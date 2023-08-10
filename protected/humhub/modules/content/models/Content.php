@@ -11,8 +11,10 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\CacheableActiveQuery;
+use humhub\components\FindInstanceTrait;
 use humhub\components\Module;
-use humhub\modules\activity\models\Activity;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -36,7 +38,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidArgumentException;
+use yii\db\ActiveQueryInterface;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -83,8 +85,10 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletable
+class Content extends ActiveRecord implements FindInstanceInterface, Movable, ContentOwner, SoftDeletable
 {
+    use FindInstanceTrait;
+
     /**
      * The default stream channel.
      * @since 1.6
@@ -206,6 +210,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         return $this->getPolymorphicRelation();
     }
 
+    public static function findInstance($identifier, array $config = []): ?self
+    {
+        $config['stringKey'] ??= 'guid';
+
+        return static::findInstanceHelper($identifier, $config);
+    }
+
     /**
      * @inheritdoc
      */
@@ -238,6 +249,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterSave($insert, $changedAttributes)
     {
+        if (!$insert) {
+            CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        }
+
         if (array_key_exists('state', $changedAttributes)) {
             // Run process for new content(Send notifications) only after changing state
             $this->processNewContent();
@@ -350,6 +365,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             ->about($contentSource)->save();
     }
 
+    public function unsetCache()
+    {
+        // delete the content record from the cache
+        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+    }
+
     /**
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete a content immediately.
@@ -367,7 +388,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function afterDelete()
     {
-        // Try delete the underlying object (Post, Question, Task, ...)
+        $this->unsetCache();
+
+        // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();
 
         /** @var ContentActiveRecord $record */
@@ -767,8 +790,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             return $this->_container;
         }
 
-        if ($this->contentContainer !== null) {
-            $this->_container = $this->contentContainer->getPolymorphicRelation();
+        if (($contentContainer = $this->contentContainer) instanceof ContentContainer) {
+            $this->_container = $contentContainer->getPolymorphicRelation();
         }
 
         return $this->_container;
@@ -778,12 +801,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @return \yii\db\ActiveQuery
+     * @return \yii\db\ActiveQuery|ContentContainer
      * @since 1.1
      */
     public function getContentContainer()
     {
-        return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
+        return $this->hasOneCached(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
     /**
@@ -857,11 +880,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             return false;
         }
 
-        if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-        } else if (!($user instanceof User)) {
-            $user = User::findOne(['id' => $user]);
-        }
+        $user = User::findIdentity($user);
 
         // Only owner can edit his content
         if ($user !== null && $this->created_by == $user->id) {
@@ -947,11 +966,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
      */
     public function canView($user = null)
     {
-        if (!$user && !Yii::$app->user->isGuest) {
-            $user = Yii::$app->user->getIdentity();
-        } else if (!$user instanceof User) {
-            $user = User::findOne(['id' => $user]);
-        }
+        $user = User::findInstance($user);
 
         // Check global content visibility, private global content is visible for all users
         if (empty($this->contentcontainer_id) && !Yii::$app->user->isGuest) {
