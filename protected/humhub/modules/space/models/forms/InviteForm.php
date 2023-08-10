@@ -136,7 +136,7 @@ class InviteForm extends Model
         // Allow users to perform this action if this is allowed by config file
         // Pre-check if user is member of the space in question
         if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
-            $membership = Membership::findMembership($this->space->id, Yii::$app->user->identity->id);
+            $membership = Membership::findInstance([$this->space->id, Yii::$app->user->identity->id]);
 
             if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                 return true;
@@ -213,7 +213,7 @@ class InviteForm extends Model
      */
     private function addUserToInviteList(User $user): bool
     {
-        $membership = Membership::findMembership($this->space->id, $user->id);
+        $membership = Membership::findInstance([$this->space->id, $user->id]);
 
         if ($membership && (int)$membership->status === Membership::STATUS_MEMBER) {
             return false;
