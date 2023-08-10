@@ -101,7 +101,7 @@ humhub.module('client', function (module, require, $) {
     };
 
     var submit = function ($form, cfg, originalEvent) {
-        if ($form instanceof $.Event && $form.$form && $form.length) {
+        if ($form instanceof $.Event && $form.$form && ($form.length || $form.$form.length)) {
             originalEvent = $form;
             $form = $form.$form;
         } else if ($form instanceof $.Event && $form.$trigger) {
