@@ -34,6 +34,8 @@ class Image extends BaseImage
 
     public bool $hideOnlineStatus = false;
 
+    public bool $showSelfOnlineStatus = false;
+
     /**
      * @inheritdoc
      */
@@ -72,7 +74,7 @@ class Image extends BaseImage
             } else {
                 Html::addCssClass($this->htmlOptions, ['has-online-status', $imgSize]);
             }
-            $userIsOnline = $isOnlineService->getStatus();
+            $userIsOnline = $isOnlineService->getStatus($this->showSelfOnlineStatus);
             $html .= Html::tag('span', '', [
                 'class' => ['tt user-online-status', $userIsOnline ? 'user-is-online' : 'user-is-offline'],
                 'title' => $userIsOnline ?
