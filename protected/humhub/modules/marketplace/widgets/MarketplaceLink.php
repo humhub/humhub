@@ -19,7 +19,7 @@ class MarketplaceLink extends Button
      */
     public function init()
     {
-        $this->link('/marketplace/browse')->loader(false);
+        $this->link(['/marketplace/browse'])->loader(false);
 
         parent::init();
     }

@@ -1,8 +1,19 @@
 HumHub Changelog
 ================
 
-1.15.0 (Unreleased)
--------------------
+1.15.0-beta.2 (Unreleased)
+--------------------------
+- Fix #6472: Initialization of account profile field type "Markdown"
+- Fix #6471: Wording "Default Homepage" in Space Default Settings
+- Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
+- Enh #6469: Added Info text for Marketplace page 
+- Fix #112: Reorder Table Rows
+- Fix #6476: Fix module disabling in queue
+- Enh #6469: Implement conditions for `fixed-settings` in config
+- Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
+
+1.15.0-beta.1 (July 31, 2023)
+-----------------------------
 - Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
 - Enh #6460: Test server output: print application requests
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
@@ -87,3 +98,4 @@ HumHub Changelog
 - Chg #6174: Users allowed to manage settings can access to module configurations
 - Enh #6440: Sort user groups by `group.sort_order` and alphabetically
 - Enh #6454: Account deletion confirmation
+- Enh #6458: Redirect to the latest-visited page after login or registration

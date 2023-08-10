@@ -75,4 +75,6 @@ return [
     'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
     'Updates available for {count} of your modules' => '',
     'Visit Marketplace' => '',
+    'You do not have the permission to configure modules. Please contact the administrator for further information.' => '',
+    'You do not have the permission to manage modules. Please contact the administrator for further information.' => '',
 ];

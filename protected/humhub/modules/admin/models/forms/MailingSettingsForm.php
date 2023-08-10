@@ -117,6 +117,7 @@ class MailingSettingsForm extends Model
     {
         $settingsManager = Yii::$app->settings;
 
+        $systemEmailAddressIsFixedBefore = $settingsManager->isFixed('mailer.systemEmailAddress');
         $settingsManager->set('mailer.transportType', $this->transportType);
 
         if ($this->transportType === self::TRANSPORT_SMTP) {
@@ -132,7 +133,10 @@ class MailingSettingsForm extends Model
             $settingsManager->set('mailer.dsn', $this->dsn);
         }
 
-        $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
+        if (!$systemEmailAddressIsFixedBefore && !$settingsManager->isFixed('mailer.systemEmailAddress')) {
+            // Update it only when it was not fixed before and after current updating
+            $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
+        }
         $settingsManager->set('mailer.systemEmailName', $this->systemEmailName);
         $settingsManager->set('mailer.systemEmailReplyTo', $this->systemEmailReplyTo);
 

@@ -21,7 +21,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
 
     RichTextEditor.prototype.getDefaultOptions = function () {
         return {
-            attributes:  {
+            attributes: {
                 'class': 'atwho-input form-control humhub-ui-richtext',
                 'data-ui-markdown': true,
             },
@@ -43,8 +43,8 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
     RichTextEditor.prototype.init = function () {
         if (this.options.placeholder) {
             this.options.placeholder = {
-                text: this.options.placeholder,
-                'class' : 'placeholder atwho-placeholder'
+                'text': this.options.placeholder,
+                'class': 'placeholder atwho-placeholder'
             };
         }
 
@@ -162,6 +162,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
     RichText.prototype.init = function () {
         // If in edit mode we do not actually render, we just hold the content
         if (!this.options.edit) {
+            this.options.edit = false;
             this.editor = new MarkdownEditor(this.$, this.options);
             this.$.html(this.editor.render());
             additions.applyTo(this.$, {filter: ['highlightCode']});
@@ -196,7 +197,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
                 }
             }).then(function (response) {
                 resolve(response.data);
-            }).catch(function (err) {
+            }).catch(function () {
                 reject(reject)
             });
         });
@@ -217,7 +218,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
 
     module.export({
         initOnPjaxLoad: true,
-        unload: function (pjax) {
+        unload: function () {
             $('.humhub-richtext-provider').remove();
             $('.ProseMirror-prompt').remove();
         },
