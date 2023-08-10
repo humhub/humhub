@@ -131,7 +131,10 @@ humhub.module('ui.modal', function (module, require, $) {
     /**
      * Sets the loader to footer in order to inactivate the action buttons
      */
-    Modal.prototype.footerLoader = function () {
+    Modal.prototype.footerLoader = function (evt) {
+        if (evt instanceof $.Event) {
+            evt.$form = evt.$trigger.closest('form');
+        }
         loader.set(this.getFooter(), {css: {padding: '13px 0 14px'}});
     }
 
@@ -763,8 +766,8 @@ humhub.module('ui.modal', function (module, require, $) {
         };
     };
 
-    const footerLoader = function () {
-        module.global.footerLoader();
+    const footerLoader = function (evt) {
+        module.global.footerLoader(evt);
     }
 
     const setContent = function (html) {
