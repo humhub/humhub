@@ -26,7 +26,7 @@ class MembershipTest extends HumHubDbTestCase
             Yii::$app->user->id, 'Approval Request Notification');
 
         // check cached version
-        $membership = Membership::findMembership(1, Yii::$app->user->id);
+        $membership = Membership::findInstance([1, Yii::$app->user->id]);
         $this->assertNotNull($membership);
         $this->assertEquals($membership->status, Membership::STATUS_APPLICANT);
 
@@ -68,7 +68,7 @@ class MembershipTest extends HumHubDbTestCase
             Yii::$app->user->id, 'Approval Request Notification');
 
         // check cached version
-        $membership = Membership::findMembership(1, Yii::$app->user->id);
+        $membership = Membership::findInstance([1, Yii::$app->user->id]);
         $this->assertNotNull($membership);
         $this->assertEquals($membership->status, Membership::STATUS_APPLICANT);
 
@@ -87,7 +87,7 @@ class MembershipTest extends HumHubDbTestCase
 
     public function testChangeRoleMembership()
     {
-        $membership = Membership::findMembership(3, 2);
+        $membership = Membership::findInstance([3, 2]);
 
         \humhub\modules\space\notifications\ChangedRolesMembership::instance()
             ->about($membership)

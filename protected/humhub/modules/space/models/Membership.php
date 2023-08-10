@@ -9,11 +9,17 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\CacheableActiveQuery;
+use humhub\components\FindInstanceTrait;
+use humhub\exceptions\InvalidArgumentException;
+use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\Module;
 use humhub\modules\user\models\User;
-use InvalidArgumentException;
 use Yii;
+use yii\db\ActiveQuery;
+use yii\db\ActiveQueryInterface;
 use yii\db\Query;
 
 /**
@@ -39,8 +45,9 @@ use yii\db\Query;
  * @property User $user
  * @property User|null $originator
  */
-class Membership extends ActiveRecord
+class Membership extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait;
 
     /**
      * @event \humhub\modules\space\MemberEvent
@@ -131,43 +138,43 @@ class Membership extends ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
+        return $this->hasOneCached(User::class, ['id' => 'user_id']);
     }
 
     public function getOriginator()
     {
-        return $this->hasOne(User::class, ['id' => 'originator_user_id']);
+        return $this->hasOneCached(User::class, ['id' => 'originator_user_id']);
     }
 
     public function getSpace()
     {
-        return $this->hasOne(Space::class, ['id' => 'space_id']);
+        return $this->hasOneCached(Space::class, ['id' => 'space_id']);
     }
 
     public function beforeSave($insert)
     {
-        Yii::$app->cache->delete(self::USER_SPACES_CACHE_KEY . $this->user_id);
-        Yii::$app->cache->delete(self::USER_SPACEIDS_CACHE_KEY . $this->user_id);
+        static::unsetCache($this);
+
         return parent::beforeSave($insert);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        static::unsetCache($this->space_id, $this->user_id);
+        static::unsetCache($this);
 
         parent::afterSave($insert, $changedAttributes);
     }
 
     public function beforeDelete()
     {
-        Yii::$app->cache->delete(self::USER_SPACES_CACHE_KEY . $this->user_id);
-        Yii::$app->cache->delete(self::USER_SPACEIDS_CACHE_KEY . $this->user_id);
+        static::unsetCache($this);
+
         return parent::beforeDelete();
     }
 
     public function afterDelete()
     {
-        static::unsetCache($this->space_id, $this->user_id);
+        static::unsetCache($this);
 
         parent::afterDelete();
     }
@@ -300,14 +307,16 @@ class Membership extends ActiveRecord
     /**
      * Returns an ActiveQuery selcting all memberships for the given $user.
      *
-     * @param User $user
+     * @param User|null $user
      * @param integer $membershipStatus the status of the Space by default self::STATUS_MEMBER.
      * @param integer $spaceStatus the status of the Space by default Space::STATUS_ENABLED.
-     * @return \yii\db\ActiveQuery
+     *
+     * @return ActiveQuery
+     * @throws \Throwable
      * @since 1.2
      */
     public static function findByUser(
-        User $user = null,
+        ?User $user = null,
              $membershipStatus = self::STATUS_MEMBER,
              $spaceStatus = Space::STATUS_ENABLED
     )
@@ -399,33 +408,101 @@ class Membership extends ActiveRecord
     /**
      * Find and cache Membership by space and user
      *
-     * @param Space|int $space
-     * @param User|int $user
+     * @param Membership|int|array<Space|int|string, User|int|string|null> $identifier
+     * @param array $config = [
+     *     'cached' => true,                    // use cached results
+     *     'nullable' => false,                 // allow null values on for $identifier
+     *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
+     *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
+     *     'intKey' => 'id',
+     *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
+     *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
+     *     ]
      *
      * @return self|null
+     *
+     * @inheritdoc
+     * @since 1.15
      */
-    public static function findMembership($space, $user): ?self
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
     {
-        if ($space instanceof Space) {
-            $spaceId = $space->id;
-        } elseif ($space === null || null === $spaceId = filter_var($space, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
-            throw new InvalidArgumentException("Argument #2 (\$space) must be a Space object or space ID.");
+        if (is_array($identifier)) {
+            if (count($identifier) !== 2) {
+                throw new InvalidArgumentException(__METHOD__, [1 => '$identifier'], 'array(Space|int|string, User|int|string|null)', $identifier);
+            }
+
+            $spaceId = Space::findInstanceAsId($identifier[0]);
+            $userId = User::findInstanceAsId($identifier[1]);
+
+            $membership = static::findInstanceHelper(['user_id' => $userId, 'space_id' => $spaceId], $config, $simpleCondition);
+
+            if ($membership) {
+                // cache the membership also under it's ID
+                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $membership->id), $membership);
+            }
+        } else {
+            $membership = static::findInstanceHelper($identifier, $config, $simpleCondition);
+
+            if ($membership) {
+                // cache the membership also under the space/user ID combination
+                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, [$membership->space_id, $membership->user_id]), $membership);
+            }
         }
 
-        if ($user instanceof User) {
-            $userId = $user->id;
-        } elseif ($user !== 0 && empty($user)) {
-            $userId = Yii::$app->user->id;
-        } elseif (null === $userId = filter_var($user, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
-            throw new InvalidArgumentException("Argument #1 (\$user) must be a User object or user ID.");
-        }
-
-        return Yii::$app->runtimeCache->getOrSet(__CLASS__ . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
+        return $membership;
     }
 
-    public static function unsetCache(int $spaceId, int $userId)
+    /**
+     * Find and cache Membership by space and user
+     *
+     * @param array<Space|int|string, User|int|string|null> $identifier
+     * @param array $config = [
+     *     'cached' => true,                    // use cached results
+     *     'nullable' => false,                 // allow null values on for $identifier
+     *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
+     *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
+     *     'intKey' => 'id',
+     *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
+     *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
+     *     ]
+     *
+     * @return null|array = [int $space_id, int $user_id]
+     *
+     * @inheritdoc
+     * @since 1.15
+     */
+    public static function findInstanceAsId($identifier, array $config = []): ?array
     {
-        Yii::$app->runtimeCache->delete(__CLASS__ . "_$spaceId-$userId");
-        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $userId);
+        $membership = static::findInstance($identifier, $config);
+
+        return $membership
+            ? [$membership->space_id, $membership->user_id]
+            : null;
+    }
+
+    public static function unsetCache($identifier)
+    {
+        $spaceId = $userId = null;
+        $runtimeCache = Yii::$app->runtimeCache;
+
+        if (is_array($identifier) || is_scalar($identifier)) {
+            $identifier = $runtimeCache->get(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $identifier));
+        }
+
+        if ($identifier instanceof self) {
+            $spaceId ??= $identifier->space_id;
+            $userId ??= $identifier->user_id;
+            $id = $identifier->id;
+        } else {
+            return;
+        }
+
+        $runtimeCache->delete(CacheableActiveQuery::normaliseObjectIdentifier(static::class, [$spaceId, $userId]));
+        $runtimeCache->delete(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $id));
+
+        $cache = Yii::$app->cache;
+        $cache->delete(self::USER_SPACES_CACHE_KEY . $userId);
+        $cache->delete(self::USER_SPACEIDS_CACHE_KEY . $userId);
+        $cache->delete(Module::$legitimateCachePrefix . $userId);
     }
 }
