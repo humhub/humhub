@@ -134,6 +134,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.footerLoader = function (evt) {
         if (evt instanceof $.Event) {
             evt.$form = evt.$trigger.closest('form');
+            evt.length = evt.$form.length;
         }
         loader.set(this.getFooter(), {css: {padding: '13px 0 14px'}});
     }
