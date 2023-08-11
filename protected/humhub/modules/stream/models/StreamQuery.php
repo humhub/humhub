@@ -2,23 +2,24 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\content\models\Content;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
+use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DateStreamFilter;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\DraftContentStreamFilter;
+use humhub\modules\stream\models\filters\ModuleStreamFilter;
+use humhub\modules\stream\models\filters\OriginatorStreamFilter;
 use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\stream\models\filters\TopicStreamFilter;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
-use humhub\modules\stream\models\filters\OriginatorStreamFilter;
-use humhub\modules\stream\models\filters\TopicStreamFilter;
-use humhub\modules\content\models\Content;
-use humhub\modules\user\models\User;
 
 /**
  * Description of StreamQuery
@@ -140,7 +141,8 @@ class StreamQuery extends Model
         BlockedUsersStreamFilter::class,
         DateStreamFilter::class,
         DraftContentStreamFilter::class,
-        ScheduledContentStreamFilter::class
+        ScheduledContentStreamFilter::class,
+        ModuleStreamFilter::class,
     ];
 
     /**
@@ -513,7 +515,6 @@ class StreamQuery extends Model
         $this->_query
             ->joinWith('createdBy')
             ->joinWith('contentContainer')
-
             ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
