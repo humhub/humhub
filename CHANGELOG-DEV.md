@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Fix #6502: Link notification for pending space approval to manage page
 - Fix #6472: Initialization of account profile field type "Markdown"
 - Fix #6471: Wording "Default Homepage" in Space Default Settings
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
