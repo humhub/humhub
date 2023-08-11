@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\actions;
 
+use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\Html;
 use humhub\modules\file\libs\ImageHelper;
 use Yii;
@@ -138,7 +139,10 @@ class UploadAction extends Action
 
         if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::class)) {
 
-            $record = $model::findOne(['id' => $pk]);
+            $record = $model instanceof FindInstanceInterface
+                ? $model::findInstance($pk)
+                : $model::findOne(['id' => $pk]);
+
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canEdit()) {
                     $this->record = $record;

@@ -9,6 +9,8 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -42,10 +44,14 @@ use Yii;
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
-class Group extends ActiveRecord
+class Group extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait {
+        afterDelete as __FindInstanceTrait_afterDelete;
+        afterSave as __FindInstanceTrait_afterSave;
+    }
 
-    const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -67,6 +73,11 @@ class Group extends ActiveRecord
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
+    }
+
+    public static function findInstance($identifier, array $config = []): ?self
+    {
+        return self::findInstanceHelper($identifier, $config);
     }
 
     /**
@@ -179,13 +190,11 @@ class Group extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->is_default_group) {
-            // Only single group can be default:
-            Group::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
+            // Only one single group can be default:
+            self::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
         }
 
-        parent::afterSave($insert, $changedAttributes);
-
-
+        $this->__FindInstanceTrait_afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -199,7 +208,7 @@ class Group extends ActiveRecord
             $defaultGroup->assignDefaultGroup();
         }
 
-        parent::afterDelete();
+        $this->__FindInstanceTrait_afterDelete();
     }
 
     /**
@@ -268,9 +277,9 @@ class Group extends ActiveRecord
      *
      * @return GroupUser|null
      */
-    public function getGroupUser($user)
+    public function getGroupUser($user): ?GroupUser
     {
-        $userId = ($user instanceof User) ? $user->id : $user;
+        $userId = User::findInstanceAsId($user);
         return GroupUser::findOne(['user_id' => $userId, 'group_id' => $this->id]);
     }
 
@@ -338,23 +347,18 @@ class Group extends ActiveRecord
      */
     public function addUser($user, $isManager = false)
     {
-        if ($this->isMember($user)) {
+        if (null === ($user = User::findInstance($user)) || $this->isMember($user)) {
             return false;
         }
 
-        $userId = ($user instanceof User) ? $user->id : $user;
-
         $newGroupUser = new GroupUser();
-        $newGroupUser->user_id = $userId;
+        $newGroupUser->user_id = $user->id;
         $newGroupUser->group_id = $this->id;
         $newGroupUser->created_at = date('Y-m-d H:i:s');
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
             if ($this->notify_users) {
-                if (!($user instanceof User)) {
-                    $user = User::findOne(['id' => $user]);
-                }
                 IncludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)
@@ -375,16 +379,12 @@ class Group extends ActiveRecord
      */
     public function removeUser($user)
     {
-        $groupUser = $this->getGroupUser($user);
-        if (!$groupUser) {
+        if (null === ($user = User::findInstance($user)) || null === ($groupUser = $this->getGroupUser($user))) {
             return false;
         }
 
         if ($groupUser->delete()) {
             if ($this->notify_users) {
-                if (!($user instanceof User)) {
-                    $user = User::findOne(['id' => $user]);
-                }
                 ExcludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)

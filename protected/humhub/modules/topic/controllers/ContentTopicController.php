@@ -19,7 +19,7 @@ class ContentTopicController extends Controller
 {
     public function actionIndex($contentId)
     {
-        $content = Content::findOne(['id' => $contentId]);
+        $content = Content::findInstance($contentId);
 
         if (!$content) {
             throw new HttpException(404);

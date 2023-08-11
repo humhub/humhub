@@ -38,6 +38,7 @@ trait InvalidTypeExceptionTrait
         $validType = [],
         $givenValue = null,
         $nullable = false,
+        $suffix = null,
         $code = 0,
         $previous = null
     ) {
@@ -51,11 +52,20 @@ trait InvalidTypeExceptionTrait
             $this->validType[] = 'null';
         }
 
+        if (is_int($suffix)) {
+            $code = $suffix;
+            $previous = $code;
+            $suffix = '';
+        } elseif ($suffix) {
+            $suffix = " $suffix";
+        }
+
         $message = sprintf(
-            '%s passed to %s must be of type %s, %s given.',
+            '%s passed to %s must be of type %s%s - %s given.',
             $this->formatPrologue(func_get_args()),
             $this->methodName,
             implode(', ', $this->validType),
+            $suffix,
             get_debug_type($this->givenValue)
         );
 

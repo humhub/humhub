@@ -257,7 +257,7 @@ class DownloadAction extends Action
             Yii::warning('Could not decode provided JWT token. ' . $ex->getMessage());
         }
         if (!empty($decoded->sub) && !empty($decoded->aud) && $decoded->aud == $file->id) {
-            return User::findOne(['id' => $decoded->sub]);
+            return User::findInstance($decoded->sub);
         }
 
         return null;

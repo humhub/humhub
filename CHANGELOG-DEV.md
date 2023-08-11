@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6482: New RuntimeCache implementation (See #6375, #6457, & #6463)
 - Fix #6472: Initialization of account profile field type "Markdown"
 - Fix #6471: Wording "Default Homepage" in Space Default Settings
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
@@ -12,6 +13,7 @@ HumHub Changelog
 - Enh #6469: Implement conditions for `fixed-settings` in config
 - Enh #68: Online Indicator Position
 - Fix #6492: Fix module form "Set as default"
+- Enh #6463: Introduce `FindInstanceInterface` with methods to get (cached) instances of e.g. `User`s, `Space`s, and `Membership`s
 - Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
 - Enh #6498: Implement option "disabled" for picker fields
 

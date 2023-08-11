@@ -394,7 +394,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         // Translate given e-mail to username
         if (strpos($userName, '@') !== false) {
-            $user = User::findOne(['email' => $userName]);
+            $user = User::findInstance($userName);
             if ($user !== null) {
                 $userName = $user->username;
             }

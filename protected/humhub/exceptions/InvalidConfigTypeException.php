@@ -19,6 +19,6 @@ class InvalidConfigTypeException extends InvalidConfigException
 
     protected function formatPrologue(array $constructArguments): string
     {
-        return "Parameter $this->parameter of configuration";
+        return "Parameter '$this->parameter' of configuration";
     }
 }

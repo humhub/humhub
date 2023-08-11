@@ -9,8 +9,11 @@
 namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -24,8 +27,9 @@ use yii\db\ActiveRecord;
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  */
-class ContentContainer extends ActiveRecord
+class ContentContainer extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait;
 
     /**
      * @inheritdoc
@@ -78,6 +82,13 @@ class ContentContainer extends ActiveRecord
         ];
     }
 
+    public static function findInstance($identifier, array $config = []): ?self
+    {
+        $config['stringKey'] ??= 'guid';
+
+        return static::findInstanceHelper($identifier, $config);
+    }
+
     /**
      * @param $guid
      * @return ContentContainerActiveRecord|null
@@ -88,5 +99,42 @@ class ContentContainer extends ActiveRecord
     {
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
+    }
+
+    public function unsetCache()
+    {
+        $runtimeCache = Yii::$app->runtimeCache;
+
+        // delete the content record from the cache
+        $runtimeCache->delete(static::class . '#' . $this->id);
+        $runtimeCache->delete(static::class . '#' . $this->guid);
+
+        /**
+         * Check if we have the related record cached in the polymorphic behavior, so we can delete the cache by ID.
+         * (This is not fully bullet-proof, as the object might still be saved in the cache, but only under the guid key.)
+         *
+         * @noinspection PhpUnhandledExceptionInspection
+         */
+        if (($model = $this->getPolymorphicRelation(false) ?? $runtimeCache->delete($this->class . '#' . $this->pk)) && $model->hasAttribute('guid')) {
+            $runtimeCache->delete($this->class . '#' . $model->guid);
+        }
+
+        $runtimeCache->delete($this->class . '#' . $this->pk);
+    }
+
+    public function afterDelete()
+    {
+        $this->unsetCache();
+
+        parent::afterDelete();
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        if (!$insert) {
+            $this->unsetCache();
+       }
+
+        parent::afterSave($insert, $changedAttributes);
     }
 }

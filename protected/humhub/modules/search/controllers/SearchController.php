@@ -63,7 +63,7 @@ class SearchController extends Controller
         $limitSpaces = [];
         if (!empty($model->limitSpaceGuids)) {
             foreach ($model->limitSpaceGuids as $guid) {
-                $space = Space::findOne(['guid' => trim($guid)]);
+                $space = Space::findInstance($guid);
                 if ($space !== null) {
                     $limitSpaces[] = $space;
                 }

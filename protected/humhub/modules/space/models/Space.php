@@ -9,6 +9,8 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -60,8 +62,9 @@ use Yii;
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
  */
-class Space extends ContentContainerActiveRecord implements Searchable
+class Space extends ContentContainerActiveRecord implements FindInstanceInterface, Searchable
 {
+    use FindInstanceTrait;
 
     // Join Policies
     const JOIN_POLICY_NONE = 0; // No Self Join Possible
@@ -251,6 +254,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function afterSave($insert, $changedAttributes)
     {
+        Yii::$app->runtimeCache->delete($this);
+
         parent::afterSave($insert, $changedAttributes);
 
         Yii::$app->queue->push(new UpdateDocument([
@@ -258,7 +263,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'primaryKey' => $this->id
         ]));
 
-        $user = User::findOne(['id' => $this->created_by]);
+        $user = User::findInstance($this->created_by);
 
         if ($insert) {
             // Auto add creator as admin
@@ -335,38 +340,49 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public static function find()
     {
-        return new ActiveQuerySpace(get_called_class());
+        return new ActiveQuerySpace(static::class);
     }
 
+    /**
+     * @param Space|int|string $identifier Space object, Space ID, or Space GUID.
+     * @param bool $cached
+     *
+     * @return self|null
+     *
+     * @inheritdoc
+     * @since 1.15
+     */
+    public static function findInstance($identifier, array $config = []): ?self
+    {
+        $config['exceptionMessageSuffix'] ??= '(must be a Space object or Space ID)';
+        $config['stringKey'] = 'guid';
+        $config['onEmpty'] = null;
+
+        return self::findInstanceHelper($identifier, $config);
+    }
 
     /**
      * Indicates that this user can join this workspace
      *
-     * @param $userId User Id of User
+     * @param User|int|string|null $user User ID of User
      */
-    public function canJoin($userId = '')
+    public function canJoin($user = null): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
         // Take current userId if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
+        $user = User::findInstance($user);
 
-        // Checks if User is already member
-        if ($this->isMember($userId)) {
+        // Checks if User is already a member
+        if ($this->isMember($user)) {
             return false;
         }
 
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
-
-        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function() use ($userId) {
-            return User::findOne($userId);
-        });
 
         if ($this->isBlockedForUser($user)) {
             return false;
@@ -376,20 +392,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Indicates that this user can join this workspace w
-     * ithout permission
+     * Indicates that this user can join this workspace without permission
      *
-     * @param $userId User Id of User
+     * @param User|int|string|null $user User ID of User
      */
-    public function canJoinFree($userId = '')
+    public function canJoinFree($user = null): bool
     {
-        // Take current userid if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
         // Checks if User is already member
-        if ($this->isMember($userId)) {
+        if ($this->isMember($user)) {
             return false;
         }
 
