@@ -350,7 +350,7 @@ class File extends FileCompat
             FileHistory::createEntryForFile($this);
         }
 
-        $this->store->delete(null, [FileHistory::VARIANT_PREFIX . '*']);
+        $this->store->delete(null, ['file', FileHistory::VARIANT_PREFIX . '*']);
     }
 
     /**

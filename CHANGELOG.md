@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.14.4 (Unreleased)
+----------------------
+- Fix #6489: Never delete original file on store new version
+
 1.14.3 (July 27, 2023)
 ----------------------
 - Fix #6345: Fix updating of post on wall stream
