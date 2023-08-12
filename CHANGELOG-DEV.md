@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.16.0 (Unreleased)
+--------------------------
+- Enh #6512: Show error messages when DB connection configuration is invalid
+
 1.15.0-beta.2 (Unreleased)
 --------------------------
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
