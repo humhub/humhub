@@ -8,7 +8,6 @@
 namespace humhub\modules\stream\models\filters;
 
 use humhub\models\Setting;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Space;
@@ -20,9 +19,9 @@ class ModuleStreamFilter extends StreamQueryFilter
 {
     public function apply(): void
     {
-        if ($this->streamQuery->container instanceof ContentContainerActiveRecord) {
-            $containerClass = $this->streamQuery->container instanceof Space ? Space::class : User::class;
-            $this->excludeContainersWithNotAvailableModule($containerClass);
+        $this->excludeContainersWithNotAvailableModule(Space::class);
+        if (!$this->streamQuery->container instanceof Space) {
+            $this->excludeContainersWithNotAvailableModule(User::class);
         }
     }
 
