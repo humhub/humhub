@@ -15,7 +15,7 @@ use yii\base\Exception;
 /**
  * @inheritdoc
  */
-class Application extends \yii\web\Application
+class Application extends \yii\web\Application implements \humhub\interfaces\Application
 {
 
     /**
@@ -63,6 +63,7 @@ class Application extends \yii\web\Application
         }
 
         parent::init();
+        $this->trigger(self::EVENT_ON_INIT);
     }
 
     /**
