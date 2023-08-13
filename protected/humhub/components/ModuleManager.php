@@ -218,8 +218,10 @@ class ModuleManager extends Component
                 $eventClass = $event['class'] ?? $event[0];
                 $eventName = $event['event'] ?? $event[1];
                 $eventHandler = $event['callback'] ?? $event[2];
+                $eventData = $event['data'] ?? $event[3] ?? null;
+                $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
                 if (method_exists($eventHandler[0], $eventHandler[1])) {
-                    Event::on($eventClass, $eventName, $eventHandler);
+                    Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
                 }
             }
         }
