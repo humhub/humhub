@@ -212,23 +212,106 @@ class ModuleManager extends Component
         Yii::$app->setModule($config['id'], $moduleConfig);
 
         // Register Event Handlers
-        if (isset($config['events'])) {
-            foreach ($config['events'] as $event) {
-                $eventClass = $event['class'] ?? $event[0];
-                $eventName = $event['event'] ?? $event[1];
-                $eventHandler = $event['callback'] ?? $event[2];
-                $eventData = $event['data'] ?? $event[3] ?? null;
-                $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
-                if (method_exists($eventHandler[0], $eventHandler[1])) {
-                    Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
-                }
-            }
-        }
+        $this->registerEventHandlers($basePath, $config);
 
         // Register Console ControllerMap
         if (Yii::$app instanceof ConsoleApplication && !(empty($config['consoleControllerMap']))) {
             Yii::$app->controllerMap = ArrayHelper::merge(Yii::$app->controllerMap, $config['consoleControllerMap']);
         }
+
+        return $config['id'];
+    }
+
+    /**
+     * @throws InvalidConfigException
+     */
+    protected function registerEventHandlers(string $basePath, array &$config): void
+    {
+        $events = $config['events'] ?? null;
+        $strict = $config['strict'] ?? false;
+
+        if (empty($events)) {
+            return;
+        }
+
+        $error = static function (string $message, bool $throw = false) use (&$config, $basePath) {
+            $message = "Configuration at $basePath has an invalid event configuration: $message";
+
+            if ($throw) {
+                throw new InvalidConfigException($message);
+            }
+
+            Yii::warning($message, $config['id']);
+        };
+
+        if (!ArrayHelper::isTraversable($events)) {
+            $error('events must be traversable', $strict);
+            return;
+        }
+
+        $getProperty = static function ($event, &$var, string $property, int $index, bool $throw = false) use ($error): bool {
+
+            $var = $event[$property] ?? $event[$index] ?? null;
+
+            if (empty($var)) {
+                $error("required property '$property' missing!", $throw);
+                return false;
+            }
+
+            return true;
+        };
+
+        foreach ($events as $event) {
+            if (empty($event)) {
+                continue;
+            }
+
+            if (!is_array($event) && !$event instanceof ArrayAccess) {
+                $error('event configuration must be an array or implement \ArrayAccess', $strict);
+                break;
+            }
+
+            if (!$getProperty($event, $eventClass, 'class', 0, $strict)) {
+                continue;
+            }
+
+            if (!$getProperty($event, $eventName, 'event', 1, $strict)) {
+                continue;
+            }
+
+            if (!$getProperty($event, $eventHandler, 'callback', 2, $strict)) {
+                continue;
+            }
+
+            if (!is_array($eventHandler)) {
+                $error("property 'callback' must be a callable defined in the array-notation denoting a method of a class", $strict);
+                continue;
+            }
+
+            if (!is_object($eventHandler[0] ?? null) && !class_exists($eventHandler[0] ?? null)) {
+                $error(sprintf("class '%s' does not exist.", $eventHandler[0] ?? ''), $strict);
+                continue;
+            }
+
+            if (!method_exists($eventHandler[0], $eventHandler[1])) {
+                $error(
+                    sprintf(
+                        "class '%s' does not have a method called '%s",
+                        is_object($eventHandler[0]) ? get_class($eventHandler[0]) : $eventHandler[0],
+                        $eventHandler[1]
+                    ),
+                    $strict
+                );
+                continue;
+            }
+
+            $eventData = $event['data'] ?? $event[3] ?? null;
+            $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
+
+            Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
+        }
+
+        $events = null;
     }
 
     /**
