@@ -181,7 +181,7 @@ class ModuleManager extends Component
 
         // Not enabled and no core/installer module
         if (!$isCoreModule && !in_array($config['id'], $this->enabledModules)) {
-            return;
+            return $config['id'];
         }
 
         // Handle Submodules
@@ -483,6 +483,10 @@ class ModuleManager extends Component
      */
     public function getModule($id, $throwOnMissingModule = true)
     {
+        if ($id instanceof Module) {
+            return $id;
+        }
+
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
             return Yii::$app->getModule($id, true);
@@ -492,6 +496,10 @@ class ModuleManager extends Component
         if (isset($this->modules[$id])) {
             $class = $this->modules[$id];
             return Yii::createObject($class, [$id, Yii::$app]);
+        }
+
+        if (is_dir($id) && is_file($id . '/config.php')) {
+            return $this->getModule($this->register($id));
         }
 
         if ($throwOnMissingModule) {
@@ -604,7 +612,7 @@ class ModuleManager extends Component
     public function enableModules($modules = [])
     {
         foreach ($modules as $module) {
-            $module = ($module instanceof Module) ? $module : $this->getModule($module);
+            $module = $this->getModule($module);
             if ($module != null) {
                 $module->enable();
             }
@@ -644,8 +652,8 @@ class ModuleManager extends Component
     public function disableModules($modules = [])
     {
         foreach ($modules as $module) {
-            $module = ($module instanceof Module) ? $module : $this->getModule($module);
-            if ($module != null) {
+            $module = $this->getModule($module);
+            if ($module !== null) {
                 $module->disable();
             }
         }
