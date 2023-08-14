@@ -1,10 +1,12 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
+/** @noinspection UnknownInspectionInspection */
 
 namespace humhub\components;
 
@@ -523,15 +525,16 @@ class ModuleManager extends Component
     }
 
     /**
-     * Checks the module can removed
+     * Checks if the module can be removed
      *
      * @param string $moduleId
-     * @return bool
-     * @throws Exception
-     */
-    public function canRemoveModule($moduleId)
+     *
+     * @noinspection PhpDocMissingThrowsInspection
+     * */
+    public function canRemoveModule($moduleId): bool
     {
-        $module = $this->getModule($moduleId);
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $module = $this->getModule($moduleId, false);
 
         if ($module === null) {
             return false;
