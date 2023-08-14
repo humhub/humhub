@@ -643,11 +643,11 @@ class ModuleManager extends Component
         $this->trigger(static::EVENT_BEFORE_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
 
         $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
-        if ($moduleEnabled != null) {
+        if ($moduleEnabled !== null) {
             $moduleEnabled->delete();
         }
 
-        if (($key = array_search($module->id, $this->enabledModules)) !== false) {
+        if (($key = array_search($module->id, $this->enabledModules, true)) !== false) {
             unset($this->enabledModules[$key]);
         }
 
