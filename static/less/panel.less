@@ -199,6 +199,12 @@
             .profile-user-photo {
                 border: 3px solid #fff;
                 border-radius: 5px;
+
+                // Force position of the online status because of the 3px border on the photo
+                + .user-online-status {
+                    right: -5px;
+                    bottom: -5px;
+                }
             }
         }
     }
