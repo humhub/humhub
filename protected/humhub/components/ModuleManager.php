@@ -8,8 +8,10 @@
 
 namespace humhub\components;
 
+use ArrayAccess;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
+use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
@@ -365,17 +367,18 @@ class ModuleManager extends Component
     /**
      * Filter modules by keyword and by additional filters from module event
      *
-     * @param Module[] $modules
-     * @param array $filters
+     * @param Module[]|null $modules
+     * @param array|ArrayAccess $filters = ['keyword' => 'search term']
+     *
      * @return Module[]
      */
-    public function filterModules(array $modules, $filters = []): array
+    public function filterModules(?array $modules, $filters = []): array
     {
-        $filters = array_merge([
-            'keyword' => null,
-        ], $filters);
+        if (!$filters instanceof ArrayAccess && !is_array($filters)) {
+            throw new InvalidArgumentTypeException(__METHOD__, [2 => '$filters'], ['array', ArrayAccess::class], $filters);
+        }
 
-        $modules = $this->filterModulesByKeyword($modules, $filters['keyword']);
+        $modules = $this->filterModulesByKeyword($modules, $filters['keyword'] ?? null);
 
         $modulesEvent = new ModulesEvent(['modules' => $modules]);
         $this->trigger(static::EVENT_AFTER_FILTER_MODULES, $modulesEvent);
@@ -386,12 +389,14 @@ class ModuleManager extends Component
     /**
      * Filter modules by keyword
      *
-     * @param Module[] $modules
+     * @param Module[]|null $modules list of modules, defaulting to installed non-core modules
      * @param null|string $keyword
      * @return Module[]
      */
-    public function filterModulesByKeyword(array $modules, $keyword = null): array
+    public function filterModulesByKeyword(?array $modules, $keyword = null): array
     {
+        $modules ??= $this->getModules();
+
         if ($keyword === null) {
             $keyword = Yii::$app->request->get('keyword', '');
         }
