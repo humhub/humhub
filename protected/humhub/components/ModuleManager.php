@@ -563,11 +563,11 @@ class ModuleManager extends Component
      * @throws Exception
      * @throws \yii\base\ErrorException
      */
-    public function removeModule($moduleId, $disableBeforeRemove = true)
+    public function removeModule($moduleId, $disableBeforeRemove = true): ?string
     {
         $module = $this->getModule($moduleId);
 
-        if ($module == null) {
+        if ($module === null) {
             throw new Exception('Could not load module to remove!');
         }
 
@@ -590,10 +590,13 @@ class ModuleManager extends Component
             FileHelper::copyDirectory($moduleBasePath, $backupFolderName);
             FileHelper::removeDirectory($moduleBasePath);
         } else {
+            $backupFolderName = null;
             //TODO: Delete directory
         }
 
         $this->flushCache();
+
+        return $backupFolderName;
     }
 
     /**
