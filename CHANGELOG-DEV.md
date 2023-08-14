@@ -17,7 +17,7 @@ HumHub Changelog
 - Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
 - Enh #6498: Implement option "disabled" for picker fields
 - Enh #6506: Allow event data from module config
-- Fix #6509: Fix online status position on people page
+- Fix #6510: Fix online status position on people page
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
