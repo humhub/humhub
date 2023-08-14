@@ -31,6 +31,7 @@ use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use PHPUnit\Framework\SkippedTestError;
 use TypeError;
 use Yii;
+use yii\base\Event;
 use yii\db\ActiveRecord;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerPermissionManager;
@@ -56,6 +57,7 @@ class HumHubDbTestCase extends Unit
 
     public $time;
 
+    public array $firedEvents = [];
 
     protected function setUp(): void
     {
@@ -256,6 +258,13 @@ class HumHubDbTestCase extends Unit
         $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
     }
 
+    public function assertEvents(array $events, string $message = ''): void
+    {
+        static::assertEquals($events, $this->firedEvents, $message);
+
+        $this->firedEvents = [];
+    }
+
     /**
      * @param int|null $expected Number of records expected. Null for any number, but not none
      * @param string|array|ExpressionInterface $tables
@@ -429,6 +438,19 @@ class HumHubDbTestCase extends Unit
     public function logout()
     {
         Yii::$app->user->logout();
+    }
+
+    public function handleEvent(Event $event, array $eventData = [])
+    {
+        $eventData += [
+            'class' => get_class($event),
+            'event' => $event->name,
+            'sender' => $event->sender,
+            'data' => $event->data,
+            'handled' => $event->handled,
+        ];
+
+        $this->firedEvents[] = $eventData;
     }
 
     /**
