@@ -320,11 +320,16 @@ class ModuleManager extends Component
         foreach ($modules as $id => $module) {
             /* @var Module $module */
             $searchFields = [$id];
-            if (isset($module->name)) {
-                $searchFields[] = $module->name;
+            if ($searchField = $module->getName()) {
+                $searchFields[] = $searchField;
             }
-            if (isset($module->description)) {
-                $searchFields[] = $module->description;
+
+            if ($searchField = $module->getDescription()) {
+                $searchFields[] = $searchField;
+            }
+
+            if ($searchField = $module->getKeywords()) {
+                array_push($searchFields, ...$searchField);
             }
 
             $keywordFound = false;
