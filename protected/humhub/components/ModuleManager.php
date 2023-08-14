@@ -146,8 +146,7 @@ class ModuleManager extends Component
      */
     public function register($basePath, $config = null)
     {
-        $filename = $basePath . '/config.php';
-        if ($config === null && is_file($filename)) {
+        if ($config === null && is_file($filename = $basePath . '/config.php')) {
             $config = include $filename;
         }
 
