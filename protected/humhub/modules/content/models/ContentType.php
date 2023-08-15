@@ -84,7 +84,6 @@ class ContentType extends Model
             $query->andWhere(['contentcontainer_id' => $container->contentcontainer_id]);
         }
 
-        $excludedContentClasses = [];
         if ($container instanceof Space) {
             $excludedContentClasses = ContentContainerModuleState::getExcludedContentClasses(Space::class);
             $query->andWhere(['NOT IN', 'object_model', $excludedContentClasses]);
