@@ -6,8 +6,8 @@ namespace humhub\modules\stream\models;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
+use humhub\modules\stream\models\filters\ModuleStreamFilter;
 use humhub\modules\stream\models\filters\PinnedContentStreamFilter;
-use humhub\modules\stream\models\filters\StreamQueryFilter;
 use yii\base\InvalidConfigException;
 
 /**
@@ -26,6 +26,15 @@ class ContentContainerStreamQuery extends WallStreamQuery
      * @var bool whether or not to sort by pinned content
      */
     public $pinnedContentSupport = true;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->filterHandlers[] = ModuleStreamFilter::class;
+        parent::init();
+    }
 
     /**
      * @inheritdoc

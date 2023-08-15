@@ -9,7 +9,6 @@ use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\DraftContentStreamFilter;
-use humhub\modules\stream\models\filters\ModuleStreamFilter;
 use humhub\modules\stream\models\filters\OriginatorStreamFilter;
 use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
@@ -142,7 +141,6 @@ class StreamQuery extends Model
         DateStreamFilter::class,
         DraftContentStreamFilter::class,
         ScheduledContentStreamFilter::class,
-        ModuleStreamFilter::class,
     ];
 
     /**
