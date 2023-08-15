@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.16.0-beta.1 (Unreleased)
+--------------------------
+- Enh #6486: Add module "Not available" option in spaces or for users
+
 1.15.0-beta.2 (Unreleased)
 --------------------------
 - Fix #6472: Initialization of account profile field type "Markdown"
@@ -10,7 +14,6 @@ HumHub Changelog
 - Fix #112: Reorder Table Rows
 - Fix #6476: Fix module disabling in queue
 - Enh #6469: Implement conditions for `fixed-settings` in config
-- Enh #6486: Add module "Not available" option in spaces or for users
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------

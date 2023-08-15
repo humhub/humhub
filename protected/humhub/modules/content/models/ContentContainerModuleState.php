@@ -8,6 +8,10 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\models\Setting;
+use humhub\modules\content\components\ContentContainerModule;
+use ReflectionClass;
+use ReflectionException;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -57,6 +61,35 @@ class ContentContainerModuleState extends ActiveRecord
         ];
 
         return $labels ? $states : array_keys($states);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public static function getExcludedContentClasses(string $containerClass): array
+    {
+        $reflectClass = new ReflectionClass($containerClass);
+
+        // Find modules with "Not Available" option per User/Space
+        $moduleIds = Setting::find()
+            ->select('module_id')
+            ->where(['name' => 'moduleManager.defaultState.' . $reflectClass->getShortName()])
+            ->andWhere(['value' => ContentContainerModuleState::STATE_NOT_AVAILABLE])
+            ->column();
+
+        if (empty($moduleIds)) {
+            return [];
+        }
+
+        $excludedContentClasses = [];
+        foreach ($moduleIds as $moduleId) {
+            $module = Yii::$app->getModule($moduleId);
+            if ($module instanceof ContentContainerModule) {
+                $excludedContentClasses = array_merge($excludedContentClasses, $module->getContentClasses());
+            }
+        }
+
+        return $excludedContentClasses;
     }
 
     /**
