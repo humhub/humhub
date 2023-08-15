@@ -23,7 +23,10 @@ use humhub\modules\space\widgets\MembershipButton;
                         [InviteButton::class, ['space' => $container], ['sortOrder' => 10]],
                         [MembershipButton::class, [
                             'space' => $container,
-                            'options' => ['becomeMember' => ['mode' => 'link']],
+                            'options' => [
+                                'becomeMember' => ['mode' => 'link'],
+                                'acceptInvite' => ['mode' => 'link']
+                            ],
                         ], ['sortOrder' => 20]],
                         [FollowButton::class, [
                             'space' => $container,
@@ -37,4 +40,3 @@ use humhub\modules\space\widgets\MembershipButton;
         </div>
     </div>
 </div>
-
