@@ -18,14 +18,8 @@ use yii\helpers\Url;
  *
  * @author luke
  */
-class Application extends \yii\console\Application
+class Application extends \yii\console\Application implements \humhub\interfaces\Application
 {
-
-    /**
-     * @event ActionEvent an event raised on init of application.
-     */
-    const EVENT_ON_INIT = 'onInit';
-
     /**
      * @var string|array the homepage url
      */

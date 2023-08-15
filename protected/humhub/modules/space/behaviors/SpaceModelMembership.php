@@ -41,11 +41,6 @@ class SpaceModelMembership extends Behavior
     private $_spaceOwner = null;
 
     /**
-     * @var array cached membership results
-     */
-    private $_memberships = [];
-
-    /**
      * Checks if given userId is Member of this Space.
      *
      * @param integer $userId
@@ -219,23 +214,11 @@ class SpaceModelMembership extends Behavior
      *
      * If none Record is found, null is given
      *
-     * @return Membership the membership
+     * @return Membership|null the membership
      */
-    public function getMembership($userId = null)
+    public function getMembership($userId = null): ?Membership
     {
-        if ($userId instanceof User) {
-            $userId = $userId->id;
-        } elseif (!$userId || $userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
-        if (!isset($this->_memberships[$userId])) {
-            $this->_memberships[$userId] = Yii::$app->runtimeCache->getOrSet(__METHOD__ . $userId . '-' . $this->owner->id, function() use ($userId) {
-                return Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
-            });
-        }
-
-        return $this->_memberships[$userId];
+        return Membership::findMembership($this->owner->id, $userId);
     }
 
     /**
@@ -540,7 +523,7 @@ class SpaceModelMembership extends Behavior
      */
     private function handleRemoveMembershipEvent(Membership $membership, User $user)
     {
-        unset($this->_memberships[$user->id]);
+        Membership::unsetCache($this->owner->id, $user->id);
 
         // Get rid of old notifications
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
