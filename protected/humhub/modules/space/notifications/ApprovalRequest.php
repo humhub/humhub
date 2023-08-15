@@ -104,7 +104,7 @@ class ApprovalRequest extends BaseNotification
 
     public function getUrl()
     {
-        return $this->source->getUrl() . 'space/manage/member/pending-approvals';
+        return $this->source->createUrl('/space/manage/member/pending-approvals');
     }
 
     /**
