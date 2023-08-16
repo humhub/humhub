@@ -137,7 +137,7 @@ class ApprovalController extends Controller
         $model->setSendMessageDefaults();
         if ($model->load(Yii::$app->request->post())) {
             if ($model->sendMessage()) {
-                $this->view->success(Yii::t('AdminModule.user', 'The message is sent to the user by email.'));
+                $this->view->success(Yii::t('AdminModule.user', 'The message has been sent by email.'));
                 return $this->redirect(['index']);
             }
             $this->view->error(Yii::t('AdminModule.user', 'Could not send the message to the user!'));
