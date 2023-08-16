@@ -8,8 +8,10 @@
 
 namespace humhub\components\mail;
 
+use humhub\libs\Helpers;
 use Symfony\Component\Mime\Crypto\SMimeSigner;
 use Yii;
+use yii\mail\MessageInterface;
 
 /**
  * Mailer implements a mailer based on SymfonyMailer.
@@ -63,18 +65,14 @@ class Mailer extends \yii\symfonymailer\Mailer
 
     /**
      * @inheritDoc
+     * @deprecated since 1.15. Use Helpers::composeEmail() instead.
+     * @see Helpers::composeEmail()
      */
     public function compose($view = null, array $params = [])
     {
         $message = parent::compose($view, $params);
 
-        // Set HumHub default from values
-        if (empty($message->getFrom())) {
-            $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
-            if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
-                $message->setReplyTo($replyTo);
-            }
-        }
+        self::ensureHumHubDefaultFromValues($message);
 
         if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null) {
             if ($this->signer === null) {
@@ -92,6 +90,25 @@ class Mailer extends \yii\symfonymailer\Mailer
         return $message;
     }
 
+    /**
+     * @param MessageInterface $message
+     *
+     * @return void
+     */
+    public static function ensureHumHubDefaultFromValues(MessageInterface $message): MessageInterface
+    {
+        // Set HumHub default from values
+        if ($message->getFrom()) {
+            return $message;
+        }
+
+        $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
+        if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
+            $message->setReplyTo($replyTo);
+        }
+
+        return $message;
+    }
 
     /**
      * @inheritdoc

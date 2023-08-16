@@ -8,6 +8,7 @@
 
 namespace humhub\commands;
 
+use humhub\libs\Helpers;
 use Yii;
 use yii\helpers\Console;
 
@@ -28,7 +29,7 @@ class TestController extends \yii\console\Controller
     {
         $message = "Console test message<br /><br />";
 
-        $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $message]);
+        $mail = Helpers::composeEmail(['html' => '@humhub/views/mail/TextOnly'], ['message' => $message]);
         $mail->setTo($address);
         $mail->setSubject('Test message');
         $mail->send();

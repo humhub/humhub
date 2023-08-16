@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
+use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
@@ -170,7 +171,7 @@ class Invite extends ActiveRecord
 
         // User requested registration link by its self
         if ($this->source === self::SOURCE_SELF || $this->source === self::SOURCE_INVITE_BY_LINK) {
-            $mail = Yii::$app->mailer->compose([
+            $mail = Helpers::composeEmail([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
             ], [
@@ -185,7 +186,7 @@ class Invite extends ActiveRecord
                 Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));
             }
 
-            $mail = Yii::$app->mailer->compose([
+            $mail = Helpers::composeEmail([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSpace'
             ], [
@@ -208,7 +209,7 @@ class Invite extends ActiveRecord
                 Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));
             }
 
-            $mail = Yii::$app->mailer->compose([
+            $mail = Helpers::composeEmail([
                 'html' => '@humhub/modules/user/views/mails/UserInvite',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInvite'
             ], [
@@ -246,7 +247,7 @@ class Invite extends ActiveRecord
      */
     public function sendAlreadyRegisteredUserMail(): bool
     {
-        $mail = Yii::$app->mailer->compose([
+        $mail = Helpers::composeEmail([
             'html' => '@humhub/modules/user/views/mails/UserAlreadyRegistered',
             'text' => '@humhub/modules/user/views/mails/plaintext/UserAlreadyRegistered'
         ], [

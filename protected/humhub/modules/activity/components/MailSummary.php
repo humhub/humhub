@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\components;
 
+use humhub\libs\Helpers;
 use humhub\modules\activity\Module;
 use Yii;
 use yii\base\Exception;
@@ -88,7 +89,7 @@ class MailSummary extends Component
         try {
             Yii::$app->view->params['showUnsubscribe'] = true;
             Yii::$app->view->params['unsubscribeUrl'] = Url::to(['/activity/user'], true);
-            $mail = Yii::$app->mailer->compose([
+            $mail = Helpers::composeEmail([
                 'html' => $this->layout,
                 'text' => $this->layoutPlaintext
                     ], [

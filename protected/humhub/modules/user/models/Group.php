@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\Helpers;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -16,6 +17,8 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
 use Yii;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 /**
@@ -417,7 +420,7 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
-        $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
+        $approvalUrl = Url::to(["/admin/approval"], true);
 
         foreach ($group->manager as $manager) {
 
@@ -429,9 +432,9 @@ class Group extends ActiveRecord
                     ['displayName' => $user->displayName]) . "<br><br>\n\n" .
                 Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .
-                \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+                Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
-            $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+            $mail = Helpers::composeEmail(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => $html,
             ]);
 

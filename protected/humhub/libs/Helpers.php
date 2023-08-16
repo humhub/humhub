@@ -8,9 +8,11 @@
 
 namespace humhub\libs;
 
+use humhub\components\mail\Mailer;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\base\Exception;
+use yii\base\InvalidArgumentException;
+use yii\mail\MessageInterface;
 
 /**
  * This class contains a lot of html helpers for the views
@@ -255,7 +257,7 @@ class Helpers
     public static function SqlMode($event)
     {
         /* set sql_mode only for mysql */
-        if ($event->sender->driverName == 'mysql') {
+        if ($event->sender->driverName === 'mysql') {
             try {
                 $event->sender->createCommand('SET SESSION sql_mode=""; SET SESSION sql_mode="NO_ENGINE_SUBSTITUTION"')->execute();
             } catch (\Exception $ex) {
@@ -264,4 +266,20 @@ class Helpers
         }
     }
 
+    /**
+     * @param $view
+     * @param $params
+     *
+     * @return MessageInterface
+     *
+     * @since 1.15
+     * @see \yii\mail\MailerInterface::compose
+     */
+    public static function composeEmail($view, $params): MessageInterface
+    {
+        /** @noinspection PhpDeprecationInspection */
+        $mail = Yii::$app->mailer->compose($view, $params);
+
+        return Mailer::ensureHumHubDefaultFromValues($mail);
+    }
 }

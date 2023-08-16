@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\libs\Helpers;
 use Yii;
 use yii\helpers\Url;
 use humhub\modules\user\models\User;
@@ -70,7 +71,7 @@ class AccountChangeEmail extends \yii\base\Model
 
         $token = md5(Yii::$app->settings->get('secret') . $user->guid . $this->newEmail);
 
-        $mail = Yii::$app->mailer->compose([
+        $mail = Helpers::composeEmail([
             'html' => '@humhub/modules/user/views/mails/ChangeEmail',
             'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail'
                 ], [

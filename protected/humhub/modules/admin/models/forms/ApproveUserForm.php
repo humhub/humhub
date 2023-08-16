@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\libs\Helpers;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\Module;
 use Yii;
@@ -220,7 +221,7 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function send(): bool
     {
-        $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+        $mail = Helpers::composeEmail(['html' => '@humhub/views/mail/TextOnly'], [
             'message' => RichTextToEmailHtmlConverter::process($this->message)
         ]);
         $mail->setTo($this->user->email);
