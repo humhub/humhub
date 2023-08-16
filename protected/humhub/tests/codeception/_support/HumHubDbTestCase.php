@@ -48,6 +48,8 @@ use yii\db\Query;
  */
 class HumHubDbTestCase extends Unit
 {
+    use HumHubHelperTrait;
+
     protected $fixtureConfig;
 
     public $appConfig = '@tests/codeception/config/unit.php';
@@ -57,8 +59,6 @@ class HumHubDbTestCase extends Unit
 
     protected function setUp(): void
     {
-        parent::setUp();
-
         if (Yii::$app === null) {
             $c = new \ReflectionClass($this);
             $m = $c->getMethod($this->getName(false));
@@ -75,40 +75,8 @@ class HumHubDbTestCase extends Unit
         $this->reloadSettings(__METHOD__);
         $this->flushCache(__METHOD__);
         $this->deleteMails(__METHOD__);
-    }
 
-    protected function reloadSettings(?string $caller = null)
-    {
-        codecept_debug(sprintf('[%s] Reloading settings', $caller ?? __METHOD__));
-        Yii::$app->settings->reload();
-
-        foreach (Yii::$app->modules as $module) {
-            if ($module instanceof \humhub\components\Module) {
-                $module->settings->reload();
-            }
-        }
-    }
-
-    protected function flushCache(?string $caller = null)
-    {
-        codecept_debug(sprintf('[%s] Flushing cache', $caller ?? __METHOD__));
-        RichTextToShortTextConverter::flushCache();
-        RichTextToHtmlConverter::flushCache();
-        RichTextToPlainTextConverter::flushCache();
-        RichTextToMarkdownConverter::flushCache();
-        UrlOembed::flush();
-    }
-
-    protected function deleteMails(?string $caller = null)
-    {
-        codecept_debug(sprintf('[%s] Deleting mails', $caller ?? __METHOD__));
-        $path = Yii::getAlias('@runtime/mail');
-        $files = glob($path . '/*'); // get all file names
-        foreach ($files as $file) { // iterate files
-            if (is_file($file)) {
-                unlink($file); // delete file
-            }
-        }
+        parent::setUp();
     }
 
     /**
