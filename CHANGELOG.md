@@ -4,6 +4,7 @@ HumHub Changelog
 1.14.4 (Unreleased)
 ----------------------
 - Fix #6489: Never delete original file on store new version
+- Fix #6507: Reload page after accepting of invite in Space header
 
 1.14.3 (July 27, 2023)
 ----------------------
