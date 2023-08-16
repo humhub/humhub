@@ -28,6 +28,7 @@ use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use humhub\tests\codeception\fixtures\SettingFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
+use PHPUnit\Framework\SkippedTestError;
 use TypeError;
 use Yii;
 use yii\db\ActiveRecord;
@@ -58,16 +59,27 @@ class HumHubDbTestCase extends Unit
     {
         parent::setUp();
 
+        if (Yii::$app === null) {
+            $c = new \ReflectionClass($this);
+            $m = $c->getMethod($this->getName(false));
+            $doc = $m->getDocComment();
+            if (preg_match('#@skip(.*?)\r?\n#s', $doc, $annotations)) {
+                throw new SkippedTestError("Test was skipped due to @skip annotation: " . (trim($annotations[1]) ?: "[No reason indicated!]"), 0);
+            }
+            return;
+        }
+
         $webRoot = dirname(__DIR__, 2) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
-        $this->initModules();
-        $this->reloadSettings();
-        $this->flushCache();
-        $this->deleteMails();
+        $this->initModules(__METHOD__);
+        $this->reloadSettings(__METHOD__);
+        $this->flushCache(__METHOD__);
+        $this->deleteMails(__METHOD__);
     }
 
-    protected function reloadSettings()
+    protected function reloadSettings(?string $caller = null)
     {
+        codecept_debug(sprintf('[%s] Reloading settings', $caller ?? __METHOD__));
         Yii::$app->settings->reload();
 
         foreach (Yii::$app->modules as $module) {
@@ -77,8 +89,9 @@ class HumHubDbTestCase extends Unit
         }
     }
 
-    protected function flushCache()
+    protected function flushCache(?string $caller = null)
     {
+        codecept_debug(sprintf('[%s] Flushing cache', $caller ?? __METHOD__));
         RichTextToShortTextConverter::flushCache();
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
@@ -86,8 +99,9 @@ class HumHubDbTestCase extends Unit
         UrlOembed::flush();
     }
 
-    protected function deleteMails()
+    protected function deleteMails(?string $caller = null)
     {
+        codecept_debug(sprintf('[%s] Deleting mails', $caller ?? __METHOD__));
         $path = Yii::getAlias('@runtime/mail');
         $files = glob($path . '/*'); // get all file names
         foreach ($files as $file) { // iterate files
@@ -101,8 +115,9 @@ class HumHubDbTestCase extends Unit
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!
      */
-    protected function initModules()
+    protected function initModules(?string $caller = null)
     {
+        codecept_debug(sprintf('[%s] Initializing Modules', $caller ?? __METHOD__));
         $cfg = Configuration::config();
 
         if (!empty($cfg['humhub_modules'])) {
