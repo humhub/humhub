@@ -239,7 +239,7 @@ class ModuleManager extends Component
         }
 
         $error = static function (string $message, bool $throw = false) use (&$config, $basePath) {
-            $message = "Configuration at $basePath has an invalid event configuration: $message";
+            $message = sprintf("Configuration at %s has an invalid event configuration: %s", $basePath, $message);
 
             if ($throw) {
                 throw new InvalidConfigException($message);
@@ -258,7 +258,7 @@ class ModuleManager extends Component
             $var = $event[$property] ?? $event[$index] ?? null;
 
             if (empty($var)) {
-                $error("required property '$property' missing!", $throw);
+                $error(sprintf("required property '%s' missing!", $property), $throw);
                 return false;
             }
 
