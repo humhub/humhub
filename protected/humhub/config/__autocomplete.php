@@ -13,7 +13,7 @@
  */
 class Yii {
     /**
-     * @var \yii\web\Application|\yii\console\Application|\humhub\components\Application|__Application|__WebApplication
+     * @var \yii\web\Application|\yii\console\Application|\humhub\components\Application|\humhub\components\console\Application|\humhub\interfaces\ApplicationInterface|__Application|__WebApplication
      */
     public static $app;
 }
