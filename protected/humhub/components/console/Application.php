@@ -59,7 +59,7 @@ class Application extends \yii\console\Application implements \humhub\interfaces
             ));
         }
 
-        if (BaseSettingsManager::isDatabaseInstalled()) {
+        if (BaseSettingsManager::isDatabaseInstalled(Yii::$app->params['databaseInstalled'] ?? false)) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
