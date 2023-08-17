@@ -6,6 +6,7 @@ HumHub Changelog
 - Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
 - Enh #6512: Show error messages when DB connection configuration is invalid
 - Fix #6516: Humhub test case would fail on skipped tests
+- Enh #5315: Default stream sort by `created_at` instead of `id`
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
@@ -26,7 +27,6 @@ HumHub Changelog
 - Enh #6498: Implement option "disabled" for picker fields
 - Enh #6506: Allow event data from module config
 - Fix #6510: Fix online status position on people page
-- Enh #5315: Default stream sort by `created_at` instead of `id`
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
