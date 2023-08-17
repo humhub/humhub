@@ -1,15 +1,19 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
+/** @noinspection UnknownInspectionInspection */
+
 namespace humhub\components;
 
+use ArrayAccess;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
+use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
@@ -146,8 +150,7 @@ class ModuleManager extends Component
      */
     public function register($basePath, $config = null)
     {
-        $filename = $basePath . '/config.php';
-        if ($config === null && is_file($filename)) {
+        if ($config === null && is_file($filename = $basePath . '/config.php')) {
             $config = include $filename;
         }
 
@@ -182,7 +185,7 @@ class ModuleManager extends Component
 
         // Not enabled and no core/installer module
         if (!$isCoreModule && !in_array($config['id'], $this->enabledModules)) {
-            return;
+            return $config['id'];
         }
 
         // Handle Submodules
@@ -213,23 +216,106 @@ class ModuleManager extends Component
         Yii::$app->setModule($config['id'], $moduleConfig);
 
         // Register Event Handlers
-        if (isset($config['events'])) {
-            foreach ($config['events'] as $event) {
-                $eventClass = $event['class'] ?? $event[0];
-                $eventName = $event['event'] ?? $event[1];
-                $eventHandler = $event['callback'] ?? $event[2];
-                $eventData = $event['data'] ?? $event[3] ?? null;
-                $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
-                if (method_exists($eventHandler[0], $eventHandler[1])) {
-                    Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
-                }
-            }
-        }
+        $this->registerEventHandlers($basePath, $config);
 
         // Register Console ControllerMap
         if (Yii::$app instanceof ConsoleApplication && !(empty($config['consoleControllerMap']))) {
             Yii::$app->controllerMap = ArrayHelper::merge(Yii::$app->controllerMap, $config['consoleControllerMap']);
         }
+
+        return $config['id'];
+    }
+
+    /**
+     * @throws InvalidConfigException
+     */
+    protected function registerEventHandlers(string $basePath, array &$config): void
+    {
+        $events = $config['events'] ?? null;
+        $strict = $config['strict'] ?? false;
+
+        if (empty($events)) {
+            return;
+        }
+
+        $error = static function (string $message, bool $throw = false) use (&$config, $basePath) {
+            $message = sprintf("Configuration at %s has an invalid event configuration: %s", $basePath, $message);
+
+            if ($throw) {
+                throw new InvalidConfigException($message);
+            }
+
+            Yii::warning($message, $config['id']);
+        };
+
+        if (!ArrayHelper::isTraversable($events)) {
+            $error('events must be traversable', $strict);
+            return;
+        }
+
+        $getProperty = static function ($event, &$var, string $property, int $index, bool $throw = false) use ($error): bool {
+
+            $var = $event[$property] ?? $event[$index] ?? null;
+
+            if (empty($var)) {
+                $error(sprintf("required property '%s' missing!", $property), $throw);
+                return false;
+            }
+
+            return true;
+        };
+
+        foreach ($events as $event) {
+            if (empty($event)) {
+                continue;
+            }
+
+            if (!is_array($event) && !$event instanceof ArrayAccess) {
+                $error('event configuration must be an array or implement \ArrayAccess', $strict);
+                break;
+            }
+
+            if (!$getProperty($event, $eventClass, 'class', 0, $strict)) {
+                continue;
+            }
+
+            if (!$getProperty($event, $eventName, 'event', 1, $strict)) {
+                continue;
+            }
+
+            if (!$getProperty($event, $eventHandler, 'callback', 2, $strict)) {
+                continue;
+            }
+
+            if (!is_array($eventHandler)) {
+                $error("property 'callback' must be a callable defined in the array-notation denoting a method of a class", $strict);
+                continue;
+            }
+
+            if (!is_object($eventHandler[0] ?? null) && !class_exists($eventHandler[0] ?? null)) {
+                $error(sprintf("class '%s' does not exist.", $eventHandler[0] ?? ''), $strict);
+                continue;
+            }
+
+            if (!method_exists($eventHandler[0], $eventHandler[1])) {
+                $error(
+                    sprintf(
+                        "class '%s' does not have a method called '%s",
+                        is_object($eventHandler[0]) ? get_class($eventHandler[0]) : $eventHandler[0],
+                        $eventHandler[1]
+                    ),
+                    $strict
+                );
+                continue;
+            }
+
+            $eventData = $event['data'] ?? $event[3] ?? null;
+            $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
+
+            Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
+        }
+
+        $events = null;
     }
 
     /**
@@ -283,17 +369,18 @@ class ModuleManager extends Component
     /**
      * Filter modules by keyword and by additional filters from module event
      *
-     * @param Module[] $modules
-     * @param array $filters
+     * @param Module[]|null $modules
+     * @param array|ArrayAccess $filters = ['keyword' => 'search term']
+     *
      * @return Module[]
      */
-    public function filterModules(array $modules, $filters = []): array
+    public function filterModules(?array $modules, $filters = []): array
     {
-        $filters = array_merge([
-            'keyword' => null,
-        ], $filters);
+        if (!$filters instanceof ArrayAccess && !is_array($filters)) {
+            throw new InvalidArgumentTypeException(__METHOD__, [2 => '$filters'], ['array', ArrayAccess::class], $filters);
+        }
 
-        $modules = $this->filterModulesByKeyword($modules, $filters['keyword']);
+        $modules = $this->filterModulesByKeyword($modules, $filters['keyword'] ?? null);
 
         $modulesEvent = new ModulesEvent(['modules' => $modules]);
         $this->trigger(static::EVENT_AFTER_FILTER_MODULES, $modulesEvent);
@@ -304,12 +391,14 @@ class ModuleManager extends Component
     /**
      * Filter modules by keyword
      *
-     * @param Module[] $modules
+     * @param Module[]|null $modules list of modules, defaulting to installed non-core modules
      * @param null|string $keyword
      * @return Module[]
      */
-    public function filterModulesByKeyword(array $modules, $keyword = null): array
+    public function filterModulesByKeyword(?array $modules, $keyword = null): array
     {
+        $modules ??= $this->getModules();
+
         if ($keyword === null) {
             $keyword = Yii::$app->request->get('keyword', '');
         }
@@ -321,11 +410,16 @@ class ModuleManager extends Component
         foreach ($modules as $id => $module) {
             /* @var Module $module */
             $searchFields = [$id];
-            if (isset($module->name)) {
-                $searchFields[] = $module->name;
+            if ($searchField = $module->getName()) {
+                $searchFields[] = $searchField;
             }
-            if (isset($module->description)) {
-                $searchFields[] = $module->description;
+
+            if ($searchField = $module->getDescription()) {
+                $searchFields[] = $searchField;
+            }
+
+            if ($searchField = $module->getKeywords()) {
+                array_push($searchFields, ...$searchField);
             }
 
             $keywordFound = false;
@@ -396,6 +490,10 @@ class ModuleManager extends Component
      */
     public function getModule($id, $throwOnMissingModule = true)
     {
+        if ($id instanceof Module) {
+            return $id;
+        }
+
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
             return Yii::$app->getModule($id, true);
@@ -405,6 +503,10 @@ class ModuleManager extends Component
         if (isset($this->modules[$id])) {
             $class = $this->modules[$id];
             return Yii::createObject($class, [$id, Yii::$app]);
+        }
+
+        if (is_dir($id) && is_file($id . '/config.php')) {
+            return $this->getModule($this->register($id));
         }
 
         if ($throwOnMissingModule) {
@@ -423,15 +525,16 @@ class ModuleManager extends Component
     }
 
     /**
-     * Checks the module can removed
+     * Checks if the module can be removed
      *
      * @param string $moduleId
-     * @return bool
-     * @throws Exception
-     */
-    public function canRemoveModule($moduleId)
+     *
+     * @noinspection PhpDocMissingThrowsInspection
+     * */
+    public function canRemoveModule($moduleId): bool
     {
-        $module = $this->getModule($moduleId);
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $module = $this->getModule($moduleId, false);
 
         if ($module === null) {
             return false;
@@ -460,11 +563,11 @@ class ModuleManager extends Component
      * @throws Exception
      * @throws \yii\base\ErrorException
      */
-    public function removeModule($moduleId, $disableBeforeRemove = true)
+    public function removeModule($moduleId, $disableBeforeRemove = true): ?string
     {
         $module = $this->getModule($moduleId);
 
-        if ($module == null) {
+        if ($module === null) {
             throw new Exception('Could not load module to remove!');
         }
 
@@ -487,10 +590,13 @@ class ModuleManager extends Component
             FileHelper::copyDirectory($moduleBasePath, $backupFolderName);
             FileHelper::removeDirectory($moduleBasePath);
         } else {
+            $backupFolderName = null;
             //TODO: Delete directory
         }
 
         $this->flushCache();
+
+        return $backupFolderName;
     }
 
     /**
@@ -517,7 +623,7 @@ class ModuleManager extends Component
     public function enableModules($modules = [])
     {
         foreach ($modules as $module) {
-            $module = ($module instanceof Module) ? $module : $this->getModule($module);
+            $module = $this->getModule($module);
             if ($module != null) {
                 $module->enable();
             }
@@ -537,11 +643,11 @@ class ModuleManager extends Component
         $this->trigger(static::EVENT_BEFORE_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
 
         $moduleEnabled = ModuleEnabled::findOne(['module_id' => $module->id]);
-        if ($moduleEnabled != null) {
+        if ($moduleEnabled !== null) {
             $moduleEnabled->delete();
         }
 
-        if (($key = array_search($module->id, $this->enabledModules)) !== false) {
+        if (($key = array_search($module->id, $this->enabledModules, true)) !== false) {
             unset($this->enabledModules[$key]);
         }
 
@@ -557,8 +663,8 @@ class ModuleManager extends Component
     public function disableModules($modules = [])
     {
         foreach ($modules as $module) {
-            $module = ($module instanceof Module) ? $module : $this->getModule($module);
-            if ($module != null) {
+            $module = $this->getModule($module);
+            if ($module !== null) {
                 $module->disable();
             }
         }
