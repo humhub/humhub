@@ -5,10 +5,10 @@ HumHub Changelog
 -------------------
 - Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
 - Enh #6512: Show error messages when DB connection configuration is invalid
-- 
+- Fix #6516: Humhub test case would fail on skipped tests
+
 1.15.0-beta.2 (Unreleased)
 --------------------------
-- Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
 - Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
