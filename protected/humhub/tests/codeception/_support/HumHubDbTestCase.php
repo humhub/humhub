@@ -28,6 +28,7 @@ use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
 use humhub\tests\codeception\fixtures\SettingFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
+use PHPUnit\Framework\SkippedTestError;
 use TypeError;
 use Yii;
 use yii\db\ActiveRecord;
@@ -47,6 +48,8 @@ use yii\db\Query;
  */
 class HumHubDbTestCase extends Unit
 {
+    use HumHubHelperTrait;
+
     protected $fixtureConfig;
 
     public $appConfig = '@tests/codeception/config/unit.php';
@@ -56,53 +59,33 @@ class HumHubDbTestCase extends Unit
 
     protected function setUp(): void
     {
-        parent::setUp();
+        if (Yii::$app === null) {
+            $c = new \ReflectionClass($this);
+            $m = $c->getMethod($this->getName(false));
+            $doc = $m->getDocComment();
+            if (preg_match('#@skip(.*?)\r?\n#s', $doc, $annotations)) {
+                throw new SkippedTestError("Test was skipped due to @skip annotation: " . (trim($annotations[1]) ?: "[No reason indicated!]"), 0);
+            }
+            return;
+        }
 
         $webRoot = dirname(__DIR__, 2) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
-        $this->initModules();
-        $this->reloadSettings();
-        $this->flushCache();
-        $this->deleteMails();
-    }
+        $this->initModules(__METHOD__);
+        $this->reloadSettings(__METHOD__);
+        $this->flushCache(__METHOD__);
+        $this->deleteMails(__METHOD__);
 
-    protected function reloadSettings()
-    {
-        Yii::$app->settings->reload();
-
-        foreach (Yii::$app->modules as $module) {
-            if ($module instanceof \humhub\components\Module) {
-                $module->settings->reload();
-            }
-        }
-    }
-
-    protected function flushCache()
-    {
-        RichTextToShortTextConverter::flushCache();
-        RichTextToHtmlConverter::flushCache();
-        RichTextToPlainTextConverter::flushCache();
-        RichTextToMarkdownConverter::flushCache();
-        UrlOembed::flush();
-    }
-
-    protected function deleteMails()
-    {
-        $path = Yii::getAlias('@runtime/mail');
-        $files = glob($path . '/*'); // get all file names
-        foreach ($files as $file) { // iterate files
-            if (is_file($file)) {
-                unlink($file); // delete file
-            }
-        }
+        parent::setUp();
     }
 
     /**
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!
      */
-    protected function initModules()
+    protected function initModules(?string $caller = null)
     {
+        codecept_debug(sprintf('[%s] Initializing Modules', $caller ?? __METHOD__));
         $cfg = Configuration::config();
 
         if (!empty($cfg['humhub_modules'])) {
