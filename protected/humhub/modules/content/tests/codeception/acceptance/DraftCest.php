@@ -34,6 +34,7 @@ class DraftCest
         $I->waitForText('Publish draft', '5');
         $I->click('Publish draft');
         $I->waitForText('The content has been successfully published.');
+        $I->wait(2);
         $I->dontSee('DRAFT');
 
         $I->wantTo('ensure published draft is now visible for other users.');
