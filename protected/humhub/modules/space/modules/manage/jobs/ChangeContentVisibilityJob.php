@@ -9,9 +9,9 @@
 namespace humhub\modules\space\modules\manage\jobs;
 
 use humhub\modules\content\models\Content;
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\queue\LongRunningActiveJob;
 
-class ChangeContentVisibilityJob extends ActiveJob
+class ChangeContentVisibilityJob extends LongRunningActiveJob
 {
     public int $contentContainerId;
 

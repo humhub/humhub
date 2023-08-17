@@ -19,11 +19,12 @@ use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\WallEntry;
+use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
-use humhub\modules\content\widgets\WallEntry;
 use humhub\widgets\Label;
 use Yii;
 use yii\base\Exception;
@@ -66,6 +67,7 @@ use yii\db\ActiveQuery;
  * @mixin Followable
  * @property User $createdBy
  * @property User $owner
+ * @property-read File[] $files
  * @author Luke
  */
 class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
@@ -218,7 +220,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getContentName()
     {
-        return static::class;
+        return static::getObjectModel();
     }
 
     /**
@@ -487,7 +489,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * base type as follows:
      *
      * ```
-     * public static function getObjectModel() {
+     * public static function getObjectModel(): string {
      *     return BaseType::class
      * }
      * ```
@@ -497,7 +499,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @return string
      */
-    public static function getObjectModel()
+    public static function getObjectModel(): string
     {
         return static::class;
     }
@@ -608,6 +610,13 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     {
         return $this->hasOne(Content::class, ['object_id' => 'id'])
             ->andWhere(['content.object_model' => static::getObjectModel()]);
+    }
+
+    public function getFiles()
+    {
+        return $this
+            ->hasMany(File::class, ['object_id' => 'id'])
+            ->andOnCondition(['object_model' => static::getObjectModel()]);
     }
 
     /**

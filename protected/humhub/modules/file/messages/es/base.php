@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'La imagen cargada no es un cuadrado.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Este campo permite un máximo de {n,plural,=1{# fichero} other{# fichero}}.',
     'Upload files' => 'Subir archivos',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

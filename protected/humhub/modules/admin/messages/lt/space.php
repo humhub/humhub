@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Tvarkyti</strong> erdves',
+    '<strong>Manage</strong> Spaces' => '<strong>Tvarkyti</strong> erdves',
     'Default Join Policy' => 'Numatytoji prisijungimo politika',
     'Default Visibility' => 'Numatytasis matomumas',
     'Default space' => 'Numatytoji erdvė',
@@ -11,9 +11,15 @@ return [
     'Add new space' => '',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Change owner' => '',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
     'Default Content Visiblity' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
     'Manage members' => '',
     'Manage modules' => '',

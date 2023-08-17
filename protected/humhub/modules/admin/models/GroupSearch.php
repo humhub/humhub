@@ -45,7 +45,7 @@ class GroupSearch extends Group
      */
     public function search($params)
     {
-        $query = Group::find();
+        $query = Group::find()->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

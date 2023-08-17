@@ -97,6 +97,28 @@ humhub.module('content.container', function (module, require, $) {
         });
     };
 
+    var turnOnNotifications = function(event) {
+        client.post(event).then(function(response) {
+            if (response.success) {
+                const contentId = event.$trigger.data('content-id');
+
+                $('#notification_off_' + contentId).hide();
+                $('#notification_on_' + contentId).show();
+            }
+        });
+    }
+
+    var turnOffNotifications = function(event) {
+        client.post(event).then(function(response) {
+            if (response.success) {
+                const contentId = event.$trigger.data('content-id');
+
+                $('#notification_on_' + contentId).hide();
+                $('#notification_off_' + contentId).show();
+            }
+        });
+    };
+
     var guid = function () {
         return module.config.guid;
     };
@@ -112,6 +134,8 @@ humhub.module('content.container', function (module, require, $) {
         unload: unload,
         guid: guid,
         enableModule: enableModule,
-        disableModule: disableModule
+        disableModule: disableModule,
+        turnOnNotifications: turnOnNotifications,
+        turnOffNotifications: turnOffNotifications,
     });
 });

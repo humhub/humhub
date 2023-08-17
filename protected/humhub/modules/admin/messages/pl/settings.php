@@ -103,7 +103,6 @@ return [
     'These settings refer to the appearance of your social network.' => 'Te ustawienia odnoszą się do wyglądu Twojej sieci społecznościowej.',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Użyj zastępczego %url% dla URL. Formatem musi być JSON. (np. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
     'Use X-Sendfile for File Downloads' => 'Użyj X-Sendfile przy pobieraniu plików',
-    'Use the default swipe to show sidebar on a mobile device' => 'Użyj domyślnego przewijania aby pokazać pasek boczny na urządzeniu mobilnym',
     'User' => 'Użytkownik',
     'User Settings' => 'Ustawienia Użytkownika',
     'Username' => 'Nazwa użytkownika',

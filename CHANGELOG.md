@@ -1,9 +1,17 @@
 HumHub Changelog
 ================
 
-1.14.3 (Unreleased)
+1.14.3 (July 27, 2023)
 ----------------------
 - Fix #6345: Fix updating of post on wall stream
+- Fix #6351: Error when config `defaultReloadableScripts` is not array
+- Fix #6359: Avoid double call of `afterSave` on creating of a published content
+- Fix #6373: Use integer format for Content columns "visibility" and "state" right after creating
+- Fix #6377: Forgot Password - Display email input error after successful captcha verification.
+- Fix #6378: Fix visibility of the link "Uninstall" on Windows server
+- Fix #6404: Fix visibility of global content on dashboard for registered users
+- Fix #6441: Display topics and content types in filters header on load page with selected filters
+- Fix #6433: Avoid duplicate activities on save published content
 
 1.14.2 (May 22, 2023)
 ----------------------

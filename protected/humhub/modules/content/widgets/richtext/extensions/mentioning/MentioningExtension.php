@@ -19,18 +19,17 @@ use humhub\components\ActiveRecord;
  * This LinkExtension is used to represent mentionings in the richtext as:
  *
  * [<name>](mention:<guid> "<url>")
- *
  */
 class MentioningExtension extends RichTextLinkExtension
 {
     public $key = 'mention';
 
-    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output) : string
+    public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
     {
-        return static::replace($output, function(RichTextLinkExtensionMatch $match) use ($richtext) {
+        return static::replace($output, function (RichTextLinkExtensionMatch $match) use ($richtext) {
             $contentContainer = ContentContainer::findOne(['guid' => $match->getExtensionId()]);
 
-            if(!$contentContainer || !$contentContainer->getPolymorphicRelation()) {
+            if (!$contentContainer || !$contentContainer->getPolymorphicRelation()) {
                 // If no user or space was found we leave out the url in the non edit mode.
                 return $richtext->edit
                     ? static::buildExtensionLink($match->getText(), $match->getText(), $match->getTitle())
@@ -39,13 +38,13 @@ class MentioningExtension extends RichTextLinkExtension
 
             $container = $contentContainer->getPolymorphicRelation();
 
-            if($container instanceof User) {
+            if ($container instanceof User) {
                 return $container->isActive()
                     ? static::buildMentioning($container)
                     : static::buildMentioningNotFound($match->getText(), $match->getExtensionId());
             }
 
-            if($container instanceof Space) {
+            if ($container instanceof Space) {
                 return self::buildMentioning($container);
             }
 
@@ -56,41 +55,41 @@ class MentioningExtension extends RichTextLinkExtension
     /**
      * @inheritDoc
      */
-    public function onBeforeConvertLink(LinkParserBlock $linkBlock) : void
+    public function onBeforeConvertLink(LinkParserBlock $linkBlock): void
     {
         $guid = $this->cutExtensionKeyFromUrl($linkBlock->getUrl());
 
         $container = $this->findContainer($guid);
 
-        if(!$container || ($container instanceof User && !$container->isActive())) {
-            $linkBlock->setResult('@'.$linkBlock->getParsedText());
+        if (!$container || ($container instanceof User && !$container->isActive())) {
+            $linkBlock->setResult('@' . $linkBlock->getParsedText());
             return;
         }
 
-        $linkBlock->setBlock('@'.$container->getDisplayName(), $container->createUrl(null, [], true));
+        $linkBlock->setBlock('@' . $container->getDisplayName(), $container->createUrl(null, [], true));
     }
 
-    private function findContainer($guid) : ?ContentContainerActiveRecord
+    private function findContainer($guid): ?ContentContainerActiveRecord
     {
         $result = User::findOne(['guid' => $guid]);
 
-        if(!$result) {
+        if (!$result) {
             $result = Space::findOne(['guid' => $guid]);
         }
 
         return $result;
     }
 
-    public static function buildMentioning(ContentContainerActiveRecord $container, $urlScheme = false) : string
+    public static function buildMentioning(ContentContainerActiveRecord $container, $urlScheme = false): string
     {
-        if($container instanceof User && !$container->isActive()) {
+        if ($container instanceof User && !$container->isActive()) {
             return static::buildMentioningNotFound($container->getDisplayName(), $container->guid);
         }
 
-        return static::buildLink($container->getDisplayName(), 'mention:'.$container->guid, $container->getUrl($urlScheme));
+        return static::buildLink($container->getDisplayName(), 'mention:' . $container->guid, $container->getUrl($urlScheme));
     }
 
-    private static function buildMentioningNotFound($name, $guid) : string
+    private static function buildMentioningNotFound($name, $guid): string
     {
         return static::buildExtensionLink($name, $guid);
     }
@@ -100,14 +99,14 @@ class MentioningExtension extends RichTextLinkExtension
         $result[$this->key] = [];
 
         // We currently only support mentionings in content or content addon records
-        if(!($record instanceof ContentActiveRecord) && !($record instanceof ContentAddonActiveRecord)) {
+        if (!($record instanceof ContentActiveRecord) && !($record instanceof ContentAddonActiveRecord)) {
             return $text;
         }
 
         foreach ($this->scanExtension($text) as $match) {
-            if($match->getExtensionId()) {
+            if ($match->getExtensionId()) {
                 $mention = Mentioning::mention($match->getExtensionId(), $record);
-                if(!empty($mention)) {
+                if (!empty($mention)) {
                     $result[$this->key][] = $mention[0];
                 }
             }

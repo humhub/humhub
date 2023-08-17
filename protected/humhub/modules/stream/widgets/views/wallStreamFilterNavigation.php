@@ -14,6 +14,7 @@ use yii\helpers\Html;
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $panels [] */
 /* @var $options [] */
+/* @var $isCollapsed bool */
 
 $panelColumn1Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_1]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_1] : null;
 $panelColumn2Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_2]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_2] : null;
@@ -30,7 +31,7 @@ $panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4])
             <?= Button::asLink(Yii::t('ContentModule.base', 'Filter') . '<b class="caret"></b>')
                 ->cssClass('wall-stream-filter-toggle')->icon('fa-filter')->sm()->style('pa') ?>
         </div>
-        <div class="wall-stream-filter-body" style="display:none">
+        <div class="wall-stream-filter-body"<?php if ($isCollapsed) : ?> style="display:none"<?php endif; ?>>
             <div class="filter-root">
                 <div class="row">
                     <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks, 'span' => count($panels)])?>

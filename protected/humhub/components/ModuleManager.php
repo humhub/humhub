@@ -218,8 +218,10 @@ class ModuleManager extends Component
                 $eventClass = $event['class'] ?? $event[0];
                 $eventName = $event['event'] ?? $event[1];
                 $eventHandler = $event['callback'] ?? $event[2];
+                $eventData = $event['data'] ?? $event[3] ?? null;
+                $eventAppend = filter_var($event['append'] ?? $event[4] ?? true, FILTER_VALIDATE_BOOLEAN);
                 if (method_exists($eventHandler[0], $eventHandler[1])) {
-                    Event::on($eventClass, $eventName, $eventHandler);
+                    Event::on($eventClass, $eventName, $eventHandler, $eventData, $eventAppend);
                 }
             }
         }
@@ -330,7 +332,7 @@ class ModuleManager extends Component
             foreach ($searchFields as $searchField) {
                 if (stripos($searchField, $keyword) !== false) {
                     $keywordFound = true;
-                    continue;
+                    break;
                 }
             }
 
@@ -387,11 +389,12 @@ class ModuleManager extends Component
      * Returns a module instance by id
      *
      * @param string $id Module Id
-     * @return Module|object
+     * @param bool $throwOnMissingModule true - to throw exception, false - to return null
+     * @return Module|object|null
      * @throws Exception
      * @throws InvalidConfigException
      */
-    public function getModule($id)
+    public function getModule($id, $throwOnMissingModule = true)
     {
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
@@ -404,7 +407,11 @@ class ModuleManager extends Component
             return Yii::createObject($class, [$id, Yii::$app]);
         }
 
-        throw new Exception('Could not find/load requested module: ' . $id);
+        if ($throwOnMissingModule) {
+            throw new Exception('Could not find/load requested module: ' . $id);
+        }
+
+        return null;
     }
 
     /**
@@ -434,7 +441,10 @@ class ModuleManager extends Component
         /** @var ModuleMarketplace $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
         if ($marketplaceModule !== null) {
-            if (strpos($module->getBasePath(), Yii::getAlias($marketplaceModule->modulesPath)) !== false) {
+            // Normalize paths before comparing in order to fix issues like Windows path separators `\`
+            $modulePath = FileHelper::normalizePath($module->getBasePath());
+            $aliasPath = FileHelper::normalizePath(Yii::getAlias($marketplaceModule->modulesPath));
+            if (strpos($modulePath, $aliasPath) !== false) {
                 return true;
             }
         }

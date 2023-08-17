@@ -9,10 +9,10 @@
 namespace humhub\modules\content\jobs;
 
 use humhub\modules\content\models\Content;
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\queue\LongRunningActiveJob;
 use Yii;
 
-class PurgeDeletedContents extends ActiveJob
+class PurgeDeletedContents extends LongRunningActiveJob
 {
 
     /**

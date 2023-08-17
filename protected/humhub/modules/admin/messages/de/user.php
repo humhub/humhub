@@ -116,6 +116,7 @@ Deine Registrierungsanfrage wurde abgelehnt.
 Mit freundlichen Grüßen
 {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Hier kannst du neue Profil-Kategorien und Felder erstellen oder bearbeiten.',
+  'Hide online status of users' => 'Online-Status von Nutzern verbergen',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Wenn individuelle Profilberechtigungen erlaubt sind, werden die folgenden Einstellungen lediglich als Standard gesetzt, den die Benutzer individuell anpassen können. Folgende, durch den Benutzer änderbare Optionen, werden zu den Profileinstellungen hinzugefügt:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Wenn diese Option nicht ausgewählt ist, wirst du Besitzer dieses Space',
   'Impersonate' => 'Simulieren',

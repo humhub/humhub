@@ -92,6 +92,17 @@ class Module extends BaseModule
     }
 
     /**
+     * @return bool
+     */
+    public static function isEnabled(): bool
+    {
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        return $marketplaceModule && $marketplaceModule->enabled;
+    }
+
+    /**
      * @return OnlineModuleManager
      */
     public function getOnlineModuleManager()
@@ -126,24 +137,5 @@ class Module extends BaseModule
         }
 
         return $this->_humhubApi;
-    }
-
-    /**
-     * Check if the modules list is filtered by single tag
-     *
-     * @param string $tag
-     * @return bool
-     */
-    public function isFilteredBySingleTag(string $tag): bool
-    {
-        $tags = Yii::$app->request->get('tags', null);
-
-        if (empty($tags)) {
-            return false;
-        }
-
-        $tags = explode(',', $tags);
-
-        return count($tags) === 1 && $tags[0] == $tag;
     }
 }

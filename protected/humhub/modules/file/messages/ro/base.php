@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'Imaginea încărcată nu este pătrată.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Acest câmp de încărcare permite doar un maxim de n,plural,=1{# fișier} other{# fișiere}}.',
     'Upload files' => 'Incarca fisiere',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

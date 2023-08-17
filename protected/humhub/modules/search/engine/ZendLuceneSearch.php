@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\engine;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\commands\SearchController;
 use humhub\modules\search\interfaces\Searchable;
@@ -127,7 +128,7 @@ class ZendLuceneSearch extends Search
 
     public function delete(Searchable $obj)
     {
-        $this->deleteRecord($obj->className(), $obj->getPrimaryKey());
+        $this->deleteRecord(PolymorphicRelation::getObjectModel($obj), $obj->getPrimaryKey());
     }
 
 

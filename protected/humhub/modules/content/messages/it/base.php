@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(visibile anche a chi non è membro dello space)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Conferma</strong> la cancellazione dell\'articolo',
     '<strong>Delete</strong> content?' => '<strong>Eliminare</strong> i contenuti?',
     '<strong>Move</strong> content' => '<strong>Sposta</strong> contenuto',
     '<strong>Permalink</strong> to this post' => '<strong>Link permanente</strong> a questo articolo',
@@ -29,7 +28,6 @@ return [
     'Creation time' => 'Data di creazione',
     'Delete' => 'Cancella',
     'Deleted' => 'Eliminata',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Vuoi veramente cancellare quest\'articolo? Tutti i commenti e i like andranno persi!',
     'Edit' => 'Modifica',
     'Enable' => 'Abilita',
     'Filter' => 'Filtro',
@@ -100,11 +98,15 @@ return [
     'Activate scheduling' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',
     'Publish draft' => '',
+    'Save as draft' => '',
+    'Save scheduling' => '',
     'Schedule publication' => '',
-    'Scheduled at {dateTime}' => '',
+    'Scheduled for {dateTime}' => '',
+    'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
 ];

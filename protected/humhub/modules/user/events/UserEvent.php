@@ -18,10 +18,8 @@ use humhub\components\Event;
  */
 class UserEvent extends Event
 {
-
     /**
      * @var \humhub\modules\user\models\User the user
      */
     public $user;
-
 }

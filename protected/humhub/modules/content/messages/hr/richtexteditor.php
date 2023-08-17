@@ -49,6 +49,7 @@ return [
     'Wrap in bullet list' => 'Zamotajte u bullet listu',
     'Wrap in ordered list' => 'Zamotajte u poredani popis',
     '[Invalid file]' => '[Invalid file]',
+    'Switch editor mode' => '',
     '[Code Block]' => '',
     '[Image]' => '',
     '[Table]' => '',

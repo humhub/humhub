@@ -40,7 +40,8 @@ class Select2BootstrapAsset extends AssetBundle
     * @inheritdoc
     */
     public $depends = [
-        Select2Asset::class
+        Select2Asset::class,
+        Select2SearchInputPlaceholderAsset::class
     ];
 
 }

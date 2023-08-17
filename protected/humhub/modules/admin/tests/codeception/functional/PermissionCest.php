@@ -2,11 +2,11 @@
 
 namespace admin\functional;
 
+use admin\FunctionalTester;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use tests\codeception\_pages\AdminPage;
-use admin\FunctionalTester;
 
 class PermissionCest
 {
@@ -164,7 +164,7 @@ class PermissionCest
 
         $I->see('Users', '#admin-menu');
         $I->see('Spaces', '#admin-menu');
-        $I->dontSee('Modules', '#admin-menu');
+        $I->see('Modules', '#admin-menu');
         $I->see('Settings', '#admin-menu');
         $I->dontSee('Information', '#admin-menu');
 
@@ -182,7 +182,9 @@ class PermissionCest
         $I->see('Space Settings');
 
         $I->amOnPage(['/admin/module']);
-        $I->see('You are not permitted to access this section.');
+        $I->expectTo('not to see permission denied message');
+        $I->see('Module administration');
+        $I->see('You do not have the permission to manage modules.');
 
         $I->amOnPage(['/admin/setting']);
         $I->dontSee('You are not permitted to access this section.');
@@ -228,7 +230,10 @@ class PermissionCest
         $I->amOnPage(['/admin/module']);
         $I->expectTo('not to see permission denied message');
         $I->see('Module administration');
+        $I->see('You do not have the permission to configure modules.');
 
+        $I->amOnPage(['/marketplace/browse']);
+        $I->see('Marketplace');
         $I->dontSeeElement('#admin-menu');
 
         $I->amOnPage(['/admin/user']);

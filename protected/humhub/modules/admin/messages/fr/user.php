@@ -103,6 +103,7 @@ Kind Regards
 
 ' => 'Bonjour {displayName}, Votre demande de compte a été refusée. Cordialement {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Vous pouvez créer ou modifier ici les catégories et les champs de profil.',
+  'Hide online status of users' => 'Masquer l’état de connexion des utilisateurs et utilisatrices',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Si les autorisations de profil individuel ne sont pas autorisées, les paramètres suivants ne sont pas modifiables pour tous les utilisateurs. Si les autorisations de profil individuel sont autorisées, les paramètres sont uniquement définis comme des valeurs par défaut que les utilisateurs peuvent personnaliser. Les entrées suivantes sont alors affichées sous la même forme dans les paramètres du profil de l\'utilisateur :',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Si cette option n\'est pas sélectionnée, le propriétaire des espaces sera transféré sur votre compte.',
   'Impersonate' => 'Emprunter l’identité',

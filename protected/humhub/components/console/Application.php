@@ -18,14 +18,8 @@ use yii\helpers\Url;
  *
  * @author luke
  */
-class Application extends \yii\console\Application
+class Application extends \yii\console\Application implements \humhub\interfaces\Application
 {
-
-    /**
-     * @event ActionEvent an event raised on init of application.
-     */
-    const EVENT_ON_INIT = 'onInit';
-
     /**
      * @var string|array the homepage url
      */
@@ -77,8 +71,8 @@ class Application extends \yii\console\Application
                 if (Yii::getAlias('@webroot-static', false) === false) {
                     Yii::setAlias('@webroot-static', '@webroot/static');
                 }
-                $this->urlManager->scriptUrl = $baseUrl;
-                $this->urlManager->baseUrl = $baseUrl;
+                $this->urlManager->scriptUrl = '';
+                $this->urlManager->baseUrl = '';
 
                 // Set hostInfo based on given baseUrl
                 $urlParts = parse_url($baseUrl);

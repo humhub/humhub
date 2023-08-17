@@ -31,6 +31,7 @@ use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -81,6 +82,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
     const VISIBILITY_ALL = 2; // Visible for all (also guests)
     const VISIBILITY_HIDDEN = 3; // Invisible
+
+    /**
+     * User Markdown Editor Modes
+     */
+    const EDITOR_RICH_TEXT = 0;
+    const EDITOR_PLAIN = 1;
 
     /**
      * User Groups
@@ -322,7 +329,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
+            return static::findOne(['id' => $id]);
+        });
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -627,9 +636,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         if ($userInvite !== null) {
             // User was invited to a space
             if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
-                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
-                if ($space != null) {
+                $space = $userInvite->space;
+                if ($space !== null) {
                     $space->addMember($this->id);
+                    Yii::$app->user->setReturnUrl($space->createUrl());
                 }
             }
 
@@ -659,27 +669,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('user');
 
-        if ($module->displayNameCallback !== null) {
-            return call_user_func($module->displayNameCallback, $this);
-        }
+            if ($module->displayNameCallback !== null) {
+                return call_user_func($module->displayNameCallback, $this);
+            }
 
-        $name = '';
+            $name = '';
 
-        $format = Yii::$app->settings->get('displayNameFormat');
+            $format = Yii::$app->settings->get('displayNameFormat');
 
-        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
-            $name = $this->profile->firstname . ' ' . $this->profile->lastname;
-        }
+            if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
+                $name = $this->profile->firstname . ' ' . $this->profile->lastname;
+            }
 
-        // Return always username as fallback
-        if ($name == '' || $name == ' ') {
-            return $this->username;
-        }
+            // Return always username as fallback
+            if ($name == '' || $name == ' ') {
+                return $this->username;
+            }
 
-        return $name;
+            return $name;
+        });
     }
 
     /**
@@ -1023,5 +1035,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $options;
+    }
+
+    public function getPasswordRecoveryService(): PasswordRecoveryService
+    {
+        return new PasswordRecoveryService($this);
     }
 }

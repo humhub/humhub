@@ -152,7 +152,8 @@ abstract class FilterNavigation extends JsWidget
     {
         return $this->render($this->view, [
             'panels' => $this->filterOutEmptyPanels(),
-            'options' => $this->getOptions()
+            'options' => $this->getOptions(),
+            'isCollapsed' => $this->isCollapsed()
         ]);
     }
 
@@ -268,5 +269,10 @@ abstract class FilterNavigation extends JsWidget
         }
 
         return array_key_exists($filterId, $this->definition) || in_array($filterId, $this->definition);
+    }
+
+    public function isCollapsed(): bool
+    {
+        return true;
     }
 }

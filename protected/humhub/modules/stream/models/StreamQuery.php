@@ -510,10 +510,11 @@ class StreamQuery extends Model
      */
     protected function setupCriteria()
     {
-        $this->_query->joinWith('createdBy');
-        $this->_query->joinWith('contentContainer');
+        $this->_query
+            ->joinWith('createdBy')
+            ->joinWith('contentContainer')
 
-        $this->_query->limit($this->limit);
+            ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
             $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);

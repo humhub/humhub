@@ -103,6 +103,7 @@ Kind Regards
 
 ' => 'こんにちは{displayName}、あなたのアカウントリクエストは却下されました。 よろしくお願いいたします。{AdminName}',
   'Here you can create or edit profile categories and fields.' => 'ここでは、プロフィールのカテゴリや設定を作成・編集できます。',
+  'Hide online status of users' => 'ユーザーのオンラインステータスを非表示にする',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '個々のプロフィールのアクセス許可が許可されていない場合、次の設定はすべてのユーザーに対して変更できません。 個別のプロフィール権限が許可されている場合、設定はユーザーがカスタマイズできるデフォルトとしてのみ設定されます。 次のエントリは、ユーザープロフィール設定に同じ形式で表示されます。',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'このオプションが選択されていない場合、スペースの所有権がアカウントに転送されます。',
   'Impersonate' => '代替ログイン',

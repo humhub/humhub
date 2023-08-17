@@ -2,6 +2,9 @@
 
 namespace tests\codeception\_support;
 
+use Codeception\Test\Unit;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\BasePermission;
 use Codeception\Configuration;
 use Codeception\Exception\ModuleException;
 use Codeception\Module;
@@ -28,8 +31,6 @@ use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use TypeError;
 use Yii;
 use yii\db\ActiveRecord;
-use Codeception\Test\Unit;
-use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\notification\models\Notification;
@@ -153,11 +154,11 @@ class HumHubDbTestCase extends Unit
         ];
     }
 
-    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    public static function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
-            'source_class' => $source->className(),
+            'source_class' => PolymorphicRelation::getObjectModel($source),
             'source_pk' => $source->getPrimaryKey(),
         ]);
         if (is_string($target_id)) {
@@ -173,12 +174,12 @@ class HumHubDbTestCase extends Unit
             $notificationQuery->andWhere(['user_id' => $target_id]);
         }
 
-        $this->assertNotEmpty($notificationQuery->all(), $msg);
+        static::assertNotEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    public static function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -188,12 +189,12 @@ class HumHubDbTestCase extends Unit
             $notificationQuery->andWhere(['user_id' => $target_id]);
         }
 
-        $this->assertEquals($count, $notificationQuery->count(), $msg);
+        static::assertEquals($count, $notificationQuery->count(), $msg);
     }
 
-    public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    public static function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
@@ -203,17 +204,17 @@ class HumHubDbTestCase extends Unit
             $notificationQuery->andWhere(['user_id' => $target_id]);
         }
 
-        $this->assertEmpty($notificationQuery->all(), $msg);
+        static::assertEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertHasActivity($class, ActiveRecord $source, $msg = '')
+    public static function assertHasActivity($class, ActiveRecord $source, $msg = '')
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => $source->className(),
+            'object_model' => PolymorphicRelation::getObjectModel($source),
             'object_id' => $source->getPrimaryKey(),
         ]);
-        $this->assertNotNull($activity, $msg);
+        static::assertNotNull($activity, $msg);
     }
 
     /**
@@ -282,14 +283,14 @@ class HumHubDbTestCase extends Unit
      * @return void
      * @since 1.15
      */
-    public function assertRecordCount(?int $expected, $tables, $condition = null, ?array $params = [], string $message = ''): void
+    public static function assertRecordCount(?int $expected, $tables, $condition = null, ?array $params = [], string $message = ''): void
     {
-        $count = $this->dbCount($tables, $condition, $params ?? []);
+        $count = static::dbCount($tables, $condition, $params ?? []);
 
         if ($expected === null) {
-            $this->assertGreaterThan(0, $count, $message);
+            static::assertGreaterThan(0, $count, $message);
         } else {
-            $this->assertEquals($expected, $count, $message);
+            static::assertEquals($expected, $count, $message);
         }
     }
 
@@ -302,9 +303,9 @@ class HumHubDbTestCase extends Unit
      * @return void
      * @since 1.15
      */
-    public function assertRecordExistsAny($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
+    public static function assertRecordExistsAny($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
     {
-        $this->assertRecordCount(null, $tables, $condition, $params ?? [], $message);
+        static::assertRecordCount(null, $tables, $condition, $params ?? [], $message);
     }
 
     /**
@@ -316,9 +317,9 @@ class HumHubDbTestCase extends Unit
      * @return void
      * @since 1.15
      */
-    public function assertRecordExists($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
+    public static function assertRecordExists($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
     {
-        $this->assertRecordCount(1, $tables, $condition, $params ?? [], $message);
+        static::assertRecordCount(1, $tables, $condition, $params ?? [], $message);
     }
 
     /**
@@ -330,9 +331,9 @@ class HumHubDbTestCase extends Unit
      * @return void
      * @since 1.15
      */
-    public function assertRecordNotExists($tables, $condition = null, ?array $params = [], string $message = 'Record exists'): void
+    public static function assertRecordNotExists($tables, $condition = null, ?array $params = [], string $message = 'Record exists'): void
     {
-        $this->assertRecordCount(0, $tables, $condition, $params ?? [], $message);
+        static::assertRecordCount(0, $tables, $condition, $params ?? [], $message);
     }
 
     /**
@@ -346,10 +347,10 @@ class HumHubDbTestCase extends Unit
      * @return void
      * @since 1.15
      */
-    public function assertRecordValue($expected, string $column, $tables, $condition = null, ?array $params = [], string $message = ''): void
+    public static function assertRecordValue($expected, string $column, $tables, $condition = null, ?array $params = [], string $message = ''): void
     {
-        $value = $this->dbQuery($tables, $condition, $params, 1)->select($column)->scalar();
-        $this->assertEquals($expected, $value, $message);
+        $value = static::dbQuery($tables, $condition, $params, 1)->select($column)->scalar();
+        static::assertEquals($expected, $value, $message);
     }
 
     public function expectExceptionTypeError(string $calledClass, string $method, int $argumentNumber, string $argumentName, string $expectedType, string $givenTye, string $exceptionClass = TypeError::class): void
@@ -451,7 +452,7 @@ class HumHubDbTestCase extends Unit
      * @see \yii\db\Connection::createCommand()
      * @since 1.15
      */
-    public function dbCommand($sql = null, $params = []): Command
+    public static function dbCommand($sql = null, $params = []): Command
     {
         return Yii::$app->getDb()->createCommand($sql, $params);
     }
@@ -463,7 +464,7 @@ class HumHubDbTestCase extends Unit
      * @return Command
      * @throws Exception
      */
-    protected function dbCommandExecute(Command $cmd, bool $execute = true): Command
+    protected static function dbCommandExecute(Command $cmd, bool $execute = true): Command
     {
         if ($execute) {
             $cmd->execute();
@@ -476,7 +477,7 @@ class HumHubDbTestCase extends Unit
      * @see Query
      * @since 1.15
      */
-    public function dbQuery($tables, $condition, $params = [], $limit = 10): Query
+    public static function dbQuery($tables, $condition, $params = [], $limit = 10): Query
     {
         return (new Query())
             ->from($tables)
@@ -488,36 +489,36 @@ class HumHubDbTestCase extends Unit
      * @see Command::insert
      * @since 1.15
      */
-    public function dbInsert($table, $columns, bool $execute = true): Command
+    public static function dbInsert($table, $columns, bool $execute = true): Command
     {
-        return $this->dbCommandExecute($this->dbCommand()->insert($table, $columns), $execute);
+        return static::dbCommandExecute(static::dbCommand()->insert($table, $columns), $execute);
     }
 
     /**
      * @see Command::update
      * @since 1.15
      */
-    public function dbUpdate($table, $columns, $condition = '', $params = [], bool $execute = true): Command
+    public static function dbUpdate($table, $columns, $condition = '', $params = [], bool $execute = true): Command
     {
-        return $this->dbCommandExecute($this->dbCommand()->update($table, $columns, $condition, $params), $execute);
+        return static::dbCommandExecute(static::dbCommand()->update($table, $columns, $condition, $params), $execute);
     }
 
     /**
      * @see Command::upsert
      * @since 1.15
      */
-    public function dbUpsert($table, $insertColumns, $updateColumns = true, $params = [], bool $execute = true): Command
+    public static function dbUpsert($table, $insertColumns, $updateColumns = true, $params = [], bool $execute = true): Command
     {
-        return $this->dbCommandExecute($this->dbCommand()->upsert($table, $insertColumns, $updateColumns, $params), $execute);
+        return static::dbCommandExecute(static::dbCommand()->upsert($table, $insertColumns, $updateColumns, $params), $execute);
     }
 
     /**
      * @see Command::delete()
      * @since 1.15
      */
-    public function dbDelete($table, $condition = '', $params = [], bool $execute = true): Command
+    public static function dbDelete($table, $condition = '', $params = [], bool $execute = true): Command
     {
-        return $this->dbCommandExecute($this->dbCommand()->delete($table, $condition, $params), $execute);
+        return static::dbCommandExecute(static::dbCommand()->delete($table, $condition, $params), $execute);
     }
 
     /**
@@ -527,9 +528,9 @@ class HumHubDbTestCase extends Unit
      * @see \yii\db\QueryTrait::limit()
      * @since 1.15
      */
-    public function dbSelect($tables, $columns, $condition = '', $params = [], $limit = 10, $selectOption = null): array
+    public static function dbSelect($tables, $columns, $condition = '', $params = [], $limit = 10, $selectOption = null): array
     {
-        return $this->dbQuery($tables, $condition, $params, $limit)
+        return static::dbQuery($tables, $condition, $params, $limit)
             ->select($columns, $selectOption)
             ->all();
     }
@@ -538,9 +539,9 @@ class HumHubDbTestCase extends Unit
      * @see Command::delete()
      * @since 1.15
      */
-    public function dbCount($tables, $condition = '', $params = [])
+    public static function dbCount($tables, $condition = '', $params = [])
     {
-        return $this->dbQuery($tables, $condition, $params)
+        return static::dbQuery($tables, $condition, $params)
             ->select("count(*)")
             ->scalar();
     }

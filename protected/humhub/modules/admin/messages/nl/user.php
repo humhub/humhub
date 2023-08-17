@@ -103,6 +103,7 @@ Kind Regards
 
 ' => 'Hallo {displayName}, uw accountverzoek is afgewezen. Met vriendelijke groeten {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Pas hier de profiel-categorieën en velden aan.',
+  'Hide online status of users' => 'Verberg de online status van gebruikers',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Als individuele profielrechten niet zijn toegestaan, kunnen de volgende instellingen niet voor alle gebruikers worden gewijzigd. Als individuele profielrechtenen zijn toegestaan, worden de instellingen alleen ingesteld als standaardwaarden die gebruikers kunnen aanpassen. De volgende vermeldingen worden vervolgens in hetzelfde formulier weergegeven in de gebruikersprofielinstellingen:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Als deze optie niet is geselecteerd, wordt het eigendom van de spaties overgedragen aan uw account.',
   'Impersonate' => 'Imiteren ( wordt deze gebruiker)',
