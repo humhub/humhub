@@ -26,6 +26,7 @@ HumHub Changelog
 - Enh #6498: Implement option "disabled" for picker fields
 - Enh #6506: Allow event data from module config
 - Fix #6510: Fix online status position on people page
+- Enh #5315: Default stream sort by `created_at` instead of `id`
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
