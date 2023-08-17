@@ -560,7 +560,7 @@ class StreamQuery extends Model
                         "content.created_at < (SELECT created_at FROM content wd WHERE wd.id=:from)",
                         ['and',
                             "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:from)",
-                            "content.id > :from"
+                            "content.id < :from"
                         ],
                     ], [':from' => $this->from]);
             } elseif (!empty($this->to)) {
@@ -569,7 +569,7 @@ class StreamQuery extends Model
                         "content.created_at > (SELECT created_at FROM content wd WHERE wd.id=:to)",
                         ['and',
                             "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:to)",
-                            "content.id < :to"
+                            "content.id > :to"
                         ],
                     ], [':to' => $this->to]);
             }
