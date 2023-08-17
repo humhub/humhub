@@ -8,27 +8,28 @@
 
 namespace humhub\modules\installer\commands;
 
+use humhub\helpers\DatabaseHelper;
+use humhub\libs\DynamicConfig;
+use humhub\libs\UUID;
+use humhub\modules\installer\libs\InitialData;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\Password;
+use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\console\Controller;
 use yii\console\ExitCode;
 use yii\helpers\Console;
-use yii\base\Exception;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Password;
-use humhub\modules\user\models\Group;
-use humhub\modules\installer\libs\InitialData;
-use humhub\libs\UUID;
-use humhub\libs\DynamicConfig;
 
 /**
  * Console Install
- * 
+ *
  * Example usage:
  *   php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
  *   php yii installer/install-db
  *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
  *   php yii installer/create-admin-account
- * 
+ *
  */
 class InstallController extends Controller
 {
@@ -42,9 +43,9 @@ class InstallController extends Controller
 
         return ExitCode::OK;
     }
-    
+
     /**
-     * Tries to open a connection to given db. 
+     * Tries to open a connection to given db.
      * On success: Writes given settings to config-file and reloads it.
      * On failure: Throws exception
      */
@@ -80,12 +81,12 @@ class InstallController extends Controller
         $this->stdout("Install DB:\n\n", Console::FG_YELLOW);
 
         $this->stdout("  * Checking Database Connection\n", Console::FG_YELLOW);
-        if(!$this->checkDBConnection()){
-            throw new Exception("Could not connect to DB!");
+        if (true !== $message = $this->checkDBConnection()) {
+            throw new Exception($message ?? "Could not connect to DB!");
         }
 
         $this->stdout("  * Installing Database\n", Console::FG_YELLOW);
-        
+
         Yii::$app->cache->flush();
         // Disable max execution time to avoid timeouts during migrations
         @ini_set('max_execution_time', 0);
@@ -119,7 +120,7 @@ class InstallController extends Controller
         $user->profile->firstname = 'Sys';
         $user->profile->lastname = 'Admin';
         $user->profile->save();
-        
+
         $password = new Password();
         $password->user_id = $user->id;
         $password->setPassword($admin_pass);
@@ -179,6 +180,8 @@ class InstallController extends Controller
 
     /**
      * Tries to open global db connection and checks result.
+     *
+     * @return true|null|string
      */
     private function checkDBConnection()
     {
@@ -186,10 +189,9 @@ class InstallController extends Controller
             // call setActive with true to open connection.
             Yii::$app->db->open();
             // return the current connection state.
-            return Yii::$app->db->getIsActive();
+            return Yii::$app->db->getIsActive() ?: null;
         } catch (Exception $e) {
-            $this->stderr($e->getMessage());
+            return DatabaseHelper::handleConnectionErrors($e, false, false, true);
         }
-        return false;
     }
 }
