@@ -3,9 +3,10 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
-- Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
-- Enh #6512: Show error messages when DB connection configuration is invalid
+- Fix #6519: Ensure e-mails would always have a sender address set
 - Fix #6516: Humhub test case would fail on skipped tests
+- Enh #6512: Show error messages when DB connection configuration is invalid
+- Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
