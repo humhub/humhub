@@ -13,7 +13,7 @@ namespace humhub\interfaces;
  *
  * @since 1.15
  */
-interface Application
+interface ApplicationInterface
 {
     /**
      * @event ActionEvent an event raised on init of application.
