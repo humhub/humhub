@@ -55,7 +55,7 @@ abstract class Filter extends Model
     }
 
     /**
-     * @inheridoc
+     * @inheritdoc
      */
     public function load($data, $formName = null)
     {

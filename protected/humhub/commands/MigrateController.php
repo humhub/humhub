@@ -9,6 +9,7 @@
 namespace humhub\commands;
 
 use humhub\components\Module;
+use humhub\helpers\DatabaseHelper;
 use Yii;
 use yii\console\Exception;
 use yii\web\Application;
@@ -78,9 +79,17 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     public function beforeAction($action)
     {
-        // Make sure to define default table storage engine
-        if (in_array(Yii::$app->db->getDriverName(), ['mysql', 'mysqli'], true)) {
-            Yii::$app->db->pdo->exec('SET default_storage_engine=' . Yii::$app->params['databaseDefaultStorageEngine']);
+        // Make sure to define a default table storage engine
+        $db = Yii::$app->db;
+
+        try {
+            $db->open();
+        } catch (\Throwable $ex) {
+            DatabaseHelper::handleConnectionErrors($ex);
+        }
+
+        if (in_array($db->getDriverName(), ['mysql', 'mysqli'], true)) {
+            $db->pdo->exec('SET default_storage_engine=' . Yii::$app->params['databaseDefaultStorageEngine']);
         }
         return parent::beforeAction($action);
     }

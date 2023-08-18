@@ -9,8 +9,10 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\user\models\User;
 use humhub\modules\content\models\Content;
+use humhub\modules\live\Module;
+use humhub\modules\user\models\User;
+use InvalidArgumentException;
 use Yii;
 use yii\db\Query;
 
@@ -105,12 +107,26 @@ class Membership extends ActiveRecord
     /**
      * Determines if this membership is a full accepted membership.
      *
-     * @since v1.2.1
      * @return bool
+     * @since v1.2.1
      */
     public function isMember()
     {
         return $this->status == self::STATUS_MEMBER;
+    }
+
+    /**
+     * @return bool
+     * @since 1.13
+     */
+    public function isPrivileged(): bool
+    {
+        return ($this->isMember() &&
+            in_array($this->group_id, [
+                Space::USERGROUP_OWNER,
+                Space::USERGROUP_ADMIN,
+                Space::USERGROUP_MODERATOR
+            ]));
     }
 
     public function getUser()
@@ -135,11 +151,25 @@ class Membership extends ActiveRecord
         return parent::beforeSave($insert);
     }
 
+    public function afterSave($insert, $changedAttributes)
+    {
+        static::unsetCache($this->space_id, $this->user_id);
+
+        parent::afterSave($insert, $changedAttributes);
+    }
+
     public function beforeDelete()
     {
         Yii::$app->cache->delete(self::USER_SPACES_CACHE_KEY . $this->user_id);
         Yii::$app->cache->delete(self::USER_SPACEIDS_CACHE_KEY . $this->user_id);
         return parent::beforeDelete();
+    }
+
+    public function afterDelete()
+    {
+        static::unsetCache($this->space_id, $this->user_id);
+
+        parent::afterDelete();
     }
 
     /**
@@ -232,11 +262,11 @@ class Membership extends ActiveRecord
     /**
      * Returns Space for user space membership
      *
-     * @since 1.0
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \yii\db\ActiveQuery for space model
+     * @since 1.0
      */
     public static function getUserSpaceQuery(User $user, $memberOnly = true, $withNotifications = null)
     {
@@ -259,12 +289,10 @@ class Membership extends ActiveRecord
         }
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('name ASC');
+            $query->defaultOrderBy();
         } else {
-            $query->orderBy('last_visit DESC');
+            $query->orderBy(['space_membership.last_visit' => SORT_DESC]);
         }
-
-        $query->orderBy(['name' => SORT_ASC]);
 
         return $query;
     }
@@ -280,9 +308,10 @@ class Membership extends ActiveRecord
      */
     public static function findByUser(
         User $user = null,
-        $membershipStatus = self::STATUS_MEMBER,
-        $spaceStatus = Space::STATUS_ENABLED
-    ) {
+             $membershipStatus = self::STATUS_MEMBER,
+             $spaceStatus = Space::STATUS_ENABLED
+    )
+    {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -290,9 +319,9 @@ class Membership extends ActiveRecord
         $query = Membership::find();
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
-            $query->orderBy('space.name ASC');
+            $query->orderBy(['space.sort_order' => SORT_ASC, 'space.name' => SORT_ASC]);
         } else {
-            $query->orderBy('space_membership.last_visit DESC');
+            $query->orderBy(['space_membership.last_visit' => SORT_DESC]);
         }
 
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
@@ -312,11 +341,11 @@ class Membership extends ActiveRecord
     /**
      * Returns a user query for space memberships
      *
-     * @since 1.1
      * @param Space $space
      * @param boolean $membersOnly Only return approved members
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \humhub\modules\user\components\ActiveQueryUser
+     * @since 1.1
      */
     public static function getSpaceMembersQuery(Space $space, $membersOnly = true, $withNotifications = null)
     {
@@ -353,18 +382,50 @@ class Membership extends ActiveRecord
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
             ->indexBy('id')
-            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' =>  Space::STATUS_ENABLED]);
+            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' => Space::STATUS_ENABLED]);
     }
 
     /**
      * Checks if the current logged in user is the related user of this membership record.
      *
-     * @since 1.3.9
      * @return bool
+     * @since 1.3.9
      */
-    public function isCurrentUser()
+    public function isCurrentUser(): bool
     {
         return !Yii::$app->user->isGuest && Yii::$app->user->identity->id === $this->user_id;
     }
 
+    /**
+     * Find and cache Membership by space and user
+     *
+     * @param Space|int $space
+     * @param User|int $user
+     *
+     * @return self|null
+     */
+    public static function findMembership($space, $user): ?self
+    {
+        if ($space instanceof Space) {
+            $spaceId = $space->id;
+        } elseif ($space === null || null === $spaceId = filter_var($space, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
+            throw new InvalidArgumentException("Argument #2 (\$space) must be a Space object or space ID.");
+        }
+
+        if ($user instanceof User) {
+            $userId = $user->id;
+        } elseif ($user !== 0 && empty($user)) {
+            $userId = Yii::$app->user->id;
+        } elseif (null === $userId = filter_var($user, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
+            throw new InvalidArgumentException("Argument #1 (\$user) must be a User object or user ID.");
+        }
+
+        return Yii::$app->runtimeCache->getOrSet(__CLASS__ . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
+    }
+
+    public static function unsetCache(int $spaceId, int $userId)
+    {
+        Yii::$app->runtimeCache->delete(__CLASS__ . "_$spaceId-$userId");
+        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $userId);
+    }
 }

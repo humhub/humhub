@@ -11,7 +11,7 @@ namespace humhub\modules\user\authclient;
 use Yii;
 
 /**
- * @inheritdoc
+ * @deprecated 1.14
  */
 class Google extends \yii\authclient\clients\Google
 {

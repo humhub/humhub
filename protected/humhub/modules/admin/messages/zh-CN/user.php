@@ -71,7 +71,6 @@ return [
     'Select Groups' => '选择组',
     'Send & decline' => '发送并拒绝',
     'Send & save' => '发送并保存',
-    'Send invite' => '发送邀请',
     'Settings' => '设置',
     'Subject' => '主题',
     'The following list contains all registered users awaiting an approval.' => '下面的列表包含等待审核的所有注册用户。',
@@ -146,6 +145,7 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Impersonate' => '',
@@ -154,10 +154,12 @@ Kind Regards
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Invite not found!' => '',
     'List pending registrations' => '',
     'Make the group selectable at registration.' => '',
     'Member since' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'None' => '',
     'Not visible' => '',

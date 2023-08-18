@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'Disabled' => 'Zakázané',
+    'Last login' => 'Posledné prihlásenie',
+    'Settings' => 'nastavenie',
     '<strong>Information</strong>' => '',
     '<strong>Profile</strong> Permissions' => '',
     '<strong>Settings</strong> and Configuration' => '',
@@ -68,7 +71,6 @@ return [
     'Deleted invitation' => '',
     'Deleted users' => '',
     'Disable' => '',
-    'Disabled' => '',
     'Disabled users' => '',
     'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => '',
     'Edit' => '',
@@ -104,6 +106,7 @@ Kind Regards
 
 ' => '',
     'Here you can create or edit profile categories and fields.' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => '',
     'Impersonate' => '',
@@ -112,8 +115,8 @@ Kind Regards
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Invite not found!' => '',
-    'Last login' => '',
     'Last name' => '',
     'List pending registrations' => '',
     'Make the group selectable at registration.' => '',
@@ -123,6 +126,7 @@ Kind Regards
     'Member since' => '',
     'Members' => '',
     'Members can invite external users by email' => '',
+    'Members can invite external users by link' => '',
     'Message' => '',
     'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => '',
     'New approval requests' => '',
@@ -159,9 +163,7 @@ Kind Regards
     'Send & save' => '',
     'Send invitation email' => '',
     'Send invitation email again?' => '',
-    'Send invite' => '',
     'Send notifications to users when added to or removed from the group.' => '',
-    'Settings' => '',
     'Show group selection at registration' => '',
     'Subject' => '',
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => '',

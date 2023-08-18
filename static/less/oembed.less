@@ -22,7 +22,7 @@
 }
 
 .oembed_confirmation {
-    background: #feebb4;
+    background: @background-color-highlight-soft;
     border-radius: 4px;
     padding: 15px;
     line-height: 30px;
@@ -37,17 +37,6 @@
     }
     > div:not(.clearfix) {
         float: left;
-    }
-    .regular-checkbox-box {
-        top: 6px;
-    }
-    .regular-checkbox {
-        &:not(:checked) + .regular-checkbox-box {
-            background: #FFF;
-        }
-        &:checked + .regular-checkbox-box:after {
-            top: -8px;
-        }
     }
 }
 

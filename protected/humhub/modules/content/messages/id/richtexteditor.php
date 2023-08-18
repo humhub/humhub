@@ -1,6 +1,7 @@
 <?php
 
 return [
+    'People' => 'Orang',
     'Title' => 'Judul',
     'Activity' => '',
     'Add or remove link' => '',
@@ -33,8 +34,8 @@ return [
     'Location' => '',
     'Objects' => '',
     'Paragraph' => '',
-    'People' => '',
     'Rows' => '',
+    'Switch editor mode' => '',
     'Symbols' => '',
     'Toggle code font' => '',
     'Toggle emphasis' => '',

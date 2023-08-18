@@ -2,41 +2,54 @@
 
 namespace tests\codeception\_support;
 
+use Codeception\Test\Unit;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\BasePermission;
+use Codeception\Configuration;
+use Codeception\Exception\ModuleException;
+use Codeception\Module;
+use Codeception\Module\Yii2;
 use humhub\models\UrlOembed;
+use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
+use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
+use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\file\tests\codeception\fixtures\FileFixture;
+use humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture;
+use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
 use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
+use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
+use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
+use humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture;
+use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
+use humhub\tests\codeception\fixtures\SettingFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
+use PHPUnit\Framework\SkippedTestError;
+use TypeError;
 use Yii;
+use yii\base\Event;
 use yii\db\ActiveRecord;
-use Codeception\Test\Unit;
-use humhub\libs\BasePermission;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use humhub\modules\friendship\models\Friendship;
+use yii\db\Command;
+use yii\db\Exception;
+use yii\db\ExpressionInterface;
+use yii\db\Query;
 
 /**
- * Inherited Methods
- * @method void wantToTest($text)
- * @method void wantTo($text)
- * @method void execute($callable)
- * @method void expectTo($prediction)
- * @method void expect($prediction)
- * @method void amGoingTo($argumentation)
- * @method void am($role)
- * @method void lookForwardTo($achieveValue)
- * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
  * @SuppressWarnings(PHPMD)
  */
 class HumHubDbTestCase extends Unit
 {
+    use HumHubHelperTrait;
 
     protected $fixtureConfig;
 
@@ -44,6 +57,7 @@ class HumHubDbTestCase extends Unit
 
     public $time;
 
+    public array $firedEvents = [];
 
     protected function setUp(): void
     {
@@ -51,66 +65,44 @@ class HumHubDbTestCase extends Unit
             \Yii::$app->db->trigger('afterOpen');
         }
 
-        parent::setUp();
+        if (Yii::$app === null) {
+            $c = new \ReflectionClass($this);
+            $m = $c->getMethod($this->getName(false));
+            $doc = $m->getDocComment();
+            if (preg_match('#@skip(.*?)\r?\n#s', $doc, $annotations)) {
+                throw new SkippedTestError("Test was skipped due to @skip annotation: " . (trim($annotations[1]) ?: "[No reason indicated!]"), 0);
+            }
+            return;
+        }
 
-        $webRoot = dirname(dirname(__DIR__)) . '/../../..';
+        $webRoot = dirname(__DIR__, 2) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
-        $this->initModules();
-        $this->reloadSettings();
-        $this->flushCache();
-        $this->deleteMails();
-    }
+        $this->initModules(__METHOD__);
+        $this->reloadSettings(__METHOD__);
+        $this->flushCache(__METHOD__);
+        $this->deleteMails(__METHOD__);
 
-    protected function reloadSettings()
-    {
-        Yii::$app->settings->reload();
-
-        foreach (Yii::$app->modules as $module) {
-            if ($module instanceof \humhub\components\Module) {
-                $module->settings->reload();
-            }
-        }
-    }
-
-    protected function flushCache()
-    {
-        RichTextToShortTextConverter::flushCache();
-        RichTextToHtmlConverter::flushCache();
-        RichTextToPlainTextConverter::flushCache();
-        RichTextToMarkdownConverter::flushCache();
-        UrlOembed::flush();
-    }
-
-    protected function deleteMails()
-    {
-        $path = Yii::getAlias('@runtime/mail');
-        $files = glob($path . '/*'); // get all file names
-        foreach ($files as $file) { // iterate files
-            if (is_file($file)) {
-                unlink($file); // delete file
-            }
-        }
+        parent::setUp();
     }
 
     /**
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!
      */
-    protected function initModules()
+    protected function initModules(?string $caller = null)
     {
-        $cfg = \Codeception\Configuration::config();
+        codecept_debug(sprintf('[%s] Initializing Modules', $caller ?? __METHOD__));
+        $cfg = Configuration::config();
 
         if (!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
         }
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function _fixtures()
+    /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
+    public function _fixtures(): array
     {
-        $cfg = \Codeception\Configuration::config();
+        $cfg = Configuration::config();
 
         if (!$this->fixtureConfig && isset($cfg['fixtures'])) {
             $this->fixtureConfig = $cfg['fixtures'];
@@ -131,34 +123,34 @@ class HumHubDbTestCase extends Unit
         return $result;
     }
 
-    protected function getDefaultFixtures()
+    protected function getDefaultFixtures(): array
     {
         return [
             'user' => ['class' => UserFullFixture::class],
             'url_oembed' => ['class' => UrlOembedFixture::class],
-            'group_permission' => ['class' => \humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture::class],
-            'contentcontainer' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture::class],
-            'settings' => ['class' => \humhub\tests\codeception\fixtures\SettingFixture::class],
-            'space' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceFixture::class],
-            'space_membership' => ['class' => \humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture::class],
-            'content' => ['class' => \humhub\modules\content\tests\codeception\fixtures\ContentFixture::class],
-            'notification' => ['class' => \humhub\modules\notification\tests\codeception\fixtures\NotificationFixture::class],
-            'file' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileFixture::class],
-            'file_history' => ['class' => \humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture::class],
-            'activity' => ['class' => \humhub\modules\activity\tests\codeception\fixtures\ActivityFixture::class],
-            'friendship' => ['class' => \humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture::class],
+            'group_permission' => ['class' => GroupPermissionFixture::class],
+            'contentcontainer' => ['class' => ContentContainerFixture::class],
+            'settings' => ['class' => SettingFixture::class],
+            'space' => ['class' => SpaceFixture::class],
+            'space_membership' => ['class' => SpaceMembershipFixture::class],
+            'content' => ['class' => ContentFixture::class],
+            'notification' => ['class' => NotificationFixture::class],
+            'file' => ['class' => FileFixture::class],
+            'file_history' => ['class' => FileHistoryFixture::class],
+            'activity' => ['class' => ActivityFixture::class],
+            'friendship' => ['class' => FriendshipFixture::class],
             'live' => [ 'class' => LiveFixture::class]
         ];
     }
 
-    public function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    public static function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
         $notificationQuery = Notification::find()->where([
             'class' => $class,
-            'source_class' => $source->className(),
+            'source_class' => PolymorphicRelation::getObjectModel($source),
             'source_pk' => $source->getPrimaryKey(),
         ]);
-        if(is_string($target_id)) {
+        if (is_string($target_id)) {
             $msg = $target_id;
             $target_id = null;
         }
@@ -167,58 +159,59 @@ class HumHubDbTestCase extends Unit
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
         }
 
-        if($target_id != null) {
+        if ($target_id != null) {
             $notificationQuery->andWhere(['user_id' => $target_id]);
         }
 
-        $this->assertNotEmpty($notificationQuery->all(), $msg);
+        static::assertNotEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    public static function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
         }
 
-        if($target_id != null) {
+        if ($target_id != null) {
             $notificationQuery->andWhere(['user_id' => $target_id]);
         }
 
-        $this->assertEquals($count, $notificationQuery->count(), $msg);
+        static::assertEquals($count, $notificationQuery->count(), $msg);
     }
 
-    public function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    public static function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
     {
-        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => $source->className(), 'source_pk' => $source->getPrimaryKey()]);
+        $notificationQuery = Notification::find()->where(['class' => $class, 'source_class' => PolymorphicRelation::getObjectModel($source), 'source_pk' => $source->getPrimaryKey()]);
 
         if ($originator_id != null) {
             $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
         }
 
-        if($target_id != null) {
+        if ($target_id != null) {
             $notificationQuery->andWhere(['user_id' => $target_id]);
         }
 
-        $this->assertEmpty($notificationQuery->all(), $msg);
+        static::assertEmpty($notificationQuery->all(), $msg);
     }
 
-    public function assertHasActivity($class, ActiveRecord $source, $msg = '')
+    public static function assertHasActivity($class, ActiveRecord $source, $msg = '')
     {
         $activity = Activity::findOne([
             'class' => $class,
-            'object_model' => $source->className(),
+            'object_model' => PolymorphicRelation::getObjectModel($source),
             'object_id' => $source->getPrimaryKey(),
         ]);
-        $this->assertNotNull($activity, $msg);
+        static::assertNotNull($activity, $msg);
     }
 
     /**
-     * @return \Codeception\Module\Yii2|\Codeception\Module
-     * @throws \Codeception\Exception\ModuleException
+     * @return Yii2|Module
+     * @throws ModuleException
      */
-    public function getYiiModule() {
+    public function getYiiModule()
+    {
         return $this->getModule('Yii2');
     }
 
@@ -228,25 +221,28 @@ class HumHubDbTestCase extends Unit
      */
     public function assertMailSent($count = 0)
     {
-        return $this->getYiiModule()->seeEmailIsSent($count);
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->getYiiModule()->seeEmailIsSent($count);
     }
 
     /**
      * @param int $count
-     * @throws \Codeception\Exception\ModuleException
+     *
+     * @throws ModuleException
      * @since 1.3
      */
-    public function assertSentEmail($count = 0)
+    public function assertSentEmail(int $count = 0)
     {
-        return $this->getYiiModule()->seeEmailIsSent($count);
+        $this->getYiiModule()->seeEmailIsSent($count);
     }
 
     public function assertEqualsLastEmailTo($to, $strict = true)
     {
-        if(is_string($to)) {
+        if (is_string($to)) {
             $to = [$to];
         }
 
+        /** @noinspection PhpUnhandledExceptionInspection */
         $message = $this->getYiiModule()->grabLastSentEmail();
         $expected = $message->getTo();
 
@@ -254,22 +250,132 @@ class HumHubDbTestCase extends Unit
             $this->assertArrayHasKey($email, $expected);
         }
 
-        if($strict) {
-            $this->assertEquals(count($to), count($expected));
+        if ($strict) {
+            $this->assertCount(count($expected), $to);
         }
-
     }
 
     public function assertEqualsLastEmailSubject($subject)
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         $message = $this->getYiiModule()->grabLastSentEmail();
         $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
+    }
+
+    public function assertEvents(array $events, string $message = ''): void
+    {
+        static::assertEquals($events, $this->firedEvents, $message);
+
+        $this->firedEvents = [];
+    }
+
+    /**
+     * @param int|null $expected Number of records expected. Null for any number, but not none
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordCount(?int $expected, $tables, $condition = null, ?array $params = [], string $message = ''): void
+    {
+        $count = static::dbCount($tables, $condition, $params ?? []);
+
+        if ($expected === null) {
+            static::assertGreaterThan(0, $count, $message);
+        } else {
+            static::assertEquals($expected, $count, $message);
+        }
+    }
+
+    /**
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordExistsAny($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
+    {
+        static::assertRecordCount(null, $tables, $condition, $params ?? [], $message);
+    }
+
+    /**
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordExists($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
+    {
+        static::assertRecordCount(1, $tables, $condition, $params ?? [], $message);
+    }
+
+    /**
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordNotExists($tables, $condition = null, ?array $params = [], string $message = 'Record exists'): void
+    {
+        static::assertRecordCount(0, $tables, $condition, $params ?? [], $message);
+    }
+
+    /**
+     * @param int|string|null $expected Number of records expected. Null for any number, but not none
+     * @param string $column
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordValue($expected, string $column, $tables, $condition = null, ?array $params = [], string $message = ''): void
+    {
+        $value = static::dbQuery($tables, $condition, $params, 1)->select($column)->scalar();
+        static::assertEquals($expected, $value, $message);
+    }
+
+    public function expectExceptionTypeError(string $calledClass, string $method, int $argumentNumber, string $argumentName, string $expectedType, string $givenTye, string $exceptionClass = TypeError::class): void
+    {
+        $this->expectException($exceptionClass);
+
+        $calledClass = str_replace('\\', '\\\\', $calledClass);
+        $argumentName = ltrim($argumentName, '$');
+
+        $this->expectExceptionMessageRegExp(
+            sprintf(
+            // Php < 8 uses: "Argument n passed to class::method() ..."
+            // PHP > 7 uses: "class::method(): Argument #n ($argument) ..."
+                '@^((Argument %d passed to )?%s::%s\\(\\)(?(2)|: Argument #%d \\(\\$%s\\))) must be of( the)? type %s, %s given, called in /.*@',
+                $argumentNumber,
+                $calledClass,
+                $method,
+                $argumentNumber,
+                $argumentName,
+                $expectedType,
+                $givenTye
+            )
+        );
     }
 
     /**
      * @param bool $allow
      */
-    public function allowGuestAccess($allow = true)
+    public function allowGuestAccess(bool $allow = true)
     {
         Yii::$app
             ->getModule('user')
@@ -279,7 +385,7 @@ class HumHubDbTestCase extends Unit
 
     public function setProfileField($field, $value, $user)
     {
-        if(is_int($user)) {
+        if (is_int($user)) {
             $user = User::findOne($user);
         } elseif (is_string($user)) {
             $user = User::findOne(['username' => $user]);
@@ -326,7 +432,7 @@ class HumHubDbTestCase extends Unit
         $contentContainer->permissionManager->clear();
     }
 
-    public function becomeUser($userName)
+    public function becomeUser($userName): ?User
     {
         $user = User::findOne(['username' => $userName]);
         Yii::$app->user->switchIdentity($user);
@@ -335,7 +441,117 @@ class HumHubDbTestCase extends Unit
 
     public function logout()
     {
-        Yii::$app->user->logout(true);
+        Yii::$app->user->logout();
     }
 
+    public function handleEvent(Event $event, array $eventData = [])
+    {
+        $eventData += [
+            'class' => get_class($event),
+            'event' => $event->name,
+            'sender' => $event->sender,
+            'data' => $event->data,
+            'handled' => $event->handled,
+        ];
+
+        $this->firedEvents[] = $eventData;
+    }
+
+    /**
+     * @see \yii\db\Connection::createCommand()
+     * @since 1.15
+     */
+    public static function dbCommand($sql = null, $params = []): Command
+    {
+        return Yii::$app->getDb()->createCommand($sql, $params);
+    }
+
+    /**
+     * @param Command $cmd
+     * @param bool $execute
+     *
+     * @return Command
+     * @throws Exception
+     */
+    protected static function dbCommandExecute(Command $cmd, bool $execute = true): Command
+    {
+        if ($execute) {
+            $cmd->execute();
+        }
+
+        return $cmd;
+    }
+
+    /**
+     * @see Query
+     * @since 1.15
+     */
+    public static function dbQuery($tables, $condition, $params = [], $limit = 10): Query
+    {
+        return (new Query())
+            ->from($tables)
+            ->where($condition, $params)
+            ->limit($limit);
+    }
+
+    /**
+     * @see Command::insert
+     * @since 1.15
+     */
+    public static function dbInsert($table, $columns, bool $execute = true): Command
+    {
+        return static::dbCommandExecute(static::dbCommand()->insert($table, $columns), $execute);
+    }
+
+    /**
+     * @see Command::update
+     * @since 1.15
+     */
+    public static function dbUpdate($table, $columns, $condition = '', $params = [], bool $execute = true): Command
+    {
+        return static::dbCommandExecute(static::dbCommand()->update($table, $columns, $condition, $params), $execute);
+    }
+
+    /**
+     * @see Command::upsert
+     * @since 1.15
+     */
+    public static function dbUpsert($table, $insertColumns, $updateColumns = true, $params = [], bool $execute = true): Command
+    {
+        return static::dbCommandExecute(static::dbCommand()->upsert($table, $insertColumns, $updateColumns, $params), $execute);
+    }
+
+    /**
+     * @see Command::delete()
+     * @since 1.15
+     */
+    public static function dbDelete($table, $condition = '', $params = [], bool $execute = true): Command
+    {
+        return static::dbCommandExecute(static::dbCommand()->delete($table, $condition, $params), $execute);
+    }
+
+    /**
+     * @see Query::select
+     * @see Query::from
+     * @see Query::where
+     * @see \yii\db\QueryTrait::limit()
+     * @since 1.15
+     */
+    public static function dbSelect($tables, $columns, $condition = '', $params = [], $limit = 10, $selectOption = null): array
+    {
+        return static::dbQuery($tables, $condition, $params, $limit)
+            ->select($columns, $selectOption)
+            ->all();
+    }
+
+    /**
+     * @see Command::delete()
+     * @since 1.15
+     */
+    public static function dbCount($tables, $condition = '', $params = [])
+    {
+        return static::dbQuery($tables, $condition, $params)
+            ->select("count(*)")
+            ->scalar();
+    }
 }

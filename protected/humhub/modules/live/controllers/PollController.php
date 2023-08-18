@@ -8,13 +8,14 @@
 
 namespace humhub\modules\live\controllers;
 
-use Yii;
-use yii\db\Expression;
-use yii\base\Exception;
-use humhub\modules\content\models\Content;
 use humhub\components\Controller;
-use humhub\modules\live\models\Live;
+use humhub\modules\content\models\Content;
 use humhub\modules\live\components\LiveEvent;
+use humhub\modules\live\models\Live;
+use humhub\modules\user\services\IsOnlineService;
+use Yii;
+use yii\base\Exception;
+use yii\db\Expression;
 
 /**
  * PollController is used by the live database driver to deliever events
@@ -98,7 +99,10 @@ class PollController extends Controller
         }
 
         Yii::$app->session->set('live.poll.lastQueryTime', $results['queryTime']);
-        
+
+        // Update "is online" status
+        (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+
         Yii::$app->response->format = 'json';
         return $results;
     }
@@ -187,11 +191,11 @@ class PollController extends Controller
     {
         $currentTime = time();
 
-        $last = (int) Yii::$app->request->get('last', $currentTime);
+        $last = (int)Yii::$app->request->get('last', $currentTime);
         if (empty($last)) {
             $last = time();
         }
-        
+
         if ($last + $this->maxTimeDecay < $currentTime) {
             Yii::info('User requested too old live data! Requested: ' . $last . ' Now: ' . $currentTime, 'live');
             $last = $currentTime;

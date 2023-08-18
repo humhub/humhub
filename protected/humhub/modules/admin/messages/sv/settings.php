@@ -103,7 +103,6 @@ return [
     'These settings refer to the appearance of your social network.' => 'Dessa inställningar hänvisar till utseendet på ditt sociala nätverk.',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Använd %url% som platshållare för URL. Formatet måste vara JSON. (t.ex. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
     'Use X-Sendfile for File Downloads' => 'Använd X-Sendfile för filnedladdningar',
-    'Use the default swipe to show sidebar on a mobile device' => 'Använd standardsvepning för att visa sidofältet på en mobil enhet',
     'User' => 'Användare',
     'User Settings' => 'Användarinställningar',
     'Username' => 'Användarnamn',
@@ -128,7 +127,7 @@ return [
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'You can find more configuration options here:' => '',
-    'e.g. 25 (for SMTP) or 587 (for SMTPS)' => '',
+    'e.g. 25 (for SMTP) or 465 (for SMTPS)' => '',
     'e.g. localhost' => '',
     'e.g. smtps://user:pass@smtp.example.com:port' => '',
 ];

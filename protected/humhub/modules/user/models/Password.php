@@ -24,6 +24,8 @@ use humhub\modules\user\components\CheckPasswordValidator;
  * @property string $password
  * @property string $salt
  * @property string $created_at
+ *
+ * @property-read User $user
  */
 class Password extends ActiveRecord
 {
@@ -55,7 +57,7 @@ class Password extends ActiveRecord
 
     public function beforeSave($insert)
     {
-        $this->created_at = date('Y-m-d G:i:s');
+        $this->created_at = date('Y-m-d H:i:s');
 
         return parent::beforeSave($insert);
     }
@@ -211,6 +213,15 @@ class Password extends ActiveRecord
                 }
             }
         }
+    }
+
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
+        $this->user->save();
+        $this->user->isCurrentUser() && Yii::$app->user->switchIdentity($this->user);
     }
 
 }

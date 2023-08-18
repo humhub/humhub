@@ -22,19 +22,25 @@ return [
     'All open registration invitations were successfully deleted.' => 'Todos os convites de inscrição abertos foram excluídos com sucesso.',
     'All the personal data of this user will be irrevocably deleted.' => 'Todos os dados pessoais deste usuário serão irrevogavelmente excluídos.',
     'Allow' => 'Permitir',
+    'Allow users to block each other' => 'Permitir que os usuários bloqueiem uns aos outros',
     'Allow users to set individual permissions for their own profile?' => 'Permitir que os usuários definam permissões individuais para seus próprios perfis?',
     'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Permitir acesso limitado para usuários não autenticados (convidados)',
     'Applied to new or existing users without any other group membership.' => 'Aplicado a usuários novos ou existentes sem qualquer outra associação de grupo.',
     'Apply' => 'Aplicar',
     'Approve' => 'Aprovar',
+    'Approve all selected' => 'Aprovar todos os selecionados',
     'Are you really sure that you want to disable this user?' => 'Tem certeza de que deseja desabilitar esse usuário?',
     'Are you really sure that you want to enable this user?' => 'Você tem certeza de que deseja habilitar esse usuário?',
     'Are you really sure that you want to impersonate this user?' => 'Você tem certeza de que deseja se passar por esse usuário?',
+    'Are you really sure? The selected users will be approved and notified by e-mail.' => 'Você tem certeza? Os usuários selecionados serão aprovados e notificados por e-mail.',
+    'Are you really sure? The selected users will be deleted and notified by e-mail.' => 'Você tem certeza? Os usuários selecionados serão excluídos e notificados por e-mail.',
     'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => 'Tem certeza mesmo? Os usuários que não estão atribuídos a outro grupo são atribuídos automaticamente ao grupo padrão.',
     'Are you sure that you want to delete following user?' => 'Tem certeza de que deseja excluir o seguinte usuário?',
     'Cancel' => 'Cancelar',
     'Click here to review' => 'Clique aqui para rever',
     'Confirm user deletion' => 'Confirmar exclusão de usuário',
+    'Could not approve the user!' => 'Não foi possível aprovar o usuário!',
+    'Could not decline the user!' => 'Não foi possível recusar o usuário!',
     'Could not load category.' => 'Não foi possível carregar a categoria.',
     'Create new group' => 'Criar novo grupo',
     'Create new profile category' => 'Criar nova categoria de perfil',
@@ -43,10 +49,13 @@ return [
     'Deactivate individual profile permissions?' => 'Desativar permissões de perfis individuais?',
     'Decline' => 'Recusar',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Recusar e apagar o usuário: <strong>{displayName}</strong>',
+    'Decline all selected' => 'Recusar todos os selecionados',
     'Default' => 'Padrão',
     'Default Profile Permissions' => 'Permissões de perfil padrão',
+    'Default Sorting' => 'Classificação padrão',
     'Default content of the registration approval email' => 'Conteúdo padrão do e-mail de aprovação de registro',
     'Default content of the registration denial email' => 'Conteúdo padrão do e-mail de negação de registro',
+    'Default group can not be deleted!' => 'O grupo padrão não pode ser excluído!',
     'Default user idle timeout, auto-logout (in seconds, optional)' => 'Tempo padrão de ócio para logout (em segundos, opcional)',
     'Default user profile visibility' => 'Visibilidade padrão do perfil do usuário',
     'Delete' => 'Apagar',
@@ -55,6 +64,7 @@ return [
     'Delete invitation' => 'Excluir convite',
     'Delete invitation?' => 'Excluir convite?',
     'Delete spaces which are owned by this user' => 'Excluir espaços pertencentes a esse usuário',
+    'Deleted' => 'Excluído',
     'Deleted invitation' => 'Convite excluído',
     'Deleted users' => 'Usuários excluídos',
     'Disable' => 'Desabilitar',
@@ -74,11 +84,36 @@ return [
     'Group not found!' => 'Grupo não encontrado!',
     'Group user not found!' => 'Usuário de Grupo não encontrado!',
     'Groups' => 'Grupos',
+    'Hello {displayName},
+
+Your account has been activated.
+
+Click here to login:
+{loginUrl}
+
+Kind Regards
+{AdminName}
+
+' => 'Olá {displayName}, sua conta foi ativada. Clique aqui para fazer login: {loginUrl} 
+Atenciosamente, {AdminName}',
+    'Hello {displayName},
+
+Your account request has been declined.
+
+Kind Regards
+{AdminName}
+
+' => 'Olá {displayName}, Sua solicitação de conta foi recusada. 
+Atenciosamente, {AdminName}',
     'Here you can create or edit profile categories and fields.' => 'Aqui você pode criar ou editar categorias e campo de perfil.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Se as permissões de perfil individual não forem permitidas, as configurações a seguir não podem ser alteradas para todos os usuários. Se as permissões de perfil individual forem permitidas, as configurações serão definidas apenas como padrões que os usuários podem personalizar. As seguintes entradas são exibidas da mesma forma nas configurações do perfil do usuário:',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Se esta opção não estiver selecionada, a propriedade dos espaços será transferida para sua conta.',
     'Impersonate' => 'Representar',
     'Include captcha in registration form' => 'Incluir captcha no formulário de registro',
+    'Information 1' => 'Informação 1',
+    'Information 2' => 'Informação 2',
+    'Information 3' => 'Informação 3',
+    'Invisible' => 'Invisível',
     'Invite not found!' => 'Convite não encontrado!',
     'Last login' => 'Último acesso',
     'Last name' => 'Último nome',
@@ -95,8 +130,10 @@ return [
     'New approval requests' => 'Novas solicitações de aprovação',
     'New users can register' => 'Usuários anônimos podem se registrar',
     'No' => 'Não',
+    'No users were selected.' => 'Nenhum usuário foi selecionado.',
     'No value found!' => 'Nenhum valor encontrado!',
     'None' => 'Nenhum',
+    'Not visible' => 'Não visível',
     'One or more user needs your approval as group admin.' => 'Um ou mais usuários necessitam da sua aprovação como administrador de grupo.',
     'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.' => 'Apenas aplicável quando o acesso limitado para usuários não-autenticados está habilitado. Afeta apenas novos usuários.',
     'Overview' => 'Visão Global',
@@ -106,20 +143,24 @@ return [
     'People' => 'Pessoas',
     'Permanently delete' => 'Excluir permanentemente',
     'Permissions' => 'Permissões',
+    'Prioritised User Group' => 'Grupo de usuários priorizado',
     'Profile Permissions' => 'Permissões de perfil',
     'Profiles' => 'Perfis',
     'Protected' => 'Protegido',
+    'Protected group can not be deleted!' => 'O grupo protegido não pode ser excluído!',
     'Remove from group' => 'Remover do grupo',
     'Require group admin approval after registration' => 'Exigir aprovação do grupo de administração após o registro',
     'Resend invitation email' => 'Reenvie o email de convite',
     'Save' => 'Salvar',
     'Search by name, email or id.' => 'Pesquise por nome, email ou id.',
     'Select Groups' => 'Selecionar Grupos',
+    'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => 'Selecione um grupo priorizado cujos membros são exibidos antes de todos os outros quando a opção de classificação \'Padrão\' é selecionada. Os usuários dentro do grupo e os usuários fora do grupo também são classificados por seu último login.',
+    'Select the profile fields you want to add as columns' => 'Selecione os campos de perfil que deseja adicionar como colunas',
+    'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'Selecione quais informações do usuário devem ser exibidas na visão geral \'Pessoas\'. Você pode selecionar qualquer campo de perfil, mesmo aqueles que você criou individualmente.',
     'Send & decline' => 'Enviar e recusar',
     'Send & save' => 'Enviar e salvar',
     'Send invitation email' => 'Enviar email de convite',
     'Send invitation email again?' => 'Enviar email de convite novamente?',
-    'Send invite' => 'Enviar convite',
     'Send notifications to users when added to or removed from the group.' => 'Envie notificações aos usuários quando forem adicionados ou removidos do grupo.',
     'Settings' => 'Configurações',
     'Show group selection at registration' => 'Mostrar seleção de grupo no registro',
@@ -127,6 +168,10 @@ return [
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => 'As associações ao Espaço de todos os membros do grupo serão atualizadas. Isso pode levar vários minutos.',
     'The following list contains all pending sign-ups and invites.' => 'A lista a seguir contem todos os cadastros e convites pendentes.',
     'The following list contains all registered users awaiting an approval.' => 'A lista a seguir contém todos os usuários registrados que aguardam uma aprovação.',
+    'The registration was approved and the user was notified by email.' => 'O cadastro foi aprovado e o usuário foi notificado por e-mail.',
+    'The registration was declined and the user was notified by email.' => 'O registro foi recusado e o usuário foi notificado por e-mail.',
+    'The registrations were approved and the users were notified by email.' => 'Os cadastros foram aprovados e os usuários foram notificados por e-mail.',
+    'The registrations were declined and the users were notified by email.' => 'Os registros foram recusados ​​e os usuários foram notificados por e-mail.',
     'The selected invitations have been successfully deleted!' => 'Os convites selecionados foram excluídos com sucesso!',
     'The user is the owner of these spaces:' => 'O usuário é o proprietário desses espaços:',
     'This option allows you to determine whether users may set individual permissions for their own profiles.' => 'Esta opção permite determinar se os usuários podem definir permissões individuais para seus próprios perfis.',
@@ -141,53 +186,12 @@ return [
     'View profile' => 'Ver perfil',
     'Visible for members only' => 'Visível apenas para membros',
     'Visible for members+guests' => 'Vísivel para membros e visitantes',
+    'Will be used as a filter in \'People\'.' => 'Será usado como filtro em \'Pessoas\'.',
     'Yes' => 'Sim',
     'You can only delete empty categories!' => 'Você só pode apagar categorias vazias!',
     'You cannot delete yourself!' => 'Você não pode se deletar!',
     'never' => 'nunca',
-    'Allow users to block each other' => '',
-    'Approve all selected' => '',
-    'Are you really sure? The selected users will be approved and notified by e-mail.' => '',
-    'Are you really sure? The selected users will be deleted and notified by e-mail.' => '',
-    'Could not approve the user!' => '',
-    'Could not decline the user!' => '',
-    'Decline all selected' => '',
-    'Default Sorting' => '',
-    'Default group can not be deleted!' => '',
-    'Deleted' => '',
-    'Hello {displayName},
-
-Your account has been activated.
-
-Click here to login:
-{loginUrl}
-
-Kind Regards
-{AdminName}
-
-' => '',
-    'Hello {displayName},
-
-Your account request has been declined.
-
-Kind Regards
-{AdminName}
-
-' => '',
-    'Information 1' => '',
-    'Information 2' => '',
-    'Information 3' => '',
-    'Invisible' => '',
-    'No users were selected.' => '',
-    'Not visible' => '',
-    'Prioritised User Group' => '',
-    'Protected group can not be deleted!' => '',
-    'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => '',
-    'Select the profile fields you want to add as columns' => '',
-    'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => '',
-    'The registration was approved and the user was notified by email.' => '',
-    'The registration was declined and the user was notified by email.' => '',
-    'The registrations were approved and the users were notified by email.' => '',
-    'The registrations were declined and the users were notified by email.' => '',
-    'Will be used as a filter in \'People\'.' => '',
+    'Hide online status of users' => '',
+    'Invite new people' => '',
+    'Members can invite external users by link' => '',
 ];

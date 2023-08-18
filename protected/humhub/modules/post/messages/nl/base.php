@@ -4,6 +4,7 @@ return array (
   'Allows the user to create posts' => 'Gebruikers mogen berichten maken',
   'Create post' => 'Bericht maken',
   'Edit your post...' => 'Bewerk uw bericht...',
+  'Post' => 'Bericht',
   'Post could not be saved!' => 'Het bericht kan niet worden opgeslagen!',
   'The post must not be empty!' => 'Het bericht mag niet leeg zijn!',
   'This space is archived.' => 'Deze ruimte is gearchiveerd.',

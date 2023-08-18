@@ -18,10 +18,8 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountDelete;
-use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
-use humhub\modules\user\widgets\ProfileSettingsPicker;
+use humhub\modules\user\Module;
 use Yii;
 use yii\web\HttpException;
 
@@ -34,7 +32,6 @@ use yii\web\HttpException;
  */
 class AccountController extends BaseAccountController
 {
-
     /**
      * @inheritdoc
      */
@@ -96,7 +93,6 @@ class AccountController extends BaseAccountController
         $form = new HForm($definition, $user->profile);
         $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate() && $form->save()) {
-
             // Trigger search refresh
             $user->save();
 
@@ -125,11 +121,15 @@ class AccountController extends BaseAccountController
         }
 
         $model->tags = $user->getTags();
+        $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
+        $model->markdownEditorMode = $user->settings->get("markdownEditorMode");
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
+            $user->settings->set('markdownEditorMode', $model->markdownEditorMode);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
@@ -151,7 +151,15 @@ class AccountController extends BaseAccountController
         $col = new \Collator(Yii::$app->language);
         $col->asort($languages);
 
-        return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settingsManager = $module->settings;
+
+        return $this->render('editSettings', [
+            'model' => $model,
+            'languages' => $languages,
+            'isEnabledOnlineStatus' => !$settingsManager->get('auth.hideOnlineStatus'),
+        ]);
     }
 
     /**
@@ -212,9 +220,9 @@ class AccountController extends BaseAccountController
     public function actionConnectedAccounts()
     {
         if (Yii::$app->request->isPost && Yii::$app->request->get('disconnect')) {
-            foreach (Yii::$app->user->getAuthClients() as $authClient) {
+            foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
                 if ($authClient->getId() == Yii::$app->request->get('disconnect')) {
-                    \humhub\modules\user\authclient\AuthClientHelpers::removeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+                    Yii::$app->user->getAuthClientUserService()->remove($authClient);
                 }
             }
             return $this->redirect(['connected-accounts']);
@@ -232,7 +240,7 @@ class AccountController extends BaseAccountController
         }
 
         $activeAuthClientIds = [];
-        foreach (Yii::$app->user->getAuthClients() as $authClient) {
+        foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
             $activeAuthClientIds[] = $authClient->getId();
         }
 
@@ -309,7 +317,7 @@ class AccountController extends BaseAccountController
      */
     public function actionDelete()
     {
-        if (!Yii::$app->user->canDeleteAccount()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canDeleteAccount()) {
             throw new HttpException(500, 'Account deletion not allowed!');
         }
 
@@ -333,11 +341,11 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeUsername()
     {
-        if (!Yii::$app->user->canChangeUsername()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeUsername()) {
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
-        $model = new AccountChangeUsername;
+        $model = new AccountChangeUsername();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
             return $this->render('changeUsername_success', ['model' => $model]);
@@ -352,11 +360,11 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmail()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
-        $model = new AccountChangeEmail;
+        $model = new AccountChangeEmail();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
             return $this->render('changeEmail_success', ['model' => $model]);
@@ -371,7 +379,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmailValidate()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -402,7 +410,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangePassword()
     {
-        if (!Yii::$app->user->canChangePassword()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangePassword()) {
             throw new HttpException(500, 'Password change is not allowed');
         }
 
@@ -497,7 +505,4 @@ class AccountController extends BaseAccountController
 
         return Yii::$app->user->getIdentity();
     }
-
 }
-
-?>

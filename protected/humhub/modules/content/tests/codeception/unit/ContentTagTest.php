@@ -3,22 +3,13 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 24.07.2017
- * Time: 15:56
- */
-
 namespace humhub\modules\content\tests\codeception\unit;
-
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
+use humhub\modules\content\services\ContentTagService;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\InvalidArgumentException;
@@ -97,7 +88,7 @@ class ContentTagTest extends HumHubDbTestCase
         $content = Content::findOne(1);
         $tag2 = new TestTagSameModule($content->getContainer(), 'test2');
         $tag2->save();
-        $content->addTag($tag2);
+        (new ContentTagService($content))->addTag($tag2);
         $this->assertEquals(1, count($content->tagRelations));
 
         $tag2->delete();
@@ -175,11 +166,15 @@ class ContentTagTest extends HumHubDbTestCase
         $content = Content::findOne(1);
         $tag2 = new TestTagSameModule($content->getContainer(), 'test2');
         $tag2->save();
-        $content->addTag($tag2);
+        (new ContentTagService($content))->addTag($tag2);
         $this->assertEquals(1, ContentTagRelation::find()->count());
 
         $content->delete();
-        $this->assertEquals(0, ContentTagRelation::find()->count());
+        $this->assertEquals(1, Content::find()->where(['id' => 1])->count());
+        $this->assertEquals(0, Content::find()->where(['id' => 1, 'state' => Content::STATE_PUBLISHED])->count());
+
+        $content->hardDelete();
+        $this->assertEquals(0, Content::find()->where(['id' => 1])->count());
 
     }
 
@@ -193,7 +188,7 @@ class ContentTagTest extends HumHubDbTestCase
 
         // Try add unsaved tag to content (should fail)
         try {
-            $content->addTag($tag);
+            (new ContentTagService($content))->addTag($tag);
             $this->assertTrue(false);
         } catch(InvalidArgumentException $e) {
             $this->assertTrue(true);
@@ -203,7 +198,7 @@ class ContentTagTest extends HumHubDbTestCase
 
         // Try add tag without container relation (should fail)
         try {
-            $content->addTag($tag);
+            (new ContentTagService($content))->addTag($tag);
             $this->assertTrue(false);
         } catch(InvalidArgumentException $e) {
             $this->assertTrue(true);
@@ -212,22 +207,21 @@ class ContentTagTest extends HumHubDbTestCase
         $tag->contentcontainer_id = $content->contentcontainer_id;
 
         // Try adding the same tag twice (should only be added once)
-        $this->assertTrue($content->addTag($tag));
+        $this->assertTrue((new ContentTagService($content))->addTag($tag));
         $this->assertEquals(1, count($content->tags));
 
-        $this->assertTrue($content->addTag($tag));
+        $this->assertTrue((new ContentTagService($content))->addTag($tag));
         $this->assertEquals(1, count($content->tags));
-
 
         $tag2 = new TestTagSameModule($content->getContainer(), 'test2');
         $this->assertTrue($tag2->save());
 
-        $this->assertTrue($content->addTag($tag2));
+        $this->assertTrue((new ContentTagService($content))->addTag($tag2));
         $this->assertEquals(2, count($content->tags));
 
         $tag3 = new TestTagOtherModule($content->getContainer(), 'test3');
         $tag3->save();
-        $content->addTag($tag3);
+        (new ContentTagService($content))->addTag($tag3);
         $this->assertEquals(3, count($content->tags));
 
         $sameModuleTags = TestTagSameModule::findByContent($content)->all();

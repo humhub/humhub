@@ -39,6 +39,11 @@ class SecurityForm extends \yii\base\Model
     public $canInviteExternalUsersByEmail;
 
     /**
+     * @var boolean allow invite from external users by link
+     */
+    public $canInviteExternalUsersByLink;
+
+    /**
      * @var boolean enable friendship system
      */
     public $enableFriendshipModule;
@@ -63,6 +68,7 @@ class SecurityForm extends \yii\base\Model
             'internalRequireApprovalAfterRegistration' => Yii::t('InstallerModule.base', 'Newly registered users have to be activated by an admin first'),
             'internalAllowAnonymousRegistration' => Yii::t('InstallerModule.base', 'External users can register (show registration form on login)'),
             'canInviteExternalUsersByEmail' => Yii::t('InstallerModule.base', 'Registered members can invite new users via email'),
+            'canInviteExternalUsersByLink' => Yii::t('InstallerModule.base', 'Registered members can invite new users via link'),
             'enableFriendshipModule' => Yii::t('InstallerModule.base', 'Allow friendships between members'),
         ];
     }

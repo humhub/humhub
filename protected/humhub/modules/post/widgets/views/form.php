@@ -1,12 +1,14 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\content\widgets\WallCreateContentFormFooter;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
 /* @var string $mentioningUrl */
 /* @var ActiveForm $form */
 /* @var Post $post */
+/* @var string $submitUrl */
 ?>
 
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
@@ -20,3 +22,8 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     'disabledText' => Yii::t("PostModule.base", "This space is archived."),
     'mentioningUrl' => $mentioningUrl,
 ])->label(false) ?>
+
+<?= WallCreateContentFormFooter::widget([
+    'contentContainer' => $post->content->container,
+    'submitUrl' => $submitUrl,
+]) ?>

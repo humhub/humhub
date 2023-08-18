@@ -20,6 +20,10 @@ use Yii;
  */
 class Checkbox extends BaseType
 {
+    /**
+     * @inheritdoc
+     */
+    public $type = 'checkbox';
 
     /**
      * Field Default Checkbox
@@ -99,18 +103,6 @@ class Checkbox extends BaseType
             $rules[] = [$profileField->internal_name, 'in', 'range' => [0, 1]];
         }
         return parent::getFieldRules($rules);
-    }
-
-
-    /**
-     * @inheritdoc
-     */
-    public function getFieldFormDefinition(User $user = null)
-    {
-        return [$this->profileField->internal_name => [
-            'type' => 'checkbox',
-            'class' => 'form-control',
-        ]];
     }
 
     /**

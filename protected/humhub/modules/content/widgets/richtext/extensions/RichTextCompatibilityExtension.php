@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext\extensions;
-
 
 use humhub\components\ActiveRecord;
 use humhub\models\UrlOembed;
@@ -20,8 +18,6 @@ use yii\helpers\Html;
  * The legacy format uses a different syntax for emoji, mentioning, oembed.
  *
  * This conversion can be deactivated either by module configuration or by module db setting `richtextCompatMode`.
- *
- * @package humhub\modules\content\widgets\richtext\extensions
  */
 class RichTextCompatibilityExtension extends Model implements RichTextExtension
 {
@@ -35,7 +31,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      */
     public function onBeforeOutput(ProsemirrorRichText $richtext, string $output): string
     {
-        if(!$this->isCompatibilityMode()) {
+        if (!$this->isCompatibilityMode()) {
             return $output;
         }
 
@@ -51,7 +47,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      * @param string $show show smilies or remove it (for activities and notifications)
      * @return string
      */
-    public static function translateEmojis(string $text) : string
+    public static function translateEmojis(string $text): string
     {
         $emojis = [
             "Relaxed", "Yum", "Relieved", "Hearteyes", "Cool", "Smirk",
@@ -111,7 +107,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      * @param $text
      * @return mixed
      */
-    private static function translateLinks(string $text) : string
+    private static function translateLinks(string $text): string
     {
         return preg_replace_callback('/(?<=^|\s)(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s\]\)\\"\'\<]{2,})(?=$|\s)/', function ($hit) {
             $url = $hit[0];
@@ -125,7 +121,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      * @param $text
      * @return mixed
      */
-    private static function translateMentionings(string $text) : string
+    private static function translateMentionings(string $text): string
     {
         return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function ($hit) {
             if ($hit[1] == 'u') {
@@ -152,7 +148,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      */
     private function isCompatibilityMode()
     {
-        /* @var $module Module  */
+        /* @var $module Module */
         $module = Yii::$app->getModule('content');
         return $module->richtextCompatMode && $module->settings->get(static::DB_SETTING_KEY, 1);
     }

@@ -12,6 +12,7 @@ use ReflectionClass;
 use Yii;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\content\models\ContentContainer;
+use yii\base\InvalidConfigException;
 
 /**
  * ModuleManager handles modules of a content container.
@@ -121,7 +122,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      */
     public function canDisable($id)
     {
-        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->className(), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
+        if (!$this->isEnabled($id) || self::getDefaultState(get_class($this->contentContainer), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -142,6 +143,7 @@ class ContentContainerModuleManager extends \yii\base\Component
                 $enabled[] = $id;
             }
         }
+        $enabled[] = 'post';
 
         return $enabled;
     }
@@ -160,9 +162,9 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         $this->_available = [];
 
-        foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
+        foreach (Yii::$app->moduleManager->getModules() as $module) {
             if ($module instanceof ContentContainerModule && $module->isActivated &&
-                $module->hasContentContainerType($this->contentContainer->className())) {
+                $module->hasContentContainerType(get_class($this->contentContainer))) {
                 $this->_available[$module->id] = $module;
             }
         }
@@ -311,4 +313,31 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         return $query;
     }
+
+    /**
+     * This method is called to determine classes of Content models which can be posted on wall.
+     *
+     * @since 1.13
+     * @param ContentContainerActiveRecord|null $contentContainer
+     * @return ContentActiveRecord[]
+     */
+    public function getContentClasses(): array
+    {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->id, function() {
+            $contentClasses = [];
+            foreach ($this->getEnabled() as $moduleId) {
+                $module = Yii::$app->getModule($moduleId);
+                foreach ($module->getContentClasses($this->contentContainer) as $class) {
+                    $content = new $class($this->contentContainer);
+                    if (!($content instanceof ContentActiveRecord)) {
+                        throw new InvalidConfigException($class . ' must be instance of ContentActiveRecord!');
+                    }
+                    $contentClasses[] = $content;
+                }
+            }
+
+            return $contentClasses;
+        });
+    }
+
 }

@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Dette området er arkivert.',
     'What\'s on your mind?' => 'Hva tenker du på?',
     'post' => 'Innlegg',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

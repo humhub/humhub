@@ -1,8 +1,8 @@
 <?php
 return array (
-  'Likes' => '',
+  'Likes' => 'Suka',
   'Receive Notifications when someone likes your content.' => '',
-  'View Online' => '',
+  'View Online' => 'Lihat online',
   '{displayNames} likes your {contentTitle}.' => '',
   '{displayNames} likes {contentTitle}.' => '',
   '{displayName} likes your {contentTitle}.' => '',

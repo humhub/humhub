@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext\extensions;
-
 
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use humhub\components\ActiveRecord;

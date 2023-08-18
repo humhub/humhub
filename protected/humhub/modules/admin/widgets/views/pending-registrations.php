@@ -53,7 +53,10 @@ AdminPendingRegistrationsAsset::register($this);
             },
             'contentOptions' => ['style' => 'width:auto; white-space: normal;'],
         ],
-        'email',
+        [
+            'attribute' => 'email',
+            'format' => 'email',
+        ],
         'originator.username',
         [
             'attribute' => 'language',
@@ -67,7 +70,7 @@ AdminPendingRegistrationsAsset::register($this);
             'options' => ['width' => '40px'],
             'format' => 'raw',
             'value' => function ($data) use ($types) {
-                return isset($types[$data->source]) ?: Html::encode($data->source);
+                return $types[$data->source] ?? Html::encode($data->source);
             },
         ],
         [

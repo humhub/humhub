@@ -44,11 +44,15 @@ class SortOrderField extends InputWidget
      */
     public function run()
     {
-        $this->field->label(Yii::t('UiModule.form', 'Sort Order'));
-        $this->field->hint(Yii::t('UiModule.form', 'Values between 0 and 10000, the existing elements usually use steps of 100.'));
-
         $model = $this->model;
         $attribute = $this->attribute;
+
+        if (!$model->getAttributeLabel($attribute)) {
+            $this->field->label(Yii::t('UiModule.form', 'Sort Order'));
+        }
+        if (!$model->getAttributeHint($attribute)) {
+            $this->field->hint(Yii::t('UiModule.form', 'Values between 0 and 10000, the existing elements usually use steps of 100.'));
+        }
 
         if ($this->defaultValue !== null && !is_numeric($model->$attribute)) {
             $model->$attribute = $this->defaultValue;

@@ -11,6 +11,7 @@ namespace humhub\modules\file\models;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\ActiveRecord;
+use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\user\models\User;
@@ -52,7 +53,7 @@ use yii\web\UploadedFile;
  *
  * @since 0.5
  */
-class File extends FileCompat
+class File extends FileCompat implements ViewableInterface
 {
     /**
      * @event Event that is triggered after a new file content has been stored.
@@ -191,10 +192,15 @@ class File extends FileCompat
      *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
+     *
      * @param string|User $userId
+     *
      * @return bool
+     * @throws IntegrityException
+     * @throws Throwable
+     * @throws \yii\base\Exception
      */
-    public function canRead($userId = "")
+    public function canRead($userId = ""): bool
     {
         $object = $this->getPolymorphicRelation();
         if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
@@ -204,13 +210,26 @@ class File extends FileCompat
         return true;
     }
 
+    public function canView($user = null): bool
+    {
+        return $this->canRead($user);
+    }
+
     /**
-     * Checks if given file can deleted.
+     * Checks if given file can be deleted.
      *
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canEdit or canDelete implemented.
+     *
+     * @param null $userId
+     *
+     * @return bool
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws \yii\base\Exception
      */
-    public function canDelete($userId = null)
+    public function canDelete($userId = null): bool
     {
         $object = $this->getPolymorphicRelation();
 
@@ -272,12 +291,12 @@ class File extends FileCompat
     /**
      * Returns all attached Files of the given $record.
      *
-     * @param \yii\db\ActiveRecord $record
+     * @param ActiveRecord $record
      * @return File[]
      */
-    public static function findByRecord(\yii\db\ActiveRecord $record)
+    public static function findByRecord(ActiveRecord $record): array
     {
-        return self::findAll(['object_model' => $record->className(), 'object_id' => $record->getPrimaryKey()]);
+        return self::findAll(['object_model' => PolymorphicRelation::getObjectModel($record), 'object_id' => $record->getPrimaryKey()]);
     }
 
     /**

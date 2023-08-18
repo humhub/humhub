@@ -8,6 +8,7 @@ return [
     'This space is archived.' => 'Този раздел е архивиран.',
     'What\'s on your mind?' => 'За какво мислиш?',
     'post' => 'публикувай',
+    'Post' => '',
     'Post could not be saved!' => '',
     'The post must not be empty!' => '',
 ];

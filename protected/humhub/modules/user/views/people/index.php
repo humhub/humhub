@@ -17,6 +17,9 @@ CardsAsset::register($this);
     <div class="panel-heading">
         <?php if ($people->isFilteredByGroup()) : ?>
             <?= Yii::t('UserModule.base', '<strong>Group</strong> members - {group}', ['{group}' => Html::encode($people->filteredGroup->name)]); ?>
+            <?php if (!empty($people->filteredGroup->description)) : ?>
+                <div class="hint-block"><?= Html::encode($people->filteredGroup->description) ?></div>
+            <?php endif; ?>
         <?php else: ?>
             <?= Yii::t('UserModule.base', '<strong>People</strong>'); ?>
         <?php endif; ?>

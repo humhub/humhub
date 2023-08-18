@@ -21,6 +21,11 @@ use yii\helpers\Html;
 class CheckboxList extends BaseType
 {
     /**
+     * @inheritdoc
+     */
+    public $type = 'checkboxlist';
+
+    /**
      * All possible options.
      * One entry per line.
      * key=>value format
@@ -113,17 +118,12 @@ class CheckboxList extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null)
+    public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
-        $result = [
-            $this->profileField->internal_name => [
-                'type' => 'checkboxlist',
-                'delimiter' => "\n",
-                'class' => 'form-control',
-                'items' => $this->getSelectItems(),
-                'readonly' => (!$this->profileField->editable),
-            ]
-        ];
+        $result = parent::getFieldFormDefinition($user, array_merge([
+            'delimiter' => "\n",
+            'items' => $this->getSelectItems(),
+        ], $options));
 
         if ($this->allowOther) {
             $result[$this->profileField->internal_name . '_other_selection'] = [

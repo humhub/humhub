@@ -94,6 +94,10 @@
             span {
                 font-size: 12px;
             }
+
+            #user-account-image {
+                margin-bottom: 0;
+            }
         }
     }
 
@@ -209,6 +213,21 @@
 
     .dropdown-footer {
         margin: 10px 10px 5px;
+
+        .btn.btn-default {
+            border: 1px solid @default;
+            box-shadow: none;
+
+            &:hover {
+                border-color: @background3;
+                background: @background3;
+            }
+
+            &:active {
+                border-color: @text-color-secondary;
+                background: white;
+            }
+        }
     }
 
     a {
@@ -282,8 +301,6 @@
     background-color: #fff;
     z-index: 1029;
     background-image: none;
-    -webkit-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-    -moz-box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
     border-bottom: 1px solid #d4d4d4;
 

@@ -123,12 +123,11 @@ return [
     'Test message' => '',
     'Url Pattern' => '',
     'Use SMTPS' => '',
-    'Use the default swipe to show sidebar on a mobile device' => '',
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'You can find more configuration options here:' => '',
     'You\'re using no icon at the moment. Upload your logo now.' => '',
-    'e.g. 25 (for SMTP) or 587 (for SMTPS)' => '',
+    'e.g. 25 (for SMTP) or 465 (for SMTPS)' => '',
     'e.g. localhost' => '',
     'e.g. smtps://user:pass@smtp.example.com:port' => '',
 ];

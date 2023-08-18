@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.13.0-dev',
+    'version' => '1.15.0-beta.1',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -54,16 +54,24 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                \yii\log\FileTarget::class => [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
-                [
+                \yii\log\DbTarget::class =>[
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
-                    'except' => ['yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403', 'yii\web\HttpException:404', 'yii\web\HttpException:405'],
+                    'except' => [
+                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
@@ -101,6 +109,10 @@ $config = [
         ],
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
+        ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
         ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
@@ -180,7 +192,7 @@ $config = [
             'th' => 'ไทย',
             'tr' => 'Türkçe',
             'ru' => 'Русский',
-            'uk' => 'українська',
+            'uk' => 'Українська',
             'el' => 'Ελληνικά',
             'ja' => '日本語',
             'hu' => 'Magyar',
@@ -191,26 +203,28 @@ $config = [
             'an' => 'Aragonés',
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
-            'cs' => 'čeština',
-            'da' => 'dansk',
+            'cs' => 'Čeština',
+            'da' => 'Dansk',
             'uz' => 'Ўзбек',
             'fa-IR' => 'فارسی',
-            'bg' => 'български',
-            'sk' => 'slovenčina',
-            'ro' => 'română',
+            'bg' => 'Български',
+            'sk' => 'Slovenčina',
+            'ro' => 'Română',
             'ar' => 'العربية/عربي‎‎',
             'ko' => '한국어',
             'id' => 'Bahasa Indonesia',
-            'lt' => 'lietuvių kalba',
+            'lt' => 'Lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
-            'fi' => 'suomalainen',
+            'fi' => 'Suomalainen',
             'he' => 'עברית',
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
+            'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
         ],
         'ldap' => [
             // LDAP date field formats
@@ -250,9 +264,6 @@ $config = [
         // Allowed languages limitation (optional)
         'allowedLanguages' => [],
         'defaultPermissions' => [],
-        'tour' => [
-            'acceptableNames' => ['interface', 'administration', 'profile', 'spaces']
-        ],
         'richText' => [
             'class' => \humhub\modules\content\widgets\richtext\ProsemirrorRichText::class,
         ],
@@ -262,7 +273,7 @@ $config = [
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
-    ]
+    ],
 ];
 
 return $config;

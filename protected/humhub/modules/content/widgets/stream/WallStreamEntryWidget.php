@@ -5,6 +5,7 @@ namespace humhub\modules\content\widgets\stream;
 
 use Exception;
 use humhub\libs\Html;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\LockCommentsLink;
@@ -13,9 +14,12 @@ use humhub\modules\content\widgets\MoveContentLink;
 use humhub\modules\content\widgets\NotificationSwitchLink;
 use humhub\modules\content\widgets\PermaLink;
 use humhub\modules\content\widgets\PinLink;
+use humhub\modules\content\widgets\PublishDraftLink;
+use humhub\modules\content\widgets\ScheduleLink;
 use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -99,6 +103,19 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     const EDIT_MODE_MODAL = 'modal';
 
+    /**
+     * Route to create a content
+     *
+     * @var string
+     */
+    public $createRoute;
+
+    /**
+     * Defines the way the creating of this wall entry is displayed.
+     *
+     * @var string
+     */
+    public $createMode;
 
     /**
      * Route to edit the content
@@ -108,7 +125,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public $editRoute;
 
     /**
-     * Defines the way the edit of this wallentry is displayed.
+     * Defines the way the edit of this wall entry is displayed.
      *
      * @var string
      */
@@ -140,6 +157,22 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     protected $renderOptionClass = WallStreamEntryOptions::class;
 
     /**
+     * @var string Action for menu of create form on wall stream
+     */
+    public $createFormMenuAction;
+
+    /**
+     * @var int Sort order of create form and tab menu on wall stream
+     */
+    public $createFormSortOrder;
+
+    /**
+     * @var string Class name of the Form to create a Content from wall stream,
+     *             The class must be based on humhub\modules\content\widgets\WallCreateContentForm
+     */
+    public $createFormClass;
+
+    /**
      * @return string returns the content type specific part of this wall entry (e.g. post content)
      */
     abstract protected function renderContent();
@@ -150,6 +183,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public function init()
     {
         parent::init();
+
+        if ($this->createMode === null) {
+            $this->createMode = $this->editMode;
+        }
+
         if (!$this->renderOptions) {
             $this->renderOptions = (new WallStreamEntryOptions);
         }
@@ -183,6 +221,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         return $this->render($this->layoutBody, [
             'model' => $this->model,
+            'topics' => Topic::findByContent($this->model->content)->all(),
             'renderOptions' => $this->renderOptions,
             'content' => $this->renderContent(),
             'header' => $this->renderHeader(),
@@ -289,6 +328,10 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getControlsMenuEntries()
     {
+        if ($this->model->content->getStateService()->isDeleted()) {
+            return [];
+        }
+
         if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
             return [
                 [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]
@@ -296,10 +339,12 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         }
 
         $result = [
+            [PublishDraftLink::class, ['content' => $this->model], ['sortOrder' => 100]],
             [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
             [DeleteLink::class, ['content' => $this->model], ['sortOrder' => 300]],
             new DropdownDivider(['sortOrder' => 350]),
             [VisibilityLink::class, ['contentRecord' => $this->model], ['sortOrder' => 400]],
+            [ScheduleLink::class, ['contentRecord' => $this->model], ['sortOrder' => 420]],
             [LockCommentsLink::class, ['contentRecord' => $this->model], ['sortOrder' => 450]],
             [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]],
             [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]],
@@ -350,5 +395,38 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return [
             'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry'
         ];
+    }
+
+    /**
+     * Get Wall Entry Widget by Content
+     *
+     * @param ContentActiveRecord $content
+     * @return WallStreamEntryWidget|null
+     */
+    public static function getByContent(ContentActiveRecord $content): ?WallStreamEntryWidget
+    {
+        if (!$content->content->container->moduleManager->isEnabled($content->getModuleId())) {
+            return null;
+        }
+
+        $wallEntryWidget = $content->getWallEntryWidget();
+        if (!($wallEntryWidget instanceof WallStreamEntryWidget)) {
+            return null;
+        }
+
+        if (empty($wallEntryWidget->createRoute)) {
+            return null;
+        }
+
+        if (!$content->content->canEdit()) {
+            return null;
+        }
+
+        return $wallEntryWidget;
+    }
+
+    public function hasCreateForm(): bool
+    {
+        return !empty($this->createFormClass);
     }
 }

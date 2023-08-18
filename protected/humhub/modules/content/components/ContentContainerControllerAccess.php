@@ -3,18 +3,8 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 26.07.2017
- * Time: 18:11
- */
-
 namespace humhub\modules\content\components;
-
 
 use Yii;
 use humhub\components\access\StrictAccess;

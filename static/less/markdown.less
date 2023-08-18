@@ -9,16 +9,15 @@
 @md-block-spacing: 1.2em;
 
 .markdown-render, [data-ui-markdown], [data-ui-richtext] {
-
+    line-height: 1.57;
     overflow: hidden;
     overflow-wrap: break-word;
-    line-height: 1.57;
 
     h1, h2, h3, h4, h5, h6 {
-        text-align: start;
-        font-weight: normal;
         margin: @md-block-spacing 0 0.8em;
         color: @text-color-main;
+        font-weight: normal;
+        text-align: start;
     }
 
     h1:first-child,
@@ -89,7 +88,6 @@
         padding: 15px 20px;
         font-size: 1em;
         border-left: 5px solid @primary;
-
     }
 
     dt, dd {
@@ -187,15 +185,21 @@
     }
 
     table {
-        width: 100%;
-        font-size: 1em;
         border: 1px solid @background3;
         margin-bottom: @md-block-spacing !important;
+        font-size: 1em;
+        width: 100%;
+
+        th, td {
+            border: 1px solid @background3 !important;
+            box-sizing: border-box;
+            position: relative;
+        }
 
         th {
-            font-size: 1em;
-            color: @text-color-contrast !important;
             background-color: @primary;
+            color: @text-color-contrast !important;
+            font-size: 1em;
 
             p {
                 color: @text-color-contrast !important;
@@ -203,13 +207,11 @@
         }
 
         td {
-            padding:15px;
-            border: 1px solid @background3 !important;
+            padding: 15px;
         }
 
         th {
             padding: 10px 15px;
-            border: 1px solid @background3 !important;
         }
     }
 }

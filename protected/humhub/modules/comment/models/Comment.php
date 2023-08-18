@@ -13,6 +13,7 @@ use humhub\modules\comment\activities\NewComment;
 use humhub\modules\comment\live\NewComment as NewCommentLive;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
+use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -41,7 +42,7 @@ use yii\helpers\Url;
  *
  * @since 0.5
  */
-class Comment extends ContentAddonActiveRecord implements ContentOwner
+class Comment extends ContentAddonActiveRecord
 {
     const CACHE_KEY_COUNT = 'commentCount_%s_%s';
     const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
@@ -217,6 +218,10 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $limit = $module->commentsPreviewMax;
         }
 
+        if ($model === self::class && $currentCommentId == $id) {
+            // No need to find current comment in sub-comments when parent comment is the current
+            $currentCommentId = null;
+        }
         $currentCommentId = intval($currentCommentId);
         $useCaching = empty($currentCommentId);// No need to cache comments for deep single comment view
 
@@ -230,6 +235,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
             $objectCondition = ['object_model' => $model, 'object_id' => $id];
             $query = Comment::find();
             if ($currentCommentId && Comment::findOne(['id' => $currentCommentId])) {
+                // Get the current and one previous comment
                 $nearCommentIds = Comment::find()
                     ->select('id')
                     ->where($objectCondition)
@@ -237,16 +243,15 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
                     ->orderBy('created_at DESC')
                     ->limit($limit)
                     ->column();
-                if (count($nearCommentIds) < $limit) {
-                    $newerCommentIds = Comment::find()
-                        ->select('id')
-                        ->where($objectCondition)
-                        ->andWhere(['>', 'id', $currentCommentId])
-                        ->orderBy('created_at ASC')
-                        ->limit($limit - count($nearCommentIds))
-                        ->column();
-                    $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
-                }
+                // Get 1 newer comment after the current comment
+                $newerCommentIds = Comment::find()
+                    ->select('id')
+                    ->where($objectCondition)
+                    ->andWhere(['>', 'id', $currentCommentId])
+                    ->orderBy('created_at ASC')
+                    ->limit(1)
+                    ->column();
+                $nearCommentIds = array_merge($nearCommentIds, $newerCommentIds);
                 $query->where(['IN', 'id', $nearCommentIds]);
             } else {
                 $query->where($objectCondition);
@@ -285,6 +290,44 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
     }
 
     /**
+     * Find more comments before or after a requested comment
+     *
+     * @param int|null $commentId ID of the latest comment from previous query
+     * @param string|null $type
+     * @param int|null $pageSize
+     * @param Comment|ContentActiveRecord
+     * @return Comment[]
+     */
+    public static function getMoreComments($object, ?int $commentId = null, ?string $type = null, ?int $pageSize = null): array
+    {
+        if (!$pageSize) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('comment');
+            $pageSize = $module->commentsBlockLoadSize;
+        }
+
+        $query = Comment::find()
+            ->where(['object_model' => get_class($object), 'object_id' => $object->getPrimaryKey()])
+            ->limit($pageSize);
+
+        if ($type === ShowMore::TYPE_NEXT) {
+            $query->orderBy(['created_at' => SORT_ASC]);
+            if ($commentId) {
+                $query->andWhere(['>', 'id', $commentId]);
+            }
+            $comments = $query->all();
+        } else {
+            $query->orderBy(['created_at' => SORT_DESC]);
+            if ($commentId) {
+                $query->andWhere(['<', 'id', $commentId]);
+            }
+            $comments = array_reverse($query->all());
+        }
+
+        return $comments;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getContentName()
@@ -300,7 +343,7 @@ class Comment extends ContentAddonActiveRecord implements ContentOwner
         return $this->message;
     }
 
-    public function canDelete($userId = '')
+    public function canDelete($userId = ''): bool
     {
 
         if ($userId == '') {

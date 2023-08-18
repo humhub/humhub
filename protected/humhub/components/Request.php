@@ -20,6 +20,13 @@ use Yii;
 class Request extends \yii\web\Request
 {
     /**
+     * Whenever a secure connection is detected, force it.
+     * @var bool
+     * @since 1.13
+     */
+    public $autoEnsureSecureConnection = true;
+
+    /**
      * Http header name for view context information
      * @see \humhub\modules\ui\view\components\View::$viewContext
      */
@@ -39,6 +46,10 @@ class Request extends \yii\web\Request
 
         if ($this->cookieValidationKey == '') {
             $this->cookieValidationKey = 'installer';
+        }
+
+        if (defined('YII_ENV_TEST') && YII_ENV_TEST && $_SERVER['SCRIPT_FILENAME'] === 'index-test.php' && in_array($_SERVER['SCRIPT_NAME'], ['/sw.js', '/offline.pwa.html', '/manifest.json'], true)) {
+            $this->setScriptUrl('/index.php');
         }
     }
 

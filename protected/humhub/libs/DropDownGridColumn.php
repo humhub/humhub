@@ -77,6 +77,9 @@ class DropDownGridColumn extends DataColumn
             $this->htmlOptions['class'] = 'editableCell form-control';
         }
 
+        // Fixes: https://github.com/yiisoft/yii2/issues/19534
+        $this->htmlOptions['strict'] = true;
+
         // We need to number the submit attributes because data attribute is not case sensitive
         $this->htmlOptions['data-submit-attributes'] = implode(', ', $this->submitAttributes);
         $i = 0;

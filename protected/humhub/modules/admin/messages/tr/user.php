@@ -102,7 +102,6 @@ return [
     'Send & save' => 'Gönder ve kaydet',
     'Send invitation email' => 'Davetiye e-postası gönder',
     'Send invitation email again?' => 'Davet e-postası tekrar gönderilsin mi?',
-    'Send invite' => 'Davetiye gönder',
     'Settings' => 'Ayarlar',
     'Subject' => 'Konu',
     'The following list contains all pending sign-ups and invites.' => 'Aşağıdaki liste bekleyen tüm üyelik ve davetleri içerir.',
@@ -165,12 +164,15 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'Information 1' => '',
     'Information 2' => '',
     'Information 3' => '',
     'Invisible' => '',
+    'Invite new people' => '',
     'Make the group selectable at registration.' => '',
+    'Members can invite external users by link' => '',
     'No users were selected.' => '',
     'Not visible' => '',
     'Prioritised User Group' => '',

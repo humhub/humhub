@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Správa</strong> prostorů',
+    '<strong>Manage</strong> Spaces' => '<strong>Správa</strong> prostorů',
     'Add new space' => 'Přidat nový prostor',
     'Default Content Visiblity' => 'Výchozí viditelnost příspěvků',
     'Default Join Policy' => 'Výchozí pravidlo, kdo se může stát členem prostoru',
@@ -16,8 +16,14 @@ return [
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Tento přehled obsahuje seznam všech prostorů s akcemi pro zobrazení, úpravu a odstranění prostorů.',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Change owner' => '',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
     'Manage members' => '',
     'Manage modules' => '',
     'Open space' => '',

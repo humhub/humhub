@@ -1,15 +1,7 @@
 <?php
-/**
- * Translation: Paul (https://paul.bid) paulbid@protonmail.com
- * 
- */
 return array (
-  'Add image/file' => 'Добавить изображение/файл',
-  'Add link' => 'Добавить ссылку',
   'Bold' => 'Полужирный',
-  'Close' => 'Закрыть',
   'Code' => 'Блок кода',
-  'Enter a url (e.g. http://example.com)' => 'Введите ссылку (например https://example.com)',
   'Heading' => 'Заголовок',
   'Image' => 'Изображение',
   'Image/File' => 'Изображение/Файл',
@@ -18,12 +10,8 @@ return array (
   'Italic' => 'Курсив',
   'List' => 'Список',
   'Ordered List' => 'Упорядоченный список',
-  'Please wait while uploading...' => 'Пожалуйста, подождите пока загрузится...',
   'Preview' => 'Предпросмотр',
   'Quote' => 'Цитата',
-  'Target' => 'Цель',
-  'Title' => 'Заголовок',
-  'Title of your link' => 'Название Вашей ссылки',
   'URL/Link' => 'Адрес/Ссылка',
   'Unordered List' => 'Маркированный список',
   'code text here' => 'вставьте код здесь',

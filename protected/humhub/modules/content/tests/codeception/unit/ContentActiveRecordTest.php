@@ -49,6 +49,8 @@ class ContentActiveRecordTest extends HumHubDbTestCase
         $space = Space::findOne(['id' => 3]);
 
         $model = new TestContent($space, Content::VISIBILITY_PUBLIC);
+        $model->isNewRecord = false;
+
         $model->setManagePermission([ManageContent::class]);
 
         $this->becomeUser('User1');
@@ -75,7 +77,7 @@ class ContentActiveRecordTest extends HumHubDbTestCase
         $groupPermission->group_id = $groupId;
         $groupPermission->contentcontainer_id = $contentContianer->contentContainerRecord->id;
         $groupPermission->module_id = $permission->moduleId;
-        $groupPermission->class = $permission->className();
+        $groupPermission->class = get_class($permission);
         $groupPermission->state = $state;
         $groupPermission->save();
         $contentContianer->getPermissionManager()->clear();

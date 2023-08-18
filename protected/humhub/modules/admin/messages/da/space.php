@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => '<strong>Administrer</strong> sider',
+    '<strong>Manage</strong> Spaces' => '<strong>Administrer</strong> sider',
     'Default Content Visiblity' => 'Standard Indholds Visning',
     'Default Join Policy' => 'Standard Deltagelsespolitik',
     'Default Visibility' => 'Standard Synlighed',
@@ -12,8 +12,14 @@ return [
     'Add new space' => '',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
     'Change owner' => '',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
     'Manage members' => '',
     'Manage modules' => '',

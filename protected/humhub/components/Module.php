@@ -10,9 +10,11 @@ namespace humhub\components;
 
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
 use yii\helpers\Json;
 use yii\web\AssetBundle;
@@ -22,17 +24,17 @@ use yii\web\AssetBundle;
  *
  * @property-read string $name
  * @property-read string $description
+ * @property-read array $keywords
  * @property-read bool $isActivated
  * @property SettingsManager $settings
- * @mixin OnlineModule
  * @author luke
  */
 class Module extends \yii\base\Module
 {
     /**
-     * @var array the loaded module.json info file
+     * @var array|null the loaded module.json info file
      */
-    private $_moduleInfo = null;
+    private ?array $_moduleInfo = null;
 
     /**
      * @var string The path for module resources (images, javascripts)
@@ -55,7 +57,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules name provided by module.json file
+     * Returns the module's name provided by module.json file
      *
      * @return string Name
      */
@@ -71,7 +73,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules description provided by module.json file
+     * Returns the module's description provided by module.json file
      *
      * @return string Description
      */
@@ -87,7 +89,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules version number provided by module.json file
+     * Returns the module's version number provided by module.json file
      *
      * @return string Version Number
      */
@@ -117,6 +119,22 @@ class Module extends \yii\base\Module
         }
 
         return $url;
+    }
+
+    /**
+     * Returns module's keywords provided by module.json file
+     *
+     * @return array List of keywords
+     */
+    public function getKeywords(): array
+    {
+        $info = $this->getModuleInfo();
+
+        if ($info['keywords']) {
+            return (array)$info['keywords'];
+        }
+
+        return [];
     }
 
     /**
@@ -213,7 +231,8 @@ class Module extends \yii\base\Module
      */
     public function getIsActivated(): bool
     {
-        return (bool) Yii::$app->hasModule($this->id);
+        return Yii::$app->hasModule($this->id) &&
+            !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
     }
 
     /**
@@ -302,13 +321,13 @@ class Module extends \yii\base\Module
      */
     protected function getModuleInfo()
     {
-        if ($this->_moduleInfo != null) {
+        if ($this->_moduleInfo !== null) {
             return $this->_moduleInfo;
         }
 
         $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
 
-        return Json::decode($moduleJson);
+        return $this->_moduleInfo = Json::decode($moduleJson);
     }
 
     /**

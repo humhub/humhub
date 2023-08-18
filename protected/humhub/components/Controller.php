@@ -11,9 +11,11 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
+use humhub\models\Setting;
+use humhub\modules\user\services\IsOnlineService;
 use Yii;
-use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 
 /**
@@ -60,7 +62,7 @@ class Controller extends \yii\web\Controller
     protected $access = StrictAccess::class;
 
     /**
-     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids. 
+     * @var string[] List of action ids which should not be intercepted by another actions. Use '*' for all action ids.
      * @since 1.9
      */
     protected $doNotInterceptActionIds = [];
@@ -68,8 +70,8 @@ class Controller extends \yii\web\Controller
     /**
      * Returns access rules for the standard access control behavior.
      *
-     * @see AccessControl
      * @return array the access permissions
+     * @see AccessControl
      */
     protected function getAccessRules()
     {
@@ -112,7 +114,7 @@ class Controller extends \yii\web\Controller
      */
     public function renderAjaxContent($content)
     {
-        return $this->getView()->renderAjaxContent($content, $this);
+        return $this->getView()->renderAjaxContent($content);
     }
 
     /**
@@ -123,7 +125,7 @@ class Controller extends \yii\web\Controller
      */
     public function renderAjaxPartial(string $content): string
     {
-        return $this->getView()->renderAjaxPartial($content, $this);
+        return $this->getView()->renderAjaxPartial($content);
     }
 
     /**
@@ -159,8 +161,8 @@ class Controller extends \yii\web\Controller
     /**
      * Throws HttpException in case the request is not an post request, otherwise returns true.
      *
-     * @throws \yii\web\HttpException
      * @return boolean returns true in case the current request is a POST
+     * @throws \yii\web\HttpException
      */
     public function forcePostRequest()
     {
@@ -215,11 +217,16 @@ class Controller extends \yii\web\Controller
             }
 
             if (!empty($this->pageTitle)) {
-                $this->getView()->pageTitle = $this->pageTitle;
+                $this->getView()->setPageTitle($this->pageTitle);
             }
 
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
                 $this->setJsViewStatus();
+
+                if (Setting::isInstalled()) {
+                    // Update "is online" status ony on full page loads
+                    (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+                }
             }
 
             return true;
@@ -305,11 +312,11 @@ class Controller extends \yii\web\Controller
     /**
      * Check if action cannot be intercepted
      *
-     * @since 1.9
-     * @param string|null $actionId, NULL - to use current action
+     * @param string|null $actionId , NULL - to use current action
      * @return bool
+     * @since 1.9
      */
-    public function isNotInterceptedAction(string $actionId = null) : bool
+    public function isNotInterceptedAction(string $actionId = null): bool
     {
         if ($actionId === null) {
             if (isset($this->action->id)) {

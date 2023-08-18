@@ -16,7 +16,7 @@ class CommentTest extends HumHubDbTestCase
     public function testCreateComment()
     {
         $this->becomeUser('User2');
-        
+
         $comment = new Comment([
             'message' => 'User2 comment!',
             'object_model' => Post::class,
@@ -29,7 +29,7 @@ class CommentTest extends HumHubDbTestCase
         $this->assertEqualsLastEmailSubject('Sara Tester commented post "User 2 Space 2 Post Private" in space Space 2');
         $this->assertNotEmpty($comment->id);
         $this->assertNotEmpty($comment->content->getPolymorphicRelation()->getFollowersWithNotificationQuery());
-        
+
         $this->assertNotNull(\humhub\modules\activity\models\Activity::findOne(['object_model' => Comment::class, 'object_id' => $comment->id]));
         $this->assertNotNull(\humhub\modules\notification\models\Notification::findOne(['source_class' => Comment::class, 'source_pk' => $comment->id]));
     }
@@ -65,7 +65,7 @@ class CommentTest extends HumHubDbTestCase
         $comment->save();
 
         $post = Post::findOne(['id' => 11]);
-        $post->delete();
+        $post->hardDelete();
 
         $this->assertNull(Comment::findOne(['id' => $comment->id]));
     }

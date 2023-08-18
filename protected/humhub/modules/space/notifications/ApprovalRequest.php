@@ -9,6 +9,7 @@
 namespace humhub\modules\space\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\space\models\Membership;
 use Yii;
 use yii\bootstrap\Html;
 use yii\helpers\ArrayHelper;
@@ -79,6 +80,18 @@ class ApprovalRequest extends BaseNotification
     }
 
     /**
+     * @inerhitdoc
+     */
+    public function isValid()
+    {
+        return Membership::find()->where([
+            'user_id' => $this->originator->id,
+            'space_id' => $this->source->id,
+            'status' => Membership::STATUS_APPLICANT,
+        ])->exists();
+    }
+
+    /**
      * @inheritdoc
      */
     public function html()
@@ -87,6 +100,11 @@ class ApprovalRequest extends BaseNotification
                     '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
                     '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
         ]);
+    }
+
+    public function getUrl()
+    {
+        return $this->source->createUrl('/space/manage/member/pending-approvals');
     }
 
     /**

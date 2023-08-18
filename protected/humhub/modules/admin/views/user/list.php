@@ -55,7 +55,10 @@ use yii\widgets\ActiveForm;
             'columns' => [
                 ['class' => ImageColumn::class],
                 ['class' => DisplayNameColumn::class],
-                'email',
+                [
+                    'attribute' => 'email',
+                    'format' => 'email',
+                ],
                 [
                     'attribute' => 'last_login',
                     'label' => Yii::t('AdminModule.user', 'Last login'),

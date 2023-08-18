@@ -377,6 +377,7 @@ humhub.module('ui.filter', function(module, require, $) {
         Filter: Filter,
         FilterInput: FilterInput,
         findFilterByComponent: findFilterByComponent,
-        addFilterType: addFilterType
+        addFilterType: addFilterType,
+        Url: Url
     });
 });

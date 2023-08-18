@@ -8,8 +8,10 @@
 
 namespace humhub\components\mail;
 
+use humhub\interfaces\MailerInterface;
 use Symfony\Component\Mime\Crypto\SMimeSigner;
 use Yii;
+use yii\mail\MessageInterface;
 
 /**
  * Mailer implements a mailer based on SymfonyMailer.
@@ -18,7 +20,7 @@ use Yii;
  * @since 1.2
  * @author Luke
  */
-class Mailer extends \yii\symfonymailer\Mailer
+class Mailer extends \yii\symfonymailer\Mailer implements MailerInterface
 {
     /**
      * @inheritdoc
@@ -68,13 +70,7 @@ class Mailer extends \yii\symfonymailer\Mailer
     {
         $message = parent::compose($view, $params);
 
-        // Set HumHub default from values
-        if (empty($message->getFrom())) {
-            $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
-            if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
-                $message->setReplyTo($replyTo);
-            }
-        }
+        self::ensureHumHubDefaultFromValues($message);
 
         if ($this->signingCertificatePath !== null && $this->signingPrivateKeyPath !== null) {
             if ($this->signer === null) {
@@ -92,6 +88,25 @@ class Mailer extends \yii\symfonymailer\Mailer
         return $message;
     }
 
+    /**
+     * @param MessageInterface $message
+     *
+     * @return void
+     */
+    public static function ensureHumHubDefaultFromValues(MessageInterface $message): MessageInterface
+    {
+        // Set HumHub default from values
+        if ($message->getFrom()) {
+            return $message;
+        }
+
+        $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
+        if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
+            $message->setReplyTo($replyTo);
+        }
+
+        return $message;
+    }
 
     /**
      * @inheritdoc
@@ -131,5 +146,17 @@ class Mailer extends \yii\symfonymailer\Mailer
         }
 
         return false;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function setTransport($transport): void
+    {
+        try {
+            parent::setTransport($transport);
+        } catch (\Exception $ex) {
+            Yii::error('Could not set mailer transport: ' . $ex->getMessage(), 'base');
+        }
     }
 }

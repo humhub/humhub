@@ -23,13 +23,7 @@ class TourCest
 
         $I->dontSeeElement('#getting-started-panel');
 
-        $I->amOnRoute(['/admin/setting/basic']);
-
-        $I->see('Show introduction tour for new users');
-        $I->click('.field-basicsettingsform-tour label');
-
-        $I->click('Save');
-        $I->seeSuccess();
+        $I->checkOptionShowTour();
 
         $I->amOnDashboard();
         $I->waitForText('You are the first user here', null, '#globalModal');

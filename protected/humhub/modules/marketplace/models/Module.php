@@ -8,6 +8,8 @@
 namespace humhub\modules\marketplace\models;
 
 use humhub\modules\marketplace\Module as MarketplaceModule;
+use humhub\modules\marketplace\services\FilterService;
+use humhub\widgets\Link;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -20,6 +22,7 @@ use yii\helpers\Url;
  * @property-read string $image
  * @property-read string $checkoutUrl
  * @property-read bool $isNonFree
+ * @property-read bool $isActivated
  *
  * @since 1.11
  */
@@ -147,6 +150,11 @@ class Module extends Model
         return $this->latestVersion;
     }
 
+    public function getInstalledVersion(): string
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->getVersion();
+    }
+
     public function getImage(): string
     {
         return empty($this->moduleImageUrl)
@@ -157,6 +165,16 @@ class Module extends Model
     public function isInstalled(): bool
     {
         return Yii::$app->moduleManager->hasModule($this->id);
+    }
+
+    public function getIsActivated(): bool
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->isActivated;
+    }
+
+    public function getConfigUrl(): string
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->getConfigUrl();
     }
 
     public function isProFeature(): bool
@@ -180,5 +198,15 @@ class Module extends Model
     public function getCheckoutUrl(): string
     {
         return str_replace('-returnToUrl-', Url::to(['/marketplace/purchase/list'], true), $this->checkoutUrl);
+    }
+
+    public function getFilterService(): FilterService
+    {
+        return new FilterService($this);
+    }
+
+    public function marketplaceLink(string $text): Link
+    {
+        return Link::asLink($text, $this->marketplaceUrl)->blank();
     }
 }

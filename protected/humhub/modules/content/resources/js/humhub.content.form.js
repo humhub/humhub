@@ -10,6 +10,8 @@ humhub.module('content.form', function(module, require, $) {
     var client = require('client');
     var event = require('event');
     var Widget = require('ui.widget').Widget;
+    var loader = require('ui.loader');
+    var modal = require('ui.modal');
 
     var instance;
 
@@ -21,11 +23,13 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.init = function() {
         this.$.hide();
+        this.menu = this.$.parent().prev('#contentFormMenu');
         // Hide options by default
         $('.contentForm_options').hide();
 
         this.setDefaultVisibility();
         this.$.fadeIn('fast');
+        this.showMenu();
 
         if(!module.config['disabled']) {
             $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function(evt) {
@@ -40,6 +44,16 @@ humhub.module('content.form', function(module, require, $) {
             $('#contentFormBody').find('.humhub-ui-richtext').trigger('disable');
         }
     };
+
+    CreateForm.prototype.showMenu = function() {
+        this.menu.find('li,a').removeClass('active');
+        const firstMenuWithForm = this.menu.find('a[data-action-click=loadForm]:eq(0)');
+        if (firstMenuWithForm.length) {
+            firstMenuWithForm.addClass('active')
+                .parent().addClass('active');
+        }
+        this.menu.fadeIn();
+    }
 
     CreateForm.prototype.submit = function(evt) {
         this.$.find('.preferences, .fileinput-button').hide();
@@ -82,6 +96,7 @@ humhub.module('content.form', function(module, require, $) {
         this.setDefaultVisibility();
         this.resetFilePreview();
         this.resetFileUpload();
+        this.resetState();
 
         $('#public').attr('checked', false);
         $('#contentFormBody').find('.humhub-ui-richtext').trigger('clear');
@@ -114,11 +129,15 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.handleError = function(response) {
         var that = this;
+        var model = that.$.find('.form-group:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
         $.each(response.errors, function(fieldName, errorMessages) {
-            that.$.find('.field-post-' + fieldName).addClass('has-error');
-            var fieldSelector = '.field-contentForm_' + fieldName;
-            that.$.find(fieldSelector + ', ' + fieldSelector + '_input')
-                .find('.help-block-error').html(errorMessages.join('<br>'));
+            var fieldSelector = '.field-' + model + '-' + fieldName;
+            var inputSelector = '.field-contentForm_' + fieldName;
+            var multiInputSelector = '[name="' + fieldName + '[]"]';
+            that.$.find(fieldSelector).addClass('has-error');
+            that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
+                .find('.help-block-error:first').html(errorMessages.join('<br>'));
+            that.$.find(multiInputSelector).closest('.form-group').addClass('has-error');
         });
     };
 
@@ -168,6 +187,154 @@ humhub.module('content.form', function(module, require, $) {
         }
     };
 
+    CreateForm.prototype.changeState = function(state, title, buttonTitle) {
+        const stateInput = this.$.find('input[name=state]');
+        let stateLabel = this.$.find('.label-content-state');
+        const button = this.$.find('#post_submit_button');
+
+        if (!stateLabel.length) {
+            stateLabel = $('<span>').addClass('label label-warning label-content-state');
+            this.$.find('.label-container').append(stateLabel);
+        }
+
+        if (stateInput.data('initial') === undefined) {
+            stateInput.data('initial', {
+                state: stateInput.val(),
+                buttonTitle: button.html()
+            });
+        }
+
+        if (typeof(state) === 'object') {
+            buttonTitle = state.$target.data('button-title');
+            title = state.$target.data('state-title');
+            state = state.$target.data('state');
+            if (stateInput.val() == state) {
+                return this.resetState();
+            }
+        }
+
+        stateInput.val(state);
+        stateLabel.show().html(title);
+        button.html(buttonTitle);
+        this.$.find('.preferences [data-action-click=notifyUser]').parent().hide();
+        this.$.find('#notifyUserContainer').hide();
+    }
+
+    CreateForm.prototype.resetState = function() {
+        const stateInput = this.$.find('input[name=state]');
+        const button = this.$.find('#post_submit_button');
+        const initial = stateInput.data('initial');
+        if (initial !== undefined) {
+            stateInput.val(initial.state);
+            button.html(initial.buttonTitle);
+        }
+        this.$.find('input[name^=scheduled]').remove();
+        this.$.find('.label-content-state').hide();
+        this.$.find('.preferences [data-action-click=notifyUser]').parent().show();
+        const notifyUserContainer = this.$.find('#notifyUserContainer');
+        if (notifyUserContainer.find('ul .select2-selection__clear').length) {
+            notifyUserContainer.show();
+        }
+    }
+
+    CreateForm.prototype.scheduleOptions = function(evt) {
+        const that = this;
+        const modalGlobal = modal.global.$;
+        const scheduledDate = that.$.find('input[name=scheduledDate]');
+        const data = {};
+
+        if (scheduledDate.length) {
+            data.ScheduleOptionsForm = {
+                enabled: 1,
+                date: scheduledDate.val()
+            };
+        }
+
+        modal.post(evt, {data}).then(function () {
+            modalGlobal.one('submitted', function () {
+                if (modalGlobal.find('.has-error').length) {
+                    return;
+                }
+
+                if (modalGlobal.find('#scheduleoptionsform-enabled').is(':checked')) {
+                    that.changeState(
+                        modalGlobal.find('input[name=state]').val(),
+                        modalGlobal.find('input[name=stateTitle]').val(),
+                        modalGlobal.find('input[name=buttonTitle]').val());
+                    that.setScheduleOption('scheduledDate', modalGlobal.find('input[name=scheduledDate]').val());
+                } else {
+                    that.resetState();
+                    that.resetScheduleOption('scheduledDate');
+                }
+
+                modal.global.close(true);
+            });
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
+    CreateForm.prototype.setScheduleOption = function(name, value) {
+        let input = this.$.find('input[name=' + name + ']');
+
+        if (value === undefined) {
+            input.remove();
+            return;
+        }
+
+        if (!input.length) {
+            input = $('<input name="' + name + '" type="hidden">');
+            this.$.find('input[name=state]').after(input);
+        }
+        input.val(value);
+    }
+
+    CreateForm.prototype.resetScheduleOption = function(name) {
+        this.setScheduleOption(name);
+    }
+
+    const CreateFormMenu = Widget.extend();
+
+    CreateFormMenu.prototype.init = function() {
+        this.topMenu = this.$.find('ul.nav');
+        this.subMenu = this.$.find('li.content-create-menu-more');
+        this.formPanel = this.$.parent().find('.panel');
+        if (!this.formPanel.find('form').length) {
+            this.$.fadeIn();
+            this.$.addClass('menu-without-form');
+        }
+    }
+
+    CreateFormMenu.prototype.activateMenu = function (evt) {
+        this.topMenu.find('li,a').removeClass('active');
+        evt.$trigger.addClass('active').find('a').addClass('active');
+
+        if (evt.$trigger.closest('ul.dropdown-menu').length) {
+            // Move item from sub menu to top menu
+            this.subMenu.find('ul').prepend(this.subMenu.prev());
+            this.subMenu.before(evt.$trigger.parent());
+        }
+    }
+
+    CreateFormMenu.prototype.loadForm = function (evt) {
+        const that = this;
+
+        loader.set(that.formPanel);
+        that.activateMenu(evt);
+
+        client.get(evt).then(function(response) {
+            that.formPanel.replaceWith(response.html);
+            that.formPanel = that.$.parent().find('.panel');
+            that.formPanel.find('[data-action-component], [data-ui-widget]').each(function () {
+                Widget.instance($(this));
+            });
+            that.formPanel.find('input[type=text], textarea, .ProseMirror').eq(0).trigger('click').focus();
+        }).catch(function(e) {
+            module.log.error(e, true);
+            loader.reset(that.formPanel);
+        });
+    }
+
     var init = function() {
         var $root = $(CREATE_FORM_ROOT_SELECTOR);
         if($root.length) {
@@ -181,6 +348,7 @@ humhub.module('content.form', function(module, require, $) {
 
     module.export({
         CreateForm: CreateForm,
+        CreateFormMenu: CreateFormMenu,
         instance: instance,
         init: init,
         initOnPjaxLoad: true,

@@ -88,7 +88,6 @@ return [
     'These settings refer to the appearance of your social network.' => 'تشير هذه الإعدادات إلى مظهر الشبكة الاجتماعية الخاصة بك.',
     'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'استخدم٪ url٪ كعنصر نائب لعنوان URL. يجب أن يكون التنسيق JSON. (مثل http://www.youtube.com/oembed؟url=٪url٪&format=json)',
     'Use X-Sendfile for File Downloads' => '@Use X-Sendfile for File Downloads@',
-    'Use the default swipe to show sidebar on a mobile device' => 'استخدم التمرير الافتراضي لإظهار الشريط الجانبي على جهاز محمول',
     'User' => 'المستخدم',
     'User Settings' => 'إعدادات المستخدم',
     'Username' => 'اسم المستخدم',
@@ -128,7 +127,7 @@ return [
     'User Display Name' => '',
     'User Display Name Subtitle' => '',
     'You can find more configuration options here:' => '',
-    'e.g. 25 (for SMTP) or 587 (for SMTPS)' => '',
+    'e.g. 25 (for SMTP) or 465 (for SMTPS)' => '',
     'e.g. localhost' => '',
     'e.g. smtps://user:pass@smtp.example.com:port' => '',
 ];

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    '<strong>Manage</strong> spaces' => 'الوحدات <strong>ادارة</strong>',
+    '<strong>Manage</strong> Spaces' => 'الوحدات <strong>ادارة</strong>',
     'Add new space' => 'أضف باحة جديدة',
     'Change owner' => 'تغير المالك',
     'Default Content Visiblity' => 'رؤية المحتوى الافتراضي',
@@ -19,8 +19,14 @@ return [
     'Space Settings' => 'الإعدادات الوحدات',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'تحتوي هذه النظرة العامة على قائمة بكل مساحة مع إجراءات لعرض المساحات وتعديلها وحذفها.',
     'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => '',
+    'Default "Hide About Page"' => '',
+    'Default "Hide Activity Sidebar Widget"' => '',
+    'Default "Hide Followers"' => '',
+    'Default "Hide Members"' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'Default Homepage' => '',
+    'Default Homepage (Non-members)' => '',
     'Manage modules' => '',
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => '',
     'Update Space memberships also for existing members.' => '',

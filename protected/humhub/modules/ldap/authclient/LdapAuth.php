@@ -11,7 +11,6 @@ namespace humhub\modules\ldap\authclient;
 use DateTime;
 use humhub\libs\StringHelper;
 use humhub\modules\ldap\Module;
-use humhub\modules\user\authclient\AuthClientHelpers;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
@@ -20,6 +19,7 @@ use humhub\modules\user\authclient\interfaces\SyncAttributes;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientService;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -333,7 +333,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         foreach ($normalized as $name => $value) {
             if (isset(Yii::$app->params['ldap']['dateFields'][$name]) && $value != '') {
                 $dateFormat = Yii::$app->params['ldap']['dateFields'][$name];
-                $date = DateTime::createFromFormat($dateFormat, $value);
+                $date = DateTime::createFromFormat($dateFormat, $value ?? '');
 
                 if ($date !== false) {
                     $normalized[$name] = $date->format('Y-m-d');
@@ -491,9 +491,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                 }
 
                 $authClient = $this->getAuthClientInstance($ldapEntry);
-                $user = AuthClientHelpers::getUserByAuthClient($authClient);
+                $user = (new AuthClientService($authClient))->getUser();
                 if ($user === null) {
-                    $registration = AuthClientHelpers::createRegistration($authClient);
+                    $registration = (new AuthClientService($authClient))->createRegistration();
                     if ($registration === null) {
                         Yii::warning('Could not automatically create LDAP user  - No ID attribute!', 'ldap');
                         continue;
@@ -504,7 +504,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                             . VarDumper::dumpAsString($registration->getErrors()), 'ldap');
                     }
                 } else {
-                    AuthClientHelpers::updateUser($authClient, $user);
+                    (new AuthClientService($authClient))->updateUser($user);
                 }
 
                 $attributes = $authClient->getUserAttributes();
@@ -516,18 +516,18 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             // Disable or Reenable Users based on collected $ids Arrays
             // This is only possible if a unique id attribute is specified.
             if ($this->idAttribute !== null) {
-                foreach (AuthClientHelpers::getUsersByAuthClient($this)->each() as $user) {
+                foreach ((new AuthClientService($this))->getUsersQuery()->each() as $user) {
                     $foundInLdap = in_array($user->authclient_id, $ids);
                     if ($foundInLdap && $user->status === User::STATUS_DISABLED) {
                         // Enable disabled users that have been found in ldap
                         $user->status = User::STATUS_ENABLED;
                         $user->save();
-                        Yii::info('Enabled user' . $user->username . ' (' . $user->id . ') - found in LDAP!', 'ldap');
+                        Yii::info('Enabled user: ' . $user->username . ' (' . $user->id . ') - Found in LDAP!', 'ldap');
                     } elseif (!$foundInLdap && $user->status == User::STATUS_ENABLED) {
                         // Disable users that were not found in ldap
                         $user->status = User::STATUS_DISABLED;
                         $user->save();
-                        Yii::warning('Disabled user' . $user->username . ' (' . $user->id . ') - not found in LDAP!', 'ldap');
+                        Yii::warning('Disabled user: ' . $user->username . ' (' . $user->id . ') - Not found in LDAP!', 'ldap');
                     }
                 }
             }
@@ -578,5 +578,16 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $attributes = $authClient->getUserAttributes();
 
         return $authClient;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function beforeSerialize(): void
+    {
+        // Make sure we normalized user attributes before put it in session (anonymous functions)
+        $this->setNormalizeUserAttributeMap([]);
+
+        $this->_ldap = null;
     }
 }

@@ -17,7 +17,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
-use yii\db\StaleObjectException;
 use yii\base\Event;
 
 
@@ -106,12 +105,6 @@ class LicenceManager extends Component
         if (isset(Yii::$app->params['hosting'])) {
             // In our demo hosting, we allow pro licences without registration
             $licence->type = Licence::LICENCE_TYPE_PRO;
-        } elseif (Yii::$app->hasModule('enterprise')) {
-            /** @var \humhub\modules\enterprise\Module $enterprise */
-            $enterprise = Yii::$app->getModule('enterprise');
-            if ($enterprise->settings->get('licence') !== null && $enterprise->settings->get('licence_valid') == 1) {
-                $licence->type = Licence::LICENCE_TYPE_EE;
-            }
         }
 
         return $licence;

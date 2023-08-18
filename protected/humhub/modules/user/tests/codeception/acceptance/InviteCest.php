@@ -23,7 +23,7 @@ class InviteCest
         $I->amUser();
         DirectoryMemberPage::openBy($I);
 
-        $I->click('Send invite');
+        $I->click('Invite new people');
         $I->waitForText('Invite new people', null, '#globalModal');
 
         $I->amGoingTo('invite an already existing user email');

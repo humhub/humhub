@@ -2,7 +2,7 @@
 
 /**
  * HumHub
- * Copyright © 2014 The HumHub Project
+ * Copyright © 2014-2023 The HumHub Project
  *
  * The texts of the GNU Affero General Public License with an additional
  * permission and of our proprietary license can be found at and
@@ -17,4 +17,10 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License for more details.
  */
-return [];
+
+return [
+    ['name' => 'testSetting1', 'value' => 'Test Setting 1 for User Admin', 'module_id' => 'user', 'contentcontainer_id' => 1 ],
+    ['name' => 'testSetting2', 'value' => 'Test Setting 2 for User Admin', 'module_id' => 'user', 'contentcontainer_id' => 1 ],
+    ['name' => 'testSetting1', 'value' => 'Test Setting 1 for User User1', 'module_id' => 'user', 'contentcontainer_id' => 2 ],
+    ['name' => 'testSetting2', 'value' => 'Test Setting 2 for User User1', 'module_id' => 'user', 'contentcontainer_id' => 2 ],
+];

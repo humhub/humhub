@@ -16,13 +16,11 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
 use humhub\modules\content\models\ContentContainerTagRelation;
-use humhub\modules\content\Module;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
-use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\web\IdentityInterface;
 
 /**
  * ContentContainerActiveRecord for ContentContainer Models e.g. Space or User.
@@ -36,7 +34,7 @@ use yii\helpers\Url;
  * @property integer $contentcontainer_id
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
- * @property ContentContainerModuleManager $moduleManager
+ * @property-read ContentContainerModuleManager $moduleManager
  * @property ContentContainer $contentContainerRecord
  *
  * @since 1.0
@@ -53,7 +51,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * @var ContentContainerModuleManager
      */
-    protected $moduleManager = null;
+    private $_moduleManager = null;
 
     /**
      * The behavior which will be attached to the base controller.
@@ -95,7 +93,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return string
      * @since 0.11.0
      */
-    public abstract function getDisplayName();
+    public abstract function getDisplayName(): string;
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
@@ -103,7 +101,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return mixed
      * @since 1.4
      */
-    public abstract function getDisplayNameSub();
+    public abstract function getDisplayNameSub(): string;
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -263,7 +261,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->hasOne(ContentContainer::class, ['pk' => 'id'])
-            ->andOnCondition(['class' => $this->className()]);
+            ->andOnCondition(['class' => get_class($this)]);
     }
 
     /**
@@ -292,7 +290,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns a ContentContainerPermissionManager instance for this ContentContainerActiveRecord as permission object
      * and the given user (or current user if not given) as permission subject.
      *
-     * @param User $user
+     * @param User|IdentityInterface $user
      * @return ContentContainerPermissionManager
      */
     public function getPermissionManager(User $user = null)
@@ -321,11 +319,13 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getModuleManager(): ?ContentContainerModuleManager
     {
-        if ($this->moduleManager !== null) {
-            return $this->moduleManager;
+        if ($this->_moduleManager !== null) {
+            return $this->_moduleManager;
         }
 
-        return $this->moduleManager = new ContentContainerModuleManager(['contentContainer' => $this]);
+        return $this->_moduleManager = new ContentContainerModuleManager([
+            'contentContainer' => $this
+        ]);
     }
 
     /**
@@ -394,7 +394,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getTags(): array
     {
-        $tags = is_string($this->contentContainerRecord->tags_cached) ? trim($this->contentContainerRecord->tags_cached) : '';
+        $tags = ($this->contentContainerRecord instanceof ContentContainer) && is_string($this->contentContainerRecord->tags_cached)
+            ? trim($this->contentContainerRecord->tags_cached)
+            : '';
         return $tags === '' ? [] : preg_split('/\s*,\s*/', $tags);
     }
 

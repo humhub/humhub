@@ -10,10 +10,10 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
+use yii\captcha\CaptchaValidator;
 use yii\helpers\Url;
 
 /**
@@ -33,15 +33,24 @@ use yii\helpers\Url;
  * @property string $firstname
  * @property string $lastname
  * @property string $captcha
+ *
+ * @property Space $space
  */
 class Invite extends ActiveRecord
 {
 
     const SOURCE_SELF = 'self';
     const SOURCE_INVITE = 'invite';
-    const TOKEN_LENGTH = 12;
+    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    const EMAIL_TOKEN_LENGTH = 12;
+    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
+
+    /**
+     * @var bool
+     */
+    public $skipCaptchaValidation = false;
 
     /**
      * @inheritdoc
@@ -66,7 +75,6 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique'],
             [['email'], 'email'],
-            [['email'], 'unique', 'targetClass' => User::class, 'message' => Yii::t('UserModule.base', 'E-Mail is already in use! - Try forgot password.')],
             [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha', 'on' => static::SOURCE_INVITE],
         ];
     }
@@ -105,7 +113,7 @@ class Invite extends ActiveRecord
     public function beforeSave($insert)
     {
         if ($insert && $this->token == '') {
-            $this->token = Yii::$app->security->generateRandomString(self::TOKEN_LENGTH);
+            $this->token = Yii::$app->security->generateRandomString(self::EMAIL_TOKEN_LENGTH);
         }
 
         return parent::beforeSave($insert);
@@ -128,9 +136,20 @@ class Invite extends ActiveRecord
             $existingInvite->delete();
         }
 
-        if ($this->allowSelfInvite() && $this->save()) {
-            $this->sendInviteMail();
-            return true;
+        if (!$this->allowSelfInvite()) {
+            return false;
+        }
+
+        if ($this->isRegisteredUser()) {
+            if ($this->sendAlreadyRegisteredUserMail()) {
+                $this->refreshCaptchaCode();
+                return true;
+            }
+            return false;
+        }
+
+        if ($this->save()) {
+            return $this->sendInviteMail();
         }
 
         return false;
@@ -138,15 +157,19 @@ class Invite extends ActiveRecord
 
     /**
      * Sends the invite e-mail
+     *
+     * @return bool
      */
-    public function sendInviteMail()
+    public function sendInviteMail(): bool
     {
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule('user');
         $registrationUrl = Url::to(['/user/registration', 'token' => $this->token], true);
 
+        $result = false;
+
         // User requested registration link by its self
-        if ($this->source == self::SOURCE_SELF) {
+        if ($this->source === self::SOURCE_SELF || $this->source === self::SOURCE_INVITE_BY_LINK) {
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
@@ -156,7 +179,7 @@ class Invite extends ActiveRecord
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
-            $mail->send();
+            $result = $mail->send();
         } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
             if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));
@@ -174,7 +197,7 @@ class Invite extends ActiveRecord
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $this->space->name, 'appName' => Yii::$app->name]));
-            $mail->send();
+            $result = $mail->send();
 
             // Switch back to users language
             Yii::$app->setLanguage(Yii::$app->user->language);
@@ -196,10 +219,56 @@ class Invite extends ActiveRecord
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name]));
-            $mail->send();
+            $result = $mail->send();
 
             // Switch back to users language
             Yii::$app->setLanguage(Yii::$app->user->language);
+        }
+
+        return $result;
+    }
+
+    /**
+     * Check if user already registered with the requested email
+     *
+     * @return bool
+     */
+    private function isRegisteredUser(): bool
+    {
+        return User::find()->where(['email' => $this->email])->exists();
+    }
+
+
+    /**
+     * Sends e-mail for user which already is registered with requested email
+     *
+     * @return bool
+     */
+    public function sendAlreadyRegisteredUserMail(): bool
+    {
+        $mail = Yii::$app->mailer->compose([
+            'html' => '@humhub/modules/user/views/mails/UserAlreadyRegistered',
+            'text' => '@humhub/modules/user/views/mails/plaintext/UserAlreadyRegistered'
+        ], [
+            'passwordRecoveryUrl' => Url::to(['/user/password-recovery'], true)
+        ]);
+        $mail->setTo($this->email);
+        $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
+
+        return $mail->send();
+    }
+
+    private function refreshCaptchaCode()
+    {
+        foreach ($this->getActiveValidators('captcha') as $validator) {
+            if ($validator instanceof CaptchaValidator) {
+                $captchaValidator = $validator;
+                break;
+            }
+        }
+
+        if (isset($captchaValidator)) {
+            $captchaValidator->createCaptchaAction()->getVerifyCode(true);
         }
     }
 
@@ -233,8 +302,13 @@ class Invite extends ActiveRecord
         return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
+    /**
+     * @return bool
+     */
     public function showCaptureInRegisterForm()
     {
-        return (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+        return
+            !$this->skipCaptchaValidation
+            && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
     }
 }

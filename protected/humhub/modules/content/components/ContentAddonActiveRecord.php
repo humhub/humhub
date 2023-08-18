@@ -9,6 +9,9 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
+use humhub\interfaces\DeletableInterface;
+use humhub\interfaces\EditableInterface;
+use humhub\interfaces\ReadableInterface;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
@@ -36,9 +39,8 @@ use yii\base\Exception;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
+class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ReadableInterface, EditableInterface, DeletableInterface
 {
-
     /**
      * @var boolean also update underlying contents last update stream sorting
      */
@@ -121,12 +123,25 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     }
 
     /**
+     * @inheritdoc
+     */
+    public function beforeSave($insert)
+    {
+        if ($insert && !$this->getContent()->getStateService()->isPublished()) {
+            return false;
+        }
+
+        return parent::beforeSave($insert);
+    }
+
+    /**
      * Checks if the given / or current user can delete this content.
      * Currently only the creator can remove.
      *
+     * @param null $userId
      * @return boolean
      */
-    public function canDelete()
+    public function canDelete($userId = null): bool
     {
         if ($this->created_by == Yii::$app->user->id) {
             return true;
@@ -138,11 +153,12 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     /**
      * Check if current user can read this object
      *
+     * @param string $userId
      * @return boolean
      */
-    public function canRead()
+    public function canRead($userId = ""): bool
     {
-        return $this->content->canView();
+        return $this->content->canView($userId);
     }
 
     /**
@@ -150,24 +166,27 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      *
      * @return boolean
      * @deprecated since 1.4
+     * @see static::canEdit()
      */
-    public function canWrite()
+    public function canWrite($userId = "")
     {
-        return $this->canEdit();
+        return $this->canEdit($userId);
     }
 
     /**
      * Checks if this record can be edited
      *
-     * @param User|null $user the user
+     * @param User|int|null $user the user
      * @return boolean
      * @since 1.4
      */
-    public function canEdit(User $user = null)
+    public function canEdit($user = null): bool
     {
         if ($user === null && Yii::$app->user->isGuest) {
             return false;
-        } elseif ($user === null) {
+        }
+
+        if ($user === null) {
             /** @var User $user */
             try {
                 $user = Yii::$app->user->getIdentity();
@@ -177,7 +196,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
             }
         }
 
-        if ($this->created_by == $user->id) {
+        if (!$user instanceof User && !($user = User::findOne(['id' => $user]))) {
+            return false;
+        }
+
+        if ($this->created_by === $user->id) {
             return true;
         }
 
@@ -199,7 +222,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
      */
     public function getContentName()
     {
-        return $this->className();
+        return static::getObjectModel();
     }
 
     /**
@@ -252,6 +275,29 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    /**
+     * Returns the class used in the polymorphic content relation.
+     * By default this function will return the static class.
+     *
+     * Subclasses of existing content record classes may overwrite this function in order to remain the actual
+     * base type as follows:
+     *
+     * ```
+     * public static function getObjectModel(): string {
+     *     return BaseType::class
+     * }
+     * ```
+     *
+     * This will force the usage of the `BaseType` class when creating, deleting or querying the content relation.
+     * This is used in cases in which a subclass extends a base record class without implementing a custom content type.
+     *
+     * @return string
+     */
+    public static function getObjectModel(): string
+    {
+        return static::class;
     }
 
 }

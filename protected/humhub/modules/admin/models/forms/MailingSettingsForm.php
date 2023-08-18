@@ -103,7 +103,7 @@ class MailingSettingsForm extends Model
         return [
             'systemEmailReplyTo' => Yii::t('AdminModule.settings', 'Optional. Default reply address for system emails like notifications.'),
             'dsn' => Yii::t('AdminModule.settings', 'e.g. smtps://user:pass@smtp.example.com:port'),
-            'port' => Yii::t('AdminModule.settings', 'e.g. 25 (for SMTP) or 587 (for SMTPS)'),
+            'port' => Yii::t('AdminModule.settings', 'e.g. 25 (for SMTP) or 465 (for SMTPS)'),
             'hostname' => Yii::t('AdminModule.settings', 'e.g. localhost'),
         ];
     }
@@ -117,6 +117,7 @@ class MailingSettingsForm extends Model
     {
         $settingsManager = Yii::$app->settings;
 
+        $systemEmailAddressIsFixedBefore = $settingsManager->isFixed('mailer.systemEmailAddress');
         $settingsManager->set('mailer.transportType', $this->transportType);
 
         if ($this->transportType === self::TRANSPORT_SMTP) {
@@ -132,7 +133,10 @@ class MailingSettingsForm extends Model
             $settingsManager->set('mailer.dsn', $this->dsn);
         }
 
-        $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
+        if (!$systemEmailAddressIsFixedBefore && !$settingsManager->isFixed('mailer.systemEmailAddress')) {
+            // Update it only when it was not fixed before and after current updating
+            $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
+        }
         $settingsManager->set('mailer.systemEmailName', $this->systemEmailName);
         $settingsManager->set('mailer.systemEmailReplyTo', $this->systemEmailReplyTo);
 

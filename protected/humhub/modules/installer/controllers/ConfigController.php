@@ -10,7 +10,10 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\comment\models\Comment;
+use humhub\modules\like\models\Like;
 use humhub\modules\marketplace\Module;
+use humhub\modules\post\models\Post;
 use humhub\modules\queue\driver\Sync;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
@@ -143,6 +146,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
             $form->canInviteExternalUsersByEmail = false;
+            $form->canInviteExternalUsersByLink = false;
             $form->enableFriendshipModule = false;
         }
 
@@ -151,6 +155,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = true;
             $form->internalAllowAnonymousRegistration = true;
             $form->canInviteExternalUsersByEmail = false;
+            $form->canInviteExternalUsersByLink = false;
             $form->enableFriendshipModule = false;
         }
 
@@ -159,6 +164,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = false;
             $form->canInviteExternalUsersByEmail = true;
+            $form->canInviteExternalUsersByLink = true;
             $form->enableFriendshipModule = true;
         }
 
@@ -167,6 +173,7 @@ class ConfigController extends Controller
             $form->internalRequireApprovalAfterRegistration = false;
             $form->internalAllowAnonymousRegistration = true;
             $form->canInviteExternalUsersByEmail = true;
+            $form->canInviteExternalUsersByLink = true;
             $form->enableFriendshipModule = false;
         }
 
@@ -174,7 +181,8 @@ class ConfigController extends Controller
             Yii::$app->getModule('user')->settings->set('auth.needApproval', $form->internalRequireApprovalAfterRegistration);
             Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', $form->internalAllowAnonymousRegistration);
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', $form->allowGuestAccess);
-            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInvite', $form->canInviteExternalUsersByEmail);
+            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', $form->canInviteExternalUsersByEmail);
+            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', $form->canInviteExternalUsersByLink);
             Yii::$app->getModule('friendship')->settings->set('enable', $form->enableFriendshipModule);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -226,6 +234,7 @@ class ConfigController extends Controller
             return $this->render('modules', ['modules' => $modules]);
         }
     }
+
 
     /**
      * Sample Data
@@ -328,7 +337,7 @@ class ConfigController extends Controller
                 $space = Space::find()->where(['id' => 1])->one();
 
                 // Create a sample post
-                $post = new \humhub\modules\post\models\Post();
+                $post = new Post();
                 $post->message = Yii::t("InstallerModule.base", "We're looking for great slogans of famous brands. Maybe you can come up with some samples?");
                 $post->content->container = $space;
                 $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
@@ -337,29 +346,29 @@ class ConfigController extends Controller
                 // Switch Identity
                 Yii::$app->user->switchIdentity($userModel);
 
-                $comment = new \humhub\modules\comment\models\Comment();
+                $comment = new Comment();
                 $comment->message = Yii::t("InstallerModule.base", "Nike – Just buy it. :wink:");
-                $comment->object_model = $post->className();
+                $comment->object_model = Post::class;
                 $comment->object_id = $post->getPrimaryKey();
                 $comment->save();
 
                 // Switch Identity
                 Yii::$app->user->switchIdentity($userModel2);
 
-                $comment2 = new \humhub\modules\comment\models\Comment();
+                $comment2 = new Comment();
                 $comment2->message = Yii::t("InstallerModule.base", "Calvin Klein – Between love and madness lies obsession.");
-                $comment2->object_model = $post->className();
+                $comment2->object_model = Post::class;
                 $comment2->object_id = $post->getPrimaryKey();
                 $comment2->save();
 
                 // Create Like Object
-                $like = new \humhub\modules\like\models\Like();
-                $like->object_model = $comment->className();
+                $like = new Like();
+                $like->object_model = Comment::class;
                 $like->object_id = $comment->getPrimaryKey();
                 $like->save();
 
-                $like = new \humhub\modules\like\models\Like();
-                $like->object_model = $post->className();
+                $like = new Like();
+                $like->object_model = Post::class;
                 $like->object_id = $post->getPrimaryKey();
                 $like->save();
 
@@ -488,6 +497,7 @@ class ConfigController extends Controller
             $space->auto_add_new_members = 1;
             $space->color = '#6fdbe8';
             $space->save();
+            $space->refresh();
 
             // activate all available modules for this space
             foreach ($space->moduleManager->getAvailable() as $module) {
@@ -495,7 +505,7 @@ class ConfigController extends Controller
             }
 
             // Add Some Post to the Space
-            $post = new \humhub\modules\post\models\Post();
+            $post = new Post();
             $post->message = Yii::t("InstallerModule.base", "Yay! I've just installed HumHub :sunglasses:");
             $post->content->container = $space;
             $post->content->visibility = \humhub\modules\content\models\Content::VISIBILITY_PUBLIC;
@@ -536,7 +546,7 @@ class ConfigController extends Controller
 
         try {
             Yii::$app->user->logout();
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             ;
         }
         return $this->render('finished');

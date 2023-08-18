@@ -1,10 +1,11 @@
+//
+// Panel
+//
 .panel {
     .text-break();
     border: none;
     background-color: @background-color-main;
     box-shadow: 0 0 3px #dadada;
-    -webkit-box-shadow: 0 0 3px #dadada;
-    -moz-box-shadow: 0 0 3px #dadada;
     border-radius: 4px;
     position: relative;
     margin-bottom: 15px;
@@ -100,6 +101,22 @@
     }
 }
 
+.panel-info {
+    border: 2px solid @info;
+
+    .panel-heading {
+        color: @info;
+    }
+}
+
+.panel-primary {
+    border: 2px solid @primary;
+
+    .panel-heading {
+        color: @primary;
+    }
+}
+
 .panel.profile {
     position: relative;
 
@@ -110,9 +127,7 @@
     }
 }
 
-.panel.members,
 .panel.groups,
-.panel.follower,
 .panel.spaces {
     .panel-body a img {
         margin-bottom: 5px;
@@ -143,20 +158,7 @@
             border-bottom-left-radius: 3px;
             color: #fff;
             pointer-events: none;
-            background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
-            /* FF3.6+ */
-            background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(1%, rgba(0, 0, 0, 0)), color-stop(100%, rgba(0, 0, 0, 0.38)));
-            /* Chrome,Safari4+ */
-            background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
-            /* Chrome10+,Safari5.1+ */
-            background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
-            /* Opera 11.10+ */
-            background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
-            /* IE10+ */
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
-            /* W3C */
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#94000000', GradientType=0);
-            /* IE6-9 */
 
             h1 {
                 font-size: 30px;
@@ -191,12 +193,18 @@
 
         .profile-user-photo-container {
             position: absolute;
-            bottom: -50px;
+            bottom: -60px;
             left: 15px;
 
             .profile-user-photo {
                 border: 3px solid #fff;
                 border-radius: 5px;
+
+                // Force position of the online status because of the 3px border on the photo
+                + .user-online-status {
+                    right: -5px;
+                    bottom: -5px;
+                }
             }
         }
     }
@@ -208,8 +216,6 @@
 
 .panel.pulse,
 .panel.fadeIn {
-    -webkit-animation-duration: 200ms;
-    -moz-animation-duration: 200ms;
     animation-duration: 200ms;
 }
 

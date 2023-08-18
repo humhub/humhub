@@ -33,6 +33,7 @@ return array (
   'Paragraph' => 'Bekezdés',
   'People' => 'Emberek',
   'Rows' => 'Sorok',
+  'Switch editor mode' => 'Szerkesztő mód váltása',
   'Symbols' => 'Szimbólumok',
   'Title' => 'Cím',
   'Toggle code font' => 'Kód betűtípus váltása',

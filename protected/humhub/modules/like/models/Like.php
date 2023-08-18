@@ -75,16 +75,20 @@ class Like extends ContentAddonActiveRecord
      */
     public static function GetLikes($objectModel, $objectId)
     {
-        $cacheId = "likes_" . $objectModel . "_" . $objectId;
-        $cacheValue = Yii::$app->cache->get($cacheId);
-
-        if ($cacheValue === false) {
-            $newCacheValue = Like::findAll(['object_model' => $objectModel, 'object_id' => $objectId]);
-            Yii::$app->cache->set($cacheId, $newCacheValue, Yii::$app->settings->get('cache.expireTime'));
-            return $newCacheValue;
-        } else {
-            return $cacheValue;
-        }
+        return Yii::$app->cache->getOrSet(
+            "likes_{$objectModel}_{$objectId}",
+            function() use ($objectModel, $objectId) {
+            return Like::find()
+                ->where([
+                    'object_model' => $objectModel,
+                    'object_id' => $objectId
+                ])
+                ->with('user')
+                ->all()
+                ;
+            },
+            Yii::$app->settings->get('cache.expireTime')
+        );
     }
 
     /**
@@ -94,12 +98,14 @@ class Like extends ContentAddonActiveRecord
     {
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
-        \humhub\modules\like\activities\Liked::instance()->about($this)->save();
+        if ($insert) {
+            \humhub\modules\like\activities\Liked::instance()->about($this)->save();
 
-        if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
-            // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
-            $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
-            NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
+            if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
+                // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
+                $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
+                NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
+            }
         }
 
         $this->automaticContentFollowing = Yii::$app->getModule('like')->autoFollowLikedContent;
