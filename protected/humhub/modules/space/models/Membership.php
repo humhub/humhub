@@ -409,38 +409,37 @@ class Membership extends ActiveRecord implements FindInstanceInterface
      * Find and cache Membership by space and user
      *
      * @param Membership|int|array<Space|int|string, User|int|string|null> $identifier
-     * @param array $config = [
-     *     'cached' => true,                    // use cached results
-     *     'nullable' => false,                 // allow null values on for $identifier
-     *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
-     *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
-     *     'intKey' => 'id',
-     *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
-     *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
-     *     ]
      *
      * @return self|null
      *
      * @inheritdoc
      * @since 1.15
+     * @see FindInstanceInterface::findInstance()
      */
     public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
     {
+        // check if $identifier is a valid array<Space|int|string, User|int|string|null>, or just a Membership|membership_id
         if (is_array($identifier)) {
+            // if an array is given, it must have exactly two elements
             if (count($identifier) !== 2) {
                 throw new InvalidArgumentException(__METHOD__, [1 => '$identifier'], 'array(Space|int|string, User|int|string|null)', $identifier);
             }
 
+            // the first array element MUST be Space|int|string, so get the Space's ID
             $spaceId = Space::findInstanceAsId($identifier[0]);
+
+            // the first array element MUST be User|int|string|null, so get the User's ID
             $userId = User::findInstanceAsId($identifier[1]);
 
-            $membership = static::findInstanceHelper(['user_id' => $userId, 'space_id' => $spaceId], $config, $simpleCondition);
+            // now look up the Membership instance by Space/User IDs
+            $membership = static::findInstanceHelper(['space_id' => $spaceId, 'user_id' => $userId], $config, $simpleCondition);
 
             if ($membership) {
-                // cache the membership also under it's ID
+                // cache the membership also under its PK (ID)
                 Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $membership->id), $membership);
             }
         } else {
+            // if it's not an array, $identifier MUST be Membership|int
             $membership = static::findInstanceHelper($identifier, $config, $simpleCondition);
 
             if ($membership) {
@@ -456,15 +455,6 @@ class Membership extends ActiveRecord implements FindInstanceInterface
      * Find and cache Membership by space and user
      *
      * @param array<Space|int|string, User|int|string|null> $identifier
-     * @param array $config = [
-     *     'cached' => true,                    // use cached results
-     *     'nullable' => false,                 // allow null values on for $identifier
-     *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
-     *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
-     *     'intKey' => 'id',
-     *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
-     *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
-     *     ]
      *
      * @return null|array = [int $space_id, int $user_id]
      *

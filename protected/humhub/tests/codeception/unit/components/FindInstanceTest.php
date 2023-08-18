@@ -108,42 +108,6 @@ class FindInstanceTest extends HumHubDbTestCase
         FindInstanceMock::findInstance([]);
     }
 
-    public function testCustomExceptionInstance()
-    {
-        $e = new HttpException(404);
-        $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('');
-
-        FindInstanceMock::findInstance(null, ['exception' => $e]);
-    }
-
-    public function testCustomExceptionClass()
-    {
-        $e = Exception::class;
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('');
-
-        FindInstanceMock::findInstance(null, ['exception' => $e]);
-    }
-
-    public function testInvalidCustomExceptionClass()
-    {
-        $e = BaseObject::class;
-        $this->expectException(InvalidConfigTypeException::class);
-        $this->expectExceptionMessage('Parameter \'exception\' of configuration passed to humhub\components\FindInstanceTrait::findInstanceHelper must be of type Throwable, null - string given.');
-
-        FindInstanceMock::findInstance(null, ['exception' => $e]);
-    }
-
-    public function testInvalidCustomExceptionConfigType()
-    {
-        $e = [];
-        $this->expectException(InvalidConfigTypeException::class);
-        $this->expectExceptionMessage('Parameter \'exception\' of configuration passed to humhub\components\FindInstanceTrait::findInstanceHelper must be of type Throwable, null - array given.');
-
-        FindInstanceMock::findInstance(null, ['exception' => $e]);
-    }
-
     public function testCache()
     {
         $currentCache = Yii::$app->runtimeCache;
