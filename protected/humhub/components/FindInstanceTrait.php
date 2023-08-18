@@ -13,7 +13,7 @@ use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\helpers\RuntimeCacheHelper;
 use humhub\interfaces\FindInstanceInterface;
 use Yii;
-use yii\base\ErrorException;
+use yii\caching\TagDependency;
 
 /**
  * Helper trait for implementing FindInstanceInterface
@@ -116,7 +116,8 @@ trait FindInstanceTrait
                     );
             }
 
-            RuntimeCacheHelper::set($record, $cacheKey);
+            $dependency = new TagDependency(['tags' => static::class]);
+            RuntimeCacheHelper::set($record, $cacheKey, $dependency);
         }
 
         // ... then return it, if it matches the $simpleCondition

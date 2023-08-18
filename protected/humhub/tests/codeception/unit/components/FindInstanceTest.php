@@ -13,6 +13,7 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\interfaces\FindInstanceInterface;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -161,7 +162,7 @@ class FindInstanceTest extends HumHubDbTestCase
     public function testCache()
     {
         $currentCache = Yii::$app->runtimeCache;
-        Yii::$app->set('runtimeCache', $cache = new FindInstanceCache(['serializer' => false]));
+        Yii::$app->set('runtimeCache', $cache = new FindInstanceCache(['serializer' => RuntimeCacheHelper::dummySerializer()]));
         static::assertNull($cache->cacheRead);
         static::assertNull($cache->cacheWritten);
         static::assertFalse($cache->valueRetrieved);

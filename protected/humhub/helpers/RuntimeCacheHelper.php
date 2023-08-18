@@ -13,8 +13,12 @@ use humhub\interfaces\UniqueIdentifiersInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use ReflectionObject;
+use Twig\Node\Expression\ConditionalExpression;
 use Yii;
 use yii\base\Component;
+use yii\caching\ChainedDependency;
+use yii\caching\Dependency;
+use yii\caching\TagDependency;
 use yii\db\ActiveRecord;
 use yii\db\ActiveRecordInterface;
 
@@ -166,7 +170,7 @@ class RuntimeCacheHelper
     /**
      * @param object|ActiveRecord|null $object
      */
-    protected static function processVariants(string $action, ?object $object, ?array $properties = null, ?array &$done = null): ?object
+    protected static function processVariants(string $action, ?object $object, ?array $properties = null, ?Dependency &$dependency = null, ?array &$done = null): ?object
     {
         $done ??= [];
 
@@ -182,9 +186,28 @@ class RuntimeCacheHelper
             return $object;
         }
 
+        if (in_array($action, ['set', 'getOrSet'])) {
+            if ($dependency === null) {
+                $dependency = new TagDependency(['tags' => get_class($object)]);
+            } /** @noinspection PhpStatementHasEmptyBodyInspection */ elseif (
+                $dependency instanceof TagDependency
+                && [get_class($object)] === (array)$dependency->tags
+            ) {
+                ;
+            } elseif (
+                !$dependency instanceof ChainedDependency
+                || !in_array([get_class($object)], $x = array_column($dependency->dependencies, 'tags'), true)
+            ) {
+                $dependency = new ChainedDependency([
+                    'dependOnAll' => true,
+                    'dependencies' => [$dependency, new TagDependency(['tags' => get_class($object)])]
+                ]);
+            }
+        }
+
         foreach ($identifiers as $identifier) {
             if (!in_array($identifier, $done, true)) {
-                $runtimeCache->$action($identifier, $object);
+                $runtimeCache->$action($identifier, $object, null, $dependency);
                 $done[] = $identifier;
             }
         }
@@ -192,12 +215,12 @@ class RuntimeCacheHelper
         return $object;
     }
 
-    public static function set($value, ?string $key = null)
+    public static function set($value, ?string $key = null, ?Dependency $dependency = null)
     {
-        static::setVariants($value, null, $done);
+        static::setVariants($value, null, $dependency, $done);
 
         if ($key && !in_array($key, $done, true)) {
-            Yii::$app->runtimeCache->set($key, $value);
+            Yii::$app->runtimeCache->set($key, $value, null, $dependency);
         }
 
         return $value;
@@ -206,15 +229,15 @@ class RuntimeCacheHelper
     /**
      * @param object|ActiveRecord|null $record
      */
-    public static function setVariants(?object $record, ?array $properties = null, ?array &$done = null): ?object
+    public static function setVariants(?object $record, ?array $properties = null, ?Dependency &$dependency = null, ?array &$done = null): ?object
     {
-        return static::processVariants('set', $record, $properties, $done);
+        return static::processVariants('set', $record, $properties, $dependency, $done);
     }
 
     /**
      * @param object|ActiveRecord|null $record
      */
-    public static function deleteVariants(?object $record, ?array $properties = null, ?array &$done = null): ?object
+    public static function deleteVariants(?object $record, ?array $properties = null, ?Dependency &$dependency = null, ?array &$done = null): ?object
     {
         $runtimeCache = Yii::$app->runtimeCache;
 
@@ -258,7 +281,7 @@ class RuntimeCacheHelper
             $model = $record->getPolymorphicRelation(false) ?? $runtimeCache->get($identifier);
 
             if ($model) {
-                static::deleteVariants($model, $properties, $done);
+                static::deleteVariants($model, $properties, $dependency, $done);
             }
         }
 
@@ -281,7 +304,7 @@ class RuntimeCacheHelper
         }
 
         if ($instance) {
-            static::deleteVariants($instance, null, $done);
+            static::deleteVariants($instance, null, $dependency, $done);
         }
 
         if ($instance !== false && $key && !in_array($key, $done, true)) {
@@ -291,6 +314,12 @@ class RuntimeCacheHelper
         return $instance ?: null;
     }
 
+    /**
+     * @param object|string|null $classOrObject Class name or object
+     * @param array|string|ConditionalExpression|null $condition Condition as used in Query::where(). Will be ignored if $classOrObject is an object  *
+     *
+     * @return void
+     */
     public static function deleteByClass($classOrObject, $condition = null)
     {
         if ($classOrObject === null) {
@@ -300,7 +329,7 @@ class RuntimeCacheHelper
         if (is_object($classOrObject)) {
             if ($condition === null) {
                 // try to delete the items in the cache base on the unique identifiers derived from $classOrObject
-                static::deleteVariants($classOrObject, null, $done);
+                static::deleteVariants($classOrObject, null, $dependency, $done);
 
                 // if the list of unique identifiers (returned in $done) is not empty, this was successful
                 if (count($done)) {
@@ -330,14 +359,14 @@ class RuntimeCacheHelper
             $key = static::normaliseObjectIdentifier($classOrObject, $condition);
 
             if ($record = $cache->get($key)) {
-                static::deleteVariants($record, null, $done);
+                static::deleteVariants($record, null, $dependency, $done);
                 if (!in_array($key, $done, true)) {
                     $cache->delete($key);
                 }
             }
         } else {
-            // otherwise, we flush the entire cache
-            $cache->flush();
+            // Invalidate all cached class instances
+            TagDependency::invalidate(Yii::$app->runtimeCache, $classOrObject);
         }
     }
 
@@ -368,6 +397,18 @@ class RuntimeCacheHelper
         }
 
         return true;
+    }
+
+    public static function dummySerializer(): array
+    {
+        /**
+         * @param array<mixed,Dependency>|mixed $input
+         *
+         * @return array<mixed,Dependency>|mixed
+         */
+        $dummyFunction = static fn &($input) => $input;
+
+        return [$dummyFunction, $dummyFunction];
     }
 
     public static function flush()
