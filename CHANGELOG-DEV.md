@@ -20,6 +20,7 @@ HumHub Changelog
 - Enh #6498: Implement option "disabled" for picker fields
 - Enh #6506: Allow event data from module config
 - Fix #6510: Fix online status position on people page
+- Fix #6526: Fix a disabled button after post a content record with state "Draft" or "Scheduled"
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
