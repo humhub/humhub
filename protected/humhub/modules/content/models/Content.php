@@ -249,7 +249,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         if (array_key_exists('state', $changedAttributes)) {
             // Run process for new content(Send notifications) only after changing state
-            $this->processNewContent();
+            $this->processNewContent($insert);
 
             $model = $this->getModel();
             if (!$insert && $model instanceof ContentActiveRecord && $this->getStateService()->isPublished()) {
@@ -279,7 +279,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         parent::afterSave($insert, $changedAttributes);
     }
 
-    private function processNewContent()
+    private function processNewContent($insert)
     {
         if (!$this->getStateService()->isPublished()) {
             // Don't notify about not published Content
@@ -289,6 +289,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         if ($this->getStateService()->wasPublished()) {
             // No need to notify twice for already published Content before
             return;
+        }
+
+        if (!$insert) {
+            // Update creation datetime after first publishing
+            $this->updateAttributes(['created_at' => date('Y-m-d H:i:s')]);
         }
 
         $record = $this->getModel();
