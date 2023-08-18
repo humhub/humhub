@@ -793,12 +793,12 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @return \yii\db\ActiveQuery|ContentContainer
+     * @return \yii\db\ActiveQuery|CacheableActiveQuery
      * @since 1.1
      */
     public function getContentContainer()
     {
-        return $this->hasOneCached(ContentContainer::class, ['id' => 'contentcontainer_id']);
+        return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
     /**

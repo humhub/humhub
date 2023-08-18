@@ -12,14 +12,14 @@ use humhub\components\ActiveRecord;
 use humhub\components\CacheableActiveQuery;
 use humhub\components\FindInstanceTrait;
 use humhub\exceptions\InvalidArgumentException;
-use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\Module;
+use humhub\modules\space\components\ActiveQuerySpace;
+use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\db\ActiveQueryInterface;
 use yii\db\Query;
 
 /**
@@ -136,19 +136,31 @@ class Membership extends ActiveRecord implements FindInstanceInterface
             ]));
     }
 
+    /**
+     * @return ActiveQuery|ActiveQueryUser
+     * @noinspection PhpReturnDocTypeMismatchInspection
+     */
     public function getUser()
     {
-        return $this->hasOneCached(User::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
+    /**
+     * @return ActiveQuery|ActiveQueryUser
+     * @noinspection PhpReturnDocTypeMismatchInspection
+     */
     public function getOriginator()
     {
-        return $this->hasOneCached(User::class, ['id' => 'originator_user_id']);
+        return $this->hasOne(User::class, ['id' => 'originator_user_id']);
     }
 
+    /**
+     * @return ActiveQuery|ActiveQuerySpace
+     * @noinspection PhpReturnDocTypeMismatchInspection
+     */
     public function getSpace()
     {
-        return $this->hasOneCached(Space::class, ['id' => 'space_id']);
+        return $this->hasOne(Space::class, ['id' => 'space_id']);
     }
 
     public function beforeSave($insert)
@@ -272,7 +284,8 @@ class Membership extends ActiveRecord implements FindInstanceInterface
      * @param \humhub\modules\user\models\User $user
      * @param boolean $memberOnly include only member status - no pending/invite states
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
-     * @return \yii\db\ActiveQuery for space model
+     *
+     * @return ActiveQuery|ActiveQuerySpace for space model
      * @since 1.0
      */
     public static function getUserSpaceQuery(User $user, $memberOnly = true, $withNotifications = null)

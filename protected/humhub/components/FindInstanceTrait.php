@@ -119,29 +119,6 @@ trait FindInstanceTrait
         return static::findInstance($identifier, $config)->id ?? null;
     }
 
-    public function hasOneCached(string $class, array $condition, array $identifiers = [])
-    {
-        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3);
-        $trace = array_column($trace, 'function');
-
-        if ($trace[2] === 'getRelation') {
-            return $this->hasOne($class, $condition);
-        }
-
-        $fields = array_flip($condition);
-
-        foreach ($fields as $field => &$value) {
-            $value = $this->$field;
-        }
-        unset($value);
-
-        $identifier = CacheableActiveQuery::normaliseObjectIdentifier($class, $identifiers + $fields, $idUsed);
-
-        return (!$idUsed || empty($record = Yii::$app->runtimeCache->get($identifier)))
-            ? $this->hasOne($class, $condition)
-            : $record;
-    }
-
     public function afterDelete()
     {
         CacheableActiveQuery::cacheProcessVariants('delete', $this);

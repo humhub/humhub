@@ -12,8 +12,6 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\FindInstanceTrait;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
-use Yii;
 use yii\db\ActiveRecord;
 
 /**

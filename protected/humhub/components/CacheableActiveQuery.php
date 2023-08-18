@@ -9,6 +9,8 @@
 namespace humhub\components;
 
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\models\Content;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
@@ -59,28 +61,38 @@ class CacheableActiveQuery extends ActiveQuery
      *
      * @return void
      */
-    public static function cacheProcessVariants(string $action, ActiveRecord $record, array $properties = ['id', 'guid']): void
+    public static function cacheProcessVariants(string $action, ActiveRecord $record, array $properties = ['id', 'guid'], ?array &$done = null): void
     {
         static $runtimeCache;
 
         $runtimeCache ??= Yii::$app->runtimeCache;
 
-        $done = [];
+        $done ??= [];
         $class = get_class($record);
 
-        $pk = $record->getPrimaryKey(true);
+        $identifier = self::normaliseObjectIdentifier($class, $record->getPrimaryKey(true));
 
-        $runtimeCache->$action(self::normaliseObjectIdentifier($class, $pk, $identifier), $record);
+        if (!in_array($identifier, $done, true)) {
+            $runtimeCache->$action($identifier, $record);
+        }
 
         $done[] = $identifier;
 
         foreach ($properties as $identifier) {
             if ($record->hasAttribute($identifier)) {
-                $identifier = (string)$record->$identifier;
+                $identifier = self::normaliseObjectIdentifier($class, (string)$record->$identifier);
                 if (!in_array($identifier, $done, true)) {
-                    $runtimeCache->$action(self::normaliseObjectIdentifier($class, $identifier, $identifier), $record);
+                    $runtimeCache->$action($identifier, $record);
                     $done[] = $identifier;
                 }
+            }
+        }
+
+        if ($record instanceof ContentActiveRecord) {
+            $identifier = self::normaliseObjectIdentifier(Content::class, [get_Class($record), ...array_values($record->getPrimaryKey(true))]);
+            if (!in_array($identifier, $done, true)) {
+                $runtimeCache->$action($identifier, $record);
+                $done[] = $identifier;
             }
         }
 
@@ -92,8 +104,10 @@ class CacheableActiveQuery extends ActiveQuery
             return;
         }
 
-        if ($model = $record->getPolymorphicRelation(false) ?? $runtimeCache->get(self::normaliseObjectIdentifier($record->{$record->classAttribute}, $record->{$record->pkAttribute}))) {
-            static::cacheProcessVariants($action, $model, $properties);
+        $identifier = self::normaliseObjectIdentifier($record->{$record->classAttribute}, $record->{$record->pkAttribute});
+
+        if (!in_array($identifier, $done, true) && $model = $record->getPolymorphicRelation(false) ?? $runtimeCache->get($identifier)) {
+            static::cacheProcessVariants($action, $model, $properties, $done);
         }
     }
 

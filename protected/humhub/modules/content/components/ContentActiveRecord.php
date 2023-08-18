@@ -619,13 +619,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInst
      */
     public function getContent()
     {
-        $getObjectModel = static::getObjectModel();
-        $content = $this->hasOneCached(Content::class, ['object_id' => 'id'], ['content.object_model' => $getObjectModel]);
-
-        return $content instanceof ActiveQueryInterface
-            ? $content
-                ->andWhere(['content.object_model' => $getObjectModel])
-            : $content;
+        return $this->hasOne(Content::class, ['object_id' => 'id'])
+            ->andWhere(['content.object_model' => static::getObjectModel()]);
     }
 
     public function getFiles()
