@@ -100,6 +100,11 @@ trait FindInstanceTrait
                 Yii::$app->runtimeCache->set($cacheKey, $identifier);
             }
 
+            if ($identifier) {
+                $cacheKey = [$cacheKey];
+                CacheableActiveQuery::cacheProcessVariants('set', $identifier, null, $cacheKey);
+            }
+
             // ... then return it, if it matches the $simpleCondition
             return static::matchProperties($identifier, $simpleCondition, $config['onEmpty'] ?? null);
         }

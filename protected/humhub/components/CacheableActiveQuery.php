@@ -12,8 +12,10 @@ use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\BaseActiveRecord;
 
 /**
  * ActiveQueryContent is an enhanced ActiveQuery with additional selectors for especially content.
@@ -30,9 +32,7 @@ class CacheableActiveQuery extends ActiveQuery
             return $result;
         }
 
-        static::cacheProcessVariants('set', $result);
-
-        return $result;
+        return static::cacheProcessVariants('set', $result);
     }
 
     public static function normaliseObjectIdentifier($classOrObject, $id = null, ?string &$idWasUsed = null): string
@@ -56,30 +56,37 @@ class CacheableActiveQuery extends ActiveQuery
 
     /**
      * @param string $action
-     * @param ActiveRecord $record
-     * @param array $properties
+     * @param object|ActiveRecord|null $record
+     * @param array|null $properties
+     * @param array|null $done
      *
      * @return void
      */
-    public static function cacheProcessVariants(string $action, ActiveRecord $record, array $properties = ['id', 'guid'], ?array &$done = null): void
+    public static function cacheProcessVariants(string $action, ?object $record, ?array $properties = ['id', 'guid'], ?array &$done = null): ?object
     {
         static $runtimeCache;
 
-        $runtimeCache ??= Yii::$app->runtimeCache;
+        if ($record === null) {
+            return null;
+        }
 
+        $runtimeCache ??= Yii::$app->runtimeCache;
+        $properties ??= ['id', 'guid'];
         $done ??= [];
         $class = get_class($record);
 
-        $identifier = self::normaliseObjectIdentifier($class, $record->getPrimaryKey(true));
+        if ($record instanceof BaseActiveRecord) {
+            $identifier = self::normaliseObjectIdentifier($class, $record->getPrimaryKey(true));
 
-        if (!in_array($identifier, $done, true)) {
-            $runtimeCache->$action($identifier, $record);
+            if (!in_array($identifier, $done, true)) {
+                $runtimeCache->$action($identifier, $record);
+            }
+
+            $done[] = $identifier;
         }
 
-        $done[] = $identifier;
-
         foreach ($properties as $identifier) {
-            if ($record->hasAttribute($identifier)) {
+            if (property_exists($record, $identifier) || ($record instanceof BaseActiveRecord && $record->hasAttribute($identifier))) {
                 $identifier = self::normaliseObjectIdentifier($class, (string)$record->$identifier);
                 if (!in_array($identifier, $done, true)) {
                     $runtimeCache->$action($identifier, $record);
@@ -100,8 +107,8 @@ class CacheableActiveQuery extends ActiveQuery
          * Check if we have the related record cached in the polymorphic behavior, so we can delete the cache by ID.
          * (This is not fully bullet-proof, as the object might still be saved in the cache, but only under the guid key.)
          */
-        if ($action !== 'delete' || !$record->hasMethod('getPolymorphicRelation')) {
-            return;
+        if ($action !== 'delete' || !$record instanceof Component || !$record->hasMethod('getPolymorphicRelation')) {
+            return $record;
         }
 
         $identifier = self::normaliseObjectIdentifier($record->{$record->classAttribute}, $record->{$record->pkAttribute});
@@ -109,6 +116,8 @@ class CacheableActiveQuery extends ActiveQuery
         if (!in_array($identifier, $done, true) && $model = $record->getPolymorphicRelation(false) ?? $runtimeCache->get($identifier)) {
             static::cacheProcessVariants($action, $model, $properties, $done);
         }
+
+        return $record;
     }
 
     public static function cacheDeleteByClass($class, $condition)
