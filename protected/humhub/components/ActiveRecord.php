@@ -12,6 +12,7 @@ use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
 use yii\base\InvalidConfigException;
+use yii\caching\TagDependency;
 use yii\db\ColumnSchema;
 use yii\db\Expression;
 use yii\validators\Validator;
@@ -257,5 +258,55 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
 
         return false;
+    }
+
+    /**
+     * @param self|string $instanceOrPk
+     * @return self|null
+     */
+    public static function findInstance($instanceOrPk)
+    {
+        $pk = ($instanceOrPk instanceof self) ? $instanceOrPk->getPrimaryKey() : $instanceOrPk;
+
+        return Yii::$app->runtimeCache->getOrSet(__CLASS__ . '#' . $pk, function () use ($instanceOrPk) {
+            if (is_string($instanceOrPk)) {
+                return self::findOne([self::primaryKey()[0] => $instanceOrPk]);
+            }
+            return $instanceOrPk;
+        }, null, new yii\caching\TagDependency(['class' => __CLASS__]);
+    }
+
+    private static function flushInstanceCache(?string $pk) {
+        if ($pk) {
+            // Invalidate single record
+            Yii::$app->runtimeCache->delete(__CLASS__ . '#' . $pk);
+        } else {
+            // Invalidate all cached class instances
+            yii\caching\TagDependency::invalidate(Yii::$app->runtimeCache, __CLASS__);
+        }
+    }
+
+    public static function updateAll($attributes, $condition = '', $params = [])
+    {
+        self::flushInstanceCache();
+        return parent::updateAll($attributes, $condition, $params);
+    }
+
+    public static function deleteAll($condition = null, $params = [])
+    {
+        self::flushInstanceCache();
+        return parent::deleteAll($condition, $params);
+    }
+
+    public function updateAttributes($attributes)
+    {
+        self::flushInstanceCache($this->getPrimaryKey());
+        return parent::updateAttributes($attributes);
+    }
+
+    public function delete()
+    {
+        self::flushInstanceCache($this->getPrimaryKey());
+        return parent::delete();
     }
 }
