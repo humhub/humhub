@@ -61,6 +61,10 @@ class HumHubDbTestCase extends Unit
 
     protected function setUp(): void
     {
+        if (\Yii::$app !== null) {
+            \Yii::$app->db->trigger('afterOpen');
+        }
+
         if (Yii::$app === null) {
             $c = new \ReflectionClass($this);
             $m = $c->getMethod($this->getName(false));

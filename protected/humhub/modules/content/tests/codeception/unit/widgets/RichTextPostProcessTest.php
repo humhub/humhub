@@ -19,7 +19,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 class RichTextPostProcessTest extends HumHubDbTestCase
 {
 
-    public function _before()
+    private function addTestOEmbedRecords()
     {
         (new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
@@ -30,8 +30,6 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'url' => 'https://www.youtube.com/watch?v=yt2',
             'preview' => 'yt2'
         ]))->save();
-
-        parent::_before();
     }
 
     /**
@@ -39,6 +37,8 @@ class RichTextPostProcessTest extends HumHubDbTestCase
      */
     public function testProcessSingleOembed()
     {
+        $this->addTestOEmbedRecords();
+
         $post = Post::findOne(['id' => 1]);
         $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)';
         $result = RichText::postProcess($text, $post);
@@ -52,6 +52,8 @@ class RichTextPostProcessTest extends HumHubDbTestCase
      */
     public function testProcessNoneOembed()
     {
+        $this->addTestOEmbedRecords();
+
         $post = Post::findOne(['id' => 1]);
         $text = '[Normal link](https://www.youtube.com/watch?v=yt1)';
         $result = RichText::postProcess($text, $post);
@@ -63,6 +65,8 @@ class RichTextPostProcessTest extends HumHubDbTestCase
      */
     public function testProcessMultipleOembed()
     {
+        $this->addTestOEmbedRecords();
+
         $post = Post::findOne(['id' => 1]);
         $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)';
         $result = RichText::postProcess($text, $post);
