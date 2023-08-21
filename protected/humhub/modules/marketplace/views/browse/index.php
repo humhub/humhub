@@ -23,6 +23,11 @@ Assets::register($this);
         <?= Settings::widget() ?>
     </div>
     <div class="panel-body">
+        <div class="help-block">
+            <?= Yii::t('MarketplaceModule.base', 'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.') ?>
+            <br><br>
+            <?= Yii::t('MarketplaceModule.base', 'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.') ?>
+        </div>
         <?= ModuleFilters::widget(); ?>
     </div>
 </div>

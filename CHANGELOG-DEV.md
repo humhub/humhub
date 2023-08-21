@@ -1,8 +1,32 @@
 HumHub Changelog
 ================
 
-1.15.0 (Unreleased)
--------------------
+1.15.0-beta.2 (Unreleased)
+--------------------------
+- Enh #6478: Add pseudo test class to allow population of DB with standard test data
+- Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
+- Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
+- Fix #6502: Link notification for pending space approval to manage page
+- Fix #6472: Initialization of account profile field type "Markdown"
+- Fix #6471: Wording "Default Homepage" in Space Default Settings
+- Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
+- Enh #6469: Added Info text for Marketplace page
+- Fix #112: Reorder Table Rows
+- Fix #6476: Fix module disabling in queue
+- Enh #6469: Implement conditions for `fixed-settings` in config
+- Enh #68: Online Indicator Position
+- Fix #6492: Fix module form "Set as default"
+- Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
+- Enh #6498: Implement option "disabled" for picker fields
+- Enh #6506: Allow event data from module config
+- Fix #6510: Fix online status position on people page
+- Fix #6526: Fix a disabled button after post a content record with state "Draft" or "Scheduled"
+- Fix #6491: Delete Space error: Attempt to read property `id` on null
+
+1.15.0-beta.1 (July 31, 2023)
+-----------------------------
+- Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
+- Enh #6460: Test server output: print application requests
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
 - Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager
@@ -82,4 +106,7 @@ HumHub Changelog
 - Fix #6429: Fix Marketplace view
 - Fix #6383: Remove permission verifying from archive methods
 - Enh #6439: Add collapsible filter state in URL
-- Fix #6491: Delete Space error: Attempt to read property `id` on null
+- Chg #6174: Users allowed to manage settings can access to module configurations
+- Enh #6440: Sort user groups by `group.sort_order` and alphabetically
+- Enh #6454: Account deletion confirmation
+- Enh #6458: Redirect to the latest-visited page after login or registration

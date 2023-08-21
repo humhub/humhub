@@ -8,15 +8,18 @@
 
 namespace humhub\components;
 
+use humhub\interfaces\ApplicationInterface;
 use Yii;
-use yii\helpers\Url;
-use yii\base\Exception;
+use Exception;
 
 /**
+ * Description of Application
+ *
  * @inheritdoc
  */
-class Application extends \yii\web\Application
+class Application extends \yii\web\Application implements ApplicationInterface
 {
+    use ApplicationTrait;
 
     /**
      * @inheritdoc
@@ -24,38 +27,12 @@ class Application extends \yii\web\Application
     public $controllerNamespace = 'humhub\\controllers';
 
     /**
-     * @var string|array the homepage url
-     */
-    private $_homeUrl = null;
-
-    /**
-     * @var string Minimum PHP version that recommended to work without issues
-     */
-    public $minRecommendedPhpVersion;
-
-    /**
-     * @var string Minimum PHP version that may works but probably with small issues
-     */
-    public $minSupportedPhpVersion;
-
-    /**
-     * @inheritdoc
-     */
-    public function __construct($config = [])
-    {
-        // Remove obsolete config params:
-        unset($config['components']['formatterApp']);
-
-        parent::__construct($config);
-    }
-
-    /**
      * @inheritdoc
      */
     public function init()
     {
         if (version_compare(phpversion(), $this->minSupportedPhpVersion, '<')) {
-            throw new \Exception(sprintf(
+            throw new Exception(sprintf(
                 'Installed PHP Version is too old! Required minimum version is PHP %s (Installed: %s)',
                 $this->minSupportedPhpVersion,
                 phpversion()
@@ -63,6 +40,7 @@ class Application extends \yii\web\Application
         }
 
         parent::init();
+        $this->trigger(self::EVENT_ON_INIT);
     }
 
     /**
@@ -81,28 +59,6 @@ class Application extends \yii\web\Application
         }
 
         parent::bootstrap();
-    }
-
-    /**
-     * @return string the homepage URL
-     */
-    public function getHomeUrl()
-    {
-        if ($this->_homeUrl === null) {
-            return Url::to(['/dashboard/dashboard']);
-        } elseif (is_array($this->_homeUrl)) {
-            return Url::to($this->_homeUrl);
-        } else {
-            return $this->_homeUrl;
-        }
-    }
-
-    /**
-     * @param string|array $value the homepage URL
-     */
-    public function setHomeUrl($value)
-    {
-        $this->_homeUrl = $value;
     }
 
     /**

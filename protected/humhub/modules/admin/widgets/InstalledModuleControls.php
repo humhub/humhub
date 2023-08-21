@@ -8,6 +8,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\ui\menu\MenuLink;
@@ -38,16 +39,6 @@ class InstalledModuleControls extends Menu
     public function initControls()
     {
         if ($this->module->isActivated) {
-            if ($this->module->getConfigUrl() != '') {
-                $this->addEntry(new MenuLink([
-                    'id' => 'configure',
-                    'label' => Yii::t('AdminModule.base', 'Configure'),
-                    'url' => $this->module->getConfigUrl(),
-                    'icon' => 'wrench',
-                    'sortOrder' => 100,
-                ]));
-            }
-
             if ($this->module instanceof ContentContainerModule) {
                 $this->addEntry(new MenuLink([
                     'id' => 'default',
@@ -125,4 +116,14 @@ class InstalledModuleControls extends Menu
         return [$url, 'moduleId' => $this->module->id];
     }
 
+    /**
+     * @inerhitdoc
+     */
+    public function beforeRun()
+    {
+        if (!Yii::$app->user->can(ManageModules::class)) {
+            return false;
+        }
+        return parent::beforeRun();
+    }
 }

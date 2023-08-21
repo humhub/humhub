@@ -13,6 +13,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
@@ -46,8 +47,10 @@ class ModuleController extends Controller
      */
     public function getAccessRules()
     {
+
         return [
-            ['permissions' => ManageModules::class]
+            ['permissions' => [ManageModules::class]],
+            ['permissions' => [ManageSettings::class], 'actions' => ['index', 'list']]
         ];
     }
 
@@ -105,7 +108,7 @@ class ModuleController extends Controller
         }
 
         Yii::$app->queue->push(new DisableModuleJob(['moduleId' => $moduleId]));
-        Yii::$app->moduleManager->disable($module);
+        $this->view->info(Yii::t('AdminModule.modules', 'Module deactivation in progress. This process may take a moment.'));
 
         return $this->redirectToModules();
     }

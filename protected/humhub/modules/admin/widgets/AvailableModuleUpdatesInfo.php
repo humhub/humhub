@@ -8,8 +8,10 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
+use Yii;
 
 /**
  * Displays info of available updates for modules
@@ -26,7 +28,7 @@ class AvailableModuleUpdatesInfo extends Widget
      */
     public function beforeRun()
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isEnabled() || !Yii::$app->user->can(ManageModules::class)) {
             return false;
         }
 

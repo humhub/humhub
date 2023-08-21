@@ -9,13 +9,15 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
 use humhub\components\Widget;
+use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\widgets\Button;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * ModuleActionsButton shows actions for module
- * 
+ *
  * @since 1.15
  * @author Luke
  */
@@ -28,9 +30,9 @@ class InstalledModuleActionButtons extends Widget
      */
     public function run()
     {
-        if (!$this->module->isActivated) {
+        if (!$this->module->isActivated && Yii::$app->user->can(ManageModules::class)) {
             return Button::asLink(Yii::t('AdminModule.base', 'Activate'),
-                    Url::to(['/admin/module/enable', 'moduleId' => $this->module->id]))
+                Url::to(['/admin/module/enable', 'moduleId' => $this->module->id]))
                 ->cssClass('btn btn-sm btn-info')
                 ->options([
                     'data-method' => 'POST',
@@ -39,7 +41,7 @@ class InstalledModuleActionButtons extends Widget
                 ]);
         }
 
-        if ($this->module->getConfigUrl() !== '') {
+        if ($this->module->getConfigUrl() !== '' && Yii::$app->user->can(ManageSettings::class)) {
             return Button::asLink(Yii::t('AdminModule.base', 'Configure'), $this->module->getConfigUrl())
                 ->cssClass('btn btn-sm btn-info active');
         }

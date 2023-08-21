@@ -2,6 +2,7 @@ humhub.module('admin', function (module, require, $) {
     var client = require('client');
     var modal = require('ui.modal');
     var additions = require('ui.additions');
+    var status = require('ui.status');
 
     /**
      * Action will delete the current page logo.
@@ -146,9 +147,10 @@ humhub.module('admin', function (module, require, $) {
     };
 
     var moduleSetAsDefault = function(event) {
-        modal.footerLoader();
+        modal.footerLoader(event);
         client.submit(event).then(function(response) {
             modal.setContent(response.data);
+            status.success(module.require('log').config.text['success.saved']);
         });
     };
 
