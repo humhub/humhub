@@ -65,7 +65,7 @@ class SpaceSearch extends Space
      */
     public function search($params)
     {
-        $memberCountSubSelect = Membership::find()->select('COUNT(*) as counter')->where('space_id=space.id')->andWhere(['space_membership.status' => Membership::STATUS_MEMBER]);
+        $memberCountSubSelect = Membership::find()->select('COUNT(*) as counter')->where('space_id=space.id')->whereState(Membership::STATE_MEMBER);
         $query = self::find();
         $query->joinWith(['ownerUser', 'ownerUser.profile']);
         $query->addSelect(['space.*', 'memberCount' => $memberCountSubSelect]);

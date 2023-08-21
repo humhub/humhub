@@ -32,7 +32,7 @@ class NewSpaces extends \yii\base\Widget
             '!=', 'space.visibility', Space::VISIBILITY_NONE,
         ]);
         $query->orWhere([
-            'space_membership.status' => Membership::STATUS_MEMBER,
+            'space_membership.state' => Membership::STATE_MEMBER,
         ]);
         $query->limit(10);
         $query->orderBy('created_at DESC');

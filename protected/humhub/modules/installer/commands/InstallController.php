@@ -22,13 +22,13 @@ use humhub\libs\DynamicConfig;
 
 /**
  * Console Install
- * 
+ *
  * Example usage:
  *   php yii installer/write-db-config "$HUMHUB_DB_HOST" "$HUMHUB_DB_NAME" "$HUMHUB_DB_USER" "$HUMHUB_DB_PASSWORD"
  *   php yii installer/install-db
  *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
  *   php yii installer/create-admin-account
- * 
+ *
  */
 class InstallController extends Controller
 {
@@ -42,9 +42,9 @@ class InstallController extends Controller
 
         return ExitCode::OK;
     }
-    
+
     /**
-     * Tries to open a connection to given db. 
+     * Tries to open a connection to given db.
      * On success: Writes given settings to config-file and reloads it.
      * On failure: Throws exception
      */
@@ -85,7 +85,7 @@ class InstallController extends Controller
         }
 
         $this->stdout("  * Installing Database\n", Console::FG_YELLOW);
-        
+
         Yii::$app->cache->flush();
         // Disable max execution time to avoid timeouts during migrations
         @ini_set('max_execution_time', 0);
@@ -109,7 +109,7 @@ class InstallController extends Controller
         $user = new User();
         $user->username = $admin_user;
         $user->email = $admin_email;
-        $user->status = User::STATUS_ENABLED;
+        $user->state = User::STATE_ENABLED;
         $user->language = '';
         if (!$user->save()) {
             throw new Exception("Could not save user");
@@ -119,7 +119,7 @@ class InstallController extends Controller
         $user->profile->firstname = 'Sys';
         $user->profile->lastname = 'Admin';
         $user->profile->save();
-        
+
         $password = new Password();
         $password->user_id = $user->id;
         $password->setPassword($admin_pass);

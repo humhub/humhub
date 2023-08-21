@@ -160,7 +160,7 @@ class WallEntry extends Widget
         }
 
         // Don't show edit link, when content container is space and archived
-        if ($this->contentObject->content->container instanceof Space && $this->contentObject->content->container->status == Space::STATUS_ARCHIVED) {
+        if ($this->contentObject->content->container instanceof Space && $this->contentObject->content->container->state == Space::STATE_ARCHIVED) {
             return "";
         }
 

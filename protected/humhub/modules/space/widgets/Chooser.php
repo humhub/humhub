@@ -228,7 +228,7 @@ class Chooser extends Widget
     protected function getMembershipQuery()
     {
         $query = Membership::find()->joinWith('space')
-            ->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.status' => Membership::STATUS_MEMBER]);
+            ->where(['space_membership.user_id' => Yii::$app->user->id, 'space_membership.state' => Membership::STATE_MEMBER]);
 
         if (Yii::$app->getModule('space')->settings->get('spaceOrder') == 0) {
             $query->orderBy('name ASC');

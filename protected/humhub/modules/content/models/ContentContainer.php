@@ -9,8 +9,11 @@
 namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -24,8 +27,9 @@ use yii\db\ActiveRecord;
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  */
-class ContentContainer extends ActiveRecord
+class ContentContainer extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait;
 
     /**
      * @inheritdoc
@@ -76,6 +80,13 @@ class ContentContainer extends ActiveRecord
                 'pkAttribute' => 'pk'
             ]
         ];
+    }
+
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    {
+        $config['stringKey'] ??= 'guid';
+
+        return static::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**

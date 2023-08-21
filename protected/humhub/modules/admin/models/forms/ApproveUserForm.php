@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\libs\Helpers;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\Module;
 use Yii;
@@ -88,8 +89,8 @@ class ApproveUserForm extends \yii\base\Model
                 throw new NotFoundHttpException(Yii::t('AdminModule.base', 'User not found!'));
             }
 
-            if ($this->user->status !== User::STATUS_NEED_APPROVAL) {
-                throw new NotFoundHttpException(Yii::t('AdminModule.base', 'Invalid user state: {state}', ['state' => $this->user->status]));
+            if ($this->user->state !== User::STATE_NEEDS_APPROVAL) {
+                throw new NotFoundHttpException(Yii::t('AdminModule.base', 'Invalid user state: {state}', ['state' => $this->user->state]));
             }
         }
 
@@ -111,7 +112,8 @@ class ApproveUserForm extends \yii\base\Model
     private function getUsers($ids)
     {
         return User::find()
-            ->andWhere(['user.id' => $ids, 'user.status' => User::STATUS_NEED_APPROVAL])
+            ->andWhere(['user.id' => $ids])
+            ->andWhereState(User::STATE_NEEDS_APPROVAL)
             ->administrableBy($this->admin)->all();
     }
 
@@ -143,7 +145,7 @@ class ApproveUserForm extends \yii\base\Model
     }
 
     /**
-     * Approves user by sending approval mail and updating user status and running initial approval logic.
+     * Approves user by sending approval mail and updating user state and running initial approval logic.
      * @return bool
      */
     public function approve(): bool
@@ -156,7 +158,7 @@ class ApproveUserForm extends \yii\base\Model
             return false;
         }
 
-        $this->user->status = User::STATUS_ENABLED;
+        $this->user->state = User::STATE_ENABLED;
         $this->user->setScenario(User::SCENARIO_APPROVE);
 
         return $this->user->save() && $this->send();
@@ -220,7 +222,7 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function send(): bool
     {
-        $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+        $mail = Helpers::composeEmail(['html' => '@humhub/views/mail/TextOnly'], [
             'message' => RichTextToEmailHtmlConverter::process($this->message)
         ]);
         $mail->setTo($this->user->email);

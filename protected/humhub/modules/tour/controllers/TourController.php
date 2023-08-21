@@ -76,7 +76,7 @@ class TourController extends \humhub\components\Controller
         if ($space === null) {
             // If user is not member of any space, try to find a public space
             // to run tour in
-            $space = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['status' => Space::STATUS_ENABLED]]);
+            $space = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['state' => Space::STATE_ENABLED]]);
         }
 
         if ($space === null) {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -7,6 +8,7 @@
 
 namespace humhub\modules\stream\models\filters;
 
+use humhub\components\StatableActiveQuery;
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use Yii;
@@ -33,7 +35,7 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
         if ($this->allowPinContent()) {
             $this->fetchScheduledContent();
         } else {
-            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_SCHEDULED];
+            $this->streamQuery->andWhereState(Content::STATE_SCHEDULED);
         }
     }
 
@@ -42,11 +44,10 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
      */
     private function fetchScheduledContent(): void
     {
+        /** @var StatableActiveQuery $scheduledQuery */
         $scheduledQuery = clone $this->query;
-        $scheduledQuery->andWhere([
-            'AND', ['content.state' => Content::STATE_SCHEDULED],
-            ['content.created_by' => Yii::$app->user->id]]
-        );
+        $scheduledQuery->whereState(Content::STATE_SCHEDULED);
+        $scheduledQuery->andWhere(['content.created_by' => Yii::$app->user->id]);
         $scheduledQuery->limit(100);
         $this->scheduledContent = $scheduledQuery->all();
     }
@@ -58,5 +59,4 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
     {
         $results = array_merge($this->scheduledContent, $results);
     }
-
 }

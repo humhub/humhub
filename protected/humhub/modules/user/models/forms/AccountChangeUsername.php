@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\forms;
 
+use humhub\libs\Helpers;
 use humhub\modules\user\Module;
 use Yii;
 use humhub\modules\user\models\User;
@@ -76,7 +77,7 @@ class AccountChangeUsername extends \yii\base\Model
         $user->username = $this->newUsername;
         $user->save();
 
-        $mail = Yii::$app->mailer->compose([
+        $mail = Helpers::composeEmail([
             'html' => '@humhub/modules/user/views/mails/ChangeUsername',
             'text' => '@humhub/modules/user/views/mails/plaintext/ChangeUsername'
         ], [

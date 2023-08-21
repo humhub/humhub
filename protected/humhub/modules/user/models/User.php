@@ -9,6 +9,11 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\components\CacheableActiveQuery;
+use humhub\components\FindInstanceTrait;
+use humhub\components\StatableTrait;
+use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -32,19 +37,21 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
+use humhub\modules\user\services\UserStateService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\web\User as WebUser;
 
 /**
  * This is the model class for table "user".
  *
  * @property integer $id
  * @property string $guid
- * @property integer $status
+ * @property integer $state
  * @property string $username
  * @property string $email
  * @property string $auth_mode
@@ -64,58 +71,57 @@ use yii\web\IdentityInterface;
  * @property Auth[] $auths
  * @property string $displayName
  * @property string $displayNameSub
+ * @property-read UserStateService $stateService
  * @mixin Followable
+ * @method UserStateService getStateService()
  */
-class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface, FindInstanceInterface, Searchable, StatableInterface
 {
-    /**
-     * User Status Flags
-     */
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
-    const STATUS_NEED_APPROVAL = 2;
-    const STATUS_SOFT_DELETED = 3;
+    use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     /**
      * Visibility Modes
      */
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2; // Visible for all (also guests)
-    const VISIBILITY_HIDDEN = 3; // Invisible
+    public const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
+    public const VISIBILITY_ALL = 2; // Visible for all (also guests)
+    public const VISIBILITY_HIDDEN = 3; // Invisible
 
     /**
      * User Markdown Editor Modes
      */
-    const EDITOR_RICH_TEXT = 0;
-    const EDITOR_PLAIN = 1;
+    public const EDITOR_RICH_TEXT = 0;
+    public const EDITOR_PLAIN = 1;
 
     /**
      * User Groups
      */
-    const USERGROUP_SELF = 'u_self';
-    const USERGROUP_FRIEND = 'u_friend';
-    const USERGROUP_USER = 'u_user';
-    const USERGROUP_GUEST = 'u_guest';
+    public const USERGROUP_SELF = 'u_self';
+    public const USERGROUP_FRIEND = 'u_friend';
+    public const USERGROUP_USER = 'u_user';
+    public const USERGROUP_GUEST = 'u_guest';
 
     /**
      * Scenarios
      */
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
-    const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTRATION = 'registration';
-    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
-    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
-    const SCENARIO_APPROVE = 'approve';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_LOGIN = 'login';
+    public const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    public const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
+    public const SCENARIO_APPROVE = 'approve';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event UserEvent an event that is triggered when the user is soft deleted (without contents) and also before complete deletion.
      */
-    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
+    public const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
 
     /**
      * A initial group for the user assigned while registration.
@@ -165,7 +171,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['created_by', 'updated_by'], 'integer'],
-            [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
+            [['state'], 'in', 'range' => array_keys($this->getStateService()->getStateOptions())],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
@@ -256,12 +262,14 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function __get($name)
     {
-        if ($name == 'super_admin') {
+        if ($name === 'super_admin') {
             /**
              * Replacement for old super_admin flag version
              */
             return $this->isSystemAdmin();
-        } elseif ($name == 'profile') {
+        }
+
+        if ($name === 'profile') {
             /**
              * Ensure there is always a related Profile Model also when it's
              * not really exists yet.
@@ -282,7 +290,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $scenarios = parent::scenarios();
         $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
+        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'state', 'visibility', 'language', 'tagsField'];
         $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
         $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
         $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
@@ -298,7 +306,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return [
             'id' => 'ID',
             'guid' => 'Guid',
-            'status' => Yii::t('UserModule.base', 'Status'),
+            'state' => Yii::t('UserModule.base', 'Status'),
             'username' => Yii::t('UserModule.base', 'Username'),
             'email' => Yii::t('UserModule.base', 'Email'),
             'profile.firstname' => Yii::t('UserModule.profile', 'First name'),
@@ -329,14 +337,45 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
-            return static::findOne(['id' => $id]);
-        });
+        return static::findInstance($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        return static::findOne(['guid' => $token]);
+        return static::findInstance($token);
+    }
+
+    /**
+     * @param User|WebUser|int|string|null $identifier User or User ID. Null for current user
+     *
+     * @inheritdoc
+     * @since 1.15
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    {
+        if ($identifier !== 0 && $identifier !== '0' && empty($identifier)) {
+            if (array_key_exists('onEmpty', $config)) {
+                return $config['onEmpty'];
+            }
+
+            $identifier = Yii::$app->user;
+        }
+
+        if ($identifier instanceof WebUser) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            $identifier = $identifier->getIdentity();
+
+            if ($identifier === null) {
+                return null;
+            }
+        }
+
+        $config['onEmpty'] ??= null;
+        $config['stringKey'] = 'guid';
+        $config['exceptionMessageSuffix'] ??= '(must be a User object or User ID or null for the current user)';
+
+        return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**
@@ -346,7 +385,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
+        return Yii::createObject(ActiveQueryUser::class, [static::class]);
     }
 
     public function getId()
@@ -442,11 +481,27 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     }
 
     /**
-     * @return bool true if the user status is enabled else false
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function getStatus(): ?int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function setStatus(?int $state): void
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return bool true if the user state is enabled else false
      */
     public function isActive()
     {
-        return $this->status === User::STATUS_ENABLED;
+        return $this->state === User::STATE_ENABLED;
     }
 
     /**
@@ -484,6 +539,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      *
      * @throws Exception
+     * @throws \Throwable
      * @since 1.3
      */
     public function softDelete()
@@ -525,7 +581,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $this->updateAttributes([
             'email' => new Expression('NULL'),
             'username' => 'deleted-' . $this->id,
-            'status' => User::STATUS_SOFT_DELETED,
+            'state' => User::STATE_SOFT_DELETED,
             'authclient_id' => new Expression('NULL')
         ]);
 
@@ -554,8 +610,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 }
             }
 
-            if ($this->status == '') {
-                $this->status = self::STATUS_ENABLED;
+            if ($this->state == '') {
+                $this->state = self::STATE_ENABLED;
             }
         }
 
@@ -576,14 +632,16 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Make sure we get an direct User model instance
-        // (e.g. not UserEditForm) for search rebuild
-        $user = User::findOne(['id' => $this->id]);
+        // Make sure we get a pure User model instance (e.g. not UserEditForm) for search rebuild
+        // and update the cache at the same time
+        $user = self::findInstance($this->id, ['cached' => false]);
+
+        CacheableActiveQuery::cacheProcessVariants('delete', $this);
 
         $this->updateSearch();
 
         if ($insert) {
-            if ($this->status == User::STATUS_NEED_APPROVAL) {
+            if ($this->state == User::STATE_NEEDS_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
@@ -592,12 +650,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         // Don't move this line under setUpApproved() because ContentContainer record should be created firstly
         parent::afterSave($insert, $changedAttributes);
 
-        // When insert an "::STATUS_ENABLED" user or update a user from status "::STATUS_NEED_APPROVAL" to "::STATUS_ENABLED"
+        // When insert an "::STATE_ENABLED" user or update a user from state "::STATE_NEEDS_APPROVAL" to "::STATE_ENABLED"
         if (
-            $this->status == User::STATUS_ENABLED &&
+            $this->state == StatableInterface::STATE_ENABLED &&
             (
                 $insert ||
-                (isset($changedAttributes['status']) && $changedAttributes['status'] == User::STATUS_NEED_APPROVAL)
+                (isset($changedAttributes['state']) && $changedAttributes['state'] == User::STATE_NEEDS_APPROVAL)
             )
         ) {
             $this->setUpApproved();
@@ -631,7 +689,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     private function setUpApproved()
     {
-        $userInvite = Invite::findOne(['email' => $this->email]);
+        $userInvite = Invite::findInstance($this->email);
 
         if ($userInvite !== null) {
             // User was invited to a space
@@ -669,7 +727,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () {
             /** @var Module $module */
             $module = Yii::$app->getModule('user');
 
@@ -1005,19 +1063,22 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
-    public static function getStatusOptions(bool $withDeleted = true): array
+    /**
+     * @return string
+     */
+    public static function getStateServiceClass(): string
     {
-        $options = [
-            self::STATUS_ENABLED => Yii::t('AdminModule.user', 'Enabled'),
-            self::STATUS_DISABLED => Yii::t('AdminModule.user', 'Disabled'),
-            self::STATUS_NEED_APPROVAL => Yii::t('AdminModule.user', 'Unapproved'),
-        ];
+        return UserStateService::class;
+    }
 
-        if ($withDeleted) {
-            $options[self::STATUS_SOFT_DELETED] = Yii::t('AdminModule.user', 'Deleted');
-        }
-
-        return $options;
+    /**
+     * @param bool $withDeleted
+     *
+     * @return array
+     */
+    public static function getStateOptions(bool $withDeleted = true): array
+    {
+        return static::getStateServiceTemplate()->getStateOptions(['withDeleted' => $withDeleted]);
     }
 
     public static function getVisibilityOptions($allowHidden = true): array

@@ -54,7 +54,7 @@ class PasswordRecoveryService
 
         $token = UUID::v4();
 
-        $mail = Yii::$app->mailer->compose([
+        $mail = Helpers::composeEmail([
             'html' => '@humhub/modules/user/views/mails/RecoverPassword',
             'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
         ], [

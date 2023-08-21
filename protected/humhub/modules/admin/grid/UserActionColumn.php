@@ -28,16 +28,16 @@ class UserActionColumn extends ActionColumn
         /** @var User $model */
 
         $actions = [];
-        if ($model->status == User::STATUS_SOFT_DELETED) {
+        if ($model->state == User::STATE_SOFT_DELETED) {
             $actions[Yii::t('AdminModule.user', 'Permanently delete')] = ['delete'];
         } else {
             $actions[Yii::t('base', 'Edit')] = ['edit'];
 
             if(Yii::$app->user->isAdmin() || !$model->isSystemAdmin()) {
                 $actions[] = '---';
-                if ($model->status == User::STATUS_DISABLED) {
+                if ($model->state == User::STATE_DISABLED) {
                     $actions[Yii::t('AdminModule.user', 'Enable')] = ['enable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to enable this user?')]];
-                } elseif ($model->status == User::STATUS_ENABLED) {
+                } elseif ($model->state == User::STATE_ENABLED) {
                     $actions[Yii::t('AdminModule.user', 'Disable')] = ['disable', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to disable this user?')]];
                 }
                 if (!$model->isCurrentUser()) {
@@ -46,7 +46,7 @@ class UserActionColumn extends ActionColumn
             }
 
 
-            if ($model->status == User::STATUS_ENABLED) {
+            if ($model->state == User::STATE_ENABLED) {
                 $actions[] = '---';
                 if (Yii::$app->user->canImpersonate($model)) {
                     $actions[Yii::t('AdminModule.user', 'Impersonate')] = ['impersonate', 'linkOptions' => ['data-method' => 'post', 'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure that you want to impersonate this user?')]];

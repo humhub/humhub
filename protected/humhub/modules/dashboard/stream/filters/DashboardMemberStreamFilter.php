@@ -33,9 +33,9 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         $this->filterContentVisibility();
         $this->query->addParams([
             ':userId' => $this->user->id,
-            ':spaceMembershipStatus' => Membership::STATUS_MEMBER,
-            ':spaceEnabledStatus' => Space::STATUS_ENABLED,
-            ':userEnabledStatus' => User::STATUS_ENABLED,
+            ':spaceMembershipState' => Membership::STATE_MEMBER,
+            ':spaceEnabledState' => Space::STATE_ENABLED,
+            ':userEnabledState' => User::STATE_ENABLED,
             ':userModel' => User::class,
             ':spaceModel' => Space::class,
             ':visibilityPrivate' => Content::VISIBILITY_PRIVATE,
@@ -52,17 +52,17 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         // Join with enabled space containers
         $this->query->leftJoin(
             'space as spaceContainer',
-            'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel AND spaceContainer.status = :spaceEnabledStatus'
+            'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel AND spaceContainer.state = :spaceEnabledState'
         );
 
         // Join with enabled user containers
         $this->query->leftJoin(
             'user AS userContainer',
-            'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel AND userContainer.status = :userEnabledStatus'
+            'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel AND userContainer.state = :userEnabledState'
         );
 
         $this->query->leftJoin(
-            'space_membership', 'space_membership.space_id = spaceContainer.id AND space_membership.user_id = :userId AND space_membership.show_at_dashboard = 1 AND space_membership.status = :spaceMembershipStatus'
+            'space_membership', 'space_membership.space_id = spaceContainer.id AND space_membership.user_id = :userId AND space_membership.show_at_dashboard = 1 AND space_membership.state = :spaceMembershipState'
         );
 
         if($this->isFollowAllProfilesActive()) {
@@ -87,7 +87,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         $this->query->andWhere('content.contentcontainer_id IS NULL OR userContainer.id IS NOT NULL OR spaceContainer.id IS NOT NULL');
 
         // We subscribe to own container, space memberships and following container
-        $containerFilterOrContidion = ['OR',
+        $containerFilterOrCondition = ['OR',
             'content.contentcontainer_id IS NULL', // Global content
             'space_membership.user_id IS NOT NULL',
             'user_follow.id IS NOT NULL' // In case of "include follow all profiles", this will only include space follows
@@ -95,14 +95,14 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
 
         if($this->isFollowAllProfilesActive()) {
             // Everyone follows everyone, so just subscribe to all user containers
-            $containerFilterOrContidion[] = 'contentcontainer.class = :userModel';
+            $containerFilterOrCondition[] = 'contentcontainer.class = :userModel';
         } else  {
             // Otherwise only subscribe to own container and friendship containers
-            $containerFilterOrContidion[] = 'contentcontainer.id = :userContentContainerId';
+            $containerFilterOrCondition[] = 'contentcontainer.id = :userContentContainerId';
         }
 
         // Filter out non subscribed container
-        $this->query->andWhere($containerFilterOrContidion);
+        $this->query->andWhere($containerFilterOrCondition);
     }
 
     /**

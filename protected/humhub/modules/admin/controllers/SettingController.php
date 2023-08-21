@@ -196,7 +196,7 @@ class SettingController extends Controller
         $user = Yii::$app->user->getIdentity();
 
         try {
-            $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
+            $mail = Helpers::composeEmail(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => Yii::t('AdminModule.settings', 'Test message')
             ]);
             $mail->setTo($user->email);

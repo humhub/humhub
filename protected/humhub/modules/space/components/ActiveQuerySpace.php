@@ -9,7 +9,9 @@
 
 namespace humhub\modules\space\components;
 
+use humhub\components\StatableActiveQueryTrait;
 use humhub\events\ActiveQueryEvent;
+use humhub\interfaces\StatableActiveQueryInterface;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\space\models\Membership;
@@ -25,8 +27,10 @@ use yii\db\ActiveQuery;
  *
  * @since 1.4
  */
-class ActiveQuerySpace extends AbstractActiveQueryContentContainer
+class ActiveQuerySpace extends AbstractActiveQueryContentContainer implements StatableActiveQueryInterface
 {
+    use StatableActiveQueryTrait;
+
     /**
      * @event Event an event that is triggered when only visible spaces are requested via [[visible()]].
      */

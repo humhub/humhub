@@ -59,7 +59,7 @@ class Events extends BaseObject
         }
 
         // Cancel all space invites by the user
-        foreach (Membership::findAll(['originator_user_id' => $user->id, 'status' => Membership::STATUS_INVITED]) as $membership) {
+        foreach (Membership::findAll(['originator_user_id' => $user->id, 'state' => Membership::STATE_INVITED]) as $membership) {
             // Avoid activities
             $membership->delete();
         }

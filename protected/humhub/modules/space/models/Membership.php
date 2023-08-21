@@ -9,11 +9,19 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\CacheableActiveQuery;
+use humhub\components\FindInstanceTrait;
+use humhub\components\StatableActiveQuery;
+use humhub\components\StatableTrait;
+use humhub\exceptions\InvalidArgumentException;
+use humhub\interfaces\FindInstanceInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\Module;
+use humhub\modules\space\components\MembershipStateService;
 use humhub\modules\user\models\User;
-use InvalidArgumentException;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Query;
 
 /**
@@ -23,7 +31,7 @@ use yii\db\Query;
  * @property integer $space_id
  * @property integer $user_id
  * @property string|null $originator_user_id
- * @property integer|null $status
+ * @property integer|null $state
  * @property string|null $request_message
  * @property string|null $last_visit
  * @property integer $show_at_dashboard
@@ -38,29 +46,49 @@ use yii\db\Query;
  * @property Space $space
  * @property User $user
  * @property User|null $originator
+ * @method StatableActiveQuery static find()
  */
-class Membership extends ActiveRecord
+class Membership extends ActiveRecord implements FindInstanceInterface, StatableInterface
 {
+    use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
 
     /**
      * @event \humhub\modules\space\MemberEvent
      */
-    const EVENT_MEMBER_REMOVED = 'memberRemoved';
+    public const EVENT_MEMBER_REMOVED = 'memberRemoved';
 
     /**
      * @event \humhub\modules\space\MemberEvent
      */
-    const EVENT_MEMBER_ADDED = 'memberAdded';
+    public const EVENT_MEMBER_ADDED = 'memberAdded';
 
     /**
-     * Status Codes
+     * State Codes
      */
-    const STATUS_INVITED = 1;
-    const STATUS_APPLICANT = 2;
-    const STATUS_MEMBER = 3;
+    public const STATE_INVITED = 1;     //ToDo: StatableInterface::STATE_DRAFT;
+    public const STATE_APPLICANT = 2;   //ToDo: StatableInterface::STATE_NEEDS_APPROVAL;
+    public const STATE_MEMBER = 3;      //ToDo: StatableInterface::STATE_ENABLED;
 
-    const USER_SPACES_CACHE_KEY = 'userSpaces_';
-    const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
+    /**
+     * @deprecated since 1.16; use self::STATE_INVITED
+     */
+    public const STATUS_INVITED = self::STATE_INVITED;
+
+    /**
+     * @deprecated since 1.16; use self::STATE_MEMBER
+     */
+    public const STATUS_MEMBER = self::STATE_MEMBER;
+
+    /**
+     * @deprecated since 1.16; use self::STATE_APPLICANT
+     */
+    public const STATUS_APPLICANT = self::STATE_APPLICANT;
+
+    public const USER_SPACES_CACHE_KEY = 'userSpaces_';
+    public const USER_SPACEIDS_CACHE_KEY = 'userSpaceIds_';
 
 
     /**
@@ -78,7 +106,7 @@ class Membership extends ActiveRecord
     {
         return [
             [['space_id', 'user_id'], 'required'],
-            [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
+            [['space_id', 'user_id', 'originator_user_id', 'state', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
             [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe']
         ];
@@ -93,7 +121,7 @@ class Membership extends ActiveRecord
             'space_id' => 'Space ID',
             'user_id' => 'User ID',
             'originator_user_id' => Yii::t('SpaceModule.base', 'Originator User ID'),
-            'status' => Yii::t('SpaceModule.base', 'Status'),
+            'state' => Yii::t('SpaceModule.base', 'Status'),
             'request_message' => Yii::t('SpaceModule.base', 'Request Message'),
             'last_visit' => Yii::t('SpaceModule.base', 'Last Visit'),
             'created_at' => Yii::t('SpaceModule.base', 'Created At'),
@@ -112,7 +140,7 @@ class Membership extends ActiveRecord
      */
     public function isMember()
     {
-        return $this->status == self::STATUS_MEMBER;
+        return $this->state == self::STATE_MEMBER;
     }
 
     /**
@@ -131,43 +159,59 @@ class Membership extends ActiveRecord
 
     public function getUser()
     {
-        return $this->hasOne(User::class, ['id' => 'user_id']);
+        return $this->hasOneCached(User::class, ['id' => 'user_id']);
     }
 
     public function getOriginator()
     {
-        return $this->hasOne(User::class, ['id' => 'originator_user_id']);
+        return $this->hasOneCached(User::class, ['id' => 'originator_user_id']);
     }
 
     public function getSpace()
     {
-        return $this->hasOne(Space::class, ['id' => 'space_id']);
+        return $this->hasOneCached(Space::class, ['id' => 'space_id']);
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function getStatus(): ?int
+    {
+        return $this->state;
+    }
+
+    /**
+     * @deprecated since 1.16. Please use static::$state instead.
+     */
+    public function setStatus(?int $state): void
+    {
+        $this->state = $state;
     }
 
     public function beforeSave($insert)
     {
-        Yii::$app->cache->delete(self::USER_SPACES_CACHE_KEY . $this->user_id);
-        Yii::$app->cache->delete(self::USER_SPACEIDS_CACHE_KEY . $this->user_id);
+        static::unsetCache($this);
+
         return parent::beforeSave($insert);
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        static::unsetCache($this->space_id, $this->user_id);
+        static::unsetCache($this);
 
         parent::afterSave($insert, $changedAttributes);
     }
 
     public function beforeDelete()
     {
-        Yii::$app->cache->delete(self::USER_SPACES_CACHE_KEY . $this->user_id);
-        Yii::$app->cache->delete(self::USER_SPACEIDS_CACHE_KEY . $this->user_id);
+        static::unsetCache($this);
+
         return parent::beforeDelete();
     }
 
     public function afterDelete()
     {
-        static::unsetCache($this->space_id, $this->user_id);
+        static::unsetCache($this);
 
         parent::afterDelete();
     }
@@ -192,6 +236,12 @@ class Membership extends ActiveRecord
         $query->andWhere(['>', 'created_at', $this->last_visit]);
 
         return $query->count();
+    }
+
+
+    public static function getStateServiceClass(): string
+    {
+        return MembershipStateService::class;
     }
 
     /**
@@ -254,7 +304,8 @@ class Membership extends ActiveRecord
         }
 
         $query = self::find()->joinWith('space')->orderBy($orderBy);
-        $query->where(['user_id' => $userId, 'space_membership.status' => self::STATUS_MEMBER]);
+        $query->where(['user_id' => $userId]);
+        $query->whereState(self::STATE_MEMBER);
 
         return $query;
     }
@@ -263,7 +314,7 @@ class Membership extends ActiveRecord
      * Returns Space for user space membership
      *
      * @param \humhub\modules\user\models\User $user
-     * @param boolean $memberOnly include only member status - no pending/invite states
+     * @param boolean $memberOnly include only member state - no pending/invite states
      * @param boolean|null $withNotifications include only memberships with sendNotification setting
      * @return \yii\db\ActiveQuery for space model
      * @since 1.0
@@ -279,7 +330,7 @@ class Membership extends ActiveRecord
         );
 
         if ($memberOnly) {
-            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+            $query->andWhere(['space_membership.state' => self::STATE_MEMBER]);
         }
 
         if ($withNotifications === true) {
@@ -300,18 +351,19 @@ class Membership extends ActiveRecord
     /**
      * Returns an ActiveQuery selcting all memberships for the given $user.
      *
-     * @param User $user
-     * @param integer $membershipStatus the status of the Space by default self::STATUS_MEMBER.
-     * @param integer $spaceStatus the status of the Space by default Space::STATUS_ENABLED.
-     * @return \yii\db\ActiveQuery
+     * @param User|null $user
+     * @param integer $membershipState the state of the Space by default self::STATE_MEMBER.
+     * @param integer $spaceState the state of the Space by default Space::STATE_ENABLED.
+     *
+     * @return ActiveQuery
+     * @throws \Throwable
      * @since 1.2
      */
     public static function findByUser(
-        User $user = null,
-             $membershipStatus = self::STATUS_MEMBER,
-             $spaceStatus = Space::STATUS_ENABLED
-    )
-    {
+        ?User $user = null,
+        $membershipState = self::STATE_MEMBER,
+        $spaceState = Space::STATE_ENABLED
+    ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
@@ -327,12 +379,12 @@ class Membership extends ActiveRecord
         $query->joinWith('space')->where(['space_membership.user_id' => $user->id]);
         $query->joinWith('space.contentContainerRecord');
 
-        if ($spaceStatus) {
-            $query->andWhere(['space.status' => $spaceStatus]);
+        if ($spaceState) {
+            $query->andWhere(['space.state' => $spaceState]);
         }
 
-        if ($membershipStatus) {
-            $query->andWhere(['space_membership.status' => $membershipStatus]);
+        if ($membershipState) {
+            $query->whereState($membershipState);
         }
 
         return $query;
@@ -353,7 +405,7 @@ class Membership extends ActiveRecord
         $query->join('LEFT JOIN', 'space_membership', 'space_membership.user_id=user.id');
 
         if ($membersOnly) {
-            $query->andWhere(['space_membership.status' => self::STATUS_MEMBER]);
+            $query->andWhere(['space_membership.state' => self::STATE_MEMBER]);
         }
 
         if ($withNotifications === true) {
@@ -382,7 +434,7 @@ class Membership extends ActiveRecord
             ->innerJoin('space_membership sm', 'space.id = sm.space_id')
             ->where('sm.user_id = :userId', [':userId' => $user->id])
             ->indexBy('id')
-            ->andWhere('space.status = :spaceStatusEnabled', [':spaceStatusEnabled' => Space::STATUS_ENABLED]);
+            ->andWhere('space.state = :spaceStateEnabled', [':spaceStateEnabled' => Space::STATE_ENABLED]);
     }
 
     /**
@@ -399,33 +451,101 @@ class Membership extends ActiveRecord
     /**
      * Find and cache Membership by space and user
      *
-     * @param Space|int $space
-     * @param User|int $user
+     * @param Membership|int|array<Space|int|string, User|int|string|null> $identifier
+     * @param array $config = [
+     *     'cached' => true,                    // use cached results
+     *     'nullable' => false,                 // allow null values on for $identifier
+     *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
+     *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
+     *     'intKey' => 'id',
+     *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
+     *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
+     *     ]
      *
      * @return self|null
+     *
+     * @inheritdoc
+     * @since 1.15
      */
-    public static function findMembership($space, $user): ?self
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
     {
-        if ($space instanceof Space) {
-            $spaceId = $space->id;
-        } elseif ($space === null || null === $spaceId = filter_var($space, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
-            throw new InvalidArgumentException("Argument #2 (\$space) must be a Space object or space ID.");
+        if (is_array($identifier)) {
+            if (count($identifier) !== 2) {
+                throw new InvalidArgumentException(__METHOD__, [1 => '$identifier'], 'array(Space|int|string, User|int|string|null)', $identifier);
+            }
+
+            $spaceId = Space::findInstanceAsId($identifier[0]);
+            $userId = User::findInstanceAsId($identifier[1]);
+
+            $membership = static::findInstanceHelper(['user_id' => $userId, 'space_id' => $spaceId], $config, $simpleCondition);
+
+            if ($membership) {
+                // cache the membership also under it's ID
+                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $membership->id), $membership);
+            }
+        } else {
+            $membership = static::findInstanceHelper($identifier, $config, $simpleCondition);
+
+            if ($membership) {
+                // cache the membership also under the space/user ID combination
+                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, [$membership->space_id, $membership->user_id]), $membership);
+            }
         }
 
-        if ($user instanceof User) {
-            $userId = $user->id;
-        } elseif ($user !== 0 && empty($user)) {
-            $userId = Yii::$app->user->id;
-        } elseif (null === $userId = filter_var($user, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
-            throw new InvalidArgumentException("Argument #1 (\$user) must be a User object or user ID.");
-        }
-
-        return Yii::$app->runtimeCache->getOrSet(__CLASS__ . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
+        return $membership;
     }
 
-    public static function unsetCache(int $spaceId, int $userId)
+    /**
+     * Find and cache Membership by space and user
+     *
+     * @param array<Space|int|string, User|int|string|null> $identifier
+     * @param array $config = [
+     *     'cached' => true,                    // use cached results
+     *     'nullable' => false,                 // allow null values on for $identifier
+     *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
+     *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
+     *     'intKey' => 'id',
+     *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
+     *     'exception' => Throwable,            // throw this exception rather than InvalidArgumentTypeException
+     *     ]
+     *
+     * @return null|array = [int $space_id, int $user_id]
+     *
+     * @inheritdoc
+     * @since 1.15
+     */
+    public static function findInstanceAsId($identifier, array $config = []): ?array
     {
-        Yii::$app->runtimeCache->delete(__CLASS__ . "_$spaceId-$userId");
-        Yii::$app->cache->delete(Module::$legitimateCachePrefix . $userId);
+        $membership = static::findInstance($identifier, $config);
+
+        return $membership
+            ? [$membership->space_id, $membership->user_id]
+            : null;
+    }
+
+    public static function unsetCache($identifier)
+    {
+        $spaceId = $userId = null;
+        $runtimeCache = Yii::$app->runtimeCache;
+
+        if (is_array($identifier) || is_scalar($identifier)) {
+            $identifier = $runtimeCache->get(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $identifier));
+        }
+
+        if ($identifier instanceof self) {
+            $spaceId ??= $identifier->space_id;
+            $userId ??= $identifier->user_id;
+            $id = $identifier->id;
+        } else {
+            return;
+        }
+
+        $runtimeCache->delete(CacheableActiveQuery::normaliseObjectIdentifier(static::class, [$spaceId, $userId]));
+        $runtimeCache->delete(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $id));
+
+        $cache = Yii::$app->cache;
+        $cache->delete(self::USER_SPACES_CACHE_KEY . $userId);
+        $cache->delete(self::USER_SPACEIDS_CACHE_KEY . $userId);
+        $cache->delete(Module::$legitimateCachePrefix . $userId);
     }
 }

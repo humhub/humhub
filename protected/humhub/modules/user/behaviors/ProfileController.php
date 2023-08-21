@@ -73,11 +73,11 @@ class ProfileController extends Behavior
      */
     public function beforeAction($action)
     {
-        if ($this->user->status == User::STATUS_NEED_APPROVAL) {
+        if ($this->user->state == User::STATE_NEEDS_APPROVAL) {
             throw new HttpException(404, Yii::t('UserModule.profile', 'This user account is not approved yet!'));
         }
 
-        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+        if ($this->user->state == User::STATE_SOFT_DELETED) {
             throw new HttpException(404, Yii::t('UserModule.profile', 'This profile is no longer available!'));
         }
 

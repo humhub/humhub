@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\CacheableActiveQuery;
 use humhub\modules\user\models\User;
 use yii\db\ActiveQuery;
 
@@ -10,7 +11,7 @@ use yii\db\ActiveQuery;
  *
  * @since 1.13.1
  */
-abstract class AbstractActiveQueryContentContainer extends ActiveQuery
+abstract class AbstractActiveQueryContentContainer extends CacheableActiveQuery
 {
     /**
      * Query keywords will be broken down into array needles with this length
@@ -19,14 +20,14 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
      *
      * @var int
      */
-    const MAX_SEARCH_NEEDLES = 5;
+    public const MAX_SEARCH_NEEDLES = 5;
 
     /**
      * During search, keyword will be walked through and each character of the set will be changed to another
      * of the same set to create variants to maximise search.
      * @var array
      */
-    protected $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
+    protected array $multiCharacterSearchVariants = [['\'', '’', '`'], ['"', '”', '“']];
 
     /**
      * Filter query by visible records for the given or current user

@@ -12,14 +12,33 @@ namespace humhub\components;
  * Event is the base class for all event classes.
  *
  * @since 1.2.3
- * @author Luke
+ * @deprecated since 1.16; Use \humhub\events\Event.
+ * @see \humhub\events\Event
+ *
+ * @property mixed $result Deprecated. Use $value instead.
  */
-class Event extends \yii\base\Event
+class Event extends \humhub\events\Event
 {
+    /**
+     * @param mixed $value
+     * @return static
+     * @deprecated since 1.15. Use static::setValue()
+     * @see static::setValue()
+     * @noinspection PhpUnused
+     */
+    public function setResult($value): Event
+    {
+        $this->value = $value;
+        return $this;
+    }
 
     /**
-     * @var mixed an optional result which can be manipulated by the event handler.
-     * Note that this varies according to which event is currently executing.
+     * @return mixed
+     * @see static::getValue()
+     * @deprecated since 1.15. Use static::getValue()
      */
-    public $result;
+    public function getResult()
+    {
+        return $this->value;
+    }
 }

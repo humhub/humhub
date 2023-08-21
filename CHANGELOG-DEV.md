@@ -1,8 +1,14 @@
 HumHub Changelog
 ================
 
+1.16.0 (Unreleased)
+--------------------------
+- Enh #6430: Introduce Statable interfaces and implementation
+
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Fix #6519: Ensure e-mails would always have a sender address set
+- Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
 - Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
@@ -16,6 +22,7 @@ HumHub Changelog
 - Enh #6469: Implement conditions for `fixed-settings` in config
 - Enh #68: Online Indicator Position
 - Fix #6492: Fix module form "Set as default"
+- Enh #6463: Introduce `FindInstanceInterface` with methods to get (cached) instances of e.g. `User`s, `Space`s, and `Membership`s
 - Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
 - Enh #6498: Implement option "disabled" for picker fields
 - Enh #6506: Allow event data from module config

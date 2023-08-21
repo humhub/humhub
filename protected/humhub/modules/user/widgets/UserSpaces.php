@@ -37,7 +37,7 @@ class UserSpaces extends \yii\base\Widget
     {
         $query = Membership::getUserSpaceQuery($this->user)
                 ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
-                ->andWhere(['space.status' => Space::STATUS_ENABLED]);
+                ->andWhere(['space.state' => Space::STATE_ENABLED]);
 
         $showMoreLink = ($query->count() > $this->maxSpaces);
 

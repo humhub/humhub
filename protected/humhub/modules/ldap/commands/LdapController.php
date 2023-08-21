@@ -85,8 +85,8 @@ class LdapController extends \yii\console\Controller
 
         $this->stdout("LDAP connection successful!\n\n", Console::FG_GREEN);
 
-        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_ENABLED])->count();
-        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'status' => User::STATUS_DISABLED])->count();
+        $activeUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'state' => User::STATE_ENABLED])->count();
+        $disabledUserCount = User::find()->andWhere(['auth_mode' => $ldapAuthClient->getId(), 'state' => User::STATE_DISABLED])->count();
 
         $this->stdout("LDAP user count:\t\t" . $userCount . " users.\n");;
         $this->stdout("HumHub user count (active):\t" . $activeUserCount . " users.\n");
@@ -212,7 +212,7 @@ class LdapController extends \yii\console\Controller
                 // Fix empty 'authclient_id' by e-mail
                 if (isset($attributes['email'])) {
                     $user = User::find()->where(['email' => $attributes['email']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
-                    if ($user !== null && User::findOne(['authclient_id' => $attributes['id']]) === null) {
+                    if ($user !== null && User::findInstance($attributes['id'], ['stringKey' => 'authclient_id']) === null) {
                         $user->updateAttributes(['authclient_id' => $attributes['id']]);
                         $d++;
                     }
@@ -221,14 +221,14 @@ class LdapController extends \yii\console\Controller
                 // Fix empty 'authclient_id' by username
                 if (isset($attributes['username'])) {
                     $user = User::find()->where(['username' => $attributes['username']])->andWhere(['IS', 'authclient_id', new Expression('NULL')])->one();
-                    if ($user !== null && User::findOne(['authclient_id' => $attributes['id']]) === null) {
+                    if ($user !== null && User::findInstance($attributes['id'], ['stringKey' => 'authclient_id']) === null) {
                         $user->updateAttributes(['authclient_id' => $attributes['id']]);
                         $d++;
                     }
                 }
 
                 // Fix wrong/missing 'auth_mode' by authclient_id
-                $user = User::findOne(['authclient_id' => $attributes['id']]);
+                $user = User::findInstance($attributes['id'], ['stringKey' => 'authclient_id']);
                 if ($user !== null && $user->auth_mode != $newAuthClient->getId()) {
                     $user->updateAttributes(['auth_mode' => $newAuthClient->getId()]);
                     $m++;

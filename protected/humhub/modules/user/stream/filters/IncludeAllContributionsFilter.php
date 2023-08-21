@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user\stream\filters;
 
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
 use humhub\modules\user\models\User;
@@ -45,6 +46,10 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
             return parent::apply();
         }
 
+        $params = [
+            ':membershipIsMember' => Membership::STATE_MEMBER,
+        ];
+
         $queryUser = $this->streamQuery->user;
 
         // TODO: Refactor to unify with ActiveQueryContent::readable()
@@ -67,7 +72,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
             $conditionSpaceMembershipRestriction = '';
         } else {
             // User must be a space's member OR Space and Content are public
-            $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
+            $conditionSpaceMembershipRestriction = ' AND ( space_membership.state=:membershipIsMember OR (content.visibility=1 AND space.visibility != 0) )';
         }
         if ($queryUser->canViewAllContent(User::class)) {
             // Don't restrict if user can view all content:
@@ -94,7 +99,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
         // Created content of is always visible
         $conditionUser .= 'OR content.created_by=' . $queryUser->id;
 
-        $this->query->andWhere("{$conditionSpace} OR {$conditionUser} OR content.contentcontainer_id IS NULL");
+        $this->query->andWhere("{$conditionSpace} OR {$conditionUser} OR content.contentcontainer_id IS NULL", $params);
     }
 
     /**

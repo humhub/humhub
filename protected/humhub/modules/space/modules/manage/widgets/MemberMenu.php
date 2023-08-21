@@ -78,7 +78,7 @@ class MemberMenu extends TabMenu
     {
         $searchModel = new MembershipSearch();
         $searchModel->space_id = $this->space->id;
-        $searchModel->status = Membership::STATUS_INVITED;
+        $searchModel->state = Membership::STATE_INVITED;
 
         return $searchModel->search([])->getCount();
     }
@@ -92,7 +92,7 @@ class MemberMenu extends TabMenu
     {
         $searchModel = new MembershipSearch();
         $searchModel->space_id = $this->space->id;
-        $searchModel->status = Membership::STATUS_APPLICANT;
+        $searchModel->state = Membership::STATE_APPLICANT;
 
         return $searchModel->search([])->getCount();
     }

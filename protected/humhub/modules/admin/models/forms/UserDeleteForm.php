@@ -49,7 +49,7 @@ class UserDeleteForm extends Model
      */
     public function init()
     {
-        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+        if ($this->user->state == User::STATE_SOFT_DELETED) {
             $this->deleteContributions = true;
         }
     }
@@ -62,7 +62,7 @@ class UserDeleteForm extends Model
         $rules = [];
         $rules[] = [['deleteSpaces'], 'boolean'];
 
-        if ($this->user->status != User::STATUS_SOFT_DELETED) {
+        if ($this->user->state != User::STATE_SOFT_DELETED) {
             $rules[] = [['deleteContributions'], 'boolean'];
         }
 
@@ -98,7 +98,7 @@ class UserDeleteForm extends Model
     public function load($data, $formName = null)
     {
         // Handle empty form submit
-        if ($this->user->status == User::STATUS_SOFT_DELETED && Yii::$app->request->isPost) {
+        if ($this->user->state == User::STATE_SOFT_DELETED && Yii::$app->request->isPost) {
             return true;
         }
 

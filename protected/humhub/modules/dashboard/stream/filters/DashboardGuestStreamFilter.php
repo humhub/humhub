@@ -28,16 +28,14 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
          * For guests collect all contentcontainer_ids of "guest" public spaces / user profiles.
          * Generally show only public content
          */
-        $publicSpacesSql = (new Query())
+        $publicSpacesSql = Space::find()
             ->select(["contentcontainer_id"])
-            ->from('space')
-            ->where(['space.visibility' =>  Space::VISIBILITY_ALL])
-            ->andWhere(['space.status' => Space::STATUS_ENABLED]);
+            ->whereState(Space::STATE_ENABLED)
+            ->andWhere(['space.visibility' =>  Space::VISIBILITY_ALL]);
 
-        $publicProfilesSql = (new Query())
+        $publicProfilesSql = User::find()
             ->select("contentcontainer_id")
-            ->from('user')
-            ->where(['user.status' => User::STATUS_ENABLED])
+            ->whereState(User::STATE_ENABLED)
             ->andWhere(['user.visibility' =>  User::VISIBILITY_ALL]);
 
         $this->query->andFilterWhere(['OR',

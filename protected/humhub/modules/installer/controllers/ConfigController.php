@@ -267,7 +267,7 @@ class ConfigController extends Controller
                 $profileModel = $userModel->profile;
                 $profileModel->scenario = 'registration';
 
-                $userModel->status = User::STATUS_ENABLED;
+                $userModel->state = User::STATE_ENABLED;
                 $userModel->username = "david1986";
                 $userModel->email = "david.roberts@example.com";
                 $userModel->language = '';
@@ -297,7 +297,7 @@ class ConfigController extends Controller
                 $profileModel2 = $userModel2->profile;
                 $profileModel2->scenario = 'registration';
 
-                $userModel2->status = User::STATUS_ENABLED;
+                $userModel2->state = User::STATE_ENABLED;
                 $userModel2->username = "sara1989";
                 $userModel2->email = "sara.schuster@example.com";
                 $userModel2->language = '';
@@ -461,7 +461,7 @@ class ConfigController extends Controller
 
         if ($form->submitted('save') && $form->validate()) {
 
-            $form->models['User']->status = User::STATUS_ENABLED;
+            $form->models['User']->state = User::STATE_ENABLED;
             $form->models['User']->language = '';
             $form->models['User']->tagsField = ['Administration', 'Support', 'HumHub'];
             $form->models['User']->save();

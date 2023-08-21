@@ -84,7 +84,7 @@ class AuthClientService
 
             foreach ($this->authClient->getSyncAttributes() as $attributeName) {
                 if (isset($attributes[$attributeName])) {
-                    if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'status', 'contentcontainer_id', 'auth_mode'])) {
+                    if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'state', 'contentcontainer_id', 'auth_mode'])) {
                         $user->setAttribute($attributeName, $attributes[$attributeName]);
                     } else {
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
@@ -136,6 +136,7 @@ class AuthClientService
             $attributes['guid'],
             $attributes['contentcontainer_id'],
             $attributes['auth_mode'],
+            $attributes['state'],
             $attributes['status']
         );
 

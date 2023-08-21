@@ -52,19 +52,19 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testSpaceMemberDoesNotSeePublicContentOfArchivedSpace()
     {
-        $this->assertSpaceMemberDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, 1 , Space::STATUS_ARCHIVED);
+        $this->assertSpaceMemberDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, 1 , Space::STATE_ARCHIVED);
     }
 
     public function testSpaceMemberDoesNotSeePublicContentOfDisabledSpace()
     {
-        $this->assertSpaceMemberDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, 1 , Space::STATUS_DISABLED);
+        $this->assertSpaceMemberDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, 1 , Space::STATE_DISABLED);
     }
 
-    private function assertSpaceMemberDoesSee($spaceVisibility, $contentVisibility, $showAtDashboard = 1, $state = Space::STATUS_ENABLED)
+    private function assertSpaceMemberDoesSee($spaceVisibility, $contentVisibility, $showAtDashboard = 1, $state = Space::STATE_ENABLED)
     {
-        $user = User::findOne(['id' => 3]);
-        $space = Space::findOne(['id' => 1]);
-        $space->updateAttributes(['status' => $state, 'visibility' => $spaceVisibility]);
+        $user = User::findInstance(3);
+        $space = Space::findInstance(1);
+        $space->updateAttributes(['state' => $state, 'visibility' => $spaceVisibility]);
 
         $membership = $space->getMembership($user->id);
         $membership->updateAttributes(['show_at_dashboard' => $showAtDashboard]);
@@ -77,11 +77,11 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertSpaceMemberDoesNotSee($spaceVisibility, $contentVisibility, $show_at_dahsboard = 1, $state = Space::STATUS_ENABLED)
+    private function assertSpaceMemberDoesNotSee($spaceVisibility, $contentVisibility, $show_at_dahsboard = 1, $state = Space::STATE_ENABLED)
     {
-        $user = User::findOne(['id' => 3]);
-        $space = Space::findOne(['id' => 1]);
-        $space->updateAttributes(['status' => $state, 'visibility' => $spaceVisibility]);
+        $user = User::findInstance(3);
+        $space = Space::findInstance(1);
+        $space->updateAttributes(['state' => $state, 'visibility' => $spaceVisibility]);
 
         $membership = $space->getMembership($user->id);
         $membership->updateAttributes(['show_at_dashboard' => $show_at_dahsboard]);
@@ -129,8 +129,8 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     private function assertNonSpaceMemberDoesNotSee($spaceVisibility, $contentVisibility)
     {
-        $user = User::findOne(['id' => 2]);
-        $space = Space::findOne(['id' => 1]);
+        $user = User::findInstance(2);
+        $space = Space::findInstance(1);
         $space->updateAttributes(['visibility' => $spaceVisibility]);
 
         $this->createContent($contentVisibility, $space);
@@ -174,20 +174,20 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testSpaceFollowerDoesNotSeePublicContentOnArchivedSpace()
     {
-        $this->assertSpaceFollowerDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, Space::STATUS_ARCHIVED);
+        $this->assertSpaceFollowerDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, Space::STATE_ARCHIVED);
     }
 
     public function testSpaceFollowerDoesNotSeePublicContentOnDisabledSpace()
     {
-        $this->assertSpaceFollowerDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, Space::STATUS_ARCHIVED);
+        $this->assertSpaceFollowerDoesNotSee(Space::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, Space::STATE_ARCHIVED);
     }
 
-    private function assertSpaceFollowerDoesSee($spaceVisibility, $contentVisibility, $state = Space::STATUS_ENABLED)
+    private function assertSpaceFollowerDoesSee($spaceVisibility, $contentVisibility, $state = Space::STATE_ENABLED)
     {
-        $user = User::findOne(['id' => 2]);
-        $space = Space::findOne(['id' => 1]);
+        $user = User::findInstance(2);
+        $space = Space::findInstance(1);
         $this->assertTrue($space->follow($user->id));
-        $space->updateAttributes(['visibility' => $spaceVisibility, 'status' => $state]);
+        $space->updateAttributes(['visibility' => $spaceVisibility, 'state' => $state]);
 
         $content = $this->createContent($contentVisibility, $space);
         $stream = $this->fetchDashboardContent($user);
@@ -195,12 +195,12 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertSpaceFollowerDoesNotSee($spaceVisibility, $contentVisibility, $state = Space::STATUS_ENABLED)
+    private function assertSpaceFollowerDoesNotSee($spaceVisibility, $contentVisibility, $state = Space::STATE_ENABLED)
     {
-        $user = User::findOne(['id' => 2]);
-        $space = Space::findOne(['id' => 1]);
+        $user = User::findInstance(2);
+        $space = Space::findInstance(1);
         $this->assertTrue($space->follow($user->id));
-        $space->updateAttributes(['visibility' => $spaceVisibility, 'status' => $state]);
+        $space->updateAttributes(['visibility' => $spaceVisibility, 'state' => $state]);
 
         $this->createContent($contentVisibility, $space);
         $stream = $this->fetchDashboardContent($user);
@@ -261,7 +261,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     public function testUserDoesNotSeeContentOfDisabledProfileWithIncludeAll()
     {
         $this->enableAutoIncludeProfilePostsAll();
-        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, null,User::STATUS_DISABLED);
+        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, null,User::STATE_DISABLED);
     }
 
 
@@ -319,15 +319,15 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
     public function testAdminDoesNotSeeContentOnDisabledProfileWithIncludeAdminOnly()
     {
         $this->enableAutoIncludeProfilePostsAdmin();
-        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::findOne(['id' => 1]), User::STATUS_DISABLED);
+        $this->assertUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::findInstance(1), User::STATE_DISABLED);
     }
 
-    private function assertUserDoesSeeProfileContent($userVisibility, $contentVisibility, $user = null , $status = User::STATUS_ENABLED)
+    private function assertUserDoesSeeProfileContent($userVisibility, $contentVisibility, $user = null , $state = User::STATE_ENABLED)
     {
-        $user1 = User::findOne(['id' => 2]);
-        $user2 = $user ?? User::findOne(['id' => 3]);
+        $user1 = User::findInstance(2);
+        $user2 = $user ?? User::findInstance(3);
 
-        $user1->updateAttributes(['visibility' => $userVisibility, 'status' => $status]);
+        $user1->updateAttributes(['visibility' => $userVisibility, 'state' => $state]);
 
         $content = $this->createContent($contentVisibility, $user1, $user1->username);
         $stream = $this->fetchDashboardContent($user2);
@@ -335,12 +335,12 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertUserDoesNotSeeProfileContent($userVisibility, $contentVisibility,  $user = null, $status = User::STATUS_ENABLED)
+    private function assertUserDoesNotSeeProfileContent($userVisibility, $contentVisibility,  $user = null, $state = User::STATE_ENABLED)
     {
-        $user1 = User::findOne(['id' => 2]);
-        $user2 = $user ?? User::findOne(['id' => 3]);
+        $user1 = User::findInstance(2);
+        $user2 = $user ?? User::findInstance(3);
 
-        $user1->updateAttributes(['visibility' => $userVisibility, 'status' => $status]);
+        $user1->updateAttributes(['visibility' => $userVisibility, 'state' => $state]);
 
         $this->createContent($contentVisibility, $user1,  $user1->username);
         $stream = $this->fetchDashboardContent($user2);
@@ -372,18 +372,18 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testFollowingUserDoesNotSeeContentOfDisabledProfile()
     {
-        $this->assertFollowingUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::STATUS_DISABLED);
+        $this->assertFollowingUserDoesNotSeeProfileContent(User::VISIBILITY_ALL, Content::VISIBILITY_PUBLIC, User::STATE_DISABLED);
     }
 
-    private function assertFollowingUserDoesSeeProfileContent($userVisibility, $contentVisibility, $status = User::STATUS_ENABLED)
+    private function assertFollowingUserDoesSeeProfileContent($userVisibility, $contentVisibility, $state = User::STATE_ENABLED)
     {
-        $user1 = User::findOne(['id' => 2]);
-        $user2 = User::findOne(['id' => 3]);
+        $user1 = User::findInstance(2);
+        $user2 = User::findInstance(3);
 
         // User2 follows user1
         static::assertTrue($user1->follow($user2));
 
-        $user1->updateAttributes(['visibility' => $userVisibility, 'status' => $status]);
+        $user1->updateAttributes(['visibility' => $userVisibility, 'state' => $state]);
 
         $content = $this->createContent($contentVisibility, $user1, $user1->username);
         $stream = $this->fetchDashboardContent($user2);
@@ -391,15 +391,15 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertFollowingUserDoesNotSeeProfileContent($userVisibility, $contentVisibility, $status = User::STATUS_ENABLED)
+    private function assertFollowingUserDoesNotSeeProfileContent($userVisibility, $contentVisibility, $state = User::STATE_ENABLED)
     {
-        $user1 = User::findOne(['id' => 2]);
-        $user2 = User::findOne(['id' => 3]);
+        $user1 = User::findInstance(2);
+        $user2 = User::findInstance(3);
 
         // User2 follows user1
         static::assertTrue($user1->follow($user2));
 
-        $user1->updateAttributes(['visibility' => $userVisibility, 'status' => $status]);
+        $user1->updateAttributes(['visibility' => $userVisibility, 'state' => $state]);
 
         $content = $this->createContent($contentVisibility, $user1, $user1->username);
         $stream = $this->fetchDashboardContent($user2);
@@ -423,7 +423,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testFriendUserDoesNotSeeContentOfDisabledProfile()
     {
-        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false, User::STATUS_DISABLED);
+        $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PUBLIC, false, User::STATE_DISABLED);
     }
 
     public function testFriendRequestedUserDoesSeePublicContent()
@@ -436,19 +436,19 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         $this->assertFriendUserDoesNotSeeProfileContent(Content::VISIBILITY_PRIVATE, true);
     }
 
-    private function assertFriendUserDoesSeeProfileContent($contentVisibility, $requested = false, $status = User::STATUS_ENABLED)
+    private function assertFriendUserDoesSeeProfileContent($contentVisibility, $requested = false, $state = User::STATE_ENABLED)
     {
         $this->enableFriendships();
 
-        $user1 = User::findOne(['id' => 2]);
+        $user1 = User::findInstance(2);
 
-        $user1->updateAttributes(['status' => $status]);
+        $user1->getStateService()->set($state)->save();
 
-        $user2 = User::findOne(['id' => 3]);
+        $user2 = User::findInstance(3);
 
         static::assertTrue(Friendship::add($user2, $user1));
 
-        if(!$requested) {
+        if (!$requested) {
             static::assertTrue(Friendship::add($user1, $user2));
         }
 
@@ -460,19 +460,19 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
         static::assertEquals($content->id, $stream[0]->id);
     }
 
-    private function assertFriendUserDoesNotSeeProfileContent($contentVisibility, $requested = false, $status = User::STATUS_ENABLED)
+    private function assertFriendUserDoesNotSeeProfileContent($contentVisibility, $requested = false, $state = User::STATE_ENABLED)
     {
         $this->enableFriendships();
 
-        $user1 = User::findOne(['id' => 2]);
+        $user1 = User::findInstance(2);
 
-        $user1->updateAttributes(['status' => $status]);
+        $user1->getStateService()->set($state)->save();
 
-        $user2 = User::findOne(['id' => 3]);
+        $user2 = User::findInstance(3);
 
         static::assertTrue(Friendship::add($user2, $user1));
 
-        if(!$requested) {
+        if (!$requested) {
             static::assertTrue(Friendship::add($user1, $user2));
         }
 

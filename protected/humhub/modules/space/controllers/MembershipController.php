@@ -256,9 +256,9 @@ class MembershipController extends ContentContainerController
             throw new HttpException(404, Yii::t('SpaceModule.base', 'There is no pending invite!'));
         }
 
-        // Check there are really an Invite
-        if ($membership->status == Membership::STATUS_INVITED) {
-            $space->addMember(Yii::$app->user->id);
+        // Check if Memberhip is really an invitation
+        if ($membership->state == Membership::STATE_INVITED) {
+            $space->addMember($membership->user_id);
         }
 
         return $this->getActionResult($space);

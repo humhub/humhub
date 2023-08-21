@@ -35,10 +35,11 @@ class PublishScheduledContentTest extends HumHubDbTestCase
         $postB = Post::findOne($postB->id);
         $this->assertEquals(Content::STATE_PUBLISHED, $postB->content->state);
 
-        $postC = Post::findOne($postC->id);
+        $postC = Post::find()->where(['id' => $postC->id])->whereStateAny()->one();
+        $this::isInstanceOf(Post::class, $postC);
         $this->assertEquals(Content::STATE_SCHEDULED, $postC->content->state);
 
-        $postD = Post::findOne($postD->id);
+        $postD = Post::find()->where(['id' => $postD->id])->whereStateAny()->one();
         $this->assertEquals(Content::STATE_SCHEDULED, $postD->content->state);
     }
 

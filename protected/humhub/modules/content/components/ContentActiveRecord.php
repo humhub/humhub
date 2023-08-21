@@ -9,7 +9,10 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\BasePermission;
+use humhub\components\StatableTrait;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -17,6 +20,7 @@ use humhub\modules\content\interfaces\SoftDeletable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ActiveContentStateService;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\content\widgets\WallEntry;
@@ -31,6 +35,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\ModelEvent;
 use yii\db\ActiveQuery;
+use yii\db\ActiveQueryInterface;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -67,11 +72,20 @@ use yii\db\ActiveQuery;
  * @mixin Followable
  * @property User $createdBy
  * @property User $owner
+ * @property-read string $contentName
+ * @property-read null|string $icon
+ * @property-read null|WallEntry|WallStreamEntryWidget $wallEntryWidget
+ * @property-read string $contentDescription
  * @property-read File[] $files
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInstanceInterface, Movable, SoftDeletable
 {
+    use FindInstanceTrait;
+    use StatableTrait {
+        StatableTrait::find insteadof FindInstanceTrait;
+    }
+
     /**
      * @see StreamEntryWidget
      * @var string the StreamEntryWidget widget class
@@ -384,7 +398,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     {
         if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if (!empty($this->wallEntryClass)) {
+        } elseif (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
@@ -407,7 +421,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class();
             $widget->contentObject = $this;
             return $widget;
         }
@@ -442,22 +456,24 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Auto follow this content
+        $content = $this->content;
+
+        // Auto-follow this content
         if ($this->autoFollow) {
-            $this->follow($this->content->created_by);
+            $this->follow($content->created_by);
         }
 
         // Set polymorphic relation
         if ($insert) {
-            $this->content->object_model = static::getObjectModel();
-            $this->content->object_id = $this->getPrimaryKey();
+            $content->object_model = static::getObjectModel();
+            $content->object_id = $this->getPrimaryKey();
         }
 
-        if (!$insert || $this->content->isNewRecord) {
+        if (!$insert || $content->isNewRecord) {
             // Save a Content only on each update of this Record or when the Content is creating first time.
             // Don't update the Content twice during inserting of this Record
             //   in order to don't touch the column `updated_at` when action is "creating" really.
-            $this->content->save();
+            $content->save();
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -472,11 +488,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function afterStateChange(?int $newState, ?int $previousState): void
     {
         // Activities should be updated to same state as parent Record
-        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($this)->whereStateAny();
         if ($activitiesQuery instanceof ActiveQuery) {
             foreach ($activitiesQuery->each() as $activity) {
                 /* @var Activity $activity */
-                $activity->content->getStateService()->update($newState);
+                $activity->getStateService()->update($newState);
             }
         }
     }
@@ -502,6 +518,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public static function getObjectModel(): string
     {
         return static::class;
+    }
+
+    public static function getStateServiceClass(): string
+    {
+        return ActiveContentStateService::class;
     }
 
     /**
@@ -608,8 +629,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getContent()
     {
-        return $this->hasOne(Content::class, ['object_id' => 'id'])
-            ->andWhere(['content.object_model' => static::getObjectModel()]);
+        $getObjectModel = static::getObjectModel();
+        $content = $this->hasOneCached(Content::class, ['object_id' => 'id'], ['content.object_model' => $getObjectModel]);
+
+        return $content instanceof ActiveQueryInterface
+            ? $content
+                ->andWhere(['content.object_model' => $getObjectModel])
+                ->whereStateAny()
+            : $content;
     }
 
     public function getFiles()
@@ -638,6 +665,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public static function find()
     {
         return new ActiveQueryContent(static::class);
+    }
+
+    /**
+     * @since 1.15
+     * @inheritdoc
+     **/
+    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    {
+        return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**

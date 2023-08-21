@@ -86,7 +86,7 @@ class EntryController extends Controller
             return null;
         }
 
-        $content = Content::findOne(['id' => $cId]);
+        $content = Content::findInstance($cId);
 
         if(!$content) {
             return null;

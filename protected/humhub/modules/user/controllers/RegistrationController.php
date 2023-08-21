@@ -103,7 +103,7 @@ class RegistrationController extends Controller
             Yii::$app->session->remove('authClient');
 
             // Autologin when user is enabled (no approval required)
-            if ($registration->getUser()->status === User::STATUS_ENABLED) {
+            if ($registration->getUser()->state === User::STATE_ENABLED) {
                 $registration->getUser()->refresh(); // https://github.com/humhub/humhub/issues/6273
                 Yii::$app->user->login($registration->getUser());
                 if (Yii::$app->request->getIsAjax()) {
@@ -114,7 +114,7 @@ class RegistrationController extends Controller
 
             return $this->render('success', [
                 'form' => $registration,
-                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+                'needApproval' => ($registration->getUser()->state === User::STATE_NEEDS_APPROVAL)
             ]);
         }
 
@@ -128,7 +128,7 @@ class RegistrationController extends Controller
     /**
      * Invitation by link
      * @param null $token
-     * @param null $spaceId
+     * @param Space|int|string|null $spaceId
      * @return string
      * @throws HttpException
      * @throws \Throwable
@@ -136,7 +136,7 @@ class RegistrationController extends Controller
      */
     public function actionByLink(?string $token = null, $spaceId = null)
     {
-        $linkRegistrationService = new LinkRegistrationService($token, Space::findOne(['id' => (int)$spaceId]));
+        $linkRegistrationService = new LinkRegistrationService($token, Space::findInstance($spaceId));
 
         if (!$linkRegistrationService->isEnabled()) {
             throw new HttpException(404);

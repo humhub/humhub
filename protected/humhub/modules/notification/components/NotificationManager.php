@@ -92,7 +92,7 @@ class NotificationManager
                 continue;
             }
 
-            if ($user->status != User::STATUS_ENABLED) {
+            if ($user->state != User::STATE_ENABLED) {
                 continue;
             }
 
@@ -253,7 +253,7 @@ class NotificationManager
         if ($isDefault) {
             // Add all user with no notification setting
             $query->orWhere([
-                'and', 'user.status=1', ['not exists', $this->findNotExistingSettingSubQuery()]
+                'and', 'user.state=' . User::STATE_ENABLED, ['not exists', $this->findNotExistingSettingSubQuery()]
             ]);
         }
 

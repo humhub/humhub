@@ -84,11 +84,13 @@ class ApprovalRequest extends BaseNotification
      */
     public function isValid()
     {
-        return Membership::find()->where([
-            'user_id' => $this->originator->id,
-            'space_id' => $this->source->id,
-            'status' => Membership::STATUS_APPLICANT,
-        ])->exists();
+        return Membership::find()
+            ->whereState(Membership::STATE_APPLICANT)
+            ->where([
+                'user_id' => $this->originator->id,
+                'space_id' => $this->source->id,
+            ])
+            ->exists();
     }
 
     /**

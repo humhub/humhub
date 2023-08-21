@@ -14,12 +14,14 @@ class DeleteActivityTest extends HumHubDbTestCase
         $post = Post::findOne(1);
         $activity = TestActivity::instance()->about($post)->create();
         $record = $activity->record;
-        $this->assertNull(Activity::find()->where(['id' => $record->id])->readable()->one());
+        $this->assertNotNull(Activity::find()->where(['id' => $record->id])->whereStateAny()->one());
+        $this->assertNotNull(Activity::find()->where(['id' => $record->id])->whereState(Activity::STATE_PUBLISHED)->one());
         $post->delete();
-        $this->assertNotNull(Activity::findOne(['id' => $record->id]));
-        $this->assertNull(Activity::find()->where(['id' => $record->id])->readable()->one());
+        $this->assertNotNull(Activity::find()->where(['id' => $record->id])->whereStateAny()->one());
+        $this->assertNotNull(Activity::find()->where(['id' => $record->id])->whereState(Activity::STATE_SOFT_DELETED)->one());
+        $this->assertNull(Activity::find()->where(['id' => $record->id])->whereState(Activity::STATE_PUBLISHED)->one());
         $post->hardDelete();
-        $this->assertNull(Activity::findOne(['id' => $record->id]));
+        $this->assertNull(Activity::find()->where(['id' => $record->id])->whereStateAny()->one());
     }
 
     public function testDeleteOriginator()

@@ -10,7 +10,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\space\widgets\SpaceDirectoryActionButtons;
 use humhub\modules\space\widgets\SpaceDirectoryIcons;
-use humhub\modules\space\widgets\SpaceDirectoryStatus;
+use humhub\modules\space\widgets\SpaceDirectoryState;
 use humhub\modules\space\widgets\SpaceDirectoryTagList;
 use yii\web\View;
 
@@ -27,7 +27,7 @@ use yii\web\View;
             'linkOptions' => ['data-contentcontainer-id' => $space->contentcontainer_id, 'class' => 'card-image-link'],
             'width' => 94,
         ]); ?>
-        <?= SpaceDirectoryStatus::widget(['space' => $space]); ?>
+        <?= SpaceDirectoryState::widget(['space' => $space]); ?>
         <div class="card-icons">
             <?= SpaceDirectoryIcons::widget(['space' => $space]); ?>
         </div>

@@ -45,7 +45,7 @@ class PermaController extends Controller
         $id = (int)Yii::$app->request->get('id');
         $commentId = (int)Yii::$app->request->get('commentId');
 
-        $content = Content::findOne(['id' => $id]);
+        $content = Content::findInstance($id);
         if ($content !== null) {
 
             if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {

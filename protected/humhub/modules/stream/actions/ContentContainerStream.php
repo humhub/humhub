@@ -10,6 +10,7 @@ namespace humhub\modules\stream\actions;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\ContentContainerStreamQuery;
+use humhub\modules\stream\models\StreamQuery;
 use yii\base\InvalidConfigException;
 
 /**
@@ -36,7 +37,7 @@ class ContentContainerStream extends Stream
      * @inheritdoc
      * @throws InvalidConfigException
      */
-    protected function initQuery($options = [])
+    protected function initQuery($options = []): StreamQuery
     {
         $options['container'] = $this->contentContainer;
 

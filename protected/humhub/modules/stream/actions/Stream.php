@@ -9,6 +9,7 @@
 namespace humhub\modules\stream\actions;
 
 use humhub\components\Request;
+use humhub\interfaces\StatableQueryInterface;
 use humhub\modules\stream\events\StreamResponseEvent;
 use humhub\modules\user\models\User;
 use Yii;
@@ -158,7 +159,7 @@ abstract class Stream extends Action
     protected $streamQuery;
 
     /**
-     * @var string suppress similar content types in a row
+     * @var string|StreamQuery suppress similar content types in a row
      */
     public $streamQueryClass = WallStreamQuery::class;
 
@@ -232,7 +233,7 @@ abstract class Stream extends Action
      * @throws \yii\base\InvalidConfigException
      * @since 1.6
      */
-    protected function initQuery($options = [])
+    protected function initQuery($options = []): StreamQuery
     {
         $options['class'] = $this->streamQueryClass;
         $instance = Yii::createObject($options);
@@ -384,7 +385,7 @@ abstract class Stream extends Action
     private function handleEmptyResponse(StreamResponse $response)
     {
         if($this->streamQuery->isSingleContentQuery()) {
-            $content = Content::findOne(['id' => $this->streamQuery->contentId]);
+            $content = Content::findInstance($this->streamQuery->contentId);
             if(!$content) {
                 $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
             } elseif (!$content->canView()) {

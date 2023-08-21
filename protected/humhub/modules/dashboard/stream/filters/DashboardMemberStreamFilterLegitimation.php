@@ -65,7 +65,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
             'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel',
             [':spaceModel' => Space::class]
         );
-        $this->query->andWhere(['OR', 'spaceContainer.id IS NULL', ['spaceContainer.status' => Space::STATUS_ENABLED]]);
+        $this->query->andWhere(['OR', 'spaceContainer.id IS NULL', ['spaceContainer.state' => Space::STATE_ENABLED]]);
     }
 
     private function excludeNotShowInDashboardSpaces()
@@ -85,7 +85,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
             'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel',
             [':userModel' => User::class]
         );
-        $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.status' => User::STATUS_ENABLED]]);
+        $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.state' => User::STATE_ENABLED]]);
     }
 
     /**
