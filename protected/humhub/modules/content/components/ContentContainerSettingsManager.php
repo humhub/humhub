@@ -78,7 +78,11 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      */
     protected function find()
     {
-        return parent::find()->andWhere(['contentcontainer_id' => $this->contentContainer->contentContainerRecord->id]);
+        if ($this->contentContainer->contentContainerRecord) {
+            return parent::find()->andWhere(['contentcontainer_id' => $this->contentContainer->contentContainerRecord->id]);
+        }
+
+        return null;
     }
 
     /**
