@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6529: Add boolean return-type to `*safe*` methods in migrations
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
 - Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
