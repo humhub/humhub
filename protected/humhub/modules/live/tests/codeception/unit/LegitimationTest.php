@@ -42,7 +42,10 @@ class LegitimationTest extends HumHubDbTestCase
         $module = Yii::$app->getModule('live');
         $user = User::findOne(['id' => 1]);
         $space1 = Space::findOne(['id' => 1]);
-        $space1->addMember($user->id);
+
+        static::assertTrue($space1->addMember($user->id));
+        static::assertInstanceOf(Membership::class, Membership::findOne(['user_id' => 1, 'space_id' => 1]));
+
         $legitimations = $module->getLegitimateContentContainerIds($user, false);
 
         static::assertCount(1, $legitimations[Content::VISIBILITY_OWNER]);

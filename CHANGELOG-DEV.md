@@ -1,21 +1,50 @@
 HumHub Changelog (DEVELOP)
 ==========================
 
+1.16.0 (Unreleased)
+-------------------
+- Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
+- Enh #6511: Backup folder path is now return from `removeModule()`
+- Fix #6511: `canRemoveModule` no longer throws an Exception
+- Enh #6511: Allow an empty filter list to filter all registered modules
+- Enh #6511: Allow module paths for `enableModules()`
+- Enh #6511: Verify module's event definition
+- Enh #6511: Make module's module.json keywords accessible and searchable
+- Enh #6511: Add Event tracking capabilities to HumHubDbTestCase
+- Enh #6511: Add test for ModuleManager
+- Fix #6519: Ensure e-mails would always have a sender address set
+- Fix #6516: Humhub test case would fail on skipped tests
+- Enh #6512: Show error messages when DB connection configuration is invalid
+- Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
+- Enh #5315: Default stream sort by `created_at` instead of `id`
+- Fix #6337: Update `created_at` after first publishing of content record
+- Enh #6002: Display more info when content record is not readable
+
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6478: Add pseudo test class to allow population of DB with standard test data
+- Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
+- Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
+- Fix #6502: Link notification for pending space approval to manage page
 - Fix #6472: Initialization of account profile field type "Markdown"
 - Fix #6471: Wording "Default Homepage" in Space Default Settings
 - Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
-- Enh #6469: Added Info text for Marketplace page 
+- Enh #6469: Added Info text for Marketplace page
 - Fix #112: Reorder Table Rows
 - Fix #6476: Fix module disabling in queue
 - Enh #6469: Implement conditions for `fixed-settings` in config
-- Enh #6002: Display more info when content record is not readable
+- Enh #68: Online Indicator Position
+- Fix #6492: Fix module form "Set as default"
+- Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
+- Enh #6498: Implement option "disabled" for picker fields
+- Enh #6506: Allow event data from module config
+- Fix #6510: Fix online status position on people page
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
 - Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
 - Enh #6460: Test server output: print application requests
+- Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
 - Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager

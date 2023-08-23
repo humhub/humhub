@@ -24,6 +24,7 @@ use yii\web\AssetBundle;
  *
  * @property-read string $name
  * @property-read string $description
+ * @property-read array $keywords
  * @property-read bool $isActivated
  * @property SettingsManager $settings
  * @author luke
@@ -56,7 +57,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules name provided by module.json file
+     * Returns the module's name provided by module.json file
      *
      * @return string Name
      */
@@ -72,7 +73,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules description provided by module.json file
+     * Returns the module's description provided by module.json file
      *
      * @return string Description
      */
@@ -88,7 +89,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules version number provided by module.json file
+     * Returns the module's version number provided by module.json file
      *
      * @return string Version Number
      */
@@ -118,6 +119,22 @@ class Module extends \yii\base\Module
         }
 
         return $url;
+    }
+
+    /**
+     * Returns module's keywords provided by module.json file
+     *
+     * @return array List of keywords
+     */
+    public function getKeywords(): array
+    {
+        $info = $this->getModuleInfo();
+
+        if ($info['keywords']) {
+            return (array)$info['keywords'];
+        }
+
+        return [];
     }
 
     /**

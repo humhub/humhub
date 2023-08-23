@@ -8,49 +8,25 @@
 
 namespace humhub\components\console;
 
+use humhub\components\ApplicationTrait;
+use humhub\interfaces\ApplicationInterface;
 use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\console\Exception;
-use yii\helpers\Url;
 
 /**
  * Description of Application
  *
- * @author luke
+ * @inheritdoc
  */
-class Application extends \yii\console\Application
+class Application extends \yii\console\Application implements ApplicationInterface
 {
-
-    /**
-     * @event ActionEvent an event raised on init of application.
-     */
-    const EVENT_ON_INIT = 'onInit';
-
-    /**
-     * @var string|array the homepage url
-     */
-    private $_homeUrl = null;
-
-    /**
-     * @var string Minimum PHP version that recommended to work without issues
-     */
-    public $minRecommendedPhpVersion;
-
-    /**
-     * @var string Minimum PHP version that may works but probably with small issues
-     */
-    public $minSupportedPhpVersion;
+    use ApplicationTrait;
 
     /**
      * @inheritdoc
      */
-    public function __construct($config = [])
-    {
-        // Remove obsolete config params:
-        unset($config['components']['formatterApp']);
-
-        parent::__construct($config);
-    }
+    public $controllerNamespace = 'humhub\\controllers';
 
     /**
      * @inheritdoc
@@ -65,7 +41,7 @@ class Application extends \yii\console\Application
             ));
         }
 
-        if (BaseSettingsManager::isDatabaseInstalled()) {
+        if (BaseSettingsManager::isDatabaseInstalled(Yii::$app->params['databaseInstalled'] ?? false)) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
@@ -108,27 +84,4 @@ class Application extends \yii\console\Application
             'fixture' => 'yii\console\controllers\FixtureController',
         ];
     }
-
-    /**
-     * @return string the homepage URL
-     */
-    public function getHomeUrl()
-    {
-        if ($this->_homeUrl === null) {
-            return Url::to(['/dashboard/dashboard']);
-        } elseif (is_array($this->_homeUrl)) {
-            return Url::to($this->_homeUrl);
-        } else {
-            return $this->_homeUrl;
-        }
-    }
-
-    /**
-     * @param string|array $value the homepage URL
-     */
-    public function setHomeUrl($value)
-    {
-        $this->_homeUrl = $value;
-    }
-
 }
