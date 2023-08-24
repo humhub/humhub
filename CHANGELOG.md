@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------
 - Fix #6489: Never delete original file on store new version
 - Fix #6507: Reload page after accepting of invite in Space header
+- Fix #6531: Fix active style for `btn-lg`
 
 1.14.3 (July 27, 2023)
 ----------------------
