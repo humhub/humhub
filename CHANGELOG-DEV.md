@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6530: Small performance improvements
 - Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
 - Enh #6511: Backup folder path is now return from `removeModule()`
 - Fix #6511: `canRemoveModule` no longer throws an Exception
