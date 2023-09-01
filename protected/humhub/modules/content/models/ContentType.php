@@ -11,7 +11,6 @@ namespace humhub\modules\content\models;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use yii\db\Query;
@@ -82,11 +81,6 @@ class ContentType extends Model
 
         if ($container) {
             $query->andWhere(['contentcontainer_id' => $container->contentcontainer_id]);
-        }
-
-        if ($container instanceof Space) {
-            $excludedContentClasses = ContentContainerModuleState::getExcludedContentClasses(Space::class);
-            $query->andWhere(['NOT IN', 'object_model', $excludedContentClasses]);
         }
 
         $result = [];

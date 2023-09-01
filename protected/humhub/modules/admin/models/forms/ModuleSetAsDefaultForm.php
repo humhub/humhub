@@ -2,12 +2,17 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\components\ContentContainerModuleManager;
+use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerModuleState;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
+use yii\db\IntegrityException;
 
 /**
  * GroupForm is used to modify group settings
@@ -27,6 +32,11 @@ class ModuleSetAsDefaultForm extends Model
     public $userDefaultState;
 
     /**
+     * @var bool
+     */
+    public $moduleDeactivationConfirmed = false;
+
+    /**
      * Validation rules for group form
      *
      * @return array validation rules for model attributes.
@@ -35,6 +45,12 @@ class ModuleSetAsDefaultForm extends Model
     {
         return [
             [['userDefaultState', 'spaceDefaultState'], 'in', 'range' => ContentContainerModuleState::getStates()],
+            [['moduleDeactivationConfirmed'], 'boolean'],
+            [['moduleDeactivationConfirmed'], function ($attribute, $params, $validator) {
+                if ($this->mustConfirmModuleDeactivation()) {
+                    $this->addError($attribute, Yii::t('AdminModule.modules', 'The module will be disabled for {nbContainers} users or spaces!', ['nbContainers' => count($this->getModuleDeactivationContainers())]));
+                }
+            }],
         ];
     }
 
@@ -45,7 +61,8 @@ class ModuleSetAsDefaultForm extends Model
     {
         return [
             'spaceDefaultState' => Yii::t('AdminModule.modules', 'Space default state'),
-            'userDefaultState' => Yii::t('AdminModule.modules', 'User default state')
+            'userDefaultState' => Yii::t('AdminModule.modules', 'User default state'),
+            'moduleDeactivationConfirmed' => Yii::t('AdminModule.modules', 'Are you sure? All module data will be deleted!'),
         ];
     }
 
@@ -76,6 +93,8 @@ class ModuleSetAsDefaultForm extends Model
 
     /**
      * @return bool
+     * @throws IntegrityException
+     * @throws Exception
      */
     public function save($validate = true)
     {
@@ -83,9 +102,53 @@ class ModuleSetAsDefaultForm extends Model
             return false;
         }
 
+        // Disable module for users and spaces
+        foreach ($this->getModuleDeactivationContainers() as $container) {
+            $contentContainerActiveRecord = $container->getPolymorphicRelation();
+            if ($contentContainerActiveRecord instanceof ContentContainerActiveRecord) {
+                $contentContainerActiveRecord->moduleManager->disable($this->moduleId);
+            }
+        }
+
         ContentContainerModuleManager::setDefaultState(User::class, $this->moduleId, $this->userDefaultState);
         ContentContainerModuleManager::setDefaultState(Space::class, $this->moduleId, $this->spaceDefaultState);
 
         return true;
+    }
+
+    /**
+     * Get the content containers where the module is to be disabled
+     * @return array|ContentContainer[]
+     */
+    public function getModuleDeactivationContainers(): array
+    {
+        $module = Yii::$app->getModule($this->moduleId);
+        if (!$module instanceof ContentContainerModule) {
+            return [];
+        }
+
+        if (
+            (int)$this->userDefaultState === ContentContainerModuleState::STATE_NOT_AVAILABLE
+            && (int)$this->spaceDefaultState === ContentContainerModuleState::STATE_NOT_AVAILABLE
+        ) {
+            return $module->getEnabledContentContainers();
+        }
+
+        if ((int)$this->userDefaultState === ContentContainerModuleState::STATE_NOT_AVAILABLE) {
+            return $module->getEnabledContentContainers(User::class);
+        }
+
+        if ((int)$this->spaceDefaultState === ContentContainerModuleState::STATE_NOT_AVAILABLE) {
+            return $module->getEnabledContentContainers(Space::class);
+        }
+
+        return [];
+    }
+
+    public function mustConfirmModuleDeactivation(): bool
+    {
+        return
+            !$this->moduleDeactivationConfirmed
+            && $this->getModuleDeactivationContainers();
     }
 }
