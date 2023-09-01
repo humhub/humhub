@@ -49,7 +49,7 @@ AdminAsset::register($this);
                 <br>
                 <?php if ($model->mustConfirmModuleDeactivation()) : ?>
                     <div class="col-md-12">
-                        <?= $form->field($model, 'confirmed')->checkbox() ?>
+                        <?= $form->field($model, 'moduleDeactivationConfirmed')->checkbox() ?>
                     </div>
                 <?php endif; ?>
             </div>
