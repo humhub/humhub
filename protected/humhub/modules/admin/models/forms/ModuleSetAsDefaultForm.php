@@ -48,7 +48,7 @@ class ModuleSetAsDefaultForm extends Model
             [['moduleDeactivationConfirmed'], 'boolean'],
             [['moduleDeactivationConfirmed'], function ($attribute, $params, $validator) {
                 if ($this->mustConfirmModuleDeactivation()) {
-                    $this->addError($attribute, Yii::t('AdminModule.modules', 'The module will be disabled for {nbContainers} users or spaces!', ['nbContainers' => count($this->getModuleDeactivationContainers())]));
+                    $this->addError($attribute, '');
                 }
             }],
         ];
@@ -62,7 +62,7 @@ class ModuleSetAsDefaultForm extends Model
         return [
             'spaceDefaultState' => Yii::t('AdminModule.modules', 'Space default state'),
             'userDefaultState' => Yii::t('AdminModule.modules', 'User default state'),
-            'moduleDeactivationConfirmed' => Yii::t('AdminModule.modules', 'Are you sure? All module data will be deleted!'),
+            'moduleDeactivationConfirmed' => Yii::t('AdminModule.modules', 'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?', ['nbContainers' => count($this->getModuleDeactivationContainers())]),
         ];
     }
 
