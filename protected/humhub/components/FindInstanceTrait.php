@@ -8,6 +8,8 @@
 
 namespace humhub\components;
 
+use Behat\Gherkin\Keywords\CachedArrayKeywords;
+use humhub\exceptions\InvalidArgumentException;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidConfigTypeException;
 use humhub\interfaces\FindInstanceInterface;
@@ -32,9 +34,13 @@ trait FindInstanceTrait
      * @see FindInstanceInterface::findInstance
      * @noinspection PhpIncompatibleReturnTypeInspection
      */
-    protected static function findInstanceHelper($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    protected static function findInstanceHelper($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         $config ??= [];
+
+        if (!CacheableActiveQuery::isSimpleCondition($simpleCondition, true)) {
+            throw new InvalidArgumentException(__METHOD__, [3 => '$simpleCondition'], ['array', 'null'], $simpleCondition, 'array keys must be strings and values must be scalars');
+        }
 
         // check if the given $identifier is already an instance of the required class ...
         if ($identifier instanceof static) {
@@ -160,9 +166,13 @@ trait FindInstanceTrait
     }
 
     /** @noinspection ReferencingObjectsInspection */
-    private static function matchProperties($identifier, iterable &$simpleCondition, $onEmpty = null)
+    private static function matchProperties($identifier, ?iterable &$simpleCondition, $onEmpty = null)
     {
         if (!is_object($identifier)) {
+            return $identifier;
+        }
+
+        if ($simpleCondition === null) {
             return $identifier;
         }
 

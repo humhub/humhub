@@ -158,7 +158,7 @@ class CacheableActiveQuery extends ActiveQuery
     {
         $cache = Yii::$app->runtimeCache;
 
-        if (is_array($condition) && $class::isPrimaryKey(array_keys($condition))) {
+        if (static::isSimpleCondition($condition) && $class::isPrimaryKey(array_keys($condition))) {
             $key = self::normaliseObjectIdentifier($class, $condition);
 
             if ($record = $cache->get($key)) {
@@ -168,5 +168,34 @@ class CacheableActiveQuery extends ActiveQuery
         } else {
             $cache->flush();
         }
+    }
+
+    public static function isSimpleCondition(&$condition, bool $allowNull = false, bool $allowIterable = false): bool
+    {
+        if ($allowNull && $condition === null) {
+            return true;
+        }
+
+        if (!is_array($condition) && (!$allowIterable || !is_iterable($condition))) {
+            return false;
+        }
+
+        $count = 0;
+
+        foreach ($condition as $key => $value) {
+            if (!is_string($key)) {
+                return false;
+            }
+            if (!is_scalar($value)) {
+                return false;
+            }
+            $count++;
+        }
+
+        if ($allowNull && $count === 0) {
+            $condition = null;
+        }
+
+        return true;
     }
 }
