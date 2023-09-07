@@ -102,7 +102,7 @@ trait FindInstanceTrait
 
             if ($identifier) {
                 $cacheKey = [$cacheKey];
-                CacheableActiveQuery::cacheProcessVariants('set', $identifier, null, $cacheKey);
+                CacheableActiveQuery::cacheSetVariants($identifier, null, $cacheKey);
             }
 
             // ... then return it, if it matches the $simpleCondition
@@ -126,14 +126,14 @@ trait FindInstanceTrait
 
     public function afterDelete()
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        CacheableActiveQuery::cacheDeleteVariants($this);
 
         parent::afterDelete();
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        CacheableActiveQuery::cacheDeleteVariants($this);
 
         parent::afterSave($insert, $changedAttributes);
     }

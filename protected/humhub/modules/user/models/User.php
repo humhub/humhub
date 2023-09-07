@@ -618,7 +618,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         // and update the cache at the same time
         $user = self::findInstance($this->id, ['cached' => false]);
 
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        CacheableActiveQuery::cacheDeleteVariants($this);
 
         $this->updateSearch();
 

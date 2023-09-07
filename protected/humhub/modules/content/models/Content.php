@@ -249,7 +249,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        CacheableActiveQuery::cacheDeleteVariants($this);
 
         if (array_key_exists('state', $changedAttributes)) {
             // Run process for new content(Send notifications) only after changing state
@@ -380,7 +380,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
      */
     public function afterDelete()
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        CacheableActiveQuery::cacheDeleteVariants($this);
 
         // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();

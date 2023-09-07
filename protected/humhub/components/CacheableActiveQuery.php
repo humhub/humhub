@@ -32,7 +32,7 @@ class CacheableActiveQuery extends ActiveQuery
             return $result;
         }
 
-        return static::cacheProcessVariants('set', $result);
+        return static::cacheSetVariants($result);
     }
 
     public static function normaliseObjectIdentifier($classOrObject, $id = null, ?string &$idWasUsed = null): string
@@ -62,15 +62,13 @@ class CacheableActiveQuery extends ActiveQuery
      *
      * @return void
      */
-    public static function cacheProcessVariants(string $action, ?object $record, ?array $properties = ['id', 'guid'], ?array &$done = null): ?object
+    protected static function cacheProcessVariants(string $action, ?object $record, ?array $properties = ['id', 'guid'], ?array &$done = null): ?object
     {
-        static $runtimeCache;
-
         if ($record === null) {
             return null;
         }
 
-        $runtimeCache ??= Yii::$app->runtimeCache;
+        $runtimeCache = Yii::$app->runtimeCache;
         $properties ??= ['id', 'guid'];
         $done ??= [];
         $class = get_class($record);
@@ -95,9 +93,21 @@ class CacheableActiveQuery extends ActiveQuery
             }
         }
 
-        if ($action !== 'delete') {
-            return $record;
-        }
+        return $record;
+    }
+
+    /**
+     * @param object|ActiveRecord|null $record
+     * @param array|null $properties
+     * @param array|null $done
+     *
+     * @return void
+     */
+    public static function cacheDeleteVariants(?object $record, ?array $properties = ['id', 'guid'], ?array &$done = null): ?object
+    {
+        $runtimeCache = Yii::$app->runtimeCache;
+
+        $record = static::cacheProcessVariants('delete', $record, $properties, $done);
 
         if ($record instanceof ContentActiveRecord) {
             $identifier = self::normaliseObjectIdentifier(Content::class, [get_Class($record), ...array_values($record->getPrimaryKey(true))]);
@@ -126,10 +136,22 @@ class CacheableActiveQuery extends ActiveQuery
         $identifier = self::normaliseObjectIdentifier($record->{$record->classAttribute}, $record->{$record->pkAttribute});
 
         if (!in_array($identifier, $done, true) && $model = $record->getPolymorphicRelation(false) ?? $runtimeCache->get($identifier)) {
-            static::cacheProcessVariants($action, $model, $properties, $done);
+            static::cacheDeleteVariants($model, $properties, $done);
         }
 
         return $record;
+    }
+
+    /**
+     * @param object|ActiveRecord|null $record
+     * @param array|null $properties
+     * @param array|null $done
+     *
+     * @return void
+     */
+    public static function cacheSetVariants(?object $record, ?array $properties = ['id', 'guid'], ?array &$done = null): ?object
+    {
+        return static::cacheProcessVariants('set', $record, $properties, $done);
     }
 
     public static function cacheDeleteByClass($class, $condition)
@@ -140,7 +162,7 @@ class CacheableActiveQuery extends ActiveQuery
             $key = self::normaliseObjectIdentifier($class, $condition);
 
             if ($record = $cache->get($key)) {
-                self::cacheProcessVariants('delete', $record);
+                self::cacheDeleteVariants($record);
                 $cache->delete($key);
             }
         } else {

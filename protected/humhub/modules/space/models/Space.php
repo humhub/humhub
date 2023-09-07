@@ -255,7 +255,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheProcessVariants('delete', $this);
+        CacheableActiveQuery::cacheDeleteVariants($this);
 
         parent::afterSave($insert, $changedAttributes);
 
