@@ -9,7 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\components\CacheableActiveQuery;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -616,7 +616,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         // and update the cache at the same time
         $user = self::findInstance($this->id, ['cached' => false]);
 
-        CacheableActiveQuery::cacheDeleteVariants($this);
+        RuntimeCacheHelper::deleteVariants($this);
 
         $this->updateSearch();
 

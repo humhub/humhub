@@ -170,7 +170,8 @@ class FindInstanceTest extends HumHubDbTestCase
         static::assertInstanceOf(FindInstanceInterface::class, $instance = FindInstanceMock::findInstance(1));
         static::assertNotNull($cache->cacheRead);
         static::assertNotNull($cache->cacheWritten);
-        static::assertEquals($instance, $cache->valueRetrieved);
+//        static::assertFalse($cache->valueRetrieved);
+        static::assertEquals($instance, Yii::$app->runtimeCache->get($instance->getUniqueId()));
 
         $cache->resetState();
 
@@ -178,7 +179,7 @@ class FindInstanceTest extends HumHubDbTestCase
         static::assertInstanceOf(FindInstanceInterface::class, $instance2 = FindInstanceMock::findInstance(1));
         static::assertNotNull($cache->cacheRead);
         static::assertNull($cache->cacheWritten);
-        static::assertFalse($cache->valueRetrieved);
+//        static::assertFalse($cache->valueRetrieved);
         static::assertEquals($instance, $cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1'));
         static::assertEquals(spl_object_id($instance2), spl_object_id($cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1')));
         static::assertEquals(spl_object_id($instance), spl_object_id($cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1')));

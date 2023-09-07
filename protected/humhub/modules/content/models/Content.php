@@ -14,6 +14,7 @@ use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\CacheableActiveQuery;
 use humhub\components\CachedActiveRecord;
 use humhub\components\Module;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -244,7 +245,7 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheDeleteVariants($this);
+        RuntimeCacheHelper::deleteVariants($this);
 
         if (array_key_exists('state', $changedAttributes)) {
             // Run process for new content(Send notifications) only after changing state
@@ -375,7 +376,7 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
      */
     public function afterDelete()
     {
-        CacheableActiveQuery::cacheDeleteVariants($this);
+        RuntimeCacheHelper::deleteVariants($this);
 
         // Try to delete the underlying object (Post, Question, Task, ...)
         $this->resetPolymorphicRelation();
@@ -1081,4 +1082,14 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
         $this->getStateService()->set($state, $options);
     }
 
+    public function getUniqueIdVariants(?array $keys = null): array
+    {
+        $uniqueIDs =  parent::getUniqueIdVariants($keys);
+        $uniqueIDs[] = RuntimeCacheHelper::normaliseObjectIdentifier(
+            static::class,
+            RuntimeCacheHelper::normaliseObjectIdentifier($this->object_model, $this->object_id)
+        );
+
+        return array_unique($uniqueIDs);
+    }
 }

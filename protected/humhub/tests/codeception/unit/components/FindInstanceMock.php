@@ -9,6 +9,7 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\FindInstanceTrait;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\interfaces\FindInstanceInterface;
 
 class FindInstanceMock implements FindInstanceInterface
@@ -32,7 +33,7 @@ class FindInstanceMock implements FindInstanceInterface
 
     public function where($criteria)
     {
-        $this->args[] = $criteria;
+        $this->args += $criteria;
         return $this;
     }
 
@@ -44,5 +45,10 @@ class FindInstanceMock implements FindInstanceInterface
     public static function findOne($condition): ?self
     {
         return new static($condition);
+    }
+
+    public function getUniqueId(): string
+    {
+        return RuntimeCacheHelper::normaliseObjectIdentifier($this, $this->args);
     }
 }

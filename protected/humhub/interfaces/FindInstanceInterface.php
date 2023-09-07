@@ -14,7 +14,7 @@ use humhub\exceptions\InvalidConfigTypeException;
 /**
  * @since 1.15
  */
-interface FindInstanceInterface
+interface FindInstanceInterface extends UniqueIdentifiersInterface
 {
     public const INSTANCE_IDENTIFIER_INVALID = 0;
     public const INSTANCE_IDENTIFIER_IS_NULL = 1;

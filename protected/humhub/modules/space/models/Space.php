@@ -9,7 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
-use humhub\components\CacheableActiveQuery;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -251,7 +251,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheDeleteVariants($this);
+        RuntimeCacheHelper::deleteVariants($this);
 
         parent::afterSave($insert, $changedAttributes);
 

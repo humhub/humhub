@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use humhub\exceptions\InvalidArgumentException;
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\interfaces\FindInstanceInterface;
 use Yii;
 
@@ -34,11 +35,11 @@ trait FindInstanceTrait
      */
     public static function findInstance($identifier, ?iterable $simpleCondition = null): ?self
     {
-        if (!CacheableActiveQuery::isSimpleCondition($simpleCondition, true)) {
+        if (!RuntimeCacheHelper::isSimpleCondition($simpleCondition, true)) {
             throw new InvalidArgumentException(__METHOD__, [3 => '$simpleCondition'], ['array', 'null'], $simpleCondition, 'array keys must be strings and values must be scalars');
         }
 
-        if (!CacheableActiveQuery::isSimpleCondition($simpleCondition, true)) {
+        if (!RuntimeCacheHelper::isSimpleCondition($simpleCondition, true)) {
             throw new InvalidArgumentException(__METHOD__, [3 => '$simpleCondition'], ['array', 'null'], $simpleCondition, 'array keys must be strings and values must be scalars');
         }
 
@@ -66,7 +67,6 @@ trait FindInstanceTrait
 
         if (is_int(key($identifier))) {
             $criteria = is_subclass_of(static::class, \yii\db\ActiveRecord::class, true) ? static::primaryKey() : ['id'];
-            $criteria = array_flip($criteria);
 
             if (count($criteria) !== count($identifier)) {
                 throw new InvalidArgumentException(
@@ -84,20 +84,18 @@ trait FindInstanceTrait
         }
 
         // normalise $criteria to cache identifier
-        $cacheKey = CacheableActiveQuery::normaliseObjectIdentifier(static::class, $criteria);
+        $cacheKey = RuntimeCacheHelper::normaliseObjectIdentifier(static::class, $criteria);
 
-        /**
-         * Callback function used to find the record in the database if it's not found in the cache
-         *
-         * @return self|null
-         */
-        $find = static fn(): ?self => static::find()->where($criteria)->one();
+        // try to get the record from cache
+        $record = Yii::$app->runtimeCache->get($cacheKey);
 
-        $record = Yii::$app->runtimeCache->getOrSet($cacheKey, $find);
+        if ($record === false) {
+            // otherwise, look it up in the database and save it into/update the cache
+            $record = static::find()
+                ->where($criteria)
+                ->one();
 
-        if ($record) {
-            $cacheKey = [$cacheKey];
-            CacheableActiveQuery::cacheSetVariants($record, null, $cacheKey);
+            RuntimeCacheHelper::set($record, $cacheKey);
         }
 
         // ... then return it, if it matches the $simpleCondition
@@ -111,37 +109,45 @@ trait FindInstanceTrait
 
     public function afterDelete()
     {
-        CacheableActiveQuery::cacheDeleteVariants($this);
+        RuntimeCacheHelper::deleteByInstance($this);
 
         parent::afterDelete();
     }
 
     public function afterSave($insert, $changedAttributes)
     {
-        CacheableActiveQuery::cacheDeleteVariants($this);
+        RuntimeCacheHelper::deleteByInstance($this);
 
         parent::afterSave($insert, $changedAttributes);
     }
 
     public static function deleteAll($condition = null, $params = [])
     {
-        CacheableActiveQuery::cacheDeleteByClass(static::class, $condition);
+        RuntimeCacheHelper::deleteByClass(static::class, $condition);
 
         return parent::deleteAll($condition, $params);
     }
 
     public static function updateAll($attributes, $condition = '', $params = [])
     {
-        CacheableActiveQuery::cacheDeleteByClass(static::class, $condition);
+        RuntimeCacheHelper::deleteByClass(static::class, $condition);
 
         return parent::updateAll($attributes, $condition, $params);
     }
 
     public static function updateAllCounters($counters, $condition = '', $params = [])
     {
-        CacheableActiveQuery::cacheDeleteByClass(static::class, $condition);
+        RuntimeCacheHelper::deleteByClass(static::class, $condition);
 
         return parent::updateAllCounters($counters, $condition, $params);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getUniqueIdVariants(?array $keys = null): ?array
+    {
+        return RuntimeCacheHelper::buildUniqueIDs($this, $keys, false, false);
     }
 
     /**

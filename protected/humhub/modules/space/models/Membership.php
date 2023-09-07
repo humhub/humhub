@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\models;
 
-use humhub\components\CacheableActiveQuery;
 use humhub\components\CachedActiveRecord;
 use humhub\exceptions\InvalidArgumentException;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\Module;
@@ -446,7 +446,7 @@ class Membership extends CachedActiveRecord
 
             if ($membership) {
                 // cache the membership also under its PK (ID)
-                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $membership->id), $membership);
+                Yii::$app->runtimeCache->set(RuntimeCacheHelper::normaliseObjectIdentifier(static::class, $membership->id), $membership);
             }
         } else {
             // if it's not an array, $identifier MUST be Membership|int
@@ -454,7 +454,7 @@ class Membership extends CachedActiveRecord
 
             if ($membership) {
                 // cache the membership also under the space/user ID combination
-                Yii::$app->runtimeCache->set(CacheableActiveQuery::normaliseObjectIdentifier(static::class, [$membership->space_id, $membership->user_id]), $membership);
+                Yii::$app->runtimeCache->set(RuntimeCacheHelper::normaliseObjectIdentifier(static::class, [$membership->space_id, $membership->user_id]), $membership);
             }
         }
 
@@ -468,7 +468,7 @@ class Membership extends CachedActiveRecord
         $runtimeCache = Yii::$app->runtimeCache;
 
         if (is_array($identifier) || is_scalar($identifier)) {
-            $identifier = $runtimeCache->get(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $identifier));
+            $identifier = $runtimeCache->get(RuntimeCacheHelper::normaliseObjectIdentifier(static::class, $identifier));
         }
 
         if ($identifier instanceof self) {
@@ -479,8 +479,8 @@ class Membership extends CachedActiveRecord
             return;
         }
 
-        $runtimeCache->delete(CacheableActiveQuery::normaliseObjectIdentifier(static::class, [$spaceId, $userId]));
-        $runtimeCache->delete(CacheableActiveQuery::normaliseObjectIdentifier(static::class, $id));
+        $runtimeCache->delete(RuntimeCacheHelper::normaliseObjectIdentifier(static::class, [$spaceId, $userId]));
+        $runtimeCache->delete(RuntimeCacheHelper::normaliseObjectIdentifier(static::class, $id));
 
         $cache = Yii::$app->cache;
         $cache->delete(self::USER_SPACES_CACHE_KEY . $userId);
