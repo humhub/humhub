@@ -351,7 +351,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
      * @since 1.15
      * @noinspection PhpDocMissingThrowsInspection
      */
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         if ($identifier !== 0 && $identifier !== '0' && empty($identifier)) {
             if (array_key_exists('onEmpty', $config)) {

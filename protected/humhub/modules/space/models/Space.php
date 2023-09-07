@@ -350,7 +350,7 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
      * @inheritdoc
      * @since 1.15
      */
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         $config['exceptionMessageSuffix'] ??= '(must be a Space object or Space ID)';
         $config['stringKey'] = 'guid';

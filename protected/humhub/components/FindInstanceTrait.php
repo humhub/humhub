@@ -30,6 +30,8 @@ trait FindInstanceTrait
     }
 
     /**
+     * @inheritdoc
+     * @return static|null
      * @throws InvalidArgumentTypeException
      * @see FindInstanceInterface::findInstance
      * @noinspection PhpIncompatibleReturnTypeInspection

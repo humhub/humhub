@@ -110,7 +110,7 @@ class Invite extends ActiveRecord implements FindInstanceInterface
         ];
     }
 
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         $config['stringKey'] ??= 'email';
         $config['onEmpty'] = null;

@@ -43,7 +43,7 @@ class FindInstanceMock implements FindInstanceInterface
         return new static($condition);
     }
 
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         return static::findInstanceHelper($identifier, $config, $simpleCondition);
     }

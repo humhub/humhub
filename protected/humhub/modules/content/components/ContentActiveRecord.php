@@ -655,7 +655,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInst
      * @since 1.15
      * @inheritdoc
      **/
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }

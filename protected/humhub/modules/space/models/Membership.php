@@ -429,7 +429,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface
      * @since 1.15
      * @see FindInstanceInterface::findInstance()
      */
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         // check if $identifier is a valid array<Space|int|string, User|int|string|null>, or just a Membership|membership_id
         if (is_array($identifier)) {

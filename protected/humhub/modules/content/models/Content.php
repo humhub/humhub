@@ -210,7 +210,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
         return $this->getPolymorphicRelation();
     }
 
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         $config['stringKey'] ??= 'guid';
 

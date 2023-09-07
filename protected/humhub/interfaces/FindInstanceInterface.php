@@ -11,6 +11,9 @@ namespace humhub\interfaces;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidConfigTypeException;
 
+/**
+ * @since 1.15
+ */
 interface FindInstanceInterface
 {
     /**
@@ -22,20 +25,19 @@ interface FindInstanceInterface
      *        If null, the default instance (e.g., active User) would be returned.
      * @param null|array $config = [
      *     'cached' => true,                    // use cached results
-     *     'nullable' => false,                 // allow null values on for $identifier
      *     'onEmpty' => null,                   // if provided, use this value in case of empty $identifier
      *     'exceptionMessageSuffix' => '',      // message used to append to the InvalidArgumentTypeException
      *     'intKey' => 'id',
      *     'stringKey' => string,               // If provided, this key will be used to look up string keys, e.g. 'guid'
      *     ]
-     * @param iterable $simpleCondition         // ['field' => 'value']-filter to be applied on the resulting object,
+     * @param iterable|null $simpleCondition    // ['field' => 'value']-filter to be applied on the resulting object,
      *                                             otherwise return $config['onEmpty'] or null
      *
-     * @return self|null
+     * @return static|null
      *
      * @throws InvalidArgumentTypeException
      */
-    public static function findInstance($identifier, ?array $config = [], iterable $simpleCondition = []): ?self;
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self;
 
     /**
      * @see static::findInstance()
