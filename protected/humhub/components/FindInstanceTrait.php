@@ -93,20 +93,20 @@ trait FindInstanceTrait
 
             if ($config['cached'] ?? true) {
                 // unless cache-lookup is prevented, try to get it from cache
-                $identifier = Yii::$app->runtimeCache->getOrSet($cacheKey, $find);
+                $record = Yii::$app->runtimeCache->getOrSet($cacheKey, $find);
             } else {
                 // otherwise, look it up in the database and save it into/update the cache
-                $identifier = $find();
-                Yii::$app->runtimeCache->set($cacheKey, $identifier);
+                $record = $find();
+                Yii::$app->runtimeCache->set($cacheKey, $record);
             }
 
-            if ($identifier) {
+            if ($record) {
                 $cacheKey = [$cacheKey];
-                CacheableActiveQuery::cacheSetVariants($identifier, null, $cacheKey);
+                CacheableActiveQuery::cacheSetVariants($record, null, $cacheKey);
             }
 
             // ... then return it, if it matches the $simpleCondition
-            return static::matchProperties($identifier, $simpleCondition, $config['onEmpty'] ?? null);
+            return static::matchProperties($record, $simpleCondition, $config['onEmpty'] ?? null);
         }
 
         throw new InvalidArgumentTypeException(
