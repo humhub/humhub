@@ -13,7 +13,9 @@ use humhub\interfaces\FindInstanceInterface;
 
 class FindInstanceMock implements FindInstanceInterface
 {
-    use FindInstanceTrait;
+    use FindInstanceTrait {
+        findInstance as _FindInstanceTrait_findInstance;
+    }
 
     public array $args;
 
@@ -45,6 +47,6 @@ class FindInstanceMock implements FindInstanceInterface
 
     public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
-        return static::findInstanceHelper($identifier, $config, $simpleCondition);
+        return static::_FindInstanceTrait_findInstance($identifier, $config, $simpleCondition);
     }
 }

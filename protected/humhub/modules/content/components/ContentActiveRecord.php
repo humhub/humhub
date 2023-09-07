@@ -8,8 +8,7 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\components\ActiveRecord;
-use humhub\components\FindInstanceTrait;
+use humhub\components\CachedActiveRecord;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\libs\BasePermission;
 use humhub\modules\activity\helpers\ActivityHelper;
@@ -77,10 +76,8 @@ use yii\db\ActiveQueryInterface;
  * @property-read File[] $files
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInstanceInterface, Movable, SoftDeletable
+class ContentActiveRecord extends CachedActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
-    use FindInstanceTrait;
-
     /**
      * @see StreamEntryWidget
      * @var string the StreamEntryWidget widget class
@@ -649,15 +646,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, FindInst
     public static function find()
     {
         return new ActiveQueryContent(static::class);
-    }
-
-    /**
-     * @since 1.15
-     * @inheritdoc
-     **/
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
-    {
-        return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**

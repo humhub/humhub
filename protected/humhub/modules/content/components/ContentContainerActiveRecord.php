@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\components\ActiveRecord;
+use humhub\components\CachedActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
@@ -40,9 +40,8 @@ use yii\web\IdentityInterface;
  * @since 1.0
  * @author Luke
  */
-abstract class ContentContainerActiveRecord extends ActiveRecord
+abstract class ContentContainerActiveRecord extends CachedActiveRecord
 {
-
     /**
      * @var ContentContainerPermissionManager
      */

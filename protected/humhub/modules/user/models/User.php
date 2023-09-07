@@ -10,8 +10,6 @@ namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\components\CacheableActiveQuery;
-use humhub\components\FindInstanceTrait;
-use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -36,7 +34,6 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
-use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
@@ -71,10 +68,8 @@ use yii\web\User as WebUser;
  * @property string $displayNameSub
  * @mixin Followable
  */
-class User extends ContentContainerActiveRecord implements IdentityInterface, FindInstanceInterface, Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
-    use FindInstanceTrait;
-
     /**
      * User Status Flags
      */
@@ -374,7 +369,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Fi
         $config['stringKey'] = 'guid';
         $config['exceptionMessageSuffix'] ??= '(must be a User object or User ID or null for the current user)';
 
-        return self::findInstanceHelper($identifier, $config, $simpleCondition);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return parent::findInstance($identifier, $config, $simpleCondition);
     }
 
     /**

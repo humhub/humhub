@@ -8,12 +8,9 @@
 
 namespace humhub\components;
 
-use Behat\Gherkin\Keywords\CachedArrayKeywords;
 use humhub\exceptions\InvalidArgumentException;
 use humhub\exceptions\InvalidArgumentTypeException;
-use humhub\exceptions\InvalidConfigTypeException;
 use humhub\interfaces\FindInstanceInterface;
-use Throwable;
 use Yii;
 
 /**
@@ -36,7 +33,7 @@ trait FindInstanceTrait
      * @see FindInstanceInterface::findInstance
      * @noinspection PhpIncompatibleReturnTypeInspection
      */
-    protected static function findInstanceHelper($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
     {
         $config ??= [];
 

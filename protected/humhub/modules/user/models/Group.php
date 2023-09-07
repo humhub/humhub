@@ -8,9 +8,7 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\components\ActiveRecord;
-use humhub\components\FindInstanceTrait;
-use humhub\interfaces\FindInstanceInterface;
+use humhub\components\CachedActiveRecord;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -44,13 +42,8 @@ use Yii;
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
-class Group extends ActiveRecord implements FindInstanceInterface
+class Group extends CachedActiveRecord
 {
-    use FindInstanceTrait {
-        afterDelete as __FindInstanceTrait_afterDelete;
-        afterSave as __FindInstanceTrait_afterSave;
-    }
-
     public const SCENARIO_EDIT = 'edit';
 
     /**
@@ -73,11 +66,6 @@ class Group extends ActiveRecord implements FindInstanceInterface
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
-    }
-
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
-    {
-        return self::findInstanceHelper($identifier, $config, $simpleCondition);
     }
 
     /**
@@ -194,7 +182,7 @@ class Group extends ActiveRecord implements FindInstanceInterface
             self::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
         }
 
-        $this->__FindInstanceTrait_afterSave($insert, $changedAttributes);
+        parent::afterSave($insert, $changedAttributes);
     }
 
     /**
@@ -208,7 +196,7 @@ class Group extends ActiveRecord implements FindInstanceInterface
             $defaultGroup->assignDefaultGroup();
         }
 
-        $this->__FindInstanceTrait_afterDelete();
+        parent::afterDelete();
     }
 
     /**

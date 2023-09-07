@@ -12,9 +12,8 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\CacheableActiveQuery;
-use humhub\components\FindInstanceTrait;
+use humhub\components\CachedActiveRecord;
 use humhub\components\Module;
-use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -85,10 +84,8 @@ use yii\helpers\Url;
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements FindInstanceInterface, Movable, ContentOwner, SoftDeletable
+class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftDeletable
 {
-    use FindInstanceTrait;
-
     /**
      * The default stream channel.
      * @since 1.6
@@ -214,7 +211,8 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
     {
         $config['stringKey'] ??= 'guid';
 
-        return static::findInstanceHelper($identifier, $config, $simpleCondition);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return parent::findInstance($identifier, $config, $simpleCondition);
     }
 
     /**
@@ -280,7 +278,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
             SearchHelper::queueDelete($this->getModel());
         }
 
-        parent::afterSave($insert, $changedAttributes);
+        ActiveRecord::afterSave($insert, $changedAttributes);
     }
 
     private function processNewContent()
@@ -392,7 +390,7 @@ class Content extends ActiveRecord implements FindInstanceInterface, Movable, Co
             $record->hardDelete();
         }
 
-        parent::afterDelete();
+        ActiveRecord::afterDelete();
     }
 
     /**

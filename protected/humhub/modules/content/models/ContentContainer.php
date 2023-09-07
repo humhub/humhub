@@ -27,7 +27,9 @@ use yii\db\ActiveRecord;
  */
 class ContentContainer extends ActiveRecord implements FindInstanceInterface
 {
-    use FindInstanceTrait;
+    use FindInstanceTrait {
+        findInstance as _FindInstanceTrait_findInstance;
+    }
 
     /**
      * @inheritdoc
@@ -84,7 +86,7 @@ class ContentContainer extends ActiveRecord implements FindInstanceInterface
     {
         $config['stringKey'] ??= 'guid';
 
-        return static::findInstanceHelper($identifier, $config, $simpleCondition);
+        return static::_FindInstanceTrait_findInstance($identifier, $config, $simpleCondition);
     }
 
     /**

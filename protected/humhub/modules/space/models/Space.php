@@ -10,8 +10,6 @@ namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\components\CacheableActiveQuery;
-use humhub\components\FindInstanceTrait;
-use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -63,10 +61,8 @@ use Yii;
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
  */
-class Space extends ContentContainerActiveRecord implements FindInstanceInterface, Searchable
+class Space extends ContentContainerActiveRecord implements Searchable
 {
-    use FindInstanceTrait;
-
     // Join Policies
     const JOIN_POLICY_NONE = 0; // No Self Join Possible
     const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
@@ -356,7 +352,8 @@ class Space extends ContentContainerActiveRecord implements FindInstanceInterfac
         $config['stringKey'] = 'guid';
         $config['onEmpty'] = null;
 
-        return self::findInstanceHelper($identifier, $config, $simpleCondition);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return parent::findInstance($identifier, $config, $simpleCondition);
     }
 
     /**

@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
+use humhub\components\CachedActiveRecord;
 use humhub\components\FindInstanceTrait;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\space\models\Space;
@@ -38,10 +39,8 @@ use yii\helpers\Url;
  *
  * @property Space $space
  */
-class Invite extends ActiveRecord implements FindInstanceInterface
+class Invite extends CachedActiveRecord
 {
-    use FindInstanceTrait;
-
     public const SOURCE_SELF = 'self';
     public const SOURCE_INVITE = 'invite';
     public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
@@ -115,7 +114,8 @@ class Invite extends ActiveRecord implements FindInstanceInterface
         $config['stringKey'] ??= 'email';
         $config['onEmpty'] = null;
 
-        return self::findInstanceHelper($identifier, $config, $simpleCondition);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return parent::findInstance($identifier, $config, $simpleCondition);
     }
 
 

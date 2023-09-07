@@ -67,7 +67,7 @@ class FindInstanceTest extends HumHubDbTestCase
         static::assertEquals(['guid' => 1], $instance->args[0]);
 
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstanceHelper must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - string given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - string given.');
 
         FindInstanceMock::findInstance('test', ['intKey' => 'guid']);
     }
@@ -87,7 +87,7 @@ class FindInstanceTest extends HumHubDbTestCase
     public function testExceptionOnNullIdentifier()
     {
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstanceHelper must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - null given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - null given.');
 
         FindInstanceMock::findInstance(null);
     }
@@ -95,7 +95,7 @@ class FindInstanceTest extends HumHubDbTestCase
     public function testExceptionOnEmptyStringIdentifier()
     {
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstanceHelper must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - string given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - string given.');
 
         FindInstanceMock::findInstance('');
     }
@@ -103,7 +103,7 @@ class FindInstanceTest extends HumHubDbTestCase
     public function testExceptionOnEmptyArrayIdentifier()
     {
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstanceHelper must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - array given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - array given.');
 
         FindInstanceMock::findInstance([]);
     }

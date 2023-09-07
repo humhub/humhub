@@ -8,9 +8,8 @@
 
 namespace humhub\modules\space\models;
 
-use humhub\components\ActiveRecord;
 use humhub\components\CacheableActiveQuery;
-use humhub\components\FindInstanceTrait;
+use humhub\components\CachedActiveRecord;
 use humhub\exceptions\InvalidArgumentException;
 use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\models\Content;
@@ -45,10 +44,8 @@ use yii\db\Query;
  * @property User $user
  * @property User|null $originator
  */
-class Membership extends ActiveRecord implements FindInstanceInterface
+class Membership extends CachedActiveRecord
 {
-    use FindInstanceTrait;
-
     /**
      * @event \humhub\modules\space\MemberEvent
      */
@@ -445,7 +442,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface
             $userId = User::findInstanceAsId($identifier[1]);
 
             // now look up the Membership instance by Space/User IDs
-            $membership = static::findInstanceHelper(['space_id' => $spaceId, 'user_id' => $userId], $config, $simpleCondition);
+            $membership = parent::findInstance(['space_id' => $spaceId, 'user_id' => $userId], $config, $simpleCondition);
 
             if ($membership) {
                 // cache the membership also under its PK (ID)
@@ -453,7 +450,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface
             }
         } else {
             // if it's not an array, $identifier MUST be Membership|int
-            $membership = static::findInstanceHelper($identifier, $config, $simpleCondition);
+            $membership = parent::findInstance($identifier, $config, $simpleCondition);
 
             if ($membership) {
                 // cache the membership also under the space/user ID combination
@@ -461,6 +458,7 @@ class Membership extends ActiveRecord implements FindInstanceInterface
             }
         }
 
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $membership;
     }
 
