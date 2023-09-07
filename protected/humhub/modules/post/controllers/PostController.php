@@ -38,9 +38,13 @@ class PostController extends ContentContainerController
      */
     public function actionView($id)
     {
-        /** @var Post $post */
-        $post = Post::find()
-            ->contentContainer($this->contentContainer)
+        $query = Post::find();
+        if (!Yii::$app->user->isGuest) {
+            $query->stateFilterCondition[] = ['content.created_by' => Yii::$app->user->id];
+        }
+
+        /* @var Post $post */
+        $post = $query->contentContainer($this->contentContainer)
             ->readable()->where(['post.id' => (int)$id])->one();
 
         if ($post === null) {
