@@ -95,11 +95,23 @@ class CacheableActiveQuery extends ActiveQuery
             }
         }
 
+        if ($action !== 'delete') {
+            return $record;
+        }
+
         if ($record instanceof ContentActiveRecord) {
             $identifier = self::normaliseObjectIdentifier(Content::class, [get_Class($record), ...array_values($record->getPrimaryKey(true))]);
             if (!in_array($identifier, $done, true)) {
-                $runtimeCache->$action($identifier, $record);
+                $runtimeCache->delete($identifier);
                 $done[] = $identifier;
+            }
+
+            if ($record->isRelationPopulated('content') && !$record->content->getIsNewRecord()) {
+                $identifier = self::normaliseObjectIdentifier(Content::class, $record->content->id);
+                if (!in_array($identifier, $done, true)) {
+                    $runtimeCache->delete($identifier);
+                    $done[] = $identifier;
+                }
             }
         }
 
@@ -107,7 +119,7 @@ class CacheableActiveQuery extends ActiveQuery
          * Check if we have the related record cached in the polymorphic behavior, so we can delete the cache by ID.
          * (This is not fully bullet-proof, as the object might still be saved in the cache, but only under the guid key.)
          */
-        if ($action !== 'delete' || !$record instanceof Component || !$record->hasMethod('getPolymorphicRelation')) {
+        if (!$record instanceof Component || !$record->hasMethod('getPolymorphicRelation')) {
             return $record;
         }
 
