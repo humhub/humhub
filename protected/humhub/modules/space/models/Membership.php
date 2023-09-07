@@ -462,25 +462,6 @@ class Membership extends CachedActiveRecord
         return $membership;
     }
 
-    /**
-     * Find and cache Membership by space and user
-     *
-     * @param array<Space|int|string, User|int|string|null> $identifier
-     *
-     * @return null|array = [int $space_id, int $user_id]
-     *
-     * @inheritdoc
-     * @since 1.15
-     */
-    public static function findInstanceAsId($identifier, array $config = []): ?array
-    {
-        $membership = static::findInstance($identifier, $config);
-
-        return $membership
-            ? [$membership->space_id, $membership->user_id]
-            : null;
-    }
-
     public static function unsetCache($identifier)
     {
         $spaceId = $userId = null;
