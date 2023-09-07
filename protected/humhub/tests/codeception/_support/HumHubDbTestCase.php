@@ -4,6 +4,7 @@ namespace tests\codeception\_support;
 
 use Codeception\Test\Unit;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\libs\BasePermission;
 use Codeception\Configuration;
 use Codeception\Exception\ModuleException;
@@ -79,6 +80,7 @@ class HumHubDbTestCase extends Unit
 
     protected function flushCache()
     {
+        RuntimeCacheHelper::flush();
         RichTextToShortTextConverter::flushCache();
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
