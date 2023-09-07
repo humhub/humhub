@@ -345,32 +345,34 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      * @inheritdoc
      * @since 1.15
      * @noinspection PhpDocMissingThrowsInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
      */
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    public static function findInstance($identifier, ?iterable $simpleCondition = null): ?self
     {
-        if ($identifier !== 0 && $identifier !== '0' && empty($identifier)) {
-            if (array_key_exists('onEmpty', $config)) {
-                return $config['onEmpty'];
-            }
+        switch (self::validateInstanceIdentifier($identifier)) {
+            case self::INSTANCE_IDENTIFIER_IS_SELF:
+                return $identifier;
 
-            $identifier = Yii::$app->user;
+            case self::INSTANCE_IDENTIFIER_IS_STRING:
+                /** @noinspection PhpIncompatibleReturnTypeInspection */
+                return parent::findInstance(['guid' => $identifier], $simpleCondition);
+
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case self::INSTANCE_IDENTIFIER_IS_NULL:
+                $identifier = Yii::$app->user;
+
+            default:
+                if ($identifier instanceof WebUser) {
+                    /** @noinspection PhpUnhandledExceptionInspection */
+                    $identifier = $identifier->getIdentity();
+
+                    if ($identifier === null) {
+                        return null;
+                    }
+                }
+
+                return parent::findInstance($identifier, $simpleCondition);
         }
-
-        if ($identifier instanceof WebUser) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $identifier = $identifier->getIdentity();
-
-            if ($identifier === null) {
-                return null;
-            }
-        }
-
-        $config['onEmpty'] ??= null;
-        $config['stringKey'] = 'guid';
-        $config['exceptionMessageSuffix'] ??= '(must be a User object or User ID or null for the current user)';
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::findInstance($identifier, $config, $simpleCondition);
     }
 
     /**

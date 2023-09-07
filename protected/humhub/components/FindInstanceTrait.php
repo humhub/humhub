@@ -31,11 +31,12 @@ trait FindInstanceTrait
      * @return static|null
      * @throws InvalidArgumentTypeException
      * @see FindInstanceInterface::findInstance
-     * @noinspection PhpIncompatibleReturnTypeInspection
      */
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    public static function findInstance($identifier, ?iterable $simpleCondition = null): ?self
     {
-        $config ??= [];
+        if (!CacheableActiveQuery::isSimpleCondition($simpleCondition, true)) {
+            throw new InvalidArgumentException(__METHOD__, [3 => '$simpleCondition'], ['array', 'null'], $simpleCondition, 'array keys must be strings and values must be scalars');
+        }
 
         if (!CacheableActiveQuery::isSimpleCondition($simpleCondition, true)) {
             throw new InvalidArgumentException(__METHOD__, [3 => '$simpleCondition'], ['array', 'null'], $simpleCondition, 'array keys must be strings and values must be scalars');
@@ -44,89 +45,68 @@ trait FindInstanceTrait
         // check if the given $identifier is already an instance of the required class ...
         if ($identifier instanceof static) {
             // ... then return it, if it matches the $simpleCondition
-            return static::matchProperties($identifier, $simpleCondition, $config['onEmpty'] ?? null);
+            return static::matchProperties($identifier, $simpleCondition);
         }
 
-        if (is_string($identifier)) {
-            $identifier = trim($identifier);
-        }
+        $errorIdentifier = $identifier;
 
-        // check if the $identifier is empty (0 or '0' are NOT considered empty as they denote a valid integer key)
-        if (empty($identifier) && $identifier !== 0 && $identifier !== '0') {
-            if (array_key_exists('onEmpty', $config)) {
-                return $config['onEmpty'];
-            }
-
+        if (static::validateInstanceIdentifier($identifier) <= self::INSTANCE_IDENTIFIER_IS_SELF) {
             throw new InvalidArgumentTypeException(
                 str_replace(__CLASS__, static::class, __METHOD__),
                 [1 => '$identifier'],
-                [self::class, 'int', ($config['stringKey'] ?? null) === null ? '(int)string' : 'string'],
-                $identifier,
-                false,
-                $config['exceptionMessageSuffix'] ?? ''
+                [static::class, 'int', '(int)string', 'string', 'array'],
+                $errorIdentifier
             );
         }
 
         // validate $identifier and build search ?array $criteria
-        if (
-            // ... for being an integer (or convertable to one)
-            is_int($id = $identifier)
-            || null !== $id = filter_var($identifier, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)
-        ) {
-            $criteria = [$config['intKey'] ?? 'id' => $id];
-        } elseif (is_string($identifier) && ($stringKey = $config['stringKey'] ?? null)) {
-            // ... for being a string
-            $criteria = [$stringKey => $identifier];
-        } elseif (is_array($identifier)) {
-            // ... an array
-            $criteria = $identifier;
+        if (is_scalar($identifier)) {
+            $identifier = (array)$identifier;
+        }
+
+        if (is_int(key($identifier))) {
+            $criteria = is_subclass_of(static::class, \yii\db\ActiveRecord::class, true) ? static::primaryKey() : ['id'];
+            $criteria = array_flip($criteria);
+
+            if (count($criteria) !== count($identifier)) {
+                throw new InvalidArgumentException(
+                    str_replace(__CLASS__, static::class, __METHOD__),
+                    [1 => '$identifier'],
+                    $criteria,
+                    $identifier,
+                    ' invalid number of arguments for primary key'
+                );
+            }
+
+            $criteria = array_combine($criteria, $identifier);
         } else {
-            // or invalid.
-            $criteria = null;
+            $criteria = $identifier;
         }
 
-        if ($criteria) {
-            // normalise $criteria to cache identifier
-            $cacheKey = CacheableActiveQuery::normaliseObjectIdentifier(static::class, $criteria);
+        // normalise $criteria to cache identifier
+        $cacheKey = CacheableActiveQuery::normaliseObjectIdentifier(static::class, $criteria);
 
-            /**
-             * Callback function used to find the record in the database if it's not found in the cache
-             *
-             * @return self|null
-             */
-            $find = static fn(): ?self => static::find()->where($criteria)->one();
+        /**
+         * Callback function used to find the record in the database if it's not found in the cache
+         *
+         * @return self|null
+         */
+        $find = static fn(): ?self => static::find()->where($criteria)->one();
 
-            if ($config['cached'] ?? true) {
-                // unless cache-lookup is prevented, try to get it from cache
-                $record = Yii::$app->runtimeCache->getOrSet($cacheKey, $find);
-            } else {
-                // otherwise, look it up in the database and save it into/update the cache
-                $record = $find();
-                Yii::$app->runtimeCache->set($cacheKey, $record);
-            }
+        $record = Yii::$app->runtimeCache->getOrSet($cacheKey, $find);
 
-            if ($record) {
-                $cacheKey = [$cacheKey];
-                CacheableActiveQuery::cacheSetVariants($record, null, $cacheKey);
-            }
-
-            // ... then return it, if it matches the $simpleCondition
-            return static::matchProperties($record, $simpleCondition, $config['onEmpty'] ?? null);
+        if ($record) {
+            $cacheKey = [$cacheKey];
+            CacheableActiveQuery::cacheSetVariants($record, null, $cacheKey);
         }
 
-        throw new InvalidArgumentTypeException(
-            str_replace(__CLASS__, static::class, __METHOD__),
-            [1 => '$identifier'],
-            [self::class, 'int', ($config['stringKey'] ?? null) === null ? '(int)string' : 'string'],
-            $identifier,
-            array_key_exists('onEmpty', $config),
-            $config['exceptionMessageSuffix'] ?? ''
-        );
+        // ... then return it, if it matches the $simpleCondition
+        return static::matchProperties($record, $simpleCondition);
     }
 
-    public static function findInstanceAsId($identifier, array $config = []): ?int
+    public static function findInstanceAsId($identifier, ?iterable $simpleCondition = null): ?int
     {
-        return static::findInstance($identifier, $config)->id ?? null;
+        return static::findInstance($identifier, $simpleCondition)->id ?? null;
     }
 
     public function afterDelete()
@@ -164,7 +144,71 @@ trait FindInstanceTrait
         return parent::updateAllCounters($counters, $condition, $params);
     }
 
-    /** @noinspection ReferencingObjectsInspection */
+    /**
+     * @param static|int|string|array|null $identifier
+     */
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
+    {
+        if ($identifier === null) {
+            return self::INSTANCE_IDENTIFIER_IS_NULL;
+        }
+
+        if ($identifier instanceof static) {
+            return self::INSTANCE_IDENTIFIER_IS_SELF;
+        }
+
+        if (is_int($identifier)) {
+            return self::INSTANCE_IDENTIFIER_IS_INT;
+        }
+
+        if (is_string($identifier)) {
+            $identifier = trim($identifier);
+
+            if ($identifier === '') {
+                $identifier = null;
+
+                return self::INSTANCE_IDENTIFIER_IS_NULL;
+            }
+
+            $id = filter_var($identifier, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+
+            if ($id !== null) {
+                $identifier = $id;
+
+                return self::INSTANCE_IDENTIFIER_IS_INT;
+            }
+
+            if ($stringKey) {
+                $identifier = [$stringKey => $identifier];
+
+                return self::INSTANCE_IDENTIFIER_IS_ARRAY;
+            }
+
+            return self::INSTANCE_IDENTIFIER_IS_STRING;
+        }
+
+        if (is_array($identifier)) {
+            if (count($identifier) === 0) {
+                $identifier = null;
+
+                return self::INSTANCE_IDENTIFIER_IS_NULL;
+            }
+
+            return self::INSTANCE_IDENTIFIER_IS_ARRAY;
+        }
+
+        return self::INSTANCE_IDENTIFIER_INVALID;
+    }
+
+
+    /**
+     * @param $identifier
+     * @param iterable|null $simpleCondition
+     * @param $onEmpty
+     *
+     * @return mixed|null
+     * @noinspection ReferencingObjectsInspection
+     */
     private static function matchProperties($identifier, ?iterable &$simpleCondition, $onEmpty = null)
     {
         if (!is_object($identifier)) {

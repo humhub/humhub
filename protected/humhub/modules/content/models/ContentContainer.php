@@ -29,6 +29,7 @@ class ContentContainer extends ActiveRecord implements FindInstanceInterface
 {
     use FindInstanceTrait {
         findInstance as _FindInstanceTrait_findInstance;
+        validateInstanceIdentifier as _FindInstanceTrait_validateInstanceIdentifier;
     }
 
     /**
@@ -82,11 +83,9 @@ class ContentContainer extends ActiveRecord implements FindInstanceInterface
         ];
     }
 
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
     {
-        $config['stringKey'] ??= 'guid';
-
-        return static::_FindInstanceTrait_findInstance($identifier, $config, $simpleCondition);
+        return static::_FindInstanceTrait_validateInstanceIdentifier($identifier, $stringKey ?? 'guid');
     }
 
     /**

@@ -12,14 +12,10 @@
 
 namespace humhub\tests\codeception\unit\components;
 
-use Exception;
 use humhub\exceptions\InvalidArgumentTypeException;
-use humhub\exceptions\InvalidConfigTypeException;
 use humhub\interfaces\FindInstanceInterface;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
-use yii\base\BaseObject;
-use yii\web\HttpException;
 
 class FindInstanceTest extends HumHubDbTestCase
 {
@@ -30,6 +26,106 @@ class FindInstanceTest extends HumHubDbTestCase
         static::assertEquals([2], $instance->args[1], 'Second argument does not match!');
     }
 
+    public function testIdentifierOfTypeNull()
+    {
+        $value = null;
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_NULL, $type);
+        static::assertNull($value);
+    }
+
+    public function testIdentifierOfTypeEmptyString()
+    {
+        $value = '';
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_NULL, $type);
+        static::assertNull($value);
+    }
+
+    public function testIdentifierOfTypeStringWithSpaces()
+    {
+        $value = '  ';
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_NULL, $type);
+        static::assertNull($value);
+    }
+
+    public function testIdentifierOfTypeEmptyArray()
+    {
+        $value = [];
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_NULL, $type);
+        static::assertNull($value);
+    }
+
+    public function testIdentifierOfTypeSelf()
+    {
+        $value = new FindInstanceMock();
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_SELF, $type);
+        static::assertInstanceOf(FindInstanceInterface::class, $value);
+    }
+
+    public function testIdentifierOfTypeStringWithZero()
+    {
+        $value = '0';
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_INT, $type);
+        static::assertEquals(0, $value);
+    }
+
+    public function testIdentifierOfTypeStringWithInteger()
+    {
+        $value = '1234';
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_INT, $type);
+        static::assertEquals(1234, $value);
+    }
+
+    public function testIdentifierOfTypeString()
+    {
+        $value = 'Hello World';
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value);
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_STRING, $type);
+        static::assertEquals('Hello World', $value);
+    }
+
+    public function testIdentifierOfTypeStringWithKey()
+    {
+        $value = 'Hello World';
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value, 'key');
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_ARRAY, $type);
+        static::assertEquals(['key' => 'Hello World'], $value);
+    }
+
+    public function testIdentifierOfTypeArray()
+    {
+        $value = ['Hello', 'World'];
+
+        $type = FindInstanceMock::validateInstanceIdentifier($value, 'key');
+
+        static::assertEquals(FindInstanceInterface::INSTANCE_IDENTIFIER_IS_ARRAY, $type);
+        static::assertEquals(['Hello', 'World'], $value);
+    }
+
     public function testSelfIdentifier()
     {
         $instance = new FindInstanceMock();
@@ -38,56 +134,10 @@ class FindInstanceTest extends HumHubDbTestCase
         static::assertEquals($instance, $instance2);
     }
 
-    public function testOnEmptyConfig()
-    {
-        $instance = new FindInstanceMock();
-
-        static::assertEquals(null, FindInstanceMock::findInstance(null, ['onEmpty' => null]));
-        static::assertEquals($instance, FindInstanceMock::findInstance(null, ['onEmpty' => $instance]));
-
-        static::assertEquals(null, FindInstanceMock::findInstance('', ['onEmpty' => null]));
-        static::assertEquals($instance, FindInstanceMock::findInstance('', ['onEmpty' => $instance]));
-
-        static::assertEquals(null, FindInstanceMock::findInstance([], ['onEmpty' => null]));
-        static::assertEquals($instance, FindInstanceMock::findInstance([], ['onEmpty' => $instance]));
-
-        static::assertInstanceOf(FindInstanceInterface::class, FindInstanceMock::findInstance(0, ['onEmpty' => null]));
-        static::assertInstanceOf(FindInstanceInterface::class, FindInstanceMock::findInstance('0', ['onEmpty' => null]));
-
-        static::assertInstanceOf(FindInstanceInterface::class, FindInstanceMock::findInstance(108, ['onEmpty' => null]));
-        static::assertInstanceOf(FindInstanceInterface::class, FindInstanceMock::findInstance('108', ['onEmpty' => null]));
-    }
-
-    public function testIntKeyConfig()
-    {
-        static::assertInstanceOf(FindInstanceInterface::class, $instance = FindInstanceMock::findInstance(1, ['intKey' => null]));
-        static::assertEquals(['id' => 1], $instance->args[0]);
-
-        static::assertInstanceOf(FindInstanceInterface::class, $instance = FindInstanceMock::findInstance(1, ['intKey' => 'guid']));
-        static::assertEquals(['guid' => 1], $instance->args[0]);
-
-        $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - string given.');
-
-        FindInstanceMock::findInstance('test', ['intKey' => 'guid']);
-    }
-
-    public function testStringKeyConfig()
-    {
-        static::assertInstanceOf(FindInstanceInterface::class, $instance = FindInstanceMock::findInstance(1, ['stringKey' => null]));
-        static::assertEquals(['id' => 1], $instance->args[0]);
-
-        static::assertInstanceOf(FindInstanceInterface::class, $instance = FindInstanceMock::findInstance(1, ['stringKey' => 'guid']));
-        static::assertEquals(['id' => 1], $instance->args[0]);
-
-        static::assertInstanceOf(FindInstanceInterface::class, $instance = FindInstanceMock::findInstance('test', ['stringKey' => 'guid']));
-        static::assertEquals(['guid' => 'test'], $instance->args[0]);
-    }
-
     public function testExceptionOnNullIdentifier()
     {
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - null given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string, string, array - null given.');
 
         FindInstanceMock::findInstance(null);
     }
@@ -95,7 +145,7 @@ class FindInstanceTest extends HumHubDbTestCase
     public function testExceptionOnEmptyStringIdentifier()
     {
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - string given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string, string, array - string given.');
 
         FindInstanceMock::findInstance('');
     }
@@ -103,7 +153,7 @@ class FindInstanceTest extends HumHubDbTestCase
     public function testExceptionOnEmptyArrayIdentifier()
     {
         $this->expectException(InvalidArgumentTypeException::class);
-        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string - array given.');
+        $this->expectExceptionMessage('Argument #1 $identifier passed to humhub\components\FindInstanceTrait::findInstance must be of type humhub\tests\codeception\unit\components\FindInstanceMock, int, (int)string, string, array - array given.');
 
         FindInstanceMock::findInstance([]);
     }
@@ -132,26 +182,6 @@ class FindInstanceTest extends HumHubDbTestCase
         static::assertEquals($instance, $cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1'));
         static::assertEquals(spl_object_id($instance2), spl_object_id($cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1')));
         static::assertEquals(spl_object_id($instance), spl_object_id($cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1')));
-
-        $cache->resetState();
-
-        // get an un-cached object (new object from "db") and store it in cache
-        static::assertInstanceOf(FindInstanceInterface::class, $instance2 = FindInstanceMock::findInstance(1, ['cached' => false]));
-        static::assertNull($cache->cacheRead);
-        static::assertNotNull($cache->cacheWritten);
-        static::assertFalse($cache->valueRetrieved);
-
-        // check it's like the object from the cache
-        static::assertEquals($instance2, $cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1'));
-
-        // check it *is* the object from the cache
-        static::assertEquals(spl_object_id($instance2), spl_object_id($cache->get('humhub_tests_codeception_unit_components_FindInstanceMock__1')));
-
-        // check if it looks like our original object
-        static::assertEquals($instance2, $instance);
-
-        // check that it is however *not* the same object
-        static::assertNotEquals(spl_object_id($instance), spl_object_id($instance2));
 
         // restore original cache
         Yii::$app->set('runtimeCache', $currentCache);

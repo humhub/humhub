@@ -340,20 +340,9 @@ class Space extends ContentContainerActiveRecord implements Searchable
         return new ActiveQuerySpace(static::class);
     }
 
-    /**
-     * @param Space|int|string $identifier Space object, Space ID, or Space GUID.
-     *
-     * @inheritdoc
-     * @since 1.15
-     */
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
     {
-        $config['exceptionMessageSuffix'] ??= '(must be a Space object or Space ID)';
-        $config['stringKey'] = 'guid';
-        $config['onEmpty'] = null;
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::findInstance($identifier, $config, $simpleCondition);
+        return parent::validateInstanceIdentifier($identifier, $stringKey ?? 'guid');
     }
 
     /**

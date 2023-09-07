@@ -426,7 +426,7 @@ class Membership extends CachedActiveRecord
      * @since 1.15
      * @see FindInstanceInterface::findInstance()
      */
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    public static function findInstance($identifier, ?iterable $simpleCondition = null): ?self
     {
         // check if $identifier is a valid array<Space|int|string, User|int|string|null>, or just a Membership|membership_id
         if (is_array($identifier)) {
@@ -442,7 +442,7 @@ class Membership extends CachedActiveRecord
             $userId = User::findInstanceAsId($identifier[1]);
 
             // now look up the Membership instance by Space/User IDs
-            $membership = parent::findInstance(['space_id' => $spaceId, 'user_id' => $userId], $config, $simpleCondition);
+            $membership = parent::findInstance(['space_id' => $spaceId, 'user_id' => $userId], $simpleCondition);
 
             if ($membership) {
                 // cache the membership also under its PK (ID)
@@ -450,7 +450,7 @@ class Membership extends CachedActiveRecord
             }
         } else {
             // if it's not an array, $identifier MUST be Membership|int
-            $membership = parent::findInstance($identifier, $config, $simpleCondition);
+            $membership = parent::findInstance($identifier, $simpleCondition);
 
             if ($membership) {
                 // cache the membership also under the space/user ID combination

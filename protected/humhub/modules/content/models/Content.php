@@ -207,12 +207,9 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
         return $this->getPolymorphicRelation();
     }
 
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
     {
-        $config['stringKey'] ??= 'guid';
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::findInstance($identifier, $config, $simpleCondition);
+        return parent::validateInstanceIdentifier($identifier, $stringKey ?? 'guid');
     }
 
     /**

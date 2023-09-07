@@ -109,15 +109,10 @@ class Invite extends CachedActiveRecord
         ];
     }
 
-    public static function findInstance($identifier, ?array $config = [], ?iterable $simpleCondition = null): ?self
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
     {
-        $config['stringKey'] ??= 'email';
-        $config['onEmpty'] = null;
-
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return parent::findInstance($identifier, $config, $simpleCondition);
+        return parent::validateInstanceIdentifier($identifier, $stringKey ?? 'email');
     }
-
 
     /**
      * @inheritdoc
