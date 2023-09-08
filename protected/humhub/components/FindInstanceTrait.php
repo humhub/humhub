@@ -13,6 +13,7 @@ use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\helpers\RuntimeCacheHelper;
 use humhub\interfaces\FindInstanceInterface;
 use Yii;
+use yii\base\ErrorException;
 
 /**
  * Helper trait for implementing FindInstanceInterface
@@ -93,7 +94,27 @@ trait FindInstanceTrait
             // otherwise, look it up in the database and save it into/update the cache
             $record = static::find()
                 ->where($criteria)
-                ->one();
+                ->limit(2)
+                ->all();
+
+            switch (count($record)) {
+                case 0:
+                    $record = null;
+                    break;
+
+                case 1:
+                    $record = reset($record);
+                    break;
+
+                default:
+                    throw new InvalidArgumentException(
+                        __METHOD__,
+                        [1 => '$identifier'],
+                        ['unique record identifier'],
+                        $identifier,
+                        'Invalid number of records (2 or more) returned! Query must return 0 or 1 record only.'
+                    );
+            }
 
             RuntimeCacheHelper::set($record, $cacheKey);
         }
