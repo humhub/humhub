@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\components\ActiveRecord;
+use humhub\components\CachedActiveRecord;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -42,10 +42,9 @@ use Yii;
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
-class Group extends ActiveRecord
+class Group extends CachedActiveRecord
 {
-
-    const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -179,13 +178,11 @@ class Group extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->is_default_group) {
-            // Only single group can be default:
-            Group::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
+            // Only one single group can be default:
+            self::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
         }
 
         parent::afterSave($insert, $changedAttributes);
-
-
     }
 
     /**

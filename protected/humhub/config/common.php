@@ -112,7 +112,7 @@ $config = [
         ],
         'runtimeCache' => [
             'class' => \yii\caching\ArrayCache::class,
-            'serializer' => false,
+            'serializer' => \humhub\helpers\RuntimeCacheHelper::dummySerializer(),
         ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
