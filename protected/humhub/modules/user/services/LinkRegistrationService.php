@@ -30,7 +30,7 @@ final class LinkRegistrationService
 
     public static function createFromRequest(): LinkRegistrationService
     {
-        $token = (string)Yii::$app->request->get('token', null);
+        $token = (string)Yii::$app->request->get('token');
         $spaceId = (int)Yii::$app->request->get('spaceId');
 
         if (!$token && Yii::$app->session->has(LinkRegistrationService::class . '::token')) {
