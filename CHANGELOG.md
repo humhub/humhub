@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #6534: Cannot change Homepage of space in PHP 8.x
 - Fix #6539: Fix overriding of loaded value with default value on HForm
 - Fix #6464: Fix access to own user container
+- Fix #6349: Fix error on login new user from external service when maintenance is enabled
 
 1.14.3 (July 27, 2023)
 ----------------------
