@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #6531: Fix active style for `btn-lg`
 - Fix #6534: Cannot change Homepage of space in PHP 8.x
 - Fix #6539: Fix overriding of loaded value with default value on HForm
+- Fix #6464: Fix access to own user container
 
 1.14.3 (July 27, 2023)
 ----------------------
