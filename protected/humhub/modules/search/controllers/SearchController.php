@@ -28,7 +28,7 @@ class SearchController extends Controller
      * View context used for the search view
      * @see View::$viewContext
      */
-    const VIEW_CONTEXT = 'search';
+    public const VIEW_CONTEXT = 'search';
 
     /**
      * @var string the current search keyword
@@ -63,7 +63,7 @@ class SearchController extends Controller
         $limitSpaces = [];
         if (!empty($model->limitSpaceGuids)) {
             foreach ($model->limitSpaceGuids as $guid) {
-                $space = Space::findOne(['guid' => trim($guid)]);
+                $space = Space::findInstance($guid);
                 if ($space !== null) {
                     $limitSpaces[] = $space;
                 }
@@ -92,7 +92,7 @@ class SearchController extends Controller
         // Store static for use in widgets (e.g. fileList)
         self::$keyword = $model->keyword;
 
-        $pagination = new Pagination;
+        $pagination = new Pagination();
         $pagination->totalCount = $searchResultSet->total;
         $pagination->pageSize = $searchResultSet->pageSize;
 
@@ -104,5 +104,4 @@ class SearchController extends Controller
                     'limitSpaces' => $limitSpaces
         ]);
     }
-
 }

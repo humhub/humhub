@@ -84,7 +84,7 @@ class PostController extends ContentContainerController
 
     public function actionEdit($id)
     {
-        $post = Post::findOne(['id' => $id]);
+        $post = Post::findInstance($id);
         if (!$post) {
             throw new NotFoundHttpException();
         }
@@ -98,7 +98,7 @@ class PostController extends ContentContainerController
         if ($model->load(Yii::$app->request->post())) {
             // Reload record to get populated updated_at field
             if ($model->save()) {
-                $post = Post::findOne(['id' => $id]);
+                $post = Post::findInstance($id);
                 return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($post));
             } else {
                 Yii::$app->response->statusCode = 400;
@@ -122,5 +122,4 @@ class PostController extends ContentContainerController
             'contentContainer' => $this->contentContainer,
         ]));
     }
-
 }

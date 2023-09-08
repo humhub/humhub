@@ -9,9 +9,12 @@
 namespace humhub\components;
 
 use Yii;
+use humhub\helpers\RuntimeCacheHelper;
+use humhub\interfaces\UniqueIdentifiersInterface;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveRecord as DbActiveRecord;
 use yii\db\ColumnSchema;
 use yii\db\Expression;
 use yii\validators\Validator;
@@ -24,7 +27,7 @@ use yii\validators\Validator;
  * @property User $updatedBy
  * @author luke
  */
-class ActiveRecord extends \yii\db\ActiveRecord
+class ActiveRecord extends DbActiveRecord implements UniqueIdentifiersInterface
 {
 
     /**
@@ -87,11 +90,20 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * Returns a unique id for this record/model
      *
-     * @return String Unique Id of this record
+     * @return String Unique ID of this record
      */
-    public function getUniqueId()
+    public function getUniqueId(): string
     {
-        return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
+        return RuntimeCacheHelper::normaliseObjectIdentifier($this, $this->getPrimaryKey(true));
+    }
+
+    /**
+     * @inheritdoc
+     * @since 1.15
+     */
+    public function getUniqueIdVariants(?array $keys = null): ?array
+    {
+        return RuntimeCacheHelper::buildUniqueIDs($this, $keys, false, false);
     }
 
     /**

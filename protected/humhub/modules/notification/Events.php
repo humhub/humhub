@@ -23,7 +23,6 @@ use humhub\modules\notification\models\Notification;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * On User delete, also delete all posts
      *
@@ -78,7 +77,7 @@ class Events extends \yii\base\BaseObject
 
             // Check if Space still exists
             if (!empty($notification->space_id)) {
-                $space = Space::findOne(['id' => $notification->space_id]);
+                $space = Space::findInstance($notification->space_id);
                 if ($space === null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " workspace seems to no longer exist!")) {
                         $notification->delete();
@@ -126,8 +125,6 @@ class Events extends \yii\base\BaseObject
                     $notification->delete();
                 }
             }
-
-
         }
     }
 
@@ -187,5 +184,4 @@ class Events extends \yii\base\BaseObject
             $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
-
 }

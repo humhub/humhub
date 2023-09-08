@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class UrlRule extends ContentContainerUrlRule
 {
-
     /**
      * @inheritdoc
      */
@@ -53,7 +52,7 @@ class UrlRule extends ContentContainerUrlRule
      */
     protected static function getContentContainerByGuid(string $guid): ?ContentContainerActiveRecord
     {
-        return Space::findOne(['guid' => $guid]);
+        return Space::findInstance($guid);
     }
 
     /**
@@ -71,5 +70,4 @@ class UrlRule extends ContentContainerUrlRule
     {
         return ($contentContainer instanceof Space);
     }
-
 }

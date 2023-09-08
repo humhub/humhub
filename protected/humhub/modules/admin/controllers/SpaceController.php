@@ -78,23 +78,24 @@ class SpaceController extends Controller
      */
     public function actionOpen($id, $section = null)
     {
-        $space = Space::findOne(['id' => $id]);
+        $space = Space::findInstance($id);
         if ($space === null) {
             throw new HttpException(404);
         }
 
-        if ($section == 'members') {
-            return $this->redirect($space->createUrl('/space/manage/member'));
-        } elseif ($section == 'owner') {
-            return $this->redirect($space->createUrl('/space/manage/member/change-owner'));
-        } elseif ($section == 'edit') {
-            return $this->redirect($space->createUrl('/space/manage'));
-        } elseif ($section == 'modules') {
-            return $this->redirect($space->createUrl('/space/manage/module'));
-        } elseif ($section == 'delete') {
-            return $this->redirect($space->createUrl('/space/manage/default/delete'));
-        } else {
-            return $this->redirect($space->getUrl());
+        switch ($section) {
+            case 'members':
+                return $this->redirect($space->createUrl('/space/manage/member'));
+            case 'owner':
+                return $this->redirect($space->createUrl('/space/manage/member/change-owner'));
+            case 'edit':
+                return $this->redirect($space->createUrl('/space/manage'));
+            case 'modules':
+                return $this->redirect($space->createUrl('/space/manage/module'));
+            case 'delete':
+                return $this->redirect($space->createUrl('/space/manage/default/delete'));
+            default:
+                return $this->redirect($space->getUrl());
         }
     }
 
@@ -180,5 +181,4 @@ class SpaceController extends Controller
             'groupId' => $groupId,
         ]);
     }
-
 }

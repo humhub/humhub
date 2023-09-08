@@ -115,8 +115,8 @@ class SpaceSettingsForm extends \yii\base\Model
         if (!empty($this->defaultSpaceGuid)) {
             foreach ($this->defaultSpaceGuid as $spaceGuid) {
                 if ($spaceGuid != "") {
-                    $space = Space::findOne(['guid' => $spaceGuid]);
-                    if ($space == null) {
+                    $space = Space::findInstance($spaceGuid);
+                    if ($space === null) {
                         $this->addError($attribute, Yii::t('AdminModule.space', "Invalid space"));
                     }
                 }
@@ -184,7 +184,7 @@ class SpaceSettingsForm extends \yii\base\Model
             }
             // Add new Default Spaces
             foreach ($this->defaultSpaceGuid as $spaceGuid) {
-                $space = Space::findOne(['guid' => $spaceGuid]);
+                $space = Space::findInstance($spaceGuid);
                 if ($space != null && $space->auto_add_new_members != 1) {
                     $space->auto_add_new_members = 1;
                     $space->save();
@@ -192,5 +192,4 @@ class SpaceSettingsForm extends \yii\base\Model
             }
         }
     }
-
 }

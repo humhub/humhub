@@ -41,7 +41,7 @@ class SoftDeleteUser extends ActiveJob implements ExclusiveJobInterface
      */
     public function run()
     {
-        $user = User::findOne(['id' => $this->user_id]);
+        $user = User::findInstance($this->user_id);
         if ($user === null) {
             return;
         }

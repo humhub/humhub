@@ -30,7 +30,8 @@ class MemberController extends Controller
     /**
      * @inheritdoc
      */
-    protected function getAccessRules() {
+    protected function getAccessRules()
+    {
         return [
             ['login'],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => [
@@ -53,13 +54,12 @@ class MemberController extends Controller
         // User Group Change
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
-            $membership = Membership::findMembership($space->id, Yii::$app->request->post('user_id'));
+            $membership = Membership::findInstance([$space->id, Yii::$app->request->post('user_id')]);
             if ($membership === null) {
                 throw new HttpException(404, 'Could not find membership!');
             }
 
             if ($membership->load(Yii::$app->request->post()) && $membership->save()) {
-
                 ChangedRolesMembership::instance()
                     ->about($membership)
                     ->from(Yii::$app->user->identity)
@@ -123,7 +123,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(['guid' => $userGuid]);
+        $user = User::findInstance($userGuid);
 
         if ($user != null) {
             $space->removeMember($user->id);
@@ -141,7 +141,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(['guid' => $userGuid]);
+        $user = User::findInstance($userGuid);
 
         if ($user != null) {
             $membership = $space->getMembership($user->id);
@@ -162,7 +162,7 @@ class MemberController extends Controller
 
         $space = $this->getSpace();
         $userGuid = Yii::$app->request->get('userGuid');
-        $user = User::findOne(['guid' => $userGuid]);
+        $user = User::findInstance($userGuid);
 
         if ($space->isSpaceOwner($user->id)) {
             throw new HttpException(500, 'Owner cannot be removed!');

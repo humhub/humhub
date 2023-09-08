@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\activities\UserFollow;
@@ -32,16 +33,15 @@ use yii\db\Query;
  */
 class Follow extends ActiveRecord
 {
+    /**
+     * @event \humhub\modules\user\events\FollowEvent
+     */
+    public const EVENT_FOLLOWING_CREATED = 'followCreated';
 
     /**
      * @event \humhub\modules\user\events\FollowEvent
      */
-    const EVENT_FOLLOWING_CREATED = 'followCreated';
-
-    /**
-     * @event \humhub\modules\user\events\FollowEvent
-     */
-    const EVENT_FOLLOWING_REMOVED = 'followRemoved';
+    public const EVENT_FOLLOWING_REMOVED = 'followRemoved';
 
     /**
      * @inheritdoc
@@ -145,7 +145,10 @@ class Follow extends ActiveRecord
     {
         try {
             $targetClass = $this->object_model;
-            if ($targetClass != "" && is_subclass_of($targetClass, ActiveRecord::class)) {
+            if (is_subclass_of($targetClass, FindInstanceInterface::class)) {
+                return $targetClass::findInstance($this->object_id);
+            }
+            if (is_subclass_of($targetClass, ActiveRecord::class)) {
                 return $targetClass::findOne(['id' => $this->object_id]);
             }
         } catch (\Exception $e) {
@@ -245,5 +248,4 @@ class Follow extends ActiveRecord
 
         return User::find()->visible()->andWhere(['exists', $subQuery]);
     }
-
 }

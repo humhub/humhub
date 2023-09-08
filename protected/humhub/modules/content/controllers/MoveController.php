@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kingb
@@ -8,8 +9,6 @@
 
 namespace humhub\modules\content\controllers;
 
-
-use HttpException;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
@@ -18,6 +17,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
 use Yii;
 use yii\data\Pagination;
+use yii\web\HttpException;
 
 class MoveController extends ContentContainerController
 {
@@ -40,7 +40,6 @@ class MoveController extends ContentContainerController
 
 
         return $this->renderAjax('moveModal', ['model' => $form]);
-
     }
 
     /**
@@ -54,7 +53,7 @@ class MoveController extends ContentContainerController
         $countQuery = clone $query;
         $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSizeParam' => 'limit']);
 
-        $content = Content::findOne(['id' => $contentId]);
+        $content = Content::findInstance($contentId);
 
         $json = [];
         foreach ($query->offset($pagination->offset)->limit($pagination->limit)->all() as $space) {

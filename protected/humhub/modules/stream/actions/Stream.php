@@ -9,6 +9,7 @@
 namespace humhub\modules\stream\actions;
 
 use humhub\components\Request;
+use humhub\interfaces\StatableQueryInterface;
 use humhub\modules\stream\events\StreamResponseEvent;
 use humhub\modules\user\models\User;
 use Yii;
@@ -47,55 +48,55 @@ abstract class Stream extends Action
      * This can be used for adding filters.
      * @since 1.7
      */
-    const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
+    public const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
 
     /**
      * @event Event triggered after stream filter handlers are applied
      * This can be used for last modifications to the query.
      * @since 1.7
      */
-    const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
+    public const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
 
     /**
      * @event Event triggered after query fetch, can be used to manipulate the
      * stream response. E.g. inject additional entries.
      *  @since 1.7
      */
-    const EVENT_AFTER_FETCH = 'afterQueryFetch';
+    public const EVENT_AFTER_FETCH = 'afterQueryFetch';
 
     /**
      * Sort by creation sort value
      */
-    const SORT_CREATED_AT = 'c';
+    public const SORT_CREATED_AT = 'c';
 
     /**
      * Sort by update sort value
      */
-    const SORT_UPDATED_AT = 'u';
+    public const SORT_UPDATED_AT = 'u';
 
     /**
      * @var string
      * @deprecated since 1.6 use ActivityStreamAction
      */
-    const MODE_NORMAL = 'normal';
+    public const MODE_NORMAL = 'normal';
 
     /**
      * @var string
      * @deprecated since 1.6 use ActivityStreamAction
      */
-    const MODE_ACTIVITY = 'activity';
+    public const MODE_ACTIVITY = 'activity';
 
     /**
      * @var string
      * @deprecated since 1.7 use BaseStreamEntryWidget::VIEW_MODE_DASHBOARD
      */
-    const FROM_DASHBOARD = 'dashboard';
+    public const FROM_DASHBOARD = 'dashboard';
 
     /**
      * Maximum wall entries per request
      * @deprecated since 1.7 not in use
      */
-    const MAX_LIMIT = 50;
+    public const MAX_LIMIT = 50;
 
     /**
      * Optional stream user if no user is specified, the current logged in user will be used.
@@ -185,7 +186,7 @@ abstract class Stream extends Action
     {
         parent::init();
 
-        if(!$this->user) {
+        if (!$this->user) {
             $this->user = Yii::$app->user->identity;
         }
 
@@ -198,7 +199,7 @@ abstract class Stream extends Action
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
 
-            if(!$this->viewContext) {
+            if (!$this->viewContext) {
                 $this->viewContext = Yii::$app->request->get('viewContext');
             }
         }
@@ -309,11 +310,11 @@ abstract class Stream extends Action
         $this->filters = $this->streamQuery->filters;
         $this->user = $this->streamQuery->user;
 
-        if(!$this->streamEntryOptions) {
+        if (!$this->streamEntryOptions) {
             $this->streamEntryOptions = $this->initStreamEntryOptions();
         }
 
-        if($this->streamEntryWidgetClass) {
+        if ($this->streamEntryWidgetClass) {
             $this->streamEntryOptions->overwriteWidgetClass($this->streamEntryWidgetClass);
         }
 
@@ -327,7 +328,7 @@ abstract class Stream extends Action
     {
         $instance = new StreamEntryOptions();
 
-        if($this->viewContext) {
+        if ($this->viewContext) {
             $instance->viewContext($this->viewContext);
         }
 
@@ -344,7 +345,7 @@ abstract class Stream extends Action
 
         $entries = $this->streamQuery->all();
 
-        if(!empty($entries)) {
+        if (!empty($entries)) {
             $this->addResponseEntries($entries, $response);
         } else {
             $this->handleEmptyResponse($response);
@@ -367,7 +368,7 @@ abstract class Stream extends Action
     {
         foreach ($entries as $content) {
             $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
-            if($streamEntry) {
+            if ($streamEntry) {
                 $response->addEntry($streamEntry);
             }
         }
@@ -383,9 +384,9 @@ abstract class Stream extends Action
      */
     private function handleEmptyResponse(StreamResponse $response)
     {
-        if($this->streamQuery->isSingleContentQuery()) {
-            $content = Content::findOne(['id' => $this->streamQuery->contentId]);
-            if(!$content) {
+        if ($this->streamQuery->isSingleContentQuery()) {
+            $content = Content::findInstance($this->streamQuery->contentId);
+            if (!$content) {
                 $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
             } elseif (!$content->canView()) {
                 $response->setError(403, Yii::t('StreamModule.base', 'You are not allowed to view this content.'));

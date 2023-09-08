@@ -24,7 +24,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
     /**
      * Content module db setting used to deactivate this feature
      */
-    const DB_SETTING_KEY = 'richtextCompatMode';
+    public const DB_SETTING_KEY = 'richtextCompatMode';
 
     /**
      * @inheritdoc
@@ -44,7 +44,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      * Replace emojis from text to img tag
      *
      * @param string $text Contains the complete message
-     * @param string $show show smilies or remove it (for activities and notifications)
+     *
      * @return string
      */
     public static function translateEmojis(string $text): string
@@ -91,12 +91,15 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
             'sun' => 'sun_with_face'
         ];
 
-        return preg_replace_callback('@;(\w*?);@', function ($hit) use (&$emojis, &$emojiMapping) {
+        return preg_replace_callback('@;(\w*?);@', static function ($hit) use (&$emojis, &$emojiMapping) {
             if (array_key_exists($hit[1], $emojiMapping)) {
                 return ':' . $emojiMapping[$hit[1]] . ':';
-            } elseif (in_array($hit[1], $emojis)) {
+            }
+
+            if (in_array($hit[1], $emojis)) {
                 return ':' . strtolower($hit[1]) . ':';
             }
+
             return $hit[0];
         }, $text);
     }
@@ -109,7 +112,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      */
     private static function translateLinks(string $text): string
     {
-        return preg_replace_callback('/(?<=^|\s)(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s\]\)\\"\'\<]{2,})(?=$|\s)/', function ($hit) {
+        return preg_replace_callback('/(?<=^|\s)(https?:\/\/(?:www\.|(?!www))[^\s\.]+\.[^\s\]\)\\"\'\<]{2,})(?=$|\s)/', static function ($hit) {
             $url = $hit[0];
             return UrlOembed::getOEmbed($url) ? '[' . $url . '](oembed:' . $url . ')' : $url;
         }, $text);
@@ -123,12 +126,12 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
      */
     private static function translateMentionings(string $text): string
     {
-        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', function ($hit) {
+        return preg_replace_callback('@\@\-([us])([\w\-]*?)($|[\.,:;\'"!\?\s])@', static function ($hit) {
             if ($hit[1] == 'u') {
                 $container = User::findOne(['guid' => $hit[2]]);
                 $name = ($container) ? $container->getDisplayName() : 'unknown';
             } else {
-                $container = Space::findOne(['guid' => $hit[2]]);
+                $container = Space::findInstance($hit[2]);
                 $name = ($container) ? $container->name : 'unknown';
             }
 

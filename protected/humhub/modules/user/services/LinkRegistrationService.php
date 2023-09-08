@@ -22,9 +22,9 @@ use yii\base\Exception;
  */
 final class LinkRegistrationService
 {
-    const SETTING_VAR_ENABLED = 'auth.internalUsersCanInviteByLink';
-    const SETTING_VAR_SPACE_TOKEN = 'inviteToken';
-    const SETTING_VAR_TOKEN = 'registration.inviteToken';
+    public const SETTING_VAR_ENABLED = 'auth.internalUsersCanInviteByLink';
+    public const SETTING_VAR_SPACE_TOKEN = 'inviteToken';
+    public const SETTING_VAR_TOKEN = 'registration.inviteToken';
     private ?Space $space;
     private ?string $token;
 
@@ -38,7 +38,7 @@ final class LinkRegistrationService
             $spaceId = Yii::$app->session->get(LinkRegistrationService::class . '::spaceId', null);
         }
 
-        return new LinkRegistrationService($token, Space::findOne(['id' => $spaceId]));
+        return new LinkRegistrationService($token, Space::findInstance($spaceId));
     }
 
 

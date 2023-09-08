@@ -68,11 +68,13 @@ class UserController extends Controller
     {
         if (Yii::$app->user->can([new ManageUsers(), new ManageGroups()])) {
             return $this->redirect(['list']);
-        } elseif (Yii::$app->user->can(ManageSettings::class)) {
-            return $this->redirect(['/admin/authentication']);
-        } else {
-            return $this->forbidden();
         }
+
+        if (Yii::$app->user->can(ManageSettings::class)) {
+            return $this->redirect(['/admin/authentication']);
+        }
+
+        return $this->forbidden();
     }
 
     /**
@@ -99,10 +101,10 @@ class UserController extends Controller
      */
     public function actionEdit()
     {
-        $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
+        $user = UserEditForm::findInstance(Yii::$app->request->get('id'));
         $user->initGroupSelection();
 
-        if ($user == null) {
+        if ($user === null) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
@@ -280,7 +282,7 @@ class UserController extends Controller
      */
     public function actionDelete($id)
     {
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
 
         $this->checkUserAccess($user);
 
@@ -316,7 +318,7 @@ class UserController extends Controller
      */
     public function actionViewProfile($id)
     {
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
         if ($user === null) {
             throw new HttpException(404);
         }
@@ -328,7 +330,7 @@ class UserController extends Controller
     {
         $this->forcePostRequest();
 
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
         if ($user === null) {
             throw new HttpException(404);
         }
@@ -343,7 +345,7 @@ class UserController extends Controller
     {
         $this->forcePostRequest();
 
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
 
         $this->checkUserAccess($user);
 
@@ -364,7 +366,7 @@ class UserController extends Controller
     {
         $this->forcePostRequest();
 
-        $user = User::findOne(['id' => $id]);
+        $user = User::findInstance($id);
 
         $this->checkUserAccess($user);
 

@@ -128,7 +128,7 @@ class RegistrationController extends Controller
     /**
      * Invitation by link
      * @param null $token
-     * @param null $spaceId
+     * @param Space|int|string|null $spaceId
      * @return string
      * @throws HttpException
      * @throws \Throwable
@@ -136,7 +136,7 @@ class RegistrationController extends Controller
      */
     public function actionByLink(?string $token = null, $spaceId = null)
     {
-        $linkRegistrationService = new LinkRegistrationService($token, Space::findOne(['id' => (int)$spaceId]));
+        $linkRegistrationService = new LinkRegistrationService($token, Space::findInstance($spaceId));
 
         if (!$linkRegistrationService->isEnabled()) {
             throw new HttpException(404);

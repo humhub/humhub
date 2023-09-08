@@ -37,7 +37,6 @@ use Laminas\Ldap\Node;
  */
 class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
-
     /**
      * @var Ldap
      */
@@ -268,8 +267,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if (isset($attributes['uid']) && !empty($attributes['uid'])) {
             $conditions[] = ['username' => $attributes['uid']];
         }
-        if ($conditions)
+        if ($conditions) {
             $query->andWhere($conditions);
+        }
 
         return $query->one();
     }
@@ -283,7 +283,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if ($node !== null) {
             $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
-        } else if ($this->login instanceof Login) {
+        }
+
+        if ($this->login instanceof Login) {
             $this->countFailedLoginAttempts();
         }
 
@@ -394,7 +396,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
         // Translate given e-mail to username
         if (strpos($userName, '@') !== false) {
-            $user = User::findOne(['email' => $userName]);
+            $user = User::findInstance($userName);
             if ($user !== null) {
                 $userName = $user->username;
             }
@@ -424,7 +426,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public function getLdap()
     {
         if ($this->_ldap === null) {
-
             $options = [
                 'host' => $this->hostname,
                 'port' => $this->port,

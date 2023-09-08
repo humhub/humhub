@@ -10,7 +10,6 @@ namespace humhub\modules\content\controllers;
 
 use Yii;
 use humhub\components\Controller;
-use humhub\modules\content\models\WallEntry;
 use humhub\modules\content\models\Content;
 use yii\web\HttpException;
 
@@ -23,7 +22,6 @@ use yii\web\HttpException;
  */
 class PermaController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -45,9 +43,8 @@ class PermaController extends Controller
         $id = (int)Yii::$app->request->get('id');
         $commentId = (int)Yii::$app->request->get('commentId');
 
-        $content = Content::findOne(['id' => $id]);
+        $content = Content::findInstance($id);
         if ($content !== null) {
-
             if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
                 $url = $content->getPolymorphicRelation()->getUrl();
             } elseif ($content->container !== null) {

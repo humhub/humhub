@@ -9,6 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -62,7 +63,6 @@ use Yii;
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
-
     // Join Policies
     const JOIN_POLICY_NONE = 0; // No Self Join Possible
     const JOIN_POLICY_APPLICATION = 1; // Invitation and Application Possible
@@ -251,6 +251,8 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public function afterSave($insert, $changedAttributes)
     {
+        RuntimeCacheHelper::deleteVariants($this);
+
         parent::afterSave($insert, $changedAttributes);
 
         Yii::$app->queue->push(new UpdateDocument([
@@ -258,7 +260,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             'primaryKey' => $this->id
         ]));
 
-        $user = User::findOne(['id' => $this->created_by]);
+        $user = User::findInstance($this->created_by);
 
         if ($insert) {
             // Auto add creator as admin
@@ -335,38 +337,36 @@ class Space extends ContentContainerActiveRecord implements Searchable
      */
     public static function find()
     {
-        return new ActiveQuerySpace(get_called_class());
+        return new ActiveQuerySpace(static::class);
     }
 
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
+    {
+        return parent::validateInstanceIdentifier($identifier, $stringKey ?? 'guid');
+    }
 
     /**
      * Indicates that this user can join this workspace
      *
-     * @param $userId User Id of User
+     * @param User|int|string|null $user User ID of User
      */
-    public function canJoin($userId = '')
+    public function canJoin($user = null): bool
     {
         if (Yii::$app->user->isGuest) {
             return false;
         }
 
         // Take current userId if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
+        $user = User::findInstance($user);
 
-        // Checks if User is already member
-        if ($this->isMember($userId)) {
+        // Checks if User is already a member
+        if ($this->isMember($user)) {
             return false;
         }
 
         if ($this->join_policy == self::JOIN_POLICY_NONE) {
             return false;
         }
-
-        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function() use ($userId) {
-            return User::findOne($userId);
-        });
 
         if ($this->isBlockedForUser($user)) {
             return false;
@@ -376,20 +376,14 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * Indicates that this user can join this workspace w
-     * ithout permission
+     * Indicates that this user can join this workspace without permission
      *
-     * @param $userId User Id of User
+     * @param User|int|string|null $user User ID of User
      */
-    public function canJoinFree($userId = '')
+    public function canJoinFree($user = null): bool
     {
-        // Take current userid if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
         // Checks if User is already member
-        if ($this->isMember($userId)) {
+        if ($this->isMember($user)) {
             return false;
         }
 

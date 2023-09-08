@@ -10,7 +10,7 @@ namespace humhub\modules\search\controllers;
 
 use humhub\components\Controller;
 use humhub\libs\ParameterEvent;
-use \humhub\modules\comment\Module as CommentModule;
+use humhub\modules\comment\Module as CommentModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
@@ -71,7 +71,7 @@ class MentioningController extends Controller
 
         $results = [];
         foreach ($users as $user) {
-            if($user->permissionManager->can(CanMention::class)) {
+            if ($user->permissionManager->can(CanMention::class)) {
                 $results[] = $this->getUserResult($user);
             }
         }
@@ -92,7 +92,7 @@ class MentioningController extends Controller
     {
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        $space = Space::findOne(['id' => (int) $id]);
+        $space = Space::findInstance($id);
         if (!$space || !(new Post($space))->content->canEdit()) {
             throw new HttpException(403, 'Access denied!');
         }
@@ -132,7 +132,7 @@ class MentioningController extends Controller
         $contentId = (int)Yii::$app->request->get('id');
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        if (!($content = Content::findOne(['id' => $contentId]))) {
+        if (!($content = Content::findInstance($contentId))) {
             throw new HttpException(403, 'Access denied!');
         }
 
@@ -140,17 +140,19 @@ class MentioningController extends Controller
         if ($keyword !== '') {
             if ($content->container instanceof Space && (new Post($content->container))->content->canEdit()) {
                 return $this->actionSpace($content->container->id);
-            } else {
-                return $this->actionIndex();
             }
+
+            return $this->actionIndex();
         }
         // Else search content followers only on initial call without provided keyword:
 
         /* @var CommentModule $commentModule */
         $commentModule = Yii::$app->getModule('comment');
 
-        if (!($object = $content->getModel()) ||
-            !$commentModule->canComment($object)) {
+        if (
+            !($object = $content->getModel()) ||
+            !$commentModule->canComment($object)
+        ) {
             throw new HttpException(403, 'Access denied!');
         }
 
@@ -223,5 +225,4 @@ class MentioningController extends Controller
             'image' => SpaceImage::widget(['space' => $space, 'width' => 20]),
         ]);
     }
-
 }

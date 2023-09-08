@@ -226,7 +226,8 @@ humhub.module('content.form', function(module, require, $) {
         const initial = stateInput.data('initial');
         if (initial !== undefined) {
             stateInput.val(initial.state);
-            button.html(initial.buttonTitle);
+            button.data('htmlOld', initial.buttonTitle).removeAttr('style');
+            loader.reset(button);
         }
         this.$.find('input[name^=scheduled]').remove();
         this.$.find('.label-content-state').hide();

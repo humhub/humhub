@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models;
 
-use humhub\components\ActiveRecord;
+use humhub\components\CachedActiveRecord;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
@@ -16,7 +16,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
 use Yii;
-
 
 /**
  * This is the model class for table "group".
@@ -42,10 +41,9 @@ use Yii;
  * @property GroupUser[] groupUsers
  * @property GroupSpace[] groupSpaces
  */
-class Group extends ActiveRecord
+class Group extends CachedActiveRecord
 {
-
-    const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -179,13 +177,11 @@ class Group extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->is_default_group) {
-            // Only single group can be default:
-            Group::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
+            // Only one single group can be default:
+            self::updateAll(['is_default_group' => '0'], ['!=', 'id', $this->id]);
         }
 
         parent::afterSave($insert, $changedAttributes);
-
-
     }
 
     /**
@@ -268,9 +264,9 @@ class Group extends ActiveRecord
      *
      * @return GroupUser|null
      */
-    public function getGroupUser($user)
+    public function getGroupUser($user): ?GroupUser
     {
-        $userId = ($user instanceof User) ? $user->id : $user;
+        $userId = User::findInstanceAsId($user);
         return GroupUser::findOne(['user_id' => $userId, 'group_id' => $this->id]);
     }
 
@@ -338,23 +334,18 @@ class Group extends ActiveRecord
      */
     public function addUser($user, $isManager = false)
     {
-        if ($this->isMember($user)) {
+        if (null === ($user = User::findInstance($user)) || $this->isMember($user)) {
             return false;
         }
 
-        $userId = ($user instanceof User) ? $user->id : $user;
-
         $newGroupUser = new GroupUser();
-        $newGroupUser->user_id = $userId;
+        $newGroupUser->user_id = $user->id;
         $newGroupUser->group_id = $this->id;
         $newGroupUser->created_at = date('Y-m-d H:i:s');
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
         if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
             if ($this->notify_users) {
-                if (!($user instanceof User)) {
-                    $user = User::findOne(['id' => $user]);
-                }
                 IncludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)
@@ -375,16 +366,12 @@ class Group extends ActiveRecord
      */
     public function removeUser($user)
     {
-        $groupUser = $this->getGroupUser($user);
-        if (!$groupUser) {
+        if (null === ($user = User::findInstance($user)) || null === ($groupUser = $this->getGroupUser($user))) {
             return false;
         }
 
         if ($groupUser->delete()) {
             if ($this->notify_users) {
-                if (!($user instanceof User)) {
-                    $user = User::findOne(['id' => $user]);
-                }
                 ExcludeGroupNotification::instance()
                     ->about($this)
                     ->from(Yii::$app->user->identity)
@@ -407,8 +394,10 @@ class Group extends ActiveRecord
     public static function notifyAdminsForUserApproval($user)
     {
         // No admin approval required
-        if ($user->status != User::STATUS_NEED_APPROVAL ||
-            !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')) {
+        if (
+            $user->status != User::STATUS_NEED_APPROVAL ||
+            !Yii::$app->getModule('user')->settings->get('auth.needApproval', 'user')
+        ) {
             return;
         }
 
@@ -420,13 +409,18 @@ class Group extends ActiveRecord
         $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
 
         foreach ($group->manager as $manager) {
-
             Yii::$app->i18n->setUserLocale($manager);
 
-            $html = Yii::t('UserModule.auth', 'Hello {displayName},',
-                    ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
-                Yii::t('UserModule.auth', 'a new user {displayName} needs approval.',
-                    ['displayName' => $user->displayName]) . "<br><br>\n\n" .
+            $html = Yii::t(
+                'UserModule.auth',
+                'Hello {displayName},',
+                ['displayName' => $manager->displayName]
+            ) . "<br><br>\n\n" .
+                Yii::t(
+                    'UserModule.auth',
+                    'a new user {displayName} needs approval.',
+                    ['displayName' => $user->displayName]
+                ) . "<br><br>\n\n" .
                 Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .
                 \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";

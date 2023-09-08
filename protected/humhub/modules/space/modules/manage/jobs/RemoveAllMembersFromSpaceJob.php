@@ -31,7 +31,7 @@ class RemoveAllMembersFromSpaceJob extends LongRunningActiveJob
     public function init()
     {
         parent::init();
-        $this->space = Space::findOne(['id' => $this->spaceId]);
+        $this->space = Space::findInstance($this->spaceId);
     }
 
     /**
@@ -42,7 +42,7 @@ class RemoveAllMembersFromSpaceJob extends LongRunningActiveJob
         foreach (Membership::findAll(['space_id' => $this->space->id, 'group_id' => [Space::USERGROUP_MEMBER, Space::USERGROUP_USER, Space::USERGROUP_GUEST]]) as $spaceMembership) {
             try {
                 $spaceMembership->delete();
-            } catch (StaleObjectException|\Exception $e) {
+            } catch (StaleObjectException | \Exception $e) {
             }
         }
     }

@@ -136,7 +136,7 @@ class InviteForm extends Model
         // Allow users to perform this action if this is allowed by config file
         // Pre-check if user is member of the space in question
         if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
-            $membership = Membership::findMembership($this->space->id, Yii::$app->user->identity->id);
+            $membership = Membership::findInstance([$this->space->id, Yii::$app->user->identity->id]);
 
             if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                 return true;
@@ -213,7 +213,7 @@ class InviteForm extends Model
      */
     private function addUserToInviteList(User $user): bool
     {
-        $membership = Membership::findMembership($this->space->id, $user->id);
+        $membership = Membership::findInstance([$this->space->id, $user->id]);
 
         if ($membership && (int)$membership->status === Membership::STATUS_MEMBER) {
             return false;
@@ -235,7 +235,6 @@ class InviteForm extends Model
     {
         // Check if email field is not empty
         if ($this->$attribute != '') {
-
             $invites = $this->$attribute;
 
             foreach ($invites as $userGuid) {
@@ -245,7 +244,7 @@ class InviteForm extends Model
                     continue;
                 }
 
-                $user = User::findOne(['guid' => $userGuid]);
+                $user = User::findInstance($userGuid);
 
                 if ($user === null) {
                     $this->addError($attribute, Yii::t('SpaceModule.base', 'User not found!'));
@@ -286,12 +285,14 @@ class InviteForm extends Model
 
                 $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]));
+                    $this->addError(
+                        $attribute,
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email])
+                    );
                     continue;
                 }
 
-                $user = User::findOne(['email' => $email]);
+                $user = User::findInstance(['email' => $email]);
                 if ($user) {
                     $this->addUserToInviteList($user);
                 } else {
