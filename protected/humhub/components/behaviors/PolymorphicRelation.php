@@ -8,6 +8,7 @@
 namespace humhub\components\behaviors;
 
 use Exception;
+use humhub\libs\Helpers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
@@ -121,14 +122,12 @@ class PolymorphicRelation extends Behavior
      */
     private function validateUnderlyingObjectType($object)
     {
-        if (count($this->mustBeInstanceOf) == 0) {
+        if (empty($this->mustBeInstanceOf)) {
             return true;
         }
 
-        foreach ($this->mustBeInstanceOf as $instance) {
-            if ($object instanceof $instance) { //|| $object->asa($instance) !== null
-                return true;
-            }
+        if (Helpers::checkClassType($object, $this->mustBeInstanceOf, false)) { //|| $object->asa($instance) !== null
+            return true;
         }
 
         Yii::error('Got invalid underlying object type! (' . get_class($object) . ')');
