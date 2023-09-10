@@ -1,0 +1,25 @@
+{
+  "id": "example",
+  "version": "1.0",
+  "name": "My Example Module With Migration",
+  "description": "My testing module with migration",
+  "humhub": {
+    "minVersion": "1.2"
+  },
+  "keywords": ["valid", "migration"],
+  "homepage": "https://www.example.com",
+  "authors": [
+    {
+      "name": "Tom Coder",
+      "email": "tc@example.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Sarah Mustermann",
+      "email": "sm@example.com",
+      "homepage": "http://example.com",
+      "role": "Translator"
+    }
+  ],
+  "licence": "AGPL-3.0-or-later"
+}

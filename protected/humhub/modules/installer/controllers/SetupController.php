@@ -8,13 +8,13 @@
 
 namespace humhub\modules\installer\controllers;
 
-use humhub\commands\MigrateController;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
 use humhub\modules\installer\Module;
+use humhub\services\MigrationService;
 use Yii;
 
 /**
@@ -183,11 +183,8 @@ class SetupController extends Controller
         // Flush Caches
         Yii::$app->cache->flush();
 
-        // Disable max execution time to avoid timeouts during database installation
-        @ini_set('max_execution_time', 0);
-
         // Migrate Up Database
-        MigrateController::webMigrateAll();
+        MigrationService::create()->migrateUp();
 
         DynamicConfig::rewrite();
 

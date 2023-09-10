@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6550: Improve module migrations
+- Fix #6237: Migration errors during module activation are ignored
 - Enh #6711: run migrations manually
 - Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
 - Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations
