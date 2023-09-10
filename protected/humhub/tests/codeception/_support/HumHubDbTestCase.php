@@ -85,6 +85,14 @@ class HumHubDbTestCase extends Unit
         parent::setUp();
     }
 
+    protected function tearDown(): void
+    {
+        static::logReset();
+
+        parent::tearDown();
+    }
+
+
     /**
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!
@@ -262,7 +270,7 @@ class HumHubDbTestCase extends Unit
         $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
     }
 
-    public function assertEvents(array $events, string $message = ''): void
+    public function assertEvents(array $events = [], string $message = ''): void
     {
         static::assertEquals($events, $this->firedEvents, $message);
 
