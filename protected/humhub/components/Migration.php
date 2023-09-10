@@ -84,16 +84,37 @@ class Migration extends \yii\db\Migration
         $transaction = $this->db->beginTransaction();
         try {
             if ($action() === false) {
-                $transaction->rollBack();
+                if ($transaction->isActive) {
+                    $transaction->rollBack();
+                }
 
                 $this->logWarning('Migration {class} was not applied');
 
                 return false;
             }
-            $transaction->commit();
+
+            if ($transaction->isActive) {
+                $transaction->commit();
+            }
         } catch (Throwable $e) {
+            // Just to be sure: check if the exception was caused by committing a transaction that was not active
+            if (
+                ($e instanceof Exception)
+                && $e->errorInfo[0] === '42000'
+                && $e->errorInfo[1] === 1305
+                && $e->errorInfo[2] === 'SAVEPOINT LEVEL1 does not exist'
+            ) {
+                // in this case, assume all is well
+                return null;
+            }
+
             $this->printException($e);
-            $transaction->rollBack();
+
+            // otherwise, if still active, roll back the transaction
+            if ($transaction->isActive) {
+                $transaction->rollBack();
+            }
+
             $this->logException($e, end($action));
 
             return false;
