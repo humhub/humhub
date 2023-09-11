@@ -11,6 +11,7 @@ namespace humhub\modules\file;
 use humhub\modules\file\handler\UploadAudioFileHandler;
 use humhub\modules\file\handler\UploadImageFileHandler;
 use humhub\modules\file\handler\UploadVideoFileHandler;
+use humhub\modules\file\components\StorageManager;
 
 /**
  * File Module
@@ -34,7 +35,7 @@ class Module extends \humhub\components\Module
      * @see components\StorageManagerInterface
      * @var string storage manager class for files
      */
-    public $storageManagerClass = '\humhub\modules\file\components\StorageManager';
+    public string $storageManagerClass = StorageManager::class;
 
     /**
      * @var array mime types to show inline instead of download

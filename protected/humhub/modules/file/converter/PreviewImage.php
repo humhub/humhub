@@ -8,13 +8,17 @@
 
 namespace humhub\modules\file\converter;
 
+use Exception;
 use humhub\modules\admin\models\Log;
+use humhub\modules\file\exceptions\InvalidFileGuidException;
+use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
 use humhub\modules\file\models\File;
 use humhub\libs\Html;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\imagine\Image;
 
 /**
@@ -106,7 +110,7 @@ class PreviewImage extends BaseConverter
 
                 $image->save($this->file->store->get($fileName), $options);
             }
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             $message = 'Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage();
             $count = Log::find()->where(['message' => $message])->count();
 
@@ -121,13 +125,39 @@ class PreviewImage extends BaseConverter
      */
     protected function canConvert(File $file)
     {
-        $originalFile = $file->store->get();
-
-        if (substr($file->mime_type, 0, 6) !== 'image/' || !is_file($originalFile)) {
+        try {
+            $originalFile = $file->getStore()->has();
+        } catch (InvalidFileGuidException | \yii\base\Exception | InvalidConfigException $e) {
             return false;
         }
 
-        return true;
+        if ($originalFile === null) {
+            return false;
+        }
+
+        try {
+            $mime_type = $file->mime_type ?? FileHelper::getMimeType($originalFile) ?? '';
+        } catch (InvalidConfigException $e) {
+            return false;
+        }
+
+        if (!str_starts_with($mime_type, 'image/')) {
+            return false;
+        }
+
+        /**
+         * @see ImageHelper::downscaleImage()
+         */
+        switch ($mime_type) {
+            case 'image/jpeg';
+            case 'image/png':
+            case 'image/webp':
+            case 'image/gif':
+                return true;
+
+            default:
+                return false;
+        }
     }
 
     /**
@@ -173,10 +203,15 @@ class PreviewImage extends BaseConverter
      * Returns the gallery link to the original file
      *
      * @param array $htmlOptions optional link html options
+     *
      * @return string the link
      */
     public function renderGalleryLink($htmlOptions = [])
     {
-        return Html::a($this->render(), $this->file->getUrl(), array_merge($htmlOptions, ['data-ui-gallery' => 'gallery-' . $this->file->guid]));
+        return Html::a(
+            $this->render(),
+            $this->file->getUrl(),
+            array_merge($htmlOptions, ['data-ui-gallery' => 'gallery-' . $this->file->guid])
+        );
     }
 }

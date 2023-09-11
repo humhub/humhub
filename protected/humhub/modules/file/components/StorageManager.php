@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -8,58 +8,84 @@
 
 namespace humhub\modules\file\components;
 
-use humhub\modules\file\models\File;
+use humhub\exceptions\InvalidArgumentValueException;
+use humhub\modules\file\exceptions\InvalidFileGuidException;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\libs\Metadata;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\base\Component;
+use yii\base\Exception;
 use yii\helpers\ArrayHelper;
-use yii\imagine\Image;
 use yii\web\UploadedFile;
 
 /**
  * StorageManager for File records
  *
- * @since 1.2
+ * @property-read string $path
+ * @since  1.2
  * @author Luke
  */
 class StorageManager extends Component implements StorageManagerInterface
 {
-
     /**
      * @var string file name of the base file (without variant)
      */
-    public $originalFileName = 'file';
+    public string $originalFileName = 'file';
 
     /**
      * @var string storage base path
      */
-    protected $storagePath = '@filestore';
+    protected string $storagePath = '@filestore';
 
     /**
      * @var integer file mode
      */
-    public $fileMode = 0744;
+    public int $fileMode = 0644;
+
+    /**
+     * @var integer file mode
+     */
+    public int $dirMode = 0744;
 
     /**
      * @var File
      */
-    protected $file;
+    protected File $file;
 
     /**
      * @inheritdoc
+     * @throws Exception when the directory for the file could not be created
+     * @throws InvalidFileGuidException when the File::$guid property is empty
      */
-    public function has($variant = null): bool
+    public function has($variant = null): ?string
     {
-        return file_exists($this->get($variant));
+        try {
+            $path = $this->get($variant);
+        } catch (InvalidFileGuidException $e) {
+            return null;
+        }
+
+        return is_file($path)
+            ? $path
+            : null;
     }
 
     /**
      * @inheritdoc
+     * @throws Exception when the directory for the file could not be created
+     * @throws InvalidFileGuidException when the File::$guid property is empty
      */
-    public function get($variant = null)
+    public function get($variant = null): string
     {
-        if ($variant === null) {
+        if ($variant === null || '' === $variant = trim($variant)) {
             $variant = $this->originalFileName;
+        } elseif (false !== strpos($variant, DIRECTORY_SEPARATOR)) {
+            $path = $this->getPath();
+            if (!str_starts_with($variant, $path)) {
+                throw new InvalidArgumentValueException('$variant', ['variant name without directory separator', 'full qualified path within stored directory'], $variant);
+            }
+            return $variant;
         }
 
         return $this->getPath() . DIRECTORY_SEPARATOR . $variant;
@@ -71,81 +97,100 @@ class StorageManager extends Component implements StorageManagerInterface
     public function getVariants($except = [])
     {
         return array_map(
-            function (string $s): string {
-                return basename($s);
-            },
-            FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)])
+            '\basename',
+            FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge([$this->originalFileName], $except)])
         );
     }
 
     /**
      * @inheritdoc
      */
-    public function set(UploadedFile $file, $variant = null)
+    public function set(UploadedFile $file, $variant = null): ?string
     {
         if (is_uploaded_file($file->tempName)) {
-            move_uploaded_file($file->tempName, $this->get($variant));
-            @chmod($this->get($variant), $this->fileMode);
+            $destination = $this->get($variant);
+            move_uploaded_file($file->tempName, $destination);
+            @chmod($destination, $this->fileMode);
+            $metadata = $this->file->metadata;
+            $metadata->{Metadata::WELL_KNOWN_METADATA_UPLOAD_MIMETYPE} = $file->type;
+            $metadata->{Metadata::WELL_KNOWN_METADATA_UPLOAD_HASH} = sha1_file($destination);
+            $metadata->{Metadata::WELL_KNOWN_METADATA_UPLOAD_SIZE} = $file->size;
+
+            return $destination;
         }
+
+        return null;
     }
 
     /**
      * @inheritdoc
      */
-    public function setContent($content, $variant = null)
+    public function setContent($content, $variant = null): ?string
     {
-        file_put_contents($this->get($variant), $content);
-        @chmod($this->get($variant), $this->fileMode);
+        $destination = $this->get($variant);
+        file_put_contents($destination, $content);
+        @chmod($destination, $this->fileMode);
+        return $destination;
     }
 
     /**
      * @inheritdoc
      */
-    public function setByPath(string $path, $variant = null)
+    public function setByPath(string $path, $variant = null): ?string
     {
-        copy($path, $this->get($variant));
-        @chmod($this->get($variant), $this->fileMode);
+        $destination = $this->get($variant);
+        copy($path, $destination);
+        @chmod($destination, $this->fileMode);
+        return $destination;
     }
 
 
     /**
      * @inheritdoc
      */
-    public function delete($variant = null, $except = [])
+    public function delete($variant = null, $except = [], $options = [])
     {
+        $path = $this->getPath();
+
         if ($variant === null) {
-            foreach (FileHelper::findFiles($this->getPath(), ['except' => $except]) as $f) {
+            $options ??= [];
+            $options['except'] = $except;
+            foreach (FileHelper::findFiles($path, $options) as $f) {
                 if (is_file($f)) {
                     FileHelper::unlink($f);
                 }
             }
-
-            if (empty($except)) {
-                FileHelper::removeDirectory($this->getPath());
-            }
-
         } elseif (is_file($this->get($variant))) {
             FileHelper::unlink($this->get($variant));
+        }
+
+        while (FileHelper::isDirEmpty($path) === true) {
+            rmdir($path);
+            $path = dirname($path);
         }
     }
 
     /**
      * @inheritdoc
      */
-    public function setFile(File $file)
+    public function setFile(File $file): self
     {
         $this->file = $file;
+
+        return $this;
     }
 
     /**
      * Returns the path where the files of this file are located
      *
      * @return string the path
+     * @throws InvalidFileGuidException when the File::$guid property is empty
+     * @throws Exception when the directory for the file could not be created
      */
-    protected function getPath()
+    protected function getPath(): string
     {
-        if ($this->file->guid == '') {
-            throw new \Exception('File GUID empty!');
+        if (empty($this->file->guid)) {
+            throw new InvalidFileGuidException('File GUID empty!');
         }
 
         $basePath = Yii::getAlias($this->storagePath);
@@ -156,13 +201,12 @@ class StorageManager extends Component implements StorageManagerInterface
         }
 
         $path = $basePath . DIRECTORY_SEPARATOR .
-            substr($this->file->guid, 0, 1) . DIRECTORY_SEPARATOR .
-            substr($this->file->guid, 1, 1) . DIRECTORY_SEPARATOR .
+            $this->file->guid[0] . DIRECTORY_SEPARATOR .
+            $this->file->guid[1] . DIRECTORY_SEPARATOR .
             $this->file->guid;
 
-        FileHelper::createDirectory($path, $this->fileMode, true);
+        FileHelper::createDirectory($path, $this->dirMode, true);
 
         return $path;
     }
-
 }
