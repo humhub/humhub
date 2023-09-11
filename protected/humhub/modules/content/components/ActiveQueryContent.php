@@ -11,6 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
@@ -65,17 +66,9 @@ class ActiveQueryContent extends ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
-        if ($user instanceof User) {
-            $this->stateFilterCondition[] = ['content.created_by' => $user->id];
-        }
-        $this->andWhere($this->stateFilterCondition);
-
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
         $this->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
         $this->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
-        $conditionSpace = '';
-        $conditionUser = '';
-        $globalCondition = '';
 
         if ($user !== null) {
             $this->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
@@ -85,7 +78,8 @@ class ActiveQueryContent extends ActiveQuery
                 $conditionSpaceMembershipRestriction = '';
             } else {
                 // User must be a space's member OR Space and Content are public
-                $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
+                $conditionSpaceMembershipRestriction = ' AND ( space_membership.status = '. Membership::STATUS_MEMBER
+                    .' OR (content.visibility = ' . Content::VISIBILITY_PUBLIC . ' AND space.visibility != ' . Space::VISIBILITY_NONE. ') )';
             }
             if ($user->canViewAllContent(User::class)) {
                 // Don't restrict if user can view all content:
@@ -99,28 +93,31 @@ class ActiveQueryContent extends ActiveQuery
             $conditionSpace = 'space.id IS NOT NULL' . $conditionSpaceMembershipRestriction;
 
             // Build Access Check based on User Content Container
-            $conditionUser = 'cuser.id IS NOT NULL AND (';                                         // user content
-            $conditionUser .= '   (content.visibility = 1) OR';                                     // public visible content
-            $conditionUser .= '   (content.visibility = 0' . $conditionUserPrivateRestriction . ')';  // private content of user
+            $conditionUser = '(cuser.id IS NOT NULL AND (';                                         // user content
+            $conditionUser .= '   (content.visibility = ' . Content::VISIBILITY_PUBLIC . ') OR';    // public visible content
+            $conditionUser .= '   (content.visibility = ' . Content::VISIBILITY_PRIVATE . $conditionUserPrivateRestriction . ')';  // private content of user
             if (Yii::$app->getModule('friendship')->getIsEnabled()) {
                 $this->leftJoin('user_friendship cff', 'cuser.id=cff.user_id AND cff.friend_user_id=:fuid', [':fuid' => $user->id]);
-                $conditionUser .= ' OR (content.visibility = 0 AND cff.id IS NOT NULL)';  // users are friends
+                $conditionUser .= ' OR (content.visibility = ' . Content::VISIBILITY_PRIVATE . ' AND cff.id IS NOT NULL)';  // users are friends
             }
-            $conditionUser .= ')';
+            $conditionUser .= '))';
 
             // Created content of is always visible
-            $conditionUser .= 'OR content.created_by=' . $user->id;
-            $globalCondition .= 'content.contentcontainer_id IS NULL';
+            $conditionUser .= 'OR content.created_by = ' . $user->id;
+            $globalCondition = 'content.contentcontainer_id IS NULL';
         } elseif (AuthHelper::isGuestAccessEnabled()) {
-            $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
-            $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
-            $globalCondition .= 'content.contentcontainer_id IS NULL AND content.visibility=1';
+            $conditionSpace = 'space.id IS NOT NULL AND space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=' . Content::VISIBILITY_PUBLIC;
+            $conditionUser = 'cuser.id IS NOT NULL AND cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=' . Content::VISIBILITY_PUBLIC;
+            $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';
         } else {
             return $this->emulateExecution();
         }
 
-        $this->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");
+        // Allow viewing Content with any state if User has access for viewing
+        $this->stateFilterCondition[] = $conditionUser;
+        $this->andWhere($this->stateFilterCondition);
 
+        $this->andWhere(['OR', $conditionSpace, $globalCondition]);
 
         return $this;
     }
