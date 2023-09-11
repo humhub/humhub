@@ -236,7 +236,7 @@ class HForm extends \yii\base\Component
                 $options['disabled'] = true;
             }
 
-            if (isset($definition['value'])) {
+            if (isset($definition['value']) && !isset($model->$name)) {
                 $options['value'] = $definition['value'];
             }
 
