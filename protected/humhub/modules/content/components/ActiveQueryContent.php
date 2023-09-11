@@ -65,6 +65,9 @@ class ActiveQueryContent extends ActiveQuery
             $user = Yii::$app->user->getIdentity();
         }
 
+        if ($user instanceof User) {
+            $this->stateFilterCondition[] = ['content.created_by' => $user->id];
+        }
         $this->andWhere($this->stateFilterCondition);
 
         $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);

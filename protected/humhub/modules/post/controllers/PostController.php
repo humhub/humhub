@@ -17,7 +17,6 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
-use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\Form;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -38,17 +37,15 @@ class PostController extends ContentContainerController
      */
     public function actionView($id)
     {
-        $query = Post::find();
-        if (!Yii::$app->user->isGuest) {
-            $query->stateFilterCondition[] = ['content.created_by' => Yii::$app->user->id];
-        }
-
         /* @var Post $post */
-        $post = $query->contentContainer($this->contentContainer)
-            ->readable()->where(['post.id' => (int)$id])->one();
+        $post = Post::find()
+            ->contentContainer($this->contentContainer)
+            ->readable()
+            ->where(['post.id' => (int)$id])
+            ->one();
 
         if ($post === null) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException();
         }
 
         $this->view->setPageTitle(Yii::t('PostModule.base', 'Post'), true);
