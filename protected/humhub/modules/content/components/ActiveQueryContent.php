@@ -117,7 +117,7 @@ class ActiveQueryContent extends ActiveQuery
         $this->stateFilterCondition[] = $conditionUser;
         $this->andWhere($this->stateFilterCondition);
 
-        $this->andWhere(['OR', $conditionSpace, $globalCondition]);
+        $this->andWhere(['OR', $conditionSpace, $conditionUser, $globalCondition]);
 
         return $this;
     }
