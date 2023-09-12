@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #6539: Fix overriding of loaded value with default value on HForm
 - Fix #6464: Fix access to own user container
 - Fix #6349: Fix error on login new user from external service when maintenance is enabled
+- Fix #6557: Fix not initialized groups array on the module administration
 - Fix #6556: Fix command `theme/switch`
 
 1.14.3 (July 27, 2023)
