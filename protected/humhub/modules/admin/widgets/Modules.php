@@ -20,10 +20,7 @@ use yii\helpers\ArrayHelper;
  */
 class Modules extends Widget
 {
-    /**
-     * @var array
-     */
-    public $groups;
+    public array $groups = [];
 
     /**
      * @inheritdoc
