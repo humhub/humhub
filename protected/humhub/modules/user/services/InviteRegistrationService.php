@@ -26,6 +26,18 @@ final class InviteRegistrationService
         $this->token = $token;
     }
 
+    public static function createFromRequestOrEmail(?string $email): InviteRegistrationService
+    {
+        $token = (string)Yii::$app->request->get('token');
+
+        if (!$token) {
+            $invite = Invite::findOne(['email' => $email]);
+            $token = $invite->token ?? null;
+        }
+
+        return new InviteRegistrationService($token);
+    }
+
     public function isValid(): bool
     {
         return ($this->getInvite() !== null);
