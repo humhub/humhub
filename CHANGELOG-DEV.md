@@ -22,6 +22,7 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6529: Add boolean return-type to `*safe*` methods in migrations
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
 - Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
@@ -39,6 +40,10 @@ HumHub Changelog
 - Enh #6498: Implement option "disabled" for picker fields
 - Enh #6506: Allow event data from module config
 - Fix #6510: Fix online status position on people page
+- Fix #6526: Fix a disabled button after post a content record with state "Draft" or "Scheduled"
+- Fix #6537: Sort profile fields on People directory filters
+- Fix #6558: Avoid PHP 8.1+ deprecated null parameter on preg_replace in richtext converters
+- Fix #6544: Registration not possible with SSO and email invites if "New users can register" is disabled
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
