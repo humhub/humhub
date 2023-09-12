@@ -288,11 +288,16 @@ class Module extends \yii\base\Module
              * Delete all Migration Table Entries
              */
             $migrations = opendir($migrationPath);
+            $params = [];
             while (false !== ($migration = readdir($migrations))) {
                 if ($migration == '.' || $migration == '..' || $migration == 'uninstall.php') {
                     continue;
                 }
-                Yii::$app->db->createCommand()->delete('migration', ['version' => str_replace('.php', '', $migration)])->execute();
+
+                $command ??= Yii::$app->db->createCommand()->delete('migration', 'version = :version', $params);
+
+                $version = str_replace('.php', '', $migration);
+                $command->bindValue(':version', $version)->execute();
             }
         }
 
