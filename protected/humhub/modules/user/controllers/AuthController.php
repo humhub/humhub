@@ -158,7 +158,8 @@ class AuthController extends Controller
 
         $user = $authClientService->getUser();
 
-        if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
+        if (Yii::$app->settings->get('maintenanceMode') && !($user && $user->isSystemAdmin())) {
+            Yii::$app->getView()->warn(ControllerAccess::getMaintenanceModeWarningText());
             return $this->redirect(['/user/auth/login']);
         }
 
