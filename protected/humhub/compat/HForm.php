@@ -18,7 +18,6 @@ use humhub\modules\ui\form\widgets\SortOrderField;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
-use yii\widgets\ActiveForm;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -227,6 +226,10 @@ class HForm extends \yii\base\Component
 
         if ($model) {
             $options = $this->getOptionsFromDefinition($definition);
+
+            if (isset($model->$name, $options['value'])) {
+                unset($options['value']);
+            }
 
             if (isset($definition['type'])) {
                 switch ($definition['type']) {
