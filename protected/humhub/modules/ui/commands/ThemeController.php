@@ -7,6 +7,8 @@
 
 namespace humhub\modules\ui\commands;
 
+use humhub\libs\DynamicConfig;
+use humhub\modules\ui\view\bootstrap\ThemeLoader;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\console\ExitCode;
@@ -72,6 +74,8 @@ class ThemeController extends \yii\console\Controller
         }
 
         $theme->activate();
+        DynamicConfig::rewrite();
+        (new ThemeLoader())->bootstrap(Yii::$app);
 
         $this->stdout("\nSuccessfully switched to theme: \n", Console::BOLD);
         $this->stdout(Yii::$app->view->theme->name. "\n\n", Console::FG_GREEN);
