@@ -24,6 +24,7 @@ HumHub Changelog
 - Fix #6526: Fix a disabled button after post a content record with state "Draft" or "Scheduled"
 - Fix #6537: Sort profile fields on People directory filters
 - Fix #6558: Avoid PHP 8.1+ deprecated null parameter on preg_replace in richtext converters
+- Fix #6544: Registration not possible with SSO and email invites if "New users can register" is disabled
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
