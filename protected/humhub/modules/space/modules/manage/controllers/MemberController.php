@@ -53,7 +53,7 @@ class MemberController extends Controller
         // User Group Change
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
-            $membership = Membership::findMembership($space->id, Yii::$app->request->post('user_id'));
+            $membership = Membership::findInstance([$space->id, Yii::$app->request->post('user_id')]);
             if ($membership === null) {
                 throw new HttpException(404, 'Could not find membership!');
             }

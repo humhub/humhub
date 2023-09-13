@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
  * @license   https://www.humhub.com/licences
@@ -8,49 +8,40 @@
 
 namespace humhub\exceptions;
 
-/**
- * @since 1.15
- */
-trait InvalidTypeExceptionTrait
+trait InvalidArgumentExceptionTrait
 {
     //  public properties
 
     public string $methodName;
     public $parameter;
-    public array $validType = [];
+
+    public array $valid = [];
 
     /**
      * @var mixed|null
      */
-    public $givenValue;
+    public $given;
 
     /**
      * @param string $method
      * @param int|array $parameter = [
      *                                     int => string,       // position, or [ position => name ] of the  argument
      *                                     ]
-     * @param array|string|null $validType
-     * @param null $givenValue
+     * @param null $given
      */
     public function __construct(
         $method = '',
         $parameter = null,
-        $validType = [],
-        $givenValue = null,
-        $nullable = false,
+        $valid = [],
+        $given = null,
         $suffix = null,
         $code = 0,
         $previous = null
     ) {
-
         $this->methodName = $method;
         $this->parameter = $parameter;
-        $this->validType = (array)($validType ?? ['mixed']);
-        $this->givenValue = $givenValue;
-
-        if ($nullable && !in_array('null', $this->validType, true)) {
-            $this->validType[] = 'null';
-        }
+        $this->valid = (array)$valid;
+        $this->given = $given;
 
         if (is_int($suffix)) {
             $code = $suffix;
@@ -61,18 +52,23 @@ trait InvalidTypeExceptionTrait
         }
 
         $message = sprintf(
-            '%s passed to %s must be of type %s%s - %s given.',
+            '%s passed to %s must be %s%s - %s given.',
             $this->formatPrologue(func_get_args()),
             $this->methodName,
-            implode(', ', $this->validType),
+            $this->formatValid(),
             $suffix,
-            get_debug_type($this->givenValue)
+            $given
         );
 
         parent::__construct($message, $code, $previous);
     }
 
-    abstract protected function formatPrologue(array $constructArguments): string;
+    protected function formatValid(): string
+    {
+        return (count($this->valid) > 1
+                ? 'one of '
+                : '') . implode(', ', $this->valid);
+    }
 
     public function getName(): string
     {
@@ -82,4 +78,6 @@ trait InvalidTypeExceptionTrait
 
         return 'Invalid Type';
     }
+
+    abstract protected function formatPrologue(array $constructArguments): string;
 }

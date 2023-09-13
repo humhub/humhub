@@ -9,8 +9,10 @@
 namespace humhub\modules\content\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\FindInstanceTrait;
+use humhub\helpers\RuntimeCacheHelper;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
 use yii\db\ActiveRecord;
 
 /**
@@ -24,8 +26,12 @@ use yii\db\ActiveRecord;
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  */
-class ContentContainer extends ActiveRecord
+class ContentContainer extends ActiveRecord implements FindInstanceInterface
 {
+    use FindInstanceTrait {
+        findInstance as _FindInstanceTrait_findInstance;
+        validateInstanceIdentifier as _FindInstanceTrait_validateInstanceIdentifier;
+    }
 
     /**
      * @inheritdoc
@@ -78,6 +84,11 @@ class ContentContainer extends ActiveRecord
         ];
     }
 
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
+    {
+        return static::_FindInstanceTrait_validateInstanceIdentifier($identifier, $stringKey ?? 'guid');
+    }
+
     /**
      * @param $guid
      * @return ContentContainerActiveRecord|null
@@ -88,5 +99,25 @@ class ContentContainer extends ActiveRecord
     {
         $instance = static::findOne(['guid' => $guid]);
         return $instance ? $instance->getPolymorphicRelation() : null;
+    }
+
+    /**
+     * @inheritdoc
+     * @since 1.15
+     */
+    public function getUniqueId(): string
+    {
+        return RuntimeCacheHelper::normaliseObjectIdentifier($this, $this->getPrimaryKey(true));
+    }
+
+    public function getUniqueIdVariants(?array $keys = null): array
+    {
+        $uniqueIDs = RuntimeCacheHelper::buildUniqueIDs($this, $keys, false, false);
+        $uniqueIDs[] = RuntimeCacheHelper::normaliseObjectIdentifier(
+            static::class,
+            RuntimeCacheHelper::normaliseObjectIdentifier($this->class, $this->pk)
+        );
+
+        return array_unique($uniqueIDs);
     }
 }

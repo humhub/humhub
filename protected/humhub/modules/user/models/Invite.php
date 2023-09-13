@@ -10,6 +10,9 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
+use humhub\components\CachedActiveRecord;
+use humhub\components\FindInstanceTrait;
+use humhub\interfaces\FindInstanceInterface;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
@@ -36,14 +39,13 @@ use yii\helpers\Url;
  *
  * @property Space $space
  */
-class Invite extends ActiveRecord
+class Invite extends CachedActiveRecord
 {
-
-    const SOURCE_SELF = 'self';
-    const SOURCE_INVITE = 'invite';
-    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
-    const EMAIL_TOKEN_LENGTH = 12;
-    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
+    public const SOURCE_SELF = 'self';
+    public const SOURCE_INVITE = 'invite';
+    public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    public const EMAIL_TOKEN_LENGTH = 12;
+    public const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
 
@@ -105,6 +107,11 @@ class Invite extends ActiveRecord
             'source' => Yii::t('UserModule.base', 'Source'),
             'language' => Yii::t('base', 'Language'),
         ];
+    }
+
+    protected static function validateInstanceIdentifier(&$identifier, ?string $stringKey = null): int
+    {
+        return parent::validateInstanceIdentifier($identifier, $stringKey ?? 'email');
     }
 
     /**

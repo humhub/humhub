@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\helpers\RuntimeCacheHelper;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -38,6 +39,7 @@ use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
+use yii\web\User as WebUser;
 
 /**
  * This is the model class for table "user".
@@ -329,14 +331,48 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
-            return static::findOne(['id' => $id]);
-        });
+        return static::findInstance($id);
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
     {
         return static::findOne(['guid' => $token]);
+    }
+
+    /**
+     * @param User|WebUser|int|string|null $identifier User or User ID. Null for current user
+     *
+     * @inheritdoc
+     * @since 1.15
+     * @noinspection PhpDocMissingThrowsInspection
+     * @noinspection PhpIncompatibleReturnTypeInspection
+     */
+    public static function findInstance($identifier, ?iterable $simpleCondition = null): ?self
+    {
+        switch (self::validateInstanceIdentifier($identifier)) {
+            case self::INSTANCE_IDENTIFIER_IS_SELF:
+                return $identifier;
+
+            case self::INSTANCE_IDENTIFIER_IS_STRING:
+                /** @noinspection PhpIncompatibleReturnTypeInspection */
+                return parent::findInstance(['guid' => $identifier], $simpleCondition);
+
+            /** @noinspection PhpMissingBreakStatementInspection */
+            case self::INSTANCE_IDENTIFIER_IS_NULL:
+                $identifier = Yii::$app->user;
+
+            default:
+                if ($identifier instanceof WebUser) {
+                    /** @noinspection PhpUnhandledExceptionInspection */
+                    $identifier = $identifier->getIdentity();
+
+                    if ($identifier === null) {
+                        return null;
+                    }
+                }
+
+                return parent::findInstance($identifier, $simpleCondition);
+        }
     }
 
     /**
@@ -346,7 +382,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public static function find()
     {
-        return Yii::createObject(ActiveQueryUser::class, [get_called_class()]);
+        return Yii::createObject(ActiveQueryUser::class, [static::class]);
     }
 
     public function getId()
@@ -576,9 +612,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function afterSave($insert, $changedAttributes)
     {
-        // Make sure we get an direct User model instance
-        // (e.g. not UserEditForm) for search rebuild
-        $user = User::findOne(['id' => $this->id]);
+        // Make sure we get a pure User model instance (e.g. not UserEditForm) for search rebuild
+        // and update the cache at the same time
+        $user = self::findInstance($this->id, ['cached' => false]);
+
+        RuntimeCacheHelper::deleteVariants($this);
 
         $this->updateSearch();
 
@@ -669,7 +707,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () {
             /** @var Module $module */
             $module = Yii::$app->getModule('user');
 
