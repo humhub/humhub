@@ -11,7 +11,6 @@ namespace humhub\modules\content\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\components\CacheableActiveQuery;
 use humhub\components\CachedActiveRecord;
 use humhub\components\Module;
 use humhub\helpers\RuntimeCacheHelper;
@@ -38,6 +37,7 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
+use yii\db\ActiveQuery;
 use yii\db\ActiveQueryInterface;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
@@ -789,7 +789,7 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
      * Relation to ContentContainer model
      * Note: this is not a Space or User instance!
      *
-     * @return \yii\db\ActiveQuery|CacheableActiveQuery
+     * @return ActiveQuery
      * @since 1.1
      */
     public function getContentContainer()
@@ -800,7 +800,7 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
     /**
      * Returns the ContentTagRelation query.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTagRelations()
@@ -811,7 +811,7 @@ class Content extends CachedActiveRecord implements Movable, ContentOwner, SoftD
     /**
      * Returns all content related tags ContentTags related to this content.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.2.2
      */
     public function getTags($tagClass = ContentTag::class)

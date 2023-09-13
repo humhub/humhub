@@ -23,9 +23,11 @@ use yii\base\ErrorException;
  */
 trait FindInstanceTrait
 {
-    public static function find()
+    public function afterFind()
     {
-        return Yii::createObject(CacheableActiveQuery::class, [static::class]);
+        RuntimeCacheHelper::setVariants($this);
+
+        parent::afterFind();
     }
 
     /**

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\components\CacheableActiveQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
@@ -16,6 +15,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 /**
@@ -25,7 +25,7 @@ use yii\db\Expression;
  *
  * @author luke
  */
-class ActiveQueryContent extends CacheableActiveQuery
+class ActiveQueryContent extends ActiveQuery
 {
     /**
      * Own content scope for userRelated
