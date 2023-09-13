@@ -115,10 +115,6 @@ var humhub = humhub || (function ($) {
 
         // Do not register modules twice!
         if (instance.id) {
-            if (instance.initOnEachLoad) {
-                // Init module on each request e.g. on ajax loading of modal window second time
-                initModule(instance);
-            }
             return;
         }
 
@@ -139,8 +135,18 @@ var humhub = humhub || (function ($) {
 
         moduleArr.push(instance);
 
-        if (instance.init && instance.initOnPjaxLoad) {
-            pjaxInitModules.push(instance);
+        if (instance.init) {
+            if (instance.initOnPjaxLoad) {
+                pjaxInitModules.push(instance);
+            }
+
+            if (instance.initOnAjaxLoad) {
+                $(document).on('ajaxComplete', function (event, jqXHR, ajaxOptions) {
+                    if (ajaxOptions && ajaxOptions.url && ajaxOptions.url === instance.config.initOnAjaxUrl) {
+                        initModule(instance);
+                    }
+                });
+            }
         }
 
         //Initialize the modules when document is ready
@@ -155,7 +161,7 @@ var humhub = humhub || (function ($) {
     var createModule = function(id, instance) {
         instance.require = require;
         instance.initOnPjaxLoad = false;
-        instance.initOnEachLoad = false;
+        instance.initOnAjaxLoad = false;
         instance.isModule = true;
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.config = require('config').module(instance);
