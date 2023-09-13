@@ -85,9 +85,9 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
     /**
      * Reloads this stream entry
      */
-    StreamEntry.prototype.reload = function () {
+    StreamEntry.prototype.reload = function (loader = true) {
         if (typeof this.stream() !== 'undefined') {
-            return this.stream().reloadEntry(this).catch(function (err) {
+            return this.stream().reloadEntry(this, loader).catch(function (err) {
                 module.log.error(err, true);
             });
         }

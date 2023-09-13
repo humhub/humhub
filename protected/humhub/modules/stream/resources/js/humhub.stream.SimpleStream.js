@@ -36,12 +36,13 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
         }
     };
 
-    SimpleStream.prototype.reloadEntry = function (entry) {
+    SimpleStream.prototype.reloadEntry = function (entry, loader = true) {
         if(!entry) {
             entry = Component.instance(this.$.find('[data-stream-entry]:first'));
         }
 
-        entry.loader();
+        loader && entry.loader();
+
         var contentId = entry.getKey();
         return client.get(content.config.reloadUrl, {data: {id: contentId}}).then(function (response) {
             if (response.output) {
