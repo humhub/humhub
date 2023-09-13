@@ -18,7 +18,6 @@ use humhub\modules\ui\form\widgets\SortOrderField;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
-use yii\widgets\ActiveForm;
 
 /**
  * HForm - Yii1 compatible form generator
