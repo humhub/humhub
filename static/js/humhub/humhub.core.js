@@ -140,11 +140,19 @@ var humhub = humhub || (function ($) {
                 pjaxInitModules.push(instance);
             }
 
-            var initOnAjaxUrls = instance.config.initOnAjaxUrls;
-            if (instance.initOnAjaxLoad && initOnAjaxUrls) {
+            if (instance.initOnAjaxLoad && instance.config.initOnAjaxUrls) {
                 $(document).on('ajaxComplete', function (event, jqXHR, ajaxOptions) {
-                    if (ajaxOptions && ajaxOptions.url && initOnAjaxUrls.includes(ajaxOptions.url.split('?')[0])) {
-                        initModule(instance);
+                    if (ajaxOptions && ajaxOptions.url) {
+                        var ajaxUrl = new URL('https://domain.tld' + ajaxOptions.url);
+                        // Remove all params except `r` param (in case pretty URLs are disabled)
+                        ajaxUrl.searchParams.forEach(function (value, name) {
+                            if (name !== 'r') {
+                                ajaxUrl.searchParams.delete(name);
+                            }
+                        });
+                        if (instance.config.initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
+                            initModule(instance);
+                        }
                     }
                 });
             }
