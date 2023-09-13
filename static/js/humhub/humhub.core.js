@@ -140,9 +140,10 @@ var humhub = humhub || (function ($) {
                 pjaxInitModules.push(instance);
             }
 
-            if (instance.initOnAjaxLoad) {
+            var initOnAjaxUrls = instance.config.initOnAjaxUrls;
+            if (instance.initOnAjaxLoad && initOnAjaxUrls) {
                 $(document).on('ajaxComplete', function (event, jqXHR, ajaxOptions) {
-                    if (ajaxOptions && ajaxOptions.url && ajaxOptions.url === instance.config.initOnAjaxUrl) {
+                    if (ajaxOptions && ajaxOptions.url && initOnAjaxUrls.includes(ajaxOptions.url.split('?')[0])) {
                         initModule(instance);
                     }
                 });
@@ -158,14 +159,14 @@ var humhub = humhub || (function ($) {
         }
     };
 
-    var createModule = function(id, instance) {
+    var createModule = function (id, instance) {
         instance.require = require;
         instance.initOnPjaxLoad = false;
         instance.initOnAjaxLoad = false;
         instance.isModule = true;
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.config = require('config').module(instance);
-        instance.text = function(key) {
+        instance.text = function (key) {
             var textCfg = instance.config['text'];
             return (textCfg) ? textCfg[key] : undefined;
         };
@@ -219,8 +220,8 @@ var humhub = humhub || (function ($) {
                 if (subPath in result) {
                     result = result[subPath];
                 } else if (init) {
-                    if(warn) {
-                        console.warn('Required a non initialized module: '+typePath)
+                    if (warn) {
+                        console.warn('Required a non initialized module: ' + typePath)
                     }
                     result = result[subPath] = {};
                 } else {
@@ -518,14 +519,14 @@ var humhub = humhub || (function ($) {
         module.log = log.module(module);
     };
 
-    $(function() {
+    $(function () {
         var log = require('log');
 
         $.each(moduleArr, function (i, module) {
             addModuleLogger(module, log);
         });
 
-        initialModules.sort(function(a,b) {
+        initialModules.sort(function (a, b) {
             var sortA = (typeof a.sortOrder !== 'undefined') ? a.sortOrder : 4294967295;
             var sortB = (typeof b.sortOrder !== 'undefined') ? b.sortOrder : 4294967295;
 
