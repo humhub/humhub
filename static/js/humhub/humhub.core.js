@@ -78,12 +78,36 @@ var humhub = humhub || (function ($) {
      *
      * A module can provide an `init` function, which by default is only called after the first initialization
      * e.g. after a full page load when the document is ready or when loaded by means of ajax.
-     * In case a modules `init` function need to be called also after each `pjax` request, the modules `initOnPjaxLoad` has to be
+     *
+     * In case a module `init` function needs to be called also after each `pjax` request, the module `initOnPjaxLoad` has to be
      * set to `true`:
      *
      * ```
      * module.initOnPjaxLoad = true;
      * ```
+     *
+     * It's also possible to call a module `init` function after each `ajax` request. The module `initOnAjaxLoad` has to be
+     * set to `true`:
+     *
+     * ```
+     * module.initOnAjaxLoad = true;
+     * ```
+     *
+     * You will also need to specify the list of URLs for which the ajax page must call the `init` function. In your Asset class, add something like this:
+     *
+     * ```php
+     *     public static function register($view)
+     *     {
+     *         $view->registerJsConfig('myModule.moduleId', [
+     *             'initOnAjaxUrls' => [
+     *                 Url::to(['/path']), // Don't add any params to the URL
+     *             ],
+     *         ]);
+     *
+     *         return parent::register($view);
+     *     }
+     * ```
+     *
      *
      * Dependencies:
      *
@@ -140,23 +164,25 @@ var humhub = humhub || (function ($) {
                 pjaxInitModules.push(instance);
             }
 
-            initOnAjaxUrls = instance.config.initOnAjaxUrls;
-            // Allow single URL as string
-            if (typeof initOnAjaxUrls === "string") {
-                initOnAjaxUrls = [initOnAjaxUrls];
-            }
-            if (typeof initOnAjaxUrls === 'object') {
+            if (instance.initOnAjaxLoad) {
                 $(document).on('ajaxComplete', function (event, jqXHR, ajaxOptions) {
                     if (ajaxOptions && ajaxOptions.url) {
-                        var ajaxUrl = new URL('https://domain.tld' + ajaxOptions.url);
-                        // Remove all params except `r` param (in case pretty URLs are disabled)
-                        ajaxUrl.searchParams.forEach(function (value, name) {
-                            if (name !== 'r') {
-                                ajaxUrl.searchParams.delete(name);
+                        var initOnAjaxUrls = instance.config.initOnAjaxUrls;
+                        // Allow single URL as string
+                        if (typeof initOnAjaxUrls === "string") {
+                            initOnAjaxUrls = [initOnAjaxUrls];
+                        }
+                        if (typeof initOnAjaxUrls === 'object') {
+                            var ajaxUrl = new URL('https://domain.tld' + ajaxOptions.url);
+                            // Remove all params except `r` param (in case pretty URLs are disabled)
+                            ajaxUrl.searchParams.forEach(function (value, name) {
+                                if (name !== 'r') {
+                                    ajaxUrl.searchParams.delete(name);
+                                }
+                            });
+                            if (initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
+                                initModule(instance);
                             }
-                        });
-                        if (initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
-                            initModule(instance);
                         }
                     }
                 });
@@ -175,6 +201,7 @@ var humhub = humhub || (function ($) {
     var createModule = function (id, instance) {
         instance.require = require;
         instance.initOnPjaxLoad = false;
+        instance.initOnAjaxLoad = false;
         instance.isModule = true;
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.config = require('config').module(instance);
