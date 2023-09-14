@@ -140,7 +140,12 @@ var humhub = humhub || (function ($) {
                 pjaxInitModules.push(instance);
             }
 
-            if (instance.initOnAjaxLoad && instance.config.initOnAjaxUrls) {
+            initOnAjaxUrls = instance.config.initOnAjaxUrls;
+            // Allow single URL as string
+            if (typeof initOnAjaxUrls === "string") {
+                initOnAjaxUrls = [initOnAjaxUrls];
+            }
+            if (typeof initOnAjaxUrls === 'object') {
                 $(document).on('ajaxComplete', function (event, jqXHR, ajaxOptions) {
                     if (ajaxOptions && ajaxOptions.url) {
                         var ajaxUrl = new URL('https://domain.tld' + ajaxOptions.url);
@@ -150,7 +155,7 @@ var humhub = humhub || (function ($) {
                                 ajaxUrl.searchParams.delete(name);
                             }
                         });
-                        if (instance.config.initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
+                        if (initOnAjaxUrls.includes(ajaxUrl.pathname + ajaxUrl.search)) {
                             initModule(instance);
                         }
                     }
@@ -170,7 +175,6 @@ var humhub = humhub || (function ($) {
     var createModule = function (id, instance) {
         instance.require = require;
         instance.initOnPjaxLoad = false;
-        instance.initOnAjaxLoad = false;
         instance.isModule = true;
         instance.id = 'humhub.modules.' + _cutModulePrefix(id);
         instance.config = require('config').module(instance);
