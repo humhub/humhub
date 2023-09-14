@@ -227,6 +227,10 @@ class HForm extends \yii\base\Component
         if ($model) {
             $options = $this->getOptionsFromDefinition($definition);
 
+            if (isset($model->$name, $options['value'])) {
+                unset($options['value']);
+            }
+
             if (isset($definition['type'])) {
                 switch ($definition['type']) {
                     case 'text':

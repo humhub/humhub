@@ -263,7 +263,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_BEFORE_PARSE, $evt);
-        $text = $evt->result;
+        $text = (string)$evt->result;
 
         // Remove leading new backslash new lines e.g. "Test\\\n" -> "Test"
         $text = preg_replace('/\\\\(\n|\r){1,2}$/', '', $text);
@@ -445,7 +445,7 @@ REGEXP;
 
     protected function renderImage($block)
     {
-        $text = $block['text'];
+        $text = (string)$block['text'];
 
         // Remove image alignment extension from image alt text
         $block['text'] = preg_replace('/>?<?$/', '', $text);
@@ -531,7 +531,7 @@ REGEXP;
      */
     protected function br2nl($text)
     {
-        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
+        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", (string)$text);
     }
 
     /**
