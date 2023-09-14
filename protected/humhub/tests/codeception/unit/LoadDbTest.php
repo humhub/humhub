@@ -14,9 +14,9 @@ use Codeception\Lib\Console\Output;
 use Codeception\Lib\ModuleContainer;
 use Codeception\Module\Yii2;
 use Codeception\Test\Metadata;
-use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
+use humhub\helpers\DbHelper;
 use humhub\modules\queue\models\QueueExclusive;
+use tests\codeception\_support\HumHubDbTestCase;
 
 /**
  * Test Debugging DbLoad Helper
@@ -42,7 +42,7 @@ class LoadDbTest extends HumHubDbTestCase
             $this->fixtureConfig = ['default'];
 
             foreach (['queue', QueueExclusive::tableName()] as $table) {
-                self::dbDelete($table);
+                DbHelper::dbDelete($table);
             }
 
             self::$humhubConsole->writeln(sprintf(' - Going to load fixtures: %s ...', implode(', ', $this->fixtureConfig)));
