@@ -15,7 +15,7 @@ use yii\base\InvalidConfigException;
  */
 class InvalidConfigTypeException extends InvalidConfigException
 {
-    use InvalidTypeExceptionTrait;
+    use InvalidArgumentExceptionTrait;
 
     protected function formatPrologue(array $constructArguments): string
     {

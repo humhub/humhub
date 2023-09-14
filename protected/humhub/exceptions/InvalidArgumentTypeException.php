@@ -15,7 +15,7 @@ use yii\base\InvalidArgumentException;
  */
 class InvalidArgumentTypeException extends InvalidArgumentException
 {
-    use InvalidTypeExceptionTrait;
+    use InvalidArgumentExceptionTrait;
 
     protected function formatPrologue(array $constructArguments): string
     {

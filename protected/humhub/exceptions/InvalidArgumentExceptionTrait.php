@@ -11,7 +11,7 @@ namespace humhub\exceptions;
 /**
  * @since 1.15
  */
-trait InvalidTypeExceptionTrait
+trait InvalidArgumentExceptionTrait
 {
     //  public properties
 
