@@ -253,6 +253,7 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
+            'goUrl' => 'https://go.humhub.com',
         ],
         'search' => [
             'zendLucenceDataDir' => '@runtime/searchdb',
