@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -8,8 +8,8 @@
 
 namespace humhub\libs;
 
+use humhub\exceptions\InvalidArgumentValueException;
 use Yii;
-use yii\base\InvalidArgumentException;
 use yii\base\Exception;
 
 /**
@@ -19,7 +19,6 @@ use yii\base\Exception;
  */
 class Helpers
 {
-
     /**
      * Shorten a text string
      *
@@ -138,8 +137,9 @@ class Helpers
      * Source: http://php.net/manual/en/function.ini-get.php#96996
      *
      * @param string $valueString
+     *
      * @return int bytes
-     * @throws InvalidParamException
+     * @throws InvalidArgumentValueException
      */
     public static function getBytesOfIniValue($valueString)
     {
@@ -148,7 +148,7 @@ class Helpers
         }
 
         if ($valueString === false) {
-            throw new InvalidArgumentException('Your configuration option of ini_get function does not exist.');
+            throw new InvalidArgumentValueException('Your configuration option of ini_get function does not exist.');
         }
 
         switch (substr($valueString, -1)) {
@@ -263,5 +263,4 @@ class Helpers
             }
         }
     }
-
 }
