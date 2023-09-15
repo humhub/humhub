@@ -38,14 +38,19 @@ class ContentContainerTest extends ContentModelTest
         $this->assertNotEmpty($contentContainer->getErrors('pk'));
     }
 
-    public function testGuidRequired()
+    public function testGuid()
     {
         $user = User::findOne(['id' => 1]);
+
+        // make sure we have a fresh ID and GUID
+        $user->id = 9;
+        $user->guid = UUID::v4();
+
         $contentContainer = new ContentContainer();
         $contentContainer->setPolymorphicRelation($user);
 
-        $this->assertFalse($contentContainer->save());
-        $this->assertNotEmpty($contentContainer->getErrors('guid'));
+        $this->assertTrue($contentContainer->save());
+        $this->assertEmpty($contentContainer->getErrors('guid'));
     }
 
     public function testModelRequired()

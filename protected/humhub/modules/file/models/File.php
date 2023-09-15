@@ -13,6 +13,7 @@ use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\StdClass;
+use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\components\StorageManager;
@@ -142,6 +143,8 @@ class File extends FileCompat implements ViewableInterface
             ],
             [['category', 'size', 'state', 'sort_order'], 'integer'],
             [['file_name', 'title'], 'string', 'max' => 255],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
         ];
     }
 

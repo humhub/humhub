@@ -34,6 +34,8 @@ Version 1.15
 - Use the verifying `Content->canArchive()` before run the methods `Content->archive()`
   and `Content->archive()`, because it was removed from within there.
 - Permission to configure modules is now restricted to users allowed to manage settings (was previously restricted to users allowed to manage modules). [More info here](https://github.com/humhub/humhub/issues/6174).
+- `$guid` properties in `contentcontainer`, `file`, `space`, and `user` models are now enforced to be valid UUIDs
+  (See `UUID::validate()`) and unique within the table.
 
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
