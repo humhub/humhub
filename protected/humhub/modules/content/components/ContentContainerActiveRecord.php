@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
+use humhub\libs\UUID;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
@@ -19,6 +20,7 @@ use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
+use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
@@ -222,9 +224,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         if ($insert) {
             $contentContainer = new ContentContainer();
-            $contentContainer->guid = $this->guid;
-            $contentContainer->class = static::class;
-            $contentContainer->pk = $this->getPrimaryKey();
+            $contentContainer->setPolymorphicRelation($this);
+
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
             } elseif ($this->hasAttribute('created_by')) {
@@ -246,6 +247,40 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         parent::afterSave($insert, $changedAttributes);
+    }
+
+    /**
+     * @since 1.16
+     */
+    public function onSetPolymorphicRelationOwner(?Component $owner)
+    {
+        if (!$owner instanceof ContentContainer) {
+            return;
+        }
+
+        $thisGUID = UUID::validate($this->guid);
+        $theirGUID = UUID::validate($owner->guid);
+
+        switch (true) {
+            case $thisGUID === null && $theirGUID === null:
+                $this->guid = $owner->guid = UUID::v4();
+                break;
+
+            case $thisGUID === null:
+                $this->guid = $thisGUID;
+                break;
+
+            case $theirGUID === null:
+                $owner->guid = $thisGUID;
+                break;
+
+            case $thisGUID !== $theirGUID:
+                Yii::warning(sprintf(
+                    "ContentContainer with GUID %s does not match the GUID of the related ContentContainerActiveRecord: %s",
+                    $thisGUID,
+                    $theirGUID
+                ));
+        }
     }
 
     /**

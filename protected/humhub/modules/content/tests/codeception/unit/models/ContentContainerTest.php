@@ -51,6 +51,14 @@ class ContentContainerTest extends ContentModelTest
 
         $this->assertTrue($contentContainer->save());
         $this->assertEmpty($contentContainer->getErrors('guid'));
+
+        $user = new User();
+        $user->id = 10;
+        $contentContainer = new ContentContainer();
+        $contentContainer->setPolymorphicRelation($user);
+
+        $this->assertTrue($contentContainer->save());
+        $this->assertEmpty($contentContainer->getErrors('guid'));
     }
 
     public function testModelRequired()
