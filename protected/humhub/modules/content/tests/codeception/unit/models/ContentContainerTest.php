@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,6 +9,7 @@
 
 namespace tests\codeception\unit\modules\content;
 
+use humhub\libs\UUID;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\user\models\User;
@@ -15,7 +17,6 @@ use modules\content\tests\codeception\_support\ContentModelTest;
 
 class ContentContainerTest extends ContentModelTest
 {
-
     public function testUniqueGuid()
     {
         $user = User::findOne(['id' => 1]);
