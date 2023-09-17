@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
+use humhub\libs\UUID;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -138,8 +139,9 @@ class RichTextPostProcessTest extends HumHubDbTestCase
     {
         $post = Post::findOne(['id' => 1]);
 
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'file_name' => 'text.txt',
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
@@ -153,13 +155,13 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
 
-        $text = "[](file-guid:xyz)";
+        $text = '[](file-guid:' . $guid . ')';
 
         $result = RichText::postProcess($text, $post);
 
         static::assertNotEmpty($result['file-guid']);
         static::assertCount(1, $result['file-guid']);
-        static::assertEquals('xyz',$result['file-guid'][0]);
+        static::assertEquals($guid, $result['file-guid'][0]);
 
         $file->refresh();
 
@@ -174,8 +176,9 @@ class RichTextPostProcessTest extends HumHubDbTestCase
     {
         $post = Post::findOne(['id' => 1]);
 
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'file_name' => 'text.txt',
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
@@ -183,8 +186,9 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'size' => 302176
         ]);
 
+        $guid2 = UUID::v4();
         $file2 = new File([
-            'guid' => 'xyz2',
+            'guid' => $guid2,
             'file_name' => 'text2.txt',
             'hash_sha1' => 'xxx',
             'title' => 'Test File2',
@@ -204,14 +208,14 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
 
-        $text = "[](file-guid:xyz) and [](file-guid:xyz2)";
+        $text = '[](file-guid:' . $guid . ') and [](file-guid:' . $guid2 . ')';
 
         $result = RichText::postProcess($text, $post);
 
         static::assertNotEmpty($result['file-guid']);
         static::assertCount(2, $result['file-guid']);
-        static::assertEquals('xyz',$result['file-guid'][0]);
-        static::assertEquals('xyz2',$result['file-guid'][1]);
+        static::assertEquals($guid, $result['file-guid'][0]);
+        static::assertEquals($guid2, $result['file-guid'][1]);
 
         $file->refresh();
 

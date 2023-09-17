@@ -9,6 +9,7 @@
 namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
+use humhub\libs\UUID;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -289,8 +290,9 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     */
     public function testFileGuidText()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.txt',
@@ -307,7 +309,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
         }
 
         $this->assertConversionResult(
-            'Test file [Test File](file-guid:xyz)',
+            'Test file [Test File](file-guid:' . $guid . ')',
             "Test file Test File(" . $file->getUrl(null, true) . ")");
     }
 
@@ -320,8 +322,9 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
 
     public function testImageFile()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -337,7 +340,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File](file-guid:xyz)',
+            'Test file ![Test File](file-guid:' . $guid . ')',
             "Test file Test File(" . $file->getUrl(null, true) . ")");
     }
 
@@ -352,8 +355,9 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
 
     public function testImageFileWithRightAlign()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -369,14 +373,15 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File>](file-guid:xyz)',
+            'Test file ![Test File>](file-guid:' . $guid . ')',
             "Test file Test File(" . $file->getUrl(null, true) . ")");
     }
 
     public function testImageFileWithLeftAlign()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'hash_sha1' => 'xxx',
@@ -392,14 +397,15 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File<](file-guid:xyz)',
+            'Test file ![Test File<](file-guid:' . $guid . ')',
             "Test file Test File(" . $file->getUrl(null, true) . ")");
     }
 
     public function testImageFileWithCenterAlign()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -415,7 +421,7 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File><](file-guid:xyz)',
+            'Test file ![Test File><](file-guid:' . $guid . ')',
             "Test file Test File(" . $file->getUrl(null, true) . ")");
     }
 

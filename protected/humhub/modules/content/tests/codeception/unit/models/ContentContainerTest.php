@@ -29,7 +29,7 @@ class ContentContainerTest extends ContentModelTest
     public function testUniqueModel()
     {
         $user = User::findOne(['id' => 1]);
-        $contentContainer = new ContentContainer(['guid' => 'xyz']);
+        $contentContainer = new ContentContainer(['guid' => UUID::v4()]);
         $contentContainer->setPolymorphicRelation($user);
 
 

@@ -121,6 +121,35 @@ class UUIDTest extends HumHubDbTestCase
         static::assertNull(UUID::validate('12345678-AAAA-bbbb-cDeF-0123456789AX'));
     }
 
+    public function testFixtures()
+    {
+        $toCheck = [
+           '@content/tests/codeception/fixtures/data/contentcontainer.php' => 'guid',
+           '@space/tests/codeception/fixtures/data/space.php' => 'guid',
+           '@user/tests/codeception/fixtures/data/user.php' => 'guid',
+        ];
+
+        foreach ($toCheck as $file => $column) {
+            Yii::info(sprintf('Testing %s::%s', $file, $column), 'testFixtures');
+
+            $file = Yii::getAlias($file);
+            self::assertFileExists($file);
+
+            $content = include($file);
+            self::assertIsArray($content);
+
+            $UUIDs = array_column($content, $column);
+            self::assertNotEmpty($UUIDs);
+
+            foreach ($UUIDs as $i => $UUID) {
+                static::assertNotNull(
+                    UUID::validate($UUID),
+                    sprintf("Invalid UUID for row %s, column '%s' in '%s'", $i, $column, $file)
+                );
+            }
+        }
+    }
+
     public function testGenerator()
     {
         // test a few random versions

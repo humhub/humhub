@@ -9,7 +9,7 @@
 namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
-use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
+use humhub\libs\UUID;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
@@ -350,8 +350,9 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testImageFileA()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -367,14 +368,15 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File](file-guid:xyz)',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx" alt="Test File"></p>');
+            'Test file ![Test File](file-guid:' . $guid . ')',
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>');
     }
 
     public function testImageFileWithRightAlign()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -390,8 +392,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File>](file-guid:xyz)',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx" alt="Test File"></p>');
+            'Test file ![Test File>](file-guid:' . $guid . ')',
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>');
     }
 
     public function testDataImage()
@@ -405,8 +407,9 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
 
     public function testImageFileWithLeftAlign()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -422,14 +425,15 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File<](file-guid:xyz)',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx" alt="Test File"></p>');
+            'Test file ![Test File<](file-guid:' . $guid . ')',
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>');
     }
 
     public function testImageFileWithCenterAlign()
     {
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'object_model' => Post::class,
             'object_id' => 1,
             'file_name' => 'text.jpg',
@@ -445,8 +449,8 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
-            'Test file ![Test File><](file-guid:xyz)',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=xyz&amp;hash_sha1=xxx" alt="Test File"></p>');
+            'Test file ![Test File><](file-guid:' . $guid . ')',
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>');
     }
 
     public function testImageFileNotFound()
