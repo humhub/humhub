@@ -26,7 +26,7 @@ jobs:
         name: PHP ${{ matrix.php-version }}-mysql-${{ matrix.mysql-version }}
         env:
             extensions: curl, intl, pdo, pdo_mysql, zip, exif, fileinfo, mbstring, gd, ldap
-            key: cache-v2
+            key: cache-v3
 
         runs-on: ${{ matrix.os }}
 
@@ -59,8 +59,8 @@ jobs:
               run: |
                 docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
 
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
 
 #            - name: Setup cache environment
 #              id: cache-env
@@ -92,7 +92,7 @@ jobs:
               run: composer validate
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v1
+              uses: actions/cache@v3
               with:
                 path: ${{ env.COMPOSER_CACHE_DIR }}
                 key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
