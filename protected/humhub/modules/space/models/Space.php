@@ -32,34 +32,33 @@ use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "space".
  *
+ * @property integer $id
+ * @property string $guid
  * @property string $name
  * @property string $description
  * @property string $about
  * @property string $url
  * @property integer $join_policy
+ * @property integer $visibility
  * @property integer $status
  * @property integer $sort_order
+ * @property string $created_at
+ * @property integer $created_by
+ * @property string $updated_at
+ * @property integer $updated_by
  * @property integer $auto_add_new_members
+ * @property integer $contentcontainer_id
  * @property integer $default_content_visibility
  * @property string $color
  * @property User $ownerUser the owner of this space
- * @property-read AdvancedSettings $advancedSettings
- * @property-read mixed $applicants
- * @property-read GroupSpace[] $groupSpaces
- * @property-read Membership[] $memberships
- * @property-read mixed $nonMembershipUser
- * @property-read array $privilegedGroupUsers
- * @property-read array $searchAttributes
  *
  * @mixin \humhub\components\behaviors\GUID
  * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
  * @mixin \humhub\modules\user\behaviors\Followable
- * @noinspection PropertiesInspection
  */
 class Space extends ContentContainerActiveRecord implements Searchable
 {
@@ -537,7 +536,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
      * Membership::getSpaceMembersQuery($this->space)->active()->visible()->count()
      * ```
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getMemberships()
     {
@@ -579,7 +578,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     }
 
     /**
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      */
     public function getOwnerUser()
     {
@@ -693,7 +692,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * Gets query for [[GroupSpace]].
      *
-     * @return ActiveQuery
+     * @return \yii\db\ActiveQuery
      * @since 1.8
      */
     public function getGroupSpaces()
