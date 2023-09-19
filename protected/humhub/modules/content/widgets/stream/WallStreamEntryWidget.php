@@ -163,7 +163,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     /**
      * @var int Sort order of create form and tab menu on wall stream
      */
-    public $createFormSortOrder;
+    public $createFormSortOrder = 1000000;
 
     /**
      * @var string Class name of the Form to create a Content from wall stream,

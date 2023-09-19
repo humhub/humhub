@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #6349: Fix error on login new user from external service when maintenance is enabled
 - Fix #6557: Fix not initialized groups array on the module administration
 - Fix #6556: Fix command `theme/switch`
+- Fix #6574: Improve a sort order of wall entry creating tab menu and form
 
 1.14.3 (July 27, 2023)
 ----------------------
