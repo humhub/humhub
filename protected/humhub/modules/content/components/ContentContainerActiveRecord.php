@@ -19,7 +19,6 @@ use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
-use yii\db\ActiveQuery;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
 
@@ -32,30 +31,18 @@ use yii\web\IdentityInterface;
  * @property integer $id
  * @property integer $visibility
  * @property string $guid
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
  * @property integer $contentcontainer_id
- * @property ContentContainer $contentContainerRecord
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
- * @property-read string[] $blockedUserGuids
- * @property-read int[] $blockedUserIds
- * @property-read int $defaultContentVisibility
- * @property-read string $displayName
- * @property-read string|mixed $displayNameSub
  * @property-read ContentContainerModuleManager $moduleManager
- * @property-read ProfileBannerImage $profileBannerImage
- * @property-read ProfileImage $profileImage
- * @property-read string[] $tags
- * @property-read string $wallOut
+ * @property ContentContainer $contentContainerRecord
  *
  * @since 1.0
- * @noinspection PropertiesInspection
+ * @author Luke
  */
 abstract class ContentContainerActiveRecord extends ActiveRecord
 {
+
     /**
      * @var ContentContainerPermissionManager
      */
@@ -106,7 +93,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return string
      * @since 0.11.0
      */
-    abstract public function getDisplayName(): string;
+    public abstract function getDisplayName(): string;
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
@@ -114,7 +101,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return mixed
      * @since 1.4
      */
-    abstract public function getDisplayNameSub(): string;
+    public abstract function getDisplayNameSub(): string;
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -221,7 +208,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $contentContainer = new ContentContainer();
+            $contentContainer = new ContentContainer;
             $contentContainer->guid = $this->guid;
             $contentContainer->class = static::class;
             $contentContainer->pk = $this->getPrimaryKey();
@@ -264,7 +251,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the related ContentContainer model (e.g. Space or User)
      *
-     * @return ActiveQuery
+     * @return ContentContainer
      * @see ContentContainer
      */
     public function getContentContainerRecord()
@@ -473,4 +460,5 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
         return $userModule->allowBlockUsers();
     }
+
 }

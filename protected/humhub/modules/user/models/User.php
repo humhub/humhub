@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -42,20 +42,29 @@ use yii\web\IdentityInterface;
 /**
  * This is the model class for table "user".
  *
+ * @property integer $id
+ * @property string $guid
  * @property integer $status
  * @property string $username
  * @property string $email
  * @property string $auth_mode
  * @property string $language
  * @property string $time_zone
+ * @property string $created_at
+ * @property integer $created_by
+ * @property string $updated_at
+ * @property integer $updated_by
  * @property string $last_login
  * @property string $authclient_id
  * @property string $auth_key
+ * @property integer $visibility
+ * @property integer $contentcontainer_id
  * @property Profile $profile
  * @property Password $currentPassword
  * @property Auth[] $auths
+ * @property string $displayName
+ * @property string $displayNameSub
  * @mixin Followable
- * @noinspection PropertiesInspection
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {

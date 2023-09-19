@@ -286,7 +286,8 @@ abstract class BaseSettingsManager extends Component
                 }
             } elseif (!is_array($prefix)) {
                 throw new InvalidArgumentTypeException(
-                    '$prefix',
+                    __METHOD__,
+                    [1 => '$prefix'],
                     ['string', 'int', 'null', \Stringable::class],
                     $prefix
                 );
