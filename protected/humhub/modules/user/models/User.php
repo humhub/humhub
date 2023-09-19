@@ -160,18 +160,18 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             }],
             [['created_by', 'updated_by'], 'integer'],
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
-            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
+            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => static::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
-            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => self::SCENARIO_APPROVE],
+            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => static::SCENARIO_APPROVE],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
             [['guid'], 'unique'],
-            [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
+            [['username'], 'validateForbiddenUsername', 'on' => [static::SCENARIO_REGISTRATION]],
         ];
 
         if ($this->isEmailRequired()) { // HForm does not support 'required' in combination with 'when'.

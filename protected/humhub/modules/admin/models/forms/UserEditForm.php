@@ -46,7 +46,7 @@ class UserEditForm extends User
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['editAdmin'][] = 'groupSelection';
+        $scenarios[static::SCENARIO_EDIT_ADMIN][] = 'groupSelection';
 
         return $scenarios;
     }

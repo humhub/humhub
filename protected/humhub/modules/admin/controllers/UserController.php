@@ -111,7 +111,7 @@ class UserController extends Controller
         $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
         $canEditPassword = $canEditAdminFields && $authClientUserService->canChangePassword();
 
-        $user->scenario = 'editAdmin';
+        $user->scenario = User::SCENARIO_EDIT_ADMIN;
         $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
 
