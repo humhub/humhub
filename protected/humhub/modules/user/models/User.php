@@ -159,19 +159,19 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['created_by', 'updated_by'], 'integer'],
-            [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
-            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => static::SCENARIO_EDIT_ADMIN],
+            [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
+            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
-            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => static::SCENARIO_APPROVE],
+            ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => self::SCENARIO_APPROVE],
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
             [['guid'], 'unique'],
-            [['username'], 'validateForbiddenUsername', 'on' => [static::SCENARIO_REGISTRATION]],
+            [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
 
         if ($this->isEmailRequired()) { // HForm does not support 'required' in combination with 'when'.
@@ -272,14 +272,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return parent::__get($name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
-        $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
-        $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
-        $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
+        $scenarios[self::SCENARIO_LOGIN] = ['username', 'password'];
+        $scenarios[self::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
+        $scenarios[self::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
+        $scenarios[self::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
+        $scenarios[self::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
         return $scenarios;
     }
