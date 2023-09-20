@@ -8,7 +8,6 @@
 
 namespace humhub\modules\user\services;
 
-use humhub\modules\user\authclient\Collection;
 use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use humhub\modules\user\authclient\interfaces\SyncAttributes;
@@ -120,11 +119,7 @@ class AuthClientUserService
     public function canChangePassword(): bool
     {
         $primaryAuthClient = $this->getPrimaryClient();
-        if ($primaryAuthClient && get_class($primaryAuthClient) === Password::class) {
-            return true;
-        }
-
-        return false;
+        return $primaryAuthClient && get_class($primaryAuthClient) === Password::class;
     }
 
     /**
