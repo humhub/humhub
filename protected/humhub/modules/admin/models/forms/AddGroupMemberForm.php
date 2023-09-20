@@ -15,7 +15,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\models\Group;
 
 /**
- * Description of UserGroupForm
+ * AddGroupMemberForm
  *
  * @author buddha
  */
