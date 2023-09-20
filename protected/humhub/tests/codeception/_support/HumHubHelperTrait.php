@@ -42,6 +42,7 @@ trait HumHubHelperTrait
             FileHelper::removeDirectory($cachePath);
         }
         Yii::$app->cache->flush();
+        Yii::$app->runtimeCache->flush();
         RichTextToShortTextConverter::flushCache();
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
