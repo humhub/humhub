@@ -101,9 +101,9 @@ class Profile extends ActiveRecord
         }
 
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = [];
-        $scenarios[static::SCENARIO_REGISTRATION] = [];
-        $scenarios[static::SCENARIO_EDIT_PROFILE] = [];
+        $scenarios[self::SCENARIO_EDIT_ADMIN] = [];
+        $scenarios[self::SCENARIO_REGISTRATION] = [];
+        $scenarios[self::SCENARIO_EDIT_PROFILE] = [];
 
         // Get synced attributes if user is set
         $syncAttributes = [];
@@ -120,14 +120,14 @@ class Profile extends ActiveRecord
                     continue;
                 }
 
-                $scenarios[static::SCENARIO_EDIT_ADMIN][] = $fieldName;
+                $scenarios[self::SCENARIO_EDIT_ADMIN][] = $fieldName;
 
                 if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
-                    $scenarios[static::SCENARIO_EDIT_PROFILE][] = $fieldName;
+                    $scenarios[self::SCENARIO_EDIT_PROFILE][] = $fieldName;
                 }
 
                 if ($profileField->show_at_registration) {
-                    $scenarios[static::SCENARIO_REGISTRATION][] = $fieldName;
+                    $scenarios[self::SCENARIO_REGISTRATION][] = $fieldName;
                 }
             }
         }

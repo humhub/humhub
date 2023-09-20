@@ -14,7 +14,8 @@ HumHub Changelog
 - Fix #6557: Fix not initialized groups array on the module administration
 - Fix #6556: Fix command `theme/switch`
 - Fix #6574: Improve a sort order of wall entry creating tab menu and form
-- Fix #6577: Wrong usage of user model scenarios 
+- Fix #6577: Wrong usage of user model scenarios
+- Fix #6578: Refactor user edit form
 
 1.14.3 (July 27, 2023)
 ----------------------

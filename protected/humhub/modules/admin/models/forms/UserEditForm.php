@@ -6,6 +6,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 
 /**
@@ -27,6 +28,8 @@ class UserEditForm extends User
      */
     public $currentGroups;
 
+    protected ?AuthClientUserService $authClientUserService = null;
+
     /**
      * @inheritdoc
      */
@@ -46,7 +49,7 @@ class UserEditForm extends User
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_EDIT_ADMIN][] = 'groupSelection';
+        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'groupSelection';
 
         return $scenarios;
     }
@@ -69,11 +72,9 @@ class UserEditForm extends User
 
     public function getGroupLabel()
     {
-        if(!Yii::$app->user->isAdmin() && $this->isSystemAdmin()) {
-            return Yii::t('AdminModule.base', 'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)');
-        }
-
-        return Yii::t('AdminModule.base', 'Groups');
+        return $this->canEditAdminFields()
+            ? Yii::t('AdminModule.base', 'Groups')
+            : Yii::t('AdminModule.base', 'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)');
     }
 
     /**
@@ -158,5 +159,24 @@ class UserEditForm extends User
         }
 
         return $result;
+    }
+
+    public function getAuthClientUserService(): AuthClientUserService
+    {
+        if ($this->authClientUserService === null) {
+            $this->authClientUserService = new AuthClientUserService($this);
+        }
+
+        return $this->authClientUserService;
+    }
+
+    public function canEditAdminFields(): bool
+    {
+        return Yii::$app->user->isAdmin() || !$this->isSystemAdmin();
+    }
+
+    public function canEditPassword(): bool
+    {
+        return $this->canEditAdminFields() && $this->getAuthClientUserService()->canChangePassword();
     }
 }
