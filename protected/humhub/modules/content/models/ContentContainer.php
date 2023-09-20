@@ -22,10 +22,10 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  * @property integer $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
+ * @noinspection PropertiesInspection
  */
 class ContentContainer extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

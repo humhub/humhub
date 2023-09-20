@@ -24,6 +24,7 @@ HumHub Changelog
 1.15.0-beta.2 (Unreleased)
 --------------------------
 - Fix #6551: Migration's transaction with invalid savepoint
+- Fix #6549: Empty profile field type causing an unspecific error
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
@@ -46,6 +47,7 @@ HumHub Changelog
 - Fix #6537: Sort profile fields on People directory filters
 - Fix #6558: Avoid PHP 8.1+ deprecated null parameter on preg_replace in richtext converters
 - Fix #6544: Registration not possible with SSO and email invites if "New users can register" is disabled
+- Fix #6572: Posts count in space should be only for published content
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------
