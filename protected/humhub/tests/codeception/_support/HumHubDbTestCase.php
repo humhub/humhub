@@ -79,6 +79,7 @@ class HumHubDbTestCase extends Unit
 
     protected function flushCache()
     {
+        Yii::$app->runtimeCache->flush();
         RichTextToShortTextConverter::flushCache();
         RichTextToHtmlConverter::flushCache();
         RichTextToPlainTextConverter::flushCache();
