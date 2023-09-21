@@ -46,6 +46,18 @@ class StatisticSettingsForm extends \yii\base\Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'trackingHtmlCode' => Yii::t('AdminModule.settings', 'Inserted script tags must contain a nonce. e.g. {code}', [
+                'code' => '<code>&lt;script nonce={{nonce}}&gt;</code>'
+            ]),
+        ];
+    }
+
+    /**
      * Saves the form
      *
      * @return boolean

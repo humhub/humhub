@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.14.4 (Unreleased)
-----------------------
+1.14.4 (September 20, 2023)
+---------------------------
 - Fix #6489: Never delete original file on store new version
 - Fix #6507: Reload page after accepting of invite in Space header
 - Fix #6531: Fix active style for `btn-lg`
@@ -13,6 +13,9 @@ HumHub Changelog
 - Fix #6349: Fix error on login new user from external service when maintenance is enabled
 - Fix #6557: Fix not initialized groups array on the module administration
 - Fix #6556: Fix command `theme/switch`
+- Fix #6574: Improve a sort order of wall entry creating tab menu and form
+- Fix #6577: Wrong usage of user model scenarios
+- Fix #6578: Refactor user edit form
 
 1.14.3 (July 27, 2023)
 ----------------------

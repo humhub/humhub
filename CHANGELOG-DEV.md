@@ -28,6 +28,8 @@ HumHub Changelog
 - Fix #6558: Avoid PHP 8.1+ deprecated null parameter on preg_replace in richtext converters
 - Fix #6544: Registration not possible with SSO and email invites if "New users can register" is disabled
 - Fix #6572: Posts count in space should be only for published content
+- Fix #3755: Fix default oembed styles for twitter posts
+- Fix #6582: Enabled `RuntimeCache` during tests
 - Fix #6583: Refresh modules available updates counter after updating of modules
 
 1.15.0-beta.1 (July 31, 2023)

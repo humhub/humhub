@@ -1,24 +1,24 @@
-.oembed_snippet[data-oembed-provider="youtube.com"],
 .oembed_snippet {
     margin-top: 10px;
     position: relative;
     padding-bottom: 55%;
     padding-top: 15px;
     overflow: hidden;
-}
 
-.oembed_snippet[data-oembed-provider="twitter.com"] {
-    padding-bottom: 0 !important;
-    padding-top: 0;
-    margin-top: 0;
-}
+    &[data-oembed-provider="Twitter"],
+    &[data-oembed-provider*="twitter.com"] {
+        padding-bottom: 0 !important;
+        padding-top: 0;
+        margin-top: 0;
+    }
 
-.oembed_snippet iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
 }
 
 .oembed_confirmation {
