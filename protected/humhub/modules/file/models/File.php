@@ -34,6 +34,7 @@ use yii\web\UploadedFile;
  *
  * @property integer $id
  * @property string $guid
+ * @property integer $state
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
@@ -68,7 +69,7 @@ class File extends FileCompat
     public const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
 
     /**
-     * The numeric value of the published state is not yet finalized. Use with caution and expect a chenge of value in later versions.
+     * The numeric value of the published state is not yet finalized. Use with caution and expect a change of value in later versions.
      *
      * @deprecated since 1.15
      * @since 1.15
@@ -118,7 +119,6 @@ class File extends FileCompat
             [['file_name', 'title'], 'string', 'max' => 255],
             [['size'], 'integer'],
             [['state'], 'integer'], // ToDo: merge with size after all fields have been added
-            [['state'], 'unique', 'targetAttribute' => ['state', 'guid']],
         ];
     }
 
