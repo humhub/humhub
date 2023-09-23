@@ -16,12 +16,14 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Exception;
 use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 
@@ -210,6 +212,7 @@ class File extends FileCompat
      * @param int $length Return number of first chars of the file hash, 0 - unlimited
      *
      * @return string
+     * @throws InvalidConfigException
      */
     public function getHash($length = 0)
     {
@@ -345,6 +348,12 @@ class File extends FileCompat
      *
      * @param UploadedFile|File|string $file File object or path
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws StaleObjectException
      * @since 1.10
      */
     public function setStoredFile($file, $skipHistoryEntry = false)
@@ -392,7 +401,7 @@ class File extends FileCompat
      *
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
      *
-     * @throws Exception|IntegrityException
+     * @throws Exception|IntegrityException|InvalidConfigException
      */
     private function beforeNewStoredFile(bool $skipHistoryEntry)
     {
