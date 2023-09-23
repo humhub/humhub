@@ -43,6 +43,7 @@ use yii\web\UploadedFile;
  * @property string|null $object_model
  * @property integer|null $object_id
  * @property integer|null $content_id
+ * @property integer $sort_order
  * @property string|null $created_at
  * @property integer|null $created_by
  * @property string|null $updated_at
@@ -117,7 +118,7 @@ class File extends FileCompat
                 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
                 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
             ],
-            [['category', 'size', 'state'], 'integer'],
+            [['category', 'size', 'state', 'sort_order'], 'integer'],
             [['file_name', 'title'], 'string', 'max' => 255],
         ];
     }
@@ -176,6 +177,8 @@ class File extends FileCompat
         $this->old_updated_at = $this->getOldAttribute('updated_at');
 
         $this->state ??= self::STATE_PUBLISHED;
+
+        $this->sort_order ??= 0;
 
         return parent::beforeSave($insert);
     }
@@ -432,6 +435,24 @@ class File extends FileCompat
     }
 
     /**
+     * @param $insert
+     * @param $changedAttributes
+     *
+     * @throws ErrorException
+     */
+    public function afterSave($insert, $changedAttributes)
+    {
+        parent::afterSave($insert, $changedAttributes);
+
+        /**
+         *  Make sure the unique index ux-file-object is not violated. Hence, if sort_order is zero (0) set it to the PK.
+         *
+         * @see self::updateAttributes()
+         */
+        $this->updateAttributes([]);
+    }
+
+    /**
      * Steps that must be performed after a new file content has been set.
      */
     private function afterNewStoredFile()
@@ -451,5 +472,35 @@ class File extends FileCompat
             ]);
             $this->trigger(self::EVENT_AFTER_NEW_STORED_FILE);
         }
+    }
+
+        /**
+         * Make sure the unique index ux-file-object is not violated. Hence, if sort_order is zero (0) set it to the PK.
+         *
+         * @param array|ArrayAccess $attributes
+         *
+         * @return void
+         * @throws ErrorException
+         * @see self::afterSave()
+         */
+    public function updateAttributes($attributes): void
+    {
+        // check if the sort_order field is to be updated and if so, if it has a valid value
+        if (
+            (
+            (is_array($attributes) && array_key_exists('sort_order', $attributes))
+            || ($attributes instanceof ArrayAccess && $attributes->offsetExists('sort_order'))
+            )
+            && empty($attributes['sort_order'])
+        ) {
+            throw new ErrorException("File.sort_order cannot be set to 0 or null");
+        }
+
+        // if the sort_order field currently has an invalid value, make sure it is set (if not already provided)
+        if (empty($this->sort_order)) {
+            $attributes['sort_order'] ??= $this->id;
+        }
+
+        parent::updateAttributes($attributes);
     }
 }

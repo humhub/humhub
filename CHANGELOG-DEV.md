@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6593: Add field `file.sort_order`
 - Enh #6592: Add field `file.state`
 - Enh #6591: Add field `file.category`
 - Enh #6568: improve UUID validation and add `UUIDValidater`
