@@ -58,10 +58,10 @@ class HumHubDbTestCase extends Unit
 
         $webRoot = dirname(__DIR__, 2) . '/../../..';
         Yii::setAlias('@webroot', realpath($webRoot));
-        $this->initModules(__METHOD__);
-        $this->reloadSettings(__METHOD__);
-        $this->flushCache(__METHOD__);
-        $this->deleteMails(__METHOD__);
+        static::initModules(__METHOD__);
+        static::reloadSettings(__METHOD__);
+        static::flushCache(__METHOD__);
+        static::deleteMails(__METHOD__);
 
         parent::setUp();
     }
@@ -70,7 +70,7 @@ class HumHubDbTestCase extends Unit
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!
      */
-    protected function initModules(?string $caller = null)
+    protected static function initModules(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Initializing Modules', $caller ?? __METHOD__));
         $cfg = Configuration::config();
@@ -94,7 +94,7 @@ class HumHubDbTestCase extends Unit
         if (!empty($this->fixtureConfig)) {
             foreach ($this->fixtureConfig as $fixtureTable => $fixtureClass) {
                 if ($fixtureClass === 'default') {
-                    $result = array_merge($result, $this->getDefaultFixtures());
+                    $result = array_merge($result, static::getDefaultFixtures());
                 } else {
                     $result[$fixtureTable] = ['class' => $fixtureClass];
                 }
@@ -104,7 +104,7 @@ class HumHubDbTestCase extends Unit
         return $result;
     }
 
-    protected function getDefaultFixtures(): array
+    protected static function getDefaultFixtures(): array
     {
         return [
             'user' => ['class' => UserFullFixture::class],
@@ -151,7 +151,7 @@ class HumHubDbTestCase extends Unit
     /**
      * @param bool $allow
      */
-    public function allowGuestAccess(bool $allow = true)
+    public static function allowGuestAccess(bool $allow = true)
     {
         Yii::$app
             ->getModule('user')
@@ -159,7 +159,7 @@ class HumHubDbTestCase extends Unit
             ->set('auth.allowGuestAccess', (int)$allow);
     }
 
-    public function setProfileField($field, $value, $user)
+    public static function setProfileField($field, $value, $user)
     {
         if (is_int($user)) {
             $user = User::findOne($user);
@@ -173,31 +173,31 @@ class HumHubDbTestCase extends Unit
         $user->profile->save();
     }
 
-    public function becomeFriendWith($username)
+    public static function becomeFriendWith($username)
     {
         $user = User::findOne(['username' => $username]);
         Friendship::add($user, Yii::$app->user->identity);
         Friendship::add(Yii::$app->user->identity, $user);
     }
 
-    public function follow($username)
+    public static function follow($username)
     {
         User::findOne(['username' => $username])->follow();
     }
 
-    public function enableFriendships($enable = true)
+    public static function enableFriendships($enable = true)
     {
         Yii::$app->getModule('friendship')->settings->set('enable', $enable);
     }
 
-    public function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)
+    public static function setGroupPermission($groupId, $permission, $state = BasePermission::STATE_ALLOW)
     {
         $permissionManger = new PermissionManager();
         $permissionManger->setGroupState($groupId, $permission, $state);
         Yii::$app->user->permissionManager->clear();
     }
 
-    public function setContentContainerPermission(
+    public static function setContentContainerPermission(
         $contentContainer,
         $groupId,
         $permission,
@@ -208,14 +208,14 @@ class HumHubDbTestCase extends Unit
         $contentContainer->permissionManager->clear();
     }
 
-    public function becomeUser($userName): ?User
+    public static function becomeUser($userName): ?User
     {
         $user = User::findOne(['username' => $userName]);
         Yii::$app->user->switchIdentity($user);
         return $user;
     }
 
-    public function logout()
+    public static function logout()
     {
         Yii::$app->user->logout();
     }

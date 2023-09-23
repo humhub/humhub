@@ -28,8 +28,8 @@ class HumHubHelper extends Module
     public function _before(\Codeception\TestInterface $test)
     {
         Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
-        $this->reloadSettings(__METHOD__);
-        $this->flushCache(__METHOD__);
+        static::reloadSettings(__METHOD__);
+        static::flushCache(__METHOD__);
     }
 
     public function fetchInviteToken($mail)

@@ -49,7 +49,7 @@ trait HumHubHelperTrait
         parent::tearDown();
     }
 
-    protected function flushCache(?string $caller = null)
+    protected static function flushCache(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Flushing cache', $caller ?? __METHOD__));
         $cachePath = Yii::getAlias('@runtime/cache');
@@ -65,7 +65,7 @@ trait HumHubHelperTrait
         UrlOembed::flush();
     }
 
-    protected function reloadSettings(?string $caller = null)
+    protected static function reloadSettings(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Reloading settings', $caller ?? __METHOD__));
         Yii::$app->settings->reload();
@@ -77,7 +77,7 @@ trait HumHubHelperTrait
         }
     }
 
-    protected function deleteMails(?string $caller = null)
+    protected static function deleteMails(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Deleting mails', $caller ?? __METHOD__));
         $path = Yii::getAlias('@runtime/mail');
