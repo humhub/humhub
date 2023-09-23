@@ -136,7 +136,8 @@ class File extends FileCompat
     public function transactions()
     {
         return [
-            'default' => self::OP_INSERT + self::OP_DELETE,
+            // ToDo: enable in v.16
+            // 'default' => self::OP_INSERT + self::OP_DELETE,
         ];
     }
 
