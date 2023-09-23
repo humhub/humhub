@@ -56,5 +56,20 @@ class m230618_135509_file_add_category_column extends Migration
         )
                 ->execute()
         ;
+
+        if ($schema->getColumn('onlyoffice_key')) {
+            $command->update(
+                $this->table,
+                ['category' => File::CATEGORY_ONLY_OFFICE],
+                [
+                'and',
+                ['not', ['object_model' => null]],
+                ['not', ['object_id' => null]],
+                ['not', ['onlyoffice_key' => null]],
+                ]
+            )
+                ->execute()
+            ;
+        }
     }
 }
