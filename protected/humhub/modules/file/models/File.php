@@ -20,6 +20,8 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\Exception;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
@@ -127,9 +129,21 @@ class File extends FileCompat
     }
 
     /**
+     * @return array
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function transactions()
+    {
+        return [
+            'default' => self::OP_INSERT + self::OP_DELETE,
+        ];
+    }
+
+    /**
      * Gets a query for [[FileHistory]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getHistoryFiles()
     {
@@ -287,8 +301,8 @@ class File extends FileCompat
     /**
      * Returns the StorageManager
      *
-     * @return \humhub\modules\file\components\StorageManagerInterface
-     * @throws \yii\base\InvalidConfigException
+     * @return StorageManagerInterface
+     * @throws InvalidConfigException
      */
     public function getStore()
     {
