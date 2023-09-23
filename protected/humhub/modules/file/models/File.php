@@ -170,7 +170,7 @@ class File extends FileCompat
      */
     public function beforeDelete()
     {
-        $this->store->delete();
+        $this->getStore()->delete();
         FileHistory::deleteAll(['file_id' => $this->id]);
 
         return parent::beforeDelete();
@@ -213,8 +213,10 @@ class File extends FileCompat
      */
     public function getHash($length = 0)
     {
-        if (empty($this->hash_sha1) && $this->store->has()) {
-            $this->updateAttributes(['hash_sha1' => sha1_file($this->store->get())]);
+        $store = $this->getStore();
+
+        if (empty($this->hash_sha1) && $store->has()) {
+            $this->updateAttributes(['hash_sha1' => sha1_file($store->get())]);
         }
 
         return $length
@@ -349,16 +351,18 @@ class File extends FileCompat
     {
         $this->beforeNewStoredFile($skipHistoryEntry);
 
+        $store = $this->getStore();
+
         if ($file instanceof UploadedFile) {
-            $this->store->set($file);
+            $store->set($file);
         } elseif ($file instanceof File) {
             if ($file->isAssigned()) {
                 throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
             }
-            $this->store->setByPath($file->store->get());
+            $store->setByPath($store->get());
             $file->delete();
         } elseif (is_string($file) && is_file($file)) {
-            $this->store->setByPath($file);
+            $store->setByPath($file);
         }
 
         $this->afterNewStoredFile();
@@ -379,7 +383,7 @@ class File extends FileCompat
     public function setStoredFileContent($content, $skipHistoryEntry = false)
     {
         $this->beforeNewStoredFile($skipHistoryEntry);
-        $this->store->setContent($content);
+        $this->getStore()->setContent($content);
         $this->afterNewStoredFile();
     }
 
@@ -396,11 +400,13 @@ class File extends FileCompat
             throw new Exception('File Record must be saved before setting a new file content.');
         }
 
-        if ($this->store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
+        $store = $this->getStore();
+
+        if ($store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
             FileHistory::createEntryForFile($this);
         }
 
-        $this->store->delete(null, ['file', FileHistory::VARIANT_PREFIX . '*']);
+        $store->delete(null, ['file', FileHistory::VARIANT_PREFIX . '*']);
     }
 
     /**
@@ -408,13 +414,15 @@ class File extends FileCompat
      */
     private function afterNewStoredFile()
     {
-        if ($this->store->has()) {
+        $store = $this->getStore();
+
+        if ($store->has()) {
             // Make sure to update updated_by & updated_at and avoid save()
             $this->beforeSave(false);
 
             $this->updateAttributes([
-                'hash_sha1' => sha1_file($this->store->get()),
-                'size' => filesize($this->store->get()),
+                'hash_sha1' => sha1_file($store->get()),
+                'size' => filesize($store->get()),
                 'updated_by' => $this->updated_by,
                 'updated_at' => $this->updated_at,
             ]);
