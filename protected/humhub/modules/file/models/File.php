@@ -68,6 +68,14 @@ class File extends FileCompat
     public const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
 
     /**
+     * The numeric value of the published state is not yet finalized. Use with caution and expect a chenge of value in later versions.
+     *
+     * @deprecated since 1.15
+     * @since 1.15
+     */
+    public const STATE_PUBLISHED = 1;
+
+    /**
      * @var int $old_updated_by
      */
     public $old_updated_by;
@@ -109,6 +117,8 @@ class File extends FileCompat
             ],
             [['file_name', 'title'], 'string', 'max' => 255],
             [['size'], 'integer'],
+            [['state'], 'integer'], // ToDo: merge with size after all fields have been added
+            [['state'], 'unique', 'targetAttribute' => ['state', 'guid']],
         ];
     }
 
@@ -164,6 +174,8 @@ class File extends FileCompat
          */
         $this->old_updated_by = $this->getOldAttribute('updated_by');
         $this->old_updated_at = $this->getOldAttribute('updated_at');
+
+        $this->state ??= self::STATE_PUBLISHED;
 
         return parent::beforeSave($insert);
     }
