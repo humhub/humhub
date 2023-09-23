@@ -8,22 +8,28 @@
 
 namespace humhub\modules\file\models;
 
+use ArrayAccess;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\file\components\StorageManager;
+use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\ErrorException;
 use yii\base\InvalidArgumentException;
 use yii\db\Exception;
+use yii\db\IntegrityException;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 /**
  * This is the model class for table "file".
  *
- * The followings are the available columns in table 'file':
+ * The following are the available columns in table 'file':
+ *
  * @property integer $id
  * @property string $guid
  * @property string $file_name
@@ -40,14 +46,14 @@ use yii\web\UploadedFile;
  * @property integer $show_in_stream
  * @property string $hash_sha1
  *
- * @property \humhub\modules\user\models\User $createdBy
- * @property \humhub\modules\file\components\StorageManager $store
+ * @property User $createdBy
+ * @property StorageManager $store
  * @property FileHistory[] $historyFiles
  *
  * @mixin PolymorphicRelation
  * @mixin GUID
  *
- * Following properties are optional and for module depended use:
+ * Following properties are optional and for module-dependent use:
  * - title
  *
  * @since 0.5
@@ -70,9 +76,12 @@ class File extends FileCompat
     public $old_updated_at;
 
     /**
-     * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
-     */
+     * @var StorageManagerInterface the storage manager
+     *
+     * @codingStandardsIgnoreStart PSR2.Methods.MethodDeclaration.Underscore
+     **/
     private $_store = null;
+    /* @codingStandardsIgnoreEnd PSR2.Methods.MethodDeclaration.Underscore */
 
     /**
      * @inheritdoc
@@ -89,7 +98,13 @@ class File extends FileCompat
     {
         return [
             [['mime_type'], 'string', 'max' => 150],
-            [['mime_type'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')],
+            [
+                ['mime_type'],
+                'match',
+                'not' => true,
+                'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
+                'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
+            ],
             [['file_name', 'title'], 'string', 'max' => 255],
             [['size'], 'integer'],
         ];
@@ -112,12 +127,13 @@ class File extends FileCompat
     }
 
     /**
-     * Gets query for [[FileHistory]].
+     * Gets a query for [[FileHistory]].
      *
      * @return \yii\db\ActiveQuery
      */
     public function getHistoryFiles()
     {
+        /** @noinspection MissedFieldInspection */
         return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
     }
 
@@ -126,6 +142,11 @@ class File extends FileCompat
      */
     public function beforeSave($insert)
     {
+        /**
+         * Used for file history
+         *
+         * @see FileHistory::createEntryForFile()
+         */
         $this->old_updated_by = $this->getOldAttribute('updated_by');
         $this->old_updated_at = $this->getOldAttribute('updated_at');
 
@@ -174,8 +195,10 @@ class File extends FileCompat
     /**
      * Get hash
      *
-     * @param int Return number of first chars of the file hash, 0 - unlimit
+     * @param int $length Return number of first chars of the file hash, 0 - unlimited
+     *
      * @return string
+     * @throws ErrorException
      */
     public function getHash($length = 0)
     {
@@ -183,7 +206,9 @@ class File extends FileCompat
             $this->updateAttributes(['hash_sha1' => sha1_file($this->store->get())]);
         }
 
-        return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
+        return $length
+            ? substr($this->hash_sha1, 0, $length)
+            : $this->hash_sha1;
     }
 
     /**
@@ -197,7 +222,7 @@ class File extends FileCompat
     public function canRead($userId = "")
     {
         $object = $this->getPolymorphicRelation();
-        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
+        if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
             return $object->content->canView($userId);
         }
 
@@ -205,7 +230,7 @@ class File extends FileCompat
     }
 
     /**
-     * Checks if given file can deleted.
+     * Checks if given file can be deleted.
      *
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canEdit or canDelete implemented.
@@ -222,10 +247,14 @@ class File extends FileCompat
         if ($object instanceof ContentAddonActiveRecord) {
             /** @var ContentAddonActiveRecord $object */
             return $object->canEdit($userId) || $object->content->canEdit($userId);
-        } elseif ($object instanceof ContentActiveRecord) {
+        }
+
+        if ($object instanceof ContentActiveRecord) {
             /** @var ContentActiveRecord $object */
             return $object->content->canEdit($userId);
-        } elseif ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
+        }
+
+        if ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
             /** @var ActiveRecord $object */
             return $object->canEdit($userId);
         }
@@ -240,12 +269,14 @@ class File extends FileCompat
      */
     public function isAssigned()
     {
-        return ($this->object_model != "");
+        return (!empty($this->object_model));
     }
 
     /**
      * Checks if this file is attached to the given record
+     *
      * @param ActiveRecord $record
+     *
      * @return bool
      */
     public function isAssignedTo(ActiveRecord $record)
@@ -284,6 +315,7 @@ class File extends FileCompat
      * Get File History by ID
      *
      * @param int $fileHistoryId
+     *
      * @return FileHistory|null
      */
     public function getFileHistoryById($fileHistoryId): ?FileHistory
@@ -327,6 +359,10 @@ class File extends FileCompat
      *
      * @param string $content
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception
+     * @throws IntegrityException
+     * @throws \yii\base\Exception
      * @since 1.10
      */
     public function setStoredFileContent($content, $skipHistoryEntry = false)
@@ -338,7 +374,10 @@ class File extends FileCompat
 
     /**
      * Steps that must be executed before a new file content is set.
+     *
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception|IntegrityException
      */
     private function beforeNewStoredFile(bool $skipHistoryEntry)
     {
