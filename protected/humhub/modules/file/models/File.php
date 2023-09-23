@@ -36,15 +36,15 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property string $mime_type
  * @property string $size
- * @property string $object_model
- * @property integer $object_id
- * @property integer $content_id
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
- * @property integer $show_in_stream
- * @property string $hash_sha1
+ * @property string|null $object_model
+ * @property integer|null $object_id
+ * @property integer|null $content_id
+ * @property string|null $created_at
+ * @property integer|null $created_by
+ * @property string|null $updated_at
+ * @property integer|null $updated_by
+ * @property integer|null $show_in_stream
+ * @property string|null $hash_sha1
  *
  * @property StorageManager $store
  * @property FileHistory[] $historyFiles
