@@ -28,10 +28,6 @@ class m230618_135509_file_add_category_column extends Migration
      */
     public function safeUp(): void
     {
-        $command = Yii::$app->getDb()
-                            ->createCommand()
-        ;
-
         $schema = Yii::$app->getDb()->getTableSchema($this->table, true);
         $after = $schema->getColumn('state') ? 'state' : 'guid';
 
@@ -39,22 +35,12 @@ class m230618_135509_file_add_category_column extends Migration
             $this->table,
             'category',
             $this->integer(11)
-                 ->unsigned()
-                 ->after($after)
+                ->unsigned()
+                ->notNull()
+                ->defaultValue(0)
+                ->after($after)
         );
 
         $this->safeCreateIndex("ix-$this->table-category", $this->table, ['category', 'object_model', 'object_id']);
-
-        $command->update(
-            $this->table,
-            ['category' => File::CATEGORY_ATTACHED_FILE],
-            [
-                'and',
-                ['not', ['object_model' => null]],
-                ['not', ['object_id' => null]],
-            ]
-        )
-                ->execute()
-        ;
     }
 }

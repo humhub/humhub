@@ -34,7 +34,7 @@ use yii\web\UploadedFile;
  *
  * @property integer $id
  * @property string $guid
- * @property integer|null $category
+ * @property integer|null $category Note, categories are still experimental. Expect changes in v1.16 (ToDo)
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
@@ -63,24 +63,6 @@ use yii\web\UploadedFile;
  */
 class File extends FileCompat
 {
-    /**
-     * Categories are still experimental. Expect changes in v1.16
-     *
-     * Generally speaking, there are two value-ranges:
-     * - Byte 1, bits 1-8, or values 1-32767:
-     *   reserved for humhub
-     * - Byte 2, bits 9-16, or values 32768-65535:
-     *   available for the object_model of the owning record.
-     */
-    public const CATEGORY_ATTACHED_FILE = 16;
-    public const CATEGORY_ATTACHED_IMAGE = self::CATEGORY_ATTACHED_FILE + self::CATEGORY_VARIANT_1;                             // 17 = 16 + 1
-    public const CATEGORY_BANNER_IMAGE = self::CATEGORY_ATTACHED_FILE + self::CATEGORY_VARIANT_1 + self::CATEGORY_VARIANT_2;    // 19 = 16 + 1 + 2
-    public const CATEGORY_OG_IMAGE = self::CATEGORY_ATTACHED_FILE + self::CATEGORY_VARIANT_1 + self::CATEGORY_VARIANT_4;        // 21 = 16 + 1 + 4
-    public const CATEGORY_VARIANT_1 = 1;
-    public const CATEGORY_VARIANT_2 = 2;
-    public const CATEGORY_VARIANT_4 = 4;
-    public const CATEGORY_VARIANT_8 = 8;
-
     /**
      * @event Event that is triggered after a new file content has been stored.
      */
@@ -184,18 +166,6 @@ class File extends FileCompat
          */
         $this->old_updated_by = $this->getOldAttribute('updated_by');
         $this->old_updated_at = $this->getOldAttribute('updated_at');
-
-        if ($this->category === null) {
-            /** @noinspection NestedPositiveIfStatementsInspection */
-            if ($this->object_model && $this->object_id !== null) {
-                $this->category = self::CATEGORY_ATTACHED_FILE;
-
-                $mime_type = $this->mime_type;
-                if ($mime_type && str_starts_with($mime_type, 'image/')) {
-                    $this->category = self::CATEGORY_ATTACHED_IMAGE;
-                }
-            }
-        }
 
         return parent::beforeSave($insert);
     }
