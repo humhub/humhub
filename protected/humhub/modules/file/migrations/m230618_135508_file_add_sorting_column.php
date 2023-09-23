@@ -8,9 +8,6 @@
 
 use humhub\components\Migration;
 use humhub\modules\file\models\File;
-use yii\base\InvalidConfigException;
-use yii\db\ActiveQuery;
-use yii\db\Expression;
 
 /**
  * Add and film GUID column
@@ -28,49 +25,20 @@ class m230618_135508_file_add_sorting_column extends Migration
 
     /**
      * {@inheritdoc}
-     * @throws \yii\base\ErrorException
-     * @throws JsonException
-     * @throws \yii\db\Exception|InvalidConfigException
+     * @throws \yii\db\Exception
      */
     public function safeUp(): void
     {
+        $command = Yii::$app->getDb()
+            ->createCommand();
+
         $this->safeAddColumn(
             $this->table,
             'sort_order',
             $this->integer(11)
-                 ->after('object_id')
-        );
-
-        $command = Yii::$app->getDb()
-                            ->createCommand()
-        ;
-
-        $command->update(
-            $this->table,
-            ['sort_order' => new Expression('id')]
-        )
-                ->execute()
-        ;
-
-        $query = Yii::createObject(ActiveQuery::class, [File::class]);
-
-        /** @var File $file */
-        foreach ($query->all() as $file) {
-            $file->sort_order = $file->id;
-
-            if (!$file->save()) {
-                throw new \yii\base\ErrorException(
-                    "File $file->id could not be saved: "
-                    . json_encode($file->getErrors(), JSON_THROW_ON_ERROR)
-                );
-            }
-        }
-
-        $this->alterColumn(
-            $this->table,
-            'sort_order',
-            $this->integer(11)
-                 ->notNull()
+                ->notNull()
+                ->defaultValue(100)
+                ->after('object_id')
         );
 
         $command->update(
