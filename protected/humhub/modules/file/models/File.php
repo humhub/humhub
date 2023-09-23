@@ -65,7 +65,7 @@ class File extends FileCompat
     /**
      * @event Event that is triggered after a new file content has been stored.
      */
-    const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+    public const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
 
     /**
      * @var int $old_updated_by
