@@ -8,17 +8,15 @@
 
 namespace humhub\modules\file\models;
 
-use ArrayAccess;
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\ErrorException;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
@@ -48,7 +46,6 @@ use yii\web\UploadedFile;
  * @property integer $show_in_stream
  * @property string $hash_sha1
  *
- * @property User $createdBy
  * @property StorageManager $store
  * @property FileHistory[] $historyFiles
  *
@@ -59,6 +56,7 @@ use yii\web\UploadedFile;
  * - title
  *
  * @since 0.5
+ * @noinspection PropertiesInspection
  */
 class File extends FileCompat
 {
@@ -212,7 +210,6 @@ class File extends FileCompat
      * @param int $length Return number of first chars of the file hash, 0 - unlimited
      *
      * @return string
-     * @throws ErrorException
      */
     public function getHash($length = 0)
     {
