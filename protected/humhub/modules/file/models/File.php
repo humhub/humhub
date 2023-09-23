@@ -363,15 +363,15 @@ class File extends FileCompat
         $store = $this->getStore();
 
         if ($file instanceof UploadedFile) {
-            $store->set($file);
+            $this->getStore()->set($file);
         } elseif ($file instanceof File) {
             if ($file->isAssigned()) {
                 throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
             }
-            $store->setByPath($store->get());
+            $this->getStore()->setByPath($file->getStore()->get());
             $file->delete();
         } elseif (is_string($file) && is_file($file)) {
-            $store->setByPath($file);
+            $this->getStore()->setByPath($file);
         }
 
         $this->afterNewStoredFile();
@@ -429,9 +429,10 @@ class File extends FileCompat
             // Make sure to update updated_by & updated_at and avoid save()
             $this->beforeSave(false);
 
+            $filename = $store->get();
             $this->updateAttributes([
-                'hash_sha1' => sha1_file($store->get()),
-                'size' => filesize($store->get()),
+                'hash_sha1' => sha1_file($filename),
+                'size' => filesize($filename),
                 'updated_by' => $this->updated_by,
                 'updated_at' => $this->updated_at,
             ]);
