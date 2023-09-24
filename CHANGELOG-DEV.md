@@ -4,6 +4,7 @@ HumHub Changelog
 1.15.0-beta.2 (Unreleased)
 --------------------------
 - Enh #6592: Add field `file.state`
+- Enh #6591: Add field `file.category`
 - Fix #6551: Migration's transaction with invalid savepoint
 - Fix #6549: Empty profile field type causing an unspecific error
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
