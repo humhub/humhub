@@ -50,6 +50,8 @@ HumHub Changelog
 - Fix #6572: Posts count in space should be only for published content
 - Fix #3755: Fix default oembed styles for twitter posts
 - Fix #6582: Enabled `RuntimeCache` during tests
+- Fix #6583: Refresh modules available updates counter after updating of modules
+- Fix #6585: Exclude database views on self checking
 
 1.15.0-beta.1 (July 31, 2023)
 -----------------------------

@@ -703,7 +703,7 @@ class SelfTest
         }
 
         // Find collations and engines of all tables
-        $dbTables = Yii::$app->getDb()->createCommand('SHOW TABLE STATUS')->queryAll();
+        $dbTables = Yii::$app->getDb()->createCommand('SHOW TABLE STATUS WHERE Comment != "VIEW"')->queryAll();
         $tableCollations = [];
         $tablesWithNotRecommendedCollations = [];
         $tableEngines = [];
@@ -712,13 +712,13 @@ class SelfTest
             if (!in_array($dbTable['Collation'], $tableCollations)) {
                 $tableCollations[] = $dbTable['Collation'];
             }
-            if (stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
+            if (!is_string($dbTable['Collation']) || stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
                 $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
             }
             if (!in_array($dbTable['Engine'], $tableEngines)) {
                 $tableEngines[] = $dbTable['Engine'];
             }
-            if (stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
+            if (!is_string($dbTable['Engine']) || stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
                 $tablesWithNotRecommendedEngines[] = $dbTable['Name'];
             }
         }
