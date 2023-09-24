@@ -5,6 +5,7 @@ HumHub Changelog
 --------------------------
 - Enh #6592: Add field `file.state`
 - Enh #6591: Add field `file.category`
+- Enh #6568: improve UUID validation and add `UUIDValidater`
 - Fix #6551: Migration's transaction with invalid savepoint
 - Fix #6549: Empty profile field type causing an unspecific error
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
