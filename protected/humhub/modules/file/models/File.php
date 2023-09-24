@@ -34,6 +34,7 @@ use yii\web\UploadedFile;
  *
  * @property integer $id
  * @property string $guid
+ * @property integer $state
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
@@ -66,6 +67,14 @@ class File extends FileCompat
      * @event Event that is triggered after a new file content has been stored.
      */
     public const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+
+    /**
+     * The numeric value of the published state is not yet finalized. Use with caution and expect a change of value in later versions.
+     *
+     * @deprecated since 1.15
+     * @since 1.15
+     */
+    public const STATE_PUBLISHED = 1;
 
     /**
      * @var int $old_updated_by
@@ -109,6 +118,7 @@ class File extends FileCompat
             ],
             [['file_name', 'title'], 'string', 'max' => 255],
             [['size'], 'integer'],
+            [['state'], 'integer'], // ToDo: merge with size after all fields have been added
         ];
     }
 
@@ -164,6 +174,8 @@ class File extends FileCompat
          */
         $this->old_updated_by = $this->getOldAttribute('updated_by');
         $this->old_updated_at = $this->getOldAttribute('updated_at');
+
+        $this->state ??= self::STATE_PUBLISHED;
 
         return parent::beforeSave($insert);
     }
