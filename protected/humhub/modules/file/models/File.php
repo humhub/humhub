@@ -35,6 +35,7 @@ use yii\web\UploadedFile;
  * @property integer $id
  * @property string $guid
  * @property integer $state
+ * @property integer|null $category Note, categories are still experimental. Expect changes in v1.16 (ToDo)
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
@@ -116,9 +117,8 @@ class File extends FileCompat
                 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
                 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
             ],
+            [['category', 'size', 'state'], 'integer'],
             [['file_name', 'title'], 'string', 'max' => 255],
-            [['size'], 'integer'],
-            [['state'], 'integer'], // ToDo: merge with size after all fields have been added
         ];
     }
 
