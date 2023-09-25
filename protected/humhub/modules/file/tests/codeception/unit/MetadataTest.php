@@ -8,6 +8,8 @@
 
 namespace tests\codeception\unit\modules\file;
 
+use humhub\modules\file\libs\FileModuleMetadata;
+use humhub\modules\file\libs\FileVariantMetadata;
 use humhub\modules\file\libs\Metadata;
 use humhub\modules\file\Module;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -25,7 +27,7 @@ class MetadataTest extends HumHubDbTestCase
             : [];
     }
 
-    public function testInstantiationStdClass()
+    public function testInstantiationMetadataWithoutModules()
     {
         // Disable Module Registration for Metadata
         Event::on(Metadata::class, Metadata::EVENT_INIT, [self::class, 'onMetadataInit'], null, false);
@@ -64,9 +66,20 @@ class MetadataTest extends HumHubDbTestCase
         static::assertEquals([], $instance->toArray());
         static::assertEquals($serialized, $instance->serialize());
 
-        // Disable Module Registration for Metadata, except for file
         Event::off(Metadata::class, Metadata::EVENT_REGISTER, [self::class, 'onMetadataRegister']);
+
+        $this->expectException(InvalidConfigException::class);
+        $this->expectExceptionMessage(sprintf("Module '%s' has not registered it's metadata namespace 'file'.", Module::class));
+
+        static::assertInstanceOf(FileModuleMetadata::class, $instance->file);
+    }
+
+    public function testInstantiationMetadataWithModuleFile()
+    {
+        // Disable Module Registration for Metadata, except for file
         Event::on(Metadata::class, Metadata::EVENT_REGISTER, [self::class, 'onMetadataRegister'], ['file'], false);
+
+        $serialized = 'O:33:"humhub\modules\file\libs\Metadata":3:{s:1:"v";i:1;s:2:"_0";a:1:{s:4:"file";O:43:"humhub\modules\file\libs\FileModuleMetadata":1:{s:1:"v";i:1;}}s:6:"config";O:8:"stdClass":1:{s:1:"v";i:1;}}';
 
         $instance = new Metadata();
 
@@ -75,7 +88,10 @@ class MetadataTest extends HumHubDbTestCase
         static::assertEquals(['file' => []], $instance->toArray());
         static::assertEquals($serialized, $instance->serialize());
 
-        $serialized = 'O:33:"humhub\modules\file\libs\Metadata":3:{s:1:"v";i:1;i:0;a:1:{s:4:"file";O:43:"humhub\modules\file\libs\FileModuleMetadata":2:{s:1:"v";i:1;i:0;a:1:{s:3:"foo";s:3:"bar";}}}s:6:"config";O:8:"stdClass":5:{s:1:"v";i:1;s:1:"0";a:1:{s:7:"default";N;}s:1:"1";b:0;s:1:"2";b:0;s:1:"3";b:0;}}';
+        static::assertInstanceOf(FileModuleMetadata::class, $instance->file);
+        static::assertInstanceOf(FileVariantMetadata::class, $instance->file->_draft);
+
+        $serialized = 'O:33:"humhub\modules\file\libs\Metadata":3:{s:1:"v";i:1;s:2:"_0";a:1:{s:4:"file";O:43:"humhub\modules\file\libs\FileModuleMetadata":2:{s:1:"v";i:1;s:2:"_0";a:1:{s:3:"foo";s:3:"bar";}}}s:6:"config";O:8:"stdClass":1:{s:1:"v";i:1;}}';
 
         $instance->file->foo = 'bar';
         static::assertCount(1, $instance);
