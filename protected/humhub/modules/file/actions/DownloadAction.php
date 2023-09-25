@@ -100,7 +100,7 @@ class DownloadAction extends Action
     public function run()
     {
         $fileName = $this->getFileName();
-        $mimeType = FileHelper::getMimeTypeByExtension($fileName);
+        $mimeType = FileHelper::getMimeType($this->getStoredFilePath());
 
         $options = [
             'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes)),
