@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.14.5 (Unreleased)
+---------------------------
+- Fix #6596: Fix duplicate error and hint for RichText editor with defined form
+
 1.14.4 (September 20, 2023)
 ---------------------------
 - Fix #6489: Never delete original file on store new version
