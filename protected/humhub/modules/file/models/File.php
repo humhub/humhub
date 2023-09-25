@@ -8,57 +8,75 @@
 
 namespace humhub\modules\file\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\components\ActiveRecord;
-use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\file\components\StorageManager;
+use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 use yii\db\Exception;
+use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
+use humhub\interfaces\ViewableInterface;
 
 /**
  * This is the model class for table "file".
  *
- * The followings are the available columns in table 'file':
+ * The following are the available columns in table 'file':
+ *
  * @property integer $id
  * @property string $guid
+ * @property integer $state
+ * @property integer|null $category Note, categories are still experimental. Expect changes in v1.16 (ToDo)
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
  * @property string $size
- * @property string $object_model
- * @property integer $object_id
- * @property integer $content_id
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
- * @property integer $show_in_stream
- * @property string $hash_sha1
+ * @property string|null $object_model
+ * @property integer|null $object_id
+ * @property integer|null $content_id
+ * @property string|null $created_at
+ * @property integer|null $created_by
+ * @property string|null $updated_at
+ * @property integer|null $updated_by
+ * @property integer|null $show_in_stream
+ * @property string|null $hash_sha1
  *
- * @property \humhub\modules\user\models\User $createdBy
- * @property \humhub\modules\file\components\StorageManager $store
+ * @property StorageManager $store
  * @property FileHistory[] $historyFiles
  *
  * @mixin PolymorphicRelation
  * @mixin GUID
  *
- * Following properties are optional and for module depended use:
+ * Following properties are optional and for module-dependent use:
  * - title
  *
  * @since 0.5
+ * @noinspection PropertiesInspection
  */
 class File extends FileCompat implements ViewableInterface
 {
     /**
      * @event Event that is triggered after a new file content has been stored.
      */
-    const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+    public const EVENT_AFTER_NEW_STORED_FILE = 'afterNewStoredFile';
+
+    /**
+     * The numeric value of the published state is not yet finalized. Use with caution and expect a change of value in later versions.
+     *
+     * @deprecated since 1.15
+     * @since 1.15
+     */
+    public const STATE_PUBLISHED = 1;
 
     /**
      * @var int $old_updated_by
@@ -71,9 +89,12 @@ class File extends FileCompat implements ViewableInterface
     public $old_updated_at;
 
     /**
-     * @var \humhub\modules\file\components\StorageManagerInterface the storage manager
-     */
+     * @var StorageManagerInterface the storage manager
+     *
+     * @codingStandardsIgnoreStart PSR2.Methods.MethodDeclaration.Underscore
+     **/
     private $_store = null;
+    /* @codingStandardsIgnoreEnd PSR2.Methods.MethodDeclaration.Underscore */
 
     /**
      * @inheritdoc
@@ -90,9 +111,15 @@ class File extends FileCompat implements ViewableInterface
     {
         return [
             [['mime_type'], 'string', 'max' => 150],
-            [['mime_type'], 'match', 'not' => true, 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/', 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')],
+            [
+                ['mime_type'],
+                'match',
+                'not' => true,
+                'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
+                'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
+            ],
+            [['category', 'size', 'state'], 'integer'],
             [['file_name', 'title'], 'string', 'max' => 255],
-            [['size'], 'integer'],
         ];
     }
 
@@ -113,12 +140,26 @@ class File extends FileCompat implements ViewableInterface
     }
 
     /**
-     * Gets query for [[FileHistory]].
+     * @return array
+     * @noinspection PhpMissingReturnTypeInspection
+     * @noinspection ReturnTypeCanBeDeclaredInspection
+     */
+    public function transactions()
+    {
+        return [
+            // ToDo: enable in v.16
+            // 'default' => self::OP_INSERT + self::OP_DELETE,
+        ];
+    }
+
+    /**
+     * Gets a query for [[FileHistory]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getHistoryFiles()
     {
+        /** @noinspection MissedFieldInspection */
         return $this->hasMany(FileHistory::class, ['file_id' => 'id'])->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
     }
 
@@ -127,8 +168,15 @@ class File extends FileCompat implements ViewableInterface
      */
     public function beforeSave($insert)
     {
+        /**
+         * Used for file history
+         *
+         * @see FileHistory::createEntryForFile()
+         */
         $this->old_updated_by = $this->getOldAttribute('updated_by');
         $this->old_updated_at = $this->getOldAttribute('updated_at');
+
+        $this->state ??= self::STATE_PUBLISHED;
 
         return parent::beforeSave($insert);
     }
@@ -138,7 +186,7 @@ class File extends FileCompat implements ViewableInterface
      */
     public function beforeDelete()
     {
-        $this->store->delete();
+        $this->getStore()->delete();
         FileHistory::deleteAll(['file_id' => $this->id]);
 
         return parent::beforeDelete();
@@ -175,16 +223,22 @@ class File extends FileCompat implements ViewableInterface
     /**
      * Get hash
      *
-     * @param int Return number of first chars of the file hash, 0 - unlimit
+     * @param int $length Return number of first chars of the file hash, 0 - unlimited
+     *
      * @return string
+     * @throws InvalidConfigException
      */
     public function getHash($length = 0)
     {
-        if (empty($this->hash_sha1) && $this->store->has()) {
-            $this->updateAttributes(['hash_sha1' => sha1_file($this->store->get())]);
+        $store = $this->getStore();
+
+        if (empty($this->hash_sha1) && $store->has()) {
+            $this->updateAttributes(['hash_sha1' => sha1_file($store->get())]);
         }
 
-        return $length ? substr($this->hash_sha1, 0, $length) : $this->hash_sha1;
+        return $length
+            ? substr($this->hash_sha1, 0, $length)
+            : $this->hash_sha1;
     }
 
     /**
@@ -203,7 +257,7 @@ class File extends FileCompat implements ViewableInterface
     public function canRead($userId = ""): bool
     {
         $object = $this->getPolymorphicRelation();
-        if ($object !== null && ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord)) {
+        if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
             return $object->content->canView($userId);
         }
 
@@ -241,10 +295,14 @@ class File extends FileCompat implements ViewableInterface
         if ($object instanceof ContentAddonActiveRecord) {
             /** @var ContentAddonActiveRecord $object */
             return $object->canEdit($userId) || $object->content->canEdit($userId);
-        } elseif ($object instanceof ContentActiveRecord) {
+        }
+
+        if ($object instanceof ContentActiveRecord) {
             /** @var ContentActiveRecord $object */
             return $object->content->canEdit($userId);
-        } elseif ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
+        }
+
+        if ($object instanceof ActiveRecord && method_exists($object, 'canEdit')) {
             /** @var ActiveRecord $object */
             return $object->canEdit($userId);
         }
@@ -259,12 +317,14 @@ class File extends FileCompat implements ViewableInterface
      */
     public function isAssigned()
     {
-        return ($this->object_model != "");
+        return (!empty($this->object_model));
     }
 
     /**
      * Checks if this file is attached to the given record
+     *
      * @param ActiveRecord $record
+     *
      * @return bool
      */
     public function isAssignedTo(ActiveRecord $record)
@@ -275,8 +335,8 @@ class File extends FileCompat implements ViewableInterface
     /**
      * Returns the StorageManager
      *
-     * @return \humhub\modules\file\components\StorageManagerInterface
-     * @throws \yii\base\InvalidConfigException
+     * @return StorageManagerInterface
+     * @throws InvalidConfigException
      */
     public function getStore()
     {
@@ -303,6 +363,7 @@ class File extends FileCompat implements ViewableInterface
      * Get File History by ID
      *
      * @param int $fileHistoryId
+     *
      * @return FileHistory|null
      */
     public function getFileHistoryById($fileHistoryId): ?FileHistory
@@ -319,22 +380,30 @@ class File extends FileCompat implements ViewableInterface
      *
      * @param UploadedFile|File|string $file File object or path
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws StaleObjectException
      * @since 1.10
      */
     public function setStoredFile($file, $skipHistoryEntry = false)
     {
         $this->beforeNewStoredFile($skipHistoryEntry);
 
+        $store = $this->getStore();
+
         if ($file instanceof UploadedFile) {
-            $this->store->set($file);
+            $this->getStore()->set($file);
         } elseif ($file instanceof File) {
             if ($file->isAssigned()) {
                 throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
             }
-            $this->store->setByPath($file->store->get());
+            $this->getStore()->setByPath($file->getStore()->get());
             $file->delete();
         } elseif (is_string($file) && is_file($file)) {
-            $this->store->setByPath($file);
+            $this->getStore()->setByPath($file);
         }
 
         $this->afterNewStoredFile();
@@ -346,18 +415,25 @@ class File extends FileCompat implements ViewableInterface
      *
      * @param string $content
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception
+     * @throws IntegrityException
+     * @throws \yii\base\Exception
      * @since 1.10
      */
     public function setStoredFileContent($content, $skipHistoryEntry = false)
     {
         $this->beforeNewStoredFile($skipHistoryEntry);
-        $this->store->setContent($content);
+        $this->getStore()->setContent($content);
         $this->afterNewStoredFile();
     }
 
     /**
      * Steps that must be executed before a new file content is set.
+     *
      * @param bool $skipHistoryEntry Skipping the creation of a history entry, even if enabled by the record
+     *
+     * @throws Exception|IntegrityException|InvalidConfigException
      */
     private function beforeNewStoredFile(bool $skipHistoryEntry)
     {
@@ -365,11 +441,13 @@ class File extends FileCompat implements ViewableInterface
             throw new Exception('File Record must be saved before setting a new file content.');
         }
 
-        if ($this->store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
+        $store = $this->getStore();
+
+        if ($store->has() && FileHistory::isEnabled($this) && !$skipHistoryEntry) {
             FileHistory::createEntryForFile($this);
         }
 
-        $this->store->delete(null, ['file', FileHistory::VARIANT_PREFIX . '*']);
+        $store->delete(null, ['file', FileHistory::VARIANT_PREFIX . '*']);
     }
 
     /**
@@ -377,13 +455,16 @@ class File extends FileCompat implements ViewableInterface
      */
     private function afterNewStoredFile()
     {
-        if ($this->store->has()) {
+        $store = $this->getStore();
+
+        if ($store->has()) {
             // Make sure to update updated_by & updated_at and avoid save()
             $this->beforeSave(false);
 
+            $filename = $store->get();
             $this->updateAttributes([
-                'hash_sha1' => sha1_file($this->store->get()),
-                'size' => filesize($this->store->get()),
+                'hash_sha1' => sha1_file($filename),
+                'size' => filesize($filename),
                 'updated_by' => $this->updated_by,
                 'updated_at' => $this->updated_at,
             ]);
