@@ -4,6 +4,7 @@ HumHub Changelog
 1.14.5 (Unreleased)
 ---------------------------
 - Fix #6596: Fix duplicate error and hint for RichText editor with defined form
+- Fix #6595: Fix mimetype of converted preview svg file to png after uploading
 
 1.14.4 (September 20, 2023)
 ---------------------------
