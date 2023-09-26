@@ -6,6 +6,10 @@
  * @license   https://www.humhub.com/licences
  */
 
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 declare(strict_types=1);
 
 namespace tests\codeception\_support;

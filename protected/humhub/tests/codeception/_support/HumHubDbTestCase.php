@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * @link      https://www.humhub.org/
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
+ * @license   https://www.humhub.com/licences
+ */
+
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 namespace tests\codeception\_support;
 
 use Codeception\Configuration;

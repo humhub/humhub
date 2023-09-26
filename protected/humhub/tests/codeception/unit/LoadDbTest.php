@@ -6,6 +6,10 @@
  * @license   https://www.humhub.com/licences
  */
 
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 namespace humhub\tests\codeception\unit;
 
 use Codeception\Exception\InjectionException;
@@ -14,7 +18,6 @@ use Codeception\Lib\Console\Output;
 use Codeception\Lib\ModuleContainer;
 use Codeception\Module\Yii2;
 use Codeception\Test\Metadata;
-use humhub\helpers\DbHelper;
 use humhub\modules\queue\models\QueueExclusive;
 use tests\codeception\_support\HumHubDbTestCase;
 
@@ -42,7 +45,7 @@ class LoadDbTest extends HumHubDbTestCase
             $this->fixtureConfig = ['default'];
 
             foreach (['queue', QueueExclusive::tableName()] as $table) {
-                DbHelper::dbDelete($table);
+                self::dbDelete($table);
             }
 
             self::$humhubConsole->writeln(sprintf(' - Going to load fixtures: %s ...', implode(', ', $this->fixtureConfig)));

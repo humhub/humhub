@@ -11,7 +11,6 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\SettingsManager;
-use humhub\helpers\DbHelper;
 use humhub\libs\BaseSettingsManager;
 use humhub\models\Setting;
 use humhub\modules\content\components\ContentContainerSettingsManager;
@@ -386,7 +385,7 @@ class SettingsManagerTest extends HumHubDbTestCase
 
         // changing the value behind the scenes
         $value2 = 'third value';
-        DbHelper::dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
+        $this->dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
         $this->assertRecordValue($value2, 'value', $table, ['name' => $setting, 'module_id' => $module]);
 
         // getting the value now should still show tho "old" value
