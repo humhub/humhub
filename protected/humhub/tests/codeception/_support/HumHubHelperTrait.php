@@ -15,6 +15,7 @@ namespace tests\codeception\_support;
 use Codeception\Exception\ModuleException;
 use Codeception\Module\Yii2;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\UUID;
 use humhub\models\UrlOembed;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
@@ -501,6 +502,30 @@ trait HumHubHelperTrait
     {
         $value = self::dbQuery($tables, $condition, $params, 1)->select($column)->scalar();
         static::assertEquals($expected, $value, $message);
+    }
+
+    public static function assertUUID($value, bool $allowNull = false, bool $strict = false, $message = '')
+    {
+        if ($allowNull && $value === null) {
+            return;
+        }
+
+        // validate UUID without changing the input (other than trimming)
+        $uuid = UUID::validate($value, null, null, null);
+
+        static::assertNotNull($uuid, $message);
+
+        if ($strict) {
+            static::assertEquals($uuid, $value, $message);
+        }
+    }
+
+    public static function assertNotUUID($value, $message = '')
+    {
+        // validate UUID without changing the input (other than trimming)
+        $uuid = UUID::validate($value, null, null, null);
+
+        static::assertNull($uuid, $message);
     }
 
     public function expectExceptionTypeError(string $calledClass, string $method, int $argumentNumber, string $argumentName, string $expectedType, string $givenTye, string $exceptionClass = TypeError::class): void

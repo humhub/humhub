@@ -15,7 +15,6 @@ namespace tests\codeception\_support;
 use Codeception\Configuration;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
-use humhub\libs\UUID;
 use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\components\ContentContainerPermissionManager;
 use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
@@ -132,30 +131,6 @@ class HumHubDbTestCase extends Unit
             'friendship' => ['class' => FriendshipFixture::class],
             'live' => [ 'class' => LiveFixture::class]
         ];
-    }
-
-    public static function assertUUID($value, bool $allowNull = false, bool $strict = false, $message = '')
-    {
-        if ($allowNull && $value === null) {
-            return;
-        }
-
-        // validate UUID without changing the input (other than trimming)
-        $uuid = UUID::validate($value, null, null, null);
-
-        static::assertNotNull($uuid, $message);
-
-        if ($strict) {
-            static::assertEquals($uuid, $value, $message);
-        }
-    }
-
-    public static function assertNotUUID($value, $message = '')
-    {
-        // validate UUID without changing the input (other than trimming)
-        $uuid = UUID::validate($value, null, null, null);
-
-        static::assertNull($uuid, $message);
     }
 
     /**
