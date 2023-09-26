@@ -706,6 +706,8 @@ trait HumHubHelperTrait
     /**
      * @see \yii\db\Connection::createCommand()
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbCommand($sql = null, $params = []): Command
     {
@@ -718,6 +720,9 @@ trait HumHubHelperTrait
      *
      * @return Command
      * @throws \yii\db\Exception
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     protected static function dbCommandExecute(Command $cmd, bool $execute = true): Command
     {
@@ -731,6 +736,8 @@ trait HumHubHelperTrait
     /**
      * @see Query
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbQuery($tables, $condition, $params = [], $limit = 10): Query
     {
@@ -743,6 +750,8 @@ trait HumHubHelperTrait
     /**
      * @see Command::insert
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbInsert($table, $columns, bool $execute = true): Command
     {
@@ -752,6 +761,8 @@ trait HumHubHelperTrait
     /**
      * @see Command::update
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbUpdate($table, $columns, $condition = '', $params = [], bool $execute = true): Command
     {
@@ -761,6 +772,8 @@ trait HumHubHelperTrait
     /**
      * @see Command::upsert
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbUpsert($table, $insertColumns, $updateColumns = true, $params = [], bool $execute = true): Command
     {
@@ -773,6 +786,8 @@ trait HumHubHelperTrait
     /**
      * @see Command::delete()
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbDelete($table, $condition = '', $params = [], bool $execute = true): Command
     {
@@ -785,6 +800,8 @@ trait HumHubHelperTrait
      * @see Query::where
      * @see \yii\db\QueryTrait::limit()
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbSelect($tables, $columns, $condition = '', $params = [], $limit = 10, $selectOption = null): array
     {
@@ -796,6 +813,8 @@ trait HumHubHelperTrait
     /**
      * @see Command::delete()
      * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
     public static function dbCount($tables, $condition = '', $params = [])
     {
