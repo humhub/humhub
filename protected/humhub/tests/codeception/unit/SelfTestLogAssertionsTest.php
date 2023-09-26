@@ -28,7 +28,7 @@ use Yii;
  * @since 1.16
  * @see static::logInitialize()
  */
-class LogAssertionsSelfTest extends HumHubDbTestCase
+class SelfTestLogAssertionsTest extends HumHubDbTestCase
 {
     protected static ?Output $originalOutput = null;
     protected static Output $output;
@@ -56,7 +56,7 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
                     $message .= \PHP_EOL;
                 }
 
-                LogAssertionsSelfTest::addData($message);
+                SelfTestLogAssertionsTest::addData($message);
             }
         };
 

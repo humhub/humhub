@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6600: Add per-test fixture definition
 - Fix #6636: Module Manager test
 - Enh #6530: Small performance improvements
 - Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
