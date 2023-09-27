@@ -7,9 +7,11 @@ HumHub Changelog
 - Enh #6592: Add field `file.state`
 - Enh #6591: Add field `file.category`
 - Enh #6568: improve UUID validation and add `UUIDValidater`
+- Enh #6553: Support log assertions
 - Fix #6551: Migration's transaction with invalid savepoint
 - Fix #6549: Empty profile field type causing an unspecific error
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
+- Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
 - Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
