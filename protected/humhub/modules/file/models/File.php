@@ -44,6 +44,7 @@ use humhub\interfaces\ViewableInterface;
  * @property string|null $object_model
  * @property integer|null $object_id
  * @property integer|null $content_id
+ * @property integer $sort_order
  * @property string|null $created_at
  * @property integer|null $created_by
  * @property string|null $updated_at
@@ -118,7 +119,7 @@ class File extends FileCompat implements ViewableInterface
                 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
                 'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
             ],
-            [['category', 'size', 'state'], 'integer'],
+            [['category', 'size', 'state', 'sort_order'], 'integer'],
             [['file_name', 'title'], 'string', 'max' => 255],
         ];
     }
@@ -177,6 +178,8 @@ class File extends FileCompat implements ViewableInterface
         $this->old_updated_at = $this->getOldAttribute('updated_at');
 
         $this->state ??= self::STATE_PUBLISHED;
+
+        $this->sort_order ??= 0;
 
         return parent::beforeSave($insert);
     }
