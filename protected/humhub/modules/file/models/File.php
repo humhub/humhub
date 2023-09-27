@@ -42,7 +42,26 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property string $mime_type
  * @property string $size
- * @property Metadata $metadata since 1.15. Note, $metadata is still experimental. Expect changes in v1.16 (ToDo)
+ * @property-read Metadata $metadata since 1.15. Note, $metadata is still experimental. Expect changes in v1.16 (ToDo).
+ *      This property is read-only in the sense that no new instance be assigned to the model.
+ *      Edit data always by working on the object itself.
+ *      You best retrieve is using `static::getMetadata()`.
+ *      E.g, to set a value you could do:
+ * ```
+ *      // setting a single value
+ *      $model->getMetadata()->property1 = "some value";
+ *      // or
+ *      $model->getMetadata()['property2'] = "some other value";
+ *
+ *      // setting multiple values
+ *      $metadata = $model->getMetadata();
+ *      $metadata->property1 = "some value";
+ *      $metadata['property2'] = "some other value";
+ *
+ *      // alternatively, the `Metadata::addValues()` method can be used:
+ *      $model->getMetadata()->addValues(['property1' => "some value", 'property2' => "some other value"] = "some other value";
+ * ```
+ *
  * @property string|null $object_model
  * @property integer|null $object_id
  * @property integer|null $content_id
