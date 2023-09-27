@@ -14,6 +14,9 @@ use Throwable;
 use yii\base\UnknownPropertyException;
 
 /**
+ * WARNING: This class and its API is still in experimental state. Expect changes in 1.16 (ToDo)
+ * ---
+ *
  * Extending from \humhub\libs\StdClass, this class some additional features:
  * - a defaultValue can be set which will be used in case a non-existent property is read: \
  *      `static::setDefaultValue($value)`
@@ -23,6 +26,8 @@ use yii\base\UnknownPropertyException;
  *      with `static::fixate()`
  *      (this is not write-protection, just disallowing new properties!)
  *
+ * @since 1.15 This class and its API is still in experimental state. Expect changes in 1.16 (ToDo)
+ * @internal (ToDo)
  * @see StdClassConfig
  */
 class StdClassConfigurable extends StdClass

@@ -42,7 +42,7 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property string $mime_type
  * @property string $size
- * @property Metadata $metadata
+ * @property Metadata $metadata since 1.15. Note, $metadata is still experimental. Expect changes in v1.16 (ToDo)
  * @property string|null $object_model
  * @property integer|null $object_id
  * @property integer|null $content_id

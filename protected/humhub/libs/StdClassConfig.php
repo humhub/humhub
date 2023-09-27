@@ -21,8 +21,12 @@ use WeakReference;
 use yii\base\UnknownPropertyException;
 
 /**
+ * WARNING: This class and its API is still in experimental state. Expect changes in 1.16 (ToDo)
+ * ---
+ *
  * @codingStandardsIgnoreFile PSR2.Classes.PropertyDeclaration.Underscore
- * @since 1.15
+ * @since 1.15 This class and its API is still in experimental state. Expect changes in 1.16 (ToDo)
+ * @internal (ToDo)
  */
 class StdClassConfig extends StdClass
 {

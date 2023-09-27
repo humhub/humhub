@@ -30,6 +30,9 @@ use yii\base\ArrayableTrait;
 use yii\helpers\ArrayHelper;
 
 /**
+ * WARNING: This class and its API is still in experimental state. Expect changes in 1.16 (ToDo)
+ * ---
+ *
  * This class provides an object that can have dynamic properties (like \stdClass) but with some additional features:
  * - the properties can also be access in the array-like manner, \
  *      i.e. `$object['property']` for `$object->property`
@@ -55,6 +58,8 @@ use yii\helpers\ArrayHelper;
  *      - provide format versioning
  *      - only allow deserialization of self and subclasses of self
  *
+ * @since 1.15 This class and its API is still in experimental state. Expect changes in 1.16 (ToDo)
+ * @internal (ToDo)
  * @see static::addValues()
  * @see static::__serialize()
  * @see static::unserialize()
