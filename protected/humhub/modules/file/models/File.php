@@ -213,7 +213,7 @@ class File extends FileCompat
 
         $metadata = $this->getAttribute('metadata');
 
-        if (($metadata instanceof StdClass) && $metadata->count() === 0) {
+        if (($metadata instanceof StdClass) && !$metadata->isModified()) {
             $this->setAttribute('metadata', null);
         }
 
