@@ -8,15 +8,18 @@
 
 namespace humhub\modules\file\libs;
 
-use humhub\modules\file\Module;
-use humhub\modules\file\widgets\FileDownload;
+use FilesystemIterator;
 use humhub\libs\Html;
 use humhub\libs\MimeHelper;
-use humhub\modules\file\models\File;
-use humhub\modules\file\handler\FileHandlerCollection;
-use humhub\modules\file\handler\DownloadFileHandler;
-use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\handler\DownloadFileHandler;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\models\File;
+use humhub\modules\file\Module;
+use humhub\modules\file\widgets\FileDownload;
+use UnexpectedValueException;
 use Yii;
 use yii\helpers\Url;
 
@@ -28,7 +31,6 @@ use yii\helpers\Url;
  */
 class FileHelper extends \yii\helpers\FileHelper
 {
-
     /**
      * Checks if given fileName has a extension
      *
@@ -77,24 +79,33 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Creates a file with options
      *
-     * @since 1.2
-     * @param \humhub\modules\file\models\File $file
+     * @param File $file
+     * @param string|array $urlOptions = [
+     *     'variant' => string // the requested file variant
+     *     'download' => bool // force download option (default: false)
+     * ] // parameters passed to File::getUrl
+     * @param array $htmlOptions = [
+     *     'label' => string,
+     *     'target' => string,
+     *     'data-target' => string,
+     * ]
      * @return string the rendered HTML link
+     * @since 1.2
      */
-    public static function createLink(File $file, $options = [], $htmlOptions = [])
+    public static function createLink(File $file, $urlOptions = [], $htmlOptions = []): string
     {
         $label = (isset($htmlOptions['label'])) ? $htmlOptions['label'] : Html::encode($file->fileName);
 
         $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
             $htmlOptions['target'] = '_blank';
-            $htmlOptions = array_merge($htmlOptions,  FileDownload::getFileDataAttributes($file));
-            return Html::a($label, $file->getUrl(), $htmlOptions);
+            $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
+            return Html::a($label, $file->getUrl($urlOptions), $htmlOptions);
         }
 
         $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);
 
-        $urlOptions = ['/file/view', 'guid' => $file->guid];
+        $urlOptions = $file->getUrlParameters($urlOptions, '/file/view');
 
         return Html::a($label, Url::to($urlOptions), $htmlOptions);
     }
@@ -104,16 +115,14 @@ class FileHelper extends \yii\helpers\FileHelper
      *
      * @since 1.2
      * @param File $file
-     * @return \humhub\modules\content\components\ContentContainerActiveRecord the content container or null
+     * @return ContentContainerActiveRecord the content container or null
      */
     public static function getContentContainer(File $file)
     {
         $relation = $file->getPolymorphicRelation();
 
-        if ($relation !== null && $relation instanceof ContentActiveRecord) {
-            if ($relation->content->container !== null) {
-                return $relation->content->container;
-            }
+        if ($relation instanceof ContentActiveRecord && $relation->content->container !== null) {
+            return $relation->content->container;
         }
 
         return null;
@@ -121,30 +130,33 @@ class FileHelper extends \yii\helpers\FileHelper
 
     /**
      * Returns general file infos as array
-     * These information are mainly used by the frontend JavaScript application to handle files.
+     * This information is mainly used by the frontend JavaScript application to handle files.
      *
-     * @since 1.2
      * @param File $file the file
+     * @param string|null $variant
      * @return array the file infos
+     * @since 1.2
      */
-    public static function getFileInfos(File $file)
+    public static function getFileInfos(File $file, ?string $variant = null)
     {
         $thumbnailUrl = '';
-        $previewImage = new PreviewImage();
+        $previewImage = new PreviewImage(['options' => ['source' => $variant]]);
         if ($previewImage->applyFile($file)) {
             $thumbnailUrl = $previewImage->getUrl();
         }
+
+        $relUrl = $file->getUrl(['variant' => $variant], false);
 
         return [
             'name' => $file->file_name,
             'guid' => $file->guid,
             'size' => $file->size,
             'mimeType' => $file->mime_type,
-            'mimeIcon' => MimeHelper::getMimeIconClassByExtension(self::getExtension($file->file_name)),
+            'mimeIcon' => MimeHelper::getMimeIconClassByExtension(static::getExtension($file->file_name)),
             'size_format' => Yii::$app->formatter->asShortSize($file->size, 1),
-            'url' => $file->getUrl(),
-            'relUrl' => $file->getUrl(null, false),
-            'openLink' => FileHelper::createLink($file),
+            'url' => Url::to($relUrl, true),
+            'relUrl' => $relUrl,
+            'openLink' => static::createLink($file, ['variant' => $variant]),
             'thumbnailUrl' => $thumbnailUrl
         ];
     }
@@ -169,4 +181,17 @@ class FileHelper extends \yii\helpers\FileHelper
         return $extensionsByMimeType;
     }
 
+    /**
+     * @param string $dir
+     * @return bool
+     * @see https://stackoverflow.com/a/18856880/3102305
+     */
+    public static function isDirEmpty(string $dir): ?bool
+    {
+        try {
+            return !(new FilesystemIterator($dir))->valid();
+        } catch (UnexpectedValueException $e) {
+            return null;
+        }
+    }
 }

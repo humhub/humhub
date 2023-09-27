@@ -98,9 +98,11 @@ trait InvalidArgumentExceptionTrait
         $int = filter_var($this->parameter, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
         if ($int === null) {
+            $parameter = preg_replace('@^(\.\.\.)?\$?@', '$1\$', $this->parameter);
+
             return $this->parameter === null
                 ? 'Unknown argument'
-                : "Argument \$" . ltrim($this->parameter, '$');
+                : "Argument " . $parameter;
         }
 
         return 'Argument #' . $int;

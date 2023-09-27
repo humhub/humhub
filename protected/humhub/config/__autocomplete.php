@@ -52,3 +52,19 @@ class __Application {
 class __WebApplication extends \humhub\components\Application
 {
 }
+
+if (!class_exists(WeakReference::class)) {
+    class WeakReference
+    {
+        /* Methods */
+        public static function create(object $object): self
+        {
+            return new static();
+        }
+
+        public function get(): ?object
+        {
+            return null;
+        }
+    }
+}

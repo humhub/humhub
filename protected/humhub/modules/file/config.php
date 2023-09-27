@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * @noinspection MissedFieldInspection
+ */
+
+use humhub\modules\file\libs\FileModuleMetadata;
+use humhub\modules\file\libs\Metadata;
 use humhub\modules\file\Module;
 use humhub\modules\search\engine\Search;
 use humhub\modules\content\widgets\WallEntryAddons;
@@ -22,6 +28,7 @@ return [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onBeforeActiveRecordDelete']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
-        ['class' => Search::class, 'event' => Search::EVENT_SEARCH_ATTRIBUTES, 'callback' => [Events::class, 'onSearchAttributes']]
+        ['class' => Search::class, 'event' => Search::EVENT_SEARCH_ATTRIBUTES, 'callback' => [Events::class, 'onSearchAttributes']],
+        ['class' => Metadata::class, 'event' => Metadata::EVENT_INIT, 'callback' => [FileModuleMetadata::class, 'onMetadataInit']],
     ],
 ];
