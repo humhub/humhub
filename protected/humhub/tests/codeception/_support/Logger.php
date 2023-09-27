@@ -6,6 +6,10 @@
  * @license   https://www.humhub.com/licences
  */
 
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 namespace tests\codeception\_support;
 
 use yii\log\Logger as YiiLogger;

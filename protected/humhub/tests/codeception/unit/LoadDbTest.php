@@ -6,6 +6,10 @@
  * @license   https://www.humhub.com/licences
  */
 
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 namespace humhub\tests\codeception\unit;
 
 use Codeception\Exception\InjectionException;
@@ -14,9 +18,8 @@ use Codeception\Lib\Console\Output;
 use Codeception\Lib\ModuleContainer;
 use Codeception\Module\Yii2;
 use Codeception\Test\Metadata;
-use tests\codeception\_support\HumHubDbTestCase;
-use Yii;
 use humhub\modules\queue\models\QueueExclusive;
+use tests\codeception\_support\HumHubDbTestCase;
 
 /**
  * Test Debugging DbLoad Helper

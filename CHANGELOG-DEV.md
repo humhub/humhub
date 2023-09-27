@@ -3,7 +3,6 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
-- Enh #6553: Support log assertions
 - Enh #6530: Small performance improvements
 - Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
 - Enh #6511: Backup folder path is now return from `removeModule()`
@@ -15,20 +14,21 @@ HumHub Changelog
 - Enh #6511: Add Event tracking capabilities to HumHubDbTestCase
 - Enh #6511: Add test for ModuleManager
 - Fix #6519: Ensure e-mails would always have a sender address set
-- Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6512: Show error messages when DB connection configuration is invalid
-- Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
 - Enh #5315: Default stream sort by `created_at` instead of `id`
 - Fix #6337: Update `created_at` after first publishing of content record
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
+- Enh #6593: Add field `file.sort_order`
 - Enh #6592: Add field `file.state`
 - Enh #6591: Add field `file.category`
 - Enh #6568: improve UUID validation and add `UUIDValidater`
+- Enh #6553: Support log assertions
 - Fix #6551: Migration's transaction with invalid savepoint
 - Fix #6549: Empty profile field type causing an unspecific error
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
+- Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
 - Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
 - Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized

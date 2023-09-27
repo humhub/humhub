@@ -6,22 +6,35 @@
  * @license   https://www.humhub.com/licences
  */
 
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 namespace tests\codeception\_support;
 
+use Codeception\Exception\ModuleException;
+use Codeception\Module\Yii2;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\UUID;
 use humhub\models\UrlOembed;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
+use humhub\modules\notification\models\Notification;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Exception;
+use TypeError;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveRecord;
+use yii\db\Command;
+use yii\db\ExpressionInterface;
+use yii\db\Query;
 use yii\helpers\FileHelper;
 use yii\log\Dispatcher;
-
-use function PHPUnit\Framework\assertEquals;
 
 /**
  * Humhub Test Helper Functions
@@ -30,11 +43,18 @@ use function PHPUnit\Framework\assertEquals;
  */
 trait HumHubHelperTrait
 {
+    public array $firedEvents = [];
     protected static ?ArrayTarget $logTarget = null;
-    protected static ?\yii\log\Logger $logOldLogger = null;
     private static $logOldDispatcher;
 
-    protected function flushCache(?string $caller = null)
+    protected function tearDown(): void
+    {
+        static::logReset();
+
+        parent::tearDown();
+    }
+
+    protected static function flushCache(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Flushing cache', $caller ?? __METHOD__));
         $cachePath = Yii::getAlias('@runtime/cache');
@@ -50,7 +70,7 @@ trait HumHubHelperTrait
         UrlOembed::flush();
     }
 
-    protected function reloadSettings(?string $caller = null)
+    protected static function reloadSettings(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Reloading settings', $caller ?? __METHOD__));
         Yii::$app->settings->reload();
@@ -62,7 +82,7 @@ trait HumHubHelperTrait
         }
     }
 
-    protected function deleteMails(?string $caller = null)
+    protected static function deleteMails(?string $caller = null)
     {
         codecept_debug(sprintf('[%s] Deleting mails', $caller ?? __METHOD__));
         $path = Yii::getAlias('@runtime/mail');
@@ -72,6 +92,463 @@ trait HumHubHelperTrait
                 unlink($file); // delete file
             }
         }
+    }
+
+    /**
+     * @return Yii2
+     * @throws ModuleException
+     */
+    public function getYiiModule(): Yii2
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getModule('Yii2');
+    }
+
+    /**
+     * GENERAL
+     * =======
+     */
+
+    /**
+     * Asserts that `$haystack` contains an element that matches the `$regex`
+     *
+     * @throws Exception
+     * @since 1.15
+     */
+    public static function assertContainsRegex(string $regex, iterable $haystack, string $message = ''): void
+    {
+        $constraint = new TraversableContainsRegex($regex);
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * Asserts that `$haystack` does not contain an element that matches the `$regex`
+     *
+     * @throws Exception
+     * @since 1.15
+     */
+    public static function assertNotContainsRegex(string $regex, iterable $haystack, string $message = ''): void
+    {
+        $constraint = new LogicalNot(
+            new TraversableContainsRegex($regex),
+        );
+
+        static::assertThat($haystack, $constraint, $message);
+    }
+
+    /**
+     * ACTIVITIES
+     * ==========
+     */
+
+    public static function assertHasActivity($class, ActiveRecord $source, $msg = '')
+    {
+        $activity = Activity::findOne([
+            'class' => $class,
+            'object_model' => PolymorphicRelation::getObjectModel($source),
+            'object_id' => $source->getPrimaryKey(),
+        ]);
+
+        static::assertNotNull($activity, $msg);
+    }
+
+    /**
+     * EVENTS (Yii)
+     * ============
+     */
+
+    /**
+     * @since 1.15
+     */
+    public function assertEvents(array $events = [], string $message = ''): void
+    {
+        static::assertEquals($events, $this->firedEvents, $message);
+
+        $this->firedEvents = [];
+    }
+
+    /**
+     * LOGGING
+     * =======
+     */
+
+    /**
+     * @param string|null $logMessage If not null, at least one of the filtered messages must match `$logMessage`
+     *     exactly
+     *
+     * @throws ErrorException
+     * @see static::logInitialize()
+     * @see static::logFilterMessages()
+     * @since 1.15
+     */
+    public static function assertLog(?string $logMessage = null, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    {
+        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
+
+        if ($logMessage === null) {
+            static::assertNotEmpty($messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+        } else {
+            static::assertContains(
+                $logMessage,
+                $messages,
+                $errorMessage ?? print_r(static::logFilterMessageTexts(), true)
+            );
+        }
+    }
+
+    /**
+     * @param string|null $logMessage If not null, at least one of the filtered messages must match `$logMessage`
+     *     exactly
+     *
+     * @throws ErrorException
+     * @see static::logInitialize()
+     * @see static::logFilterMessages()
+     * @since 1.15
+     */
+    public static function assertLogCount(int $expectedCount, ?string $logMessage = null, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    {
+        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
+
+        if ($logMessage !== null) {
+            $messages = array_filter($messages, static fn($text) => $text === $logMessage);
+        }
+
+        static::assertCount($expectedCount, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+    }
+
+    /**
+     * @param string|null $logMessage If not null, at least one of the filtered messages must match `$logMessage`
+     *     exactly
+     *
+     * @throws ErrorException
+     * @since 1.15
+     * @see static::logInitialize()
+     * @see static::logFilterMessages()
+     */
+    public static function assertNotLog(?string $logMessage = null, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    {
+        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
+
+        if ($logMessage === null) {
+            static::assertEmpty($messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+        } else {
+            static::assertNotContains(
+                $logMessage,
+                $messages,
+                $errorMessage ?? print_r(static::logFilterMessageTexts(), true)
+            );
+        }
+    }
+
+    /**
+     * @param string $regex At least one of the filtered messages must match the given `$regex` pattern
+     *
+     * @throws ErrorException|Exception
+     * @since 1.15
+     * @see static::logInitialize()
+     * @see static::logFilterMessages()
+     */
+    public static function assertLogRegex(string $regex, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    {
+        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
+
+        static::assertContainsRegex($regex, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+    }
+
+    /**
+     * @param string $regex At least one of the filtered messages must match the given `$regex` pattern
+     *
+     * @throws ErrorException|Exception
+     * @since 1.15
+     * @see static::logInitialize()
+     * @see static::logFilterMessages()
+     */
+    public static function assertLogRegexCount(int $expectedCount, string $regex, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    {
+        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
+
+        if (count($messages)) {
+            try {
+                preg_match($regex, '');
+            } catch (ErrorException $e) {
+                throw new Exception("Invalid regex given: '{$regex}'");
+            }
+
+            $messages = array_filter($messages, static fn($text) => preg_match($regex, $text));
+        }
+
+        static::assertCount($expectedCount, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+    }
+
+    /**
+     * @param string $regex None of the filtered messages may match the given `$regex` pattern
+     *
+     * @throws ErrorException|Exception
+     * @since 1.15
+     * @see static::logInitialize()
+     * @see static::logFilterMessages()
+     */
+    public static function assertNotLogRegex(string $regex, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    {
+        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
+
+        static::assertNotContainsRegex(
+            $regex,
+            $messages,
+            $errorMessage ?? print_r(static::logFilterMessageTexts(), true)
+        );
+    }
+
+    /**
+     * MAILS
+     * =====
+     */
+
+    /**
+     * @see assertSentEmail
+     * @since 1.3
+     */
+    public function assertMailSent($count = 0)
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $this->getYiiModule()->seeEmailIsSent($count);
+    }
+
+    /**
+     * @param int $count
+     *
+     * @throws ModuleException
+     * @since 1.3
+     */
+    public function assertSentEmail(int $count = 0)
+    {
+        $this->getYiiModule()->seeEmailIsSent($count);
+    }
+
+    public function assertEqualsLastEmailTo($to, $strict = true)
+    {
+        if (is_string($to)) {
+            $to = [$to];
+        }
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $message = $this->getYiiModule()->grabLastSentEmail();
+        $expected = $message->getTo();
+
+        foreach ($to as $email) {
+            $this->assertArrayHasKey($email, $expected);
+        }
+
+        if ($strict) {
+            $this->assertCount(count($expected), $to);
+        }
+    }
+
+    public function assertEqualsLastEmailSubject($subject)
+    {
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $message = $this->getYiiModule()->grabLastSentEmail();
+        $this->assertEquals($subject, str_replace(["\n", "\r"], '', $message->getSubject()));
+    }
+
+    /**
+     * NOTIFICATIONS
+     * =============
+     */
+
+    public static function assertHasNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where([
+            'class' => $class,
+            'source_class' => PolymorphicRelation::getObjectModel($source),
+            'source_pk' => $source->getPrimaryKey(),
+        ]);
+
+        if (is_string($target_id)) {
+            $msg = $target_id;
+            $target_id = null;
+        }
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if ($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        static::assertNotEmpty($notificationQuery->all(), $msg);
+    }
+
+    public static function assertHasNoNotification($class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where([
+            'class' => $class,
+            'source_class' => PolymorphicRelation::getObjectModel($source),
+            'source_pk' => $source->getPrimaryKey(),
+        ]);
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if ($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        static::assertEmpty($notificationQuery->all(), $msg);
+    }
+
+    public static function assertEqualsNotificationCount($count, $class, ActiveRecord $source, $originator_id = null, $target_id = null, $msg = '')
+    {
+        $notificationQuery = Notification::find()->where([
+            'class' => $class,
+            'source_class' => PolymorphicRelation::getObjectModel($source),
+            'source_pk' => $source->getPrimaryKey()
+        ]);
+
+        if ($originator_id != null) {
+            $notificationQuery->andWhere(['originator_user_id' => $originator_id]);
+        }
+
+        if ($target_id != null) {
+            $notificationQuery->andWhere(['user_id' => $target_id]);
+        }
+
+        static::assertEquals($count, $notificationQuery->count(), $msg);
+    }
+
+    /**
+     * RECORDS
+     * =======
+     */
+
+    /**
+     * @param int|null $expected Number of records expected. Null for any number, but not none
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordCount(?int $expected, $tables, $condition = null, ?array $params = [], string $message = ''): void
+    {
+        $count = static::dbCount($tables, $condition, $params ?? []);
+
+        if ($expected === null) {
+            static::assertGreaterThan(0, $count, $message);
+        } else {
+            static::assertEquals($expected, $count, $message);
+        }
+    }
+
+    /**
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordExists($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
+    {
+        static::assertRecordCount(1, $tables, $condition, $params ?? [], $message);
+    }
+
+    /**
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordNotExists($tables, $condition = null, ?array $params = [], string $message = 'Record exists'): void
+    {
+        static::assertRecordCount(0, $tables, $condition, $params ?? [], $message);
+    }
+
+    /**
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordExistsAny($tables, $condition = null, ?array $params = [], string $message = 'Record does not exist'): void
+    {
+        static::assertRecordCount(null, $tables, $condition, $params ?? [], $message);
+    }
+
+    /**
+     * @param int|string|null $expected Number of records expected. Null for any number, but not none
+     * @param string $column
+     * @param string|array|ExpressionInterface $tables
+     * @param string|array|ExpressionInterface|null $condition
+     * @param array|null $params
+     * @param string $message
+     *
+     * @return void
+     * @since 1.15
+     */
+    public static function assertRecordValue($expected, string $column, $tables, $condition = null, ?array $params = [], string $message = ''): void
+    {
+        $value = self::dbQuery($tables, $condition, $params, 1)->select($column)->scalar();
+        static::assertEquals($expected, $value, $message);
+    }
+
+    public static function assertUUID($value, bool $allowNull = false, bool $strict = false, $message = '')
+    {
+        if ($allowNull && $value === null) {
+            return;
+        }
+
+        // validate UUID without changing the input (other than trimming)
+        $uuid = UUID::validate($value, null, null, null);
+
+        static::assertNotNull($uuid, $message);
+
+        if ($strict) {
+            static::assertEquals($uuid, $value, $message);
+        }
+    }
+
+    public static function assertNotUUID($value, $message = '')
+    {
+        // validate UUID without changing the input (other than trimming)
+        $uuid = UUID::validate($value, null, null, null);
+
+        static::assertNull($uuid, $message);
+    }
+
+    public function expectExceptionTypeError(string $calledClass, string $method, int $argumentNumber, string $argumentName, string $expectedType, string $givenTye, string $exceptionClass = TypeError::class): void
+    {
+        $this->expectException($exceptionClass);
+
+        $calledClass = str_replace('\\', '\\\\', $calledClass);
+        $argumentName = ltrim($argumentName, '$');
+
+        $this->expectExceptionMessageRegExp(
+            sprintf(
+            // Php < 8 uses: "Argument n passed to class::method() ..."
+            // PHP > 7 uses: "class::method(): Argument #n ($argument) ..."
+                '@^((Argument %d passed to )?%s::%s\\(\\)(?(2)|: Argument #%d \\(\\$%s\\))) must be of( the)? type %s, %s given, called in /.*@',
+                $argumentNumber,
+                $calledClass,
+                $method,
+                $argumentNumber,
+                $argumentName,
+                $expectedType,
+                $givenTye
+            )
+        );
     }
 
     /**
@@ -86,18 +563,18 @@ trait HumHubHelperTrait
      *  - run the code that should generate the log entries
      *  - call any of the `assertLog*` or `assertNotLog*` functions to test for the (un)expected log message
      *  - optionally call `static::logFlush();` if you want to run more log-generating code
-     *  - optionally call `static::logReset();` when you no longer need the log to be captured within the test. Though, this
-     *    will automatically be called during `tearDown()`.
+     *  - optionally call `static::logReset();` when you no longer need the log to be captured within the test. Though,
+     * this will automatically be called during `tearDown()`.
      *
-     *  If you need all log entries, call `static::logFilterMessageTexts()` with no arguments, or if you want the complete
-     *  log information, use `static::logFilterMessages()`. For the format of the returned array elements to the latter,
-     *  please see `\yii\log\Logger::$messages`.
+     *  If you need all log entries, call `static::logFilterMessageTexts()` with no arguments, or if you want the
+     * complete log information, use `static::logFilterMessages()`. For the format of the returned array elements to
+     * the latter, please see `\yii\log\Logger::$messages`.
      *
      *  For some kind of sample implementation, please see `\humhub\tests\codeception\unit\LogAssertionsSelfTest`
      * **********************************************************************************************************************
      *
      * @throws InvalidConfigException
-     * @since 1.16
+     * @since 1.15
      * @see \yii\log\Logger::$messages
      * @see \humhub\tests\codeception\unit\LogAssertionsSelfTest
      */
@@ -133,13 +610,16 @@ trait HumHubHelperTrait
          * @see Dispatcher::__construct
          * @see Dispatcher::getLogger
          */
-        Yii::$app->set('log', Yii::createObject(['class' => Dispatcher::class, 'targets' => [static::class => self::$logTarget]]));
+        Yii::$app->set(
+            'log',
+            Yii::createObject(['class' => Dispatcher::class, 'targets' => [static::class => self::$logTarget]])
+        );
     }
 
     /**
      * Flush the captured log entries without stopping to capture them
      *
-     * @since 1.16
+     * @since 1.15
      * @see static::logInitialize()
      */
     protected static function logFlush()
@@ -157,7 +637,7 @@ trait HumHubHelperTrait
      * Delete any captured log entry and stop capturing new entries. Automatically called by `static::tearDown()`
      *
      * @throws InvalidConfigException
-     * @since 1.16
+     * @since 1.15
      * @see static::logInitialize()
      * @see static::tearDown()
      */
@@ -187,13 +667,14 @@ trait HumHubHelperTrait
      * Returns the array of captured log message arrays
      *
      * @param int|int[]|null $levels Array or bitmask of verbosity levels to be returned:
-     *                                  Logger::LEVEL_ERROR, Logger::LEVEL_WARNING, Logger::LEVEL_INFO, Logger::LEVEL_TRACE
+     *                                  Logger::LEVEL_ERROR, Logger::LEVEL_WARNING, Logger::LEVEL_INFO,
+     *     Logger::LEVEL_TRACE
      * @param string[]|null $categories Array of categories to be returned or null for any
      * @param string[]|null $exceptCategories Array of categories NOT to be returned, or null for no exclusion
      *
      * @return array of message, following the format of `\yii\log\Logger::$messages`
      * @throws ErrorException
-     * @since 1.16
+     * @since 1.15
      * @see static::logInitialize()
      * @see \yii\log\Logger::$messages
      */
@@ -213,7 +694,7 @@ trait HumHubHelperTrait
      * Returns an array of captured log messages as string (without the category or level)
      *
      * @throws ErrorException
-     * @since 1.16
+     * @since 1.15
      * @see static::logInitialize()
      * @see static::logFilterMessages()
      */
@@ -223,142 +704,122 @@ trait HumHubHelperTrait
     }
 
     /**
-     * @param string|null $logMessage If not null, at least one of the filtered messages must match `$logMessage` exactly
-     *
-     * @throws ErrorException
-     * @see static::logInitialize()
-     * @see static::logFilterMessages()
-     * @since 1.16
+     * @see \yii\db\Connection::createCommand()
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
-    public static function assertLog(?string $logMessage = null, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    public static function dbCommand($sql = null, $params = []): Command
     {
-        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
-
-        if ($logMessage === null) {
-            static::assertNotEmpty($messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
-        } else {
-            static::assertContains($logMessage, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
-        }
+        return Yii::$app->getDb()->createCommand($sql, $params);
     }
 
     /**
-     * @param string|null $logMessage If not null, at least one of the filtered messages must match `$logMessage` exactly
+     * @param Command $cmd
+     * @param bool $execute
      *
-     * @throws ErrorException
-     * @see static::logInitialize()
-     * @see static::logFilterMessages()
-     * @since 1.16
+     * @return Command
+     * @throws \yii\db\Exception
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
-    public static function assertLogCount(int $expectedCount, ?string $logMessage = null, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    protected static function dbCommandExecute(Command $cmd, bool $execute = true): Command
     {
-        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
-
-        if ($logMessage !== null) {
-            $messages = array_filter($messages, static fn($text) => $text === $logMessage);
+        if ($execute) {
+            $cmd->execute();
         }
 
-        static::assertCount($expectedCount, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+        return $cmd;
     }
 
     /**
-     * @param string|null $logMessage If not null, at least one of the filtered messages must match `$logMessage` exactly
-     *
-     * @throws ErrorException
-     * @since 1.16
-     * @see static::logInitialize()
-     * @see static::logFilterMessages()
+     * @see Query
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
-    public static function assertNotLog(?string $logMessage = null, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    public static function dbQuery($tables, $condition, $params = [], $limit = 10): Query
     {
-        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
-
-        if ($logMessage === null) {
-            static::assertEmpty($messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
-        } else {
-            static::assertNotContains($logMessage, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
-        }
+        return (new Query())
+            ->from($tables)
+            ->where($condition, $params)
+            ->limit($limit);
     }
 
     /**
-     * @param string $regex At least one of the filtered messages must match the given `$regex` pattern
-     *
-     * @throws ErrorException|Exception
-     * @since 1.16
-     * @see static::logInitialize()
-     * @see static::logFilterMessages()
+     * @see Command::insert
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
-    public static function assertLogRegex(string $regex, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    public static function dbInsert($table, $columns, bool $execute = true): Command
     {
-        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
-
-        static::asserContainsRegex($regex, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+        return static::dbCommandExecute(static::dbCommand()->insert($table, $columns), $execute);
     }
 
     /**
-     * @param string $regex At least one of the filtered messages must match the given `$regex` pattern
-     *
-     * @throws ErrorException|Exception
-     * @since 1.16
-     * @see static::logInitialize()
-     * @see static::logFilterMessages()
+     * @see Command::update
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
-    public static function assertLogRegexCount(int $expectedCount, string $regex, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    public static function dbUpdate($table, $columns, $condition = '', $params = [], bool $execute = true): Command
     {
-        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
-
-        if (count($messages)) {
-            try {
-                preg_match($regex, '');
-            } catch (ErrorException $e) {
-                throw new Exception("Invalid regex given: '{$regex}'");
-            }
-
-            $messages = array_filter($messages, static fn($text) => preg_match($regex, $text));
-        }
-
-        static::assertCount($expectedCount, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
+        return static::dbCommandExecute(static::dbCommand()->update($table, $columns, $condition, $params), $execute);
     }
 
     /**
-     * @param string $regex None of the filtered messages may match the given `$regex` pattern
-     *
-     * @throws ErrorException|Exception
-     * @since 1.16
-     * @see static::logInitialize()
-     * @see static::logFilterMessages()
+     * @see Command::upsert
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
      */
-    public static function assertNotLogRegex(string $regex, $levels = null, ?array $categories = null, ?array $exceptCategories = null, $errorMessage = null)
+    public static function dbUpsert($table, $insertColumns, $updateColumns = true, $params = [], bool $execute = true): Command
     {
-        $messages = static::logFilterMessageTexts($levels, $categories, $exceptCategories);
-
-        static::assertNotContainsRegex($regex, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
-    }
-
-    /**
-     * Asserts that `$haystack` contains an element that matches the `$regex`
-     *
-     * @since 1.16
-     * @throws Exception
-     */
-    public static function asserContainsRegex(string $regex, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new TraversableContainsRegex($regex);
-
-        static::assertThat($haystack, $constraint, $message);
-    }
-
-    /**
-     * Asserts that `$haystack` does not contain an element that matches the `$regex`
-     *
-     * @since 1.16
-     * @throws Exception
-     */
-    public static function assertNotContainsRegex(string $regex, iterable $haystack, string $message = ''): void
-    {
-        $constraint = new LogicalNot(
-            new TraversableContainsRegex($regex),
+        return static::dbCommandExecute(
+            static::dbCommand()->upsert($table, $insertColumns, $updateColumns, $params),
+            $execute
         );
+    }
 
-        static::assertThat($haystack, $constraint, $message);
+    /**
+     * @see Command::delete()
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
+     */
+    public static function dbDelete($table, $condition = '', $params = [], bool $execute = true): Command
+    {
+        return static::dbCommandExecute(static::dbCommand()->delete($table, $condition, $params), $execute);
+    }
+
+    /**
+     * @see Query::select
+     * @see Query::from
+     * @see Query::where
+     * @see \yii\db\QueryTrait::limit()
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
+     */
+    public static function dbSelect($tables, $columns, $condition = '', $params = [], $limit = 10, $selectOption = null): array
+    {
+        return static::dbQuery($tables, $condition, $params, $limit)
+            ->select($columns, $selectOption)
+            ->all();
+    }
+
+    /**
+     * @see Command::delete()
+     * @since 1.15
+     * @deprecated since 1.15
+     * @internal
+     */
+    public static function dbCount($tables, $condition = '', $params = [])
+    {
+        return static::dbQuery($tables, $condition, $params)
+            ->select("count(*)")
+            ->scalar();
     }
 }
