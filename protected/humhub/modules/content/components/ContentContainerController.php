@@ -10,11 +10,14 @@ namespace humhub\modules\content\components;
 
 use humhub\components\Controller;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
  * Controller is the base class of web controllers which acts in scope of a ContentContainer (e.g. Space or User).
@@ -142,6 +145,32 @@ class ContentContainerController extends Controller
             !$this->contentContainer->moduleManager->isEnabled($this->module->id)) {
             throw new HttpException(405, Yii::t('base', 'Module is not enabled on this content container!'));
         }
+    }
+
+    /**
+     * Check if the requested content record is readable for the current or given User
+     *
+     * @param ContentActiveRecord|null $record
+     * @param User|integer|null $user
+     * @return bool
+     * @throws HttpException
+     * @throws \Throwable
+     * @throws \yii\base\Exception
+     */
+    protected function checkContentIsReadable(?ContentActiveRecord $record, $user = null): bool
+    {
+        if (!($record instanceof ContentActiveRecord)) {
+            throw new NotFoundHttpException(Yii::t('base', 'The requested content cannot be displayed. Either it was deleted, you mistyped it or it is currently not available for you.'));
+        }
+
+        return $record->content->canView($user);
+    }
+
+    protected function renderNotAvailableContent(): string
+    {
+        return $this->render('@content/views/content/notAvailable.php', [
+            'container' => $this->contentContainer
+        ]);
     }
 
     /**

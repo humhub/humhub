@@ -1,5 +1,5 @@
-HumHub Changelog
-================
+HumHub Changelog (DEVELOP)
+==========================
 
 1.16.0 (Unreleased)
 -------------------
@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #6512: Show error messages when DB connection configuration is invalid
 - Enh #5315: Default stream sort by `created_at` instead of `id`
 - Fix #6337: Update `created_at` after first publishing of content record
+- Enh #6002: Display more info when content record is not readable
 
 1.15.0-beta.2 (Unreleased)
 --------------------------
