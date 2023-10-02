@@ -10,6 +10,7 @@ HumHub Changelog
 - Enh #6553: Support log assertions
 - Fix #6551: Migration's transaction with invalid savepoint
 - Fix #6549: Empty profile field type causing an unspecific error
+- Fix #6547: Invalid class name validated as valid and improve validation
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
 - Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
