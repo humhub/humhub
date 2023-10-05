@@ -18,4 +18,5 @@ return [
     'Spaces' => 'スペース',
     'User default state' => 'ユーザーのデフォルト状態',
     'Users' => 'ユーザー',
+    'Module deactivation in progress. This process may take a moment.' => '',
 ];

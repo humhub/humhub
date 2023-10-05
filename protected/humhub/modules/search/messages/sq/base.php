@@ -1,14 +1,14 @@
 <?php
-return array (
-  '<strong>Search </strong> results' => '',
-  'Advanced search settings' => '',
-  'All' => '',
-  'Content' => 'Përmbajtja',
-  'Search' => 'Kërko',
-  'Search for user, spaces and content' => '',
-  'Search only in certain spaces:' => '',
-  'Spaces' => 'Hapësirat',
-  'Specify space' => '',
-  'Users' => 'Përdoruesit',
-  'Your search returned no matches.' => '',
-);
+
+return [
+    'Content' => 'Përmbajtja',
+    'Spaces' => 'Hapësirat',
+    'Users' => 'Përdoruesit',
+    '<strong>Search </strong> results' => '',
+    'Advanced search settings' => '',
+    'All' => '',
+    'Search for user, spaces and content' => '',
+    'Search only in certain spaces:' => '',
+    'Specify space' => '',
+    'Your search returned no matches.' => '',
+];

@@ -18,4 +18,5 @@ return [
     'Spaces' => 'Ruimtes',
     'User default state' => 'Standaard gebruikersstatus:',
     'Users' => 'Gebruikers',
+    'Module deactivation in progress. This process may take a moment.' => '',
 ];
