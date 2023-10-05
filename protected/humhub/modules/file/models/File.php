@@ -11,10 +11,12 @@ namespace humhub\modules\file\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\StdClass;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
+use humhub\modules\file\libs\Metadata;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
@@ -40,6 +42,26 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property string $mime_type
  * @property string $size
+ * @property-read Metadata $metadata since 1.15. Note, $metadata is still experimental. Expect changes in v1.16 (ToDo).
+ *      This property is read-only in the sense that no new instance be assigned to the model.
+ *      Edit data always by working on the object itself.
+ *      You best retrieve is using `static::getMetadata()`.
+ *      E.g, to set a value you could do:
+ * ```
+ *      // setting a single value
+ *      $model->getMetadata()->property1 = "some value";
+ *      // or
+ *      $model->getMetadata()['property2'] = "some other value";
+ *
+ *      // setting multiple values
+ *      $metadata = $model->getMetadata();
+ *      $metadata->property1 = "some value";
+ *      $metadata['property2'] = "some other value";
+ *
+ *      // alternatively, the `Metadata::addValues()` method can be used:
+ *      $model->getMetadata()->addValues(['property1' => "some value", 'property2' => "some other value"] = "some other value";
+ * ```
+ *
  * @property string|null $object_model
  * @property integer|null $object_id
  * @property integer|null $content_id
@@ -152,6 +174,15 @@ class File extends FileCompat
         ];
     }
 
+    public function __get($name)
+    {
+        if ($name === 'metadata') {
+            return $this->getMetadata();
+        }
+
+        return parent::__get($name);
+    }
+
     /**
      * Gets a query for [[FileHistory]].
      *
@@ -179,6 +210,12 @@ class File extends FileCompat
         $this->state ??= self::STATE_PUBLISHED;
 
         $this->sort_order ??= 0;
+
+        $metadata = $this->getAttribute('metadata');
+
+        if (($metadata instanceof StdClass) && !$metadata->isModified()) {
+            $this->setAttribute('metadata', null);
+        }
 
         return parent::beforeSave($insert);
     }
@@ -317,6 +354,40 @@ class File extends FileCompat
     }
 
     /**
+     * @return Metadata
+     */
+    public function getMetadata(): Metadata
+    {
+        /** @var Metadata|null $metadata */
+        $metadata = $this->getAttribute('metadata');
+
+        if ($metadata instanceof Metadata) {
+            return $metadata;
+        }
+
+        $metadata = new Metadata($metadata);
+
+        $this->setAttribute('metadata', $metadata);
+
+        return $metadata;
+    }
+
+    /**
+     * @param string|array $metadata
+     *
+     * @return File
+     */
+    public function setMetadata($metadata): File
+    {
+        /** @var Metadata|null $md */
+        $md = $this->metadata;
+
+        $md->addValues($metadata);
+
+        return $this;
+    }
+
+    /**
      * Returns the StorageManager
      *
      * @return StorageManagerInterface
@@ -379,15 +450,15 @@ class File extends FileCompat
         $store = $this->getStore();
 
         if ($file instanceof UploadedFile) {
-            $this->getStore()->set($file);
-        } elseif ($file instanceof File) {
+            $store->set($file);
+        } elseif ($file instanceof self) {
             if ($file->isAssigned()) {
                 throw new InvalidArgumentException('Already assigned File records cannot stored as another File record.');
             }
-            $this->getStore()->setByPath($file->getStore()->get());
+            $store->setByPath($file->getStore()->get());
             $file->delete();
         } elseif (is_string($file) && is_file($file)) {
-            $this->getStore()->setByPath($file);
+            $store->setByPath($file);
         }
 
         $this->afterNewStoredFile();
