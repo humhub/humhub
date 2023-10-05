@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.0-beta.2 (Unreleased)
---------------------------
+1.15.0-beta.2 (October 5, 2023)
+-------------------------------
 - Enh #6594: Add field `file.metadata`
 - Enh #6593: Add field `file.sort_order`
 - Enh #6592: Add field `file.state`
