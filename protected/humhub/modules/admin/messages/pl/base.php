@@ -41,7 +41,7 @@ return array (
   'Install Updates' => 'Zainstaluj aktualizacje',
   'Invalid user state: {state}' => 'Niepoprawny stan użytkownika: {state}',
   'Invite by email' => 'Zaproś przez e-mail',
-  'Invite by link' => '',
+  'Invite by link' => 'Zaproś poprzez link',
   'Invited by' => 'Zaproszony przez',
   'Keep your system up-to-date and benefit from the latest improvements.' => '',
   'Logging' => 'Logowanie',

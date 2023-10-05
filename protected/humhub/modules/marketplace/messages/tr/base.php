@@ -111,7 +111,7 @@ The license was successfully removed!
   'Remove licence key' => '',
   'Save and update' => '',
   'Search' => 'Arama',
-  'Search...' => '',
+  'Search...' => 'Arama...',
   'Settings' => 'Ayarlar',
   'Stop updating' => '',
   'Tags' => 'Etiketler',
