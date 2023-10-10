@@ -225,6 +225,7 @@ $config = [
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
             'sr' => 'Сербисцх',
+            'eu' => 'Basque'
         ],
         'ldap' => [
             // LDAP date field formats
