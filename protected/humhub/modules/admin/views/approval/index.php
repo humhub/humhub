@@ -109,11 +109,14 @@ $columns[] = [
     ?>
 
     <br>
+    <?= Html::button(Yii::t('AdminModule.user', 'Email all selected'), [
+        'class' => 'btn btn-primary btn-sm bulk-actions-button bulk-actions-button-email',
+        'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be notified by e-mail.'),
+    ]) ?>
     <?= Html::button(Yii::t('AdminModule.user', 'Approve all selected'), [
         'class' => 'btn btn-success btn-sm bulk-actions-button bulk-actions-button-approve',
         'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be approved and notified by e-mail.'),
     ]) ?>
-    &nbsp;
     <?= Html::button(Yii::t('AdminModule.user', 'Decline all selected'), [
         'class' => 'btn btn-danger btn-sm bulk-actions-button bulk-actions-button-decline',
         'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be deleted and notified by e-mail.'),
@@ -125,6 +128,11 @@ $columns[] = [
 <script <?= Html::nonce() ?>>
     $(function () {
 
+        $('.bulk-actions-button-email').on('click', function () {
+            $('#admin-approval-form').find("input[name='action']").remove();
+            $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_SEND_MESSAGE ?>" />');
+            //$('#admin-approval-form').submit();
+        });
         $('.bulk-actions-button-approve').on('click', function () {
             $('#admin-approval-form').find("input[name='action']").remove();
             $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_APPROVE ?>" />');

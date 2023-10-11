@@ -27,6 +27,7 @@ class ApprovalController extends Controller
      */
     public $adminOnly = false;
 
+    public const ACTION_SEND_MESSAGE = 'send_message';
     public const ACTION_APPROVE = 'approve';
     public const ACTION_DECLINE = 'decline';
 
@@ -218,15 +219,22 @@ class ApprovalController extends Controller
 
         $model = new ApproveUserForm($usersId);
 
+        if ($action === self::ACTION_SEND_MESSAGE && $model->bulkSendMessage()) {
+            $this->view->success(Yii::t('AdminModule.user', 'The users were notified by email.'));
+            return $this->redirect(['index']);
+        }
+
         if ($action === self::ACTION_APPROVE && $model->bulkApprove()) {
             $this->view->success(Yii::t('AdminModule.user', 'The registrations were approved and the users were notified by email.'));
             return $this->redirect(['index']);
-        } elseif ($action === self::ACTION_DECLINE && $model->bulkDecline()) {
+        }
+
+        if ($action === self::ACTION_DECLINE && $model->bulkDecline()) {
             $this->view->success(Yii::t('AdminModule.user', 'The registrations were declined and the users were notified by email.'));
             return $this->redirect(['index']);
-        } else {
-            throw new HttpException(400, 'Invalid action!');
         }
+
+        throw new HttpException(400, 'Invalid action!');
     }
 
 }

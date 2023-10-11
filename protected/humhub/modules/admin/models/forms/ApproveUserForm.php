@@ -211,6 +211,24 @@ class ApproveUserForm extends \yii\base\Model
     /**
      * @return bool
      */
+    public function bulkSendMessage()
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        foreach ($this->users as $user) {
+            $this->user = $user;
+            $this->setSendMessageDefaults();
+            $this->sendMessage();
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
     public function bulkApprove()
     {
         if (!$this->validate()) {
