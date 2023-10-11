@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+Unreleased
+-------------------------------
+- Enh #6609: Monthly email summary
+
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------
 - Enh #6594: Add field `file.metadata`
