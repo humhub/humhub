@@ -141,8 +141,6 @@ class Post extends ContentActiveRecord implements Searchable
             'user' => $this->getPostAuthorName()
         ];
 
-        $this->trigger(self::EVENT_SEARCH_ADD, new \humhub\modules\search\events\SearchAddEvent($attributes));
-
         return $attributes;
     }
 

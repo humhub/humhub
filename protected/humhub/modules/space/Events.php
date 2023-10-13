@@ -25,19 +25,6 @@ use humhub\components\Event;
  */
 class Events extends BaseObject
 {
-
-    /**
-     * On rebuild of the search index, rebuild all space records
-     *
-     * @param Event $event
-     */
-    public static function onSearchRebuild($event)
-    {
-        foreach (Space::find()->each() as $space) {
-            Yii::$app->search->add($space);
-        }
-    }
-
     /**
      * Callback on user soft deletion
      *
