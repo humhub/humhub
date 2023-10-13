@@ -8,12 +8,11 @@
 
 namespace humhub\modules\content\commands;
 
+use humhub\modules\content\interfaces\Searchable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\SearchRequest;
-use humhub\modules\search\commands\type;
-use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\RebuildIndex;
 use humhub\modules\user\models\User;
 use Yii;

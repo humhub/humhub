@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\search\libs\SearchHelper;
 
 /**
  * This is the model class for table "group_admin".
@@ -97,7 +96,6 @@ class GroupUser extends ActiveRecord
      */
     public function afterDelete()
     {
-        SearchHelper::queueUpdate($this->user);
         parent::afterDelete();
     }
 

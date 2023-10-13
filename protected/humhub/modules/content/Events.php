@@ -13,8 +13,8 @@ use humhub\commands\IntegrityController;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\search\libs\SearchHelper;
+use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\interfaces\Searchable;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
@@ -132,9 +132,7 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
 
-        if ($record->content->getStateService()->isPublished()) {
-            SearchHelper::queueUpdate($record);
-        }
+        (new ContentSearchService())->updateContent($record->content);
     }
 
     /**
@@ -146,7 +144,8 @@ class Events extends BaseObject
     {
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
-        SearchHelper::queueDelete($record);
+
+        (new ContentSearchService())->deleteContent($record->content);
     }
 
     /**

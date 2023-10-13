@@ -11,7 +11,7 @@ class SearchRequest extends Model
 {
     public ?User $user = null;
 
-    public string $keyword;
+    public string $keyword = '';
 
     public $page = 1;
 

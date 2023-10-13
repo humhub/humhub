@@ -19,6 +19,7 @@ use ZendSearch\Lucene\Exception\RuntimeException;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\Query\Boolean;
+use ZendSearch\Lucene\Search\Query\Term as TermQuery;
 use ZendSearch\Lucene\Search\Query\Wildcard;
 use ZendSearch\Lucene\Search\QueryParser;
 use ZendSearch\Lucene\SearchIndexInterface;
@@ -69,7 +70,7 @@ class ZendLucenceDriver extends AbstractDriver
 
     public function delete(Content $content): void
     {
-        $query = new Term($content->id, 'id');
+        $query = new TermQuery(new Term($content->id, 'id'));
         foreach ($this->getIndex()->find($query) as $result) {
             try {
                 $this->getIndex()->delete($result->id);
@@ -112,9 +113,7 @@ class ZendLucenceDriver extends AbstractDriver
             try {
                 $contentId = $hit->getDocument()->getField('content.id')->getUtf8Value();
             } catch (\Exception $ex) {
-                print "<pre>";
-                print_r($hit->getDocument());
-                die();
+                throw new \Exception('Could not get content id from Lucence search result');
             }
             $content = Content::findOne(['id' => $contentId]);
             if ($content !== null) {

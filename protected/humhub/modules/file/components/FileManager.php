@@ -10,7 +10,7 @@ namespace humhub\modules\file\components;
 
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\search\libs\SearchHelper;
+use humhub\modules\content\services\ContentSearchService;
 use Yii;
 use yii\base\Component;
 use humhub\modules\file\models\File;
@@ -80,7 +80,10 @@ class FileManager extends Component
             $file->updateAttributes($attributes);
         }
 
-        SearchHelper::queueUpdate($this->record);
+        if ($this->record instanceof ContentActiveRecord) {
+            (new ContentSearchService())->updateContent($this->record->content);
+        }
+
     }
 
     /**

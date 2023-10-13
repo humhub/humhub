@@ -29,10 +29,10 @@ use humhub\modules\content\notifications\ContentCreated as NotificationsContentC
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -270,11 +270,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             }
         }
 
-        if ($this->getStateService()->isPublished()) {
-            SearchHelper::queueUpdate($this->getModel());
-        } else {
-            SearchHelper::queueDelete($this->getModel());
-        }
+        (new ContentSearchService())->updateContent($this);
 
         parent::afterSave($insert, $changedAttributes);
     }
