@@ -3,11 +3,14 @@
 namespace humhub\modules\content\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\content\search\driver\ZendLucenceDriver;
+use humhub\modules\content\Module;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
 use Yii;
 
+/**
+ * @property Module $module
+ */
 class SearchController extends Controller
 {
 
@@ -23,7 +26,7 @@ class SearchController extends Controller
 
         $searchRequest = new SearchRequest();
         if ($searchRequest->load(Yii::$app->request->get(), '') && $searchRequest->validate()) {
-            $resultSet = (new ContentSearchService())->getDriver()->search($searchRequest);
+            $resultSet = $this->module->getSearchDriver()->search($searchRequest);
         }
 
         return $this->render('index', [

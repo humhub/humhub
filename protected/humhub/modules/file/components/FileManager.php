@@ -81,7 +81,7 @@ class FileManager extends Component
         }
 
         if ($this->record instanceof ContentActiveRecord) {
-            (new ContentSearchService())->updateContent($this->record->content);
+            (new ContentSearchService($this->record->content))->update();
         }
 
     }

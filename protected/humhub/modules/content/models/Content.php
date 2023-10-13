@@ -206,11 +206,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * @return ContentActiveRecord
-     * @throws IntegrityException
      * @since 1.3
      */
-    public function getModel()
+    public function getModel(): ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
@@ -270,7 +268,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             }
         }
 
-        (new ContentSearchService())->updateContent($this);
+        (new ContentSearchService($this))->update();
 
         parent::afterSave($insert, $changedAttributes);
     }

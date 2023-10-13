@@ -51,7 +51,7 @@ class ContentTagService
 
         $this->content->refresh();
 
-        (new ContentSearchService())->updateContent($this->content);
+        (new ContentSearchService($this->content))->update();
 
         $contentRelation = new ContentTagRelation($this->content, $tag);
 

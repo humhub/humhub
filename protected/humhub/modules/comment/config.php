@@ -19,6 +19,5 @@ return [
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
         [WallEntryLinks::class, WallEntryLinks::EVENT_INIT, [Events::class, 'onWallEntryLinksInit']],
         [WallEntryAddons::class, WallEntryAddons::EVENT_INIT, [Events::class, 'onWallEntryAddonInit']],
-        [Search::class, Search::EVENT_SEARCH_ATTRIBUTES, [Events::class, 'onSearchAttributes']]
     ],
 ];

@@ -9,6 +9,8 @@
 namespace humhub\modules\content;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -93,16 +95,16 @@ class Module extends \humhub\components\Module
 
     /**
      * @param ContentContainerActiveRecord $container
-     * @since 1.6
      * @return int
+     * @since 1.6
      */
     public function getMaxPinnedContent(ContentContainerActiveRecord $container)
     {
-        if($container instanceof User) {
+        if ($container instanceof User) {
             return $this->maxPinnedProfileContent;
         }
 
-        if($container instanceof Space) {
+        if ($container instanceof Space) {
             return $this->maxPinnedSpaceContent;
         }
 
@@ -143,4 +145,8 @@ class Module extends \humhub\components\Module
         ];
     }
 
+    public function getSearchDriver(): AbstractDriver
+    {
+        return new ZendLucenceDriver();
+    }
 }

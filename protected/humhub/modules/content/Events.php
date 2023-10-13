@@ -14,7 +14,6 @@ use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\services\ContentSearchService;
-use humhub\modules\content\interfaces\Searchable;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
@@ -116,7 +115,7 @@ class Events extends BaseObject
         foreach (Content::find()->each() as $content) {
             /* @var Content $content */
             $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof Searchable && $content->getStateService()->isPublished()) {
+            if ($content->getStateService()->isPublished()) {
                 Yii::$app->search->add($contentObject);
             }
         }
@@ -132,7 +131,7 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
 
-        (new ContentSearchService())->updateContent($record->content);
+        (new ContentSearchService($record->content))->update();
     }
 
     /**
@@ -145,7 +144,7 @@ class Events extends BaseObject
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
 
-        (new ContentSearchService())->deleteContent($record->content);
+        (new ContentSearchService($record->content))->delete();
     }
 
     /**

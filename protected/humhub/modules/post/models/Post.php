@@ -12,7 +12,6 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\WallEntry;
-use humhub\modules\content\interfaces\Searchable;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -28,7 +27,7 @@ use yii\helpers\Url;
  * @property string $updated_at
  * @property integer $updated_by
  */
-class Post extends ContentActiveRecord implements Searchable
+class Post extends ContentActiveRecord
 {
     /**
      * @inheritdoc

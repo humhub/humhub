@@ -3,9 +3,11 @@
 namespace humhub\modules\content\jobs;
 
 use humhub\modules\content\models\Content;
+use humhub\modules\content\Module;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
+use Yii;
 
 class SearchDeleteDocument extends ActiveJob implements ExclusiveJobInterface
 {
@@ -26,7 +28,7 @@ class SearchDeleteDocument extends ActiveJob implements ExclusiveJobInterface
     {
         $content = Content::findOne(['id' => $this->contentId]);
         if ($content) {
-            (new ContentSearchService())->getDriver()->delete($content);
+            (new ContentSearchService($content))->delete(false);
         }
     }
 

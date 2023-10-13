@@ -101,12 +101,7 @@ class Comment extends ContentAddonActiveRecord
      */
     public function afterDelete()
     {
-        try {
-            $this->updateContentSearch();
-        } catch (Exception $ex) {
-            Yii::error($ex);
-        }
-
+        $this->updateContentSearch();
         parent::afterDelete();
     }
 
@@ -182,10 +177,8 @@ class Comment extends ContentAddonActiveRecord
      */
     protected function updateContentSearch()
     {
-        /** @var ContentActiveRecord $content */
-        $contentRecord = $this->getCommentedRecord();
-        if ($contentRecord !== null) {
-            (new ContentSearchService())->updateContent($contentRecord->content);
+        if ($this->content) {
+            (new ContentSearchService($this->content))->update();
         }
     }
 

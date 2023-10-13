@@ -8,11 +8,11 @@
 
 namespace humhub\modules\content\commands;
 
-use humhub\modules\content\interfaces\Searchable;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\search\jobs\RebuildIndex;
 use humhub\modules\user\models\User;
 use Yii;
@@ -44,10 +44,8 @@ class SearchController extends \yii\console\Controller
         $driver = $this->getDriver();
         $driver->purge();
         foreach (Content::find()->all() as $content) {
-            if ($content->getPolymorphicRelation() instanceof Searchable) {
-                $driver->update($content);
-                print ".";
-            }
+            (new ContentSearchService($content))->update(false);
+            print ".";
         }
         print "OK!\n\n";
     }

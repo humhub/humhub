@@ -7,6 +7,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\content\services\ContentSearchService;
 use Yii;
 use yii\base\Exception;
 use yii\data\Pagination;
@@ -53,14 +54,20 @@ class ZendLucenceDriver extends AbstractDriver
             }, $content->tags))));
         $document->addField(Field::keyword('content.container_id', $content->container->id));
         $document->addField(Field::keyword('content.created_at', strtotime($content->created_at)));
-        // ToDo: Authors
-        // ToDo: Dates
-        // ToDo: Add Comments / Files
-        foreach ($content->getPolymorphicRelation()->getSearchAttributes() as $attributeName => $attributeValue) {
+        $document->addField(Field::keyword('content.created_by', $content->createdBy->getDisplayName()));
+        $document->addField(Field::keyword('content.updated_at', strtotime($content->created_at)));
+        $document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
+        $document->addField(Field::unStored('content.comments', (new ContentSearchService($content))->getCommentsAsText()));
+        $document->addField(Field::unStored('content.files', (new ContentSearchService($content))->getFileContentAsText()));
+
+        foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
             $document->addField(Field::unStored($attributeName, $attributeValue));
+            Yii::warning('Add: '. $attributeName. ' - '. $attributeValue);
         }
 
         try {
+            Yii::warning('Updated document '. $content->id, 'search');
+
             $this->getIndex()->addDocument($document);
             $this->commit();
         } catch (RuntimeException $e) {
@@ -78,6 +85,7 @@ class ZendLucenceDriver extends AbstractDriver
                 Yii::error('Could not delete document from search index. Error: ' . $e->getMessage(), 'content');
             }
         }
+        Yii::warning('Deleted document '. $content->id, 'search');
         $this->commit();
     }
 
