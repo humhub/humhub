@@ -87,9 +87,6 @@ class GroupUser extends ActiveRecord
                     $groupSpace->space->addMember($this->user->id);
                 }
             }
-            if ($this->user !== null) {
-                $this->user->updateSearch();
-            }
         }
 
         parent::afterSave($insert, $changedAttributes);
