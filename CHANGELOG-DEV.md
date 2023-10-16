@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+Unreleased
+-------------------------------
+- Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
+
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------
 - Enh #6594: Add field `file.metadata`
