@@ -1,11 +1,5 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\content\widgets\richtext;
 
 use humhub\modules\ui\form\widgets\JsInputWidget;
@@ -181,6 +175,7 @@ class AbstractRichTextEditor extends JsInputWidget
         $inputOptions = $this->getInputAttributes();
 
         if ($this->form != null) {
+            $this->fieldOptions['template'] = "{label}\n{input}";
             $input = $this->form->field($this->model, $this->attribute, $this->fieldOptions)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;

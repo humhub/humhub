@@ -103,6 +103,7 @@ Kind Regards
 
 ' => 'Kedves {displayName}! Fiókkérelmed elutasították. Üdvözlettel: {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Itt profil-kategóriákat és mezőket hozhatsz létre vagy szerkeszthetsz.',
+  'Hide online status of users' => 'A felhasználók online állapotának elrejtése',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Ha az egyedi profilengedélyek nem engedélyezettek, akkor a következő beállítások nem módosíthatók minden felhasználó számára. Ha egyedi profilengedélyek engedélyezettek, akkor a beállításokat csak alapértelmezettként lesznek beállítva, amelyeket a felhasználók testre szabhatnak. Ezután a következő bejegyzések ugyanabban a formában jelennek meg a felhasználói profil beállításaiban:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ha ezt az opciót nem választod ki, akkor a közösségek tulajdonjoga átkerül a fiókodba.',
   'Impersonate' => 'Megszemélyesítés',

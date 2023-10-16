@@ -12,6 +12,7 @@ use humhub\libs\Html;
 use humhub\modules\file\libs\ImageHelper;
 use Yii;
 use yii\base\Action;
+use yii\db\ActiveRecord;
 use yii\web\UploadedFile;
 use humhub\libs\Helpers;
 use humhub\modules\file\models\FileUpload;
@@ -136,8 +137,8 @@ class UploadAction extends Action
         }
 
 
-        if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::class)) {
-
+        /** @var ActiveRecord|string $model */
+        if ($model != '' && $pk != '' && $model = Helpers::checkClassType($model, ActiveRecord::class)) {
             $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canEdit()) {

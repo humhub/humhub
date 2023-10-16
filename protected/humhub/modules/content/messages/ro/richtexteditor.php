@@ -49,6 +49,7 @@ return [
     'Wrap in bullet list' => 'Înfășoară în lista neordonată',
     'Wrap in ordered list' => 'Înfășoară în lista ordonată',
     '[Invalid file]' => '[fișier greșit]',
+    'Switch editor mode' => '',
     '[Code Block]' => '',
     '[Image]' => '',
     '[Table]' => '',

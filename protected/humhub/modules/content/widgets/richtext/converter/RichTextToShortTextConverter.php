@@ -1,10 +1,7 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext\converter;
 
-
-use humhub\libs\Helpers;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
@@ -47,7 +44,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     /**
      * @inheritDoc
      */
-    protected function renderPlainLink(LinkParserBlock $linkBlock) : string
+    protected function renderPlainLink(LinkParserBlock $linkBlock): string
     {
         return $linkBlock->getParsedText();
     }
@@ -74,7 +71,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function renderCode($block)
     {
-        return Yii::t('ContentModule.richtexteditor', '[Code Block]')."\n\n";
+        return Yii::t('ContentModule.richtexteditor', '[Code Block]') . "\n\n";
     }
 
     /**
@@ -82,7 +79,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function renderTable($block)
     {
-        return Yii::t('ContentModule.richtexteditor', '[Table]')."\n\n";
+        return Yii::t('ContentModule.richtexteditor', '[Table]') . "\n\n";
     }
 
     /**
@@ -90,7 +87,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function renderHeadline($block)
     {
-        return $this->renderAbsy($block['content'])."\n\n";
+        return $this->renderAbsy($block['content']) . "\n\n";
     }
 
     /**
@@ -99,13 +96,13 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function renderImage($block)
     {
-        return Yii::t('ContentModule.richtexteditor', '[Image]')."\n\n";
+        return Yii::t('ContentModule.richtexteditor', '[Image]') . "\n\n";
     }
 
     /**
      * @inheritDoc
      */
-    protected function renderPlainImage(LinkParserBlock $linkBlock) : string
+    protected function renderPlainImage(LinkParserBlock $linkBlock): string
     {
         $url = $linkBlock->getUrl();
         return RichTextLinkExtension::validateNonExtensionUrl($url) ? $url : '';
@@ -114,18 +111,18 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
     /**
      * @inheritDoc
      */
-    protected function onAfterParse($text) : string
+    protected function onAfterParse($text): string
     {
-        $result = $text;
+        $result = (string)$text;
 
-        if(!$this->getOption(static::OPTION_PRESERVE_SPACES, false)) {
-            $result  = trim(preg_replace('/\s+/', ' ', $result));
+        if (!$this->getOption(static::OPTION_PRESERVE_SPACES, false)) {
+            $result = trim(preg_replace('/\s+/', ' ', $result));
         }
 
         $result = parent::onAfterParse($result);
         $result = Html::encode($result);
 
-        if($this->getOption(static::OPTION_NL2BR, false)) {
+        if ($this->getOption(static::OPTION_NL2BR, false)) {
             $result = nl2br($result, false);
         }
 

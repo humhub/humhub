@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -61,15 +60,4 @@ class MarkdownEditor extends BaseType
         return parent::getFieldRules($rules);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
-    {
-        return parent::getFieldFormDefinition($user, array_merge([
-            'rows' => '3'
-        ], $options));
-    }
-
 }
-?>

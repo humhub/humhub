@@ -9,22 +9,22 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\components\Controller;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\authclient\interfaces\ApprovalBypass;
+use humhub\modules\user\models\forms\Registration;
+use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
-use humhub\modules\user\services\LinkRegistrationService;
 use humhub\modules\user\services\InviteRegistrationService;
+use humhub\modules\user\services\LinkRegistrationService;
 use humhub\modules\user\widgets\AuthChoice;
 use Yii;
 use yii\authclient\BaseClient;
+use yii\authclient\ClientInterface;
 use yii\base\Exception;
 use yii\db\StaleObjectException;
 use yii\web\HttpException;
-use yii\authclient\ClientInterface;
-use humhub\components\Controller;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Invite;
-use humhub\modules\user\models\forms\Registration;
-use humhub\modules\user\authclient\interfaces\ApprovalBypass;
 
 /**
  * RegistrationController handles new user registration
@@ -53,6 +53,14 @@ class RegistrationController extends Controller
     public function beforeAction($action)
     {
         if (!Yii::$app->user->isGuest) {
+            $linkRegistrationService = LinkRegistrationService::createFromRequest();
+
+            if (
+                $linkRegistrationService->isValid()
+                && $linkRegistrationService->inviteToSpace(Yii::$app->user->identity)
+            ) {
+                return $this->redirect($linkRegistrationService->getSpace()->getUrl());
+            }
             throw new HttpException(401, Yii::t('UserModule.base', 'Your are already logged in! - Logout first!'));
         }
 

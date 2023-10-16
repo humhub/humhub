@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -31,6 +31,7 @@ use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\PasswordRecoveryService;
 use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
@@ -41,29 +42,20 @@ use yii\web\IdentityInterface;
 /**
  * This is the model class for table "user".
  *
- * @property integer $id
- * @property string $guid
  * @property integer $status
  * @property string $username
  * @property string $email
  * @property string $auth_mode
  * @property string $language
  * @property string $time_zone
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
  * @property string $last_login
  * @property string $authclient_id
  * @property string $auth_key
- * @property integer $visibility
- * @property integer $contentcontainer_id
  * @property Profile $profile
  * @property Password $currentPassword
  * @property Auth[] $auths
- * @property string $displayName
- * @property string $displayNameSub
  * @mixin Followable
+ * @noinspection PropertiesInspection
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
@@ -164,8 +156,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['created_by', 'updated_by'], 'integer'],
-            [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
-            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
+            [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
+            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['guid'], 'string', 'max' => 45],
             [['time_zone'], 'validateTimeZone'],
@@ -277,14 +269,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return parent::__get($name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
-        $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
-        $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
-        $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
+        $scenarios[self::SCENARIO_LOGIN] = ['username', 'password'];
+        $scenarios[self::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
+        $scenarios[self::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
+        $scenarios[self::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
+        $scenarios[self::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -328,7 +323,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     public static function findIdentity($id)
     {
-        return static::findOne(['id' => $id]);
+        return Yii::$app->runtimeCache->getOrSet(User::class . '#' . $id, function () use ($id) {
+            return static::findOne(['id' => $id]);
+        });
     }
 
     public static function findIdentityByAccessToken($token, $type = null)
@@ -633,9 +630,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         if ($userInvite !== null) {
             // User was invited to a space
             if (in_array($userInvite->source, [Invite::SOURCE_INVITE, Invite::SOURCE_INVITE_BY_LINK], true)) {
-                $space = Space::findOne(['id' => $userInvite->space_invite_id]);
-                if ($space != null) {
+                $space = $userInvite->space;
+                if ($space !== null) {
                     $space->addMember($this->id);
+                    Yii::$app->user->setReturnUrl($space->createUrl());
                 }
             }
 
@@ -665,27 +663,29 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getDisplayName(): string
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('user');
 
-        if ($module->displayNameCallback !== null) {
-            return call_user_func($module->displayNameCallback, $this);
-        }
+            if ($module->displayNameCallback !== null) {
+                return call_user_func($module->displayNameCallback, $this);
+            }
 
-        $name = '';
+            $name = '';
 
-        $format = Yii::$app->settings->get('displayNameFormat');
+            $format = Yii::$app->settings->get('displayNameFormat');
 
-        if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
-            $name = $this->profile->firstname . ' ' . $this->profile->lastname;
-        }
+            if ($this->profile !== null && $format == '{profile.firstname} {profile.lastname}') {
+                $name = $this->profile->firstname . ' ' . $this->profile->lastname;
+            }
 
-        // Return always username as fallback
-        if ($name == '' || $name == ' ') {
-            return $this->username;
-        }
+            // Return always username as fallback
+            if ($name == '' || $name == ' ') {
+                return $this->username;
+            }
 
-        return $name;
+            return $name;
+        });
     }
 
     /**
@@ -1029,5 +1029,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         return $options;
+    }
+
+    public function getPasswordRecoveryService(): PasswordRecoveryService
+    {
+        return new PasswordRecoveryService($this);
     }
 }

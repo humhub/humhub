@@ -1,12 +1,6 @@
 <?php
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
 
 namespace humhub\modules\content\widgets\richtext\converter;
-
 
 use cebe\markdown\GithubMarkdown;
 use humhub\components\ActiveRecord;
@@ -19,22 +13,20 @@ use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensio
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 /**
- * This class serves as base class for richtext converters used to convert HumHub richtext to other formats. The base
- * converter class extends GithubMarkdown markdown parser to support:
+ * This class serves as base class for richtext converters used to convert HumHub richtext to other formats.
  *
- *  - `onBeforeParse` and `onAfterparse` events
+ * The base converter class extends GithubMarkdown Markdown parser to support:
+ *  - `onBeforeParse` and `onAfterParse` events
  *  - new line by `\`
  *  - registration of richtext extensions
  *  - extended link/image regex e.g. for image size [Scaled Image](http://localhost/static/img/logo.png =150x)
  *
- * The [[addExtension()]] function can be used to add additional richtext extensions. By default all extensions registered
- * in [[ProsemirrorRichText::getExtensions()]] are available.
+ * The [[addExtension()]] function can be used to add additional richtext extensions.
+ * By default, all extensions registered in [[ProsemirrorRichText::getExtensions()]] are available.
  *
- * > Note: The result of this parser will not be encoded, so do not directly add the result to a HTML view  without
- * encoding it.
+ * > Note: The result of this parser will not be encoded, so do not directly add the result to a HTML view without encoding it.
  *
  * @since 1.8
  */
@@ -176,7 +168,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
         }
 
         $result = 'content_' . $content->content->id;
-        return $prefix ? $prefix.'_'.$result : $result;
+        return $prefix ? $prefix . '_' . $result : $result;
     }
 
     /**
@@ -192,8 +184,8 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      */
     public static function buildCacheKeyForRecord(ActiveRecord $record, $prefix = null)
     {
-        $result = get_class($record).'_'.$record->getUniqueId();
-        return $prefix ? $prefix.'_'.$result : $result;
+        $result = get_class($record) . '_' . $record->getUniqueId();
+        return $prefix ? $prefix . '_' . $result : $result;
     }
 
     /**
@@ -208,9 +200,10 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      * Can be used to add additional richtext extensions
      * @param RichTextExtension $extension
      */
-    public function addExtension(RichTextExtension $extension) {
+    public function addExtension(RichTextExtension $extension)
+    {
         $this->extensions[] = $extension;
-        if($extension instanceof RichTextLinkExtension) {
+        if ($extension instanceof RichTextLinkExtension) {
             $this->linkExtensions[] = $extension;
         }
     }
@@ -224,17 +217,17 @@ abstract class BaseRichTextConverter extends GithubMarkdown
             $result = null;
             $cacheKey = $this->getOption(static::OPTION_CACHE_KEY, null);
 
-            if($cacheKey && isset(static::$cache[$cacheKey])) {
+            if ($cacheKey && isset(static::$cache[$cacheKey])) {
                 $result = static::$cache[$cacheKey];
             }
 
-            if($result === null) {
+            if ($result === null) {
                 $result = $this->onBeforeParse($text);
                 $result = parent::parse($result);
 
                 // We cache the whole parser result, this way we can reuse the same result e.g. for different maxLength
                 // or other post processes
-                if($cacheKey && count(static::$cache) < static::MAX_CACHE_ENTRIES) {
+                if ($cacheKey && count(static::$cache) < static::MAX_CACHE_ENTRIES) {
                     static::$cache[$cacheKey] = $result;
                 }
             }
@@ -270,10 +263,10 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_BEFORE_PARSE, $evt);
-        $text = $evt->result;
+        $text = (string)$evt->result;
 
         // Remove leading new backslash new lines e.g. "Test\\\n" -> "Test"
-        $text = preg_replace('/\\\\(\n|\r){1,2}$/',  '', $text);
+        $text = preg_replace('/\\\\(\n|\r){1,2}$/', '', $text);
 
         foreach ($this->extensions as $extension) {
             $text = $extension->onBeforeConvert($text, $this->format, $this->options);
@@ -284,8 +277,8 @@ abstract class BaseRichTextConverter extends GithubMarkdown
 
     protected function renderAbsy($blocks)
     {
-        if(!empty($this->getExcludes())) {
-            $blocks = array_filter($blocks, function($block) {
+        if (!empty($this->getExcludes())) {
+            $blocks = array_filter($blocks, function ($block) {
                 return !in_array($block[0], $this->getExcludes(), true);
             });
         }
@@ -308,12 +301,10 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      *    return $text;
      * }
      * ```
-     *
-     *
      * @param $text
      * @return mixed|string
      */
-    protected function onAfterParse($text) : string
+    protected function onAfterParse($text): string
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_AFTER_PARSE, $evt);
@@ -373,7 +364,7 @@ REGEXP;
                 return [
                     $text,
                     isset($refMatches[2]) ? $refMatches[2] : '', // url
-                    empty($refMatches[5]) ? null: $refMatches[5], // title
+                    empty($refMatches[5]) ? null : $refMatches[5], // title
                     $offset + strlen($refMatches[0]), // offset
                     null, // reference key
                     empty($refMatches[7]) ? null : $refMatches[7] // extension metadata
@@ -409,24 +400,24 @@ REGEXP;
      */
     protected function renderLink($block)
     {
-       return $this->renderLinkOrImage(new LinkParserBlock([
-           'block' => $block,
-           'parsedText' => is_string($block['text']) ? $block['text'] : $this->renderAbsy($block['text'])
-       ]));
+        return $this->renderLinkOrImage(new LinkParserBlock([
+            'block' => $block,
+            'parsedText' => is_string($block['text']) ? $block['text'] : $this->renderAbsy($block['text'])
+        ]));
     }
 
     protected function renderLinkOrImage(LinkParserBlock $linkBlock)
     {
-        if(!$linkBlock->getUrl()) {
+        if (!$linkBlock->getUrl()) {
             return $linkBlock->getParsedText();
         }
 
         foreach ($this->linkExtensions as $linkExtension) {
-            if(in_array($linkExtension->key, $this->getExcludes())) {
+            if (in_array($linkExtension->key, $this->getExcludes())) {
                 return '';
             }
 
-            if($linkExtension->validateExtensionUrl($linkBlock->getUrl())) {
+            if ($linkExtension->validateExtensionUrl($linkBlock->getUrl())) {
                 $linkExtension->onBeforeConvertLink($linkBlock);
                 $linkBlock->toAbsoluteUrl();
                 return $this->renderLinkExtension($linkExtension, $linkBlock);
@@ -435,7 +426,7 @@ REGEXP;
 
         $linkBlock->toAbsoluteUrl();
 
-        if($linkBlock->isImage()) {
+        if ($linkBlock->isImage()) {
             return $this->renderPlainImage($linkBlock);
         }
 
@@ -454,16 +445,16 @@ REGEXP;
 
     protected function renderImage($block)
     {
-        $text = $block['text'];
+        $text = (string)$block['text'];
 
         // Remove image alignment extension from image alt text
         $block['text'] = preg_replace('/>?<?$/', '', $text);
 
-        if($this->getOption(static::OPTION_IMAGE_AS_URL, false)) {
+        if ($this->getOption(static::OPTION_IMAGE_AS_URL, false)) {
             return Html::encode($block['url']);
         }
 
-        if($this->getOption(static::OPTION_IMAGE_AS_LINK, false)) {
+        if ($this->getOption(static::OPTION_IMAGE_AS_LINK, false)) {
             $text = empty($block['text']) ? $block['url'] : $block['text'];
             $linkBlock = $block;
             $linkBlock[0] = 'link';
@@ -483,12 +474,13 @@ REGEXP;
      * @param LinkParserBlock $linkBlock
      * @return string
      */
-    protected function renderLinkExtension(RichTextLinkExtension $ext, LinkParserBlock $linkBlock) : string {
-        if($linkBlock->getResult()) {
+    protected function renderLinkExtension(RichTextLinkExtension $ext, LinkParserBlock $linkBlock): string
+    {
+        if ($linkBlock->getResult()) {
             return $linkBlock->getResult();
         }
 
-        if($linkBlock->isImage()) {
+        if ($linkBlock->isImage()) {
             return $this->renderPlainImage($linkBlock);
         }
 
@@ -499,7 +491,8 @@ REGEXP;
      * @param LinkParserBlock $linkBlock
      * @return string
      */
-    protected function renderPlainLink(LinkParserBlock $linkBlock) : string {
+    protected function renderPlainLink(LinkParserBlock $linkBlock): string
+    {
         $block = $linkBlock->block;
 
         if (isset($block['refkey'])) {
@@ -510,14 +503,14 @@ REGEXP;
             }
         }
 
-        if($this->getOption(static::OPTION_LINK_AS_TEXT, false)) {
+        if ($this->getOption(static::OPTION_LINK_AS_TEXT, false)) {
             return $this->renderAbsy($block['text']);
         }
 
         $target = Html::encode($this->getOption(static::OPTION_LINK_TARGET, '_blank'));
         $targetAttr = !$this->getOption(static::OPTION_PREV_LINK_TARGET, false) ? " target=\"$target\"" : '';
 
-        return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"'. $targetAttr
+        return '<a href="' . htmlspecialchars($block['url'], ENT_COMPAT | ENT_HTML401, 'UTF-8') . '"' . $targetAttr
             . (empty($block['title']) ? '' : ' title="' . htmlspecialchars($block['title'], ENT_COMPAT | ENT_HTML401 | ENT_SUBSTITUTE, 'UTF-8') . '"')
             . '>' . $this->renderAbsy($block['text']) . '</a>';
     }
@@ -526,7 +519,8 @@ REGEXP;
      * @param LinkParserBlock $linkBlock
      * @return string
      */
-    protected function renderPlainImage(LinkParserBlock $linkBlock) : string {
+    protected function renderPlainImage(LinkParserBlock $linkBlock): string
+    {
         return parent::renderImage($linkBlock->block);
     }
 
@@ -537,7 +531,7 @@ REGEXP;
      */
     protected function br2nl($text)
     {
-        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
+        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", (string)$text);
     }
 
     /**

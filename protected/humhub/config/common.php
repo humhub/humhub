@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.15.0-dev',
+    'version' => '1.15.0-beta.2',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -110,6 +110,10 @@ $config = [
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
         ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
+        ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
             'viewPath' => '@humhub/views/mail',
@@ -188,7 +192,7 @@ $config = [
             'th' => 'ไทย',
             'tr' => 'Türkçe',
             'ru' => 'Русский',
-            'uk' => 'українська',
+            'uk' => 'Українська',
             'el' => 'Ελληνικά',
             'ja' => '日本語',
             'hu' => 'Magyar',
@@ -199,27 +203,29 @@ $config = [
             'an' => 'Aragonés',
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
-            'cs' => 'čeština',
-            'da' => 'dansk',
+            'cs' => 'Čeština',
+            'da' => 'Dansk',
             'uz' => 'Ўзбек',
             'fa-IR' => 'فارسی',
-            'bg' => 'български',
-            'sk' => 'slovenčina',
-            'ro' => 'română',
+            'bg' => 'Български',
+            'sk' => 'Slovenčina',
+            'ro' => 'Română',
             'ar' => 'العربية/عربي‎‎',
             'ko' => '한국어',
             'id' => 'Bahasa Indonesia',
-            'lt' => 'lietuvių kalba',
+            'lt' => 'Lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
-            'fi' => 'suomalainen',
+            'fi' => 'Suomalainen',
             'he' => 'עברית',
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
+            'eu' => 'Basque'
         ],
         'ldap' => [
             // LDAP date field formats
@@ -269,12 +275,6 @@ $config = [
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',
     ],
-    'container' => [
-        'definitions' => [
-            //todo: Remove after Yii 2.0.48 release
-            \yii\validators\DateValidator::class => humhub\components\validators\DateValidator::class,
-        ]
-    ]
 ];
 
 return $config;

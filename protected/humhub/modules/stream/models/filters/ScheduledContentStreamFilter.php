@@ -30,7 +30,7 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
             return;
         }
 
-        if ($this->streamQuery->isInitialQuery()) {
+        if ($this->allowPinContent()) {
             $this->fetchScheduledContent();
         } else {
             $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_SCHEDULED];

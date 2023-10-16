@@ -31,10 +31,12 @@ use yii\helpers\Url;
             </div>
 
             <div class="form-group">
-                <?= Captcha::widget([
-                    'model' => $model, 'attribute' => 'verifyCode', 'captchaAction' => '/user/auth/captcha',
+                <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
+                    'model' => $model,
+                    'attribute' => 'verifyCode',
+                    'captchaAction' => '/user/auth/captcha',
                     'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
-                ]); ?>
+                ])->label(false) ?>
             </div>
 
             <hr>

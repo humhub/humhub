@@ -1,12 +1,8 @@
 <?php
 
 return [
-    'Add image/file' => '',
-    'Add link' => '',
     'Bold' => '',
-    'Close' => '',
     'Code' => '',
-    'Enter a url (e.g. http://example.com)' => '',
     'Heading' => '',
     'Image' => '',
     'Image/File' => '',
@@ -15,12 +11,8 @@ return [
     'Italic' => '',
     'List' => '',
     'Ordered List' => '',
-    'Please wait while uploading...' => '',
     'Preview' => '',
     'Quote' => '',
-    'Target' => '',
-    'Title' => '',
-    'Title of your link' => '',
     'URL/Link' => '',
     'Unordered List' => '',
     'code text here' => '',

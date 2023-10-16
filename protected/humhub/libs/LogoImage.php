@@ -60,12 +60,7 @@ class LogoImage
 
         $file = self::getFile($maxWidth, $maxHeight);
         if (file_exists($file)) {
-            // Workaround for absolute urls in console applications (Cron)
-            $base = '';
-            if (Yii::$app->request->isConsoleRequest) {
-                $base = Url::base(true);
-            }
-            return $base . Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/logo/' . static::buildFileName($maxWidth, $maxHeight) . '?v=' . filemtime($file);
+            return Yii::getAlias(Yii::$app->assetManager->baseUrl) . '/logo/' . static::buildFileName($maxWidth, $maxHeight) . '?v=' . filemtime($file);
         } elseif (static::hasImage() && $autoResize) {
             try {
                 FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));

@@ -30,6 +30,7 @@ return array (
   'Members' => 'メンバー',
   'Modules' => 'モジュール',
   'Next' => '次',
+  'Only global administrators can change this value' => 'この値を変更できるのは全体管理者だけです',
   'Owner' => '所有者',
   'Pending Approvals' => '承認を保留中',
   'Pending Invites' => '招待を保留中',

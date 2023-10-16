@@ -115,15 +115,16 @@ class AdvancedSettings extends Model
         $module = Yii::$app->getModule('space');
 
         $settings = $this->space->getSettings();
+        $defaultSettings = $module->getDefaultSettings();
 
         $this->url = $this->space->url;
-        $this->indexUrl = $settings->get('indexUrl', null);
-        $this->indexGuestUrl = $settings->get('indexGuestUrl', null);
+        $this->indexUrl = $settings->get('indexUrl', $defaultSettings->defaultIndexRoute ? $this->space->createUrl($defaultSettings->defaultIndexRoute) : '');
+        $this->indexGuestUrl = $settings->get('indexGuestUrl', $defaultSettings->defaultIndexGuestRoute ? $this->space->createUrl($defaultSettings->defaultIndexGuestRoute) : '');
 
-        $this->hideMembers = (bool)$settings->get('hideMembers', $this->hideMembers);
-        $this->hideAbout = (bool)$settings->get('hideAbout', $module->hideAboutPage);
-        $this->hideActivities = (bool)$settings->get('hideActivities', $this->hideActivities);
-        $this->hideFollowers = (bool)$settings->get('hideFollowers', $this->hideFollowers);
+        $this->hideMembers = $settings->get('hideMembers', $defaultSettings->defaultHideMembers);
+        $this->hideAbout = $settings->get('hideAbout', $defaultSettings->defaultHideAbout);
+        $this->hideActivities = $settings->get('hideActivities', $defaultSettings->defaultHideActivities);
+        $this->hideFollowers = $settings->get('hideFollowers', $defaultSettings->defaultHideFollowers);
         $this->sortOrder = $this->space->sort_order;
     }
 
@@ -141,16 +142,16 @@ class AdvancedSettings extends Model
         $this->space->url = $this->url;
 
         if ($this->space->isAttributeChanged('url')) {
-            if ($this->indexUrl) {
+            if ($this->indexUrl && $oldUrl = $this->space->getOldAttribute('url')) {
                 $this->indexUrl = str_replace(
-                    $this->space->getOldAttribute('url'),
+                    $oldUrl,
                     $this->space->url,
                     $this->indexUrl
                 );
             }
-            if ($this->indexGuestUrl) {
+            if ($this->indexGuestUrl && $oldUrl = $this->space->getOldAttribute('url')) {
                 $this->indexGuestUrl = str_replace(
-                    $this->space->getOldAttribute('url'),
+                    $oldUrl,
                     $this->space->url,
                     $this->indexGuestUrl
                 );

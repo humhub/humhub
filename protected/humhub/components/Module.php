@@ -10,9 +10,11 @@ namespace humhub\components;
 
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
+use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
 use yii\helpers\Json;
 use yii\web\AssetBundle;
@@ -24,7 +26,6 @@ use yii\web\AssetBundle;
  * @property-read string $description
  * @property-read bool $isActivated
  * @property SettingsManager $settings
- * @mixin OnlineModule
  * @author luke
  */
 class Module extends \yii\base\Module
@@ -213,7 +214,8 @@ class Module extends \yii\base\Module
      */
     public function getIsActivated(): bool
     {
-        return (bool) Yii::$app->hasModule($this->id);
+        return Yii::$app->hasModule($this->id) &&
+            !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
     }
 
     /**

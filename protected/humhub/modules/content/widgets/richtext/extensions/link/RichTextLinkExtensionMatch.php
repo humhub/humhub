@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext\extensions\link;
-
 
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtensionMatch;
 
@@ -30,47 +28,47 @@ class RichTextLinkExtensionMatch extends RichTextExtensionMatch
     /**
      * @return string
      */
-    public function getFull() : string
+    public function getFull(): string
     {
         return $this->getByIndex(static::INDEX_FULL);
     }
 
-    public function getText() : string
+    public function getText(): string
     {
         return $this->getByIndex(static::INDEX_CONTENT);
     }
 
-    public function getExtensionKey() : string
+    public function getExtensionKey(): string
     {
         return $this->getByIndex(static::INDEX_EXTENSION_KEY);
     }
 
-    public function getExtensionId() : string
+    public function getExtensionId(): string
     {
         return $this->getByIndex(static::INDEX_EXTENSION_ID);
     }
 
-    public function getExtensionUrl() : string
+    public function getExtensionUrl(): string
     {
         return $this->getExtensionKey() . ':' . $this->getExtensionId();
     }
 
-    public function getTitle() : string
+    public function getTitle(): string
     {
         return $this->getByIndex(static::INDEX_TITLE);
     }
 
-    public function getAddition() : ?string
+    public function getAddition(): ?string
     {
         return $this->getByIndex(static::INDEX_ADDITION);
     }
 
-    public function getByIndex(int $index) : string
+    public function getByIndex(int $index): string
     {
         return $this->match[$index] ?? '';
     }
 
-    public function isImage() : bool
+    public function isImage(): bool
     {
         return $this->getFull()[0] === '!';
     }

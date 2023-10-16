@@ -1,10 +1,38 @@
 HumHub Changelog
 ================
 
-1.14.3 (Unreleased)
+1.14.5 (Unreleased)
+---------------------------
+- Fix #6596: Fix duplicate error and hint for RichText editor with defined form
+- Fix #6595: Fix mimetype of converted preview svg file to png after uploading
+
+1.14.4 (September 20, 2023)
+---------------------------
+- Fix #6489: Never delete original file on store new version
+- Fix #6507: Reload page after accepting of invite in Space header
+- Fix #6531: Fix active style for `btn-lg`
+- Fix #6534: Cannot change Homepage of space in PHP 8.x
+- Fix #6543: Fix errors of inside modal actions
+- Fix #6539: Fix overriding of loaded value with default value on HForm
+- Fix #6464: Fix access to own user container
+- Fix #6349: Fix error on login new user from external service when maintenance is enabled
+- Fix #6557: Fix not initialized groups array on the module administration
+- Fix #6556: Fix command `theme/switch`
+- Fix #6574: Improve a sort order of wall entry creating tab menu and form
+- Fix #6577: Wrong usage of user model scenarios
+- Fix #6578: Refactor user edit form
+
+1.14.3 (July 27, 2023)
 ----------------------
 - Fix #6345: Fix updating of post on wall stream
-- Fix #6351: Error when config `defaultReloadableScripts` is not array 
+- Fix #6351: Error when config `defaultReloadableScripts` is not array
+- Fix #6359: Avoid double call of `afterSave` on creating of a published content
+- Fix #6373: Use integer format for Content columns "visibility" and "state" right after creating
+- Fix #6377: Forgot Password - Display email input error after successful captcha verification.
+- Fix #6378: Fix visibility of the link "Uninstall" on Windows server
+- Fix #6404: Fix visibility of global content on dashboard for registered users
+- Fix #6441: Display topics and content types in filters header on load page with selected filters
+- Fix #6433: Avoid duplicate activities on save published content
 
 1.14.2 (May 22, 2023)
 ----------------------

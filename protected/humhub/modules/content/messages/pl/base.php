@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Widoczne również dla osób niebędących członkami tej strefy)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Potwierdź</strong> usunięcie postu',
     '<strong>Move</strong> content' => '<strong>Przenieś</strong> zawartość',
     '<strong>Permalink</strong> to this post' => '<strong>Link</strong> do tego postu',
     'Activated' => 'Aktywowane',
@@ -28,7 +27,6 @@ return [
     'Creation time' => 'Czas utworzenia',
     'Delete' => 'Usuń',
     'Deleted' => 'Usunięte',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'Czy naprawdę chcesz usunąć ten post? Wszystkie polubienia i komentarze zostaną utracone!',
     'Edit' => 'Edytuj',
     'Enable' => 'Włącz',
     'Filter' => 'Filtr',
@@ -99,12 +97,16 @@ return [
     'Activate scheduling' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'New Updates Available!' => '',
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',
     'Publish draft' => '',
+    'Save as draft' => '',
+    'Save scheduling' => '',
     'Schedule publication' => '',
-    'Scheduled at {dateTime}' => '',
+    'Scheduled for {dateTime}' => '',
+    'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
 ];

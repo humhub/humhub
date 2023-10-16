@@ -147,6 +147,8 @@ class PermissionManager extends Component
     {
         $this->_access = [];
         $this->_groupPermissions = [];
+
+        Yii::$app->runtimeCache->flush();        // ToDo: Flush only PermissionManager related entries
     }
 
     /**
@@ -226,7 +228,10 @@ class PermissionManager extends Component
         // array_fill_keys is done in order to record group ids, even if no records found
         // recorded group id will not be fetched again
         $this->_groupPermissions += array_fill_keys($ids, []);
-        $result = $this->getQuery()->andWhere(['group_id' => $ids])->all();
+
+        $result = Yii::$app->runtimeCache->getOrSet(__METHOD__ . implode(',', $ids), function () use ($ids) {
+            return $this->getQuery()->andWhere(['group_id' => $ids])->all();
+        });
 
         foreach ($result as $group) {
             /** @var GroupPermission | ActiveRecord $group */
@@ -346,11 +351,11 @@ class PermissionManager extends Component
 
     /**
      * Not used anymore, permissions are now prefetched into $_groupPermissions array
-     * @deprecated since 1.10
-     *
      * @param $groupId
      * @param BasePermission $permission
      * @return array|null|\yii\db\ActiveRecord
+     * @deprecated since 1.10
+     *
      */
     protected function getGroupStateRecord($groupId, BasePermission $permission)
     {
@@ -473,9 +478,9 @@ class PermissionManager extends Component
     /**
      * Returns a query for users which are granted given permission
      *
-     * @since 1.3.8
      * @param BasePermission $permission
      * @return ActiveQueryUser
+     * @since 1.3.8
      */
     public static function findUsersByPermission($permission)
     {

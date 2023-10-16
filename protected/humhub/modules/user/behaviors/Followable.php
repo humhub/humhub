@@ -43,7 +43,14 @@ class Followable extends Behavior
     public function getFollowRecord($userId)
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
-        return Follow::find()->where(['object_model' => get_class($this->owner), 'object_id' => $this->owner->getPrimaryKey(), 'user_id' => $userId])->one();
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $userId, function() use ($userId) {
+            return Follow::find()
+                ->where([
+                    'object_model' => get_class($this->owner),
+                    'object_id' => $this->owner->getPrimaryKey(),
+                    'user_id' => $userId
+                ])->one();
+        });
     }
 
     /**

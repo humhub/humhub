@@ -2,7 +2,6 @@
 
 return [
     '(Also visible to non-members of this space)' => '(També visible per als no membres d\'aquest espai)',
-    '<strong>Confirm</strong> post deletion' => '<strong>Confirmar</strong> l\'eliminació del post',
     '<strong>Delete</strong> content?' => '<strong>Eliminar</strong> contingut?',
     '<strong>Move</strong> content' => '<strong>Moure</strong> contingut',
     '<strong>Permalink</strong> to this post' => '<strong>Enllaç</strong> a la publicació',
@@ -29,7 +28,6 @@ return [
     'Creation time' => 'Data de creació',
     'Delete' => 'Suprimeix',
     'Deleted' => 'Eliminat',
-    'Do you really want to delete this post? All likes and comments will be lost!' => 'De veritat vol eliminar aquest post? Tots els m\'agrada i els comentaris es perdran!',
     'Edit' => 'Editar',
     'Enable' => 'Habilita',
     'Filter' => 'Filtra',
@@ -100,11 +98,15 @@ return [
     'Activate scheduling' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
+    'Do you want to delete this content, including all comments and attachments?<br><br>Please note: If a stream entry was created using a module, the original content that this entry is linked to will also be deleted.' => '',
     'Draft' => '',
     'Hidden' => '',
     'Note: Due to technical reasons there may be a delay of a few minutes.' => '',
     'Publish draft' => '',
+    'Save as draft' => '',
+    'Save scheduling' => '',
     'Schedule publication' => '',
-    'Scheduled at {dateTime}' => '',
+    'Scheduled for {dateTime}' => '',
+    'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
 ];

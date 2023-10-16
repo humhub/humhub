@@ -13,8 +13,8 @@ humhub.module('cards', function(module, require, $) {
     const selectTag = function (evt) {
         const filter = $(evt.$trigger).data('filter');
         const tag = $(evt.$trigger).data('tag');
-        const isMultiple = $(evt.$trigger).data('multiple');
         const input = $(evt.$trigger).closest('form').find('input[type=hidden][name=' + filter + ']');
+        const isMultiple = input.data('multiple');
 
         if (tag === '') {
             input.val('');

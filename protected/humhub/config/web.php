@@ -22,7 +22,7 @@ $config = [
         'request' => [
             'class' => \humhub\components\Request::class,
             'csrfCookie' => [
-                'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
+                'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
             ],
         ],
         'response' => [
@@ -36,7 +36,7 @@ $config = [
             'loginUrl' => ['/user/auth/login'],
             'identityCookie' => [
                 'name' => '_identity',
-                'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
+                'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
             ],
         ],
         'errorHandler' => [
@@ -46,7 +46,7 @@ $config = [
             'class' => \humhub\modules\user\components\Session::class,
             'cookieParams' => [
                 'httpOnly' => true,
-                'sameSite' => PHP_VERSION_ID >= 70300 ? yii\web\Cookie::SAME_SITE_LAX : null,
+                'sameSite' => yii\web\Cookie::SAME_SITE_LAX,
             ],
         ],
     ],
@@ -60,7 +60,10 @@ $config = [
                     "Referrer-Policy" => "no-referrer-when-downgrade",
                     "X-Permitted-Cross-Domain-Policies" => "master-only",
                     "X-Frame-Options" => "sameorigin",
-                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self'; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline';"
+                    "Content-Security-Policy" => "default-src *; connect-src  *; font-src 'self'; frame-src https://* http://* *; img-src https://* http://* * data:; object-src 'self'; script-src {{ nonce }} 'self' https://* http://* * 'unsafe-inline' 'report-sample'; style-src * https://* http://* * 'unsafe-inline';"
+                ],
+                'csp' => [
+                    'nonce' => true
                 ]
             ]
         ]

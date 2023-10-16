@@ -1,20 +1,14 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\content\widgets\richtext;
 
+use humhub\components\ActiveRecord;
+use humhub\components\Event;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
-use Yii;
-use humhub\components\Event;
 use humhub\widgets\JsWidget;
+use Yii;
 use yii\base\InvalidArgumentException;
-use humhub\components\ActiveRecord;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.
@@ -120,27 +114,6 @@ abstract class AbstractRichText extends JsWidget
      * @var boolean enables the edit rendering mode
      */
     public $edit = false;
-
-    /**
-     * @var boolean enables the minimal rendering mode used for example for previews, this mode should take the
-     * [[maxLenght]] setting into account for truncating the preview content.
-     *
-     * @deprecated since 1.8 use shorttext converter instead
-     */
-    public $minimal = false;
-
-    /**
-     * @var int setting used to truncate the rich text content, usually related to [[minimal]] mode and used for previews
-     *
-     * @deprecated since 1.8 use shorttext converter instead
-     */
-    public $maxLength = 0;
-
-    /**
-     * @var boolean defines if this rich text is also used as client side markdown text.
-     * @deprecated since 1.3
-     */
-    public $markdown = false;
 
     /**
      * @var array Can be used to explicitly include specific plugins in addition to the set of defaults (preset)

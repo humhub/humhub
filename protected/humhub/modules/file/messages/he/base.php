@@ -18,5 +18,8 @@ return [
     'The uploaded image is not a squared.' => 'התמונה שהועלה אינה מרובעת',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'לא ניתן להעלות מספר קבצים במקביל',
     'Upload files' => 'העלה קבצים',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
     'Double file extensions are not allowed!' => '',
 ];

@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * @link      https://www.humhub.org/
+ * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
+ * @license   https://www.humhub.com/licences
+ */
+
+/**
+ * @noinspection PhpIllegalPsrClassPathInspection
+ */
+
 namespace tests\codeception\_support;
 
 use Codeception\Module;
@@ -9,6 +19,7 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverte
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use Yii;
+use yii\helpers\FileHelper;
 use yii\symfonymailer\Message;
 
 /**
@@ -19,22 +30,16 @@ use yii\symfonymailer\Message;
  */
 class HumHubHelper extends Module
 {
+    use HumHubHelperTrait;
 
     protected $config = [];
 
+    /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
     public function _before(\Codeception\TestInterface $test)
     {
         Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
-        $this->flushCache();
-    }
-
-    protected function flushCache()
-    {
-        RichTextToShortTextConverter::flushCache();
-        RichTextToHtmlConverter::flushCache();
-        RichTextToPlainTextConverter::flushCache();
-        RichTextToMarkdownConverter::flushCache();
-        UrlOembed::flush();
+        static::reloadSettings(__METHOD__);
+        static::flushCache(__METHOD__);
     }
 
     public function fetchInviteToken($mail)
@@ -58,27 +63,28 @@ class HumHubHelper extends Module
         $this->getModule('Yii2')->_loadPage('POST', '/user/invite', ['Invite[emails]' => $email]);
     }
 
+    /** @noinspection PhpUnhandledExceptionInspection */
     public function assertMailSent($count = 0, $msg = null)
     {
-        return $this->getModule('Yii2')->seeEmailIsSent($count);
+        $this->getYiiModule()->seeEmailIsSent($count);
     }
 
     public function assertEqualsLastEmailSubject($subject)
     {
-        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $message = $this->getYiiModule()->grabLastSentEmail();
         $this->assertEquals($subject, $message->getSubject());
     }
 
     public function grapLastEmailText()
     {
         /** @var Message $message */
-        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $message = $this->getYiiModule()->grabLastSentEmail();
         return $message->getTextBody();
     }
 
     /*public function assertEqualsLastEmailSubject($subject)
     {
-        $message = $this->getModule('Yii2')->grabLastSentEmail();
+        $message = $this->getYiiModule()->grabLastSentEmail();
         $this->assertEquals($subject, $message->getSubject());
     }*/
 
@@ -101,5 +107,4 @@ class HumHubHelper extends Module
             }
         }
     }
-
 }
