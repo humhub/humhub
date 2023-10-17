@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #6596: Fix duplicate error and hint for RichText editor with defined form
 - Fix #6595: Fix mimetype of converted preview svg file to png after uploading
 - Fix #6614: Fix undefined error on live event of follow action
+- Fix #6615: Improve scrolling to anchor with fixed header
 
 1.14.4 (September 20, 2023)
 ---------------------------
