@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.0-beta.3 (Unreleased)
+-------------------------------
+- Enh #6619: Add a link to "Module Administration" from Marketplace
+
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------
 - Enh #6594: Add field `file.metadata`
