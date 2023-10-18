@@ -855,7 +855,7 @@ class SelfTest
                     ->tooltip(Yii::t('AdminModule.information', 'This module is not provided via our Marketplace and may cause problems especially during updates'));
             } else {
                 $title .= ' ' .$onlineModule->marketplaceLink(Icon::get('info-circle'));
-                if ($onlineModule->id === 'news' || $onlineModule->isDeprecated) {
+                if ($onlineModule->isDeprecated) {
                     $state = 'WARNING';
                     $info[] = Label::danger(Yii::t('AdminModule.information', 'Deprecated'));
                 }
