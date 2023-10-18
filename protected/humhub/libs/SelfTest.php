@@ -12,6 +12,8 @@ use humhub\models\Setting;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Label;
 use Yii;
 
 /**
@@ -609,21 +611,7 @@ class SelfTest
             ];
         }
 
-        // Check HumHub Marketplace API Connection
-        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
-        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        }
-
-        return $checks;
+        return self::getMarketplaceResults($checks);
     }
 
     /**
@@ -823,5 +811,70 @@ class SelfTest
         }
 
         return $driver;
+    }
+
+    /**
+     * Get Results of the Application SelfTest for Marketplace part.
+     *
+     * Fields
+     *  - title
+     *  - state (OK, WARNING or ERROR)
+     *  - hint
+     *
+     * @param array Results initialized before
+     * @return array
+     */
+    public static function getMarketplaceResults($checks = []): array
+    {
+        // Check HumHub Marketplace API Connection
+        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
+        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        }
+
+        // Check installed modules by marketplace
+        /* @var \humhub\components\Module[] $modules */
+        $modules = Yii::$app->moduleManager->getModules();
+        foreach ($modules as $module) {
+            $onlineModule = $module->getOnlineModule();
+            $title = Yii::t('AdminModule.information', 'Module "{moduleName}"', ['moduleName' => $module->name]);
+            $state = 'OK';
+            $info = [];
+
+            if ($onlineModule === null) {
+                $state = 'WARNING';
+                $info[] = Label::warning(Yii::t('AdminModule.information', 'Not provided'))
+                    ->tooltip(Yii::t('AdminModule.information', 'This module is not provided via our Marketplace and may cause problems especially during updates'));
+            } else {
+                $title .= ' ' .$onlineModule->marketplaceLink(Icon::get('info-circle'));
+                if ($onlineModule->id === 'news' || $onlineModule->isDeprecated) {
+                    $state = 'WARNING';
+                    $info[] = Label::danger(Yii::t('AdminModule.information', 'Deprecated'));
+                }
+                if (version_compare($onlineModule->latestCompatibleVersion, $module->getVersion(), 'gt')) {
+                    $state = 'WARNING';
+                    $info[] = Label::info(Yii::t('AdminModule.information', 'Update'))
+                        ->tooltip(Yii::t('AdminModule.information', 'Update from {oldVersion} to the latest version {newVersion}', [
+                            'oldVersion' => $module->getVersion(),
+                            'newVersion' => $onlineModule->latestCompatibleVersion,
+                        ]));
+                }
+            }
+
+            $checks[] = [
+                'title' => $title . ' ' . implode(' ', $info),
+                'state' => $state
+            ];
+        }
+
+        return $checks;
     }
 }

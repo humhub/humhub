@@ -13,6 +13,7 @@ use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\marketplace\models\Module as OnlineModelModule;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\queue\helpers\QueueHelper;
 use Yii;
@@ -468,5 +469,17 @@ class Module extends \yii\base\Module
         }
 
         return $assets;
+    }
+
+    public function getOnlineModule(): ?OnlineModelModule
+    {
+        /* @var \humhub\modules\marketplace\Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        if (!$marketplaceModule->enabled) {
+            return null;
+        }
+
+        return $marketplaceModule->onlineModuleManager->getModule($this->id);
     }
 }
