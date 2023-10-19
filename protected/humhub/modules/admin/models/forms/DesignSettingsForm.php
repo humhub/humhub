@@ -8,16 +8,16 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\libs\DynamicConfig;
+use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use humhub\libs\LogoImage;
-use humhub\libs\DynamicConfig;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 
 /**
  * DesignSettingsForm
@@ -93,6 +93,15 @@ class DesignSettingsForm extends Model
         ];
     }
 
+    /**
+     * @inerhitdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'spaceOrder' => Yii::t('AdminModule.settings', 'A manual sort is always applied first to spaces whose sort order has been configured.'),
+        ];
+    }
 
     /**
      * @inheritdoc
