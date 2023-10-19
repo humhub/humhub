@@ -849,7 +849,7 @@ class SelfTest
             $onlineModule = $module->getOnlineModule();
             if ($onlineModule === null) {
                 $customModules[] = $module->name;
-            } elseif ($onlineModule->isDeprecated || in_array($module->id, ['news', 'cfiles', 'custom_pages'])) {
+            } elseif ($onlineModule->isDeprecated) {
                 $deprecatedModules[] = $module->name;
             }
         }
