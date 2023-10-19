@@ -843,35 +843,34 @@ class SelfTest
         // Check installed modules by marketplace
         /* @var \humhub\components\Module[] $modules */
         $modules = Yii::$app->moduleManager->getModules();
+        $deprecatedModules = [];
+        $customModules = [];
         foreach ($modules as $module) {
             $onlineModule = $module->getOnlineModule();
-            $title = Yii::t('AdminModule.information', 'Module "{moduleName}"', ['moduleName' => $module->name]);
-            $state = 'OK';
-            $info = [];
-
             if ($onlineModule === null) {
-                $state = 'WARNING';
-                $info[] = Label::warning(Yii::t('AdminModule.information', 'Not provided'))
-                    ->tooltip(Yii::t('AdminModule.information', 'This module is not provided via our Marketplace and may cause problems especially during updates'));
-            } else {
-                $title .= ' ' .$onlineModule->marketplaceLink(Icon::get('info-circle'));
-                if ($onlineModule->isDeprecated) {
-                    $state = 'WARNING';
-                    $info[] = Label::danger(Yii::t('AdminModule.information', 'Deprecated'));
-                }
-                if (version_compare($onlineModule->latestCompatibleVersion, $module->getVersion(), 'gt')) {
-                    $state = 'WARNING';
-                    $info[] = Label::info(Yii::t('AdminModule.information', 'Update'))
-                        ->tooltip(Yii::t('AdminModule.information', 'Update from {oldVersion} to the latest version {newVersion}', [
-                            'oldVersion' => $module->getVersion(),
-                            'newVersion' => $onlineModule->latestCompatibleVersion,
-                        ]));
-                }
+                $customModules[] = $module->name;
+            } elseif ($onlineModule->isDeprecated || in_array($module->id, ['news', 'cfiles', 'custom_pages'])) {
+                $deprecatedModules[] = $module->name;
             }
+        }
 
+        if ($deprecatedModules !== []) {
             $checks[] = [
-                'title' => $title . ' ' . implode(' ', $info),
-                'state' => $state
+                'title' => Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
+                    'modules' => implode(', ', $deprecatedModules)
+                ]),
+                'state' => 'ERROR',
+                'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
+            ];
+        }
+
+        if ($customModules !== []) {
+            $checks[] = [
+                'title' => Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
+                    'modules' => implode(', ', $customModules)
+                ]),
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Updates must be performed manually. Check compatibility before HumHub updates!')
             ];
         }
 
