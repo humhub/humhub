@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-Unreleased
+1.16.0-beta.1 (Unreleased)
 -------------------------------
 - Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
 
