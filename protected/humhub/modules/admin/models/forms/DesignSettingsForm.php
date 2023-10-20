@@ -85,7 +85,7 @@ class DesignSettingsForm extends Model
             'paginationSize' => Yii::t('AdminModule.settings', 'Default pagination size (Entries per page)'),
             'displayNameFormat' => Yii::t('AdminModule.settings', 'User Display Name'),
             'displayNameSubFormat' => Yii::t('AdminModule.settings', 'User Display Name Subtitle'),
-            'spaceOrder' => Yii::t('AdminModule.settings', 'Dropdown space order'),
+            'spaceOrder' => Yii::t('AdminModule.settings', '"My Spaces" Sorting'),
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
@@ -99,7 +99,7 @@ class DesignSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'spaceOrder' => Yii::t('AdminModule.settings', 'A manual sort is always applied first to spaces whose sort order has been configured.'),
+            'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the space advanced settings.'),
         ];
     }
 
