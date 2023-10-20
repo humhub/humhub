@@ -99,7 +99,7 @@ class DesignSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the space advanced settings.'),
+            'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the Space advanced settings.'),
         ];
     }
 
