@@ -826,8 +826,10 @@ class SelfTest
      */
     public static function getMarketplaceResults($checks = []): array
     {
+        $titlePrefix = Yii::t('AdminModule.information', 'HumHub') . ' - ';
+
         // Check HumHub Marketplace API Connection
-        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
+        $title = $titlePrefix . Yii::t('AdminModule.information', 'Marketplace API Connection');
         if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
             $checks[] = [
                 'title' => $title,
@@ -856,7 +858,7 @@ class SelfTest
 
         if ($deprecatedModules !== []) {
             $checks[] = [
-                'title' => Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
+                'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
                     'modules' => implode(', ', $deprecatedModules)
                 ]),
                 'state' => 'ERROR',
@@ -866,7 +868,7 @@ class SelfTest
 
         if ($customModules !== []) {
             $checks[] = [
-                'title' => Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
+                'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
                     'modules' => implode(', ', $customModules)
                 ]),
                 'state' => 'WARNING',
