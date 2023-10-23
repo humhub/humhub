@@ -5,6 +5,8 @@ HumHub Changelog
 -------------------------------
 - Enh #6619: Add a link to "Module Administration" from Marketplace
 - Enh #6620: Marketplace: Add more module checks
+- Enh #6621: Avoid PHP error when trying to download a file without guid in the URL params (return 404 exception instead)
+- Enh #6623: Add a hint in the "Dropdown space order" settings to inform that a manual sort is always applied first
 
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------

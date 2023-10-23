@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Collapse' => '',
-    'Read more' => '',
-    'Reset filters' => '',
-    'User Interface' => '',
-];
+return array (
+  'Collapse' => 'Jaso',
+  'Read more' => '',
+  'Reset filters' => '',
+  'User Interface' => '',
+);
