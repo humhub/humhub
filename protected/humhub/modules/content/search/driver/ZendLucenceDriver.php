@@ -62,12 +62,9 @@ class ZendLucenceDriver extends AbstractDriver
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
             $document->addField(Field::unStored($attributeName, $attributeValue));
-            Yii::warning('Add: '. $attributeName. ' - '. $attributeValue);
         }
 
         try {
-            Yii::warning('Updated document '. $content->id, 'search');
-
             $this->getIndex()->addDocument($document);
             $this->commit();
         } catch (RuntimeException $e) {
@@ -85,7 +82,6 @@ class ZendLucenceDriver extends AbstractDriver
                 Yii::error('Could not delete document from search index. Error: ' . $e->getMessage(), 'content');
             }
         }
-        Yii::warning('Deleted document '. $content->id, 'search');
         $this->commit();
     }
 

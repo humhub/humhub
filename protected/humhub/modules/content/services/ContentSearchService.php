@@ -2,7 +2,6 @@
 
 namespace humhub\modules\content\services;
 
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\jobs\SearchDeleteDocument;
@@ -12,10 +11,7 @@ use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\models\File;
-use humhub\modules\search\engine\Search;
-use humhub\modules\search\events\SearchAttributesEvent;
 use Yii;
-use yii\base\Event;
 
 class ContentSearchService
 {
