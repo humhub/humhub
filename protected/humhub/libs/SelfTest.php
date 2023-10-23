@@ -872,7 +872,7 @@ class SelfTest
                     'modules' => implode(', ', $customModules)
                 ]),
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Updates must be performed manually. Check compatibility before HumHub updates!')
+                'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
             ];
         }
 
