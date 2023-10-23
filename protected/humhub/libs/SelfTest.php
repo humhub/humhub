@@ -12,6 +12,8 @@ use humhub\models\Setting;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\Label;
 use Yii;
 
 /**
@@ -609,21 +611,7 @@ class SelfTest
             ];
         }
 
-        // Check HumHub Marketplace API Connection
-        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
-        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        }
-
-        return $checks;
+        return self::getMarketplaceResults($checks);
     }
 
     /**
@@ -823,5 +811,71 @@ class SelfTest
         }
 
         return $driver;
+    }
+
+    /**
+     * Get Results of the Application SelfTest for Marketplace part.
+     *
+     * Fields
+     *  - title
+     *  - state (OK, WARNING or ERROR)
+     *  - hint
+     *
+     * @param array Results initialized before
+     * @return array
+     */
+    public static function getMarketplaceResults($checks = []): array
+    {
+        $titlePrefix = Yii::t('AdminModule.information', 'HumHub') . ' - ';
+
+        // Check HumHub Marketplace API Connection
+        $title = $titlePrefix . Yii::t('AdminModule.information', 'Marketplace API Connection');
+        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        }
+
+        // Check installed modules by marketplace
+        /* @var \humhub\components\Module[] $modules */
+        $modules = Yii::$app->moduleManager->getModules();
+        $deprecatedModules = [];
+        $customModules = [];
+        foreach ($modules as $module) {
+            $onlineModule = $module->getOnlineModule();
+            if ($onlineModule === null) {
+                $customModules[] = $module->name;
+            } elseif ($onlineModule->isDeprecated) {
+                $deprecatedModules[] = $module->name;
+            }
+        }
+
+        if ($deprecatedModules !== []) {
+            $checks[] = [
+                'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
+                    'modules' => implode(', ', $deprecatedModules)
+                ]),
+                'state' => 'ERROR',
+                'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
+            ];
+        }
+
+        if ($customModules !== []) {
+            $checks[] = [
+                'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
+                    'modules' => implode(', ', $customModules)
+                ]),
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
+            ];
+        }
+
+        return $checks;
     }
 }
