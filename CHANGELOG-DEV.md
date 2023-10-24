@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #6620: Marketplace: Add more module checks
 - Enh #6621: Avoid PHP error when trying to download a file without guid in the URL params (return 404 exception instead)
 - Enh #6623: Add a hint in the "Dropdown space order" settings to inform that a manual sort is always applied first
+- Enh #6628: Add self test check: "Mobile App - Push Service"
 
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------

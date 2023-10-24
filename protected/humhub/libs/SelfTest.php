@@ -316,22 +316,6 @@ class SelfTest
             ];
         }
 
-        // Checks GraphicsMagick Extension
-        $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Extension', ['phpExtension' => 'GraphicsMagick']);
-        if (class_exists('Gmagick', false)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Optional')
-            ];
-        }
-
-
         $memoryLimit = ini_get('memory_limit');
         if (preg_match('/^(\d+)(.)$/', $memoryLimit, $m)) {
             if ($m[2] == 'G') {
@@ -390,22 +374,6 @@ class SelfTest
                 'state' => 'WARNING',
                 'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
                     . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for APC Caching', ['phpExtension' => 'APCu'])
-            ];
-        }
-
-        // Checks SQLite3 Extension
-        $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Support', ['phpExtension' => 'SQLite3']);
-        if (class_exists('SQLite3')) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
-                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for DB Caching', ['phpExtension' => 'SQLite3'])
             ];
         }
 
@@ -873,6 +841,25 @@ class SelfTest
                 ]),
                 'state' => 'WARNING',
                 'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
+            ];
+        }
+
+        // Check Mobile App - Push Service
+        $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
+        /* @var \humhub\modules\fcmPush\Module|null $pushModule */
+        $pushModule = $modules['fcm-push'] ?? null;
+        if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
+            $pushModule->isActivated &&
+            $pushModule->getGoService()->isConfigured()) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING',
+                'hint' => Yii::t('AdminModule.information', 'Install "Push Notifications (Firebase)" module and setup of Firebase API Key required')
             ];
         }
 
