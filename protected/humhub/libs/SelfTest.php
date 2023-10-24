@@ -859,7 +859,7 @@ class SelfTest
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Install "Push Notifications (Firebase)" module and setup of Firebase API Key required')
+                'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
             ];
         }
 
