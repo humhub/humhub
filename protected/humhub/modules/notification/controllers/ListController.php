@@ -22,9 +22,9 @@ use yii\db\IntegrityException;
 class ListController extends Controller
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY]

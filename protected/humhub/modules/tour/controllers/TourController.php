@@ -9,10 +9,10 @@
 namespace humhub\modules\tour\controllers;
 
 use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\tour\Module;
 use Yii;
 use yii\web\HttpException;
-use humhub\modules\space\models\Space;
 
 /**
  * TourController
@@ -23,7 +23,10 @@ use humhub\modules\space\models\Space;
  */
 class TourController extends \humhub\components\Controller
 {
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             ['login']

@@ -36,7 +36,10 @@ use yii\web\HttpException;
  */
 class MembershipController extends ContentContainerController
 {
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             ['permission' => [InviteUsers::class], 'actions' => ['invite']],
