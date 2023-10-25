@@ -25,9 +25,9 @@ use Yii;
 class AdminController extends Controller
 {
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageSettings::class]],

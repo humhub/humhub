@@ -22,7 +22,7 @@ class OembedController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [['login']];
     }

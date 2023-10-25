@@ -24,7 +24,7 @@ use yii\web\HttpException;
  * Disable guest access for all controller actions:
  *
  * ```php
- * public function getAccessRules()
+ * protected function getAccessRules()
  * {
  *     return [
  *          ['login']
@@ -35,7 +35,7 @@ use yii\web\HttpException;
  * Disable guest access for specific controller actions:
  *
  * ```php
- * public function getAccessRules()
+ * protected function getAccessRules()
  * {
  *     return [
  *          ['login' => ['action1', 'action2']]
@@ -46,7 +46,7 @@ use yii\web\HttpException;
  * All users have to be logged in + additional permission check for 'action1' and 'action2':
  *
  * ```php
- * public function getAccessRules()
+ * protected function getAccessRules()
  * {
  *     return [
  *          ['login'],
@@ -58,7 +58,7 @@ use yii\web\HttpException;
  * Custom inline validator for action 'action1':
  *
  * ```php
- * public function getAccessRules()
+ * protected function getAccessRules()
  * {
  *     return [
  *          ['validateMyCustomRule', 'someParameter' => 'someValue', 'actions' => ['action1']]
