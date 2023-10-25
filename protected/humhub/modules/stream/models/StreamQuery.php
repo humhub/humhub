@@ -586,9 +586,10 @@ class StreamQuery extends Model
      * protected function beforeApplyFilters()
      * {
      *   $this->addFilterHandler(MyStreamFilter::class);
-     *   // NOTE: Put the parent method here in the end of this method in order to
-     *   //       the event trigger has all applied filters above
+     *   // NOTE: Put the parent method here between methods `addFilterHandler` and `removeFilterHandler`
+     *   //       in order to have all applied filters from external event triggers
      *   parent::beforeApplyFilters();
+     *   $this->removeFilterHandler(SomeStreamFilter::class);
      * }
      * ```
      *
