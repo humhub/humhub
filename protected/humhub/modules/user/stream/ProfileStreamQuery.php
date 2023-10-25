@@ -24,8 +24,6 @@ class ProfileStreamQuery extends ContentContainerStreamQuery
      */
     public function beforeApplyFilters()
     {
-        parent::beforeApplyFilters();
-
         $this->removeFilterHandler(ContentContainerStreamFilter::class);
 
         // The default scope may be overwritten by first request, the real default is handled in the stream filter navigation
@@ -35,5 +33,7 @@ class ProfileStreamQuery extends ContentContainerStreamQuery
                 ? IncludeAllContributionsFilter::SCOPE_ALL
                 : IncludeAllContributionsFilter::SCOPE_PROFILE
         ]));
+
+        parent::beforeApplyFilters();
     }
 }

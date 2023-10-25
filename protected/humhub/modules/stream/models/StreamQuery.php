@@ -144,6 +144,13 @@ class StreamQuery extends Model
     ];
 
     /**
+     * @var array Excluded query filter handlers from adding
+     * @see [[removeFilterHandler(..., $exclude = true)]]
+     * @since 1.14.5
+     */
+    public $excludedFilterHandlers = [];
+
+    /**
      * Per default only content with published state are returned.
      *
      * @note Used, for example, by the Recycle Bin module to display deleted content in the stream.
@@ -585,11 +592,11 @@ class StreamQuery extends Model
      * ```php
      * protected function beforeApplyFilters()
      * {
-     *   $this->addFilterHandler(MyStreamFilter::class);
-     *   // NOTE: Put the parent method here between methods `addFilterHandler` and `removeFilterHandler`
-     *   //       in order to have all applied filters from external event triggers
-     *   parent::beforeApplyFilters();
      *   $this->removeFilterHandler(SomeStreamFilter::class);
+     *   $this->addFilterHandler(MyStreamFilter::class);
+     *   // NOTE: Put the parent method here in the end of this method in order to have
+     *   //       all core applied filters when external event triggers will be called
+     *   parent::beforeApplyFilters();
      * }
      * ```
      *
@@ -632,14 +639,18 @@ class StreamQuery extends Model
      *
      * @param string|StreamQueryFilter $handler
      * @param bool $overwrite whether or not to overwrite existing filters of the same class
-     * @return StreamQueryFilter initialized stream filter
+     * @return StreamQueryFilter|null initialized stream filter
      * @throws InvalidConfigException
      * @since 1.6
      */
     public function addFilterHandler($handler, $overwrite = true, $prepend = false)
     {
+        if ($this->isExcludedFilterHandler($handler)) {
+            return null;
+        }
+
         if ($overwrite) {
-            $this->removeFilterHandler($handler);
+            $this->removeFilterHandler($handler, false);
         }
 
         $handler = $this->prepareHandler($handler);
@@ -670,7 +681,10 @@ class StreamQuery extends Model
     {
         $result = [];
         foreach ($handlers as $handler) {
-            $result[] = $this->addFilterHandler($handler, $overwrite);
+            $handler = $this->addFilterHandler($handler, $overwrite);
+            if ($handler !== null) {
+                $result[] = $handler;
+            }
         }
 
         return $result;
@@ -679,12 +693,11 @@ class StreamQuery extends Model
     /**
      * Can be used to remove filters by filter class.
      *
-     * @param $handler
-     * @return StreamQueryFilter
-     * @throws InvalidConfigException
+     * @param string|StreamQueryFilter $handlerToRemove
+     * @param bool $exclude Exclude from further adding
      * @since 1.6
      */
-    public function removeFilterHandler($handlerToRemove)
+    public function removeFilterHandler($handlerToRemove, bool $exclude = true)
     {
         $result = [];
         $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
@@ -695,21 +708,37 @@ class StreamQuery extends Model
         }
 
         $this->filterHandlers = $result;
+
+        if ($exclude && !$this->isExcludedFilterHandler($handlerToRemoveClass)) {
+            $this->excludedFilterHandlers[] = $handlerToRemoveClass;
+        }
+    }
+
+    /**
+     * Check the filter handler is excluded
+     *
+     * @param string|StreamQueryFilter $handler
+     * @return bool
+     */
+    public function isExcludedFilterHandler($handler): bool
+    {
+        $handler = is_string($handler) ? $handler : get_class($handler);
+        return in_array($handler, $this->excludedFilterHandlers);
     }
 
     /**
      * Can be used to search for a filter handler by class.
      *
-     * @param $handler
-     * @return StreamQueryFilter
+     * @param string|StreamQueryFilter $class
+     * @return StreamQueryFilter|null
      * @throws InvalidConfigException
      * @since 1.6
      */
     public function getFilterHandler($class): ?StreamQueryFilter
     {
-        $handlerToRemoveClass = is_string($class) ? $class : get_class($class);
+        $handlerClass = is_string($class) ? $class : get_class($class);
         foreach ($this->filterHandlers as $handler) {
-            if (is_a($handler, $handlerToRemoveClass, true)) {
+            if (is_a($handler, $handlerClass, true)) {
                 return $this->prepareHandler($handler);
             }
         }
