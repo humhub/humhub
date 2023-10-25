@@ -422,7 +422,10 @@ class StreamQuery extends Model
                 Yii::warning('StreamQuery::postProcessAll - invalid FilterHandler: ' . var_export($filterHandler, true), 'content');
             }
         }
-        return $result;
+
+        // Remove duplicates, they may exist after fetch top sorted items by different way,
+        // e.g. when a Content is top sorted as Draft and as Unread News
+        return array_values(ArrayHelper::index($result, 'id'));
     }
 
     /**
@@ -582,8 +585,10 @@ class StreamQuery extends Model
      * ```php
      * protected function beforeApplyFilters()
      * {
-     *   parent::beforeApplyFilters();
      *   $this->addFilterHandler(MyStreamFilter::class);
+     *   // NOTE: Put the parent method here in the end of this method in order to
+     *   //       the event trigger has all applied filters above
+     *   parent::beforeApplyFilters();
      * }
      * ```
      *
