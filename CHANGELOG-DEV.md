@@ -19,8 +19,18 @@ HumHub Changelog
 - Fix #6337: Update `created_at` after first publishing of content record
 - Fix #6631: Fix visibility of the method `Controller::getAccessRules()`
 
-1.15.0-beta.2 (Unreleased)
---------------------------
+1.15.0-beta.3 (Unreleased)
+-------------------------------
+- Enh #6619: Add a link to "Module Administration" from Marketplace
+- Enh #6620: Marketplace: Add more module checks
+- Enh #6621: Avoid PHP error when trying to download a file without guid in the URL params (return 404 exception instead)
+- Enh #6623: Add a hint in the "Dropdown space order" settings to inform that a manual sort is always applied first
+- Enh #6626: Content state flag "was published"
+- Enh #6628: Add self test check: "Mobile App - Push Service"
+
+1.15.0-beta.2 (October 5, 2023)
+-------------------------------
+- Enh #6594: Add field `file.metadata`
 - Enh #6593: Add field `file.sort_order`
 - Enh #6592: Add field `file.state`
 - Enh #6591: Add field `file.category`
@@ -28,6 +38,7 @@ HumHub Changelog
 - Enh #6553: Support log assertions
 - Fix #6551: Migration's transaction with invalid savepoint
 - Fix #6549: Empty profile field type causing an unspecific error
+- Fix #6547: Invalid class name validated as valid and improve validation
 - Enh #6529: Add boolean return-type to `*safe*` methods in migrations
 - Fix #6516: Humhub test case would fail on skipped tests
 - Enh #6478: Add pseudo test class to allow population of DB with standard test data
@@ -61,7 +72,6 @@ HumHub Changelog
 -----------------------------
 - Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
 - Enh #6460: Test server output: print application requests
-- Enh #6451: Introduce Archiveable, Deletable, Editable, Readable, & Viewable Interfaces
 - Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
 - Fix #6220: User Soft Delete doesn't remove third party auth references
 - Enh #6270: Add tests for SettingsManager

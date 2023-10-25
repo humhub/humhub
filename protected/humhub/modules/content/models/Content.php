@@ -75,6 +75,7 @@ use yii\helpers\Url;
  * @property integer $archived
  * @property integer $hidden
  * @property integer $state
+ * @property integer $was_published
  * @property string $scheduled_at
  * @property integer $locked_comments
  * @property string $created_at
@@ -267,6 +268,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
             if ($model instanceof ContentActiveRecord) {
                 $model->afterStateChange($this->state, $previousState);
+            }
+
+            if (!$this->getStateService()->wasPublished() && (int) $previousState === self::STATE_PUBLISHED) {
+                $this->updateAttributes(['was_published' => 1]);
             }
         }
 

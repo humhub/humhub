@@ -86,6 +86,10 @@ return array (
   'Upload file' => 'ファイルをアップロード',
   'You are not allowed to run this action.' => 'この操作を実行することはできません。',
   'verify your upload_max_filesize and post_max_size php settings.' => 'Upload_max_filesize と post_max_size の php 設定を確認してください。',
+  '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '{attribute} が空です。空の値を埋めるシステム構成関数が無効な値を返しました。もう一度試すか管理者に問い合わせてください。',
+  '{attribute} must be a string (UUID) or null; {type} given.' => '{attribute} は文字列 (UUID) または null でなければなりません。 {type} が指定されました。',
+  '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '{attribute} は UUID または null でなければなりません。 UUID の形式は "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}" です。
+X = [a-fA-F0-9]、波括弧と区切りダッシュは両方ともオプションです。',
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',

@@ -119,7 +119,7 @@ The license was successfully removed!
     'Third-party disclaimer' => 'Haftungsausschluss von Drittanbietern',
     'This Module was developed by a third-party.' => 'Dieses Modul würde von einem Drittanbieter entwickelt.',
     'Try other keywords or remove filters.' => 'Verwende andere Suchbegriffe oder ändere die Filtereinstellungen.',
-    'Uninstalled' => 'Deinstalliert',
+    'Uninstalled' => 'Nicht installiert',
     'Update' => 'Aktualisieren',
     'Update all' => 'Alle aktualisieren',
     'Update successful' => 'Aktualisierung erfolgreich',
@@ -132,5 +132,6 @@ The license was successfully removed!
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
     'Great!' => '',
+    'Module Administration' => '',
     'Would you like to jump straight to it?' => '',
 ];

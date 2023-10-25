@@ -34,6 +34,14 @@ Version 1.15 (Unreleased)
 
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
+- `\humhub\libs\Helpers::checkClassType()` (see [#6548](https://github.com/humhub/humhub/pull/6548))
+  - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`
+    with different Exception Codes as documented in the function's documentation:
+      - `\humhub\exceptions\InvalidArgumentClassException`
+      - `\humhub\exceptions\InvalidArgumentTypeException`
+      - `\humhub\exceptions\InvalidArgumentValueException`
+  - the return type has changed from `false` to `string|null`
+  - the second parameter `$type` is now mandatory
 
 ### Deprecations
 #### New

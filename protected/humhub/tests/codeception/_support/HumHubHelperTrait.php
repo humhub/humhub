@@ -28,6 +28,7 @@ use PHPUnit\Framework\Exception;
 use TypeError;
 use Yii;
 use yii\base\ErrorException;
+use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveRecord;
 use yii\db\Command;
@@ -159,7 +160,44 @@ trait HumHubHelperTrait
      */
 
     /**
+     * Used to check the fired events. Example:
+     * ```
+     * // register the events you are interested in
+     * \yii\base\Event::on(EventA::class, EventA::EVENT_NAME_1, [$this, 'handleEvent'], $optionalEventData);
+     * $instance->on(EventB::class, EventB::EVENT_NAME_2, [$this, 'handleEvent'], $optionalEventData);
+     *
+     * // Then do the stuff that would raise the event
+     *
+     * // Then assert the events - adapt to what you expect. It is not a requirement that both events you've registered
+     * // to are actually fired. In fact, you might want to register to one event above, and then make sure it was *not*
+     * // fired by not adding it in the list below.
+     * $this->assertEvents([
+     *      [
+     *          'class' => EventA::class,
+     *          'event' => EventA::EVENT_NAME_1,
+     *          'sender' => $instance,                      // adapt to what you expect
+     *          'data' => null,                             // or $optionalEventData
+     *          'handled' => false,                         // adapt to what you expect
+     *          'extra' => [                                // example according to the example in static::handleEvent()
+     *              EventA::EVENT_NAME_1 => Module1::class,
+     *          ],
+     *      ],
+     *      [
+     *          'class' => EventB::class,
+     *          'event' => EventB::EVENT_NAME_2',
+     *          'sender' => $instance,
+     *          'data' => null,                             // or $optionalEventData
+     *          'handled' => false,                         // adapt to what you expect
+     *          'extra' => [                                // example according to the example in static::handleEvent()
+     *              $id1 => $name1,
+     *              $id2 => $name2,
+     *          ],
+     *      ],
+     * ]);
+     * ```
+     *
      * @since 1.15
+     * @see static::handleEvent()
      */
     public function assertEvents(array $events = [], string $message = ''): void
     {
@@ -550,6 +588,54 @@ trait HumHubHelperTrait
             )
         );
     }
+
+
+    /**
+     * EVENTS HELPERS
+     * ==============
+     */
+
+    /**
+     * Saves the events to be later asserted.
+     *
+     * You may want to override this method to add some specific data to be verified later. E.g., like so:
+     * ```
+     *  public function handleEvent(Event $event)
+     *  {
+     *      $e = [];
+     *
+     *      if ($event instanceof EventA) {
+     *          $e['extra'] = [$event->name => get_debug_type($event->data)];
+     *      }
+     *
+     *      if ($event instanceof EventB) {
+     *          $e['extra'] = array_column($event->data, 'name', 'id');
+     *      }
+     *
+     *      parent::handleEvent($event, $e);
+     *  }
+     * ```
+     *
+     * @since 1.15
+     * @see static::assertEvents()
+     */
+    public function handleEvent(Event $event)
+    {
+        $eventData = [
+            'class' => get_class($event),
+            'event' => $event->name,
+            'sender' => $event->sender,
+            'data' => $event->data,
+            'handled' => $event->handled,
+        ];
+
+        $this->firedEvents[] = $eventData;
+    }
+
+    /**
+     * LOGGING HELPERS
+     * ===============
+     */
 
     /**
      * Start capturing log entries, in order to later check them with `assertLog*` and `assertNotLog*` functions

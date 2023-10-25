@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.15.0-beta.1',
+    'version' => '1.15.0-beta.2',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -225,6 +225,7 @@ $config = [
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
             'sr' => 'Сербисцх',
+            'eu' => 'Basque'
         ],
         'ldap' => [
             // LDAP date field formats
