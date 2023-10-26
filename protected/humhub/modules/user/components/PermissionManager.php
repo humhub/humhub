@@ -183,7 +183,9 @@ class PermissionManager extends Component
         $record->class = get_class($permission);
         $record->group_id = $groupId;
         $record->state = $state;
-        $record->save();
+        if ($record->save()) {
+            $this->clear();
+        }
     }
 
     /**
