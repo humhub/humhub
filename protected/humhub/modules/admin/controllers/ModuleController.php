@@ -43,13 +43,13 @@ class ModuleController extends Controller
     {
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Modules'));
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageModules::class]

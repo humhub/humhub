@@ -28,7 +28,6 @@ use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\Log;
 use humhub\modules\notification\models\forms\NotificationSettings;
-use yii\base\BaseObject;
 
 /**
  * SettingController
@@ -65,13 +64,13 @@ class SettingController extends Controller
         ]);
         $this->subLayout = '@admin/views/layouts/setting';
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageSettings::class]
