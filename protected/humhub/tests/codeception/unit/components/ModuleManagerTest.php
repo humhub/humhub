@@ -387,13 +387,16 @@ class ModuleManagerTest extends HumHubDbTestCase
 
     public function testInvalidEventConfigInvalidCallbackWithNonExistingMethod()
     {
-        $this->runEventExceptionTest([
+        $this->runEventExceptionTest(
             [
-                'class' => __CLASS__,
-                'event' => 'invalid1',
-                'callback' => [__CLASS__, 'someMethod'],
+                [
+                    'class' => __CLASS__,
+                    'event' => 'invalid1',
+                    'callback' => [__CLASS__, 'someMethod'],
+                ],
             ],
-        ], "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod");
+            "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod"
+        );
     }
 
     /**
@@ -661,23 +664,53 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertEquals([], $this->moduleManager->filterModulesByKeyword(null, 'foo'));
 
         // match keyword
-        static::assertEquals(['module1' => $module1], $this->moduleManager->filterModulesByKeyword(null, 'one'));
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'two'));
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'cool'));
+        static::assertEquals(
+            ['module1' => $module1],
+            $this->moduleManager->filterModulesByKeyword(null, 'one')
+        );
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'two')
+        );
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'cool')
+        );
 
         // match name
-        static::assertEquals(['module1' => $module1], $this->moduleManager->filterModulesByKeyword(null, 'Module 1'));
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'Module 2'));
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'Example'));
+        static::assertEquals(
+            ['module1' => $module1],
+            $this->moduleManager->filterModulesByKeyword(null, 'Module 1')
+        );
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'Module 2')
+        );
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'Example')
+        );
 
         // match description
-        static::assertEquals(['module1' => $module1], $this->moduleManager->filterModulesByKeyword(null, 'module 1.'));
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'module 2.'));
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'testing'));
+        static::assertEquals(
+            ['module1' => $module1],
+            $this->moduleManager->filterModulesByKeyword(null, 'module 1.')
+        );
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'module 2.')
+        );
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'testing')
+        );
 
         $this->moduleManager->on(ModuleManager::EVENT_AFTER_FILTER_MODULES, [$this, 'handleEvent']);
 
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModules(null, ['foo']));
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModules(null, ['foo'])
+        );
 
         /** @noinspection MissedFieldInspection */
         $this->assertEvents([
@@ -705,7 +738,10 @@ class ModuleManagerTest extends HumHubDbTestCase
             ]
         ]);
 
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModules(null, ['keyword' => 'Example Module 2']));
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModules(null, ['keyword' => 'Example Module 2'])
+        );
 
         /** @noinspection MissedFieldInspection */
         $this->assertEvents([
@@ -862,7 +898,12 @@ class ModuleManagerTest extends HumHubDbTestCase
             $eventName = $event['event'] ?? $event[1] ?? null;
             $eventHandler = $event['callback'] ?? $event[2] ?? null;
 
-            if ($isEnabled && $eventClass && $eventName && is_array($eventHandler) && method_exists($eventHandler[0], $eventHandler[1])) {
+            if (
+                $isEnabled && $eventClass && $eventName && is_array($eventHandler) && method_exists(
+                    $eventHandler[0],
+                    $eventHandler[1]
+                )
+            ) {
                 static::assertTrue(Event::off($eventClass, $eventName, $eventHandler));
             } else {
                 static::assertFalse(Event::off($eventClass, $eventName, $eventHandler));
@@ -969,7 +1010,16 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->firedEvents = [];
 
-        static::dbDelete(ModuleEnabled::tableName(), ['module_id' => ['module1', 'module2', 'coreModule', 'installerModule', 'invalidModule1', 'invalidModule2']]);
+        static::dbDelete(ModuleEnabled::tableName(), [
+            'module_id' => [
+                'module1',
+                'module2',
+                'coreModule',
+                'installerModule',
+                'invalidModule1',
+                'invalidModule2'
+            ]
+        ]);
 
         static::$moduleEnabledList ??= array_column(
             static::dbSelect('module_enabled', 'module_id'),
