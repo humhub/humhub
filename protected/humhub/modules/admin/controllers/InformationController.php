@@ -37,16 +37,19 @@ class InformationController extends Controller
      */
     public $defaultAction = 'about';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/information';
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::class],

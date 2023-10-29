@@ -34,7 +34,7 @@ class PendingRegistrationsController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [
