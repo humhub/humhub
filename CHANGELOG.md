@@ -8,6 +8,8 @@ HumHub Changelog
 - Fix #6614: Fix undefined error on live event of follow action
 - Fix #6615: Improve scrolling to anchor with fixed header
 - Fix #6629: Fix visibility of new message counter on space chooser
+- Fix #6630: Fix visibility of top sorted stream entries on dashboard from external filters
+- Fix #6635: Fix visibility of the method `Controller::getAccessRules()`
 
 1.14.4 (September 20, 2023)
 ---------------------------

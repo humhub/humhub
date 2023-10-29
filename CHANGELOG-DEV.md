@@ -27,6 +27,7 @@ HumHub Changelog
 - Enh #6623: Add a hint in the "Dropdown space order" settings to inform that a manual sort is always applied first
 - Enh #6626: Content state flag "was published"
 - Enh #6628: Add self test check: "Mobile App - Push Service"
+- Fix #6634: Refresh cache after set a permission
 
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------

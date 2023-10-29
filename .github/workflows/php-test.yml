@@ -57,7 +57,7 @@ jobs:
         steps:
             - name: Start Selenium
               run: |
-                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:117.0-20230926
 
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v1
