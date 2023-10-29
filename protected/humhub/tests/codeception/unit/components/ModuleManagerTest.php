@@ -11,6 +11,7 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\components\ModuleEvent;
 use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\ModuleEnabled;
@@ -27,7 +28,6 @@ use yii\base\InvalidConfigException;
 use yii\caching\ArrayCache;
 use yii\db\StaleObjectException;
 use yii\helpers\FileHelper;
-use humhub\components\ModuleEvent;
 
 require_once __DIR__ . '/bootstrap/ModuleAutoLoaderTest.php';
 
@@ -37,7 +37,8 @@ require_once __DIR__ . '/bootstrap/ModuleAutoLoaderTest.php';
 class ModuleManagerTest extends HumHubDbTestCase
 {
     private static int $moduleDirCount;
-
+    private static array $moduleDirList;
+    private static ?array $moduleEnabledList = null;
     private static string $appModuleRoot;
     private static string $coreModuleRoot;
     private static string $testModuleRoot;
@@ -47,7 +48,6 @@ class ModuleManagerTest extends HumHubDbTestCase
     private ?string $moduleClass = null;
     private ?string $moduleNS = null;
     private static array $aliases;
-
     private static ModuleManager $originalModuleManager;
 
     public static function setUpBeforeClass(): void
@@ -59,12 +59,28 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::$appModuleRoot = dirname(__DIR__, 5) . '/modules';
 
         static::$moduleDirCount = 0;
+        static::$moduleDirList = [];
 
-        $dh  = opendir($appModuleRoot = static::$appModuleRoot);
+        $dh = opendir($appModuleRoot = static::$appModuleRoot);
 
         while (false !== ($filename = readdir($dh))) {
             if ($filename !== '.' && $filename !== '..' && is_dir("$appModuleRoot/$filename")) {
                 static::$moduleDirCount++;
+
+                $config_file = new \SplFileInfo("$appModuleRoot/$filename/config.php");
+                $config_file = new \SplFileInfo($config_file->getRealPath());
+
+                if (!$config_file->isFile() || !$config_file->isReadable()) {
+                    continue;
+                }
+
+                $config = include $config_file->getPathname();
+
+                if (!is_array($config)) {
+                    continue;
+                }
+
+                static::$moduleDirList[$config['id']] = $config['class'];
             }
         }
     }
@@ -102,9 +118,21 @@ class ModuleManagerTest extends HumHubDbTestCase
 
     public function testBasics()
     {
-        static::assertEquals([], $this->moduleManager->myModules());
-        static::assertEquals([], $this->moduleManager->myCoreModules());
-        static::assertEquals([], $this->moduleManager->myEnabledModules());
+        static::assertEquals(
+            [],
+            $this->moduleManager->myModules(),
+            __FUNCTION__ . '.' . 'myModules()'
+        );
+        static::assertEquals(
+            [],
+            $this->moduleManager->myCoreModules(),
+            __FUNCTION__ . '.' . 'myCoreModules()'
+        );
+        static::assertEquals(
+            static::$moduleEnabledList,
+            $this->moduleManager->myEnabledModules(),
+            __FUNCTION__ . '.' . 'myEnabledModules()'
+        );
     }
 
     /**
@@ -183,11 +211,15 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->registerModule($basePath, $config);
 
-        static::assertEquals([], $this->moduleManager->getModules([
-            'includeCoreModules' => true,
-            'enabled' => true,
-            'returnClass' => true,
-        ]));
+        static::assertEquals(
+            [],
+            $this->moduleManager->getModules([
+                'includeCoreModules' => true,
+                'enabled' => true,
+                'returnClass' => true,
+            ]),
+            __FUNCTION__ . '.' . 'getModules()'
+        );
     }
 
     /**
@@ -287,7 +319,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     public function testInvalidEventConfigNotArrayAccess()
     {
         $this->runEventExceptionTest([
-                'invalid1',
+            'invalid1',
         ], "event configuration must be an array or implement \\ArrayAccess");
     }
 
@@ -355,13 +387,16 @@ class ModuleManagerTest extends HumHubDbTestCase
 
     public function testInvalidEventConfigInvalidCallbackWithNonExistingMethod()
     {
-        $this->runEventExceptionTest([
+        $this->runEventExceptionTest(
             [
-                'class' => __CLASS__,
-                'event' => 'invalid1',
-                'callback' => [__CLASS__, 'someMethod'],
+                [
+                    'class' => __CLASS__,
+                    'event' => 'invalid1',
+                    'callback' => [__CLASS__, 'someMethod'],
+                ],
             ],
-        ], "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod");
+            "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod"
+        );
     }
 
     /**
@@ -392,13 +427,18 @@ class ModuleManagerTest extends HumHubDbTestCase
             'enabled' => false,
             'returnClass' => true,
         ]));
-        static::assertEquals(array_flip(ModuleAutoLoaderTest::EXPECTED_CORE_MODULES), $modules);
+        $expected = array_merge(
+            [],
+            array_flip(ModuleAutoLoaderTest::EXPECTED_CORE_MODULES),
+            static::$moduleDirList
+        );
+        static::assertEquals($expected, $modules);
 
         static::assertIsArray($modules = $moduleManager->getEnabledModules([
             'enabled' => false,
             'returnClass' => true,
         ]));
-        static::assertEquals([], $modules);
+        static::assertEquals(static::$moduleDirList, $modules);
     }
 
     /**
@@ -511,7 +551,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->moduleManager->disable($module);
 
-        static::assertCount(0, $this->moduleManager->myEnabledModules());
+        static::assertCount(count(static::$moduleEnabledList), $this->moduleManager->myEnabledModules());
         static::assertRecordCount(0, ModuleEnabled::tableName(), ['module_id' => $this->moduleId]);
         static::assertNull(Yii::$app->getModule($this->moduleId));
 
@@ -600,11 +640,23 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         Yii::$app->set('moduleManager', $this->moduleManager);
 
-        $this->moduleManager->enableModules([static::$testModuleRoot . '/module1', static::$testModuleRoot . '/module2']);
+        $this->moduleManager->enableModules([
+            static::$testModuleRoot . '/module1',
+            static::$testModuleRoot . '/module2'
+        ]);
 
-        static::assertEquals(['module1' => Module1::class, 'module2' => Module2::class], $this->moduleManager->myModules());
-        static::assertEquals([], $this->moduleManager->myCoreModules());
-        static::assertEquals(['module1', 'module2'], $this->moduleManager->myEnabledModules());
+        static::assertEquals(
+            ['module1' => Module1::class, 'module2' => Module2::class],
+            $this->moduleManager->myModules()
+        );
+        static::assertEquals(
+            [],
+            $this->moduleManager->myCoreModules()
+        );
+        static::assertEquals(
+            [...static::$moduleEnabledList, 'module1', 'module2'],
+            $this->moduleManager->myEnabledModules()
+        );
 
         $module1 = $this->moduleManager->getModule('module1');
         $module2 = $this->moduleManager->getModule('module2');
@@ -612,23 +664,53 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertEquals([], $this->moduleManager->filterModulesByKeyword(null, 'foo'));
 
         // match keyword
-        static::assertEquals(['module1' => $module1], $this->moduleManager->filterModulesByKeyword(null, 'one'));
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'two'));
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'cool'));
+        static::assertEquals(
+            ['module1' => $module1],
+            $this->moduleManager->filterModulesByKeyword(null, 'one')
+        );
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'two')
+        );
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'cool')
+        );
 
         // match name
-        static::assertEquals(['module1' => $module1], $this->moduleManager->filterModulesByKeyword(null, 'Module 1'));
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'Module 2'));
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'Example'));
+        static::assertEquals(
+            ['module1' => $module1],
+            $this->moduleManager->filterModulesByKeyword(null, 'Module 1')
+        );
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'Module 2')
+        );
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'Example')
+        );
 
         // match description
-        static::assertEquals(['module1' => $module1], $this->moduleManager->filterModulesByKeyword(null, 'module 1.'));
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'module 2.'));
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModulesByKeyword(null, 'testing'));
+        static::assertEquals(
+            ['module1' => $module1],
+            $this->moduleManager->filterModulesByKeyword(null, 'module 1.')
+        );
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'module 2.')
+        );
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModulesByKeyword(null, 'testing')
+        );
 
         $this->moduleManager->on(ModuleManager::EVENT_AFTER_FILTER_MODULES, [$this, 'handleEvent']);
 
-        static::assertEquals(['module1' => $module1, 'module2' => $module2], $this->moduleManager->filterModules(null, ['foo']));
+        static::assertEquals(
+            ['module1' => $module1, 'module2' => $module2],
+            $this->moduleManager->filterModules(null, ['foo'])
+        );
 
         /** @noinspection MissedFieldInspection */
         $this->assertEvents([
@@ -656,7 +738,10 @@ class ModuleManagerTest extends HumHubDbTestCase
             ]
         ]);
 
-        static::assertEquals(['module2' => $module2], $this->moduleManager->filterModules(null, ['keyword' => 'Example Module 2']));
+        static::assertEquals(
+            ['module2' => $module2],
+            $this->moduleManager->filterModules(null, ['keyword' => 'Example Module 2'])
+        );
 
         /** @noinspection MissedFieldInspection */
         $this->assertEvents([
@@ -672,7 +757,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionMessage(
-            'Argument #2 $filters passed to humhub\components\ModuleManager::filterModules must be of type array, ArrayAccess, string given.'
+            'Argument $filters passed to humhub\components\ModuleManager::filterModules must be one of the following types: array, ArrayAccess - string given.'
         );
         static::assertEquals([], $this->moduleManager->filterModules(null, 'foo'));
     }
@@ -746,9 +831,27 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->moduleManager->register($basePath, $config);
 
-        static::assertEquals([$this->moduleId => $this->moduleClass], $this->moduleManager->myModules());
-        static::assertEquals($isCore ? [$this->moduleClass] : [], $this->moduleManager->myCoreModules());
-        static::assertEquals($isEnabled && !$isCore ? [$this->moduleId] : [], $this->moduleManager->myEnabledModules());
+        static::assertEquals(
+            [$this->moduleId => $this->moduleClass],
+            $this->moduleManager->myModules(),
+            __FUNCTION__ . '.' . 'myModules()'
+        );
+
+        static::assertEquals(
+            $isCore ? [$this->moduleClass] : [],
+            $this->moduleManager->myCoreModules(),
+            __FUNCTION__ . '.' . 'myCoreModules()'
+        );
+
+        $expected = static::$moduleEnabledList;
+        if ($isEnabled && !$isCore) {
+            $expected[] = $this->moduleId;
+        }
+        static::assertEquals(
+            $expected,
+            $this->moduleManager->myEnabledModules(),
+            __FUNCTION__ . '.' . 'myEnabledModules()'
+        );
 
         static::assertTrue($this->moduleManager->hasModule($this->moduleId));
 
@@ -795,7 +898,12 @@ class ModuleManagerTest extends HumHubDbTestCase
             $eventName = $event['event'] ?? $event[1] ?? null;
             $eventHandler = $event['callback'] ?? $event[2] ?? null;
 
-            if ($isEnabled && $eventClass && $eventName && is_array($eventHandler) && method_exists($eventHandler[0], $eventHandler[1])) {
+            if (
+                $isEnabled && $eventClass && $eventName && is_array($eventHandler) && method_exists(
+                    $eventHandler[0],
+                    $eventHandler[1]
+                )
+            ) {
                 static::assertTrue(Event::off($eventClass, $eventName, $eventHandler));
             } else {
                 static::assertFalse(Event::off($eventClass, $eventName, $eventHandler));
@@ -902,7 +1010,21 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->firedEvents = [];
 
-        static::dbDelete(ModuleEnabled::tableName(), ['module_id' => ['module1', 'module2', 'coreModule', 'installerModule', 'invalidModule1', 'invalidModule2']]);
+        static::dbDelete(ModuleEnabled::tableName(), [
+            'module_id' => [
+                'module1',
+                'module2',
+                'coreModule',
+                'installerModule',
+                'invalidModule1',
+                'invalidModule2'
+            ]
+        ]);
+
+        static::$moduleEnabledList ??= array_column(
+            static::dbSelect('module_enabled', 'module_id'),
+            'module_id'
+        );
 
         $this->moduleManager = new ModuleManagerMock();
     }

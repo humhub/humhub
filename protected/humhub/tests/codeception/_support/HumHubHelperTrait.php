@@ -34,6 +34,7 @@ use yii\db\ActiveRecord;
 use yii\db\Command;
 use yii\db\ExpressionInterface;
 use yii\db\Query;
+use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 use yii\log\Dispatcher;
 
@@ -619,15 +620,15 @@ trait HumHubHelperTrait
      * @since 1.15
      * @see static::assertEvents()
      */
-    public function handleEvent(Event $event)
+    public function handleEvent(Event $event, array $eventData = [])
     {
-        $eventData = [
+        $eventData = ArrayHelper::merge([
             'class' => get_class($event),
             'event' => $event->name,
             'sender' => $event->sender,
             'data' => $event->data,
             'handled' => $event->handled,
-        ];
+        ], $eventData);
 
         $this->firedEvents[] = $eventData;
     }

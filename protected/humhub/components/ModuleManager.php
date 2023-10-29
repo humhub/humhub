@@ -377,7 +377,7 @@ class ModuleManager extends Component
     public function filterModules(?array $modules, $filters = []): array
     {
         if (!$filters instanceof ArrayAccess && !is_array($filters)) {
-            throw new InvalidArgumentTypeException(__METHOD__, [2 => '$filters'], ['array', ArrayAccess::class], $filters);
+            throw new InvalidArgumentTypeException('$filters', ['array', ArrayAccess::class], $filters);
         }
 
         $modules = $this->filterModulesByKeyword($modules, $filters['keyword'] ?? null);
