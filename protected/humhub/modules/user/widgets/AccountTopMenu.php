@@ -44,7 +44,7 @@ class AccountTopMenu extends Menu
         if (Yii::$app->user->isGuest) {
 
             $signUpText = Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration')
-                ? Yii::t('UserModule.base', 'Sign in / up')
+                ? Yii::t('UserModule.base', 'Sign in / Register')
                 : Yii::t('UserModule.base', 'Sign in');
 
 
