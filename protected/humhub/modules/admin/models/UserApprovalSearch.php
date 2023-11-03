@@ -79,7 +79,7 @@ class UserApprovalSearch extends User
             return $dataProvider;
         }
 
-        $query->administrableBy(Yii::$app->user->getIdentity());
+        $query->administrableBy(Yii::$app->user->model);
 
         $query->andWhere(['user.status' => User::STATUS_NEED_APPROVAL]);
         $query->andFilterWhere(['id' => $this->id]);

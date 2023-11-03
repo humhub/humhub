@@ -80,11 +80,8 @@ class SettingsManager extends BaseSettingsManager
      */
     public function user(?User $user = null): ?ContentContainerSettingsManager
     {
-        if ($user === null) {
-            $user = Yii::$app->user->getIdentity();
-            if (!$user instanceof User) {
-                return null;
-            }
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->model;
         }
 
         return $this->contentContainer($user);

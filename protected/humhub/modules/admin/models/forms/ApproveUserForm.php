@@ -57,7 +57,7 @@ class ApproveUserForm extends \yii\base\Model
      */
     public function __construct($usersId)
     {
-        $this->admin = Yii::$app->user->getIdentity();
+        $this->admin = Yii::$app->user->model;
 
         if (is_array($usersId)) {
             $this->_isBulkAction = true;

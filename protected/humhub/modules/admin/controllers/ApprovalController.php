@@ -61,7 +61,7 @@ class ApprovalController extends Controller
      */
     public function checkCanApproveUsers($rule, $access)
     {
-        if (!Yii::$app->user->getIdentity()->canApproveUsers()) {
+        if (!Yii::$app->user->model->canApproveUsers()) {
             $access->code = 403;
             return false;
         }

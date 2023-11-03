@@ -17,10 +17,9 @@ use Yii;
 use yii\authclient\ClientInterface;
 
 /**
- * Description of User
- * @property UserModel|null $identity
+ * @inheritDoc
+ * @property UserModel|null $model
  * @mixin Impersonator
- * @author luke
  */
 class User extends \yii\web\User
 {
@@ -47,6 +46,27 @@ class User extends \yii\web\User
         return [
             Impersonator::class,
         ];
+    }
+
+    /**
+     * Returns the User model ActiveRecord associated with the currently logged-in user.
+     *
+     * @return UserModel|null
+     * @since 1.16
+     */
+    public function getModel(): ?UserModel
+    {
+        if ($this->isGuest) {
+            return null;
+        }
+
+        $identity = $this->getIdentity();
+        if ($identity instanceof UserModel) {
+            return $identity;
+        }
+
+
+        return UserModel::findOne(['id' => $identity->getId()]);
     }
 
     public function isAdmin()
@@ -176,8 +196,8 @@ class User extends \yii\web\User
     }
 
     /**
-     * @deprecated since 1.14
      * @return boolean
+     * @deprecated since 1.14
      */
     public function canDeleteAccount()
     {

@@ -67,7 +67,7 @@ class PollController extends Controller
                 throw new Exception('Polling is only available when using the live database driver!');
             }
 
-            $this->containerIds = $this->module->getLegitimateContentContainerIds(Yii::$app->user->getIdentity());
+            $this->containerIds = $this->module->getLegitimateContentContainerIds(Yii::$app->user->model);
             return true;
         }
 
@@ -101,7 +101,7 @@ class PollController extends Controller
         Yii::$app->session->set('live.poll.lastQueryTime', $results['queryTime']);
 
         // Update "is online" status
-        (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+        (new IsOnlineService(Yii::$app->user->model))->updateStatus();
 
         Yii::$app->response->format = 'json';
         return $results;

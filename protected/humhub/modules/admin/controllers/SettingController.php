@@ -191,8 +191,7 @@ class SettingController extends Controller
 
     public function actionMailingServerTest()
     {
-        /** @var User $user */
-        $user = Yii::$app->user->getIdentity();
+        $user = Yii::$app->user->model;
 
         try {
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [

@@ -37,7 +37,7 @@ class Yii {
  * @property \humhub\components\UrlManager $urlManager
  * @property \humhub\modules\live\components\Sender $live
  * @property \yii\mutex\Mutex $mutex
- * @property \yii\web\User|__WebUser $user
+ * @property \humhub\modules\user\components\User $user
  * @property \yii\caching\ArrayCache $runtimeCache
  */
 class __Application {
@@ -45,9 +45,8 @@ class __Application {
 
 /**
  * Class WebApplication
- * Include only Web application related components here
- * @property \humhub\modules\user\components\User $user
- * @property \humhub\components\mail\Mailer $mailer
+ * Include only Web application related components here:
+ * -
  */
 class __WebApplication extends \humhub\components\Application
 {

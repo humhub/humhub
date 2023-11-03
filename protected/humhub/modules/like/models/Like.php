@@ -104,7 +104,7 @@ class Like extends ContentAddonActiveRecord
             if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
                 // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
                 $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
-                NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
+                NewLike::instance()->from(Yii::$app->user->model)->about($this)->send($target);
             }
         }
 
