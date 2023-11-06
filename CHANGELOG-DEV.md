@@ -29,6 +29,7 @@ HumHub Changelog
 - Enh #6626: Content state flag "was published"
 - Enh #6628: Add self test check: "Mobile App - Push Service"
 - Fix #6634: Refresh cache after set a permission
+- Fix #6638: Padding for logo image on login page
 
 1.15.0-beta.2 (October 5, 2023)
 -------------------------------
