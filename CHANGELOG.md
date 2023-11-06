@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.14.5 (Unreleased)
----------------------------
+1.14.5 (November 6, 2023)
+-------------------------
 - Fix #6596: Fix duplicate error and hint for RichText editor with defined form
 - Fix #6595: Fix mimetype of converted preview svg file to png after uploading
 - Fix #6614: Fix undefined error on live event of follow action
