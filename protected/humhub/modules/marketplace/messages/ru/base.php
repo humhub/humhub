@@ -1,111 +1,77 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) paulbid@protonmail.com */
 return array (
-  '
-Module successfully disabled!
-' => '
-Модуль успешно отключен!
-',
-  '
-Module successfully enabled!
-' => '
-Модуль успешно подключен!
-',
-  '
-No active Professional Edition license found!
-' => '',
-  '
-The license could not be activated:
-' => '',
-  '
-The license was successfully activated!
-
-' => '',
-  '
-The license was successfully removed!
-
-' => '',
-  '--- Disable module: {moduleId} ---
-
-' => '--- Отключение модуля: {moduleId} ---
-
-',
-  '--- Enable module: {moduleId} ---
-
-' => '--- Включение модуля: {moduleId} ---
-
-',
-  '<strong>Activate</strong> your Professional Edition' => '<strong>Активируйте</strong> свою Профессиональную версию',
-  'A new update is available (HumHub %version%)!' => '',
+  'Module successfully disabled!' => 'Модуль успешно отключён!',
+  'Module successfully enabled!' => 'Модуль успешно подключён!',
+  'No active Professional Edition license found!' => 'Активная лицензия Профессиональной версии HumHub не найдена!',
+  'The license could not be activated:' => 'Лицензия не может быть активирована:',
+  'The license was successfully activated!' => 'Лицензия была успешно активирована!',
+  'The license was successfully removed!' => 'Лицензия была успешно удалена!',
+  '--- Disable module: {moduleId} ---' => '--- Отключение модуля: {moduleId} ---',
+  '--- Enable module: {moduleId} ---' => '--- Включение модуля: {moduleId} ---',
+  '<strong>Activate</strong> your Professional Edition' => '<strong>Активируйте</strong> свою Профессиональную версию HumHub',
+  'A new update is available (HumHub %version%)!' => 'Доступно новое обновление: HumHub %version%!',
   'Add Licence Key' => 'Добавить лицензионный ключ',
-  'Add purchased module by licence key' => 'Добавить ключ для приобретённого модуля',
+  'Add purchased module by licence key' => 'Добавить приобретённый модуль с помощью лицензионного ключа',
   'All' => 'Все',
-  'All {moduleId} module content will be deleted. Continue?' => 'Весть контент модуля {moduleId} будет удалён. Продолжить?',
-  'Available Updates' => '',
-  'Buy' => '',
+  'All {moduleId} module content will be deleted. Continue?' => 'Весь контент модуля {moduleId} будет удалён. Продолжить?',
+  'Available Updates' => 'Доступные обновления',
+  'Buy' => 'Купить',
   'Buy (%price%)' => 'Купить (%price%)',
-  'Categories' => '',
-  'Changelog' => '',
-  'Community' => '',
-  'Could not connect to HumHub API!
-' => '',
-  'Could not connect to licence server!' => '',
+  'Categories' => 'Категории',
+  'Changelog' => 'Журнал изменений',
+  'Community' => 'От сообщества',
+  'Could not connect to HumHub API!' => 'Не удалось подключиться к HumHub API!',
+  'Could not connect to licence server!' => 'Не удалось подключиться к серверу лицензий!',
   'Could not extract module!' => 'Не удалось извлечь модуль!',
   'Could not remove old module path!' => 'Не удалось удалить старый путь к модулю!',
   'Could not update licence. Error: ' => 'Не удалось обновить лицензию. Ошибка:',
   'Download of module failed!' => 'Не удалось загрузить модуль!',
   'Edit licence' => 'Редактировать лицензию',
-  'Featured' => '',
-  'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
+  'Featured' => 'Рекомендуемые',
+  'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Если этот модуль дополнительно помечен как <strong>«От сообщества»</strong>, то он не тестируется и не контролируется командой разработки HumHub. Имейте это ввиду при его установке.',
   'Install' => 'Установить',
   'Installed' => 'Установленные',
-  'Installing module...' => 'Установить модуль...',
-  'Invalid module licence key!
-' => '',
+  'Installing module...' => 'Установливаем модуль...',
+  'Invalid module licence key!' => 'Лицензионный ключ модуля недействительный!',
   'Latest version:' => 'Последняя версия:',
-  'Learn more' => '',
-  'Licence Key:' => 'Лицензионный Ключ:',
-  'Licence key' => 'Ключ лицензии',
-  'Licenced for max. {number} users.' => 'Лицензия на максимум {число} пользователей.',
+  'Learn more' => 'Подробнее',
+  'Licence Key:' => 'Лицензионный ключ:',
+  'Licence key' => 'Лицензионный ключ',
+  'Licenced for max. {number} users.' => 'Лицензия рассчитана на ограниченное число пользователей. Максимальное количество пользователей: {number}',
   'Licenced to:' => 'Лицензировано для:',
   'Marketplace' => 'Маркет',
   'Max. users:' => 'Максимальное количество пользователей:',
-  'Module directory %modulePath% is not writeable!' => 'Папка модуля %modulePath% запрещает запись в неё!',
+  'Module directory %modulePath% is not writeable!' => 'Каталог модуля %modulePath% запрещает записывать файлы в него!',
   'Module download failed! (%error%)' => 'Не удалось загрузить модуль! (%error%)',
-  'Module licence added!
-' => '',
-  'Module licence key cannot be empty!
-' => '',
-  'Module not found or activated!
-' => 'Модуль не найден или уже активирован!
-',
-  'Module not found!
-' => 'Модуль не найден!
-',
-  'More info' => 'Подробнее',
+  'Module licence added!' => 'Лицензия на модуль добавлена!',
+  'Module licence key cannot be empty!' => 'Лицензионный ключ модуля не может быть пустым!',
+  'Module not found or activated!' => 'Модуль не найден или уже активирован!',
+  'Module not found!' => 'Модуль не найден!',
+  'More info' => 'Дополнительная информация',
   'New' => 'Новое',
-  'No compatible module version found!' => 'Совместимых версий модуля не найдено!',
-  'No license key? Find out more about the {pro} or contact us.' => 'Нет лицензионного ключа? Узнайте больше о {pro} или свяжитесь с нами напрямую.',
+  'No compatible module version found!' => 'Версий модуля совместимых с вашей установкой HumHub не найдено!',
+  'No license key? Find out more about the {pro} or contact us.' => 'Нет лицензионного ключа? Узнайте больше о {pro} или свяжитесь с нами напрямую через официальный сайт.',
   'No purchased modules found!' => 'Приобретённых модулей не найдено!',
-  'Not Installed' => '',
-  'Official' => '',
+  'Not Installed' => 'Не установлено',
+  'Official' => 'Официальный',
   'Ok' => 'Ок',
-  'PROFESSIONAL EDITION' => '',
-  'Partner' => '',
-  'Professional Edition' => '',
-  'Professional Edition is activated!' => 'Профессиональная Версия активирована!',
+  'PROFESSIONAL EDITION' => 'ПРОФЕССИОНАЛЬНАЯ ВЕРСИЯ',
+  'Partner' => 'Партнёр',
+  'Professional Edition' => 'Профессиональная версия',
+  'Professional Edition is activated!' => 'Профессиональная версия активирована!',
   'Register' => 'Регистрация',
   'Remove licence key' => 'Удалить лицензионный ключ',
   'Save and update' => 'Сохранить и обновить',
-  'Stop updating' => '',
+  'Stop updating' => 'Остановить обновление',
   'Tags' => 'Теги',
-  'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',
+  'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'Разработчики HumHub не гарантируют функциональность, качество или непрерывное развитие этого модуля.',
   'Third-party' => 'Сторонние разработчики',
-  'Third-party Modules are not covered by Professional Edition agreements.' => '',
+  'Third-party Modules are not covered by Professional Edition agreements.' => 'Соглашения о Профессиональной версии не распространяются на сторонние модули.',
   'Third-party disclaimer' => 'Отказ от ответственности за продукты сторонних разработчиков',
-  'This Module was developed by a third-party.' => '',
+  'This Module was developed by a third-party.' => 'Этот модуль был разработан сторонними разработчиками.',
   'Update' => 'Обновить',
-  'Update all' => '',
-  'Upgrade to Professional Edition' => 'Обновление до Профессиональной Версии',
+  'Update all' => 'Обновить все',
+  'Upgrade to Professional Edition' => 'Улучшить до Профессиональной версии',
   'Version:' => 'Версия:',
-  'Your HumHub installation is up to date!' => '',
+  'Your HumHub installation is up to date!' => 'Ваша установка HumHub обновлена!',
 );
