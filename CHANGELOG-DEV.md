@@ -1,3 +1,0 @@
-HumHub Changelog
-================
-
