@@ -4,7 +4,7 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
-Version 1.15 (Unreleased)
+Version 1.15
 -------------------------
 
 ### Behaviour change
