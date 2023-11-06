@@ -1,6 +1,151 @@
 HumHub Changelog
 ================
 
+1.15.0 (November 6, 2023)
+--------------------------------
+
+See also: HumHub 1.14 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_14) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Warning: HumHub now employs JavaScript nonces for enhanced security (CSP), which may necessitate manual adjustments for inserted scripts, such as statistics codes, to ensure compatibility. See [Migration Notes](https://docs.humhub.org/docs/admin/updating-migration2#115) for details.
+
+- Enh #6619: Add a link to "Module Administration" from Marketplace
+- Enh #6620: Marketplace: Add more module checks
+- Enh #6621: Avoid PHP error when trying to download a file without guid in the URL params (return 404 exception instead)
+- Enh #6623: Add a hint in the "Dropdown space order" settings to inform that a manual sort is always applied first
+- Enh #6626: Content state flag "was published"
+- Enh #6628: Add self test check: "Mobile App - Push Service"
+- Fix #6634: Refresh cache after set a permission
+- Fix #6638: Padding for logo image on login page
+
+
+1.15.0-beta.2 (October 5, 2023)
+-------------------------------
+- Enh #6594: Add field `file.metadata`
+- Enh #6593: Add field `file.sort_order`
+- Enh #6592: Add field `file.state`
+- Enh #6591: Add field `file.category`
+- Enh #6568: improve UUID validation and add `UUIDValidater`
+- Enh #6553: Support log assertions
+- Fix #6551: Migration's transaction with invalid savepoint
+- Fix #6549: Empty profile field type causing an unspecific error
+- Fix #6547: Invalid class name validated as valid and improve validation
+- Enh #6529: Add boolean return-type to `*safe*` methods in migrations
+- Fix #6516: Humhub test case would fail on skipped tests
+- Enh #6478: Add pseudo test class to allow population of DB with standard test data
+- Enh #6480: Convert assert* and db* methods to static, in line with general usage pattern
+- Enh #6505: Introduce Application interface; now also fire the `onInit` event when the web application has initialized
+- Fix #6502: Link notification for pending space approval to manage page
+- Fix #6472: Initialization of account profile field type "Markdown"
+- Fix #6471: Wording "Default Homepage" in Space Default Settings
+- Fix #6468: Module Administration - Marketplace Links broken without Pretty URLs
+- Enh #6469: Added Info text for Marketplace page
+- Fix #112: Reorder Table Rows
+- Fix #6476: Fix module disabling in queue
+- Enh #6469: Implement conditions for `fixed-settings` in config
+- Enh #68: Online Indicator Position
+- Fix #6492: Fix module form "Set as default"
+- Fix #6457: Regression with membership cache. Also move cache to `Membership::findMembership`.
+- Enh #6498: Implement option "disabled" for picker fields
+- Enh #6506: Allow event data from module config
+- Fix #6510: Fix online status position on people page
+- Fix #6526: Fix a disabled button after post a content record with state "Draft" or "Scheduled"
+- Fix #6537: Sort profile fields on People directory filters
+- Fix #6558: Avoid PHP 8.1+ deprecated null parameter on preg_replace in richtext converters
+- Fix #6544: Registration not possible with SSO and email invites if "New users can register" is disabled
+- Fix #6572: Posts count in space should be only for published content
+- Fix #3755: Fix default oembed styles for twitter posts
+- Fix #6582: Enabled `RuntimeCache` during tests
+- Fix #6583: Refresh modules available updates counter after updating of modules
+- Fix #6585: Exclude database views on self checking
+
+1.15.0-beta.1 (July 31, 2023)
+-----------------------------
+- Fix #6461: Test server support to serve web module's `/manifest.json`, `/sw.js`, & `/offline.pwa.html`
+- Enh #6460: Test server output: print application requests
+- Fix #6423: log.fata in frontend logging is redirected to log.fatal, which did not work
+- Fix #6220: User Soft Delete doesn't remove third party auth references
+- Enh #6270: Add tests for SettingsManager
+- Enh #6272: Always return integer from settings, if value can be converted
+- Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
+- Enh #6271: Add input and type checks, as well as strict types to SettingsManager
+- Fix #6266: BaseSettingsManager::deleteAll() does use prefix as wildcard
+- Fix #6259: Add json & pdo extensions as requirement; updating composer dependencies and node modules
+- Fix #6192: Where Group::getAdminGroupId() would sometimes return int, sometimes string
+- Enh #6260: Improve migration class
+- Fix #6199: Module manager Add types to properties
+- Fix #6189: Module settings survive deactivation in cache
+- Enh #6236: Logging: Show log entries from migrations with category migration
+- Fix #6216: Spaces icon in admin menu
+- Chg #6212: Revise email sender (always use the system name)
+- Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
+- Enh #6225: Removed deprecated MarkdownEditor usages
+- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
+- Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
+- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
+- Enh #5668: Allow Admin to sort the Spaces in a custom order
+- Enh #29: AutoStart Tour for new Users
+- Fix #6243: Do not send notification when ApprovalRequest is not valid
+- Enh #6215: Added `LongRunningActiveJob` to avoid timeout for long running queue jobs
+- Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
+- Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
+- Enh #6277: Bring back Pjax Functionality
+- Enh #6285: Change background color for confirmation of oembed content
+- Enh #6289: Refactored UserWall and Wall widgets
+- Fix #44: Mail Module Indicator Problem
+- Enh #6295: Add the possibility to display if users are online
+- Fix #6299: Fix ambiguous space sort order column
+- Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
+- Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
+- Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
+- Enh #6311: Added {cols, rows} to textarea() control.
+- Enh #6304: Update button title on creating of not published content
+- Enh #6319: Duplicate File Converter Logs
+- Fix #5962: Make top menu shrink and grow on resize window
+- Enh #6328: Add arrows for gridview sort columns
+- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
+- Enh #2: Store Default Markdown Editor Mode
+- Enh #6355: Fix limit results in People: Country Filter
+- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
+- Enh #6356: Added SqlDataProvider support for `ImageColumn` and `DisplayNameColumn`
+- Enh #6169: Replace deprecated `yii\base\BaseObject::className()`
+- Enh #6361: Use `LongRunningActiveJob` on more active jobs
+- Enh #6363: Add an event in the NotificationManager to allow removing some notifications categories in the settings
+- Enh #6371: Space Hide Member Option disables Member Joined/Left Activities
+- Enh #6375: Performance Improvements
+- Enh #6369: Don't pin draft and scheduled contents on dashboard
+- Enh #6370: Remove FlatElements CSS
+- Enh #6379: Normalize integer columns after load data to ActiveRecord
+- Enh #6384: Added Serbian(sr) language
+- Enh #6389: Remove deprecated JS function `setModalLoader()`
+- Enh #6394: Removed custom DateValidator.php after Yii 2.0.48 release
+- Enh #6393: The installer should clear all caches early
+- Fix #6391: Fix initialization of account profile field type "Markdown"
+- Enh #5713: Disabling modules will be done in a background job
+- Enh #6400: Enable nonce in config web header
+- Enh #6405: Uploading a file larger than PHP's limits does not tell the user about the file weight issue
+- Enh #6407: FileHandlerButtonDropdown - Possibility to have a custom CSS class
+- Enh #6130: Add default settings for space creation
+- Enh #6079: Migrated Content Tag Logic into `ContentTagService`
+- Enh #5718: Use Select2 plugin for all drop-down list fields
+- Enh #6132: Widget `AjaxButton` now deprecated. Consider use `data-action` instead
+- Enh #6411: Make invite by link from a space work for registered users
+- Enh #6409: Redirect to the invited space after registration
+- Enh #6386: Fix absolute base URL in console commands
+- Fix #79: Fix Headline HelpText Style
+- Fix #6418: Fix login from modal window
+- Fix #6395: Link notification for pending space approval to manage page
+- Fix #6415: Fix caching keys on space directory
+- Fix #6424: Fix width of select2 dropdown inputs
+- Fix #6425: Fix default dropdown select2 options
+- Fix #6428: Translation for custom profile field is served from wrong file
+- Fix #6429: Fix Marketplace view
+- Fix #6383: Remove permission verifying from archive methods
+- Enh #6439: Add collapsible filter state in URL
+- Chg #6174: Users allowed to manage settings can access to module configurations
+- Enh #6440: Sort user groups by `group.sort_order` and alphabetically
+- Enh #6454: Account deletion confirmation
+- Enh #6458: Redirect to the latest-visited page after login or registration
+
 1.14.5 (November 6, 2023)
 -------------------------
 - Fix #6596: Fix duplicate error and hint for RichText editor with defined form
