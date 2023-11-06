@@ -28,6 +28,7 @@ use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
+use humhub\interfaces\ViewableInterface;
 
 /**
  * This is the model class for table "file".
@@ -85,7 +86,7 @@ use yii\web\UploadedFile;
  * @since 0.5
  * @noinspection PropertiesInspection
  */
-class File extends FileCompat
+class File extends FileCompat implements ViewableInterface
 {
     /**
      * @event Event that is triggered after a new file content has been stored.
@@ -285,10 +286,15 @@ class File extends FileCompat
      *
      * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
      * the file is readable for all.
+     *
      * @param string|User $userId
+     *
      * @return bool
+     * @throws IntegrityException
+     * @throws Throwable
+     * @throws \yii\base\Exception
      */
-    public function canRead($userId = "")
+    public function canRead($userId = ""): bool
     {
         $object = $this->getPolymorphicRelation();
         if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
@@ -298,13 +304,26 @@ class File extends FileCompat
         return true;
     }
 
+    public function canView($user = null): bool
+    {
+        return $this->canRead($user);
+    }
+
     /**
      * Checks if given file can be deleted.
      *
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canEdit or canDelete implemented.
+     *
+     * @param null $userId
+     *
+     * @return bool
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws \yii\base\Exception
      */
-    public function canDelete($userId = null)
+    public function canDelete($userId = null): bool
     {
         $object = $this->getPolymorphicRelation();
 

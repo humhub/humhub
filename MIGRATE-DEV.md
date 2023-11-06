@@ -4,6 +4,19 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
+Version 1.16 (Unreleased)
+-------------------------
+
+### Deprecations
+- `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
+
+### Type restrictions
+- `\humhub\modules\comment\models\Comment` on `canDelete()`
+- `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canRead()`, `canWrite()`, `canEdit()`
+- `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
+- `\humhub\modules\file\models\File` on `canRead()`, `canDelete()`
+
+
 Version 1.15
 -------------------------
 
@@ -51,3 +64,4 @@ Version 1.15
 - `humhub\widgets\MarkdownField`
 - `humhub\widgets\MarkdownFieldModals`
 - `humhub\widgets\ModalConfirm`
+

@@ -8,10 +8,9 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "contentcontainer".

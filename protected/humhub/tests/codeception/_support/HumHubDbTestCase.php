@@ -49,6 +49,8 @@ class HumHubDbTestCase extends Unit
 
     public $time;
 
+    public array $firedEvents = [];
+
     protected function setUp(): void
     {
         if (\Yii::$app !== null) {

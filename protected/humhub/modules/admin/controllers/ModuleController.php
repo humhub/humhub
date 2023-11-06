@@ -47,7 +47,6 @@ class ModuleController extends Controller
      */
     protected function getAccessRules()
     {
-
         return [
             ['permissions' => [ManageModules::class]],
             ['permissions' => [ManageSettings::class], 'actions' => ['index', 'list']]
