@@ -4,7 +4,7 @@ HumHub Changelog
 1.15.0 (November 6, 2023)
 --------------------------------
 
-See also: HumHub 1.14 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_14) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+See also: HumHub 1.14 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_15) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
 
 Warning: HumHub now employs JavaScript nonces for enhanced security (CSP), which may necessitate manual adjustments for inserted scripts, such as statistics codes, to ensure compatibility. See [Migration Notes](https://docs.humhub.org/docs/admin/updating-migration2#115) for details.
 
