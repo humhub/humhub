@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.15.1 (Unreleased)
+--------------------------------
+- Fix #6639: Apply image inline styles in email message
+
+
 1.15.0 (November 6, 2023)
 --------------------------------
 
