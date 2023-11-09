@@ -545,6 +545,21 @@ humhub.module('file', function (module, require, $) {
 
             upload.finish();
         });
+
+        // Bootstrap 3 drop-down menu auto dropup according to screen position
+        // Must be removed when Humhub uses Bootstrap 4+
+        var dropdownButtonSelector = '.upload-buttons > .btn-group';
+        $(document).on("shown.bs.dropdown", dropdownButtonSelector, function () {
+            var $ul = $(this).children(".dropdown-menu");
+            var $button = $(this).children(".dropdown-toggle");
+            var ulOffset = $ul.offset();
+            var spaceUp = (ulOffset.top - $button.height() - $ul.height()) - $(window).scrollTop();
+            var spaceDown = $(window).scrollTop() + $(window).height() - (ulOffset.top + $ul.height());
+            if (spaceDown < 0 && (spaceUp >= 0 || spaceUp > spaceDown))
+                $(this).addClass("dropup");
+        }).on("hidden.bs.dropdown", dropdownButtonSelector, function () {
+            $(this).removeClass("dropup");
+        });
     };
 
     var upload = function (evt) {
