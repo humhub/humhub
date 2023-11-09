@@ -24,17 +24,13 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     const OPTION_RECEIVER_USER = 'receiver';
 
     /**
-     * Inline style are required for GMail web client because it ignores styles from head <style>
-     */
-    const INLINE_STYLES = [
-        'img' => 'max-width:100%'
-    ];
-
-    /**
      * @inheritdoc
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock): string
     {
+        // This inline style is required for GMail web client because it ignores styles from head <style>
+        $linkBlock->setStyle(['max-width' => '100%']);
+
         return parent::renderPlainImage($this->tokenizeBlock($linkBlock));
     }
 
@@ -94,25 +90,5 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     protected function renderParagraph($block)
     {
         return '<p>' . nl2br($this->renderAbsy($block['content'])) . "</p>\n";
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function onAfterParse($text): string
-    {
-        return $this->applyInlineStyles(parent::onAfterParse($text));
-    }
-
-    protected function applyInlineStyles(string $text): string
-    {
-        $pattern = '#(<(' . implode('|', array_keys(self::INLINE_STYLES)). '))([^a-z\d].+?)(/?>)#i';
-        return preg_replace_callback($pattern, [$this, 'callbackInlineStyles'], $text);
-    }
-
-    protected function callbackInlineStyles(array $match): string
-    {
-        $style = isset(self::INLINE_STYLES[$match[2]]) ? ' style="' . self::INLINE_STYLES[$match[2]] . '"' : '';
-        return $match[1] . $match[3] . $style . $match[4];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\link;
 
+use humhub\libs\Html;
 use yii\base\Model;
 use yii\helpers\Url;
 
@@ -15,6 +16,10 @@ class LinkParserBlock extends Model
     const BLOCK_KEY_MD = 'orig';
     const BLOCK_KEY_TEXT = 'text';
     const BLOCK_KEY_FILE_ID = 'fileId';
+    const BLOCK_KEY_WIDTH = 'width';
+    const BLOCK_KEY_HEIGHT = 'height';
+    const BLOCK_KEY_ALIGN = 'align';
+    const BLOCK_KEY_STYLE = 'style';
 
     /**
      * @var array
@@ -41,6 +46,42 @@ class LinkParserBlock extends Model
      */
     public $result;
 
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->initImageOptions();
+    }
+
+    protected function initImageOptions()
+    {
+        if (!$this->isImage()) {
+            return;
+        }
+
+        if ($this->hasOption(static::BLOCK_KEY_TEXT)) {
+            // Extract image alignment from image alt text
+            $text = trim((string)$this->block[static::BLOCK_KEY_TEXT]);
+            if (substr($text, -2) === '><') {
+                $this->setAlign('middle');
+                $this->setText(substr($text, 0, -2));
+            } elseif (substr($text, -1) === '<') {
+                $this->setAlign('left');
+                $this->setText(substr($text, 0, -1));
+            } elseif (substr($text, -1) === '>') {
+                $this->setAlign('right');
+                $this->setText(substr($text, 0, -1));
+            }
+        }
+
+        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)x(\d+)\)$/', $this->block[static::BLOCK_KEY_MD], $size)) {
+            $this->setWidth($size[1]);
+            $this->setHeight($size[2]);
+        }
+    }
+
     public function getMarkdown(): ?string
     {
         return $this->block[static::BLOCK_KEY_MD] ?? null;
@@ -66,7 +107,7 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_URL] = $url;
     }
 
-    public function getText(): ?array
+    public function getText()
     {
         return $this->block[static::BLOCK_KEY_TEXT] ?? null;
     }
@@ -105,6 +146,46 @@ class LinkParserBlock extends Model
     public function setParsedText(string $text)
     {
         $this->parsedText = $text;
+    }
+
+    public function getWidth()
+    {
+        return $this->block[static::BLOCK_KEY_WIDTH] ?? null;
+    }
+
+    public function setWidth($width)
+    {
+        $this->block[static::BLOCK_KEY_WIDTH] = $width;
+    }
+
+    public function getHeight()
+    {
+        return $this->block[static::BLOCK_KEY_HEIGHT] ?? null;
+    }
+
+    public function setHeight($height)
+    {
+        $this->block[static::BLOCK_KEY_HEIGHT] = $height;
+    }
+
+    public function getAlign()
+    {
+        return $this->block[static::BLOCK_KEY_ALIGN] ?? null;
+    }
+
+    public function setAlign($align)
+    {
+        $this->block[static::BLOCK_KEY_ALIGN] = $align;
+    }
+
+    public function getStyle()
+    {
+        return $this->block[static::BLOCK_KEY_STYLE] ?? null;
+    }
+
+    public function setStyle($style)
+    {
+        $this->block[static::BLOCK_KEY_STYLE] = $style;
     }
 
     public function setBlock(string $text, string $url, string $title = null, $fileId = null)
@@ -151,6 +232,36 @@ class LinkParserBlock extends Model
         }
 
         return [['text', $text]];
+    }
+
+    public function hasOption(string $key): bool
+    {
+        return isset($this->block[$key]) && $this->block[$key] !== '' && $this->block[$key] !== [];
+    }
+
+    public function renderImageAttributes(): string
+    {
+        $attrs = [
+            'src' => $this->getUrl(),
+            'alt' => $this->getText()
+        ];
+        if ($this->hasOption(static::BLOCK_KEY_TITLE)) {
+            $attrs['title'] = $this->getTitle();
+        }
+        if ($this->hasOption(static::BLOCK_KEY_WIDTH)) {
+            $attrs['width'] = $this->getWidth();
+        }
+        if ($this->hasOption(static::BLOCK_KEY_HEIGHT)) {
+            $attrs['height'] = $this->getHeight();
+        }
+        if ($this->hasOption(static::BLOCK_KEY_ALIGN)) {
+            $attrs['align'] = $this->getAlign();
+        }
+        if ($this->hasOption(static::BLOCK_KEY_STYLE)) {
+            $attrs['style'] = $this->getStyle();
+        }
+
+        return Html::renderTagAttributes($attrs);
     }
 
 }
