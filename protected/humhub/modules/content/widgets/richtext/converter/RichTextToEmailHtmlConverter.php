@@ -24,14 +24,47 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     const OPTION_RECEIVER_USER = 'receiver';
 
     /**
+     * Convert the following style classes to inline styles,
+     * It is required for some email clients which ignore styles from head <style>
+     */
+    const CLASS_STYLES = [
+        'pull-left' => ['float' => 'left'],
+        'pull-right' => ['float' => 'right'],
+        'center-block' => ['display' => 'block', 'margin' => 'auto'],
+    ];
+
+    /**
      * @inheritdoc
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock): string
     {
         // This inline style is required for GMail web client because it ignores styles from head <style>
         $linkBlock->setStyle(['max-width' => '100%']);
-
+        $linkBlock = $this->convertClassToStyle($linkBlock);
         return parent::renderPlainImage($this->tokenizeBlock($linkBlock));
+    }
+
+    /**
+     * Convert style class to inline style
+     *
+     * @param LinkParserBlock $linkBlock
+     * @return LinkParserBlock
+     */
+    protected function convertClassToStyle(LinkParserBlock $linkBlock): LinkParserBlock
+    {
+        $class = $linkBlock->getClass();
+        if (empty($class)) {
+            return $linkBlock;
+        }
+
+        $classes = explode(' ', $class);
+        foreach ($classes as $class) {
+            if (isset(self::CLASS_STYLES[$class])) {
+                $linkBlock->setStyle(self::CLASS_STYLES[$class]);
+            }
+        }
+
+        return $linkBlock;
     }
 
     /**

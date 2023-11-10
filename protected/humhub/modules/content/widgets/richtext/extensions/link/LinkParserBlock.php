@@ -7,7 +7,8 @@ use yii\base\Model;
 use yii\helpers\Url;
 
 /**
- * <orig> = [<text>](<url> "<title>")
+ * Link: <orig> = [<text>](<url> "<title>")
+ * Image: <orig> = ![<text><alignment>](<url> "<title>" =<width>x<height>)
  */
 class LinkParserBlock extends Model
 {
@@ -18,7 +19,7 @@ class LinkParserBlock extends Model
     const BLOCK_KEY_FILE_ID = 'fileId';
     const BLOCK_KEY_WIDTH = 'width';
     const BLOCK_KEY_HEIGHT = 'height';
-    const BLOCK_KEY_ALIGN = 'align';
+    const BLOCK_KEY_CLASS = 'class';
     const BLOCK_KEY_STYLE = 'style';
 
     /**
@@ -65,13 +66,13 @@ class LinkParserBlock extends Model
             // Extract image alignment from image alt text
             $text = trim((string)$this->block[static::BLOCK_KEY_TEXT]);
             if (substr($text, -2) === '><') {
-                $this->setAlign('middle');
+                $this->setClass('center-block');
                 $this->setText(substr($text, 0, -2));
             } elseif (substr($text, -1) === '<') {
-                $this->setAlign('left');
+                $this->setClass('pull-left');
                 $this->setText(substr($text, 0, -1));
             } elseif (substr($text, -1) === '>') {
-                $this->setAlign('right');
+                $this->setClass('pull-right');
                 $this->setText(substr($text, 0, -1));
             }
         }
@@ -168,24 +169,28 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_HEIGHT] = $height;
     }
 
-    public function getAlign()
+    public function getClass()
     {
-        return $this->block[static::BLOCK_KEY_ALIGN] ?? null;
+        return $this->block[static::BLOCK_KEY_CLASS] ?? null;
     }
 
-    public function setAlign($align)
+    public function setClass($class)
     {
-        $this->block[static::BLOCK_KEY_ALIGN] = $align;
+        $this->block[static::BLOCK_KEY_CLASS] = $class;
     }
 
-    public function getStyle()
+    public function getStyle(): ?array
     {
         return $this->block[static::BLOCK_KEY_STYLE] ?? null;
     }
 
-    public function setStyle($style)
+    public function setStyle(array $style)
     {
-        $this->block[static::BLOCK_KEY_STYLE] = $style;
+        if (!isset($this->block[static::BLOCK_KEY_STYLE])) {
+            $this->block[static::BLOCK_KEY_STYLE] = [];
+        }
+
+        $this->block[static::BLOCK_KEY_STYLE] = array_merge($this->block[static::BLOCK_KEY_STYLE], $style);
     }
 
     public function setBlock(string $text, string $url, string $title = null, $fileId = null)
@@ -254,8 +259,8 @@ class LinkParserBlock extends Model
         if ($this->hasOption(static::BLOCK_KEY_HEIGHT)) {
             $attrs['height'] = $this->getHeight();
         }
-        if ($this->hasOption(static::BLOCK_KEY_ALIGN)) {
-            $attrs['align'] = $this->getAlign();
+        if ($this->hasOption(static::BLOCK_KEY_CLASS)) {
+            $attrs['class'] = $this->getClass();
         }
         if ($this->hasOption(static::BLOCK_KEY_STYLE)) {
             $attrs['style'] = $this->getStyle();
