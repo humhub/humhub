@@ -48,6 +48,25 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
         ]);
     }
 
+    public function testConvertAdditionalImageAttributesToHtml()
+    {
+        $this->assertConversionResult(
+            '![Image alt text](http://local/image.jpg "Image description")',
+            '<p><img src="http://local/image.jpg" alt="Image alt text" title="Image description" style="max-width: 100%;"></p>');
+
+        $this->assertConversionResult(
+            '![Image alt text>](http://local/image.jpg "Image description" =100x)',
+            '<p><img class="pull-right" src="http://local/image.jpg" width="100" alt="Image alt text" title="Image description" style="max-width: 100%; float: right;"></p>');
+
+        $this->assertConversionResult(
+            '![Image alt text<](http://local/image.jpg "Image description" =x200)',
+            '<p><img class="pull-left" src="http://local/image.jpg" height="200" alt="Image alt text" title="Image description" style="max-width: 100%; float: left;"></p>');
+
+        $this->assertConversionResult(
+            '![Image alt text><](http://local/image.jpg "Image description" =50x120)',
+            '<p><img class="center-block" src="http://local/image.jpg" width="50" height="120" alt="Image alt text" title="Image description" style="max-width: 100%; display: block; margin: auto;"></p>');
+    }
+
     private function assertConversionResult($markdown, $expected = null, $options = [])
     {
         if ($expected === null) {
