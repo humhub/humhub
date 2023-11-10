@@ -212,7 +212,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         // Image size is currently not supported in html output
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg" =150x)',
-            '<p>Test <img src="http://localhost/static/img/logo.png" alt="Scaled Image" title="img6.jpg"></p>'
+            '<p>Test <img src="http://localhost/static/img/logo.png" width="150" alt="Scaled Image" title="img6.jpg"></p>'
         );
     }
 
@@ -221,7 +221,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         // Image size is currently not supported in html output
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png =150x)',
-            '<p>Test <img src="http://localhost/static/img/logo.png" alt="Scaled Image"></p>'
+            '<p>Test <img src="http://localhost/static/img/logo.png" width="150" alt="Scaled Image"></p>'
         );
     }
 
@@ -229,7 +229,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image>](http://localhost/static/img/logo.png =150x)',
-            '<p>Test <img src="http://localhost/static/img/logo.png" alt="Scaled Image"></p>'
+            '<p>Test <img src="http://localhost/static/img/logo.png" width="150" alt="Scaled Image" align="right"></p>'
         );
     }
 
@@ -237,7 +237,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image<](http://localhost/static/img/logo.png =150x)',
-            '<p>Test <img src="http://localhost/static/img/logo.png" alt="Scaled Image"></p>'
+            '<p>Test <img src="http://localhost/static/img/logo.png" width="150" alt="Scaled Image" align="left"></p>'
         );
     }
 
@@ -245,7 +245,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
-            '<p>Test <img src="http://localhost/static/img/logo.png" alt="Scaled Image"></p>'
+            '<p>Test <img src="http://localhost/static/img/logo.png" width="150" alt="Scaled Image" align="middle"></p>'
         );
     }
 
@@ -376,7 +376,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File>](file-guid:' . $guid . ')',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>'
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File" align="right"></p>'
         );
     }
 
@@ -410,7 +410,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File<](file-guid:' . $guid . ')',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>'
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File" align="left"></p>'
         );
     }
 
@@ -435,7 +435,7 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:' . $guid . ')',
-            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File"></p>'
+            '<p>Test file <img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $guid . '&amp;hash_sha1=xxx" alt="Test File" align="middle"></p>'
         );
     }
 

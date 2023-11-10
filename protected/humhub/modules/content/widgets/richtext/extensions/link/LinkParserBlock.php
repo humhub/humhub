@@ -76,9 +76,9 @@ class LinkParserBlock extends Model
             }
         }
 
-        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)x(\d+)\)$/', $this->block[static::BLOCK_KEY_MD], $size)) {
-            $this->setWidth($size[1]);
-            $this->setHeight($size[2]);
+        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)?x(\d+)?\)$/', $this->block[static::BLOCK_KEY_MD], $size)) {
+            $this->setWidth($size[1] ?? null);
+            $this->setHeight($size[2] ?? null);
         }
     }
 

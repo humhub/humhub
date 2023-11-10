@@ -43,7 +43,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->file_name . '")Test',
-            '<p>Test<img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $file->guid . '&amp;hash_sha1=&amp;token=' . $token . '" alt="test_image.jpg" style="max-width:100%">Test</p>', [
+            '<p>Test<img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $file->guid . '&amp;hash_sha1=&amp;token=' . $token . '" alt="test_image.jpg" style="max-width: 100%;">Test</p>', [
             RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $admin,
         ]);
     }
