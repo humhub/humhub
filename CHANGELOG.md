@@ -5,6 +5,8 @@ HumHub Changelog
 --------------------------------
 - Fix #6644: Fix push service
 - Fix #6645: File dropdown not visible at the bottom of the page
+- Fix #6639: Apply image inline styles in email message
+
 
 1.15.0 (November 6, 2023)
 --------------------------------
