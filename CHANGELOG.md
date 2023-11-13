@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #6645: File dropdown not visible at the bottom of the page
 - Fix #6639: Apply image inline styles in email message
 - Fix #6649: Fix birthday format on welcome page
+- Fix #6652: Fix profile update on welcome page
 
 
 1.15.0 (November 6, 2023)
