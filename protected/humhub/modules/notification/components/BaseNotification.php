@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
+use humhub\libs\SafeBaseUrl;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\notification\jobs\SendBulkNotification;
@@ -161,10 +162,10 @@ abstract class BaseNotification extends SocialActivity
         }
 
         if($this->hasContent()) {
-            $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
+            $url = SafeBaseUrl::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
             $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], false);
         } else {
-            $url = Url::to(['/notification/entry', 'id' => $this->record->id], true);
+            $url = SafeBaseUrl::to(['/notification/entry', 'id' => $this->record->id], true);
             $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id], false);
         }
 

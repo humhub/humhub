@@ -25,6 +25,7 @@ class SafeBaseUrl extends BaseUrl
     {
         $urlManager = clone parent::getUrlManager();
         $urlManager->setHostInfo(static::getHostInfoFromSetting());
+        $urlManager->setBaseUrl(static::getBaseUrlFromSetting());
         return $urlManager;
     }
 
@@ -44,5 +45,23 @@ class SafeBaseUrl extends BaseUrl
         $data = parse_url($baseUrl);
 
         return $data['scheme'] . '://' . $data['host'] . (isset($data['port']) ? ':' . $data['port'] : '');
+    }
+
+    /**
+     * Get base URL path from general setting "Base URL"
+     *
+     * @return string|null
+     */
+    public static function getBaseUrlFromSetting(): ?string
+    {
+        $baseUrl = Yii::$app->settings->get('baseUrl');
+
+        if (empty($baseUrl)) {
+            return null;
+        }
+
+        $data = parse_url($baseUrl);
+
+        return $data['path'] ?? null;
     }
 }
