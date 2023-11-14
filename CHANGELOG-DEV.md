@@ -19,3 +19,4 @@ HumHub Changelog
 - Enh #5315: Default stream sort by `created_at` instead of `id`
 - Fix #6337: Update `created_at` after first publishing of content record
 - Fix #6631: Fix visibility of the method `Controller::getAccessRules()`
+- Enh #6650: Add assets GZIP compression with Apache
