@@ -53,7 +53,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](/p/site)',
-            "Test [Link](http://localhost/p/site)"
+            "Test [Link](http://localhost:8080/p/site)"
         );
     }
 
@@ -61,7 +61,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](/p/site)',
-            "Test [Link &< Link](http://localhost/p/site)"
+            "Test [Link &< Link](http://localhost:8080/p/site)"
         );
     }
 
@@ -69,23 +69,23 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [](/p/site)',
-            "Test [](http://localhost/p/site)"
+            "Test [](http://localhost:8080/p/site)"
         );
     }
 
     public function testLinkWithMarkedText()
     {
         $this->assertConversionResult(
-            'Test [**Bold** Url](http://localhost/p/site)',
-            "Test [**Bold** Url](http://localhost/p/site)"
+            'Test [**Bold** Url](http://localhost:8080/p/site)',
+            "Test [**Bold** Url](http://localhost:8080/p/site)"
         );
     }
 
     public function testConvertLinkifiedLink()
     {
         $this->assertConversionResult(
-            'Test http://localhost/p/site',
-            "Test http://localhost/p/site"
+            'Test http://localhost:8080/p/site',
+            "Test http://localhost:8080/p/site"
         );
     }
 
@@ -121,7 +121,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](/static/img/logo.png)',
-            "Test ![Alt Text](http://localhost/static/img/logo.png)"
+            "Test ![Alt Text](http://localhost:8080/static/img/logo.png)"
         );
     }
 
@@ -129,55 +129,55 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](/static/img/logo.png)',
-            "Test ![Alt & < Text](http://localhost/static/img/logo.png)"
+            "Test ![Alt & < Text](http://localhost:8080/static/img/logo.png)"
         );
     }
 
     public function testConvertImageWithTitleText()
     {
         $this->assertConversionResult(
-            'Test ![Image Label](http://localhost/static/img/logo.png "Image Title")',
-            "Test ![Image Label](http://localhost/static/img/logo.png \"Image Title\")"
+            'Test ![Image Label](http://localhost:8080/static/img/logo.png "Image Title")',
+            "Test ![Image Label](http://localhost:8080/static/img/logo.png \"Image Title\")"
         );
     }
 
     public function testConvertImageWithSizeToText()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg" =150x)',
-            'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg")'
+            'Test ![Scaled Image](http://localhost:8080/static/img/logo.png "img6.jpg" =150x)',
+            'Test ![Scaled Image](http://localhost:8080/static/img/logo.png "img6.jpg")'
         );
     }
 
     public function testConvertImageWithSizeAndNoTitleToText()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            'Test ![Scaled Image](http://localhost:8080/static/img/logo.png =150x)',
+            "Test ![Scaled Image](http://localhost:8080/static/img/logo.png)"
         );
     }
 
     public function testConvertImageWithImageAlignmentRight()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image>](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            'Test ![Scaled Image>](http://localhost:8080/static/img/logo.png =150x)',
+            "Test ![Scaled Image](http://localhost:8080/static/img/logo.png)"
         );
     }
 
     public function testConvertImageWithImageAlignmentLeft()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image<](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            'Test ![Scaled Image<](http://localhost:8080/static/img/logo.png =150x)',
+            "Test ![Scaled Image](http://localhost:8080/static/img/logo.png)"
         );
     }
 
     public function testConvertImageWithImageAlignmentCenter()
     {
         $this->assertConversionResult(
-            'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            'Test ![Scaled Image><](http://localhost:8080/static/img/logo.png =150x)',
+            "Test ![Scaled Image](http://localhost:8080/static/img/logo.png)"
         );
     }
 
