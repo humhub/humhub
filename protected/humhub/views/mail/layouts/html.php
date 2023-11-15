@@ -1,10 +1,10 @@
 <?php
 
-use humhub\libs\SafeBaseUrl;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\widgets\FooterMenu;
-use humhub\widgets\PoweredBy;
+use yii\helpers\Url;
 use yii\helpers\Html;
+use humhub\widgets\PoweredBy;
 
 ?>
 
@@ -560,7 +560,7 @@ use yii\helpers\Html;
                                                                         <tr>
                                                                             <td style="text-align:center;">
                                                                                 <span style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>;">
-                                                                                    <a href="<?php echo SafeBaseUrl::to(['/'], true); ?>"
+                                                                                    <a href="<?php echo Url::to(['/'], true); ?>"
                                                                                         style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
                                                                                             <?php echo Html::encode(Yii::$app->name); ?>
                                                                                     </a>
@@ -689,7 +689,7 @@ use yii\helpers\Html;
                                                                 <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>;">
 
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
-                                                                        <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : SafeBaseUrl::to(['/notification/user'], true) ?>
+                                                                        <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : \yii\helpers\Url::to(['/notification/user'], true) ?>
                                                                         <span style="text-decoration: none; color: <?= $soft2Color ?>;">
                                                                             <a href="<?= $url ?>" style="text-decoration: none; color: <?= $soft2Color ?>;"><?= Yii::t('base', 'Unsubscribe') ?></a>
                                                                             •

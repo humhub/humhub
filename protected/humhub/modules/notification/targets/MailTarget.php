@@ -8,10 +8,9 @@
 
 namespace humhub\modules\notification\targets;
 
-use humhub\libs\SafeBaseUrl;
+use Yii;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
-use Yii;
 
 /**
  *
@@ -55,7 +54,7 @@ class MailTarget extends BaseTarget
         Yii::$app->i18n->setUserLocale($recipient);
 
         Yii::$app->view->params['showUnsubscribe'] = true;
-        Yii::$app->view->params['unsubscribeUrl'] = SafeBaseUrl::to(['/notification/user'], true);
+        Yii::$app->view->params['unsubscribeUrl'] = \yii\helpers\Url::to(['/notification/user'], true);
 
         // Note: the renderer is configured in common.php by default its an instance of MailTarget
         $renderer = $this->getRenderer();
