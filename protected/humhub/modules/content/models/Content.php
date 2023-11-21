@@ -567,9 +567,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Checks if the current user can archive this content.
      * The content owner and the workspace admin can archive contents.
      *
-     * @return boolean
-     * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @inheritdoc
      */
     public function canArchive($user = null): bool
     {
@@ -599,9 +597,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Archives the content object
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function archive(): bool
     {
@@ -735,9 +731,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Unarchives the content object
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function unarchive(): bool
     {
@@ -970,13 +964,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Checks if user can view this content.
-     *
-     * @param User|integer $user
-     * @return boolean can view this content
-     * @throws Exception
-     * @throws Throwable
-     * @since 1.1
+     * @inheritdoc
      */
     public function canView($user = null): bool
     {

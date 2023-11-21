@@ -1,5 +1,4 @@
 <?php
-
 /*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -10,14 +9,17 @@ namespace humhub\interfaces;
 
 use humhub\modules\user\models\User;
 
+/**
+ * Readable Interface
+ * @since 1.16
+ */
 interface ReadableInterface
 {
     /**
      * Checks if given element can be read.
      *
-     * @param string|User $userId
-     *
+     * @param User|integer|string|null $user User instance or user id, null - current user
      * @return bool
      */
-    public function canRead($userId = ""): bool;
+    public function canRead($user = null): bool;
 }

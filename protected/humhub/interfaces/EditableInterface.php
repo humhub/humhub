@@ -9,18 +9,19 @@
 namespace humhub\interfaces;
 
 use humhub\modules\user\models\User;
-use Throwable;
 
+/**
+ * Editable Interface
+ * @since 1.16
+ */
 interface EditableInterface
 {
 
     /**
      * Checks if the given user can edit/create this element.
      *
-     * @param User|integer $user user instance or user id
-     *
-     * @return bool can edit/create this element
-     * @since 1.15
+     * @param User|integer|string|null $user user instance or user id
+     * @return bool
      */
     public function canEdit($user = null): bool;
 
