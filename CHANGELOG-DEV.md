@@ -21,3 +21,4 @@ HumHub Changelog
 - Fix #6631: Fix visibility of the method `Controller::getAccessRules()`
 - Enh #6650: Add assets GZIP compression with Apache
 - Fix #6662: Change the start_url of the PWA from home to base URL
+- Enh #6667: Allow view file when owner object provides this

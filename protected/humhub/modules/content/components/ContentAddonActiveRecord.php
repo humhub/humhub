@@ -138,8 +138,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Rea
      * Checks if the given / or current user can delete this content.
      * Currently only the creator can remove.
      *
-     * @param null $userId
-     * @return boolean
+     * @inheritdoc
      */
     public function canDelete($userId = null): bool
     {
@@ -151,14 +150,11 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Rea
     }
 
     /**
-     * Check if current user can read this object
-     *
-     * @param string $userId
-     * @return boolean
+     * @inheritdoc
      */
-    public function canRead($userId = ""): bool
+    public function canRead($user = null): bool
     {
-        return $this->content->canView($userId);
+        return $this->content->canView($user);
     }
 
     /**

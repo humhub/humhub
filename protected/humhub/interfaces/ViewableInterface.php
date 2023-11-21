@@ -9,19 +9,19 @@
 namespace humhub\interfaces;
 
 use humhub\modules\user\models\User;
-use Throwable;
 
+/**
+ * Viewable Interface
+ * @since 1.16
+ */
 interface ViewableInterface
 {
     /**
      * Checks if user can view this element.
      *
-     * @param User|integer $user
-     *
-     * @return boolean can view this element
-     * @throws Throwable
-     * @since 1.15
+     * @param User|integer|string|null $user User instance or user id, null - current user
+     * @return bool
      */
-    public function canView($user = null);
+    public function canView($user = null): bool;
 
 }
