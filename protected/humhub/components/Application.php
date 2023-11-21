@@ -94,4 +94,37 @@ class Application extends \yii\web\Application implements ApplicationInterface
             $this->language = $value;
         }
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function getModule($id, $load = true)
+    {
+        try {
+            return parent::getModule($id, $load);
+        } catch (Exception $exception) {
+            Yii::error('Could not load module "' . $id . '": ' . $exception->getMessage());
+            return null;
+        }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getModules($loadedOnly = false)
+    {
+        $modules = parent::getModules($loadedOnly);
+
+        foreach ($modules as $id => $module) {
+            if (is_array($module) || is_string($module)) {
+                $module = Yii::$app->getModule($id);
+            }
+            if (!($module instanceof \yii\base\Module)) {
+                // Exclude broken module
+                unset($modules[$id]);
+            }
+        }
+
+        return $modules;
+    }
 }

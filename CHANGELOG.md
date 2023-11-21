@@ -555,6 +555,9 @@ Warning: The minimum PHP version is now `PHP 7.4`!
 - Fix #5591: Fix people/space cards banner
 - Enh #5575: Add content topics to search
 
+1.10.5 (Unreleased)
+-----------------------
+- Fix #5659: Improve Module loading error handling
 
 1.10.4 (April 19, 2022)
 -----------------------
