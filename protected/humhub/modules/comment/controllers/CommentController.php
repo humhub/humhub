@@ -199,7 +199,7 @@ class CommentController extends Controller
     {
         $comment = $this->getComment($id);
 
-        if (!$comment->canRead()) {
+        if (!$comment->canView()) {
             throw new ForbiddenHttpException();
         }
 

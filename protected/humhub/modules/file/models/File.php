@@ -281,9 +281,17 @@ class File extends FileCompat implements ViewableInterface
     }
 
     /**
-     * @inheritdoc
+     * @deprecated Use canView() instead. It will be deleted since v1.17
      */
     public function canRead($user = null): bool
+    {
+        return $this->canView($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canView($user = null): bool
     {
         $object = $this->getPolymorphicRelation();
         if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
@@ -294,14 +302,6 @@ class File extends FileCompat implements ViewableInterface
         }
 
         return true;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function canView($user = null): bool
-    {
-        return $this->canRead($user);
     }
 
     /**
