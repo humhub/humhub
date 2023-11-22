@@ -9,12 +9,15 @@ Version 1.16 (Unreleased)
 
 ### Deprecations
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
+- `\humhub\modules\file\models\File::canRead()` use `canView()` instead
+- `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
 
 ### Type restrictions
 - `\humhub\modules\comment\models\Comment` on `canDelete()`
-- `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canRead()`, `canWrite()`, `canEdit()`
+- `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canWrite()`, `canEdit()`
 - `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
 - `\humhub\modules\file\models\File` on `canRead()`, `canDelete()`
+
 
 
 Version 1.15
