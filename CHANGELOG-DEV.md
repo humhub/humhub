@@ -22,4 +22,4 @@ HumHub Changelog
 - Enh #6650: Add assets GZIP compression with Apache
 - Fix #6662: Change the start_url of the PWA from home to base URL
 - Enh #6667: Allow view file when owner object provides this
-- Enh #6670: Remove interface `ReadableInterface`
+- Enh #6671: Remove interface `ReadableInterface`
