@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #6656: Fix people and space filters
 - Fix #6652: Fix profile update on welcome page
 - Fix #6660: Fix memory usage on integrity check
+- Fix #6666: Limit jQuery with version < 3.7.0 to avoid dropdown error
 
 
 1.15.0 (November 6, 2023)
