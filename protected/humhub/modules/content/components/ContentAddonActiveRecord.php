@@ -11,7 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\components\ActiveRecord;
 use humhub\interfaces\DeletableInterface;
 use humhub\interfaces\EditableInterface;
-use humhub\interfaces\ReadableInterface;
+use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
@@ -39,7 +39,7 @@ use yii\base\Exception;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ReadableInterface, EditableInterface, DeletableInterface
+class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ViewableInterface, EditableInterface, DeletableInterface
 {
     /**
      * @var boolean also update underlying contents last update stream sorting
@@ -150,9 +150,17 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Rea
     }
 
     /**
-     * @inheritdoc
+     * @deprecated Use canView() instead. It will be deleted since v1.17
      */
     public function canRead($user = null): bool
+    {
+        return $this->canView($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canView($user = null): bool
     {
         return $this->content->canView($user);
     }

@@ -143,7 +143,7 @@ class DownloadAction extends Action
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
-        if (!$file->canRead($user)) {
+        if (!$file->canView($user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
