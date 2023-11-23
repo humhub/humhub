@@ -24,10 +24,17 @@ class ScheduledCest
         $I->wantTo('ensure the scheduled content has a proper badge.');
         $I->waitForText($postContent, null, '.wall-entry');
         $I->see($this->getLabelText($datetime), '//div[@class="wall-entry"][1]');
+        $I->wantTo('ensure author can see the scheduled content on dashboard.');
+        $I->amOnDashboard();
+        $I->waitForText($postContent, null, '[data-stream-entry="1"]');
+        $I->waitForText($this->getLabelText($datetime), null, '[data-stream-entry="1"]');
 
-        $I->wantTo('ensure draft is not visible for other users.');
+        $I->wantTo('ensure the scheduled content is not visible for other users.');
         $I->amUser2(true);
         $I->amOnSpace3();
+        $I->dontSee($postContent);
+        $I->amOnDashboard();
+        $I->waitForElementVisible('[data-stream-entry="1"]');
         $I->dontSee($postContent);
 
         $I->wantTo('update scheduled options of the existing content');
