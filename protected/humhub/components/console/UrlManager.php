@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace humhub\components\console;
 
@@ -24,7 +29,7 @@ class UrlManager extends \humhub\components\UrlManager
             $hostInfo .= ':' . $urlParts['port'];
         }
         $this->setHostInfo($hostInfo);
-        $this->setScriptUrl($this->getBaseUrl() . '/index.php');
+        $this->setScriptUrl($this->getBaseUrl() . ($this->getScriptUrl() ?: '/index.php'));
 
         parent::init();
     }
@@ -40,6 +45,4 @@ class UrlManager extends \humhub\components\UrlManager
 
         return 'http://localhost';
     }
-
-
 }

@@ -21,6 +21,7 @@ return [
         ],
         'urlManager' => [
             'class' => \humhub\components\console\UrlManager::class,
+            'scriptUrl' => '/index.php',
         ],
         'runtimeCache' => [
             'class' => \yii\caching\DummyCache::class
