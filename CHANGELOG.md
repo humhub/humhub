@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #6652: Fix profile update on welcome page
 - Fix #6660: Fix memory usage on integrity check
 - Fix #6666: Limit jQuery with version < 3.7.0 to avoid dropdown error
+- Fix #6653: URL in email notification removes the sub-folder of the Base URL 
 - Fix #6674: Fix visibility of draft and scheduled content on dashboard
 
 
