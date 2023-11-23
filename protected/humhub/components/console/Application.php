@@ -45,7 +45,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
-                    Yii::setAlias('@web', $baseUrl);
+                    Yii::setAlias('@web', Yii::$app->settings->get('baseUrl'));
                 }
                 if (Yii::getAlias('@web-static', false) === false) {
                     Yii::setAlias('@web-static', '@web/static');
@@ -53,17 +53,6 @@ class Application extends \yii\console\Application implements ApplicationInterfa
                 if (Yii::getAlias('@webroot-static', false) === false) {
                     Yii::setAlias('@webroot-static', '@webroot/static');
                 }
-                $this->urlManager->scriptUrl = '';
-                $this->urlManager->baseUrl = '';
-
-                // Set hostInfo based on given baseUrl
-                $urlParts = parse_url($baseUrl);
-                $hostInfo = $urlParts['scheme'] . '://' . $urlParts['host'];
-                if (isset($urlParts['port'])) {
-                    $hostInfo .= ':' . $urlParts['port'];
-                }
-
-                $this->urlManager->hostInfo = $hostInfo;
             }
         }
 

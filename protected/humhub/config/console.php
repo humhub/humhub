@@ -19,6 +19,9 @@ return [
             'enableSession' => false,
             'loginUrl' => ['/user/auth/login']
         ],
+        'urlManager' => [
+            'class' => \humhub\components\console\UrlManager::class,
+        ],
         'runtimeCache' => [
             'class' => \yii\caching\DummyCache::class
         ],
