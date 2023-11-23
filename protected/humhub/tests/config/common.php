@@ -21,6 +21,9 @@ return [
         'queue' => [
             'class' => 'humhub\modules\queue\driver\Instant',
         ],
+        'urlManager' => [
+            'class' => \humhub\components\console\UrlManager::class,
+        ],
     ],
     'params' => [
         'installed' => true,
