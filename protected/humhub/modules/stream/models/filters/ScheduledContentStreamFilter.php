@@ -32,9 +32,17 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
 
         if ($this->allowPinContent()) {
             $this->fetchScheduledContent();
-        } else {
-            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_SCHEDULED];
+        } elseif (!Yii::$app->user->isGuest) {
+            $this->streamQuery->stateFilterCondition[] = $this->getScheduledCondition();
         }
+    }
+
+    private function getScheduledCondition(): array
+    {
+        return ['AND',
+            ['content.state' => Content::STATE_SCHEDULED],
+            ['content.created_by' => Yii::$app->user->id]
+        ];
     }
 
     /**
@@ -43,10 +51,7 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
     private function fetchScheduledContent(): void
     {
         $scheduledQuery = clone $this->query;
-        $scheduledQuery->andWhere([
-            'AND', ['content.state' => Content::STATE_SCHEDULED],
-            ['content.created_by' => Yii::$app->user->id]]
-        );
+        $scheduledQuery->andWhere($this->getScheduledCondition());
         $scheduledQuery->limit(100);
         $this->scheduledContent = $scheduledQuery->all();
     }
