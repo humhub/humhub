@@ -45,7 +45,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
-                    Yii::setAlias('@web', Yii::$app->settings->get('baseUrl'));
+                    Yii::setAlias('@web', $baseUrl);
                 }
                 if (Yii::getAlias('@web-static', false) === false) {
                     Yii::setAlias('@web-static', '@web/static');
