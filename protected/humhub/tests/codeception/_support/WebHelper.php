@@ -27,7 +27,7 @@ class WebHelper extends Module
 
     public function _before(\Codeception\TestInterface $test)
     {
-        Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
+        ;
     }
 
     /**
