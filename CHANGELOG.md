@@ -11,9 +11,9 @@ HumHub Changelog
 - Fix #6652: Fix profile update on welcome page
 - Fix #6660: Fix memory usage on integrity check
 - Fix #6666: Limit jQuery with version < 3.7.0 to avoid dropdown error
-- Fix #6653: URL in email notification removes the sub-folder of the Base URL 
+- Fix #6653: URL in email notification removes the sub-folder of the Base URL
 - Fix #6674: Fix visibility of draft and scheduled content on dashboard
-
+- Fix #6679: On the space invitation by link page, the language chooser doesn't save the selected language
 
 1.15.0 (November 6, 2023)
 --------------------------------
