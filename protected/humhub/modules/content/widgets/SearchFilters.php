@@ -8,6 +8,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\libs\Html;
+use humhub\modules\content\search\SearchRequest;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use Yii;
 
@@ -46,15 +47,10 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 200,
         ]);
 
-        $this->addFilter('Type', [
+        $this->addFilter('contentType', [
             'title' => Yii::t('SpaceModule.base', 'Content type'),
             'type' => 'dropdown',
-            'options' => [
-                '' => Yii::t('SpaceModule.base', 'Any'),
-                'post' => Yii::t('SpaceModule.base', 'Post'),
-                'wiki' => Yii::t('SpaceModule.base', 'Wiki Page'),
-                'poll' => Yii::t('SpaceModule.base', 'Poll'),
-            ],
+            'options' => array_merge(['' => Yii::t('SpaceModule.base', 'Any')], SearchRequest::getContentTypes()),
             'sortOrder' => 300,
         ]);
     }

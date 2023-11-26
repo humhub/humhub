@@ -2,9 +2,11 @@
 
 namespace humhub\modules\content\search;
 
+use humhub\modules\content\models\ContentType;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
+use yii\db\Query;
 use yii\web\IdentityInterface;
 
 class SearchRequest extends Model
@@ -17,12 +19,11 @@ class SearchRequest extends Model
 
     public $pageSize = 25;
 
-    public $contentTypes = [];
+    public $contentType = [];
 
     public $contentContainer = [];
 
     public $orderBy = 'content.created_at';
-
 
 
     public function init()
@@ -39,16 +40,21 @@ class SearchRequest extends Model
         return [
             [['keyword'], 'safe'],
             [['keyword'], 'required'],
+            [['contentType'], 'in', 'range' => array_keys(static::getContentTypes())],
             //[['page'], 'numeric'],
             //[['pageSize'], 'numeric'],
-            //[['contentTypes'], 'in', static::getContentTypes()],
             //[['orderBy'], 'in', []],
         ];
     }
 
     public static function getContentTypes(): array
-    {
+   {
+        $result = [];
+        foreach (ContentType::getContentTypes() as $contentType) {
+            $result[$contentType->typeClass] = ucfirst($contentType->getContentName());
+        }
 
+        return $result;
     }
 
 }

@@ -20,6 +20,7 @@ use ZendSearch\Lucene\Exception\RuntimeException;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\Query\Boolean;
+use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
 use ZendSearch\Lucene\Search\Query\Term as TermQuery;
 use ZendSearch\Lucene\Search\Query\Wildcard;
 use ZendSearch\Lucene\Search\QueryParser;
@@ -54,9 +55,13 @@ class ZendLucenceDriver extends AbstractDriver
             }, $content->tags))));
         $document->addField(Field::keyword('content.container_id', $content->container->id));
         $document->addField(Field::keyword('content.created_at', strtotime($content->created_at)));
-        $document->addField(Field::keyword('content.created_by', $content->createdBy->getDisplayName()));
+        if ($content->createdBy) {
+            $document->addField(Field::keyword('content.created_by', $content->createdBy->getDisplayName()));
+        }
         $document->addField(Field::keyword('content.updated_at', strtotime($content->created_at)));
-        $document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
+        if ($content->updatedBy) {
+            $document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
+        }
         $document->addField(Field::unStored('content.comments', (new ContentSearchService($content))->getCommentsAsText()));
         $document->addField(Field::unStored('content.files', (new ContentSearchService($content))->getFileContentAsText()));
 
@@ -90,8 +95,8 @@ class ZendLucenceDriver extends AbstractDriver
         $query = new Boolean();
         $query->addSubquery(new Wildcard(new Term($request->keyword)), true);
 
-        if (count($request->contentTypes) > 1) {
-            //$this->addQueryFilterContentType($query, $options->contentTypes);
+        if (!empty($request->contentType)) {
+            $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
         }
         if ($request->user !== null) {
             //$this->addQueryFilterUser($query, $options->contentTypes);
@@ -131,7 +136,6 @@ class ZendLucenceDriver extends AbstractDriver
 
         return $resultSet;
     }
-
 
     private function getIndex()
     {

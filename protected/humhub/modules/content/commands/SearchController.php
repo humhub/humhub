@@ -43,7 +43,7 @@ class SearchController extends \yii\console\Controller
     {
         $driver = $this->getDriver();
         $driver->purge();
-        foreach (Content::find()->all() as $content) {
+        foreach (Content::find()->each() as $content) {
             (new ContentSearchService($content))->update(false);
             print ".";
         }
