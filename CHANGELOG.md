@@ -14,6 +14,7 @@ HumHub Changelog
 - Fix #6653: URL in email notification removes the sub-folder of the Base URL
 - Fix #6674: Fix visibility of draft and scheduled content on dashboard
 - Fix #6679: On the space invitation by link page, the language chooser doesn't save the selected language
+- Fix #6677: Do not check mobile push module in requirements check on installation
 
 1.15.0 (November 6, 2023)
 --------------------------------
