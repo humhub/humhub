@@ -14,7 +14,7 @@ class MembershipTest extends HumHubDbTestCase
     {
         $this->becomeUser('User1');
 
-        $user1 = Yii::$app->user->getIdentity();
+        $user1 = Yii::$app->user->model;
 
         // Request Membership for Space 1 (approval join policity)
         $space = Space::findOne(['id' => 1]);

@@ -107,7 +107,7 @@ class Push extends BaseDriver
             return '';
         }
 
-        $user = Yii::$app->user->getIdentity();
+        $user = Yii::$app->user->model;
         $token = [
             'iss' => Url::to(['/'], true),
             'sub' => Yii::$app->user->id,

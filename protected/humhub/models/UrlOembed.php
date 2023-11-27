@@ -496,10 +496,7 @@ class UrlOembed extends ActiveRecord
             return [];
         }
 
-        /* @var User $user */
-        $user = Yii::$app->user->getIdentity();
-
-        $allowedUrls = $user->settings->get('allowedOembedUrls');
+        $allowedUrls = Yii::$app->user->model->settings->get('allowedOembedUrls');
 
         return empty($allowedUrls) ? [] : explode(',', $allowedUrls);
     }
@@ -523,9 +520,7 @@ class UrlOembed extends ActiveRecord
         $allowedUrls = self::getAllowedDomains();
         $allowedUrls[] = $domain;
 
-        /* @var User $user */
-        $user = Yii::$app->user->getIdentity();
-        $user->settings->set('allowedOembedUrls', implode(',', $allowedUrls));
+        Yii::$app->user->model->settings->set('allowedOembedUrls', implode(',', $allowedUrls));
 
         return true;
     }
