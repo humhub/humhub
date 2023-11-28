@@ -20,6 +20,7 @@
 
 namespace humhub\modules\tour\widgets;
 
+use humhub\modules\tour\Module;
 use Yii;
 use yii\base\Widget;
 
@@ -30,14 +31,16 @@ class Dashboard extends Widget
 {
     public function run()
     {
-        $settingsManager = Yii::$app->getModule('tour')->settings->user();
+        /* @var Module $module */
+        $module = Yii::$app->getModule('tour');
+        $settingsManager = $module->settings->user();
 
         return $this->render('tourPanel', [
             'interface' => $settingsManager->get("interface"),
             'spaces' => $settingsManager->get("spaces"),
             'profile' => $settingsManager->get("profile"),
             'administration' => $settingsManager->get("administration"),
-            'showWelcome' => (Yii::$app->user->id == 1 && Yii::$app->getModule('installer')->settings->get('sampleData') != 1 && $settingsManager->get('welcome') != 1)
+            'showWelcome' => $module->showWelcomeWindow()
         ]);
     }
 }
