@@ -844,23 +844,25 @@ class SelfTest
             ];
         }
 
-        // Check Mobile App - Push Service
-        $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
-        /* @var \humhub\modules\fcmPush\Module|null $pushModule */
-        $pushModule = $modules['fcm-push'] ?? null;
-        if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
-            $pushModule->isActivated &&
-            $pushModule->getGoService()->isConfigured()) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
-            ];
+        if (Setting::isInstalled()) {
+            // Check Mobile App - Push Service
+            $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
+            /* @var \humhub\modules\fcmPush\Module|null $pushModule */
+            $pushModule = $modules['fcm-push'] ?? null;
+            if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
+                $pushModule->isActivated &&
+                $pushModule->getGoService()->isConfigured()) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK'
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
+                ];
+            }
         }
 
         return $checks;
