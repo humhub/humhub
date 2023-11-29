@@ -2,6 +2,7 @@
 
 namespace humhub\modules\tour;
 
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -25,12 +26,18 @@ class Module extends \humhub\components\Module
     /**
      * Check if the welcome tour window should be displayed automatically
      *
+     * @param User|null $user
      * @return bool
      */
-    public function showWelcomeWindow(): bool
+    public function showWelcomeWindow(?User $user = null): bool
     {
-        return Yii::$app->user->id === 1 &&
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->identity;
+        }
+
+        return $user instanceof User &&
+            $user->id === 1 &&
             Yii::$app->getModule('installer')->settings->get('sampleData') != 1 &&
-            $this->settings->user()->get('welcome') != 1;
+            $this->settings->user($user)->get('welcome') != 1;
     }
 }

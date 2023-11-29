@@ -9,6 +9,7 @@ namespace humhub\modules\tour;
 
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\tour\widgets\Dashboard;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -18,7 +19,7 @@ use Yii;
  */
 class Events
 {
-    const AUTO_START = 'tour.autoStartWelcome';
+    const AUTO_START = 'autoStartTour';
     const DASHBOARD_WIDGET = 'tour.displayDashboardWidget';
 
     public static function onDashboardSidebarInit($event)
@@ -27,7 +28,7 @@ class Events
             return;
         }
 
-        if (Yii::$app->session->get(self::AUTO_START)) {
+        if (self::getModule()->settings->user()->get(self::AUTO_START)) {
             self::runAutoStartWelcomeTour();
         } elseif(Yii::$app->session->get(self::DASHBOARD_WIDGET)) {
             /* @var Sidebar $sidebar */
@@ -36,13 +37,17 @@ class Events
         }
     }
 
+    public static function onUserBeforeLogin($event)
+    {
+        if ($event->identity instanceof User && self::shouldStartWelcomeTour($event->identity)) {
+            self::getModule()->settings->user($event->identity)->set(self::AUTO_START, true);
+        }
+    }
+
     public static function onAfterLogin()
     {
         if (self::shouldDisplayDashboardWidget()) {
             Yii::$app->session->set(self::DASHBOARD_WIDGET, true);
-            if (self::shouldStartWelcomeTour()) {
-                Yii::$app->session->set(self::AUTO_START, true);
-            }
         }
     }
 
@@ -51,35 +56,23 @@ class Events
         return Yii::$app->getModule('tour');
     }
 
-    private static function shouldDisplayDashboardWidget(): bool
+    private static function shouldDisplayDashboardWidget(?User $user = null): bool
     {
         $settings = self::getModule()->settings;
         return $settings->get('enable') == 1 &&
-            $settings->user()->get('hideTourPanel') != 1;
+            $settings->user($user)->get('hideTourPanel') != 1;
     }
 
-    private static function shouldStartWelcomeTour(): bool
+    private static function shouldStartWelcomeTour(?User $user = null): bool
     {
-        if (Yii::$app->user->isGuest) {
-            // Don't start it for guest
-            return false;
-        }
-
-        if (self::getModule()->showWelcomeWindow()) {
-            // No need auto start because it will be done by dashboard widget
-            return false;
-        }
-
-        $user = Yii::$app->user->identity;
-
-        // Force auto start only for new created user
-        return $user->updated_by === null && $user->created_at === $user->updated_at;
+        return $user->last_login === null && // Force auto start only for new created user who is logged in first time after registration
+            self::shouldDisplayDashboardWidget($user) && // Start it only when the dashboard sidebar widget is visible for the user
+            !self::getModule()->showWelcomeWindow($user); // No need auto start because it will be done by dashboard widget
     }
 
     private static function runAutoStartWelcomeTour(): void
     {
-        Yii::$app->session->remove(self::AUTO_START);
-        Yii::$app->user->identity->updateAttributes(['updated_by' => Yii::$app->user->id]);
+        self::getModule()->settings->user()->delete(self::AUTO_START);
         Yii::$app->response->redirect(['/dashboard/dashboard', 'tour' => true]);
     }
 }
