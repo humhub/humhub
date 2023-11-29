@@ -14,6 +14,10 @@ Version 1.16 (Unreleased)
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
+- `\humhub\modules\friendship\Module::getIsEnabled()` use `isFriendshipEnabled()` instead
+  (note: `\humhub\modules\friendship\Module::getIsEnabled()` and the virtual
+  property `\humhub\modules\friendship\Module::isEnabled` now return the status of the module -
+  which yields always true for core modules.)
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types

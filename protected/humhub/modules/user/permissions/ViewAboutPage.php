@@ -48,7 +48,7 @@ class ViewAboutPage extends \humhub\libs\BasePermission
     public function getDefaultState($groupId)
     {
         // When friendship is disabled, also allow normal members to see about page
-        if ($groupId == User::USERGROUP_USER && !Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if ($groupId == User::USERGROUP_USER && !Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             return self::STATE_ALLOW;
         }
 

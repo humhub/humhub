@@ -65,7 +65,7 @@ class ProfileHeader extends \yii\base\Widget
             // Deprecated variables below (will removed in future versions)
             'allowModifyProfileImage' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
             'allowModifyProfileBanner' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
-            'friendshipsEnabled' => Yii::$app->getModule('friendship')->getIsEnabled(),
+            'friendshipsEnabled' => Yii::$app->getModule('friendship')->isFriendshipEnabled(),
             'followingEnabled' => !Yii::$app->getModule('user')->disableFollow,
             'countFriends' => -1,
             'countFollowers' => -1,

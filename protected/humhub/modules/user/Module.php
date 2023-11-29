@@ -197,7 +197,7 @@ class Module extends \humhub\components\Module
                 new permissions\ViewAboutPage(),
             ];
 
-            if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if(Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
                 $permissions[] = new permissions\CanMention();
             }
 

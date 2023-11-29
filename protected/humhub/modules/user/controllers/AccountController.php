@@ -187,7 +187,7 @@ class AccountController extends BaseAccountController
         $groups = [];
         $groupAccessEnabled = AuthHelper::isGuestAccessEnabled();
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $groups[User::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
             $groups[User::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
         } else {
