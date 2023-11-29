@@ -45,6 +45,8 @@ use yii\log\Dispatcher;
  */
 trait HumHubHelperTrait
 {
+    use DebugTrait;
+
     public array $firedEvents = [];
     protected static ?ArrayTarget $logTarget = null;
     private static $logOldDispatcher;
@@ -110,6 +112,13 @@ trait HumHubHelperTrait
      * GENERAL
      * =======
      */
+
+    protected function isPhpVersion($minVersion = 8): void
+    {
+        if (PHP_MAJOR_VERSION < $minVersion) {
+            $this->markTestSkipped('The current PHP version ' . PHP_VERSION . ' does not meet the minimal requirement for this test: ' . $minVersion);
+        }
+    }
 
     /**
      * Asserts that `$haystack` contains an element that matches the `$regex`
@@ -663,7 +672,7 @@ trait HumHubHelperTrait
      * @throws InvalidConfigException
      * @since 1.15
      * @see \yii\log\Logger::$messages
-     * @see \humhub\tests\codeception\unit\LogAssertionsSelfTest
+     * @see \humhub\tests\codeception\unit\SelfTestLogAssertionsTest
      */
     protected static function logInitialize()
     {

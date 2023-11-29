@@ -15,35 +15,70 @@ namespace tests\codeception\_support;
 use Codeception\Configuration;
 use Codeception\Test\Unit;
 use humhub\libs\BasePermission;
-use humhub\modules\activity\tests\codeception\fixtures\ActivityFixture;
 use humhub\modules\content\components\ContentContainerPermissionManager;
-use humhub\modules\content\tests\codeception\fixtures\ContentContainerFixture;
-use humhub\modules\content\tests\codeception\fixtures\ContentFixture;
-use humhub\modules\file\tests\codeception\fixtures\FileFixture;
-use humhub\modules\file\tests\codeception\fixtures\FileHistoryFixture;
 use humhub\modules\friendship\models\Friendship;
-use humhub\modules\friendship\tests\codeception\fixtures\FriendshipFixture;
-use humhub\modules\live\tests\codeception\fixtures\LiveFixture;
-use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
-use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
-use humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
-use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
-use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
-use humhub\tests\codeception\fixtures\SettingFixture;
-use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use PHPUnit\Framework\SkippedTestError;
+use ReflectionAttribute;
+use ReflectionClass;
 use Yii;
 
 /**
- * @SuppressWarnings(PHPMD)
+ * HumHub test case
+ * ---
+ * ## Fixture Configuration
+ *
+ * Fixtures are configured in the test configuration and can be overwritten per unit and per test.
+ *
+ * - Per-Unit Fixture Configuration: \
+ *   Annotate the **class** with an annotation that extends from `FixtureConfig`.
+ * - Per-Test Fixture Configuration: \
+ *    Annotate the **method** with an annotation that extends from `FixtureConfig`.
+ *
+ * For configuration options, see `FixtureConfig`.
+ *
+ * While evaluating the configuration for a specific test, the following priority applies:
+ *    1. Test method's first annotation deriving from `FixtureConfig`
+ *    2. Class's first annotation deriving from `FixtureConfig`
+ *    3. Fixture provided by the configuration.
+ *
+ * If you create your own Fixture Configuration class, please make sure it extends from `FixtureConfig` and has the
+ *  attribute `#[\Attribute]` set.
+ *
+ * **Note:** Since Attributes are only supported as of PHP version 8, mark the entire unit to be skipped by adding
+ * `static::isPhpVersion()` to your `static::setUp()` method, or at the top of individual test methods.
+ *
+ * @see FixtureConfig
  */
+#[FixtureLegacy]
 class HumHubDbTestCase extends Unit
 {
     use HumHubHelperTrait;
 
-    protected $fixtureConfig;
+    /**
+     * ## Deprecated Per-Class Fixture Configuration
+     * Possible values are:
+     *  - `null`: the setting from the configuration is used
+     *  - `['default']`: the result from `$this->getDefaultFixtures()` is used
+     *  - `['alias1', 'alias2', ...]`: the alias denotes the fixture definition key as specified in the current class'
+     *    `getDefaultFixtures()`.
+     *     The value will be replaced with the respective fixture definition.
+     *     (A combination with `default` does not throw an error, but makes no sense either, since the alias is already
+     *     included in `default`.)
+     *  - `[$fixtureTable => $fixtureClass, ...]`: the specified fixture classes are loaded
+     *  - `['default', $fixtureTable => $fixtureClass, ...]`: the result from `$this->getDefaultFixtures()` is merged
+     *     with the specified fixtures.
+     *     Only meaningful if the additional fixture is not included in the default set.
+     *  - `['Alias1', 'alias2', $fixtureTable => $fixtureClass, ...]`: the two aliases are retrieved from
+     *      `$this->getDefaultFixtures()` (see above under `alias` syntax) and is merged with the specified fixtures.
+     *
+     * @var array|null Fixture configuration
+     *
+     * @see FixtureConfig
+     * @deprecated since 1.16; use `FixtureConfig` attributes instead
+     */
+    protected ?array $fixtureConfig = null;
 
     public $appConfig = '@tests/codeception/config/unit.php';
 
@@ -53,16 +88,19 @@ class HumHubDbTestCase extends Unit
 
     protected function setUp(): void
     {
-        if (\Yii::$app !== null) {
-            \Yii::$app->db->trigger('afterOpen');
+        if (Yii::$app !== null) {
+            Yii::$app->db->trigger('afterOpen');
         }
 
         if (Yii::$app === null) {
-            $c = new \ReflectionClass($this);
+            $c = new ReflectionClass($this);
             $m = $c->getMethod($this->getName(false));
             $doc = $m->getDocComment();
             if (preg_match('#@skip(.*?)\r?\n#s', $doc, $annotations)) {
-                throw new SkippedTestError("Test was skipped due to @skip annotation: " . (trim($annotations[1]) ?: "[No reason indicated!]"), 0);
+                throw new SkippedTestError(
+                    "Test was skipped due to @skip annotation: " . (trim($annotations[1]) ?: "[No reason indicated!]"),
+                    0
+                );
             }
             return;
         }
@@ -91,48 +129,32 @@ class HumHubDbTestCase extends Unit
         }
     }
 
-    /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
+    /**
+     * @see FixtureConfig for default configuration for the entire class.
+     * There you also find further details on how to configure the fixture on a per-test basis.
+     *
+     * @codingStandardsIgnoreStart PSR2.Methods.MethodDeclaration.Underscore
+     **/
     public function _fixtures(): array
-    {
-        $cfg = Configuration::config();
+    { // @codingStandardsIgnoreEnd PSR2.Methods.MethodDeclaration.Underscore
 
-        if (!$this->fixtureConfig && isset($cfg['fixtures'])) {
-            $this->fixtureConfig = $cfg['fixtures'];
-        }
-
-        $result = [];
-
-        if (!empty($this->fixtureConfig)) {
-            foreach ($this->fixtureConfig as $fixtureTable => $fixtureClass) {
-                if ($fixtureClass === 'default') {
-                    $result = array_merge($result, static::getDefaultFixtures());
-                } else {
-                    $result[$fixtureTable] = ['class' => $fixtureClass];
-                }
-            }
-        }
-
-        return $result;
+        return FixtureLegacy::create(
+            $this,
+            $this->getName(),
+            $this->fixtureConfig,
+            static::getDefaultFixtures()
+        )->getFixtures();
     }
 
-    protected static function getDefaultFixtures(): array
+
+    /**
+     * @return array|null
+     * @deprecated since 1.16; use FixtureConfig instead.
+     * @see FixtureConfig
+     */
+    protected static function getDefaultFixtures(): ?array
     {
-        return [
-            'user' => ['class' => UserFullFixture::class],
-            'url_oembed' => ['class' => UrlOembedFixture::class],
-            'group_permission' => ['class' => GroupPermissionFixture::class],
-            'contentcontainer' => ['class' => ContentContainerFixture::class],
-            'settings' => ['class' => SettingFixture::class],
-            'space' => ['class' => SpaceFixture::class],
-            'space_membership' => ['class' => SpaceMembershipFixture::class],
-            'content' => ['class' => ContentFixture::class],
-            'notification' => ['class' => NotificationFixture::class],
-            'file' => ['class' => FileFixture::class],
-            'file_history' => ['class' => FileHistoryFixture::class],
-            'activity' => ['class' => ActivityFixture::class],
-            'friendship' => ['class' => FriendshipFixture::class],
-            'live' => [ 'class' => LiveFixture::class]
-        ];
+        return null;
     }
 
     /**
