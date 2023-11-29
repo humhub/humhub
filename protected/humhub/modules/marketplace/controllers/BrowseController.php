@@ -74,15 +74,29 @@ class BrowseController extends Controller
     }
 
     /**
-     * Activates a module after installation
+     * Enables a module after installation
+     *
+     * @deprecated since v1.16; use static::actionEnable()
+     * @see static::actionEnable()
+     * @throws NotFoundHttpException
      */
-    public function actionActivate()
+    public function actionActivate(): string
+    {
+        return $this->actionEnable();
+    }
+
+    /**
+     * Enables a module after installation
+     *
+     * @throws HttpException
+*/
+    public function actionEnable(): string
     {
         $this->forcePostRequest();
 
         $moduleService = $this->getModuleService();
 
-        if (!$moduleService->activate()) {
+        if (!$moduleService->enable()) {
             throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Could not find the requested module!'));
         }
 
