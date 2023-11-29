@@ -18,7 +18,8 @@ use Yii;
  */
 class Events
 {
-    const AUTO_START_KEY = 'tour.autoStartWelcome';
+    const AUTO_START = 'tour.autoStartWelcome';
+    const DASHBOARD_WIDGET = 'tour.displayDashboardWidget';
 
     public static function onDashboardSidebarInit($event)
     {
@@ -26,29 +27,35 @@ class Events
             return;
         }
 
-        $settings = self::getModule()->settings;
-
-        if ($settings->get('enable') == 1 && $settings->user()->get('hideTourPanel') != 1) {
-            if (Yii::$app->session->get(self::AUTO_START_KEY)) {
-                self::runAutoStartWelcomeTour();
-            } else {
-                /* @var Sidebar $sidebar */
-                $sidebar = $event->sender;
-                $sidebar->addWidget(Dashboard::class, [], ['sortOrder' => 100]);
-            }
+        if (Yii::$app->session->get(self::AUTO_START)) {
+            self::runAutoStartWelcomeTour();
+        } elseif(Yii::$app->session->get(self::DASHBOARD_WIDGET)) {
+            /* @var Sidebar $sidebar */
+            $sidebar = $event->sender;
+            $sidebar->addWidget(Dashboard::class, [], ['sortOrder' => 100]);
         }
     }
 
     public static function onAfterLogin()
     {
-        if (self::shouldStartWelcomeTour()) {
-            Yii::$app->session->set(self::AUTO_START_KEY, true);
+        if (self::shouldDisplayDashboardWidget()) {
+            Yii::$app->session->set(self::DASHBOARD_WIDGET, true);
+            if (self::shouldStartWelcomeTour()) {
+                Yii::$app->session->set(self::AUTO_START, true);
+            }
         }
     }
 
     private static function getModule(): Module
     {
         return Yii::$app->getModule('tour');
+    }
+
+    private static function shouldDisplayDashboardWidget(): bool
+    {
+        $settings = self::getModule()->settings;
+        return $settings->get('enable') == 1 &&
+            $settings->user()->get('hideTourPanel') != 1;
     }
 
     private static function shouldStartWelcomeTour(): bool
@@ -71,7 +78,7 @@ class Events
 
     private static function runAutoStartWelcomeTour(): void
     {
-        Yii::$app->session->remove(self::AUTO_START_KEY);
+        Yii::$app->session->remove(self::AUTO_START);
         Yii::$app->user->identity->updateAttributes(['updated_by' => Yii::$app->user->id]);
         Yii::$app->response->redirect(['/dashboard/dashboard', 'tour' => true]);
     }
