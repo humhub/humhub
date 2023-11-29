@@ -2,11 +2,17 @@
 namespace humhub\tests\codeception\unit\models;
 
 use humhub\models\UrlOembed;
+use tests\codeception\_support\FixtureDefault;
 use tests\codeception\_support\HumHubDbTestCase;
 
+#[FixtureDefault]
 class UrlOembedTest extends HumHubDbTestCase
 {
-    public $fixtureConfig = ['default'];
+    /**
+     * @var array|null Only for PHP v7
+     * @deprecated since v1.16
+     */
+    public ?array $fixtureConfig = ['default'];
 
     public function _before()
     {

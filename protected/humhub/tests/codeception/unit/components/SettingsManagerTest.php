@@ -16,6 +16,7 @@ use humhub\models\Setting;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use tests\codeception\_support\FixtureDefault;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -26,9 +27,14 @@ use yii\helpers\ArrayHelper;
 
 use function PHPUnit\Framework\assertInstanceOf;
 
+#[FixtureDefault]
 class SettingsManagerTest extends HumHubDbTestCase
 {
-    protected $fixtureConfig = ['default'];
+    /**
+     * @var array|null Only for PHP v7
+     * @deprecated since v1.16
+     */
+    protected ?array $fixtureConfig = ['default'];
 
     public function testCreateWithoutModuleId()
     {

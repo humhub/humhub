@@ -10,11 +10,17 @@ namespace humhub\tests\codeception\unit\models;
 
 use humhub\models\Setting;
 use humhub\tests\codeception\unit\components\SettingActiveRecordTest;
+use tests\codeception\_support\FixtureDefault;
 use yii\base\Exception;
 
+#[FixtureDefault]
 class SettingTest extends SettingActiveRecordTest
 {
-    protected $fixtureConfig = ['default'];
+    /**
+     * @var array|null Only for PHP v7
+     * @deprecated since v1.16
+     */
+    protected ?array $fixtureConfig = ['default'];
 
     public function testGetCacheKeyFormat()
     {

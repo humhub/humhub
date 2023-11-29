@@ -11,12 +11,18 @@ namespace tests\codeception\unit\modules\file;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use SplFileInfo;
+use tests\codeception\_support\FixtureConfig;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
+#[FixtureConfig]
 class FileHelperTest extends HumHubDbTestCase
 {
-    protected $fixtureConfig = false;
+    /**
+     * @var array|null Only for PHP v7
+     * @deprecated since v1.16
+     */
+    protected ?array $fixtureConfig = null;
 
     protected function setUp(): void
     {

@@ -10,12 +10,18 @@ use humhub\commands\TestController;
 use humhub\components\access\AccessValidator;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
+use tests\codeception\_support\FixtureDefault;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
+#[FixtureDefault]
 class TestControllerAccess extends HumHubDbTestCase
 {
-    public $fixtureConfig = ['default'];
+    /**
+     * @var array|null Only for PHP v7
+     * @deprecated since v1.16
+     */
+    public ?array $fixtureConfig = ['default'];
 
     public function testLoggedInOnlyValidator()
     {

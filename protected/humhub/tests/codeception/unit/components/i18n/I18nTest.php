@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,14 +9,18 @@
 
 namespace humhub\tests\codeception\unit;
 
-use Yii;
+use tests\codeception\_support\FixtureDefault;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
+#[FixtureDefault]
 class I18nTest extends HumHubDbTestCase
 {
-    public $fixtureConfig = [
-        'default'
-    ];
+    /**
+     * @var array|null Only for PHP v7
+     * @deprecated since v1.16
+     */
+    public ?array $fixtureConfig = ['default'];
 
     public function testShowMeridian()
     {
