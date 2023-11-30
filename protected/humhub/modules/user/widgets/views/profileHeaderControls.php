@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\user\widgets\HeaderControlsMenu;
 use humhub\modules\user\widgets\ProfileHeaderControls;
 use humhub\modules\friendship\widgets\FriendshipButton;
 use humhub\modules\user\widgets\ProfileEditButton;
@@ -18,16 +19,14 @@ use humhub\modules\user\widgets\UserFollowButton;
                     <?= ProfileHeaderControls::widget([
                         'user' => $container,
                         'widgets' => [
-                            [ProfileEditButton::class, ['user' => $container], []],
-                            [UserFollowButton::class, ['user' => $container], []],
-                            [FriendshipButton::class, ['user' => $container], []],
+                            [ProfileEditButton::class, ['user' => $container]],
+                            [UserFollowButton::class, ['user' => $container]],
+                            [FriendshipButton::class, ['user' => $container]],
+                            [HeaderControlsMenu::class, ['user' => $container]],
                         ]
-                    ]);
-                    ?>
+                    ]) ?>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-
