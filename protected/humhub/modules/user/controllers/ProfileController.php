@@ -116,8 +116,9 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->unfollow();
+        $redirect = Yii::$app->request->get('redirect', false);
 
-        if (Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax && !$redirect) {
             Yii::$app->response->format = 'json';
             return ['success' => true];
         }
@@ -155,6 +156,8 @@ class ProfileController extends ContentContainerController
 
     public function actionBlock()
     {
+        $this->forcePostRequest();
+
         if ($this->contentContainer->blockForUser()) {
             $this->view->warn(Yii::t('UserModule.base', 'The user has been blocked for you.'));
         }
@@ -164,6 +167,8 @@ class ProfileController extends ContentContainerController
 
     public function actionUnblock()
     {
+        $this->forcePostRequest();
+
         if ($this->contentContainer->unblockForUser()) {
             $this->view->success(Yii::t('UserModule.base', 'The user has been unblocked for you.'));
         }
