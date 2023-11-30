@@ -18,6 +18,7 @@ Version 1.16 (Unreleased)
   (note: `\humhub\modules\friendship\Module::getIsEnabled()` and the virtual
   property `\humhub\modules\friendship\Module::isEnabled` now return the status of the module -
   which yields always true for core modules.)
+- `\humhub\modules\marketplace\Module::isEnabled()` use `isMarketplaceEnabled()` instead
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types

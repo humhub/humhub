@@ -38,7 +38,7 @@ class BrowseController extends Controller
      */
     public function beforeAction($action)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isMarketplaceEnabled()) {
             throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Marketplace is disabled.'));
         }
 

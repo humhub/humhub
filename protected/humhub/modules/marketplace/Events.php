@@ -30,7 +30,7 @@ class Events extends BaseObject
      */
     public static function onConsoleApplicationInit($event)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isMarketplaceEnabled()) {
             return;
         }
 
@@ -47,7 +47,7 @@ class Events extends BaseObject
 
     public static function onMarketplaceAfterFilterModules(ModulesEvent $event)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isMarketplaceEnabled()) {
             return;
         }
 
@@ -64,7 +64,7 @@ class Events extends BaseObject
 
     public static function onAccountTopMenuInit($event)
     {
-        if (!Module::isEnabled() ||
+        if (!Module::isMarketplaceEnabled() ||
             !Yii::$app->user->isAdmin() ||
             !Yii::$app->user->can(ManageModules::class)) {
             return;

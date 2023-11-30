@@ -90,7 +90,7 @@ class InstalledModuleControls extends Menu
             ]));
         }
 
-        if (MarketplaceModule::isEnabled()) {
+        if (MarketplaceModule::isMarketplaceEnabled()) {
             $this->addEntry(new MenuLink([
                 'id' => 'info',
                 'label' => Yii::t('AdminModule.base', 'Show in Marketplace'),

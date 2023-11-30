@@ -62,7 +62,7 @@ class MarketplaceService
 
     public function refreshPendingModuleUpdateCount(int $count = null)
     {
-        if (MarketplaceModule::isEnabled()) {
+        if (MarketplaceModule::isMarketplaceEnabled()) {
             if ($count === null) {
                 $count = count($this->getMarketplaceModule()->onlineModuleManager->getModuleUpdates());
             }
@@ -73,7 +73,7 @@ class MarketplaceService
 
     public function getPendingModuleUpdateCount(): int
     {
-        return MarketplaceModule::isEnabled()
+        return MarketplaceModule::isMarketplaceEnabled()
             ? (int) $this->getSettings()->get('pendingModuleUpdateCount')
             : 0;
     }
