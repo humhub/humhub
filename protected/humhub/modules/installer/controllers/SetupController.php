@@ -187,7 +187,7 @@ class SetupController extends Controller
 
         DynamicConfig::rewrite();
 
-        $this->module->setDatabaseInstalled();
+        DynamicConfig::setDatabaseInstalled();
     }
 
 }

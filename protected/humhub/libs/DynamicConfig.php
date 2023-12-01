@@ -205,4 +205,25 @@ class DynamicConfig extends BaseObject
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
     }
+
+    /**
+     * Sets application in installed state (disables installer)
+     */
+    public static function setInstalled()
+    {
+        $config = self::load();
+        $config['params']['installed'] = true;
+        self::save($config);
+    }
+
+    /**
+     * Sets the application database in installed state
+     */
+    public static function setDatabaseInstalled()
+    {
+        $config = self::load();
+        $config['params']['databaseInstalled'] = true;
+        self::save($config);
+    }
+
 }
