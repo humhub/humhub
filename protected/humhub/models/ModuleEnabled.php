@@ -86,7 +86,7 @@ class ModuleEnabled extends \yii\db\ActiveRecord
             return $registeredModuleInfo;
         }
 
-        if (!BaseSettingsManager::isInstalled()) {
+        if (!BaseSettingsManager::isInstalled() || !BaseSettingsManager::isDatabaseInstalled()) {
             return (object) [
                 'modules' => [],
                 'enabled' => [],
