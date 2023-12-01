@@ -123,16 +123,6 @@ class ModuleManagerTest extends HumHubDbTestCase
             $this->moduleManager->myModules(),
             __FUNCTION__ . '.' . 'myModules()'
         );
-        static::assertEquals(
-            [],
-            $this->moduleManager->myCoreModules(),
-            __FUNCTION__ . '.' . 'myCoreModules()'
-        );
-        static::assertEquals(
-            static::$moduleEnabledList,
-            $this->moduleManager->myEnabledModules(),
-            __FUNCTION__ . '.' . 'myEnabledModules()'
-        );
     }
 
     /**
@@ -920,9 +910,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     public function registerModuleAsEnabled(string $basePath, $config)
     {
         // set module as enabled
-        $this->moduleManager->myEnabledModules()[] = $this->moduleId;
-
-        $module = $this->registerModule($basePath, $config);
+        $module = $this->registerModule($basePath, $config, true);
 
         static::assertEquals([$this->moduleId => $this->moduleClass], $this->moduleManager->getModules([
             'includeCoreModules' => true,
@@ -953,9 +941,6 @@ class ModuleManagerTest extends HumHubDbTestCase
         $this->moduleManager = new ModuleManagerMock();
 
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
-
-        // set module as enabled
-        $this->moduleManager->myEnabledModules()[] = $this->moduleId;
 
         unset($config['namespace']);
 
