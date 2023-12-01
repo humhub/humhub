@@ -1,7 +1,7 @@
 <?php
 
 use humhub\components\Migration;
-use humhub\models\Setting;
+use humhub\libs\BaseSettingsManager;
 use humhub\modules\user\models\Group;
 
 /**
@@ -24,7 +24,7 @@ class m201228_064513_default_group extends Migration
         }
 
         // Try to create "Default Group" only for upgrade case because on new installation the group "Users" is used as default group:
-        if (Setting::isInstalled()) {
+        if (BaseSettingsManager::isInstalled()) {
             // Move value from setting:auth.defaultUserGroup into new column group:is_default_group
             if (empty($defaultUserGroupId) ||
                 !($group = Group::findOne(['id' => $defaultUserGroupId])) ||

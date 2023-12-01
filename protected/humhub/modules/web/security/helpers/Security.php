@@ -4,9 +4,9 @@
 namespace humhub\modules\web\security\helpers;
 
 
-use humhub\models\Setting;
-use Yii;
+use humhub\libs\BaseSettingsManager;
 use humhub\modules\web\security\models\SecuritySettings;
+use Yii;
 
 class Security
 {
@@ -78,7 +78,7 @@ class Security
      */
     public static function getNonce($create = false)
     {
-        if(!Setting::isInstalled()) {
+        if(!BaseSettingsManager::isInstalled()) {
             return null;
         }
 

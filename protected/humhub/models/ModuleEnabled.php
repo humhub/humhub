@@ -8,6 +8,7 @@
 
 namespace humhub\models;
 
+use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -85,7 +86,7 @@ class ModuleEnabled extends \yii\db\ActiveRecord
             return $registeredModuleInfo;
         }
 
-        if (!Setting::isInstalled()) {
+        if (!BaseSettingsManager::isInstalled()) {
             return (object) [
                 'modules' => [],
                 'enabled' => [],

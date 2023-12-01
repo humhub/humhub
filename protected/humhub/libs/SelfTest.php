@@ -8,12 +8,9 @@
 
 namespace humhub\libs;
 
-use humhub\models\Setting;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Label;
 use Yii;
 
 /**
@@ -435,7 +432,7 @@ class SelfTest
                 ];
             }
 
-            if (Setting::isInstalled()) {
+            if (BaseSettingsManager::isInstalled()) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
                     $checks[] = [

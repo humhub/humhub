@@ -8,7 +8,7 @@
 
 namespace humhub\components;
 
-use humhub\models\Setting;
+use humhub\libs\BaseSettingsManager;
 use humhub\modules\like\activities\Liked;
 use humhub\modules\like\models\Like;
 use Throwable;
@@ -604,7 +604,7 @@ class Migration extends \yii\db\Migration
      */
     protected function isInitialInstallation(): bool
     {
-        return (!Setting::isInstalled());
+        return (!BaseSettingsManager::isInstalled());
     }
 
     /**
