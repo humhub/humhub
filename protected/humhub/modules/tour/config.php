@@ -3,7 +3,6 @@
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\tour\Events;
 use humhub\modules\tour\Module;
-use humhub\modules\user\controllers\AuthController;
 use yii\web\User;
 
 return [
@@ -12,7 +11,6 @@ return [
     'isCoreModule' => true,
     'events' => [
         [Sidebar::class, Sidebar::EVENT_INIT, [Events::class, 'onDashboardSidebarInit']],
-        [AuthController::class, AuthController::EVENT_AFTER_LOGIN, [Events::class, 'onAfterLogin']],
         [User::class, User::EVENT_BEFORE_LOGIN, [Events::class, 'onUserBeforeLogin']],
     ],
 ];

@@ -20,7 +20,6 @@ use Yii;
 class Events
 {
     const AUTO_START = 'autoStartTour';
-    const DASHBOARD_WIDGET = 'tour.displayDashboardWidget';
 
     public static function onDashboardSidebarInit($event)
     {
@@ -30,7 +29,7 @@ class Events
 
         if (self::getModule()->settings->user()->get(self::AUTO_START)) {
             self::runAutoStartWelcomeTour();
-        } elseif(Yii::$app->session->get(self::DASHBOARD_WIDGET)) {
+        } elseif(self::shouldDisplayDashboardWidget()) {
             /* @var Sidebar $sidebar */
             $sidebar = $event->sender;
             $sidebar->addWidget(Dashboard::class, [], ['sortOrder' => 100]);
@@ -41,13 +40,6 @@ class Events
     {
         if ($event->identity instanceof User && self::shouldStartWelcomeTour($event->identity)) {
             self::getModule()->settings->user($event->identity)->set(self::AUTO_START, true);
-        }
-    }
-
-    public static function onAfterLogin()
-    {
-        if (self::shouldDisplayDashboardWidget()) {
-            Yii::$app->session->set(self::DASHBOARD_WIDGET, true);
         }
     }
 
