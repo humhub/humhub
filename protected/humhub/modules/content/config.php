@@ -20,8 +20,6 @@ return [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_SOFT_DELETE, 'callback' => [Events::class, 'onUserSoftDelete']],
         ['class' => Space::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onSpaceDelete']],
         ['class' => Search::class, 'event' => Search::EVENT_ON_REBUILD, 'callback' => [Events::class, 'onSearchRebuild']],
-        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_INSERT, 'callback' => [Events::class, 'onContentActiveRecordSave']],
-        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentActiveRecordSave']],
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentActiveRecordDelete']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']]

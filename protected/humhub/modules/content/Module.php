@@ -93,6 +93,7 @@ class Module extends \humhub\components\Module
      */
     public $publishScheduledInterval = 10;
 
+
     /**
      * @param ContentContainerActiveRecord $container
      * @return int

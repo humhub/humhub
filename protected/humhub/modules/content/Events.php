@@ -122,19 +122,6 @@ class Events extends BaseObject
     }
 
     /**
-     * After a components\ContentActiveRecord was saved
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onContentActiveRecordSave($event)
-    {
-        /** @var ContentActiveRecord $record */
-        $record = $event->sender;
-
-        (new ContentSearchService($record->content))->update();
-    }
-
-    /**
      * After a components\ContentActiveRecord was deleted
      *
      * @param \yii\base\Event $event

@@ -53,6 +53,52 @@ class SearchFilters extends DirectoryFilters
             'options' => array_merge(['' => Yii::t('SpaceModule.base', 'Any')], SearchRequest::getContentTypes()),
             'sortOrder' => 300,
         ]);
+
+        $this->addFilter('dateForm', [
+            'title' => Yii::t('SpaceModule.base', 'Date From'),
+            'type' => 'input',
+            'sortOrder' => 400,
+        ]);
+
+        $this->addFilter('dateTo', [
+            'title' => Yii::t('SpaceModule.base', 'Date To'),
+            'type' => 'input',
+            'sortOrder' => 420,
+        ]);
+
+        $this->addFilter('topic', [
+            'title' => Yii::t('SpaceModule.base', 'Topic'),
+            'type' => 'input',
+            'sortOrder' => 420,
+        ]);
+
+        $this->addFilter('author', [
+            'title' => Yii::t('SpaceModule.base', 'Author'),
+            'type' => 'input',
+            'sortOrder' => 500,
+        ]);
+        /*
+        $this->addFilter('status', [
+            'title' => Yii::t('SpaceModule.base', 'Status'),
+            'type' => 'dropdown',
+            'options' => [
+                '' => 'Any',
+                'archived' => 'Archived',
+            ],
+            'sortOrder' => 500,
+        ]);
+        */
+        $this->addFilter('space', [
+            'title' => Yii::t('SpaceModule.base', 'Space'),
+            'type' => 'input',
+            'sortOrder' => 500,
+        ]);
+        $this->addFilter('profile', [
+            'title' => Yii::t('SpaceModule.base', 'Profile'),
+            'type' => 'input',
+            'sortOrder' => 500,
+        ]);
+
     }
 
     public static function getDefaultValue(string $filter): string

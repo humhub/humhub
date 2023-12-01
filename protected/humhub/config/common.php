@@ -254,9 +254,6 @@ $config = [
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
         ],
-        'search' => [
-            'zendLucenceDataDir' => '@runtime/searchdb',
-        ],
         'curl' => [
             // Check SSL certificates on cURL requests
             'validateSsl' => true,

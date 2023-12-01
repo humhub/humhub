@@ -93,10 +93,10 @@ class ZendLucenceDriver extends AbstractDriver
     public function search(SearchRequest $request): ResultSet
     {
         $query = new Boolean();
-        $query->addSubquery(new Wildcard(new Term($request->keyword)), true);
+        $query->addSubquery(new Wildcard(new Term(mb_strtolower($request->keyword))), true);
 
         if (!empty($request->contentType)) {
-            $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
+           // $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
         }
         if ($request->user !== null) {
             //$this->addQueryFilterUser($query, $options->contentTypes);
@@ -159,7 +159,7 @@ class ZendLucenceDriver extends AbstractDriver
 
     private function getIndexPath()
     {
-        $path = Yii::getAlias(Yii::$app->params['search']['zendLucenceDataDir']);
+        $path = Yii::getAlias('@runtime/content-search-db');
         FileHelper::createDirectory($path);
 
         return $path;

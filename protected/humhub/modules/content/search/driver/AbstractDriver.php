@@ -27,4 +27,15 @@ abstract class AbstractDriver
      * @return mixed
      */
     abstract public function search(SearchRequest $request): ResultSet;
+
+
+    public static function rebuild($showDots = false)
+    {
+        foreach (Content::find()->each() as $content) {
+            if ($showDots) {
+                print ".";
+            }
+        }
+    }
+
 }

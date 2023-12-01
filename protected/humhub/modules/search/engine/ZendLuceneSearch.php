@@ -364,9 +364,8 @@ class ZendLuceneSearch extends Search
 
     protected function getIndexPath()
     {
-        $path = Yii::getAlias(Yii::$app->params['search']['zendLucenceDataDir']);
+        $path = Yii::getAlias('@runtime/search-db');
         FileHelper::createDirectory($path);
-
         return $path;
     }
 
