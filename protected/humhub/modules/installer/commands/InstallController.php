@@ -8,6 +8,7 @@
 
 namespace humhub\modules\installer\commands;
 
+use humhub\commands\MigrateController;
 use humhub\helpers\DatabaseHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\UUID;
@@ -29,12 +30,11 @@ use yii\helpers\Console;
  *   php yii installer/install-db
  *   php yii installer/write-site-config "$HUMHUB_NAME" "$HUMHUB_EMAIL"
  *   php yii installer/create-admin-account
- *
  */
 class InstallController extends Controller
 {
     /**
-     * Finished install without input. Useful for testing.
+     * Finished installation without input. Useful for testing.
      */
     public function actionAuto()
     {
@@ -49,7 +49,8 @@ class InstallController extends Controller
      * On success: Writes given settings to config-file and reloads it.
      * On failure: Throws exception
      */
-    public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass) {
+    public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass)
+    {
         $connectionString = "mysql:host=" . $db_host . ";dbname=" . $db_name;
         $dbConfig = [
             'class' => 'yii\db\Connection',
@@ -90,14 +91,14 @@ class InstallController extends Controller
         Yii::$app->cache->flush();
         // Disable max execution time to avoid timeouts during migrations
         @ini_set('max_execution_time', 0);
-        \humhub\commands\MigrateController::webMigrateAll();
+        MigrateController::webMigrateAll();
 
         DynamicConfig::rewrite();
 
-        $this->setDatabaseInstalled();
+        Yii::$app->setDatabaseInstalled();
 
         $this->stdout("  * Finishing\n", Console::FG_YELLOW);
-        $this->setInstalled();
+        Yii::$app->setInstalled();
 
         return ExitCode::OK;
     }
@@ -105,7 +106,7 @@ class InstallController extends Controller
     /**
      * Creates a new user account and adds it to the admin-group
      */
-    public function actionCreateAdminAccount($admin_user='admin', $admin_email='humhub@example.com', $admin_pass='test')
+    public function actionCreateAdminAccount($admin_user = 'admin', $admin_email = 'humhub@example.com', $admin_pass = 'test')
     {
         $user = new User();
         $user->username = $admin_user;
@@ -134,7 +135,8 @@ class InstallController extends Controller
     /**
      * Writes essential site settings to config file and sets installed state
      */
-    public function actionWriteSiteConfig($site_name='HumHub', $site_email='humhub@example.com'){
+    public function actionWriteSiteConfig($site_name = 'HumHub', $site_email = 'humhub@example.com')
+    {
         $this->stdout("Install Site:\n\n", Console::FG_YELLOW);
         InitialData::bootstrap();
 
@@ -143,7 +145,7 @@ class InstallController extends Controller
         Yii::$app->settings->set('secret', UUID::v4());
         Yii::$app->settings->set('timeZone', Yii::$app->timeZone);
 
-        $this->setInstalled();
+        Yii::$app->setInstalled();
 
         return ExitCode::OK;
     }
@@ -151,31 +153,12 @@ class InstallController extends Controller
     /**
      * Sets the base url
      */
-    public function actionSetBaseUrl($base_url){
+    public function actionSetBaseUrl($base_url)
+    {
         $this->stdout("Setting base url", Console::FG_YELLOW);
         Yii::$app->settings->set('baseUrl', $base_url);
 
         return ExitCode::OK;
-    }
-
-     /**
-     * Sets application in installed state (disables installer)
-     */
-    private function setInstalled()
-    {
-        $config = DynamicConfig::load();
-        $config['params']['installed'] = true;
-        DynamicConfig::save($config);
-    }
-
-    /**
-     * Sets application database in installed state
-     */
-    private function setDatabaseInstalled()
-    {
-        $config = DynamicConfig::load();
-        $config['params']['databaseInstalled'] = true;
-        DynamicConfig::save($config);
     }
 
     /**
