@@ -129,7 +129,7 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             Yii::$app->cache->flush();
             Yii::$app->assetManager->clear();
-            Yii::$app->view->theme->variables->flushCache();
+            Yii::$app->view->theme->activate();
             $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
