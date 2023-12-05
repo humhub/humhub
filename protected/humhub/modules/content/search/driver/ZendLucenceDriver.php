@@ -55,12 +55,14 @@ class ZendLucenceDriver extends AbstractDriver
             }, $content->tags))));
         $document->addField(Field::keyword('content.container_id', $content->container->id));
         $document->addField(Field::keyword('content.created_at', strtotime($content->created_at)));
+        $document->addField(Field::keyword('content.created_by', $content->created_by));
         if ($content->createdBy) {
-            $document->addField(Field::keyword('content.created_by', $content->createdBy->getDisplayName()));
+            $document->addField(Field::unStored('content.created_by_name', $content->createdBy->displayName));
         }
+
         $document->addField(Field::keyword('content.updated_at', strtotime($content->created_at)));
         if ($content->updatedBy) {
-            $document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
+            //$document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
         }
         $document->addField(Field::unStored('content.comments', (new ContentSearchService($content))->getCommentsAsText()));
         $document->addField(Field::unStored('content.files', (new ContentSearchService($content))->getFileContentAsText()));
@@ -96,8 +98,13 @@ class ZendLucenceDriver extends AbstractDriver
         $query->addSubquery(new Wildcard(new Term(mb_strtolower($request->keyword))), true);
 
         if (!empty($request->contentType)) {
-           // $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
+            $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
         }
+
+        if ($request->author) {
+            $query->addSubquery(new QueryTerm(new Term($request->author->id, 'content.created_by')), true);
+        }
+
         if ($request->user !== null) {
             //$this->addQueryFilterUser($query, $options->contentTypes);
         }

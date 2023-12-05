@@ -42,20 +42,48 @@ class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->becomeUser('Admin');
 
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test0']))->save();
-        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test1']))->save();
-        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test2']))->save();
+        (new TestContent($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test1']))->save();
+        (new TestContent($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test2']))->save();
 
         $request = new SearchRequest();
         $request->keyword = 'Test';
+        $request->contentType = TestContent::class;
 
         $result = $this->searchDriver->search($request);
 
-        $this->assertEquals(count($result->results), 3);
+        $this->assertEquals(2, count($result->results));
     }
 
     public function testFilterAuthor()
     {
-        $this->assertTrue(true);
+        $space = Space::findOne(['id' => 1]);
+
+        $this->becomeUser('Admin');
+
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestAuthor Test2']))->save();
+
+        $this->becomeUser('User2');
+
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestAuthor Test3']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestAuthor Test4']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestAuthor Test5']))->save();
+
+        // Search by filter
+
+        $request = new SearchRequest();
+        $request->keyword = 'TestAuthor';
+        $request->author = User::findOne(['username' => 'User2']);
+
+        $result = $this->searchDriver->search($request);
+
+        $this->assertEquals(3, count($result->results));
+
+        // Search by keyword
+        $request = new SearchRequest();
+        $request->keyword = 'Sara';
+        $result = $this->searchDriver->search($request);
+
+        $this->assertEquals(3, count($result->results));
     }
 
 }

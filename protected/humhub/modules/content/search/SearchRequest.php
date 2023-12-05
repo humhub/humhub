@@ -19,12 +19,13 @@ class SearchRequest extends Model
 
     public $pageSize = 25;
 
-    public $contentType = [];
+    public $contentType = '';
 
     public $contentContainer = [];
 
     public $orderBy = 'content.created_at';
 
+    public ?User $author = null;
 
     public function init()
     {
@@ -48,7 +49,7 @@ class SearchRequest extends Model
     }
 
     public static function getContentTypes(): array
-   {
+    {
         $result = [];
         foreach (ContentType::getContentTypes() as $contentType) {
             $result[$contentType->typeClass] = ucfirst($contentType->getContentName());

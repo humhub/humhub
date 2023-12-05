@@ -134,28 +134,11 @@ class Post extends ContentActiveRecord
      */
     public function getSearchAttributes()
     {
-        $attributes = [
+        return [
             'message' => $this->message,
-            'url' => $this->url,
-            'user' => $this->getPostAuthorName()
         ];
-
-        return $attributes;
     }
 
-    /**
-     * @return string
-     */
-    private function getPostAuthorName()
-    {
-        $user = User::findOne(['id' => $this->created_by]);
-
-        if ($user !== null && $user->isActive()) {
-            return $user->getDisplayName();
-        }
-
-        return '';
-    }
 
     /**
      * @inheritDoc
