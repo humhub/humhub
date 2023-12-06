@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.15.1 (Unreleased)
 --------------------------------
+- Fix #6698: Content relations
 - Fix #6644: Fix push service
 - Fix #6645: File dropdown not visible at the bottom of the page
 - Fix #6639: Apply image inline styles in email message
