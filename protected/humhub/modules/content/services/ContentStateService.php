@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -17,7 +18,7 @@ use yii\base\Component;
  */
 class ContentStateService extends Component
 {
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
     public Content $content;
 
@@ -45,7 +46,9 @@ class ContentStateService extends Component
      */
     public function allowState(int $state)
     {
-        $this->states[] = $state;
+        if (!in_array($state, $this->states, true)) {
+            $this->states[] = $state;
+        }
     }
 
     /**
@@ -141,7 +144,7 @@ class ContentStateService extends Component
             }
         }
 
-        $this->content->state = $state;
+        $this->content->setAttribute('state', $state);
         return true;
     }
 
