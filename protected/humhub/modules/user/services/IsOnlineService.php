@@ -35,12 +35,11 @@ class IsOnlineService
         }
     }
 
-    public function getStatus(bool $showSelfStatus = false): bool
+    public function getStatus(): bool
     {
         return
             $this->isEnabled()
-            && Yii::$app->cache->exists($this->getCacheKey())
-            && ($showSelfStatus || $this->user->id !== Yii::$app->user->id);
+            && Yii::$app->cache->exists($this->getCacheKey());
     }
 
     public function isEnabled(): bool
