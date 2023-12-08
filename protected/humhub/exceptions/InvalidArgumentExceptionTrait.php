@@ -51,8 +51,10 @@ trait InvalidArgumentExceptionTrait
             // check if $parameter is actually the $message
             if (strpos($parameterOrMessage, ' ') !== false) {
                 $message = $parameterOrMessage;
-                $code = $code ?? $valid ?? 0;
-                $previous = $previous ?? $given;
+                $code ??= is_int($valid) ? $valid : 0;
+                if ($given instanceof Throwable) {
+                    $previous ??= $given;
+                }
             } else {
                 $trace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 2);
                 $trace = end($trace);

@@ -12,8 +12,10 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\components\StatableTrait;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
+use humhub\interfaces\StatableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -89,26 +91,21 @@ use yii\helpers\Url;
  * @property-read ActiveQuery $tagRelations
  * @property-read ContentActiveRecord $model
  * @property-read mixed $contentDescription
- * @property-read StateServiceInterface $stateService
+ * @property-read ContentStateService $stateService
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
  * @since 0.5
  */
-class Content extends ActiveRecord implements Movable, ContentOwner, ArchiveableInterface, EditableInterface, ViewableInterface, SoftDeletable
+class Content extends ActiveRecord implements Movable, ContentOwner, ArchiveableInterface, EditableInterface, ViewableInterface, SoftDeletable, StatableInterface
 {
+    use StatableTrait;
+
     /**
      * The default stream channel.
      * @since 1.6
      */
     public const STREAM_CHANNEL_DEFAULT = 'default';
-
-    /**
-     * A array of user objects which should informed about this new content.
-     *
-     * @var array User
-     */
-    public $notifyUsersOfNewContent = [];
 
     /**
      * @var int The private visibility mode (e.g. for space member content or user profile posts for friends)
@@ -126,12 +123,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     public const VISIBILITY_OWNER = 2;
 
     /**
-     * Content States - By default, only content with the "Published" state is returned.
+     * A array of user objects which should informed about this new content.
+     *
+     * @var array User
      */
-    public const STATE_PUBLISHED = 1;
-    public const STATE_DRAFT = 10;
-    public const STATE_SCHEDULED = 20;
-    public const STATE_DELETED = 100;
+    public $notifyUsersOfNewContent = [];
 
     /**
      * @var ContentContainerActiveRecord the Container (e.g. Space or User) where this content belongs to.
@@ -143,11 +139,6 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @deprecated since v1.2.3 use ContentActiveRecord::silentContentCreation instead.
      */
     public $muteDefaultSocialActivities = false;
-
-    /**
-     * @event Event is used when a Content state is changed.
-     */
-    public const EVENT_STATE_CHANGED = 'changedState';
 
     /**
      * @inheritdoc
@@ -1085,9 +1076,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         return $this->created_at !== $this->updated_at && !empty($this->updated_at) && is_string($this->updated_at);
     }
 
-    public function getStateService(): ContentStateService
+    /**
+     * @inheritDoc
+     */
+    public static function getStateServiceClass(): string
     {
-        return new ContentStateService(['content' => $this]);
+        return ContentStateService::class;
     }
 
     /**
