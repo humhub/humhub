@@ -6,17 +6,18 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\content\services;
+namespace humhub\services;
 
 use humhub\libs\DbDateValidator;
 use humhub\modules\content\models\Content;
 use yii\base\Component;
 
 /**
- * This service is used to extend Content record for state features
- * @since 1.14
+ * This service is used to extend an implementing record for state features
+ *
+ * @since 1.16
  */
-class ContentStateService extends Component
+class StateService extends Component
 {
     public const EVENT_INIT = 'init';
 
@@ -68,53 +69,26 @@ class ContentStateService extends Component
      * Check if the Content has the requested state
      *
      * @param int|string|null $state
+     *
      * @return bool
      */
     public function is($state): bool
     {
         // Always convert to integer before comparing,
         // because right after save the content->state may be a string
-        return (int) $this->content->state === (int) $state;
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->is(Content::STATE_PUBLISHED);
-    }
-
-    /**
-     * @since 1.14.3
-     * @return bool
-     */
-    public function wasPublished(): bool
-    {
-        return (bool) $this->content->was_published;
-    }
-
-    public function isDraft(): bool
-    {
-        return $this->is(Content::STATE_DRAFT);
-    }
-
-    public function isScheduled(): bool
-    {
-        return $this->is(Content::STATE_SCHEDULED);
-    }
-
-    public function isDeleted(): bool
-    {
-        return $this->is(Content::STATE_DELETED);
+        return (int)$this->content->state === (int)$state;
     }
 
     /**
      * Check if the requested state can be set to the Content
      *
      * @param int|string|null $state
+     *
      * @return bool
      */
     public function canChange($state): bool
     {
-        return in_array((int) $state, $this->states);
+        return in_array((int)$state, $this->states);
     }
 
     /**
@@ -125,7 +99,7 @@ class ContentStateService extends Component
      */
     public function set($state, array $options = []): bool
     {
-        $state = (int) $state;
+        $state = (int)$state;
 
         if (!$this->canChange($state)) {
             return false;
@@ -157,25 +131,5 @@ class ContentStateService extends Component
     public function update($state, array $options = []): bool
     {
         return $this->set($state, $options) && $this->content->save();
-    }
-
-    public function publish(): bool
-    {
-        return $this->update(Content::STATE_PUBLISHED);
-    }
-
-    public function schedule(?string $date): bool
-    {
-        return $this->update(Content::STATE_SCHEDULED, ['scheduled_at' => $date]);
-    }
-
-    public function draft(): bool
-    {
-        return $this->update(Content::STATE_DRAFT);
-    }
-
-    public function delete(): bool
-    {
-        return $this->update(Content::STATE_DELETED);
     }
 }
