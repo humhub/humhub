@@ -48,6 +48,11 @@ class SearchRequest extends Model
         ];
     }
 
+    public function getKeywords(): array
+    {
+        return explode(' ', $this->keyword);
+    }
+
     public static function getContentTypes(): array
     {
         $result = [];

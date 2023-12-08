@@ -35,10 +35,51 @@ class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertTrue(true);
     }
 
-    public function testFilterContentType()
+    public function testKeywords()
     {
         $space = Space::findOne(['id' => 1]);
+        $this->becomeUser('Admin');
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
+        /**
+         * Short keyword
+         */
+        $request = new SearchRequest();
+        $request->keyword = 'M';
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(0, count($result->results));
+
+        $request = new SearchRequest();
+        $request->keyword = 'X';
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(1, count($result->results));
+
+        /**
+         * Test Multiple AND Keywords
+         */
+        $request = new SearchRequest();
+        $request->keyword = 'Marabru Leav';
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(1, count($result->results));
+
+        $request = new SearchRequest();
+        $request->keyword = 'Marabru Leav Abcd';
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(0, count($result->results));
+
+
+        /**
+         * Part of Wildcards
+         */
+        $request = new SearchRequest();
+        $request->keyword = 'Ma*';
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(1, count($result->results));
+    }
+
+    public function testFilterCnontentType()
+    {
+        $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
 
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test0']))->save();
@@ -80,7 +121,7 @@ class AbstractDriverTestSuite extends HumHubDbTestCase
 
         // Search by keyword
         $request = new SearchRequest();
-        $request->keyword = 'Sara';
+        $request->keyword = 'Sara Tester';
         $result = $this->searchDriver->search($request);
 
         $this->assertEquals(3, count($result->results));

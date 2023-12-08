@@ -95,7 +95,13 @@ class ZendLucenceDriver extends AbstractDriver
     public function search(SearchRequest $request): ResultSet
     {
         $query = new Boolean();
-        $query->addSubquery(new Wildcard(new Term(mb_strtolower($request->keyword))), true);
+        foreach ($request->getKeywords() as $keyword) {
+            if (mb_strlen($keyword) < 3) {
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new Term(mb_strtolower($keyword))), true);
+            } else {
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard(new Term(mb_strtolower($keyword))), true);
+            }
+        }
 
         if (!empty($request->contentType)) {
             $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
@@ -180,5 +186,4 @@ class ZendLucenceDriver extends AbstractDriver
             Yii::error('Could not commit search index. Error: ' . $e->getMessage(), 'search');
         }
     }
-
 }
