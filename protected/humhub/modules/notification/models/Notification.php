@@ -5,6 +5,7 @@ namespace humhub\modules\notification\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\libs\ClassMapSupportTrait;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
@@ -18,9 +19,11 @@ use yii\db\Query;
  * This is the model class for table "notification".
  *
  * @property integer $id
+ * @property integer $class_id
  * @property string $class
  * @property integer $user_id
  * @property integer $seen
+ * @property integer $source_class_id
  * @property string $source_class
  * @property integer $source_pk
  * @property integer $space_id
@@ -38,6 +41,7 @@ use yii\db\Query;
  */
 class Notification extends ActiveRecord
 {
+    use ClassMapSupportTrait;
 
     /**
      * @var int number of found grouped notifications
@@ -57,7 +61,7 @@ class Notification extends ActiveRecord
         return [
             [
                 'class' => PolymorphicRelation::class,
-                'classAttribute' => 'source_class',
+                'classAttribute' => 'source_class_id',
                 'pkAttribute' => 'source_pk',
                 'strict' => true,
                 'mustBeInstanceOf' => [
@@ -100,7 +104,17 @@ class Notification extends ActiveRecord
                 'integer',
             ],
             [['class', 'source_class'], 'string', 'max' => 100],
+            [['class'], $this->getClassMapValidator('class_id')],
+            [['source_class'], $this->getClassMapValidator('source_class_id')],
             [['payload'], 'safe']
+        ];
+    }
+
+    protected static function classMappedFields(): array
+    {
+        return [
+            'class_id'        => 'class',
+            'source_class_id' => 'source_class',
         ];
     }
 
@@ -140,12 +154,11 @@ class Notification extends ActiveRecord
                     ->andWhere(['class' => $this->class, 'user_id' => $this->user_id, 'group_key' => $this->group_key])
                     ->one();
                 $params['originator'] = $params['record']->originator;
-
             } else {
                 $params['record'] = $this;
             }
 
-            $object = new $this->class;
+            $object = new $this->class();
             Yii::configure($object, $params);
             return $object;
         }
@@ -176,7 +189,7 @@ class Notification extends ActiveRecord
     public function getSourceObject()
     {
         $sourceClass = $this->source_class;
-        if (class_exists($sourceClass) && $sourceClass != "") {
+        if ($sourceClass && class_exists($sourceClass)) {
             return $sourceClass::findOne(['id' => $this->source_pk]);
         }
         return null;
@@ -297,5 +310,4 @@ class Notification extends ActiveRecord
     {
         return self::findUnseen($user)->andWhere(['desktop_notified' => 0]);
     }
-
 }

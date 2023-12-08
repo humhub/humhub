@@ -106,22 +106,24 @@ class Module extends \humhub\components\Module
 
     /**
      * Sets application in installed state (disables installer)
+     *
+     * @deprecated since v1.16; use DynamicConfig::setInstalled()
+     * @see DynamicConfig::setInstalled()
      */
     public function setInstalled()
     {
-        $config = DynamicConfig::load();
-        $config['params']['installed'] = true;
-        DynamicConfig::save($config);
+        DynamicConfig::setInstalled();
     }
 
     /**
-     * Sets application database in installed state
+     * Sets the application database in installed state
+     *
+     * @deprecated since v1.16; use DynamicConfig::setDatabaseInstalled()
+     * @see DynamicConfig::setDatabaseInstalled()
      */
     public function setDatabaseInstalled()
     {
-        $config = DynamicConfig::load();
-        $config['params']['databaseInstalled'] = true;
-        DynamicConfig::save($config);
+        DynamicConfig::setDatabaseInstalled();
     }
 
     protected function initConfigSteps()

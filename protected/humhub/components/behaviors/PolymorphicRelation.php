@@ -9,6 +9,7 @@ namespace humhub\components\behaviors;
 
 use Exception;
 use humhub\libs\Helpers;
+use humhub\models\ClassMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
@@ -147,6 +148,13 @@ class PolymorphicRelation extends Behavior
     {
         if (empty($className) || empty($primaryKey)) {
             return null;
+        }
+
+        if (null !== $classId = filter_var($className, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
+            $className = ClassMap::getClassById($classId);
+            if ($className === null) {
+                return null;
+            }
         }
 
         try {

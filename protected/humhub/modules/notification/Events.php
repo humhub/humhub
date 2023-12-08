@@ -11,6 +11,7 @@ namespace humhub\modules\notification;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\models\ClassMap;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use Yii;
@@ -42,7 +43,7 @@ class Events extends \yii\base\BaseObject
             $notification->delete();
         }
 
-        foreach (Notification::findAll(['source_class' => User::class, 'source_pk' => $user->id]) as $notification) {
+        foreach (Notification::findAll(['source_class_id' => ClassMap::getIdBy(User::class), 'source_pk' => $user->id]) as $notification) {
             $notification->delete();
         }
 
@@ -88,7 +89,7 @@ class Events extends \yii\base\BaseObject
 
             // Check if source object exists when defined
             try {
-                if ($notification->source_class != "" && $notification->getSourceObject() == null) {
+                if ("$notification->source_class_id" !== "" && $notification->getSourceObject() === null) {
                     if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                         $notification->delete();
                     }
@@ -176,8 +177,8 @@ class Events extends \yii\base\BaseObject
         $record = $event->sender;
 
         models\Notification::deleteAll([
-            'source_class' => PolymorphicRelation::getObjectModel($record),
-            'source_pk' => $record->getPrimaryKey(),
+            'source_class_id' => ClassMap::getIdBy($event->sender),
+            'source_pk' => $event->sender->getPrimaryKey(),
         ]);
     }
 

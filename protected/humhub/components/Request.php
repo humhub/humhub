@@ -8,7 +8,7 @@
 
 namespace humhub\components;
 
-use humhub\models\Setting;
+use humhub\libs\BaseSettingsManager;
 use Yii;
 
 /**
@@ -37,7 +37,7 @@ class Request extends \yii\web\Request
      */
     public function init()
     {
-        if (Setting::isInstalled()) {
+        if (BaseSettingsManager::isInstalled()) {
             $secret = Yii::$app->settings->get('secret');
             if ($secret != "") {
                 $this->cookieValidationKey = $secret;

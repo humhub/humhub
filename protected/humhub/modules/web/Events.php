@@ -8,13 +8,13 @@
 
 namespace humhub\modules\web;
 
+use humhub\controllers\ErrorController;
+use humhub\libs\BaseSettingsManager;
 use humhub\modules\web\pwa\controllers\ManifestController;
 use humhub\modules\web\pwa\controllers\OfflineController;
 use humhub\modules\web\pwa\controllers\ServiceWorkerController;
-use Yii;
-use humhub\controllers\ErrorController;
-use humhub\models\Setting;
 use humhub\modules\web\security\helpers\Security;
+use Yii;
 
 /**
  * Event Handling Callbacks
@@ -38,7 +38,7 @@ class Events
     private static function generateCSPRequestCheck()
     {
         return !Yii::$app->request->isAjax
-            && Setting::isInstalled()
+            && BaseSettingsManager::isInstalled()
             && !(Yii::$app->controller instanceof ErrorController)
             && !(Yii::$app->controller instanceof OfflineController)
             && !(Yii::$app->controller instanceof ManifestController)

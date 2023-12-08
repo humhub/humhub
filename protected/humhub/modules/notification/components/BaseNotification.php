@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
+use humhub\models\ClassMap;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\notification\jobs\SendBulkNotification;
@@ -405,7 +406,7 @@ abstract class BaseNotification extends SocialActivity
     {
         $condition = [];
 
-        $condition['class'] = static::class;
+        $condition['class_id'] = ClassMap::getIdByOneName(static::class);
 
         if ($user !== null) {
             $condition['user_id'] = $user->id;
@@ -417,7 +418,7 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->source !== null) {
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = PolymorphicRelation::getObjectModel($this->source);
+            $condition['source_class_id'] = ClassMap::getIdBy($this->source);
         }
 
         Notification::deleteAll($condition);
@@ -444,7 +445,7 @@ abstract class BaseNotification extends SocialActivity
 
         // Automatically mark similar notifications (same source) as seen
         $similarNotifications = Notification::find()
-            ->where(['source_class' => $this->record->source_class, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
+            ->where(['source_class_id' => $this->record->source_class_id, 'source_pk' => $this->record->source_pk, 'user_id' => $this->record->user_id])
             ->andWhere(['!=', 'seen', '1']);
         foreach ($similarNotifications->all() as $notification) {
             /* @var $notification Notification */

@@ -81,7 +81,7 @@ abstract class BaseSettingsManager extends Component
         }
 
         if ($value === null) {
-             $this->delete($name);
+            $this->delete($name);
             return;
         }
 
@@ -317,5 +317,15 @@ abstract class BaseSettingsManager extends Component
         }
 
         return in_array('setting', $db->schema->getTableNames());
+    }
+
+    /**
+     * Checks if Humhub is installed
+     *
+     * @return boolean
+     */
+    public static function isInstalled(): bool
+    {
+        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'];
     }
 }

@@ -10,6 +10,7 @@ namespace humhub\components;
 
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\models\ClassMap;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\comment\models\Comment;
@@ -76,7 +77,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * By defining the $recordClass an ActiveRecord will be created automatically within the
      * init function.
      *
-     * @var ActiveRecord The related record for this activitiy
+     * @var ActiveRecord The related record for this activity
      */
     public $record;
 
@@ -105,7 +106,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     }
 
     /**
-     * Static initializer should be prefered over new initialization, since it makes use
+     * Static initializer should be preferred over new initialization, since it makes use
      * of Yii::createObject dependency injection/configuration.
      *
      * @param array $options
@@ -309,7 +310,8 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         }
 
         if ($this->source) {
-            $result['source_class'] = PolymorphicRelation::getObjectModel($this->source);
+            $result['source_class'] = $class = PolymorphicRelation::getObjectModel($this->source);
+            $result['source_class_id'] = ClassMap::getIdByOneName($class);
             $result['source_pk'] = $this->source->getPrimaryKey();
             $result['space_id'] = $this->source->getSpaceId();
         }

@@ -10,6 +10,7 @@ namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
+use humhub\models\ClassMap;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\content\interfaces\ContentOwner;
@@ -331,8 +332,8 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Returns the permission value interpretable by an PermissionManager instance.
      *
-     * @param string|array|null
-     * @return null|object|string
+     * @param string|array|null $perm
+     * @return array|object|string|null
      * @since 1.13
      * @see ContentActiveRecord::$managePermission, ContentActiveRecord::$createPermission
      */
@@ -382,13 +383,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getWallOut($params = [])
     {
-        if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
+        $class = $this->wallEntryClass;
+
+        if (is_subclass_of($class, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if (!empty($this->wallEntryClass)) {
+        } elseif (!empty($class)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
-        return call_user_func($this->wallEntryClass . '::widget', $params);
+        return call_user_func($class . '::widget', $params);
     }
 
     /**
@@ -401,24 +404,19 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function getWallEntryWidget()
     {
-        if (empty($this->wallEntryClass)) {
+        $class = $this->wallEntryClass;
+
+        if (empty($class)) {
             return null;
         }
 
-        if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
-            $class = $this->wallEntryClass;
-            $widget = new $class;
+        if (is_subclass_of($class, WallEntry::class)) {
+            $widget = new $class();
             $widget->contentObject = $this;
             return $widget;
         }
 
-        if ($this->wallEntryClass) {
-            $class = $this->wallEntryClass;
-            $widget = new $class(['model' => $this]);
-            return $widget;
-        }
-
-        return null;
+        return new $class(['model' => $this]);
     }
 
     /**
@@ -502,6 +500,11 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public static function getObjectModel(): string
     {
         return static::class;
+    }
+
+    public static function getObjectModelId(): int
+    {
+        return ClassMap::getIdByName(static::class);
     }
 
     /**
@@ -609,7 +612,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function getContent()
     {
         return $this->hasOne(Content::class, ['object_id' => 'id'])
-            ->andWhere(['content.object_model' => static::getObjectModel()]);
+            ->andWhere(['content.object_class_id' => static::getObjectModelId()]);
     }
 
     public function getFiles()
