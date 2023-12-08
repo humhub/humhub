@@ -8,6 +8,8 @@
 
 namespace humhub\components;
 
+use humhub\exceptions\InvalidArgumentValueException;
+use humhub\libs\UUID;
 use humhub\modules\like\activities\Liked;
 use humhub\modules\like\models\Like;
 use Throwable;
@@ -485,6 +487,31 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Add a foreign key constraint to the global_id table on the field indicated.
+     *
+     * @param string $sourceField Source field referencing `global_id.id`
+     *
+     * @return bool indicates if key has been added
+     * @throws Exception
+     * @see static::$table
+     * @since 1.16
+     * @noinspection PhpMissingReturnTypeInspection
+     **/
+    public function safeAddForeignKeyToGlobalIdTable(string $sourceField = 'gid')
+    {
+        // add foreign key for table `global_id`
+        return $this->safeAddForeignKey(
+            sprintf("fk-%s-%s", $this->table, $sourceField),
+            $this->table,
+            $sourceField,
+            'global_id',
+            'gid',
+            'CASCADE',
+            'CASCADE'
+        );
+    }
+
+    /**
      * Add a foreign key constraint to the user table on the `updated_by` field.
      *
      * @return bool indicates if key has been added
@@ -625,6 +652,56 @@ class Migration extends \yii\db\Migration
         }
 
         return (int)$this->insertSilent('class_map', ['class_name' => $class, 'module_id' => $moduleID]);
+    }
+
+    /**
+     * @param string|null $guid Optional. Valid UUID. Otherwise, a valid UUID will be generated and returned
+     * @param array $values = [
+     *     'class_map_id' => int,
+     *     'state' => int,
+     *     'url_slug' => string
+     * ]
+     * @param string|int|null $class Optional. Class name or ID. However, $values['class_map_id'] takes precedence
+     * @param string|null $moduleID Module ID. Required, if $class is a string
+     *
+     * @return int Global ID (GID) associated with the given or new GUID
+     * @throws Exception
+     */
+    public function createGlobalIdRecord(?string &$guid = null, array $values = [], ?string $class = null, ?string $moduleID = null): int
+    {
+        if ($class !== null) {
+            $classId = filter_var($class, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+
+            if ($classId === null) {
+                if ($moduleID === null) {
+                    throw new InvalidArgumentValueException("\$moduleId must be provided if \$class is given, but not an integer");
+                }
+
+                $classId = $this->createClassMapRecord($class, $moduleID);
+            }
+
+            $values['class_map_id'] = $classId;
+        }
+
+        $guid = UUID::validate($guid);
+
+        if ($guid !== null) {
+            $id = (new Query())->select('gid')->from('global_id')->where(['guid' => $guid])->scalar();
+
+            if ($id !== false) {
+                if (!empty($values)) {
+                    $this->updateSilent('global_id', $values, ['gid' => $id]);
+                }
+
+                return $id;
+            }
+        } else {
+            $guid = UUID::v4();
+        }
+
+        $values['guid'] = $guid;
+
+        return (int)$this->insertSilent('global_id', $values);
     }
 
     /**
