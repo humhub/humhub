@@ -263,7 +263,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_BEFORE_PARSE, $evt);
-        $text = $evt->result;
+        $text = (string)$evt->result;
 
         // Remove leading new backslash new lines e.g. "Test\\\n" -> "Test"
         $text = preg_replace('/\\\\(\n|\r){1,2}$/', '', $text);
@@ -445,11 +445,6 @@ REGEXP;
 
     protected function renderImage($block)
     {
-        $text = $block['text'];
-
-        // Remove image alignment extension from image alt text
-        $block['text'] = preg_replace('/>?<?$/', '', $text);
-
         if ($this->getOption(static::OPTION_IMAGE_AS_URL, false)) {
             return Html::encode($block['url']);
         }
@@ -521,7 +516,20 @@ REGEXP;
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock): string
     {
-        return parent::renderImage($linkBlock->block);
+        $block = $linkBlock->block;
+
+        if (isset($block['refkey'])) {
+            if (($ref = $this->lookupReference($block['refkey'])) !== false) {
+                $linkBlock->block = array_merge($block, $ref);
+            } else {
+                if (strncmp($block['orig'], '![', 2) === 0) {
+                    return '![' . $this->renderAbsy($this->parseInline(substr($block['orig'], 2)));
+                }
+                return $block['orig'];
+            }
+        }
+
+        return '<img' . $linkBlock->renderImageAttributes() . ($this->html5 ? '>' : ' />');
     }
 
     /**
@@ -531,7 +539,7 @@ REGEXP;
      */
     protected function br2nl($text)
     {
-        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
+        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", (string)$text);
     }
 
     /**

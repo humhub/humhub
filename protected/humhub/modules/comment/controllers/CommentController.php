@@ -39,9 +39,9 @@ use yii\web\NotFoundHttpException;
 class CommentController extends Controller
 {
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY => ['post', 'edit', 'delete']],
@@ -64,7 +64,8 @@ class CommentController extends Controller
             $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
             $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
-            Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            /** @var Comment|ContentActiveRecord $modelClass */
+            $modelClass = Helpers::checkClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
             $this->target = $modelClass::findOne(['id' => $modelPk]);
 
             if (!$this->target) {
@@ -198,7 +199,7 @@ class CommentController extends Controller
     {
         $comment = $this->getComment($id);
 
-        if (!$comment->canRead()) {
+        if (!$comment->canView()) {
             throw new ForbiddenHttpException();
         }
 

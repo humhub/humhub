@@ -10,7 +10,7 @@ namespace humhub\modules\search\controllers;
 
 use humhub\components\Controller;
 use humhub\libs\ParameterEvent;
-use \humhub\modules\comment\Module as CommentModule;
+use humhub\modules\comment\Module as CommentModule;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
@@ -45,7 +45,7 @@ class MentioningController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['login']

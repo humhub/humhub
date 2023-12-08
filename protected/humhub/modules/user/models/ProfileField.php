@@ -154,9 +154,8 @@ class ProfileField extends ActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != '' && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
-            $type = $this->field_type_class;
-            $this->_fieldType = new $type;
+        if ($this->field_type_class != '' && $type = Helpers::checkClassType($this->field_type_class, fieldtype\BaseType::class)) {
+            $this->_fieldType = new $type();
             $this->_fieldType->setProfileField($this);
             return $this->_fieldType;
         }

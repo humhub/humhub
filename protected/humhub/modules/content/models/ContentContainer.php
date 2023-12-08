@@ -8,10 +8,9 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "contentcontainer".
@@ -23,10 +22,10 @@ use yii\db\ActiveRecord;
  * @property integer $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
+ * @noinspection PropertiesInspection
  */
 class ContentContainer extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

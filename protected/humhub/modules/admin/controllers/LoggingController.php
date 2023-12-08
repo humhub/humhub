@@ -32,13 +32,13 @@ class LoggingController extends Controller
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Logging'));
         $this->subLayout = '@admin/views/layouts/information';
 
-		return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => SeeAdminInformation::class]

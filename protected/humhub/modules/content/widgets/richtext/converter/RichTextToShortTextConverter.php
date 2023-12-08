@@ -113,7 +113,7 @@ class RichTextToShortTextConverter extends RichTextToPlainTextConverter
      */
     protected function onAfterParse($text): string
     {
-        $result = $text;
+        $result = (string)$text;
 
         if (!$this->getOption(static::OPTION_PRESERVE_SPACES, false)) {
             $result = trim(preg_replace('/\s+/', ' ', $result));

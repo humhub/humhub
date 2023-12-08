@@ -61,4 +61,9 @@ trait ApplicationTrait
     {
         $this->_homeUrl = $value;
     }
+
+    public function getMailer(): MailerInterface
+    {
+        return parent::getMailer();
+    }
 }

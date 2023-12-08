@@ -3,30 +3,84 @@
 return [
     '
 Module successfully disabled!
-' => 'Modül başarıyla devre dışı!',
+' => 'Modül başarıyla devre dışı bırakıldı!',
     '
 Module successfully enabled!
 ' => 'Modül başarıyla etkinleştirildi!',
+    '
+No active Professional Edition license found!
+' => 'Etkin Profesyonel Sürüm lisansı bulunamadı!',
+    '
+The license could not be activated:
+' => 'Lisans etkinleştirilemedi:',
+    '
+The license was successfully activated!
+
+' => 'Lisans başarıyla etkinleştirildi!',
+    '
+The license was successfully removed!
+
+' => 'Lisans başarıyla kaldırıldı!',
     '--- Disable module: {moduleId} ---
 
 ' => '--- Modülü devre dışı bırak: {moduleId} ---',
     '--- Enable module: {moduleId} ---
 
 ' => '--- Modülü etkinleştir: {moduleId} ---',
+    '<strong>Activate</strong> your Professional Edition' => 'Profesyonel Sürümünüzü <strong>etkinleştirin</strong>',
+    '<strong>General</strong> Settings' => '<strong>Genel</strong> Ayarlar',
+    'A new update is available (HumHub %version%)!' => 'Yeni bir güncelleme mevcut (HumHub %version%)!',
+    'Activate' => 'Etkinleştir',
+    'Activate now' => 'Şimdi aktifleştir',
     'Activated' => 'Aktif',
+    'Add Licence Key' => 'Lisans Anahtarı Ekle',
     'Add purchased module by licence key' => 'Satın alınan lisans anahtarı ile modül ekle',
+    'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => 'Gerekli modülü kurduktan sonra tek yapmanız gereken onu etkinleştirmek. Bundan sonra modülü veya işlevi anında kullanmaya başlayabilirsiniz. Lütfen bazı modüllerin kullanımdan önce yapılandırılması gerektiğini unutmayın.',
     'All' => 'Hepsi',
+    'All {moduleId} module content will be deleted. Continue?' => 'Tüm {moduleId} modül içeriği silinecek. Devam etmek?',
+    'Allow module versions in beta status' => 'Beta durumundaki modül sürümlerine izin ver',
+    'Available Updates' => 'Mevcut Güncellemeler',
+    'Buy' => 'Satın al',
     'Buy (%price%)' => 'Satın Al (%price%)',
+    'Categories' => 'Kategoriler',
+    'Changelog' => 'Değişiklik günlüğü',
+    'Community' => 'Toplum',
     'Configure' => 'Yapılandırma',
+    'Could not connect to HumHub API!' => 'HumHub API\'sine bağlanılamadı!',
+    'Could not connect to HumHub API!
+' => 'HumHub API\'sine bağlanılamadı!',
+    'Could not connect to licence server!' => 'Lisans sunucusuna bağlanılamadı!',
     'Could not extract module!' => 'Modül çıkarılamadı!',
     'Could not find requested module!' => 'İstenen modül bulunamadı!',
+    'Could not find the requested module!' => 'İstenilen modül bulunamadı!',
+    'Could not remove old module path!' => 'Eski modül yolu kaldırılamadı!',
+    'Could not update licence. Error: ' => 'Lisans güncellenemedi. Hata:',
+    'Deprecated' => 'Kullanımdan kaldırıldı',
     'Download of module failed!' => 'Modülü indirme başarısız oldu!',
+    'Edit licence' => 'Lisansı düzenle',
+    'Featured' => 'Öne Çıkanlar',
+    'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'Ağınıza ekleyebileceğiniz tüm modülleri HumHub Pazaryerimizde bulabilirsiniz. Yazılımı kişiselleştiren ve ağınızı ihtiyaçlarınıza göre yapılandırma olanağı sunan çok sayıda eklenti ve özelliği keşfedin.',
     'General Settings' => 'Genel Ayarlar',
+    'Great!' => 'Harika!',
+    'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'Bu Modül ayrıca <strong>"Topluluk"</strong> olarak işaretlenmişse HumHub proje ekibi tarafından ne test edilir ne de izlenir.',
     'Information' => 'Bilgi',
     'Install' => 'Yükle',
     'Installed' => 'Yüklendi',
+    'Invalid module licence key!' => 'Geçersiz modül lisans anahtarı!',
+    'Invalid module licence key!
+' => 'Geçersiz modül lisans anahtarı!',
     'Latest version:' => 'Son versiyon:',
+    'Learn more' => 'Daha fazla bilgi edin',
     'Licence Key:' => 'Lisans Anahtarı:',
+    'Licence key' => 'Lisans anahtarı',
+    'Licenced for max. {number} users.' => 'Maksimum {number} kullanıcı sayısına lisanslıdır.',
+    'Licenced to:' => 'Lisanslı:',
+    'License not found or expired. Please contact the module publisher.' => 'Lisans bulunamadı veya süresi dolmuş. Lütfen modül yayıncısıyla iletişime geçin.',
+    'Marketplace' => 'Pazar yeri',
+    'Marketplace is disabled.' => 'Pazaryeri devre dışı bırakıldı.',
+    'Max. users:' => 'Maks. kullanıcılar:',
+    'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '"{moduleName}" modülü başarıyla {newVersion} sürümüne güncellendi.',
+    'Module <strong>activated</strong>' => 'Modül <strong>etkinleştirildi</strong>',
     'Module directory %modulePath% is not writeable!' => 'Modül yolu %modulePath% yazılabilir değil!',
     'Module download failed! (%error%)' => 'Modül indirme başarısız! %error%',
     'Module not found or activated!
@@ -41,6 +95,7 @@ Module successfully enabled!
     'Ok' => 'Tamam',
     'Register' => 'Kayıt Ol',
     'Search' => 'Arama',
+    'Search...' => 'Arama...',
     'Settings' => 'Ayarlar',
     'Tags' => 'Etiketler',
     'Third-party' => 'Üçüncü taraf',
@@ -48,61 +103,8 @@ Module successfully enabled!
     'Update' => 'Güncelle',
     'Update successful' => 'Güncelleme başarılı',
     'Version:' => 'Sürüm:',
-    '
-No active Professional Edition license found!
-' => '',
-    '
-The license could not be activated:
-' => '',
-    '
-The license was successfully activated!
-
-' => '',
-    '
-The license was successfully removed!
-
-' => '',
-    '<strong>Activate</strong> your Professional Edition' => '',
-    '<strong>General</strong> Settings' => '',
-    'A new update is available (HumHub %version%)!' => '',
-    'Activate' => '',
-    'Activate now' => '',
-    'Add Licence Key' => '',
-    'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
-    'All {moduleId} module content will be deleted. Continue?' => '',
-    'Allow module versions in beta status' => '',
-    'Available Updates' => '',
-    'Buy' => '',
-    'Categories' => '',
-    'Changelog' => '',
-    'Community' => '',
-    'Could not connect to HumHub API!' => '',
-    'Could not connect to HumHub API!
-' => '',
-    'Could not connect to licence server!' => '',
-    'Could not find the requested module!' => '',
-    'Could not remove old module path!' => '',
-    'Could not update licence. Error: ' => '',
-    'Deprecated' => '',
-    'Edit licence' => '',
-    'Featured' => '',
-    'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
-    'Great!' => '',
-    'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
-    'Invalid module licence key!' => '',
-    'Invalid module licence key!
-' => '',
-    'Learn more' => '',
-    'Licence key' => '',
-    'Licenced for max. {number} users.' => '',
-    'Licenced to:' => '',
-    'License not found or expired. Please contact the module publisher.' => '',
-    'Marketplace' => '',
-    'Marketplace is disabled.' => '',
-    'Max. users:' => '',
-    'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '',
-    'Module <strong>activated</strong>' => '',
     'Module <strong>installed</strong>' => '',
+    'Module Administration' => '',
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module licence added!' => '',
@@ -119,7 +121,6 @@ The license was successfully removed!
     'Professional Edition is activated!' => '',
     'Remove licence key' => '',
     'Save and update' => '',
-    'Search...' => '',
     'Stop updating' => '',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',
     'Third-party Modules are not covered by Professional Edition agreements.' => '',

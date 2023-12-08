@@ -2,13 +2,13 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
+use humhub\components\ActiveRecord;
+use humhub\components\Event;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
-use Yii;
-use humhub\components\Event;
 use humhub\widgets\JsWidget;
+use Yii;
 use yii\base\InvalidArgumentException;
-use humhub\components\ActiveRecord;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.

@@ -84,16 +84,37 @@ class Migration extends \yii\db\Migration
         $transaction = $this->db->beginTransaction();
         try {
             if ($action() === false) {
-                $transaction->rollBack();
+                if ($transaction->isActive) {
+                    $transaction->rollBack();
+                }
 
                 $this->logWarning('Migration {class} was not applied');
 
                 return false;
             }
-            $transaction->commit();
+
+            if ($transaction->isActive) {
+                $transaction->commit();
+            }
         } catch (Throwable $e) {
+            // Just to be sure: check if the exception was caused by committing a transaction that was not active
+            if (
+                ($e instanceof Exception)
+                && $e->errorInfo[0] === '42000'
+                && $e->errorInfo[1] === 1305
+                && $e->errorInfo[2] === 'SAVEPOINT LEVEL1 does not exist'
+            ) {
+                // in this case, assume all is well
+                return null;
+            }
+
             $this->printException($e);
-            $transaction->rollBack();
+
+            // otherwise, if still active, roll back the transaction
+            if ($transaction->isActive) {
+                $transaction->rollBack();
+            }
+
             $this->logException($e, end($action));
 
             return false;
@@ -106,37 +127,43 @@ class Migration extends \yii\db\Migration
      * @param string $table
      * @param $columns
      * @param string|null $options
-     * @return void
+     * @return bool indicates if the table has been created
      * @see static::createTable()
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeCreateTable(string $table, $columns, ?string $options = null): void
+    protected function safeCreateTable(string $table, $columns, ?string $options = null)
     {
         if (!$this->db->getTableSchema($table, true)) {
             $this->createTable($table, $columns, $options);
-        } else {
-            if (!$this->compact) {
-                echo "    > skipped create table $table, table does already exist ...\n";
-            }
-            $this->logWarning("Tried to create an already existing existing table '$table'");
+            return true;
         }
+
+        if (!$this->compact) {
+            echo "    > skipped create table $table, table does already exist ...\n";
+        }
+        $this->logWarning("Tried to create an already existing existing table '$table'");
+        return false;
     }
 
     /**
      * @param string $table
-     * @return void
+     * @return bool indicates if the table has been dropped
      * @see static::dropTable()
      * @noinspection PhpUnused
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeDropTable(string $table): void
+    protected function safeDropTable(string $table)
     {
         if ($this->db->getTableSchema($table, true)) {
             $this->dropTable($table);
-        } else {
-            if (!$this->compact) {
-                echo "    > skipped drop table $table, table does not exist ...\n";
-            }
-            $this->logWarning("Tried to drop a non existing table '$table'");
+            return true;
         }
+
+        if (!$this->compact) {
+            echo "    > skipped drop table $table, table does not exist ...\n";
+        }
+        $this->logWarning("Tried to drop a non existing table '$table'");
+        return false;
     }
 
     /**
@@ -153,35 +180,45 @@ class Migration extends \yii\db\Migration
         return $tableSchema && in_array($column, $tableSchema->columnNames, true);
     }
 
-    protected function safeDropColumn(string $table, string $column): void
+    /**
+     * @return bool indicates if column has been dropped
+     * @noinspection PhpMissingReturnTypeInspection
+     */
+    protected function safeDropColumn(string $table, string $column)
     {
         if ($this->columnExists($column, $table)) {
             $this->dropColumn($table, $column);
-        } else {
-            if (!$this->compact) {
-                echo "    > skipped drop column $column from table $table, column does not exist ...\n";
-            }
-            $this->logWarning("Tried to drop a non existing column '$column' from table '$table'");
+            return true;
         }
+
+        if (!$this->compact) {
+            echo "    > skipped drop column $column from table $table, column does not exist ...\n";
+        }
+        $this->logWarning("Tried to drop a non existing column '$column' from table '$table'");
+        return false;
     }
 
     /**
      * @param string $table table name
      * @param string $column column name
      * @param string|ColumnSchemaBuilder $type column type
-     * @return void
+     *
+     * @return bool indicates if column has been added
      * @see static::addColumn()
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeAddColumn(string $table, string $column, $type): void
+    protected function safeAddColumn(string $table, string $column, $type)
     {
         if (!$this->columnExists($column, $table)) {
             $this->addColumn($table, $column, $type);
-        } else {
-            if (!$this->compact) {
-                echo "    > skipped add column $column from table $table, column does already exist ...\n";
-            }
-            $this->logWarning("Tried to add an already existing column '$column' on table '$table'");
+            return true;
         }
+
+        if (!$this->compact) {
+            echo "    > skipped add column $column from table $table, column does already exist ...\n";
+        }
+        $this->logWarning("Tried to add an already existing column '$column' on table '$table'");
+        return false;
     }
 
     /**
@@ -226,21 +263,24 @@ class Migration extends \yii\db\Migration
      * @param string $table
      * @param string|array $columns
      * @param bool $unique
+     * @return bool indicates if the index has been created
      * @throws Exception
      * @since 1.9.1
      * @see static::createIndex()
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeCreateIndex(string $index, string $table, $columns, bool $unique = false): void
+    protected function safeCreateIndex(string $index, string $table, $columns, bool $unique = false)
     {
-        if ($this->indexExists($index, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped create index $index in the table $table, index already exists ...\n";
-            }
-            $this->logWarning("Tried to create an already existing index '$index' on table '$table'");
-            return;
+        if (!$this->indexExists($index, $table)) {
+            $this->createIndex($index, $table, $columns, $unique);
+            return true;
         }
 
-        $this->createIndex($index, $table, $columns, $unique);
+        if (!$this->compact) {
+            echo "    > skipped create index $index in the table $table, index already exists ...\n";
+        }
+        $this->logWarning("Tried to create an already existing index '$index' on table '$table'");
+        return false;
     }
 
     /**
@@ -248,22 +288,25 @@ class Migration extends \yii\db\Migration
      *
      * @param string $index
      * @param string $table
+     * @return bool indicates if the index has been dropped
      * @throws Exception
      * @since 1.9.1
      * @see static::dropIndex()
      * @noinspection PhpUnused
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeDropIndex(string $index, string $table): void
+    protected function safeDropIndex(string $index, string $table)
     {
-        if (!$this->indexExists($index, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped drop index $index from the table $table, index does not exist ...\n";
-            }
-            $this->logWarning("Tried to drop a non existing index '$index' from table '$table'");
-            return;
+        if ($this->indexExists($index, $table)) {
+            $this->dropIndex($index, $table);
+            return true;
         }
 
-        $this->dropIndex($index, $table);
+        if (!$this->compact) {
+            echo "    > skipped drop index $index from the table $table, index does not exist ...\n";
+        }
+        $this->logWarning("Tried to drop a non existing index '$index' from table '$table'");
+        return false;
     }
 
     /**
@@ -272,21 +315,24 @@ class Migration extends \yii\db\Migration
      * @param string $index
      * @param string $table
      * @param string|array $columns
+     * @return bool indicates if key has been added
      * @throws Exception
      * @since 1.9.1
      * @see static::addPrimaryKey()
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeAddPrimaryKey(string $index, string $table, $columns): void
+    protected function safeAddPrimaryKey(string $index, string $table, $columns)
     {
-        if ($this->indexExists('PRIMARY', $table)) {
-            if (!$this->compact) {
-                echo "    > skipped create primary index $index in the table $table, primary index already exists ...\n";
-            }
-            $this->logWarning("Tried to create an already existing primary index '$index' on table '$table'");
-            return;
+        if (!$this->indexExists('PRIMARY', $table)) {
+            $this->addPrimaryKey($index, $table, $columns);
+            return true;
         }
 
-        $this->addPrimaryKey($index, $table, $columns);
+        if (!$this->compact) {
+            echo "    > skipped create primary index $index in the table $table, primary index already exists ...\n";
+        }
+        $this->logWarning("Tried to create an already existing primary index '$index' on table '$table'");
+        return false;
     }
 
     /**
@@ -294,22 +340,26 @@ class Migration extends \yii\db\Migration
      *
      * @param string $index
      * @param string $table
+     *
+     * @return bool indicates if key has been added
      * @throws Exception
      * @since 1.9.1
      * @see static::dropPrimaryKey()
      * @noinspection PhpUnused
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeDropPrimaryKey(string $index, string $table): void
+    protected function safeDropPrimaryKey(string $index, string $table)
     {
-        if (!$this->indexExists('PRIMARY', $table)) {
-            if (!$this->compact) {
-                echo "    > skipped drop primary index $index from the table $table, primary index does not exist ...\n";
-            }
-            $this->logWarning("Tried to drop a non existing primary index '$index' from table '$table'");
-            return;
+        if ($this->indexExists('PRIMARY', $table)) {
+            $this->dropPrimaryKey($index, $table);
+            return true;
         }
 
-        $this->dropPrimaryKey($index, $table);
+        if (!$this->compact) {
+            echo "    > skipped drop primary index $index from the table $table, primary index does not exist ...\n";
+        }
+        $this->logWarning("Tried to drop a non existing primary index '$index' from table '$table'");
+        return false;
     }
 
     /**
@@ -322,59 +372,67 @@ class Migration extends \yii\db\Migration
      * @param string|array $refColumns
      * @param string|null $delete
      * @param string|null $update
+     * @return bool indicates if key has been added
      * @throws Exception
      * @since 1.9.1
      * @see static::addForeignKey()
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeAddForeignKey(string $index, string $table, $columns, string $refTable, $refColumns, ?string $delete = null, ?string $update = null): void
+    protected function safeAddForeignKey(string $index, string $table, $columns, string $refTable, $refColumns, ?string $delete = null, ?string $update = null)
     {
-        if ($this->foreignIndexExists($index, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped create foreign index $index in the table $table, foreign index already exists ...\n";
-            }
-            $this->logWarning("Tried to create an already existing foreign index '$index' on table '$table'");
-            return;
+        if (!$this->foreignIndexExists($index, $table)) {
+            $this->addForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
+            return true;
         }
 
-        $this->addForeignKey($index, $table, $columns, $refTable, $refColumns, $delete, $update);
+        if (!$this->compact) {
+            echo "    > skipped create foreign index $index in the table $table, foreign index already exists ...\n";
+        }
+        $this->logWarning("Tried to create an already existing foreign index '$index' on table '$table'");
+        return false;
     }
 
     /**
-     * Drop a foreign if it exists in the table
+     * Drop a foreign key if it exists in the table
      *
      * @param string $index
      * @param string $table
+     * @return bool indicates if key has been dropped
      * @throws Exception
      * @since 1.9.1
      * @noinspection PhpUnused
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    protected function safeDropForeignKey(string $index, string $table): void
+    protected function safeDropForeignKey(string $index, string $table)
     {
-        if (!$this->foreignIndexExists($index, $table)) {
-            if (!$this->compact) {
-                echo "    > skipped drop foreign index $index from the table $table, foreign index does not exist ...\n";
-            }
-            $this->logWarning("Tried to drop a non existing foreign index '$index' from table '$table'");
-            return;
+        if ($this->foreignIndexExists($index, $table)) {
+            $this->dropForeignKey($index, $table);
+            return true;
         }
 
-        $this->dropForeignKey($index, $table);
+        if (!$this->compact) {
+            echo "    > skipped drop foreign index $index from the table $table, foreign index does not exist ...\n";
+        }
+        $this->logWarning("Tried to drop a non existing foreign index '$index' from table '$table'");
+        return false;
     }
 
     /**
      * Add a foreign key constraint to the user table on the field indicated.
      *
      * @param string $sourceField Source field referencing `user.id`
-     * @return void
+     *
+     * @return bool indicates if key has been added
      * @throws Exception
      * @see static::$table
      * @since 1.15
-     */
-    public function safeAddForeignKeyToUserTable(string $sourceField): void
+     * @noinspection PhpMissingReturnTypeInspection
+     **/
+    public function safeAddForeignKeyToUserTable(string $sourceField)
     {
         // add foreign key for table `user`
-        $this->safeAddForeignKey(
-            "fk-{$this->table}-$sourceField",
+        return $this->safeAddForeignKey(
+            sprintf("fk-%s-%s", $this->table, $sourceField),
             $this->table,
             $sourceField,
             'user',
@@ -387,29 +445,31 @@ class Migration extends \yii\db\Migration
     /**
      * Add a foreign key constraint to the user table on the `updated_by` field.
      *
-     * @return void
+     * @return bool indicates if key has been added
      * @throws Exception
      * @see static::safeAddForeignKeyToUserTable()
      * @since 1.15
      * @noinspection PhpUnused
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    public function safeAddForeignKeyUpdatedBy(): void
+    public function safeAddForeignKeyUpdatedBy()
     {
-        $this->safeAddForeignKeyToUserTable('updated_by');
+        return $this->safeAddForeignKeyToUserTable('updated_by');
     }
 
     /**
      * Add a foreign key constraint to the user table on the `created_by` field.
      *
-     * @return void
+     * @return bool indicates if key has been added
      * @throws Exception
      * @see static::safeAddForeignKeyToUserTable()
      * @since 1.15
      * @noinspection PhpUnused
+     * @noinspection PhpMissingReturnTypeInspection
      */
-    public function safeAddForeignKeyCreatedBy(): void
+    public function safeAddForeignKeyCreatedBy()
     {
-        $this->safeAddForeignKeyToUserTable('created_by');
+        return $this->safeAddForeignKeyToUserTable('created_by');
     }
 
 
@@ -438,7 +498,7 @@ class Migration extends \yii\db\Migration
      */
     public function timestampWithoutAutoUpdate($precision = null): ColumnSchemaBuilder
     {
-        // Make sure to define default table storage engine
+        // Make sure to define the default table storage engine
         return in_array($this->driverName, ['mysql', 'mysqli'], true)
             ? $this->timestamp($precision)
                 ->append('DEFAULT CURRENT_TIMESTAMP')
@@ -449,7 +509,7 @@ class Migration extends \yii\db\Migration
     /**
      * Renames a class
      *
-     * This is often required because some classes are also stored in database
+     * This is often required because some classes are also stored in the database,
      * e.g. for polymorphic relations.
      *
      * This method is also required for 0.20 namespace migration!
@@ -475,9 +535,9 @@ class Migration extends \yii\db\Migration
 
         /**
          * Looking up "NewLike" activities with this className
-         * Since 0.20 the className changed to Like (is not longer the target object e.g. post)
+         * Since 0.20 the className changed to Like (is not longer the target object, e.g. post)
          *
-         * Use raw query for better performance.
+         * Use a raw query for better performance.
          */
         $updateSql = "
             UPDATE activity
@@ -547,7 +607,7 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param string $message Message to be logged
-     * @param array $params Parameters to translate in message
+     * @param array $params Parameters to translate in $message
      * @return void
      * @since 1.15.0
      */
@@ -558,7 +618,7 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param string $message Message to be logged
-     * @param array $params Parameters to translate in message
+     * @param array $params Parameters to translate in $message
      * @return void
      * @since 1.15.0
      */
@@ -569,7 +629,7 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param string $message Message to be logged
-     * @param array $params Parameters to translate in message
+     * @param array $params Parameters to translate in $message
      * @return void
      * @since 1.15.0
      * @noinspection PhpUnused
@@ -581,7 +641,7 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param string $message Message to be logged
-     * @param array $params Parameters to translate in message
+     * @param array $params Parameters to translate in $message
      * @return void
      * @since 1.15.0
      */
@@ -595,7 +655,7 @@ class Migration extends \yii\db\Migration
      * Translate log messages
      *
      * @param string $message Message to be logged
-     * @param array $params Parameters to translate in message
+     * @param array $params Parameters to translate in $message
      * @return void
      * @since 1.15.0
      */

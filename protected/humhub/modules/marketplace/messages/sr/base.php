@@ -82,6 +82,7 @@ The license was successfully removed!
     'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '',
     'Module <strong>activated</strong>' => '',
     'Module <strong>installed</strong>' => '',
+    'Module Administration' => '',
     'Module configuration' => '',
     'Module directory %modulePath% is not writeable!' => '',
     'Module download failed! (%error%)' => '',

@@ -96,6 +96,7 @@ The license was successfully removed!
     'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '',
     'Module <strong>activated</strong>' => '',
     'Module <strong>installed</strong>' => '',
+    'Module Administration' => '',
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module licence added!' => '',

@@ -10,12 +10,12 @@ namespace humhub\libs;
 
 use humhub\components\SettingActiveRecord;
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\helpers\DatabaseHelper;
 use Stringable;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
-use yii\db\conditions\LikeCondition;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
 
@@ -286,8 +286,7 @@ abstract class BaseSettingsManager extends Component
                 }
             } elseif (!is_array($prefix)) {
                 throw new InvalidArgumentTypeException(
-                    __METHOD__,
-                    [1 => '$prefix'],
+                    '$prefix',
                     ['string', 'int', 'null', \Stringable::class],
                     $prefix
                 );
@@ -303,19 +302,20 @@ abstract class BaseSettingsManager extends Component
     /**
      * Checks if settings table exists or application is not installed yet
      *
-     * @return bool
      * @since 1.3
      */
-    public static function isDatabaseInstalled()
+    public static function isDatabaseInstalled(bool $dieOnError = false): bool
     {
         try {
-            if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
-                return true;
-            }
+            $db = Yii::$app->db;
+            $db->open();
         } catch (\Exception $ex) {
+            if ($dieOnError) {
+                DatabaseHelper::handleConnectionErrors($ex);
+            }
             return false;
         }
 
-        return false;
+        return in_array('setting', $db->schema->getTableNames());
     }
 }

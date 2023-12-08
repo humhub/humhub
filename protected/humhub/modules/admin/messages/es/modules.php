@@ -18,4 +18,5 @@ return [
     'User default state' => 'Estado por defecto del usuario',
     'Users' => 'Usuarios',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
+    'Module deactivation in progress. This process may take a moment.' => '',
 ];

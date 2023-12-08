@@ -142,16 +142,16 @@ class AdvancedSettings extends Model
         $this->space->url = $this->url;
 
         if ($this->space->isAttributeChanged('url')) {
-            if ($this->indexUrl) {
+            if ($this->indexUrl && $oldUrl = $this->space->getOldAttribute('url')) {
                 $this->indexUrl = str_replace(
-                    $this->space->getOldAttribute('url'),
+                    $oldUrl,
                     $this->space->url,
                     $this->indexUrl
                 );
             }
-            if ($this->indexGuestUrl) {
+            if ($this->indexGuestUrl && $oldUrl = $this->space->getOldAttribute('url')) {
                 $this->indexGuestUrl = str_replace(
-                    $this->space->getOldAttribute('url'),
+                    $oldUrl,
                     $this->space->url,
                     $this->indexGuestUrl
                 );

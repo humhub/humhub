@@ -12,6 +12,7 @@ use humhub\components\ModuleEvent;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
+use humhub\modules\marketplace\services\MarketplaceService;
 use Yii;
 use yii\base\Component;
 use yii\web\HttpException;
@@ -173,6 +174,8 @@ class OnlineModuleManager extends Component
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
         $updatedModule->migrate();
+
+        (new MarketplaceService())->refreshPendingModuleUpdateCount();
 
         $this->trigger(static::EVENT_AFTER_UPDATE, new ModuleEvent(['module' => $updatedModule]));
     }
@@ -362,6 +365,18 @@ class OnlineModuleManager extends Component
         }
 
         return $modules;
+    }
+
+    /**
+     * Get online module by ID
+     *
+     * @param string $id
+     * @return ModelModule|null
+     */
+    public function getModule(string $id): ?ModelModule
+    {
+        $modules = $this->getModules();
+        return isset($modules[$id]) ? new ModelModule($modules[$id]) : null;
     }
 
 }
