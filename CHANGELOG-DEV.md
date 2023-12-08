@@ -3,6 +3,8 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations 
+- Enh #6697: Make state badge customizable
 - Fix #6636: Module Manager test
 - Enh #6530: Small performance improvements
 - Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
