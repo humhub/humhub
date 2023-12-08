@@ -36,6 +36,7 @@ Version 1.15
 - Permission to configure modules is now restricted to users allowed to manage settings (was previously restricted to users allowed to manage modules). [More info here](https://github.com/humhub/humhub/issues/6174).
 
 ### Type restrictions
+- `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
 - `\humhub\libs\Helpers::checkClassType()` (see [#6548](https://github.com/humhub/humhub/pull/6548))
   - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`
