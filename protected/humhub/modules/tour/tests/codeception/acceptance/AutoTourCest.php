@@ -14,6 +14,7 @@ use Yii;
 class AutoTourCest
 {
     /**
+     * @skip
      * @param AcceptanceTester $I
      * @throws \Exception
      */

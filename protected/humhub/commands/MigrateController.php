@@ -12,6 +12,7 @@ use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
 use Yii;
 use yii\console\Exception;
+use yii\db\MigrationInterface;
 use yii\web\Application;
 
 /**
@@ -50,10 +51,12 @@ use yii\web\Application;
  * yii migrate/down
  * ~~~
  *
+ *
+ * @property-read string[] $newMigrations
+ * @property-read string[] $migrationPaths
  */
 class MigrateController extends \yii\console\controllers\MigrateController
 {
-
     /**
      * @var string the directory storing the migration classes. This can be either
      * a path alias or a directory.
@@ -63,7 +66,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     /**
      * @var boolean also include migration paths of all enabled modules
      */
-    public $includeModuleMigrations = false;
+    public bool $includeModuleMigrations = false;
 
     /**
      * When includeModuleMigrations is enabled, this maps migrations to the
@@ -71,13 +74,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
      *
      * @var array
      */
-    protected $migrationPathMap = [];
+    protected array $migrationPathMap = [];
 
 
     /**
      * @inerhitdoc
      */
-    public function beforeAction($action)
+    public function beforeAction($action): bool
     {
         // Make sure to define a default table storage engine
         $db = Yii::$app->db;
@@ -98,9 +101,9 @@ class MigrateController extends \yii\console\controllers\MigrateController
     /**
      * @inheritdoc
      */
-    public function options($actionID)
+    public function options($actionID): array
     {
-        if ($actionID == 'up') {
+        if ($actionID === 'up') {
             return array_merge(parent::options($actionID), ['includeModuleMigrations']);
         }
 
@@ -109,9 +112,10 @@ class MigrateController extends \yii\console\controllers\MigrateController
 
     /**
      * Returns the migrations that are not applied.
-     * @return array list of new migrations
+     *
+     * @return string[] list of new migrations
      */
-    protected function getNewMigrations()
+    protected function getNewMigrations(): array
     {
         if (!$this->includeModuleMigrations) {
             return parent::getNewMigrations();
@@ -121,8 +125,9 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $migrations = [];
         foreach ($this->getMigrationPaths() as $migrationPath) {
             $this->migrationPath = $migrationPath;
-            $migrations = array_merge($migrations, parent::getNewMigrations());
-            $this->migrationPathMap[$migrationPath] = $migrations;
+            $newMigrations = parent::getNewMigrations();
+            $migrations = array_unique(array_merge($migrations, $newMigrations));
+            $this->migrationPathMap[$migrationPath] = $newMigrations;
         }
 
         sort($migrations);
@@ -132,10 +137,12 @@ class MigrateController extends \yii\console\controllers\MigrateController
 
     /**
      * Creates a new migration instance.
+     *
      * @param string $class the migration class name
-     * @return \yii\db\MigrationInterface the migration instance
+     *
+     * @return MigrationInterface the migration instance
      */
-    protected function createMigration($class)
+    protected function createMigration($class): MigrationInterface
     {
         if ($this->includeModuleMigrations) {
             $this->migrationPath = $this->getMigrationPath($class);
@@ -148,14 +155,15 @@ class MigrateController extends \yii\console\controllers\MigrateController
      * Returns the migration path of a given migration.
      * A map containing the path=>migration will be created by getNewMigrations method.
      *
-     * @param type $migration
-     * @return type
-     * @throws \yii\console\Exception
+     * @param string $migration
+     *
+     * @return string
+     * @throws Exception
      */
-    public function getMigrationPath($migration)
+    public function getMigrationPath(string $migration): string
     {
         foreach ($this->migrationPathMap as $path => $migrations) {
-            if (in_array($migration, $migrations)) {
+            if (in_array($migration, $migrations, true)) {
                 return $path;
             }
         }
@@ -166,9 +174,9 @@ class MigrateController extends \yii\console\controllers\MigrateController
     /**
      * Returns the migration paths of all enabled modules
      *
-     * @return array
+     * @return string[]
      */
-    protected function getMigrationPaths()
+    protected function getMigrationPaths(): array
     {
         $migrationPaths = ['base' => $this->migrationPath];
         foreach (Yii::$app->getModules() as $id => $config) {
@@ -196,7 +204,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
      *
      * @return string output
      */
-    public static function webMigrateAll()
+    public static function webMigrateAll(): string
     {
         ob_start();
         $controller = new self('migrate', Yii::$app);
@@ -206,16 +214,17 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->color = false;
         $controller->runAction('up');
 
-        return ob_get_clean();
+        return ob_get_clean() ?: '';
     }
 
     /**
      * Executes migrations in a specific folder
      *
      * @param string $migrationPath
+     *
      * @return string output
      */
-    public static function webMigrateUp($migrationPath)
+    public static function webMigrateUp(string $migrationPath): string
     {
         ob_start();
         $controller = new self('migrate', Yii::$app);
@@ -225,7 +234,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->color = false;
         $controller->runAction('up');
 
-        return ob_get_clean();
+        return ob_get_clean() ?: '';
     }
 
     /**
@@ -235,9 +244,10 @@ class MigrateController extends \yii\console\controllers\MigrateController
     {
         if (Yii::$app instanceof Application) {
             print $string;
-        } else {
-            return parent::stdout($string);
+            return strlen($string);
         }
+
+        return parent::stdout($string);
     }
 
     /**
@@ -247,8 +257,9 @@ class MigrateController extends \yii\console\controllers\MigrateController
     {
         if (Yii::$app instanceof Application) {
             print $string;
-        } else {
-            return parent::stderr($string);
+            return strlen($string);
         }
+
+        return parent::stderr($string);
     }
 }
