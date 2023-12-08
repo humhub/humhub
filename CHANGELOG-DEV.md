@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6711: run migrations manually
 - Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
 - Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations
 - Enh #6697: Make state badge customizable
