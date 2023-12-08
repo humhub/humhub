@@ -8,7 +8,8 @@
 namespace humhub\modules\tour;
 
 use humhub\modules\dashboard\widgets\Sidebar;
-use humhub\modules\tour\widgets\Dashboard;
+use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
+use humhub\modules\tour\widgets\Tour;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -19,52 +20,30 @@ use Yii;
  */
 class Events
 {
-    const AUTO_START = 'autoStartTour';
-
     public static function onDashboardSidebarInit($event)
     {
         if (Yii::$app->user->isGuest) {
             return;
         }
 
-        if (self::getModule()->settings->user()->get(self::AUTO_START)) {
-            self::runAutoStartWelcomeTour();
-        } elseif(self::shouldDisplayDashboardWidget()) {
+        if (DashboardWidget::isVisible()) {
             /* @var Sidebar $sidebar */
             $sidebar = $event->sender;
-            $sidebar->addWidget(Dashboard::class, [], ['sortOrder' => 100]);
+            $sidebar->addWidget(DashboardWidget::class, [], ['sortOrder' => 100]);
         }
     }
 
     public static function onUserBeforeLogin($event)
     {
         if ($event->identity instanceof User && self::shouldStartWelcomeTour($event->identity)) {
-            self::getModule()->settings->user($event->identity)->set(self::AUTO_START, true);
+            Tour::enableAutoStart('dashboard', $event->identity);
         }
-    }
-
-    private static function getModule(): Module
-    {
-        return Yii::$app->getModule('tour');
-    }
-
-    private static function shouldDisplayDashboardWidget(?User $user = null): bool
-    {
-        $settings = self::getModule()->settings;
-        return $settings->get('enable') == 1 &&
-            $settings->user($user)->get('hideTourPanel') != 1;
     }
 
     private static function shouldStartWelcomeTour(?User $user = null): bool
     {
         return $user->last_login === null && // Force auto start only for new created user who is logged in first time after registration
-            self::shouldDisplayDashboardWidget($user) && // Start it only when the dashboard sidebar widget is visible for the user
-            !self::getModule()->showWelcomeWindow($user); // No need auto start because it will be done by dashboard widget
-    }
-
-    private static function runAutoStartWelcomeTour(): void
-    {
-        self::getModule()->settings->user()->delete(self::AUTO_START);
-        Yii::$app->response->redirect(['/dashboard/dashboard', 'tour' => true]);
+            DashboardWidget::isVisible($user) && // Start it only when the dashboard sidebar widget is visible for the user
+            !Yii::$app->getModule('tour')->showWelcomeWindow($user); // No need auto start because it will be done by dashboard widget
     }
 }
