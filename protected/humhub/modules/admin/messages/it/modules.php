@@ -18,4 +18,5 @@ return [
     'User default state' => 'Stato predefinito dell\'utente',
     'Users' => 'Persone',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
+    'Module deactivation in progress. This process may take a moment.' => '',
 ];

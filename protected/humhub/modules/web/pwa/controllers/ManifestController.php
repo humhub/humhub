@@ -10,8 +10,8 @@ namespace humhub\modules\web\pwa\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\modules\web\Module;
+use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\helpers\Url;
 
@@ -54,7 +54,7 @@ class ManifestController extends Controller
     private function handlePwa()
     {
         $this->manifest['display'] = 'standalone';
-        $this->manifest['start_url'] = Url::home(true);
+        $this->manifest['start_url'] = Url::base(true);
         $this->manifest['short_name'] = Yii::$app->name;
         $this->manifest['name'] = Yii::$app->name;
         $this->manifest['background_color'] = Yii::$app->view->theme->variable('primary');

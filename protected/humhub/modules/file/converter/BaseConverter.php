@@ -90,7 +90,7 @@ abstract class BaseConverter extends BaseObject
      */
     public function getUrl()
     {
-        return $this->file == null ? '' : $this->file->getUrl($this->getFileName());
+        return $this->file == null ? '' : $this->file->getUrl($this->getFilename());
     }
 
     /**

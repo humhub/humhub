@@ -107,12 +107,16 @@ class UserModelTest extends HumHubDbTestCase
         $this->assertEquals('Admin Tester', $user->getDisplayName());
 
         Yii::$app->settings->set('displayNameFormat', '');
+
+        Yii::$app->runtimeCache->flush();
         $this->assertEquals('Admin', $user->getDisplayName());
 
         $userModule = Yii::$app->getModule('user');
         $userModule->displayNameCallback = function () {
             return 'Callback display name';
         };
+
+        Yii::$app->runtimeCache->flush();
         $this->assertEquals('Callback display name', $user->getDisplayName());
     }
 

@@ -157,13 +157,15 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     public function isAdmin()
     {
-        if(parent::isAdmin()) {
+        if (parent::isAdmin()) {
             return true;
         }
 
         if ($this->contentContainer instanceof Space) {
             return $this->contentContainer->isAdmin($this->user);
-        } elseif($this->contentContainer instanceof Space) {
+        }
+
+        if ($this->contentContainer instanceof User) {
             return $this->user && $this->user->is($this->contentContainer);
         }
 

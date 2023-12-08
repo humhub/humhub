@@ -11,6 +11,7 @@ return array (
   'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'Ennek a modulnak a deaktiválása még nem fejeződött be. Kérjük, próbálja újra néhány perc múlva.',
   'Enable module...' => 'Modul bekapcsolása...',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Itt kiválaszthatod, hogy egy modul automatikusan aktiválódjon-e egy közösségben vagy felhasználói profilban. Ha azt szeretnéd, hogy a modul legyen aktiválva, válaszd a "mindig aktiválva" lehetőséget.',
+  'Module deactivation in progress. This process may take a moment.' => 'Modul deaktiválása folyamatban. Ez a folyamat eltarthat egy ideig.',
   'Module path %path% is not writeable!' => 'A(z ) %path% modulútvonal nem írható!',
   'Save' => 'Mentés',
   'Space default state' => 'Közösség alapértelmezett állapota',
