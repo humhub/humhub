@@ -10,12 +10,10 @@ namespace humhub\components\behaviors;
 
 use Exception;
 use humhub\libs\Helpers;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\models\ClassMap;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
-use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 use yii\db\IntegrityException;
@@ -27,33 +25,8 @@ use yii\db\IntegrityException;
  *
  * @property ActiveRecord|object|null $polymorphicRelation
  */
-class PolymorphicTrait
+trait PolymorphicTrait
 {
-    /**
-     * @var string the class name attribute
-     */
-    public $classAttribute = 'object_model';
-
-    /**
-     * @var string the primary key attribute
-     */
-    public $pkAttribute = 'object_id';
-
-    /**
-     * @var boolean if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
-     */
-    public $strict = false;
-
-    /**
-     * @var array the related object needs to be an "instanceof" at least one of these given classnames
-     */
-    public $mustBeInstanceOf = [];
-
-    /**
-     * @var ActiveRecord|object|null the cached object
-     */
-    protected $polymorphRecord = null;
-
     /**
      * Returns the Underlying Object
      *
@@ -62,23 +35,21 @@ class PolymorphicTrait
      */
     public function getPolymorphicRelation()
     {
-        if ($this->polymorphRecord !== null) {
-            return $this->polymorphRecord;
+        if ($this->polymorphicRecord !== null) {
+            return $this->polymorphicRecord;
         }
 
-        $owner = $this->getOwner();
+        $identifier = $this->getPolymorphicIdentifier();
+        $settings = $this->getPolymorphicSettings();
 
-        $object = static::loadActiveRecord(
-            $owner->getAttribute($this->classAttribute),
-            $owner->getAttribute($this->pkAttribute)
-        );
+        $object = static::loadActiveRecord(...$identifier);
 
-        if ($this->strict && !$object && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
-            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($owner) . ' (' . $owner->getAttribute($this->classAttribute) . ':' . $owner->getAttribute($this->pkAttribute) . ')');
+        if ($settings->strict && !$object && !empty($settings->classAttribute) && !empty($settings->pkAttribute)) {
+            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->getOwner()) . ' (' . $identifier[0] . ':' . $identifier[1] . ')');
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
-            $this->polymorphRecord = $object;
+            $this->polymorphicRecord = $object;
 
             return $object;
         }
@@ -93,25 +64,27 @@ class PolymorphicTrait
      */
     public function setPolymorphicRelation($object)
     {
-        if ($this->polymorphRecord === $object) {
+        if ($this->polymorphicRecord === $object) {
             return;
         }
 
+        $settings = $this->getPolymorphicSettings();
+
         if ($this->validateUnderlyingObjectType($object)) {
-            $cached = $this->polymorphRecord;
-            $this->polymorphRecord = $object;
+            $cached = $this->polymorphicRecord;
+            $this->polymorphicRecord = $object;
 
             if ($object instanceof ActiveRecord) {
                 $owner = $this->getOwner();
 
                 $class = get_class($object);
                 if ($cached === null || get_class($cached) !== $class) {
-                    $owner->setAttribute($this->classAttribute, $class);
+                    $owner->{$settings->classAttribute} = $class;
                 }
 
                 $pk = $object->getPrimaryKey();
                 if ($cached === null || $cached->getPrimaryKey() !== $pk) {
-                    $owner->setAttribute($this->pkAttribute, $pk);
+                    $owner->{$settings->pkAttribute} = $pk;
                 }
             }
         }
@@ -122,7 +95,7 @@ class PolymorphicTrait
      */
     public function resetPolymorphicRelation()
     {
-        $this->polymorphRecord = null;
+        $this->polymorphicRecord = null;
     }
 
     /**
@@ -132,7 +105,7 @@ class PolymorphicTrait
      *
      * @return boolean
      */
-    private function validateUnderlyingObjectType($object)
+    private function validateUnderlyingObjectType($object): bool
     {
         if (empty($this->mustBeInstanceOf)) {
             return true;
@@ -160,6 +133,15 @@ class PolymorphicTrait
     {
         if (empty($className) || empty($primaryKey)) {
             return null;
+        }
+
+        // check if $className is an integer and valid classId
+        if (null !== $classId = filter_var($className, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE)) {
+            $className = ClassMap::getClassById($classId);
+            if ($className === null) {
+                Yii::error('Could not load polymorphic relation! (Invalid ClassId: ' . $className . ')');
+                return null;
+            }
         }
 
         try {
@@ -194,7 +176,39 @@ class PolymorphicTrait
      */
     protected function getOwner(): ActiveRecord
     {
-        /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $this instanceof PolymorphicRelation ? $this->owner : $this;
+    }
+
+    /**
+     *
+     * @return array
+     */
+    protected function getPolymorphicIdentifier(): array
+    {
+        $owner = $this->getOwner();
+        $settings = $this->getPolymorphicSettings();
+
+        return [
+            $owner->getAttribute($settings->classAttribute),
+            $owner->getAttribute($settings->pkAttribute)
+        ];
+    }
+
+    /**
+     * @return object = (object) [
+     *     'classAttribute' => string,
+     *     'pkAttribute' => string,
+     *     'strict' => bool,
+     *     'mustBeInstanceOf' => string[]
+     * ]
+     */
+    protected function getPolymorphicSettings(): object
+    {
+        return (object)[
+            'classAttribute' => $this->classAttribute,
+            'pkAttribute' => $this->pkAttribute,
+            'strict' => $this->strict,
+            'mustBeInstanceOf' => $this->mustBeInstanceOf,
+        ];
     }
 }
