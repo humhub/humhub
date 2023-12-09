@@ -25,4 +25,4 @@ HumHub Changelog
 - Fix #6662: Change the start_url of the PWA from home to base URL
 - Enh #6667: Allow view file when owner object provides this
 - Enh #6671: Remove interface `ReadableInterface`
-- Enh #6713: Keep string class option for Pjax Widget 
+- Enh #5751: Allow user blocking from profile page

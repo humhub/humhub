@@ -308,7 +308,7 @@ class MembershipController extends ContentContainerController
      */
     protected function getActionResult(Space $space)
     {
-        if ($this->request->isAjax) {
+        if ($this->request->isAjax && !Yii::$app->request->get('redirect', false)) {
             $options = $this->request->post('options', []);
 
             // Show/Hide the "Follow"/"Unfollow" buttons depending on updated membership state after AJAX action
