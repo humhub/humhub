@@ -15,20 +15,19 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
-use yii\base\Behavior;
 use yii\base\Model;
 use yii\db\ActiveRecord;
 use yii\db\BaseActiveRecord;
 use yii\db\IntegrityException;
 
 /**
- * PolymorphicRelations behavior provides simple support for polymorphic relations in ActiveRecords.
+ * PolymorphicRelations made fast.
  *
- * @since 0.5
+ * @since 1.16
  *
  * @property ActiveRecord|object|null $polymorphicRelation
  */
-class PolymorphicRelation extends Behavior
+class PolymorphicTrait
 {
     /**
      * @var string the class name attribute
@@ -53,7 +52,7 @@ class PolymorphicRelation extends Behavior
     /**
      * @var ActiveRecord|object|null the cached object
      */
-    private $cached = null;
+    protected $polymorphRecord = null;
 
     /**
      * Returns the Underlying Object
@@ -63,21 +62,23 @@ class PolymorphicRelation extends Behavior
      */
     public function getPolymorphicRelation()
     {
-        if ($this->cached !== null) {
-            return $this->cached;
+        if ($this->polymorphRecord !== null) {
+            return $this->polymorphRecord;
         }
 
+        $owner = $this->getOwner();
+
         $object = static::loadActiveRecord(
-            $this->owner->getAttribute($this->classAttribute),
-            $this->owner->getAttribute($this->pkAttribute)
+            $owner->getAttribute($this->classAttribute),
+            $owner->getAttribute($this->pkAttribute)
         );
 
         if ($this->strict && !$object && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
-            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($this->owner) . ' (' . $this->owner->getAttribute($this->classAttribute) . ':' . $this->owner->getAttribute($this->pkAttribute) . ')');
+            throw new IntegrityException('Call to an inconsistent polymorphic relation detected on ' . get_class($owner) . ' (' . $owner->getAttribute($this->classAttribute) . ':' . $owner->getAttribute($this->pkAttribute) . ')');
         }
 
         if ($object !== null && $this->validateUnderlyingObjectType($object)) {
-            $this->cached = $object;
+            $this->polymorphRecord = $object;
 
             return $object;
         }
@@ -92,33 +93,28 @@ class PolymorphicRelation extends Behavior
      */
     public function setPolymorphicRelation($object)
     {
-        if ($this->cached === $object) {
+        if ($this->polymorphRecord === $object) {
             return;
         }
 
         if ($this->validateUnderlyingObjectType($object)) {
-            $cached = $this->cached;
-            $this->cached = $object;
+            $cached = $this->polymorphRecord;
+            $this->polymorphRecord = $object;
 
             if ($object instanceof ActiveRecord) {
+                $owner = $this->getOwner();
+
                 $class = get_class($object);
                 if ($cached === null || get_class($cached) !== $class) {
-                    $this->owner->setAttribute($this->classAttribute, $class);
+                    $owner->setAttribute($this->classAttribute, $class);
                 }
 
                 $pk = $object->getPrimaryKey();
                 if ($cached === null || $cached->getPrimaryKey() !== $pk) {
-                    $this->owner->setAttribute($this->pkAttribute, $pk);
+                    $owner->setAttribute($this->pkAttribute, $pk);
                 }
             }
         }
-    }
-
-    public static function getObjectModel(Model $object): string
-    {
-        return $object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord
-            ? $object::getObjectModel()
-            : get_class($object);
     }
 
     /**
@@ -126,7 +122,7 @@ class PolymorphicRelation extends Behavior
      */
     public function resetPolymorphicRelation()
     {
-        $this->cached = null;
+        $this->polymorphRecord = null;
     }
 
     /**
@@ -191,5 +187,14 @@ class PolymorphicRelation extends Behavior
         }
 
         return null;
+    }
+
+    /**
+     * @return ActiveRecord
+     */
+    protected function getOwner(): ActiveRecord
+    {
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this instanceof PolymorphicRelation ? $this->owner : $this;
     }
 }
