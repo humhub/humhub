@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\interfaces\ActiveRecordInterface;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
@@ -24,24 +25,25 @@ use yii\validators\Validator;
  * @property User $updatedBy
  * @author luke
  */
-class ActiveRecord extends \yii\db\ActiveRecord
+class ActiveRecord extends \yii\db\ActiveRecord implements ActiveRecordInterface
 {
-
     /**
-     * @var \humhub\modules\file\components\FileManager
+     * @var FileManager|null
+     * @codingStandardsIgnoreStart PSR2.Classes.PropertyDeclaration.Underscore
      */
-    private $_fileManager;
+    private ?FileManager $_fileManager = null;
+    // @codingStandardsIgnoreEnd
 
     /**
      * @var bool enable file history for attached files
      * @since 1.10
      */
-    public $fileManagerEnableHistory = false;
+    public bool $fileManagerEnableHistory = false;
 
     /**
      * @event Event is used to append rules what defined in [[rules()]].
      */
-    const EVENT_APPEND_RULES = 'appendRules';
+    public const EVENT_APPEND_RULES = 'appendRules';
 
     /**
      * @inheritdoc
@@ -77,7 +79,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             $this->created_at = date('Y-m-d H:i:s');
         }
 
-        if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
+        if ($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
             $this->updated_at = date('Y-m-d H:i:s');
         }
 
@@ -180,7 +182,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function __unserialize($unserializedArr)
     {
         $this->init();
-        $this->setAttributes($unserializedArr['attributes'],false);
+        $this->setAttributes($unserializedArr['attributes'], false);
         $this->setOldAttributes($unserializedArr['oldAttributes']);
     }
 
