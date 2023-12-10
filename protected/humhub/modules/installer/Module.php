@@ -62,7 +62,7 @@ class Module extends \humhub\components\Module
     {
 
         // Block installer, when it's marked as installed
-        if (Yii::$app->params['installed']) {
+        if (Yii::$app->isInstalled()) {
             throw new HttpException(500, 'HumHub is already installed!');
         }
 

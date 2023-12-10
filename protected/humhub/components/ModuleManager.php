@@ -114,7 +114,7 @@ class ModuleManager extends Component
         parent::init();
 
         // Either database installed and not in installed state
-        if (!Yii::$app->params['databaseInstalled'] && !Yii::$app->params['installed']) {
+        if (!Yii::$app->isInstalled() && !Yii::$app->isDatabaseInstalled()) {
             return;
         }
 
@@ -181,7 +181,7 @@ class ModuleManager extends Component
             }
         }
 
-        if (!Yii::$app->params['installed'] && $isInstallerModule) {
+        if (!Yii::$app->isInstalled() && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];
         }
 

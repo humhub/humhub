@@ -100,8 +100,14 @@ trait ApplicationTrait
      *
      * @since 1.16
      */
-    public function isDatabaseInstalled(bool $dieOnError = false): bool
+    public function isDatabaseInstalled(bool $checkConnection = false): bool
     {
+        $dieOnError = isset(Yii::$app->params['databaseInstalled']) && $this->params['databaseInstalled'];
+
+        if (!$checkConnection) {
+            return $dieOnError;
+        }
+
         try {
             $db = Yii::$app->db;
             $db->open();
@@ -112,7 +118,7 @@ trait ApplicationTrait
             return false;
         }
 
-        return in_array('setting', $db->schema->getTableNames());
+        return Yii::$app->params['databaseInstalled'] = in_array('setting', $db->schema->getTableNames());
     }
 
     /**

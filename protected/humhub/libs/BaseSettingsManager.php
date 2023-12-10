@@ -10,7 +10,6 @@ namespace humhub\libs;
 
 use humhub\components\SettingActiveRecord;
 use humhub\exceptions\InvalidArgumentTypeException;
-use humhub\helpers\DatabaseHelper;
 use Stringable;
 use Yii;
 use yii\base\Component;
@@ -305,8 +304,8 @@ abstract class BaseSettingsManager extends Component
      * @since 1.3
      * @deprecated since 1.16
      */
-    public static function isDatabaseInstalled(bool $dieOnError = false): bool
+    public static function isDatabaseInstalled(): bool
     {
-        return Yii::$app->isDatabaseInstalled($dieOnError);
+        return Yii::$app->isDatabaseInstalled(true);
     }
 }

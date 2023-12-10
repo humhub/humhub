@@ -267,7 +267,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/installerModule');
 
-        static::assertTrue(Yii::$app->params['installed']);
+        static::assertTrue(Yii::$app->isInstalled());
 
         $this->registerModule($basePath, $config, false);
 
