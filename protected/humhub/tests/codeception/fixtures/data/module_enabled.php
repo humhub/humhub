@@ -1,2 +1,5 @@
 <?php
-return [];
+
+return [
+    ['module_id' => '_CORE_'],
+];

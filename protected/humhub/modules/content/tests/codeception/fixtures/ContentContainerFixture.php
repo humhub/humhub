@@ -8,18 +8,20 @@
 
 namespace humhub\modules\content\tests\codeception\fixtures;
 
+use humhub\modules\content\models\ContentContainer;
+use humhub\tests\codeception\fixtures\GlobalIdFixture;
 use yii\test\ActiveFixture;
 
 class ContentContainerFixture extends ActiveFixture
 {
-    public $modelClass = 'humhub\modules\content\models\ContentContainer';
+    public $modelClass = ContentContainer::class;
     public $dataFile = '@modules/content/tests/codeception/fixtures/data/contentcontainer.php';
-    
-    public $depends = [
-        'humhub\modules\content\tests\codeception\fixtures\ContentContainerDefaultPermissionFixture',
-        'humhub\modules\content\tests\codeception\fixtures\ContentContainerPermissionFixture',
-        'humhub\modules\content\tests\codeception\fixtures\ContentContainerSettingFixture',
-        'humhub\modules\content\tests\codeception\fixtures\ContentContainerModuleFixture'
-    ];
 
+    public $depends = [
+        GlobalIdFixture::class,
+        ContentContainerDefaultPermissionFixture::class,
+        ContentContainerPermissionFixture::class,
+        ContentContainerSettingFixture::class,
+        ContentContainerModuleFixture::class
+    ];
 }
