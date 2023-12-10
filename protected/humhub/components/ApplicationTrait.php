@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -8,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\interfaces\MailerInterface;
+use yii\db\MigrationInterface;
 use yii\helpers\Url;
 
 trait ApplicationTrait
@@ -26,6 +28,12 @@ trait ApplicationTrait
      * @var string Minimum PHP version that may works but probably with small issues
      */
     public $minSupportedPhpVersion;
+
+    /**
+     * @var MigrationInterface|null Will be set to the instance of the currently running migration
+     * @see Migration::up() and Migration::down()
+     */
+    public ?MigrationInterface $currentMigration = null;
 
     /**
      * @inheritdoc

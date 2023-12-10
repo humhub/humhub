@@ -60,7 +60,11 @@ class Migration extends \yii\db\Migration
      */
     public function up()
     {
-        return $this->saveUpDown([$this, 'safeUp']);
+        Yii::$app->currentMigration = $this;
+        $result = $this->saveUpDown([$this, 'safeUp']);
+        Yii::$app->currentMigration = null;
+
+        return $result;
     }
 
     /**
@@ -69,7 +73,11 @@ class Migration extends \yii\db\Migration
      */
     public function down()
     {
-        return $this->saveUpDown([$this, 'safeDown']);
+        Yii::$app->currentMigration = $this;
+        $result = $this->saveUpDown([$this, 'safeDown']);
+        Yii::$app->currentMigration = null;
+
+        return $result;
     }
 
     /**
@@ -482,9 +490,19 @@ class Migration extends \yii\db\Migration
      */
     public function integerReferenceKey(): ColumnSchemaBuilder
     {
-        return $this->integer(11)
-            ->notNull()
-            ;
+        return $this->integer(11)->notNull();
+    }
+
+    /**
+     * Returns the field configuration for a FK field
+     *
+     * @return ColumnSchemaBuilder
+     * @since 1.16
+     * @noinspection PhpUnused
+     */
+    public function integerReferenceKeyUnsigned(): ColumnSchemaBuilder
+    {
+        return $this->integerReferenceKey()->unsigned();
     }
 
     /**
