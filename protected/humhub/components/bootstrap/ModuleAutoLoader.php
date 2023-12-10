@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -21,8 +22,8 @@ use yii\helpers\FileHelper;
  */
 class ModuleAutoLoader implements BootstrapInterface
 {
-    const CACHE_ID = 'module_configs';
-    const CONFIGURATION_FILE = 'config.php';
+    public const CACHE_ID = 'module_configs';
+    public const CONFIGURATION_FILE = 'config.php';
 
     /**
      * Bootstrap method to be called during application bootstrap stage.
@@ -71,11 +72,11 @@ class ModuleAutoLoader implements BootstrapInterface
 
         $modules = [];
         $moduleIdFolders = [];
+        $moduleManager = Yii::$app->moduleManager;
         foreach ($folders as $folder) {
             try {
-                /** @noinspection PhpIncludeInspection */
                 $moduleConfig = include $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
-                if (Yii::$app->moduleManager->preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
+                if ($moduleManager->preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
                     Yii::error('Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"');
                 } else {
                     $modules[$folder] = $moduleConfig;
@@ -86,9 +87,9 @@ class ModuleAutoLoader implements BootstrapInterface
             }
         }
 
-        if (Yii::$app->moduleManager->preventDuplicatedModules) {
+        if ($moduleManager->preventDuplicatedModules) {
             // Overwrite module paths from config
-            foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
+            foreach ($moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
                 if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] != $overwriteModulePath) {
                     try {
                         $moduleConfig = include $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;

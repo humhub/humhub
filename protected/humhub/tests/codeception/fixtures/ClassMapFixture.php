@@ -8,10 +8,14 @@
 
 namespace humhub\tests\codeception\fixtures;
 
-use humhub\models\ModuleEnabled;
+use humhub\models\ClassMap;
 use yii\test\ActiveFixture;
 
-class ModulesEnabledFixture extends ActiveFixture
+class ClassMapFixture extends ActiveFixture
 {
-    public $modelClass = ModuleEnabled::class;
+    public $modelClass = ClassMap::class;
+
+    public $depends = [
+        ModulesEnabledFixture::class,
+    ];
 }

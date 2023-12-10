@@ -9,6 +9,8 @@
 namespace humhub\modules\content\components;
 
 use humhub\components\ActiveRecord;
+use humhub\components\GlobalIdTrait;
+use humhub\interfaces\GlobalActiveRecordInterface;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
@@ -30,8 +32,8 @@ use yii\web\IdentityInterface;
  *      - getProfileImage()
  *
  * @property integer $id
+ * @property integer $gid
  * @property integer $visibility
- * @property string $guid
  * @property string $created_at
  * @property integer $created_by
  * @property string $updated_at
@@ -54,8 +56,10 @@ use yii\web\IdentityInterface;
  * @since 1.0
  * @noinspection PropertiesInspection
  */
-abstract class ContentContainerActiveRecord extends ActiveRecord
+abstract class ContentContainerActiveRecord extends ActiveRecord implements GlobalActiveRecordInterface
 {
+    use GlobalIdTrait;
+
     /**
      * @var ContentContainerPermissionManager
      */
@@ -138,7 +142,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Should be overwritten by implementation
+     *
      * @param bool $scheme since 1.8
+     *
      * @return string
      */
     public function getUrl($scheme = false)
@@ -165,6 +171,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Checks if the user is allowed to access private content in this container
      *
      * @param User $user
+     *
      * @return boolean can access private content
      */
     public function canAccessPrivateContent(User $user = null)
@@ -185,6 +192,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * @param $token
+     *
      * @return ContentContainerActiveRecord|null
      */
     public static function findByGuid($token)
@@ -194,10 +202,11 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Compares this container with the given $container instance. If the $container is null this function will always
-     * return false. Null values are accepted in order to safely enable calls as `$user->is(Yii::$app->user->getIdentity())`
-     * which would otherwise fail in case of guest users.
+     * return false. Null values are accepted in order to safely enable calls as
+     * `$user->is(Yii::$app->user->getIdentity())` which would otherwise fail in case of guest users.
      *
      * @param ContentContainerActiveRecord|null $container
+     *
      * @return bool
      * @since 1.7
      */
@@ -218,23 +227,35 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * @inheritdoc
      */
+    public function beforeSave($insert)
+    {
+        if (!parent::beforeSave($insert)) {
+            return false;
+        }
+
+        if (empty($this->getAttribute('gid'))) {
+            $globalId = $this->globalIdRecord;
+
+            if ($globalId->getIsNewRecord() && !$globalId->save()) {
+                return false;
+            }
+
+            $this->setAttribute('gid', $globalId->gid);
+        }
+
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $contentContainer = new ContentContainer();
-            $contentContainer->guid = $this->guid;
-            $contentContainer->class = static::class;
-            $contentContainer->pk = $this->getPrimaryKey();
-            if ($this instanceof User) {
-                $contentContainer->owner_user_id = $this->id;
-            } elseif ($this->hasAttribute('created_by')) {
-                $contentContainer->owner_user_id = $this->created_by;
-            }
-
-            $contentContainer->save();
-
-            $this->contentcontainer_id = $contentContainer->id;
+            $contentContainer = new ContentContainer(['polymorphicRelation' => $this]);
+            $this->contentcontainer_id = $this->id;
             $this->update(false, ['contentcontainer_id']);
+            $this->populateRelation('contentContainerRecord', $contentContainer);
         }
 
         if ($this->isAttributeSafe('tagsField') && $this->tagsField !== null) {
@@ -269,6 +290,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      */
     public function getContentContainerRecord()
     {
+        if ($this->hasAttribute('gid')) {
+            return $this->hasOne(ContentContainer::class, ['gid' => 'gid']);
+        }
+
         if ($this->hasAttribute('contentcontainer_id')) {
             return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
         }
@@ -290,6 +315,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
+     *
      * @return boolean
      * @see PermissionManager::can()
      * @since 1.2
@@ -304,6 +330,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * and the given user (or current user if not given) as permission subject.
      *
      * @param User|IdentityInterface $user
+     *
      * @return ContentContainerPermissionManager
      */
     public function getPermissionManager(User $user = null)
@@ -345,6 +372,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Returns user group for the given $user or current logged in user if no $user instance was provided.
      *
      * @param User|null $user
+     *
      * @return string
      */
     public function getUserGroup(User $user = null)
@@ -362,6 +390,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns weather or not the contentcontainer is archived. (Default false).
+     *
      * @return boolean
      * @since 1.2
      */
@@ -382,7 +411,9 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Checks the current visibility setting of this ContentContainerActiveRecord
+     *
      * @param $visibility
+     *
      * @return bool
      */
     public function isVisibleFor($visibility)
@@ -442,6 +473,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Check if current container is blocked for the User
      *
      * @param User|null $user
+     *
      * @return bool
      */
     public function isBlockedForUser(?User $user = null): bool

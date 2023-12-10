@@ -8,14 +8,13 @@
 
 namespace humhub\tests\codeception\unit\components;
 
-use Codeception\Test\Unit;
-use humhub\libs\BaseSettingsManager;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class BaseSettingsManagerTest extends HumHubDbTestCase
 {
     public function testIsDatabaseInstalled()
     {
-        $this->assertTrue(BaseSettingsManager::isDatabaseInstalled());
+        $this->assertTrue(Yii::$app->isDatabaseInstalled());
     }
 }

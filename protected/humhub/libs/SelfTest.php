@@ -8,12 +8,9 @@
 
 namespace humhub\libs;
 
-use humhub\models\Setting;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Label;
 use Yii;
 
 /**
@@ -25,7 +22,6 @@ use Yii;
  */
 class SelfTest
 {
-
     /**
      * Get Results of the Application SelfTest.
      *
@@ -435,7 +431,7 @@ class SelfTest
                 ];
             }
 
-            if (Setting::isInstalled()) {
+            if (Yii::$app->isInstalled()) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
                     $checks[] = [
@@ -591,6 +587,7 @@ class SelfTest
      *  - hint
      *
      * @param array Results initialized before
+     *
      * @return array
      */
     public static function getDatabaseResults($checks = [])
@@ -790,6 +787,7 @@ class SelfTest
      *  - hint
      *
      * @param array Results initialized before
+     *
      * @return array
      */
     public static function getMarketplaceResults($checks = []): array

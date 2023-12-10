@@ -9,6 +9,7 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\ModuleManager;
+use humhub\libs\ModuleInfo;
 
 class ModuleManagerMock extends ModuleManager
 {
@@ -17,13 +18,13 @@ class ModuleManagerMock extends ModuleManager
         return $this->modules;
     }
 
-    public function &myEnabledModules(): array
+    public function myEnabledModules(): array
     {
-        return $this->enabledModules;
+        return array_filter($this->modules, static fn(ModuleInfo $moduleInfo) => $moduleInfo->isRegistered);
     }
 
-    public function &myCoreModules(): array
+    public function myCoreModules(): array
     {
-        return $this->coreModules;
+        return array_filter($this->modules, static fn(ModuleInfo $moduleInfo) => $moduleInfo->isCoreModule);
     }
 }

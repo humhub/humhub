@@ -20,7 +20,6 @@ use Yii;
  */
 class LayoutAddons extends BaseStack
 {
-
     /**
      * @inheritdoc
      */
@@ -30,15 +29,14 @@ class LayoutAddons extends BaseStack
             $this->addWidget(GlobalModal::class);
             $this->addWidget(GlobalConfirmModal::class);
 
-            if(Yii::$app->params['installed']) {
+            if (Yii::$app->isInstalled()) {
                 $this->addWidget(Tour::class);
                 $this->addWidget(TrackingWidget::class);
             }
 
             $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);
             $this->addWidget(StatusBar::class);
-            if (Yii::$app->params['installed']) {
-
+            if (Yii::$app->isInstalled()) {
                 $this->addWidget(BlueimpGallery::class);
 
                 if (Yii::$app->params['enablePjax']) {
@@ -48,5 +46,4 @@ class LayoutAddons extends BaseStack
         }
         parent::init();
     }
-
 }

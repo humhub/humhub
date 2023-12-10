@@ -8,7 +8,8 @@
 
 namespace humhub\components;
 
-use humhub\models\Setting;
+use humhub\exceptions\InvalidArgumentValueException;
+use humhub\libs\UUID;
 use humhub\modules\like\activities\Liked;
 use humhub\modules\like\models\Like;
 use Throwable;
@@ -16,6 +17,7 @@ use Traversable;
 use Yii;
 use yii\db\ColumnSchemaBuilder;
 use yii\db\Exception;
+use yii\db\Query;
 
 /**
  * Migration is the base class for representing a database migration.
@@ -76,6 +78,7 @@ class Migration extends \yii\db\Migration
      * Helper function for self::up() and self::down()
      *
      * @param array $action
+     *
      * @return bool|null
      * @since 1.15.0
      */
@@ -127,6 +130,7 @@ class Migration extends \yii\db\Migration
      * @param string $table
      * @param $columns
      * @param string|null $options
+     *
      * @return bool indicates if the table has been created
      * @see static::createTable()
      * @noinspection PhpMissingReturnTypeInspection
@@ -147,6 +151,7 @@ class Migration extends \yii\db\Migration
 
     /**
      * @param string $table
+     *
      * @return bool indicates if the table has been dropped
      * @see static::dropTable()
      * @noinspection PhpUnused
@@ -171,6 +176,7 @@ class Migration extends \yii\db\Migration
      *
      * @param string $column
      * @param string $table
+     *
      * @return bool
      * @since 1.9.1
      */
@@ -221,11 +227,43 @@ class Migration extends \yii\db\Migration
         return false;
     }
 
+
+    /**
+     * @since 1.16
+     * @see static::safeAddColumn()
+     * @see static::integerReferenceKey()
+     */
+    public function safeAddReferenceColumn(string $table, string $column): bool
+    {
+        return $this->safeAddColumn($table, $column, $this->integerReferenceKey());
+    }
+
+    /**
+     * @since 1.16
+     * @see static::safeAddColumn()
+     * @see static::integerReferenceKeyUnsigned()
+     */
+    public function safeAddUnsignedReferenceColumn(string $table, string $column): bool
+    {
+        return $this->safeAddColumn($table, $column, $this->integerReferenceKeyUnsigned());
+    }
+
+    /**
+     * @since 1.16
+     * @see static::safeAddColumn()
+     * @see static::integerReferenceKeyUnsigned()
+     */
+    public function safeAddGidReferenceColumn(string $table, string $column = 'gid'): bool
+    {
+        return $this->safeAddUnsignedReferenceColumn($table, $column);
+    }
+
     /**
      * Check if the index already exists in the table
      *
      * @param string $index
      * @param string $table
+     *
      * @return bool
      * @throws Exception
      * @since 1.9.1
@@ -242,6 +280,7 @@ class Migration extends \yii\db\Migration
      *
      * @param string $index
      * @param string $table
+     *
      * @return bool
      * @throws Exception
      * @since 1.9.1
@@ -263,6 +302,7 @@ class Migration extends \yii\db\Migration
      * @param string $table
      * @param string|array $columns
      * @param bool $unique
+     *
      * @return bool indicates if the index has been created
      * @throws Exception
      * @since 1.9.1
@@ -288,6 +328,7 @@ class Migration extends \yii\db\Migration
      *
      * @param string $index
      * @param string $table
+     *
      * @return bool indicates if the index has been dropped
      * @throws Exception
      * @since 1.9.1
@@ -315,6 +356,7 @@ class Migration extends \yii\db\Migration
      * @param string $index
      * @param string $table
      * @param string|array $columns
+     *
      * @return bool indicates if key has been added
      * @throws Exception
      * @since 1.9.1
@@ -372,6 +414,7 @@ class Migration extends \yii\db\Migration
      * @param string|array $refColumns
      * @param string|null $delete
      * @param string|null $update
+     *
      * @return bool indicates if key has been added
      * @throws Exception
      * @since 1.9.1
@@ -397,6 +440,7 @@ class Migration extends \yii\db\Migration
      *
      * @param string $index
      * @param string $table
+     *
      * @return bool indicates if key has been dropped
      * @throws Exception
      * @since 1.9.1
@@ -443,6 +487,31 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Add a foreign key constraint to the global_id table on the field indicated.
+     *
+     * @param string $sourceField Source field referencing `global_id.id`
+     *
+     * @return bool indicates if key has been added
+     * @throws Exception
+     * @see static::$table
+     * @since 1.16
+     * @noinspection PhpMissingReturnTypeInspection
+     **/
+    public function safeAddForeignKeyToGlobalIdTable(string $sourceField = 'gid')
+    {
+        // add foreign key for table `global_id`
+        return $this->safeAddForeignKey(
+            sprintf("fk-%s-%s", $this->table, $sourceField),
+            $this->table,
+            $sourceField,
+            'global_id',
+            'gid',
+            'CASCADE',
+            'CASCADE'
+        );
+    }
+
+    /**
      * Add a foreign key constraint to the user table on the `updated_by` field.
      *
      * @return bool indicates if key has been added
@@ -482,9 +551,19 @@ class Migration extends \yii\db\Migration
      */
     public function integerReferenceKey(): ColumnSchemaBuilder
     {
-        return $this->integer(11)
-            ->notNull()
-            ;
+        return $this->integer(11)->notNull();
+    }
+
+    /**
+     * Returns the field configuration for a FK field
+     *
+     * @return ColumnSchemaBuilder
+     * @since 1.16
+     * @noinspection PhpUnused
+     */
+    public function integerReferenceKeyUnsigned(): ColumnSchemaBuilder
+    {
+        return $this->integerReferenceKey()->unsigned();
     }
 
     /**
@@ -492,6 +571,7 @@ class Migration extends \yii\db\Migration
      * being the first timestamp column in the table.
      *
      * @param $precision
+     *
      * @return ColumnSchemaBuilder
      * @since 1.15
      * @see https://dev.mysql.com/doc/refman/8.0/en/timestamp-initialization.html
@@ -516,10 +596,15 @@ class Migration extends \yii\db\Migration
      *
      * @param string $oldClass
      * @param string $newClass
+     *
      * @throws Exception
      */
     protected function renameClass(string $oldClass, string $newClass): void
     {
+        if ($this->db->getTableSchema('class_map')) {
+            $this->updateSilent('class_map', ['class_name' => $newClass], ['class_name' => $oldClass]);
+        }
+
         $this->updateSilent('activity', ['object_model' => $newClass], ['object_model' => $oldClass]);
         $this->updateSilent('activity', ['class' => $newClass], ['class' => $oldClass]);
         $this->updateSilent('comment', ['object_model' => $newClass], ['object_model' => $oldClass]);
@@ -552,6 +637,73 @@ class Migration extends \yii\db\Migration
         ])->execute();
     }
 
+    public function createClassMapRecord(string $class, string $moduleID): int
+    {
+        $id = (new Query())->select('id')->from('class_map')->where(['class_name' => $class])->scalar();
+
+        if ($id !== false) {
+            return $id;
+        }
+
+        $m = (new Query())->select('module_id')->from('module_enabled')->where(['module_id' => $moduleID])->scalar();
+
+        if ($m === false) {
+            $this->insertSilent('module_enabled', ['module_id' => $moduleID]);
+        }
+
+        return (int)$this->insertSilent('class_map', ['class_name' => $class, 'module_id' => $moduleID]);
+    }
+
+    /**
+     * @param string|null $guid Optional. Valid UUID. Otherwise, a valid UUID will be generated and returned
+     * @param array $values = [
+     *     'class_map_id' => int,
+     *     'state' => int,
+     *     'url_slug' => string
+     * ]
+     * @param string|int|null $class Optional. Class name or ID. However, $values['class_map_id'] takes precedence
+     * @param string|null $moduleID Module ID. Required, if $class is a string
+     *
+     * @return int Global ID (GID) associated with the given or new GUID
+     * @throws Exception
+     */
+    public function createGlobalIdRecord(?string &$guid = null, array $values = [], ?string $class = null, ?string $moduleID = null): int
+    {
+        if ($class !== null) {
+            $classId = filter_var($class, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+
+            if ($classId === null) {
+                if ($moduleID === null) {
+                    throw new InvalidArgumentValueException("\$moduleId must be provided if \$class is given, but not an integer");
+                }
+
+                $classId = $this->createClassMapRecord($class, $moduleID);
+            }
+
+            $values['class_map_id'] = $classId;
+        }
+
+        $guid = UUID::validate($guid);
+
+        if ($guid !== null) {
+            $id = (new Query())->select('gid')->from('global_id')->where(['guid' => $guid])->scalar();
+
+            if ($id !== false) {
+                if (!empty($values)) {
+                    $this->updateSilent('global_id', $values, ['gid' => $id]);
+                }
+
+                return $id;
+            }
+        } else {
+            $guid = UUID::v4();
+        }
+
+        $values['guid'] = $guid;
+
+        return (int)$this->insertSilent('global_id', $values);
+    }
+
     /**
      * Creates and executes an UPDATE SQL statement without any output.
      * The method will properly escape the column names and bind the values to be updated.
@@ -561,6 +713,7 @@ class Migration extends \yii\db\Migration
      * @param array|string $condition the conditions that will be put in the WHERE part. Please
      * refer to [[Query::where()]] on how to specify conditions.
      * @param array|Traversable $params the parameters to be bound to the query.
+     *
      * @throws Exception
      */
     public function updateSilent(string $table, $columns, $condition = '', $params = []): void
@@ -571,13 +724,17 @@ class Migration extends \yii\db\Migration
     /**
      * Creates and executes an INSERT SQL statement without any output
      * The method will properly escape the column names, and bind the values to be inserted.
+     *
      * @param string $table the table that new rows will be inserted into.
      * @param array|Traversable $columns the column data (name => value) to be inserted into the table.
+     *
      * @throws Exception
      */
-    public function insertSilent(string $table, $columns): void
+    public function insertSilent(string $table, $columns): string
     {
         $this->db->createCommand()->insert($table, $columns)->execute();
+
+        return $this->db->getLastInsertID();
     }
 
     /**
@@ -588,14 +745,16 @@ class Migration extends \yii\db\Migration
      */
     protected function isInitialInstallation(): bool
     {
-        return (!Setting::isInstalled());
+        return (!Yii::$app->isInstalled());
     }
 
     /**
      * Get data from database dsn config
      *
      * @since 1.9.3
+     *
      * @param string $name 'host', 'port', 'dbname'
+     *
      * @return string|null
      */
     private function getDsnAttribute(string $name): ?string
@@ -608,6 +767,7 @@ class Migration extends \yii\db\Migration
     /**
      * @param string $message Message to be logged
      * @param array $params Parameters to translate in $message
+     *
      * @return void
      * @since 1.15.0
      */
@@ -619,6 +779,7 @@ class Migration extends \yii\db\Migration
     /**
      * @param string $message Message to be logged
      * @param array $params Parameters to translate in $message
+     *
      * @return void
      * @since 1.15.0
      */
@@ -630,6 +791,7 @@ class Migration extends \yii\db\Migration
     /**
      * @param string $message Message to be logged
      * @param array $params Parameters to translate in $message
+     *
      * @return void
      * @since 1.15.0
      * @noinspection PhpUnused
@@ -642,6 +804,7 @@ class Migration extends \yii\db\Migration
     /**
      * @param string $message Message to be logged
      * @param array $params Parameters to translate in $message
+     *
      * @return void
      * @since 1.15.0
      */
@@ -656,6 +819,7 @@ class Migration extends \yii\db\Migration
      *
      * @param string $message Message to be logged
      * @param array $params Parameters to translate in $message
+     *
      * @return void
      * @since 1.15.0
      */
@@ -680,6 +844,7 @@ class Migration extends \yii\db\Migration
      *
      * @param Throwable $e The Throwable to be logged
      * @param string $method The Method that was running
+     *
      * @since 1.15.0
      */
     protected function logException(Throwable $e, string $method): void
