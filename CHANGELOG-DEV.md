@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6719: Set running migration to Yii::$app->currentMigration
 - Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations 
 - Enh #6697: Make state badge customizable
 - Fix #6636: Module Manager test
