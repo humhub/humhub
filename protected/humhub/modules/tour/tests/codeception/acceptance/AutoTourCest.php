@@ -29,6 +29,7 @@ class AutoTourCest
         // Login how user
         $I->amUser1(true);
 
+        $I->wait(1);
         $I->waitForElementVisible('.popover.tour');
         $I->see('Dashboard', '.popover.tour');
         $I->click('Next', '.popover.tour');
