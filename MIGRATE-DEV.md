@@ -11,6 +11,8 @@ Version 1.16 (Unreleased)
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
+- `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
+- `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
 
 ### Type restrictions
 - `\humhub\modules\comment\models\Comment` on `canDelete()`

@@ -114,6 +114,15 @@ class ContentContainerBlockedUsers extends ActiveRecord
             }
         }
 
+        self::refreshCachedUserIds($contentContainer, $newBlockedUserIds);
+    }
+
+    /**
+     * @param ContentContainerActiveRecord $contentContainer
+     * @param array|null $newBlockedUserIds
+     */
+    public static function refreshCachedUserIds(ContentContainerActiveRecord $contentContainer, ?array $newBlockedUserIds = null)
+    {
         $contentContainer->settings->set(self::BLOCKED_USERS_SETTING, empty($newBlockedUserIds) ? null : implode(',', $newBlockedUserIds));
     }
 
@@ -184,7 +193,7 @@ class ContentContainerBlockedUsers extends ActiveRecord
             $blockedUserRelation->delete();
         }
 
-        $contentContainer->settings->delete(self::BLOCKED_USERS_SETTING);
+        self::refreshCachedUserIds($contentContainer);
     }
 
     /**

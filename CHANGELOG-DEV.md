@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
 - Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations 
 - Enh #6697: Make state badge customizable
 - Fix #6636: Module Manager test
@@ -25,3 +26,4 @@ HumHub Changelog
 - Fix #6662: Change the start_url of the PWA from home to base URL
 - Enh #6667: Allow view file when owner object provides this
 - Enh #6671: Remove interface `ReadableInterface`
+- Enh #5751: Allow user blocking from profile page

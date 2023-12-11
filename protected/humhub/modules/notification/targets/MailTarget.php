@@ -88,7 +88,7 @@ class MailTarget extends BaseTarget
     public function isActive(User $user = null)
     {
         // Do not send mail notifications for example content during installlation.
-        return parent::isActive() && Yii::$app->params['installed'];
+        return parent::isActive() && Yii::$app->isInstalled();
     }
 
 }
