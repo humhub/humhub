@@ -33,31 +33,31 @@ class AutoTourCest
         $I->see('Dashboard', '.popover.tour');
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Notifications', null, '.popover.tour');
+        $I->waitForText('Notifications', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Account Menu', null, '.popover.tour');
+        $I->waitForText('Account Menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space Menu', null, '.popover.tour');
+        $I->waitForText('Space Menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Start space guide', '.popover.tour');
 
-        $I->waitForText('Once you have joined or created a new space', null, '.popover.tour');
+        $I->waitForText('Once you have joined or created a new space', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space navigation menu', null, '.popover.tour');
+        $I->waitForText('Space navigation menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space preferences', null, '.popover.tour');
+        $I->waitForText('Space preferences', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Writing posts', null, '.popover.tour');
+        $I->waitForText('Writing posts', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
@@ -69,35 +69,35 @@ class AutoTourCest
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Space members', null, '.popover.tour');
+        $I->waitForText('Space members', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Yay! You\'re done.', null, '.popover.tour');
+        $I->waitForText('Yay! You\'re done.', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Profile Guide', '.popover.tour');
 
-        $I->waitForText('User profile', null, '.popover.tour');
+        $I->waitForText('User profile', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Profile photo', null, '.popover.tour');
+        $I->waitForText('Profile photo', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Edit account', null, '.popover.tour');
+        $I->waitForText('Edit account', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Profile menu', null, '.popover.tour');
+        $I->waitForText('Profile menu', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Profile stream', null, '.popover.tour');
+        $I->waitForText('Profile stream', 10, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Hurray! The End.', null, '.popover.tour');
+        $I->waitForText('Hurray! The End.', 10, '.popover.tour');
         $I->wait(1);
         $I->click('End guide', '.popover.tour');
 
