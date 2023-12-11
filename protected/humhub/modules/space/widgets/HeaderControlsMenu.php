@@ -120,6 +120,7 @@ class HeaderControlsMenu extends DropdownMenu
                         'data-method' => 'POST',
                         'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
                         'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
+                        'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
                     ]
                 ]));
             }
