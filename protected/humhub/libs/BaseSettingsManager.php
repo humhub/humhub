@@ -10,7 +10,6 @@ namespace humhub\libs;
 
 use humhub\components\SettingActiveRecord;
 use humhub\exceptions\InvalidArgumentTypeException;
-use humhub\helpers\DatabaseHelper;
 use Stringable;
 use Yii;
 use yii\base\Component;
@@ -57,7 +56,7 @@ abstract class BaseSettingsManager extends Component
             throw new InvalidConfigException('Module id not set!', 2);
         }
 
-        if (static::isDatabaseInstalled()) {
+        if (Yii::$app->isDatabaseInstalled()) {
             $this->loadValues();
         }
 
@@ -81,7 +80,7 @@ abstract class BaseSettingsManager extends Component
         }
 
         if ($value === null) {
-             $this->delete($name);
+            $this->delete($name);
             return;
         }
 
@@ -303,19 +302,10 @@ abstract class BaseSettingsManager extends Component
      * Checks if settings table exists or application is not installed yet
      *
      * @since 1.3
+     * @deprecated since 1.16
      */
-    public static function isDatabaseInstalled(bool $dieOnError = false): bool
+    public static function isDatabaseInstalled(): bool
     {
-        try {
-            $db = Yii::$app->db;
-            $db->open();
-        } catch (\Exception $ex) {
-            if ($dieOnError) {
-                DatabaseHelper::handleConnectionErrors($ex);
-            }
-            return false;
-        }
-
-        return in_array('setting', $db->schema->getTableNames());
+        return Yii::$app->isDatabaseInstalled(true);
     }
 }
