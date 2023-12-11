@@ -139,4 +139,4 @@ jobs:
               uses: actions/upload-artifact@v3
               with:
                 name: codeception-output
-                path: protected/tests/codeception/_output/*
+                path: protected/humhub/tests/codeception/_output/*
