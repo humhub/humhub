@@ -84,13 +84,13 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user, 'tags')->widget(ContainerTagPicker::class, ['placeholderMore' => Yii::t('TourModule.base', 'Your skills, knowledge and experience (comma seperated)')]); ?>
+                            <?php echo $form->field($user, 'tagsField')->widget(ContainerTagPicker::class, ['placeholderMore' => Yii::t('TourModule.base', 'Your skills, knowledge and experience')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
+                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::class, ['dateFormat' => 'medium', 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                         </div>
                         <div class="col-md-6">
                             <br><br>

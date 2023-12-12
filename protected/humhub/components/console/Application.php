@@ -8,43 +8,24 @@
 
 namespace humhub\components\console;
 
-use humhub\libs\BaseSettingsManager;
+use humhub\components\ApplicationTrait;
+use humhub\interfaces\ApplicationInterface;
 use Yii;
 use yii\console\Exception;
-use yii\helpers\Url;
 
 /**
  * Description of Application
  *
- * @author luke
+ * @inheritdoc
  */
-class Application extends \yii\console\Application implements \humhub\interfaces\Application
+class Application extends \yii\console\Application implements ApplicationInterface
 {
-    /**
-     * @var string|array the homepage url
-     */
-    private $_homeUrl = null;
-
-    /**
-     * @var string Minimum PHP version that recommended to work without issues
-     */
-    public $minRecommendedPhpVersion;
-
-    /**
-     * @var string Minimum PHP version that may works but probably with small issues
-     */
-    public $minSupportedPhpVersion;
+    use ApplicationTrait;
 
     /**
      * @inheritdoc
      */
-    public function __construct($config = [])
-    {
-        // Remove obsolete config params:
-        unset($config['components']['formatterApp']);
-
-        parent::__construct($config);
-    }
+    public $controllerNamespace = 'humhub\\controllers';
 
     /**
      * @inheritdoc
@@ -59,8 +40,8 @@ class Application extends \yii\console\Application implements \humhub\interfaces
             ));
         }
 
-        if (BaseSettingsManager::isDatabaseInstalled()) {
-            $baseUrl = Yii::$app->settings->get('baseUrl');
+        if ($this->isDatabaseInstalled(true)) {
+            $baseUrl = $this->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
                     Yii::setAlias('@web', $baseUrl);
@@ -71,17 +52,6 @@ class Application extends \yii\console\Application implements \humhub\interfaces
                 if (Yii::getAlias('@webroot-static', false) === false) {
                     Yii::setAlias('@webroot-static', '@webroot/static');
                 }
-                $this->urlManager->scriptUrl = '';
-                $this->urlManager->baseUrl = '';
-
-                // Set hostInfo based on given baseUrl
-                $urlParts = parse_url($baseUrl);
-                $hostInfo = $urlParts['scheme'] . '://' . $urlParts['host'];
-                if (isset($urlParts['port'])) {
-                    $hostInfo .= ':' . $urlParts['port'];
-                }
-
-                $this->urlManager->hostInfo = $hostInfo;
             }
         }
 
@@ -91,6 +61,7 @@ class Application extends \yii\console\Application implements \humhub\interfaces
 
     /**
      * Returns the configuration of the built-in commands.
+     *
      * @return array the configuration of the built-in commands.
      */
     public function coreCommands()
@@ -102,27 +73,4 @@ class Application extends \yii\console\Application implements \humhub\interfaces
             'fixture' => 'yii\console\controllers\FixtureController',
         ];
     }
-
-    /**
-     * @return string the homepage URL
-     */
-    public function getHomeUrl()
-    {
-        if ($this->_homeUrl === null) {
-            return Url::to(['/dashboard/dashboard']);
-        } elseif (is_array($this->_homeUrl)) {
-            return Url::to($this->_homeUrl);
-        } else {
-            return $this->_homeUrl;
-        }
-    }
-
-    /**
-     * @param string|array $value the homepage URL
-     */
-    public function setHomeUrl($value)
-    {
-        $this->_homeUrl = $value;
-    }
-
 }

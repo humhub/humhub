@@ -14,6 +14,7 @@ use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * The Admin Navigation for spaces
@@ -112,10 +113,15 @@ class HeaderControlsMenu extends DropdownMenu
             if (!$this->space->isSpaceOwner() && $this->space->canLeave()) {
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Cancel Membership'),
-                    'url' => $this->space->createUrl('/space/membership/revoke-membership'),
+                    'url' => $this->space->createUrl('/space/membership/revoke-membership', ['redirect' => true]),
                     'icon' => 'remove',
                     'sortOrder' => 700,
-                    'htmlOptions' => ['data-method' => 'POST']
+                    'htmlOptions' => [
+                        'data-method' => 'POST',
+                        'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
+                        'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
+                        'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
+                    ]
                 ]));
             }
 

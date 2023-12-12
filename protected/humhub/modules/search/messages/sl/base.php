@@ -1,14 +1,14 @@
 <?php
-return array (
-  '<strong>Search </strong> results' => '',
-  'Advanced search settings' => '',
-  'All' => '',
-  'Content' => 'Vsebina',
-  'Search' => '',
-  'Search for user, spaces and content' => '',
-  'Search only in certain spaces:' => '',
-  'Spaces' => '',
-  'Specify space' => '',
-  'Users' => '',
-  'Your search returned no matches.' => '',
-);
+
+return [
+    'Content' => 'Vsebina',
+    '<strong>Search </strong> results' => '',
+    'Advanced search settings' => '',
+    'All' => '',
+    'Search for user, spaces and content' => '',
+    'Search only in certain spaces:' => '',
+    'Spaces' => '',
+    'Specify space' => '',
+    'Users' => '',
+    'Your search returned no matches.' => '',
+];

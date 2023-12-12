@@ -9,10 +9,11 @@
 namespace humhub\modules\tour\controllers;
 
 use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\tour\Module;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
-use humhub\modules\space\models\Space;
 
 /**
  * TourController
@@ -23,7 +24,10 @@ use humhub\modules\space\models\Space;
  */
 class TourController extends \humhub\components\Controller
 {
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             ['login']
@@ -91,14 +95,18 @@ class TourController extends \humhub\components\Controller
      */
     public function actionWelcome()
     {
+        /* @var User $user */
         $user = Yii::$app->user->getIdentity();
-        $profile = $user->profile;
 
-        if ($user->id == 1 && $user->load(Yii::$app->request->post()) && $user->validate() && $user->save()) {
-            if ($profile->load(Yii::$app->request->post()) && $profile->validate() && $profile->save()) {
-                Yii::$app->getModule('tour')->settings->contentContainer($user)->set("welcome", 1);
-                return $this->redirect(['/dashboard/dashboard']);
-            }
+        if ($user->id == 1 &&
+            $user->load(Yii::$app->request->post()) &&
+            $user->save(true, ['tagsField']) &&
+            ($profile = $user->profile) &&
+            $profile->load(Yii::$app->request->post()) &&
+            $profile->save(true, ['firstname', 'lastname', 'title', 'birthday', 'birthday_hide_year', 'phone_work', 'mobile'])
+        ) {
+            Yii::$app->getModule('tour')->settings->contentContainer($user)->set('welcome', 1);
+            return $this->redirect(['/dashboard/dashboard']);
         }
 
         return $this->renderAjax('welcome', [

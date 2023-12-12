@@ -43,7 +43,7 @@
         "npm-asset/imagesloaded": "^5.0",
         "npm-asset/intersection-observer": "^0.7.0",
         "npm-asset/jplayer": "^2.9",
-        "npm-asset/jquery": "^3.6.3",
+        "npm-asset/jquery": "~3.6.3",
         "npm-asset/jquery-ui": "^1.13.2",
         "npm-asset/jquery-autosize": "^1.0",
         "npm-asset/jquery-knob": "^1.2",

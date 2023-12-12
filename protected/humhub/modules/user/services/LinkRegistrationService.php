@@ -30,7 +30,7 @@ final class LinkRegistrationService
 
     public static function createFromRequest(): LinkRegistrationService
     {
-        $token = (string)Yii::$app->request->get('token', null);
+        $token = (string)Yii::$app->request->get('token');
         $spaceId = (int)Yii::$app->request->get('spaceId');
 
         if (!$token && Yii::$app->session->has(LinkRegistrationService::class . '::token')) {
@@ -64,9 +64,6 @@ final class LinkRegistrationService
     public function getStoredToken(): ?string
     {
         if ($this->space) {
-            // TODO: Find better solution
-            Yii::$app->setLanguage($this->space->ownerUser->language);
-
             return $this->space->settings->get(self::SETTING_VAR_SPACE_TOKEN);
         }
 

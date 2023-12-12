@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\stream\models;
-
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
@@ -32,8 +30,6 @@ class ContentContainerStreamQuery extends WallStreamQuery
      */
     protected function beforeApplyFilters()
     {
-        parent::beforeApplyFilters();
-
         $this->addFilterHandler(
             new ContentContainerStreamFilter(['container' => $this->container]),
             true,
@@ -44,5 +40,6 @@ class ContentContainerStreamQuery extends WallStreamQuery
             $this->addFilterHandler(new PinnedContentStreamFilter(['container' => $this->container]));
         }
 
+        parent::beforeApplyFilters();
     }
 }

@@ -129,7 +129,7 @@ class GroupUser extends ActiveRecord
      */
     public function validateGroupId()
     {
-        if ($this->scenario == static::SCENARIO_REGISTRATION) {
+        if ($this->scenario == self::SCENARIO_REGISTRATION) {
             if ($this->group_id != '') {
                 $registrationGroups = Group::getRegistrationGroups();
                 foreach ($registrationGroups as $group) {

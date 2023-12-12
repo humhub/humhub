@@ -86,9 +86,11 @@ class PeopleFilters extends DirectoryFilters
         ]);
 
         // Profile fields
-        $profileFields = ProfileField::findAll(['directory_filter' => 1]);
+        $profileFields = ProfileField::find()
+            ->where(['directory_filter' => 1])
+            ->orderBy(['sort_order' => SORT_ASC]);
         $profileFieldSortOrder = 1000;
-        foreach ($profileFields as $profileField) {
+        foreach ($profileFields->each() as $profileField) {
             $this->initProfileFieldFilter($profileField, $profileFieldSortOrder);
             $profileFieldSortOrder += 10;
         }

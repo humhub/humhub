@@ -188,7 +188,7 @@ humhub.module('client', function (module, require, $) {
         } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
-        } else if (!object.isString(url)) {
+        } else if (url && !object.isString(url)) {
             cfg = url;
             url = cfg.url;
         }

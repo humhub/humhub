@@ -35,7 +35,7 @@ return array (
   'Other users' => 'Andere Benutzer',
   'Password Recovery' => 'Passwort-Wiederherstellung',
   'Permissions' => 'Berechtigungen',
-  'Plain' => '',
+  'Plain' => 'Einfach',
   'Profile' => 'Profil',
   'Profile Tags' => 'Profil-Tags (Schlagwörter)',
   'Profile visibility' => 'Profilsichtbarkeit',

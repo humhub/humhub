@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,18 +9,18 @@
 
 namespace tests\codeception\unit\modules\content\widgets;
 
+use humhub\libs\UUID;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
-
+use Throwable;
 
 class RichTextPostProcessTest extends HumHubDbTestCase
 {
-
-    public function _before()
+    private function addTestOEmbedRecords()
     {
         (new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
@@ -30,15 +31,12 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'url' => 'https://www.youtube.com/watch?v=yt2',
             'preview' => 'yt2'
         ]))->save();
-
-        parent::_before();
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessSingleOembed()
     {
+        $this->addTestOEmbedRecords();
+
         $post = Post::findOne(['id' => 1]);
         $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)';
         $result = RichText::postProcess($text, $post);
@@ -47,22 +45,20 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEquals('https://www.youtube.com/watch?v=yt1', $result['oembed'][0]);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessNoneOembed()
     {
+        $this->addTestOEmbedRecords();
+
         $post = Post::findOne(['id' => 1]);
         $text = '[Normal link](https://www.youtube.com/watch?v=yt1)';
         $result = RichText::postProcess($text, $post);
         static::assertEmpty($result['oembed']);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessMultipleOembed()
     {
+        $this->addTestOEmbedRecords();
+
         $post = Post::findOne(['id' => 1]);
         $text = '[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)';
         $result = RichText::postProcess($text, $post);
@@ -72,9 +68,6 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEquals('https://www.youtube.com/watch?v=yt2', $result['oembed'][1]);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessInvalidOembed()
     {
         $post = Post::findOne(['id' => 1]);
@@ -83,9 +76,6 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEmpty($result['oembed']);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessSingleMentioning()
     {
         $post = Post::findOne(['id' => 1]);
@@ -95,12 +85,9 @@ class RichTextPostProcessTest extends HumHubDbTestCase
 
         $result = RichText::postProcess($text, $post);
         static::assertNotEmpty($result['mention']);
-        static::assertCount(1,$result['mention']);
+        static::assertCount(1, $result['mention']);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessMultipleMentioning()
     {
         $post = Post::findOne(['id' => 1]);
@@ -113,13 +100,10 @@ class RichTextPostProcessTest extends HumHubDbTestCase
 
         static::assertNotEmpty($result['mention']);
         static::assertCount(2, $result['mention']);
-        static::assertEquals($guid,$result['mention'][0]->guid);
-        static::assertEquals($guid2,$result['mention'][1]->guid);
+        static::assertEquals($guid, $result['mention'][0]->guid);
+        static::assertEquals($guid2, $result['mention'][1]->guid);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessInvalidMentioning()
     {
         $post = Post::findOne(['id' => 1]);
@@ -131,15 +115,13 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEmpty($result['mention']);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessSingleFile()
     {
         $post = Post::findOne(['id' => 1]);
 
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'file_name' => 'text.txt',
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
@@ -149,17 +131,17 @@ class RichTextPostProcessTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
-        $text = "[](file-guid:xyz)";
+        $text = '[](file-guid:' . $guid . ')';
 
         $result = RichText::postProcess($text, $post);
 
         static::assertNotEmpty($result['file-guid']);
         static::assertCount(1, $result['file-guid']);
-        static::assertEquals('xyz',$result['file-guid'][0]);
+        static::assertEquals($guid, $result['file-guid'][0]);
 
         $file->refresh();
 
@@ -167,15 +149,13 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEquals($file->object_model, Post::class);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessMultipleFiles()
     {
         $post = Post::findOne(['id' => 1]);
 
+        $guid = UUID::v4();
         $file = new File([
-            'guid' => 'xyz',
+            'guid' => $guid,
             'file_name' => 'text.txt',
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
@@ -183,8 +163,9 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'size' => 302176
         ]);
 
+        $guid2 = UUID::v4();
         $file2 = new File([
-            'guid' => 'xyz2',
+            'guid' => $guid2,
             'file_name' => 'text2.txt',
             'hash_sha1' => 'xxx',
             'title' => 'Test File2',
@@ -194,24 +175,24 @@ class RichTextPostProcessTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e ) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
         try {
             $file2->save();
-        } catch (\Throwable $e ) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
-        $text = "[](file-guid:xyz) and [](file-guid:xyz2)";
+        $text = '[](file-guid:' . $guid . ') and [](file-guid:' . $guid2 . ')';
 
         $result = RichText::postProcess($text, $post);
 
         static::assertNotEmpty($result['file-guid']);
         static::assertCount(2, $result['file-guid']);
-        static::assertEquals('xyz',$result['file-guid'][0]);
-        static::assertEquals('xyz2',$result['file-guid'][1]);
+        static::assertEquals($guid, $result['file-guid'][0]);
+        static::assertEquals($guid2, $result['file-guid'][1]);
 
         $file->refresh();
 
@@ -225,9 +206,6 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEquals($file2->object_model, Post::class);
     }
 
-    /**
-     * @throws \yii\base\InvalidConfigException
-     */
     public function testProcessInvalidFile()
     {
         $post = Post::findOne(['id' => 1]);
@@ -275,8 +253,4 @@ class RichTextPostProcessTest extends HumHubDbTestCase
         static::assertEquals($guid, $result['file-guid'][0]);
         static::assertEquals("[${filename}](file-guid:${guid} \"${filename}\" x150)", $result['text']);
     }
-
-
-
-
 }

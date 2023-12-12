@@ -37,6 +37,16 @@ class FileHelper extends \yii\helpers\FileHelper
      */
     public static function hasExtension($fileName)
     {
+        /**
+         * suggested alternative:
+         * `return pathinfo($file, PATHINFO_FILENAME) && pathinfo($file, PATHINFO_EXTENSION);`
+         * of
+         * `
+         * $path_parts = pathinfo($file);
+         * return ($path_parts['filename'] ?? false) && ($path_parts['extension'] ?? false);
+         * `
+         * @see \humhub\tests\codeception\unit\libs\FileHelperTest::testHasExtensionFalsePositives()
+        */
         return (strpos($fileName, '.') !== false);
     }
 
