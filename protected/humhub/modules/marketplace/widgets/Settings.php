@@ -43,6 +43,13 @@ class Settings extends Menu
             'icon' => 'key',
             'sortOrder' => 200,
         ]));
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('MarketplaceModule.base', 'Module Administration'),
+            'url' => ['/admin/module'],
+            'icon' => 'rocket',
+            'sortOrder' => 300,
+        ]));
     }
 
     /**

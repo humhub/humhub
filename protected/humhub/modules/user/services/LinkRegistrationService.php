@@ -64,9 +64,6 @@ final class LinkRegistrationService
     public function getStoredToken(): ?string
     {
         if ($this->space) {
-            // TODO: Find better solution
-            Yii::$app->setLanguage($this->space->ownerUser->language);
-
             return $this->space->settings->get(self::SETTING_VAR_SPACE_TOKEN);
         }
 

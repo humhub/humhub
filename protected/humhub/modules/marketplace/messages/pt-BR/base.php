@@ -125,6 +125,7 @@ The license was successfully removed!
     'Marketplace is disabled.' => '',
     'Module <strong>activated</strong>' => '',
     'Module <strong>installed</strong>' => '',
+    'Module Administration' => '',
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module licence added!' => '',

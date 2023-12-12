@@ -445,11 +445,6 @@ REGEXP;
 
     protected function renderImage($block)
     {
-        $text = (string)$block['text'];
-
-        // Remove image alignment extension from image alt text
-        $block['text'] = preg_replace('/>?<?$/', '', $text);
-
         if ($this->getOption(static::OPTION_IMAGE_AS_URL, false)) {
             return Html::encode($block['url']);
         }
@@ -521,7 +516,20 @@ REGEXP;
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock): string
     {
-        return parent::renderImage($linkBlock->block);
+        $block = $linkBlock->block;
+
+        if (isset($block['refkey'])) {
+            if (($ref = $this->lookupReference($block['refkey'])) !== false) {
+                $linkBlock->block = array_merge($block, $ref);
+            } else {
+                if (strncmp($block['orig'], '![', 2) === 0) {
+                    return '![' . $this->renderAbsy($this->parseInline(substr($block['orig'], 2)));
+                }
+                return $block['orig'];
+            }
+        }
+
+        return '<img' . $linkBlock->renderImageAttributes() . ($this->html5 ? '>' : ' />');
     }
 
     /**

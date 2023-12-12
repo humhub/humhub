@@ -1,5 +1,6 @@
 <?php
 return array (
+  '"My Spaces" Sorting' => '"マイスペース" の並べ替え',
   '1 month' => '1ヶ月',
   '1 week' => '1週間',
   '1 year' => '1年',
@@ -20,7 +21,6 @@ return array (
   'Advanced Settings' => '高度な設定',
   'Allow Self-Signed Certificates?' => '自己署名証明書を許可する？',
   'Allowed file extensions' => '許可されたファイル拡張子',
-  'Alphabetical' => 'アルファベット順',
   'Appearance Settings' => '外観の設定',
   'Auto format based on user language - Example: {example}' => 'ユーザー言語に基づく自動フォーマット - 例：{example}',
   'Back to overview' => '概要に戻る',
@@ -31,6 +31,8 @@ return array (
   'Currently no provider active!' => '現在、有効なプロパイダはありません',
   'Currently there are {count} records in the database dating from {dating}.' => '現在{dating}からデータベースに{count}レコードがあります。',
   'Custom DSN' => 'カスタム DSN',
+  'Custom sort order (alphabetical if not defined)' => 'カスタムの並べ替え順序 (定義されていない場合はアルファベット順)',
+  'Custom sort order can be defined in the Space advanced settings.' => 'カスタムの並べ替え順序は、スペースの詳細設定で定義できます。',
   'DSN' => 'DSN',
   'DSN Examples:' => 'DSN 例：',
   'Dashboard' => 'ダッシュボード',
@@ -42,7 +44,6 @@ return array (
   'Default pagination size (Entries per page)' => 'デフォルトのページネーション数（ページあたりのエントリ数）',
   'Default stream content order' => 'デフォルトのストリームコンテンツ順序',
   'Delete' => '削除',
-  'Dropdown space order' => 'スペースのドロップダウンの並び順',
   'E-Mail' => 'Eメール',
   'E-Mail reply-to' => 'メールの返信先',
   'E-Mail sender address' => 'メールアドレス',

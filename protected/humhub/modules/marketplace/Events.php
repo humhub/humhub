@@ -56,8 +56,7 @@ class Events extends BaseObject
         }
 
         foreach ($event->modules as $m => $module) {
-            /* @var ModelModule $module */
-            if (!$module->getFilterService()->isFiltered()) {
+            if ($module instanceof ModelModule && !$module->getFilterService()->isFiltered()) {
                 unset($event->modules[$m]);
             }
         }

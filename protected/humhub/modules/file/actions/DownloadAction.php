@@ -10,15 +10,14 @@ namespace humhub\modules\file\actions;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
 use yii\base\Action;
-use humhub\modules\file\models\File;
-use humhub\modules\file\libs\FileHelper;
 use yii\filters\HttpCache;
+use yii\web\HttpException;
 
 /**
  * DownloadAction
@@ -126,7 +125,7 @@ class DownloadAction extends Action
      *
      * @throws HttpException
      */
-    protected function loadFile(string $guid, ?string $token = null)
+    protected function loadFile(?string $guid, ?string $token = null)
     {
         $file = File::findOne(['guid' => $guid]);
 
@@ -144,7 +143,7 @@ class DownloadAction extends Action
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
-        if (!$file->canRead($user)) {
+        if (!$file->canView($user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 

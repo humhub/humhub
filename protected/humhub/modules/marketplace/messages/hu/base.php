@@ -81,6 +81,7 @@ The license was successfully removed!
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '"{moduleName}" modul sikeresen frissítve a {newVersion} verzióra.',
   'Module <strong>activated</strong>' => 'A modul <strong>aktiválva</strong>',
   'Module <strong>installed</strong>' => 'A modul <strong>telepítve</strong>',
+  'Module Administration' => 'Modul Adminisztráció',
   'Module configuration' => 'Modul konfiguráció',
   'Module directory %modulePath% is not writeable!' => 'A %modulePath% modulkönyvtár nem írható!',
   'Module download failed! (%error%)' => 'Modul letöltése sikertelen! (%error%)',

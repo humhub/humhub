@@ -81,6 +81,7 @@ The license was successfully removed!
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => 'モジュール "{moduleName}" はバージョン {newVersion} に正常に更新されました。',
   'Module <strong>activated</strong>' => 'モジュールが<strong>アクティブ化</strong>されました',
   'Module <strong>installed</strong>' => 'モジュールが<strong>インストールされています</strong>',
+  'Module Administration' => 'モジュール管理',
   'Module configuration' => 'モジュール構成',
   'Module directory %modulePath% is not writeable!' => 'モジュールのディレクトリ %modulePath% の書き込み権限がありません！',
   'Module download failed! (%error%)' => 'モジュールのダウンロードに失敗しました！（%error%）',

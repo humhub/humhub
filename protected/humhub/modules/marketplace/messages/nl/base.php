@@ -81,6 +81,7 @@ The license was successfully removed!
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => 'Module "{moduleName}" is met succes bijgewerkt naar versie {newVersion}.',
   'Module <strong>activated</strong>' => 'Module <strong>geactiveerd</strong>',
   'Module <strong>installed</strong>' => 'Module <strong>geïnstalleerd</strong>',
+  'Module Administration' => 'Modulebeheer',
   'Module configuration' => 'Moduleconfiguratie',
   'Module directory %modulePath% is not writeable!' => 'Modulemap %modulePath% is niet schrijfbaar!',
   'Module download failed! (%error%)' => 'Download van module mislukt! (%error%)',
