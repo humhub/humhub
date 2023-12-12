@@ -39,11 +39,11 @@ humhub.module('ui.view', function (module, require, $) {
         };
     };
 
-    var getHeight = function() {
+    var getHeight = function () {
         return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     };
 
-    var getWidth = function() {
+    var getWidth = function () {
         return window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     };
 
@@ -54,7 +54,7 @@ humhub.module('ui.view', function (module, require, $) {
         prevSwipe = false;
         $('body').removeClass('modal-open');
 
-        if(isSmall() || isMedium()) {
+        if (isSmall() || isMedium()) {
             setTimeout(initMobileSidebar, 50);
         }
 
@@ -62,31 +62,31 @@ humhub.module('ui.view', function (module, require, $) {
         module.log.debug('View context', viewContext);
     };
 
-    var unload = function() {
+    var unload = function () {
         setViewContext(null);
     };
 
-    var isSwipeAllowed = function() {
+    var isSwipeAllowed = function () {
         return !prevSwipeDelay && !prevSwipe;
     };
 
-    var setViewContext = function(vctx) {
+    var setViewContext = function (vctx) {
         viewContext = vctx;
     };
 
-    var getViewContext = function() {
+    var getViewContext = function () {
         return viewContext;
     };
 
-    var isActiveScroll = function() {
+    var isActiveScroll = function () {
         return prevSwipeDelay;
     };
 
-    var preventSwipe = function(prev) {
+    var preventSwipe = function (prev) {
         prevSwipe = object.isDefined(prev) ? prev : true;
     };
 
-    var initMobileSidebar = function() {
+    var initMobileSidebar = function () {
 
         var duration = 500;
         var animation = 'swing';
@@ -94,35 +94,35 @@ humhub.module('ui.view', function (module, require, $) {
 
         $sidebar.css({
             'position': 'fixed',
-            'top' : '0',
+            'top': '0',
             'width': '100%',
             'height': '100%',
             'background': 'white',
             'left': '100%',
             'overflow-y': 'auto',
-            'z-index' : '997'
+            'z-index': '997'
         });
 
-        window.addEventListener('scroll', function(){
-            window.clearTimeout( scrollTimeout );
+        window.addEventListener('scroll', function () {
+            window.clearTimeout(scrollTimeout);
             prevSwipeDelay = true;
 
-            scrollTimeout = setTimeout(function() {
+            scrollTimeout = setTimeout(function () {
                 prevSwipeDelay = false;
             }, 400);
         }, true);
 
-        $(document).on('swiped-left', function(e) {
-            if(!isSwipeAllowed() || e.target && $(e.target).closest('[data-menu-id]').length) {
+        $(document).on('swiped-left', function (e) {
+            if (!isSwipeAllowed() || e.target && $(e.target).closest('[data-menu-id]').length) {
                 return;
             }
 
             var topPadding = getContentTop() + 7;
             $sidebar.css({height: '100%', padding: topPadding + 'px 5px 5px 5px'})
                 .show()
-                .animate({'left' : '0'}, {
+                .animate({'left': '0'}, {
                     step: function (now, fx) {
-                        $(this).css({"transform": "translate3d("+now+"px, 0px, 0px)"});
+                        $(this).css({"transform": "translate3d(" + now + "px, 0px, 0px)"});
                     },
                     duration: duration,
                     easing: animation,
@@ -133,12 +133,12 @@ humhub.module('ui.view', function (module, require, $) {
                 }, 'linear');
         });
 
-        $(document).on('swiped-right', function(e) {
+        $(document).on('swiped-right', function (e) {
             $('.layout-content-container').show();
 
-            $sidebar.animate({'left' : '100%'}, {
+            $sidebar.animate({'left': '100%'}, {
                 step: function (now, fx) {
-                    $(this).css({"transform": "translate3d("+now+"px, 0px, 0px)"});
+                    $(this).css({"transform": "translate3d(" + now + "px, 0px, 0px)"});
                 },
                 duration: duration,
                 easing: animation,
@@ -153,16 +153,19 @@ humhub.module('ui.view', function (module, require, $) {
 
     };
 
-    var getContentTop = function() {
+    var getContentTop = function () {
         var theme = require('ui.theme', true);
 
-        if(object.isFunction(theme.getContentTop)) {
+        if (object.isFunction(theme.getContentTop)) {
             return theme.getContentTop();
         }
 
-        var $topBar = $('#topbar-second');
+        var contentTop = 0;
+        $('.topbar').each(function () {
+            contentTop += $(this).height();
+        });
 
-        return $topBar.position().top + $topBar.height();
+        return contentTop;
     };
 
     module.export({
@@ -180,7 +183,7 @@ humhub.module('ui.view', function (module, require, $) {
         getContentTop: getContentTop,
         // This function is called by controller itself
         setState: setState,
-        getViewContext : getViewContext,
+        getViewContext: getViewContext,
         setViewContext: setViewContext,
         getState: function () {
             return $.extend({}, state);
