@@ -39,13 +39,13 @@ class UserProfileController extends Controller
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Userprofiles'));
         $this->subLayout = '@admin/views/layouts/user';
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageUsers::class]

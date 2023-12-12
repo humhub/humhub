@@ -21,7 +21,10 @@ class ImageController extends ContainerImageController
 {
     public $validContentContainerClasses = [Space::class];
 
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]],

@@ -8,6 +8,8 @@
  * @license http://www.yiiframework.com/license/
  */
 
+use humhub\helpers\DatabaseHelper;
+
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 
 // fcgi doesn't have STDIN and STDOUT defined by default
@@ -25,6 +27,11 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/config/console.php')
 );
 
-$application = new humhub\components\console\Application($config);
-$exitCode = $application->run();
-exit($exitCode);
+try {
+    $exitCode = (new humhub\components\console\Application($config))->run();
+    exit($exitCode);
+} catch (\Throwable $ex) {
+    if (null === DatabaseHelper::handleConnectionErrors($ex)) {
+        throw $ex;
+    }
+}

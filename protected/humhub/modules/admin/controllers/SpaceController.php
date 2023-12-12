@@ -41,13 +41,13 @@ class SpaceController extends Controller
         $this->subLayout = '@admin/views/layouts/space';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Spaces'));
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageSpaces::class, ManageSettings::class]],

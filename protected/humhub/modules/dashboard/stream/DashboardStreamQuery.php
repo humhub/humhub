@@ -4,8 +4,6 @@ namespace humhub\modules\dashboard\stream;
 
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\dashboard\Module;
-use humhub\modules\dashboard\stream\filters\DashboardGuestStreamFilter;
-use humhub\modules\dashboard\stream\filters\DashboardMemberStreamFilter;
 use Yii;
 
 /**
@@ -25,8 +23,6 @@ class DashboardStreamQuery extends ActivityStreamQuery
      */
     public function beforeApplyFilters()
     {
-        parent::beforeApplyFilters();
-
         if (empty($this->user)) {
             $this->addFilterHandler(Module::getModuleInstance()->guestFilterClass);
         } else {
@@ -34,6 +30,8 @@ class DashboardStreamQuery extends ActivityStreamQuery
                 'class' => Module::getModuleInstance()->memberFilterClass,
                 'user' => $this->user]));
         }
+
+        parent::beforeApplyFilters();
     }
 
 }

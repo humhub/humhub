@@ -38,13 +38,13 @@ class AuthenticationController extends Controller
 
         $this->subLayout = '@admin/views/layouts/user';
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageSettings::class]

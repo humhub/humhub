@@ -11,13 +11,13 @@ namespace humhub\modules\file\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\interfaces\ViewableInterface;
 use humhub\libs\StdClass;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\components\StorageManager;
 use humhub\modules\file\components\StorageManagerInterface;
 use humhub\modules\file\libs\Metadata;
-use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -85,7 +85,7 @@ use yii\web\UploadedFile;
  * @since 0.5
  * @noinspection PropertiesInspection
  */
-class File extends FileCompat
+class File extends FileCompat implements ViewableInterface
 {
     /**
      * @event Event that is triggered after a new file content has been stored.
@@ -281,18 +281,24 @@ class File extends FileCompat
     }
 
     /**
-     * Checks if given file can read.
-     *
-     * If the file is not an instance of HActiveRecordContent or HActiveRecordContentAddon
-     * the file is readable for all.
-     * @param string|User $userId
-     * @return bool
+     * @deprecated Use canView() instead. It will be deleted since v1.17
      */
-    public function canRead($userId = "")
+    public function canRead($user = null): bool
+    {
+        return $this->canView($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canView($user = null): bool
     {
         $object = $this->getPolymorphicRelation();
         if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
-            return $object->content->canView($userId);
+            return $object->content->canView($user);
+        }
+        if ($object instanceof ViewableInterface) {
+            return $object->canView($user);
         }
 
         return true;
@@ -303,8 +309,16 @@ class File extends FileCompat
      *
      * If the file is not an instance of ContentActiveRecord or ContentAddonActiveRecord
      * the file is readable for all unless there is method canEdit or canDelete implemented.
+     *
+     * @param null $userId
+     *
+     * @return bool
+     * @throws IntegrityException
+     * @throws InvalidConfigException
+     * @throws Throwable
+     * @throws \yii\base\Exception
      */
-    public function canDelete($userId = null)
+    public function canDelete($userId = null): bool
     {
         $object = $this->getPolymorphicRelation();
 

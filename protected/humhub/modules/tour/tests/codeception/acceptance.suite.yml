@@ -20,3 +20,6 @@ modules:
       browser: chrome
       port: 4444
       window_size: 1600x900
+      capabilities:
+        chromeOptions:
+          args: ["--lang=en-US"]
