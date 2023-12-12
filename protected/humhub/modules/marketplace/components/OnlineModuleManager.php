@@ -367,4 +367,16 @@ class OnlineModuleManager extends Component
         return $modules;
     }
 
+    /**
+     * Get online module by ID
+     *
+     * @param string $id
+     * @return ModelModule|null
+     */
+    public function getModule(string $id): ?ModelModule
+    {
+        $modules = $this->getModules();
+        return isset($modules[$id]) ? new ModelModule($modules[$id]) : null;
+    }
+
 }

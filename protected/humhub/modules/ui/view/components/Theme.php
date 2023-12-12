@@ -8,9 +8,7 @@
 
 namespace humhub\modules\ui\view\components;
 
-use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
-use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\Theme as BaseTheme;
@@ -101,11 +99,12 @@ class Theme extends BaseTheme
 
     /**
      * Registers theme css and resources to the view
+     *
      * @param bool $includeParents also register parent themes
      */
     public function register($includeParents = true)
     {
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             return;
         }
 
@@ -120,7 +119,6 @@ class Theme extends BaseTheme
             $mtime = filemtime($this->getBasePath() . '/css/theme.css');
             Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
         }
-
     }
 
 
@@ -186,6 +184,7 @@ class Theme extends BaseTheme
      * Publishs theme assets (e.g. images or css)
      *
      * @param boolean|null $force
+     *
      * @return string url of published resources
      */
     public function publishResources($force = null)
@@ -205,7 +204,9 @@ class Theme extends BaseTheme
      * Returns the value of a given theme variable
      *
      * @since 1.2
+     *
      * @param string $key the variable name
+     *
      * @return string the variable value
      */
     public function variable($key, $default = null)
@@ -226,7 +227,7 @@ class Theme extends BaseTheme
             return $this->parents;
         }
 
-        if ($this->isActive() && BaseSettingsManager::isDatabaseInstalled()) {
+        if ($this->isActive() && Yii::$app->isDatabaseInstalled()) {
             $this->parents = static::getActiveParents();
         }
 
@@ -241,11 +242,10 @@ class Theme extends BaseTheme
                     $parentPaths[] = $theme->getBasePath();
                 }
 
-                if (BaseSettingsManager::isDatabaseInstalled()) {
+                if (Yii::$app->isDatabaseInstalled()) {
                     Yii::$app->settings->setSerialized('themeParents', $parentPaths);
                 }
             }
-
         }
 
         return $this->parents;
@@ -277,5 +277,4 @@ class Theme extends BaseTheme
         }
         return $parents;
     }
-
 }

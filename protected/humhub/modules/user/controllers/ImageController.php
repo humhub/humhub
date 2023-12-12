@@ -49,7 +49,10 @@ class ImageController extends ContainerImageController
         }
     }
 
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             ['validateAccess'],

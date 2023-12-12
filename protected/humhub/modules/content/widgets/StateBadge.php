@@ -30,11 +30,7 @@ class StateBadge extends Widget
      */
     public function run()
     {
-        if ($this->model === null) {
-            return '';
-        }
-
-        switch ($this->model->content->state) {
+        switch ($this->getState()) {
             case Content::STATE_DRAFT:
                 return Html::tag('span', Yii::t('ContentModule.base', 'Draft'),
                     ['class' => 'label label-danger label-state-draft']
@@ -53,5 +49,18 @@ class StateBadge extends Widget
         }
 
         return '';
+    }
+
+    /**
+     * @return int|null
+     * @since 1.16
+     */
+    public function getState(): ?int
+    {
+        if ($this->model === null) {
+            return null;
+        }
+
+        return $this->model->content->state;
     }
 }

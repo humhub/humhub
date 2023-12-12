@@ -26,7 +26,7 @@ class BrowseController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageModules::class]

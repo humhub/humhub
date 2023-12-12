@@ -1,6 +1,7 @@
 <?php
 
 return [
+    '"My Spaces" Sorting' => '',
     '1 month' => '',
     '1 week' => '',
     '1 year' => '',
@@ -21,7 +22,6 @@ return [
     'Advanced Settings' => '',
     'Allow Self-Signed Certificates?' => '',
     'Allowed file extensions' => '',
-    'Alphabetical' => '',
     'Appearance Settings' => '',
     'Auto format based on user language - Example: {example}' => '',
     'Back to overview' => '',
@@ -32,6 +32,8 @@ return [
     'Currently no provider active!' => '',
     'Currently there are {count} records in the database dating from {dating}.' => '',
     'Custom DSN' => '',
+    'Custom sort order (alphabetical if not defined)' => '',
+    'Custom sort order can be defined in the Space advanced settings.' => '',
     'DSN' => '',
     'DSN Examples:' => '',
     'Dashboard' => '',
@@ -43,7 +45,6 @@ return [
     'Default pagination size (Entries per page)' => '',
     'Default stream content order' => '',
     'Delete' => '',
-    'Dropdown space order' => '',
     'E-Mail' => '',
     'E-Mail reply-to' => '',
     'E-Mail sender address' => '',

@@ -4,7 +4,26 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
-Version 1.15 (Unreleased)
+Version 1.16 (Unreleased)
+-------------------------
+
+### Deprecations
+- `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
+- `\humhub\modules\file\models\File::canRead()` use `canView()` instead
+- `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
+- `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
+- `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
+
+### Type restrictions
+- `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
+- `\humhub\modules\comment\models\Comment` on `canDelete()`
+- `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canWrite()`, `canEdit()`
+- `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
+- `\humhub\modules\file\models\File` on `canRead()`, `canDelete()`
+
+
+
+Version 1.15
 -------------------------
 
 ### Behaviour change
@@ -51,3 +70,4 @@ Version 1.15 (Unreleased)
 - `humhub\widgets\MarkdownField`
 - `humhub\widgets\MarkdownFieldModals`
 - `humhub\widgets\ModalConfirm`
+

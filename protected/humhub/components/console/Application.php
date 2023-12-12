@@ -10,7 +10,6 @@ namespace humhub\components\console;
 
 use humhub\components\ApplicationTrait;
 use humhub\interfaces\ApplicationInterface;
-use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\console\Exception;
 
@@ -41,8 +40,8 @@ class Application extends \yii\console\Application implements ApplicationInterfa
             ));
         }
 
-        if (BaseSettingsManager::isDatabaseInstalled()) {
-            $baseUrl = Yii::$app->settings->get('baseUrl');
+        if ($this->isDatabaseInstalled(true)) {
+            $baseUrl = $this->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
                     Yii::setAlias('@web', $baseUrl);
@@ -53,17 +52,6 @@ class Application extends \yii\console\Application implements ApplicationInterfa
                 if (Yii::getAlias('@webroot-static', false) === false) {
                     Yii::setAlias('@webroot-static', '@webroot/static');
                 }
-                $this->urlManager->scriptUrl = '';
-                $this->urlManager->baseUrl = '';
-
-                // Set hostInfo based on given baseUrl
-                $urlParts = parse_url($baseUrl);
-                $hostInfo = $urlParts['scheme'] . '://' . $urlParts['host'];
-                if (isset($urlParts['port'])) {
-                    $hostInfo .= ':' . $urlParts['port'];
-                }
-
-                $this->urlManager->hostInfo = $hostInfo;
             }
         }
 
@@ -73,6 +61,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
 
     /**
      * Returns the configuration of the built-in commands.
+     *
      * @return array the configuration of the built-in commands.
      */
     public function coreCommands()

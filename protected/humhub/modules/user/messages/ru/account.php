@@ -8,7 +8,7 @@ return array (
   'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
   'All your personal data will be irrevocably deleted.' => 'Все ваши личные данные будут безвозвратно удалены.',
   'Are you sure that you want to delete your account?' => 'Вы уверены, что хотите удалить свой аккаунт?',
-  'Blocked users' => '',
+  'Blocked users' => 'Заблокированные пользователи',
   'Changing the username can make some links unusable, for example old links to the profile.' => 'Изменение имени пользователя может сделать некоторые ссылки непригодными, например старые ссылки на профиль.',
   'Confirm' => 'Подтвердить',
   'Current password' => 'Текущий пароль',

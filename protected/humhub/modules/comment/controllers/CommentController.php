@@ -39,9 +39,9 @@ use yii\web\NotFoundHttpException;
 class CommentController extends Controller
 {
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY => ['post', 'edit', 'delete']],
@@ -199,7 +199,7 @@ class CommentController extends Controller
     {
         $comment = $this->getComment($id);
 
-        if (!$comment->canRead()) {
+        if (!$comment->canView()) {
             throw new ForbiddenHttpException();
         }
 
