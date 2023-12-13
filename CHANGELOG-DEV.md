@@ -28,3 +28,4 @@ HumHub Changelog
 - Enh #6671: Remove interface `ReadableInterface`
 - Enh #5751: Allow user blocking from profile page
 - Fix #6721: Top menu entries for spaces are not highlighted when clicked
+- Fix #6725: Allow theme without second topbar menu
