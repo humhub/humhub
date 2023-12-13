@@ -29,16 +29,16 @@ humhub.module('ui.topNavigation', function (module, require, $) {
         $topSub.show();
         var $topMenuDropdown = $('#top-menu-sub-dropdown');
 
-        while (isOverflow() && moveNextItemToDropDown($topMenuDropdown)) {}
+        while (isOverflow() && moveNextItemToDropDown($topMenuDropdown)) {
+        }
 
         $topBarSecond.css('overflow', '');
         $topSub.find('.dropdown-toggle').dropdown();
     };
 
-    var moveNextItemToDropDown = function($topMenuDropdown)
-    {
+    var moveNextItemToDropDown = function ($topMenuDropdown) {
         var $item = $topNav.children('.top-menu-item:last');
-        if(!$item.length) {
+        if (!$item.length) {
             return false;
         }
 
@@ -47,9 +47,10 @@ humhub.module('ui.topNavigation', function (module, require, $) {
         return true;
     };
 
-    var isOverflow = function() {
-        $searchMenu = $('.search-menu');
-        return $topNav[0].offsetHeight > $topBarSecond[0].offsetHeight || ($searchMenu.length && $searchMenu[0].offsetTop);
+    var isOverflow = function () {
+        var $searchMenu = $('.search-menu');
+        return ($topNav.length && $topBarSecond.length && $topNav[0].offsetHeight > $topBarSecond[0].offsetHeight)
+            || ($searchMenu.length && $searchMenu[0].offsetTop);
     };
 
     module.export({
