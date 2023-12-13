@@ -422,6 +422,7 @@ humhub.module('client', function (module, require, $) {
     };
 
     var formStateChanged = function ($form) {
+        $form.find(':focus').blur(); // Unfocus in order to update textarea value from RichText editor
         return $form.data('state') && $form.data('state') !== serializeFormState($form);
     };
 
