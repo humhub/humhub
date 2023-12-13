@@ -133,3 +133,10 @@ jobs:
 
             - name: Run test suite
               run: grunt test -build -env=github
+
+            - name: Upload Codeception Output
+              if: failure()
+              uses: actions/upload-artifact@v3
+              with:
+                name: codeception-output
+                path: protected/humhub/tests/codeception/_output/*
