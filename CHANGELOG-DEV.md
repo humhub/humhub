@@ -27,7 +27,8 @@ HumHub Changelog
 - Enh #6667: Allow view file when owner object provides this
 - Enh #6671: Remove interface `ReadableInterface`
 - Enh #5751: Allow user blocking from profile page
-- Eng #6686: Make the container header clickable to return to the container's home
+- Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
+- Enh #6686: Make the container header clickable to return to the container's home
 - Enh #6609: Monthly email summary
 - Fix #6721: Top menu entries for spaces are not highlighted when clicked
 - Fix #6725: Allow theme without second topbar menu
