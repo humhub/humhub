@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.15.1 (December 8, 2023)
+1.15.1 (December 13, 2023)
 -------------------------
 - Enh #6697: Make state badge customizable
 - Fix #6698: Content relations
