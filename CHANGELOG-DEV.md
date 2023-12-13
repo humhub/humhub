@@ -4,7 +4,7 @@ HumHub Changelog
 1.16.0 (Unreleased)
 -------------------
 - Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
-- Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations 
+- Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations
 - Enh #6697: Make state badge customizable
 - Fix #6636: Module Manager test
 - Enh #6530: Small performance improvements
@@ -28,3 +28,5 @@ HumHub Changelog
 - Enh #6671: Remove interface `ReadableInterface`
 - Enh #5751: Allow user blocking from profile page
 - Enh #6609: Monthly email summary
+- Fix #6721: Top menu entries for spaces are not highlighted when clicked
+- Fix #6725: Allow theme without second topbar menu
