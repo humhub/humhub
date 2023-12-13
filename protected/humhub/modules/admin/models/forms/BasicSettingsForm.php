@@ -111,7 +111,7 @@ class BasicSettingsForm extends \yii\base\Model
     public function save()
     {
         Yii::$app->settings->set('name', $this->name);
-        Yii::$app->settings->set('baseUrl', $this->baseUrl);
+        Yii::$app->settings->set('baseUrl', trim($this->baseUrl));
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);
         Yii::$app->settings->set('timeZone', $this->timeZone);
