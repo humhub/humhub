@@ -57,11 +57,8 @@ class BasicSettingsForm extends \yii\base\Model
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['defaultTimeZone', 'timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
-            [['baseUrl'], function ($attribute, $params, $validator) {
-                if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
-                    $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
-                }
-            }],
+            [['baseUrl'], 'url', 'pattern' => '/^{schemes}:\/\/([A-Z0-9][A-Z0-9_\-\.]*)+(?::\d{1,5})?(?:$|[?\/#])/i'],
+            [['baseUrl'], 'trim'],
             ['maintenanceModeInfo', 'safe'],
         ];
     }
