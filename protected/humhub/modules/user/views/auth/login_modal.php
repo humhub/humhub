@@ -3,11 +3,11 @@
 use humhub\libs\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
+use humhub\modules\user\widgets\AuthChoice;
 use yii\captcha\Captcha;
 use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
 use yii\helpers\Url;
-use humhub\modules\user\widgets\AuthChoice;
+use yii\widgets\ActiveForm;
 
 /* @var $canRegister boolean */
 /* @var $model Login */
@@ -15,11 +15,12 @@ use humhub\modules\user\widgets\AuthChoice;
 /* @var $info string */
 /* @var $passwordRecoveryRoute string|array|null */
 ?>
-<div class="modal-dialog modal-dialog-small animated fadeIn">
+<div id="user-auth-login-modal" class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title" id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Join</strong> the network'); ?></h4>
+            <h4 class="modal-title"
+                id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Join</strong> the network'); ?></h4>
         </div>
         <div class="modal-body">
             <br/>
@@ -50,7 +51,7 @@ use humhub\modules\user\widgets\AuthChoice;
                         </div>
                     <?php endif; ?>
 
-                   <?php if (AuthChoice::hasClients()): ?>
+                    <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
@@ -67,30 +68,32 @@ use humhub\modules\user\widgets\AuthChoice;
                     <hr>
                     <div class="row">
                         <div class="col-md-4">
-                            <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary" data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
+                            <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary"
+                                    data-action-click="ui.modal.submit"
+                                    data-action-url="<?= Url::to(['/user/auth/login']) ?>">
                                 <?= Yii::t('UserModule.auth', 'Sign in') ?>
                             </button>
 
                         </div>
                         <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-md-8 text-right">
-                            <small>
-                                <?= Html::a(
-                                    Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
-                                    $passwordRecoveryRoute,
-                                    ArrayHelper::merge([
-                                        'id' => 'recoverPasswordBtn',
-                                    ], is_array($passwordRecoveryRoute) ? [
-                                        'data' => [
-                                            'action-click' => 'ui.modal.load',
-                                            'action-url' => Url::to($passwordRecoveryRoute),
-                                        ]
-                                    ] : [
-                                        'target' => '_blank',
-                                    ]),
-                                ) ?>
-                            </small>
-                        </div>
+                            <div class="col-md-8 text-right">
+                                <small>
+                                    <?= Html::a(
+                                        Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                        $passwordRecoveryRoute,
+                                        ArrayHelper::merge([
+                                            'id' => 'recoverPasswordBtn',
+                                        ], is_array($passwordRecoveryRoute) ? [
+                                            'data' => [
+                                                'action-click' => 'ui.modal.load',
+                                                'action-url' => Url::to($passwordRecoveryRoute),
+                                            ]
+                                        ] : [
+                                            'target' => '_blank',
+                                        ]),
+                                    ) ?>
+                                </small>
+                            </div>
                         <?php endif; ?>
                     </div>
 
@@ -113,12 +116,13 @@ use humhub\modules\user\widgets\AuthChoice;
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
+                                'captchaAction' => '/user/auth/captcha',
+                            ])->label(false); ?>
                         <?php endif; ?>
                         <hr>
 
-                        <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit" data-action-url="<?= Url::to(['/user/auth/login']) ?>">
+                        <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit"
+                           data-action-url="<?= Url::to(['/user/auth/login']) ?>">
                             <?= Yii::t('UserModule.auth', 'Register') ?>
                         </a>
 

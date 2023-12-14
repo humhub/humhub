@@ -8,8 +8,8 @@
 
 namespace humhub\modules\activity;
 
-use Yii;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
+use Yii;
 
 /**
  * Activity BaseModule
@@ -29,6 +29,11 @@ class Module extends \humhub\components\Module
      * @var int day to send weekly summaries on daily cron run (0 = Sunday, 6 = Saturday)
      */
     public $weeklySummaryDay = 0;
+
+    /**
+     * @var int day to send monthly summaries on daily cron run (1 = first day of the month)
+     */
+    public $monthlySummaryDay = 1;
 
     /**
      * @var boolean enable mail summary feature

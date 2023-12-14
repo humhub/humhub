@@ -1,10 +1,10 @@
 <?php
 
-use humhub\widgets\SiteLogo;
-use yii\bootstrap\ActiveForm;
-use humhub\modules\user\widgets\AuthChoice;
 use humhub\libs\Html;
 use humhub\modules\user\models\Invite;
+use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\SiteLogo;
+use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 /**
@@ -20,6 +20,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <br/>
     <div class="row">
         <div id="create-account-form" class="panel panel-default animated bounceIn"
+             data-has-auth-client="0"
              style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
             <div class="panel-heading">
                 <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
@@ -53,24 +54,24 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             </div>
         </div>
 
-    <?= humhub\widgets\LanguageChooser::widget(); ?>
-</div>
+        <?= humhub\widgets\LanguageChooser::widget(); ?>
+    </div>
 
-<script <?= Html::nonce() ?>>
+    <script <?= Html::nonce() ?>>
 
-    // Shake panel after wrong validation
-    <?php if ($invite->hasErrors()) { ?>
-    $('#create-account-form').removeClass('bounceInLeft');
-    $('#create-account-form').addClass('shake');
-    $('#app-title').removeClass('fadeIn');
-    <?php } ?>
+        // Shake panel after wrong validation
+        <?php if ($invite->hasErrors()) { ?>
+        $('#create-account-form').removeClass('bounceInLeft');
+        $('#create-account-form').addClass('shake');
+        $('#app-title').removeClass('fadeIn');
+        <?php } ?>
 
-    <?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
-    <?php } ?>
+        <?php if ($invite->showCaptureInRegisterForm()) { ?>
+        $('#register-email').on('focus', function () {
+            $('#registration-form-captcha').fadeIn(500);
+        });
+        <?php } ?>
 
-</script>
+    </script>
 
 

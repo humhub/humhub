@@ -22,17 +22,15 @@ humhub.module('ui.navigation', function (module, require, $) {
             });
             // Reset active config.
             module.config['active'] = undefined;
-        }).on('humhub:space:changed', function () {
-            $('#top-menu-nav').find('li').removeClass('active');
         });
     };
 
     var setActive = function (id, item) {
-        if(!id) {
+        if (!id) {
             return;
         }
 
-        if(!item) {
+        if (!item) {
             module.setActiveItem(null);
             return;
         }
@@ -40,11 +38,11 @@ humhub.module('ui.navigation', function (module, require, $) {
         var $menu = $('#' + id);
         var $item = null;
 
-        if(item.id) {
-            $item = $menu.find('[data-menu-id="'+item.id+'"]');
+        if (item.id) {
+            $item = $menu.find('[data-menu-id="' + item.id + '"]');
         }
 
-        if((!$item || !$item.length) && item.url) {
+        if ((!$item || !$item.length) && item.url) {
             $item = $menu.find('[href="' + item.url + '"]');
         }
 
@@ -57,7 +55,7 @@ humhub.module('ui.navigation', function (module, require, $) {
             return;
         }
 
-        $item.each(function() {
+        $item.each(function () {
             var $this = $(this);
             $this.closest('ul').find('li').removeClass('active');
             $this.closest('ul').find('a').removeClass('active');

@@ -3,11 +3,10 @@
 use humhub\libs\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
-use yii\captcha\Captcha;
-use \yii\helpers\Url;
-use yii\widgets\ActiveForm;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\SiteLogo;
+use yii\captcha\Captcha;
+use yii\widgets\ActiveForm;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
@@ -18,7 +17,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $passwordRecoveryRoute string|array|null */
 ?>
 
-<div class="container" style="text-align: center;">
+<div id="user-auth-login-modal" class="container" style="text-align: center;">
     <?= SiteLogo::widget(['place' => 'login']); ?>
     <br>
 
@@ -46,18 +45,18 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             <?php endif; ?>
 
             <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
-                <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false); ?>
-                <?= $form->field($model, 'password')
-                    ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
-                    ->label(false); ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+            <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false); ?>
+            <?= $form->field($model, 'password')
+                ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
+                ->label(false); ?>
+            <?= $form->field($model, 'rememberMe')->checkbox(); ?>
 
-                <hr>
-                <div class="row">
-                    <div class="col-md-4">
-                        <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
-                    </div>
-                    <?php if ($passwordRecoveryRoute) : ?>
+            <hr>
+            <div class="row">
+                <div class="col-md-4">
+                    <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
+                </div>
+                <?php if ($passwordRecoveryRoute) : ?>
                     <div class="col-md-8 text-right">
                         <small>
                             <?= Html::a(
@@ -73,8 +72,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                             ) ?>
                         </small>
                     </div>
-                    <?php endif; ?>
-                </div>
+                <?php endif; ?>
+            </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
