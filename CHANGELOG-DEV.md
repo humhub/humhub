@@ -27,6 +27,7 @@ HumHub Changelog
 - Enh #6667: Allow view file when owner object provides this
 - Enh #6671: Remove interface `ReadableInterface`
 - Enh #5751: Allow user blocking from profile page
+- Enh #6486: Add module "Not available" option in spaces or for users
 - Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
 - Enh #6686: Make the container header clickable to return to the container's home
 - Enh #6609: Monthly email summary
