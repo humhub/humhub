@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.2 (Unreleased)
+-------------------------
+- Fix #6741: Fix no pretty url of password recovery link
+
 1.15.1 (December 13, 2023)
 -------------------------
 - Enh #6697: Make state badge customizable
