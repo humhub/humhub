@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.2 (Unreleased)
+-------------------------
+- Fix #6708: Fix displaying of alert when RichText is changed on refresh a page
+
 1.15.1 (December 13, 2023)
 -------------------------
 - Enh #6697: Make state badge customizable
