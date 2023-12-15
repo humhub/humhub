@@ -18,13 +18,15 @@ use yii\authclient\ClientInterface;
 
 /**
  * Description of User
+ *
  * @property UserModel|null $identity
+ * @method  UserModel|null getIdentity(bool $autoRenew = true)
  * @mixin Impersonator
  * @author luke
  */
 class User extends \yii\web\User
 {
-    const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
+    public const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
 
     /**
      * @var PermissionManager
@@ -97,6 +99,7 @@ class User extends \yii\web\User
      * ```
      *
      * @param string|string[]|BasePermission $permission
+     *
      * @return boolean
      * @throws \yii\base\InvalidConfigException
      * @throws \Throwable
@@ -195,6 +198,7 @@ class User extends \yii\web\User
 
     /**
      * Determines if this user must change the password.
+     *
      * @return boolean
      * @since 1.8
      */
