@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\commands\MigrateController;
 use humhub\libs\SelfTest;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\components\DatabaseInfo;
@@ -18,6 +17,7 @@ use humhub\modules\queue\driver\MySQL;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\queue\interfaces\QueueInfoInterface;
 use humhub\modules\search\jobs\RebuildIndex;
+use humhub\services\MigrationService;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -89,18 +89,21 @@ class InformationController extends Controller
 
     public function actionDatabase(int $migrate = self::DB_ACTION_CHECK)
     {
+        $migrationService = MigrationService::create();
+
         if ($migrate === self::DB_ACTION_RUN) {
+            $migrationService->migrateUp();
             $migrationOutput = sprintf(
                 "%s\n%s",
-                MigrateController::webMigrateAll(),
+                $migrationService->getLastMigrationOutput(),
                 SettingController::flushCache()
             );
         } else {
-            $migrationOutput = MigrateController::webMigrateAll(MigrateController::MIGRATION_ACTION_NEW);
+            $migrate = $migrationService->hasMigrationsPending()
+                ? self::DB_ACTION_PENDING
+                : self::DB_ACTION_CHECK;
 
-            $migrate = str_contains($migrationOutput, 'No new migrations found.')
-                ? self::DB_ACTION_CHECK
-                : self::DB_ACTION_PENDING;
+            $migrationOutput = $migrationService->getLastMigrationOutput();
         }
 
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);

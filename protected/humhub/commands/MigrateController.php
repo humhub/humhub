@@ -10,8 +10,8 @@ namespace humhub\commands;
 
 use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
+use humhub\services\MigrationService;
 use Yii;
-use yii\base\InvalidRouteException;
 use yii\console\Exception;
 use yii\db\MigrationInterface;
 use yii\web\Application;
@@ -207,20 +207,14 @@ class MigrateController extends \yii\console\controllers\MigrateController
      * @param \yii\base\Module|null $module Module to get the migrations from, or Null for Application
      *
      * @return string output
-     * @throws Exception
-     * @throws InvalidRouteException
+     * @deprecated since 1.16; use MigrationService::migrateUp()
+     * @see MigrationService::migrateUp()
      */
     public static function webMigrateAll(string $action = 'up', ?\yii\base\Module $module = null): string
     {
-        ob_start();
-        $controller = new self('migrate', $module ?? Yii::$app);
-        $controller->db = Yii::$app->db;
-        $controller->interactive = false;
-        $controller->includeModuleMigrations = true;
-        $controller->color = false;
-        $controller->runAction($action);
-
-        return ob_get_clean() ?: '';
+        return $action === 'up'
+            ? MigrationService::create($module)->migrateUp()
+            : MigrationService::create($module)->migrateNew();
     }
 
     /**
@@ -229,8 +223,11 @@ class MigrateController extends \yii\console\controllers\MigrateController
      * @param string $migrationPath
      *
      * @return string output
+     * @deprecated since 1.16; use MigrationService::create($module)->migrateUp()
+     * @see MigrationService::create()
+     * @see MigrationService::migrateUp()
      */
-    public static function webMigrateUp(string $migrationPath): string
+    public static function webMigrateUp(string $migrationPath): ?string
     {
         ob_start();
         $controller = new self('migrate', Yii::$app);
@@ -240,7 +237,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $controller->color = false;
         $controller->runAction('up');
 
-        return ob_get_clean() ?: '';
+        return ob_get_clean() ?: null;
     }
 
     /**

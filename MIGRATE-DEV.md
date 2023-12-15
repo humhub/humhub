@@ -8,11 +8,12 @@ Version 1.16 (Unreleased)
 -------------------------
 
 ### Deprecations
+- `\humhub\components\Module::migrate()` use `getMigrationService()->migrateUp(MigrationService::ACTION_MIGRATE)` instead
+- `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
+- `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
+- `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
-- `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
-- `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
-- `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
 
 ### Type restrictions
 - `\humhub\components\behaviors\PolymorphicRelation` enforces types on fields, method parameters, & return types

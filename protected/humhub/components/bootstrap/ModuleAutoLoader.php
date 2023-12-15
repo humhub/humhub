@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -12,6 +13,7 @@ use Yii;
 use yii\base\BootstrapInterface;
 use yii\base\ErrorException;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
 
 /**
@@ -21,13 +23,16 @@ use yii\helpers\FileHelper;
  */
 class ModuleAutoLoader implements BootstrapInterface
 {
-    const CACHE_ID = 'module_configs';
-    const CONFIGURATION_FILE = 'config.php';
+    public const CACHE_ID = 'module_configs';
+    public const CONFIGURATION_FILE = 'config.php';
 
     /**
      * Bootstrap method to be called during application bootstrap stage.
+     *
      * @param Application $app the application currently running
-     * @throws \yii\base\InvalidConfigException
+     *
+     * @throws InvalidConfigException Module a configuration does not have both an id and class attribute
+     * @throws ErrorException On invalid module autoload path
      */
     public function bootstrap($app)
     {
@@ -37,10 +42,12 @@ class ModuleAutoLoader implements BootstrapInterface
 
     /**
      * Find available modules
-     * @return array
-     * @throws ErrorException
+     *
+     * @return array[] Array of module configurations with module ID as index.
+     *          Read from cache if available and YII_DEBUG is disabled
+     * @throws ErrorException On invalid module autoload path
      */
-    public static function locateModules()
+    public static function locateModules(): array
     {
         $modules = Yii::$app->cache->get(self::CACHE_ID);
 
@@ -54,11 +61,13 @@ class ModuleAutoLoader implements BootstrapInterface
 
     /**
      * Find all modules with configured paths
-     * @param array $paths
-     * @return array
-     * @throws ErrorException
+     *
+     * @param string[] $paths
+     *
+     * @return array[] Array of module configurations with module ID as index
+     * @throws ErrorException On invalid module autoload path
      */
-    private static function findModules($paths)
+    private static function findModules(iterable $paths): array
     {
         $folders = [];
         foreach ($paths as $path) {
@@ -71,11 +80,12 @@ class ModuleAutoLoader implements BootstrapInterface
 
         $modules = [];
         $moduleIdFolders = [];
+        $preventDuplicatedModules = Yii::$app->moduleManager->preventDuplicatedModules;
+
         foreach ($folders as $folder) {
             try {
-                /** @noinspection PhpIncludeInspection */
                 $moduleConfig = include $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
-                if (Yii::$app->moduleManager->preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
+                if ($preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
                     Yii::error('Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"');
                 } else {
                     $modules[$folder] = $moduleConfig;
@@ -86,10 +96,10 @@ class ModuleAutoLoader implements BootstrapInterface
             }
         }
 
-        if (Yii::$app->moduleManager->preventDuplicatedModules) {
+        if ($preventDuplicatedModules) {
             // Overwrite module paths from config
             foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
-                if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] != $overwriteModulePath) {
+                if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] !== $overwriteModulePath) {
                     try {
                         $moduleConfig = include $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
                         Yii::info('Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"');
@@ -110,13 +120,15 @@ class ModuleAutoLoader implements BootstrapInterface
 
     /**
      * Find all directories with a configuration file inside
+     *
      * @param string $path
-     * @return array
+     *
+     * @return string[]
      * @throws InvalidArgumentException
      */
-    private static function findModulesByPath($path)
+    private static function findModulesByPath(string $path): array
     {
-        $hasConfigurationFile = function ($path) {
+        $hasConfigurationFile = static function ($path) {
             return is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
         };
 
