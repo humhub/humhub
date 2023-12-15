@@ -94,7 +94,6 @@ use yii\web\HttpException;
  */
 class AccessControl extends ActionFilter
 {
-
     /**
      * Rules for access to controller
      *
@@ -120,6 +119,7 @@ class AccessControl extends ActionFilter
 
     /**
      * Only allow logged in users access to this controller
+     *
      * @deprecated since 1.2.2 use ['loggedInOnly'] rule instead
      */
     public $loggedInOnly = false;
@@ -135,9 +135,11 @@ class AccessControl extends ActionFilter
     public function beforeAction($action)
     {
         // Bypass when not installed for installer
-        if (empty(Yii::$app->params['installed']) &&
-                  Yii::$app->controller->module != null &&
-                  Yii::$app->controller->module->id == 'installer') {
+        if (
+            !Yii::$app->isInstalled()
+            && ($module = Yii::$app->controller->module)
+            && $module->id === 'installer'
+        ) {
             return true;
         }
 
@@ -145,12 +147,14 @@ class AccessControl extends ActionFilter
         $this->controllerAccess = $this->getControllerAccess($this->rules);
 
         if (!$this->controllerAccess->run()) {
-            if (isset($this->controllerAccess->codeCallback) &&
-                method_exists($this, $this->controllerAccess->codeCallback)) {
+            if (
+                isset($this->controllerAccess->codeCallback)
+                && method_exists($this, $this->controllerAccess->codeCallback)
+            ) {
                 // Call a specific function for current action filter,
                 // may be used to filter a logged in user for some restriction e.g. "must change password"
                 call_user_func([$this, $this->controllerAccess->codeCallback]);
-            } else if ($this->controllerAccess->code == 401) {
+            } elseif ($this->controllerAccess->code == 401) {
                 $this->loginRequired();
             } else {
                 $this->forbidden();
@@ -226,6 +230,7 @@ class AccessControl extends ActionFilter
 
     /**
      * Force user to redirect to change password
+     *
      * @since 1.8
      */
     protected function forceChangePassword()
@@ -237,6 +242,7 @@ class AccessControl extends ActionFilter
 
     /**
      * Log out all non admin users when maintenance mode is active
+     *
      * @since 1.8
      */
     protected function checkMaintenanceMode()

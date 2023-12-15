@@ -3,7 +3,14 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Enh #6550: Improve module migrations
+- Fix #6237: Migration errors during module activation are ignored
+- Enh #6711: run migrations manually
+- Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
+- Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations
+- Enh #6697: Make state badge customizable
 - Fix #6636: Module Manager test
+- Enh #6587: Apply UUID validator
 - Enh #6530: Small performance improvements
 - Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
 - Enh #6511: Backup folder path is now return from `removeModule()`
@@ -23,3 +30,10 @@ HumHub Changelog
 - Fix #6662: Change the start_url of the PWA from home to base URL
 - Enh #6667: Allow view file when owner object provides this
 - Enh #6671: Remove interface `ReadableInterface`
+- Enh #5751: Allow user blocking from profile page
+- Enh #6486: Add module "Not available" option in spaces or for users
+- Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
+- Enh #6686: Make the container header clickable to return to the container's home
+- Enh #6609: Monthly email summary
+- Fix #6721: Top menu entries for spaces are not highlighted when clicked
+- Fix #6725: Allow theme without second topbar menu

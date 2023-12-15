@@ -1,8 +1,10 @@
 HumHub Changelog
 ================
 
-1.15.1 (Unreleased)
---------------------------------
+1.15.1 (December 8, 2023)
+-------------------------
+- Enh #6697: Make state badge customizable
+- Fix #6698: Content relations
 - Fix #6644: Fix push service
 - Fix #6645: File dropdown not visible at the bottom of the page
 - Fix #6639: Apply image inline styles in email message
@@ -10,8 +12,14 @@ HumHub Changelog
 - Fix #6656: Fix people and space filters
 - Fix #6652: Fix profile update on welcome page
 - Fix #6660: Fix memory usage on integrity check
+- Fix #6666: Limit jQuery with version < 3.7.0 to avoid dropdown error
+- Fix #6653: URL in email notification removes the sub-folder of the Base URL
 - Fix #6674: Fix visibility of draft and scheduled content on dashboard
-
+- Fix #6679: On the space invitation by link page, the language chooser doesn't save the selected language
+- Fix #6677: Do not check mobile push module in requirements check on installation
+- Fix #6678: Refactor auto start tour for new user
+- Fix #6694: Remove the "Offline" tooltip when my own "Online" status is not displayed
+- Fix #6700: Reload theme variable `@baseTheme` after flushing cache
 
 1.15.0 (November 6, 2023)
 --------------------------------

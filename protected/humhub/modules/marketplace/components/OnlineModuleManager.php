@@ -173,7 +173,7 @@ class OnlineModuleManager extends Component
         $this->install($moduleId);
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
-        $updatedModule->migrate();
+        $updatedModule->getMigrationService()->migrateUp();
 
         (new MarketplaceService())->refreshPendingModuleUpdateCount();
 

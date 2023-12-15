@@ -98,10 +98,6 @@ class UserSearch extends User
             return $dataProvider;
         }
 
-
-        $query->joinWith(['profile']);
-
-
         // Freetext filters
         if (!empty($this->freeText)) {
             $query->andWhere([

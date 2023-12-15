@@ -57,10 +57,10 @@ jobs:
         steps:
             - name: Start Selenium
               run: |
-                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:117.0-20230926
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
 
-            - uses: actions/checkout@v2
-            - uses: actions/setup-node@v1
+            - uses: actions/checkout@v3
+            - uses: actions/setup-node@v3
 
 #            - name: Setup cache environment
 #              id: cache-env
@@ -71,7 +71,7 @@ jobs:
 #                key: ${{ env.key }}
 
 #            - name: Cache extensions
-#              uses: actions/cache@v1
+#              uses: actions/cache@v3
 #              with:
 #                path: ${{ steps.cache-env.outputs.dir }}
 #                key: ${{ steps.cache-env.outputs.key }}
@@ -92,7 +92,7 @@ jobs:
               run: composer validate
 
             - name: Cache dependencies installed with composer
-              uses: actions/cache@v1
+              uses: actions/cache@v3
               with:
                 path: ${{ env.COMPOSER_CACHE_DIR }}
                 key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
@@ -133,3 +133,10 @@ jobs:
 
             - name: Run test suite
               run: grunt test -build -env=github
+
+            - name: Upload Codeception Output
+              if: failure()
+              uses: actions/upload-artifact@v3
+              with:
+                name: codeception-output
+                path: protected/humhub/tests/codeception/_output/*

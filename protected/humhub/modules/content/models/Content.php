@@ -15,6 +15,7 @@ use humhub\components\Module;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
+use humhub\libs\UUIDValidator;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -180,10 +181,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         return [
             [['object_id', 'visibility', 'pinned'], 'integer'],
             [['archived'], 'safe'],
-            [['guid'], 'string', 'max' => 45],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
             [['object_model'], 'string', 'max' => 100],
             [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
-            [['guid'], 'unique']
         ];
     }
 

@@ -54,8 +54,11 @@ class Events extends BaseObject
         $module = static::getModule();
         if ($module->enableMailSummaries) {
             Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_DAILY]));
-            if (date('w') == $module->weeklySummaryDay) {
+            if (date('w') === (string)$module->weeklySummaryDay) {
                 Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_WEEKLY]));
+            }
+            if (date('j') === (string)$module->monthlySummaryDay) {
+                Yii::$app->queue->push(new SendMailSummary(['interval' => MailSummary::INTERVAL_MONTHLY]));
             }
         }
     }
