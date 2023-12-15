@@ -28,7 +28,7 @@ class ContentContainerModule extends Module
     /**
      * @inheritdoc
      */
-    public function disable()
+    public function disable(): ?bool
     {
         // disable in content containers
         $contentContainerQuery = ContentContainerModuleManager::getContentContainerQueryByModule($this->id);
@@ -41,7 +41,7 @@ class ContentContainerModule extends Module
             $moduleState->delete();
         }
 
-        parent::disable();
+        return parent::disable();
     }
 
     /**

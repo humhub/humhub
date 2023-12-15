@@ -19,6 +19,7 @@ use humhub\modules\admin\events\ModulesEvent;
 use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
 use Some\Name\Space\module1\Module as Module1;
 use Some\Name\Space\module2\Module as Module2;
+use Some\Name\Space\moduleWithMigration\Module as ModuleWithMigration;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 use yii\base\ErrorException;
@@ -26,8 +27,10 @@ use yii\base\Event;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\caching\ArrayCache;
+use yii\console\ExitCode;
 use yii\db\StaleObjectException;
 use yii\helpers\FileHelper;
+use yii\log\Logger;
 
 require_once __DIR__ . '/bootstrap/ModuleAutoLoaderTest.php';
 
@@ -588,7 +591,10 @@ class ModuleManagerTest extends HumHubDbTestCase
     public function testGetModules()
     {
         $moduleManager = Yii::$app->moduleManager;
-        static::assertIsArray($modules = $moduleManager->getModules(['returnClass' => true]));
+
+        $modules = $moduleManager->getModules(['returnClass' => true]);
+
+        static::assertIsArray($modules);
         static::assertCount(static::$moduleDirCount, $modules);
     }
 
@@ -604,12 +610,22 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $module = $this->registerModule($basePath, $config);
 
-        $oldMM = Yii::$app->cache;
+        $oldMM = Yii::$app->moduleManager;
         Yii::$app->set('moduleManager', $this->moduleManager);
+
+        static::logInitialize();
 
         $this->moduleManager->enableModules([$module, static::$testModuleRoot . '/module2']);
 
         Yii::$app->set('moduleManager', $oldMM);
+
+        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        static::assertLog('Module has no migrations directory.', Logger::LEVEL_TRACE, [$module->id]);
+
+        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, ['module2']);
+        static::assertLogRegex('@No new migrations found\. Your system is up-to-date\.@', Logger::LEVEL_INFO, ['module2']);
+
+        static::logReset();
 
         /** @noinspection MissedFieldInspection */
         $this->assertEvents([
@@ -637,6 +653,63 @@ class ModuleManagerTest extends HumHubDbTestCase
         );
 
         $this->moduleManager->enableModules([static::$testModuleRoot . '/non-existing-module']);
+    }
+
+    /**
+     * @noinspection MissedFieldInspection
+     */
+    public function testEnableModulesWithMigration()
+    {
+        Yii::$app->set('moduleManager', $this->moduleManager);
+        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, [$this, 'handleEvent']);
+
+        /** @var ModuleWithMigration $module */
+        $module = $this->moduleManager->getModule(static::$testModuleRoot . '/moduleWithMigration');
+
+        static::logInitialize();
+
+        // ToDo: beforeEnable() has been removed from this PR and will be re-introduced as an event in a follow-up PR
+        //        $module->doEnable = false;
+        //        static::assertNull($module->enable());
+        //        static::assertNull($module->migrationResult);
+        //        static::assertNull($module->migrationOutput);
+        //        $this->assertEvents();
+        //        static::assertLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::logFlush();
+
+        $module->doEnable = true;
+        static::assertTrue($module->enable());
+//        static::assertEquals(ExitCode::OK, $module->migrationResult);
+//        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+//        static::assertLogRegex('@\*\*\* applied m230911_000100_create_test_table \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
+        static::logFlush();
+
+        $this->assertEvents([
+            [
+                'class' => ModuleEvent::class,
+                'event' => 'afterModuleEnabled',
+                'sender' => $this->moduleManager,
+                'data' => null,
+                'handled' => false,
+                'module' => ['moduleWithMigration' => ModuleWithMigration::class],
+            ],
+        ]);
+
+//        $module->doDisable = false;
+//        static::assertNull($module->disable());
+//        static::assertNull($module->migrationResult);
+//        static::assertNull($module->migrationOutput);
+//        $this->assertEvents();
+//
+//        static::assertLog('Module has not been disabled due to beforeDisable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+//        static::logFlush();
+
+        $module->doDisable = true;
+        static::assertTrue($module->disable());
+//        static::assertEquals(ExitCode::OK, $module->migrationResult);
+//        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+//        static::assertLogRegex('@    > drop table test_module_with_migration \.\.\. done \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
+        static::logFlush();
     }
 
     /**
@@ -1020,10 +1093,11 @@ class ModuleManagerTest extends HumHubDbTestCase
             'module_id' => [
                 'module1',
                 'module2',
+                'moduleWithMigration',
                 'coreModule',
                 'installerModule',
                 'invalidModule1',
-                'invalidModule2'
+                'invalidModule2',
             ]
         ]);
 
