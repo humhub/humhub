@@ -11,6 +11,7 @@ namespace humhub\commands;
 use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
 use Yii;
+use yii\base\InvalidRouteException;
 use yii\console\Exception;
 use yii\db\MigrationInterface;
 use yii\web\Application;
@@ -202,17 +203,22 @@ class MigrateController extends \yii\console\controllers\MigrateController
     /**
      * Executes all pending migrations
      *
+     * @param string $action 'up' or 'new'
+     * @param \yii\base\Module|null $module Module to get the migrations from, or Null for Application
+     *
      * @return string output
+     * @throws Exception
+     * @throws InvalidRouteException
      */
-    public static function webMigrateAll(): string
+    public static function webMigrateAll(string $action = 'up', ?\yii\base\Module $module = null): string
     {
         ob_start();
-        $controller = new self('migrate', Yii::$app);
+        $controller = new self('migrate', $module ?? Yii::$app);
         $controller->db = Yii::$app->db;
         $controller->interactive = false;
         $controller->includeModuleMigrations = true;
         $controller->color = false;
-        $controller->runAction('up');
+        $controller->runAction($action);
 
         return ob_get_clean() ?: '';
     }
