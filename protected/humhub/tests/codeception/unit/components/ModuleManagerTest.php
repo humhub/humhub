@@ -427,11 +427,17 @@ class ModuleManagerTest extends HumHubDbTestCase
             'enabled' => false,
             'returnClass' => true,
         ]));
+
+        // Workaround for internal SaaS core module
+        unset($modules['hostinginfo']);
+
         $expected = array_merge(
             [],
             array_flip(ModuleAutoLoaderTest::EXPECTED_CORE_MODULES),
             static::$moduleDirList
         );
+
+
         static::assertEquals($expected, $modules);
 
         static::assertIsArray($modules = $moduleManager->getEnabledModules([
