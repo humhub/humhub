@@ -10,11 +10,9 @@ class Pjax extends \yii\widgets\Pjax
 
     public function init()
     {
-        $this->options = ArrayHelper::merge($this->options, [
-            'class' => (array) ArrayHelper::getValue($this->options, 'class', [])
-        ], [
-            'class' => ['exclude-from-pjax-client'],
-        ]);
+        $class = (array) ArrayHelper::getValue($this->options, 'class', []);
+        $class[] = 'exclude-from-pjax-client';
+        $this->options['class'] = $class;
 
         parent::init();
     }
