@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -159,7 +160,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
-            [['guid'], 'string', 'max' => 45],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -167,7 +169,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['guid'], 'unique'],
             [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
 
