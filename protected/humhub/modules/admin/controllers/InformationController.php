@@ -99,12 +99,11 @@ class InformationController extends Controller
                 SettingController::flushCache()
             );
         } else {
-            $migrationService->migrateNew();
-            $migrationOutput = $migrationService->getLastMigrationOutput();
+            $migrate = $migrationService->hasMigrationsPending()
+                ? self::DB_ACTION_PENDING
+                : self::DB_ACTION_CHECK;
 
-            $migrate = str_contains($migrationOutput, 'No new migrations found.')
-                ? self::DB_ACTION_CHECK
-                : self::DB_ACTION_PENDING;
+            $migrationOutput = $migrationService->getLastMigrationOutput();
         }
 
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);

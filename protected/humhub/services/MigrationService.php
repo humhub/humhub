@@ -109,9 +109,24 @@ class MigrationService extends Component
         return $this->lastMigrationResult;
     }
 
-    public function isValid(): bool
+    public function hasMigrations(): bool
     {
         return $this->path !== null;
+    }
+
+    public function hasMigrationsPending(): bool
+    {
+        if (!$this->hasMigrations()) {
+            return false;
+        }
+
+        if ($this->migrateNew() === false) {
+            return false;
+        }
+
+        $migrationOutput = $this->getLastMigrationOutput();
+
+        return !str_contains($migrationOutput, 'No new migrations found.');
     }
 
     /**
@@ -210,7 +225,7 @@ class MigrationService extends Component
         $this->lastMigrationOutput = null;
         $this->lastMigrationResult = null;
 
-        if (!$this->isValid()) {
+        if (!$this->hasMigrations()) {
             return null;
         }
 
