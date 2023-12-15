@@ -6,16 +6,15 @@
  * @license   https://www.humhub.com/licences
  */
 
-namespace humhub\tests\codeception\unit\components;
+namespace humhub\tests\codeception\unit;
 
-use Codeception\Test\Unit;
-use humhub\libs\BaseSettingsManager;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
-class BaseSettingsManagerTest extends HumHubDbTestCase
+class ApplicationBaseTest extends HumHubDbTestCase
 {
     public function testIsDatabaseInstalled()
     {
-        $this->assertTrue(BaseSettingsManager::isDatabaseInstalled());
+        $this->assertTrue(Yii::$app->isDatabaseInstalled());
     }
 }

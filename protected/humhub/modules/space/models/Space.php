@@ -9,6 +9,7 @@
 namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -119,13 +120,15 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $rules = [
             [['join_policy', 'visibility', 'status', 'sort_order', 'auto_add_new_members', 'default_content_visibility'], 'integer'],
             [['name'], 'required'],
+            [['name'], 'string', 'max' => 45, 'min' => 2],
             [['description', 'about', 'color'], 'string'],
             [['tagsField', 'blockedUsersField'], 'safe'],
             [['description'], 'string', 'max' => 100],
             [['join_policy'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'in', 'range' => [0, 1, 2]],
             [['visibility'], 'checkVisibility'],
-            [['guid', 'name'], 'string', 'max' => 45, 'min' => 2],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
             [['url'], UrlValidator::class, 'space' => $this],
         ];
 

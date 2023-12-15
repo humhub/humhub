@@ -11,8 +11,12 @@ Version 1.16 (Unreleased)
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
+- `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
+- `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
 
 ### Type restrictions
+- `\humhub\components\behaviors\PolymorphicRelation` enforces types on fields, method parameters, & return types
+- `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
 - `\humhub\modules\comment\models\Comment` on `canDelete()`
 - `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canWrite()`, `canEdit()`
 - `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
@@ -34,9 +38,10 @@ Version 1.15
 - Use the verifying `Content->canArchive()` before run the methods `Content->archive()`
   and `Content->archive()`, because it was removed from within there.
 - Permission to configure modules is now restricted to users allowed to manage settings (was previously restricted to users allowed to manage modules). [More info here](https://github.com/humhub/humhub/issues/6174).
+- `$guid` properties in `contentcontainer`, `file`, `space`, and `user` models are now enforced to be valid UUIDs
+  (See `UUID::validate()`) and unique within the table.
 
 ### Type restrictions
-- `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
 - `\humhub\libs\Helpers::checkClassType()` (see [#6548](https://github.com/humhub/humhub/pull/6548))
   - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`

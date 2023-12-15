@@ -9,8 +9,8 @@
 namespace humhub\modules\content\models;
 
 use Yii;
-use yii\db\ActiveRecord;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "contentcontainer_module".
@@ -32,6 +32,9 @@ class ContentContainerModuleState extends ActiveRecord
     /** @var int */
     const STATE_FORCE_ENABLED = 2;
 
+    /** @var int */
+    const STATE_NOT_AVAILABLE = 3;
+
     /**
      * @inheritdoc
      */
@@ -47,6 +50,7 @@ class ContentContainerModuleState extends ActiveRecord
     public static function getStates($labels = false)
     {
         $states = [
+            self::STATE_NOT_AVAILABLE => Yii::t('AdminModule.modules', 'Not available'),
             self::STATE_DISABLED => Yii::t('AdminModule.modules', 'Deactivated'),
             self::STATE_ENABLED => Yii::t('AdminModule.modules', 'Activated'),
             self::STATE_FORCE_ENABLED => Yii::t('AdminModule.modules', 'Always activated')

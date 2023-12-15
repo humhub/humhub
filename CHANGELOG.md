@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.1 (Unreleased)
---------------------------------
+1.15.1 (December 8, 2023)
+-------------------------
 - Enh #6697: Make state badge customizable
 - Fix #6698: Content relations
 - Fix #6644: Fix push service
@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #6674: Fix visibility of draft and scheduled content on dashboard
 - Fix #6679: On the space invitation by link page, the language chooser doesn't save the selected language
 - Fix #6677: Do not check mobile push module in requirements check on installation
+- Fix #6678: Refactor auto start tour for new user
 - Fix #6694: Remove the "Offline" tooltip when my own "Online" status is not displayed
 - Fix #6700: Reload theme variable `@baseTheme` after flushing cache
 

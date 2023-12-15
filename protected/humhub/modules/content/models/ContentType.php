@@ -67,10 +67,11 @@ class ContentType extends Model
      * @param ContentContainerActiveRecord|null $container
      * @return static[] existing content types of the given container
      */
-    public static function getContentTypes(ContentContainerActiveRecord $container = null) {
+    public static function getContentTypes(ContentContainerActiveRecord $container = null)
+    {
         $containerId = ($container) ? $container->id : '';
 
-        if(isset(static::$cache[$containerId])) {
+        if (isset(static::$cache[$containerId])) {
             return static::$cache[$containerId];
         }
 
@@ -78,13 +79,13 @@ class ContentType extends Model
             ->from('content')->distinct()
             ->where(['stream_channel' => 'default']);
 
-        if($container) {
+        if ($container) {
             $query->andWhere(['contentcontainer_id' => $container->contentcontainer_id]);
         }
 
         $result = [];
 
-        foreach($query->orderBy('object_model')->all() as $item) {
+        foreach ($query->orderBy('object_model')->all() as $item) {
             $result[] = new static(['typeClass' => $item['object_model']]);
         }
 
@@ -95,7 +96,8 @@ class ContentType extends Model
      * @param ContentContainerActiveRecord|null $container
      * @return array content type selection array in form of [contentTypeClass => contentName]
      */
-    public static function getContentTypeSelection(ContentContainerActiveRecord $container = null) {
+    public static function getContentTypeSelection(ContentContainerActiveRecord $container = null)
+    {
         $result = [];
         foreach (static::getContentTypes($container) as $contentType) {
             $result[$contentType->typeClass] = $contentType->getContentName();
