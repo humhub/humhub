@@ -14,6 +14,8 @@ use humhub\libs\BasePermission;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\User as UserModel;
+use RuntimeException;
+use Throwable;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
@@ -166,9 +168,8 @@ class PermissionManager extends Component
      * @param string|BasePermission $permission either permission class or instance
      * @param string $state
      *
-     * @throws \Exception
      * @throws InvalidConfigException
-     * @throws StaleObjectException
+     * @throws Throwable
      */
     public function setGroupState($groupId, $permission, $state)
     {
@@ -192,9 +193,12 @@ class PermissionManager extends Component
         $record->class = get_class($permission);
         $record->group_id = $groupId;
         $record->state = $state;
-        if ($record->save()) {
-            $this->clear();
+
+        if ($record->save() === false) {
+            throw new RuntimeException("Saving permission failed: " . implode('; ', $record->getErrorSummary(true)));
         }
+
+        $this->clear();
     }
 
     /**
