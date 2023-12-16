@@ -68,30 +68,22 @@ class SecurityController extends Controller
     }
 
     /**
-     * Shows space permessions
+     * Shows space permissions
      */
     public function actionPermissions()
     {
         $space = $this->getSpace();
 
-        $groups = $space->getUserGroups();
+        $groups = $space::getUserGroups();
         $groupId = Yii::$app->request->get('groupId', Space::USERGROUP_MEMBER);
         if (!array_key_exists($groupId, $groups)) {
             throw new HttpException(500, 'Invalid group id given!');
         }
 
         // Handle permission state change
-        if (Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = $space->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            $space->permissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
-            return [];
-        }
+        $return = $space->permissionManager->handlePermissionStateChange($groupId);
 
-        return $this->render('permissions', [
+        return $return ?? $this->render('permissions', [
                     'space' => $space,
                     'groups' => $groups,
                     'groupId' => $groupId
