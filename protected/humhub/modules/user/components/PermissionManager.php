@@ -180,6 +180,7 @@ class PermissionManager extends Component
         if ($state === '' || $state === null) {
             if ($record !== null) {
                 $record->delete();
+                $this->clear();
             }
             return;
         }
@@ -191,7 +192,7 @@ class PermissionManager extends Component
         $record->permission_id = $permission->getId();
         $record->module_id = $permission->getModuleId();
         $record->class = get_class($permission);
-        $record->group_id = $groupId;
+        $record->group_id = (string)$groupId; // content container permissions require a text value here
         $record->state = $state;
 
         if ($record->save() === false) {
