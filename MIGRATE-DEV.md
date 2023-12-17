@@ -19,6 +19,7 @@ Version 1.16 (Unreleased)
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
 - `\humhub\components\behaviors\PolymorphicRelation` enforces types on fields, method parameters, & return types
 - `\humhub\components\bootstrap\ModuleAutoLoader::findModules()` is enforcing types on method parameters and return value
+- `\humhub\components\bootstrap\ModuleAutoLoader::findModulesByPath()` is enforcing types on method parameters and return value
 - `\humhub\components\bootstrap\ModuleAutoLoader::locateModules()` is enforcing return type
 - `\humhub\components\ModuleManager::register()` is enforcing types on method parameters
 - `\humhub\modules\comment\models\Comment` on `canDelete()`
