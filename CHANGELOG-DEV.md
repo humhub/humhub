@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6754: Regression due to return type (#6550)
 - Enh #6550: Improve module migrations
 - Fix #6237: Migration errors during module activation are ignored
 - Enh #6711: run migrations manually
