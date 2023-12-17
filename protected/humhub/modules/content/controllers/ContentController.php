@@ -207,17 +207,27 @@ class ContentController extends Controller
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canEdit()) {
-            throw new ForbiddenHttpException();
-        } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
+        }
+
+        if (!$content->canEdit()) {
             throw new ForbiddenHttpException();
         }
 
-        if ($content->isPrivate()) {
-            $content->visibility = Content::VISIBILITY_PUBLIC;
-        } else {
-            $content->visibility = Content::VISIBILITY_PRIVATE;
+        // Prevent Change to "Public" in private spaces
+        if (
+            $content->container
+            && $content->isPrivate()
+            && (
+                !$content->container->visibility
+                || !$content->container->permissionManager->can(new CreatePublicContent())
+            )
+        ) {
+            throw new ForbiddenHttpException();
         }
+
+        $content->visibility = $content->isPrivate() ?
+            Content::VISIBILITY_PUBLIC :
+            Content::VISIBILITY_PRIVATE;
 
         return $this->asJson([
             'success' => $content->save(),
