@@ -153,6 +153,7 @@ class BasePermission extends BaseObject
      * @param array $parameters Parameters passed to PermissionManager::can() which allows a permission to evaluate if caching should be disabled
      *
      * @return string|null A unique string (see method description) or null, if caching should be disabled
+     * @since 1.15.2
      * @see PermissionManager::can()
      * @see UUID::v4()
      * @noinspection PhpUnusedParameterInspection
