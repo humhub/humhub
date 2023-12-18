@@ -8,20 +8,21 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\modules\content\models\ContentContainerDefaultPermission;
-use humhub\modules\user\components\PermissionManager;
-use humhub\modules\content\models\ContentContainerPermission;
+use humhub\components\Module as Module;
 use humhub\libs\BasePermission;
+use humhub\modules\content\models\ContentContainerDefaultPermission;
+use humhub\modules\content\models\ContentContainerPermission;
+use humhub\modules\user\components\PermissionManager;
 use Yii;
+use yii\base\Module as BaseModule;
 
 /**
  * @inheritdoc
  */
 class ContentContainerPermissionManager extends PermissionManager
 {
-
     /**
-     * @var ContentContainerActiveRecord
+     * @var ContentContainerActiveRecord|null
      */
     public $contentContainer = null;
 
@@ -42,11 +43,12 @@ class ContentContainerPermissionManager extends PermissionManager
     /**
      * @inheritdoc
      */
-    protected function getModulePermissions(\yii\base\Module $module)
+    protected function getModulePermissions(BaseModule $module)
     {
-        if ($module instanceof \humhub\components\Module) {
+        if ($module instanceof Module) {
             return $module->getPermissions($this->contentContainer);
         }
+
         return [];
     }
 
@@ -55,8 +57,9 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function createPermissionRecord()
     {
-        $permission = new ContentContainerPermission;
+        $permission = Yii::createObject(ContentContainerPermission::class);
         $permission->contentcontainer_id = $this->contentContainer->contentcontainer_id;
+
         return $permission;
     }
 
@@ -65,14 +68,15 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function getQuery()
     {
-        return \humhub\modules\content\models\ContentContainerPermission::find()->where(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
+        return ContentContainerPermission::find()->where(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
     }
 
     /**
      * Returns the group default state
      *
-     * @param string $groupId
+     * @param string|int $groupId
      * @param BasePermission $permission
+     *
      * @return string|int the state
      */
     public function getSingleGroupDefaultState($groupId, BasePermission $permission)
@@ -89,15 +93,15 @@ class ContentContainerPermissionManager extends PermissionManager
      * Returns the default state stored in DB per container type.
      * This method returns null in case the default state for this permission or group is not stored in DB yet.
      *
-     * @param int $groupId
+     * @param string|int $groupId
      * @param BasePermission $permission
+     *
      * @return int|null
      * @since 1.8
      */
     private function getDefaultStoredState($groupId, BasePermission $permission)
     {
-        if ($this->contentContainer === null ||
-            !is_object($this->contentContainer)) {
+        if ($this->contentContainer === null) {
             // Content Container must be defined to get default permission per column `contentcontainer_class`
             return null;
         }
@@ -109,25 +113,30 @@ class ContentContainerPermissionManager extends PermissionManager
             return null;
         }
 
+        $class = get_class($this->contentContainer);
         // Cache default permissions per Content Container Type(Space/User):
-        $cachedDefaultPermissions = Yii::$app->cache->getOrSet( 'defaultPermissions:'.get_class($this->contentContainer), function () use ($groupId) {
-            $records = ContentContainerDefaultPermission::find()
-                ->select(['group_id', 'module_id', 'permission_id', 'state'])
-                ->where(['contentcontainer_class' => get_class($this->contentContainer)])
-                ->all();
-            $defaultPermissions = [];
-            foreach ($records as $defaultPermission) {
-                /* @var $permissionRecord ContentContainerDefaultPermission  */
-                $defaultPermissions[$defaultPermission->group_id][$defaultPermission->module_id][$defaultPermission->permission_id] = $defaultPermission->state;
+        $cachedDefaultPermissions = Yii::$app->cache->getOrSet(
+            'defaultPermissions:' . $class,
+            static function () use ($class): array {
+                $records = ContentContainerDefaultPermission::find()
+                    ->select(['group_id', 'module_id', 'permission_id', 'state',])
+                    ->where(['contentcontainer_class' => $class])
+                    ->all();
+                $defaultPermissions = [];
+                foreach ($records as $defaultPermission) {
+                    /* @var $permissionRecord ContentContainerDefaultPermission */
+                    $defaultPermissions[$defaultPermission->group_id][$defaultPermission->module_id][$defaultPermission->permission_id]
+                        = $defaultPermission->state;
+                }
+
+                return $defaultPermissions;
             }
-            return $defaultPermissions;
-        });
+        );
 
         if (isset($cachedDefaultPermissions[$groupId][$permission->moduleId][get_class($permission)])) {
-            return (int) $cachedDefaultPermissions[$groupId][$permission->moduleId][get_class($permission)];
+            return (int)$cachedDefaultPermissions[$groupId][$permission->moduleId][get_class($permission)];
         }
 
         return null;
     }
-
 }

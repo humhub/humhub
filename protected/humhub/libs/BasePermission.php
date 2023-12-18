@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -25,14 +26,14 @@ class BasePermission extends BaseObject
     /**
      * @event Event an event that is triggered when the permission is initialized via [[init()]].
      */
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
     /**
      * Permission States
      */
-    const STATE_DEFAULT = '';
-    const STATE_ALLOW = 1;
-    const STATE_DENY = 0;
+    public const STATE_DEFAULT = null;
+    public const STATE_ALLOW = 1;
+    public const STATE_DENY = 0;
 
     /**
      * @var string id of the permission (default is classname)
@@ -42,7 +43,7 @@ class BasePermission extends BaseObject
     /**
      * @var string title of the permission
      */
-    protected $title ='';
+    protected $title = '';
 
     /**
      * @var string description of the permission
@@ -66,9 +67,10 @@ class BasePermission extends BaseObject
 
     /**
      * A list of groupIds which are fixed group state.
-     * See defaultState for default setting.
      *
-     * @var array default fixed groups
+     * @see static::$defaultState for default setting.
+     *
+     * @var string[] default fixed groups
      */
     protected $fixedGroups = [
         Space::USERGROUP_GUEST,
@@ -79,7 +81,7 @@ class BasePermission extends BaseObject
     /**
      * The default state of this permission
      *
-     * @var string
+     * @var int|null
      */
     protected $defaultState = self::STATE_DENY;
 
@@ -87,7 +89,7 @@ class BasePermission extends BaseObject
      * Optional contentContainer instance to improve title and description.
      *
      * @since 1.2
-     * @var \humhub\modules\content\components\ContentContainerActiveRecord
+     * @var ContentContainerActiveRecord|null
      */
     public $contentContainer = null;
 
@@ -146,11 +148,13 @@ class BasePermission extends BaseObject
 
     /**
      * Returns the default state of the permission.
-     * The defaultState is either defined by setting $defaultState attribute
-     * or by overwriting the $defaultState by means of the configuration param 'defaultPermissions'.
+     * The defaultState is either defined by setting `$defaultState` attribute
+     * or by overwriting the `$defaultState` by means of the configuration param 'defaultPermissions'.
      *
-     * If the $defaultState is set to denied, we can grant the permission for specific groups by defining
+     * If the `$defaultState` is set to `denied`, we can grant the permission for specific groups by defining
      * the $defaultAllowedGroups array.
+     *
+     * @param string|int $groupId
      *
      * @return int the default state
      */
@@ -165,21 +169,24 @@ class BasePermission extends BaseObject
             return self::STATE_ALLOW;
         }
 
-        return (int) (in_array($groupId, $this->defaultAllowedGroups));
+        return (int) in_array($groupId, $this->defaultAllowedGroups)
+            ? self::STATE_ALLOW
+            : self::STATE_DENY;
     }
 
     /**
-     * Returns the default state set in the configration params 'defaultPermissions'.
+     * Returns the default state set in the configuration params 'defaultPermissions'.
      * This method returns null in case the default state for this permission or group is not set in
      * the configuration.
      *
-     * @param int $groupId
+     * @param string|int $groupId
+     *
      * @return int|null
      * @since 1.2
      */
     protected function getConfiguredState($groupId)
     {
-        if(!isset(Yii::$app->params['defaultPermissions'][static::class])) {
+        if (!isset(Yii::$app->params['defaultPermissions'][static::class])) {
             return null;
         }
 
@@ -188,8 +195,10 @@ class BasePermission extends BaseObject
         }
 
         // Allow asterisk to overwrite all groups excluding guest groups
-        if (isset(Yii::$app->params['defaultPermissions'][static::class]['*'])
-            && !in_array($groupId, [Space::USERGROUP_GUEST, User::USERGROUP_GUEST], true)) {
+        if (
+            isset(Yii::$app->params['defaultPermissions'][static::class]['*'])
+            && !in_array($groupId, [Space::USERGROUP_GUEST, User::USERGROUP_GUEST], true)
+        ) {
             return Yii::$app->params['defaultPermissions'][static::class]['*'];
         }
 
@@ -209,6 +218,8 @@ class BasePermission extends BaseObject
     /**
      * Checks the given id belongs to this permission
      *
+     * @param string $id
+     *
      * @return boolean
      */
     public function hasId($id)
@@ -226,9 +237,13 @@ class BasePermission extends BaseObject
     {
         if ($state === self::STATE_ALLOW) {
             return Yii::t('base', 'Allow');
-        } elseif ($state === self::STATE_DENY) {
+        }
+
+        if ($state === self::STATE_DENY) {
             return Yii::t('base', 'Deny');
-        } elseif ($state == '') {
+        }
+
+        if ($state === null) {
             return Yii::t('base', 'Default');
         }
 
@@ -236,9 +251,10 @@ class BasePermission extends BaseObject
     }
 
     /**
-     * @param array Ids of additional fixed groups
+     * @param array $groupIds Ids of additional fixed groups
      */
-    public function addFixedGroups($groupIds) {
+    public function addFixedGroups($groupIds)
+    {
         if (is_array($groupIds) && !empty($groupIds)) {
             $this->fixedGroups = array_merge($this->fixedGroups, $groupIds);
         }

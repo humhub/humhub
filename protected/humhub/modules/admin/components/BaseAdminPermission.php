@@ -8,17 +8,16 @@
 
 namespace humhub\modules\admin\components;
 
+use humhub\libs\BasePermission;
 use humhub\modules\user\models\Group;
 
 /**
  * BaseAdminPermission is a fixed allowed permission for the admin group
- * 
- * @author buddha
+ *
  * @since 1.2
  */
-class BaseAdminPermission extends \humhub\libs\BasePermission
+class BaseAdminPermission extends BasePermission
 {
-
     /**
      * @inheritdoc
      */
@@ -41,13 +40,13 @@ class BaseAdminPermission extends \humhub\libs\BasePermission
 
     /**
      * {@inheritdoc}
-     * 
+     *
      * Note: that this function always returns state self::STATE_ALLOW for the administration
      * group, this behaviour can't be overwritten by means of the configuration.
-     * 
-     * Thi
-     * @param type $groupId
-     * @return type
+     *
+     * @param int|string $groupId
+     *
+     * @return int
      */
     public function getDefaultState($groupId)
     {
@@ -57,5 +56,4 @@ class BaseAdminPermission extends \humhub\libs\BasePermission
 
         return parent::getDefaultState($groupId);
     }
-
 }

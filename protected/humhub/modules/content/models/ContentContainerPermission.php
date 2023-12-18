@@ -8,19 +8,16 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\PermissionActiveRecord;
+
 /**
  * This is the model class for table "contentcontainer_permission".
  *
- * @property string $permission_id
- * @property integer $contentcontainer_id
  * @property string $group_id
- * @property string $module_id
- * @property string $class
- * @property integer $state
+ * @property integer $contentcontainer_id
  */
-class ContentContainerPermission extends \yii\db\ActiveRecord
+class ContentContainerPermission extends PermissionActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -40,5 +37,4 @@ class ContentContainerPermission extends \yii\db\ActiveRecord
             [['permission_id', 'group_id', 'module_id', 'class'], 'string', 'max' => 255]
         ];
     }
-
 }
