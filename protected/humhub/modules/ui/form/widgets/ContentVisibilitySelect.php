@@ -12,9 +12,10 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
-use yii\bootstrap\InputWidget;
 use yii\bootstrap\Html;
+use yii\bootstrap\InputWidget;
 
 
 /**
@@ -116,11 +117,19 @@ class ContentVisibilitySelect extends InputWidget
         $contentContainer = $this->getContentContainer();
 
         // Should hide on private spaces (Only provide private content visibility option)
-        if ($contentContainer instanceof Space) {
-            /** @var Space $contentContainer */
-            if ($contentContainer->visibility == Space::VISIBILITY_NONE) {
-                return true;
-            }
+        if (
+            $contentContainer instanceof Space
+            && $contentContainer->visibility === Space::VISIBILITY_NONE
+        ) {
+            return true;
+        }
+
+        // Should hide on global content if Guest access is disabled
+        if (
+            $contentContainer === null
+            && !AuthHelper::isGuestAccessEnabled()
+        ) {
+            return true;
         }
 
         return false;

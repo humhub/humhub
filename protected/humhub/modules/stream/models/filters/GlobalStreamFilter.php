@@ -1,0 +1,36 @@
+<?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ *
+ */
+
+namespace humhub\modules\stream\models\filters;
+
+use humhub\modules\content\models\Content;
+use Yii;
+
+/**
+ * This stream filter will only include global content and furthermore
+ * only includes public content if the query is done by a guest
+ *
+ * @package humhub\modules\stream\models\filters
+ * @since 1.16
+ */
+class GlobalStreamFilter extends StreamQueryFilter
+{
+    /**
+     * @inheritDoc
+     */
+    public function apply()
+    {
+        // Limit to global content
+        $this->query->andWhere(['content.contentcontainer_id' => null]);
+
+        // Limit to public posts when guest
+        if (Yii::$app->user->isGuest) {
+            $this->query->andWhere('content.visibility = :visibility', [':visibility' => Content::VISIBILITY_PUBLIC]);
+        }
+    }
+}

@@ -9,6 +9,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\user\helpers\AuthHelper;
 use yii\helpers\Url;
 
 /**
@@ -44,6 +45,15 @@ class VisibilityLink extends \yii\base\Widget
                 !$content->container->visibility
                 || !$content->container->permissionManager->can(new CreatePublicContent())
             )
+        ) {
+            return '';
+        }
+
+        // Prevent Change to "Public" if content is global and Guest access is disabled
+        if (
+            $content->container === null
+            && $content->isPrivate()
+            && !AuthHelper::isGuestAccessEnabled()
         ) {
             return '';
         }
