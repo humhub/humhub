@@ -51,11 +51,22 @@ use yii\web\IdentityInterface;
  * @property string $last_login
  * @property string $authclient_id
  * @property string $auth_key
- * @property Profile $profile
- * @property Password $currentPassword
+ * @property-read string $authKey
  * @property Auth[] $auths
+ * @property Password $currentPassword
+ * @property-read ActiveQuery|null $friends
+ * @property-read Group[] $groups
+ * @property-read ActiveQuery $groupUsers
+ * @property-read Session[] $httpSessions
+ * @property-read Group[] $managerGroups
+ * @property-read GroupUser[] $managerGroupsUser
+ * @property-write bool $mustChangePassword
+ * @property-read User|null $originator
+ * @property-read PasswordRecoveryService $passwordRecoveryService
+ * @property Profile $profile
+ * @property-read array $searchAttributes
+ * @property-read Space[] $spaces
  * @mixin Followable
- * @noinspection PropertiesInspection
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
 {
