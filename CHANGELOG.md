@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #6741: Fix no pretty url of password recovery link
 - Enh #6734: Trim Base URL on save
 - Fix #6708: Fix displaying of alert when RichText is changed on refresh a page
+- Fix #6747: Fix loading of default container permissions from cache
 
 1.15.1 (December 13, 2023)
 -------------------------

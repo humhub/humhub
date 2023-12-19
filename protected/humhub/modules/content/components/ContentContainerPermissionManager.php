@@ -117,14 +117,14 @@ class ContentContainerPermissionManager extends PermissionManager
                 ->all();
             $defaultPermissions = [];
             foreach ($records as $defaultPermission) {
-                /* @var $permissionRecord ContentContainerDefaultPermission  */
+                /* @var $defaultPermission ContentContainerDefaultPermission */
                 $defaultPermissions[$defaultPermission->group_id][$defaultPermission->module_id][$defaultPermission->permission_id] = $defaultPermission->state;
             }
             return $defaultPermissions;
         });
 
-        if (isset($cachedDefaultPermissions[$groupId][$permission->moduleId][get_class($permission)])) {
-            return (int) $cachedDefaultPermissions[$groupId][$permission->moduleId][get_class($permission)];
+        if (isset($cachedDefaultPermissions[$groupId][$permission->getModuleId()][$permission->getId()])) {
+            return (int) $cachedDefaultPermissions[$groupId][$permission->getModuleId()][$permission->getId()];
         }
 
         return null;
