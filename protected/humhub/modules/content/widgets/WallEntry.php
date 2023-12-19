@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
@@ -217,7 +216,7 @@ class WallEntry extends Widget
     {
         $entryClass = null;
         if ($entry instanceof MenuEntry) {
-            $entryClass = PolymorphicRelation::getObjectModel($entry);
+            $entryClass = get_class($entry);
         } elseif (is_array($entry) && isset($entry[0])) {
             $entryClass = $entry[0];
         }
