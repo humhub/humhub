@@ -981,7 +981,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         }
 
         // Check system admin can see all content module configuration
-        if ($user->canViewAllContent(PolymorphicRelation::getObjectModel($this->container))) {
+        if ($user->canViewAllContent(get_class($this->container))) {
             return true;
         }
 
