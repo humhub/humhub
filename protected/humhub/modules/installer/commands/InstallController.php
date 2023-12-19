@@ -8,7 +8,6 @@
 
 namespace humhub\modules\installer\commands;
 
-use humhub\commands\MigrateController;
 use humhub\helpers\DatabaseHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\UUID;
@@ -16,6 +15,7 @@ use humhub\modules\installer\libs\InitialData;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
+use humhub\services\MigrationService;
 use Yii;
 use yii\base\Exception;
 use yii\console\Controller;
@@ -89,9 +89,8 @@ class InstallController extends Controller
         $this->stdout("  * Installing Database\n", Console::FG_YELLOW);
 
         Yii::$app->cache->flush();
-        // Disable max execution time to avoid timeouts during migrations
-        @ini_set('max_execution_time', 0);
-        MigrateController::webMigrateAll();
+
+        MigrationService::create()->migrateUp();
 
         DynamicConfig::rewrite();
 

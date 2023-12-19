@@ -41,7 +41,7 @@ class ContentContainerModule extends Module
             $moduleState->delete();
         }
 
-        parent::disable();
+        return parent::disable();
     }
 
     /**

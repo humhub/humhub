@@ -842,7 +842,7 @@ class SelfTest
             ];
         }
 
-        if (Setting::isInstalled()) {
+        if (Yii::$app->isInstalled()) {
             // Check Mobile App - Push Service
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
             /* @var \humhub\modules\fcmPush\Module|null $pushModule */

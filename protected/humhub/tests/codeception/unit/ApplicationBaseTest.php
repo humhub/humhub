@@ -6,12 +6,12 @@
  * @license   https://www.humhub.com/licences
  */
 
-namespace humhub\tests\codeception\unit\components;
+namespace humhub\tests\codeception\unit;
 
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
-class BaseSettingsManagerTest extends HumHubDbTestCase
+class ApplicationBaseTest extends HumHubDbTestCase
 {
     public function testIsDatabaseInstalled()
     {
