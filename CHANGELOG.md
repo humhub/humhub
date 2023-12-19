@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #6734: Trim Base URL on save
 - Fix #6708: Fix displaying of alert when RichText is changed on refresh a page
 - Fix #6747: Fix loading of default container permissions from cache
+- Fix #6766: Since Humhub 1.15.1, getting content polymorphic relation changes the content object_model to the wrong class
 
 1.15.1 (December 13, 2023)
 -------------------------
