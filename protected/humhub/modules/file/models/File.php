@@ -350,7 +350,7 @@ class File extends FileCompat
      */
     public function isAssignedTo(ActiveRecord $record)
     {
-        return $this->object_model === get_class($record) && $this->object_id == $record->getPrimaryKey();
+        return $this->object_model === PolymorphicRelation::getObjectModel($record) && $this->object_id == $record->getPrimaryKey();
     }
 
     /**

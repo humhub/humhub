@@ -2,6 +2,7 @@
 
 namespace humhub\modules\like\widgets;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\like\Module;
@@ -50,7 +51,7 @@ class LikeLink extends \yii\base\Widget
         $module = Yii::$app->getModule('like');
         $canLike = $module->canLike($this->object);
 
-        $likes = LikeModel::GetLikes(get_class($this->object), $this->object->id);
+        $likes = LikeModel::GetLikes(PolymorphicRelation::getObjectModel($this->object), $this->object->id);
         foreach ($likes as $like) {
             if ($like->user->id == Yii::$app->user->id) {
                 $currentUserLiked = true;
@@ -58,15 +59,15 @@ class LikeLink extends \yii\base\Widget
         }
 
         return $this->render('likeLink', [
-                    'canLike' => $canLike,
-                    'object' => $this->object,
-                    'likes' => $likes,
-                    'currentUserLiked' => $currentUserLiked,
-                    'id' => $this->object->getUniqueId(),
-                    'likeUrl' => Url::to(['/like/like/like', 'contentModel' => get_class($this->object), 'contentId' => $this->object->id]),
-                    'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => get_class($this->object), 'contentId' => $this->object->id]),
-                    'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => get_class($this->object), 'contentId' => $this->object->getPrimaryKey()]),
-                    'title' => $this->generateLikeTitleText($currentUserLiked, $likes)
+            'canLike' => $canLike,
+            'object' => $this->object,
+            'likes' => $likes,
+            'currentUserLiked' => $currentUserLiked,
+            'id' => $this->object->getUniqueId(),
+            'likeUrl' => Url::to(['/like/like/like', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
+            'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
+            'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->getPrimaryKey()]),
+            'title' => $this->generateLikeTitleText($currentUserLiked, $likes)
         ]);
     }
 
@@ -84,7 +85,7 @@ class LikeLink extends \yii\base\Widget
                 return Yii::t('LikeModule.base', 'You like this.');
             } else {
                 // output, if more users like this
-                $userlist .= Yii::t('LikeModule.base', 'You'). "\n";
+                $userlist .= Yii::t('LikeModule.base', 'You') . "\n";
                 $previewUserCount++;
             }
         }
@@ -102,7 +103,7 @@ class LikeLink extends \yii\base\Widget
                 // check, if you liked
                 if ($likes[$i]->user->guid != Yii::$app->user->guid) {
                     // output, if an other user liked
-                    $userlist .= Html::encode($likes[$i]->user->displayName). "\n";
+                    $userlist .= Html::encode($likes[$i]->user->displayName) . "\n";
                     $previewUserCount++;
                 }
 

@@ -12,7 +12,6 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\GUID;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
-use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -28,7 +27,6 @@ use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\post\models\Post;
 use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
@@ -36,7 +34,6 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
-use yii\base\InvalidArgumentException;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
@@ -261,7 +258,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 $model->afterStateChange($this->state, $previousState);
             }
 
-            if (!$this->getStateService()->wasPublished() && (int) $previousState === self::STATE_PUBLISHED) {
+            if (!$this->getStateService()->wasPublished() && (int)$previousState === self::STATE_PUBLISHED) {
                 $this->updateAttributes(['was_published' => 1]);
             }
         }
@@ -308,7 +305,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => get_class($record),
+                'sourceClass' => PolymorphicRelation::getObjectModel($record),
                 'sourceId' => $record->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
@@ -406,7 +403,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         }
 
         Notification::deleteAll([
-            'source_class' => get_class($this),
+            'source_class' => PolymorphicRelation::getObjectModel($this),
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
@@ -984,7 +981,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         }
 
         // Check system admin can see all content module configuration
-        if ($user->canViewAllContent(get_class($this->container))) {
+        if ($user->canViewAllContent(PolymorphicRelation::getObjectModel($this->container))) {
             return true;
         }
 

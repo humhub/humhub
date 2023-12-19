@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
@@ -43,10 +44,10 @@ class Followable extends Behavior
     public function getFollowRecord($userId)
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $userId, function() use ($userId) {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $userId, function () use ($userId) {
             return Follow::find()
                 ->where([
-                    'object_model' => get_class($this->owner),
+                    'object_model' => PolymorphicRelation::getObjectModel($this->owner),
                     'object_id' => $this->owner->getPrimaryKey(),
                     'user_id' => $userId
                 ])->one();
@@ -161,7 +162,7 @@ class Followable extends Behavior
     {
         return User::find()
             ->leftJoin('user_follow', 'user.id = user_follow.user_id AND user_follow.object_id=:object_id AND user_follow.object_model = :object_model', [
-                ':object_model' => get_class($this->owner),
+                ':object_model' => PolymorphicRelation::getObjectModel($this->owner),
                 ':object_id' => $this->owner->getPrimaryKey(),
             ])
             ->where('user_follow.user_id IS NOT null')
@@ -191,7 +192,7 @@ class Followable extends Behavior
     public function getFollowingQuery($query)
     {
         $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-            ['object_model' => get_class($this->owner)]);
+            ['object_model' => PolymorphicRelation::getObjectModel($this->owner)]);
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
         return $query;
     }
