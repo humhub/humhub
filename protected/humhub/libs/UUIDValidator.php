@@ -88,6 +88,7 @@ class UUIDValidator extends StringValidator
      * @see static::$allowNull
      */
     protected $autofillWith = true;
+    public $skipOnEmpty = false;
 
     /**
      * @var string|null user-defined error message used when the value is blank
@@ -313,7 +314,7 @@ class UUIDValidator extends StringValidator
     public function setAutofillWith($autofillWith): UUIDValidator
     {
         if ($autofillWith !== null) {
-             $bool = filter_var($autofillWith, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+            $bool = filter_var($autofillWith, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
             if ($bool !== null && $autofillWith !== '') {
                 $autofillWith = $bool;

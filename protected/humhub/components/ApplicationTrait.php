@@ -102,9 +102,9 @@ trait ApplicationTrait
      */
     public function isDatabaseInstalled(bool $checkConnection = false): bool
     {
-        $dieOnError = isset(Yii::$app->params['databaseInstalled']) && $this->params['databaseInstalled'];
+        $dieOnError = $this->params['databaseInstalled'] ?? null;
 
-        if (!$checkConnection) {
+        if (!$checkConnection && $dieOnError !== null) {
             return $dieOnError;
         }
 
