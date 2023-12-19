@@ -2,10 +2,11 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\components\Widget;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\Module;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\components\Widget;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use Yii;
@@ -62,7 +63,7 @@ class Comments extends Widget
      */
     public function run()
     {
-        $objectModel = get_class($this->object);
+        $objectModel = PolymorphicRelation::getObjectModel($this->object);
         $objectId = $this->object->getPrimaryKey();
 
         $streamQuery = Yii::$app->request->getQueryParam('StreamQuery');

@@ -16,8 +16,12 @@ Version 1.16 (Unreleased)
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
 
 ### Type restrictions
-- `\humhub\components\behaviors\PolymorphicRelation` enforces types on fields, method parameters, & return types
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
+- `\humhub\components\behaviors\PolymorphicRelation` enforces types on fields, method parameters, & return types
+- `\humhub\components\bootstrap\ModuleAutoLoader::findModules()` is enforcing types on method parameters and return value
+- `\humhub\components\bootstrap\ModuleAutoLoader::findModulesByPath()` is enforcing types on method parameters and return value
+- `\humhub\components\bootstrap\ModuleAutoLoader::locateModules()` is enforcing return type
+- `\humhub\components\ModuleManager::register()` is enforcing types on method parameters
 - `\humhub\modules\comment\models\Comment` on `canDelete()`
 - `\humhub\modules\content\components\ContentAddonActiveRecord` on `canDelete()`, `canWrite()`, `canEdit()`
 - `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`

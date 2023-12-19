@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6754: Regression due to return type (#6550)
 - Enh #6550: Improve module migrations
 - Fix #6237: Migration errors during module activation are ignored
 - Enh #6711: run migrations manually
@@ -37,3 +38,4 @@ HumHub Changelog
 - Enh #6609: Monthly email summary
 - Fix #6721: Top menu entries for spaces are not highlighted when clicked
 - Fix #6725: Allow theme without second topbar menu
+- Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false

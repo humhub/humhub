@@ -104,8 +104,8 @@ class PolymorphicRelation extends Behavior
             $this->cached = $object;
 
             if ($object instanceof ActiveRecordInterface) {
-                $class = get_class($object);
-                if ($cached === null || get_class($cached) !== $class) {
+                $class = self::getObjectModel($object);
+                if ($cached === null || self::getObjectModel($cached) !== $class) {
                     $this->owner->setAttribute($this->classAttribute, $class);
                 }
 
