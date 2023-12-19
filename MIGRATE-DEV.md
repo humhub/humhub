@@ -23,7 +23,10 @@ Version 1.16 (Unreleased)
 - `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
 - `\humhub\modules\file\models\File` on `canRead()`, `canDelete()`
 
-
+### New
+- `humhub\modules\stream\actions\GlobalStream`
+- `humhub\modules\stream\models\GlobalStreamQuery`
+- `humhub\modules\stream\models\filters\GlobalStreamFilter`
 
 Version 1.15
 -------------------------
@@ -45,15 +48,16 @@ Version 1.15
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
 - `\humhub\libs\Helpers::checkClassType()` (see [#6548](https://github.com/humhub/humhub/pull/6548))
-  - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`
-    with different Exception Codes as documented in the function's documentation:
-      - `\humhub\exceptions\InvalidArgumentClassException`
-      - `\humhub\exceptions\InvalidArgumentTypeException`
-      - `\humhub\exceptions\InvalidArgumentValueException`
-  - the return type has changed from `false` to `string|null`
-  - the second parameter `$type` is now mandatory
+    - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`
+      with different Exception Codes as documented in the function's documentation:
+        - `\humhub\exceptions\InvalidArgumentClassException`
+        - `\humhub\exceptions\InvalidArgumentTypeException`
+        - `\humhub\exceptions\InvalidArgumentValueException`
+    - the return type has changed from `false` to `string|null`
+    - the second parameter `$type` is now mandatory
 
 ### Deprecations
+
 #### New
 - `Content::addTags()` and `Content::addTag()`. Use `ContentTagService`
 - `humhub\libs\UUID::is_valid()`. Use `UUID::validate()`
@@ -74,4 +78,3 @@ Version 1.15
 - `humhub\widgets\MarkdownField`
 - `humhub\widgets\MarkdownFieldModals`
 - `humhub\widgets\ModalConfirm`
-
