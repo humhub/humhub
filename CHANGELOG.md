@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.2 (Unreleased)
--------------------------
+1.15.2 (December 19, 2023)
+--------------------------
 - Fix #6753: Non-unique key used for permission caching
 - Fix #6741: Fix no pretty url of password recovery link
 - Enh #6734: Trim Base URL on save
