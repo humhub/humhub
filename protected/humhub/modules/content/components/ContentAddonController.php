@@ -10,11 +10,10 @@ namespace humhub\modules\content\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Controller;
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use Yii;
 use yii\base\Exception;
 use yii\web\HttpException;
-
 
 /**
  * ContentAddonController is a base controller for ContentAddons.
@@ -29,7 +28,6 @@ use yii\web\HttpException;
  */
 class ContentAddonController extends Controller
 {
-
     /**
      * Content this addon belongs to
      *
@@ -88,7 +86,10 @@ class ContentAddonController extends Controller
         }
 
         /** @var ContentAddonActiveRecord|ContentActiveRecord $modelClass */
-        $modelClass = Helpers::checkClassType($modelClass, [ContentAddonActiveRecord::class, ContentActiveRecord::class]);
+        $modelClass = DataTypeHelper::filterClassType(
+            $modelClass,
+            [ContentAddonActiveRecord::class, ContentActiveRecord::class]
+        );
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
@@ -122,7 +123,7 @@ class ContentAddonController extends Controller
     public function loadContentAddon($className, $pk)
     {
         /** @var ContentAddonActiveRecord|null $className */
-        $className = Helpers::checkClassType($className, ContentAddonActiveRecord::class);
+        $className = DataTypeHelper::filterClassType($className, ContentAddonActiveRecord::class);
         if ($className === null) {
             throw new Exception("Given className is not a content addon model!");
         }
@@ -139,5 +140,4 @@ class ContentAddonController extends Controller
 
         $this->contentAddon = $target;
     }
-
 }

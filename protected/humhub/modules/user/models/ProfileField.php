@@ -9,11 +9,10 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "profile_field".
@@ -154,7 +153,8 @@ class ProfileField extends ActiveRecord
         if ($this->_fieldType != null)
             return $this->_fieldType;
 
-        if ($this->field_type_class != '' && $type = Helpers::checkClassType($this->field_type_class, fieldtype\BaseType::class)) {
+        if ($this->field_type_class != '' && $type = DataTypeHelper::filterClassType($this->field_type_class,
+                fieldtype\BaseType::class)) {
             $this->_fieldType = new $type();
             $this->_fieldType->setProfileField($this);
             return $this->_fieldType;

@@ -7,7 +7,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
@@ -172,7 +172,7 @@ class BaseType extends Model
     {
         $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
-            $className = Helpers::checkClassType($className, static::class);
+            $className = DataTypeHelper::filterClassType($className, static::class);
             /** @var BaseType $instance */
             $instance = new $className();
             if ($profileField !== null) {
