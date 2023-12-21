@@ -11,6 +11,7 @@ namespace humhub\modules\user\models;
 use humhub\components\ActiveRecord;
 use humhub\modules\user\services\AuthClientUserService;
 use Yii;
+use yii\base\Exception;
 
 /**
  * This is the model class for table "profile".
@@ -50,14 +51,12 @@ use Yii;
  */
 class Profile extends ActiveRecord
 {
-
-
     /**
      * @since 1.3.2
      */
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
-    const SCENARIO_REGISTRATION = 'registration';
-    const SCENARIO_EDIT_PROFILE = 'editProfile';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_EDIT_PROFILE = 'editProfile';
 
 
     /**
@@ -79,10 +78,7 @@ class Profile extends ActiveRecord
             [['user_id'], 'integer'],
         ];
 
-        foreach (ProfileField::find()->all() as $profileField) {
-            if ($profileField->getFieldType()->isVirtual) {
-                continue;
-            }
+        foreach (static::getValidProfileFields(true) as $profileField) {
             $rules = array_merge($rules, $profileField->getFieldType()->getFieldRules());
         }
 
@@ -101,9 +97,9 @@ class Profile extends ActiveRecord
         }
 
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = [];
-        $scenarios[static::SCENARIO_REGISTRATION] = [];
-        $scenarios[static::SCENARIO_EDIT_PROFILE] = [];
+        $scenarios[self::SCENARIO_EDIT_ADMIN] = [];
+        $scenarios[self::SCENARIO_REGISTRATION] = [];
+        $scenarios[self::SCENARIO_EDIT_PROFILE] = [];
 
         // Get synced attributes if user is set
         $syncAttributes = [];
@@ -111,23 +107,22 @@ class Profile extends ActiveRecord
             $syncAttributes = (new AuthClientUserService($this->user))->getSyncAttributes();
         }
 
-        foreach (ProfileField::find()->all() as $profileField) {
+        foreach (static::getValidProfileFields() as $profileField) {
             // Some fields consist of multiple field definitions (e.g. Birthday)
             foreach ($profileField->fieldType->getFieldFormDefinition($this->user) as $fieldName => $definition) {
-
                 // Skip automatically synced attributes (readonly)
                 if (in_array($profileField->internal_name, $syncAttributes)) {
                     continue;
                 }
 
-                $scenarios[static::SCENARIO_EDIT_ADMIN][] = $fieldName;
+                $scenarios[self::SCENARIO_EDIT_ADMIN][] = $fieldName;
 
                 if ($profileField->editable && !in_array($profileField->internal_name, $syncAttributes)) {
-                    $scenarios[static::SCENARIO_EDIT_PROFILE][] = $fieldName;
+                    $scenarios[self::SCENARIO_EDIT_PROFILE][] = $fieldName;
                 }
 
                 if ($profileField->show_at_registration) {
-                    $scenarios[static::SCENARIO_REGISTRATION][] = $fieldName;
+                    $scenarios[self::SCENARIO_REGISTRATION][] = $fieldName;
                 }
             }
         }
@@ -190,7 +185,7 @@ class Profile extends ActiveRecord
         }
 
         $labels = [];
-        foreach (ProfileField::find()->all() as $profileField) {
+        foreach (static::getValidProfileFields() as $profileField) {
             /** @var ProfileField $profileField */
             $labels = array_merge($labels, $profileField->getFieldType()->getLabels());
         }
@@ -219,7 +214,6 @@ class Profile extends ActiveRecord
         $safeAttributes = $this->safeAttributes();
 
         foreach (ProfileFieldCategory::find()->orderBy('sort_order')->all() as $profileFieldCategory) {
-
             $category = [
                 'type' => 'form',
                 'title' => Yii::t($profileFieldCategory->getTranslationCategory(), $profileFieldCategory->title),
@@ -248,8 +242,8 @@ class Profile extends ActiveRecord
 
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
-                if(isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
-                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileFieldCategory->getTranslationCategory(), $profileField->description);
+                if (isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
+                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
@@ -268,11 +262,7 @@ class Profile extends ActiveRecord
      */
     public function beforeSave($insert)
     {
-        foreach (ProfileField::find()->all() as $profileField) {
-            /** @var ProfileField $profileField */
-            if ($profileField->getFieldType()->isVirtual) {
-                continue;
-            }
+        foreach (static::getValidProfileFields(true) as $profileField) {
             $key = $profileField->internal_name;
             $this->$key = $profileField->getFieldType()->beforeProfileSave($this->$key);
         }
@@ -346,6 +336,56 @@ class Profile extends ActiveRecord
     }
 
     /**
+     * Returns unsorted, unfiltered list of ProfileFields, skipping those without a valid field type
+     *
+     * @param bool $skipVirtual if provided and true, virtual fields will be omitted
+     *
+     * @return array
+     * @since 1.15
+     * @noinspection PhpDocMissingThrowsInspection
+     */
+    protected static function &getValidProfileFields(bool $skipVirtual = false): array
+    {
+        $result = [];
+
+        foreach (ProfileField::find()->all() as $profileField) {
+            try {
+                $fieldType = $profileField->getFieldType();
+            } catch (Exception $e) {
+                if (YII_DEBUG) {
+                    /** @noinspection PhpUnhandledExceptionInspection */
+                    throw $e;
+                }
+
+                Yii::error($e->getMessage());
+
+                continue;
+            }
+
+            if ($fieldType === null) {
+                $message = sprintf("Field %s has no valid type associated", $profileField->internal_name);
+
+                if (YII_DEBUG) {
+                    /** @noinspection PhpUnhandledExceptionInspection */
+                    throw new \Exception($message);
+                }
+
+                Yii::error($message);
+
+                continue;
+            }
+
+            if ($skipVirtual && $fieldType->isVirtual) {
+                continue;
+            }
+
+            $result[] = $profileField;
+        }
+
+        return $result;
+    }
+
+    /**
      * Soft delete will empty all profile fields except these defined in the module configuration.
      */
     public function softDelete()
@@ -363,5 +403,4 @@ class Profile extends ActiveRecord
             Yii::error('Could not soft delete profile!');
         }
     }
-
 }

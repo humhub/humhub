@@ -8,12 +8,12 @@
 
 namespace humhub\modules\live;
 
-use Yii;
-use humhub\modules\live\Module;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\friendship\FriendshipEvent;
 use humhub\modules\space\MemberEvent;
 use humhub\modules\user\events\FollowEvent;
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Events provides callbacks to handle events.
@@ -57,7 +57,7 @@ class Events extends \yii\base\BaseObject
      */
     public static function onFollowEvent(FollowEvent $event)
     {
-        if ($event->target instanceof ContentContainerActiveRecord) {
+        if ($event->target instanceof ContentContainerActiveRecord && $event->user instanceof User) {
             Yii::$app->getModule('live')->refreshLegitimateContentContainerIds($event->user);
         }
     }

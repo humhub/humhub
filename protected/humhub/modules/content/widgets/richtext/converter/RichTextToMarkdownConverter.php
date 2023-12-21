@@ -1,9 +1,4 @@
 <?php
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
@@ -77,7 +72,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     /**
      * @inheritDoc
      */
-    protected function onAfterParse($text) : string
+    protected function onAfterParse($text): string
     {
         return trim(parent::onAfterParse($text));
     }
@@ -85,33 +80,40 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     /**
      * html entity mark parser is disabled by removing marker in php doc
      */
-    protected function parseEntity($text) { /* Not implemented */}
+    protected function parseEntity($text)
+    { /* Not implemented */
+    }
 
     /**
      * `<` mark parser is disabled by removing marker in php doc
      */
-    protected function parseLt($text) { /* Not implemented */}
+    protected function parseLt($text)
+    { /* Not implemented */
+    }
 
     /**
      * `>` mark parser is disabled by removing marker in php doc
      */
-    protected function parseGt($text) { /* Not implemented */}
+    protected function parseGt($text)
+    { /* Not implemented */
+    }
 
 
     /**
      * @inheritDoc
      */
-    protected function renderPlainLink(LinkParserBlock $linkBlock) : string
+    protected function renderPlainLink(LinkParserBlock $linkBlock): string
     {
-        return RichTextLinkExtension::buildLink($linkBlock->getParsedText(),$linkBlock->getUrl(), $linkBlock->getTitle());
+        return RichTextLinkExtension::buildLink($linkBlock->getParsedText(), $linkBlock->getUrl(), $linkBlock->getTitle());
     }
 
     /**
      * @inheritDoc
      */
-    protected function renderPlainImage(LinkParserBlock $linkBlock) : string {
+    protected function renderPlainImage(LinkParserBlock $linkBlock): string
+    {
         $result = $this->renderPlainLink($linkBlock);
-        return $result[0] === '[' ? static::IMAGE_SUFFIX.$result : $result;
+        return $result[0] === '[' ? static::IMAGE_SUFFIX . $result : $result;
     }
 
     /**
@@ -121,7 +123,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderEmail($block)
     {
-        return RichTextLinkExtension::buildLink($block[1], 'mailto:'.$block[1]);
+        return RichTextLinkExtension::buildLink($block[1], 'mailto:' . $block[1]);
     }
 
     /**
@@ -155,14 +157,14 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderParagraph($block)
     {
-        return $this->renderAbsy($block['content'])."\n\n";
+        return $this->renderAbsy($block['content']) . "\n\n";
     }
 
     /**
      * Returns a plain text representation of a list block
      * @param $block
      * @return string
-    */
+     */
     protected function renderList($block)
     {
         $output = '';
@@ -170,16 +172,16 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
         $level = $block['level'] ?? 0;
         foreach ($block['items'] as $item => $itemLines) {
             foreach ($itemLines as &$line) {
-                if($line[0] === 'list') {
+                if ($line[0] === 'list') {
                     $line['level'] = $level + 1;
                 }
             }
 
-            unset( $line );
+            unset($line);
 
-            $output .= $level !== 0 ? "\n".str_repeat(' ', $level * 3) : '';
-            $output .= $block['list'] === 'ol' ? (isset($block['origNums'][$item]) ? $block['origNums'][$item] : ++$count).'. ' : '- ';
-            $output .= $this->renderAbsy($itemLines). ($level === 0 ? "\n" : '');
+            $output .= $level !== 0 ? "\n" . str_repeat(' ', $level * 3) : '';
+            $output .= $block['list'] === 'ol' ? (isset($block['origNums'][$item]) ? $block['origNums'][$item] : ++$count) . '. ' : '- ';
+            $output .= $this->renderAbsy($itemLines) . ($level === 0 ? "\n" : '');
         }
 
         return $output . ($level === 0 ? "\n" : '');
@@ -192,7 +194,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     protected function renderCode($block)
     {
         $lang = $block['language'] ?? '';
-        return "```$lang\n".$block['content']."\n```\n\n";
+        return "```$lang\n" . $block['content'] . "\n```\n\n";
     }
 
     /**
@@ -201,7 +203,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderQuote($block)
     {
-        return '> '.$this->renderAbsy($block['content']) . "\n\n";
+        return '> ' . $this->renderAbsy($block['content']) . "\n\n";
     }
 
     /**
@@ -210,7 +212,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderHeadline($block)
     {
-        return str_repeat('#', $block['level']).' '.$this->renderAbsy($block['content'])."\n\n";
+        return str_repeat('#', $block['level']) . ' ' . $this->renderAbsy($block['content']) . "\n\n";
     }
 
     /**
@@ -220,7 +222,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
     protected function renderHtml($block)
     {
         // We do not strip_tags here, since the richtext does not support html and interprets html as normal text
-        return $this->br2nl($block['content']). "\n\n";
+        return $this->br2nl($block['content']) . "\n\n";
     }
 
     /**
@@ -244,7 +246,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderStrike($block)
     {
-        return static::STRIKE_WRAPPER.$this->renderAbsy($block[1]).static::STRIKE_WRAPPER;
+        return static::STRIKE_WRAPPER . $this->renderAbsy($block[1]) . static::STRIKE_WRAPPER;
     }
 
     /**
@@ -253,7 +255,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderStrong($block)
     {
-        return static::BOLD_WRAPPER.$this->renderAbsy($block[1]).static::BOLD_WRAPPER;
+        return static::BOLD_WRAPPER . $this->renderAbsy($block[1]) . static::BOLD_WRAPPER;
     }
 
     /**
@@ -262,7 +264,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderEmph($block)
     {
-        return static::EMPHASIZE_WRAPPER.$this->renderAbsy($block[1]).static::EMPHASIZE_WRAPPER;
+        return static::EMPHASIZE_WRAPPER . $this->renderAbsy($block[1]) . static::EMPHASIZE_WRAPPER;
     }
 
     /**
@@ -271,7 +273,7 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function renderInlineCode($block)
     {
-        return static::INLINE_CODE_WRAPPER.$block[1].static::INLINE_CODE_WRAPPER;
+        return static::INLINE_CODE_WRAPPER . $block[1] . static::INLINE_CODE_WRAPPER;
     }
 
     /**
@@ -317,14 +319,14 @@ class RichTextToMarkdownConverter extends BaseRichTextConverter
      */
     protected function identifyQuote($line)
     {
-        return $this->identifyQuote
-            ? parent::identifyQuote($line)
-            : false;
+        return $this->identifyQuote && parent::identifyQuote($line);
     }
 
 
     /**
      * Deactivated by removing marker
      */
-    protected function parseTd($markdown) { /* Not implemented */ }
+    protected function parseTd($markdown)
+    { /* Not implemented */
+    }
 }

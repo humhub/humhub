@@ -21,10 +21,17 @@ class DraftCest
 
         $I->wantTo('ensure draft has a draft badge.');
         $I->waitForText('DRAFT', '5', '//div[@class="wall-entry"][1]');
+        $I->wantTo('ensure author can see the draft content on dashboard.');
+        $I->amOnDashboard();
+        $I->waitForText('Schabernack', null, '[data-stream-entry="1"]');
+        $I->waitForText('DRAFT', null, '[data-stream-entry="1"]');
 
         $I->wantTo('ensure draft is not visible for other users.');
         $I->amUser2(true);
         $I->amOnSpace3();
+        $I->dontSee('Schabernack');
+        $I->amOnDashboard();
+        $I->waitForElementVisible('[data-stream-entry="1"]');
         $I->dontSee('Schabernack');
 
         $I->wantTo('publish draft');
@@ -34,6 +41,7 @@ class DraftCest
         $I->waitForText('Publish draft', '5');
         $I->click('Publish draft');
         $I->waitForText('The content has been successfully published.');
+        $I->wait(2);
         $I->dontSee('DRAFT');
 
         $I->wantTo('ensure published draft is now visible for other users.');

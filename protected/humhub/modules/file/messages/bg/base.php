@@ -19,4 +19,7 @@ return [
     'The uploaded image is not a squared.' => 'Каченото изображение не е на квадрат.',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Това поле за качване позволява само {n,plural,=1{# файл} other{# файла}}.',
     'Upload files' => 'Качване на файлове',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
 ];

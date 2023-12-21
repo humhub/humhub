@@ -3,18 +3,8 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 26.07.2017
- * Time: 18:11
- */
-
 namespace humhub\modules\content\components;
-
 
 use Yii;
 use humhub\components\access\StrictAccess;
@@ -167,13 +157,15 @@ class ContentContainerControllerAccess extends StrictAccess
      */
     public function isAdmin()
     {
-        if(parent::isAdmin()) {
+        if (parent::isAdmin()) {
             return true;
         }
 
         if ($this->contentContainer instanceof Space) {
             return $this->contentContainer->isAdmin($this->user);
-        } elseif($this->contentContainer instanceof Space) {
+        }
+
+        if ($this->contentContainer instanceof User) {
             return $this->user && $this->user->is($this->contentContainer);
         }
 

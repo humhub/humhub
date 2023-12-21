@@ -1,15 +1,19 @@
 <?php
 
+use humhub\libs\Html;
+use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
-use humhub\widgets\AjaxButton;
-use humhub\widgets\LoaderWidget;
+use yii\helpers\Url;
 
 /**
+ * @var $this \yii\web\View
  * @var $module \humhub\components\Module
  * @var $model \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm
  */
+
+AdminAsset::register($this);
 
 ?>
 
@@ -43,26 +47,32 @@ use humhub\widgets\LoaderWidget;
                     </div>
                 <?php endif; ?>
                 <br>
+                <?php if ($model->mustConfirmModuleDeactivation()) : ?>
+                    <div class="col-md-12">
+                        <?= $form->field($model, 'moduleDeactivationConfirmed')->checkbox() ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
         <div class="modal-footer">
-            <?= AjaxButton::widget([
-                'label' => Yii::t('AdminModule.modules', 'Save'),
-                'ajaxOptions' => [
-                    'type' => 'POST',
-                    'beforeSend' => new yii\web\JsExpression('function(){ setModalLoader(); }'),
-                    'success' => new yii\web\JsExpression('function(html){ $("#globalModal").html(html); }'),
-                    'url' => \yii\helpers\Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
-                ],
-                'htmlOptions' => ['class' => 'btn btn-primary']
-            ]); ?>
-
-            <button type="button" class="btn btn-primary" data-dismiss="modal">
-                <?= Yii::t('AdminModule.modules', 'Close'); ?>
-            </button>
-
-            <?= LoaderWidget::widget(['id' => 'default-loader', 'cssClass' => 'loader-modal hidden']); ?>
+            <?= Html::a(
+                Yii::t('AdminModule.modules', 'Save'), '#', [
+                    'class' => ['btn', 'btn-primary'],
+                    'data' => [
+                        'action-click' => 'admin.moduleSetAsDefault',
+                        'action-url' => Url::to(['/admin/module/set-as-default', 'moduleId' => $module->id]),
+                    ]
+                ]
+            ) ?>
+            <?= Html::button(
+                Yii::t('AdminModule.modules', 'Close'), [
+                    'class' => ['btn', 'btn-primary'],
+                    'data' => [
+                        'dismiss' => 'modal',
+                    ]
+                ]
+            ) ?>
         </div>
 
         <?php $form::end(); ?>

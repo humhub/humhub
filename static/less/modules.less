@@ -49,14 +49,22 @@
             }
         }
     }
-    .module-settings-icon {
+    .marketplace-settings-dropdown {
         float: right;
-        color: #02A1B1;
-        font-size: 22px;
-        line-height: 20px;
-        margin: 2px;
-        &:hover {
-            color: #1d8e9d;
+        list-style: none;
+        .dropdown-toggle {
+            color: #02A1B1;
+            font-size: 22px;
+            line-height: 20px;
+            margin: 2px;
+            &:hover {
+                color: #1d8e9d;
+            }
+        }
+    }
+    @media (max-width: 460px) {
+        .card {
+            width: 100%;
         }
     }
 }
@@ -208,5 +216,53 @@
                 }
             }
         }
+    }
+}
+
+// Module row style in Administration
+.modules-group {
+    margin-bottom: 25px;
+    padding: 6px;
+    > strong {
+        display: block;
+        margin-bottom: 13px;
+    }
+    .module-row {
+        border-top: 1px solid #ddd;
+        margin: 0 0 16px 0;
+        > div {
+            padding-top: 16px;
+            small {
+                color: @text-color-soft2;
+            }
+        }
+        .module-icon {
+            text-align: center;
+            padding-left: 6px;
+        }
+        .module-actions {
+            white-space: nowrap;
+            text-align: right;
+            padding-right: 0;
+            .btn:not(:first-child) {
+                margin-left: 14px;
+            }
+        }
+    }
+}
+.modules-updates-info {
+    border-radius: 3px;
+    border: 1px solid var(--border-color-warning);
+    background: var(--background-color-warning);
+    color: var(--text-color-warning);
+    padding: 14px 20px 14px 25px;
+    margin: 20px 10px 10px;
+    font-size: 11px;
+    line-height: 20px;
+    strong {
+        font-size: 13px;
+    }
+    .btn {
+        margin-top: 8px;
     }
 }

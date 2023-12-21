@@ -19,6 +19,7 @@ use humhub\modules\content\widgets\ScheduleLink;
 use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -163,7 +164,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     /**
      * @var int Sort order of create form and tab menu on wall stream
      */
-    public $createFormSortOrder;
+    public $createFormSortOrder = 1000000;
 
     /**
      * @var string Class name of the Form to create a Content from wall stream,
@@ -220,6 +221,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         return $this->render($this->layoutBody, [
             'model' => $this->model,
+            'topics' => Topic::findByContent($this->model->content)->all(),
             'renderOptions' => $this->renderOptions,
             'content' => $this->renderContent(),
             'header' => $this->renderHeader(),

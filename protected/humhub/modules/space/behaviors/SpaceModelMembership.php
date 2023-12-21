@@ -41,11 +41,6 @@ class SpaceModelMembership extends Behavior
     private $_spaceOwner = null;
 
     /**
-     * @var array cached membership results
-     */
-    private $_memberships = [];
-
-    /**
      * Checks if given userId is Member of this Space.
      *
      * @param integer $userId
@@ -219,21 +214,11 @@ class SpaceModelMembership extends Behavior
      *
      * If none Record is found, null is given
      *
-     * @return Membership the membership
+     * @return Membership|null the membership
      */
-    public function getMembership($userId = null)
+    public function getMembership($userId = null): ?Membership
     {
-        if ($userId instanceof User) {
-            $userId = $userId->id;
-        } elseif (!$userId || $userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
-        if (!isset($this->_memberships[$userId])) {
-            $this->_memberships[$userId] = Membership::findOne(['user_id' => $userId, 'space_id' => $this->owner->id]);
-        }
-
-        return $this->_memberships[$userId];
+        return Membership::findMembership($this->owner->id, $userId);
     }
 
     /**
@@ -476,7 +461,7 @@ class SpaceModelMembership extends Behavior
             'space' => $this->owner, 'user' => $user
         ]));
 
-        if (!$silent) {
+        if (!$silent && !$this->owner->settings->get('hideMembers')) {
             // Create Activity
             MemberAdded::instance()->from($user)->about($this->owner)->save();
         }
@@ -538,7 +523,7 @@ class SpaceModelMembership extends Behavior
      */
     private function handleRemoveMembershipEvent(Membership $membership, User $user)
     {
-        unset($this->_memberships[$user->id]);
+        Membership::unsetCache($this->owner->id, $user->id);
 
         // Get rid of old notifications
         ApprovalRequest::instance()->from($user)->about($this->owner)->delete();
@@ -560,7 +545,10 @@ class SpaceModelMembership extends Behavior
      */
     private function handleCancelMemberEvent(User $user)
     {
-        MemberRemoved::instance()->about($this->owner)->from($user)->create();
+        if (!$this->owner->settings->get('hideMembers')) {
+            MemberRemoved::instance()->about($this->owner)->from($user)->create();
+        }
+
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED,
             new MemberEvent(['space' => $this->owner, 'user' => $user]));
     }

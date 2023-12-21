@@ -8,11 +8,11 @@
 
 namespace humhub\modules\admin\controllers;
 
-use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\models\SpaceSearch;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use humhub\modules\admin\components\Controller;
@@ -41,13 +41,13 @@ class SpaceController extends Controller
         $this->subLayout = '@admin/views/layouts/space';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Spaces'));
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageSpaces::class, ManageSettings::class]],
@@ -103,7 +103,10 @@ class SpaceController extends Controller
      */
     public function actionSettings()
     {
-        $form = new SpaceSettingsForm;
+        /** @var Module $module */
+        $module = Yii::$app->getModule('space');
+        $form = $module->getDefaultSettings();
+
         $visibilityOptions = [];
 
         if (AuthHelper::isGuestAccessEnabled()) {
@@ -121,20 +124,27 @@ class SpaceController extends Controller
 
         $contentVisibilityOptions = [
             Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'),
-            Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')];
+            Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')
+        ];
 
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+
+        $indexModuleSelection = [
+            '' => Yii::t('SpaceModule.manage', 'Stream (Default)'),
+            '/space/space/about' => Yii::t('SpaceModule.base', 'About'),
+        ];
+
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
             $this->view->saved();
             return $this->redirect(['settings']);
         }
 
         return $this->render('settings', [
-                    'model' => $form,
-                    'joinPolicyOptions' => $joinPolicyOptions,
-                    'visibilityOptions' => $visibilityOptions,
-                    'contentVisibilityOptions' => $contentVisibilityOptions
-                        ]
-        );
+                'model' => $form,
+                'joinPolicyOptions' => $joinPolicyOptions,
+                'visibilityOptions' => $visibilityOptions,
+                'contentVisibilityOptions' => $contentVisibilityOptions,
+                'indexModuleSelection' => $indexModuleSelection
+            ]);
     }
 
     /**

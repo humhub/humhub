@@ -60,7 +60,7 @@ class ActivityStreamCest
         $I->click('Delete',$newEntrySelector);
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Confirm post deletion');
+        $I->see('Delete content?');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForElementNotVisible($newEntrySelector);

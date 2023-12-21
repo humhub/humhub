@@ -86,7 +86,8 @@ class ContentAddonController extends Controller
             throw new HttpException(500, 'Model & ID parameter required!');
         }
 
-        Helpers::CheckClassType($modelClass, [ContentAddonActiveRecord::class, ContentActiveRecord::class]);
+        /** @var ContentAddonActiveRecord|ContentActiveRecord $modelClass */
+        $modelClass = Helpers::checkClassType($modelClass, [ContentAddonActiveRecord::class, ContentActiveRecord::class]);
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
@@ -112,14 +113,16 @@ class ContentAddonController extends Controller
 
     /**
      * Loads Content Addon
-     * We also validates that the content addon corresponds to the loaded content.
+     * We also validate that the content addon corresponds to the loaded content.
      *
      * @param string $className
      * @param int $pk
      */
     public function loadContentAddon($className, $pk)
     {
-        if (!Helpers::CheckClassType($className, ContentAddonActiveRecord::class)) {
+        /** @var ContentAddonActiveRecord|null $className */
+        $className = Helpers::checkClassType($className, ContentAddonActiveRecord::class);
+        if ($className === null) {
             throw new Exception("Given className is not a content addon model!");
         }
 

@@ -53,6 +53,7 @@ return [
     'Are you sure you want to remove this member.' => '',
     'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => '',
     'Choose the modules you want to use for this Space. In order for the modules to be available to you here, they must have been previously installed by administrators of the network using the admin panel. If you cannot deactivate individual modules, it is because they have been set as the default for the entire network.' => '',
+    'Only global administrators can change this value' => '',
     'Removal of members queued' => '',
     'Remove all members' => '',
     'The URL has already been taken.' => '',

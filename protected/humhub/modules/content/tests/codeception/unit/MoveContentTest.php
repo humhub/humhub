@@ -5,16 +5,7 @@
  * @license https://www.humhub.com/licences
  *
  */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 24.07.2017
- * Time: 15:56
- */
-
 namespace humhub\modules\content\tests\codeception\unit;
-
 
 use humhub\libs\BasePermission;
 use humhub\modules\admin\permissions\ManageUsers;

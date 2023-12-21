@@ -26,7 +26,7 @@ class Events extends \yii\base\BaseObject
         $integrityController = $event->sender;
 
         $integrityController->showTestHeadline("Post  Module - Posts (" . Post::find()->count() . " entries)");
-        foreach (Post::find()->all() as $post) {
+        foreach (Post::find()->each() as $post) {
             /* @var Post $post */
             if (empty($post->content->id)) {
                 if ($integrityController->showFix("Deleting post " . $post->id . " without existing content record!")) {

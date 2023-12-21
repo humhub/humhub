@@ -27,7 +27,6 @@ use yii\web\ForbiddenHttpException;
  */
 class Controller extends \yii\web\Controller
 {
-
     /**
      * @event \yii\base\Event an event raised on init a controller.
      */
@@ -120,6 +119,7 @@ class Controller extends \yii\web\Controller
      * Renders a string as Ajax including assets without end page so it can be called several times.
      *
      * @param string $content
+     *
      * @return string Rendered content
      */
     public function renderAjaxPartial(string $content): string
@@ -131,6 +131,7 @@ class Controller extends \yii\web\Controller
      * Renders a static string by applying the layouts (sublayout + layout.
      *
      * @param string $content the static string being rendered
+     *
      * @return string the rendering result of the layout with the given static string as the `$content` variable.
      * If the layout is disabled, the string will be returned back.
      *
@@ -221,8 +222,11 @@ class Controller extends \yii\web\Controller
 
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
                 $this->setJsViewStatus();
-                // Update "is online" status ony on full page loads
-                (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+
+                if (Yii::$app->isInstalled()) {
+                    // Update "is online" status ony on full page loads
+                    (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+                }
             }
 
             return true;
@@ -309,6 +313,7 @@ class Controller extends \yii\web\Controller
      * Check if action cannot be intercepted
      *
      * @param string|null $actionId , NULL - to use current action
+     *
      * @return bool
      * @since 1.9
      */

@@ -75,16 +75,20 @@ class Like extends ContentAddonActiveRecord
      */
     public static function GetLikes($objectModel, $objectId)
     {
-        $cacheId = "likes_" . $objectModel . "_" . $objectId;
-        $cacheValue = Yii::$app->cache->get($cacheId);
-
-        if ($cacheValue === false) {
-            $newCacheValue = Like::findAll(['object_model' => $objectModel, 'object_id' => $objectId]);
-            Yii::$app->cache->set($cacheId, $newCacheValue, Yii::$app->settings->get('cache.expireTime'));
-            return $newCacheValue;
-        } else {
-            return $cacheValue;
-        }
+        return Yii::$app->cache->getOrSet(
+            "likes_{$objectModel}_{$objectId}",
+            function() use ($objectModel, $objectId) {
+            return Like::find()
+                ->where([
+                    'object_model' => $objectModel,
+                    'object_id' => $objectId
+                ])
+                ->with('user')
+                ->all()
+                ;
+            },
+            Yii::$app->settings->get('cache.expireTime')
+        );
     }
 
     /**

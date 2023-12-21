@@ -8,9 +8,10 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "contentcontainer".
@@ -22,10 +23,10 @@ use yii\db\ActiveRecord;
  * @property integer $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
+ * @noinspection PropertiesInspection
  */
 class ContentContainer extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -41,10 +42,16 @@ class ContentContainer extends ActiveRecord
     {
         return [
             [['pk', 'owner_user_id'], 'integer'],
-            [['class', 'pk', 'guid'], 'required'],
-            [['guid', 'class'], 'string', 'max' => 255],
+            [['class', 'pk'], 'required'],
+            [['class'], 'string', 'max' => 255],
             [['class', 'pk'], 'unique', 'targetAttribute' => ['class', 'pk'], 'message' => 'The combination of Class and Pk has already been taken.'],
-            [['guid'], 'unique']
+            [['guid'],
+                UUIDValidator::class,
+                'autofillWith' => false,
+                'allowNull' => false,
+                'messageOnForbiddenNull' => 'Cannot not create standalone ContentContainer instance. Instance will be automatically created on ContentContainerActiveRecord::afterSave()'
+            ],
+            [['guid'], 'unique'],
         ];
     }
 

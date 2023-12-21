@@ -8,14 +8,14 @@
 
 namespace humhub\modules\activity\models;
 
+use humhub\modules\activity\components\MailSummary;
+use humhub\modules\activity\Module;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\models\ContentContainerSetting;
-use Yii;
-use yii\base\Model;
-use yii\base\Exception;
-use humhub\modules\activity\Module;
-use humhub\modules\activity\components\MailSummary;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\base\Model;
 
 /**
  * MailSummaryForm
@@ -122,6 +122,7 @@ class MailSummaryForm extends Model
             MailSummary::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Hourly'),
             MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily'),
             MailSummary::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Weekly'),
+            MailSummary::INTERVAL_MONTHLY => Yii::t('ActivityModule.base', 'Monthly'),
         ];
     }
 

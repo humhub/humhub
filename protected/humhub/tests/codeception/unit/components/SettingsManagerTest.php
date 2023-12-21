@@ -169,6 +169,44 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertEquals($value, $sm->get($setting));
     }
 
+    public function testSettingFixedValues()
+    {
+        $module = 'base';
+        $sm = new SettingsManager(['moduleId' => $module]);
+
+        // Test callable function for fixed settings
+        Yii::$app->params['fixed-settings'][$module]['test.first'] = function (SettingsManager $sm) {
+            if ($sm->get('test.second') === 'secondValueFixed1') {
+                return 'value1FromFixedConfig';
+            }
+            if ($sm->get('test.second') === 'secondValueFixed2') {
+                return 'value2FromFixedConfig';
+            }
+            return null;
+        };
+
+        $sm->set('test.first', 'firstValueDB');
+        $sm->set('test.second', 'secondValueDB');
+
+        $this->assertEquals($sm->get('test.first'), 'firstValueDB');
+        $this->assertEquals($sm->get('test.second'), 'secondValueDB');
+
+        // Set special value for second param in order to force the first param from fixed config
+        $sm->set('test.second', 'secondValueFixed1');
+        $this->assertEquals($sm->get('test.first'), 'value1FromFixedConfig');
+
+        $sm->set('test.second', 'secondValueFixed2');
+        $this->assertEquals($sm->get('test.first'), 'value2FromFixedConfig');
+
+        // Test simple value
+        Yii::$app->params['fixed-settings'][$module]['test.first'] = 'staticValueFromFixedConfig';
+        $this->assertEquals($sm->get('test.first'), 'staticValueFromFixedConfig');
+
+        // Reset fixed value
+        Yii::$app->params['fixed-settings'][$module]['test.first'] = null;
+        $this->assertEquals($sm->get('test.first'), 'firstValueDB');
+    }
+
     public function testSerialized()
     {
         $module = 'base';
@@ -347,7 +385,7 @@ class SettingsManagerTest extends HumHubDbTestCase
 
         // changing the value behind the scenes
         $value2 = 'third value';
-        $this->dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
+        self::dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
         $this->assertRecordValue($value2, 'value', $table, ['name' => $setting, 'module_id' => $module]);
 
         // getting the value now should still show tho "old" value

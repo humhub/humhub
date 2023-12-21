@@ -113,7 +113,7 @@ class Push extends BaseDriver
             'sub' => Yii::$app->user->id,
             'legitmation' => Yii::$app->getModule('live')->getLegitimateContentContainerIds($user)
         ];
-        return JWT::encode($token, $this->jwtKey);
+        return JWT::encode($token, $this->jwtKey, 'HS256');
     }
 
     /**

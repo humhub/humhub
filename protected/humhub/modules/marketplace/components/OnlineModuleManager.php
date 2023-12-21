@@ -12,6 +12,7 @@ use humhub\components\ModuleEvent;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
+use humhub\modules\marketplace\services\MarketplaceService;
 use Yii;
 use yii\base\Component;
 use yii\web\HttpException;
@@ -172,7 +173,9 @@ class OnlineModuleManager extends Component
         $this->install($moduleId);
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
-        $updatedModule->migrate();
+        $updatedModule->getMigrationService()->migrateUp();
+
+        (new MarketplaceService())->refreshPendingModuleUpdateCount();
 
         $this->trigger(static::EVENT_AFTER_UPDATE, new ModuleEvent(['module' => $updatedModule]));
     }
@@ -186,9 +189,10 @@ class OnlineModuleManager extends Component
      *  - latestVersion
      *  - latestCompatibleVersion
      *
+     * @param bool $cached
      * @return array of modules
      */
-    public function getModules($cached = true)
+    public function getModules(bool $cached = true)
     {
         if (!$cached) {
             $this->_modules = null;
@@ -292,20 +296,56 @@ class OnlineModuleManager extends Component
      */
     public function getNotInstalledModules(): array
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
-        $modules = $this->getModules();
+        $modules = [];
 
-        foreach ($modules as $o => $module) {
+        foreach ($this->getModules() as $moduleId => $module) {
             $onlineModule = new ModelModule($module);
-            if ($onlineModule->isInstalled() ||
-                !$onlineModule->latestCompatibleVersion ||
-                ($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
-                unset($modules[$o]);
-                continue;
+            if (!$onlineModule->isInstalled() &&
+                $onlineModule->latestCompatibleVersion &&
+                !($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
+                $modules[$moduleId] = $onlineModule;
             }
-            $modules[$o] = $onlineModule;
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get only installed modules
+     *
+     * @return ModelModule[]
+     */
+    public function getInstalledModules(): array
+    {
+        $modules = [];
+
+        foreach ($this->getModules() as $moduleId => $module) {
+            $onlineModule = new ModelModule($module);
+            if ($onlineModule->isInstalled()) {
+                $modules[$moduleId] = $onlineModule;
+            }
+        }
+
+        return $modules;
+    }
+
+    /**
+     * Get only purchased modules
+     *
+     * @param bool $cached
+     * @return ModelModule[]
+     */
+    public function getPurchasedModules(bool $cached = true): array
+    {
+        $modules = $this->getModules($cached);
+
+        foreach ($modules as $i => $module) {
+            if (!isset($module['purchased']) || !$module['purchased']) {
+                unset($modules[$i]);
+            }
         }
 
         return $modules;
@@ -325,6 +365,18 @@ class OnlineModuleManager extends Component
         }
 
         return $modules;
+    }
+
+    /**
+     * Get online module by ID
+     *
+     * @param string $id
+     * @return ModelModule|null
+     */
+    public function getModule(string $id): ?ModelModule
+    {
+        $modules = $this->getModules();
+        return isset($modules[$id]) ? new ModelModule($modules[$id]) : null;
     }
 
 }

@@ -19,7 +19,10 @@ use yii\web\HttpException;
 
 class ManageController extends ContentContainerController
 {
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             ['login'],

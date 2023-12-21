@@ -1,49 +1,42 @@
 HumHub Changelog
+================
 
-1.15.0 (Unreleased)
+1.16.0 (Unreleased)
 -------------------
-- Enh #6270: Add tests for SettingsManager
-- Enh #6272: Always return integer from settings, if value can be converted
-- Fix #6267: SettingsManager::flushContentContainer() only clears the collection in the current instance, not the underlying cache
-- Enh #6271: Add input and type checks, as well as strict types to SettingsManager
-- Fix #6266: BaseSettingsManager::deleteAll() does use prefix as wildcard
-- Fix #6259: Add json & pdo extensions as requirement; updating composer dependencies and node modules
-- Fix #6192: Where Group::getAdminGroupId() would sometimes return int, sometimes string
-- Enh #6260: Improve migration class
-- Fix #6199: Module manager Add types to properties
-- Fix #6189: Module settings survive deactivation in cache
-- Enh #6236: Logging: Show log entries from migrations with category migration
-- Fix #6216: Spaces icon in admin menu
-- Fix #6229: Bug on saving forms: Zend OPcache API is restricted by "restrict_api"
-- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
-- Enh #6164: Invitation by link: when registering within an SSO, the email should only be requested on the service provider
-- Enh #6240: Add ability to set showAtDashboard in SpaceMembership::addMember method
-- Enh #5668: Allow Admin to sort the Spaces in a custom order
-- Enh #29: AutoStart Tour for new Users
-- Fix #6243: Do not send notification when ApprovalRequest is not valid
-- Enh #6215: Added `LongRunningActiveJob` to avoid timeout for long running queue jobs
-- Enh #6253: Remove `DefaultSwipeOnMobile` checkbox
-- Enh #10: Added `collapsedPostHeight` to the Post module for set collapsed post default height
-- Enh #6277: Bring back Pjax Functionality
-- Enh #6285: Change background color for confirmation of oembed content
-- Enh #6289: Refactored UserWall and Wall widgets
-- Fix #44: Mail Module Indicator Problem
-- Enh #6295: Add the possibility to display if users are online
-- Fix #6299: Fix ambiguous space sort order column
-- Enh #2590: Possibility to add a dropdown button to upload audio, image or video file type
-- Enh #6298: Move the "Write a new comment" field style to a generic field that can be used by other modules
-- Enh #6310: Module information is localized with `docs/uk/README.md` or `README.uk.md`.
-- Enh #6311: Added {cols, rows} to textarea() control.
-- Enh #6304: Update button title on creating of not published content
-- Enh #6319: Duplicate File Converter Logs
-- Fix #5962: Make top menu shrink and grow on resize window
-- Enh #6328: Add arrows for gridview sort columns
-- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
-- Enh #2: Store Default Markdown Editor Mode
-- Enh #6355: Fix limit results in People: Country Filter
-- Enh #6327: PHP error when calling `Password::setPassword` on unsaved User records
-- Enh #6356: Added SqlDataProvider support for `ImageColumn` and `DisplayNameColumn`
-- Enh #6169: Replace deprecated `yii\base\BaseObject::className()`
-- Enh #6361: Use `LongRunningActiveJob` on more active jobs
-- Enh #6363: Add an event in the NotificationManager to allow removing some notifications categories in the settings
+- Fix #6754: Regression due to return type (#6550)
+- Enh #6550: Improve module migrations
+- Fix #6237: Migration errors during module activation are ignored
+- Enh #6711: run migrations manually
+- Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
+- Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations
+- Enh #6697: Make state badge customizable
+- Fix #6636: Module Manager test
+- Enh #6587: Apply UUID validator
+- Enh #6530: Small performance improvements
+- Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
+- Enh #6511: Backup folder path is now return from `removeModule()`
+- Fix #6511: `canRemoveModule` no longer throws an Exception
+- Enh #6511: Allow an empty filter list to filter all registered modules
+- Enh #6511: Allow module paths for `enableModules()`
+- Enh #6511: Verify module's event definition
+- Enh #6511: Make module's module.json keywords accessible and searchable
+- Enh #6511: Add Event tracking capabilities to HumHubDbTestCase
+- Enh #6511: Add test for ModuleManager
+- Fix #6519: Ensure e-mails would always have a sender address set
+- Enh #6512: Show error messages when DB connection configuration is invalid
+- Enh #5315: Default stream sort by `created_at` instead of `id`
+- Fix #6337: Update `created_at` after first publishing of content record
+- Fix #6631: Fix visibility of the method `Controller::getAccessRules()`
+- Enh #6650: Add assets GZIP compression with Apache
+- Fix #6662: Change the start_url of the PWA from home to base URL
+- Enh #6667: Allow view file when owner object provides this
+- Enh #6671: Remove interface `ReadableInterface`
+- Enh #5751: Allow user blocking from profile page
+- Enh #6486: Add module "Not available" option in spaces or for users
+- Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
+- Enh #6686: Make the container header clickable to return to the container's home
+- Enh #6609: Monthly email summary
+- Fix #6721: Top menu entries for spaces are not highlighted when clicked
+- Fix #6725: Allow theme without second topbar menu
+- Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false
 - Enh #6335: Pending approvals: possibility to send a message

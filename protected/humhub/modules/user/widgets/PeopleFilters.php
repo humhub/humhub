@@ -41,7 +41,11 @@ class PeopleFilters extends DirectoryFilters
 
         // Group
         $groupOptions = [];
-        $groups = Group::findAll(['show_at_directory' => 1]);
+        /* @var Group[] $groups */
+        $groups = Group::find()
+            ->where(['show_at_directory' => 1])
+            ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
+            ->all();
         if ($groups) {
             $groupOptions[''] = Yii::t('UserModule.base', 'Any');
             foreach ($groups as $group) {
@@ -82,9 +86,11 @@ class PeopleFilters extends DirectoryFilters
         ]);
 
         // Profile fields
-        $profileFields = ProfileField::findAll(['directory_filter' => 1]);
+        $profileFields = ProfileField::find()
+            ->where(['directory_filter' => 1])
+            ->orderBy(['sort_order' => SORT_ASC]);
         $profileFieldSortOrder = 1000;
-        foreach ($profileFields as $profileField) {
+        foreach ($profileFields->each() as $profileField) {
             $this->initProfileFieldFilter($profileField, $profileFieldSortOrder);
             $profileFieldSortOrder += 10;
         }

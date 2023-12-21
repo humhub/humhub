@@ -10,6 +10,7 @@ namespace humhub\modules\user\services;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
 use yii\base\Exception;
@@ -29,7 +30,7 @@ final class LinkRegistrationService
 
     public static function createFromRequest(): LinkRegistrationService
     {
-        $token = (string)Yii::$app->request->get('token', null);
+        $token = (string)Yii::$app->request->get('token');
         $spaceId = (int)Yii::$app->request->get('spaceId');
 
         if (!$token && Yii::$app->session->has(LinkRegistrationService::class . '::token')) {
@@ -63,9 +64,6 @@ final class LinkRegistrationService
     public function getStoredToken(): ?string
     {
         if ($this->space) {
-            // TODO: Find better solution
-            Yii::$app->setLanguage($this->space->ownerUser->language);
-
             return $this->space->settings->get(self::SETTING_VAR_SPACE_TOKEN);
         }
 
@@ -122,4 +120,20 @@ final class LinkRegistrationService
         Yii::$app->session->set(get_class($this) . '::spaceId', $this->space->id ?? null);
     }
 
+    /**
+     * @throws Exception
+     */
+    public function inviteToSpace(?User $user): bool
+    {
+        if ($this->space && $user) {
+            $this->space->inviteMember($user->id, $this->space->ownerUser->id, false);
+            return true;
+        }
+        return false;
+    }
+
+    public function getSpace(): ?Space
+    {
+        return $this->space;
+    }
 }
