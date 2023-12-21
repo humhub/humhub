@@ -8,6 +8,7 @@
 
 namespace humhub\components;
 
+use humhub\interfaces\ModuleInfoInterface;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
@@ -34,7 +35,7 @@ use yii\web\AssetBundle;
  * @property SettingsManager $settings
  * @author luke
  */
-class Module extends \yii\base\Module
+class Module extends \yii\base\Module implements ModuleInfoInterface
 {
     /**
      * @var array|null the loaded module.json info file
@@ -62,9 +63,26 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns the module's name provided by module.json file
-     *
-     * @return string Name
+     * @inheritDoc
+     * @since 1.16
+     */
+    public function getId()
+    {
+        if (!empty($this->id)) {
+             return $this->id;
+        }
+
+        $info = $this->getModuleInfo();
+
+        if ($info['id']) {
+            return $info['id'];
+        }
+
+        throw new InvalidConfigException(static::class . '::$id property must be set.');
+    }
+
+    /**
+     * @inheritDoc
      */
     public function getName()
     {
@@ -78,9 +96,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns the module's description provided by module.json file
-     *
-     * @return string Description
+     * @inheritDoc
      */
     public function getDescription()
     {
@@ -94,9 +110,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns the module's version number provided by module.json file
-     *
-     * @return string Version Number
+     * @inheritDoc
      */
     public function getVersion()
     {
@@ -127,9 +141,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns module's keywords provided by module.json file
-     *
-     * @return array List of keywords
+     * @inheritDoc
      */
     public function getKeywords(): array
     {
