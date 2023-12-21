@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -46,11 +47,22 @@ use yii\web\IdentityInterface;
  * @property string $last_login
  * @property string $authclient_id
  * @property string $auth_key
- * @property Profile $profile
- * @property Password $currentPassword
+ * @property-read string $authKey
  * @property Auth[] $auths
+ * @property Password $currentPassword
+ * @property-read ActiveQuery|null $friends
+ * @property-read Group[] $groups
+ * @property-read ActiveQuery $groupUsers
+ * @property-read Session[] $httpSessions
+ * @property-read Group[] $managerGroups
+ * @property-read GroupUser[] $managerGroupsUser
+ * @property-write bool $mustChangePassword
+ * @property-read User|null $originator
+ * @property-read PasswordRecoveryService $passwordRecoveryService
+ * @property Profile $profile
+ * @property-read array $searchAttributes
+ * @property-read Space[] $spaces
  * @mixin Followable
- * @noinspection PropertiesInspection
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface
 {
@@ -154,7 +166,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
-            [['guid'], 'string', 'max' => 45],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -162,7 +175,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['guid'], 'unique'],
             [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
 

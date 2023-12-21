@@ -11,13 +11,10 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
-use humhub\modules\content\models\ContentContainerDefaultPermission;
 use humhub\modules\content\models\ContentContainerPermission;
-use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
-use yii\db\Expression;
 use yii\web\HttpException;
 
 /**
@@ -47,7 +44,7 @@ class UserPermissionsController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageUsers::class]],

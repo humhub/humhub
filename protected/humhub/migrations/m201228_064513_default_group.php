@@ -1,7 +1,6 @@
 <?php
 
 use humhub\components\Migration;
-use humhub\models\Setting;
 use humhub\modules\user\models\Group;
 
 /**
@@ -14,7 +13,11 @@ class m201228_064513_default_group extends Migration
      */
     public function safeUp()
     {
-        $this->safeAddColumn('group', 'is_default_group', $this->boolean()->notNull()->defaultValue(0)->after('is_admin_group'));
+        $this->safeAddColumn(
+            'group',
+            'is_default_group',
+            $this->boolean()->notNull()->defaultValue(0)->after('is_admin_group')
+        );
 
         $defaultUserGroupId = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');
 
@@ -24,11 +27,13 @@ class m201228_064513_default_group extends Migration
         }
 
         // Try to create "Default Group" only for upgrade case because on new installation the group "Users" is used as default group:
-        if (Setting::isInstalled()) {
+        if (Yii::$app->isInstalled()) {
             // Move value from setting:auth.defaultUserGroup into new column group:is_default_group
-            if (empty($defaultUserGroupId) ||
+            if (
+                empty($defaultUserGroupId) ||
                 !($group = Group::findOne(['id' => $defaultUserGroupId])) ||
-                $group->is_admin_group) {
+                $group->is_admin_group
+            ) {
                 // Create one default Group if setting:auth.defaultUserGroup was not selected to any group:
                 $group = new Group();
                 $group->name = 'Default Group';

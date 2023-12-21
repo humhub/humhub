@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @link      https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -7,7 +8,10 @@
 
 namespace humhub\components;
 
+use humhub\helpers\DatabaseHelper;
 use humhub\interfaces\MailerInterface;
+use humhub\libs\DynamicConfig;
+use Yii;
 use yii\helpers\Url;
 
 trait ApplicationTrait
@@ -65,5 +69,67 @@ trait ApplicationTrait
     public function getMailer(): MailerInterface
     {
         return parent::getMailer();
+    }
+
+    /**
+     * Checks if Humhub is installed
+     *
+     * @return boolean
+     * @since 1.16
+     */
+    public function isInstalled(): bool
+    {
+        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'];
+    }
+
+    /**
+     * Sets application in installed state (disables installer)
+     *
+     * @since 1.16
+     */
+    public function setInstalled()
+    {
+        $config = DynamicConfig::load();
+        $config['params']['installed'] = true;
+        DynamicConfig::save($config);
+    }
+
+
+    /**
+     * Checks if settings table exists or application is not installed yet
+     *
+     * @since 1.16
+     */
+    public function isDatabaseInstalled(bool $checkConnection = false): bool
+    {
+        $dieOnError = $this->params['databaseInstalled'] ?? null;
+
+        if (!$checkConnection && $dieOnError !== null) {
+            return $dieOnError;
+        }
+
+        try {
+            $db = Yii::$app->db;
+            $db->open();
+        } catch (\Exception $ex) {
+            if ($dieOnError) {
+                DatabaseHelper::handleConnectionErrors($ex);
+            }
+            return false;
+        }
+
+        return Yii::$app->params['databaseInstalled'] = in_array('setting', $db->schema->getTableNames());
+    }
+
+    /**
+     * Sets the application database in installed state
+     *
+     * @since 1.16
+     */
+    public function setDatabaseInstalled()
+    {
+        $config = DynamicConfig::load();
+        $config['params']['databaseInstalled'] = true;
+        DynamicConfig::save($config);
     }
 }

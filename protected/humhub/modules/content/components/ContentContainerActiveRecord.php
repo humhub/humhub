@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
+use humhub\libs\UUID;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
@@ -19,6 +20,7 @@ use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
+use yii\base\Component;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
@@ -223,8 +225,8 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($insert) {
             $contentContainer = new ContentContainer();
             $contentContainer->guid = $this->guid;
-            $contentContainer->class = static::class;
-            $contentContainer->pk = $this->getPrimaryKey();
+            $contentContainer->setPolymorphicRelation($this);
+
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
             } elseif ($this->hasAttribute('created_by')) {
@@ -232,6 +234,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             }
 
             $contentContainer->save();
+            $this->populateRelation('contentContainerRecord', $contentContainer);
 
             $this->contentcontainer_id = $contentContainer->id;
             $this->update(false, ['contentcontainer_id']);
@@ -472,5 +475,88 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         $userModule = Yii::$app->getModule('user');
 
         return $userModule->allowBlockUsers();
+    }
+
+    /**
+     * Block this container for the given or current User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function blockForUser(?User $user = null): bool
+    {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            }
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if ($user->isBlockedForUser($this)) {
+            return true;
+        }
+
+        $newBlockedUserRelation = new ContentContainerBlockedUsers();
+        $newBlockedUserRelation->contentcontainer_id = $user->contentcontainer_id;
+        $newBlockedUserRelation->user_id = $this->id;
+        if (!$newBlockedUserRelation->save()) {
+            return false;
+        }
+
+        $blockedUserIds = $user->getBlockedUserIds();
+        $blockedUserIds[] = $this->id;
+
+        ContentContainerBlockedUsers::refreshCachedUserIds($user, $blockedUserIds);
+
+        return true;
+    }
+
+    /**
+     * Block the current container for the User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function unblockForUser(?User $user = null): bool
+    {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            }
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!$user->isBlockedForUser($this)) {
+            return true;
+        }
+
+        $blockedUserRelation = ContentContainerBlockedUsers::findOne([
+            'contentcontainer_id' => $user->contentcontainer_id,
+            'user_id' => $this->id
+        ]);
+
+        if (!$blockedUserRelation) {
+            return true;
+        }
+
+        if (!$blockedUserRelation->delete()) {
+            return false;
+        }
+
+        $blockedUserIds = $user->getBlockedUserIds();
+        if (($deletedIndex = array_search($this->id, $blockedUserIds)) !== false) {
+            unset($blockedUserIds[$deletedIndex]);
+            ContentContainerBlockedUsers::refreshCachedUserIds($user, $blockedUserIds);
+        }
+
+        return true;
     }
 }

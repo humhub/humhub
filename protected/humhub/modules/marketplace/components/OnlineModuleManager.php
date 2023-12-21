@@ -173,7 +173,7 @@ class OnlineModuleManager extends Component
         $this->install($moduleId);
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
-        $updatedModule->migrate();
+        $updatedModule->getMigrationService()->migrateUp();
 
         (new MarketplaceService())->refreshPendingModuleUpdateCount();
 
@@ -365,6 +365,18 @@ class OnlineModuleManager extends Component
         }
 
         return $modules;
+    }
+
+    /**
+     * Get online module by ID
+     *
+     * @param string $id
+     * @return ModelModule|null
+     */
+    public function getModule(string $id): ?ModelModule
+    {
+        $modules = $this->getModules();
+        return isset($modules[$id]) ? new ModelModule($modules[$id]) : null;
     }
 
 }

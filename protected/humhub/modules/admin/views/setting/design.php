@@ -2,9 +2,9 @@
 
 use humhub\libs\LogoImage;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -51,7 +51,10 @@ $iconUrl = SiteIcon::getUrl(140);
 
     </div>
 
-    <?= $form->field($model, 'spaceOrder')->dropDownList(['0' => Yii::t('AdminModule.settings', 'Alphabetical'), '1' => Yii::t('AdminModule.settings', 'Last visit')]); ?>
+    <?= $form->field($model, 'spaceOrder')->dropDownList([
+        '0' => Yii::t('AdminModule.settings', 'Custom sort order (alphabetical if not defined)'),
+        '1' => Yii::t('AdminModule.settings', 'Last visit'),
+    ]); ?>
 
     <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
 

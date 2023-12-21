@@ -31,17 +31,17 @@ class BaseType extends Model
 
     /**
      * @event Event an event raised after init. Can be used to add custom field types.
-     * 
+     *
      * Example config.php:
      *     'events' => [
      *         [BaseType::class, BaseType::EVENT_INIT, [Events::class, 'onFieldTypesInit']]
      *     ]
-     * 
+     *
      * Example Events.php:
      *     public static function onFieldTypesInit($event) {
      *         $event->sender->addFieldType(CustomFieldType::class, "Custom field");
      *     }
-     * 
+     *
      * @since 1.12
      */
     const EVENT_INIT = "fieldTypesInit";
@@ -172,19 +172,18 @@ class BaseType extends Model
     {
         $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
-            if (Helpers::CheckClassType($className, static::class)) {
-                /** @var BaseType $instance */
-                $instance = new $className;
-                if ($profileField !== null) {
-                    $instance->profileField = $profileField;
+            $className = Helpers::checkClassType($className, static::class);
+            /** @var BaseType $instance */
+            $instance = new $className();
+            if ($profileField !== null) {
+                $instance->profileField = $profileField;
 
-                    // Seems current type, so try load data
-                    if ($profileField->field_type_class == $className) {
-                        $instance->loadFieldConfig();
-                    }
+                // Seems current type, so try load data
+                if ($profileField->field_type_class == $className) {
+                    $instance->loadFieldConfig();
                 }
-                $types[] = $instance;
             }
+            $types[] = $instance;
         }
 
         return $types;

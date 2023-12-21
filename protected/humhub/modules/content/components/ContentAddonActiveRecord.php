@@ -11,7 +11,7 @@ namespace humhub\modules\content\components;
 use humhub\components\ActiveRecord;
 use humhub\interfaces\DeletableInterface;
 use humhub\interfaces\EditableInterface;
-use humhub\interfaces\ReadableInterface;
+use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
@@ -39,7 +39,7 @@ use yii\base\Exception;
  * @package humhub.components
  * @since 0.5
  */
-class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ReadableInterface, EditableInterface, DeletableInterface
+class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ViewableInterface, EditableInterface, DeletableInterface
 {
     /**
      * @var boolean also update underlying contents last update stream sorting
@@ -138,8 +138,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Rea
      * Checks if the given / or current user can delete this content.
      * Currently only the creator can remove.
      *
-     * @param null $userId
-     * @return boolean
+     * @inheritdoc
      */
     public function canDelete($userId = null): bool
     {
@@ -151,14 +150,19 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Rea
     }
 
     /**
-     * Check if current user can read this object
-     *
-     * @param string $userId
-     * @return boolean
+     * @deprecated Use canView() instead. It will be deleted since v1.17
      */
-    public function canRead($userId = ""): bool
+    public function canRead($user = null): bool
     {
-        return $this->content->canView($userId);
+        return $this->canView($user);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function canView($user = null): bool
+    {
+        return $this->content->canView($user);
     }
 
     /**

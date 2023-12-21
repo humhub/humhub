@@ -8,16 +8,16 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\libs\DynamicConfig;
+use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
-use humhub\libs\LogoImage;
-use humhub\libs\DynamicConfig;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 
 /**
  * DesignSettingsForm
@@ -85,7 +85,7 @@ class DesignSettingsForm extends Model
             'paginationSize' => Yii::t('AdminModule.settings', 'Default pagination size (Entries per page)'),
             'displayNameFormat' => Yii::t('AdminModule.settings', 'User Display Name'),
             'displayNameSubFormat' => Yii::t('AdminModule.settings', 'User Display Name Subtitle'),
-            'spaceOrder' => Yii::t('AdminModule.settings', 'Dropdown space order'),
+            'spaceOrder' => Yii::t('AdminModule.settings', '"My Spaces" Sorting'),
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
@@ -93,6 +93,15 @@ class DesignSettingsForm extends Model
         ];
     }
 
+    /**
+     * @inerhitdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the Space advanced settings.'),
+        ];
+    }
 
     /**
      * @inheritdoc

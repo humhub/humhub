@@ -5,7 +5,6 @@ use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
-use humhub\widgets\LoaderWidget;
 use yii\helpers\Url;
 
 /**
@@ -48,6 +47,11 @@ AdminAsset::register($this);
                     </div>
                 <?php endif; ?>
                 <br>
+                <?php if ($model->mustConfirmModuleDeactivation()) : ?>
+                    <div class="col-md-12">
+                        <?= $form->field($model, 'moduleDeactivationConfirmed')->checkbox() ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 

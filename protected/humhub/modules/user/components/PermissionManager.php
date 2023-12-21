@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -24,7 +25,6 @@ use yii\db\ActiveRecord;
  */
 class PermissionManager extends Component
 {
-
     /**
      * User identity.
      * @var \humhub\modules\user\models\User
@@ -76,20 +76,18 @@ class PermissionManager extends Component
                     return false;
                 }
             }
+
             return $verifyAll;
-        } elseif ($allowCaching) {
-            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
-            $key = $permission->getId();
-
-            if (!isset($this->_access[$key])) {
-                $this->_access[$key] = $this->verify($permission);
-            }
-
-            return $this->_access[$key];
-        } else {
-            $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
-            return $this->verify($permission);
         }
+
+        $permission = ($permission instanceof BasePermission) ? $permission : Yii::createObject($permission);
+
+        /** @var BasePermission $permission */
+        if ($allowCaching && $key = $permission->getCacheKey()) {
+            return $this->_access[$key] ??= $this->verify($permission);
+        }
+
+        return $this->verify($permission);
     }
 
     /**
@@ -183,7 +181,9 @@ class PermissionManager extends Component
         $record->class = get_class($permission);
         $record->group_id = $groupId;
         $record->state = $state;
-        $record->save();
+        if ($record->save()) {
+            $this->clear();
+        }
     }
 
     /**
@@ -281,8 +281,10 @@ class PermissionManager extends Component
 
         foreach ($this->_groupPermissions[$groupId] as $groupPermission) {
             /** @var $groupPermission GroupPermission */
-            if ($groupPermission->permission_id == $permission->getId()
-                && $groupPermission->module_id == $permission->getModuleId()) {
+            if (
+                $groupPermission->permission_id == $permission->getId()
+                && $groupPermission->module_id == $permission->getModuleId()
+            ) {
                 return $groupPermission;
             }
         }
@@ -420,7 +422,7 @@ class PermissionManager extends Component
      */
     protected function createPermissionRecord()
     {
-        return new GroupPermission;
+        return new GroupPermission();
     }
 
     /**
@@ -484,7 +486,7 @@ class PermissionManager extends Component
      */
     public static function findUsersByPermission($permission)
     {
-        $pm = new static;
+        $pm = new static();
 
         $allowedGroupIds = [];
         foreach (Group::find()->all() as $group) {
@@ -495,5 +497,4 @@ class PermissionManager extends Component
 
         return UserModel::find()->joinWith('groupUsers')->andWhere(['IN', 'group_user.group_id', $allowedGroupIds]);
     }
-
 }

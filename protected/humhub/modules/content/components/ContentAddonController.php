@@ -8,11 +8,12 @@
 
 namespace humhub\modules\content\components;
 
-use Yii;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Controller;
-use yii\web\HttpException;
-use yii\base\Exception;
 use humhub\libs\Helpers;
+use Yii;
+use yii\base\Exception;
+use yii\web\HttpException;
 
 
 /**
@@ -73,12 +74,12 @@ class ContentAddonController extends Controller
     {
 
         $modelClass = Yii::$app->request->get('contentModel');
-        $pk = (int) Yii::$app->request->get('contentId');
+        $pk = (int)Yii::$app->request->get('contentId');
 
         // Fixme
         if ($modelClass == '') {
             $modelClass = Yii::$app->request->post('contentModel');
-            $pk = (int) Yii::$app->request->post('contentId');
+            $pk = (int)Yii::$app->request->post('contentId');
         }
 
 
@@ -86,7 +87,8 @@ class ContentAddonController extends Controller
             throw new HttpException(500, 'Model & ID parameter required!');
         }
 
-        Helpers::CheckClassType($modelClass, [ContentAddonActiveRecord::class, ContentActiveRecord::class]);
+        /** @var ContentAddonActiveRecord|ContentActiveRecord $modelClass */
+        $modelClass = Helpers::checkClassType($modelClass, [ContentAddonActiveRecord::class, ContentActiveRecord::class]);
         $target = $modelClass::findOne(['id' => $pk]);
 
         if ($target === null) {
@@ -104,7 +106,7 @@ class ContentAddonController extends Controller
             throw new HttpException(403, 'Access denied!');
         }
 
-        $this->contentModel = get_class($target);
+        $this->contentModel = PolymorphicRelation::getObjectModel($target);
         $this->contentId = $target->getPrimaryKey();
 
         return parent::beforeAction($action);
@@ -112,14 +114,16 @@ class ContentAddonController extends Controller
 
     /**
      * Loads Content Addon
-     * We also validates that the content addon corresponds to the loaded content.
+     * We also validate that the content addon corresponds to the loaded content.
      *
      * @param string $className
      * @param int $pk
      */
     public function loadContentAddon($className, $pk)
     {
-        if (!Helpers::CheckClassType($className, ContentAddonActiveRecord::class)) {
+        /** @var ContentAddonActiveRecord|null $className */
+        $className = Helpers::checkClassType($className, ContentAddonActiveRecord::class);
+        if ($className === null) {
             throw new Exception("Given className is not a content addon model!");
         }
 
@@ -129,7 +133,7 @@ class ContentAddonController extends Controller
             throw new HttpException(500, 'Could not find content addon record!');
         }
 
-        if ($target->object_model != get_class($this->parentContent) && $target->object_id != $this->parentContent->getPrimaryKey()) {
+        if ($target->object_model !== PolymorphicRelation::getObjectModel($this->parentContent) && $target->object_id !== $this->parentContent->getPrimaryKey()) {
             throw new HttpException(500, 'Content addon not belongs to given content record!');
         }
 

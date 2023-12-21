@@ -203,9 +203,10 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
             if (!$content) {
                 $content = new Content();
-                $content->setPolymorphicRelation($this);
                 $this->populateRelation('content', $content);
             }
+
+            $content->setPolymorphicRelation($this);
 
             return $content;
         }
@@ -384,7 +385,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     {
         if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if (!empty($this->wallEntryClass)) {
+        } elseif (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
@@ -407,7 +408,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class();
             $widget->contentObject = $this;
             return $widget;
         }

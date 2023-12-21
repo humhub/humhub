@@ -16,6 +16,7 @@ return [
     'Spaces' => 'Các diễn đàn',
     'Users' => 'Người dùng',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
+    'Module deactivation in progress. This process may take a moment.' => '',
     'Space default state' => '',
     'User default state' => '',
 ];

@@ -8,12 +8,13 @@
 
 namespace humhub\modules\file\components;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\base\Component;
-use humhub\modules\file\models\File;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -69,7 +70,7 @@ class FileManager extends Component
             }
 
             $attributes = [
-                'object_model' => get_class($this->record),
+                'object_model' => PolymorphicRelation::getObjectModel($this->record),
                 'object_id' => $this->record->getPrimaryKey(),
             ];
 
@@ -93,7 +94,7 @@ class FileManager extends Component
      */
     public function find()
     {
-        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' => get_class($this->record)]);
+        return File::find()->andWhere(['object_id' => $this->record->getPrimaryKey(), 'object_model' => PolymorphicRelation::getObjectModel($this->record)]);
     }
 
     /**

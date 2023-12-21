@@ -15,6 +15,7 @@ use humhub\components\Module;
 use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
+use humhub\libs\UUIDValidator;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -75,6 +76,7 @@ use yii\helpers\Url;
  * @property integer $archived
  * @property integer $hidden
  * @property integer $state
+ * @property integer $was_published
  * @property string $scheduled_at
  * @property integer $locked_comments
  * @property string $created_at
@@ -179,10 +181,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         return [
             [['object_id', 'visibility', 'pinned'], 'integer'],
             [['archived'], 'safe'],
-            [['guid'], 'string', 'max' => 45],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
             [['object_model'], 'string', 'max' => 100],
             [['object_model', 'object_id'], 'unique', 'targetAttribute' => ['object_model', 'object_id'], 'message' => 'The combination of Object Model and Object ID has already been taken.'],
-            [['guid'], 'unique']
         ];
     }
 
@@ -266,6 +268,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             if ($model instanceof ContentActiveRecord) {
                 $model->afterStateChange($this->state, $previousState);
             }
+
+            if (!$this->getStateService()->wasPublished() && (int)$previousState === self::STATE_PUBLISHED) {
+                $this->updateAttributes(['was_published' => 1]);
+            }
         }
 
         (new ContentSearchService($this))->update();
@@ -311,7 +317,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => get_class($record),
+                'sourceClass' => PolymorphicRelation::getObjectModel($record),
                 'sourceId' => $record->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
@@ -409,7 +415,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         Notification::deleteAll([
-            'source_class' => get_class($this),
+            'source_class' => PolymorphicRelation::getObjectModel($this),
             'source_pk' => $this->getPrimaryKey(),
         ]);
 
@@ -556,9 +562,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Checks if the current user can archive this content.
      * The content owner and the workspace admin can archive contents.
      *
-     * @return boolean
-     * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @inheritdoc
      */
     public function canArchive($user = null): bool
     {
@@ -588,9 +592,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Archives the content object
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function archive(): bool
     {
@@ -724,9 +726,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Unarchives the content object
-     *
-     * @return bool
+     * @inheritdoc
      */
     public function unarchive(): bool
     {
@@ -959,13 +959,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * Checks if user can view this content.
-     *
-     * @param User|integer $user
-     * @return boolean can view this content
-     * @throws Exception
-     * @throws Throwable
-     * @since 1.1
+     * @inheritdoc
      */
     public function canView($user = null): bool
     {

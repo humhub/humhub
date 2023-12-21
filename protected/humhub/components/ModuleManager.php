@@ -14,15 +14,17 @@ use ArrayAccess;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\exceptions\InvalidArgumentTypeException;
-use humhub\libs\BaseSettingsManager;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
 use humhub\modules\marketplace\Module as ModuleMarketplace;
+use Throwable;
 use Yii;
 use yii\base\Component;
+use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\db\StaleObjectException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
 
@@ -115,11 +117,11 @@ class ModuleManager extends Component
         parent::init();
 
         // Either database installed and not in installed state
-        if (!Yii::$app->params['databaseInstalled'] && !Yii::$app->params['installed']) {
+        if (!Yii::$app->isInstalled() && !Yii::$app->isDatabaseInstalled()) {
             return;
         }
 
-        if (!BaseSettingsManager::isDatabaseInstalled()) {
+        if (!Yii::$app->isDatabaseInstalled()) {
             $this->enabledModules = [];
         } else {
             $this->enabledModules = ModuleEnabled::getEnabledIds();
@@ -129,9 +131,11 @@ class ModuleManager extends Component
     /**
      * Registers a module to the manager
      * This is usually done by config.php in modules root folder.
+     *
      * @param array $configs
-     * @throws InvalidConfigException
-     * @see \humhub\components\bootstrap\ModuleAutoLoader::bootstrap
+     *
+     * @throws InvalidConfigException Module configuration does not have both an id and class attribute
+     * @see ModuleAutoLoader::bootstrap
      *
      */
     public function registerBulk(array $configs)
@@ -144,18 +148,19 @@ class ModuleManager extends Component
     /**
      * Registers a module
      *
-     * @param string $basePath the modules base path
-     * @param array $config the module configuration (config.php)
-     * @throws InvalidConfigException
+     * @param string $basePath the module's base path
+     * @param array|null $config the module configuration (config.php)
+     *
+     * @throws InvalidConfigException Module configuration does not have both an id and class attribute
      */
-    public function register($basePath, $config = null)
+    public function register(string $basePath, ?array $config = null)
     {
         if ($config === null && is_file($filename = $basePath . '/config.php')) {
             $config = include $filename;
         }
 
         // Check mandatory config options
-        if (!isset($config['class']) || !isset($config['id'])) {
+        if (!isset($config['class'], $config['id'])) {
             throw new InvalidConfigException('Module configuration requires an id and class attribute: ' . $basePath);
         }
 
@@ -179,7 +184,7 @@ class ModuleManager extends Component
             }
         }
 
-        if (!Yii::$app->params['installed'] && $isInstallerModule) {
+        if (!Yii::$app->isInstalled() && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];
         }
 
@@ -343,12 +348,16 @@ class ModuleManager extends Component
 
         $modules = [];
         foreach ($this->modules as $id => $class) {
-            if (!$options['includeCoreModules'] && in_array($class, $this->coreModules)) {
+            if (!$options['includeCoreModules'] && in_array($class, $this->coreModules, true)) {
                 // Skip core modules
                 continue;
             }
 
-            if ($options['enabled'] && !in_array($class, $this->coreModules) && !in_array($id, $this->enabledModules)) {
+            if (
+                $options['enabled']
+                && !in_array($class, $this->coreModules, true)
+                && !in_array($id, $this->enabledModules, true)
+            ) {
                 // Skip disabled modules
                 continue;
             }
@@ -377,7 +386,7 @@ class ModuleManager extends Component
     public function filterModules(?array $modules, $filters = []): array
     {
         if (!$filters instanceof ArrayAccess && !is_array($filters)) {
-            throw new InvalidArgumentTypeException(__METHOD__, [2 => '$filters'], ['array', ArrayAccess::class], $filters);
+            throw new InvalidArgumentTypeException('$filters', ['array', ArrayAccess::class], $filters);
         }
 
         $modules = $this->filterModulesByKeyword($modules, $filters['keyword'] ?? null);
@@ -393,6 +402,7 @@ class ModuleManager extends Component
      *
      * @param Module[]|null $modules list of modules, defaulting to installed non-core modules
      * @param null|string $keyword
+     *
      * @return Module[]
      */
     public function filterModulesByKeyword(?array $modules, $keyword = null): array
@@ -442,6 +452,7 @@ class ModuleManager extends Component
      * Returns all enabled modules and supportes further options as [[getModules()]].
      *
      * @param array $options
+     *
      * @return array
      * @throws Exception
      * @since 1.3.10
@@ -456,6 +467,7 @@ class ModuleManager extends Component
      * Checks if a moduleId exists, regardless it's activated or not
      *
      * @param string $id
+     *
      * @return boolean
      */
     public function hasModule($id)
@@ -484,6 +496,7 @@ class ModuleManager extends Component
      *
      * @param string $id Module Id
      * @param bool $throwOnMissingModule true - to throw exception, false - to return null
+     *
      * @return Module|object|null
      * @throws Exception
      * @throws InvalidConfigException
@@ -560,8 +573,9 @@ class ModuleManager extends Component
      *
      * @param string $moduleId
      * @param bool $disableBeforeRemove
+     *
      * @throws Exception
-     * @throws \yii\base\ErrorException
+     * @throws ErrorException
      */
     public function removeModule($moduleId, $disableBeforeRemove = true): ?string
     {
@@ -603,6 +617,7 @@ class ModuleManager extends Component
      * Enables a module
      *
      * @param Module $module
+     *
      * @throws InvalidConfigException
      * @since 1.1
      */
@@ -616,6 +631,7 @@ class ModuleManager extends Component
 
         $this->enabledModules[] = $module->id;
         $this->register($module->getBasePath());
+        $this->flushCache();
 
         $this->trigger(static::EVENT_AFTER_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
     }
@@ -634,8 +650,9 @@ class ModuleManager extends Component
      * Disables a module
      *
      * @param Module $module
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     *
+     * @throws Throwable
+     * @throws StaleObjectException
      * @since 1.1
      */
     public function disable(Module $module)
@@ -653,11 +670,14 @@ class ModuleManager extends Component
 
         Yii::$app->setModule($module->id, null);
 
+        $this->flushCache();
+
         $this->trigger(static::EVENT_AFTER_MODULE_DISABLE, new ModuleEvent(['module' => $module]));
     }
 
     /**
      * @param array $modules
+     *
      * @throws Exception
      */
     public function disableModules($modules = [])
