@@ -17,6 +17,7 @@ use ZendSearch\Lucene\Analysis\Analyzer\Common\Utf8Num\CaseInsensitive;
 use ZendSearch\Lucene\Document;
 use ZendSearch\Lucene\Document\Field;
 use ZendSearch\Lucene\Exception\RuntimeException;
+use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\Query\Boolean;
@@ -118,7 +119,12 @@ class ZendLucenceDriver extends AbstractDriver
             //$this->addQueryFilterContentContainer($query, $options->contentTypes);
         }
 
-        $hits = new ArrayObject($this->getIndex()->find($query, $request->orderBy));
+
+        if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
+            $hits = new ArrayObject($this->getIndex()->find($query, 'content.created_at'));
+        } else {
+            $hits = new ArrayObject($this->getIndex()->find($query));
+        }
 
         $resultSet = new ResultSet();
         $resultSet->pagination = new Pagination();
@@ -150,7 +156,7 @@ class ZendLucenceDriver extends AbstractDriver
         return $resultSet;
     }
 
-    private function getIndex()
+    private function getIndex(): Index
     {
         if ($this->_index) {
             return $this->_index;

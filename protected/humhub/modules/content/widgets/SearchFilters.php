@@ -9,6 +9,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\libs\Html;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\search\engine\Search;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use Yii;
 
@@ -40,9 +41,8 @@ class SearchFilters extends DirectoryFilters
             'title' => Yii::t('SpaceModule.base', 'Sorting'),
             'type' => 'dropdown',
             'options' => [
-                'name' => Yii::t('SpaceModule.base', 'Best'),
-                'newer' => Yii::t('SpaceModule.base', 'Newest first'),
-                'older' => Yii::t('SpaceModule.base', 'Oldest first'),
+                SearchRequest::ORDER_BY_SCORE => Yii::t('SpaceModule.base', 'Best'),
+                SearchRequest::ORDER_BY_CREATION_DATE => Yii::t('SpaceModule.base', 'Newest first'),
             ],
             'sortOrder' => 200,
         ]);
@@ -54,6 +54,7 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 300,
         ]);
 
+        /*
         $this->addFilter('dateForm', [
             'title' => Yii::t('SpaceModule.base', 'Date From'),
             'type' => 'input',
@@ -65,6 +66,7 @@ class SearchFilters extends DirectoryFilters
             'type' => 'input',
             'sortOrder' => 420,
         ]);
+        */
 
         $this->addFilter('topic', [
             'title' => Yii::t('SpaceModule.base', 'Topic'),
@@ -77,6 +79,7 @@ class SearchFilters extends DirectoryFilters
             'type' => 'input',
             'sortOrder' => 500,
         ]);
+
         /*
         $this->addFilter('status', [
             'title' => Yii::t('SpaceModule.base', 'Status'),
@@ -93,12 +96,14 @@ class SearchFilters extends DirectoryFilters
             'type' => 'input',
             'sortOrder' => 500,
         ]);
+
+        /*
         $this->addFilter('profile', [
             'title' => Yii::t('SpaceModule.base', 'Profile'),
             'type' => 'input',
             'sortOrder' => 500,
         ]);
-
+        */
     }
 
     public static function getDefaultValue(string $filter): string
