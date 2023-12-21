@@ -66,16 +66,16 @@ class PolymorphicRelation extends Behavior
             return $this->cached;
         }
 
-        $record = static::loadActiveRecord(
-            $this->owner->getAttribute($this->classAttribute),
-            $this->owner->getAttribute($this->pkAttribute)
-        );
+        $className = $this->owner->getAttribute($this->classAttribute);
+        $primaryKey = $this->owner->getAttribute($this->pkAttribute);
+
+        $record = static::loadActiveRecord($className, $primaryKey);
 
         if ($this->strict && !$record && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
             throw new IntegrityException(
                 'Call to an inconsistent polymorphic relation detected on '
                 . ($this->owner === null ? 'NULL' : get_class($this->owner))
-                . ' (' . $this->owner->getAttribute($this->classAttribute) . ':' . $this->owner->getAttribute($this->pkAttribute) . ')'
+                . ' (' . $className . ':' . $primaryKey . ')'
             );
         }
 
@@ -169,12 +169,12 @@ class PolymorphicRelation extends Behavior
     /**
      * Loads an active record based on classname and primary key.
      *
-     * @param string $className
+     * @param string|null $className
      * @param string|int $primaryKey
      *
      * @return null|ActiveRecord|ActiveRecordInterface
      */
-    public static function loadActiveRecord(string $className, $primaryKey): ?ActiveRecordInterface
+    public static function loadActiveRecord(?string $className, $primaryKey): ?ActiveRecordInterface
     {
         if (empty($className) || empty($primaryKey)) {
             return null;
