@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6771: Fatal error on Marketplace keyword search (and Introduce `ModuleInfoInterface` #6771)
 - Fix #6754: Regression due to return type (#6550)
 - Enh #6550: Improve module migrations
 - Fix #6237: Migration errors during module activation are ignored
