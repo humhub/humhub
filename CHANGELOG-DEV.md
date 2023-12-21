@@ -39,4 +39,5 @@ HumHub Changelog
 - Fix #6721: Top menu entries for spaces are not highlighted when clicked
 - Fix #6725: Allow theme without second topbar menu
 - Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false
+- Enh #131: Online Indicator- People Cards, Members Snippet, My Profile
 - Enh #6335: Pending approvals: possibility to send a message

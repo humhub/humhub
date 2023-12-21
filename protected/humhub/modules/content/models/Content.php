@@ -271,7 +271,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 $model->afterStateChange($this->state, $previousState);
             }
 
-            if (!$this->getStateService()->wasPublished() && (int) $previousState === self::STATE_PUBLISHED) {
+            if (!$this->getStateService()->wasPublished() && (int)$previousState === self::STATE_PUBLISHED) {
                 $this->updateAttributes(['was_published' => 1]);
             }
         }
@@ -323,7 +323,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 'originator' => $this->createdBy->guid,
                 'contentContainerId' => $this->container->contentContainerRecord->id,
                 'visibility' => $this->visibility,
-                'sourceClass' => get_class($record),
+                'sourceClass' => PolymorphicRelation::getObjectModel($record),
                 'sourceId' => $record->getPrimaryKey(),
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
@@ -421,7 +421,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         Notification::deleteAll([
-            'source_class' => get_class($this),
+            'source_class' => PolymorphicRelation::getObjectModel($this),
             'source_pk' => $this->getPrimaryKey(),
         ]);
 

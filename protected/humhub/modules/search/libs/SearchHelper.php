@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\libs;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\search\interfaces\Searchable;
 use humhub\modules\search\jobs\DeleteDocument;
 use humhub\modules\search\jobs\UpdateDocument;
@@ -54,7 +55,7 @@ class SearchHelper extends BaseObject
             $pk = $record->getPrimaryKey();
             if (!empty($pk) && !is_array($pk)) {
                 Yii::$app->queue->push(new UpdateDocument([
-                    'activeRecordClass' => get_class($record),
+                    'activeRecordClass' => PolymorphicRelation::getObjectModel($record),
                     'primaryKey' => $pk
                 ]));
                 return true;
@@ -75,7 +76,7 @@ class SearchHelper extends BaseObject
             $pk = $record->getPrimaryKey();
             if (!empty($pk) && !is_array($pk)) {
                 Yii::$app->queue->push(new DeleteDocument([
-                    'activeRecordClass' => get_class($record),
+                    'activeRecordClass' => PolymorphicRelation::getObjectModel($record),
                     'primaryKey' => $pk
                 ]));
                 return true;

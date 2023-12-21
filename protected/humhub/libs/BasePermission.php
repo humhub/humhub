@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
@@ -42,7 +43,7 @@ class BasePermission extends BaseObject
     /**
      * @var string title of the permission
      */
-    protected $title ='';
+    protected $title = '';
 
     /**
      * @var string description of the permission
@@ -145,6 +146,24 @@ class BasePermission extends BaseObject
     }
 
     /**
+     * This function must return a unique que.
+     * It must either start with the module id, or be a valid UUID.
+     * The function may return null to avoid caching in the PermissionManager.
+     *
+     * @param array $parameters Parameters passed to PermissionManager::can() which allows a permission to evaluate if caching should be disabled
+     *
+     * @return string|null A unique string (see method description) or null, if caching should be disabled
+     * @since 1.15.2
+     * @see PermissionManager::can()
+     * @see UUID::v4()
+     * @noinspection PhpUnusedParameterInspection
+     */
+    public function getCacheKey(array $parameters = []): ?string
+    {
+        return $this->getModuleId() . $this->getId();
+    }
+
+    /**
      * Returns the default state of the permission.
      * The defaultState is either defined by setting $defaultState attribute
      * or by overwriting the $defaultState by means of the configuration param 'defaultPermissions'.
@@ -179,7 +198,7 @@ class BasePermission extends BaseObject
      */
     protected function getConfiguredState($groupId)
     {
-        if(!isset(Yii::$app->params['defaultPermissions'][static::class])) {
+        if (!isset(Yii::$app->params['defaultPermissions'][static::class])) {
             return null;
         }
 
@@ -188,8 +207,10 @@ class BasePermission extends BaseObject
         }
 
         // Allow asterisk to overwrite all groups excluding guest groups
-        if (isset(Yii::$app->params['defaultPermissions'][static::class]['*'])
-            && !in_array($groupId, [Space::USERGROUP_GUEST, User::USERGROUP_GUEST], true)) {
+        if (
+            isset(Yii::$app->params['defaultPermissions'][static::class]['*'])
+            && !in_array($groupId, [Space::USERGROUP_GUEST, User::USERGROUP_GUEST], true)
+        ) {
             return Yii::$app->params['defaultPermissions'][static::class]['*'];
         }
 
@@ -238,7 +259,8 @@ class BasePermission extends BaseObject
     /**
      * @param array Ids of additional fixed groups
      */
-    public function addFixedGroups($groupIds) {
+    public function addFixedGroups($groupIds)
+    {
         if (is_array($groupIds) && !empty($groupIds)) {
             $this->fixedGroups = array_merge($this->fixedGroups, $groupIds);
         }
