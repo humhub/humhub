@@ -287,7 +287,7 @@ class ApproveUserForm extends \yii\base\Model
         $module = Yii::$app->getModule('user');
 
         $this->subject = Yii::t('AdminModule.user',
-            'Your pending registration for \'{displayName}\'.',
+            'About the account request for \'{displayName}\'.',
             ['{displayName}' => Html::encode($this->user->displayName)]
         );
 
