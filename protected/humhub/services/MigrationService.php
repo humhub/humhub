@@ -261,6 +261,16 @@ class MigrationService extends Component
         if ($result->result > ExitCode::OK) {
             $errorMessage = "Migration failed!";
 
+            if (
+                preg_match(
+                    '@^Exception:\s+(?<message>.*?$)\s+(?<trace>.*?\{main\})$@ms',
+                    $result->output ?? '',
+                    $matches
+                )
+            ) {
+                $errorMessage .= "\n" . $matches['message'] . "\nSee application log for full trace.";
+            }
+
             if (YII_DEBUG) {
                 throw new InvalidConfigException($errorMessage);
             }
