@@ -23,7 +23,6 @@ use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\Query\Boolean;
 use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
 use ZendSearch\Lucene\Search\Query\Term as TermQuery;
-use ZendSearch\Lucene\Search\Query\Wildcard;
 use ZendSearch\Lucene\Search\QueryParser;
 use ZendSearch\Lucene\SearchIndexInterface;
 
@@ -56,6 +55,7 @@ class ZendLucenceDriver extends AbstractDriver
             }, $content->tags))));
         $document->addField(Field::keyword('content.container_id', $content->container->id));
         $document->addField(Field::keyword('content.created_at', strtotime($content->created_at)));
+
         $document->addField(Field::keyword('content.created_by', $content->created_by));
         if ($content->createdBy) {
             $document->addField(Field::unStored('content.created_by_name', $content->createdBy->displayName));
@@ -121,7 +121,7 @@ class ZendLucenceDriver extends AbstractDriver
 
 
         if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
-            $hits = new ArrayObject($this->getIndex()->find($query, 'content.created_at'));
+            $hits = new ArrayObject($this->getIndex()->find($query, 'content.created_at', SORT_DESC));
         } else {
             $hits = new ArrayObject($this->getIndex()->find($query));
         }

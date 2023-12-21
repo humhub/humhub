@@ -48,7 +48,7 @@ class SearchRequest extends Model
             [['contentType'], 'in', 'range' => array_keys(static::getContentTypes())],
             //[['page'], 'numeric'],
             //[['pageSize'], 'numeric'],
-            //[['orderBy'], 'in', []],
+            [['orderBy'], 'in', 'range' => [static::ORDER_BY_SCORE, static::ORDER_BY_CREATION_DATE]],
         ];
     }
 

@@ -37,7 +37,7 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 100,
         ]);
 
-        $this->addFilter('sort', [
+        $this->addFilter('orderBy', [
             'title' => Yii::t('SpaceModule.base', 'Sorting'),
             'type' => 'dropdown',
             'options' => [

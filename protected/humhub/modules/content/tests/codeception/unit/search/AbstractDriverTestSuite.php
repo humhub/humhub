@@ -111,11 +111,11 @@ class AbstractDriverTestSuite extends HumHubDbTestCase
 
         $post1 = (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Keyword Abcd Test3']));
         $post1->save();
-        $post1->content->updateAttributes(['created_at' => '2023-03-01 12:00:00']);
+        $post1->content->updateAttributes(['created_at' => '2023-01-01 12:00:00']);
 
         $post2 = (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Bla Keyword Test3']));
         $post2->save();
-        $post2->content->updateAttributes(['created_at' => '2023-01-01 13:00:00']);
+        $post2->content->updateAttributes(['created_at' => '2023-03-01 13:00:00']);
 
         $post3 = (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Keyword Keyword Test3']));
         $post3->save();
