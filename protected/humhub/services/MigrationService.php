@@ -11,11 +11,13 @@ namespace humhub\services;
 use humhub\commands\MigrateController;
 use humhub\components\Application;
 use humhub\components\Event;
+use humhub\components\Migration;
 use humhub\components\Module;
 use humhub\events\MigrationEvent;
 use humhub\interfaces\ApplicationInterface;
 use humhub\libs\Helpers;
 use Throwable;
+use uninstall;
 use Yii;
 use yii\base\ActionEvent;
 use yii\base\Component;
@@ -23,6 +25,8 @@ use yii\base\Controller;
 use yii\base\InvalidConfigException;
 use yii\base\Module as BaseModule;
 use yii\console\ExitCode;
+use yii\db\Exception;
+use yii\db\MigrationInterface;
 
 /**
  * @since 1.16
@@ -199,7 +203,7 @@ class MigrationService extends Component
             ]
         );
 
-        return $this->checkMigrationStatus($result);
+        return $this->checkMigrationStatus($result, $controller->getLastMigration());
     }
 
     /**
@@ -243,7 +247,7 @@ class MigrationService extends Component
      * @throws InvalidConfigException
      * @throws Throwable
      */
-    private function checkMigrationStatus(MigrationEvent $result): bool
+    private function checkMigrationStatus(MigrationEvent $result, ?MigrationInterface $migration): bool
     {
         $this->lastMigrationOutput = $result->output ?: 'Migration output unavailable';
         $this->lastMigrationResult = $result->result;
@@ -260,8 +264,11 @@ class MigrationService extends Component
         /** @see \yii\console\controllers\BaseMigrateController::actionUp() */
         if ($result->result > ExitCode::OK) {
             $errorMessage = "Migration failed!";
+            $exception = null;
 
-            if (
+            if ($migration instanceof Migration && $exception = $migration->getLastException()) {
+                $errorMessage .= "\n" . $exception->getMessage() . "\nSee application log for full trace.";
+            } elseif (
                 preg_match(
                     '@^Exception:\s+(?<message>.*?$)\s+(?<trace>.*?\{main\})$@ms',
                     $result->output ?? '',
@@ -271,11 +278,11 @@ class MigrationService extends Component
                 $errorMessage .= "\n" . $matches['message'] . "\nSee application log for full trace.";
             }
 
-            if (YII_DEBUG) {
-                throw new InvalidConfigException($errorMessage);
-            }
-
             Yii::error($errorMessage, $this->module->id);
+
+            if (YII_DEBUG) {
+                throw new InvalidConfigException($errorMessage, 0, $exception);
+            }
 
             return false;
         }
@@ -305,12 +312,12 @@ class MigrationService extends Component
         ob_start();
         require_once($uninstallMigration);
 
-        $migration = new \uninstall();
+        $migration = new uninstall();
         $migration->compact = false;
 
         try {
             $result->result = $migration->up() === false ? ExitCode::UNSPECIFIED_ERROR : ExitCode::OK;
-        } catch (\yii\db\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error($ex, $this->module->id);
             $result->result = ExitCode::UNSPECIFIED_ERROR;
         }
@@ -333,7 +340,7 @@ class MigrationService extends Component
             $result->output .= "    > migration entry $version removed.\n";
         }
 
-        return $this->checkMigrationStatus($result);
+        return $this->checkMigrationStatus($result, $migration);
     }
 
     /**
