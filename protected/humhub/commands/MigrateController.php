@@ -180,7 +180,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     protected function getMigrationPaths(): array
     {
         $migrationPaths = ['base' => $this->migrationPath];
-        foreach (Yii::$app->getModules() as $id => $config) {
+        foreach (($this->module ?? Yii::$app)->getModules() as $id => $config) {
             $class = null;
             if (is_array($config) && isset($config['class'])) {
                 $class = $config['class'];
