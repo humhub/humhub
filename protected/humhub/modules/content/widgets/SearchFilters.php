@@ -66,7 +66,6 @@ class SearchFilters extends DirectoryFilters
             'type' => 'input',
             'sortOrder' => 420,
         ]);
-        */
 
         $this->addFilter('topic', [
             'title' => Yii::t('SpaceModule.base', 'Topic'),
@@ -79,6 +78,7 @@ class SearchFilters extends DirectoryFilters
             'type' => 'input',
             'sortOrder' => 500,
         ]);
+        */
 
         /*
         $this->addFilter('status', [
@@ -90,12 +90,12 @@ class SearchFilters extends DirectoryFilters
             ],
             'sortOrder' => 500,
         ]);
-        */
         $this->addFilter('space', [
             'title' => Yii::t('SpaceModule.base', 'Space'),
             'type' => 'input',
             'sortOrder' => 500,
         ]);
+        */
 
         /*
         $this->addFilter('profile', [
