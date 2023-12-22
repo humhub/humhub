@@ -121,7 +121,9 @@ Your account creation is under review.
 Could you tell us the motivation behind your registration?
 
 Kind Regards
-{AdminName}' => 'Hallo UnApproved User,
+{AdminName}
+
+' => 'Hallo UnApproved User,
 
 Die Erstellung Ihres Kontos wird derzeit überprüft.
 Können Sie uns die Motivation hinter Ihrer Anmeldung nennen?
