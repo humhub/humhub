@@ -23,4 +23,9 @@ class DataTypeHelperMock extends DataTypeHelper
     {
         return parent::checkTypeHelper($current, $type, $input);
     }
+
+    public static function parseTypes($types): array
+    {
+        return parent::parseTypes($types);
+    }
 }

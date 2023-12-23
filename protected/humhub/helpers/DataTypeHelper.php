@@ -30,15 +30,24 @@ class DataTypeHelper
 
 
     /**
-     * @param mixed $input
-     * @param string|string[] $types
-     * @param bool|null $requireAll
+     * @param mixed $input Variable to be checked.
+     * @param string|string[] $types Allowed types: can be a single type or and array of types. Valid input are
+     * ``
+     * - simple type names as returned by gettype()
+     * - `null` value or `'NULL'` string
+     * - class, interface, or trait names
+     * - class instances whose class type will be checked
+     * - `callable`, e.g. `is_scalar`
+     * ``
+     * @param bool|null $requireAll Indicates if only one type in the list must be met, or all of them
      * @param string|null $throw = Name of the argument to be used for InvalidArgumentTypeException or Null if no
      *     exception should be thrown
-     * @param array|null $typesChecked
+     * @param array|null $typesChecked List of parsed type names as provided by $types
+     *     (class instances and callables will be converted to string)
      *
      * @return string|null
      * @since 1.16
+     * @see gettype
      */
     public static function checkType($input, $types, ?bool $requireAll = false, ?string $throw = '$input', ?array &$typesChecked = null): ?string
     {
@@ -190,12 +199,13 @@ class DataTypeHelper
      * - if True, `$value` must already be of type `int`.
      * - if False, a conversion to `int` is attempted.
      * ``
+     * @param bool $throwException throws an exception instead of returning `null`
      *
      * @since 1.16
      */
-    public static function filterBool($value, ?bool $strict = false, bool $throw = false): ?bool
+    public static function filterBool($value, ?bool $strict = false, bool $throwException = false): ?bool
     {
-        $param = $throw ? '$value' : false;
+        $param = $throwException ? '$value' : false;
         if ($strict) {
             $types = 'bool';
             $input = $value;
@@ -230,8 +240,8 @@ class DataTypeHelper
      *     $type. Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
      * @param string|string[] $types (List of) class, interface or trait names that are allowed.
      *        If NULL is included, NULL values are also allowed.
-     * @param bool|null $throw Determines if an Exception should be thrown if $className doesn't match $type, or simply
-     *     return NULL. Invalid $types always throw an error!
+     * @param bool|null $throwException Determines if an Exception should be thrown if $className doesn't match $type,
+     *     or simply return NULL. Invalid $types always throw an error!
      * @param bool $strict If set to true, no invalid characters are removed from a $className string.
      *        If set to false, please make sure you use the function's return value, rather than $className, as they
      *     might diverge
@@ -241,7 +251,7 @@ class DataTypeHelper
      * @noinspection PhpDocMissingThrowsInspection
      * @noinspection PhpUnhandledExceptionInspection
      */
-    public static function filterClassType($className, $types, bool $throw = true, ?bool $strict = true): ?string
+    public static function filterClassType($className, $types, bool $throwException = true, ?bool $strict = true): ?string
     {
         if (empty($types)) {
             throw new InvalidArgumentValueException(
@@ -306,7 +316,7 @@ class DataTypeHelper
                 return null;
             }
 
-            if (!$throw) {
+            if (!$throwException) {
                 return null;
             }
 
@@ -320,7 +330,7 @@ class DataTypeHelper
 
         // check for other empty input
         if (empty($className)) {
-            if ((!$strict && $allowNull) || !$throw) {
+            if ((!$strict && $allowNull) || !$throwException) {
                 return null;
             }
 
@@ -351,7 +361,7 @@ class DataTypeHelper
                 }
             }
 
-            if (!$throw) {
+            if (!$throwException) {
                 return null;
             }
 
@@ -364,7 +374,7 @@ class DataTypeHelper
         }
 
         if (!is_string($className)) {
-            if (!$throw) {
+            if (!$throwException) {
                 return null;
             }
 
@@ -379,7 +389,7 @@ class DataTypeHelper
         $cleaned = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
 
         if ($strict && $cleaned !== $className) {
-            if (!$throw) {
+            if (!$throwException) {
                 return null;
             }
 
@@ -394,7 +404,7 @@ class DataTypeHelper
         $className = $cleaned;
 
         if (!class_exists($className)) {
-            if (!$throw) {
+            if (!$throwException) {
                 return null;
             }
 
@@ -416,7 +426,7 @@ class DataTypeHelper
             }
         }
 
-        if (!$throw) {
+        if (!$throwException) {
             return null;
         }
 
@@ -435,12 +445,13 @@ class DataTypeHelper
      *  - if True, `$value` must already be of type `float`.
      *  - if False, a conversion to `float` is attempted.
      *  ``
+     * @param bool $throwException throws an exception instead of returning `null`
      *
      * @since 1.16
      */
-    public static function filterFloat($value, bool $strict = false, bool $throw = false): ?float
+    public static function filterFloat($value, bool $strict = false, bool $throwException = false): ?float
     {
-        $param = $throw ? '$value' : false;
+        $param = $throwException ? '$value' : false;
         if ($strict) {
             $types = 'float';
             $input = $value;
@@ -459,13 +470,14 @@ class DataTypeHelper
      * - if True, `$value` must already be of type `int`.
      * - if False, a conversion to `int` is attempted.
      * ``
+     * @param bool $throwException throws an exception instead of returning `null`
      *
      * @return int|null
      * @since 1.16
      */
-    public static function filterInt($value, bool $strict = false, bool $throw = false): ?int
+    public static function filterInt($value, bool $strict = false, bool $throwException = false): ?int
     {
-        $param = $throw ? '$value' : false;
+        $param = $throwException ? '$value' : false;
 
         if ($strict) {
             $types = 'integer';
@@ -485,12 +497,13 @@ class DataTypeHelper
      * - if True, `$value` must already be a scalar value.
      * - if False, `NULL` is also allowed (not throwing an exception, if `$throw` is True).
      * ``
+     * @param bool $throwException throws an exception instead of returning `null`
      *
      * @since 1.16
      */
-    public static function filterScalar($value, bool $strict = null, bool $throw = false)
+    public static function filterScalar($value, bool $strict = null, bool $throwException = false)
     {
-        $param = $throw ? '$value' : false;
+        $param = $throwException ? '$value' : false;
         $types = $strict ? ['is_scalar'] : [null, 'is_scalar'];
 
         return self::checkType($value, $types, false, $param) === null ? null : $value;
@@ -503,12 +516,13 @@ class DataTypeHelper
      * - if True, `$value` must already be of type `string`.
      * - if False, a conversion to `string` is attempted.
      * ``
+     * @param bool $throwException throws an exception instead of returning `null`
      *
      * @since 1.16
      */
-    public static function filterString($value, bool $strict = false, bool $throw = false): ?string
+    public static function filterString($value, bool $strict = false, bool $throwException = false): ?string
     {
-        $param = $throw ? '$value' : false;
+        $param = $throwException ? '$value' : false;
         $types = $strict ? 'string' : ['string', null, Stringable::class, 'is_scalar'];
 
         switch (self::checkType($value, $types, false, $param)) {
@@ -526,33 +540,16 @@ class DataTypeHelper
     }
 
     /**
-     * @param mixed $value value to be tested or converted
-     * @param bool $strict indicates if strict comparison should be performed:
-     * ``
-     * - if True, `$value` must already be of type `int`.
-     * - if False, a conversion to `int` is attempted.
-     * ``
+     * Method evaluates all the traits used in an object/class, including the ones inherited from parent classes
      *
+     * @param string|object $class Class name or instance to be checked
+     * @param bool $autoload Indicates whether autoload should be performed for classes that are not yet loaded.
+     *
+     * @return array an array of trait names used by the given class
      * @since 1.16
-     */
-    public static function checkInt($value, bool $strict = false): ?int
-    {
-        // check if strict
-        if (($strict && !is_int($value)) || !is_scalar($value)) {
-            return null;
-        }
-
-        return filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
-    }
-
-    /**
-     * @param string|object $class
-     * @param bool $autoload
-     *
-     * @return array|null
      * @see https://www.php.net/manual/en/function.class-uses.php#122427
      */
-    public static function &classUsesTraits($class, bool $autoload = true): ?array
+    public static function classUsesTraits($class, bool $autoload = true): array
     {
         $traits = [];
 
@@ -573,11 +570,7 @@ class DataTypeHelper
             $traits_to_search = array_merge($new_traits, $traits_to_search);
         };
 
-        if (count($traits) === 0) {
-            $traits = null;
-        } else {
-            $traits = array_unique($traits);
-        }
+        $traits = array_unique($traits);
 
         return $traits;
     }
@@ -588,7 +581,7 @@ class DataTypeHelper
      * @return array|string[]
      * @since 1.16
      */
-    public static function parseTypes($types): array
+    protected static function parseTypes($types): array
     {
 
         if ($types === null) {
