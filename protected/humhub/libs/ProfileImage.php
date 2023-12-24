@@ -19,8 +19,8 @@ use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
 use Yii;
 use yii\base\Exception;
-use yii\helpers\Url;
 use yii\helpers\FileHelper;
+use yii\helpers\Url;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
@@ -269,6 +269,10 @@ class ProfileImage
             return SpaceImage::widget($widgetOptions);
         }
 
+        if (isset($cfg['showSelfOnlineStatus'])) {
+            $widgetOptions['showSelfOnlineStatus'] = $cfg['showSelfOnlineStatus'];
+            unset($cfg['showSelfOnlineStatus']);
+        }
 
         $htmlOptions = [];
 

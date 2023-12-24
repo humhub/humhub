@@ -78,7 +78,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
         <?php if ($container->getProfileImage()->hasImage()) : ?>
             <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org') ?>">
-                <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
+                <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false, 'showSelfOnlineStatus' => true]) ?>
             </a>
         <?php else : ?>
             <?= $container->getProfileImage()->render($profileImageHeight - 10, ['class' => 'img-profile-header-background profile-user-photo']) ?>
