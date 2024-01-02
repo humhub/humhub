@@ -4,6 +4,12 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
+Version 1.15.3
+-------------------------
+
+### Bugfix with potential side-effect
+- `\humhub\modules\ui\form\widgets\BasePicker` and `\humhub\modules\ui\form\widgets\MultiSelect` do now treat and empty array for the field `BasePicker::$selection` as a valid selection list and will not attempt to get the list from the model in that case.
+
 Version 1.15
 -------------------------
 
