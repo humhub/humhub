@@ -569,9 +569,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
         }
 
-        if (empty($this->email)) {
-            $this->email = null;
-        }
+        $this->email = empty($this->email) ? null : strtolower($this->email);
 
         return parent::beforeSave($insert);
     }
