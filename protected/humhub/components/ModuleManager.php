@@ -14,8 +14,10 @@ use ArrayAccess;
 use humhub\components\bootstrap\ModuleAutoLoader;
 use humhub\components\console\Application as ConsoleApplication;
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\interfaces\ModuleInfoInterface;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\events\ModulesEvent;
+use humhub\modules\marketplace\models\Module as OnlineModuleModel;
 use humhub\modules\marketplace\Module as ModuleMarketplace;
 use Throwable;
 use Yii;
@@ -418,7 +420,7 @@ class ModuleManager extends Component
         }
 
         foreach ($modules as $id => $module) {
-            /* @var Module $module */
+            /* @var ModuleInfoInterface|Module|OnlineModuleModel $module */
             $searchFields = [$id];
             if ($searchField = $module->getName()) {
                 $searchFields[] = $searchField;

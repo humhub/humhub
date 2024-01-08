@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -7,6 +8,7 @@
 
 namespace humhub\modules\marketplace\models;
 
+use humhub\interfaces\ModuleInfoInterface;
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
 use humhub\widgets\Link;
@@ -26,7 +28,7 @@ use yii\helpers\Url;
  *
  * @since 1.11
  */
-class Module extends Model
+class Module extends Model implements ModuleInfoInterface
 {
     /**
      * @var string
@@ -138,6 +140,42 @@ class Module extends Model
         }
 
         parent::__construct($config);
+    }
+
+    /**
+     * @inheritDoc
+     * @since 1.16
+     */
+    public function getId(): string
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritDoc
+     * @since 1.16
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @inheritDoc
+     * @since 1.16
+     */
+    public function getDescription(): string
+    {
+        return '';
+    }
+
+    /**
+     * @inheritDoc
+     * @since 1.16
+     */
+    public function getKeywords(): array
+    {
+        return [];
     }
 
     public function getIsNonFree(): bool
