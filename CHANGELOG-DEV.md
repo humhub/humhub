@@ -42,3 +42,4 @@ HumHub Changelog
 - Enh #131: Online Indicator- People Cards, Members Snippet, My Profile
 - Fix #6774: When enableMailSummaries is false in the configuration file, prevent accessing the "E-Mail Summaries" page in the account settings
 - Fix #6777: Allow access to pending registrations to non-system admins
+- Enh #6783: Lowercase user email before save
