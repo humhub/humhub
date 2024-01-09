@@ -62,6 +62,25 @@ class AuthController extends Controller
     public $access = ControllerAccess::class;
 
     /**
+     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     *
+     * @since 1.16
+     * @var bool
+     */
+    public $showLoginForm = true;
+
+
+    /**
+     * Allow new user registrations from the following AuthClient IDs even if "User Registration" is deactivated.
+     *
+     * @since 1.16
+     * @var string[]
+     */
+    public $allowUserRegistrationFromAuthClientIds = [];
+
+
+    /**
      * @inheritdoc
      */
     protected $doNotInterceptActionIds = ['*'];
@@ -126,6 +145,7 @@ class AuthController extends Controller
             'invite' => $invite,
             'canRegister' => $invite->allowSelfInvite(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
+            'showLoginForm' => $this->showLoginForm || Yii::$app->request->get('showLoginForm', false)
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {
@@ -204,7 +224,10 @@ class AuthController extends Controller
         $inviteRegistrationService = InviteRegistrationService::createFromRequestOrEmail($attributes['email'] ?? null);
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
-        if (!$inviteRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
+        if (!$inviteRegistrationService->isValid() &&
+            !$linkRegistrationService->isValid() &&
+            (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->allowUserRegistrationFromAuthClientIds))
+        ) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'You\'re not registered.'));
             return $this->redirect(['/user/auth/login']);
