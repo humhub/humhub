@@ -44,3 +44,4 @@ HumHub Changelog
 - Fix #6777: Allow access to pending registrations to non-system admins
 - Enh #6783: Lowercase user email before save
 - Enh #6786: Improve password hashing
+- Fix #6790: Fix marketplace searching
