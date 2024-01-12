@@ -15,7 +15,10 @@ use yii\widgets\ActiveForm;
 /* @var $info string */
 /* @var $passwordRecoveryRoute string|array|null */
 /* @var $showLoginForm bool */
+/* @var $showRegistrationForm bool */
+
 ?>
+
 <div id="user-auth-login-modal" class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
@@ -26,7 +29,7 @@ use yii\widgets\ActiveForm;
         <div class="modal-body">
             <br/>
 
-            <?php if ($canRegister) : ?>
+            <?php if ($canRegister && $showRegistrationForm) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
@@ -103,7 +106,7 @@ use yii\widgets\ActiveForm;
                     <?php endif; ?>
                 </div>
 
-                <?php if ($canRegister) : ?>
+                <?php if ($canRegister && $showRegistrationForm) : ?>
                     <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 

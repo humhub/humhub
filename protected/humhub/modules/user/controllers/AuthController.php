@@ -70,6 +70,15 @@ class AuthController extends Controller
      */
     public $showLoginForm = true;
 
+    /**
+     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     *
+     * @since 1.16
+     * @var bool
+     */
+    public $showRegistrationForm = true;
+
 
     /**
      * Allow new user registrations from the following AuthClient IDs even if "User Registration" is deactivated.
@@ -145,7 +154,8 @@ class AuthController extends Controller
             'invite' => $invite,
             'canRegister' => $invite->allowSelfInvite(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
-            'showLoginForm' => $this->showLoginForm || Yii::$app->request->get('showLoginForm', false)
+            'showLoginForm' => $this->showLoginForm || Yii::$app->request->get('showLoginForm', false),
+            'showRegistrationForm' => $this->showRegistrationForm
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {

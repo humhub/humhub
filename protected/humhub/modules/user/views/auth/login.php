@@ -16,7 +16,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $info string */
 /* @var $passwordRecoveryRoute string|array|null */
 /* @var $showLoginForm bool */
-
+/* @var $showRegistrationForm bool */
 
 ?>
 
@@ -85,7 +85,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <br>
 
-    <?php if ($canRegister) : ?>
+    <?php if ($canRegister && $showRegistrationForm) : ?>
         <div id="register-form"
              class="panel panel-default animated bounceInLeft"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
