@@ -48,7 +48,6 @@ class ModuleFilters extends DirectoryFilters
             'sortOrder' => 100,
         ]);
 
-        $marketplaceModule->onlineModuleManager->getModules();
         $categories = $marketplaceModule->onlineModuleManager->getCategories();
         if (!empty($categories)) {
             $this->addFilter('categoryId', [
