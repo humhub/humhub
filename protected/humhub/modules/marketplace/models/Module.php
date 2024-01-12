@@ -167,6 +167,15 @@ class Module extends Model
         return Yii::$app->moduleManager->hasModule($this->id);
     }
 
+    public function isMarketplaced(): bool
+    {
+        /* @var MarketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        return $this->latestCompatibleVersion &&
+            !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
+    }
+
     public function getIsActivated(): bool
     {
         return Yii::$app->moduleManager->getModule($this->id)->isActivated;
