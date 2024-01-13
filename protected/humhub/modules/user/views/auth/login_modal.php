@@ -57,6 +57,12 @@ use yii\widgets\ActiveForm;
 
                     <?php if (AuthChoice::hasClients()): ?>
                         <?= AuthChoice::widget([]) ?>
+                        <?php if ($showLoginForm): ?>
+                            <div class="or-container">
+                                <hr>
+                                <div>or</div>
+                            </div>
+                        <?php endif; ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
@@ -112,6 +118,10 @@ use yii\widgets\ActiveForm;
 
                         <?php if (AuthChoice::hasClients()): ?>
                             <?= AuthChoice::widget() ?>
+                            <div class="or-container">
+                                <hr>
+                                <div>or</div>
+                            </div>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                         <?php endif; ?>

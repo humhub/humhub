@@ -8,11 +8,11 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
-use yii\bootstrap\Html;
 use yii\base\InvalidConfigException;
-use humhub\modules\user\authclient\BaseFormAuth;
+use yii\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
@@ -110,7 +110,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function init()
     {
-        if(count($this->getClients()) == 0) {
+        if (count($this->getClients()) == 0) {
             return;
         } else {
             return parent::init();
@@ -122,7 +122,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function run()
     {
-        if(count($this->getClients()) == 0) {
+        if (count($this->getClients()) == 0) {
             return;
         } else {
             return parent::run();
@@ -167,7 +167,6 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             echo Html::endTag('div');
         }
         echo Html::endTag('div');
-        echo Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
     }
 
     /**
