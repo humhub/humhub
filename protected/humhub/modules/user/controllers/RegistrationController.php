@@ -154,6 +154,7 @@ class RegistrationController extends Controller
 
         return $this->render('byLink', [
             'invite' => $form,
+            'showRegistrationForm' => $this->module->showRegistrationForm,
             'showAuthClients' => true,
         ]);
     }
