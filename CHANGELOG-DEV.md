@@ -46,3 +46,4 @@ HumHub Changelog
 - Enh #6786: Improve password hashing
 - Enh #6788: Allow to disable login/registration form via configuration file
 - Enh #6788: Allow new user registration of specified SSO providers via configuration file 
+- Fix #6790: Fix marketplace searching

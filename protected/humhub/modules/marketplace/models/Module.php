@@ -140,6 +140,23 @@ class Module extends Model
         parent::__construct($config);
     }
 
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function getKeywords(): array
+    {
+        return $this->isInstalled()
+            ? Yii::$app->moduleManager->getModule($this->id)->getKeywords()
+            : [];
+    }
+
     public function getIsNonFree(): bool
     {
         return (!empty($this->price_eur) || !empty($this->price_request_quote));
@@ -165,6 +182,15 @@ class Module extends Model
     public function isInstalled(): bool
     {
         return Yii::$app->moduleManager->hasModule($this->id);
+    }
+
+    public function isMarketplaced(): bool
+    {
+        /* @var MarketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        return $this->latestCompatibleVersion &&
+            !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
     }
 
     public function getIsActivated(): bool
