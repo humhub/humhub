@@ -161,6 +161,33 @@ class Module extends \humhub\components\Module
     public $includeEmailInSearch = true;
 
     /**
+     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     *
+     * @since 1.16
+     * @var bool
+     */
+    public $showLoginForm = true;
+
+    /**
+     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     *
+     * @since 1.16
+     * @var bool
+     */
+    public $showRegistrationForm = true;
+
+
+    /**
+     * Allow new user registrations from the following AuthClient IDs even if "User Registration" is deactivated.
+     *
+     * @since 1.16
+     * @var string[]
+     */
+    public $allowUserRegistrationFromAuthClientIds = [];
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
