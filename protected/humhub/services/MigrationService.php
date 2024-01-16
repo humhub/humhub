@@ -70,7 +70,7 @@ class MigrationService extends Component
 
         $realpath = $this->getPath(true);
 
-        if ($realpath === false || !is_dir($realpath)) {
+        if ($realpath === null || !is_dir($realpath)) {
             Yii::debug("Module has no migrations directory.", $this->module->id);
             $this->path = null;
         }
