@@ -28,7 +28,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             </div>
             <div class="panel-body">
                 <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
-                    <?= AuthChoice::widget() ?>
+                    <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
                 <?php endif; ?>
 
                 <?php if (Yii::$app->session->hasFlash('error')): ?>
@@ -77,5 +77,3 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         <?php } ?>
 
     </script>
-
-

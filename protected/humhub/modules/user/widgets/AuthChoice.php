@@ -33,6 +33,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public $showButtonColors = false;
 
+    public $showOrDivider = false;
+
     /**
      * @inheritdoc
      */
@@ -167,6 +169,10 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             echo Html::endTag('div');
         }
         echo Html::endTag('div');
+
+        if ($this->showOrDivider) {
+            echo Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
+        }
     }
 
     /**

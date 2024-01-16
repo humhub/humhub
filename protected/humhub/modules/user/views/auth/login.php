@@ -38,13 +38,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
             <?php endif; ?>
 
             <?php if (AuthChoice::hasClients()): ?>
-                <?= AuthChoice::widget([]) ?>
-                <?php if ($showLoginForm): ?>
-                    <div class="or-container">
-                        <hr>
-                        <div>or</div>
-                    </div>
-                <?php endif; ?>
+                <?= AuthChoice::widget(['showOrDivider' => $showLoginForm]) ?>
             <?php else: ?>
                 <?php if ($canRegister) : ?>
                     <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
