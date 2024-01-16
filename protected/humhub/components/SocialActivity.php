@@ -244,6 +244,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     /**
      * Url of the origin of this notification
      * If source is a Content / ContentAddon / ContentContainer this will automatically generated.
+     * NOTE: Returned URL must be absolute with scheme
      *
      * @return string
      */
@@ -254,9 +255,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         if ($this->source instanceof Comment) {
             $url = $this->source->getUrl();
         } else if ($this->hasContent()) {
-            $url = $this->getContent()->getUrl();
+            $url = $this->getContent()->getUrl(true);
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            $url = $this->source->getUrl();
+            $url = $this->source->getUrl(true);
         }
 
         // Create absolute URL, for E-Mails
