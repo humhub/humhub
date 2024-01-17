@@ -117,12 +117,15 @@ class MailSummaryForm extends Model
      */
     public function getIntervals()
     {
+        $serverTimeZone = Yii::$app->settings->get('timeZone');
+        $dailyCronTime = Yii::$app->params['dailyCronExecutionTime'] . ' (' . $serverTimeZone . ')';
+        $weeklyCronDays = date('l', static::getModule()->weeklySummaryDay) . 's';
+
         return [
             MailSummary::INTERVAL_NONE => Yii::t('ActivityModule.base', 'Never'),
             MailSummary::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Hourly'),
-            MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily'),
-            MailSummary::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Weekly'),
-            MailSummary::INTERVAL_MONTHLY => Yii::t('ActivityModule.base', 'Monthly'),
+            MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily - send at ' . $dailyCronTime),
+            MailSummary::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Weekly - send on ' . $weeklyCronDays . ' at ' . $dailyCronTime),
         ];
     }
 
