@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6772: Polymorphic relation lookup (Regression #6587)
 - Enh #6745: Harmonise term `enabled/disabled` vs `active/inactive` for modules
 - Fix #6754: Regression due to return type (#6550)
 - Enh #6550: Improve module migrations
