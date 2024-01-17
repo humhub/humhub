@@ -175,7 +175,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     {
         return
             $module instanceof ContentContainerModule
-            && $module->isActivated
+            && $module->getIsEnabled()
             && $module->hasContentContainerType(get_class($this->contentContainer))
             && self::getDefaultState(get_class($this->contentContainer), $module->id) !== ContentContainerModuleState::STATE_NOT_AVAILABLE;
     }

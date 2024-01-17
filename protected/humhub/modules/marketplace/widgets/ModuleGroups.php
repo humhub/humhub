@@ -81,7 +81,7 @@ class ModuleGroups extends Widget
         $installedModules = $marketplaceModule->onlineModuleManager->getInstalledModules();
         if (count($installedModules) > 0) {
             $installedModules = Yii::$app->moduleManager->filterModules($installedModules);
-            ArrayHelper::multisort($installedModules, 'isActivated', SORT_DESC);
+            ArrayHelper::multisort($installedModules, 'isEnabled', SORT_DESC);
             $this->addGroup('installed', [
                 'title' => Yii::t('MarketplaceModule.base', 'Installed'),
                 'modules' => $installedModules,

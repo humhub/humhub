@@ -193,9 +193,21 @@ class Module extends Model
             !($this->isDeprecated && $marketplaceModule->hideLegacyModules);
     }
 
+    /**
+     * @deprecated since v1.16; use self::getIsEnabled()
+     * @see self::getIsEnabled()
+     */
     public function getIsActivated(): bool
     {
-        return Yii::$app->moduleManager->getModule($this->id)->isActivated;
+        return $this->getIsEnabled();
+    }
+
+    /**
+     * @since v1.16
+     */
+    public function getIsEnabled(): bool
+    {
+        return Yii::$app->moduleManager->getModule($this->id)->getIsEnabled();
     }
 
     public function getConfigUrl(): string

@@ -85,7 +85,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
         $conditionUser .= '   (content.visibility = 1) OR';             // public visible content
         $conditionUser .= '   (content.visibility = 0' . $conditionUserPrivateRestriction . ')';  // private content of user
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $this->query->leftJoin('user_friendship cff', 'cuser.id=cff.user_id AND cff.friend_user_id=:fuid', [':fuid' => $queryUser->id]);
             $conditionUser .= ' OR (content.visibility = 0 AND cff.id IS NOT NULL)';  // users are friends
         }
