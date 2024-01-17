@@ -52,7 +52,7 @@ class InstalledModuleControls extends Menu
 
             $this->addEntry(new MenuLink([
                 'id' => 'deactivate',
-                'label' => Yii::t('AdminModule.base', 'Disable'),
+                'label' => Yii::t('AdminModule.base', 'Deactivate'),
                 'url' => $this->getActionUrl('/admin/module/disable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
@@ -64,7 +64,7 @@ class InstalledModuleControls extends Menu
         } else {
             $this->addEntry(new MenuLink([
                 'id' => 'deactivate',
-                'label' => Yii::t('AdminModule.base', 'Enable'),
+                'label' => Yii::t('AdminModule.base', 'Activate'),
                 'url' => $this->getActionUrl('/admin/module/enable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',

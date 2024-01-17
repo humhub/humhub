@@ -235,7 +235,7 @@ class MarketplaceController extends Controller
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
         if ($module === null || !Yii::$app->hasModule($moduleId)) {
-            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found or enabled!\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found or activated!\n"), Console::FG_RED, Console::BOLD);
             return 1;
         }
 

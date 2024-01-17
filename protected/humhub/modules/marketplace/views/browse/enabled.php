@@ -12,7 +12,7 @@ use humhub\widgets\ModalDialog;
 /* @var string $moduleConfigUrl */
 ?>
 <?php ModalDialog::begin([
-    'header' => Yii::t('MarketplaceModule.base', 'Module <strong>enabled</strong>')
+    'header' => Yii::t('MarketplaceModule.base', 'Module <strong>activated</strong>')
 ]) ?>
 
     <div class="modal-body">
@@ -21,13 +21,13 @@ use humhub\widgets\ModalDialog;
             <br><br>
             <?= Yii::t('MarketplaceModule.base', 'Would you like to jump straight to it?') ?>
         <?php else : ?>
-            <?= Yii::t('MarketplaceModule.base', 'Well done! You have successfully installed and enabled the module!') ?>
+            <?= Yii::t('MarketplaceModule.base', 'Well done! You have successful installed an activated the module!') ?>
         <?php endif; ?>
     </div>
 
     <div class="modal-footer">
         <?php if ($moduleConfigUrl) : ?>
-            <?= ModalButton::cancel(Yii::t('MarketplaceModule.base', 'No, thank you!')) ?>
+            <?= ModalButton::cancel() ?>
             <?= Button::primary(Yii::t('MarketplaceModule.base', 'Module configuration'))
                 ->link($moduleConfigUrl) ?>
         <?php else : ?>
