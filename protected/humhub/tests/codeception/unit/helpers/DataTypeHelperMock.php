@@ -19,9 +19,9 @@ use humhub\helpers\DataTypeHelper;
  */
 class DataTypeHelperMock extends DataTypeHelper
 {
-    public static function checkTypeHelper(string $current, $type, &$input): ?string
+    public static function checkTypeHelper(&$input, string $inputType, $typeToCheck): ?string
     {
-        return parent::checkTypeHelper($current, $type, $input);
+        return parent::checkTypeHelper($input, $inputType, $typeToCheck);
     }
 
     public static function parseTypes($types): array

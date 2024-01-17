@@ -11,7 +11,6 @@ namespace humhub\helpers;
 use humhub\exceptions\InvalidArgumentClassException;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidArgumentValueException;
-use LogicException;
 use Stringable;
 
 /**
@@ -31,7 +30,7 @@ class DataTypeHelper
 
     /**
      * @param mixed $input Variable to be checked.
-     * @param string|string[] $types Allowed types: can be a single type or and array of types. Valid input are
+     * @param string[] $types Allowed types. Valid input are
      * ``
      * - simple type names as returned by gettype()
      * - `null` value or `'NULL'` string
@@ -39,106 +38,107 @@ class DataTypeHelper
      * - class instances whose class type will be checked
      * - `callable`, e.g. `is_scalar`
      * ``
-     * @param bool|null $requireAll Indicates if only one type in the list must be met, or all of them
-     * @param string|null $throw = Name of the argument to be used for InvalidArgumentTypeException or Null if no
-     *     exception should be thrown
-     * @param array|null $typesChecked List of parsed type names as provided by $types
-     *     (class instances and callables will be converted to string)
+     * @param string $parameterOrMessage = Name of the argument to be used for InvalidArgumentTypeException
+     *
+     * @return void
+     * @since 1.16
+     * @see self::checkType()
+     * @see InvalidArgumentTypeException
+     * @throws InvalidArgumentTypeException
+     */
+    public static function ensureType($input, array $types, string $parameterOrMessage = '$input'): void
+    {
+        if (self::checkType($input, $types) !== null) {
+            return;
+        }
+
+        $validTypes = array_map(
+            static fn($item) => is_callable($item, true, $name) || (is_object($item) && $name = get_class($item))
+                ? $name
+                : $item,
+            $types
+        );
+
+        throw new InvalidArgumentTypeException(
+            $parameterOrMessage,
+            $validTypes,
+            $input
+        );
+    }
+
+    /**
+     * @param mixed $input Variable to be checked.
+     * @param string[] $types Allowed types. Valid input are
+     * ``
+     * - simple type names as returned by gettype()
+     * - `null` value or `'NULL'` string
+     * - class, interface, or trait names
+     * - class instances whose class type will be checked
+     * - `callable`, e.g. `is_scalar`
+     * ``
+     * @param bool $returnIndex if set to `true`, the method will return the types' index, rather that it's name.
      *
      * @return string|null
      * @since 1.16
      * @see gettype
      */
-    public static function checkType($input, $types, ?bool $requireAll = false, ?string $throw = '$input', ?array &$typesChecked = null): ?string
+    public static function checkType($input, array $types, bool $returnIndex = false): ?string
     {
 
-        $requireAll ??= false;
-        $returnIndex = false;
-
-        if (is_array($types)) {
-            if (true === ($types[array_key_last($types)] ?? false)) {
-                $returnIndex = array_pop($types);
-            }
-
-            $typesChecked = $types;
-        } else {
-            $typesChecked = self::parseTypes($types);
+        // if the last item in `$types` is the value `true`, return the $types´ index, rather its value
+        if (true === ($types[array_key_last($types)] ?? false)) {
+            $returnIndex = true;
+            array_pop($types);
         }
 
-        if ($input === null) {
-            if (in_array($i = null, $typesChecked, true) || in_array($i = 'NULL', $typesChecked, true)) {
-                if ($requireAll && count($typesChecked)) {
-                    throw new LogicException("A variable can never be NULL and any other type at the same time!");
-                }
+        $types = self::parseTypes($types);
 
+        if ($input === null) {
+            if (in_array($i = null, $types, true) || in_array($i = 'NULL', $types, true)) {
                 if ($returnIndex) {
-                    return array_search($i, $typesChecked, true);
+                    return array_search($i, $types, true);
                 }
 
                 return 'NULL';
             }
         } else {
-            $type = null;
-            $current = gettype($input);
+            $inputType = gettype($input);
 
-            foreach ($typesChecked as $i => $type) {
-                if ($type === null) {
+            foreach ($types as $i => $typeToCheck) {
+                if ($typeToCheck === null) {
                     continue;
                 }
 
-                $type = static::checkTypeHelper($current, $type, $input);
+                $typeToCheck = static::checkTypeHelper($input, $inputType, $typeToCheck);
 
-                if ($requireAll) {
-                    if ($type === null) {
-                        break;
-                    }
-                } elseif ($type !== null) {
+                if ($typeToCheck !== null) {
                     return $returnIndex
                         ? $i
-                        : $type;
+                        : $typeToCheck;
                 }
             }
         }
 
-        $typesChecked = array_map(
-            static fn($item) => is_callable($item, true, $name)
-                ? $name
-                : $item,
-            $typesChecked
-        );
-
-        if ($requireAll && $type !== null) {
-            return implode('|', $typesChecked);
-        }
-
-        if (!$throw) {
-            return null;
-        }
-
-        throw new InvalidArgumentTypeException(
-            $throw,
-            $typesChecked,
-            $input
-        );
+        return null;
     }
 
-    protected static function checkTypeHelper(string $current, $type, &$input): ?string
+    protected static function checkTypeHelper(&$input, string $inputType, $typeToCheck): ?string
     {
 
-        if (is_string($type)) {
-            switch ($type) {
+        if (is_string($typeToCheck) || (is_object($typeToCheck) && $typeToCheck = get_class($typeToCheck))) {
+            switch ($typeToCheck) {
                 case 'boolean':     // the result of gettype()
                 case 'bool':        // the name as it is defined in code
-                    return $current === 'boolean'
+                    return $inputType === 'boolean'
                         // return it the way it was tested
-                        ? $type
+                        ? $typeToCheck
                         : null;
 
                 case 'integer':     // the result of gettype()
                 case 'int':         // the name as it is defined in code
-                    return $current === 'integer'
+                    return $inputType === 'integer'
                         // return it the way it was tested
-                        ? $type
+                        ? $typeToCheck
                         : null;
 
                 case 'string':
@@ -148,43 +148,43 @@ class DataTypeHelper
                 case 'resource (closed)': // as of PHP 7.2.0
                 case 'NULL':
                 case 'unknown type':
-                    return $current === $type
-                        ? $type
+                    return $inputType === $typeToCheck
+                        ? $typeToCheck
                         : null;
 
                 case 'double':
                 case 'float':
-                    return $current === 'double'
-                        ? $type
+                    return $inputType === 'double'
+                        ? $typeToCheck
                         : null;
 
                 case Stringable::class:
-                    return $current === 'object'
+                    return $inputType === 'object'
                     && ($input instanceof Stringable || is_callable([$input, '__toString']))
-                        ? $type
+                        ? $typeToCheck
                         : null;
 
                 default:
                     /** @noinspection NotOptimalIfConditionsInspection */
                     if (
-                        (class_exists($type) || interface_exists($type))
-                        && $input instanceof $type
+                        (class_exists($typeToCheck) || interface_exists($typeToCheck))
+                        && $input instanceof $typeToCheck
                     ) {
-                        return $type;
+                        return $typeToCheck;
                     }
 
                     if (
-                        trait_exists($type, true)
-                        && in_array($type, static::classUsesTraits($input), true)
+                        trait_exists($typeToCheck, true)
+                        && in_array($typeToCheck, static::classUsesTraits($input), true)
                     ) {
-                        return $type;
+                        return $typeToCheck;
                     }
             }
         }
 
         if (
-            is_callable($type, false, $name)
-            && $type($input)
+            is_callable($typeToCheck, false, $name)
+            && $typeToCheck($input)
         ) {
             return $name;
         }
@@ -207,7 +207,7 @@ class DataTypeHelper
     {
         $param = $throwException ? '$value' : false;
         if ($strict) {
-            $types = 'bool';
+            $types = ['bool'];
             $input = $value;
         } elseif ($strict === null) {
             try {
@@ -220,7 +220,7 @@ class DataTypeHelper
             $input = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         }
 
-        return self::checkType($input, $types, false, $param) === null ? null : $input;
+        return self::checkType($input, $types, $param) === null ? null : $input;
     }
 
     /**
@@ -453,14 +453,14 @@ class DataTypeHelper
     {
         $param = $throwException ? '$value' : false;
         if ($strict) {
-            $types = 'float';
+            $types = ['float'];
             $input = $value;
         } else {
             $types = ['float', null];
             $input = filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
         }
 
-        return self::checkType($input, $types, false, $param) === null ? null : $input;
+        return self::checkType($input, $types, $param) === null ? null : $input;
     }
 
     /**
@@ -480,14 +480,14 @@ class DataTypeHelper
         $param = $throwException ? '$value' : false;
 
         if ($strict) {
-            $types = 'integer';
+            $types = ['integer'];
             $input = $value;
         } else {
             $types = ['integer', null];
             $input = filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
         }
 
-        return self::checkType($input, $types, false, $param) === null ? null : $input;
+        return self::checkType($input, $types, $param) === null ? null : $input;
     }
 
     /**
@@ -506,7 +506,7 @@ class DataTypeHelper
         $param = $throwException ? '$value' : false;
         $types = $strict ? ['is_scalar'] : [null, 'is_scalar'];
 
-        return self::checkType($value, $types, false, $param) === null ? null : $value;
+        return self::checkType($value, $types, $param) === null ? null : $value;
     }
 
     /**
@@ -523,9 +523,9 @@ class DataTypeHelper
     public static function filterString($value, bool $strict = false, bool $throwException = false): ?string
     {
         $param = $throwException ? '$value' : false;
-        $types = $strict ? 'string' : ['string', null, Stringable::class, 'is_scalar'];
+        $types = $strict ? ['string'] : ['string', null, Stringable::class, 'is_scalar'];
 
-        switch (self::checkType($value, $types, false, $param)) {
+        switch (self::checkType($value, $types, $param)) {
             case 'string':
                 return $value;
             case 'NULL':

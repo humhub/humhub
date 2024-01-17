@@ -34,10 +34,10 @@ class DataTypeHelperTest extends Unit
 {
     public function testClassTypeHelperCase1()
     {
-        static::assertNull(DataTypeHelperMock::checkTypeHelper('', null, $value));
-        static::assertNull(DataTypeHelperMock::checkTypeHelper('', 1, $value));
-        static::assertNull(DataTypeHelperMock::checkTypeHelper('', 1.2, $value));
-        static::assertNull(DataTypeHelperMock::checkTypeHelper('', true, $value));
+        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', null));
+        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', 1));
+        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', 1.2));
+        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', true));
     }
 
     public function testClassTypeHelperCase2()
@@ -85,10 +85,10 @@ class DataTypeHelperTest extends Unit
 
             $current = gettype($test[0]);
 
-            static::assertEquals($key, DataTypeHelperMock::checkTypeHelper($current, $key, $value));
+            static::assertEquals($key, DataTypeHelperMock::checkTypeHelper($value, $current, $key));
 
             if (array_key_exists(1, $test)) {
-                static::assertEquals($test[1], DataTypeHelperMock::checkTypeHelper($current, $test[1], $value));
+                static::assertEquals($test[1], DataTypeHelperMock::checkTypeHelper($value, $current, $test[1]));
             }
 
             foreach ($values as $i => $type) {
@@ -97,7 +97,7 @@ class DataTypeHelperTest extends Unit
                 }
 
                 $current = gettype($type);
-                static::assertNull(DataTypeHelperMock::checkTypeHelper($current, $key, $value));
+                static::assertNull(DataTypeHelperMock::checkTypeHelper($value, $current, $key));
             }
         }
     }
@@ -111,10 +111,10 @@ class DataTypeHelperTest extends Unit
             }
         };
 
-        static::assertEquals('object', DataTypeHelperMock::checkTypeHelper('object', 'object', $value));
+        static::assertEquals('object', DataTypeHelperMock::checkTypeHelper($value, 'object', 'object'));
         static::assertEquals(
             Stringable::class,
-            DataTypeHelperMock::checkTypeHelper('object', Stringable::class, $value)
+            DataTypeHelperMock::checkTypeHelper($value, 'object', Stringable::class)
         );
 
         $value = new class () {
@@ -126,45 +126,45 @@ class DataTypeHelperTest extends Unit
 
         static::assertEquals(
             'object',
-            DataTypeHelperMock::checkTypeHelper(gettype($value), 'object', $value)
+            DataTypeHelperMock::checkTypeHelper($value, gettype($value), 'object')
         );
         static::assertEquals(
             Stringable::class,
-            DataTypeHelperMock::checkTypeHelper('object', Stringable::class, $value)
+            DataTypeHelperMock::checkTypeHelper($value, 'object', Stringable::class)
         );
 
         $value = new static();
 
         static::assertEquals(
             'object',
-            DataTypeHelperMock::checkTypeHelper(gettype($value), 'object', $value)
+            DataTypeHelperMock::checkTypeHelper($value, gettype($value), 'object')
         );
 
         // test class
         static::assertEquals(
             static::class,
-            DataTypeHelperMock::checkTypeHelper(gettype($value), static::class, $value)
+            DataTypeHelperMock::checkTypeHelper($value, gettype($value), static::class)
         );
 
         // test interface
         static::assertEquals(
             TestInterface::class,
-            DataTypeHelperMock::checkTypeHelper(gettype($value), TestInterface::class, $value)
+            DataTypeHelperMock::checkTypeHelper($value, gettype($value), TestInterface::class)
         );
 
         // test trait
         static::assertEquals(
             Stub::class,
-            DataTypeHelperMock::checkTypeHelper(gettype($value), Stub::class, $value)
+            DataTypeHelperMock::checkTypeHelper($value, gettype($value), Stub::class)
         );
     }
 
     public function testParseTypeCase1()
     {
-        static::assertEquals(['NULL'], DataTypeHelper::parseTypes(null));
-        static::assertEquals(['test'], DataTypeHelper::parseTypes(['test']));
-        static::assertEquals(['test'], DataTypeHelper::parseTypes('test'));
-        static::assertEquals(['foo', 'bar'], DataTypeHelper::parseTypes('foo|bar'));
+        static::assertEquals(['NULL'], DataTypeHelperMock::parseTypes(null));
+        static::assertEquals(['test'], DataTypeHelperMock::parseTypes(['test']));
+        static::assertEquals(['test'], DataTypeHelperMock::parseTypes('test'));
+        static::assertEquals(['foo', 'bar'], DataTypeHelperMock::parseTypes('foo|bar'));
     }
 
     public function testParseTypeCase2()
@@ -174,7 +174,7 @@ class DataTypeHelperTest extends Unit
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
 
-        DataTypeHelper::parseTypes('');
+        DataTypeHelperMock::parseTypes('');
     }
 
     public function testParseTypeCase3()
@@ -184,7 +184,7 @@ class DataTypeHelperTest extends Unit
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
 
-        DataTypeHelper::parseTypes([]);
+        DataTypeHelperMock::parseTypes([]);
     }
 
     /**
@@ -214,13 +214,12 @@ class DataTypeHelperTest extends Unit
         foreach ($tests as $key => $value) {
             codecept_debug("- Testing $key");
 
-            static::assertEquals($key, DataTypeHelper::checkType($value, $key, false, false));
-            static::assertEquals($key, DataTypeHelper::checkType($value, [$key], false, false));
+            static::assertEquals($key, DataTypeHelper::checkType($value, [$key]));
         }
 
-        static::assertEquals('string', DataTypeHelper::checkType('', [null, 'string'], false, false));
-        static::assertEquals('string', DataTypeHelper::checkType('', ['string', null], false, false));
-        static::assertEquals('string', DataTypeHelper::checkType('', ['string', 'NULL'], false, false));
+        static::assertEquals('string', DataTypeHelper::checkType('', [null, 'string']));
+        static::assertEquals('string', DataTypeHelper::checkType('', ['string', null]));
+        static::assertEquals('string', DataTypeHelper::checkType('', ['string', 'NULL']));
 
         $values = [
             new class () implements Stringable {
@@ -238,30 +237,21 @@ class DataTypeHelperTest extends Unit
         ];
 
         foreach ($values as $value) {
-            static::assertEquals('object', DataTypeHelper::checkType($value, ['object'], false, false));
+            static::assertEquals('object', DataTypeHelper::checkType($value, ['object']));
             static::assertEquals(
                 Stringable::class,
-                DataTypeHelper::checkType($value, [Stringable::class], false, false)
+                DataTypeHelper::checkType($value, [Stringable::class])
             );
-            static::assertEquals('is_object', DataTypeHelper::checkType($value, ['is_object'], false, false));
+            static::assertEquals('is_object', DataTypeHelper::checkType($value, ['is_object']));
 
             // type order is of significance, if multiple types match
             static::assertEquals(
                 'object',
-                DataTypeHelper::checkType($value, ['object', Stringable::class], false, false)
+                DataTypeHelper::checkType($value, ['object', Stringable::class])
             );
             static::assertEquals(
                 Stringable::class,
-                DataTypeHelper::checkType($value, [Stringable::class, 'object'], false, false)
-            );
-
-            static::assertEquals(
-                'object|Stringable',
-                DataTypeHelper::checkType($value, ['object', Stringable::class], true, false)
-            );
-            static::assertEquals(
-                'Stringable|object',
-                DataTypeHelper::checkType($value, [Stringable::class, 'object'], true, false)
+                DataTypeHelper::checkType($value, [Stringable::class, 'object'])
             );
         }
     }
