@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #6744: Make sure to call `humhub\components\Module::update()` on Module updates
 - Fix #6796: Files in the RichText doesn't open as new tab
 - Fix #6800: Fix missed domain of profile url in email notifications
+- Fix #6801: Add missed twemoji images
 
 1.15.2 (December 19, 2023)
 --------------------------
