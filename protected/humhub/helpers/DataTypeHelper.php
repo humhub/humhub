@@ -20,14 +20,26 @@ use function gettype;
  */
 class DataTypeHelper
 {
-    public const CLASS_CHECK_VALUE_IS_NULL = 128;
-    public const CLASS_CHECK_TYPE_NOT_IN_LIST = 32;
-    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = 2;
-    public const CLASS_CHECK_VALUE_IS_EMPTY = 4;
-    public const CLASS_CHECK_INVALID_VALUE_PARAMETER = 1;
-    public const CLASS_CHECK_INVALID_TYPE = 8;
-    public const CLASS_CHECK_NON_EXISTING_CLASS = 16;
-    public const CLASS_CHECK_VALUE_IS_INSTANCE = 64;
+    public const TYPE_CHECK_VALUE_IS_NULL = 128;
+    public const TYPE_CHECK_TYPE_NOT_IN_LIST = 32;
+    public const TYPE_CHECK_INVALID_TYPE_PARAMETER = 2;
+    public const TYPE_CHECK_VALUE_IS_EMPTY = 4;
+    public const TYPE_CHECK_INVALID_VALUE_PARAMETER = 1;
+    public const TYPE_CHECK_INVALID_TYPE = 8;
+    public const TYPE_CHECK_NON_EXISTING_CLASS = 16;
+    public const TYPE_CHECK_VALUE_IS_INSTANCE = 64;
+
+    public const BOOLEAN = 'boolean';
+    public const INTEGER = 'integer';
+    public const STRING = 'string';
+    public const ARRAY = 'array';
+    public const OBJECT = 'object';
+    public const RESOURCE = 'resource';
+    public const RESOURCE_CLOSED = 'resource (closed)';
+    public const UNKNOWN_TYPE = 'unknown type';
+    public const DOUBLE = 'double';
+    public const FLOAT = 'float';
+    public const NULL = 'NULL';
 
 
     /**
@@ -64,7 +76,7 @@ class DataTypeHelper
      * - class instances whose class type will be checked
      * - `callable`, e.g. `is_scalar`
      * ``
-     * @param bool $returnIndex if set to `true`, the method will return the types' index, rather that it's name.
+     *      rather that it's name.
      *
      * @return string|null Returns the first match of `$value` against the `$allowedTypes`.
      * ``
@@ -77,13 +89,13 @@ class DataTypeHelper
      * @since 1.16
      * @see gettype()
      */
-    public static function matchType($value, $allowedTypes, bool $throwException = false, bool $returnIndex = false): ?string
+    public static function matchType($value, $allowedTypes, bool $throwException = false): ?string
     {
         $validTypes = self::parseTypes($allowedTypes, $allowNull, $checkTraits);
 
         if ($value === null) {
             if ($allowNull) {
-                return $returnIndex ? array_search(null, $allowedTypes, true) : 'NULL';
+                return self::NULL;
             }
 
             if (!$throwException) {
@@ -94,7 +106,7 @@ class DataTypeHelper
                 '$value',
                 $validTypes,
                 $value,
-                self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_VALUE_IS_NULL
+                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_VALUE_IS_NULL
             );
         }
 
@@ -103,9 +115,7 @@ class DataTypeHelper
 
         foreach ($allowedTypes as $i => $typeToCheck) {
             if (static::matchTypeHelper($typeToCheck, $value, $inputType, $inputTraits) !== null) {
-                return $returnIndex
-                    ? $i
-                    : $validTypes[$i];
+                return $validTypes[$i];
             }
         }
 
@@ -113,10 +123,10 @@ class DataTypeHelper
             return null;
         }
 
-        $code = self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_TYPE_NOT_IN_LIST;
+        $code = self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_TYPE_NOT_IN_LIST;
 
         if (is_object($value)) {
-            $code |= self::CLASS_CHECK_VALUE_IS_INSTANCE;
+            $code |= self::TYPE_CHECK_VALUE_IS_INSTANCE;
         }
 
         throw new InvalidArgumentClassException(
@@ -132,40 +142,40 @@ class DataTypeHelper
 
         if (is_string($typeToCheck) || (is_object($typeToCheck) && $typeToCheck = get_class($typeToCheck))) {
             switch ($typeToCheck) {
-                case 'string':
-                case 'array':
-                case 'object':
-                case 'resource':
-                case 'resource (closed)': // as of PHP 7.2.0
-                case 'NULL':
-                case 'unknown type':
+                case self::STRING:
+                case self::ARRAY:
+                case self::OBJECT:
+                case self::RESOURCE:
+                case self::RESOURCE_CLOSED: // as of PHP 7.2.0
+                case self::NULL:
+                case self::UNKNOWN_TYPE:
                     return $inputType === $typeToCheck
                         ? $typeToCheck
                         : null;
 
-                case 'boolean':     // the result of gettype()
-                case 'bool':        // the name as it is defined in code
-                    return $inputType === 'boolean'
+                case self::BOOLEAN:     // the result of gettype()
+                case 'bool':            // the name as it is defined in code
+                    return $inputType === self::BOOLEAN
                         // return it the way it was tested
                         ? $typeToCheck
                         : null;
 
-                case 'integer':     // the result of gettype()
-                case 'int':         // the name as it is defined in code
-                    return $inputType === 'integer'
+                case self::INTEGER:     // the result of gettype()
+                case 'int':             // the name as it is defined in code
+                    return $inputType === self::INTEGER
                         // return it the way it was tested
                         ? $typeToCheck
                         : null;
 
-                case 'double':
-                case 'float':
-                    return $inputType === 'double'
+                case self::DOUBLE:
+                case self::FLOAT:
+                    return $inputType === self::DOUBLE
                         // return it the way it was tested
                         ? $typeToCheck
                         : null;
 
                 case Stringable::class:
-                    return $inputType === 'object'
+                    return $inputType === self::OBJECT
                     && ($input instanceof Stringable || is_callable([$input, '__toString']))
                         ? $typeToCheck
                         : null;
@@ -237,13 +247,13 @@ class DataTypeHelper
      * ``
      * @param bool $throwException
      *
-     * @return string The name of the first matched type given in $allowedTypes
+     * @return mixed|null The `$value` if it matches any type given in $allowedTypes, or NULL otherwise
      *
      * @since 1.16
      * @see self::matchType()
      * @see InvalidArgumentTypeException
      */
-    public static function filterType($value, $allowedTypes, bool $throwException = false)
+    private static function filterType($value, $allowedTypes, bool $throwException = false)
     {
         return self::matchType($value, $allowedTypes, $throwException) === null
             ? null
@@ -264,7 +274,7 @@ class DataTypeHelper
     public static function filterBool($value, ?bool $strict = false, bool $throwException = false): ?bool
     {
         if ($strict) {
-            return self::filterType($value, ['bool'], $throwException);
+            return self::filterType($value, [self::BOOLEAN], $throwException);
         }
 
         if ($strict === null) {
@@ -277,7 +287,7 @@ class DataTypeHelper
 
         $input = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
-        return self::matchType($input, ['bool', null], $throwException) === null ? null : $input;
+        return self::matchType($input, [self::BOOLEAN, null], $throwException) === null ? null : $input;
     }
 
     /**
@@ -351,7 +361,7 @@ class DataTypeHelper
                 '$value',
                 $allowedTypes,
                 $value,
-                self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_VALUE_IS_NULL
+                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_VALUE_IS_NULL
             );
         }
 
@@ -367,13 +377,13 @@ class DataTypeHelper
                     '$value',
                     $allowedTypes,
                     $value,
-                    self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_TYPE_NOT_IN_LIST
+                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_TYPE_NOT_IN_LIST
                 )
                 : new InvalidArgumentTypeException(
                     '$value',
                     $allowedTypes,
                     $value,
-                    self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE
+                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE
                 );
         }
 
@@ -393,7 +403,7 @@ class DataTypeHelper
                     '$value',
                     'a valid class name or an object instance',
                     $value,
-                    self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_NON_EXISTING_CLASS
+                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_NON_EXISTING_CLASS
                 );
             }
 
@@ -407,7 +417,7 @@ class DataTypeHelper
                 '$value',
                 $allowedTypes,
                 $value,
-                self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_INVALID_TYPE
+                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE
             );
         }
 
@@ -425,10 +435,10 @@ class DataTypeHelper
             return null;
         }
 
-        $code = self::CLASS_CHECK_INVALID_VALUE_PARAMETER + self::CLASS_CHECK_TYPE_NOT_IN_LIST;
+        $code = self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_TYPE_NOT_IN_LIST;
 
         if ($isObject) {
-            $code |= self::CLASS_CHECK_VALUE_IS_INSTANCE;
+            $code |= self::TYPE_CHECK_VALUE_IS_INSTANCE;
         }
 
         throw new InvalidArgumentClassException(
@@ -453,12 +463,12 @@ class DataTypeHelper
     public static function filterFloat($value, bool $strict = false, bool $throwException = false): ?float
     {
         if ($strict) {
-            return self::filterType($value, ['float'], $throwException);
+            return self::filterType($value, [self::FLOAT], $throwException);
         }
 
         $input = filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
 
-        return self::filterType($input, ['float', null], $throwException);
+        return self::filterType($input, [self::FLOAT, null], $throwException);
     }
 
     /**
@@ -476,12 +486,12 @@ class DataTypeHelper
     public static function filterInt($value, bool $strict = false, bool $throwException = false): ?int
     {
         if ($strict) {
-            return self::filterType($value, ['integer'], $throwException);
+            return self::filterType($value, [self::INTEGER], $throwException);
         }
 
         $input = filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
 
-        return self::filterType($input, ['integer', null], $throwException);
+        return self::filterType($input, [self::INTEGER, null], $throwException);
     }
 
     /**
@@ -493,13 +503,16 @@ class DataTypeHelper
      * ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
+     * @return bool|int|float|string|null
      * @since 1.16
      */
     public static function filterScalar($value, bool $strict = false, bool $throwException = false)
     {
-        $allowedTypes = $strict ? ['is_scalar'] : [null, 'is_scalar'];
+        if ($strict) {
+            return self::filterType($value, ['is_scalar'], $throwException);
+        }
 
-        return self::filterType($value, $allowedTypes, $throwException);
+        return self::filterType($value, [null, 'is_scalar'], $throwException);
     }
 
     /**
@@ -515,15 +528,18 @@ class DataTypeHelper
      */
     public static function filterString($value, bool $strict = false, bool $throwException = false): ?string
     {
-        $allowedTypes = $strict ? ['string'] : ['string', null, Stringable::class, 'is_scalar'];
+        $allowedTypes = $strict ? [self::STRING] : [self::STRING, null, Stringable::class, 'is_scalar'];
 
         switch (self::matchType($value, $allowedTypes, $throwException)) {
-            case 'string':
+            case self::STRING:
                 return $value;
-            case 'NULL':
+
+            case self::NULL:
                 return null;
+
             case Stringable::class:
                 return $value->__toString();
+
             case 'is_scalar':
                 return (string)$value;
         }
@@ -585,9 +601,9 @@ class DataTypeHelper
             if ($allowedTypes === '') {
                 throw new InvalidArgumentValueException(
                     '$allowedTypes',
-                    ['string', 'string[]', 'object[]'],
+                    [self::STRING, 'string[]', 'object[]'],
                     $allowedTypes,
-                    self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY
+                    self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY
                 );
             }
 
@@ -597,18 +613,18 @@ class DataTypeHelper
         if (!is_array($allowedTypes)) {
             throw new InvalidArgumentTypeException(
                 '$allowedTypes',
-                ['string', 'string[]', 'object[]', null],
+                [self::STRING, 'string[]', 'object[]', null],
                 $allowedTypes,
-                self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_INVALID_TYPE
+                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE
             );
         }
 
         if (count($allowedTypes) === 0) {
             throw new InvalidArgumentValueException(
                 '$allowedTypes',
-                ['string', 'string[]', 'object[]'],
+                [self::STRING, 'string[]', 'object[]'],
                 $allowedTypes,
-                self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY
+                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY
             );
         }
 
@@ -616,7 +632,7 @@ class DataTypeHelper
 
         // validate the type array
         foreach ($allowedTypes as $index => &$item) {
-            if ($item === null || $item === 'NULL') {
+            if ($item === null || $item === self::NULL) {
                 $allowNull = true;
                 $item = null;
                 continue;
@@ -635,26 +651,26 @@ class DataTypeHelper
             if (!is_string($item)) {
                 throw new InvalidArgumentValueException(
                     sprintf('$allowedTypes[%s]', $index),
-                    ['class', 'object'],
+                    ['class', self::OBJECT],
                     $item,
-                    self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_INVALID_TYPE
+                    self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE
                 );
             }
 
             if ($allowGetTypes) {
                 switch ($item) {
-                    case 'boolean':     // the result of gettype()
-                    case 'bool':        // the name as it is defined in code
-                    case 'integer':     // the result of gettype()
-                    case 'int':         // the name as it is defined in code
-                    case 'string':
-                    case 'array':
-                    case 'object':
-                    case 'resource':
-                    case 'resource (closed)': // as of PHP 7.2.0
-                    case 'unknown type':
-                    case 'double':
-                    case 'float':
+                    case self::BOOLEAN:     // the result of gettype()
+                    case 'bool':            // the name as it is defined in code
+                    case self::INTEGER:     // the result of gettype()
+                    case 'int':             // the name as it is defined in code
+                    case self::STRING:
+                    case self::ARRAY:
+                    case self::OBJECT:
+                    case self::RESOURCE:
+                    case self::RESOURCE_CLOSED: // as of PHP 7.2.0
+                    case self::UNKNOWN_TYPE:
+                    case self::DOUBLE:
+                    case self::FLOAT:
                         $valid[$index] = $item;
                         continue 2;
                 }
@@ -683,7 +699,7 @@ class DataTypeHelper
                 sprintf('$allowedTypes[%s]', $index),
                 'a valid class/interface/trait name or an object instance',
                 $item,
-                self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_NON_EXISTING_CLASS
+                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_NON_EXISTING_CLASS
             );
         }
 

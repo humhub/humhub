@@ -26,56 +26,56 @@ class Helpers
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER;
+    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER;
+    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_VALUE_IS_EMPTY = DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY;
+    public const CLASS_CHECK_VALUE_IS_EMPTY = DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_INVALID_TYPE = DataTypeHelper::CLASS_CHECK_INVALID_TYPE;
+    public const CLASS_CHECK_INVALID_TYPE = DataTypeHelper::TYPE_CHECK_INVALID_TYPE;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_NON_EXISTING_CLASS = DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS;
+    public const CLASS_CHECK_NON_EXISTING_CLASS = DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_TYPE_NOT_IN_LIST = DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST;
+    public const CLASS_CHECK_TYPE_NOT_IN_LIST = DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_VALUE_IS_INSTANCE = DataTypeHelper::CLASS_CHECK_VALUE_IS_INSTANCE;
+    public const CLASS_CHECK_VALUE_IS_INSTANCE = DataTypeHelper::TYPE_CHECK_VALUE_IS_INSTANCE;
 
     /**
      * @var int
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_VALUE_IS_NULL = DataTypeHelper::CLASS_CHECK_VALUE_IS_NULL;
+    public const CLASS_CHECK_VALUE_IS_NULL = DataTypeHelper::TYPE_CHECK_VALUE_IS_NULL;
 
     /**
      * Shorten a text string

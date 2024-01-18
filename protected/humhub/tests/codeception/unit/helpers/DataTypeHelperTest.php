@@ -401,7 +401,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY);
 
         DataTypeHelper::matchClassType(null, '');
     }
@@ -412,7 +412,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY);
 
         DataTypeHelper::matchClassType(null, []);
     }
@@ -423,7 +423,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_INVALID_TYPE);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::TYPE_CHECK_INVALID_TYPE);
 
         DataTypeHelper::matchClassType(null, 0);
     }
@@ -434,7 +434,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS);
 
         DataTypeHelper::matchClassType(null, '0');
     }
@@ -446,7 +446,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS);
 
         /** @noinspection PhpUndefinedClassInspection */
         DataTypeHelper::matchClassType(null, NonExistingClassName::class);
@@ -458,7 +458,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS);
 
         /** @noinspection PhpUndefinedClassInspection */
         DataTypeHelper::matchClassType(null, [BaseObject::class, NonExistingClassName::class]);
@@ -478,7 +478,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY + DataTypeHelper::CLASS_CHECK_INVALID_TYPE + DataTypeHelper::CLASS_CHECK_VALUE_IS_NULL);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY + DataTypeHelper::TYPE_CHECK_INVALID_TYPE + DataTypeHelper::TYPE_CHECK_VALUE_IS_NULL);
 
         DataTypeHelper::ensureClassType(null, BaseObject::class);
     }
@@ -493,7 +493,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentClassException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY + DataTypeHelper::CLASS_CHECK_INVALID_TYPE + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY + DataTypeHelper::TYPE_CHECK_INVALID_TYPE + DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST);
 
         DataTypeHelper::ensureClassType('', BaseObject::class);
     }
@@ -509,7 +509,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS);
 
         /** @noinspection PhpUndefinedClassInspection */
         DataTypeHelper::ensureClassType(NonExistingClassName::class, BaseObject::class);
@@ -525,7 +525,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentClassException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST);
 
         DataTypeHelper::ensureClassType(Exception::class, BaseObject::class);
     }
@@ -540,7 +540,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentClassException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST + DataTypeHelper::CLASS_CHECK_VALUE_IS_INSTANCE);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST + DataTypeHelper::TYPE_CHECK_VALUE_IS_INSTANCE);
 
         DataTypeHelper::ensureClassType(new Exception('hello'), BaseObject::class);
     }
@@ -575,7 +575,7 @@ class DataTypeHelperTest extends Unit
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
+        $this->expectExceptionCode(DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS);
 
         DataTypeHelper::ensureClassType('#%' . Exception::class, Exception::class);
     }
