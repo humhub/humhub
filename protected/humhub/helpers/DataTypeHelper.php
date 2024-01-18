@@ -223,9 +223,9 @@ class DataTypeHelper
      * @throws InvalidArgumentTypeException|InvalidArgumentClassException|InvalidArgumentValueException
      * @since 1.16
      */
-    public static function ensureClassType($value, $allowedTypes): string
+    public static function ensureClassType($value, $allowedTypes): void
     {
-        return self::matchClassType($value, $allowedTypes, true);
+        self::matchClassType($value, $allowedTypes, true);
     }
 
     /**
@@ -238,9 +238,9 @@ class DataTypeHelper
      * @see InvalidArgumentTypeException
      * @throws InvalidArgumentTypeException|InvalidArgumentValueException
      */
-    public static function ensureType($value, $allowedTypes): string
+    public static function ensureType($value, $allowedTypes): void
     {
-        return self::matchType($value, $allowedTypes, true);
+        self::matchType($value, $allowedTypes, true);
     }
 
     /**
@@ -294,19 +294,25 @@ class DataTypeHelper
             return false;
         }
 
-        $input = is_array($value) ? !empty($value) : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $input = is_array($value) ? !empty($value) : filter_var(
+            $value,
+            FILTER_VALIDATE_BOOLEAN,
+            FILTER_NULL_ON_FAILURE
+        );
 
         return self::filterType($input, [self::BOOLEAN, null], $throwException);
     }
 
     /**
-     * Checks if the class or object has one of the given classes, interfaces or traits as one of its parents or implements it.
+     * Checks if the class or object has one of the given classes, interfaces or traits as one of its parents or
+     * implements it.
      *
      * @param string|object|null|mixed $value Object or classname to be checked. Null may be valid if included in
      *      $type. Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
      * @param string|string[]|object[] $allowedTypes (List of) allowed class, interface or trait names, or object
      *      instances. Object instances may only be passed as part of an array. In such a case, the object's type/class
-     *      is used for comparison. If a string is provided, it will be split by `|`. If NULL value or the "NULL" string
+     *      is used for comparison. If a string is provided, it will be split by `|`. If NULL value or the "NULL"
+     *     string
      *      is included, NULL values are also allowed.   *
      * @param bool $throwException throws an exception instead of returning `null`.
      * Code of the thrown Exception is a bit-mask consisting of the following bits:

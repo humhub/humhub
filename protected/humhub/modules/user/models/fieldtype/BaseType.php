@@ -172,7 +172,7 @@ class BaseType extends Model
     {
         $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
-            $className = DataTypeHelper::ensureClassType($className, static::class);
+            $className = DataTypeHelper::matchClassType($className, static::class, true);
             /** @var BaseType $instance */
             $instance = new $className();
             if ($profileField !== null) {
