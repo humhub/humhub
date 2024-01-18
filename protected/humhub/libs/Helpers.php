@@ -26,7 +26,7 @@ class Helpers
      * @deprecated since 1.16; Use constant in DataTypeHelper class instead
      * @see DataTypeHelper
      * */
-    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER;
+    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER;
 
     /**
      * @var int
@@ -246,11 +246,15 @@ class Helpers
 
     /**
      * @deprecated since 1.16; use DataTypeHelper::checkClassType()
-     * @see DataTypeHelper::filterClassType
+     * @see DataTypeHelper::matchClassType
      */
-    public static function checkClassType($className, $types, bool $throw = true, ?bool $strict = true): ?string
+    public static function checkClassType($className, $type = '')
     {
-        return DataTypeHelper::filterClassType($className, $types, $throw, $strict);
+        if (is_string($className)) {
+            $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
+        }
+
+        return DataTypeHelper::matchClassType($className, $type, false, true);
     }
 
     /**

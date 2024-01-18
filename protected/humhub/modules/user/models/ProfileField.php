@@ -44,7 +44,6 @@ use yii\db\ActiveQuery;
  */
 class ProfileField extends ActiveRecord
 {
-
     /**
      * Field Type Instance
      *
@@ -150,11 +149,14 @@ class ProfileField extends ActiveRecord
      */
     public function getFieldType(): ?BaseType
     {
-        if ($this->_fieldType != null)
+        if ($this->_fieldType != null) {
             return $this->_fieldType;
+        }
 
-        if ($this->field_type_class != '' && $type = DataTypeHelper::filterClassType($this->field_type_class,
-                fieldtype\BaseType::class)) {
+        if (
+            $this->field_type_class != ''
+            && $type = DataTypeHelper::ensureClassType($this->field_type_class, fieldtype\BaseType::class)
+        ) {
             $this->_fieldType = new $type();
             $this->_fieldType->setProfileField($this);
             return $this->_fieldType;
@@ -287,7 +289,6 @@ class ProfileField extends ActiveRecord
     {
 
         if (!$this->isNewRecord) {
-
             // Dont allow changes of internal_name - Maybe not the best way to check it.
             $currentProfileField = ProfileField::findOne(['id' => $this->id]);
             if ($this->field_type_class != $currentProfileField->field_type_class) {
@@ -328,5 +329,4 @@ class ProfileField extends ActiveRecord
 
         return "UserModule.profile";
     }
-
 }

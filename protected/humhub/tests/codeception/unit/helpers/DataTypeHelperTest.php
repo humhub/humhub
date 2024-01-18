@@ -34,10 +34,10 @@ class DataTypeHelperTest extends Unit
 {
     public function testClassTypeHelperCase1()
     {
-        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', null));
-        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', 1));
-        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', 1.2));
-        static::assertNull(DataTypeHelperMock::checkTypeHelper($value, '', true));
+        static::assertNull(DataTypeHelperMock::matchTypeHelper(null, $value, ''));
+        static::assertNull(DataTypeHelperMock::matchTypeHelper(1, $value, ''));
+        static::assertNull(DataTypeHelperMock::matchTypeHelper(1.2, $value, ''));
+        static::assertNull(DataTypeHelperMock::matchTypeHelper(true, $value, ''));
     }
 
     public function testClassTypeHelperCase2()
@@ -85,10 +85,10 @@ class DataTypeHelperTest extends Unit
 
             $current = gettype($test[0]);
 
-            static::assertEquals($key, DataTypeHelperMock::checkTypeHelper($value, $current, $key));
+            static::assertEquals($key, DataTypeHelperMock::matchTypeHelper($key, $value, $current));
 
             if (array_key_exists(1, $test)) {
-                static::assertEquals($test[1], DataTypeHelperMock::checkTypeHelper($value, $current, $test[1]));
+                static::assertEquals($test[1], DataTypeHelperMock::matchTypeHelper($test[1], $value, $current));
             }
 
             foreach ($values as $i => $type) {
@@ -97,7 +97,7 @@ class DataTypeHelperTest extends Unit
                 }
 
                 $current = gettype($type);
-                static::assertNull(DataTypeHelperMock::checkTypeHelper($value, $current, $key));
+                static::assertNull(DataTypeHelperMock::matchTypeHelper($key, $value, $current));
             }
         }
     }
@@ -111,10 +111,10 @@ class DataTypeHelperTest extends Unit
             }
         };
 
-        static::assertEquals('object', DataTypeHelperMock::checkTypeHelper($value, 'object', 'object'));
+        static::assertEquals('object', DataTypeHelperMock::matchTypeHelper('object', $value, 'object'));
         static::assertEquals(
             Stringable::class,
-            DataTypeHelperMock::checkTypeHelper($value, 'object', Stringable::class)
+            DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object')
         );
 
         $value = new class () {
@@ -126,65 +126,90 @@ class DataTypeHelperTest extends Unit
 
         static::assertEquals(
             'object',
-            DataTypeHelperMock::checkTypeHelper($value, gettype($value), 'object')
+            DataTypeHelperMock::matchTypeHelper('object', $value, gettype($value))
         );
         static::assertEquals(
             Stringable::class,
-            DataTypeHelperMock::checkTypeHelper($value, 'object', Stringable::class)
+            DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object')
         );
 
         $value = new static();
 
         static::assertEquals(
             'object',
-            DataTypeHelperMock::checkTypeHelper($value, gettype($value), 'object')
+            DataTypeHelperMock::matchTypeHelper('object', $value, gettype($value))
         );
 
         // test class
         static::assertEquals(
             static::class,
-            DataTypeHelperMock::checkTypeHelper($value, gettype($value), static::class)
+            DataTypeHelperMock::matchTypeHelper(static::class, $value, gettype($value))
         );
 
         // test interface
         static::assertEquals(
             TestInterface::class,
-            DataTypeHelperMock::checkTypeHelper($value, gettype($value), TestInterface::class)
+            DataTypeHelperMock::matchTypeHelper(TestInterface::class, $value, gettype($value))
         );
 
         // test trait
+        $traits = DataTypeHelper::classUsesTraits($value);
         static::assertEquals(
             Stub::class,
-            DataTypeHelperMock::checkTypeHelper($value, gettype($value), Stub::class)
+            DataTypeHelperMock::matchTypeHelper(Stub::class, $value, gettype($value), $traits)
         );
     }
 
     public function testParseTypeCase1()
     {
-        static::assertEquals(['NULL'], DataTypeHelperMock::parseTypes(null));
-        static::assertEquals(['test'], DataTypeHelperMock::parseTypes(['test']));
-        static::assertEquals(['test'], DataTypeHelperMock::parseTypes('test'));
-        static::assertEquals(['foo', 'bar'], DataTypeHelperMock::parseTypes('foo|bar'));
+        $types = null;
+        static::assertEquals([], DataTypeHelperMock::parseTypes($types));
+        static::assertEquals([null], $types);
+
+        $types = ['string'];
+        static::assertEquals(['string'], DataTypeHelperMock::parseTypes($types));
+        static::assertEquals(['string'], $types);
+
+        $types = 'int';
+        static::assertEquals(['int'], DataTypeHelperMock::parseTypes($types));
+        static::assertEquals(['int'], $types);
+
+        $types = 'string|int';
+        static::assertEquals(['string', 'int'], DataTypeHelperMock::parseTypes($types));
+        static::assertEquals(['string', 'int'], $types);
     }
 
     public function testParseTypeCase2()
     {
-        $message = '$types cannot be empty';
+        $message = 'Argument $allowedTypes passed to humhub\helpers\DataTypeHelper::parseTypes must be one of string, string[], object[] - empty string given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
 
-        DataTypeHelperMock::parseTypes('');
+        $types = '';
+        DataTypeHelperMock::parseTypes($types);
     }
 
     public function testParseTypeCase3()
     {
-        $message = '$types cannot be empty';
+        $message = 'Argument $allowedTypes passed to humhub\helpers\DataTypeHelper::parseTypes must be one of string, string[], object[] - [] given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
 
-        DataTypeHelperMock::parseTypes([]);
+        $types = [];
+        DataTypeHelperMock::parseTypes($types);
+    }
+
+    public function testParseTypeCase4()
+    {
+        $message = 'Argument $allowedTypes[0] passed to humhub\helpers\DataTypeHelper::parseTypes must be a valid class/interface/trait name or an object instance - test given.';
+
+        $this->expectException(InvalidArgumentValueException::class);
+        $this->expectExceptionMessage($message);
+
+        $types = ['test'];
+        DataTypeHelperMock::parseTypes($types);
     }
 
     /**
@@ -214,12 +239,12 @@ class DataTypeHelperTest extends Unit
         foreach ($tests as $key => $value) {
             codecept_debug("- Testing $key");
 
-            static::assertEquals($key, DataTypeHelper::checkType($value, [$key]));
+            static::assertEquals($key, DataTypeHelper::matchType($value, [$key]));
         }
 
-        static::assertEquals('string', DataTypeHelper::checkType('', [null, 'string']));
-        static::assertEquals('string', DataTypeHelper::checkType('', ['string', null]));
-        static::assertEquals('string', DataTypeHelper::checkType('', ['string', 'NULL']));
+        static::assertEquals('string', DataTypeHelper::matchType('', [null, 'string']));
+        static::assertEquals('string', DataTypeHelper::matchType('', ['string', null]));
+        static::assertEquals('string', DataTypeHelper::matchType('', ['string', 'NULL']));
 
         $values = [
             new class () implements Stringable {
@@ -237,21 +262,21 @@ class DataTypeHelperTest extends Unit
         ];
 
         foreach ($values as $value) {
-            static::assertEquals('object', DataTypeHelper::checkType($value, ['object']));
+            static::assertEquals('object', DataTypeHelper::matchType($value, ['object']));
             static::assertEquals(
                 Stringable::class,
-                DataTypeHelper::checkType($value, [Stringable::class])
+                DataTypeHelper::matchType($value, [Stringable::class])
             );
-            static::assertEquals('is_object', DataTypeHelper::checkType($value, ['is_object']));
+            static::assertEquals('is_object', DataTypeHelper::matchType($value, ['is_object']));
 
             // type order is of significance, if multiple types match
             static::assertEquals(
                 'object',
-                DataTypeHelper::checkType($value, ['object', Stringable::class])
+                DataTypeHelper::matchType($value, ['object', Stringable::class])
             );
             static::assertEquals(
                 Stringable::class,
-                DataTypeHelper::checkType($value, [Stringable::class, 'object'])
+                DataTypeHelper::matchType($value, [Stringable::class, 'object'])
             );
         }
     }
@@ -370,231 +395,211 @@ class DataTypeHelperTest extends Unit
         static::assertNull(DataTypeHelper::filterString((object)[]));
     }
 
-    public function testClassTypeCheckCase1()
-    {
-        $message = 'Argument $type passed to humhub\helpers\DataTypeHelper::filterClassType must be one of string, string[] - NULL given.';
-
-        $this->expectException(InvalidArgumentValueException::class);
-        $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
-
-        DataTypeHelper::filterClassType(null, null);
-    }
-
     public function testClassTypeCheckCase2()
     {
-        $message = 'Argument $type passed to humhub\helpers\DataTypeHelper::filterClassType must be one of string, string[] - empty string given.';
+        $message = 'Argument $allowedTypes passed to humhub\helpers\DataTypeHelper::parseTypes must be one of string, string[], object[] - empty string given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
         $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
 
-        DataTypeHelper::filterClassType(null, '');
+        DataTypeHelper::matchClassType(null, '');
     }
 
     public function testClassTypeCheckCase3()
     {
-        $message = 'Argument $type passed to humhub\helpers\DataTypeHelper::filterClassType must be one of string, string[] - [] given.';
+        $message = 'Argument $allowedTypes passed to humhub\helpers\DataTypeHelper::parseTypes must be one of string, string[], object[] - [] given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
         $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
 
-        DataTypeHelper::filterClassType(null, []);
+        DataTypeHelper::matchClassType(null, []);
     }
 
     public function testClassTypeCheckCase4()
     {
-        $message = 'Argument $type passed to humhub\helpers\DataTypeHelper::filterClassType must be one of string, string[] - 0 given.';
+        $message = 'Argument $allowedTypes passed to humhub\helpers\DataTypeHelper::parseTypes must be one of the following types: string, string[], object[], NULL - int given.';
 
-        $this->expectException(InvalidArgumentValueException::class);
+        $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_INVALID_TYPE);
 
-        DataTypeHelper::filterClassType(null, 0);
+        DataTypeHelper::matchClassType(null, 0);
     }
 
     public function testClassTypeCheckCase5()
     {
-        $message = 'Argument $type passed to humhub\helpers\DataTypeHelper::filterClassType must be one of string, string[] - \'0\' given.';
+        $message = 'Argument $allowedTypes[0] passed to humhub\helpers\DataTypeHelper::parseTypes must be a valid class/interface/trait name or an object instance - \'0\' given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
 
-        DataTypeHelper::filterClassType(null, '0');
+        DataTypeHelper::matchClassType(null, '0');
     }
 
 
     public function testClassTypeCheckCase6()
     {
-        $message = 'Argument $type[0] passed to humhub\helpers\DataTypeHelper::filterClassType must be a valid class/interface/trait name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
+        $message = 'Argument $allowedTypes[0] passed to humhub\helpers\DataTypeHelper::parseTypes must be a valid class/interface/trait name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
         $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
 
         /** @noinspection PhpUndefinedClassInspection */
-        DataTypeHelper::filterClassType(null, NonExistingClassName::class);
+        DataTypeHelper::matchClassType(null, NonExistingClassName::class);
     }
 
     public function testClassTypeCheckCase7()
     {
-        $message = 'Argument $type[1] passed to humhub\helpers\DataTypeHelper::filterClassType must be a valid class/interface/trait name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
+        $message = 'Argument $allowedTypes[1] passed to humhub\helpers\DataTypeHelper::parseTypes must be a valid class/interface/trait name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
         $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_TYPE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
 
         /** @noinspection PhpUndefinedClassInspection */
-        DataTypeHelper::filterClassType(null, [BaseObject::class, NonExistingClassName::class]);
+        DataTypeHelper::matchClassType(null, [BaseObject::class, NonExistingClassName::class]);
     }
 
     public function testClassTypeCheckCaseNull()
     {
         static::assertNull(
-            DataTypeHelper::filterClassType(null, BaseObject::class, false)
+            DataTypeHelper::matchClassType(null, BaseObject::class)
         );
 
         static::assertNull(
-            DataTypeHelper::filterClassType(null, [BaseObject::class, null])
+            DataTypeHelper::matchClassType(null, [BaseObject::class, null])
         );
 
-        $message = 'Argument $className passed to humhub\helpers\DataTypeHelper::filterClassType must be of type yii\base\BaseObject - NULL given.';
+        $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - NULL given.';
 
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY + DataTypeHelper::CLASS_CHECK_INVALID_TYPE + DataTypeHelper::CLASS_CHECK_VALUE_IS_NULL);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY + DataTypeHelper::CLASS_CHECK_INVALID_TYPE + DataTypeHelper::CLASS_CHECK_VALUE_IS_NULL);
 
-        DataTypeHelper::filterClassType(null, BaseObject::class);
+        DataTypeHelper::ensureClassType(null, BaseObject::class);
     }
 
     public function testClassTypeCheckCaseEmptyString()
     {
         static::assertNull(
-            DataTypeHelper::filterClassType('', BaseObject::class, false)
+            DataTypeHelper::matchClassType('', BaseObject::class)
         );
 
-        static::assertNull(
-            DataTypeHelper::filterClassType('', [BaseObject::class, null], true, false)
-        );
-
-        $message = 'Argument $className passed to humhub\helpers\DataTypeHelper::filterClassType must be of type yii\base\BaseObject - empty string given.';
+        $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - empty string given.';
 
         $this->expectException(InvalidArgumentClassException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY + DataTypeHelper::CLASS_CHECK_INVALID_TYPE + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_VALUE_IS_EMPTY + DataTypeHelper::CLASS_CHECK_INVALID_TYPE + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST);
 
-        DataTypeHelper::filterClassType('', BaseObject::class);
+        DataTypeHelper::ensureClassType('', BaseObject::class);
     }
 
     public function testClassTypeCheckCaseString()
     {
         /** @noinspection PhpUndefinedClassInspection */
         static::assertNull(
-            DataTypeHelper::filterClassType(NonExistingClassName::class, BaseObject::class, false)
+            DataTypeHelper::matchClassType(NonExistingClassName::class, BaseObject::class, false)
         );
 
-        $message = 'Argument $className passed to humhub\helpers\DataTypeHelper::filterClassType must be a valid class name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
+        $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be a valid class name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
 
         $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
 
         /** @noinspection PhpUndefinedClassInspection */
-        DataTypeHelper::filterClassType(NonExistingClassName::class, BaseObject::class);
+        DataTypeHelper::ensureClassType(NonExistingClassName::class, BaseObject::class);
     }
 
     public function testClassTypeCheckCaseWrongClass()
     {
         static::assertNull(
-            DataTypeHelper::filterClassType(Exception::class, BaseObject::class, false)
+            DataTypeHelper::matchClassType(Exception::class, BaseObject::class)
         );
 
-        $message = 'Argument $className passed to humhub\helpers\DataTypeHelper::filterClassType must be of type yii\base\BaseObject - PHPUnit\Framework\Exception given.';
+        $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - PHPUnit\Framework\Exception given.';
 
         $this->expectException(InvalidArgumentClassException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST);
 
-        DataTypeHelper::filterClassType(Exception::class, BaseObject::class);
+        DataTypeHelper::ensureClassType(Exception::class, BaseObject::class);
     }
 
     public function testClassTypeCheckCaseWrongInstance()
     {
         static::assertNull(
-            DataTypeHelper::filterClassType(new Exception('hello'), BaseObject::class, false)
+            DataTypeHelper::matchClassType(new Exception('hello'), BaseObject::class)
         );
 
-        $message = 'Argument $className passed to humhub\helpers\DataTypeHelper::filterClassType must be of type yii\base\BaseObject - PHPUnit\Framework\Exception given.';
+        $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - PHPUnit\Framework\Exception given.';
 
         $this->expectException(InvalidArgumentClassException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST + DataTypeHelper::CLASS_CHECK_VALUE_IS_INSTANCE);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_TYPE_NOT_IN_LIST + DataTypeHelper::CLASS_CHECK_VALUE_IS_INSTANCE);
 
-        DataTypeHelper::filterClassType(new Exception('hello'), BaseObject::class);
+        DataTypeHelper::ensureClassType(new Exception('hello'), BaseObject::class);
     }
 
     public function testClassTypeCheckCaseCorrectClass()
     {
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::filterClassType(Exception::class, Exception::class)
+            DataTypeHelper::matchClassType(Exception::class, Exception::class)
         );
 
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::filterClassType(Exception::class, [new \Exception()])
+            DataTypeHelper::matchClassType(Exception::class, [new \Exception()])
         );
 
         static::assertEquals(
             BaseObject::class,
-            DataTypeHelper::filterClassType(BaseObject::class, Configurable::class)
+            DataTypeHelper::matchClassType(BaseObject::class, Configurable::class)
         );
 
         static::assertEquals(
             Model::class,
-            DataTypeHelper::filterClassType(Model::class, ArrayableTrait::class)
-        );
-
-        static::assertEquals(
-            Exception::class,
-            DataTypeHelper::filterClassType('#%' . Exception::class, Exception::class, false, false)
+            DataTypeHelper::matchClassType(Model::class, ArrayableTrait::class)
         );
 
         static::assertNull(
-            DataTypeHelper::filterClassType('#%' . Exception::class, Exception::class, false, true)
+            DataTypeHelper::matchClassType('#%' . Exception::class, Exception::class)
         );
 
-        $message = 'Argument $className passed to humhub\helpers\DataTypeHelper::filterClassType must be a valid class name or an object instance - #%PHPUnit\Framework\Exception given.';
+        $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be a valid class name or an object instance - #%PHPUnit\Framework\Exception given.';
 
-        $this->expectException(InvalidArgumentClassException::class);
+        $this->expectException(InvalidArgumentValueException::class);
         $this->expectExceptionMessage($message);
-        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER);
+        $this->expectExceptionCode(DataTypeHelper::CLASS_CHECK_INVALID_VALUE_PARAMETER + DataTypeHelper::CLASS_CHECK_NON_EXISTING_CLASS);
 
-        DataTypeHelper::filterClassType('#%' . Exception::class, Exception::class);
+        DataTypeHelper::ensureClassType('#%' . Exception::class, Exception::class);
     }
 
     public function testClassTypeCheckCaseCorrectInstance()
     {
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::filterClassType(new Exception('hello'), Exception::class)
+            DataTypeHelper::matchClassType(new Exception('hello'), Exception::class)
         );
 
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::filterClassType(new Exception('hello'), [new \Exception()])
+            DataTypeHelper::matchClassType(new Exception('hello'), [new \Exception()])
         );
 
         static::assertEquals(
             BaseObject::class,
-            DataTypeHelper::filterClassType(new BaseObject(), Configurable::class)
+            DataTypeHelper::matchClassType(new BaseObject(), Configurable::class)
         );
 
         static::assertEquals(
             Model::class,
-            DataTypeHelper::filterClassType(new Model(), ArrayableTrait::class)
+            DataTypeHelper::matchClassType(new Model(), ArrayableTrait::class)
         );
     }
 }

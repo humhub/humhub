@@ -86,7 +86,7 @@ class ContentAddonController extends Controller
         }
 
         /** @var ContentAddonActiveRecord|ContentActiveRecord $modelClass */
-        $modelClass = DataTypeHelper::filterClassType(
+        $modelClass = DataTypeHelper::ensureClassType(
             $modelClass,
             [ContentAddonActiveRecord::class, ContentActiveRecord::class]
         );
@@ -123,7 +123,7 @@ class ContentAddonController extends Controller
     public function loadContentAddon($className, $pk)
     {
         /** @var ContentAddonActiveRecord|null $className */
-        $className = DataTypeHelper::filterClassType($className, ContentAddonActiveRecord::class);
+        $className = DataTypeHelper::matchClassType($className, ContentAddonActiveRecord::class);
         if ($className === null) {
             throw new Exception("Given className is not a content addon model!");
         }

@@ -65,7 +65,7 @@ class CommentController extends Controller
             $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
             /** @var Comment|ContentActiveRecord $modelClass */
-            $modelClass = DataTypeHelper::filterClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            $modelClass = DataTypeHelper::ensureClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
             $this->target = $modelClass::findOne(['id' => $modelPk]);
 
             if (!$this->target) {

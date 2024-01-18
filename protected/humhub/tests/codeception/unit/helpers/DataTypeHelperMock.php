@@ -19,13 +19,13 @@ use humhub\helpers\DataTypeHelper;
  */
 class DataTypeHelperMock extends DataTypeHelper
 {
-    public static function checkTypeHelper(&$input, string $inputType, $typeToCheck): ?string
+    public static function matchTypeHelper($typeToCheck, &$input, string $inputType, ?array &$inputTraits = null): ?string
     {
-        return parent::checkTypeHelper($input, $inputType, $typeToCheck);
+        return parent::matchTypeHelper($typeToCheck, $input, $inputType, $inputTraits);
     }
 
-    public static function parseTypes($types): array
+    public static function parseTypes(&$allowedTypes, ?bool &$allowNull = false, ?array &$checkTraits = null, bool $allowCallables = true, bool $allowGetTypes = true): array
     {
-        return parent::parseTypes($types);
+        return parent::parseTypes($allowedTypes, $allowNull, $checkTraits, $allowCallables, $allowGetTypes);
     }
 }

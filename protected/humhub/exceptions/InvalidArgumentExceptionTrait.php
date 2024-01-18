@@ -23,9 +23,9 @@ trait InvalidArgumentExceptionTrait
     protected bool $isInstantiating = true;
 
     /**
-     * @param string $parameterOrMessage Name of parameter in question, or alternatively the full message string containing at
-     *        least one space character (ASCII 32). In this case, `$valid` and `$given` are considered to be
-     *        `$code` and `$previous` respectively
+     * @param string $parameterOrMessage Name of parameter in question, or alternatively the full message string
+     *      containing at least one space character (ASCII 32). In this case, `$valid` and `$given` are considered to be
+     *      `$code` and `$previous` respectively
      * @param string|string[] $valid (List of) valid parameter(s)
      * @param mixed $given Parameter received
      * @param int $code Optional exception code
@@ -41,11 +41,23 @@ trait InvalidArgumentExceptionTrait
 
         try {
             if (!is_string($parameterOrMessage)) {
-                throw new InvalidArgumentTypeException('$parameterOrMessage', ['string'], $parameterOrMessage, 0, $this);
+                throw new InvalidArgumentTypeException(
+                    '$parameterOrMessage',
+                    ['string'],
+                    $parameterOrMessage,
+                    0,
+                    $this
+                );
             }
 
             if (empty($parameterOrMessage = trim($parameterOrMessage))) {
-                throw new InvalidArgumentValueException('$parameterOrMessage', 'non-empty string', $parameterOrMessage, 0, $this);
+                throw new InvalidArgumentValueException(
+                    '$parameterOrMessage',
+                    'non-empty string',
+                    $parameterOrMessage,
+                    0,
+                    $this
+                );
             }
 
             // check if $parameter is actually the $message
@@ -56,12 +68,19 @@ trait InvalidArgumentExceptionTrait
                     $previous ??= $given;
                 }
             } else {
-                $trace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 2);
-                $trace = end($trace);
-                $this->methodName = ltrim(($trace['class'] ?? '') . '::' . ($trace['function'] ?? 'unknown method'), ':');
+                if (false !== $pos = strrpos($parameterOrMessage, '::')) {
+                    $this->methodName = trim(substr($parameterOrMessage, 0, $pos), ':');
+                    $this->parameter = trim(substr($parameterOrMessage, $pos), ':');
+                } else {
+                    $trace = debug_backtrace(\DEBUG_BACKTRACE_IGNORE_ARGS, 2);
+                    $trace = end($trace);
+                    $this->methodName = ltrim(
+                        ($trace['class'] ?? '') . '::' . ($trace['function'] ?? 'unknown method'),
+                        ':'
+                    );
 
-                $this->parameter = $parameterOrMessage;
-
+                    $this->parameter = $parameterOrMessage;
+                }
                 try {
                     $this->setValid($valid);
                 } catch (InvalidArgumentTypeException $t) {
@@ -86,7 +105,7 @@ trait InvalidArgumentExceptionTrait
     }
 
     /**
-     * @see static::__construct()
+     * @see          static::__construct()
      * @noinspection PhpUnhandledExceptionInspection
      * @noinspection PhpDocMissingThrowsInspection
      */

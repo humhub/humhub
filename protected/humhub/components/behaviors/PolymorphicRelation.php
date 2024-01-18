@@ -156,7 +156,7 @@ class PolymorphicRelation extends Behavior
             return true;
         }
 
-        if (DataTypeHelper::filterClassType($object, $this->mustBeInstanceOf, false)) { //|| $object->asa($instance) !== null
+        if (DataTypeHelper::matchClassType($object, $this->mustBeInstanceOf)) { //|| $object->asa($instance) !== null
             return true;
         }
 

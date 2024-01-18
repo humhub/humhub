@@ -44,7 +44,7 @@ class MigrationService extends Component
      */
     public function __construct(?BaseModule $module = null)
     {
-        DataTypeHelper::filterClassType($module, [ApplicationInterface::class, Module::class, null]);
+        DataTypeHelper::ensureClassType($module, [ApplicationInterface::class, Module::class, null]);
 
         $this->module = $module ?? Yii::$app;
 

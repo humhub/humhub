@@ -138,7 +138,7 @@ class UploadAction extends Action
 
 
         /** @var ActiveRecord|string $model */
-        if ($model != '' && $pk != '' && $model = DataTypeHelper::filterClassType($model, ActiveRecord::class)) {
+        if ($model != '' && $pk != '' && $model = DataTypeHelper::ensureClassType($model, ActiveRecord::class)) {
             $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canEdit()) {
