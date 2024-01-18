@@ -37,7 +37,6 @@ class HumHubHelper extends Module
     /* @codingStandardsIgnoreLine PSR2.Methods.MethodDeclaration.Underscore */
     public function _before(\Codeception\TestInterface $test)
     {
-        Yii::$app->getUrlManager()->setScriptUrl('/index-test.php');
         static::reloadSettings(__METHOD__);
         static::flushCache(__METHOD__);
     }
