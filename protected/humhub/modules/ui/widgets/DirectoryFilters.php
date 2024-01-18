@@ -70,11 +70,15 @@ abstract class DirectoryFilters extends Widget
     {
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
-            $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
-                'directoryFilters' => $this,
-                'filter' => $filter,
-                'data' => array_merge(self::getDefaultFilterData(), $data),
-            ]);
+            $data = array_merge(self::getDefaultFilterData(), $data);
+            $filterInput = $this->renderFilterInput($filter, $data);
+
+            if ($filterInput !== $data['beforeInput'] . $data['afterInput']) {
+                $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
+                    'data' => $data,
+                    'filterInput' => $filterInput
+                ]);
+            }
         }
         return $filtersHtml;
     }

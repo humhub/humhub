@@ -10,6 +10,7 @@ namespace humhub\modules\user\widgets;
 use humhub\libs\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use Yii;
@@ -27,6 +28,21 @@ class PeopleFilters extends DirectoryFilters
      */
     public $pageUrl = '/user/people';
 
+    public ?PeopleQuery $query = null;
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        if (!(new PeopleSettingsForm())->reduceFilterOptions) {
+            // Disable the reducing filter options to currently filtered users
+            $this->query = null;
+        }
+
+        parent::init();
+    }
+
     protected function initDefaultFilters()
     {
         // Keyword
@@ -41,13 +57,15 @@ class PeopleFilters extends DirectoryFilters
 
         // Group
         $groupOptions = [];
-        /* @var Group[] $groups */
-        $groups = Group::find()
-            ->where(['show_at_directory' => 1])
-            ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
-            ->all();
+        $groups = Group::find()->where(['show_at_directory' => 1]);
+        if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
+            $groups->leftJoin('group_user', 'group_user.group_id = group.id')
+                ->andWhere(['IN', 'group_user.user_id', $this->query->getFilteredUsersSubQuery()]);
+        }
+        $groups = $groups->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])->all();
         if ($groups) {
             $groupOptions[''] = Yii::t('UserModule.base', 'Any');
+            /* @var Group[] $groups */
             foreach ($groups as $group) {
                 $groupOptions[$group->id] = $group->name;
             }
@@ -120,7 +138,8 @@ class PeopleFilters extends DirectoryFilters
                 $filterData['widget'] = PeopleFilterPicker::class;
                 $filterData['inputOptions'] = ['data-dropdown-auto-width' => 'true'];
                 $filterData['widgetOptions'] = [
-                    'itemKey' => $profileField->internal_name
+                    'itemKey' => $profileField->internal_name,
+                    'query' => $this->query
                 ];
                 break;
 

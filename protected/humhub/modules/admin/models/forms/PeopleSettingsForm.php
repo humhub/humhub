@@ -26,6 +26,7 @@ class PeopleSettingsForm extends Model
     public $detail3;
     public $defaultSorting;
     public $defaultSortingGroup;
+    public $reduceFilterOptions;
 
     /**
      * @var array Cached options for card details from tables of user profile and its categories
@@ -45,6 +46,7 @@ class PeopleSettingsForm extends Model
         $this->detail3 = Yii::$app->settings->get('people.detail3', '');
         $this->defaultSorting = Yii::$app->settings->get('people.defaultSorting', 'lastlogin');
         $this->defaultSortingGroup = Yii::$app->settings->get('people.defaultSortingGroup', '');
+        $this->reduceFilterOptions = Yii::$app->settings->get('people.reduceFilterOptions', true);
     }
 
     /**
@@ -60,6 +62,7 @@ class PeopleSettingsForm extends Model
             ['defaultSortingGroup', 'required', 'when' => function ($model) {
                 return $model->defaultSorting == '';
             }],
+            ['reduceFilterOptions', 'boolean']
         ];
     }
 
@@ -74,6 +77,7 @@ class PeopleSettingsForm extends Model
             'detail3' => Yii::t('AdminModule.user', 'Information 3'),
             'defaultSorting' => Yii::t('AdminModule.user', 'Default Sorting'),
             'defaultSortingGroup' => Yii::t('AdminModule.user', 'Prioritised User Group'),
+            'reduceFilterOptions' => Yii::t('AdminModule.user', 'Reduce filter options'),
         ];
     }
 
@@ -84,6 +88,7 @@ class PeopleSettingsForm extends Model
     {
         return [
             'defaultSortingGroup' => Yii::t('AdminModule.user', 'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.'),
+            'reduceFilterOptions' => Yii::t('AdminModule.user', 'Display only options what filtered users have. Disable this option if you prefer better performance.'),
         ];
     }
 
@@ -98,6 +103,7 @@ class PeopleSettingsForm extends Model
         Yii::$app->settings->set('people.detail3', $this->detail3);
         Yii::$app->settings->set('people.defaultSorting', $this->defaultSorting);
         Yii::$app->settings->set('people.defaultSortingGroup', $this->defaultSortingGroup);
+        Yii::$app->settings->set('people.reduceFilterOptions', $this->reduceFilterOptions);
 
         return true;
     }

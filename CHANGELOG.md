@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #6744: Make sure to call `humhub\components\Module::update()` on Module updates
 - Fix #6796: Files in the RichText doesn't open as new tab
 - Fix #6800: Fix missed domain of profile url in email notifications
+- Enh #6806: Reduce people filter options depending on what filtered users have
 
 1.15.2 (December 19, 2023)
 --------------------------

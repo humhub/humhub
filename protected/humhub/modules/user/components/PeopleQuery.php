@@ -39,6 +39,8 @@ class PeopleQuery extends ActiveQueryUser
      */
     public $pageSize = 25;
 
+    public array $activeFilters = [];
+
     /**
      * @inheritdoc
      */
@@ -76,6 +78,7 @@ class PeopleQuery extends ActiveQueryUser
     public function filterByKeyword(): PeopleQuery
     {
         $keyword = Yii::$app->request->get('keyword', '');
+        $this->setActiveFilter('keyword', $keyword);
 
         return $this->search($keyword);
     }
@@ -92,6 +95,8 @@ class PeopleQuery extends ActiveQueryUser
         if (empty($fields)) {
             return $this;
         }
+
+        $this->setActiveFilter('fields', $fields);
 
         // Skip fields if they are not defined for directory filters
         $filteredProfileFields = ProfileField::find()
@@ -126,11 +131,12 @@ class PeopleQuery extends ActiveQueryUser
 
     public function filterByGroup(): PeopleQuery
     {
-        $groupId = Yii::$app->request->get('groupId', 0);
+        $groupId = Yii::$app->request->get('groupId');
 
         if ($groupId) {
             $group = Group::findOne(['id' => $groupId, 'show_at_directory' => 1]);
             if ($group) {
+                $this->setActiveFilter('group', $group->id);
                 $this->filteredGroup = $group;
                 $this->isGroupMember($group);
             }
@@ -141,7 +147,10 @@ class PeopleQuery extends ActiveQueryUser
 
     public function filterByConnection(): PeopleQuery
     {
-        switch (Yii::$app->request->get('connection')) {
+        $connection = Yii::$app->request->get('connection');
+        $this->setActiveFilter('connection', $connection);
+
+        switch ($connection) {
             case 'followers':
                 return $this->filterByConnectionFollowers();
             case 'following':
@@ -193,7 +202,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function isFilteredByGroup(): bool
     {
-        return $this->filteredGroup instanceof Group;
+        return $this->isFiltered('group');
     }
 
     public function order(): PeopleQuery
@@ -241,10 +250,33 @@ class PeopleQuery extends ActiveQueryUser
 
     public function eagerLoading(): PeopleQuery
     {
-        return $this
-            ->with('profile')
-            ->with('contentContainerRecord')
-            ;
+        return $this->with('profile')->with('contentContainerRecord');
+    }
+
+    public function isFiltered(?string $filter = null): bool
+    {
+        return $filter === null
+            ? $this->activeFilters !== []
+            : isset($this->activeFilters[$filter]);
+    }
+
+    public function setActiveFilter(string $name, $value)
+    {
+        if ($value === null || $value === '' || $value === []) {
+            return;
+        }
+
+        $this->activeFilters[$name] = $value;
+    }
+
+    public function getFilteredUsersSubQuery(): PeopleQuery
+    {
+        $query = clone $this;
+
+        return $query->select('user.id')
+            ->limit(null)
+            ->offset(null)
+            ->orderBy(null);
     }
 
 }

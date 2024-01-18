@@ -33,6 +33,8 @@ use humhub\widgets\Button;
         <?= $form->field($model, 'defaultSortingGroup')->dropDownList(PeopleSettingsForm::getSortingGroupOptions()); ?>
     </div>
 
+    <?= $form->field($model, 'reduceFilterOptions')->checkbox() ?>
+
     <?= Button::save(Yii::t('AdminModule.user', 'Save'))->submit(); ?>
 
     <?php ActiveForm::end(); ?>
