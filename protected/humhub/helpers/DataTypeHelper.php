@@ -267,11 +267,11 @@ class DataTypeHelper
      * @param bool $strict indicates if strict comparison should be performed:
      * ``
      * - if TRUE, `$value` must already be of type `boolean`. In that case, its value is returned, NULL otherwise.
-     * - if FALSE, a conversion to `boolean` is attempted, where
+     * - if FALSE, a conversion to `boolean` is attempted using `(bool)`. No exception is thrown, ever.
+     *       Note: "false", "off", "no" yield TRUE in this case.
+     * - if NULL, a conversion to `boolean` is attempted, where
      *      "1", "true", "on", and "yes" yield TRUE,
      *      "0", "false", "off", "no", and "" yield FALSE.
-     * - if NULL, a conversion to `boolean` is attempted using `(bool)`. No exception is thrown, ever.
-     *      Note: "false", "off", "no" yield TRUE in this case.
      * ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
@@ -286,17 +286,17 @@ class DataTypeHelper
             return self::filterType($value, [self::BOOLEAN], $throwException);
         }
 
-        if ($strict === null) {
+        if ($strict === false) {
             try {
-                return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE) ?? (bool)$value;
+                return (bool)$value;
             } catch (\Throwable $e) {
             }
             return false;
         }
 
-        $input = filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+        $input = is_array($value) ? !empty($value) : filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
 
-        return self::matchType($input, [self::BOOLEAN, null], $throwException) === null ? null : $input;
+        return self::filterType($input, [self::BOOLEAN, null], $throwException);
     }
 
     /**

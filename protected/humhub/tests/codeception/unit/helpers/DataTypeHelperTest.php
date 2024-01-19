@@ -284,7 +284,7 @@ class DataTypeHelperTest extends Unit
     /**
      * @depends testCheckTypeCase
      */
-    public function testFilterBool()
+    public function testFilterBoolStrict()
     {
         static::assertTrue(DataTypeHelper::filterBool(true, true));
         static::assertNull(DataTypeHelper::filterBool('true', true));
@@ -293,24 +293,49 @@ class DataTypeHelperTest extends Unit
         static::assertFalse(DataTypeHelper::filterBool(false, true));
         static::assertNull(DataTypeHelper::filterBool('false', true));
         static::assertNull(DataTypeHelper::filterBool(0, true));
+    }
 
-        static::assertTrue(DataTypeHelper::filterBool(true));
-        static::assertTrue(DataTypeHelper::filterBool('true'));
-        static::assertTrue(DataTypeHelper::filterBool(1));
-        static::assertTrue(DataTypeHelper::filterBool('1'));
-
+    /**
+     * @depends testCheckTypeCase
+     */
+    public function testFilterBoolConversion()
+    {
         static::assertTrue(DataTypeHelper::filterBool(true, null));
+        static::assertTrue(DataTypeHelper::filterBool('true', null));
         static::assertTrue(DataTypeHelper::filterBool(1, null));
         static::assertTrue(DataTypeHelper::filterBool('1', null));
-        static::assertTrue(DataTypeHelper::filterBool('foo', null));
-        static::assertTrue(DataTypeHelper::filterBool(['1'], null));
-        static::assertFalse(DataTypeHelper::filterBool(false, null));
+        static::assertTrue(DataTypeHelper::filterBool([''], null));
+        static::assertTrue(DataTypeHelper::filterBool([0], null));
+        static::assertTrue(DataTypeHelper::filterBool([1], null));
+
         static::assertFalse(DataTypeHelper::filterBool('false', null));
         static::assertFalse(DataTypeHelper::filterBool('0', null));
         static::assertFalse(DataTypeHelper::filterBool('', null));
         static::assertFalse(DataTypeHelper::filterBool(0, null));
         static::assertFalse(DataTypeHelper::filterBool([], null));
         static::assertFalse(DataTypeHelper::filterBool(null, null));
+
+        static::assertNull(DataTypeHelper::filterBool(new static(), null));
+    }
+
+    /**
+     * @depends testCheckTypeCase
+     */
+    public function testFilterBoolDefault()
+    {
+        static::assertTrue(DataTypeHelper::filterBool(true, false));
+        static::assertTrue(DataTypeHelper::filterBool(1, false));
+        static::assertTrue(DataTypeHelper::filterBool('1', false));
+        static::assertTrue(DataTypeHelper::filterBool('foo', false));
+        static::assertTrue(DataTypeHelper::filterBool(['1'], false));
+        static::assertTrue(DataTypeHelper::filterBool('false', false));
+
+        static::assertFalse(DataTypeHelper::filterBool(false, false));
+        static::assertFalse(DataTypeHelper::filterBool('0', false));
+        static::assertFalse(DataTypeHelper::filterBool('', false));
+        static::assertFalse(DataTypeHelper::filterBool(0, false));
+        static::assertFalse(DataTypeHelper::filterBool([], false));
+        static::assertFalse(DataTypeHelper::filterBool(null, false));
     }
 
     /**
