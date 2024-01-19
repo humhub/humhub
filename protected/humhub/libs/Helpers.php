@@ -11,8 +11,9 @@ namespace humhub\libs;
 use humhub\exceptions\InvalidArgumentClassException;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidArgumentValueException;
+use LogicException;
+use Stringable;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 /**
  * This class contains a lot of html helpers for the views
@@ -35,6 +36,7 @@ class Helpers
      *
      * @param string $text - Text string you will shorten
      * @param integer $length - Count of characters to show
+     *
      * @return string
      */
     public static function truncateText($text, $length): string
@@ -56,6 +58,7 @@ class Helpers
 
     /**
      * Compare two arrays values
+     *
      * @param array $a - First array to compare against..
      * @param array $b - Second array
      *
@@ -76,20 +79,27 @@ class Helpers
 
     /**
      * Temp Function to use UTF8 SubStr
+     *
      * @deprecated since 1.11 Use mb_substr() instead.
      *
      * @param string $str
      * @param integer $from
      * @param integer $len
+     *
      * @return string
      */
     public static function substru($str, $from, $len): string
     {
-        return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
+        return preg_replace(
+            '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s',
+            '$1',
+            $str
+        );
     }
 
     /**
      * Get a readable time format from seconds
+     *
      * @param string $sekunden - Seconds you will formatting
      * */
     public static function getFormattedTime($sekunden)
@@ -121,6 +131,7 @@ class Helpers
      * Source: http://php.net/manual/en/function.ini-get.php
      *
      * @param String $val
+     *
      * @return int bytes
      * @deprecated bug on PHP7 "A non well formed numeric value encountered"
      * @see \humhub\libs\Helpers::getBytesOfIniValue instead
@@ -188,6 +199,124 @@ class Helpers
     }
 
     /**
+     * @param mixed $value value to be tested or converted
+     * @param bool $strict indicates if strict comparison should be performed:
+     * ``
+     * - if True, `$value` must already be of type `int`.
+     * - if False, a conversion to `int` is attempted.
+     * ``
+     *
+     * @since 1.16
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
+     */
+    public static function checkBool(&$value, bool $strict = false): ?bool
+    {
+        // check if strict
+        if (($strict && !is_bool($value)) || !is_scalar($value)) {
+            return null;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
+    }
+
+    /**
+     * @param mixed $value value to be tested or converted
+     * @param bool $strict indicates if strict comparison should be performed:
+     *  ``
+     *  - if True, `$value` must already be of type `float`.
+     *  - if False, a conversion to `float` is attempted.
+     *  ``
+     *
+     * @since 1.16
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
+     */
+    public static function checkFloat(&$value, bool $strict = false): ?float
+    {
+        // check if strict
+        if (($strict && !is_float($value)) || !is_scalar($value)) {
+            return null;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_FLOAT, FILTER_NULL_ON_FAILURE);
+    }
+
+    /**
+     * @param mixed $value value to be tested or converted
+     * @param bool $strict indicates if strict comparison should be performed:
+     * ``
+     * - if True, `$value` must already be of type `int`.
+     * - if False, a conversion to `int` is attempted.
+     * ``
+     *
+     * @since 1.16
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
+     */
+    public static function checkInt(&$value, bool $strict = false): ?int
+    {
+        // check if strict
+        if (($strict && !is_int($value)) || !is_scalar($value)) {
+            return null;
+        }
+
+        return filter_var($value, FILTER_VALIDATE_INT, FILTER_NULL_ON_FAILURE);
+    }
+
+    /**
+     * @param mixed $value value to be tested or converted
+     * @param bool $strict indicates if strict comparison should be performed:
+     * ``
+     * - if True, `$value` must already be of type `string`.
+     * - if False, a conversion to `string` is attempted.
+     * ``
+     *
+     * @since 1.16
+     * @noinspection PhpParameterByRefIsNotUsedAsReferenceInspection
+     */
+    public static function checkString(&$value, bool $strict = false): ?string
+    {
+
+        if ($strict) {
+            return is_string($value) ? $value : null;
+        }
+
+        if ($value instanceof Stringable || (\is_object($value) && \method_exists($value, '__toString'))) {
+            return $value->__toString();
+        }
+
+        if (!is_scalar($value)) {
+            return null;
+        }
+
+        return (string)$value;
+    }
+
+    /**
+     * @param $types
+     *
+     * @return array|string[]
+     * @since 1.16
+     */
+    public static function parseTypes($types): array
+    {
+
+        if ($types === null) {
+            $typesChecked = ['NULL'];
+        } elseif (is_array($types)) {
+            $typesChecked = $types;
+        } elseif (is_string($types)) {
+            $typesChecked = explode('|', $types);
+        } else {
+            throw new InvalidArgumentTypeException(
+                '$types',
+                ['string', 'string[]', null],
+                $types
+            );
+        }
+
+        return $typesChecked;
+    }
+
+    /**
      * Checks if the class has this class as one of its parents
      *
      * Code of the thrown Exception is a bit-mask consisting of the following bits
@@ -200,14 +329,15 @@ class Helpers
      * - self::CLASS_CHECK_VALUE_IS_INSTANCE: $className is an object instance
      * - self::CLASS_CHECK_VALUE_IS_NULL: NULL value
      *
-     * @param string|object|null|mixed $className Object or classname to be checked. Null may be valid if included in $type.
-     *        Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
+     * @param string|object|null|mixed $className Object or classname to be checked. Null may be valid if included in
+     *     $type. Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
      * @param string|string[] $types (List of) class, interface or trait names that are allowed.
      *        If NULL is included, NULL values are also allowed.
-     * @param bool $throw Determines if an Exception should be thrown if $className doesn't match $type, or simply return NULL.
-     *        Invalid $types always throw an error!
+     * @param bool $throw Determines if an Exception should be thrown if $className doesn't match $type, or simply
+     *     return NULL. Invalid $types always throw an error!
      * @param bool $strict If set to true, no invalid characters are removed from a $className string.
-     *        If set to false, please make sure you use the function's return value, rather than $className, as they might diverge
+     *        If set to false, please make sure you use the function's return value, rather than $className, as they
+     *     might diverge
      *
      * @return string|null
      * @throws InvalidArgumentTypeException|InvalidArgumentClassException|InvalidArgumentValueException
@@ -217,10 +347,15 @@ class Helpers
     public static function checkClassType($className, $types, bool $throw = true, ?bool $strict = true): ?string
     {
         if (empty($types)) {
-            throw new InvalidArgumentValueException('$type', ['string', 'string[]'], $types, self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY);
+            throw new InvalidArgumentValueException(
+                '$type',
+                ['string', 'string[]'],
+                $types,
+                self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY
+            );
         }
 
-        $types = (array)$types;
+        $types = static::parseTypes($types);
         $valid = [];
         $allowNull = false;
 
@@ -237,13 +372,23 @@ class Helpers
             }
 
             if (!is_string($item)) {
-                throw new InvalidArgumentValueException(sprintf('$type[%s]', $index), ['class', 'object'], $item, self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_INVALID_TYPE);
+                throw new InvalidArgumentValueException(
+                    sprintf('$type[%s]', $index),
+                    ['class', 'object'],
+                    $item,
+                    self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_INVALID_TYPE
+                );
             }
 
             $isTrait = false;
 
             if (!class_exists($item) && !interface_exists($item, false) && !($isTrait = trait_exists($item, false))) {
-                throw new InvalidArgumentValueException(sprintf('$type[%s]', $index), 'a valid class/interface/trait name or an object instance', $item, self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_NON_EXISTING_CLASS);
+                throw new InvalidArgumentValueException(
+                    sprintf('$type[%s]', $index),
+                    'a valid class/interface/trait name or an object instance',
+                    $item,
+                    self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_NON_EXISTING_CLASS
+                );
             }
 
             $valid[$item] = $isTrait;
@@ -276,6 +421,8 @@ class Helpers
             );
         }
 
+        $strict ??= true;
+
         // check for other empty input
         if (empty($className)) {
             if ((!$strict && $allowNull) || !$throw) {
@@ -283,19 +430,18 @@ class Helpers
             }
 
             throw is_string($className)
-                    ? new InvalidArgumentClassException(
-                        '$className',
-                        $types,
-                        $className,
-                        self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_TYPE_NOT_IN_LIST
-                    )
-                    : new InvalidArgumentTypeException(
-                        '$className',
-                        $types,
-                        $className,
-                        self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE
-                    )
-            ;
+                ? new InvalidArgumentClassException(
+                    '$className',
+                    $types,
+                    $className,
+                    self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_TYPE_NOT_IN_LIST
+                )
+                : new InvalidArgumentTypeException(
+                    '$className',
+                    $types,
+                    $className,
+                    self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE
+                );
         }
 
         // Validation for object instances
@@ -388,6 +534,155 @@ class Helpers
     }
 
     /**
+     * @param                      $input
+     * @param string|string[] $types
+     * @param bool|null $requireAll
+     * @param string|null $throw = Name of the argument to be used for InvalidArgumentTypeException or Null if no
+     *     exception should be thrown
+     * @param array|null $typesChecked
+     *
+     * @return string|null
+     * @since 1.16
+     */
+    public static function checkType(&$input, $types, ?bool $requireAll = false, ?string $throw = '$input', ?array &$typesChecked = null): ?string
+    {
+
+        $requireAll ??= false;
+        $returnIndex = false;
+
+        if (is_array($types)) {
+            if (true === ($types[array_key_last($types)] ?? false)) {
+                $returnIndex = array_pop($types);
+            }
+
+            $typesChecked = $types;
+        } else {
+            $typesChecked = self::parseTypes($types);
+        }
+
+        if ($input === null) {
+            if (in_array($i = null, $typesChecked, true) || in_array($i = 'NULL', $typesChecked, true)) {
+                if ($requireAll && count($typesChecked)) {
+                    throw new LogicException("A variable can never be NULL and any other type at the same time!");
+                }
+
+                if ($returnIndex) {
+                    return array_search($i, $typesChecked, true);
+                }
+
+                return 'NULL';
+            }
+        } else {
+            $type = null;
+            $current = gettype($input);
+
+            foreach ($typesChecked as $i => $type) {
+                if ($type === null) {
+                    continue;
+                }
+
+                $type = static::checkTypeHelper($current, $type, $input);
+
+                if ($requireAll) {
+                    if ($type === null) {
+                        break;
+                    }
+                } elseif ($type !== null) {
+                    return $returnIndex
+                        ? $i
+                        : $type;
+                }
+            }
+        }
+
+        $typesChecked = array_map(
+            static fn($item) => is_callable($item, true, $name)
+                ? $name
+                : $item,
+            $typesChecked
+        );
+
+        if ($requireAll && $type !== null) {
+            return implode('|', $typesChecked);
+        }
+
+        if (!$throw) {
+            return null;
+        }
+
+        throw new InvalidArgumentTypeException(
+            $throw,
+            $typesChecked,
+            $input
+        );
+    }
+
+
+    protected static function checkTypeHelper(string $current, $type, &$input): ?string
+    {
+
+        if (is_string($type)) {
+            switch ($type) {
+                case 'boolean':     // the result of gettype()
+                case 'bool':        // the name as it is defined in code
+                    return $current === 'boolean'
+                        // return it the way it was tested
+                        ? $type
+                        : null;
+
+                case 'integer':     // the result of gettype()
+                case 'int':         // the name as it is defined in code
+                    return $current === 'integer'
+                        // return it the way it was tested
+                        ? $type
+                        : null;
+
+                case 'string':
+                case 'array':
+                case 'object':
+                case 'resource':
+                case 'resource (closed)': // as of PHP 7.2.0
+                case 'NULL':
+                case 'unknown type':
+                    return $current === $type
+                        ? $type
+                        : null;
+
+                case 'double': // (for historical reasons, "double" is returned in case of a float, and not simply "float")
+                case 'float':
+                    return $current === 'double'
+                        ? 'float'
+                        : null;
+
+                case Stringable::class:
+                    return $current === 'object'
+                    && ($input instanceof Stringable || is_callable([$input, '__toString']))
+                        ? $type
+                        : null;
+
+                default:
+                    /** @noinspection NotOptimalIfConditionsInspection */
+                    if (
+                        (class_exists($type) || interface_exists($type))
+                        && $input instanceof $type
+                    ) {
+                        return $type;
+                    }
+            }
+        }
+
+        if (
+            is_callable($type, false, $name)
+            && $type($input)
+        ) {
+            return $name;
+        }
+
+        return null;
+    }
+
+
+    /**
      * @param string|object $class
      * @param bool $autoload
      *
@@ -442,6 +737,7 @@ class Helpers
      *
      * @param string $a First subject string to compare.
      * @param string $b Second subject string to compare.
+     *
      * @return bool true if the strings are the same, false if they are different or if
      * either is not a string.
      */
@@ -472,6 +768,7 @@ class Helpers
      * This is mainly required for grouped notifications.
      *
      * @param $event
+     *
      * @since 1.2.1
      */
     public static function SqlMode($event)

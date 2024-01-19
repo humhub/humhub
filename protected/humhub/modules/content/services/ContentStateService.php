@@ -8,174 +8,61 @@
 
 namespace humhub\modules\content\services;
 
-use humhub\libs\DbDateValidator;
+use humhub\components\StateServiceDeletableTrait;
+use humhub\components\StateServiceDraftableTrait;
+use humhub\components\StateServicePublishableTrait;
+use humhub\components\StateServiceSchedulableTrait;
 use humhub\modules\content\models\Content;
-use yii\base\Component;
+use humhub\services\StateService;
 
 /**
  * This service is used to extend Content record for state features
+ *
  * @since 1.14
+ *
+ * @property Content $content Deprecated since 1.16; use static::$record
+ * @property Content $record
  */
-class ContentStateService extends Component
+class ContentStateService extends StateService
 {
-    public const EVENT_INIT = 'init';
-
-    public Content $content;
-
-    protected array $states = [];
+    use StateServiceDeletableTrait;
+    use StateServicePublishableTrait;
+    use StateServiceDraftableTrait;
+    use StateServiceSchedulableTrait;
 
     /**
      * @inheritdoc
      */
-    public function init()
+    public function initStates(): self
     {
-        parent::init();
-
         $this->allowState(Content::STATE_PUBLISHED);
         $this->allowState(Content::STATE_DRAFT);
         $this->allowState(Content::STATE_SCHEDULED);
         $this->allowState(Content::STATE_DELETED);
 
-        $this->trigger(self::EVENT_INIT);
+        return parent::initStates();
     }
 
     /**
-     * Allow a state for the Content
+     * @param Content $content
      *
-     * @param int $state
+     * @return $this
+     * @deprecated since v1.16; use static::setRecord()
+     * @see static::setRecord()
      */
-    public function allowState(int $state)
+    public function setContent(Content $content): ContentStateService
     {
-        if (!in_array($state, $this->states, true)) {
-            $this->states[] = $state;
-        }
+        return $this->setRecord($content);
     }
 
     /**
-     * Exclude a state from the allowed list
-     *
-     * @param int $state
+     * @return Content
+     * @deprecated since v1.16; use static::getRecord()
+     * @see static::getRecord()
      */
-    public function denyState(int $state)
+    public function getContent(): Content
     {
-        $stateIndex = array_search($state, $this->states);
-        if ($stateIndex !== false) {
-            unset($this->states[$stateIndex]);
-        }
-    }
-
-    /**
-     * Check if the Content has the requested state
-     *
-     * @param int|string|null $state
-     * @return bool
-     */
-    public function is($state): bool
-    {
-        // Always convert to integer before comparing,
-        // because right after save the content->state may be a string
-        return (int) $this->content->state === (int) $state;
-    }
-
-    public function isPublished(): bool
-    {
-        return $this->is(Content::STATE_PUBLISHED);
-    }
-
-    /**
-     * @since 1.14.3
-     * @return bool
-     */
-    public function wasPublished(): bool
-    {
-        return (bool) $this->content->was_published;
-    }
-
-    public function isDraft(): bool
-    {
-        return $this->is(Content::STATE_DRAFT);
-    }
-
-    public function isScheduled(): bool
-    {
-        return $this->is(Content::STATE_SCHEDULED);
-    }
-
-    public function isDeleted(): bool
-    {
-        return $this->is(Content::STATE_DELETED);
-    }
-
-    /**
-     * Check if the requested state can be set to the Content
-     *
-     * @param int|string|null $state
-     * @return bool
-     */
-    public function canChange($state): bool
-    {
-        return in_array((int) $state, $this->states);
-    }
-
-    /**
-     * Set new state
-     *
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     */
-    public function set($state, array $options = []): bool
-    {
-        $state = (int) $state;
-
-        if (!$this->canChange($state)) {
-            return false;
-        }
-
-        if ($state === Content::STATE_SCHEDULED) {
-            if (empty($options['scheduled_at'])) {
-                return false;
-            }
-
-            $this->content->scheduled_at = $options['scheduled_at'];
-            (new DbDateValidator())->validateAttribute($this->content, 'scheduled_at');
-            if ($this->content->hasErrors('scheduled_at')) {
-                $this->content->scheduled_at = null;
-                return false;
-            }
-        }
-
-        $this->content->setAttribute('state', $state);
-        return true;
-    }
-
-    /**
-     * Set and save new state for the Content
-     *
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     */
-    public function update($state, array $options = []): bool
-    {
-        return $this->set($state, $options) && $this->content->save();
-    }
-
-    public function publish(): bool
-    {
-        return $this->update(Content::STATE_PUBLISHED);
-    }
-
-    public function schedule(?string $date): bool
-    {
-        return $this->update(Content::STATE_SCHEDULED, ['scheduled_at' => $date]);
-    }
-
-    public function draft(): bool
-    {
-        return $this->update(Content::STATE_DRAFT);
-    }
-
-    public function delete(): bool
-    {
-        return $this->update(Content::STATE_DELETED);
+        /** @noinspection PhpIncompatibleReturnTypeInspection */
+        return $this->getRecord();
     }
 }

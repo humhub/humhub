@@ -8,6 +8,7 @@ Version 1.16 (Unreleased)
 -------------------------
 
 ### Deprecations
+- `\humhub\components\Event` use `\humhub\events\Event` instead
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
   (note: this also affects the virtual instance property `\humhub\modules\friendship\Module::$isActivated` which should
   now read `$isEnabled`!)
