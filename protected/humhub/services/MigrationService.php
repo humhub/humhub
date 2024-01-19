@@ -328,14 +328,14 @@ class MigrationService extends Component
          */
         $migrations = opendir($path);
         $params = [];
-        while (false !== ($migration = readdir($migrations))) {
-            if ($migration === '.' || $migration === '..' || $migration === 'uninstall.php') {
+        while (false !== ($filename = readdir($migrations))) {
+            if ($filename === '.' || $filename === '..' || $filename === 'uninstall.php') {
                 continue;
             }
 
             $command ??= Yii::$app->db->createCommand()->delete('migration', 'version = :version', $params);
 
-            $version = str_replace('.php', '', $migration);
+            $version = str_replace('.php', '', $filename);
             $command->bindValue(':version', $version)->execute();
             $result->output .= "    > migration entry $version removed.\n";
         }
