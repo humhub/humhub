@@ -215,6 +215,10 @@ class DataTypeHelper
     }
 
     /**
+     * Ensures that the provided `$value` is of or implements any class, interface or trait as provided by the
+     * `$allowedTypes` parameter. The function throws an Exception if none of the provided types is matched. Please see
+     * self::matchClassType() for more information on the parameters.
+     *
      * @see self::matchClassType()
      * @throws InvalidArgumentTypeException|InvalidArgumentClassException|InvalidArgumentValueException
      * @since 1.16
@@ -225,6 +229,10 @@ class DataTypeHelper
     }
 
     /**
+     * Ensures that the provided `$value` is of or implements any type as provided by the `$allowedTypes` parameter.
+     * The function throws an Exception if none of the provided types is matched.
+     * Please see self::matchType() for more information on the parameters.
+     *
      * @since 1.16
      * @see self::matchType()
      * @see InvalidArgumentTypeException
@@ -236,16 +244,7 @@ class DataTypeHelper
     }
 
     /**
-     * @param mixed $value Variable to be checked.
-     * @param string|string[]|object[] $allowedTypes Allowed types. Valid input are
-     * ``
-     * - simple type names as returned by gettype()
-     * - `null` value or `'NULL'` string
-     * - class, interface, or trait names
-     * - class instances whose class type will be checked
-     * - `callable`, e.g. `is_scalar`
-     * ``
-     * @param bool $throwException
+     * Helper variable that returns the input `$value` if it is matched against the `$allowedTypes`
      *
      * @return mixed|null The `$value` if it matches any type given in $allowedTypes, or NULL otherwise
      *
@@ -261,14 +260,24 @@ class DataTypeHelper
     }
 
     /**
+     * Returns the boolean value of `$value`, or NULL if it's not a boolean and cannot be converted.
+     * See the parameter description for more information.
+     *
      * @param mixed $value value to be tested or converted
      * @param bool $strict indicates if strict comparison should be performed:
      * ``
-     * - if True, `$value` must already be of type `int`.
-     * - if False, a conversion to `int` is attempted.
+     * - if TRUE, `$value` must already be of type `boolean`. In that case, its value is returned, NULL otherwise.
+     * - if FALSE, a conversion to `boolean` is attempted, where
+     *      "1", "true", "on", and "yes" yield TRUE,
+     *      "0", "false", "off", "no", and "" yield FALSE.
+     * - if NULL, a conversion to `boolean` is attempted using `(bool)`. No exception is thrown, ever.
+     *      Note: "false", "off", "no" yield TRUE in this case.
      * ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
+     * @return bool|null see `$strict` parameter for details
+     *
+     * @see filter_var()
      * @since 1.16
      */
     public static function filterBool($value, ?bool $strict = false, bool $throwException = false): ?bool
@@ -315,7 +324,7 @@ class DataTypeHelper
     }
 
     /**
-     * Checks if the class has this class as one of its parents
+     * Checks if the class or object has one of the given classes, interfaces or traits as one of its parents or implements it.
      *
      * @param string|object|null|mixed $value Object or classname to be checked. Null may be valid if included in
      *      $type. Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
@@ -450,11 +459,14 @@ class DataTypeHelper
     }
 
     /**
+     * Returns the boolean value of `$value`, or NULL if it's not a float and cannot be converted.
+     * See the parameter description for more information.
+     *
      * @param mixed $value value to be tested or converted
      * @param bool $strict indicates if strict comparison should be performed:
      *  ``
-     *  - if True, `$value` must already be of type `float`.
-     *  - if False, a conversion to `float` is attempted.
+     *  - if TRUE, `$value` must already be of type `float`.
+     *  - if FALSE, a conversion to `float` is attempted.
      *  ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
@@ -472,11 +484,14 @@ class DataTypeHelper
     }
 
     /**
+     * Returns the boolean value of `$value`, or NULL if it's not an integer and cannot be converted.
+     * See the parameter description for more information.
+     *
      * @param mixed $value value to be tested or converted
      * @param bool $strict indicates if strict comparison should be performed:
      * ``
-     * - if True, `$value` must already be of type `int`.
-     * - if False, a conversion to `int` is attempted.
+     * - if TRUE, `$value` must already be of type `int`.
+     * - if FALSE, a conversion to `int` is attempted.
      * ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
@@ -495,11 +510,14 @@ class DataTypeHelper
     }
 
     /**
+     * Returns the boolean value of `$value`, or NULL if it's not a scalar.
+     * See the parameter description for more information.
+     *
      * @param mixed $value value to be tested or converted
      * @param bool $strict indicates if strict comparison should be performed:
      * ``
-     * - if True, `$value` must already be a scalar value.
-     * - if False, `NULL` is also allowed (not throwing an exception, if `$throw` is True).
+     * - if TRUE, `$value` must already be a scalar value.
+     * - if FALSE, `NULL` is also allowed (not throwing an exception, if `$throw` is TRUE).
      * ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
@@ -516,11 +534,14 @@ class DataTypeHelper
     }
 
     /**
+     * Returns the boolean value of `$value`, or NULL if it's not a string and cannot be converted.
+     * See the parameter description for more information.
+     *
      * @param mixed $value value to be tested or converted
      * @param bool $strict indicates if strict comparison should be performed:
      * ``
-     * - if True, `$value` must already be of type `string`.
-     * - if False, a conversion to `string` is attempted.
+     * - if TRUE, `$value` must already be of type `string`.
+     * - if FALSE, a conversion to `string` is attempted.
      * ``
      * @param bool $throwException throws an exception instead of returning `null`
      *
