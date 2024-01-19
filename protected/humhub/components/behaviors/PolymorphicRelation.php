@@ -10,7 +10,7 @@ namespace humhub\components\behaviors;
 
 use Exception;
 use humhub\components\ActiveRecord;
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
@@ -156,7 +156,7 @@ class PolymorphicRelation extends Behavior
             return true;
         }
 
-        if (Helpers::checkClassType($object, $this->mustBeInstanceOf, false)) { //|| $object->asa($instance) !== null
+        if (DataTypeHelper::matchClassType($object, $this->mustBeInstanceOf)) { //|| $object->asa($instance) !== null
             return true;
         }
 
