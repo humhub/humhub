@@ -86,7 +86,7 @@ class AuthClientService
                 if (isset($attributes[$attributeName])) {
                     if ($user->hasAttribute($attributeName) && !in_array($attributeName, ['id', 'guid', 'status', 'contentcontainer_id', 'auth_mode'])) {
                         $user->setAttribute($attributeName, $attributes[$attributeName]);
-                    } else {
+                    } elseif ($user->profile->hasAttribute($attributeName)) {
                         $user->profile->setAttribute($attributeName, $attributes[$attributeName]);
                     }
                 } else {
