@@ -161,6 +161,13 @@ class Module extends \humhub\components\Module
     public $includeEmailInSearch = true;
 
     /**
+     * Reduce filters based on already active filters
+     * @var bool 
+     * @since 1.16
+     */
+    public $peopleEnableNestedFilters = true;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
