@@ -300,30 +300,6 @@ class DataTypeHelper
     }
 
     /**
-     * Checks if the class has this class as one of its parents
-     *
-     * @param string|object|null|mixed $value Object or classname to be checked. Null may be valid if included in
-     *     $type. Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
-     * @param string|string[]|object[] $allowedTypes (List of) allowed class, interface or trait names, or object
-     *     instances. Object instances may only be passed as part of an array. In such a case, the object's type/class
-     *     is used for comparison. If a string is provided, it will be split by `|`. If NULL value or the "NULL" string
-     *     is included, NULL values are also allowed.
-     * @param bool $throwException throws an exception instead of returning `null`
-     *
-     * @return string|object|null
-     * @throws InvalidArgumentTypeException|InvalidArgumentClassException|InvalidArgumentValueException
-     * @noinspection PhpDocMissingThrowsInspection
-     * @noinspection PhpUnhandledExceptionInspection
-     * @since 1.16
-     */
-    public static function filterClassType($value, $allowedTypes, bool $throwException = false)
-    {
-        return self::matchClassType($value, $allowedTypes, $throwException) === null
-            ? null
-            : $value;
-    }
-
-    /**
      * Checks if the class or object has one of the given classes, interfaces or traits as one of its parents or implements it.
      *
      * @param string|object|null|mixed $value Object or classname to be checked. Null may be valid if included in
