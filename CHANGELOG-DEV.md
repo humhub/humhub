@@ -48,5 +48,6 @@ HumHub Changelog
 - Enh #6783: Lowercase user email before save
 - Enh #6786: Improve password hashing
 - Enh #6788: Allow to disable login/registration form via configuration file
-- Enh #6788: Allow new user registration of specified SSO providers via configuration file 
+- Enh #6788: Allow new user registration of specified SSO providers via configuration file
 - Fix #6790: Fix marketplace searching
+- Fix #6808: On small screens, in the "Spaces" page, for spaces not having an image, the acronym text is not vertically centered
