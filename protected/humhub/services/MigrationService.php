@@ -14,8 +14,8 @@ use humhub\components\Event;
 use humhub\components\Migration;
 use humhub\components\Module;
 use humhub\events\MigrationEvent;
+use humhub\helpers\DataTypeHelper;
 use humhub\interfaces\ApplicationInterface;
-use humhub\libs\Helpers;
 use Throwable;
 use uninstall;
 use Yii;
@@ -48,7 +48,7 @@ class MigrationService extends Component
      */
     public function __construct(?BaseModule $module = null)
     {
-        Helpers::checkClassType($module, [ApplicationInterface::class, Module::class, null]);
+        DataTypeHelper::ensureClassType($module, [ApplicationInterface::class, Module::class, null]);
 
         $this->module = $module ?? Yii::$app;
 
