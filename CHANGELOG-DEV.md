@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6770: Improve migration error messages
 - Enh #6750: Code de-duplication by introducing `PermissionManager::handlePermissionStateChange()`
 - Fix #6772: Polymorphic relation lookup (Regression #6587)
 - Enh #6745: Harmonise term `enabled/disabled` vs `active/inactive` for modules
