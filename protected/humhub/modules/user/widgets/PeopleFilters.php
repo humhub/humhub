@@ -13,6 +13,7 @@ use humhub\modules\ui\widgets\DirectoryFilters;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\Module;
 use Yii;
 
 /**
@@ -35,7 +36,9 @@ class PeopleFilters extends DirectoryFilters
      */
     public function init()
     {
-        if (!(new PeopleSettingsForm())->reduceFilterOptions) {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        if (!$module->peopleEnableNestedFilters) {
             // Disable the reducing filter options to currently filtered users
             $this->query = null;
         }
