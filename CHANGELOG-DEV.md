@@ -51,3 +51,4 @@ HumHub Changelog
 - Enh #6788: Allow new user registration of specified SSO providers via configuration file
 - Fix #6790: Fix marketplace searching
 - Fix #6811: `SpaceModelMembership::removeMember()` should always return a boolean value (returns void if success)
+- Fix #6808: On small screens, in the "Spaces" page, for spaces not having an image, the acronym text is not vertically centered
