@@ -396,12 +396,13 @@ class SpaceModelMembership extends Behavior
      * @throws \yii\base\InvalidConfigException
      */
     public function addMember(
-        int $userId,
-        int $canLeave = 1,
-        bool $silent = false,
+        int    $userId,
+        int    $canLeave = 1,
+        bool   $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
-        bool $showAtDashboard = true
-    ): bool {
+        bool   $showAtDashboard = true
+    ): bool
+    {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
             return false;
@@ -481,14 +482,14 @@ class SpaceModelMembership extends Behavior
     /**
      * Remove Membership
      *
-     * @param integer $userId of User to Remove
+     * @param integer|null $userId of User to Remove
      * @return bool
      * @throws \yii\base\InvalidConfigException
      * @throws \Throwable
      */
-    public function removeMember($userId = '')
+    public function removeMember($userId = null)
     {
-        if ($userId == '') {
+        if (!$userId) {
             $userId = Yii::$app->user->id;
         }
 
@@ -510,6 +511,8 @@ class SpaceModelMembership extends Behavior
 
             $this->handleRemoveMembershipEvent($membership, $user);
         });
+
+        return true;
     }
 
     /**
