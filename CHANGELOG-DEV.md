@@ -50,4 +50,4 @@ HumHub Changelog
 - Enh #6788: Allow to disable login/registration form via configuration file
 - Enh #6788: Allow new user registration of specified SSO providers via configuration file
 - Fix #6790: Fix marketplace searching
-- Fix: `SpaceModelMembership::removeMember()` should always return a boolean value (returns void if success)
+- Fix #6811: `SpaceModelMembership::removeMember()` should always return a boolean value (returns void if success)
