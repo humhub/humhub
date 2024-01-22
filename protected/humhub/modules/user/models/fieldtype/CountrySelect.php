@@ -10,6 +10,7 @@ namespace humhub\modules\user\models\fieldtype;
 
 use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
+use humhub\libs\Html;
 use Yii;
 
 /**
@@ -65,7 +66,7 @@ class CountrySelect extends Select
                 $key = trim($code);
                 $value = Iso3166Codes::country($key, true);
                 if (!empty($key) && $key !== $value) {
-                    $items[trim($key)] = trim($value);
+                    $items[$key] = trim($value);
                 }
             }
         }
@@ -86,7 +87,7 @@ class CountrySelect extends Select
         $value = $user->profile->$internalName;
 
         if (!$raw) {
-            return \yii\helpers\Html::encode(Iso3166Codes::country($value));
+            return Html::encode(Iso3166Codes::country($value));
         }
 
         return $value;
