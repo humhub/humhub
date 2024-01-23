@@ -24,7 +24,7 @@ abstract class DirectoryFilters extends Widget
     /**
      * @var array Filters
      */
-    protected $filters = [];
+    public $filters = [];
 
     /**
      * @var string Main page URL, used to reset and submit a form with filters
