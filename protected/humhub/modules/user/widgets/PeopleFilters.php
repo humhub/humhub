@@ -15,6 +15,7 @@ use humhub\modules\user\models\Group;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\Module;
 use Yii;
+use yii\db\Expression;
 
 /**
  * PeopleFilters displays the filters on the directory people page
@@ -59,20 +60,8 @@ class PeopleFilters extends DirectoryFilters
         ]);
 
         // Group
-        $groupOptions = [];
-        $groups = Group::find()->where(['show_at_directory' => 1]);
-        if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
-            $groups->leftJoin('group_user', 'group_user.group_id = group.id')
-                ->andWhere(['IN', 'group_user.user_id', $this->query->getFilteredUsersSubQuery()]);
-        }
-        $groups = $groups->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])->all();
-        if ($groups) {
-            $groupOptions[''] = Yii::t('UserModule.base', 'Any');
-            /* @var Group[] $groups */
-            foreach ($groups as $group) {
-                $groupOptions[$group->id] = $group->name;
-            }
-
+        $groupOptions = $this->getGroupOptions();
+        if (!empty($groupOptions)) {
             $this->addFilter('groupId', [
                 'title' => Yii::t('UserModule.base', 'User Group'),
                 'type' => 'dropdown',
@@ -166,6 +155,51 @@ class PeopleFilters extends DirectoryFilters
         }
 
         return '';
+    }
+
+    protected function getGroupOptions(): array
+    {
+        $options = ['' => Yii::t('UserModule.base', 'Any')];
+
+        if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
+            $query = clone $this->query;
+
+            $groups = $query
+                ->leftJoin('group_user AS fgu', 'fgu.user_id = user.id')
+                ->leftJoin('group', 'fgu.group_id = group.id')
+                ->select(['group.id', 'group.name'])
+                ->andWhere(['IS NOT', 'group.id', new Expression('NULL')])
+                ->offset(null)
+                ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
+                ->asArray()
+                ->all();
+
+            if (empty($groups)) {
+                return [];
+            }
+
+            foreach ($groups as $group) {
+                $options[$group['id']] = $group['name'];
+            }
+
+            return $options;
+        }
+
+        $groups = Group::find()
+            ->where(['show_at_directory' => 1])
+            ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
+            ->all();
+
+        if (empty($groups)) {
+            return [];
+        }
+
+        /* @var Group[] $groups */
+        foreach ($groups as $group) {
+            $options[$group->id] = $group->name;
+        }
+
+        return $options;
     }
 
 }

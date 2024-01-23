@@ -268,14 +268,4 @@ class PeopleQuery extends ActiveQueryUser
 
         $this->activeFilters[$name] = $value;
     }
-
-    public function getFilteredUsersSubQuery(): PeopleQuery
-    {
-        $query = clone $this;
-
-        return $query->select('user.id')
-            ->limit(null)
-            ->offset(null)
-            ->orderBy(null);
-    }
 }

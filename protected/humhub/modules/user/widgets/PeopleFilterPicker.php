@@ -153,34 +153,33 @@ class PeopleFilterPicker extends BasePicker
      * Returns suggestions by keyword
      *
      * @param string $keyword
-     * @return Profile[]
+     * @return array
      */
-    public function getSuggestions($keyword = '')
+    public function getSuggestions($keyword = ''): array
     {
         if (empty($this->defaultResults)) {
-            $query = User::find()
+            if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
+                $filteredValues = $this->getFilteredProfileFieldValues($this->itemKey);
+                $suggestions = [];
+                foreach ($filteredValues as $filteredValue) {
+                    $suggestions[] = ['id' => $filteredValue, 'text' => $filteredValue];
+                }
+                return $suggestions;
+            }
+
+            return User::find()
                 ->select(['id' => $this->itemKey, 'text' => $this->itemKey])
                 ->visible()
                 ->joinWith('profile')
-                ->andWhere(['LIKE', $this->itemKey, $keyword]);
-
-            if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
-                $query->andWhere(['IN', 'user.id', $this->query->getFilteredUsersSubQuery()]);
-            }
-
-            return $query->groupBy($this->itemKey)
+                ->andWhere(['LIKE', $this->itemKey, $keyword])
+                ->groupBy($this->itemKey)
                 ->limit(100)
                 ->asArray()
                 ->all();
         }
 
         if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
-            $filteredResults = Profile::find()
-                ->select($this->itemKey)
-                ->distinct($this->itemKey)
-                ->andWhere(['IN', 'user_id', $this->query->getFilteredUsersSubQuery()])
-                ->andWhere(['IS NOT', $this->itemKey, new Expression('NULL')])
-                ->column();
+            $filteredResults = $this->getFilteredProfileFieldValues($this->itemKey);
             $filteredResults[] = $this->getSelectedOptionKey();
         }
 
@@ -213,5 +212,19 @@ class PeopleFilterPicker extends BasePicker
         }
 
         return $this->cachedDefaultResultData;
+    }
+
+    protected function getFilteredProfileFieldValues(string $field): array
+    {
+        $query = clone $this->query;
+
+        return $query->select('fp.' . $field)
+            ->distinct('fp.' . $field)
+            ->leftJoin('profile AS fp', 'fp.user_id = user.id')
+            ->andWhere(['IS NOT', 'fp.' . $field, new Expression('NULL')])
+            ->limit(100)
+            ->offset(null)
+            ->orderBy(null)
+            ->column();
     }
 }
