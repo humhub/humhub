@@ -53,3 +53,4 @@ HumHub Changelog
 - Fix #6790: Fix marketplace searching
 - Fix #6811: `SpaceModelMembership::removeMember()` should always return a boolean value (returns void if success)
 - Fix #6808: On small screens, in the "Spaces" page, for spaces not having an image, the acronym text is not vertically centered
+- Enh #6812: Reduce people filter options depending on what filtered users have

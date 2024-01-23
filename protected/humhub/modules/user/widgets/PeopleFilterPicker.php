@@ -3,11 +3,13 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\db\Expression;
 use yii\helpers\Url;
 
 /**
@@ -24,6 +26,10 @@ class PeopleFilterPicker extends BasePicker
      * @inheritdoc
      */
     public $defaultRoute = '/user/people/filter-people-json';
+
+    public ?PeopleQuery $query = null;
+
+    protected ?array $cachedDefaultResultData = null;
 
     /**
      * @inheritdoc
@@ -50,15 +56,35 @@ class PeopleFilterPicker extends BasePicker
     /**
      * @inheritdoc
      */
-    protected function getSelectedOptions()
+    public function beforeRun()
+    {
+        return parent::beforeRun() && $this->hasOptions();
+    }
+
+    public function hasOptions(): bool
+    {
+        return $this->getDefaultResultData() !== [] || $this->getSelectedOptions() !== [];
+    }
+
+    protected function getSelectedOptionKey(): ?string
     {
         $get = Yii::$app->request->get('fields');
-        if (isset($get[$this->itemKey])) {
-            $this->selection[] = $get[$this->itemKey];
-        }
 
+        return $get[$this->itemKey] ?? null;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function getSelectedOptions()
+    {
         if (!$this->selection) {
             $this->selection = [];
+        }
+
+        $selectedKey = $this->getSelectedOptionKey();
+        if ($selectedKey !== null) {
+            $this->selection[] = $selectedKey;
         }
 
         $result = [];
@@ -132,18 +158,38 @@ class PeopleFilterPicker extends BasePicker
     public function getSuggestions($keyword = '')
     {
         if (empty($this->defaultResults)) {
-            return User::find()
+            $query = User::find()
                 ->select(['id' => $this->itemKey, 'text' => $this->itemKey])
                 ->visible()
                 ->joinWith('profile')
-                ->andWhere(['LIKE', $this->itemKey, $keyword])
-                ->groupBy($this->itemKey)
+                ->andWhere(['LIKE', $this->itemKey, $keyword]);
+
+            if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
+                $query->andWhere(['IN', 'user.id', $this->query->getFilteredUsersSubQuery()]);
+            }
+
+            return $query->groupBy($this->itemKey)
                 ->limit(100)
                 ->asArray()
                 ->all();
         }
+
+        if ($this->query instanceof PeopleQuery && $this->query->isFiltered()) {
+            $filteredResults = Profile::find()
+                ->select($this->itemKey)
+                ->distinct($this->itemKey)
+                ->andWhere(['IN', 'user_id', $this->query->getFilteredUsersSubQuery()])
+                ->andWhere(['IS NOT', $this->itemKey, new Expression('NULL')])
+                ->column();
+            $filteredResults[] = $this->getSelectedOptionKey();
+        }
+
         $result = [];
         foreach ($this->defaultResults as $itemKey => $itemText) {
+            if (isset($filteredResults) && !in_array($itemKey, $filteredResults)) {
+                continue;
+            }
+
             if ($keyword !== '' && stripos($itemText, $keyword) === false) {
                 continue;
             }
@@ -162,6 +208,10 @@ class PeopleFilterPicker extends BasePicker
      */
     protected function getDefaultResultData()
     {
-        return $this->getSuggestions();
+        if ($this->cachedDefaultResultData === null) {
+            $this->cachedDefaultResultData = $this->getSuggestions();
+        }
+
+        return $this->cachedDefaultResultData;
     }
 }
