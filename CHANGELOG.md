@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #6800: Fix missed domain of profile url in email notifications
 - Fix #6801: Add missed twemoji images
 - Fix: Iso3166Codes class calls
+- Fix #6813: Fix for displaying whether I follow a user
 
 1.15.2 (December 19, 2023)
 --------------------------
