@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Show {i} more.' => 'Zobrazit {i} více.',
-    'Date "From" should be before "To"!' => '',
-    'The content could not be found.' => '',
-    'You are not allowed to view this content.' => '',
-];
+return array (
+  'Date "From" should be before "To"!' => 'Datum "Od" by mělo být před "Do"!',
+  'Show {i} more.' => 'Zobrazit {i} více.',
+  'The content could not be found.' => 'Obsah se nepodařilo najít.',
+  'You are not allowed to view this content.' => 'Nejste oprávněni zobrazit tento obsah.',
+);

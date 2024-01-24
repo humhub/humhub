@@ -7,10 +7,9 @@ return array (
   'Please add the email addresses of people you want to invite below.' => 'Prosím přidejte emailovou adresy lidí, které chcete pozvat',
   'Send invite' => 'Odeslat pozvánku',
   'Separate multiple email addresses by comma.' => 'Při vložení více emailových adres, jednotlivé adresy oddělte čárkou.',
-  'You\'ve been invited to join %appName%' => '',
+  'You\'ve been invited to join %appName%' => 'Byli jste pozváni do %appName%',
   '{email} is already registered!' => 'E-mailová adresa {email} již v databázi existuje!',
   '{email} is not valid!' => 'E-mailová adresa {email} není platná!',
-  '{username} invited you to join "{space}" on {name}.' => 'Uživatel {username} Vás pozval k připojení k prostoru "{space}" s názvem {name}.
-',
+  '{username} invited you to join "{space}" on {name}.' => 'Uživatel {username} Vás pozval k připojení k prostoru "{space}" s názvem {name}.',
   '{username} invited you to {name}.' => 'Uživatel {username} Vás pozval k {name}.',
 );

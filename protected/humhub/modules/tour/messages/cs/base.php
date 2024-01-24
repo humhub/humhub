@@ -17,7 +17,7 @@ return array (
   'End guide' => 'Ukončit průvodce',
   'Get to know your way around the site\'s most important features with the following guides:' => 'Následující průvodce vám může pomoci se lépe zorientovat v této síti a tak vám usnadní začátky práce s ní. Vyberte si, co vás zajímá:',
   'Hide my year of birth' => 'Skrýt můj rok narození',
-  'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => '',
+  'Howdy <strong>%firstname%</strong>, thank you for using %community%.' => 'Ahoj <strong>%firstname%</strong>, děkujeme, že používáš %community%.',
   'Next »' => 'Další »',
   'Ok' => 'Ok',
   'Save and close' => 'Uložit a zavřít',
