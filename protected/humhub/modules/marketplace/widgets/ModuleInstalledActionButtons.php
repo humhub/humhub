@@ -43,13 +43,13 @@ class ModuleInstalledActionButtons extends Widget
                 $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Configure'), $this->module->getConfigUrl())
                     ->cssClass('btn btn-sm btn-info');
             }
-            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Activated'))
+            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Enabled'))
                 ->link(['/admin/module/list'])
                 ->icon('check')
                 ->cssClass('active')
                 ->sm();
         } else {
-            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Activate'))
+            $html .= Button::info(Yii::t('MarketplaceModule.base', 'Enable'))
                 ->link(['/admin/module/list'])
                 ->sm();
         }
