@@ -2,17 +2,25 @@
 
 namespace tests\codeception\unit;
 
+use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\PeopleFilterPicker;
 use humhub\modules\user\widgets\PeopleFilters;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class PeopleFiltersTest extends HumHubDbTestCase
 {
     public function testDefaultFilters()
     {
         $peopleFilters = new PeopleFilters();
-        $this->assertEquals($this->getGroupOptions(), $this->getFilterOptions('groupId', $peopleFilters));
+        $this->assertEquals([
+                '' => 'Any',
+                1 => 'Administrator',
+                2 => 'Users',
+                3 => 'Moderators'
+            ], $this->getFilterOptions('groupId', $peopleFilters));
     }
 
     public function testProfileFieldFilters()
@@ -21,30 +29,39 @@ class PeopleFiltersTest extends HumHubDbTestCase
 
         // Activate profile field filters
         ProfileField::updateAll(['directory_filter' => 1], ['IN', 'internal_name', ['firstname', 'lastname']]);
-
         $peopleFilters = new PeopleFilters();
 
-        $this->assertEquals($this->getLastnameOptions(), $this->getFilterOptions('fields[firstname]', $peopleFilters));
+        $this->assertEquals(['Admin', 'Andreas', 'Peter', 'Sara'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
     }
 
-    private function getGroupOptions(): array
+    public function testReducedFilters()
     {
-        return [
-            '' => 'Any',
-            1 => 'Administrator',
-            2 => 'Users',
-            3 => 'Moderators'
-        ];
-    }
+        $this->becomeUser('Admin');
+        /* @var User $user */
+        $user = Yii::$app->user->getIdentity();
+        $user->profile->updateAttributes(['lastname' => 'AdminLastName']);
+        ProfileField::updateAll(['directory_filter' => 1], ['IN', 'internal_name', ['firstname', 'lastname']]);
 
-    private function getLastnameOptions(): array
-    {
-        return [
-            0 => 'Admin',
-            1 => 'Andreas',
-            2 => 'Peter',
-            3 => 'Sara'
-        ];
+        // Filter by lastname
+        $peopleQuery = new PeopleQuery(['defaultFilters' => ['fields' => ['lastname' => 'Tester']]]);
+        $peopleFilters = new PeopleFilters(['query' => $peopleQuery]);
+        $this->assertEquals(['Andreas', 'Peter', 'Sara'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
+        $this->assertEquals(['Tester'], $this->getFilterOptions('fields[lastname]', $peopleFilters));
+        $this->assertEquals(['' => 'Any', 2 => 'Users', 3 => 'Moderators'], $this->getFilterOptions('groupId', $peopleFilters));
+
+        // Filter by firstname
+        $peopleQuery = new PeopleQuery(['defaultFilters' => ['fields' => ['firstname' => 'Admin']]]);
+        $peopleFilters = new PeopleFilters(['query' => $peopleQuery]);
+        $this->assertEquals(['Admin'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
+        $this->assertEquals(['AdminLastName'], $this->getFilterOptions('fields[lastname]', $peopleFilters));
+        $this->assertEquals(['' => 'Any', 1 => 'Administrator'], $this->getFilterOptions('groupId', $peopleFilters));
+
+        // Filter by group
+        $peopleQuery = new PeopleQuery(['defaultFilters' => ['groupId' => 2]]);
+        $peopleFilters = new PeopleFilters(['query' => $peopleQuery]);
+        $this->assertEquals(['Peter'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
+        $this->assertEquals(['Tester'], $this->getFilterOptions('fields[lastname]', $peopleFilters));
+        $this->assertEquals(['' => 'Any', 2 => 'Users'], $this->getFilterOptions('groupId', $peopleFilters));
     }
 
     private function getFilterOptions(string $filterKey, PeopleFilters $peopleFilters): array

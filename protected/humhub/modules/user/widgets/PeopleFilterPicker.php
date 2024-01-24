@@ -173,6 +173,7 @@ class PeopleFilterPicker extends BasePicker
                 ->joinWith('profile')
                 ->andWhere(['LIKE', $this->itemKey, $keyword])
                 ->groupBy($this->itemKey)
+                ->orderBy($this->itemKey)
                 ->limit(100)
                 ->asArray()
                 ->all();
@@ -224,7 +225,7 @@ class PeopleFilterPicker extends BasePicker
             ->andWhere(['IS NOT', 'fp.' . $field, new Expression('NULL')])
             ->limit(100)
             ->offset(null)
-            ->orderBy(null)
+            ->orderBy('fp.' . $field)
             ->column();
     }
 }

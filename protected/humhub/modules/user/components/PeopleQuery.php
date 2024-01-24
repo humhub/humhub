@@ -39,6 +39,7 @@ class PeopleQuery extends ActiveQueryUser
      */
     public $pageSize = 25;
 
+    public array $defaultFilters = [];
     public array $activeFilters = [];
 
     /**
@@ -77,7 +78,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function filterByKeyword(): PeopleQuery
     {
-        $keyword = Yii::$app->request->get('keyword', '');
+        $keyword = Yii::$app->request->get('keyword', $this->defaultFilters['keyword'] ?? '');
         $this->setActiveFilter('keyword', $keyword);
 
         return $this->search($keyword);
@@ -85,7 +86,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function filterByProfileFields(): PeopleQuery
     {
-        $fields = Yii::$app->request->get('fields', []);
+        $fields = Yii::$app->request->get('fields', $this->defaultFilters['fields'] ?? []);
 
         // Remove empty filters
         $fields = array_filter($fields, function($value) {
@@ -131,7 +132,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function filterByGroup(): PeopleQuery
     {
-        $groupId = Yii::$app->request->get('groupId');
+        $groupId = Yii::$app->request->get('groupId', $this->defaultFilters['groupId'] ?? null);
 
         if ($groupId) {
             $group = Group::findOne(['id' => $groupId, 'show_at_directory' => 1]);
@@ -147,7 +148,7 @@ class PeopleQuery extends ActiveQueryUser
 
     public function filterByConnection(): PeopleQuery
     {
-        $connection = Yii::$app->request->get('connection');
+        $connection = Yii::$app->request->get('connection', $this->defaultFilters['connection'] ?? null);
         $this->setActiveFilter('connection', $connection);
 
         switch ($connection) {
