@@ -57,29 +57,8 @@ class OnlineModuleManager extends Component
             throw new Exception(Yii::t('MarketplaceModule.base', 'No compatible module version found!'));
         }
 
-        // Check Module Folder exists
-        $moduleDownloadFolder = Yii::getAlias($marketplaceModule->modulesDownloadPath);
-        FileHelper::createDirectory($moduleDownloadFolder);
-
-        // Download
-        $downloadUrl = $moduleInfo['latestCompatibleVersion']['downloadUrl'];
-        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
-        try {
-            $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
-            $this->downloadFile($downloadTargetFileName, $downloadUrl, $hashSha256);
-        } catch (\Exception $ex) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
-        }
-
-        // Remove old module path
-        if (!$this->removeModuleDir($modulesPath . DIRECTORY_SEPARATOR . $moduleId)) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not remove old module path!'));
-        }
-
-        // Extract Package
-        if (!file_exists($downloadTargetFileName)) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Download of module failed!'));
-        }
+        $downloadTargetFileName = $this->downloadModule($moduleInfo);
+        $this->checkRequirements($moduleId, $downloadTargetFileName);
 
         if (!$this->unzip($downloadTargetFileName, $modulesPath)) {
             Yii::error('Could not unzip ' . $downloadTargetFileName . ' to ' . $modulesPath, 'marketplace');
@@ -121,6 +100,51 @@ class OnlineModuleManager extends Component
 
         return true;
     }
+
+    private function checkRequirements($moduleId, $moduleZipFile) {
+        $config = require('zip://' . $moduleZipFile . '#' . $moduleId . '/config.php');
+        if (isset($config['requirementCheck']) && is_callable($config['requirementCheck'])) {
+            $result = call_user_func($config['requirementCheck']);
+            if ($result !== null) {
+                throw new HttpException('500', $result);
+            }
+        }
+    }
+
+    private function downloadModule($moduleInfo): string
+    {
+        /** @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $modulesPath = Yii::getAlias($marketplaceModule->modulesPath);
+
+        // Check Module Folder exists
+        $moduleDownloadFolder = Yii::getAlias($marketplaceModule->modulesDownloadPath);
+        FileHelper::createDirectory($moduleDownloadFolder);
+
+
+        // Download
+        $downloadUrl = $moduleInfo['latestCompatibleVersion']['downloadUrl'];
+        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
+        try {
+            $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
+            $this->downloadFile($downloadTargetFileName, $downloadUrl, $hashSha256);
+        } catch (\Exception $ex) {
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
+        }
+
+        // Remove old module path
+        if (!$this->removeModuleDir($modulesPath . DIRECTORY_SEPARATOR . $moduleInfo['id'])) {
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not remove old module path!'));
+        }
+
+        // Extract Package
+        if (!file_exists($downloadTargetFileName)) {
+            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Download of module failed!'));
+        }
+
+        return $downloadTargetFileName;
+    }
+
 
     private function downloadFile($fileName, $url, $sha256 = null)
     {
@@ -167,6 +191,11 @@ class OnlineModuleManager extends Component
         if (Yii::$app->hasModule($moduleId)) {
             Yii::$app->setModule($moduleId, null);
         }
+
+        $moduleInfo = $this->getModuleInfo($moduleId);
+
+        $moduleZipFile = $this->downloadModule($moduleInfo);
+        $this->checkRequirements($moduleId, $moduleZipFile);
 
         Yii::$app->moduleManager->removeModule($moduleId, false);
 
