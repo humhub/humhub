@@ -1,16 +1,17 @@
 <?php
 
-use humhub\modules\admin\controllers\ApprovalController;
-use humhub\modules\user\models\ProfileField;
-use humhub\widgets\Button;
-use yii\grid\ActionColumn;
-use humhub\modules\admin\models\UserApprovalSearch;
-use yii\data\ActiveDataProvider;
 use humhub\libs\Html;
-use humhub\widgets\GridView;
-use humhub\modules\user\grid\ImageColumn;
+use humhub\modules\admin\controllers\ApprovalController;
+use humhub\modules\admin\grid\ApprovalActionColumn;
+use humhub\modules\admin\models\forms\ApproveUserForm;
+use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
+use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\widgets\Button;
+use humhub\widgets\GridView;
+use yii\data\ActiveDataProvider;
 
 /** @var $searchModel UserApprovalSearch */
 /** @var $dataProvider ActiveDataProvider */
@@ -40,11 +41,19 @@ foreach ($profileFieldsColumns as $profileField) {
 }
 $columns[] = 'created_at';
 $columns[] = [
-    'class' => ActionColumn::class,
-    'options' => ['style' => 'width:105px;'],
+    'class' => ApprovalActionColumn::class,
+    'options' => ['style' => 'width:160px;'],
     'buttons' => [
         'view' => function ($url, $model) {
             return Button::defaultType()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
+        },
+        'sendMessage' => function ($url, $model) {
+            $nbMsgSent = ApproveUserForm::getNumberMessageSent($model->id);
+            return
+                Button::primary($nbMsgSent ?: '')->link(['send-message', 'id' => $model->id])->icon('paper-plane')->sm()->tooltip(
+                    Yii::t('AdminModule.user', 'Send a message') .
+                    ($nbMsgSent ? ' (' . Yii::t('AdminModule.user', '{nbMsgSent} already sent', ['nbMsgSent' => $nbMsgSent]) . ')' : '')
+                );
         },
         'update' => function ($url, $model) {
             return Button::success()->link(['approve', 'id' => $model->id])->icon('check')->sm()->tooltip(Yii::t('AdminModule.user', 'Approve'));
@@ -100,11 +109,14 @@ $columns[] = [
     ?>
 
     <br>
+    <?= Html::button(Yii::t('AdminModule.user', 'Email all selected'), [
+        'class' => 'btn btn-primary btn-sm bulk-actions-button bulk-actions-button-email',
+        'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be notified by e-mail.'),
+    ]) ?>
     <?= Html::button(Yii::t('AdminModule.user', 'Approve all selected'), [
         'class' => 'btn btn-success btn-sm bulk-actions-button bulk-actions-button-approve',
         'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be approved and notified by e-mail.'),
     ]) ?>
-    &nbsp;
     <?= Html::button(Yii::t('AdminModule.user', 'Decline all selected'), [
         'class' => 'btn btn-danger btn-sm bulk-actions-button bulk-actions-button-decline',
         'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be deleted and notified by e-mail.'),
@@ -116,6 +128,11 @@ $columns[] = [
 <script <?= Html::nonce() ?>>
     $(function () {
 
+        $('.bulk-actions-button-email').on('click', function () {
+            $('#admin-approval-form').find("input[name='action']").remove();
+            $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_SEND_MESSAGE ?>" />');
+            //$('#admin-approval-form').submit();
+        });
         $('.bulk-actions-button-approve').on('click', function () {
             $('#admin-approval-form').find("input[name='action']").remove();
             $('#admin-approval-form').append('<input type="hidden" name="action" value="<?= ApprovalController::ACTION_APPROVE ?>" />');
