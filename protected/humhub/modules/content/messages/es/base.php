@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> a esta entrada',
   '<strong>Scheduling</strong> Options' => 'Opciones de <strong>programación</strong>',
   'Activate scheduling' => 'Activar la programación',
-  'Activated' => 'Activado',
+  'Enabled' => 'Activado',
   'Add a member to notify' => 'Añadir un miembro a notificar',
   'Add tag...' => 'Añadir etiqueta...',
   'Archived' => 'Archivado',

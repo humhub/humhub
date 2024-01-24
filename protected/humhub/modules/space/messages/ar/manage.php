@@ -48,7 +48,7 @@ return [
     'Unarchive' => 'إلغاء وضع الأرشيف',
     'e.g. example for {baseUrl}/s/example' => 'على سبيل المثال مثال لـ {baseUrl} / s / example',
     'never' => 'أبدا',
-    'Activate' => '',
+    'Enable' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',
     'Are you sure you want to remove this member.' => '',
     'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => '',

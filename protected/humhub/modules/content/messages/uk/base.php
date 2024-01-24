@@ -17,7 +17,7 @@ return [
     '<strong>Move</strong> content' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
-    'Activated' => '',
+    'Enabled' => '',
     'Add a member to notify' => '',
     'Add tag...' => '',
     'Archived' => '',

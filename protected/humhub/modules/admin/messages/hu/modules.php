@@ -1,7 +1,7 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% - Beállítás alapértelmezett modulként',
-  'Activated' => 'Aktiválva',
+  'Enabled' => 'Aktiválva',
   'Always activated' => 'Mindig aktiválva van',
   'Are you sure? *ALL* module data will be lost!' => 'Biztos vagy benne? *MINDEN* modul adat elvész!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Biztos vagy benne? *MINDEN* a modullal kapcsolatos és fájl elvész!',

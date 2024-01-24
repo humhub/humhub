@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => 'ይዘቱን <strong>ያዛውሩ</strong>',
     '<strong>Permalink</strong> to this post' => 'ይህን ልጥፍ <strong>ማስፈንጠሪያ ይፍጠሩለት</strong> ',
-    'Activated' => 'አገልግሎት ይሰጣል',
+    'Enabled' => 'አገልግሎት ይሰጣል',
     'Add a member to notify' => 'ማስታወቂያ የሚቀርብላቸውን አባላት አክል',
     'Archived' => 'ማህደር',
     'Back to stream' => 'ወደማስተላለፊያው ተመለስ',

@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Nustatyti kaip numatytąjį modulį',
-    'Activated' => 'Aktyvuota',
+    'Enabled' => 'Aktyvuota',
     'Always activated' => 'Visada aktyvuota',
     'Are you sure? *ALL* module data will be lost!' => 'Ar Jūs tikras? *ALL* visa modulio informacija bus prarasta!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Ar Jūs tikras? *ALL* visa su moduliu susijusi informacija ir failai bus prarasti!',

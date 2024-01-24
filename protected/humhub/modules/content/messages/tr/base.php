@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => '<strong>İçeriği</strong> taşı',
     '<strong>Permalink</strong> to this post' => '<strong>İçerik</strong> bağlantısı',
-    'Activated' => 'Aktif',
+    'Enabled' => 'Aktif',
     'Add a member to notify' => 'Bilgilendirme için bir kullanıcı ekle',
     'Add tag...' => 'Etiket ekle..',
     'Archived' => 'Arşiv',

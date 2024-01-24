@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Ustaw jako moduł domyślny',
-    'Activated' => 'Aktywowane',
+    'Enabled' => 'Aktywowane',
     'Always activated' => 'Zawsze aktywny',
     'Are you sure? *ALL* module data will be lost!' => 'Czy jesteś pewny? *WSZYSTKIE* dane modułu zostaną utracone!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Czy jesteś pewny? *WSZYSTKIE* dane i pliki związane z modułem zostaną utracone!',

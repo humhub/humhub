@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Varsayılan modül olarak ayarla',
-    'Activated' => 'Aktif',
+    'Enabled' => 'Aktif',
     'Always activated' => 'Daima aktif',
     'Are you sure? *ALL* module data will be lost!' => '*TÜM* modül verileri kaybedilecek! Emin misiniz?',
     'Are you sure? *ALL* module related data and files will be lost!' => '*TÜM* modül verileri ve dosyaları kaybedilecek! Emin misiniz?',

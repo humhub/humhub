@@ -121,7 +121,7 @@ return [
     'Confirm user deletion' => '',
     'Could not approve the user!' => '',
     'Could not decline the user!' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Deactivate individual profile permissions?' => '',
     'Decline all selected' => '',
     'Default Profile Permissions' => '',

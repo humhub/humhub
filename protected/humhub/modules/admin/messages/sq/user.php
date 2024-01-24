@@ -2,7 +2,7 @@
 
 return [
     'Cancel' => 'Anulo',
-    'Deactivate' => 'Çaktivizo',
+    'Disable' => 'Çaktivizo',
     'Default' => 'E paracaktuar',
     'Delete' => 'Fshij',
     'Disabled' => 'me aftësi të kufizuara',

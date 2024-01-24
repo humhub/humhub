@@ -2,10 +2,10 @@
 
 return [
     '<strong>Maintenance</strong> Mode' => '<strong>Mantenimendua-modua</strong> Modua',
-    'Activate' => 'Aktibatu',
+    'Enable' => 'Aktibatu',
     'Back to overview' => 'Itzuli ikuspegi orokorrera',
     'Dashboard' => 'Ohola',
-    'Deactivate' => 'Desaktibatu',
+    'Disable' => 'Desaktibatu',
     'Delete' => 'Ezabatu',
     'Friendship' => 'Adiskidetasuna',
     'General' => 'Orokorra',

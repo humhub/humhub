@@ -44,7 +44,7 @@ return array (
   'Create new group' => '',
   'Create new profile category' => '',
   'Create new profile field' => '',
-  'Deactivate' => '비활성화',
+  'Disable' => '비활성화',
   'Deactivate individual profile permissions?' => '',
   'Decline' => '거부',
   'Decline & delete user: <strong>{displayName}</strong>' => '',

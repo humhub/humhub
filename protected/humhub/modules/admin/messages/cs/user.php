@@ -44,7 +44,7 @@ return array (
   'Create new group' => 'Vytvořit novou skupinu',
   'Create new profile category' => 'Vytvořit novou kategorii uživatelského profilu',
   'Create new profile field' => 'Vytvořit nové pole profilu',
-  'Deactivate' => 'Deaktivovat',
+  'Disable' => 'Deaktivovat',
   'Deactivate individual profile permissions?' => 'Deaktivovat oprávnění jednotlivých profilů?',
   'Decline' => 'Nechci se zúčastnit',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Zamítnout a smazat uživatele: <strong>{displayName}</strong>',

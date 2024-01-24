@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Activated' => 'Activat',
+    'Enabled' => 'Activat',
     'Close' => 'Tanca',
     'Could not find requested module!' => 'No s\'ha pogut trobar el mòdul sol·licitat!',
     'Module path %path% is not writeable!' => 'La ruta %path% del mòdul no té permís d\'escriptura!',

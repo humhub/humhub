@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Activated' => 'הופעל',
+    'Enabled' => 'הופעל',
     'Close' => 'סגור',
     'Save' => 'שמירה',
     'Spaces' => 'אזורים',

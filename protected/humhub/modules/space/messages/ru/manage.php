@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>Модули</strong> сообщества',
   '<strong>Space</strong> settings' => '<strong>Настройки</strong> сообщества',
   'Actions' => 'Действия',
-  'Activate' => 'Активировать',
+  'Enable' => 'Активировать',
   'Add <strong>Modules</strong>' => '<strong>Добавить</strong> модули',
   'Advanced access settings' => 'Расширенные настройки доступа',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'Все участники, за исключением модераторов и администраторов этого сообщества, будут удалены. Все ожидающие приглашения и запросы на членство будут аннулированы.',

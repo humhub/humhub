@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Oletukset',
-    'Activated' => 'Aktivoitu',
+    'Enabled' => 'Aktivoitu',
     'Always activated' => 'Aina käytössä',
     'Are you sure? *ALL* module data will be lost!' => 'Oletko varma? *KAIKKI* laajennukseen liittyvät tiedot menetetään!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Oletko varma? *KAIKKI* laajennukseen liittyvät tiedot menetetään!',

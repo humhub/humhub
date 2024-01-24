@@ -10,7 +10,7 @@ return [
     'Add new category' => 'Tambah baru',
     'Allow' => 'Ijinkan',
     'Cancel' => 'Batal',
-    'Deactivate' => 'Matikan',
+    'Disable' => 'Matikan',
     'Decline' => 'Batal',
     'Default' => 'Bawaan',
     'Delete' => 'Hapus',

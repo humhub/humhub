@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '',
   '<strong>Space</strong> settings' => '',
   'Actions' => '확인',
-  'Activate' => '활성화',
+  'Enable' => '활성화',
   'Add <strong>Modules</strong>' => '',
   'Advanced access settings' => '',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',

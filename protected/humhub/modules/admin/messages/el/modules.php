@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Ορισμός ως προεπιλεγμένη μονάδα',
-    'Activated' => 'Ενεργοποιήθηκε',
+    'Enabled' => 'Ενεργοποιήθηκε',
     'Always activated' => 'Πάντα ενεργοποιημένο',
     'Are you sure? *ALL* module data will be lost!' => 'Είστε σίγουροι; *Όλα* τα δεδομένα μονάδας θα χαθούν!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Είστε σίγουροι; *Όλα* τα δεδομένα και τα αρχεία που σχετίζονται με τις λειτουργικές μονάδες θα χαθούν!',

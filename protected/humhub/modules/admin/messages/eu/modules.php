@@ -1,7 +1,7 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% - Modulo lehenetsi gisa ezarri',
-  'Activated' => 'Aktibatuta',
+  'Enabled' => 'Aktibatuta',
   'Always activated' => 'Beti aktibatuta',
   'Are you sure? *ALL* module data will be lost!' => 'Ziur al zaude? *ALL* moduluaren datuak galduko dira!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Ziur al zaude? *ALL* moduluaren datuak eta fitxategiak galduko dira!',

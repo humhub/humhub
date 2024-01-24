@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - 设置为默认模块',
-    'Activated' => '启用',
+    'Enabled' => '启用',
     'Always activated' => '一直启用',
     'Are you sure? *ALL* module data will be lost!' => '确定吗？所有模块数据将被删除！',
     'Are you sure? *ALL* module related data and files will be lost!' => '确定吗？所有模块相关的数据和文件会丢失！',

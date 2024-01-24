@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - ตั้งเป็นโมดูลเริ่มต้น',
-    'Activated' => 'เปิดใช้งานแล้ว',
+    'Enabled' => 'เปิดใช้งานแล้ว',
     'Always activated' => 'เปิดใช้งานเสมอ',
     'Are you sure? *ALL* module data will be lost!' => 'คุณแน่ใจไหม? *ทั้งหมด* ข้อมูลโมดูลจะหายไป!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'คุณแน่ใจไหม? *ทั้งหมด* ข้อมูลและไฟล์ที่เกี่ยวข้องกับโมดูลจะหายไป!',

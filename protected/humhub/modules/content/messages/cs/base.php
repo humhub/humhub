@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '<strong>Odkaz</strong> na tento příspěvek',
   '<strong>Scheduling</strong> Options' => '<strong>Možnosti</strong> plánování',
   'Activate scheduling' => 'Aktivace plánování',
-  'Activated' => 'Aktivováno',
+  'Enabled' => 'Aktivováno',
   'Add a member to notify' => 'Upozornit uživatele',
   'Add tag...' => 'Přidat značku...',
   'Archived' => 'Archivováno',

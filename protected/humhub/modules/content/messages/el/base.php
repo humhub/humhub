@@ -4,7 +4,7 @@ return [
     '(Also visible to non-members of this space)' => '(Επίσης ορατό σε μη μέλη του χώρου)',
     '<strong>Move</strong> content' => '<strong>Μετακίνηση</strong> περιεχομένου',
     '<strong>Permalink</strong> to this post' => '<strong>Mόνιμος σύνδεσμος </strong> σε αυτή τη θέση',
-    'Activated' => 'Ενεργοποιήθηκε',
+    'Enabled' => 'Ενεργοποιήθηκε',
     'Add a member to notify' => 'Προσθέστε ένα μέλος για ειδοποίηση',
     'Add tag...' => 'Προσθήκη ετικέτας...',
     'Archived' => 'Αρχειοθετημένα',

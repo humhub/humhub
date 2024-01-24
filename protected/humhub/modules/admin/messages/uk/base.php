@@ -2,7 +2,7 @@
 
 return [
     'About' => 'Про',
-    'Activate' => 'Активувати',
+    'Enable' => 'Активувати',
     'Administration' => 'Адміністрування',
     'Default' => 'За замовченням',
     'General' => 'Загальне',
@@ -36,7 +36,7 @@ return [
     'Caching' => '',
     'Configure' => '',
     'Cronjobs' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Default group for administrators of this HumHub Installation' => '',
     'Default group for all newly registered users of the network' => '',
     'Delete all' => '',

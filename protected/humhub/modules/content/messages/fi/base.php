@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => '<strong>Siirrä</strong> sisältöä',
     '<strong>Permalink</strong> to this post' => '<strong>Pysyvä</strong> linkki tähän viestiin',
-    'Activated' => 'Aktivoitu',
+    'Enabled' => 'Aktivoitu',
     'Add a member to notify' => 'Lisää käyttäjä jolle ilmoitetaan',
     'Archived' => 'Arkistoitu',
     'Back to stream' => 'Takaisin',

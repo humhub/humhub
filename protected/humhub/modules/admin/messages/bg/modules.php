@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Задайте като модул по подразбиране',
-    'Activated' => 'Активиран',
+    'Enabled' => 'Активиран',
     'Always activated' => 'Винаги активиран',
     'Are you sure? *ALL* module data will be lost!' => 'Сигурни ли сте? *ВСИЧКИ* данни от модула ще бъдат загубени!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Сигурни ли сте? *ВСИЧКИ* данни и файловете, свързани с модула, ще бъдат загубени!',

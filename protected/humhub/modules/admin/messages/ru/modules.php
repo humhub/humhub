@@ -1,7 +1,7 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% - режим работы модуля',
-  'Activated' => 'Включен',
+  'Enabled' => 'Включен',
   'Always activated' => 'Всегда включен',
   'Are you sure? *ALL* module data will be lost!' => 'Вы уверены?  *ВСЕ* данные модуля будут утеряны!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Вы уверены? *ВСЕ* данные и файлы связанные с модулем будут утеряны!',

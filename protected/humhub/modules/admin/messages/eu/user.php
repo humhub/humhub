@@ -44,7 +44,7 @@ return array (
   'Create new group' => '',
   'Create new profile category' => '',
   'Create new profile field' => '',
-  'Deactivate' => 'Desaktibatu',
+  'Disable' => 'Desaktibatu',
   'Deactivate individual profile permissions?' => '',
   'Decline' => '',
   'Decline & delete user: <strong>{displayName}</strong>' => '',

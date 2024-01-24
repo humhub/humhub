@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '',
   '<strong>Scheduling</strong> Options' => '',
   'Activate scheduling' => '',
-  'Activated' => '',
+  'Enabled' => '',
   'Add a member to notify' => '',
   'Add tag...' => '',
   'Archived' => '',

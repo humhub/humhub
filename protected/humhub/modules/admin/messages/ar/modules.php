@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - تعين كموديول افتراضى',
-    'Activated' => 'تم التفعيل',
+    'Enabled' => 'تم التفعيل',
     'Always activated' => 'نشط دائما',
     'Are you sure? *ALL* module data will be lost!' => 'هل انت متأكد؟ جميع المعلومات الخاصة بالموديولات سيتم حذفها!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'هل أنت متأكد؟ جميع المعلومات والملفات الخاصة بالموديولات سيتم حذفها!',

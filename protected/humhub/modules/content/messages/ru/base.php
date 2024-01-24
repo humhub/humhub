@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '<strong>Постоянная ссылка</strong> для этой записи',
   '<strong>Scheduling</strong> Options' => '<strong>Параметры расписания</strong>',
   'Activate scheduling' => 'Включить расписание',
-  'Activated' => 'Включен',
+  'Enabled' => 'Включен',
   'Add a member to notify' => 'Добавить участника для уведомления',
   'Add tag...' => 'Добавить метку...',
   'Archived' => 'В архиве',

@@ -3,10 +3,10 @@
 return [
     '<strong>Confirm</strong> image deletion' => '<strong>이미지 삭제 </strong> 확인',
     '<strong>Maintenance</strong> Mode' => '<strong>유지 관리</strong> 모드',
-    'Activate' => '활성화',
+    'Enable' => '활성화',
     'Back to overview' => '개요로 돌아가기',
     'Dashboard' => '대시보드',
-    'Deactivate' => '비활성화',
+    'Disable' => '비활성화',
     'Delete' => '삭제',
     'Friendship' => '프렌즈십',
     'General' => '일반',

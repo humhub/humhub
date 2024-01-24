@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '이 글에 대한 퍼머링크',
   '<strong>Scheduling</strong> Options' => '스케줄링 옵션',
   'Activate scheduling' => '스케줄 활성화',
-  'Activated' => '활성화',
+  'Enabled' => '활성화',
   'Add a member to notify' => '알릴 멤버 추가하기',
   'Add tag...' => '태그 추가...',
   'Archived' => '보관됨',

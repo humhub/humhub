@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Activate' => 'Активувати',
+    'Enable' => 'Активувати',
     'Delete' => 'Видалити',
     'E-Mail' => 'Електронна пошта',
     'General' => 'Загальне',
@@ -47,7 +47,7 @@ return [
     'DSN Examples:' => '',
     'Dashboard' => '',
     'Date input format' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Deactivate maintenance mode and enable all users to access the platform again?' => '',
     'Default Timezone' => '',
     'Default language' => '',

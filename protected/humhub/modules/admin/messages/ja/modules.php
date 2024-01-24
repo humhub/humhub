@@ -1,7 +1,7 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% - デフォルトのモジュールとして設定',
-  'Activated' => '作動中',
+  'Enabled' => '作動中',
   'Always activated' => '常に作動',
   'Are you sure? *ALL* module data will be lost!' => '本当にモジュールを無効にしますか？ モジュールのすべてのデータは失われます。',
   'Are you sure? *ALL* module related data and files will be lost!' => '本当にモジュールを削除しますか？ モジュールに関連するすべてのデータやファイルが失われてしまいます。',

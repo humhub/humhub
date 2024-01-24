@@ -2,7 +2,7 @@
 
 return [
     '<strong>Confirm</strong> image deletion' => '<strong>Confirma</strong> l\'eliminació de la imatge',
-    'Activate' => 'Activar',
+    'Enable' => 'Activar',
     'Back to overview' => 'Tornar a la vista general',
     'Base URL' => 'URL base',
     'Dashboard' => 'Inici',
@@ -55,7 +55,7 @@ return [
     'DSN' => '',
     'DSN Examples:' => '',
     'Date input format' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Deactivate maintenance mode and enable all users to access the platform again?' => '',
     'Default Timezone' => '',
     'Default stream content order' => '',

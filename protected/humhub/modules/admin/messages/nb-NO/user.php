@@ -137,7 +137,7 @@ return [
     'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => '',
     'Could not approve the user!' => '',
     'Could not decline the user!' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Deactivate individual profile permissions?' => '',
     'Decline all selected' => '',
     'Default Profile Permissions' => '',

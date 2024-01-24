@@ -7,7 +7,7 @@ return [
     'Spaces' => '스페이스',
     'Users' => '사용자들',
     '%moduleName% - Set as default module' => '',
-    'Activated' => '',
+    'Enabled' => '',
     'Always activated' => '',
     'Are you sure? *ALL* module data will be lost!' => '',
     'Are you sure? *ALL* module related data and files will be lost!' => '',

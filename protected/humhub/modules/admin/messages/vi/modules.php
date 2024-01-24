@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Set as default module',
-    'Activated' => 'Đã được kích hoạt',
+    'Enabled' => 'Đã được kích hoạt',
     'Always activated' => 'Luôn luôn kích hoạt',
     'Are you sure? *ALL* module data will be lost!' => 'Bạn có chắc? *TẤT CẢ* dữ liệu module sẽ bị mất!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Bạn có chắc?  *TẤT CẢ* các files và dữ liệu liên quan sẽ bị mất!',

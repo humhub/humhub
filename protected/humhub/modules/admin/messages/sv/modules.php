@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Ange som standardmodul',
-    'Activated' => 'Aktiverad',
+    'Enabled' => 'Aktiverad',
     'Always activated' => 'Alltid aktiverad',
     'Are you sure? *ALL* module data will be lost!' => 'Är du säker? *ALL* moduldata kommer att gå förlorad!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Är du säker? *ALLA* modulrelaterade data och filer kommer att gå förlorad!',

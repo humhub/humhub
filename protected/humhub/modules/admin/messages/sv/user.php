@@ -43,7 +43,7 @@ return [
     'Create new group' => 'Skapa ny grupp',
     'Create new profile category' => 'Skapa ny profilkategori',
     'Create new profile field' => 'Skapa nytt profilfält',
-    'Deactivate' => 'Avaktivera',
+    'Disable' => 'Avaktivera',
     'Deactivate individual profile permissions?' => 'Inaktivera individuella profilbehörigheter?',
     'Decline' => 'Avböj',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Avvisa och ta bort användare: <strong>{displayName}</strong>',

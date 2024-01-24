@@ -2,7 +2,7 @@
 
 return [
     'Actions' => 'Aksi',
-    'Activate' => 'Aktifkan',
+    'Enable' => 'Aktifkan',
     'Delete' => 'Hapus',
     'Members' => 'Anggota',
     'Modules' => 'Modul',

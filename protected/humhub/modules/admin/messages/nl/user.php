@@ -44,7 +44,7 @@ return array (
   'Create new group' => 'Maak nieuwe groep',
   'Create new profile category' => 'Nieuwe profiel categorie toevoegen',
   'Create new profile field' => 'Nieuw profiel veld toevoegen',
-  'Deactivate' => 'Deactiveren',
+  'Disable' => 'Deactiveren',
   'Deactivate individual profile permissions?' => 'Individuele profielrechten deactiveren?',
   'Decline' => 'Afwijzen',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Afwijzen &amp; verwijderen gebruiker: <strong>{displayName}</strong>',

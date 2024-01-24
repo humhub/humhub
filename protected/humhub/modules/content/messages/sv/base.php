@@ -5,7 +5,7 @@ return [
     '<strong>Delete</strong> content?' => '<strong>Ta bort</strong> innehåll?',
     '<strong>Move</strong> content' => '<strong>Flytta</strong> Innehåll',
     '<strong>Permalink</strong> to this post' => '<strong>Permalänk</strong> till det här inlägget',
-    'Activated' => 'Aktiverad',
+    'Enabled' => 'Aktiverad',
     'Add a member to notify' => 'Lägg till en medlem som ska notifieras',
     'Add tag...' => 'Lägg till tagg...',
     'Archived' => 'Arkiverad',

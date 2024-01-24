@@ -118,7 +118,7 @@ return [
     'Could not decline the user!' => '',
     'Create new profile category' => '',
     'Create new profile field' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Deactivate individual profile permissions?' => '',
     'Decline' => '',
     'Decline all selected' => '',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Activated' => '已啟用',
+    'Enabled' => '已啟用',
     'Close' => '關閉',
     'Save' => '儲存',
     'Spaces' => 'Space',

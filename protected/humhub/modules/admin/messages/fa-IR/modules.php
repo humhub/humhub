@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - به عنوان ماژول پیش‌فرض قرار بده',
-    'Activated' => 'فعال شد',
+    'Enabled' => 'فعال شد',
     'Always activated' => 'فعال‌سازی دائمی',
     'Are you sure? *ALL* module data will be lost!' => 'آیا مطمئن هستید؟ *تمامی* داده‌های ماژول از بین‌خواهد رفت!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'آیا مطمئن هستید؟ *تمامی* داده‌ها و فایل‌های مرتبط با ماژول از بین‌خواهد رفت!',

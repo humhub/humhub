@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Activated' => 'አገልግሎት ይሰጣል',
+    'Enabled' => 'አገልግሎት ይሰጣል',
     'Are you sure? *ALL* module data will be lost!' => 'እርግጠኞ ኖር? *ሁሉም* የሞጁል መረጃዎች ይጠፋሉ!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'እርግጠኞ ኖር? *ሁሉም* ከሞጁል ጋር ታያያዥነት ያላቸው መረጃዎች እና ፋይሎች ይጠፋሉ!',
     'Close' => 'ዝጋ',

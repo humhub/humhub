@@ -2,7 +2,7 @@
 
 return [
     'About' => 'Informació',
-    'Activate' => 'Activar',
+    'Enable' => 'Activar',
     'Admin' => 'Administrador',
     'Administration' => 'Administració',
     'Administrators' => 'Administradors',
@@ -49,7 +49,7 @@ return [
     'Advanced settings' => '',
     'Appearance' => '',
     'Base URL needs to begin with http:// or https://' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Default group for administrators of this HumHub Installation' => '',
     'Default group for all newly registered users of the network' => '',
     'Delete all' => '',

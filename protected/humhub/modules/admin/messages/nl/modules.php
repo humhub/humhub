@@ -1,7 +1,7 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% - Stel in als standaard module',
-  'Activated' => 'Ingeschakeld',
+  'Enabled' => 'Ingeschakeld',
   'Always activated' => 'Altijd geactiveerd',
   'Are you sure? *ALL* module data will be lost!' => 'Weet u het zeker? *ALLE* module gegevens zal verloren gaan!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Weet u het zeker? *ALLE* gegevens en bestanden gerelateerd aan de module zullen verloren gaan!',

@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>Forum</strong> moduler',
   '<strong>Space</strong> settings' => '<strong>Forum</strong> inställningar',
   'Actions' => 'Åtgärder',
-  'Activate' => 'Aktivera',
+  'Enable' => 'Aktivera',
   'Add <strong>Modules</strong>' => 'Lägg till moduler',
   'Advanced access settings' => 'Avancerade inställningar för åtkomst',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'Alla medlemmar utom moderatorer och administratörer av detta utrymme kommer att tas bort. Alla väntande inbjudningar och medlemsförfrågningar kommer att avslutas.',

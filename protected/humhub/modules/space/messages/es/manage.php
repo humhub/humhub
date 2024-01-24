@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>Módulos</strong> del espacio',
   '<strong>Space</strong> settings' => 'Configuración del <strong>espacio</strong>',
   'Actions' => 'Acciones',
-  'Activate' => 'Activar',
+  'Enable' => 'Activar',
   'Add <strong>Modules</strong>' => 'Añadir <strong>Modulos</strong>',
   'Advanced access settings' => 'Ajustes avanzados de acceso',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'Se eliminarán todos los miembros de este Espacio, excepto los moderadores y administradores. Se cancelarán todas las invitaciones y peticiones de participación.',

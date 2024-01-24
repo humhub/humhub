@@ -13,8 +13,8 @@ Module successfully enabled!
     '--- Enable module: {moduleId} ---
 
 ' => '--- 啟用模組: {moduleId} ---',
-    'Activate' => '啟用',
-    'Activated' => '已啟用',
+    'Enable' => '啟用',
+    'Enabled' => '已啟用',
     'Add Licence Key' => '添加授權碼',
     'All' => '所有結果',
     'Configure' => '設定',
@@ -59,7 +59,7 @@ The license was successfully removed!
     '<strong>Activate</strong> your Professional Edition' => '',
     '<strong>General</strong> Settings' => '',
     'A new update is available (HumHub %version%)!' => '',
-    'Activate now' => '',
+    'Enable now' => '',
     'Add purchased module by licence key' => '',
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
     'All {moduleId} module content will be deleted. Continue?' => '',
@@ -102,7 +102,7 @@ The license was successfully removed!
     'Marketplace is disabled.' => '',
     'Max. users:' => '',
     'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '',
-    'Module <strong>activated</strong>' => '',
+    'Module <strong>enabled</strong>' => '',
     'Module <strong>installed</strong>' => '',
     'Module Administration' => '',
     'Module configuration' => '',
@@ -131,7 +131,7 @@ The license was successfully removed!
     'Third-party Modules are not covered by Professional Edition agreements.' => '',
     'Uninstalled' => '',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
-    'Well done! To make the module available within your network, you will also need to activate it. Do you want to activate it now?' => '',
-    'Well done! You have successful installed an activated the module!' => '',
+    'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
+    'Well done! You have successfully installed and enabled the module!' => '',
     'Would you like to jump straight to it?' => '',
 ];

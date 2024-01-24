@@ -2,7 +2,7 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% - Postavi kao zadani modul',
-    'Activated' => 'Aktivirano',
+    'Enabled' => 'Aktivirano',
     'Always activated' => 'Uvijek aktivirano',
     'Are you sure? *ALL* module data will be lost!' => 'Jeste li sigurni? * SVI * podaci modula bit će izgubljeni!',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Jeste li sigurni? * SVI * modul povezani podaci i datoteke bit će izgubljeni!',

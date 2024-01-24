@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>Moduly</strong> prostoru',
   '<strong>Space</strong> settings' => 'Nastavení <strong>prostorů</strong>',
   'Actions' => 'Akce',
-  'Activate' => 'Aktivovat',
+  'Enable' => 'Aktivovat',
   'Add <strong>Modules</strong>' => 'Přidat <strong>Moduly</strong>',
   'Advanced access settings' => 'Pokročilá nastavení přístupu a viditelnosti',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'Všichni členové s výjimkou moderátorů a správců tohoto prostoru budou odstraněni. Všechny nevyřízené pozvánky a žádosti o členství budou ukončeny.',

@@ -8,7 +8,7 @@ return [
     'Spaces' => 'Spatii',
     'Users' => 'Utilizatori',
     '%moduleName% - Set as default module' => '',
-    'Activated' => '',
+    'Enabled' => '',
     'Always activated' => '',
     'Are you sure? *ALL* module data will be lost!' => '',
     'Are you sure? *ALL* module related data and files will be lost!' => '',
