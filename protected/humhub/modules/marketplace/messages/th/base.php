@@ -28,8 +28,6 @@ The license was successfully removed!
 
 ' => '--- เปิดใช้งานโมดูล: {moduleId} ---',
     '<strong>Activate</strong> your Professional Edition' => '<strong>เปิดใช้งาน</strong> Professional Edition ของคุณ',
-    'Enable' => 'เปิดใช้งาน',
-    'Enabled' => 'เปิดใช้งานแล้ว',
     'Add purchased module by licence key' => 'เพิ่มโมดูลที่ซื้อด้วยรหัสใบอนุญาต',
     'All' => 'ทั้งหมด',
     'All {moduleId} module content will be deleted. Continue?' => 'เนื้อหาโมดูล {moduleId} ทั้งหมดจะถูกลบออก ดำเนินการต่อ',
@@ -45,6 +43,8 @@ The license was successfully removed!
     'Could not update licence. Error: ' => 'ไม่สามารถอัปเดตใบอนุญาต ข้อผิดพลาด:',
     'Download of module failed!' => 'การดาวน์โหลดโมดูลล้มเหลว',
     'Edit licence' => 'แก้ไขใบอนุญาต',
+    'Enable' => 'เปิดใช้งาน',
+    'Enabled' => 'เปิดใช้งานแล้ว',
     'General Settings' => 'การตั้งค่าทั่วไป',
     'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => 'หากโมดูลนี้ถูกทำเครื่องหมายเพิ่มเติมเป็น <strong>"ชุมชน"</strong> จะไม่ได้รับการทดสอบหรือตรวจสอบโดยทีมงานโครงการ HumHub',
     'Information' => 'ข้อมูล',
@@ -66,8 +66,6 @@ The license was successfully removed!
 ' => 'เพิ่มใบอนุญาตโมดูลแล้ว',
     'Module licence key cannot be empty!
 ' => 'รหัสใบอนุญาตของโมดูลไม่สามารถเว้นว่างได้',
-    'Module not found or activated!
-' => 'ไม่พบโมดูลหรือเปิดใช้งาน',
     'Module not found!
 ' => 'ไม่พบโมดูล',
     'More info' => 'ข้อมูลเพิ่มเติม',
@@ -97,9 +95,9 @@ The license was successfully removed!
     'Version:' => 'รุ่น:',
     '<strong>General</strong> Settings' => '',
     'A new update is available (HumHub %version%)!' => '',
-    'Enable now' => '',
     'Add Licence Key' => '',
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
+    'All modules' => '',
     'Allow module versions in beta status' => '',
     'Available Updates' => '',
     'Categories' => '',
@@ -108,6 +106,7 @@ The license was successfully removed!
     'Could not connect to HumHub API!' => '',
     'Could not find the requested module!' => '',
     'Deprecated' => '',
+    'Enable now' => '',
     'Featured' => '',
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
     'Great!' => '',
@@ -121,7 +120,10 @@ The license was successfully removed!
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
     'Module licence added!' => '',
+    'Module not found or enabled!
+' => '',
     'No modules found.' => '',
+    'No, thank you!' => '',
     'Official' => '',
     'PROFESSIONAL EDITION' => '',
     'Partner' => '',
@@ -132,6 +134,7 @@ The license was successfully removed!
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
     'Well done! You have successfully installed and enabled the module!' => '',
+    'Without category' => '',
     'Would you like to jump straight to it?' => '',
     'Your HumHub installation is up to date!' => '',
 ];

@@ -30,9 +30,6 @@ The license was successfully removed!
     '<strong>Activate</strong> your Professional Edition' => '<strong>Активируйте</strong> свою Профессиональную версию',
     '<strong>General</strong> Settings' => '<strong>Общие</strong> настройки',
     'A new update is available (HumHub %version%)!' => 'Доступно новое обновление (HumHub %version%)!',
-    'Enable' => 'Активировать',
-    'Enable now' => 'Активировать сейчас',
-    'Enabled' => 'Включен',
     'Add Licence Key' => 'Добавить лицензионный ключ',
     'Add purchased module by licence key' => 'Добавить ключ для приобретённого модуля',
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => 'После установки необходимого модуля вам останется только активировать его. После этого вы можете мгновенно начать использовать модуль или функцию. Обратите внимание, что некоторые модули необходимо настроить перед использованием.',
@@ -58,6 +55,9 @@ The license was successfully removed!
     'Deprecated' => 'Устарело',
     'Download of module failed!' => 'Не удалось загрузить модуль!',
     'Edit licence' => 'Редактировать лицензию',
+    'Enable' => 'Активировать',
+    'Enable now' => 'Активировать сейчас',
+    'Enabled' => 'Включен',
     'Featured' => 'Рекомендуемые',
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'Найдите все модули, которые вы можете добавить в свою сеть, на нашей торговой площадке HumHub. Откройте для себя многочисленные дополнения и функции, которые настраивают программное обеспечение и дают вам возможность настроить сеть в соответствии с вашими потребностями.',
     'General Settings' => 'Общие настройки',
@@ -91,8 +91,6 @@ The license was successfully removed!
 ' => 'Добавлена ​​лицензия на модуль!',
     'Module licence key cannot be empty!
 ' => 'Лицензионный ключ модуля не может быть пустым!',
-    'Module not found or activated!
-' => 'Модуль не найден или уже активирован!',
     'Module not found!
 ' => 'Модуль не найден!',
     'More info' => 'Подробнее',
@@ -133,5 +131,10 @@ The license was successfully removed!
     'Well done! You have successfully installed and enabled the module!' => 'Отличная работа! Вы успешно установили и активировали модуль!',
     'Would you like to jump straight to it?' => 'Хотите сразу перейти к этому?',
     'Your HumHub installation is up to date!' => 'Ваша установка HumHub обновлена!',
+    'All modules' => '',
     'Module Administration' => '',
+    'Module not found or enabled!
+' => '',
+    'No, thank you!' => '',
+    'Without category' => '',
 ];

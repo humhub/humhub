@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'Enable' => 'Активувати',
     'All' => 'Всі',
+    'Enable' => 'Активувати',
     'Register' => 'Реєстрація',
     'Search' => 'Пошук',
     'Search...' => 'Пошук...',
@@ -38,11 +38,10 @@ The license was successfully removed!
     '<strong>Activate</strong> your Professional Edition' => '',
     '<strong>General</strong> Settings' => '',
     'A new update is available (HumHub %version%)!' => '',
-    'Enable now' => '',
-    'Enabled' => '',
     'Add Licence Key' => '',
     'Add purchased module by licence key' => '',
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
+    'All modules' => '',
     'All {moduleId} module content will be deleted. Continue?' => '',
     'Allow module versions in beta status' => '',
     'Available Updates' => '',
@@ -64,6 +63,8 @@ The license was successfully removed!
     'Deprecated' => '',
     'Download of module failed!' => '',
     'Edit licence' => '',
+    'Enable now' => '',
+    'Enabled' => '',
     'Featured' => '',
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
     'General Settings' => '',
@@ -98,7 +99,7 @@ The license was successfully removed!
 ' => '',
     'Module licence key cannot be empty!
 ' => '',
-    'Module not found or activated!
+    'Module not found or enabled!
 ' => '',
     'Module not found!
 ' => '',
@@ -109,6 +110,7 @@ The license was successfully removed!
     'No modules found.' => '',
     'No modules installed yet. Install some to enhance the functionality!' => '',
     'No purchased modules found!' => '',
+    'No, thank you!' => '',
     'Official' => '',
     'Ok' => '',
     'PROFESSIONAL EDITION' => '',
@@ -132,6 +134,7 @@ The license was successfully removed!
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
     'Well done! You have successfully installed and enabled the module!' => '',
+    'Without category' => '',
     'Would you like to jump straight to it?' => '',
     'Your HumHub installation is up to date!' => '',
 ];
