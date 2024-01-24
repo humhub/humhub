@@ -81,7 +81,7 @@ The license was successfully removed!
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => 'Mise à jour réussie du module "{moduleName}" vers la version {newVersion}.',
   'Module <strong>activated</strong>' => 'Module <strong>activé</strong>',
   'Module <strong>installed</strong>' => 'Module <strong>installé</strong>',
-  'Module Administration' => 'Module d\'administration',
+  'Module Administration' => 'Administration des modules',
   'Module configuration' => 'Configuration du module',
   'Module directory %modulePath% is not writeable!' => 'Le dossier du module %modulePath% est en lecture seule.',
   'Module download failed! (%error%)' => 'Erreur de téléchargement du module (%error%)',

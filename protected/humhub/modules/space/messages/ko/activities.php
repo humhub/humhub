@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Space has been archived' => '방이 보관되었습니다.',
+  'Space has been archived' => '방을 보관했습니다.',
   'Space has been unarchived' => '방이 보관되지 않았습니다.',
   'Space member joined' => '방 멤버 가입',
   'Space member left' => '방 멤버 탈퇴',

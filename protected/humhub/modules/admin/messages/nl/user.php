@@ -140,7 +140,7 @@ Kind Regards
   'Password' => 'Wachtwoord',
   'Pending approvals' => 'Wachtende goedkeuringen',
   'Pending user approvals' => 'Wachtende gebruiker goedkeuringen',
-  'People' => 'Mensen',
+  'People' => 'Leden',
   'Permanently delete' => 'Permanent verwijderen',
   'Permissions' => 'Machtigingen',
   'Prioritised User Group' => 'Gebruikersgroep met prioriteit',

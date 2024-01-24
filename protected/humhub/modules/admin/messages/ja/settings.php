@@ -107,7 +107,7 @@ return array (
   'These settings refer to advanced topics of your social network.' => 'ここでは、ソーシャルネットワークの高度な設定を行うことができます。',
   'These settings refer to the appearance of your social network.' => 'ここでは、ソーシャルネットワークの外観の設定を行うことができます。',
   'Url Pattern' => 'URL パターン',
-  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'URLのプレースホルダに%url%を使用します。書式はJSONである必要があります。 （例：http://www.youtube.com/oembed?url=%url%&amp;format=json）',
+  'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'URLのプレースホルダに %url% を使用します。書式はJSONである必要があります。（例：http://www.youtube.com/oembed?url=%url%&amp;format=json）',
   'Use SMTPS' => 'SMTPSを使う',
   'Use X-Sendfile for File Downloads' => 'ファイルダウンロードのためにX-Sendfileを使用する',
   'User' => 'ユーザー',

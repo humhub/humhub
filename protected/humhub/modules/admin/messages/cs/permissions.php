@@ -1,10 +1,10 @@
 <?php
 return array (
   'Access Admin Information' => 'Přístup k administrátorským informacím',
-  'Can access the \'Administration -> Information\' section.' => 'Přístup do sekce "Administrace -> Informace".',
-  'Can manage modules within the \'Administration ->  Modules\' section.' => 'Přístup do sekce "Administrace -> Moduly".',
-  'Can manage Spaces within the \'Administration -> Spaces\' section.' => 'Přístup do sekce "Administrace -> Prostory". (vytváření/editace/smazání)',
-  'Can manage general settings.' => 'Editace sekce uživatelé- prostory- a hlavní-nastavení.',
+  'Can access the \'Administration -> Information\' section.' => 'Přístup do sekce "Administrace -&gt; Informace".',
+  'Can manage Spaces within the \'Administration -> Spaces\' section.' => 'Editace sekce "Administrace -&gt; Prostory".',
+  'Can manage general settings.' => 'Editace sekce obecné nastavení.',
+  'Can manage modules within the \'Administration ->  Modules\' section.' => 'Editace sekce "Administrace -&gt; Moduly".',
   'Can manage users and groups' => 'Editace sekce uživatelé a skupiny',
   'Can manage users and user profiles.' => 'Editace sekce uživatelé a uživatelské účty.',
   'Manage Groups' => 'Správa Skupin',

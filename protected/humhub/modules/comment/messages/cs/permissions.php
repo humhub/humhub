@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Manage content' => 'Spravovat obsah',
-    'Can manage (e.g. archive, stick, move or delete) arbitrary content' => '',
-];
+return array (
+  'Can manage (e.g. archive, stick, move or delete) arbitrary content' => 'Spravovat (např. archivovat, lepit, přesouvat nebo mazat) libovolný obsah.',
+  'Manage content' => 'Spravovat obsah',
+);
