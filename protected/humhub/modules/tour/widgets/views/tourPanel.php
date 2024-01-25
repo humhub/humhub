@@ -7,7 +7,7 @@ use yii\helpers\Url;
 TourAsset::register($this);
 
 ?>
-<div class="panel panel-default panel-tour" id="getting-started-panel">
+<div class="card card-default panel-tour" id="getting-started-panel">
     <?php
 
     $removeOptionHtml = Html::tag(
@@ -31,10 +31,10 @@ TourAsset::register($this);
     <!-- Display panel menu widget -->
     <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml]); ?>
 
-    <div class="panel-heading">
+    <div class="card-header">
         <?php echo Yii::t('TourModule.base', '<strong>Getting</strong> Started'); ?>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <p>
             <?php echo Yii::t('TourModule.base', 'Get to know your way around the site\'s most important features with the following guides:'); ?>
         </p>

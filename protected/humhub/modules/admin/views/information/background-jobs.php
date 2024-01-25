@@ -26,11 +26,11 @@ if (empty($lastRunDaily)) {
 ?>
 <div class="row">
     <div class="col-md-6">
-        <div class="panel">
-            <div class="panel-heading">
+        <div class="card">
+            <div class="card-header">
                 <?= Yii::t('AdminModule.information', '<strong>CronJob</strong> Status'); ?>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <strong><?= Yii::t('AdminModule.information', 'Last run (hourly):'); ?></strong><br> <?= $lastRunHourly; ?>
                 <br/><br/>
                 <strong><?= Yii::t('AdminModule.information', 'Last run (daily):'); ?></strong><br> <?= $lastRunDaily; ?>
@@ -40,8 +40,8 @@ if (empty($lastRunDaily)) {
     </div>
 
     <div class="col-md-6">
-        <div class="panel">
-            <div class="panel-heading">
+        <div class="card">
+            <div class="card-header">
                 <?php if ($canClearQueue): ?>
                     <?= Button::danger('Clear queue')
                         ->link(['background-jobs', 'clearQueue' => 1])
@@ -51,7 +51,7 @@ if (empty($lastRunDaily)) {
                 <?php endif; ?>
                 <?= Yii::t('AdminModule.information', '<strong>Queue</strong> Status'); ?>
             </div>
-            <div class="panel-body">
+            <div class="card-body">
                 <strong><?= Yii::t('AdminModule.information', 'Driver'); ?></strong><br/>
                 <?= $driverName; ?><br/>
                 <br/>

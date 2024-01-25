@@ -1,16 +1,16 @@
 <?php
 
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 use humhub\widgets\GridView;
 ?>
-<div class="panel-heading">
+<div class="card-header">
     <?php echo Yii::t('FriendshipModule.base', '<strong>Sent</strong> friend requests'); ?>
 </div>
 
 
 <?php echo \humhub\modules\friendship\widgets\ManageMenu::widget(['user' => $user]); ?>
 
-<div class="panel-body">
+<div class="card-body">
     <?php
     echo GridView::widget([
         'dataProvider' => $dataProvider,

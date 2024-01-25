@@ -47,7 +47,7 @@ class PermisionGridModuleFilter extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => 'form-control pull-right visible-md visible-lg',
+            'class' => 'form-control float-end visible-md visible-lg',
             'style' => 'width:150px'
         ];
     }

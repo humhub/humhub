@@ -1,0 +1,217 @@
+.md-editor.active {
+    border: 2px solid $info !important;
+}
+
+.md-editor textarea {
+    padding: 10px !important;
+}
+
+$md-block-spacing: 1.2em;
+
+.markdown-render, [data-ui-markdown], [data-ui-richtext] {
+    line-height: 1.57;
+    overflow: hidden;
+    overflow-wrap: break-word;
+
+    h1, h2, h3, h4, h5, h6 {
+        margin: $md-block-spacing 0 0.8em;
+        color: $text-color-main;
+        font-weight: normal;
+        text-align: start;
+    }
+
+    h1:first-child,
+    h2:first-child,
+    h3:first-child,
+    h4:first-child,
+    h5:first-child,
+    h6:first-child {
+        margin: 0 0 0.8em;
+    }
+
+    h1 {
+        font-size: 1.7em;
+    }
+
+    h2 {
+        font-size: 1.5em;
+    }
+
+    h3 {
+        font-size: 1.2em;
+    }
+
+    h4 {
+        font-size: 1.1em;
+    }
+
+    h5 {
+        font-size: 1em;
+    }
+
+    h6 {
+        font-size: .85em;
+    }
+
+    p, pre, blockquote, ul, ol {
+        margin: 0 0 $md-block-spacing;
+    }
+
+    li ul, li ol {
+        margin: 0;
+    }
+
+    p:last-child {
+        margin: 0;
+    }
+
+    pre {
+        padding: 0;
+        border: none;
+        background-color: $background-color-secondary;
+    }
+
+    pre code {
+        background-color: $background-color-secondary;
+        color: $text-color-main;
+    }
+
+    code {
+        background-color: lighten($info, 50%);
+        color: darken($info, 10%);
+    }
+
+    blockquote {
+        background-color: rgba(128, 128, 128, 0.05);
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+        padding: 15px 20px;
+        font-size: 1em;
+        border-left: 5px solid $primary;
+    }
+
+    dt, dd {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        line-height: 1.45;
+    }
+
+    dt {
+        font-weight: bold;
+    }
+
+    dd {
+        margin-left: 40px;
+    }
+
+    pre {
+        text-align: start;
+        border: 0;
+        padding: 10px 20px;
+        border-radius: 0;
+        border-left: 2px solid $primary;
+
+        code {
+            white-space: pre !important;
+        }
+    }
+
+    blockquote ul:last-child, blockquote ol:last-child {
+        margin-bottom: 0;
+    }
+
+    ul, ol {
+        margin-top: 0;
+        padding-left: 30px;
+
+        li p {
+            // otherwise single list items p hides the marker
+            overflow: visible !important;
+        }
+    }
+
+    .footnote {
+        vertical-align: top;
+        position: relative;
+        top: -0.5em;
+        font-size: .8em;
+    }
+
+    .emoji {
+        width: 16px;
+    }
+
+    a,
+    a:visited {
+        background-color: inherit;
+        text-decoration: none;
+        color: $link !important;
+    }
+
+    a.header-anchor {
+        color: $text-color-main !important;
+    }
+
+    a.not-found {
+        color: $warning;
+    }
+
+    li {
+        border: 0 !important;
+        background-color: transparent !important;
+        padding: 0;
+        margin: 5px 0;
+    }
+
+    img:not(.center-block) {
+        max-width: 100%;
+    }
+
+    img.pull-right {
+        margin: 5px 0 0 10px;
+    }
+
+    img.pull-left {
+        margin: 5px 10px 0 0;
+    }
+
+    img.center-block {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+
+    img[width='100%'] {
+        border-radius: 4px;
+    }
+
+    table {
+        border: 1px solid $background3;
+        margin-bottom: $md-block-spacing !important;
+        font-size: 1em;
+        width: 100%;
+
+        th, td {
+            border: 1px solid $background3 !important;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        th {
+            background-color: $primary;
+            color: $text-color-contrast !important;
+            font-size: 1em;
+
+            p {
+                color: $text-color-contrast !important;
+            }
+        }
+
+        td {
+            padding: 15px;
+        }
+
+        th {
+            padding: 10px 15px;
+        }
+    }
+}

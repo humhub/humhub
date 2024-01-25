@@ -4,7 +4,7 @@ use humhub\modules\user\models\Password;
 use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\widgets\SiteLogo;
 
 /* @var $model Password */
@@ -16,10 +16,10 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
     <br>
 
     <div class="row">
-        <div id="must-change-password-form" class="panel panel-default animated bounceIn"
+        <div id="must-change-password-form" class="card card-default animated bounceIn"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Change</strong> Password'); ?></div>
-            <div class="panel-body">
+            <div class="card-header"><?= Yii::t('UserModule.auth', '<strong>Change</strong> Password'); ?></div>
+            <div class="card-body">
 
                 <?php $form = ActiveForm::begin(); ?>
 
@@ -35,7 +35,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
                 <?= $form->field($model, 'newPasswordConfirm')->passwordInput(['maxlength' => 45]); ?>
 
                 <hr>
-                <?= Html::submitButton(Yii::t('UserModule.auth', 'Confirm'), ['class' => 'btn btn-primary pull-left', 'data-ui-loader' => ""]); ?>
+                <?= Html::submitButton(Yii::t('UserModule.auth', 'Confirm'), ['class' => 'btn btn-primary float-start', 'data-ui-loader' => ""]); ?>
 
                 <?php ActiveForm::end(); ?>
 

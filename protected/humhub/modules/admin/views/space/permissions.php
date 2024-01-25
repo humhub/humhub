@@ -10,7 +10,7 @@ use yii\helpers\Url;
 
 ?>
 <h4><?= Yii::t('AdminModule.space', 'Default Space Permissions'); ?></h4>
-<div class="help-block">
+<div class="form-text">
     <?= Yii::t('AdminModule.space', 'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.'); ?>
     <br><br>
     <?= Yii::t('AdminModule.space', 'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.'); ?>
@@ -28,6 +28,6 @@ use yii\helpers\Url;
     <?php endforeach; ?>
 </ul>
 
-<div class="panel-body" style="padding-top: 0px;">
+<div class="card-body" style="padding-top: 0px;">
     <?= PermissionGridEditor::widget(['permissionManager' => $defaultPermissionManager, 'groupId' => $groupId]); ?>
 </div>

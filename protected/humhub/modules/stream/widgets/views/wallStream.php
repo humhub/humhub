@@ -14,7 +14,7 @@ StreamAsset::register($this);
 ?>
 
 <?php if ($contentContainer && $contentContainer->isArchived()) : ?>
-    <span class="label label-warning pull-right" style="margin-top:10px;">
+    <span class="label label-warning float-end" style="margin-top:10px;">
         <?= Yii::t('ContentModule.base', 'Archived'); ?>
     </span>
 <?php endif; ?>

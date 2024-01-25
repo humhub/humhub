@@ -12,7 +12,12 @@
     "grunt-contrib-copy": "*",
     "grunt-contrib-cssmin": "^2.1.0",
     "grunt-contrib-less": "^2.0.0",
+    "grunt-contrib-sass": "^2.0.0",
     "grunt-contrib-uglify": "^5.0",
     "grunt-shell": "^2.1.0"
+  },
+  "dependencies": {
+    "sass": "^1.66.1",
+    "sass-migrator": "^1.7.3"
   }
 }

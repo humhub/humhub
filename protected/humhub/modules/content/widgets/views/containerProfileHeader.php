@@ -41,7 +41,6 @@ $profileImageHeight = $container->getProfileImage()->height();
 <?= Html::beginTag('div', $options) ?>
 
 <div class="panel-profile-header">
-
     <div class="image-upload-container profile-banner-image-container">
         <!-- profile image output-->
         <?= $container->getProfileBannerImage()->render('width:100%', ['class' => 'img-profile-header-background']) ?>
@@ -52,13 +51,13 @@ $profileImageHeight = $container->getProfileImage()->height();
             <h2 class="<?= $classPrefix ?>"><?= Html::encode($subTitle) ?></h2>
         </div>
 
-        <?php if ($canEdit) : ?>
+        <?php if ($canEdit): ?>
             <div class="image-upload-loader" style="padding:<?= $bannerProgressBarPadding ?>">
                 <?= $bannerUpload->progress() ?>
             </div>
         <?php endif; ?>
 
-        <?php if ($canEdit) : ?>
+        <?php if ($canEdit): ?>
             <?= $this->render('containerProfileImageMenu', [
                 'upload' => $bannerUpload,
                 'hasImage' => $container->getProfileBannerImage()->hasImage(),
@@ -73,15 +72,15 @@ $profileImageHeight = $container->getProfileImage()->height();
     <div class="image-upload-container profile-user-photo-container"
          style="width: <?= $profileImageWidth ?>px; height: <?= $profileImageHeight ?>px;">
 
-        <?php if ($container->getProfileImage()->hasImage()) : ?>
+        <?php if ($container->getProfileImage()->hasImage()): ?>
             <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org') ?>">
                 <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
             </a>
-        <?php else : ?>
+        <?php else: ?>
             <?= $container->getProfileImage()->render($profileImageHeight - 10, ['class' => 'img-profile-header-background profile-user-photo']) ?>
         <?php endif; ?>
 
-        <?php if ($canEdit) : ?>
+        <?php if ($canEdit): ?>
             <div class="image-upload-loader" style="padding-top: 60px;">
                 <?= $profileImageUpload->progress() ?>
             </div>

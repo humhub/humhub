@@ -4,7 +4,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Registration successful');
 <div class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel"><?php echo Yii::t('UserModule.auth', '<strong>Registration</strong> successful!'); ?></h4>
         </div>
         <div class="modal-body text-center">

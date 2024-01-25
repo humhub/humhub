@@ -9,7 +9,7 @@
 namespace humhub\modules\ui\form\widgets;
 
 use Yii;
-use yii\bootstrap\InputWidget;
+use yii\bootstrap5\InputWidget;
 
 
 /**
@@ -48,7 +48,7 @@ class SortOrderField extends InputWidget
         $attribute = $this->attribute;
 
         if (!$model->getAttributeLabel($attribute)) {
-            $this->field->label(Yii::t('UiModule.form', 'Sort Order'));
+            $this->field->label(Yii::t('UiModule.form', 'Sort Order'), ['class' => 'form-label']);
         }
         if (!$model->getAttributeHint($attribute)) {
             $this->field->hint(Yii::t('UiModule.form', 'Values between 0 and 10000, the existing elements usually use steps of 100.'));

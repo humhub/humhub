@@ -58,7 +58,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         </div>
                     </div>
 
-                    <p class="help-block text-center">
+                    <p class="form-text text-center">
                         <?= Icon::get('arrow-up')?>
                         <br>
                         <?= Yii::t('TourModule.base', 'Drag a photo here or click to browse your files'); ?>
@@ -114,7 +114,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-end">
                             <hr>
                             <br>
                             <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.base', 'Save and close'))?>

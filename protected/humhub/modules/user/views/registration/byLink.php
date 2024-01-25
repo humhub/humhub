@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\SiteLogo;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\libs\Html;
 use humhub\modules\user\models\Invite;
@@ -19,12 +19,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <?= SiteLogo::widget(['place' => 'login']) ?>
     <br/>
     <div class="row">
-        <div id="create-account-form" class="panel panel-default animated bounceIn"
+        <div id="create-account-form" class="card card-default animated bounceIn"
              style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading">
+            <div class="card-header">
                 <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
             </div>
-            <div class="panel-body">
+
+            <div class="card-body">
                 <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
                     <?= AuthChoice::widget() ?>
                 <?php endif; ?>
@@ -37,7 +38,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 
                 <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                <?php if ($invite->showCaptureInRegisterForm()): ?>
                     <div id="registration-form-captcha" style="display: none;">
                         <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
 
@@ -57,7 +58,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 </div>
 
 <script <?= Html::nonce() ?>>
-
     // Shake panel after wrong validation
     <?php if ($invite->hasErrors()) { ?>
     $('#create-account-form').removeClass('bounceInLeft');
@@ -70,7 +70,4 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         $('#registration-form-captcha').fadeIn(500);
     });
     <?php } ?>
-
 </script>
-
-

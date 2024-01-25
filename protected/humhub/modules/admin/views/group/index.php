@@ -11,22 +11,21 @@ use humhub\widgets\GridView;
 
 /* @var $searchModel GroupSearch */
 ?>
-<div class="panel-body">
-    <div class="pull-right">
+<div class="card-body">
+    <div class="float-end">
         <?= Link::success(Yii::t('AdminModule.user', 'Create new group'))->href(Url::to(['edit']))->sm()->icon('add') ?>
     </div>
 
     <h4><?= Yii::t('AdminModule.user', 'Manage groups'); ?></h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
     </div>
 </div>
 
 <?= GroupMenu::widget() ?>
 
-<div class="panel-body">
-
+<div class="card-body">
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

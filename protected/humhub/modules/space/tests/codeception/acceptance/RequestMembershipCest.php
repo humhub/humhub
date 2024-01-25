@@ -123,7 +123,7 @@ class RequestMembershipCest
         $I->amAdmin(true);
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');
         $I->amOnSpace1();
-        $I->dontSeeElement('.panel-danger');
+        $I->dontSeeElement('.card-danger');
 
         $I->click('.dropdown-navigation', '.controls-header');
         $I->waitForText('Members', null, '.controls-header');

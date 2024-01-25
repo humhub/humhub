@@ -9,7 +9,7 @@ use humhub\libs\Html;
 <div class="modal-dialog animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('SpaceModule.base', '<strong>Request</strong> Membership'); ?>
             </h4>
@@ -23,7 +23,7 @@ use humhub\libs\Html;
         </div>
         <div class="modal-footer">
             <hr>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
                 <?= Yii::t('SpaceModule.base', 'Close'); ?>
             </button>
         </div>

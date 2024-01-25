@@ -24,7 +24,7 @@ class ActivitySettingsCest
         $I->amAdmin();
         $I->amOnRoute('/activity/admin/defaults');
 
-        $I->submitForm('.panel-body form', [
+        $I->submitForm('.card-body form', [
             'MailSummaryForm[interval]' => '1',
             'MailSummaryForm[limitSpacesMode]' => '1',
             'MailSummaryForm[limitSpaces][]' => Space::findOne(1)->guid,
@@ -40,7 +40,7 @@ class ActivitySettingsCest
         $I->seeCheckboxIsChecked($this->getActivityCheckboxSelector(ContentCreated::class));
         $I->dontSeeCheckboxIsChecked($this->getActivityCheckboxSelector(Liked::class));
 
-        $I->submitForm('.panel-body form', [
+        $I->submitForm('.card-body form', [
             'MailSummaryForm[interval]' => '2',
             'MailSummaryForm[limitSpacesMode]' => '',
             'MailSummaryForm[limitSpaces][]' => '',

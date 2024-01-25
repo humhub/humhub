@@ -19,7 +19,7 @@ Assets::register($this);
 <div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('MarketplaceModule.base', 'Add Licence Key'); ?>
             </h4>
@@ -35,7 +35,7 @@ Assets::register($this);
                         <?= Button::defaultType(Yii::t('MarketplaceModule.base', 'Register'))
                             ->submit()
                             ->action('marketplace.registerLicenceKey')
-                            ->cssClass('btn btn-default btn-sm form-button-search'); ?>
+                            ->cssClass('btn btn-outline-secondary btn-sm form-button-search'); ?>
                     </div>
                     <?php if ($message != ''): ?>
                         <div style="color:<?= ($hasError) ? 'red' : 'green'; ?>"><?= Html::encode($message); ?></div>
@@ -57,7 +57,7 @@ Assets::register($this);
                 <?php foreach ($modules as $module): ?>
                     <hr>
                     <div class="media">
-                        <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
+                        <img class="media-object img-rounded float-start" data-src="holder.js/64x64" alt="64x64"
                              style="width: 64px; height: 64px;"
                              src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']; ?>">
 
@@ -87,7 +87,7 @@ Assets::register($this);
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <small class="pull-right"><br />Installation Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
+            <small class="float-end"><br />Installation Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
             <div class="clearfix"></div>
 
         </div>

@@ -9,7 +9,7 @@ use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /**
  * @var $this View
@@ -29,11 +29,11 @@ use yii\bootstrap\ActiveForm;
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item active">
-                <a class="nav-link" data-toggle="tab"
+                <a class="nav-link" data-bs-toggle="tab"
                    href="#invite-by-email"><?= Yii::t('UserModule.base', 'Invite by email') ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab"
+                <a class="nav-link" data-bs-toggle="tab"
                    href="#invite-by-link"><?= Yii::t('UserModule.base', 'Invite by link') ?></a>
             </li>
         </ul>
@@ -69,7 +69,7 @@ use yii\bootstrap\ActiveForm;
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
-                        <a href="#" class="pull-right"
+                        <a href="#" class="float-end"
                            data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>",
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"

@@ -173,7 +173,7 @@ class Registration extends HForm
         if ($this->enableMustChangePassword) {
             $form['elements']['mustChangePassword'] = [
                 'type' => 'checkbox',
-                'class' => 'form-control',
+                'class' => 'form-control form-check-input',
             ];
         }
 

@@ -10,7 +10,7 @@ use humhub\widgets\FooterMenu;
             echo \humhub\modules\user\widgets\AccountMenu::widget(); ?>
         </div>
         <div class="col-md-9">
-            <div class="panel panel-default">
+            <div class="card card-default">
                 <?php echo $content; ?>
             </div>
             <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_FULL_PAGE]); ?>

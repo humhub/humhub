@@ -9,16 +9,16 @@ use yii\helpers\Html;
 /* @var $showMoreButton boolean */
 ?>
 
-<div class="panel panel-default spaces" id="new-spaces-panel">
+<div class="card card-default spaces" id="new-spaces-panel">
 
     <!-- Display panel menu widget -->
     <?= PanelMenu::widget(['id' => 'new-spaces-panel']); ?>
 
-    <div class="panel-heading">
+    <div class="card-header">
         <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces'); ?>
     </div>
-    <div class="panel-body">
-        <?php foreach ($newSpaces as $space) : ?>
+    <div class="card-body">
+        <?php foreach ($newSpaces as $space): ?>
             <?= Image::widget([
                 'space' => $space,
                 'showTooltip' => true,

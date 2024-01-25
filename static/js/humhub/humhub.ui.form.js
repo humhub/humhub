@@ -32,7 +32,7 @@ humhub.module('ui.form', function (module, require, $) {
             }
 
             // init tab structure
-            $tabs.append('<li><a href="#tab-' + index + '" data-toggle="tab">' + label + '</a></li>');
+            $tabs.append('<li><a href="#tab-' + index + '" data-bs-toggle="tab">' + label + '</a></li>');
             $tabContent.append('<div class="tab-pane" data-tab-index="' + index + '" id="tab-' + index + '"></div>');
 
             // clone inputs from fieldSet into our tab structure
@@ -67,7 +67,7 @@ humhub.module('ui.form', function (module, require, $) {
         }
 
         // focus first input on tab change
-        this.$.find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        this.$.find('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
             var tabId = $(e.target).attr('href'); // newly activated tab
             $(tabId).find('.form-control').first().focus();
         });

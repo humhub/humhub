@@ -6,7 +6,7 @@ use yii\helpers\Html;
 ?>
 
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
-    <div class="help-block">
+    <div class="form-text">
          <?php echo Yii::t('UserModule.account', 'Your current username is <b>{username}</b>. You can change your current username here.', ['username' => Html::encode(Yii::$app->user->getIdentity()->username)]); ?>
     </div>
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>

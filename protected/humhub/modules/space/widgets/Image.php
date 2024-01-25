@@ -9,7 +9,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\modules\ui\widgets\BaseImage;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * Return space image or acronym
@@ -65,7 +65,7 @@ class Image extends BaseImage
         $imageHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
         if ($this->showTooltip) {
-            $this->linkOptions['data-toggle'] = 'tooltip';
+            $this->linkOptions['data-bs-toggle'] = 'tooltip';
             $this->linkOptions['data-placement'] = 'top';
             $this->linkOptions['data-html'] = 'true';
             $this->linkOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->space->name);

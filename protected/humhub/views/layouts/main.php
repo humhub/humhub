@@ -24,11 +24,11 @@
                     <?= \humhub\widgets\SiteLogo::widget(); ?>
                 </div>
 
-                <div class="topbar-actions pull-right">
+                <div class="topbar-actions float-end">
                     <?= \humhub\modules\user\widgets\AccountTopMenu::widget(); ?>
                 </div>
 
-                <div class="notifications pull-right">
+                <div class="notifications float-end">
                     <?= \humhub\widgets\NotificationArea::widget(); ?>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                     <?= \humhub\widgets\TopMenu::widget(); ?>
                 </ul>
 
-                <ul class="nav pull-right" id="search-menu-nav">
+                <ul class="nav float-end" id="search-menu-nav">
                     <?= \humhub\widgets\TopMenuRightStack::widget(); ?>
                 </ul>
             </div>

@@ -19,15 +19,14 @@ use yii\helpers\Url;
 ?>
 
 
-<div class="panel panel-default wall_<?= $object->getUniqueId(); ?>">
-    <div class="panel-body">
-
+<div class="card card-default wall_<?= $object->getUniqueId(); ?>">
+    <div class="card-body">
         <div class="media">
             <!-- since v1.2 -->
             <div class="stream-entry-loader"></div>
 
             <!-- start: show wall entry options -->
-            <?php if ($renderControls) : ?>
+            <?php if ($renderControls): ?>
                 <?= WallEntryControls::widget(['object' => $object, 'wallEntryWidget' => $wallEntryWidget]) ?>
             <?php endif; ?>
             <!-- end: show wall entry options -->
@@ -36,7 +35,7 @@ use yii\helpers\Url;
             UserImage::widget([
                 'user' => $user,
                 'width' => 40,
-                'htmlOptions' => ['class' => 'pull-left','data-contentcontainer-id' => $user->contentcontainer_id]
+                'htmlOptions' => ['class' => 'float-start','data-contentcontainer-id' => $user->contentcontainer_id]
             ]);
             ?>
 
@@ -47,7 +46,7 @@ use yii\helpers\Url;
                     'width' => 20,
                     'htmlOptions' => ['class' => 'img-space'],
                     'link' => 'true',
-                    'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
+                    'linkOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $container->contentcontainer_id],
                 ]);
                 ?>
             <?php endif; ?>
@@ -62,7 +61,7 @@ use yii\helpers\Url;
                         </span>
                     <?php endif; ?>
 
-                    <div class="pull-right <?= ($renderControls) ? 'labels' : '' ?>">
+                    <div class="float-end <?= ($renderControls) ? 'labels' : '' ?>">
                         <?= WallEntryLabels::widget(['object' => $object]); ?>
                     </div>
                 </div>
@@ -70,7 +69,7 @@ use yii\helpers\Url;
                     <a href="<?= Url::to(['/content/perma', 'id' => $object->content->id], true) ?>">
                         <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
                     </a>
-                    <?php if ($updatedAt !== null) : ?>
+                    <?php if ($updatedAt !== null): ?>
                         &middot;
                         <span class="tt"
                               title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
@@ -84,7 +83,7 @@ use yii\helpers\Url;
             </div>
 
             <!-- wall-entry-addons class required since 1.2 -->
-            <?php if ($renderAddons) : ?>
+            <?php if ($renderAddons): ?>
                 <div class="stream-entry-addons clearfix">
                     <?= WallEntryAddons::widget($addonOptions); ?>
                 </div>

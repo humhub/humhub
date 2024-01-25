@@ -11,11 +11,11 @@ use humhub\modules\user\widgets\Image;
  */
 ?>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card card-default">
+    <div class="card-header">
         <?= Yii::t('SpaceModule.base', '<strong>About</strong> the Space') ?>
     </div>
-    <div class="panel-body">
+    <div class="card-body">
         <?php if ($space->about || $space->description): ?>
             <div>
                 <div data-ui-markdown data-ui-show-more data-collapse-at="600">
@@ -26,7 +26,6 @@ use humhub\modules\user\widgets\Image;
         <?php endif; ?>
 
         <div class="row">
-
             <div class="col-md-4">
                 <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
                     <div class="media">
@@ -102,8 +101,6 @@ use humhub\modules\user\widgets\Image;
                 <p><i class="fa fa-globe colorInfo"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
             </div>
         </div>
-
-
     </div>
 </div>
 

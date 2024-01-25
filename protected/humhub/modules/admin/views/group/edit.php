@@ -16,7 +16,7 @@ use humhub\modules\space\widgets\SpacePickerField;
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
-<div class="panel-body">
+<div class="card-body">
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= $form->field($group, 'name'); ?>
     <?= $form->field($group, 'description')->textarea(['rows' => 5]); ?>

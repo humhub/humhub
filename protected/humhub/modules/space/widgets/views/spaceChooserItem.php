@@ -14,13 +14,13 @@ use yii\helpers\Html;
                 'space' => $space,
                 'width' => 24,
                 'htmlOptions' => [
-                    'class' => 'pull-left',
+                    'class' => 'float-start',
             ]]);
             ?>
             <div class="media-body">
                 <strong class="space-name"><?= Html::encode($space->name); ?></strong>
                     <?= $badge ?>
-                <div data-message-count="<?= $updateCount; ?>" style="display: none;" class="badge badge-space messageCount pull-right tt" title="<?= Yii::t('SpaceModule.chooser', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]); ?>">
+                <div data-message-count="<?= $updateCount; ?>" style="display: none;" class="badge badge-space messageCount float-end tt" title="<?= Yii::t('SpaceModule.chooser', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]); ?>">
                     <?= $updateCount; ?>
                 </div>
                 <br>

@@ -13,8 +13,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
 use Yii;
-use yii\bootstrap\InputWidget;
-use yii\bootstrap\Html;
+use yii\bootstrap5\InputWidget;
+use yii\bootstrap5\Html;
 
 
 /**

@@ -89,12 +89,12 @@ function showFileUploadError(file) {
         '<div class="modal-dialog modal-dialog-extra-small animated pulse">' +
         '<div class="modal-content">' +
         '<div class="modal-header">' +
-        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+        '<button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>' +
         '<h4 class="modal-title" id="myModalLabel">' + fileuploader_error_modal_title + '</h4> ' +
         '</div>' +
         '<div class="modal-body text-center">' + fileuploader_error_modal_errormsg + ' ' + htmlEncode(file.name) + '<br>' + htmlEncode(errorMessage) + '</div>' +
         '<div class="modal-footer">' +
-        '<button type="button" class="btn btn-primary" data-dismiss="modal">' + fileuploader_error_modal_btn_close + '</button>' +
+        '<button type="button" class="btn btn-primary" data-bs-dismiss="modal">' + fileuploader_error_modal_btn_close + '</button>' +
         '</div>' +
         '</div>' +
         '</div>' +

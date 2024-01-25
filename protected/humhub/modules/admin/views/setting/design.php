@@ -27,9 +27,9 @@ $iconUrl = SiteIcon::getUrl(140);
 
 ?>
 
-<div class="panel-body">
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.settings', 'Appearance Settings'); ?></h4>
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.settings', 'These settings refer to the appearance of your social network.'); ?>
     </div>
 
@@ -66,7 +66,7 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
 
 
-    <div class="well">
+    <div class="card card-body text-bg-light">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
@@ -85,7 +85,7 @@ $iconUrl = SiteIcon::getUrl(140);
         </div>
     </div>
 
-    <div class="well">
+    <div class="card card-body text-bg-light">
         <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'style' => 'display: none', 'name' => 'icon[]']); ?>
         <div class="image-upload-container" id="icon-upload">
             <img class="img-rounded" id="icon-image" src="<?= $iconUrl ?>"

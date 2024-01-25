@@ -22,7 +22,6 @@ use humhub\modules\ui\view\components\View;
  */
 class LayoutHeader extends Widget
 {
-
     /**
      * Registers mobile app related Head Tags
      *
@@ -30,7 +29,6 @@ class LayoutHeader extends Widget
      */
     public static function registerHeadTags(View $view)
     {
-
         $view->registerMetaTag(['name' => 'theme-color', 'content' => Yii::$app->view->theme->variable('primary')]);
         $view->registerMetaTag(['name' => 'application-name', 'content' => Yii::$app->name]);
 
@@ -69,7 +67,5 @@ class LayoutHeader extends Widget
             }
 JS
             , View::POS_READY, 'serviceWorkerInit');
-
     }
-
 }

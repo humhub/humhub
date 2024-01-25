@@ -12,10 +12,10 @@ use humhub\widgets\Button;
 /* @var MenuEntry[] $entries */
 ?>
 <?= Button::defaultType(Icon::get('cog') . Icon::get('dropdownToggle'))
-    ->options(['data-toggle' => 'dropdown'])
+    ->options(['data-bs-toggle' => 'dropdown'])
     ->sm()
     ->loader(false) ?>
-<ul class="dropdown-menu pull-right">
+<ul class="dropdown-menu float-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
             <?= $entry->render() ?>

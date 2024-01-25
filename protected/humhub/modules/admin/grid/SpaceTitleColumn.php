@@ -12,7 +12,7 @@ use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
 use humhub\widgets\Label;
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * TitleColumn

@@ -15,9 +15,9 @@ use yii\helpers\Html;
 
 ActivityAsset::register($this);
 ?>
-<div class="panel panel-default panel-activities" id="panel-activities">
+<div class="card card-default panel-activities" id="panel-activities">
     <?= PanelMenu::widget(['id' => 'panel-activities']) ?>
-    <div class="panel-heading">
+    <div class="card-header">
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
     <?= Html::beginTag('div', $options) ?>

@@ -27,10 +27,9 @@ $categoryItems[] = [
 ];
 ?>
 
-<div class="panel-body">
-
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.user', 'Manage profile attributes') ?></h4>
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'Here you can create or edit profile categories and fields.'); ?>
     </div>
 

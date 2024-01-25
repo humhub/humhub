@@ -23,7 +23,7 @@ class LessHelper
      */
     public static function getVariableFile(Theme $theme)
     {
-        return $theme->getBasePath() . '/less/variables.less';
+        return $theme->getBasePath() . '/scss/variables.scss';
     }
 
 

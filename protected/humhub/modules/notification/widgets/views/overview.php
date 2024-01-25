@@ -8,7 +8,7 @@ use yii\helpers\Html;
 ?>
 <?= Html::beginTag('div', $options) ?>
 <a href="#" id="icon-notifications" data-action-click='toggle'
-   aria-label="<?= Yii::t('NotificationModule.base', 'Open the notification dropdown menu') ?>" data-toggle="dropdown">
+   aria-label="<?= Yii::t('NotificationModule.base', 'Open the notification dropdown menu') ?>" data-bs-toggle="dropdown">
     <i class="fa fa-bell"></i>
 </a>
 
@@ -16,7 +16,7 @@ use yii\helpers\Html;
 
 <!-- container for ajax response -->
 <ul id="dropdown-notifications" class="dropdown-menu">
-    <li class="dropdown-header">
+    <li class="dropdown-item dropdown-header">
         <div class="arrow"></div><?= Yii::t('NotificationModule.base', 'Notifications'); ?>
         <div class="dropdown-header-link">
             <a id="mark-seen-link" data-action-click='markAsSeen'
@@ -25,15 +25,15 @@ use yii\helpers\Html;
             </a>
         </div>
     </li>
-    <li>
+    <li class="dropdown-item">
         <ul class="media-list"></ul>
     </li>
-    <li id="loader_notifications">
+    <li class="dropdown-item" id="loader_notifications">
         <?= \humhub\widgets\LoaderWidget::widget(); ?>
     </li>
-    <li>
+    <li class="dropdown-item">
         <div class="dropdown-footer">
-            <a class="btn btn-default col-md-12" href="<?= Url::to(['/notification/overview']); ?>">
+            <a class="btn btn-outline-secondary col-md-12" href="<?= Url::to(['/notification/overview']); ?>">
                 <?= Yii::t('NotificationModule.base', 'Show all notifications'); ?>
             </a>
         </div>

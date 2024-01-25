@@ -12,7 +12,7 @@ use humhub\modules\space\models\Space;
 
 /**
  * SpaceDirectoryCard shows a space on spaces directory
- * 
+ *
  * @since 1.9
  * @author Luke
  */
@@ -27,7 +27,7 @@ class SpaceDirectoryCard extends Widget
     /**
      * @var string HTML wrapper around card
      */
-    public $template = '<div class="card card-space col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
+    public $template = '<div class="card card-space col-lg-3 col-md-4 col-sm-6 col-12">{card}</div>';
 
     /**
      * @inheritdoc

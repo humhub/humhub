@@ -34,7 +34,7 @@ $nextUrl = $isAmind ? Url::to(['/admin/module/list', 'tour' => 'true']) : '';
                         placement: "left"
                     },
                     {
-                        element: ".layout-nav-container .panel",
+                        element: ".layout-nav-container .card",
                         title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Profile</strong> menu')); ?>,
                         content: <?= json_encode(Yii::t('TourModule.profile', 'Just like in the space, the user profile can be personalized with various modules.<br><br>You can see which modules are available for your profile by looking them in “Modules” in the account settings menu.')); ?>,
                         placement: "right"

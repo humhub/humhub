@@ -14,16 +14,16 @@ use yii\helpers\Html;
 /* @var int $totalMemberCount */
 /* @var array $showListOptions */
 ?>
-<div class="panel panel-default members" id="space-members-panel">
+<div class="card card-default members" id="space-members-panel">
     <?= PanelMenu::widget([
         'id' => 'space-members-panel',
         'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]); ?>
-    <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
+    <div class="card-header"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)
     </div>
-    <div class="panel-body">
-        <?php foreach ($users as $user) : ?>
+    <div class="card-body">
+        <?php foreach ($users as $user): ?>
             <?php
             if (in_array($user->id, $privilegedUserIds[Space::USERGROUP_OWNER])) {
                 // Show Owner image & tooltip
@@ -53,10 +53,9 @@ use yii\helpers\Html;
             ?>
         <?php endforeach; ?>
 
-        <?php if ($showListButton) : ?>
+        <?php if ($showListButton): ?>
             <br>
-            <a href="<?= $urlMembersList; ?>" data-target="#globalModal" class="btn btn-default btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
+            <a href="<?= $urlMembersList; ?>" data-target="#globalModal" class="btn btn-outline-secondary btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
         <?php endif; ?>
-
     </div>
 </div>

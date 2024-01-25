@@ -4,7 +4,7 @@ use humhub\modules\user\models\forms\AccountRecoverPassword;
 use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\widgets\SiteLogo;
 use yii\captcha\Captcha;
 
@@ -13,18 +13,17 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 /**
  * @var $model AccountRecoverPassword
  */
-
 ?>
 <div class="container" style="text-align: center;">
     <?= SiteLogo::widget(['place' => 'login']); ?>
     <br>
 
     <div class="row">
-        <div id="password-recovery-form" class="panel panel-default animated bounceIn"
+        <div id="password-recovery-form" class="card card-default animated bounceIn"
              style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></div>
-            <div class="panel-body">
+            <div class="card-header"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></div>
 
+            <div class="card-body">
                 <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
                 <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
@@ -37,8 +36,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                         'attribute' => 'verifyCode',
                         'captchaAction' => '/user/auth/captcha',
                         'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
-                    ])->label(false);
-                    ?>
+                    ])->label(false); ?>
                 </div>
 
                 <hr>
@@ -46,14 +44,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                 <?= Button::primary(Yii::t('UserModule.auth', 'Back'))->link(Url::home())->pjax(false) ?>
 
                 <?php ActiveForm::end(); ?>
-
             </div>
         </div>
     </div>
 </div>
 
 <script <?= \humhub\libs\Html::nonce() ?>>
-
     $(function () {
         // set cursor to email field
         $('#email_txt').focus();

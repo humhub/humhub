@@ -139,9 +139,9 @@ class ThemeHelper
      */
     public static function getAllVariables(Theme $theme)
     {
-        $variables = LessHelper::parseLessVariables(Yii::getAlias('@webroot-static/less/variables.less'));
+        $variables = LessHelper::parseLessVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
         foreach (array_reverse(static::getThemeTree($theme)) as $theme) {
-            $eeVariablesFile = $theme->getBasePath() . '/less/enterprise_variables.less';
+            $eeVariablesFile = $theme->getBasePath() . '/scss/enterprise_variables.scss';
             if (file_exists($eeVariablesFile)) {
                 $variables = ArrayHelper::merge($variables, LessHelper::parseLessVariables($eeVariablesFile));
             }

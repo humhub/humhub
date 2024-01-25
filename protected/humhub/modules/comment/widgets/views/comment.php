@@ -34,7 +34,7 @@ $module = Yii::$app->getModule('comment');
 
     <?= CommentControls::widget(['comment' => $comment]) ?>
 
-    <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
+    <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
     <div>
         <div class="media-body">
             <h4 class="media-heading">

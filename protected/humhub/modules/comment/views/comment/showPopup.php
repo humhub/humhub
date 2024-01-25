@@ -12,7 +12,7 @@ use humhub\modules\comment\widgets\Form;
 <?php ModalDialog::begin(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>
     <div class="modal-body comment-container comment-modal-body" style="margin-top:0">
         <div id="userlist-content">
-            <div class="well well-small" id="comment_<?= $id ?>">
+            <div class="card card-body text-bg-light well-small" id="comment_<?= $id ?>">
                 <div class="comment" id="comments_area_<?= $id ?>">
                     <?= $output ?>
                 </div>

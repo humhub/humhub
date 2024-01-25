@@ -12,7 +12,7 @@ use yii\helpers\Html;
 /* @var $approveFormModel ApproveUserForm */
 ?>
 
-<div class="panel-body">
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.user', 'Decline & delete user: <strong>{displayName}</strong>', ['{displayName}' => Html::encode($model->displayName)]); ?></h4>
 
     <?php $form = ActiveForm::begin(); ?>

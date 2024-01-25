@@ -1,0 +1,125 @@
+//
+// General
+// --------------------------------------------------
+body {
+    @extend .text-break;
+    padding-top: 130px;
+    background-color: $background-color-page;
+    color: $text-color-main;
+    font-family: 'Open Sans', sans-serif;
+
+    a,
+    a:hover,
+    a:focus,
+    a:active,
+    a.active {
+        color: $text-color-highlight;
+        text-decoration: none;
+    }
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+// Cols (change position property to prevent the cutting of tooltips or menus)
+.col-md-1,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-md-10,
+.col-md-11,
+.col-md-12 {
+    position: inherit;
+}
+
+.layout-nav-container {
+    padding: 0 0 0 15px;
+}
+
+.layout-sidebar-container {
+    padding: 0 15px 0 0;
+}
+
+@media (max-width: 768px) {
+    .layout-nav-container {
+        padding: 0 15px;
+        .left-navigation {
+            margin-bottom: 0;
+        }
+    }
+}
+
+h4 {
+    font-weight: 300;
+    font-size: 150%;
+}
+
+input[type=text],
+input[type=password],
+input[type=select] {
+    /* Remove First */
+    appearance: none;
+}
+
+.powered,
+.powered a {
+    color: #b8c7d3 !important;
+}
+
+.langSwitcher {
+    display: inline-block;
+}
+
+[data-ui-show-more] {
+    overflow: hidden;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+    .layout-nav-container {
+        padding: 0 15px;
+    }
+
+    body {
+        padding-top: 120px;
+    }
+}
+
+@media print {
+    #topbar-first, #topbar-second {
+        display: none;
+    }
+}
+
+// Todo find better place for this selector
+span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: lightgrey;
+}
+
+.panel-body a[data-bs-toggle], .modal-body a[data-bs-toggle] {
+    color:$link;
+}
+
+.showMore {
+    font-size:13px;
+}
+
+.table-responsive {
+    word-wrap: normal;
+    overflow-wrap: normal;
+    word-break: normal;
+    hyphens: none;
+}

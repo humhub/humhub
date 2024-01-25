@@ -14,17 +14,17 @@ use yii\helpers\Html;
 /* @var int $totalFollowerCount */
 /* @var array $showListOptions */
 ?>
-<div class="panel panel-default follower" id="space-follower-panel">
+<div class="card card-default follower" id="space-follower-panel">
     <?= PanelMenu::widget([
         'id' => 'space-follower-panel',
         'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions))
     ]) ?>
 
-    <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
+    <div class="card-header"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> followers') ?> (<?= $totalFollowerCount ?>)
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?php foreach ($followers as $follower): ?>
             <?= $follower->getProfileImage()->render(32, [
                 'class' => 'img-rounded tt img_margin',

@@ -46,7 +46,7 @@ class HeaderControlsMenu extends DropdownMenu
     {
         parent::init();
 
-        if(!$this->label) {
+        if (!$this->label) {
             $this->label = Icon::get('controls');
         }
 
@@ -128,7 +128,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'htmlOptions' => [
                         'data-method' => 'POST',
                         'class' => 'tt',
-                        'data-toggle' => 'tooltip',
+                        'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'left',
                         'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard')
                     ]
@@ -141,7 +141,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'sortOrder' => 800,
                     'htmlOptions' => ['data-method' => 'POST',
                         'class' => 'tt',
-                        'data-toggle' => 'tooltip',
+                        'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'left',
                         'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard')
                     ]

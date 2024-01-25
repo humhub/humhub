@@ -5,7 +5,7 @@ humhub.module('client.pjax', function (module, require, $) {
 
     var init = function () {
         if (module.config.active) {
-            $(document).pjax('a:not([data-pjax-prevent],[target],[data-target],[data-toggle],.exclude-from-pjax-client a)', PJAX_CONTAINER_SELECTOR, module.config.options);
+            $(document).pjax('a:not([data-pjax-prevent],[target],[data-target],[data-bs-toggle],.exclude-from-pjax-client a)', PJAX_CONTAINER_SELECTOR, module.config.options);
             pjaxRedirectFix();
             module.installLoader();
         }

@@ -13,17 +13,17 @@ use humhub\modules\ui\menu\MenuEntry;
 /* @var array $options */
 ?>
 
-<div class="comment-entry-loader pull-right"></div>
+<div class="comment-entry-loader float-end"></div>
 <?= Html::beginTag('ul', $options) ?>
     <li class="dropdown ">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
            aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
             <?= Icon::get('dropdownToggle') ?>
         </a>
 
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu float-end">
             <?php foreach ($entries as $entry) : ?>
-                <li>
+                <li class="dropdown-item">
                     <?= $entry->render() ?>
                 </li>
             <?php endforeach; ?>

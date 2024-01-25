@@ -1,5 +1,5 @@
 <?php
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 if ($link == true) :
     echo Html::beginTag('a', $linkOptions);

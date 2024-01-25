@@ -20,9 +20,8 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 
-<div class="panel-body">
-
-    <div class="help-block">
+<div class="card-body">
+    <div class="form-text">
         <?= Yii::t('LdapModule.base', 'Specify your LDAP-backend used to fetch user accounts.') ?>
     </div>
     <br>

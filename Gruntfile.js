@@ -83,7 +83,7 @@ module.exports = function (grunt) {
                 command: function(name) {
                     let theme = name || grunt.option('name') || "HumHub";
                     let sep = cmdSep();
-                    return `cd themes/${theme}/less ${sep} lessc -x build.less ../css/theme.css`;
+                    return `cd themes/${theme}/scss ${sep} sass build.scss:../css/theme.css`;
                 }
             },
             migrateCreate: {
@@ -100,7 +100,6 @@ module.exports = function (grunt) {
                     return `cd protected ${sep} php yii migrate/up --includeModuleMigrations=${includeModuleMigrations}`;
                 }
             }
-
         },
         concat: {},
         uglify: {
@@ -116,6 +115,13 @@ module.exports = function (grunt) {
                 files: cssMinAssetcfg
             }
         },
+        scss: {
+            dev: {
+                files: {
+                    'themes/HumHub/css/scss/theme.css': 'themes/HumHub/css/scss/theme.scss'
+                }
+            }
+        },
         less: {
             dev: {
                 files: {
@@ -126,6 +132,7 @@ module.exports = function (grunt) {
     });
 
     grunt.loadNpmTasks('grunt-contrib-less');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');

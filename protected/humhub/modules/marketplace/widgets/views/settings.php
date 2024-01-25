@@ -18,11 +18,11 @@ use humhub\widgets\Button;
             ->icon('cog')
             ->cssClass('dropdown-toggle')
             ->tooltip(Yii::t('MarketplaceModule.base', 'Settings'))
-            ->options(['data-toggle' => 'dropdown']) ?>
+            ->options(['data-bs-toggle' => 'dropdown']) ?>
 
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu float-end">
             <?php foreach ($entries as $entry) : ?>
-                <li>
+                <li class="dropdown-item">
                     <?= $entry->render() ?>
                 </li>
             <?php endforeach; ?>

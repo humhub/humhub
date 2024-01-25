@@ -5,31 +5,30 @@ use humhub\modules\admin\models\forms\UserDeleteForm;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $model UserDeleteForm */
 ?>
-<div class="panel-body">
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.user', 'Confirm user deletion'); ?></h4>
     <br>
 
     <p><strong><?= Yii::t('AdminModule.user', 'Are you sure that you want to delete following user?'); ?></strong></p>
-    <div class="well">
 
-    <div class="media">
-        <div class="media-left" style="padding-right:6px">
-            <?= UserImage::widget(['user' => $model->user, 'width' => 38, 'link' => true]); ?>
+    <div class="card card-body text-bg-light">
+        <div class="media">
+            <div class="media-left" style="padding-right:6px">
+                <?= UserImage::widget(['user' => $model->user, 'width' => 38, 'link' => true]); ?>
+            </div>
+            <div class="media-body">
+                <h4 class="media-heading"><?= Html::containerLink($model->user); ?></h4>
+                <?= Html::encode($model->user->email) ?>
+            </div>
         </div>
-        <div class="media-body">
-            <h4 class="media-heading"><?= Html::containerLink($model->user); ?></h4>
-            <?= Html::encode($model->user->email) ?>
-        </div>
-    </div>    
-    <hr>
+        <hr>
         <p><i class="fa fa-exclamation-triangle" style="color: <?= $this->theme->variable('danger')?>"></i> &nbsp;<?= Yii::t('AdminModule.user', 'All the personal data of this user will be irrevocably deleted.'); ?></p>
 
     <?php if (count($model->getOwningSpaces()) !== 0): ?>
-
         <p><b><?= Yii::t('AdminModule.user', 'The user is the owner of these spaces:'); ?></b></p>
 
         <?php foreach ($model->getOwningSpaces() as $space): ?>

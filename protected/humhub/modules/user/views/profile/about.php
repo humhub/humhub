@@ -10,20 +10,21 @@ use humhub\modules\user\models\fieldtype\MarkdownEditor;
  */
 $categories = $user->profile->getProfileFieldCategories();
 ?>
-<div class="panel panel-default">
-    <div
-        class="panel-heading"><?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?></div>
-    <div class="panel-body">
+<div class="card card-default">
+    <div class="card-header">
+        <?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?>
+    </div>
+
+    <div class="card-body">
         <?php $firstClass = "active" ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($categories as $category): ?>
                 <li class="<?= $firstClass ?>">
-                    <a href="#profile-category-<?= $category->id; ?>" data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                    <a href="#profile-category-<?= $category->id; ?>" data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                 </li>
                 <?php
                 $firstClass = "";
-            endforeach;
-            ?>
+            endforeach; ?>
         </ul>
         <?php $firstClass = "active" ?>
         <div class="tab-content">
@@ -33,9 +34,9 @@ $categories = $user->profile->getProfileFieldCategories();
                 $firstClass = "";
                 ?>" id="profile-category-<?= $category->id ?>">
                     <form class="form-horizontal" role="form">
-                        <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
+                        <?php foreach ($user->profile->getProfileFields($category) as $field): ?>
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">
+                                <label class="col-sm-3 form-label control-label">
                                     <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
                                 </label>
                                 <?php if (strtolower($field->title) == 'about'): ?>

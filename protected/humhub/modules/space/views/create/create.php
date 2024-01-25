@@ -1,6 +1,6 @@
 <?php
 
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\modules\space\widgets\SpaceNameColorInput;
@@ -21,7 +21,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
             <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
             <?= $form->field($model, 'description'); ?>
 
-            <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
+            <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
                 <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.manage', 'Advanced access settings'); ?>
             </a>
 

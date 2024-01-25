@@ -11,12 +11,12 @@ namespace humhub\modules\ui\form\widgets;
 use humhub\libs\Html;
 
 /**
- * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
+ * A HumHub enhanced version of [[\yii\bootstrap5\ActiveField]].
  *
  * @since 1.2
  * @author Luke
  */
-class ActiveField extends \yii\bootstrap\ActiveField
+class ActiveField extends \yii\bootstrap5\ActiveField
 {
     /**
      * @var bool Can be set to true in order to prevent this field from being rendered. This may be used by InputWidgets
@@ -36,8 +36,8 @@ class ActiveField extends \yii\bootstrap\ActiveField
         $config['attribute'] = $this->attribute;
         $config['view'] = $this->form->getView();
 
-        if(is_subclass_of($class, JsInputWidget::class)) {
-            if(isset($config['options'])) {
+        if (is_subclass_of($class, JsInputWidget::class)) {
+            if (isset($config['options'])) {
                 $this->adjustLabelFor($config['options']);
             }
 
@@ -52,7 +52,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function begin()
     {
-        if($this->preventRendering) {
+        if ($this->preventRendering) {
             return '';
         }
 
@@ -62,9 +62,9 @@ class ActiveField extends \yii\bootstrap\ActiveField
     /**
      * @inheritdoc
      */
-    public function render($content = null)
+    public function render($content = null): string
     {
-        if($this->preventRendering) {
+        if ($this->preventRendering) {
             return '';
         }
 
@@ -76,7 +76,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function end()
     {
-        if($this->preventRendering) {
+        if ($this->preventRendering) {
             return '';
         }
 

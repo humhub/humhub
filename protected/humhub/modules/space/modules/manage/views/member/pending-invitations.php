@@ -15,12 +15,14 @@ use humhub\widgets\TimeAgo;
 /* @var $space Space */
 ?>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
+<div class="card card-default">
+    <div class="card-header">
         <?= Yii::t('SpaceModule.manage', '<strong>Manage</strong> members'); ?>
     </div>
+
     <?= MemberMenu::widget(['space' => $space]); ?>
-    <div class="panel-body">
+
+    <div class="card-body">
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
             'tableOptions' => ['class' => 'table table-hover table-responsive'],
@@ -66,7 +68,6 @@ use humhub\widgets\TimeAgo;
                     ],
                 ],
             ],
-        ]);
-        ?>
+        ]); ?>
     </div>
 </div>

@@ -28,7 +28,7 @@ use yii\helpers\Html;
                         <?= Image::widget([
                             'user' => $user,
                             'link' => false,
-                            'htmlOptions' => ['class' => 'media-object pull-left'],
+                            'htmlOptions' => ['class' => 'media-object float-start'],
                             'hideOnlineStatus' => $hideOnlineStatus,
                         ]) ?>
 

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>

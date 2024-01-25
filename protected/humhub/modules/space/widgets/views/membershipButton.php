@@ -21,12 +21,14 @@ if ($membership === null) {
     ?>
     <div class="<?= $options['acceptInvite']['groupClass'] ?>">
         <?= Html::a($options['acceptInvite']['title'], $options['acceptInvite']['url'], $options['acceptInvite']['attrs']); ?>
-        <button type="button" class="<?= $options['acceptInvite']['togglerClass'] ?> dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="<?= $options['acceptInvite']['togglerClass'] ?> dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], $options['declineInvite']['attrs']); ?></li>
+            <li class="dropdown-item">
+                <?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], $options['declineInvite']['attrs']); ?>
+            </li>
         </ul>
     </div>
     <?php

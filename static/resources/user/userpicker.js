@@ -229,12 +229,12 @@ $.fn.userpicker = function (options) {
 
         // build data object
         var data = options['data'] || {};
-        
+
         //This is the preferred way of adding the keyword
         if(options['searchUrl'].indexOf('-keywordPlaceholder-') < 0) {
             data['keyword'] = keyword;
         }
-        
+
         //Set the user role filter
         if(options['userRole']) {
             data['userRole'] = options['userRole'];
@@ -256,7 +256,7 @@ $.fn.userpicker = function (options) {
                 } else if(a.displayName.indexOf(keyword) < 0 && b.displayName.indexOf(keyword) >= 0) {
                       return 1;
                 }
-  
+
                 return 0;
             });
 
@@ -267,7 +267,7 @@ $.fn.userpicker = function (options) {
 
                     var _takenStyle = "";
                     var _takenData = false;
-                   
+
                     // set options to link, that this entry is already taken or not available
                     if (json[i].disabled == true || $('#' + uniqueID + '_' + json[i].guid).length || $('#'+json[i].guid).length || json[i].isMember == true || json[i].guid == options.userGuid) {
                         _takenStyle = "opacity: 0.4;"
@@ -317,7 +317,7 @@ $.fn.userpicker = function (options) {
         $('#maxUsersHint').remove();
 
         // build html structure
-        var _html = '<div id="maxUsersHint" style="display: none;" class="alert alert-danger"><button type="button" class="close" data-dismiss="alert">x</button><strong>Sorry!</strong> You can add a maximum of ' + options.maxUsers + ' users as admin for this group.</div>';
+        var _html = '<div id="maxUsersHint" style="display: none;" class="alert alert-danger"><button type="button" class="close" data-bs-dismiss="alert">x</button><strong>Sorry!</strong> You can add a maximum of ' + options.maxUsers + ' users as admin for this group.</div>';
 
         // add hint to DOM
         $('#' + uniqueID + '_invite_tags').after(_html);
@@ -332,9 +332,9 @@ $.fn.userpicker = function (options) {
 
 // Add an usertag for invitation
 $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
-    
+
     if ($('#user_' + guid + ' a').attr('data-taken') != "true") {
-      
+
         // Building a new <li> entry
         var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="fa fa-times-circle"></i></li>';
 

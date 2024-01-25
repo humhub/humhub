@@ -29,7 +29,7 @@ class ModuleInstalledActionButtons extends Widget
     /**
      * @var string Template for buttons
      */
-    public $template = '<div class="card-footer text-right">{buttons}</div>';
+    public $template = '<div class="card-footer text-end">{buttons}</div>';
 
     /**
      * @inheritdoc

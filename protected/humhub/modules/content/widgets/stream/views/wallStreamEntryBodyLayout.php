@@ -15,8 +15,8 @@ use humhub\modules\ui\view\components\View;
 
 ?>
 
-<div class="panel panel-default wall_<?= $model->getUniqueId() ?>">
-    <div class="panel-body">
+<div class="card card-default wall_<?= $model->getUniqueId() ?>">
+    <div class="card-body">
         <div class="media wall-entry-header">
             <?= $header ?>
         </div>

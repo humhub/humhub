@@ -32,7 +32,7 @@ abstract class LeftNavigation extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'panel panel-default left-navigation'
+            'class' => 'card card-default left-navigation'
         ];
     }
 

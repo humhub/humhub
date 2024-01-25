@@ -9,14 +9,14 @@ use humhub\libs\Html;
 ?>
 
 <?= Html::beginTag('div', $options)?>
-    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true">
+    <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true">
         <?= $menu->label ?>
         <span class="caret"></span>
    </button>
 
-    <ul class="dropdown-menu pull-right">
+    <ul class="dropdown-menu float-end">
         <?php foreach ($entries as $entry) : ?>
-            <li>
+            <li class="dropdown-item">
                 <?= $entry->render() ?>
             </li>
         <?php endforeach; ?>

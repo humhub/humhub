@@ -13,10 +13,9 @@ use humhub\widgets\Button;
 /* @var $model PeopleSettingsForm */
 ?>
 
-<div class="panel-body">
-
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.user', 'People'); ?></h4>
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. '); ?>
     </div>
 

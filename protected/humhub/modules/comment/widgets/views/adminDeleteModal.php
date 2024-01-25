@@ -12,7 +12,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->field($model, 'message')->textarea(['rows' => 3]) ?>
-<?= $form->field($model, 'notify')->checkbox(['value' => '1', 'checked ' => true]) ?>
+<?= $form->field($model, 'notify')->checkbox(['value' => '1', 'checked ' => true, 'class' => 'form-check-input']) ?>
 
 <?php ActiveForm::end(); ?>
 

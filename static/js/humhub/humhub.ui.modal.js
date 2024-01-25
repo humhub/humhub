@@ -624,7 +624,6 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     var _setGlobalModalTargetHandler = function () {
-
         // unbind all previously-attached events
         $("a[data-target='#globalModal']").off('.humhub:globalModal');
 

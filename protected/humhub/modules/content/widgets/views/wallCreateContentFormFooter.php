@@ -63,42 +63,42 @@ use yii\helpers\Html;
             'dropZone' => '#contentFormBody',
             'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ]); ?>
-        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
+        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-outline-secondary']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'form-check-input contentForm hidden', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
-        <div class="pull-right">
+        <div class="float-end">
             <span class="label-container">
                 <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
             </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#"
+                    <a class="dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
                        aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
-                    <ul class="dropdown-menu pull-right">
-                        <li>
+                    <ul class="dropdown-menu float-end">
+                        <li class="dropdown-item">
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
                         </li>
                         <?php if (TopicPicker::showTopicPicker($contentContainer)) : ?>
-                            <li>
+                            <li class="dropdown-item">
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
                             </li>
                         <?php endif; ?>
                         <?php if ($canSwitchVisibility): ?>
-                            <li>
+                            <li class="dropdown-item">
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
                                     ->id('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
-                        <li>
+                        <li class="dropdown-item">
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
                                     ->icon('edit')
                                     ->options([
@@ -107,7 +107,7 @@ use yii\helpers\Html;
                                         'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
                                     ]) ?>
                         </li>
-                        <li>
+                        <li class="dropdown-item">
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
                                 ->icon('clock-o') ?>
                         </li>

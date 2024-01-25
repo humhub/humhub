@@ -18,7 +18,7 @@ use yii\helpers\Html;
         $htmlOptions['active'] = '';
     }
     ?>
-    <div style="margin-left: 10px" class="pull-right">
+    <div style="margin-left: 10px" class="float-end">
         <?= Button::info($entry->getIcon() . '&nbsp;&nbsp;' . Html::tag('strong', $entry->getLabel()))
             ->link($entry->getUrl())
             ->options($htmlOptions)

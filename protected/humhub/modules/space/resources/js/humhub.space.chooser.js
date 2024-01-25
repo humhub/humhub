@@ -386,11 +386,11 @@ humhub.module('space.chooser', function (module, require, $) {
         var atLeastTwo = input && input.length > 1;
 
         if (emptyResult && atLeastTwo) {
-            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.emptyResult') + '</div></li>');
+            this.$remoteSearch.html('<li><div class="form-text">' + module.text('info.emptyResult') + '</div></li>');
         } else if (emptyResult) {
-            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div></li>');
+            this.$remoteSearch.html('<li><div class="form-text">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div></li>');
         } else if (!atLeastTwo) {
-            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.remoteAtLeastInput') + '</div></li>');
+            this.$remoteSearch.html('<li><div class="form-text">' + module.text('info.remoteAtLeastInput') + '</div></li>');
         }
     }
 

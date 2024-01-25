@@ -20,7 +20,7 @@ use yii\helpers\Url;
 ?>
 
 <li class="dropdown">
-    <a href="#" id="space-menu" class="dropdown-toggle" data-toggle="dropdown">
+    <a href="#" id="space-menu" class="dropdown-toggle" data-bs-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
         <?php if ($currentSpace) : ?>
             <?= Image::widget(['space' => $currentSpace, 'width' => 32, 'htmlOptions' => ['class' => 'current-space-image']]); ?>
@@ -34,7 +34,7 @@ use yii\helpers\Url;
     </a>
 
     <ul class="dropdown-menu" id="space-menu-dropdown">
-        <li>
+        <li class="dropdown-item">
             <form action="" class="dropdown-controls">
                 <div <?= $canAccessDirectory ? 'class="input-group"' : '' ?>>
                     <input type="text" id="space-menu-search" class="form-control" autocomplete="off"
@@ -52,18 +52,18 @@ use yii\helpers\Url;
             </form>
         </li>
 
-        <li class="divider"></li>
-        <li>
+        <li class="dropdown-divider"></li>
+        <li class="dropdown-item">
             <ul class="media-list notLoaded" id="space-menu-spaces">
                 <?= $renderedItems ?>
             </ul>
         </li>
-        <li class="remoteSearch">
+        <li class="dropdown-item remoteSearch">
             <ul id="space-menu-remote-search" class="media-list notLoaded"></ul>
         </li>
 
         <?php if ($canCreateSpace) : ?>
-            <li>
+            <li class="dropdown-item">
                 <div class="dropdown-footer">
                     <a href="#" class="btn btn-info col-md-12" data-action-click="ui.modal.load"
                        data-action-url="<?= Url::to(['/space/create/create']) ?>">

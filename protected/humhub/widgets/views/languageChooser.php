@@ -12,7 +12,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <div class="text text-center animated fadeIn">
     <?php if (count($languages) > 1) : ?>
         <?= Yii::t('base', "Choose language:"); ?> &nbsp;
-        <div class="langSwitcher inline-block">
+        <div class="langSwitcher d-inline-block">
             <?php $form = ActiveForm::begin(['id' => 'choose-language-form']); ?>
             <?= $form->field($model, 'language')->dropDownList($languages, ['data-action-change' => 'ui.form.submit'])->label(false); ?>
             <?php $form::end(); ?>

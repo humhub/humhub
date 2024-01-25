@@ -2,18 +2,16 @@
 
 use humhub\modules\installer\forms\SecurityForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /* @var SecurityForm $model */
 ?>
-<div id="name-form" class="panel panel-default animated fadeIn">
-
-    <div class="panel-heading">
+<div id="name-form" class="card card-default animated fadeIn">
+    <div class="card-header">
         <?php echo Yii::t('InstallerModule.base', 'Security <strong>Settings</strong>'); ?>
     </div>
 
-    <div class="panel-body">
-
+    <div class="card-body">
         <p><?php echo Yii::t('InstallerModule.base', 'Here you can decide how new, unregistered users can access HumHub.'); ?></p>
         <br>
 

@@ -25,7 +25,7 @@ use humhub\libs\Html;
                     <a href="<?= $space->getUrl(); ?>" data-modal-close="1">
 
                         <div class="media">
-                            <img class="media-object img-rounded pull-left"
+                            <img class="media-object img-rounded float-start"
                                  src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
                                  height="50" style="width: 50px; height: 50px;">
 

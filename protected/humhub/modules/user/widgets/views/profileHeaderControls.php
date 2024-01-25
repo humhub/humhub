@@ -8,13 +8,13 @@ use humhub\modules\user\widgets\UserFollowButton;
 
 /* @var $container \humhub\modules\content\components\ContentContainerActiveRecord */
 ?>
-<div class="panel-body">
+<div class="card-body">
     <div class="panel-profile-controls">
         <div class="row">
             <div class="col-md-12">
                 <?= ProfileHeaderCounterSet::widget(['user' => $container]); ?>
 
-                <div class="controls controls-header pull-right">
+                <div class="controls controls-header float-end">
                     <?= ProfileHeaderControls::widget([
                         'user' => $container,
                         'widgets' => [
@@ -22,8 +22,7 @@ use humhub\modules\user\widgets\UserFollowButton;
                             [UserFollowButton::class, ['user' => $container], []],
                             [FriendshipButton::class, ['user' => $container], []],
                         ]
-                    ]);
-                    ?>
+                    ]); ?>
                 </div>
             </div>
         </div>

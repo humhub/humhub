@@ -36,9 +36,9 @@
         this.$element = $(element);
         content = '';
         this.modal_id = this.options.modal_id ? this.options.modal_id : 'ekkoLightbox-' + Math.floor((Math.random() * 1000) + 1);
-        header = '<div class="modal-header"' + (this.options.title ? '' : ' style="display:none"') + '><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div>';
+        header = '<div class="modal-header"' + (this.options.title ? '' : ' style="display:none"') + '><button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title">' + this.options.title + '</h4></div>';
         footer = '<div class="modal-footer"' + (this.options.footer ? '' : ' style="display:none"') + '>' + this.options.footer + '</div>';
-        //footer = '<div class="modal-footer"><button type="button" class="btn btn-primary" data-dismiss="modal">Close</button></div>';
+        //footer = '<div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button></div>';
         $(document.body).append('<div id="' + this.modal_id + '" class="ekko-lightbox modal" tabindex="-1"><div class="modal-dialog" style="margin-top: 0 !important"><div class="modal-content">' + header + '<div class="modal-body"><div class="ekko-lightbox-container"><div></div></div></div>' + footer + '</div></div></div>');
         this.modal = $('#' + this.modal_id);
         this.modal_body = this.modal.find('.modal-body').first();
@@ -57,9 +57,9 @@
             this.gallery = this.$element.data('gallery');
             if (this.gallery) {
                 if (this.options.gallery_parent_selector === 'document.body' || this.options.gallery_parent_selector === '') {
-                    this.gallery_items = $(document.body).find('*[data-toggle="lightbox"][data-gallery="' + this.gallery + '"]');
+                    this.gallery_items = $(document.body).find('*[data-bs-toggle="lightbox"][data-gallery="' + this.gallery + '"]');
                 } else {
-                    this.gallery_items = this.$element.parents(this.options.gallery_parent_selector).first().find('*[data-toggle="lightbox"][data-gallery="' + this.gallery + '"]');
+                    this.gallery_items = this.$element.parents(this.options.gallery_parent_selector).first().find('*[data-bs-toggle="lightbox"][data-gallery="' + this.gallery + '"]');
                 }
                 this.gallery_index = this.gallery_items.index(this.$element);
                 $(document).on('keydown.ekkoLightbox', this.navigate.bind(this));
@@ -256,9 +256,9 @@
                     if (_this.modal_arrows) {
                         _this.modal_arrows.css('display', 'block');
                     }
-                    
+
                     var width = image.width();
-                    
+
                     // Don't resize for small devices
                     if(windowWidth < 700) {
                         _this.lightbox_container.find('a').css('line-height', function() {
@@ -268,7 +268,7 @@
                     } else {
                         return _this.resize((width < maxW) ? width : maxW);
                     }
-                    
+
                 };
                 img.onerror = function () {
                     return _this.error('Failed to load image: ' + src);
@@ -315,7 +315,7 @@
         });
     };
 
-    $(document).delegate('*[data-toggle="lightbox"]', 'click', function (event) {
+    $(document).delegate('*[data-bs-toggle="lightbox"]', 'click', function (event) {
         var $this;
         event.preventDefault();
         $this = $(this);

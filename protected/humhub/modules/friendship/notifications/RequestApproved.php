@@ -9,7 +9,7 @@
 namespace humhub\modules\friendship\notifications;
 
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**

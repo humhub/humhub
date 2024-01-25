@@ -16,14 +16,14 @@ AdminPendingRegistrationsAsset::register($this);
 <?= Html::beginTag('div', $options); ?>
     <h4><?= Yii::t('AdminModule.base', 'Pending user registrations') ?></h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t(
             'AdminModule.user',
             'The following list contains all pending sign-ups and invites.'
         ) ?>
     </div>
 
-    <div class="pull-right">
+    <div class="float-end">
         <?= humhub\libs\Html::backButton(
             ['/admin/user/index'],
             [

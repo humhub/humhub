@@ -1,0 +1,355 @@
+//
+// Navs
+// --------------------------------------------------
+.tab-sub-menu {
+    padding-left: 10px;
+
+    li > a:hover, li > a:focus {
+        background-color: $background-color-secondary;
+        border-bottom-color: #ddd;
+    }
+
+    li.active > a {
+        background-color: $background-color-main;
+        border-bottom-color: transparent;
+    }
+}
+
+.nav-tabs > li > a, .nav-tabs > li > a[data-bs-toggle] {
+    color: $text-color-main;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus,
+.nav-tabs > li > a:hover, .nav-tabs > li > a:focus {
+    color: $text-color-highlight;
+}
+
+.tab-menu {
+    padding-top: 10px;
+    background-color: $background-color-main;
+
+    .nav-tabs {
+        padding-left: 10px;
+
+        li > a {
+            padding-top: 12px;
+            border-color: #ddd;
+            border-bottom: 1px solid #ddd;
+            background-color: $background-color-secondary;
+            max-height: 41px;
+            outline: none;
+        }
+
+        li > a:hover, li > a:focus {
+            padding-top: 10px;
+            border-top: 3px solid #ddd;
+        }
+
+        li > a:hover {
+            background-color: $background-color-secondary;
+        }
+
+        li.active > a, li.active > a:hover {
+            padding-top: 10px;
+            border-top: 3px solid $info;
+        }
+
+        li.active > a {
+            background-color: $background-color-main;
+            border-bottom-color: transparent;
+        }
+    }
+}
+
+ul.tab-menu {
+    padding-top: 10px;
+    background-color: $background-color-main;
+
+    padding-left: 10px;
+}
+
+ul.tab-menu-settings {
+    li > a {
+        padding-top: 12px;
+        border-color: #ddd;
+        border-bottom: 1px solid #ddd;
+        background-color: $background-color-secondary;
+        max-height: 41px;
+        outline: none;
+    }
+
+    li > a:hover, li > a:focus {
+        padding-top: 10px;
+        border-top: 3px solid #ddd !important;
+    }
+
+    li > a:hover {
+        background-color: $background-color-secondary;
+    }
+
+    li.active > a, li.active > a:hover, li.active > a:focus {
+        padding-top: 10px;
+        border-top: 3px solid $info !important;
+    }
+
+    li.active > a {
+        background-color: $background-color-main;
+        border-bottom-color: transparent !important;
+    }
+}
+
+.nav-pills,
+.nav-tabs,
+.account {
+    .dropdown-menu {
+        background-color: $primary;
+        border: none;
+
+        li.dropdown-divider {
+            background-color: darken($primary, 5%);
+            border-bottom: none;
+            margin: 9px 1px !important;
+        }
+
+        li {
+            border-left: 3px solid $primary;
+
+            a {
+                color: white;
+                font-weight: 400;
+                font-size: 13px;
+                padding: 4px 15px;
+
+                i {
+                    margin-right: 0;
+                    font-size: 14px;
+                    display: inline-block;
+                    width: 19px;
+                    text-align: center;
+                }
+            }
+
+            a:hover,
+            a:visited,
+            a:hover,
+            a:focus {
+                background: none;
+            }
+        }
+
+        li:hover:not(.dropdown-divider),
+        li.selected {
+            border-left: 3px solid $info;
+            color: $text-color-contrast !important;
+            background-color: darken($primary, 5%) !important;
+        }
+    }
+}
+
+.nav-pills.preferences {
+    .dropdown .dropdown-toggle {
+        i {
+            color: $info;
+            font-size: 15px;
+            font-weight: 600;
+        }
+    }
+
+    .dropdown.open {
+        .dropdown-toggle,
+        .dropdown-toggle:hover {
+            background-color: $primary;
+
+            i {
+                color: $text-color-contrast;
+            }
+        }
+    }
+
+    li.dropdown-divider:last-of-type {
+        display: none;
+    }
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    background-color: $primary;
+}
+
+// Nav-Tabs
+.nav-tabs {
+    margin-bottom: 10px;
+}
+
+.list-group {
+    a [class^="fa-"],
+    a [class*=" fa-"] {
+        display: inline-block;
+        width: 18px;
+    }
+}
+
+.nav-pills.preferences {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
+    .dropdown .dropdown-toggle {
+        padding: 2px 5px;
+    }
+
+    .dropdown.open {
+        .dropdown-toggle,
+        .dropdown-toggle:hover {
+            color: white;
+        }
+    }
+}
+
+.nav-tabs {
+    li {
+        font-weight: 600;
+        font-size: 12px;
+    }
+}
+
+.tab-content .tab-pane {
+    a {
+        color: $link;
+    }
+
+    .form-group {
+        margin-bottom: 5px;
+    }
+}
+
+.nav-tabs.tabs-center {
+    li {
+        float: none;
+        display: inline-block;
+    }
+}
+
+.nav-tabs.tabs-small {
+    li > a {
+        padding: 5px 7px;
+    }
+}
+
+.nav .caret,
+.nav .caret:hover,
+.nav .caret:active {
+    border-top-color: $text-color-highlight;
+    border-bottom-color: $text-color-highlight;
+    height: 6.928px;
+}
+
+.nav li.dropdown > a:hover .caret,
+.nav li.dropdown > a:active .caret {
+    border-top-color: $text-color-highlight;
+    border-bottom-color: $text-color-highlight;
+}
+
+.nav .open > a .caret,
+.nav .open > a:hover .caret,
+.nav .open > a:focus .caret {
+    border-top-color: $text-color-highlight;
+    border-bottom-color: $text-color-highlight;
+}
+
+.nav .open > a,
+.nav .open > a:hover,
+.nav .open > a:focus {
+    border-color: #ededed;
+    color: $text-color-highlight;
+
+    .caret {
+        color: $text-color-highlight;
+    }
+}
+
+.footer-nav {
+    filter: opacity(.6);
+    font-size: 12px;
+    text-align: center;
+}
+
+@media (max-width: 991px) {
+    .controls-header {
+        text-align: left !important;
+    }
+}
+
+// Widget "WallCreateContentMenu" / JS UI widget "content.form.CreateFormMenu":
+#contentFormMenu {
+    display: none;
+    &.menu-without-form a {
+        border-radius: 4px;
+    }
+    .nav-tabs {
+        margin-bottom: 0;
+        border: none;
+        float: right;
+        > li > a, > li.active > a {
+            color: #7A7A7A;
+            background: #fff;
+            border-color: #fff;
+            &:hover, &.active {
+                z-index: 1;
+                color: #333;
+            }
+        }
+    }
+    &:after {
+        content: " ";
+        clear: both;
+        display: block;
+    }
+
+    .content-create-menu-more {
+        > i {
+            border-radius: 4px 4px 0 0;
+            background: #fff;
+            margin-right: 3px;
+            padding: 10px 15px 11px;
+            font-size: 18px;
+            &:hover {
+                color: #333;
+            }
+        }
+        .dropdown-menu {
+            background-color: $background-color-main;
+            border: 1px solid #D7D7D7;
+            border-radius: 4px;
+            li {
+                a {
+                    color: $text-color-highlight;
+                }
+                border-left-color: $background-color-main;
+                &:hover, &.selected {
+                    color: $text-color-highlight;
+                    border-left-color: $info;
+                    background-color: $background-color-secondary !important;
+                }
+            }
+        }
+    }
+
+    @media (max-width: 480px) {
+        .nav-tabs {
+            display: flex;
+            width: 100%;
+            > li {
+                flex-grow: 1;
+                text-align: center;
+                &.content-create-menu-more {
+                    flex-grow: 0.3;
+                    > i.fa {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
+}

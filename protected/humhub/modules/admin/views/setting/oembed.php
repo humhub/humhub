@@ -11,14 +11,14 @@ use yii\web\View;
 /* @var OEmbedSettingsForm $settings */
 
 $this->registerJs(<<<JS
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-bs-toggle="tooltip"]').tooltip();
 JS, View::POS_READY);
 
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<p class="pull-right">
+<p class="float-end">
     <?= Html::a(Yii::t('AdminModule.settings', 'Add new provider'), Url::to(['oembed-edit']), ['class' => 'btn btn-success']); ?>
 </p>
 
@@ -27,7 +27,7 @@ JS, View::POS_READY);
 <?php if (count($providers) != 0): ?>
     <div id="oembed-providers">
         <?php foreach ($providers as $providerName => $provider) : ?>
-            <div class="oembed-provider-container col-xs-6 col-md-3">
+            <div class="oembed-provider-container col-6 col-md-3">
                 <div class="oembed-provider">
 
                     <div class="oembed-provider-name">
@@ -37,14 +37,14 @@ JS, View::POS_READY);
                         <?php parse_str($provider['endpoint'], $query); ?>
                         <?php if (isset($query['access_token']) && empty($query['access_token'])): ?>
                             <span class="label label-danger label-error"
-                                  data-toggle="tooltip" data-placement="right"
+                                  data-bs-toggle="tooltip" data-placement="right"
                                   title="<?= Yii::t('AdminModule.settings', 'Access token is not provided yet.') ?>">
                                 <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                             </span>
                         <?php endif; ?>
                     </div>
 
-                    <?= Html::a(Yii::t('base', 'Edit'), Url::to(['oembed-edit', 'name' => $providerName]), ['data-method' => 'POST', 'class' => 'btn btn-xs btn-link']); ?>
+                    <?= Html::a(Yii::t('base', 'Edit'), Url::to(['oembed-edit', 'name' => $providerName]), ['data-method' => 'POST', 'class' => 'btn btn-sm btn-link']); ?>
 
                 </div>
             </div>

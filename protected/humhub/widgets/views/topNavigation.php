@@ -18,12 +18,12 @@ TopNavigationAsset::register($this);
 <?php endforeach; ?>
 
 <li id="top-menu-sub" class="dropdown" style="display:none;">
-    <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-toggle="dropdown">
+    <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-bs-toggle="dropdown">
         <i class="fa fa-align-justify"></i><br>
         <?= Yii::t('base', 'Menu'); ?>
         <b class="caret"></b>
     </a>
-    <ul id="top-menu-sub-dropdown" class="dropdown-menu dropdown-menu-right">
+    <ul id="top-menu-sub-dropdown" class="dropdown-menu dropdown-menu-end">
 
     </ul>
 </li>

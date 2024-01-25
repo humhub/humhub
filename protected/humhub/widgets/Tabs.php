@@ -11,7 +11,7 @@ namespace humhub\widgets;
 use Yii;
 
 /**
- * Extends `\yii\bootstrap\Tabs` by providing providing view based tab items.
+ * Extends `\yii\bootstrap5\Tabs` by providing providing view based tab items.
  *
  * View based tabs usage:
  *
@@ -35,10 +35,10 @@ use Yii;
  * ?>
  *
  * @since 1.2.2
- * @see \yii\bootstrap\Tabs
+ * @see \yii\bootstrap5\Tabs
  * @package humhub\widgets
  */
-class Tabs extends \yii\bootstrap\Tabs
+class Tabs extends \yii\bootstrap5\Tabs
 {
     /**
      * @var string contains the viewPath

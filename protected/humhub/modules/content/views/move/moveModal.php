@@ -1,6 +1,6 @@
 <?php
 use humhub\widgets\ModalDialog;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\widgets\ModalButton;
 use humhub\widgets\Button;

@@ -1,17 +1,16 @@
 <?php
 
 use humhub\modules\installer\controllers\ConfigController;
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Html;
-?>
-<div id="name-form" class="panel panel-default animated fadeIn">
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
 
-    <div class="panel-heading">
+?>
+<div id="name-form" class="card card-default animated fadeIn">
+    <div class="card-header">
         <?php echo Yii::t('InstallerModule.base', '<strong>Configuration</strong>'); ?>
     </div>
 
-    <div class="panel-body">
-
+    <div class="card-body">
         <p><?php echo Yii::t('InstallerModule.base', 'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.'); ?></p>
         <br>
 
@@ -26,7 +25,6 @@ use yii\bootstrap\Html;
             ConfigController::USECASE_OTHER => Yii::t('InstallerModule.base', 'Skip this step, I want to set up everything manually'),
         ]);
         ?>
-
         <hr>
 
         <?php echo Html::submitButton(Yii::t('base', 'Next'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>

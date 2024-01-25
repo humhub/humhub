@@ -77,7 +77,7 @@ class CheckboxList extends BaseType
                     'allowOther' => [
                         'type' => 'checkbox',
                         'label' => Yii::t('UserModule.profile', 'Allow other selection'),
-                        'class' => 'form-control',
+                        'class' => 'form-control form-check-input',
                         'hint' => Yii::t('UserModule.profile', 'This will add an additional input element for custom values')
                     ]
                 ]

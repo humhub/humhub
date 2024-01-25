@@ -12,7 +12,7 @@ use humhub\modules\marketplace\models\Module;
 
 /**
  * ModuleCard shows a card with module data
- * 
+ *
  * @since 1.11
  * @author Luke
  */
@@ -33,7 +33,7 @@ class ModuleCard extends Widget
         parent::init();
 
         if (empty($this->template)) {
-            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-xs-6" data-module="{moduleId}">{card}</div>';
+            $this->template = '<div class="card card-module col-lg-3 col-md-4 col-sm-6 col-6" data-module="{moduleId}">{card}</div>';
         }
 
         if (empty($this->view)) {

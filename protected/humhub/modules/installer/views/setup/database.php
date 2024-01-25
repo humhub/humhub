@@ -8,12 +8,12 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var string $errorMessage */
 ?>
 
-<div id="database-form" class="panel panel-default animated fadeIn">
-    <div class="panel-heading">
+<div id="database-form" class="card card-default animated fadeIn">
+    <div class="card-header">
         <?= Yii::t('InstallerModule.base', '<strong>Database</strong> Configuration'); ?>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'Below you have to enter your database connection details. If you’re not sure about these, please contact your system administrator.'); ?></p>
 
         <?php $form = ActiveForm::begin(); ?>
@@ -44,7 +44,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 </div>
 
 <script <?= Html::nonce() ?>>
-
     $(function () {
         // set cursor to email field
         $('#hostname').focus();
@@ -55,5 +54,4 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     $('#database-form').removeClass('fadeIn');
     $('#database-form').addClass('shake');
     <?php endif; ?>
-
 </script>

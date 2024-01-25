@@ -10,10 +10,10 @@ use humhub\widgets\Button;
 
 ?>
 <div style="padding:20px" class="jumbotron">
-    <div class="pull-left" style="padding-right:24px">
+    <div class="float-start" style="padding-right:24px">
         <?= Html::img(Yii::getAlias('@web-static/img/humhub_pro.jpg'), ['style' => 'height:124px']) ?>
     </div>
-    <div class="pull-right">
+    <div class="float-end">
         <?= Button::primary(Yii::t('MarketplaceModule.base', 'Edit licence'))
             ->link(['/marketplace/licence'])->icon('cogs')->sm() ?>
     </div>

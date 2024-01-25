@@ -11,8 +11,8 @@ use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
 use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\ui\view\components\View;
-use yii\bootstrap\BootstrapAsset;
-use yii\bootstrap\BootstrapPluginAsset;
+use yii\bootstrap5\BootstrapAsset;
+use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
 use yii\jui\JuiAsset;
 use yii\web\JqueryAsset;
@@ -28,8 +28,8 @@ Yii::setAlias('@web', '/');
 Yii::setAlias('@webroot-static', __DIR__ . '/../../../static');
 Yii::setAlias('@web-static', '/static');
 
-$bundels = ArrayHelper::merge(AppAsset::STATIC_DEPENDS, CoreBundleAsset::STATIC_DEPENDS);
-$bundels = ArrayHelper::merge([AppAsset::class, CoreBundleAsset::class], $bundels);
+$bundles = ArrayHelper::merge(AppAsset::STATIC_DEPENDS, CoreBundleAsset::STATIC_DEPENDS);
+$bundles = ArrayHelper::merge([AppAsset::class, CoreBundleAsset::class], $bundles);
 
 return [
     // Adjust command/callback for JavaScript files compressing:
@@ -37,7 +37,7 @@ return [
     // Adjust command/callback for CSS files compressing:
     'cssCompressor' => 'grunt cssmin --from={from} --to={to}',
     // The list of asset bundles to compress:
-    'bundles' => $bundels,
+    'bundles' => $bundles,
     // Asset bundle for compression output:
     'targets' => [
         AppAsset::BUNDLE_NAME => [
@@ -82,14 +82,13 @@ return [
                 'sourcePath' => '@npm/jquery-ui/dist'
             ],
             BootstrapPluginAsset::class => [
-                'js' => ['js/bootstrap.min.js'],
+                'js' => ['dist/js/bootstrap.min.js'],
                 'depends' => [
                     JqueryAsset::class,
                     BootstrapAsset::class,
                     JuiBootstrapBridgeAsset::class
                 ]
             ],
-
         ]
     ],
 ];

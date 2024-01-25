@@ -16,7 +16,7 @@ use yii\log\Logger;
 <div id="admin-log-entries">
     <div>
         <?= Yii::t('AdminModule.information', 'Total {count} entries found.', ['{count}' => $pagination->totalCount]) ?>
-        <span class="pull-right">
+        <span class="float-end">
             <?= Yii::t('AdminModule.information', 'Displaying {count} entries per page.', ['{count}' => $pagination->pageSize]) ?>
         </span>
     </div>
@@ -51,7 +51,7 @@ use yii\log\Logger;
                     <h4 class="media-heading">
                         <span class="label <?= $labelClass; ?>"><?= Html::encode($levelName) ?></span>&nbsp;
                         <?= date('r', (int) $entry->log_time) ?>&nbsp;
-                        <span class="pull-right"><?= Html::encode($entry->category) ?></span>
+                        <span class="float-end"><?= Html::encode($entry->category) ?></span>
                     </h4>
                     <div data-ui-show-more data-collapse-at="150">
                         <?= nl2br(Html::encode($entry->message)) ?>
@@ -64,7 +64,7 @@ use yii\log\Logger;
 
     <?php if ($pagination->totalCount): ?>
         <div
-            class="pull-right"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
+            class="float-end"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
     <?php endif; ?>
 
     <div style="text-align: center;">

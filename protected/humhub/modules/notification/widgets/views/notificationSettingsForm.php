@@ -4,7 +4,7 @@
 /* @var $showSpaces boolean */
 /* @var $defaultSpaces \humhub\modules\space\models\Space[] */
 
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 ?>
 
 <br />

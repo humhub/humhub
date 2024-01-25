@@ -29,8 +29,8 @@ $this->registerJs(<<<JS
                     }).replace(/([A-Z])/, " $1");
                 var inputId = 'oembedproviderform-' + key;
 
-                formGroup = '<div class="form-group col-xs-12 col-sm-6">' +
-                    '<label for="' + inputId + '" class="control-label" type="text">' + label + '</label>' +
+                formGroup = '<div class="form-group col-12 col-sm-6">' +
+                    '<label for="' + inputId + '" class="form-label control-label" type="text">' + label + '</label>' +
                     '<input id="' + inputId + '" value="' + (!value.match(/\%\w+\%/) ? value : "") + '" type="text" class="form-control endpoint-param" data-param-name="' + key + '">' +
                     '</div>';
 
@@ -72,7 +72,7 @@ JS, View::POS_LOAD);
 
 <div class="clearfix">
     <?= Button::back(Url::to(['setting/oembed']), Yii::t('AdminModule.settings', 'Back to overview')) ?>
-    <h4 class="pull-left">
+    <h4 class="float-start">
         <?php
         if (empty($name)) {
             echo Yii::t('AdminModule.settings', 'Add OEmbed provider');
@@ -92,10 +92,10 @@ JS, View::POS_LOAD);
 <?= $form->field($model, 'name')->textInput(['class' => 'form-control']); ?>
 
 <?= $form->field($model, 'pattern')->textInput(['class' => 'form-control']); ?>
-<p class="help-block"><?= Yii::t('AdminModule.settings', 'Regular expression by which the link match will be checked.'); ?></p>
+<p class="form-text"><?= Yii::t('AdminModule.settings', 'Regular expression by which the link match will be checked.'); ?></p>
 
 <?= $form->field($model, 'endpoint')->textInput(['class' => 'form-control']); ?>
-<p class="help-block"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
+<p class="form-text"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
 
 <?php if(isset($query['access_token'])): ?>
     <?= $form->field($model, 'access_token')->textInput(['class' => 'form-control endpoint-param', 'data-param-name' => 'access_token', 'value' => $query['access_token']]) ?>

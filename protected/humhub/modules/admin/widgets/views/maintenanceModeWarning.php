@@ -12,9 +12,9 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="panel panel-danger panel-invalid">
-    <div class="panel-heading"><?= Yii::t('AdminModule.base', '<strong>Maintenance</strong> Mode'); ?></div>
-    <div class="panel-body">
+<div class="card card-danger panel-invalid">
+    <div class="card-header"><?= Yii::t('AdminModule.base', '<strong>Maintenance</strong> Mode'); ?></div>
+    <div class="card-body">
         <p><?= ControllerAccess::getMaintenanceModeWarningText('<br>') ?></p>
         <br>
         <?php if (Yii::$app->user->isAdmin()): ?>

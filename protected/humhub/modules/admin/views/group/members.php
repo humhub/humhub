@@ -23,7 +23,7 @@ AdminGroupAsset::register($this);
 ?>
 
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
-<div class="panel-body">
+<div class="card-body">
      <div class="row">
         <div class="col-md-6">
             <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
@@ -47,7 +47,7 @@ AdminGroupAsset::register($this);
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
                 </span>
             </div>
             <?php ActiveForm::end(); ?>
@@ -79,7 +79,7 @@ AdminGroupAsset::register($this);
                         $isManager = $group->isManager($data);
                         $yesSelected = ($isManager) ? 'selected' : '';
                         $noSelected = ($isManager) ? '' : 'selected';
-                        $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
+                        $result = '<select class="editableCell form-select" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
                         $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
                         $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
                         return $result;

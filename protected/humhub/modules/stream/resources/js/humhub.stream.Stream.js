@@ -633,7 +633,7 @@ humhub.module('stream.Stream', function (module, require, $) {
             if (filterInput.length) {
                 filterInput.parent()
                     .addClass('has-error')
-                    .append('<div class="help-block help-block-error">' + errors[filter] + '</div>');
+                    .append('<div class="form-text form-text-error">' + errors[filter] + '</div>');
             }
         }
     };
@@ -641,7 +641,7 @@ humhub.module('stream.Stream', function (module, require, $) {
     Stream.prototype.clearFilterErrors = function () {
         this.filter.$.find('[data-filter-category]').parent()
             .removeClass('has-error')
-            .find('div.help-block.help-block-error').remove();
+            .find('div.form-text.form-text-error').remove();
     };
 
     Stream.prototype.onSingleEntryStream = function () {

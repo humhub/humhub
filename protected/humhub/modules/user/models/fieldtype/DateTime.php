@@ -35,7 +35,7 @@ class DateTime extends BaseType
     /**
      * Rules for validating the Field Type Settings Form
      *
-     * @return type
+     * @return array[]
      */
     public function rules()
     {
@@ -47,22 +47,22 @@ class DateTime extends BaseType
     /**
      * Returns Form Definition for edit/create this field.
      *
-     * @return Array Form Definition
+     * @return array Form Definition
      */
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
-                        'elements' => [
-                            'showTimePicker' => [
-                                'type' => 'checkbox',
-                                'label' => Yii::t('UserModule.profile', 'Show date/time picker'),
-                                'class' => 'form-control',
-                            ],
-                        ]
-        ]]);
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
+                'elements' => [
+                    'showTimePicker' => [
+                        'type' => 'checkbox',
+                        'label' => Yii::t('UserModule.profile', 'Show date/time picker'),
+                        'class' => 'form-control form-check-input',
+                    ],
+                ]
+            ]]);
     }
 
     /**
@@ -83,7 +83,7 @@ class DateTime extends BaseType
      * Returns the Field Rules, to validate users input
      *
      * @param type $rules
-     * @return type
+     * @return array
      */
     public function getFieldRules($rules = [])
     {
@@ -111,15 +111,16 @@ class DateTime extends BaseType
     {
         $internalName = $this->profileField->internal_name;
 
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            $user->profile->$internalName ?? '',
+            new \DateTimeZone(Yii::$app->formatter->timeZone)
+        );
 
-        if ($date === false)
+        if ($date === false) {
             return "";
+        }
 
         return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDatetime($date, 'long');
     }
-
 }
-
-?>

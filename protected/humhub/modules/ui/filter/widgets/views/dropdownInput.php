@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $options [] */

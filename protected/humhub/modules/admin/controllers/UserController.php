@@ -193,7 +193,7 @@ class UserController extends Controller
                     ],
                     'mustChangePassword' => [
                         'type' => 'checkbox',
-                        'class' => 'form-control',
+                        'class' => 'form-control form-check-input',
                         'label' => Yii::t('UserModule.base', 'Force password change upon next login'),
                     ],
                 ],

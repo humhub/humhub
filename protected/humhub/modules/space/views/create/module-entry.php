@@ -14,7 +14,7 @@ use humhub\widgets\Button;
 /* @var $space Space */
 ?>
 <div class="module-row row">
-    <div class="col-xs-2 col-sm-1 module-icon">
+    <div class="col-2 col-sm-1 module-icon">
         <?= Html::img($module->getImage(), [
             'class' => 'media-object img-rounded',
             'data-src' => 'holder.js/34x34',
@@ -22,12 +22,12 @@ use humhub\widgets\Button;
             'style' => 'width:34px;height:34px',
         ]) ?>
     </div>
-    <div class="col-xs-10 col-sm-3 col-md-2">
+    <div class="col-10 col-sm-3 col-md-2">
         <?= $module->getContentContainerName($space) ?>
         <br><small><?= Yii::t('AdminModule.base', 'Version') . ' ' . $module->getVersion() ?></small>
     </div>
-    <div class="col-xs-6 col-sm-5 col-md-6"><?= $module->getDescription() ?></div>
-    <div class="col-xs-5 col-sm-3 module-actions">
+    <div class="col-6 col-sm-5 col-md-6"><?= $module->getDescription() ?></div>
+    <div class="col-5 col-sm-3 module-actions">
         <?= Button::asLink(Yii::t('SpaceModule.manage', 'Activate'))
             ->cssClass('btn btn-sm btn-info enable')
             ->style($space->moduleManager->isEnabled($module->id) ? 'display:none' : '')

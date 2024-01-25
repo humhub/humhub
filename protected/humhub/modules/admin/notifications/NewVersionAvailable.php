@@ -10,7 +10,7 @@ namespace humhub\modules\admin\notifications;
 
 use Yii;
 use yii\helpers\Url;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\admin\libs\HumHubAPI;
 

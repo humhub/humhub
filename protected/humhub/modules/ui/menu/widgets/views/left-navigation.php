@@ -10,7 +10,7 @@ use humhub\libs\Html;
 
 <?= Html::beginTag('div', $options) ?>
     <?php if (!empty($menu->panelTitle)) : ?>
-        <div class="panel-heading"><?= $menu->panelTitle; ?></div>
+        <div class="card-header"><?= $menu->panelTitle; ?></div>
     <?php endif; ?>
 
     <div class="list-group">

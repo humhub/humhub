@@ -56,14 +56,13 @@ $columns[] = [
 ];
 ?>
 
-<div class="panel-body">
-
-    <div class="dropdown pull-right">
+<div class="card-body">
+    <div class="dropdown float-end">
         <?php if (!empty($availableProfileFields)): ?>
             <?= Button::defaultType()
                 ->icon('cog')
                 ->loader(false)
-                ->options(['data-toggle' => 'dropdown']) ?>
+                ->options(['data-bs-toggle' => 'dropdown']) ?>
         <?php endif; ?>
 
         <?= Html::beginForm('#', 'post', [
@@ -73,7 +72,7 @@ $columns[] = [
         <h6 class="dropdown-header">
             <strong><?= Yii::t('AdminModule.user', 'Select the profile fields you want to add as columns') ?></strong>
         </h6>
-        <li class="divider"></li>
+        <li class="dropdown-divider"></li>
         <div style="padding: 0 15px;">
             <?php foreach ($availableProfileFields as $field): ?>
                 <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-' . $field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?>
@@ -86,7 +85,7 @@ $columns[] = [
 
     <h4><?= Yii::t('AdminModule.user', 'Pending user approvals') ?></h4>
 
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'The following list contains all registered users awaiting an approval.') ?>
     </div>
 

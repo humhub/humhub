@@ -9,7 +9,7 @@
 namespace humhub\modules\user\grid;
 
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * DisplayNameColumn

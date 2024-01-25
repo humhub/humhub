@@ -4,7 +4,7 @@ use humhub\widgets\Link;
 ?>
 <?= Link::withAction($currentTimeZoneLabel, 'ui.form.elements.toggleTimeZoneInput')->cssClass($toggleClass)->cssClass('timeZoneToggle') ?>
 <div class="timeZoneInputContainer" style="display:none">
-    <?= Html::label(Yii::t('base', 'Time Zone'), $id, ['class' => 'control-label'])?>
+    <?= Html::label(Yii::t('base', 'Time Zone'), $id, ['class' => 'form-label control-label'])?>
     <?php if($model) : ?>
         <?= Html::activeDropDownList($model, $attribute, $timeZoneItems, ['id' => $id, 'data-action-change' => 'ui.form.elements.timeZoneSelected', 'style' => 'width:100%']) ?>
     <?php elseif($name) : ?>

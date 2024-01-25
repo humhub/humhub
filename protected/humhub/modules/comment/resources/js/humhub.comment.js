@@ -18,7 +18,7 @@ humhub.module('comment', function (module, require, $) {
                 richText.$.trigger('clear');
                 that.getUpload().reset();
                 that.$.find('.form-group').removeClass('has-error');
-                that.$.find('.help-block-error').html('');
+                that.$.find('.form-text-error').html('');
             },
             400: function (response) {
                 that.replace(response.html);

@@ -54,11 +54,11 @@ class ActionColumn extends Column
 
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
         $html .= Button::defaultType('<span class="caret"></span>')->cssClass('dropdown-toggle')
-            ->options(['data-toggle' => 'dropdown'])->icon('controls')->loader(false);
-        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
+            ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
+        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {
-                $html .= '<li class="divider"></li>';
+                $html .= '<li class="dropdown-divider"></li>';
             } else {
                 $linkOptions = null;
                 if (isset($url['linkOptions'])) {
@@ -73,7 +73,6 @@ class ActionColumn extends Column
         }
         $html .= Html::endTag('ul');
         $html .= Html::endTag('div');
-
 
         return $html;
     }

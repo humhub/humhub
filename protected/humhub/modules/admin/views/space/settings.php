@@ -12,7 +12,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 ?>
 <h4><?= Yii::t('AdminModule.space', 'Space Settings'); ?></h4>
-<div class="help-block">
+<div class="form-text">
     <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
 </div>
 

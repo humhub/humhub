@@ -6,13 +6,13 @@ use humhub\libs\Html;
  * @see \humhub\modules\installer\controllers\ConfigController::actionAdmin()
  */
 ?>
-<div id="create-admin-account-form" class="panel panel-default animated fadeIn">
+<div id="create-admin-account-form" class="card card-default animated fadeIn">
 
-    <div class="panel-heading">
+    <div class="card-header">
         <?php echo Yii::t('InstallerModule.base', '<strong>Admin</strong> Account'); ?>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?php echo Yii::t('InstallerModule.base', "You're almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network."); ?></p>
         <hr/>
 

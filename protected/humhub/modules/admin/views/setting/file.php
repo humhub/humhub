@@ -19,12 +19,12 @@ $fileModule = Yii::$app->getModule('file');
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
 <?= $form->field($model, 'maxFileSize')->textInput(['class' => 'form-control', 'readonly' => $fileModule->settings->isFixed('maxFileSize')]); ?>
-<p class="help-block" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:' . $this->theme->variable('danger') . ' !important"' : '' ?>>
+<p class="form-text" <?= ($model->maxFileSize > $maxUploadSize) ? 'style="color:' . $this->theme->variable('danger') . ' !important"' : '' ?>>
     <?= Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', ['{maxUploadSize}' => $maxUploadSizeText]); ?>
 </p>
 
 <?= $form->field($model, 'allowedExtensions')->textarea(['class' => 'form-control']); ?>
-<p class="help-block"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
+<p class="form-text"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
 
 <br />
 

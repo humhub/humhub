@@ -24,7 +24,7 @@ UiImageSetAsset::register($this);
         <?php if (count($hiddenItems) > 0) : ?>
             <div class="ui-imageset-show-more tt img-rounded"
                  style="width: <?= $options['width'] ?>px; height: <?= $options['height'] ?>px;"
-                 data-toggle="tooltip"
+                 data-bs-toggle="tooltip"
                  data-placement="top"
                  data-original-title="Show more"><?= count($hiddenItems) ?>+
             </div>

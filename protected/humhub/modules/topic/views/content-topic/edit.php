@@ -9,7 +9,7 @@
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $model \humhub\modules\topic\models\forms\ContentTopicsForm */

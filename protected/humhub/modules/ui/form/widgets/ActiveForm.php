@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-
 use humhub\libs\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 
@@ -18,7 +17,7 @@ use humhub\modules\ui\icon\widgets\Icon;
  * @since 1.1
  * @author Luke
  */
-class ActiveForm extends \yii\bootstrap\ActiveForm
+class ActiveForm extends \yii\bootstrap5\ActiveForm
 {
 
     /**
@@ -64,15 +63,18 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
         $cssClass = ($isClosed) ? 'closed' : 'opened';
 
         return
-            Html::beginTag('div', ['class' => 'form-collapsible-fields ' . $cssClass, 'data-ui-widget' => 'ui.form.elements.FormFieldsCollapsible', 'data-ui-init' => 1]) .
+            Html::beginTag('div', [
+                'class' => 'form-collapsible-fields ' . $cssClass,
+                'data-ui-widget' => 'ui.form.elements.FormFieldsCollapsible', 'data-ui-init' => 1
+            ]) .
             Html::tag('div',
                 Html::tag('div',
                     Icon::get('plus', ['htmlOptions' => ['class' => 'iconOpen']]) .
                     Icon::get('minus', ['htmlOptions' => ['class' => 'iconClose']]) . '&nbsp;&nbsp;',
-                    ['class' => 'pull-left']
+                    ['class' => 'float-start']
                 ) .
-                Html::label($title, null, ['class' => 'control-label'])
-                , ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab', 'data-toggle' => 'tab']) .
+                Html::label($title, null, ['class' => 'form-label control-label']),
+                ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab', 'data-bs-toggle' => 'tab']) .
             Html::beginTag('fieldset');
     }
 
@@ -84,17 +86,15 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
      */
     public function endCollapsibleFields()
     {
-        return Html::endTag('fieldset') .
-            Html::endTag('div');
+        return Html::endTag('fieldset') . Html::endTag('div');
     }
 
     /**
      * @inheritdoc
      * @return ActiveField the created ActiveField object
      */
-    public function field($model, $attribute, $options = [])
+    public function field($model, $attribute, $options = []): \yii\bootstrap5\ActiveField
     {
         return parent::field($model, $attribute, $options);
     }
-
 }

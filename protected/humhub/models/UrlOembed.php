@@ -316,7 +316,7 @@ class UrlOembed extends ActiveRecord
             Html::tag('br') .
             Yii::t('base', 'Do you want to enable content from \'{urlPrefix}\'?', ['urlPrefix' => Html::tag('strong', $urlPrefix)]) .
             Html::tag('br') .
-            Html::tag('label', '<input type="checkbox"> ' . Yii::t('base', 'Always allow content from this provider!')) .
+            Html::tag('label', '<input type="checkbox" class="form-check-input"> ' . Yii::t('base', 'Always allow content from this provider!'), ['class' => 'form-label']) .
             Html::tag('br') .
             Button::info(Yii::t('base', 'Confirm'))->action('oembed.display')->sm();
 

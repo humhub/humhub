@@ -33,15 +33,16 @@ $enabledProfilePermissions = (boolean)$userModule->settings->get('enableProfileP
 ?>
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 
-<div class="panel-body">
-    <div class="help-block">
+<div class="card-body">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'This option allows you to determine whether users may set individual permissions for their own profiles.'); ?>
     </div>
     <br/>
     <div class="checkbox">
-        <label for="switchPermissionChkId">
+        <label for="switchPermissionChkId" class="form-label">
             <?= Html::checkbox('switchPermissionChkName', $enabledProfilePermissions, [
                 'id' => 'switchPermissionChkId',
+                'class' => 'form-check-input',
                 'data-action-click' => 'admin.changeIndividualProfilePermissions',
                 'data-action-url' => Url::to(['/admin/user-permissions/switch-individual-profile-permissions']),
                 'data-action-confirm-header' => $adminSettingsJsConfig['text']['enableProfilePermissions.header'],
@@ -56,7 +57,7 @@ $enabledProfilePermissions = (boolean)$userModule->settings->get('enableProfileP
     <br/>
 
     <h5><?= Yii::t('AdminModule.user', 'Default Profile Permissions'); ?></h5>
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:'); ?>
     </div>
     <br/>
@@ -66,14 +67,14 @@ $enabledProfilePermissions = (boolean)$userModule->settings->get('enableProfileP
     </div>
 
     <ul id="tabs" class="nav nav-tabs tab-sub-menu permission-group-tabs">
-        <?php foreach ($groups as $currentGroupId => $groupLabel) : ?>
+        <?php foreach ($groups as $currentGroupId => $groupLabel): ?>
             <li class="<?= ($groupId === $currentGroupId) ? 'active' : '' ?>">
                 <a href="<?= Url::toRoute(['/admin/user-permissions', 'groupId' => $currentGroupId]) ?>"><?= $groupLabel ?></a>
             </li>
         <?php endforeach; ?>
     </ul>
 
-    <div class="panel-body" style="padding-top: 0px;">
+    <div class="card-body" style="padding-top: 0px;">
         <?= PermissionGridEditor::widget(['permissionManager' => $defaultPermissionManager, 'groupId' => $groupId]); ?>
     </div>
 </div>

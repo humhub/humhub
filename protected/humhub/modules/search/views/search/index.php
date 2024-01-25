@@ -7,7 +7,7 @@ use humhub\widgets\FooterMenu;
 use yii\data\Pagination;
 use yii\helpers\Url;
 use humhub\libs\Html;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\modules\search\models\forms\SearchForm;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -57,9 +57,12 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 <div class="container" data-action-component="stream.SimpleStream">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel">
-                <div class="panel-heading"><strong><?= Yii::t('base', 'Search'); ?></strong></div>
-                <div class="panel-body">
+            <div class="card">
+                <div class="card-header">
+                    <strong><?= Yii::t('base', 'Search'); ?></strong>
+                </div>
+
+                <div class="card-body">
                     <div class="row">
                         <div class="col-md-3"></div>
                         <div class="col-md-6">
@@ -71,13 +74,13 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                                     'class' => 'form-control form-search', 'id' => 'search-input-field'
                                 ])->label(false) ?>
                                 <?= Html::submitButton(Yii::t('base', 'Search'), [
-                                    'class' => 'btn btn-default btn-sm form-button-search',
+                                    'class' => 'btn btn-outline-secondary btn-sm form-button-search',
                                     'data-ui-loader' => ''
                                 ]) ?>
                             </div>
 
                             <div class="text-center">
-                                <a data-toggle="collapse"
+                                <a data-bs-toggle="collapse"
                                    id="search-settings-link"
                                    href="#collapse-search-settings"
                                    style="font-size: 11px;">
@@ -109,9 +112,10 @@ humhub\modules\stream\assets\StreamAsset::register($this);
     <?php if (!empty($model->keyword)): ?>
         <div class="row">
             <div class="col-md-2">
-                <div class="panel panel-default">
-                    <div
-                        class="panel-heading"><?= Yii::t('SearchModule.base', '<strong>Search </strong> results') ?></div>
+                <div class="card card-default">
+                    <div class="card-header">
+                        <?= Yii::t('SearchModule.base', '<strong>Search </strong> results') ?>
+                    </div>
                     <div class="list-group">
                         <a data-pjax-prevent href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_ALL]); ?>'
                            class="list-group-item<?= ($model->scope === SearchForm::SCOPE_ALL) ? ' active' : '' ?>">
@@ -151,16 +155,14 @@ humhub\modules\stream\assets\StreamAsset::register($this);
             </div>
 
             <div class="col-md-10">
-
                 <div class="searchResults">
-
                     <?php if (count($results) > 0): ?>
                         <?php foreach ($results as $result): ?>
                             <?php try {  ?>
-                                <?php if ($result instanceof ContentActiveRecord) : ?>
+                                <?php if ($result instanceof ContentActiveRecord): ?>
                                     <?= StreamEntryWidget::renderStreamEntry($result,
                                         (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH))?>
-                                <?php elseif ($result instanceof ContentContainerActiveRecord) : ?>
+                                <?php elseif ($result instanceof ContentContainerActiveRecord): ?>
                                     <?= $result->getWallOut() ?>
                                 <?php else: ?>
                                     No Output for Class <?= get_class($result); ?>
@@ -168,8 +170,8 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                             <?php } catch(\Throwable $e) {Yii::error($e);} ?>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <div class="panel panel-default">
-                            <div class="panel-body">
+                        <div class="card card-default">
+                            <div class="card-body">
                                 <p><strong><?= Yii::t('SearchModule.base', 'Your search returned no matches.') ?></strong></p>
                             </div>
                         </div>

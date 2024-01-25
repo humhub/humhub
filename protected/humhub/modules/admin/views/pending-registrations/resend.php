@@ -5,7 +5,7 @@ use yii\helpers\Url;
 
 /** @var $model \humhub\modules\user\models\Invite */
 ?>
-<div class="panel-body">
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.user', 'Send invitation email again?'); ?></h4>
     <br>
 
@@ -36,6 +36,6 @@ use yii\helpers\Url;
     <?= Html::a(
         Yii::t('AdminModule.user', 'Cancel'),
         Url::to(['/admin/pending-registrations']),
-        ['class' => 'btn btn-primary pull-right']
+        ['class' => 'btn btn-primary float-end']
     ); ?>
 </div>

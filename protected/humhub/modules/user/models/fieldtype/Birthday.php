@@ -65,7 +65,7 @@ class Birthday extends BaseType
                     'defaultHideAge' => [
                         'type' => 'checkbox',
                         'label' => Yii::t('UserModule.profile', 'Hide age per default'),
-                        'class' => 'form-control',
+                        'class' => 'form-control form-check-input',
                     ],
                 ]
             ]
@@ -210,7 +210,7 @@ class Birthday extends BaseType
          */
         if ($hideAge === self::HIDE_AGE_YES) {
             // See: https://github.com/humhub/humhub/issues/5187#issuecomment-888178022
-            
+
             $month = Yii::$app->formatter->asDate($birthdayDate, 'php:F');
             $day = Yii::$app->formatter->asDate($birthdayDate, 'php:d');
             if (preg_match('/(' . preg_quote($day) . '.+' . preg_quote($month) . '|' . preg_quote($month) . '.+' . preg_quote($day) . ')/', $longDate, $m)) {

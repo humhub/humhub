@@ -10,11 +10,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <h1 id="app-title" class="animated fadeIn"><?php echo Html::encode(Yii::$app->name); ?></h1>
     <br/>
     <div class="row">
-        <div class="panel panel-default animated fadeIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
-            <div
-                class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!'); ?></div>
-            <div class="panel-body">
-                <?php if ($needApproval) : ?>
+        <div class="card card-default animated fadeIn" style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+            <div class="card-header">
+                <?php echo Yii::t('UserModule.auth', '<strong>Your account</strong> has been successfully created!'); ?>
+            </div>
+
+            <div class="card-body">
+                <?php if ($needApproval): ?>
                     <p><?php echo Yii::t('UserModule.auth', 'After activating your account by the administrator, you will receive a notification by email.'); ?></p>
                     <br/>
                     <a href="<?php echo Url::home() ?>" class="btn btn-primary" data-ui-loader data-pjax-prevent><?php echo Yii::t('UserModule.auth', 'back to home') ?></a>
@@ -28,6 +30,3 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         </div>
     </div>
 </div>
-
-
-

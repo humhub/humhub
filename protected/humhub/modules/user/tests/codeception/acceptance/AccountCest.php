@@ -74,7 +74,7 @@ class AccountCest
         //$I->wait(20);
 
         $I->scrollToBottom();
-        $I->click('Save', '.panel-body');
+        $I->click('Save', '.card-body');
 
         $I->seeSuccess('Saved');
 

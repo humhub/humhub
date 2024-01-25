@@ -17,23 +17,21 @@ use yii\web\View;
 
 CardsAsset::register($this);
 ?>
-<div class="panel panel-default">
-
-    <div class="panel-heading">
+<div class="card card-default">
+    <div class="card-header">
         <?= Yii::t('SpaceModule.base', '<strong>Spaces</strong>'); ?>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?= SpaceDirectoryFilters::widget(); ?>
     </div>
-
 </div>
 
 <div class="row cards">
     <?php if (!$spaces->exists()): ?>
     <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
+        <div class="card card-default">
+            <div class="card-body">
                 <strong><?= Yii::t('SpaceModule.base', 'No results found!'); ?></strong><br/>
                 <?= Yii::t('SpaceModule.base', 'Try other keywords or remove filters.'); ?>
             </div>
@@ -41,12 +39,12 @@ CardsAsset::register($this);
     </div>
     <?php endif; ?>
 
-    <?php foreach ($spaces->with('contentContainerRecord')->all() as $space) : ?>
+    <?php foreach ($spaces->with('contentContainerRecord')->all() as $space): ?>
         <?= SpaceDirectoryCard::widget(['space' => $space]); ?>
     <?php endforeach; ?>
 </div>
 
-<?php if (!$spaces->isLastPage()) : ?>
+<?php if (!$spaces->isLastPage()): ?>
     <?= Html::tag('div', '', [
         'class' => 'cards-end',
         'data-current-page' => $spaces->pagination->getPage() + 1,

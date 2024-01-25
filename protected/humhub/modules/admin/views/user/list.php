@@ -18,15 +18,14 @@ use yii\widgets\ActiveForm;
  */
 ?>
 
-<div class="panel-body">
-
-    <div class="pull-right">
+<div class="card-body">
+    <div class="float-end">
         <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('add')->sm()->link(['/admin/user/add']) ?>
         <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
     </div>
 
     <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.user', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
 
@@ -38,7 +37,7 @@ use yii\widgets\ActiveForm;
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i></button>
                 </span>
             </div>
         </div>

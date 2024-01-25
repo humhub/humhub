@@ -8,11 +8,10 @@ use humhub\widgets\PanelMenu;
  */
 ?>
 
-<div class="panel panel-default panel-my-membership" id="my-membership-panel">
+<div class="card card-default card-my-membership" id="my-membership-panel">
     <?= PanelMenu::widget(['id' => 'space-my-membership-panel']); ?>
-    <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>About</strong> your membership'); ?></div>
-    <div class="panel-body">
-
+    <div class="card-header"><?= Yii::t('SpaceModule.base', '<strong>About</strong> your membership'); ?></div>
+    <div class="card-body">
         <p><b><?= Yii::t('SpaceModule.base', 'Role') ?>: </b><?= ucfirst($role) ?></p>
         <?php if (!empty($memberSince)): ?>
             <p><b><?= Yii::t('SpaceModule.base', 'Member since') ?>: </b><?= $memberSince ?></p>

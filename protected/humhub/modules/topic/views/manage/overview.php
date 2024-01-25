@@ -11,7 +11,7 @@ use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use yii\helpers\Html;
@@ -23,18 +23,16 @@ use yii\helpers\Html;
 /* @var $title string */
 ?>
 
+<div class="card card-default">
+    <div class="card-header"><?= $title ?></div>
 
-<div class="panel panel-default">
-    <div class="panel-heading"><?= $title ?></div>
-
-    <?php if ($contentContainer instanceof Space) : ?>
+    <?php if ($contentContainer instanceof Space): ?>
         <?= DefaultMenu::widget(['space' => $contentContainer]); ?>
-    <?php elseif ($contentContainer instanceof User) : ?>
+    <?php elseif ($contentContainer instanceof User): ?>
         <?= AccountSettingsMenu::widget() ?>
     <?php endif; ?>
 
-    <div class="panel-body">
-
+    <div class="card-body">
         <?php $form = ActiveForm::begin(); ?>
         <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
         <div class="form-group">

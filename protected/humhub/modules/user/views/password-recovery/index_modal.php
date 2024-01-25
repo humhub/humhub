@@ -15,7 +15,7 @@ use yii\helpers\Url;
     <div class="modal-content">
 
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?>
             </h4>
@@ -46,7 +46,7 @@ use yii\helpers\Url;
                 <?= Yii::t('UserModule.auth', 'Reset password') ?>
             </a>
             &nbsp;
-            <a href="#" class="btn btn-default" data-action-click="ui.modal.load"
+            <a href="#" class="btn btn-outline-secondary" data-action-click="ui.modal.load"
                data-action-url="<?= Url::to(['/user/auth/login']) ?>" data-ui-loader>
                 <?= Yii::t('UserModule.auth', 'Back') ?>
             </a>

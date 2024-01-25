@@ -14,7 +14,7 @@ use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\libs\Html;
 
 $modal = ModalDialog::begin([
@@ -41,20 +41,20 @@ $form = ActiveForm::begin([
         <div class="text-center">
             <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                 <li class="<?= $isInviteTabActiveClass ?> tab-user-picker">
-                    <a href="#user-picker" data-toggle="tab">
+                    <a href="#user-picker" data-bs-toggle="tab">
                         <?= Yii::t('SpaceModule.base', 'Pick users'); ?>
                     </a>
                 </li>
                 <?php if ($canInviteByEmail) : ?>
                     <li class="<?= $isInviteByEmailTabActiveClass ?> tab-invite-by-email">
-                        <a href="#invite-by-email" data-toggle="tab">
+                        <a href="#invite-by-email" data-bs-toggle="tab">
                             <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if ($canInviteByLink) : ?>
                     <li class="tab-invite-by-link">
-                        <a href="#invite-by-link" data-toggle="tab">
+                        <a href="#invite-by-link" data-bs-toggle="tab">
                             <?= Yii::t('SpaceModule.base', 'Invite by link'); ?>
                         </a>
                     </li>
@@ -117,7 +117,7 @@ $form = ActiveForm::begin([
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
-                        <a href="#" class="pull-right"
+                        <a href="#" class="float-end"
                            data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>",
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"

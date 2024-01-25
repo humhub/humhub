@@ -2,7 +2,7 @@
 
 use humhub\modules\user\models\forms\Registration;
 use humhub\widgets\SiteLogo;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\libs\Html;
 
@@ -18,12 +18,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
     <?= SiteLogo::widget(['place' => 'login']) ?>
     <br/>
     <div class="row">
-        <div id="create-account-form" class="panel panel-default animated bounceIn"
+        <div id="create-account-form" class="card card-default animated bounceIn"
              style="max-width: 500px; margin: 0 auto 20px; text-align: left;">
-            <div class="panel-heading">
+            <div class="card-header">
                 <?= Yii::t('UserModule.auth', '<strong>Account</strong> registration') ?>
             </div>
-            <div class="panel-body">
+
+            <div class="card-body">
                 <?php if ($showAuthClients): ?>
                     <?= AuthChoice::widget() ?>
                 <?php endif; ?>
@@ -53,5 +54,4 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             $('#app-title').removeClass('fadeIn');
         <?php endif; ?>
     <?php endforeach; ?>
-
 </script>

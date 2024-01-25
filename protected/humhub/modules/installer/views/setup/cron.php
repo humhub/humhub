@@ -1,15 +1,14 @@
 <?php
 
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 ?>
-<div id="cron" class="panel panel-default animated fadeIn">
-
-    <div class="panel-heading">
+<div id="cron" class="card card-default animated fadeIn">
+    <div class="card-header">
         <?= Yii::t('InstallerModule.base', '<strong>Scheduled jobs</strong>') ?>
     </div>
 
-    <div class="panel-body">
+    <div class="card-body">
         <p><?= Yii::t('InstallerModule.base', 'HumHub uses cron jobs to execute scheduled or to run potentially heavy tasks such as sending out email summaries and notifications or optimizing the search index.'); ?></p>
         <p>
             <strong><?= Yii::t('InstallerModule.base', 'Installation Example:') ?></strong>

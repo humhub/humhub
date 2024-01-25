@@ -12,8 +12,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\bootstrap\Html;
-use yii\bootstrap\InputWidget;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\InputWidget;
 
 /**
  * ContentHiddenCheckbox is the form field to set the Content Hidden flag.
@@ -41,7 +41,7 @@ class ContentHiddenCheckbox extends InputWidget
      */
     public int $type = self::TYPE_CONTENT;
 
-    public array $hintOptions = ['tag' => 'p', 'class' => 'help-block'];
+    public array $hintOptions = ['tag' => 'p', 'class' => 'form-text'];
 
     /**
      * @inheritDoc
@@ -54,10 +54,10 @@ class ContentHiddenCheckbox extends InputWidget
             if (!isset($this->model->contentContainer)) {
                 $this->options['label'] = Yii::t('UiModule.form', 'Hide all stream entries of this module globally by default');
                 $this->hintOptions['hint'] = Yii::t('UiModule.form', 'Note: The default settings can be adjusted individually for each Space and each single stream entry. Hidden entries can be made visible using the stream filtering options.');
-            } else if ($this->model->contentContainer instanceof ContentContainerActiveRecord) {
+            } elseif ($this->model->contentContainer instanceof ContentContainerActiveRecord) {
                 if ($this->model->contentContainer instanceof Space) {
                     $this->options['label'] = Yii::t('UiModule.form', 'Hide all stream entries in this Space by default');
-                } else if ($this->model->contentContainer instanceof User) {
+                } elseif ($this->model->contentContainer instanceof User) {
                     $this->options['label'] = Yii::t('UiModule.form', 'Hide all stream entries in your Profile by default');
                 }
                 $this->hintOptions['hint'] = Yii::t('UiModule.form', 'Note: Hidden entries can be made visible using the stream filtering options. Single stream entries can be marked as visible on an individual level.');
@@ -71,7 +71,5 @@ class ContentHiddenCheckbox extends InputWidget
             Html::activeCheckbox($this->model, $this->attribute, $this->options) .
             Html::activeHint($this->model, $this->attribute, $this->hintOptions) .
             '</div>';
-
     }
-
 }

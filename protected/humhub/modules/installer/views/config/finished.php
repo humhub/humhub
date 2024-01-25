@@ -2,10 +2,10 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
-?>
-<div class="panel panel-default animated fadeIn">
 
-    <div class="panel-body text-center">
+?>
+<div class="card card-default animated fadeIn">
+    <div class="card-body text-center">
         <br>
         <p class="lead"><?= Yii::t('InstallerModule.base', "<strong>Congratulations</strong>. You're done."); ?></p>
 

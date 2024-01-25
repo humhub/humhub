@@ -23,9 +23,9 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
 AdminAsset::register($this);
 ?>
 
-<div class="panel-body">
+<div class="card-body">
     <h4><?= Yii::t('AdminModule.settings', 'General Settings'); ?></h4>
-    <div class="help-block">
+    <div class="form-text">
         <?= Yii::t('AdminModule.settings', 'Here you can configure basic settings of your social network.'); ?>
     </div>
 

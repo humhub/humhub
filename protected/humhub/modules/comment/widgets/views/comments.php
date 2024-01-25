@@ -12,7 +12,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 /* @var $currentCommentId int */
 /* @var $id string unqiue object id */
 ?>
-<div class="well well-small comment-container" style="display:none;" id="comment_<?= $id; ?>">
+<div class="card card-body text-bg-light well-small comment-container" style="display:none;" id="comment_<?= $id; ?>">
     <div class="comment <?php if (Yii::$app->user->isGuest): ?>guest-mode<?php endif; ?>"
          id="comments_area_<?= $id; ?>">
 

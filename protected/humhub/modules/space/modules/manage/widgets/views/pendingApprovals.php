@@ -8,11 +8,11 @@ use humhub\widgets\Link;
 /* @var $space \humhub\modules\space\models\Space */
 ?>
 
-<div class="panel panel-danger">
-    <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>New</strong> member request'); ?></div>
-    <div class="panel-body">
+<div class="card card-danger">
+    <div class="card-header"><?= Yii::t('SpaceModule.base', '<strong>New</strong> member request'); ?></div>
+    <div class="card-body">
         <table width="100%" border="0" cellpadding="0" cellspacing="0">
-            <?php foreach ($applicants as $membership) : ?>
+            <?php foreach ($applicants as $membership): ?>
                 <tr>
                     <td style="padding-right:12px;vertical-align: top">
                         <?= Image::widget(['user' => $membership->user]); ?>

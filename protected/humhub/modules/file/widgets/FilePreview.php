@@ -100,7 +100,7 @@ class FilePreview extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => 'well post-file-list'
+            'class' => 'card card-body text-bg-light post-file-list'
         ];
     }
 

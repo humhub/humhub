@@ -57,7 +57,7 @@ humhub.module('content.form', function(module, require, $) {
 
     CreateForm.prototype.submit = function(evt) {
         this.$.find('.preferences, .fileinput-button').hide();
-        this.$.find('.help-block-error').html('');
+        this.$.find('.form-text-error').html('');
         this.$.find('.has-error').removeClass('has-error');
 
         var that = this;
@@ -136,7 +136,7 @@ humhub.module('content.form', function(module, require, $) {
             var multiInputSelector = '[name="' + fieldName + '[]"]';
             that.$.find(fieldSelector).addClass('has-error');
             that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
-                .find('.help-block-error:first').html(errorMessages.join('<br>'));
+                .find('.form-text-error:first').html(errorMessages.join('<br>'));
             that.$.find(multiInputSelector).closest('.form-group').addClass('has-error');
         });
     };

@@ -49,7 +49,7 @@ class Image extends BaseImage
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
 
         if ($this->tooltipText || $this->showTooltip) {
-            $this->imageOptions['data-toggle'] = 'tooltip';
+            $this->imageOptions['data-bs-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
             $this->imageOptions['data-html'] = 'true';
             $this->imageOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->user->displayName);

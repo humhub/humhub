@@ -14,19 +14,16 @@ use yii\helpers\Url;
 /* @var $space Space */
 ?>
 
-<div class="panel panel-default">
-    <div>
-        <div class="panel-heading">
-            <?= Yii::t('SpaceModule.manage', '<strong>Space</strong> settings'); ?>
-        </div>
+<div class="card card-default">
+    <div class="card-header">
+        <?= Yii::t('SpaceModule.manage', '<strong>Space</strong> settings'); ?>
     </div>
 
     <?= DefaultMenu::widget(['space' => $space]); ?>
 
-    <div class="panel-body">
-
+    <div class="card-body">
         <?php $form = ActiveForm::begin(['options' => ['id' => 'spaceIndexForm'], 'enableClientValidation' => false, 'acknowledge' => true]); ?>
-        <?php if (Yii::$app->urlManager->enablePrettyUrl) : ?>
+        <?php if (Yii::$app->urlManager->enablePrettyUrl): ?>
             <?= $form->field($model, 'url')->hint(Yii::t('SpaceModule.manage', 'e.g. example for {baseUrl}/s/example', ['baseUrl' => Url::base(true)])); ?>
         <?php endif; ?>
         <?= $form->field($model, 'hideMembers')->checkbox(); ?>
@@ -35,7 +32,7 @@ use yii\helpers\Url;
         <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
         <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
         <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
-        <?php if (Yii::$app->user->can(ManageSpaces::class)) : ?>
+        <?php if (Yii::$app->user->can(ManageSpaces::class)): ?>
             <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
         <?php else: ?>
             <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class, [

@@ -3,23 +3,23 @@
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 use humhub\widgets\DataSaved;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use humhub\libs\Html;
 
 /* @var $model Space */
 /* @var $visibilities array */
 ?>
 
-<div class="panel panel-default">
+<div class="card card-default">
     <div>
-        <div class="panel-heading">
+        <div class="card-header">
             <?= Yii::t('SpaceModule.manage', '<strong>Security</strong> settings'); ?>
         </div>
     </div>
 
     <?= SecurityTabMenu::widget(['space' => $model]); ?>
 
-    <div class="panel-body">
+    <div class="card-body">
         <?php $form = ActiveForm::begin(); ?>
 
         <?= $form->field($model, 'visibility')->dropDownList($visibilities, [

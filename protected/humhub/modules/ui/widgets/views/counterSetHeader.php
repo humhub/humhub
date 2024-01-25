@@ -12,14 +12,14 @@ use humhub\libs\Html;
 
 ?>
 
-<div class="statistics pull-left">
+<div class="statistics float-start">
     <?php foreach ($counters as $counter): ?>
 
         <?php if ($counter->hasLink()): ?>
             <?= Html::beginTag('a', array_merge(['href' => $counter->url], $counter->linkOptions)); ?>
         <?php endif; ?>
 
-        <div class="pull-left entry">
+        <div class="float-start entry">
             <span class="count"><?= $counter->getShortValue(); ?></span>
             <br>
             <span class="title"><?= $counter->label; ?></span>

@@ -9,7 +9,7 @@
 namespace humhub\modules\space\notifications;
 
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 use humhub\modules\notification\components\BaseNotification;
 
 /**
@@ -55,7 +55,7 @@ class ApprovalRequestAccepted extends BaseNotification
             Html::tag('strong', Html::encode($this->originator->displayName)),
             Html::tag('strong', Html::encode($this->source->name)));
     }
-    
+
     private function getInfoText($displayName, $spaceName)
     {
         return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the space {spaceName}', [

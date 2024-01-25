@@ -7,11 +7,11 @@ use yii\helpers\Url;
 $this->pageTitle = Yii::t('base', 'Error');
 ?>
 <div class="container">
-    <div class="panel panel-default">
-        <div class="panel-heading">
+    <div class="card card-default">
+        <div class="card-header">
             <?= Yii::t('base', 'Oooops...'); ?> <?= Yii::t('base', 'It looks like you may have taken the wrong turn.'); ?>
         </div>
-        <div class="panel-body">
+        <div class="card-body">
 
             <div class="error">
                 <h2><?= Html::encode($message); ?></h2>

@@ -11,7 +11,7 @@ namespace humhub\modules\ui\menu;
 use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use yii\base\BaseObject;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * Class MenuEntry

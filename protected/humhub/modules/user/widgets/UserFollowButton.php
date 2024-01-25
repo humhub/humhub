@@ -9,7 +9,7 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * UserFollowButton
@@ -36,12 +36,12 @@ class UserFollowButton extends \yii\base\Widget
     public $unfollowLabel = null;
 
     /**
-     * @var string options for follow button 
+     * @var string options for follow button
      */
     public $followOptions = ['class' => 'btn btn-primary'];
 
     /**
-     * @var array options for unfollow button 
+     * @var array options for unfollow button
      */
     public $unfollowOptions = ['class' => 'btn btn-primary active'];
 

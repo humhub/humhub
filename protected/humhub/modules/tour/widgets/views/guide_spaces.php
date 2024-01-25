@@ -18,7 +18,7 @@ use yii\helpers\Url;
                         content: <?= json_encode(Yii::t('TourModule.spaces', "Once you have joined or created a new space you can work on projects, discuss topics or just share information with other users.<br><br>There are various tools to personalize a space, thereby making the work process more productive.")); ?>
                     },
                     {
-                        element: ".layout-nav-container .panel",
+                        element: ".layout-nav-container .card",
                         title: <?= json_encode(Yii::t('TourModule.spaces', '<strong>Space</strong> navigation menu')); ?>,
                         content: <?= json_encode(Yii::t('TourModule.spaces', 'This is where you can navigate the space – where you find which modules are active or available for the particular space you are currently in. These could be polls, tasks or notes for example.<br><br>Only the space admin can manage the space\'s modules.')); ?>,
                         placement: "right"

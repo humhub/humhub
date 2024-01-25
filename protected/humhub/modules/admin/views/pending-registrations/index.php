@@ -9,7 +9,7 @@ use humhub\modules\admin\widgets\PendingRegistrations;
 
 ?>
 
-<div class="panel-body">
+<div class="card-body">
     <?=
     PendingRegistrations::widget([
         'dataProvider' => $dataProvider,
