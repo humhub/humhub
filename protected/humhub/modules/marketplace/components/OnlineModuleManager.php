@@ -57,7 +57,7 @@ class OnlineModuleManager extends Component
             throw new Exception(Yii::t('MarketplaceModule.base', 'No compatible module version found!'));
         }
 
-        $downloadTargetFileName = $this->downloadModule($moduleInfo);
+        $downloadTargetFileName = $this->downloadModule($moduleId, $moduleInfo);
         $this->checkRequirements($moduleId, $downloadTargetFileName);
 
         if (!$this->unzip($downloadTargetFileName, $modulesPath)) {
@@ -111,7 +111,7 @@ class OnlineModuleManager extends Component
         }
     }
 
-    private function downloadModule($moduleInfo): string
+    private function downloadModule($moduleId, $moduleInfo): string
     {
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
@@ -132,8 +132,9 @@ class OnlineModuleManager extends Component
             throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
         }
 
+
         // Remove old module path
-        if (!$this->removeModuleDir($modulesPath . DIRECTORY_SEPARATOR . $moduleInfo['id'])) {
+        if (!$this->removeModuleDir($modulesPath . DIRECTORY_SEPARATOR . $moduleId)) {
             throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not remove old module path!'));
         }
 
@@ -194,7 +195,7 @@ class OnlineModuleManager extends Component
 
         $moduleInfo = $this->getModuleInfo($moduleId);
 
-        $moduleZipFile = $this->downloadModule($moduleInfo);
+        $moduleZipFile = $this->downloadModule($moduleId, $moduleInfo);
         $this->checkRequirements($moduleId, $moduleZipFile);
 
         Yii::$app->moduleManager->removeModule($moduleId, false);
