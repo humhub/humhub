@@ -6,6 +6,7 @@ HumHub Changelog
 - Enh #6779: Added Twig Sandbox Extension for Statistic Tracking Codes
 - Fix #6791: Fix number of filtered modules on Marketplace
 - Fix #6796: Files in the RichText doesn't open as new tab
+- Fix #6126: `Session::$timeout` takes effect before configured `User::$authTimeout`
 
 1.15.2 (December 19, 2023)
 --------------------------
