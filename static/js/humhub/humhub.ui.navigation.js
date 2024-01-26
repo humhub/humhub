@@ -50,8 +50,9 @@ humhub.module('ui.navigation', function (module, require, $) {
     };
 
     var setActiveItem = function ($item) {
+        $('#top-menu-nav li').removeClass('active');
+
         if (!$item || !$item.length) {
-            $('#top-menu-nav li').removeClass('active');
             return;
         }
 
