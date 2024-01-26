@@ -102,11 +102,12 @@ class OnlineModuleManager extends Component
     }
 
     private function checkRequirements($moduleId, $moduleZipFile) {
-        $config = require('zip://' . $moduleZipFile . '#' . $moduleId . '/config.php');
-        if (isset($config['requirementCheck']) && is_callable($config['requirementCheck'])) {
-            $result = call_user_func($config['requirementCheck']);
-            if ($result !== null) {
-                throw new HttpException('500', $result);
+        $zip = new ZipArchive();
+        $zip->open($moduleZipFile);
+        if ($zip->locateName($moduleId . '/requirements.php')) {
+            $requirementCheckResult = include('zip://' . $moduleZipFile . '#' . $moduleId . '/requirements.php');
+            if (is_string($requirementCheckResult)) {
+                throw new HttpException('500', $requirementCheckResult);
             }
         }
     }

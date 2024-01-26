@@ -121,13 +121,7 @@ class ModuleAutoLoader implements BootstrapInterface
 
     private static function getModuleConfigByPath(string $modulePath): array
     {
-        $config = include $modulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
-
-        // Remove closure/anon function which cannot be serialized into cache. It is only required during
-        // Marketplace installation/updates.
-        unset($config['requirementCheck']);
-
-        return $config;
+        return include $modulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
     }
 
 
