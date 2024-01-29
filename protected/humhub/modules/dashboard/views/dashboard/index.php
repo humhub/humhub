@@ -4,6 +4,7 @@
  * @var bool $showProfilePostForm
  */
 
+use humhub\modules\topic\widgets\TrendingTopics;
 use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
@@ -27,7 +28,11 @@ use humhub\libs\Html;
                 [
                     ActivityStreamViewer::class,
                     ['streamAction' => '/dashboard/dashboard/activity-stream'],
-                    ['sortOrder' => 150]
+                    ['sortOrder' => 150],
+                ],
+                [
+                    TrendingTopics::class,
+                    [],
                 ]
             ]
         ]);
