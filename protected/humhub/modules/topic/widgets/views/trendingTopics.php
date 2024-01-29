@@ -10,7 +10,7 @@ use humhub\modules\topic\widgets\TopicLabel;
 <div class="panel panel-default panel-topic" id="panel-topic">
     <?= PanelMenu::widget(['id' => 'panel-topic']) ?>
     <div class="panel-heading">
-        <?= Yii::t('TopicModule.base', '<strong>Most</strong> Used Topics') ?>
+        <?= Yii::t('TopicModule.base', '<strong>Trending</strong> Topics') ?>
     </div>
     <div class="panel-body">
         <?php foreach ($topics as $topic): ?>
