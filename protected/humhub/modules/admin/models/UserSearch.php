@@ -115,7 +115,7 @@ class UserSearch extends User
                 ['like', 'concat(profile.lastname, " ", profile.firstname)', $this->freeText],
             ]);
 
-            if (!empty($this->status)) {
+            if (isset($this->status) && in_array($this->status, [User::STATUS_ENABLED, User::STATUS_DISABLED, User::STATUS_SOFT_DELETED])) {
                 $query->andFilterWhere(['user.status' => $this->status]);
             }
             return $dataProvider;

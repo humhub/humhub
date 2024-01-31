@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix: Iso3166Codes class calls
 - Fix #6813: Fix for displaying whether I follow a user
 - Fix #6126: `Session::$timeout` takes effect before configured `User::$authTimeout`
+- Fix #6795: Fix searching of disabled users in Administration
 
 1.15.2 (December 19, 2023)
 --------------------------
