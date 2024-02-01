@@ -42,8 +42,8 @@ use humhub\modules\ui\view\components\View;
     </div>
     <p><br>
         <?= Html::a(
-            Yii::t('AdminModule.information', 'Refresh'),
-            ['/admin/information/database'],
+            Yii::t('AdminModule.information', 'Update Database'),
+            ['/admin/information/database', 'migrate' => 1],
             [
                 'id' => 'migrationRun',
                 'class' => 'btn btn-primary pull-right',
@@ -59,8 +59,8 @@ use humhub\modules\ui\view\components\View;
     </div>
     <p><br>
         <?= Html::a(
-            Yii::t('AdminModule.information', 'Update Database'),
-            ['/admin/information/database', 'migrate' => 1],
+            Yii::t('AdminModule.information', 'Refresh'),
+            ['/admin/information/database'],
             [
                 'id' => 'migrationRun',
                 'class' => 'btn btn-primary pull-right',
