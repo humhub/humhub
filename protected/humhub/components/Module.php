@@ -230,14 +230,24 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Check this module is activated
+     * Check this module is enabled
      *
      * @return bool
      */
-    public function getIsActivated(): bool
+    public function getIsEnabled(): bool
     {
         return Yii::$app->hasModule($this->id) &&
             !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
+    }
+
+    /**
+     * @see          static::getIsEnabled()
+     * @deprecated since 1.16; use static::getIsEnabled() instead.
+     * @noinspection PhpUnused
+     */
+    public function getIsActivated(): bool
+    {
+        return $this->getIsEnabled();
     }
 
     /**
@@ -248,15 +258,14 @@ class Module extends \yii\base\Module
      */
     public function enable()
     {
+        Yii::$app->moduleManager->enable($this);
         $result = $this->getMigrationService()->migrateUp();
 
         if ($result === false) {
+            Yii::$app->moduleManager->disable($this);
             Yii::error('Could not enable module. Database Migration failed! See previous error for result.', $this->id);
-
             return false;
         }
-
-        Yii::$app->moduleManager->enable($this);
 
         return $result;
     }
@@ -380,9 +389,9 @@ class Module extends \yii\base\Module
      * This function should also make sure the module is installed on the given container in case the permission
      * only affects installed features.
      *
-     * @since 0.21
      * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer
      * @return array list of permissions
+     * @since 0.21
      */
     public function getPermissions($contentContainer = null)
     {
@@ -392,8 +401,8 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of notification classes this module provides.
      *
-     * @since 1.1
      * @return array list of notification classes
+     * @since 1.1
      */
     public function getNotifications()
     {
@@ -421,8 +430,8 @@ class Module extends \yii\base\Module
     /**
      * Determines whether the module has notification classes or not
      *
-     * @since 1.2
      * @return boolean has notifications
+     * @since 1.2
      */
     public function hasNotifications()
     {
@@ -432,8 +441,8 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of activity class names this modules provides.
      *
-     * @since 1.2
      * @return array list of activity class names
+     * @since 1.2
      */
     public function getActivityClasses()
     {
@@ -461,8 +470,8 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of asset class names this modules provides.
      *
-     * @since 1.2.8
      * @return array list of asset class names
+     * @since 1.2.8
      */
     public function getAssetClasses()
     {

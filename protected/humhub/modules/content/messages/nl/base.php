@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> naar dit bericht',
   '<strong>Scheduling</strong> Options' => '<strong>Planning</strong> opties',
   'Activate scheduling' => 'Activeer de planningmogelijkheden',
-  'Activated' => 'Ingeschakeld',
+  'Enabled' => 'Ingeschakeld',
   'Add a member to notify' => 'Hou een lid op de hoogte',
   'Add tag...' => 'Label toevoegen...',
   'Archived' => 'Gearchiveerd',

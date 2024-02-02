@@ -76,7 +76,7 @@ class Module extends \humhub\components\Module
             $privateContainerQuery = Membership::getMemberSpaceContainerIdQuery($user);
 
             // Add friend container if friendship module is active
-            if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
                 $privateContainerQuery->union(Friendship::getFriendshipContainerIdQuery($user), true);
             }
 

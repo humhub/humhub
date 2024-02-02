@@ -43,6 +43,7 @@ use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 
 /**
@@ -439,11 +440,13 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Deletes this content immediately and permanently
      *
      * @return bool
+     * @throws Throwable
+     * @throws StaleObjectException
      * @since 1.14
      */
     public function hardDelete(): bool
     {
-        return (parent::delete() !== false);
+        return parent::delete() !== false;
     }
 
     /**

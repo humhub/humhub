@@ -69,17 +69,9 @@ class UserPermissionsController extends Controller
         }
 
         // Handle permission state change
-        if (Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = $defaultPermissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            $defaultPermissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
-            return [];
-        }
+        $return = $defaultPermissionManager->handlePermissionStateChange($groupId);
 
-        return $this->render('default', [
+        return $return ?? $this->render('default', [
             'defaultPermissionManager' => $defaultPermissionManager,
             'groups' => $groups,
             'groupId' => $groupId,

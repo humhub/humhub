@@ -26,11 +26,13 @@ use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
 use humhub\widgets\Label;
+use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\ModelEvent;
 use yii\db\ActiveQuery;
+use yii\db\StaleObjectException;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -555,10 +557,12 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
     /**
      * @inheritdoc
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function hardDelete(): bool
     {
-        return (parent::delete() !== false);
+        return parent::delete() !== false;
     }
 
     /**
@@ -587,7 +591,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * Checks if the given user or the current logged in user if no user was given, is the owner of this content
      * @param null $user
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.3
      */
     public function isOwner($user = null)

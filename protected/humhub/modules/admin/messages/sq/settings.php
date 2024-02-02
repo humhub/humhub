@@ -2,9 +2,9 @@
 
 return [
     '<strong>Maintenance</strong> Mode' => 'mënyra e <strong>mirëmbajtjes</strong>',
-    'Activate' => 'Aktivizoni',
+    'Enable' => 'Aktivizoni',
     'Back to overview' => 'Kthehu te përmbledhja',
-    'Deactivate' => 'Çaktivizo',
+    'Disable' => 'Çaktivizo',
     'Delete' => 'Fshij',
     'General' => 'Gjeneral',
     'User' => 'Përdoruesi',

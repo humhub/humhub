@@ -117,6 +117,7 @@ class RegistrationController extends Controller
 
         return $this->render('index', [
             'hForm' => $registration,
+            'showRegistrationForm' => $this->module->showRegistrationForm,
             'hasAuthClient' => $authClient !== null,
         ]);
     }
@@ -154,6 +155,7 @@ class RegistrationController extends Controller
 
         return $this->render('byLink', [
             'invite' => $form,
+            'showRegistrationForm' => $this->module->showRegistrationForm,
             'showAuthClients' => true,
         ]);
     }

@@ -15,9 +15,9 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
         '<div class="alert alert-danger">' .
         Yii::t('AdminModule.settings', '<strong>Warning:</strong> All users will be immediately logged out, except admins.') .
         '</div>',
-    'maintenanceMode.button.enable' => Yii::t('AdminModule.settings', 'Activate'),
+    'maintenanceMode.button.enable' => Yii::t('AdminModule.settings', 'Enable'),
     'maintenanceMode.question.disable' => Yii::t('AdminModule.settings', 'Deactivate maintenance mode and enable all users to access the platform again?'),
-    'maintenanceMode.button.disable' => Yii::t('AdminModule.settings', 'Deactivate'),
+    'maintenanceMode.button.disable' => Yii::t('AdminModule.settings', 'Disable'),
 ]]);
 
 AdminAsset::register($this);

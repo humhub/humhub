@@ -5,7 +5,7 @@ return [
     '<strong>Delete</strong> content?' => '<strong>ลบ</strong> เนื้อหา?',
     '<strong>Move</strong> content' => '<strong>ย้าย</strong> เนื้อหา',
     '<strong>Permalink</strong> to this post' => '<strong>ลิงก์ถาวร</strong> ไปยังโพสต์นี้',
-    'Activated' => 'เปิดใช้งานแล้ว',
+    'Enabled' => 'เปิดใช้งานแล้ว',
     'Add a member to notify' => 'เพิ่มสมาชิกเพื่อแจ้งเตือน',
     'Add tag...' => 'เพิ่มแท็ก...',
     'Archived' => 'ที่เก็บถาวร',

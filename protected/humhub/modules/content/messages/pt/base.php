@@ -5,7 +5,7 @@ return [
     '<strong>Delete</strong> content?' => '<strong>Eliminar</strong> conteúdo?',
     '<strong>Move</strong> content' => '<strong>Mover</strong> conteúdo',
     '<strong>Permalink</strong> to this post' => '<strong>Link</strong> para esta publicação',
-    'Activated' => 'Activado',
+    'Enabled' => 'Activado',
     'Add a member to notify' => 'Adicionar uma pessoa para notificar',
     'Add tag...' => 'Adicionar etiqueta...',
     'Archived' => 'Arquivado',

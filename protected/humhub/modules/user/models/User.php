@@ -435,7 +435,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public function getFriends()
     {
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             return Friendship::getFriendsQuery($this);
         }
 
@@ -559,9 +559,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
         }
 
-        if (empty($this->email)) {
-            $this->email = null;
-        }
+        $this->email = empty($this->email) ? null : strtolower($this->email);
 
         return parent::beforeSave($insert);
     }
@@ -724,7 +722,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         }
 
         // Friend
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             return (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS);
         }
 
@@ -852,7 +850,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     {
         $groups = [];
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $groups[self::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
             $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
         } else {
@@ -881,7 +879,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             return self::USERGROUP_SELF;
         }
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             if (Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
                 return self::USERGROUP_FRIEND;
             }

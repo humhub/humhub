@@ -2,7 +2,7 @@
 
 return [
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> til dette opslag',
-    'Activated' => 'Aktiveret',
+    'Enabled' => 'Aktiveret',
     'Add a member to notify' => 'Tilføjet et medlem til notifikation',
     'Archived' => 'Arkiveret',
     'Back to stream' => 'Tilbage til stream',

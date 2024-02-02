@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => 'この投稿への<strong>パーマリンク</strong>',
   '<strong>Scheduling</strong> Options' => '<strong>スケジューリング</strong> オプション',
   'Activate scheduling' => 'スケジューリングを有効にする',
-  'Activated' => '作動中',
+  'Enabled' => '作動中',
   'Add a member to notify' => '通知するメンバーを追加',
   'Add tag...' => 'タグを追加...',
   'Archived' => 'アーカイブ',

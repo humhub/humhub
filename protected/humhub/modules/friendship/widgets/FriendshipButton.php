@@ -127,7 +127,7 @@ class FriendshipButton extends \yii\base\Widget
     public static function isVisibleForUser(User $user): bool
     {
         return !Yii::$app->user->isGuest &&
-            Yii::$app->getModule('friendship')->getIsEnabled() &&
+            Yii::$app->getModule('friendship')->isFriendshipEnabled() &&
             !$user->isCurrentUser();
     }
 

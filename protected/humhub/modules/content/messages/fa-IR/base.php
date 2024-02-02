@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => '<strong>جابجایی</strong> محتوا',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> به این پست',
-    'Activated' => 'فعال شد',
+    'Enabled' => 'فعال شد',
     'Add a member to notify' => 'افزودن یک کاربر به آگهی',
     'Archived' => 'بایگانی شده',
     'Back to stream' => 'بازگشت به جریان',

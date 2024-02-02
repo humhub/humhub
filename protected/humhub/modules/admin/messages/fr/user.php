@@ -44,7 +44,7 @@ return array (
   'Create new group' => 'Ajouter un groupe',
   'Create new profile category' => 'Créer une nouvelle catégorie de profil',
   'Create new profile field' => 'Créer nouveau champ de profil',
-  'Deactivate' => 'Désactiver',
+  'Disable' => 'Désactiver',
   'Deactivate individual profile permissions?' => 'Désactiver les autorisations de profil individuel ?',
   'Decline' => 'Refuser',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Refuser et supprimer l\'utilisateur : <strong>{displayName}</strong>',

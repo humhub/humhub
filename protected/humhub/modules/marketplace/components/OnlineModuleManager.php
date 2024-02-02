@@ -222,24 +222,46 @@ class OnlineModuleManager extends Component
         return $this->_modules;
     }
 
-
-    public function getCategories()
+    public function getCategories(): array
     {
         return Yii::$app->cache->getOrSet('marketplace-categories', function () {
-
+            $modules = $this->getModules();
             $categories = HumHubAPI::request('v1/modules/list-categories');
 
-            $names = [];
-            $names[0] = 'All categories (' . count($this->_modules) . ')';
+            $totalCount = 0;
+            $withoutCategoryCount = 0;
+            foreach ($modules as $module) {
+                $onlineModule = new ModelModule($module);
+                if (!$onlineModule->isMarketplaced()) {
+                    continue;
+                }
 
-            foreach ($categories as $i => $n) {
-                $c = 0;
-                foreach ($this->_modules as $m) {
-                    if (in_array($i, $m['categories'])) {
-                        $c++;
+                $totalCount++;
+
+                if (empty($module['categories'])) {
+                    $withoutCategoryCount++;
+                    continue;
+                }
+
+                foreach ($module['categories'] as $catIndex) {
+                    if (isset($categories[$catIndex])) {
+                        if (!isset($categories[$catIndex]['count'])) {
+                            $categories[$catIndex]['count'] = 0;
+                        }
+                        $categories[$catIndex]['count']++;
                     }
                 }
-                $names[$i] = $n['name'] . ' (' . $c . ')';
+            }
+
+            $names = [];
+            $names[0] = Yii::t('MarketplaceModule.base', 'All modules') . ' (' . $totalCount . ')';
+
+            foreach ($categories as $c => $category) {
+                $names[$c] = $category['name'] . ' (' . ($category['count'] ?? '0') . ')';
+            }
+
+            if ($withoutCategoryCount > 0) {
+                $names[-1] = Yii::t('MarketplaceModule.base', 'Without category') . ' (' . $withoutCategoryCount . ')';
             }
 
             return $names;
@@ -296,16 +318,11 @@ class OnlineModuleManager extends Component
      */
     public function getNotInstalledModules(): array
     {
-        /* @var Module $module */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-
         $modules = [];
 
         foreach ($this->getModules() as $moduleId => $module) {
             $onlineModule = new ModelModule($module);
-            if (!$onlineModule->isInstalled() &&
-                $onlineModule->latestCompatibleVersion &&
-                !($onlineModule->isDeprecated && $marketplaceModule->hideLegacyModules)) {
+            if (!$onlineModule->isInstalled() && $onlineModule->isMarketplaced()) {
                 $modules[$moduleId] = $onlineModule;
             }
         }

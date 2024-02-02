@@ -143,9 +143,9 @@ humhub.module('marketplace', function (module, require, $) {
         modal.global.show();
 
         modal.post(evt, {data: {moduleId}}).then(function () {
-            const activateButton = modal.global.$.find('[data-action-click="marketplace.activate"]').clone();
-            if (activateButton.length) {
-                installButton.after(activateButton.addClass('btn-sm'));
+            const enableButton = modal.global.$.find('[data-action-click="marketplace.enable"]').clone();
+            if (enableButton.length) {
+                installButton.after(enableButton.addClass('btn-sm'));
             }
             installButton.remove();
         }).catch(function (e) {
@@ -153,7 +153,7 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
-    const activate = function(evt) {
+    const enable = function(evt) {
         const moduleId = evt.$trigger.data('module-id');
         const moduleCard = $('button[data-module-id="' + moduleId + '"]').closest('.card');
 
@@ -171,6 +171,6 @@ humhub.module('marketplace', function (module, require, $) {
         updateAll,
         registerLicenceKey,
         install,
-        activate
+        enable
     });
 });

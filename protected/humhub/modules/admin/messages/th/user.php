@@ -38,7 +38,7 @@ return [
     'Create new group' => 'สร้างกลุ่มใหม่',
     'Create new profile category' => 'สร้างหมวดหมู่โปรไฟล์ใหม่',
     'Create new profile field' => 'สร้างช่องโปรไฟล์ใหม่',
-    'Deactivate' => 'ปิดการใช้งาน',
+    'Disable' => 'ปิดการใช้งาน',
     'Deactivate individual profile permissions?' => 'ปิดใช้งานการอนุญาตโปรไฟล์ส่วนบุคคล?',
     'Decline' => 'ลดลง',
     'Decline & delete user: <strong>{displayName}</strong>' => 'ปฏิเสธและลบผู้ใช้: <strong>{displayName}</strong>',

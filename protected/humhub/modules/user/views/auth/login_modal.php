@@ -14,7 +14,11 @@ use yii\widgets\ActiveForm;
 /* @var $invite Invite */
 /* @var $info string */
 /* @var $passwordRecoveryRoute string|array|null */
+/* @var $showLoginForm bool */
+/* @var $showRegistrationForm bool */
+
 ?>
+
 <div id="user-auth-login-modal" class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
@@ -25,7 +29,7 @@ use yii\widgets\ActiveForm;
         <div class="modal-body">
             <br/>
 
-            <?php if ($canRegister) : ?>
+            <?php if ($canRegister && $showRegistrationForm) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
@@ -52,60 +56,66 @@ use yii\widgets\ActiveForm;
                     <?php endif; ?>
 
                     <?php if (AuthChoice::hasClients()): ?>
-                        <?= AuthChoice::widget([]) ?>
+                        <?= AuthChoice::widget(['showOrDivider' => $showLoginForm]) ?>
                     <?php else: ?>
                         <?php if ($canRegister) : ?>
                             <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
-                        <?php else: ?>
+                        <?php elseif ($showLoginForm): ?>
                             <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
                         <?php endif; ?>
                     <?php endif; ?>
 
-                    <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
-                    <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>
-                    <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.auth', 'password')]); ?>
-                    <?= $form->field($model, 'rememberMe')->checkbox(); ?>
-                    <hr>
-                    <div class="row">
-                        <div class="col-md-4">
-                            <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary"
-                                    data-action-click="ui.modal.submit"
-                                    data-action-url="<?= Url::to(['/user/auth/login']) ?>">
-                                <?= Yii::t('UserModule.auth', 'Sign in') ?>
-                            </button>
+                    <?php if ($showLoginForm): ?>
+                        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+                        <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>
+                        <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.auth', 'password')]); ?>
+                        <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+                        <hr>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary"
+                                        data-action-click="ui.modal.submit"
+                                        data-action-url="<?= Url::to(['/user/auth/login']) ?>">
+                                    <?= Yii::t('UserModule.auth', 'Sign in') ?>
+                                </button>
 
-                        </div>
-                        <?php if ($passwordRecoveryRoute) : ?>
-                            <div class="col-md-8 text-right">
-                                <small>
-                                    <?= Html::a(
-                                        Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
-                                        $passwordRecoveryRoute,
-                                        ArrayHelper::merge([
-                                            'id' => 'recoverPasswordBtn',
-                                        ], is_array($passwordRecoveryRoute) ? [
-                                            'data' => [
-                                                'action-click' => 'ui.modal.load',
-                                                'action-url' => Url::to($passwordRecoveryRoute),
-                                            ]
-                                        ] : [
-                                            'target' => '_blank',
-                                        ]),
-                                    ) ?>
-                                </small>
                             </div>
-                        <?php endif; ?>
-                    </div>
+                            <?php if ($passwordRecoveryRoute) : ?>
+                                <div class="col-md-8 text-right">
+                                    <small>
+                                        <?= Html::a(
+                                            Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                            $passwordRecoveryRoute,
+                                            ArrayHelper::merge([
+                                                'id' => 'recoverPasswordBtn',
+                                            ], is_array($passwordRecoveryRoute) ? [
+                                                'data' => [
+                                                    'action-click' => 'ui.modal.load',
+                                                    'action-url' => Url::to($passwordRecoveryRoute),
+                                                ]
+                                            ] : [
+                                                'target' => '_blank',
+                                            ]),
+                                        ) ?>
+                                    </small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
 
-                    <?php ActiveForm::end(); ?>
+                        <?php ActiveForm::end(); ?>
+                    <?php endif; ?>
                 </div>
 
-                <?php if ($canRegister) : ?>
+                <?php if ($canRegister && $showRegistrationForm) : ?>
                     <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
                          id="register">
 
                         <?php if (AuthChoice::hasClients()): ?>
                             <?= AuthChoice::widget() ?>
+                            <div class="or-container">
+                                <hr>
+                                <div>or</div>
+                            </div>
                         <?php else: ?>
                             <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                         <?php endif; ?>

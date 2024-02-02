@@ -38,7 +38,7 @@ return [
     'Create new group' => 'Създаване на нова група',
     'Create new profile category' => 'Създаване на нова категория на профила',
     'Create new profile field' => 'Създаване на ново поле на профила',
-    'Deactivate' => 'Деактивиране',
+    'Disable' => 'Деактивиране',
     'Deactivate individual profile permissions?' => 'Деактивиране на разрешенията за индивидуален профил?',
     'Decline' => 'Отказвам',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Отхвърляне и изтриване на потребител: <strong>{displayName}</strong>',

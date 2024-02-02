@@ -22,7 +22,7 @@ class UserFilter extends User
     /**
      * Returns a UserFilter instance for the given $user or the current user identity
      * if $user is not provided.
-     * 
+     *
      * @param type $user
      * @return type
      */
@@ -38,17 +38,17 @@ class UserFilter extends User
 
     /**
      * Default implementation for user picker filter.
-     * 
+     *
      * @param type $keywords
      * @param type $maxResults
      * @param type $friendsOnly
      * @param type $permission
-     * @deprecated since 1.2 use 
+     * @deprecated since 1.2 use
      * @return type
      */
     public function getUserPickerResult($keywords = null, $maxResults = null, $friendsOnly = false, $permission = null)
     {
-        if (!Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (!Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             //We don't use the permission here for filtering since we include user with no permission as disabled in the result.
             //The problem here is we do not prefer users with permission in the query.
             $users = $this->getUserByFilter($keywords, $maxResults);
@@ -56,10 +56,10 @@ class UserFilter extends User
         }
 
         $friends = $this->getFriendsByFilter($keywords, $maxResults);
-        
+
         //Create userinfo json with with set 'disabled' field if the user is not permitted
         $jsonResult = UserPicker::asJSON($friends, $permission);
-        
+
         //Fill the remaining space with member users with the given permission
         if (!$friendsOnly && count($friends) < $maxResults) {
             $additionalUser = [];
@@ -74,7 +74,7 @@ class UserFilter extends User
 
         return $jsonResult;
     }
-    
+
     private function containsUser($userArr, $user)
     {
         foreach($userArr as $currentUser) {
@@ -87,7 +87,7 @@ class UserFilter extends User
 
     /**
      * Searches for all active users by the given keyword and permission.
-     * 
+     *
      * @param type $keywords
      * @param type $maxResults
      * @param type $permission
@@ -100,7 +100,7 @@ class UserFilter extends User
 
     /**
      * Search for all active friends by the given keyword and permission
-     * 
+     *
      * @param type $keywords search keyword
      * @param type $maxResults
      * @param type $permission
@@ -110,13 +110,13 @@ class UserFilter extends User
     {
         return self::filter($this->getFriends(), $keywords, $maxResults, $permission);
     }
-    
+
     /**
      * Returns an array of user models filtered by a $keyword and $permission. These filters
      * are added to the provided $query. The $keyword filter can be used to filter the users
      * by email, username, firstname, lastname and title. By default this functions does not
      * consider inactive user.
-     * 
+     *
      * @param type $query
      * @param type $keywords
      * @param type $maxResults
@@ -133,16 +133,16 @@ class UserFilter extends User
     public static function addQueryFilter($query, $keywords = null, $maxResults = null, $active = null)
     {
         self::addKeywordFilter($query, $keywords);
-        
+
         if ($maxResults != null) {
             $query->limit($maxResults);
         }
-        
+
         //We filter active user by default
         if(($active != null && $active) || $active == null) {
             $query->active();
         }
-        
+
         return $query;
     }
 
@@ -161,7 +161,7 @@ class UserFilter extends User
     /**
      * Returns a subset of the given array containing all users of the given set
      * which are permitted. If the permission is null this method returns the
-     * 
+     *
      * @param $users
      * @param $permission
      * @return array

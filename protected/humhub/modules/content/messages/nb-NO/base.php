@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => '<strong>Flytt</strong> innhold',
     '<strong>Permalink</strong> to this post' => '@@@@',
-    'Activated' => 'Aktivert',
+    'Enabled' => 'Aktivert',
     'Add a member to notify' => 'Legg til en følger',
     'Archived' => 'Arkivert',
     'Back to stream' => 'Tilbake til nyhetsstrøm',
