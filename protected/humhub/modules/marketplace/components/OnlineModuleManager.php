@@ -15,9 +15,11 @@ use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
 use Yii;
 use yii\base\Component;
+use yii\base\ErrorException;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
-use yii\web\HttpException;
+use yii\web\ServerErrorHttpException;
 use ZipArchive;
 
 /**
@@ -35,11 +37,10 @@ class OnlineModuleManager extends Component
     /**
      * Installs latest compatible module version
      *
-     * @param string $moduleId
-     * @throws Exception
-     * @throws HttpException
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\InvalidConfigException
+     * @param $moduleId
+     * @return void
+     * @throws ServerErrorHttpException
+     * @throws InvalidConfigException
      */
     public function install($moduleId)
     {
@@ -48,13 +49,13 @@ class OnlineModuleManager extends Component
         $modulesPath = Yii::getAlias($marketplaceModule->modulesPath);
 
         if (!is_writable($modulesPath)) {
-            throw new Exception(Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulesPath]));
+            $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulesPath]));
         }
 
         $moduleInfo = $this->getModuleInfo($moduleId);
 
         if (!isset($moduleInfo['latestCompatibleVersion'])) {
-            throw new Exception(Yii::t('MarketplaceModule.base', 'No compatible module version found!'));
+            $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'No compatible module version found!'));
         }
 
         $downloadTargetFileName = $this->downloadModule($moduleId);
@@ -62,12 +63,14 @@ class OnlineModuleManager extends Component
 
         // Remove old module path
         if (!$this->removeModuleDir($modulesPath . DIRECTORY_SEPARATOR . $moduleId)) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not remove old module path!'));
+            $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Could not remove old module path!'));
         }
 
         if (!$this->unzip($downloadTargetFileName, $modulesPath)) {
-            Yii::error('Could not unzip ' . $downloadTargetFileName . ' to ' . $modulesPath, 'marketplace');
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Could not extract module!'));
+            $this->throwError($moduleId,
+                'Could not unzip ' . $downloadTargetFileName . ' to ' . $modulesPath,
+                Yii::t('MarketplaceModule.base', 'Could not extract module!')
+            );
         }
 
         Yii::$app->moduleManager->flushCache();
@@ -113,7 +116,7 @@ class OnlineModuleManager extends Component
         if ($zip->locateName($moduleId . '/requirements.php')) {
             $requirementCheckResult = include('zip://' . $moduleZipFile . '#' . $moduleId . '/requirements.php');
             if (is_string($requirementCheckResult)) {
-                throw new HttpException('500', $requirementCheckResult);
+                $this->throwError($moduleId, $requirementCheckResult);
             }
         }
     }
@@ -135,21 +138,21 @@ class OnlineModuleManager extends Component
         $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
         try {
             $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
-            $this->downloadFile($downloadTargetFileName, $downloadUrl, $hashSha256);
+            $this->downloadFile($moduleId, $downloadTargetFileName, $downloadUrl, $hashSha256);
         } catch (\Exception $ex) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
+            $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
         }
 
         // Extract Package
         if (!file_exists($downloadTargetFileName)) {
-            throw new HttpException('500', Yii::t('MarketplaceModule.base', 'Download of module failed!'));
+            $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Download of module failed!'));
         }
 
         return $downloadTargetFileName;
     }
 
 
-    private function downloadFile($fileName, $url, $sha256 = null)
+    private function downloadFile(string $moduleId, $fileName, $url, $sha256 = null)
     {
         if (is_file($fileName) && !empty($sha256) && hash_file('sha256', $fileName) === $sha256) {
             // File already downloaded
@@ -162,15 +165,15 @@ class OnlineModuleManager extends Component
             $httpClient->get($url)->addOptions(['timeout' => 300])->setOutputFile($fp)->send();
             fclose($fp);
         } catch (\yii\httpclient\Exception $e) {
-            throw new \Exception('Download failed.' . $e->getMessage());
+            $this->throwError($moduleId, 'Download failed.' . $e->getMessage());
         }
 
         if (!is_file($fileName)) {
-            throw new \Exception('Download failed. Could not write file! ' . $fileName);
+            $this->throwError($moduleId, 'Download failed. Could not write file! ' . $fileName);
         }
 
         if (!empty($sha256) && hash_file('sha256', $fileName) !== $sha256) {
-            throw new \Exception('File verification failed. Could not download file! ' . $fileName);
+            $this->throwError($moduleId, 'File verification failed. Could not download file! ' . $fileName);
         }
 
         return true;
@@ -180,11 +183,12 @@ class OnlineModuleManager extends Component
     /**
      * Updates a given module
      *
-     * @param string $moduleId
+     * @param $moduleId
+     * @return void
      * @throws Exception
-     * @throws HttpException
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
+     * @throws ServerErrorHttpException
+     * @throws ErrorException
      */
     public function update($moduleId)
     {
@@ -424,6 +428,15 @@ class OnlineModuleManager extends Component
     {
         $modules = $this->getModules();
         return isset($modules[$id]) ? new ModelModule($modules[$id]) : null;
+    }
+
+    /**
+     * @throws ServerErrorHttpException
+     */
+    private function throwError(string $moduleId, string $errorMsg, string $displayedErrorMsg = null): void
+    {
+        Yii::error('Error installing or updating the "' . $moduleId . '" module: ' . $errorMsg, 'marketplace');
+        throw new ServerErrorHttpException($displayedErrorMsg ?? $errorMsg);
     }
 
 }
