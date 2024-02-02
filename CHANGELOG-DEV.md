@@ -55,3 +55,4 @@ HumHub Changelog
 - Fix #6808: On small screens, in the "Spaces" page, for spaces not having an image, the acronym text is not vertically centered
 - Enh #6812: Reduce people filter options depending on what filtered users have
 - Fix #6810: Top menu on small screens: the previous page remains active when the new page is in the drop-down submenu
+- Fix #6830: Wrong view filename after module enabling
