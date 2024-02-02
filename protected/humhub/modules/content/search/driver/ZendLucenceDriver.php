@@ -53,7 +53,10 @@ class ZendLucenceDriver extends AbstractDriver
             array_map(function (ContentTag $tag) {
                 return $tag->name;
             }, $content->tags))));
-        $document->addField(Field::keyword('content.container_id', $content->container->id));
+
+        if ($content->container) {
+            $document->addField(Field::keyword('content.container_id', $content->container->id));
+        }
         $document->addField(Field::keyword('content.created_at', strtotime($content->created_at)));
 
         $document->addField(Field::keyword('content.created_by', $content->created_by));

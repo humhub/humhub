@@ -35,7 +35,7 @@ class ContentSearchService
                 $this->getSearchDriver()->update($this->content);
             }
         } else {
-            $this->delete();
+            $this->delete($asActiveJob);
         }
     }
 

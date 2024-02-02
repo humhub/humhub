@@ -8,12 +8,13 @@
 
 namespace humhub\modules\content\commands;
 
+use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
-use humhub\modules\search\jobs\RebuildIndex;
+use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -55,8 +56,8 @@ class SearchController extends \yii\console\Controller
      */
     public function actionQueueRebuild()
     {
-        $job = new RebuildIndex();
-        if (\humhub\modules\queue\helpers\QueueHelper::isQueued($job)) {
+        $job = new SearchRebuildIndex();
+        if (QueueHelper::isQueued($job)) {
             print "Rebuild process is already queued or running!\n";
             return;
         }

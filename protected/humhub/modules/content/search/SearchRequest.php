@@ -11,7 +11,6 @@ use yii\web\IdentityInterface;
 
 class SearchRequest extends Model
 {
-
     public const ORDER_BY_CREATION_DATE = 'content.created_at';
     public const ORDER_BY_SCORE = 'score';
 
