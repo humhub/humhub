@@ -28,7 +28,6 @@ class Yii {
  * @property \humhub\modules\ui\view\components\View $view
  * @property \humhub\components\SettingsManager $settings
  * @property \humhub\modules\notification\components\NotificationManager $notification
- * @property \humhub\modules\search\engine\Search $search
  * @property \humhub\components\i18n\Formatter
  * @property \humhub\components\AssetManager $assetManager
  * @property \humhub\modules\user\authclient\Collection $authClientCollection

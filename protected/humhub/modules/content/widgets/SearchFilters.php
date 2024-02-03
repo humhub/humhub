@@ -9,7 +9,6 @@ namespace humhub\modules\content\widgets;
 
 use humhub\libs\Html;
 use humhub\modules\content\search\SearchRequest;
-use humhub\modules\search\engine\Search;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use Yii;
 

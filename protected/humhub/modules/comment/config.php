@@ -6,7 +6,6 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\commands\IntegrityController;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryLinks;
-use humhub\modules\search\engine\Search;
 
 /** @noinspection MissedFieldInspection */
 return [

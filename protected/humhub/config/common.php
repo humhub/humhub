@@ -78,9 +78,6 @@ $config = [
                 ],
             ],
         ],
-        'search' => [
-            'class' => \humhub\modules\search\engine\ZendLuceneSearch::class,
-        ],
         'settings' => [
             'class' => \humhub\components\SettingsManager::class,
             'moduleId' => 'base',

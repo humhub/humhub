@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\search\engine\Search;
 use humhub\modules\user\Events;
 use humhub\commands\IntegrityController;
 use humhub\modules\content\components\ContentAddonActiveRecord;

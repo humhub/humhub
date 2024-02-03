@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\search\engine\Search;
 use humhub\modules\user\models\User;
 use humhub\modules\space\Events;
 use humhub\modules\space\Module;

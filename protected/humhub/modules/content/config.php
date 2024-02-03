@@ -6,9 +6,7 @@ use humhub\commands\IntegrityController;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\modules\search\engine\Search;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\TopMenuRightStack;
 
 return [
     'id' => 'content',
