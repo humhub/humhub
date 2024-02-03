@@ -107,22 +107,6 @@ class Events extends BaseObject
     }
 
     /**
-     * On rebuild of the search index, rebuild all user records
-     *
-     * @param Event $event
-     */
-    public static function onSearchRebuild($event)
-    {
-        foreach (Content::find()->each() as $content) {
-            /* @var Content $content */
-            $contentObject = $content->getPolymorphicRelation();
-            if ($content->getStateService()->isPublished()) {
-                Yii::$app->search->add($contentObject);
-            }
-        }
-    }
-
-    /**
      * After a components\ContentActiveRecord was deleted
      *
      * @param \yii\base\Event $event
@@ -156,6 +140,7 @@ class Events extends BaseObject
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
     }
+
     public static function onCronHourly($event)
     {
         try {
@@ -163,16 +148,15 @@ class Events extends BaseObject
             $controller = $event->sender;
 
             $controller->stdout("Optimizing search index...\n");
-            Yii::$app->search->optimize();
+
+            $searchDriver = static::getModule()->getSearchDriver();
+            $searchDriver->optimize();
+
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         } catch (\Throwable $e) {
-            $controller->stderr($e->getMessage()."\n'");
+            $controller->stderr($e->getMessage() . "\n'");
             Yii::error($e);
         }
-    }
-    private static function getModule(): Module
-    {
-        return Yii::$app->getModule('content');
     }
 
     private static function canPublishScheduledContent(): bool
@@ -189,4 +173,8 @@ class Events extends BaseObject
         }
     }
 
+    private static function getModule(): Module
+    {
+        return Yii::$app->getModule('content');
+    }
 }

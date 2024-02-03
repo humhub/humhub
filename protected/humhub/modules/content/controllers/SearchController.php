@@ -5,7 +5,6 @@ namespace humhub\modules\content\controllers;
 use humhub\components\Controller;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\SearchRequest;
-use humhub\modules\content\services\ContentSearchService;
 use Yii;
 
 /**
@@ -20,7 +19,7 @@ class SearchController extends Controller
     public $subLayout = '@content/views/search/_layout';
 
     /**
-     * @var SearchRequest $searchRequest The current search request, required for File highlighting
+     * @note The current search request, required for File highlighting
      */
     public ?SearchRequest $searchRequest = null;
 

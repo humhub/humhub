@@ -10,21 +10,21 @@ namespace humhub\modules\content\commands;
 
 use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\search\driver\AbstractDriver;
-use humhub\modules\content\search\driver\ZendLucenceDriver;
+use humhub\modules\content\Module;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\console\Controller;
 
 /**
  * Search Tools
  *
- * @package humhub.modules_core.search.console
+ * @property Module $module
  * @since 0.12
  */
-class SearchController extends \yii\console\Controller
+class SearchController extends Controller
 {
 
     /**
@@ -33,7 +33,7 @@ class SearchController extends \yii\console\Controller
     public function actionOptimize()
     {
         print "Optimizing search index: ";
-        $driver = $this->getDriver();
+        $driver = $this->module->getSearchDriver();
         $driver->optimize();
         print "OK!\n\n";
     }
@@ -43,7 +43,7 @@ class SearchController extends \yii\console\Controller
      */
     public function actionRebuild()
     {
-        $driver = $this->getDriver();
+        $driver = $this->module->getSearchDriver();
         $driver->purge();
         foreach (Content::find()->each() as $content) {
             (new ContentSearchService($content))->update(false);
@@ -73,7 +73,7 @@ class SearchController extends \yii\console\Controller
      */
     public function actionFind($keyword)
     {
-        $driver = $this->getDriver();
+        $driver = $this->module->getSearchDriver();
 
         $user = User::findOne(['id' => 1]);
 
@@ -87,11 +87,5 @@ class SearchController extends \yii\console\Controller
         foreach ($searchResultSet->results as $content) {
             print "\t - " . $content->object_model . ' ' . $content->object_id . "\n";
         }
-    }
-
-
-    private function getDriver(): AbstractDriver
-    {
-        return new ZendLucenceDriver();
     }
 }
