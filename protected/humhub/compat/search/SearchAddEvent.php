@@ -9,5 +9,7 @@ use yii\base\Event;
  */
 class SearchAddEvent extends Event
 {
-
+    public function __construct($attributes)
+    {
+    }
 }

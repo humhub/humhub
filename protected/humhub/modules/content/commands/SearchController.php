@@ -2,7 +2,7 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2024 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
@@ -11,6 +11,7 @@ namespace humhub\modules\content\commands;
 use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
+use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\queue\helpers\QueueHelper;
@@ -18,12 +19,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\console\Controller;
 
-/**
- * Search Tools
- *
- * @property Module $module
- * @since 0.12
- */
 class SearchController extends Controller
 {
 
@@ -33,7 +28,7 @@ class SearchController extends Controller
     public function actionOptimize()
     {
         print "Optimizing search index: ";
-        $driver = $this->module->getSearchDriver();
+        $driver = $this->getSearchDriver();
         $driver->optimize();
         print "OK!\n\n";
     }
@@ -43,7 +38,7 @@ class SearchController extends Controller
      */
     public function actionRebuild()
     {
-        $driver = $this->module->getSearchDriver();
+        $driver = $this->getSearchDriver();
         $driver->purge();
         foreach (Content::find()->each() as $content) {
             (new ContentSearchService($content))->update(false);
@@ -73,7 +68,7 @@ class SearchController extends Controller
      */
     public function actionFind($keyword)
     {
-        $driver = $this->module->getSearchDriver();
+        $driver = $this->getSearchDriver();
 
         $user = User::findOne(['id' => 1]);
 
@@ -87,5 +82,13 @@ class SearchController extends Controller
         foreach ($searchResultSet->results as $content) {
             print "\t - " . $content->object_model . ' ' . $content->object_id . "\n";
         }
+    }
+
+    private function getSearchDriver(): AbstractDriver
+    {
+        /** @var Module $module */
+        $module = Yii::$app->getModule('content');
+
+        return $module->getSearchDriver();
     }
 }

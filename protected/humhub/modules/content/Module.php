@@ -10,6 +10,7 @@ namespace humhub\modules\content;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\search\driver\MysqlDriver;
 use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
@@ -148,6 +149,7 @@ class Module extends \humhub\components\Module
 
     public function getSearchDriver(): AbstractDriver
     {
-        return new ZendLucenceDriver();
+        return new MysqlDriver();
+        //return new ZendLucenceDriver();
     }
 }

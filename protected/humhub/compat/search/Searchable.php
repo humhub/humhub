@@ -7,5 +7,5 @@ namespace humhub\modules\search\interfaces;
  */
 interface Searchable extends \humhub\modules\content\interfaces\Searchable
 {
-
+    const EVENT_SEARCH_ADD = 'deprecated';
 }
