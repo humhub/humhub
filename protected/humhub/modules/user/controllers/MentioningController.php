@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\search\controllers;
+namespace humhub\modules\user\controllers;
 
 use humhub\components\Controller;
 use humhub\libs\ParameterEvent;
@@ -17,11 +17,11 @@ use humhub\modules\post\models\Post;
 use humhub\modules\search\Module;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\modules\space\widgets\Image as SpaceImage;
 use Yii;
 use yii\web\HttpException;
 
@@ -41,6 +41,11 @@ class MentioningController extends Controller
      * @var Module $module
      */
     public $module;
+
+    /**
+     * @var int $mentioningSearchBoxResultLimit Maximum results in mentioning users/spaces box
+     */
+    public $mentioningSearchBoxResultLimit = 6;
 
     /**
      * @inheritdoc
@@ -65,13 +70,13 @@ class MentioningController extends Controller
         $users = User::find()
             ->available()
             ->search($keyword)
-            ->limit($this->module->mentioningSearchBoxResultLimit)
+            ->limit($this->mentioningSearchBoxResultLimit)
             ->orderBy(['user.last_login' => SORT_DESC])
             ->all();
 
         $results = [];
         foreach ($users as $user) {
-            if($user->permissionManager->can(CanMention::class)) {
+            if ($user->permissionManager->can(CanMention::class)) {
                 $results[] = $this->getUserResult($user);
             }
         }
@@ -92,7 +97,7 @@ class MentioningController extends Controller
     {
         $keyword = (string)Yii::$app->request->get('keyword');
 
-        $space = Space::findOne(['id' => (int) $id]);
+        $space = Space::findOne(['id' => (int)$id]);
         if (!$space || !(new Post($space))->content->canEdit()) {
             throw new HttpException(403, 'Access denied!');
         }
@@ -101,7 +106,7 @@ class MentioningController extends Controller
         $users = Membership::getSpaceMembersQuery($space)
             ->available()
             ->search($keyword)
-            ->limit($this->module->mentioningSearchBoxResultLimit)
+            ->limit($this->mentioningSearchBoxResultLimit)
             ->orderBy(['space_membership.last_visit' => SORT_DESC])
             ->all();
 
@@ -158,7 +163,7 @@ class MentioningController extends Controller
         $users = Follow::getFollowersQuery($object, true)
             ->search($keyword)
             ->available()
-            ->limit($this->module->mentioningSearchBoxResultLimit)
+            ->limit($this->mentioningSearchBoxResultLimit)
             ->orderBy(['user.last_login' => SORT_DESC])
             ->all();
 
@@ -178,7 +183,7 @@ class MentioningController extends Controller
      */
     private function appendMentioningSpaceResults(string $keyword, array $results): array
     {
-        $spaceNum = $this->module->mentioningSearchBoxResultLimit - count($results);
+        $spaceNum = $this->mentioningSearchBoxResultLimit - count($results);
 
         if ($spaceNum <= 0) {
             // No need to add spaces because the list is already filled with max number of the results
