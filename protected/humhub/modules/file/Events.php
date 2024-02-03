@@ -10,10 +10,8 @@ namespace humhub\modules\file;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
 use yii\base\Event;
-use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\file\converter\TextConverter;
 
 /**

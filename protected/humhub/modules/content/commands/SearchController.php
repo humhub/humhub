@@ -33,7 +33,8 @@ class SearchController extends \yii\console\Controller
     public function actionOptimize()
     {
         print "Optimizing search index: ";
-        Yii::$app->search->optimize();
+        $driver = $this->getDriver();
+        $driver->optimize();
         print "OK!\n\n";
     }
 

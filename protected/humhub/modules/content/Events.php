@@ -17,6 +17,7 @@ use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
+use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
@@ -155,7 +156,20 @@ class Events extends BaseObject
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
     }
+    public static function onCronHourly($event)
+    {
+        try {
+            /** @var Controller $controller */
+            $controller = $event->sender;
 
+            $controller->stdout("Optimizing search index...\n");
+            Yii::$app->search->optimize();
+            $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
+        } catch (\Throwable $e) {
+            $controller->stderr($e->getMessage()."\n'");
+            Yii::error($e);
+        }
+    }
     private static function getModule(): Module
     {
         return Yii::$app->getModule('content');
