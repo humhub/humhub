@@ -2,10 +2,13 @@
 
 namespace humhub\modules\content\tests\codeception\unit\search;
 
-use tests\codeception\_support\HumHubDbTestCase;
+use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\search\driver\ZendLucenceDriver;
 
 class ZendLucenceDriverTest extends AbstractDriverTestSuite
 {
-
-
+    protected function getDriver(): AbstractDriver
+    {
+        return new ZendLucenceDriver();
+    }
 }

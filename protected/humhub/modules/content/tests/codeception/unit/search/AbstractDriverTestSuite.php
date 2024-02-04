@@ -7,27 +7,26 @@ use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\tests\codeception\unit\TestContent;
-use humhub\modules\content\Module;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
 
-class AbstractDriverTestSuite extends HumHubDbTestCase
+abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 {
 
     protected ?AbstractDriver $searchDriver = null;
 
+    abstract protected function getDriver(): AbstractDriver;
+
     public function _before()
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('content');
-        $this->searchDriver = $module->getSearchDriver();
+        $this->searchDriver = $this->getDriver();
         $this->searchDriver->purge();
-
         parent::_before();
     }
+
 
     public function testKeywords()
     {
