@@ -11,5 +11,7 @@ modules:
     config:
       Yii2:
         configFile: 'codeception/config/unit.php'
-        transaction: true
+
+        # Transactions are not possible here, because MySQL Search Driver Tests requiring FullText Indicies
+        transaction: false
         cleanup: false

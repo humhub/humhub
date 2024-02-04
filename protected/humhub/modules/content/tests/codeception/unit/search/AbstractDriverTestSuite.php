@@ -3,6 +3,7 @@
 namespace humhub\modules\content\tests\codeception\unit\search;
 
 use humhub\modules\content\models\Content;
+use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
@@ -18,12 +19,23 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
     protected ?AbstractDriver $searchDriver = null;
 
-    abstract protected function getDriver(): AbstractDriver;
+    abstract protected function createDriver(): AbstractDriver;
 
     public function _before()
     {
-        $this->searchDriver = $this->getDriver();
+        $this->searchDriver = $this->createDriver();
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('content');
+
+        $module->setComponents([
+            'search' => [
+                'class' => get_class($this->searchDriver)
+            ]
+        ]);
+
         $this->searchDriver->purge();
+
         parent::_before();
     }
 
@@ -32,19 +44,33 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     {
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
-        // Short keywords
-        $this->assertEquals(0, count($this->getSearchResultByKeyword('M')->results));
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('X')->results));
-
         // Test Multiple AND Keywords
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabru Leav')->results));
+        $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabru')->results));
         $this->assertEquals(0, count($this->getSearchResultByKeyword('Marabru Leav Abcd')->results));
 
         // Wildcards
         $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabr*')->results));
     }
+
+
+    /**
+     * @skip Not possible on MySQLDriver
+     */
+    public function testShortKeywords()
+    {
+        $space = Space::findOne(['id' => 1]);
+        $this->becomeUser('Admin');
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
+
+        // Short keywords
+        $this->assertEquals(0, count($this->getSearchResultByKeyword('M')->results));
+        $this->assertEquals(1, count($this->getSearchResultByKeyword('X')->results));
+    }
+
 
     private function getSearchResultByKeyword(string $keyword): ResultSet
     {

@@ -3,12 +3,12 @@
 namespace humhub\modules\content\tests\codeception\unit\search;
 
 use humhub\modules\content\search\driver\AbstractDriver;
-use humhub\modules\content\search\driver\ZendLucenceDriver;
+use humhub\modules\content\search\driver\MysqlDriver;
 
-class ZendLucenceDriverTest extends AbstractDriverTestSuite
+class MysqlDriverTest extends AbstractDriverTestSuite
 {
     protected function createDriver(): AbstractDriver
     {
-        return new ZendLucenceDriver();
+        return new MysqlDriver();
     }
 }

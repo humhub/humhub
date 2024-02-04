@@ -20,6 +20,7 @@ class MysqlDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
+
         $this->delete($content);
 
         $record = new ContentFulltext();
@@ -51,11 +52,17 @@ class MysqlDriver extends AbstractDriver
     {
         $query = Content::find();
         $query->leftJoin('content_fulltext', 'content_fulltext.content_id=content.id');
+        $query->andWhere('content_fulltext.content_id IS NOT NULL');
 
-        $fields = 'content_fulltext.contents, content_fulltext.comments, content_fulltext.files';
+        $againstSqlQuery = '';
+        foreach ($request->getKeywords() as $keyword) {
+            $againstSqlQuery .= '+' . $keyword . ' ';
+        }
 
-        $query->addSelect(['*', 'MATCH(' . $fields . ') AGAINST ("' . Yii::$app->db->quoteValue($request->keyword) . '" IN NATURAL LANGUAGE MODE) as score']);
-        $query->where('MATCH(' . $fields . ') AGAINST (:key IN NATURAL LANGUAGE MODE)', ['key' => $request->keyword]);
+        $matchDbFields = 'content_fulltext.contents, content_fulltext.comments, content_fulltext.files';
+
+        $query->addSelect(['*', 'MATCH(' . $matchDbFields . ') AGAINST ("' . Yii::$app->db->quoteValue($againstSqlQuery) . '" IN BOOLEAN MODE) as score']);
+        $query->andWhere('MATCH(' . $matchDbFields . ') AGAINST (:key IN BOOLEAN MODE)', ['key' => $againstSqlQuery]);
 
         if (!empty($request->contentType)) {
             $query->andWhere(['content.object_model' => $request->contentType]);
