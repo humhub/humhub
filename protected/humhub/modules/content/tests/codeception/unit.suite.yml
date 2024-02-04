@@ -14,4 +14,4 @@ modules:
 
         # Transactions are not possible here, because MySQL Search Driver Tests requiring FullText Indicies
         transaction: false
-        cleanup: false
+        cleanup: true
