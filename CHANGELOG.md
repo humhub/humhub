@@ -15,7 +15,7 @@ HumHub Changelog
 - Fix #6126: `Session::$timeout` takes effect before configured `User::$authTimeout`
 - Fix #6795: Fix searching of disabled users in Administration
 - Fix #6834: Fix notification switcher in wall stream entry context menu
-- Fix #6835: Fix check permission of changing content to public from context menu
+- Fix #6836: Fix check permission of changing content to public from context menu
 
 1.15.2 (December 19, 2023)
 --------------------------
