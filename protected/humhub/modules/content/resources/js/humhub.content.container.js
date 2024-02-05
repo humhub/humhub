@@ -102,8 +102,8 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 const contentId = event.$trigger.data('content-id');
 
-                $('#notification_off_' + contentId).hide();
-                $('#notification_on_' + contentId).show();
+                $('#notification_on_' + contentId).hide();
+                $('#notification_off_' + contentId).show();
             }
         });
     }
@@ -113,8 +113,8 @@ humhub.module('content.container', function (module, require, $) {
             if (response.success) {
                 const contentId = event.$trigger.data('content-id');
 
-                $('#notification_on_' + contentId).hide();
-                $('#notification_off_' + contentId).show();
+                $('#notification_off_' + contentId).hide();
+                $('#notification_on_' + contentId).show();
             }
         });
     };

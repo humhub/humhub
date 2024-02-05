@@ -43,6 +43,7 @@ ContentContainerAsset::register($this);
             'data' => [
                 'action-click' => 'content.container.turnOnNotifications',
                 'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
+                'content-id' => $content->id,
             ]
         ]
     ); ?>
