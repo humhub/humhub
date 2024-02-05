@@ -207,7 +207,7 @@ class ContentController extends Controller
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canEdit()) {
+        } elseif (!$content->canEdit() || (!$content->visibility && !$content->container->visibility)) {
             throw new ForbiddenHttpException();
         } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
             throw new ForbiddenHttpException();
