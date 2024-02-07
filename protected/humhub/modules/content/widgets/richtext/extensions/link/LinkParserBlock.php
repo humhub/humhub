@@ -12,15 +12,15 @@ use yii\helpers\Url;
  */
 class LinkParserBlock extends Model
 {
-    const BLOCK_KEY_URL = 'url';
-    const BLOCK_KEY_TITLE = 'title';
-    const BLOCK_KEY_MD = 'orig';
-    const BLOCK_KEY_TEXT = 'text';
-    const BLOCK_KEY_FILE_ID = 'fileId';
-    const BLOCK_KEY_WIDTH = 'width';
-    const BLOCK_KEY_HEIGHT = 'height';
-    const BLOCK_KEY_CLASS = 'class';
-    const BLOCK_KEY_STYLE = 'style';
+    public const BLOCK_KEY_URL = 'url';
+    public const BLOCK_KEY_TITLE = 'title';
+    public const BLOCK_KEY_MD = 'orig';
+    public const BLOCK_KEY_TEXT = 'text';
+    public const BLOCK_KEY_FILE_ID = 'fileId';
+    public const BLOCK_KEY_WIDTH = 'width';
+    public const BLOCK_KEY_HEIGHT = 'height';
+    public const BLOCK_KEY_CLASS = 'class';
+    public const BLOCK_KEY_STYLE = 'style';
 
     /**
      * @var array

@@ -28,15 +28,14 @@ use yii\base\Component;
  */
 abstract class Search extends Component
 {
-
-    const EVENT_SEARCH_ATTRIBUTES = 'search_attributes';
-    const EVENT_ON_REBUILD = 'onRebuild';
-    const DOCUMENT_TYPE_USER = 'user';
-    const DOCUMENT_TYPE_SPACE = 'space';
-    const DOCUMENT_TYPE_CONTENT = 'content';
-    const DOCUMENT_TYPE_OTHER = 'other';
-    const DOCUMENT_VISIBILITY_PUBLIC = 'public';
-    const DOCUMENT_VISIBILITY_PRIVATE = 'private';
+    public const EVENT_SEARCH_ATTRIBUTES = 'search_attributes';
+    public const EVENT_ON_REBUILD = 'onRebuild';
+    public const DOCUMENT_TYPE_USER = 'user';
+    public const DOCUMENT_TYPE_SPACE = 'space';
+    public const DOCUMENT_TYPE_CONTENT = 'content';
+    public const DOCUMENT_TYPE_OTHER = 'other';
+    public const DOCUMENT_VISIBILITY_PUBLIC = 'public';
+    public const DOCUMENT_VISIBILITY_PRIVATE = 'private';
 
     /**
      * @var int the minimum length of a search token
@@ -61,7 +60,7 @@ abstract class Search extends Component
      * @param array $options
      * @return SearchResultSet
      */
-    abstract public function find($query, Array $options);
+    abstract public function find($query, array $options);
 
     /**
      * Stores an object in search index.
@@ -105,7 +104,7 @@ abstract class Search extends Component
      */
     public function optimize()
     {
-        
+
     }
 
     protected function getMetaInfoArray(Searchable $obj)
@@ -132,7 +131,7 @@ abstract class Search extends Component
                 $meta['visibility'] = self::DOCUMENT_VISIBILITY_PRIVATE;
             }
 
-            $meta['contentTags'] = implode(', ', array_map(function(ContentTag $tag) {
+            $meta['contentTags'] = implode(', ', array_map(function (ContentTag $tag) {
                 return $tag->name;
             }, $obj->content->tags));
 
@@ -181,8 +180,8 @@ abstract class Search extends Component
 
     /**
      * Returns additional search attributes for the given object.
-     * This contains a list of comments, files and other content addons. 
-     * 
+     * This contains a list of comments, files and other content addons.
+     *
      * @param Searchable $object
      * @return array the additional search attributes
      */

@@ -70,20 +70,20 @@ JS, View::POS_LOAD);
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<div class="clearfix">
-    <?= Button::back(Url::to(['setting/oembed']), Yii::t('AdminModule.settings', 'Back to overview')) ?>
-    <h4 class="pull-left">
-        <?php
-        if (empty($name)) {
-            echo Yii::t('AdminModule.settings', 'Add OEmbed provider');
-        } else {
-            echo Yii::t('AdminModule.settings', 'Edit OEmbed provider');
-        }
-        ?>
-    </h4>
-</div>
+    <div class="clearfix">
+        <?= Button::back(Url::to(['setting/oembed']), Yii::t('AdminModule.settings', 'Back to overview')) ?>
+        <h4 class="pull-left">
+            <?php
+            if (empty($name)) {
+                echo Yii::t('AdminModule.settings', 'Add OEmbed provider');
+            } else {
+                echo Yii::t('AdminModule.settings', 'Edit OEmbed provider');
+            }
+?>
+        </h4>
+    </div>
 
-<br>
+    <br>
 
 <?php $form = ActiveForm::begin(['id' => 'oembed-provider-form', 'acknowledge' => true]); ?>
 
@@ -92,16 +92,16 @@ JS, View::POS_LOAD);
 <?= $form->field($model, 'name')->textInput(['class' => 'form-control']); ?>
 
 <?= $form->field($model, 'pattern')->textInput(['class' => 'form-control']); ?>
-<p class="help-block"><?= Yii::t('AdminModule.settings', 'Regular expression by which the link match will be checked.'); ?></p>
+    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Regular expression by which the link match will be checked.'); ?></p>
 
 <?= $form->field($model, 'endpoint')->textInput(['class' => 'form-control']); ?>
-<p class="help-block"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
+    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
 
-<?php if(isset($query['access_token'])): ?>
+<?php if (isset($query['access_token'])): ?>
     <?= $form->field($model, 'access_token')->textInput(['class' => 'form-control endpoint-param', 'data-param-name' => 'access_token', 'value' => $query['access_token']]) ?>
 <?php endif; ?>
 
-<div id="endpoint-parameters"></div>
+    <div id="endpoint-parameters"></div>
 
 <?= Button::primary(Yii::t('AdminModule.settings', 'Save'))->submit(); ?>
 

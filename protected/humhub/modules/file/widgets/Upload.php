@@ -8,10 +8,13 @@
 
 namespace humhub\modules\file\widgets;
 
+use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Widget;
+use humhub\modules\content\Module;
 use humhub\modules\file\models\File;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\helpers\Html;
 
@@ -91,9 +94,9 @@ use yii\helpers\Html;
  */
 class Upload extends Widget
 {
-    const DEFAULT_SUBMIT_NAME = 'fileList[]';
-    const DEFAULT_UPLOAD_NAME = 'files[]';
-    const DEFAULT_ATTRIBUTE_NAME = 'files';
+    public const DEFAULT_SUBMIT_NAME = 'fileList[]';
+    public const DEFAULT_UPLOAD_NAME = 'files[]';
+    public const DEFAULT_ATTRIBUTE_NAME = 'files';
 
     /**
      * @var Model the model the file array should be
@@ -143,7 +146,7 @@ class Upload extends Widget
      * @param string $attribute
      * @param array $cfg
      * @return static
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function forModel($model, $attribute = self::DEFAULT_ATTRIBUTE_NAME, $cfg = [])
     {
@@ -157,11 +160,11 @@ class Upload extends Widget
      * @param string|array $uploadName
      * @param array $cfg
      * @return static
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function withName($submitName = self::DEFAULT_SUBMIT_NAME, $uploadName = self::DEFAULT_UPLOAD_NAME, $cfg = [])
     {
-        if(is_array($uploadName)) {
+        if (is_array($uploadName)) {
             $cfg = $uploadName;
             $uploadName = $submitName;
         }
@@ -174,7 +177,7 @@ class Upload extends Widget
      *
      * @param array $cfg
      * @return static|object
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function create($cfg = [])
     {
@@ -193,7 +196,7 @@ class Upload extends Widget
         }
 
         if ($this->max === true) {
-            /** @var \humhub\modules\content\Module $contentModule */
+            /** @var Module $contentModule */
             $contentModule = Yii::$app->getModule('content');
             if ($contentModule !== null) {
                 $this->max = $contentModule->maxAttachedFiles;
@@ -249,7 +252,7 @@ class Upload extends Widget
      *
      * @param array $cfg
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @see UploadButton
      */
     public function button($cfg = [])
@@ -274,7 +277,7 @@ class Upload extends Widget
      *
      * @param array $cfg
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @see UploadInput
      */
     public function input($cfg = [])
@@ -300,13 +303,13 @@ class Upload extends Widget
      *
      * @param array $cfg
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @see UploadProgress
      */
     public function progress($cfg = [])
     {
         $options = (isset($cfg['options'])) ? $cfg['options'] : [];
-        $options['id'] = $this->id.'_progress';
+        $options['id'] = $this->id . '_progress';
         $cfg['options'] = $options;
 
         return UploadProgress::widget($cfg);
@@ -321,13 +324,13 @@ class Upload extends Widget
      *
      * @param array $cfg
      * @return string
-     * @throws \Exception
+     * @throws Exception
      * @see FilePreview
      */
     public function preview($cfg = [])
     {
         $options = (isset($cfg['options'])) ? $cfg['options'] : [];
-        $options['id'] = $this->id.'_preview';
+        $options['id'] = $this->id . '_preview';
         $cfg['options'] = $options;
 
         $cfg = array_merge([
@@ -348,7 +351,7 @@ class Upload extends Widget
      */
     protected function getPreviewFiles($showInStream = null)
     {
-        if($this->reset) {
+        if ($this->reset) {
             return [];
         }
 
@@ -356,7 +359,7 @@ class Upload extends Widget
         $resultMap = [];
 
         // Try fetching submitted files for this upload component if postState flag is active
-        if($this->postState) {
+        if ($this->postState) {
             $resultMap = [];
             $postFiles = UploadInput::getSubmittedFiles($this->model, $this->attribute, $this->submitName);
             foreach ($postFiles as $postFile) {
@@ -366,7 +369,7 @@ class Upload extends Widget
 
         // Add already attached files
         $modelFiles = $this->getModelFiles($showInStream);
-        if(!empty($modelFiles)) {
+        if (!empty($modelFiles)) {
             foreach ($modelFiles as $attachedFile) {
                 $resultMap[$attachedFile->guid] = $attachedFile;
             }
@@ -377,19 +380,19 @@ class Upload extends Widget
 
     private function getModelFiles($showInStream = null)
     {
-        if($this->model instanceof ActiveRecord) {
-            return($showInStream === null)
+        if ($this->model instanceof ActiveRecord) {
+            return ($showInStream === null)
                 ? $this->model->fileManager->findAll()
                 : $this->model->fileManager->findStreamFiles($showInStream);
         }
 
         $result = [];
-        if($this->model && $this->attribute) {
+        if ($this->model && $this->attribute) {
             $files = Html::getAttributeValue($this->model, $this->attribute);
-            if(is_array($files)) {
+            if (is_array($files)) {
                 foreach ($files as $file) {
                     $file = is_string($file) ? File::findOne(['guid' => $file]) : $file;
-                    if($file) {
+                    if ($file) {
                         $result[] = $file;
                     }
                 }

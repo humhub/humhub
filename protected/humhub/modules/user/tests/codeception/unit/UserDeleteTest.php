@@ -11,7 +11,6 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class UserDeleteTest extends HumHubDbTestCase
 {
-
     public function testUserSoftDelete()
     {
         $this->becomeUser('Admin');

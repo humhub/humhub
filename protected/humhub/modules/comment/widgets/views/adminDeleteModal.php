@@ -21,9 +21,9 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     var $notifyCheckbox = $('#admindeletecommentform-notify');
 
     $notifyCheckbox.on('change', function () {
-         if($notifyCheckbox.is(':checked'))
-             $messageTextarea.removeAttr('disabled');
-         else
-             $messageTextarea.attr('disabled', 'disabled');
+        if ($notifyCheckbox.is(':checked'))
+            $messageTextarea.removeAttr('disabled');
+        else
+            $messageTextarea.attr('disabled', 'disabled');
     });
 </script>

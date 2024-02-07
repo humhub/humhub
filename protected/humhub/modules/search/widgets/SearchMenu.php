@@ -15,7 +15,6 @@ use yii\base\Widget;
  */
 class SearchMenu extends Widget
 {
-
     /**
      * @inheritdoc
      */

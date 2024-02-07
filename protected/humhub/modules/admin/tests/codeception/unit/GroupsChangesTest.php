@@ -2,7 +2,6 @@
 
 namespace tests\codeception\unit\modules\space;
 
-
 use humhub\libs\BasePermission;
 use humhub\modules\admin\models\forms\UserEditForm;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
@@ -16,7 +15,6 @@ use Yii;
 
 class GroupsChangesTest extends HumHubDbTestCase
 {
-
     public function testUserManagerTryToAssignAdminGroupOnHimself()
     {
         $this->becomeUser('Admin');

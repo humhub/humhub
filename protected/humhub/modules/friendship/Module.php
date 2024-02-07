@@ -15,7 +15,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -45,10 +44,10 @@ class Module extends \humhub\components\Module
      */
     public function getNotifications()
     {
-       return [
-           'humhub\modules\friendship\notifications\Request',
-           'humhub\modules\friendship\notifications\RequestApproved',
-           'humhub\modules\friendship\notifications\RequestDeclined'
-       ];
+        return [
+            'humhub\modules\friendship\notifications\Request',
+            'humhub\modules\friendship\notifications\RequestApproved',
+            'humhub\modules\friendship\notifications\RequestDeclined'
+        ];
     }
 }

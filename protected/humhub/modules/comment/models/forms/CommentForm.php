@@ -64,11 +64,11 @@ class CommentForm extends yii\base\Model
      */
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        if(!empty($attributeNames)) {
+        if (!empty($attributeNames)) {
             return parent::validate($attributeNames, $clearErrors);
         }
 
-        if(!$this->comment->validate() || !parent::validate($attributeNames, $clearErrors)) {
+        if (!$this->comment->validate() || !parent::validate($attributeNames, $clearErrors)) {
             $this->comment->addError('message', Yii::t('CommentModule.base', 'Comment could not be saved!'));
         }
 
@@ -92,7 +92,7 @@ class CommentForm extends yii\base\Model
      */
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 

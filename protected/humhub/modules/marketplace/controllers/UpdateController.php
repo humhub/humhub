@@ -11,7 +11,11 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\services\ModuleService;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * Class UpdateController
@@ -33,11 +37,11 @@ class UpdateController extends Controller
     /**
      * Updates a module with the most recent version online
      *
-     * @return UpdateController|\yii\console\Response|\yii\web\Response
+     * @return UpdateController|\yii\console\Response|Response
      * @throws HttpException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\base\ErrorException
+     * @throws Exception
+     * @throws InvalidConfigException
+     * @throws ErrorException
      */
     public function actionInstall()
     {

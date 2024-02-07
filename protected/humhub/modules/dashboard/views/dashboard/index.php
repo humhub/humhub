@@ -20,19 +20,19 @@ use humhub\libs\Html;
             'contentContainer' => $contentContainer,
             'showProfilePostForm' => $showProfilePostForm
         ]);
-        ?>
+?>
     </div>
     <div class="col-md-4 layout-sidebar-container">
         <?= Sidebar::widget([
-            'widgets' => [
-                [
-                    ActivityStreamViewer::class,
-                    ['streamAction' => '/dashboard/dashboard/activity-stream'],
-                    ['sortOrder' => 150]
-                ]
-            ]
-        ]);
-        ?>
+    'widgets' => [
+        [
+            ActivityStreamViewer::class,
+            ['streamAction' => '/dashboard/dashboard/activity-stream'],
+            ['sortOrder' => 150]
+        ]
+    ]
+]);
+?>
         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
     </div>
 </div>

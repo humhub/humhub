@@ -67,5 +67,5 @@ use yii\helpers\Url;
             ['class' => SpaceActionColumn::class],
         ],
     ]);
-    ?>
+?>
 </div>

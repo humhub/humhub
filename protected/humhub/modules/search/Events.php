@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search;
 
+use Throwable;
 use Yii;
 use yii\base\BaseObject;
 use yii\console\Controller;
@@ -34,8 +35,8 @@ class Events extends BaseObject
             $controller->stdout("Optimizing search index...\n");
             Yii::$app->search->optimize();
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
-        } catch (\Throwable $e) {
-            $controller->stderr($e->getMessage()."\n'");
+        } catch (Throwable $e) {
+            $controller->stderr($e->getMessage() . "\n'");
             Yii::error($e);
         }
     }

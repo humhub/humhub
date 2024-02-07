@@ -22,7 +22,7 @@ use yii\base\Component;
  */
 class ThemeVariables extends Component
 {
-    const SETTING_PREFIX = 'theme.var.';
+    public const SETTING_PREFIX = 'theme.var.';
 
     /**
      * @var Theme

@@ -30,7 +30,6 @@ use yii\db\ActiveRecord;
  */
 class Password extends ActiveRecord
 {
-
     /**
      * Additional Fields for Scenarios
      */
@@ -210,14 +209,14 @@ class Password extends ActiveRecord
     {
         $userModule = Yii::$app->getModule('user');
         $additionalRules = $userModule->getPasswordStrength();
-        if (is_array($additionalRules) && ! empty($additionalRules)) {
+        if (is_array($additionalRules) && !empty($additionalRules)) {
             foreach ($additionalRules as $pattern => $message) {
                 $errorMessage = $userModule->isCustomPasswordStrength() ?
                     Yii::t('UserModule.custom', $message) :
                     $message;
                 try {
                     preg_match($pattern, $this->$attribute, $matches);
-                    if (! count($matches)) {
+                    if (!count($matches)) {
                         $this->addError($attribute, $errorMessage);
                     }
                 } catch (\Exception $exception) {

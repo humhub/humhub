@@ -14,6 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
 use yii\captcha\CaptchaValidator;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
 /**
@@ -38,12 +39,11 @@ use yii\helpers\Url;
  */
 class Invite extends ActiveRecord
 {
-
-    const SOURCE_SELF = 'self';
-    const SOURCE_INVITE = 'invite';
-    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
-    const EMAIL_TOKEN_LENGTH = 12;
-    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
+    public const SOURCE_SELF = 'self';
+    public const SOURCE_INVITE = 'invite';
+    public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    public const EMAIL_TOKEN_LENGTH = 12;
+    public const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
 
@@ -275,7 +275,7 @@ class Invite extends ActiveRecord
     /**
      * Return user which triggered this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getOriginator()
     {
@@ -285,7 +285,7 @@ class Invite extends ActiveRecord
     /**
      * Return space which is involved in this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {

@@ -29,7 +29,7 @@ abstract class Menu extends JsWidget
     /**
      * @event MenuEvent an event raised before running the navigation widget.
      */
-    const EVENT_RUN = 'run';
+    public const EVENT_RUN = 'run';
 
     /**
      * @var string template view file of the navigation

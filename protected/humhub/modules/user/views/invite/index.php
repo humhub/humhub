@@ -70,7 +70,7 @@ use yii\bootstrap\ActiveForm;
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
                         <a href="#" class="pull-right"
-                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>",
+                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
                            data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link', 'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed]) ?>">
@@ -80,16 +80,16 @@ use yii\bootstrap\ActiveForm;
                 </div>
                 <br>
                 <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
-                    ->link('mailto:' .
-                        '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
-                        '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
-                            'originator' => Yii::$app->user->identity,
-                            'registrationUrl' => $model->getInviteLink()
-                        ])))
-                    ->id('global-invite-send-link-by-email-btn')
-                    ->icon('paper-plane')
-                    ->loader(false)
-                ?>
+                                        ->link('mailto:' .
+                                            '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
+                                            '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
+                                                'originator' => Yii::$app->user->identity,
+                                                'registrationUrl' => $model->getInviteLink()
+                                            ])))
+                                        ->id('global-invite-send-link-by-email-btn')
+                                        ->icon('paper-plane')
+                                        ->loader(false)
+            ?>
             </div>
         <?php endif; ?>
     </div>

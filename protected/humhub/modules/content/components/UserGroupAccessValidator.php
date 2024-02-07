@@ -5,9 +5,8 @@
  * @license https://www.humhub.com/licences
  *
  */
- 
-namespace humhub\modules\content\components;
 
+namespace humhub\modules\content\components;
 
 use Yii;
 use humhub\components\access\ActionAccessValidator;
@@ -46,7 +45,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
 
     protected function validate($rule)
     {
-        if($this->globalPermissionCheck()) {
+        if ($this->globalPermissionCheck()) {
             return true;
         }
 
@@ -54,12 +53,12 @@ class UserGroupAccessValidator extends ActionAccessValidator
             $allowedGroups = is_string($rule[$this->name]) ? [$rule[$this->name]] : $rule[$this->name];
             $userGroup = $this->contentContainer->getUserGroup($this->access->user);
 
-            if(isset($rule['strict']) && $rule['strict'] == true) {
+            if (isset($rule['strict']) && $rule['strict'] == true) {
                 return in_array($userGroup, $allowedGroups);
             }
 
             foreach ($allowedGroups as $allowedUserGroup) {
-                if($this->getUserGroupLevel($userGroup) >= $this->getUserGroupLevel($allowedUserGroup)) {
+                if ($this->getUserGroupLevel($userGroup) >= $this->getUserGroupLevel($allowedUserGroup)) {
                     return true;
                 }
             }
@@ -77,11 +76,11 @@ class UserGroupAccessValidator extends ActionAccessValidator
      */
     protected function globalPermissionCheck()
     {
-        if(!$this->access->user) {
+        if (!$this->access->user) {
             return false;
         }
 
-        $userPermissionManager =  new PermissionManager(['subject' => $this->access->user]);
+        $userPermissionManager = new PermissionManager(['subject' => $this->access->user]);
         return ($this->access->user->isSystemAdmin())
             || ($this->contentContainer instanceof Space && $userPermissionManager->can(ManageSpaces::class));
     }
@@ -90,7 +89,7 @@ class UserGroupAccessValidator extends ActionAccessValidator
     {
         $userGroupLevelArr = ($this->contentContainer instanceof Space) ? $this->spaceGroupLevel : $this->profileGroupLevel;
 
-        if(!in_array($userGroup, $userGroupLevelArr)) {
+        if (!in_array($userGroup, $userGroupLevelArr)) {
             return PHP_INT_MAX;
         }
 

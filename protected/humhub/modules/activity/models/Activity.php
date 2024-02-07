@@ -32,7 +32,6 @@ use humhub\modules\activity\widgets\Activity as ActivityStreamEntryWidget;
  */
 class Activity extends ContentActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -117,7 +116,7 @@ class Activity extends ContentActiveRecord
      *
      * @return mixed
      * @throws IntegrityException
-     * @see \humhub\modules\activity\components\BaseActivity::$source
+     * @see BaseActivity
      */
     public function getSource()
     {

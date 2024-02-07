@@ -25,8 +25,8 @@ use Yii;
  */
 class Comments extends Widget
 {
-    const VIEW_MODE_COMPACT = 'compact';
-    const VIEW_MODE_FULL = 'full';
+    public const VIEW_MODE_COMPACT = 'compact';
+    public const VIEW_MODE_FULL = 'full';
 
     /**
      * @var Comment|ContentActiveRecord

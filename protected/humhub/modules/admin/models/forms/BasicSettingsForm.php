@@ -2,19 +2,20 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use DateTimeZone;
 use Yii;
 use humhub\libs\DynamicConfig;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\Stream;
 use humhub\libs\TimezoneHelper;
+use yii\base\Model;
 
 /**
  * BasicSettingsForm
  * @since 0.5
  */
-class BasicSettingsForm extends \yii\base\Model
+class BasicSettingsForm extends Model
 {
-
     public $name;
     public $baseUrl;
     public $defaultLanguage;
@@ -55,7 +56,7 @@ class BasicSettingsForm extends \yii\base\Model
             [['name', 'baseUrl'], 'required'],
             ['name', 'string', 'max' => 150],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
-            [['defaultTimeZone', 'timeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
+            [['defaultTimeZone', 'timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
             [['baseUrl'], 'url', 'pattern' => '/^{schemes}:\/\/([A-Z0-9][A-Z0-9_\-\.]*)+(?::\d{1,5})?(?:$|[?\/#])/i'],
             [['baseUrl'], 'trim'],
@@ -88,11 +89,17 @@ class BasicSettingsForm extends \yii\base\Model
     public function attributeHints()
     {
         return [
-            'defaultTimeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+            'defaultTimeZone' => Yii::t(
+                'AdminModule.settings',
+                'Reported database time: {dateTime}',
+                [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),
-            'timeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+            'timeZone' => Yii::t(
+                'AdminModule.settings',
+                'Reported database time: {dateTime}',
+                [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),

@@ -8,11 +8,14 @@
 
 namespace humhub\modules\admin\models;
 
+use humhub\libs\DateHelper;
+use humhub\modules\user\components\ActiveQueryUser;
 use yii\base\InvalidArgumentException;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\user\models\User;
+use yii\db\Expression;
 
 /**
  * Description of UserSearch
@@ -21,9 +24,8 @@ use humhub\modules\user\models\User;
  */
 class UserSearch extends User
 {
-
     /**
-     * @var \humhub\modules\user\components\ActiveQueryUser
+     * @var ActiveQueryUser
      */
     public $query;
 
@@ -71,7 +73,7 @@ class UserSearch extends User
     public function search($params)
     {
         $query = ($this->query == null) ? User::find() : $this->query;
-        /* @var $query \humhub\modules\user\components\ActiveQueryUser */
+        /* @var $query ActiveQueryUser */
         $query->joinWith('profile');
 
         $dataProvider = new ActiveDataProvider([
@@ -126,15 +128,14 @@ class UserSearch extends User
         $query->andFilterWhere(['like', 'profile.lastname', $this->getAttribute('profile.lastname')]);
 
 
-
         if ($this->getAttribute('last_login') != "") {
             try {
-                $last_login = \humhub\libs\DateHelper::parseDateTime($this->getAttribute('last_login'));
+                $last_login = DateHelper::parseDateTime($this->getAttribute('last_login'));
 
                 $query->andWhere([
                     '=',
-                    new \yii\db\Expression("DATE(last_login)"),
-                    new \yii\db\Expression("DATE(:last_login)", [':last_login' => $last_login])
+                    new Expression("DATE(last_login)"),
+                    new Expression("DATE(:last_login)", [':last_login' => $last_login])
                 ]);
             } catch (InvalidArgumentException $e) {
                 // do not change the query if the date is wrong formatted

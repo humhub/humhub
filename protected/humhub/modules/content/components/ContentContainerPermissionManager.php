@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\Module;
 use humhub\modules\content\models\ContentContainerDefaultPermission;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\content\models\ContentContainerPermission;
@@ -19,7 +20,6 @@ use Yii;
  */
 class ContentContainerPermissionManager extends PermissionManager
 {
-
     /**
      * @var ContentContainerActiveRecord
      */
@@ -44,7 +44,7 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function getModulePermissions(\yii\base\Module $module)
     {
-        if ($module instanceof \humhub\components\Module) {
+        if ($module instanceof Module) {
             return $module->getPermissions($this->contentContainer);
         }
         return [];
@@ -55,7 +55,7 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function createPermissionRecord()
     {
-        $permission = new ContentContainerPermission;
+        $permission = new ContentContainerPermission();
         $permission->contentcontainer_id = $this->contentContainer->contentcontainer_id;
         return $permission;
     }
@@ -65,7 +65,7 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function getQuery()
     {
-        return \humhub\modules\content\models\ContentContainerPermission::find()->where(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
+        return ContentContainerPermission::find()->where(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
     }
 
     /**
@@ -110,7 +110,7 @@ class ContentContainerPermissionManager extends PermissionManager
         }
 
         // Cache default permissions per Content Container Type(Space/User):
-        $cachedDefaultPermissions = Yii::$app->cache->getOrSet( 'defaultPermissions:'.get_class($this->contentContainer), function () use ($groupId) {
+        $cachedDefaultPermissions = Yii::$app->cache->getOrSet('defaultPermissions:' . get_class($this->contentContainer), function () use ($groupId) {
             $records = ContentContainerDefaultPermission::find()
                 ->select(['group_id', 'module_id', 'permission_id', 'state'])
                 ->where(['contentcontainer_class' => get_class($this->contentContainer)])
@@ -124,7 +124,7 @@ class ContentContainerPermissionManager extends PermissionManager
         });
 
         if (isset($cachedDefaultPermissions[$groupId][$permission->getModuleId()][$permission->getId()])) {
-            return (int) $cachedDefaultPermissions[$groupId][$permission->getModuleId()][$permission->getId()];
+            return (int)$cachedDefaultPermissions[$groupId][$permission->getModuleId()][$permission->getId()];
         }
 
         return null;

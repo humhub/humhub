@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -22,7 +23,6 @@ use yii\helpers\Url;
  */
 class Members extends Widget
 {
-
     /**
      * @var int maximum members to display
      */
@@ -62,7 +62,7 @@ class Members extends Widget
     /**
      * Returns a query for members of this space
      *
-     * @return \yii\db\ActiveQuery the query
+     * @return ActiveQuery the query
      */
     protected function getUserQuery()
     {

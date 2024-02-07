@@ -12,6 +12,7 @@ use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
 use humhub\modules\user\controllers\ProfileController;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\web\View;
 
 /**
  * Will show the introduction tour
@@ -72,7 +73,7 @@ class Tour extends Widget
     /**
      * @deprecated since 1.3.13
      */
-    public function loadResources(\yii\web\View $view)
+    public function loadResources(View $view)
     {
         // Dummy for old template version
     }
@@ -92,7 +93,7 @@ class Tour extends Widget
             $type = $type['type'];
         }
 
-        return (bool) self::getSettings()->user($user)->get('autoStartTour.' . $type, false);
+        return (bool)self::getSettings()->user($user)->get('autoStartTour.' . $type, false);
     }
 
     public static function enableAutoStart(string $type, ?User $user = null)

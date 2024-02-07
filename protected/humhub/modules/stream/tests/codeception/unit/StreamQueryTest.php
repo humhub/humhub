@@ -20,11 +20,11 @@ class StreamQueryTest extends HumHubDbTestCase
         parent::_before();
 
         // Clear fixture content
-        foreach(Content::find()->all() as $content) {
+        foreach (Content::find()->all() as $content) {
             $content->delete();
         }
 
-        $this->space =  Space::findOne(['id' => 1]);
+        $this->space = Space::findOne(['id' => 1]);
     }
 
     /**
@@ -34,14 +34,14 @@ class StreamQueryTest extends HumHubDbTestCase
      * @return Post
      * @throws Exception
      */
-    protected function createPost($text, $streamSort = null )
+    protected function createPost($text, $streamSort = null)
     {
         $this->becomeUser('Admin');
 
         $post = new Post(['message' => $text]);
         $post->save();
 
-        if($streamSort) {
+        if ($streamSort) {
             $post->content->updateAttributes(['stream_sort_date' => $streamSort]);
         }
 

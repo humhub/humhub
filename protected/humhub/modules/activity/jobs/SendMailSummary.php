@@ -23,7 +23,6 @@ use Yii;
  */
 class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterface
 {
-
     /**
      * @var int the interval
      */

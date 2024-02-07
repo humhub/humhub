@@ -29,7 +29,6 @@ use yii\web\UploadedFile;
  */
 class UploadAction extends Action
 {
-
     /**
      * The record to whom this files belongs to.
      * Optional, since "free" files can also attached to a record later.

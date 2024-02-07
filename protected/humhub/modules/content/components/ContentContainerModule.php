@@ -24,7 +24,6 @@ use humhub\modules\content\models\ContentContainerPermission;
  */
 class ContentContainerModule extends Module
 {
-
     /**
      * @inheritdoc
      */
@@ -33,7 +32,7 @@ class ContentContainerModule extends Module
         // disable in content containers
         $contentContainerQuery = ContentContainerModuleManager::getContentContainerQueryByModule($this->id);
         foreach ($contentContainerQuery->all() as $contentContainer) {
-            /* @var $contentContainer \humhub\modules\content\models\ContentContainer */
+            /* @var $contentContainer ContentContainer */
             $this->disableContentContainer($contentContainer->getPolymorphicRelation());
         }
 

@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140930_205511_fix_default extends Migration
 {
-
     public function up()
     {
         $this->alterColumn('activity', 'module', "varchar(100) DEFAULT ''");

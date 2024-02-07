@@ -1,16 +1,18 @@
 <?php
 
 use humhub\libs\LogoImage;
+use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $model DesignSettingsForm */
 
-\humhub\modules\admin\assets\AdminAsset::register($this);
+AdminAsset::register($this);
 
 $this->registerJsConfig('admin', [
     'text' => [
@@ -62,7 +64,7 @@ $iconUrl = SiteIcon::getUrl(140);
         '' => Yii::t('AdminModule.settings', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
-    ?>
+?>
     <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
     <br>
     <br>
@@ -82,8 +84,8 @@ $iconUrl = SiteIcon::getUrl(140);
                 <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
-                    ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
-                    ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+                ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
+                ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -99,8 +101,8 @@ $iconUrl = SiteIcon::getUrl(140);
                 <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
-                    ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
-                    ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+                ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
+                ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -108,6 +110,6 @@ $iconUrl = SiteIcon::getUrl(140);
     <hr>
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-    <?= \humhub\widgets\DataSaved::widget(); ?>
+    <?= DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
 </div>

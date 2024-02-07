@@ -13,7 +13,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**
  * ModuleCard shows a card with module data of Content Container
- * 
+ *
  * @since 1.15
  * @author Luke
  */

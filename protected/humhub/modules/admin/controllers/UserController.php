@@ -26,8 +26,10 @@ use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
 use yii\db\Query;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * User management
@@ -374,10 +376,10 @@ class UserController extends Controller
     /**
      * Export user list as csv or xlsx
      * @param string $format supported format by phpspreadsheet
-     * @return \yii\web\Response
+     * @return Response
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionExport($format)
     {

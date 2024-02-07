@@ -13,8 +13,10 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\services\AuthClientUserService;
+use Throwable;
 use Yii;
 use yii\authclient\ClientInterface;
+use yii\base\InvalidConfigException;
 
 /**
  * Description of User
@@ -101,8 +103,8 @@ class User extends \yii\web\User
      * @param string|string[]|BasePermission $permission
      *
      * @return boolean
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Throwable
+     * @throws InvalidConfigException
+     * @throws Throwable
      * @since 1.2
      * @see PermissionManager::can()
      */
@@ -113,7 +115,7 @@ class User extends \yii\web\User
 
     /**
      * @return PermissionManager instance with the related identity instance as permission subject.
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getPermissionManager()
     {
@@ -179,8 +181,8 @@ class User extends \yii\web\User
     }
 
     /**
-     * @deprecated since 1.14
      * @return boolean
+     * @deprecated since 1.14
      */
     public function canDeleteAccount()
     {

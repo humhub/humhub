@@ -18,7 +18,6 @@ use humhub\modules\user\widgets\Image as UserImage;
  */
 class ImageColumn extends BaseColumn
 {
-
     /**
      * @inheritdoc
      */

@@ -131,7 +131,7 @@ class Followable extends Behavior
         if ($userId instanceof User) {
             $userId = $userId->id;
         } elseif (!$userId || $userId == "") {
-            $userId = \Yii::$app->user->id;
+            $userId = Yii::$app->user->id;
         }
 
         if (!isset($this->_followerCache[$userId])) {
@@ -190,8 +190,11 @@ class Followable extends Behavior
      */
     public function getFollowingQuery($query)
     {
-        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-            ['object_model' => get_class($this->owner)]);
+        $query->leftJoin(
+            'user_follow',
+            'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
+            ['object_model' => get_class($this->owner)]
+        );
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
         return $query;
     }

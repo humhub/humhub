@@ -1,20 +1,22 @@
 <?php
 
+use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use \humhub\modules\comment\models\Comment;
+use humhub\modules\comment\models\Comment;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $objectModel string */
 /* @var $objectId integer */
 /* @var $id string unique object id */
 /* @var $commentCount integer */
 /* @var $mode string */
 /* @var $isNestedComment boolean */
-/* @var $comment \humhub\modules\comment\models\Comment */
-/* @var $module \humhub\modules\comment\Module */
+/* @var $comment Comment */
+/* @var $module Module */
 
 $hasComments = ($commentCount > 0);
 $commentCountSpan = Html::tag('span', ' (' . $commentCount . ')', [
@@ -35,9 +37,10 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     <?= Html::a(
         $label . $commentCountSpan,
         Yii::$app->user->loginUrl,
-        ['data-target' => '#globalModal']) ?>
+        ['data-target' => '#globalModal']
+    ) ?>
 <?php else : ?>
     <?= Button::asLink($label . $commentCountSpan)
-        ->action('comment.toggleComment', null, '#comment_' . $id) ?>
+            ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
 

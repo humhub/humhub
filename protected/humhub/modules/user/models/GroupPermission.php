@@ -1,8 +1,9 @@
 <?php
 
 namespace humhub\modules\user\models;
-use humhub\libs\BasePermission;
 
+use humhub\libs\BasePermission;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "group_permission".
@@ -13,7 +14,7 @@ use humhub\libs\BasePermission;
  * @property string $class
  * @property integer $state
  */
-class GroupPermission extends \yii\db\ActiveRecord
+class GroupPermission extends ActiveRecord
 {
     /**
      * @inheritdoc

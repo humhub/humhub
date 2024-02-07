@@ -25,7 +25,6 @@ use humhub\components\Event;
  */
 class Events extends BaseObject
 {
-
     /**
      * On rebuild of the search index, rebuild all space records
      *

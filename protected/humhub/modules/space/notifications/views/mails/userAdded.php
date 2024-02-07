@@ -14,11 +14,17 @@
 /* @var $isNew boolean */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
-/* @var $record \humhub\modules\notification\models\Notification */
+/* @var $record Notification */
 /* @var $html string */
 /* @var $text string */
+
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\notification\models\Notification;
+use humhub\widgets\mails\MailButtonList;
+use humhub\widgets\mails\MailContentContainerInfoBox;
+
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
@@ -34,7 +40,7 @@
         </tr>
         <tr>
             <td style="border-top: 1px solid #eee;padding-top:10px;">
-                <?= \humhub\widgets\mails\MailContentContainerInfoBox::widget(['container' => $space])?>
+                <?= MailContentContainerInfoBox::widget(['container' => $space]) ?>
             </td>
         </tr>
         <tr>
@@ -44,11 +50,11 @@
             <td>
                 <?=
 
-                \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
+                MailButtonList::widget(['buttons' => [
                     humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
 
-                ?>
+?>
             </td>
         </tr>
     </table>

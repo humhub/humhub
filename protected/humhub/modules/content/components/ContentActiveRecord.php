@@ -249,7 +249,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @param array $labels
      * @param bool $includeContentName
-     * @return Label[]|\string[] content labels used for example in wallentrywidget
+     * @return Label[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
     public function getLabels($labels = [], $includeContentName = true)
@@ -609,7 +609,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Related Content model
      *
-     * @return \yii\db\ActiveQuery|ActiveQueryContent
+     * @return ActiveQuery|ActiveQueryContent
      */
     public function getContent()
     {

@@ -22,7 +22,6 @@ use yii\queue\db\Queue;
  */
 class MySQL extends Queue implements QueueInfoInterface
 {
-
     /**
      * @inheritdoc
      */

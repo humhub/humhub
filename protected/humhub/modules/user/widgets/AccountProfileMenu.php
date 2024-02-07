@@ -17,7 +17,6 @@ use humhub\modules\ui\menu\widgets\TabMenu;
  */
 class AccountProfileMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      */

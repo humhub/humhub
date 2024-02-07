@@ -20,7 +20,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -204,7 +203,7 @@ class Module extends \humhub\components\Module
                 new permissions\ViewAboutPage(),
             ];
 
-            if(Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
+            if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
                 $permissions[] = new permissions\CanMention();
             }
 
@@ -306,7 +305,7 @@ class Module extends \humhub\components\Module
      */
     public function allowBlockUsers(): bool
     {
-        return (bool) $this->settings->get('auth.blockUsers', true);
+        return (bool)$this->settings->get('auth.blockUsers', true);
     }
 
     /**
@@ -317,11 +316,11 @@ class Module extends \humhub\components\Module
      */
     public function canMention($object)
     {
-//        $content = $object->content;
+        //        $content = $object->content;
 
-//        if(!isset($content->container)) {
-//            return false;
-//        }
+        //        if(!isset($content->container)) {
+        //            return false;
+        //        }
 
         if ($object->permissionManager->can(CanMention::class)) {
             return true;

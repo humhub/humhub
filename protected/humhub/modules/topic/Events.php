@@ -52,7 +52,7 @@ class Events extends BaseObject
      */
     public static function onProfileSettingMenuInit($event)
     {
-        if(Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return;
         }
 
@@ -63,7 +63,7 @@ class Events extends BaseObject
             'sortOrder' => 250
         ]);
 
-        if(MenuLink::isActiveState('topic', 'manage')) {
+        if (MenuLink::isActiveState('topic', 'manage')) {
             AccountMenu::markAsActive('account-settings-settings');
         }
     }

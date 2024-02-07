@@ -18,7 +18,6 @@ use yii\helpers\Url;
  */
 class Comment extends Widget
 {
-
     /**
      * @var \humhub\modules\comment\models\Comment the comment
      */

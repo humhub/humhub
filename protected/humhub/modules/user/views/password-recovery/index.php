@@ -38,7 +38,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                         'captchaAction' => '/user/auth/captcha',
                         'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
                     ])->label(false);
-                    ?>
+?>
                 </div>
 
                 <hr>

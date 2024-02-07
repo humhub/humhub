@@ -41,6 +41,7 @@ use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
@@ -530,7 +531,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      *
      * @return boolean
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function canPin(): bool
     {
@@ -715,7 +716,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
      * @throws IntegrityException
      * @throws Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
     {
@@ -877,7 +878,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @throws Exception
      * @throws IntegrityException
      * @throws Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.1
      */
     public function canEdit($user = null): bool
@@ -958,7 +959,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @param bool $allowCaching
      * @return bool
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @see PermissionManager::can()
      * @since 1.2.1
      */
@@ -1056,7 +1057,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * @returns \humhub\modules\content\models\Content content instance of this content owner
+     * @returns Content content instance of this content owner
      */
     public function getContent()
     {

@@ -26,7 +26,6 @@ use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
-
 /**
  * This is the model class for table "comment".
  *
@@ -44,8 +43,8 @@ use yii\helpers\Url;
  */
 class Comment extends ContentAddonActiveRecord
 {
-    const CACHE_KEY_COUNT = 'commentCount_%s_%s';
-    const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
+    public const CACHE_KEY_COUNT = 'commentCount_%s_%s';
+    public const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
 
     /**
      * @inheritdoc
@@ -193,7 +192,7 @@ class Comment extends ContentAddonActiveRecord
     /**
      * Returns the commented record e.g. a Post
      *
-     * @return \humhub\modules\content\components\ContentActiveRecord
+     * @return ContentActiveRecord
      */
     public function getCommentedRecord()
     {

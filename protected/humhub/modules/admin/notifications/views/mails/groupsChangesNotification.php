@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $viewable humhub\modules\user\notifications\Followed */
 /* @var $url string */
 /* @var $date string */
@@ -13,11 +13,18 @@
 /* @var $isNew boolean */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
-/* @var $record \humhub\modules\notification\models\Notification */
+/* @var $record Notification */
 /* @var $html string */
+
 /* @var $text string */
+
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\notification\models\Notification;
+use humhub\modules\ui\view\components\View;
+use humhub\widgets\mails\MailButtonList;
+
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
@@ -33,16 +40,18 @@
         <tr>
             <td>
                 <?=
-                \humhub\widgets\mails\MailButtonList::widget([
+                MailButtonList::widget([
                     'buttons' => [
                         humhub\widgets\mails\MailButton::widget([
                             'url' => $url,
-                            'text' => Yii::t('SpaceModule.notification',
-                                'View Online'),
+                            'text' => Yii::t(
+                                'SpaceModule.notification',
+                                'View Online'
+                            ),
                         ]),
                     ],
                 ]);
-                ?>
+?>
             </td>
         </tr>
     </table>

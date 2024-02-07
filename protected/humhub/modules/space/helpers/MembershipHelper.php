@@ -21,10 +21,9 @@ use humhub\modules\space\models\Space;
  */
 class MembershipHelper
 {
-
     /**
      * Returns an array of spaces where the given user is owner.
-     * 
+     *
      * @param User|null $user the user or null for current user
      * @param boolean $useCache use cached result if available
      * @return Space[] the list of spaces

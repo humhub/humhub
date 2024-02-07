@@ -1,8 +1,6 @@
 <?php
 
-
 namespace modules\content\tests\codeception\_support;
-
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\tests\codeception\unit\TestContent;

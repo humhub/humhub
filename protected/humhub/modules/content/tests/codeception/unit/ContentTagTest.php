@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\content\tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
@@ -190,7 +191,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             (new ContentTagService($content))->addTag($tag);
             $this->assertTrue(false);
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertTrue(true);
         }
 
@@ -200,7 +201,7 @@ class ContentTagTest extends HumHubDbTestCase
         try {
             (new ContentTagService($content))->addTag($tag);
             $this->assertTrue(false);
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $this->assertTrue(true);
         }
 
@@ -243,7 +244,7 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $container = (!$container) ? $this->space : $container;
 
-        if(!$container) {
+        if (!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
         }
 
@@ -255,7 +256,7 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $container = (!$container) ? $this->space : $container;
 
-        if(!$container) {
+        if (!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
         }
 
@@ -267,7 +268,7 @@ class ContentTagTest extends HumHubDbTestCase
     {
         $container = (!$container) ? $this->space : $container;
 
-        if(!$container) {
+        if (!$container) {
             $container = $this->space = Space::findOne(['id' => 3]);
         }
 

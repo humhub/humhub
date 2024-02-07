@@ -14,7 +14,7 @@ class m200729_080349_commentIndex_fix_order extends Migration
     {
         try {
             $this->dropIndex('idx_comment_target', 'comment');
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             // May not exist, see migration m200715_184207_commentIndex
         }
 

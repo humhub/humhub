@@ -22,7 +22,6 @@ use Yii;
  */
 class ModuleActionButtons extends Widget
 {
-
     /**
      * @var Module
      */

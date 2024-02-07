@@ -4,14 +4,17 @@ use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 
 /* @var BasicSettingsForm $model */
 
 $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
     'maintenanceMode.header' => Yii::t('AdminModule.settings', '<strong>Maintenance</strong> Mode'),
-    'maintenanceMode.question.enable' => Yii::t('AdminModule.settings',
-            'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>') .
+    'maintenanceMode.question.enable' => Yii::t(
+        'AdminModule.settings',
+        'Activate maintenance mode and disable access to the platform for non-admin users?<br><br>'
+    ) .
         '<div class="alert alert-danger">' .
         Yii::t('AdminModule.settings', '<strong>Warning:</strong> All users will be immediately logged out, except admins.') .
         '</div>',
@@ -67,7 +70,7 @@ AdminAsset::register($this);
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <!-- show flash message after saving -->
-    <?php \humhub\widgets\DataSaved::widget(); ?>
+    <?php DataSaved::widget(); ?>
 
     <?php ActiveForm::end(); ?>
 </div>

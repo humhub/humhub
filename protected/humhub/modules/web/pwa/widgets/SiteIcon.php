@@ -18,7 +18,6 @@ use yii\base\Exception;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
-
 /**
  * Class SiteIcon handles icons of the installation.
  * Those icons will be used to represent the application in components such as mobile apps, bookmarks, etc.
@@ -56,7 +55,7 @@ class SiteIcon extends Widget
     public static function getUrl($size, $autoResize = true)
     {
         $manualUploadedFile = Yii::getAlias('@webroot/uploads/icon/' . static::buildFileName($size));
-        if(file_exists($manualUploadedFile)) {
+        if (file_exists($manualUploadedFile)) {
             return Yii::getAlias('@web/uploads/icon/' . static::buildFileName($size)) . '?v=' . filemtime($manualUploadedFile);
         }
 

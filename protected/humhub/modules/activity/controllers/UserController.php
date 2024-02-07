@@ -22,7 +22,6 @@ use yii\web\NotFoundHttpException;
  */
 class UserController extends BaseAccountController
 {
-
     /**
      * @return string
      * @throws NotFoundHttpException

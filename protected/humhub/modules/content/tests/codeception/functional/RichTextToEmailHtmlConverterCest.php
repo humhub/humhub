@@ -16,7 +16,6 @@ use yii\symfonymailer\Message;
 
 class RichTextToEmailHtmlConverterCest
 {
-
     public function testSendEmailWithImageAndLink(FunctionalTester $I)
     {
         $I->wantTo('see image and link in email message');

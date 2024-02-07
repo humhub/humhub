@@ -6,11 +6,11 @@ coverage:
     enabled: true
     remote: false
     include:
-    - ../actions/*
-    - ../helpers/*
-    - ../models/*
-    - ../widgets/*
-    - ../Module.php
+        - ../actions/*
+        - ../helpers/*
+        - ../models/*
+        - ../widgets/*
+        - ../Module.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true

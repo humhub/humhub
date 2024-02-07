@@ -13,7 +13,6 @@ use Yii;
 use yii\db\Query;
 use yii\queue\db\Queue;
 
-
 /**
  * IncompleteSetupWarning shows a snippet in the dashboard
  * if problems of the HumHub setup were found.
@@ -22,9 +21,8 @@ use yii\queue\db\Queue;
  */
 class IncompleteSetupWarning extends Widget
 {
-
-    const PROBLEM_QUEUE_RUNNER = 'queue-runner';
-    const PROBLEM_CRON_JOBS = 'cron-jobs';
+    public const PROBLEM_QUEUE_RUNNER = 'queue-runner';
+    public const PROBLEM_CRON_JOBS = 'cron-jobs';
 
 
     /**

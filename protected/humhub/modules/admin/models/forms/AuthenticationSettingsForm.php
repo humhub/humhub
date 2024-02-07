@@ -12,13 +12,14 @@ use humhub\libs\DynamicConfig;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\base\Model;
 
 /**
  * AuthenticationSettingsForm
  *
  * @since 0.5
  */
-class AuthenticationSettingsForm extends \yii\base\Model
+class AuthenticationSettingsForm extends Model
 {
     public $internalAllowAnonymousRegistration;
     public $internalRequireApprovalAfterRegistration;

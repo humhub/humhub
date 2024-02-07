@@ -1,13 +1,12 @@
 <?php
 
-
 namespace humhub\modules\stream\actions;
-
 
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\StreamSuppressQuery;
 use Yii;
 use yii\base\Exception;
+use yii\web\Response;
 
 /**
  * This class is used to build up a stream array or json response used in stream actions.
@@ -73,20 +72,20 @@ class StreamResponse
      */
     public function addEntry($entry, $injectIndex = false)
     {
-        if($entry instanceof StreamEntryResponse) {
+        if ($entry instanceof StreamEntryResponse) {
             $entry = $entry->asArray();
         }
 
         $entryId = $entry['id'];
         $this->entries[$entryId] = $entry;
 
-        if(is_int($injectIndex)) {
-            array_splice( $this->entryOrder, $injectIndex, 0, $entryId );
+        if (is_int($injectIndex)) {
+            array_splice($this->entryOrder, $injectIndex, 0, $entryId);
         } else {
             $this->entryOrder[] = $entryId;
         }
 
-        if($injectIndex === false) {
+        if ($injectIndex === false) {
             $this->lastContentId = $entry['id'];
         }
     }
@@ -137,7 +136,7 @@ class StreamResponse
 
     /**
      * Returns the stream action result as json response.
-     * @return \yii\web\Response
+     * @return Response
      * @throws Exception
      */
     public function asJson()

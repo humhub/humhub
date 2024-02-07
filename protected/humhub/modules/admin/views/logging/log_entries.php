@@ -46,11 +46,11 @@ use yii\log\Logger;
                             $labelClass = 'label-danger';
                             $levelName = Yii::t('AdminModule.information', 'Error');
                     }
-                    ?>
+            ?>
 
                     <h4 class="media-heading">
                         <span class="label <?= $labelClass; ?>"><?= Html::encode($levelName) ?></span>&nbsp;
-                        <?= date('r', (int) $entry->log_time) ?>&nbsp;
+                        <?= date('r', (int)$entry->log_time) ?>&nbsp;
                         <span class="pull-right"><?= Html::encode($entry->category) ?></span>
                     </h4>
                     <div data-ui-show-more data-collapse-at="150">

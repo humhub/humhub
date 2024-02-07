@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140829_122906_delete extends Migration
 {
-
     public function up()
     {
         $this->delete('user', ['status' => 3]);

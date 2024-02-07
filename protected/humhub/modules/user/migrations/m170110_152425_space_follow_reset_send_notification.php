@@ -1,13 +1,14 @@
 <?php
 
 use humhub\components\Migration;
+use humhub\modules\space\models\Space;
 
 class m170110_152425_space_follow_reset_send_notification extends Migration
 {
     public function up()
     {
         // Reset space notification sending in order to enable the new notification system, this was not in use for spaces and users before.
-        $this->updateSilent('user_follow', ['send_notifications' => 0], ['object_model' => \humhub\modules\space\models\Space::class]);
+        $this->updateSilent('user_follow', ['send_notifications' => 0], ['object_model' => Space::class]);
         $this->updateSilent('user_follow', ['send_notifications' => 0], ['object_model' => \humhub\modules\user\models\User::class]);
     }
 

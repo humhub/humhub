@@ -24,7 +24,6 @@ use yii\base\Exception;
  */
 class Menu extends LeftNavigation
 {
-
     /** @var Space */
     public $space;
 

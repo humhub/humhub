@@ -10,7 +10,6 @@ use humhub\modules\user\models\User;
 
 class FriendshipTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     /**

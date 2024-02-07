@@ -23,7 +23,6 @@ use humhub\modules\admin\libs\HumHubAPI;
  */
 class NewVersionAvailable extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -52,7 +51,7 @@ class NewVersionAvailable extends BaseNotification
      */
     public function category()
     {
-        return new AdminNotificationCategory;
+        return new AdminNotificationCategory();
     }
 
     /**
@@ -72,5 +71,3 @@ class NewVersionAvailable extends BaseNotification
     }
 
 }
-
-?>

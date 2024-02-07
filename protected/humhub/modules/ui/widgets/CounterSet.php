@@ -7,6 +7,7 @@
 
 namespace humhub\modules\ui\widgets;
 
+use humhub\components\Widget;
 
 /**
  * Class CounterSet
@@ -14,7 +15,7 @@ namespace humhub\modules\ui\widgets;
  * @since 1.3
  * @package humhub\modules\ui\widgets
  */
-class CounterSet extends \humhub\components\Widget
+class CounterSet extends Widget
 {
     /**
      * @var CounterSetItem[]

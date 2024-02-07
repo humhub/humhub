@@ -2,6 +2,7 @@
 
 use humhub\libs\Html;
 use humhub\modules\tour\assets\TourAsset;
+use humhub\widgets\PanelMenu;
 use yii\helpers\Url;
 
 TourAsset::register($this);
@@ -14,7 +15,8 @@ TourAsset::register($this);
         'li',
         Html::a(
             Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
-            Url::to(["/tour/tour/hide-panel", "ajax" => 1]), [
+            Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
+            [
                 'data' => [
                     'action-click' => 'tour.hidePanel',
                     'action-confirm-header' => Html::tag('i', '', ['class' => ['fa', 'fa-eye-slash']]) . Yii::t('TourModule.base', ' Remove panel'),
@@ -26,10 +28,10 @@ TourAsset::register($this);
         )
     );
 
-    ?>
+?>
 
     <!-- Display panel menu widget -->
-    <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml]); ?>
+    <?php echo PanelMenu::widget(['id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml]); ?>
 
     <div class="panel-heading">
         <?php echo Yii::t('TourModule.base', '<strong>Getting</strong> Started'); ?>
@@ -46,12 +48,14 @@ TourAsset::register($this);
                 </a>
             </li>
             <li class="<?php if ($spaces == 1) : ?>completed<?php endif; ?>">
-                <a id="interface-tour-link" href="<?php echo Url::to(['/tour/tour/start-space-tour']); ?>" data-pjax-prevent>
+                <a id="interface-tour-link" href="<?php echo Url::to(['/tour/tour/start-space-tour']); ?>"
+                   data-pjax-prevent>
                     <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.base', '<strong>Guide:</strong> Spaces'); ?>
                 </a>
             </li>
             <li class="<?php if ($profile == 1) : ?>completed<?php endif; ?>">
-                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile/home', ['tour' => 'true']); ?>" data-pjax-prevent>
+                <a href="<?php echo Yii::$app->user->getIdentity()->createUrl('//user/profile/home', ['tour' => 'true']); ?>"
+                   data-pjax-prevent>
                     <i class="fa fa-play-circle-o"></i><?php echo Yii::t('TourModule.base', '<strong>Guide:</strong> User profile'); ?>
                 </a>
             </li>
@@ -69,7 +73,7 @@ TourAsset::register($this);
 <?php if ($showWelcome): ?>
     <script <?= Html::nonce() ?>>
         $(document).on('humhub:ready', function () {
-            humhub.modules.ui.modal.global.load( "<?= Url::to(['/tour/tour/welcome']) ?>");
+            humhub.modules.ui.modal.global.load("<?= Url::to(['/tour/tour/welcome']) ?>");
         });
     </script>
 <?php endif; ?>

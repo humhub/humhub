@@ -40,11 +40,11 @@ use yii\helpers\Url;
  */
 class AbstractRichTextEditor extends JsInputWidget
 {
-    const LAYOUT_BLOCK = 'block';
+    public const LAYOUT_BLOCK = 'block';
 
-    const LAYOUT_INLINE = 'inline';
+    public const LAYOUT_INLINE = 'inline';
 
-    const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
+    public const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
 
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'

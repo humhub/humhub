@@ -3,15 +3,15 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * LogsSettingsForm
  *
  * @since 1.2
  */
-class LogsSettingsForm extends \yii\base\Model
+class LogsSettingsForm extends Model
 {
-
     public $logsDateLimit;
 
     /**

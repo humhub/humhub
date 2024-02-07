@@ -8,8 +8,9 @@
 
 use humhub\libs\Html;
 use humhub\modules\admin\widgets\IncompleteSetupWarning;
+use humhub\modules\ui\view\components\View;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $problems array */
 
 ?>
@@ -29,7 +30,7 @@ use humhub\modules\admin\widgets\IncompleteSetupWarning;
                 </li>
             <?php endif; ?>
         </ul>
-        <br />
+        <br/>
         <?php if (Yii::$app->user->isAdmin()): ?>
             <?= Html::a(Yii::t('AdminModule.base', 'Open documentation'), 'https://docs.humhub.org/docs/admin/cron-jobs', ['class' => 'btn btn-danger', 'target' => '_blank']); ?>
         <?php endif; ?>

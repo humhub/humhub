@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m150322_194403_remove_type_field extends Migration
 {
-
     public function up()
     {
         $this->dropColumn('wall', 'type');

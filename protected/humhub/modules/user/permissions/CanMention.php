@@ -8,15 +8,15 @@
 
 namespace humhub\modules\user\permissions;
 
+use humhub\libs\BasePermission;
 use Yii;
 use humhub\modules\user\models\User;
 
 /**
  * Can Mention Permission
  */
-class CanMention extends \humhub\libs\BasePermission
+class CanMention extends BasePermission
 {
-
     /**
      * @inheritdoc
      */
@@ -44,8 +44,8 @@ class CanMention extends \humhub\libs\BasePermission
     public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->title = \Yii::t('UserModule.base', 'Mentioning');
-        $this->description = \Yii::t('UserModule.base', 'Allow users to mention you');
+        $this->title = Yii::t('UserModule.base', 'Mentioning');
+        $this->description = Yii::t('UserModule.base', 'Allow users to mention you');
     }
 
     /**

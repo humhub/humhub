@@ -54,7 +54,7 @@ use humhub\libs\Html;
 </div>
 
 <script <?= Html::nonce() ?>>
-    $('#space-visibility').on('change', function() {
+    $('#space-visibility').on('change', function () {
         if (this.value == 0) {
             $('#space-join_policy, #space-default_content_visibility').val('0').prop('disabled', true);
         } else {

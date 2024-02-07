@@ -12,18 +12,19 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
+use yii\base\BaseObject;
 use yii\base\Event;
 use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\file\converter\TextConverter;
+use yii\helpers\Console;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * On init of the WallEntryAddonWidget, attach the files of the content.
      *
@@ -53,7 +54,7 @@ class Events extends \yii\base\BaseObject
             $file->delete();
         }
 
-        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
     }
 
     /**
@@ -104,9 +105,9 @@ class Events extends \yii\base\BaseObject
 
     /**
      * Handles the SearchAttributesEvent and adds related files
-     * 
-     * @since 1.2.3
+     *
      * @param SearchAttributesEvent $event
+     * @since 1.2.3
      */
     public static function onSearchAttributes(SearchAttributesEvent $event)
     {

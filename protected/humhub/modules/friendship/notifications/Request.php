@@ -19,7 +19,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class Request extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -48,7 +47,7 @@ class Request extends BaseNotification
      */
     public function category()
     {
-        return new FriendshipNotificationCategory;
+        return new FriendshipNotificationCategory();
     }
 
     /**

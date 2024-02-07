@@ -7,7 +7,6 @@
 
 namespace humhub\modules\ui;
 
-
 /**
  * Event Handling Callbacks
  *
@@ -15,5 +14,4 @@ namespace humhub\modules\ui;
  */
 class Events
 {
-
 }

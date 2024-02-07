@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\widgets\WallCreateContentMenu;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -8,7 +9,7 @@ use humhub\modules\space\models\Space;
 
 /* @var $wallCreateContentForm WallCreateContentForm */
 /* @var $defaultVisibility integer */
-/* @var $contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $contentContainer ContentContainerActiveRecord */
 
 ContentFormAsset::register($this);
 
@@ -24,13 +25,14 @@ $this->registerJsConfig('content.form', [
 ?>
 
 <?php if (WallCreateContentMenu::canCreateEntry($contentContainer, 'form')) : ?>
-<div class="panel panel-default clearfix">
-    <div class="panel-body" id="contentFormBody" style="display:none;" data-action-component="content.form.CreateForm" >
-        <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
+    <div class="panel panel-default clearfix">
+        <div class="panel-body" id="contentFormBody" style="display:none;"
+             data-action-component="content.form.CreateForm">
+            <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-        <?= $wallCreateContentForm->renderActiveForm($form) ?>
+            <?= $wallCreateContentForm->renderActiveForm($form) ?>
 
-        <?php ActiveForm::end(); ?>
-    </div><!-- /panel body -->
-</div><!-- /panel -->
+            <?php ActiveForm::end(); ?>
+        </div><!-- /panel body -->
+    </div><!-- /panel -->
 <?php endif; ?>

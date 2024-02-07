@@ -11,7 +11,6 @@ use Yii;
  */
 class SpaceChooserItem extends Widget
 {
-
     /**
      * @var string
      */

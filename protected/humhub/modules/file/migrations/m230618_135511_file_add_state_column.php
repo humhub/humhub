@@ -32,9 +32,9 @@ class m230618_135511_file_add_state_column extends Migration
             $this->table,
             'state',
             $this->tinyInteger()
-                 ->defaultValue(File::STATE_PUBLISHED)
-                 ->notNull()
-                 ->after('guid')
+                ->defaultValue(File::STATE_PUBLISHED)
+                ->notNull()
+                ->after('guid')
         );
     }
 }

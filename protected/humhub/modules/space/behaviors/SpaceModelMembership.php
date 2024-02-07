@@ -24,9 +24,11 @@ use humhub\modules\space\notifications\InviteRevoked;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\validators\EmailValidator;
 
 /**
@@ -37,7 +39,6 @@ use yii\validators\EmailValidator;
  */
 class SpaceModelMembership extends Behavior
 {
-
     private $_spaceOwner = null;
 
     /**
@@ -230,7 +231,7 @@ class SpaceModelMembership extends Behavior
     public function inviteMemberByEMail($email, $originatorUserId)
     {
         // Invalid E-Mail
-        $validator = new EmailValidator;
+        $validator = new EmailValidator();
         if (!$validator->validate($email)) {
             return false;
         }
@@ -334,6 +335,7 @@ class SpaceModelMembership extends Behavior
                 case Membership::STATUS_APPLICANT:
                     // If user is an applicant of this space add user and return.
                     $this->addMember($userId);
+                    // no break
                 case Membership::STATUS_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
@@ -392,8 +394,8 @@ class SpaceModelMembership extends Behavior
      * @param bool $showAtDashboard add member without any notifications
      * @param string $groupId
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function addMember(
         int    $userId,
@@ -401,8 +403,7 @@ class SpaceModelMembership extends Behavior
         bool   $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
         bool   $showAtDashboard = true
-    ): bool
-    {
+    ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
             return false;
@@ -484,8 +485,8 @@ class SpaceModelMembership extends Behavior
      *
      * @param integer|null $userId of User to Remove
      * @return bool
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Throwable
+     * @throws InvalidConfigException
+     * @throws Throwable
      */
     public function removeMember($userId = null)
     {
@@ -521,8 +522,8 @@ class SpaceModelMembership extends Behavior
      * @param Membership $membership
      * @param User $user
      * @throws Exception
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     private function handleRemoveMembershipEvent(Membership $membership, User $user)
     {
@@ -552,8 +553,11 @@ class SpaceModelMembership extends Behavior
             MemberRemoved::instance()->about($this->owner)->from($user)->create();
         }
 
-        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED,
-            new MemberEvent(['space' => $this->owner, 'user' => $user]));
+        MemberEvent::trigger(
+            Membership::class,
+            Membership::EVENT_MEMBER_REMOVED,
+            new MemberEvent(['space' => $this->owner, 'user' => $user])
+        );
     }
 
     /**
@@ -562,13 +566,13 @@ class SpaceModelMembership extends Behavior
      *
      * @param Membership $membership
      * @param User $user
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     private function handleCancelInvitationEvent(Membership $membership, User $user)
     {
         if ($membership->originator && $membership->isCurrentUser()) {
             InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
-        } else if (Yii::$app->user->identity) {
+        } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }
     }
@@ -579,7 +583,7 @@ class SpaceModelMembership extends Behavior
      *
      * @param Membership $membership
      * @param User $user
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     private function handleCancelApplicantEvent(Membership $membership, User $user)
     {

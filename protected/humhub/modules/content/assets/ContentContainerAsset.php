@@ -18,7 +18,6 @@ use humhub\components\assets\AssetBundle;
  */
 class ContentContainerAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

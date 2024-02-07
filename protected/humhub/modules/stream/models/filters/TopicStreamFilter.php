@@ -8,13 +8,12 @@
 
 namespace humhub\modules\stream\models\filters;
 
-
 use yii\db\Expression;
 use yii\db\Query;
 
 class TopicStreamFilter extends StreamQueryFilter
 {
-    const CATEGORY = 'topics';
+    public const CATEGORY = 'topics';
 
     /**
      * Array of active topic filters.
@@ -35,14 +34,14 @@ class TopicStreamFilter extends StreamQueryFilter
 
     public function apply()
     {
-        if(empty($this->topics)) {
+        if (empty($this->topics)) {
             return;
         }
 
-        $subQuery = (new Query)->select(['count(*)'])
+        $subQuery = (new Query())->select(['count(*)'])
             ->from('content_tag_relation')
             ->where(['and', 'content_tag_relation.content_id = content.id', ['in', 'content_tag_relation.tag_id', $this->topics]]);
 
-        $this->query->andWhere( ['=', new Expression('('.count($this->topics).')'), $subQuery]);
+        $this->query->andWhere(['=', new Expression('(' . count($this->topics) . ')'), $subQuery]);
     }
 }

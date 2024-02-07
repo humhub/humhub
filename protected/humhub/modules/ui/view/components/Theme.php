@@ -194,7 +194,8 @@ class Theme extends BaseTheme
         }
 
         $published = Yii::$app->assetManager->publish(
-            $this->getBasePath(), ['forceCopy' => $force, 'except' => ['views/']]
+            $this->getBasePath(),
+            ['forceCopy' => $force, 'except' => ['views/']]
         );
 
         return $published[1];
@@ -203,11 +204,11 @@ class Theme extends BaseTheme
     /**
      * Returns the value of a given theme variable
      *
-     * @since 1.2
-     *
      * @param string $key the variable name
      *
      * @return string the variable value
+     * @since 1.2
+     *
      */
     public function variable($key, $default = null)
     {
@@ -218,8 +219,8 @@ class Theme extends BaseTheme
      * Returns the base/parent themes of this theme.
      * The parent is specified in the LESS Variable file as variable "baseTheme".
      *
-     * @see ThemeVariables
      * @return Theme[] the theme parents
+     * @see ThemeVariables
      */
     public function getParents()
     {

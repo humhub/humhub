@@ -12,7 +12,6 @@ use humhub\modules\notification\components\NotificationCategory;
  */
 class MentionedNotificationCategory extends NotificationCategory
 {
-
     /**
      * @inheritdoc
      */

@@ -1,10 +1,12 @@
 <?php
 
+use humhub\libs\Html;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 ?>
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {

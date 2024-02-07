@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\content\models;
 
 use Yii;
@@ -11,6 +12,7 @@ use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\db\Expression;
+use yii\db\IntegrityException;
 
 /**
  * ContentTags are a concept to categorize content on module and ContentContainer level.
@@ -108,7 +110,7 @@ class ContentTag extends ActiveRecord
             parent::__construct([]);
         }
 
-        if(!empty($name)) {
+        if (!empty($name)) {
             $this->name = $name;
         }
     }
@@ -195,9 +197,9 @@ class ContentTag extends ActiveRecord
      */
     public function validate($attributeNames = null, $clearErrors = true)
     {
-        if($attributeNames === null || in_array('addition', $attributeNames)) {
+        if ($attributeNames === null || in_array('addition', $attributeNames)) {
             // the addition will only be validated if $tag->addition has been called
-            if($this->hasAddition() && !$this->addition->validate()) {
+            if ($this->hasAddition() && !$this->addition->validate()) {
                 return false;
             }
         }
@@ -207,7 +209,7 @@ class ContentTag extends ActiveRecord
 
     public function load($data, $formName = null)
     {
-        if($this->hasAddition()) {
+        if ($this->hasAddition()) {
             $this->addition->load($data);
         }
         return parent::load($data, $formName);
@@ -217,7 +219,7 @@ class ContentTag extends ActiveRecord
      * Returns the ContentContainer relation as ActiveQuery to this tag or null if this is a global tag.
      *
      * Note: In order to retrieve the actual Container (Space/User) use `getContainer()`.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getContentContainer()
     {
@@ -233,7 +235,7 @@ class ContentTag extends ActiveRecord
      * This function will cache the container instance once loaded.
      *
      * @return null|ContentContainerActiveRecord
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      */
     public function getContainer()
     {
@@ -256,7 +258,7 @@ class ContentTag extends ActiveRecord
     /**
      * Returns the parent tag relation.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getParent()
     {
@@ -268,7 +270,7 @@ class ContentTag extends ActiveRecord
     }
 
     /**
-     * @return ActiveRecord|\yii\db\ActiveQuery
+     * @return ActiveRecord|ActiveQuery
      */
     public function getAddition()
     {
@@ -299,7 +301,7 @@ class ContentTag extends ActiveRecord
 
     public function afterSave($insert, $changedAttributes)
     {
-        if($this->hasAddition()) {
+        if ($this->hasAddition()) {
             $this->addition->setTag($this);
             $this->addition->save();
         }
@@ -321,7 +323,7 @@ class ContentTag extends ActiveRecord
     /**
      * Finds instances and filters by module_id if a static module_id is given.
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public static function find()
     {
@@ -350,7 +352,7 @@ class ContentTag extends ActiveRecord
      */
     public static function findOne($condition)
     {
-        if(is_numeric($condition)) {
+        if (is_numeric($condition)) {
             return static::find()->andWhere(['id' => $condition])->one();
         } else {
             return static::find()->andWhere($condition)->one();
@@ -367,8 +369,8 @@ class ContentTag extends ActiveRecord
      */
     public static function typeQuery($query)
     {
-        $instance = new static;
-        if($instance->includeTypeQuery && static::class != ContentTag::class) {
+        $instance = new static();
+        if ($instance->includeTypeQuery && static::class != ContentTag::class) {
             $query->andWhere(['content_tag.type' => static::class]);
         }
 
@@ -383,7 +385,7 @@ class ContentTag extends ActiveRecord
      */
     public static function moduleQuery($query)
     {
-        $instance = new static;
+        $instance = new static();
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
         }
@@ -394,7 +396,7 @@ class ContentTag extends ActiveRecord
      * Finds ContentTag for the given $moduleId
      *
      * @param $moduleId
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public static function findByModule($moduleId)
     {
@@ -405,7 +407,7 @@ class ContentTag extends ActiveRecord
      * Finds instances by given $type.
      *
      * @param string $type
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public static function findByType($type)
     {
@@ -422,7 +424,7 @@ class ContentTag extends ActiveRecord
      */
     public static function findByName($name, $contentContainer = null)
     {
-        if($contentContainer) {
+        if ($contentContainer) {
             $query = static::findByContainer($contentContainer);
         } else {
             $query = static::find();
@@ -454,7 +456,7 @@ class ContentTag extends ActiveRecord
     {
         $query = $content->getTags(static::class);
         static::moduleQuery($query);
-        $instance = new static;
+        $instance = new static();
 
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
@@ -473,12 +475,12 @@ class ContentTag extends ActiveRecord
     {
         $query = $content->getTagRelations()->innerJoin('content_tag', 'content_tag_relation.tag_id = content_tag.id');
 
-        $instance = new static;
+        $instance = new static();
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
         }
 
-        if(!$includeGlobal) {
+        if (!$includeGlobal) {
             $query->andWhere(['IS NOT', 'content_tag.contentcontainer_id', new Expression('NULL')]);
         }
 
@@ -513,7 +515,7 @@ class ContentTag extends ActiveRecord
     {
         $instance = new static();
 
-        if($contentContainer) {
+        if ($contentContainer) {
             $container_id = $contentContainer instanceof ContentContainerActiveRecord ? $contentContainer->contentcontainer_id : $contentContainer;
             return static::deleteAll(['module_id' => $instance->module_id, 'contentcontainer_id' => $container_id]);
         } else {
@@ -530,7 +532,7 @@ class ContentTag extends ActiveRecord
     {
         $instance = new static();
 
-        if($contentContainer) {
+        if ($contentContainer) {
             $container_id = $contentContainer instanceof ContentContainerActiveRecord ? $contentContainer->contentcontainer_id : $contentContainer;
             return static::deleteAll(['type' => $instance->type, 'contentcontainer_id' => $container_id]);
         } else {
@@ -548,14 +550,14 @@ class ContentTag extends ActiveRecord
      */
     public static function deleteAll($condition = null, $params = [])
     {
-        if(static::class === ContentTag::class) {
+        if (static::class === ContentTag::class) {
             return parent::deleteAll($condition, $params);
         }
 
         $instance = new static();
-        if(empty($condition)) {
+        if (empty($condition)) {
             $condition = ['type' => $instance->type];
-        } else if(!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
+        } elseif (!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
             $condition['type'] = $instance->type;
         }
 
@@ -566,8 +568,8 @@ class ContentTag extends ActiveRecord
      * Searches for all content tags of this type.
      *
      * @param $condition
-     * @since 1.3.2
      * @return ActiveRecord[]
+     * @since 1.3.2
      */
     public static function findAll($condition)
     {
@@ -576,7 +578,7 @@ class ContentTag extends ActiveRecord
         }
 
         $instance = new static();
-        if(empty($condition)) {
+        if (empty($condition)) {
             $condition = ['type' => $instance->type];
         } else {
             $condition['type'] = $instance->type;
@@ -600,7 +602,7 @@ class ContentTag extends ActiveRecord
     {
         $container_id = $container instanceof ContentContainerActiveRecord ? $container->contentcontainer_id : $container;
 
-        if(!$includeGlobal) {
+        if (!$includeGlobal) {
             return static::find()->andWhere(['content_tag.contentcontainer_id' => $container_id]);
         } else {
             return static::find()->andWhere(['or',

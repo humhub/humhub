@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m150714_093525_activity extends Migration
 {
-
     public function up()
     {
         $this->dropColumn('activity', 'created_by');

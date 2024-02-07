@@ -23,7 +23,6 @@ use humhub\modules\space\models\Space;
  */
 class UserDeleteForm extends Model
 {
-
     /**
      * @var User the user record to delete
      */

@@ -3,6 +3,7 @@
 use humhub\modules\installer\controllers\ConfigController;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
+
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 
@@ -25,7 +26,7 @@ use yii\bootstrap\Html;
             ConfigController::USECASE_COMMUNITY => Yii::t('InstallerModule.base', 'My community'),
             ConfigController::USECASE_OTHER => Yii::t('InstallerModule.base', 'Skip this step, I want to set up everything manually'),
         ]);
-        ?>
+?>
 
         <hr>
 

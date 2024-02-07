@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\modules\content\components\ContentContainerActiveRecord;
 
 /**

@@ -70,17 +70,17 @@ $placeholder = ($isNestedComment)
                 'max' => $contentModule->maxAttachedFiles,
                 'cssButtonClass' => 'btn-sm btn-info',
             ]);
-            echo FileHandlerButtonDropdown::widget([
-                'primaryButton' => $uploadButton,
-                'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-info btn-sm',
-                'pullRight' => true,
-            ]);
-            echo Button::info()
-                ->icon('send')
-                ->cssClass('btn-comment-submit')->sm()
-                ->action('submit', $submitUrl)->submit();
-            ?></div>
+echo FileHandlerButtonDropdown::widget([
+    'primaryButton' => $uploadButton,
+    'handlers' => $fileHandlers,
+    'cssButtonClass' => 'btn-info btn-sm',
+    'pullRight' => true,
+]);
+echo Button::info()
+    ->icon('send')
+    ->cssClass('btn-comment-submit')->sm()
+    ->action('submit', $submitUrl)->submit();
+?></div>
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>

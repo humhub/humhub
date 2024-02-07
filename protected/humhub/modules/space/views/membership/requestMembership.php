@@ -6,9 +6,10 @@ use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\LoaderWidget;
+use yii\web\View;
 
 /**
- * @var $this \yii\web\View
+ * @var $this View
  * @var $space Space
  * @var $model RequestMembershipForm
  */
@@ -33,23 +34,26 @@ SpaceAsset::register($this);
             <br/>
             <br/>
 
-            <?= $form->field($model, 'message',)->textarea(['id' => 'request-message', 'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...')]); ?>
+            <?= $form->field($model, 'message', )->textarea(['id' => 'request-message', 'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...')]); ?>
 
         </div>
         <div class="modal-footer">
             <hr/>
             <?= Html::a(
-                Yii::t('SpaceModule.base', 'Send'), '#', [
-                    'class' => ['btn', 'btn-primary'],
-                    'data' => [
-                        'action-click' => 'space.requestMembershipSend',
-                        'action-url' => $space->createUrl('/space/membership/request-membership-form'),
-                    ]
-                ]
+                Yii::t('SpaceModule.base', 'Send'),
+                '#',
+                [
+                                'class' => ['btn', 'btn-primary'],
+                                'data' => [
+                                    'action-click' => 'space.requestMembershipSend',
+                                    'action-url' => $space->createUrl('/space/membership/request-membership-form'),
+                                ]
+                            ]
             ) ?>
 
             <?= Html::button(
-                Yii::t('SpaceModule.base', 'Close'), [
+                Yii::t('SpaceModule.base', 'Close'),
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'dismiss' => 'modal',

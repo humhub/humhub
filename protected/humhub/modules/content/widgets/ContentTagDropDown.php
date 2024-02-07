@@ -88,12 +88,12 @@ class ContentTagDropDown extends JsInputWidget
 
         if (!$this->query) {
             if ($this->contentContainer) {
-                $this->query = call_user_func($this->tagClass .'::findByContainer', $this->contentContainer, $this->includeGlobal);
+                $this->query = call_user_func($this->tagClass . '::findByContainer', $this->contentContainer, $this->includeGlobal);
             } elseif (!empty($this->type)) {
                 $type = ($this->type === true) ? $this->tagClass : $this->type;
-                $this->query = call_user_func($this->tagClass .'::findByType', [$type]);
+                $this->query = call_user_func($this->tagClass . '::findByType', [$type]);
             } else {
-                $this->query = call_user_func($this->tagClass .'::find');
+                $this->query = call_user_func($this->tagClass . '::find');
             }
         }
 

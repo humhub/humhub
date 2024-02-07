@@ -18,8 +18,8 @@ use yii\helpers\Url;
  */
 class ShowMore extends Widget
 {
-    const TYPE_PREVIOUS = 'previous';
-    const TYPE_NEXT = 'next';
+    public const TYPE_PREVIOUS = 'previous';
+    public const TYPE_NEXT = 'next';
 
     /**
      * Content Object

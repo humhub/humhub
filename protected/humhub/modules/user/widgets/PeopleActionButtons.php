@@ -19,7 +19,6 @@ use humhub\modules\user\models\User;
  */
 class PeopleActionButtons extends Widget
 {
-
     /**
      * @var User
      */

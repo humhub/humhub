@@ -89,7 +89,7 @@ class UserEditForm extends User
                 if (!$this->isInGroupSelection($userGroup)) {
                     /* @var $groupUser GroupUser */
                     $groupUser = $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one();
-                    if(!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
+                    if (!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
                         $groupUser->delete();
                     }
                 }
@@ -149,8 +149,8 @@ class UserEditForm extends User
      */
     public static function getGroupItems($groups = null)
     {
-        if(!$groups) {
-            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() :  Group::findAll(['is_admin_group' => '0']) ;
+        if (!$groups) {
+            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() : Group::findAll(['is_admin_group' => '0']);
         }
 
         $result = [];

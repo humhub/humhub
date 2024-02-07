@@ -12,13 +12,12 @@ use humhub\modules\space\models\Space;
 
 /**
  * SpaceDirectoryCard shows a space on spaces directory
- * 
+ *
  * @since 1.9
  * @author Luke
  */
 class SpaceDirectoryCard extends Widget
 {
-
     /**
      * @var Space
      */

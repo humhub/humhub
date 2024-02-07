@@ -10,8 +10,9 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $space Space */
 /* @var $url string */
 /* @var $contentContainer ContentContainerActiveRecord */
@@ -85,10 +86,13 @@ use yii\helpers\Html;
 
                                                                         <!-- check if activity object has a space -->
                                                                         <?php if ($space !== null): ?>
-                                                                            <?= Html::a($space->displayName,
-                                                                                $space->createUrl(null, [], true), [
-                                                                                    'style' => 'text-decoration: none; color: #555555;'
-                                                                                ]) ?>
+                                                                            <?= Html::a(
+                                                                                $space->displayName,
+                                                                                $space->createUrl(null, [], true),
+                                                                                [
+                                                                                                                                                                'style' => 'text-decoration: none; color: #555555;'
+                                                                                                                                                            ]
+                                                                            ) ?>
                                                                         <?php endif; ?>
 
                                                                         <?php if ($url != '') : ?>

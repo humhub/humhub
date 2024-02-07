@@ -8,7 +8,9 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\stream\Module;
 use Yii;
 use yii\base\Exception;
 
@@ -24,7 +26,6 @@ use yii\base\Exception;
  */
 class StreamSuppressQuery extends StreamQuery
 {
-
     /**
      * @var boolean marks query as executed
      */
@@ -85,7 +86,7 @@ class StreamSuppressQuery extends StreamQuery
      */
     protected function isSuppressionActive()
     {
-        /* @var $streamModule \humhub\modules\stream\Module */
+        /* @var $streamModule Module */
         $streamModule = Yii::$app->getModule('stream');
 
         return !($this->preventSuppression || $this->limit <= $streamModule->streamSuppressLimit || $this->isSingleContentQuery());
@@ -101,7 +102,7 @@ class StreamSuppressQuery extends StreamQuery
             $this->isQueryExecuted = true;
             $result = parent::all();
 
-            if(!empty($result)) {
+            if (!empty($result)) {
                 $last = $result[count($result) - 1];
                 $this->lastContentId = $last->id;
             }
@@ -194,7 +195,7 @@ class StreamSuppressQuery extends StreamQuery
             return false;
         }
 
-        /* @var $streamModule \humhub\modules\stream\Module */
+        /* @var $streamModule Module */
         $streamModule = Yii::$app->getModule('stream');
 
         // Check if content type is suppressable
@@ -231,7 +232,7 @@ class StreamSuppressQuery extends StreamQuery
      * Returns suppressed content ids
      *
      * @return array
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getSuppressions()
     {
@@ -241,7 +242,7 @@ class StreamSuppressQuery extends StreamQuery
 
         $results = [];
         foreach ($this->suppressions as $parentContentId => $infos) {
-            /* @var $contentInstance \humhub\modules\content\components\ContentActiveRecord  */
+            /* @var $contentInstance ContentActiveRecord */
             $contentInstance = $infos['parentContent']->getPolymorphicRelation();
             if ($contentInstance === null) {
                 Yii::error('Could not load content instance with id: ' . $parentContentId, 'stream');

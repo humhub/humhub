@@ -22,7 +22,6 @@ use Yii;
  */
 class DeleteDocument extends ActiveJob implements ExclusiveJobInterface
 {
-
     /**
      * @var string class name of the active record
      */

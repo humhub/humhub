@@ -1,11 +1,12 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
 
 /**
- * @var $this \humhub\modules\ui\view\components\View
+ * @var $this View
  * @var $user \humhub\modules\user\models\User
  */
 $categories = $user->profile->getProfileFieldCategories();
@@ -18,18 +19,19 @@ $categories = $user->profile->getProfileFieldCategories();
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($categories as $category): ?>
                 <li class="<?= $firstClass ?>">
-                    <a href="#profile-category-<?= $category->id; ?>" data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                    <a href="#profile-category-<?= $category->id; ?>"
+                       data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                 </li>
                 <?php
                 $firstClass = "";
             endforeach;
-            ?>
+?>
         </ul>
         <?php $firstClass = "active" ?>
         <div class="tab-content">
             <?php foreach ($categories as $category): ?>
                 <div class="tab-pane <?php
-                echo $firstClass;
+    echo $firstClass;
                 $firstClass = "";
                 ?>" id="profile-category-<?= $category->id ?>">
                     <form class="form-horizontal" role="form">
@@ -40,12 +42,14 @@ $categories = $user->profile->getProfileFieldCategories();
                                 </label>
                                 <?php if (strtolower($field->title) == 'about'): ?>
                                     <div class="col-sm-9">
-                                        <div class="form-control-static"><?= RichText::output($field->getUserValue($user, true)) ?></div>
+                                        <div
+                                            class="form-control-static"><?= RichText::output($field->getUserValue($user, true)) ?></div>
                                     </div>
                                 <?php else: ?>
                                     <div class="col-sm-9">
                                         <?php if ($field->field_type_class == MarkdownEditor::class): ?>
-                                            <p class="form-control-static" style="min-height: 0 !important;padding-top:0;">
+                                            <p class="form-control-static"
+                                               style="min-height: 0 !important;padding-top:0;">
                                                 <?= RichText::output($field->getUserValue($user, true)) ?>
                                             </p>
                                         <?php else: ?>

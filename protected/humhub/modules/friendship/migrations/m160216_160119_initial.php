@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m160216_160119_initial extends Migration
 {
-
     public function up()
     {
         $this->createTable('user_friendship', [

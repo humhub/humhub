@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @var string defines the icon for topics used in badges etc.
      */

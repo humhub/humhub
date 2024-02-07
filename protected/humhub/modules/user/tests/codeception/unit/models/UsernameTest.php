@@ -7,13 +7,11 @@
 
 namespace tests\codeception\unit\models;
 
-
 use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\user\models\User;
 
 class UsernameTest extends HumHubDbTestCase
 {
-
     public function testUserNameValidation()
     {
         $user = User::findOne(['id' => 1]);

@@ -25,12 +25,11 @@ use yii\base\Model;
  */
 class MailSummaryForm extends Model
 {
-
     /**
      * Space limit modes (include or exclude)
      */
-    const LIMIT_MODE_EXCLUDE = 0;
-    const LIMIT_MODE_INCLUDE = 1;
+    public const LIMIT_MODE_EXCLUDE = 0;
+    public const LIMIT_MODE_INCLUDE = 1;
 
     /**
      * @var array of selected activities to include

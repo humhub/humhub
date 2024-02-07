@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\components;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -15,6 +16,7 @@ use humhub\modules\file\models\File;
 use humhub\modules\search\libs\SearchHelper;
 use Yii;
 use yii\base\Component;
+use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -26,9 +28,8 @@ use yii\helpers\ArrayHelper;
  */
 class FileManager extends Component
 {
-
     /**
-     * @var \humhub\components\ActiveRecord
+     * @var ActiveRecord
      */
     public $record;
 
@@ -87,7 +88,7 @@ class FileManager extends Component
     /**
      * File find query
      *
-     * @return \yii\db\ActiveQuery file find query
+     * @return ActiveQuery file find query
      */
     public function find()
     {

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\post\permissions;
 
+use humhub\libs\BasePermission;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -15,9 +16,8 @@ use humhub\modules\space\models\Space;
 /**
  * CreatePost Permission
  */
-class CreatePost extends \humhub\libs\BasePermission
+class CreatePost extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

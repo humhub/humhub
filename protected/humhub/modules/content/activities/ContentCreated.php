@@ -13,14 +13,13 @@ use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 
 /**
- * Activity for created content 
+ * Activity for created content
  *
  * @see \humhub\modules\content\components\ContentActiveRecord
  * @author luke
  */
 class ContentCreated extends BaseActivity implements ConfigurableActivityInterface
 {
-
     /**
      * @inheritdoc
      */

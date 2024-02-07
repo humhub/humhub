@@ -6,14 +6,14 @@ coverage:
     enabled: true
     remote: false
     include:
-    - ../controllers/*
-    - ../models/*
-    - ../notifications/*
-    - ../views/*
-    - ../widgets/*
-    - ../FriendshipEvent.php
-    - ../Events.php
-    - ../Module.php
+        - ../controllers/*
+        - ../models/*
+        - ../notifications/*
+        - ../views/*
+        - ../widgets/*
+        - ../FriendshipEvent.php
+        - ../Events.php
+        - ../Module.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true

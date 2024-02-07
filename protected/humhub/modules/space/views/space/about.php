@@ -41,7 +41,7 @@ use humhub\modules\user\widgets\Image;
                                     'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
                                 ]);
                             }
-                            ?>
+                    ?>
                         </div>
                     </div>
 
@@ -63,7 +63,7 @@ use humhub\modules\user\widgets\Image;
                                     'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
                                 ]);
                             }
-                            ?>
+                    ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -83,7 +83,7 @@ use humhub\modules\user\widgets\Image;
                             'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
                         ]);
                     }
-                    ?>
+            ?>
                 </div>
             </div>
             <br/>

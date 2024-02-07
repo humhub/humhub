@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity;
 
+use Exception;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
 use Yii;
 
@@ -19,7 +20,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdocs
      */
@@ -54,14 +54,14 @@ class Module extends \humhub\components\Module
         foreach (Yii::$app->getModules(false) as $moduleId => $module) {
             try {
                 $module = Yii::$app->getModule($moduleId);
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 Yii::error('Could not load module to determine activites! Module: ' . $moduleId . ' Error: ' . $ex->getMessage(), 'activity');
                 continue;
             }
 
             if ($module instanceof \humhub\components\Module) {
                 foreach ($module->getActivityClasses() as $class) {
-                    $activity = new $class;
+                    $activity = new $class();
                     if ($activity instanceof ConfigurableActivityInterface) {
                         $activities[] = $activity;
                     }

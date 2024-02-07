@@ -9,15 +9,15 @@
 namespace humhub\modules\installer\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * DatabaseForm holds all required database settings.
  *
  * @since 0.5
  */
-class DatabaseForm extends \yii\base\Model
+class DatabaseForm extends Model
 {
-
     /**
      * @var string hostname
      */

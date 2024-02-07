@@ -46,16 +46,14 @@ class m230618_135508_file_add_sorting_column extends Migration
             ['object_model' => null],
             ['object_model' => '']
         )
-                ->execute()
-        ;
+            ->execute();
 
         $command->update(
             $this->table,
             ['object_id' => null],
             ['object_id' => '']
         )
-                ->execute()
-        ;
+            ->execute();
 
         $this->safeCreateIndex("ix-$this->table-object", $this->table, ['object_model', 'object_id', 'sort_order']);
 

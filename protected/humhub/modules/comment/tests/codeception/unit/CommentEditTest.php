@@ -14,7 +14,6 @@ use humhub\modules\post\models\Post;
 
 class CommentEditTest extends HumHubDbTestCase
 {
-
     public function testNewCommentIsNotEdited()
     {
         $this->becomeUser('User2');

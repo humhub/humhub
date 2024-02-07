@@ -8,6 +8,9 @@
 
 namespace humhub\modules\stream;
 
+use humhub\modules\activity\models\Activity;
+use humhub\modules\post\models\Post;
+
 /**
  * Stream Module provides stream (wall) backend and frontend
  *
@@ -16,7 +19,6 @@ namespace humhub\modules\stream;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @var array content classes to excludes from streams
      */
@@ -31,8 +33,8 @@ class Module extends \humhub\components\Module
      * @var array default content classes which are not suppressed when in a row
      */
     public $defaultStreamSuppressQueryIgnore = [
-        \humhub\modules\post\models\Post::class,
-        \humhub\modules\activity\models\Activity::class
+        Post::class,
+        Activity::class
     ];
 
     /**

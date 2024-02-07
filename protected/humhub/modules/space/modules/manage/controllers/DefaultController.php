@@ -28,7 +28,6 @@ use yii\helpers\Url;
  */
 class DefaultController extends Controller
 {
-
     /**
      * @inheritdoc
      */

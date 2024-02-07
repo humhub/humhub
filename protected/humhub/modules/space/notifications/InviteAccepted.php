@@ -21,7 +21,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class InviteAccepted extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -33,15 +32,15 @@ class InviteAccepted extends BaseNotification
     public $viewName = 'inviteAccepted';
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {
@@ -55,7 +54,8 @@ class InviteAccepted extends BaseNotification
     {
         return $this->getInfoText(
             Html::tag('strong', Html::encode($this->originator->displayName)),
-            Html::tag('strong', Html::encode($this->source->name)));
+            Html::tag('strong', Html::encode($this->source->name))
+        );
     }
 
     private function getInfoText($displayName, $spaceName)

@@ -8,6 +8,9 @@
 
 namespace humhub\modules\file\components;
 
+use humhub\modules\file\models\File;
+use yii\web\UploadedFile;
+
 /**
  * StorageManagerInterface
  *
@@ -35,11 +38,11 @@ interface StorageManagerInterface
     /**
      * Adds or overwrites the file by given UploadedFile in store.
      *
-     * @param \yii\web\UploadedFile $file
+     * @param UploadedFile $file
      * @param string $variant the variant identifier
      * @see File::setStoredFile() Use this method to set a new file.
      */
-    public function set(\yii\web\UploadedFile $file, $variant = null);
+    public function set(UploadedFile $file, $variant = null);
 
     /**
      * Adds or overwrites the file content by given string in store
@@ -77,7 +80,7 @@ interface StorageManagerInterface
     /**
      * Sets the file for this storage manager instance
      *
-     * @param \humhub\modules\file\models\File $file
+     * @param File $file
      */
-    public function setFile(\humhub\modules\file\models\File $file);
+    public function setFile(File $file);
 }

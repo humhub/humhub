@@ -19,7 +19,6 @@ use humhub\modules\user\models\Group;
  */
 class UserGroupForm extends Model
 {
-
     /**
      * GroupId selection array of the form.
      * @var type

@@ -1,11 +1,13 @@
 <?php
 
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\user\widgets\Image;
 use yii\helpers\Html;
 use humhub\widgets\Link;
 
-/* @var $applicants \humhub\modules\space\models\Membership[] */
-/* @var $space \humhub\modules\space\models\Space */
+/* @var $applicants Membership[] */
+/* @var $space Space */
 ?>
 
 <div class="panel panel-danger">

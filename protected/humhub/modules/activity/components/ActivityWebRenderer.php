@@ -29,7 +29,6 @@ use humhub\components\rendering\Viewable;
  */
 class ActivityWebRenderer extends LayoutRenderer
 {
-
     /**
      * @var string default view path
      */
