@@ -62,12 +62,15 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?= $form->field($model, 'encryption')->dropDownList($model->encryptionTypes) ?>
     <?= $form->field($model, 'username')->textInput() ?>
     <?= $form->field($model, 'passwordField')->passwordInput() ?>
+
     <?= $form->field($model, 'baseDn')->textInput() ?>
     <?= $form->field($model, 'loginFilter')->textArea() ?>
     <?= $form->field($model, 'userFilter')->textArea() ?>
+
     <?= $form->field($model, 'usernameAttribute')->textInput() ?>
     <?= $form->field($model, 'emailAttribute')->textInput() ?>
     <?= $form->field($model, 'idAttribute')->textInput() ?>
+
     <?= $form->field($model, 'refreshUsers')->checkbox() ?>
 
     <?= $form->beginCollapsibleFields(Yii::t('AdminModule.base', 'Advanced settings')); ?>

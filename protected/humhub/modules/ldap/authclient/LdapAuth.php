@@ -486,8 +486,11 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             $authClient = null;
             $ids = [];
             foreach ($this->getUserCollection() as $ldapEntry) {
-                if (in_array(strtolower($ldapEntry['dn']), $this->ignoredDNs)) {
-                    continue;
+                $dn = strtolower($ldapEntry['dn']);
+                foreach ($this->ignoredDNs as $ignoredDN) {
+                    if (str_contains($dn, strtolower($ignoredDN))) {
+                        continue 2;
+                    }
                 }
 
                 $authClient = $this->getAuthClientInstance($ldapEntry);
