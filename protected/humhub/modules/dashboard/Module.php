@@ -19,7 +19,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * Possible options to include profile posts into the dashboard stream
      *
@@ -27,8 +26,8 @@ class Module extends \humhub\components\Module
      * Always: Always include all user profile posts into dashboards
      * Admin Only: For admin users, always include all profile posts (without following)
      */
-    const STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS = 'all';
-    const STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY = 'admin';
+    public const STREAM_AUTO_INCLUDE_PROFILE_POSTS_ALWAYS = 'all';
+    public const STREAM_AUTO_INCLUDE_PROFILE_POSTS_ADMIN_ONLY = 'admin';
 
     /**
      * @inheritdocs
@@ -71,5 +70,4 @@ class Module extends \humhub\components\Module
         $module = Yii::$app->getModule('dashboard');
         return $module;
     }
-
 }

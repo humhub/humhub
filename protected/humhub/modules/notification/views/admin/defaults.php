@@ -1,9 +1,10 @@
 <?php
 
+use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\libs\Html;
 
-/* @var $model \humhub\modules\notification\models\forms\NotificationSettings */
+/* @var $model NotificationSettings */
 ?>
 
 <div class="panel-body">
@@ -15,12 +16,12 @@ use humhub\libs\Html;
         <br/>
     </div>
     <?php $form = ActiveForm::begin(['acknowledge' => true]) ?>
-        <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
-            'model' => $model,
-            'form' => $form,
-            'showSpaces' => true
-        ]) ?>
-        <br />
+    <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
+        'model' => $model,
+        'form' => $form,
+        'showSpaces' => true
+    ]) ?>
+    <br/>
     <?= Html::submitButton(Yii::t('base', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
     <?php if ($model->canResetAllUsers()): ?>

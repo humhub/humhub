@@ -11,6 +11,7 @@ namespace humhub\modules\notification\models\forms;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 use yii\web\HttpException;
@@ -24,11 +25,10 @@ use humhub\modules\admin\permissions\ManageSettings;
  */
 class NotificationSettings extends Model
 {
-
     /**
      * Will hold the selected notification settings. Note this will only be filled with selected settings
      * and not with deselected notification settings.
-     * 
+     *
      * @var array
      */
     public $settings = [];
@@ -39,17 +39,17 @@ class NotificationSettings extends Model
     public $spaceGuids = [];
 
     /**
-     * @var \humhub\modules\user\models\User instance for which the settings should by appleid, if null global settings are used.
+     * @var User instance for which the settings should by appleid, if null global settings are used.
      */
     public $user;
 
     /**
-     * @var boolean manage if the user/users should receive desktop notifications. 
+     * @var boolean manage if the user/users should receive desktop notifications.
      */
     public $desktopNotifications;
 
     /**
-     * @var BaseTarget[] 
+     * @var BaseTarget[]
      */
     protected $_targets;
 
@@ -138,7 +138,7 @@ class NotificationSettings extends Model
 
     /**
      * Returns the field name for the given category/target combination.
-     * 
+     *
      * @param NotificationCategory $category
      * @param BaseTarget $target
      * @return string
@@ -150,9 +150,9 @@ class NotificationSettings extends Model
 
     /**
      * Saves the settings for the given user (or global if no user is given).
-     * 
+     *
      * @return boolean if the save process was successful else false
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function save()
     {
@@ -199,14 +199,14 @@ class NotificationSettings extends Model
     /**
      * Saves the Notificaton Space settings for the given user.
      * This is skipped if no user is selected (global settings).
-     * 
+     *
      * If the user is already a member of this space this function activates the sending of notifications for
      * his membership.
-     * 
+     *
      * If the user is already following the space this function activates the sendinf of notification for his follow record.
-     * 
+     *
      * Otherwise a new follow record is created.
-     * 
+     *
      * @return type
      */
     private function saveSpaceSettings()
@@ -285,5 +285,4 @@ class NotificationSettings extends Model
         $settingsManager = Yii::$app->getModule('notification')->settings->user();
         $settingsManager->reload();
     }
-
 }

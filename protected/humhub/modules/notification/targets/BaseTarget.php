@@ -8,7 +8,10 @@
 
 namespace humhub\modules\notification\targets;
 
+use Exception;
 use Yii;
+use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 use yii\di\Instance;
 use humhub\modules\user\models\User;
 use humhub\components\rendering\Renderer;
@@ -22,9 +25,8 @@ use humhub\modules\notification\components\NotificationCategory;
  *
  * @author buddha
  */
-abstract class BaseTarget extends \yii\base\BaseObject
+abstract class BaseTarget extends BaseObject
 {
-
     /**
      * Unique target id has to be defined by subclasses.
      * @var string
@@ -83,8 +85,8 @@ abstract class BaseTarget extends \yii\base\BaseObject
     abstract public function getTitle();
 
     /**
-     * @return \humhub\components\rendering\Renderer default renderer for this target.
-     * @throws \yii\base\InvalidConfigException
+     * @return Renderer default renderer for this target.
+     * @throws InvalidConfigException
      */
     public function getRenderer()
     {
@@ -162,7 +164,7 @@ abstract class BaseTarget extends \yii\base\BaseObject
             } else {
                 $this->acknowledge($notification, false);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Yii::error($e);
             $this->acknowledge($notification, false);
         }
@@ -218,9 +220,9 @@ abstract class BaseTarget extends \yii\base\BaseObject
      *
      * @param BaseNotification $notification
      * @param User $user
-     * @see BaseTarget::isActive()
-     * @see BaseTarget::isCategoryEnabled()
      * @return boolean
+     * @see BaseTarget::isCategoryEnabled()
+     * @see BaseTarget::isActive()
      */
     public function isEnabled(BaseNotification $notification, User $user = null)
     {
@@ -269,5 +271,4 @@ abstract class BaseTarget extends \yii\base\BaseObject
 
         return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
     }
-
 }

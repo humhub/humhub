@@ -18,7 +18,6 @@ use Yii;
  */
 class Sidebar extends BaseSidebar
 {
-
     /**
      * @inheritDoc
      */
@@ -37,5 +36,4 @@ class Sidebar extends BaseSidebar
             }
         }
     }
-
 }

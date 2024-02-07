@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -37,9 +38,7 @@ class m190309_201944_rename_settings extends Migration
         foreach ($renameSettings as $from => $to) {
             $this->update('setting', ['name' => $to, 'module_id' => 'ldap'], ['name' => $from, 'module_id' => 'user']);
         }
-
     }
-
 
 
     /**
