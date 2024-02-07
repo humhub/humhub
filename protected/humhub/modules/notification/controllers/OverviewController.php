@@ -26,7 +26,7 @@ use yii\db\StaleObjectException;
  */
 class OverviewController extends Controller
 {
-    const PAGINATION_PAGE_SIZE = 20;
+    public const PAGINATION_PAGE_SIZE = 20;
 
     /**
      * @inheritdoc

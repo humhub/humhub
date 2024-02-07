@@ -24,5 +24,3 @@ use yii\helpers\Html;
     <?= Html::endTag('center') ?>
 <?php endif; ?>
 <?= Html::endTag('div');
-
-

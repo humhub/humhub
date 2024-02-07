@@ -20,7 +20,7 @@ class DashboardController extends Controller
      * View context used for the dashboard view
      * @see View::$viewContext
      */
-    const VIEW_CONTEXT = 'dashboard';
+    public const VIEW_CONTEXT = 'dashboard';
 
     /**
      * @inheritdoc

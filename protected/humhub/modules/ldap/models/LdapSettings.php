@@ -21,7 +21,7 @@ use yii\base\Model;
  */
 class LdapSettings extends Model
 {
-    const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
+    public const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
 
     /**
      * @var boolean
