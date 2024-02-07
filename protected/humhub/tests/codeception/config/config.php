@@ -9,12 +9,6 @@ $default = [
     'language' => 'en-US',
     'params' => [
         'installed' => true,
-        'settings' => [
-            'core' => [
-                'name' => 'HumHub Test',
-                'baseUrl' => 'http://localhost:8080',
-            ],
-        ]
     ],
     'controllerMap' => [
         'fixture' => [

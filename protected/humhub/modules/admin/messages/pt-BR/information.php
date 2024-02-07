@@ -89,6 +89,10 @@ return [
     'Make sure that the `proc_open` function is not disabled.' => '',
     'Mobile App - Push Service' => '',
     'Must be updated manually. Check compatibility with newer HumHub versions before updating.' => '',
+    'Outstanding database migrations:' => '',
     'Pretty URLs' => '',
+    'Refresh' => '',
     'The module(s) are no longer maintained and should be uninstalled.' => '',
+    'Update Database' => '',
+    'Your database is <b>up-to-date</b>.' => '',
 ];

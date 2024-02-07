@@ -9,7 +9,7 @@ return array (
   'Separate multiple email addresses by comma.' => '',
   'You\'ve been invited to join %appName%' => '',
   '{email} is already registered!' => '',
-  '{email} is not valid!' => '',
+  '{email} is not valid!' => '{email}이 유효하지 않습니다!',
   '{username} invited you to join "{space}" on {name}.' => '',
   '{username} invited you to {name}.' => '',
 );

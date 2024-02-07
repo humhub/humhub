@@ -29,7 +29,7 @@ class MarketplaceLink extends Button
      */
     public function beforeRun()
     {
-        if (!Module::isEnabled() || !Yii::$app->user->can(ManageModules::class)) {
+        if (!Module::isMarketplaceEnabled() || !Yii::$app->user->can(ManageModules::class)) {
             return false;
         }
 

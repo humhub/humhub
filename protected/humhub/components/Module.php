@@ -230,14 +230,24 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Check this module is activated
+     * Check this module is enabled
      *
      * @return bool
      */
-    public function getIsActivated(): bool
+    public function getIsEnabled(): bool
     {
         return Yii::$app->hasModule($this->id) &&
             !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
+    }
+
+    /**
+     * @see          static::getIsEnabled()
+     * @deprecated since 1.16; use static::getIsEnabled() instead.
+     * @noinspection PhpUnused
+     */
+    public function getIsActivated(): bool
+    {
+        return $this->getIsEnabled();
     }
 
     /**

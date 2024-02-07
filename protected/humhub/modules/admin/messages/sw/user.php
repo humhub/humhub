@@ -45,7 +45,7 @@ return [
     'Create new group' => '',
     'Create new profile category' => '',
     'Create new profile field' => '',
-    'Deactivate' => '',
+    'Disable' => '',
     'Deactivate individual profile permissions?' => '',
     'Decline' => '',
     'Decline & delete user: <strong>{displayName}</strong>' => '',

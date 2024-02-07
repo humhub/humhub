@@ -45,7 +45,7 @@ return [
     'Create new group' => 'Criar novo grupo',
     'Create new profile category' => 'Criar nova categoria de perfil',
     'Create new profile field' => 'Criar novo campo de perfil',
-    'Deactivate' => 'Desativar',
+    'Disable' => 'Desativar',
     'Deactivate individual profile permissions?' => 'Desativar permissões de perfis individuais?',
     'Decline' => 'Recusar',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Recusar e apagar o usuário: <strong>{displayName}</strong>',

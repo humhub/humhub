@@ -20,14 +20,15 @@ use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
 use Some\Name\Space\module1\Module as Module1;
 use Some\Name\Space\module2\Module as Module2;
 use Some\Name\Space\moduleWithMigration\Module as ModuleWithMigration;
+use SplFileInfo;
 use tests\codeception\_support\HumHubDbTestCase;
+use Throwable;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\caching\ArrayCache;
-use yii\console\ExitCode;
 use yii\db\StaleObjectException;
 use yii\helpers\FileHelper;
 use yii\log\Logger;
@@ -70,8 +71,8 @@ class ModuleManagerTest extends HumHubDbTestCase
             if ($filename !== '.' && $filename !== '..' && is_dir("$appModuleRoot/$filename")) {
                 static::$moduleDirCount++;
 
-                $config_file = new \SplFileInfo("$appModuleRoot/$filename/config.php");
-                $config_file = new \SplFileInfo($config_file->getRealPath());
+                $config_file = new SplFileInfo("$appModuleRoot/$filename/config.php");
+                $config_file = new SplFileInfo($config_file->getRealPath());
 
                 if (!$config_file->isFile() || !$config_file->isReadable()) {
                     continue;
@@ -434,12 +435,16 @@ class ModuleManagerTest extends HumHubDbTestCase
         // Workaround for internal SaaS core module
         unset($modules['hostinginfo']);
 
+        $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(array_column(
+            static::dbSelect('module_enabled', 'module_id'),
+            'module_id'
+        )));
+
         $expected = array_merge(
             [],
             array_flip(ModuleAutoLoaderTest::EXPECTED_CORE_MODULES),
-            static::$moduleDirList
+            $locallyEnabledModules
         );
-
 
         static::assertEquals($expected, $modules);
 
@@ -447,7 +452,8 @@ class ModuleManagerTest extends HumHubDbTestCase
             'enabled' => false,
             'returnClass' => true,
         ]));
-        static::assertEquals(static::$moduleDirList, $modules);
+
+        static::assertEquals($locallyEnabledModules, $modules);
     }
 
     /**
@@ -514,7 +520,7 @@ class ModuleManagerTest extends HumHubDbTestCase
      * @noinspection MissedFieldInspection
      */
     /**
-     * @throws \Throwable
+     * @throws Throwable
      * @throws InvalidConfigException
      * @throws StaleObjectException
      * @throws Exception
@@ -619,11 +625,27 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         Yii::$app->set('moduleManager', $oldMM);
 
-        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-        static::assertLog('Module has no migrations directory.', Logger::LEVEL_TRACE, [$module->id]);
+        static::assertNotLog(
+            'Module has not been enabled due to beforeEnable() returning false',
+            Logger::LEVEL_WARNING,
+            [$module->id]
+        );
+        static::assertLog(
+            'Module has no migrations directory.',
+            Logger::LEVEL_TRACE,
+            [$module->id]
+        );
 
-        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, ['module2']);
-        static::assertLogRegex('@No new migrations found\. Your system is up-to-date\.@', Logger::LEVEL_INFO, ['module2']);
+        static::assertNotLog(
+            'Module has not been enabled due to beforeEnable() returning false',
+            Logger::LEVEL_WARNING,
+            ['module2']
+        );
+        static::assertLogRegex(
+            '@No new migrations found\. Your system is up-to-date\.@',
+            Logger::LEVEL_INFO,
+            ['module2']
+        );
 
         static::logReset();
 
@@ -1101,10 +1123,14 @@ class ModuleManagerTest extends HumHubDbTestCase
             ]
         ]);
 
-        static::$moduleEnabledList ??= array_column(
-            static::dbSelect('module_enabled', 'module_id'),
-            'module_id'
-        );
+        if (Yii::$app->isDatabaseInstalled()) {
+            static::$moduleEnabledList ??= array_column(
+                static::dbSelect('module_enabled', 'module_id'),
+                'module_id'
+            );
+        } else {
+            static::$moduleEnabledList ??= [];
+        }
 
         $this->moduleManager = new ModuleManagerMock();
     }

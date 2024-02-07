@@ -848,7 +848,7 @@ class SelfTest
             /* @var \humhub\modules\fcmPush\Module|null $pushModule */
             $pushModule = $modules['fcm-push'] ?? null;
             if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
-                $pushModule->isActivated &&
+                $pushModule->getIsEnabled() &&
                 $pushModule->getGoService()->isConfigured()) {
                 $checks[] = [
                     'title' => $title,

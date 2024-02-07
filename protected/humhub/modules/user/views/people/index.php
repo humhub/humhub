@@ -28,7 +28,7 @@ CardsAsset::register($this);
     </div>
 
     <div class="panel-body">
-        <?= PeopleFilters::widget(); ?>
+        <?= PeopleFilters::widget(['query' => $people]) ?>
     </div>
 
 </div>

@@ -90,5 +90,9 @@ return [
     'Deprecated Modules ({modules})' => '',
     'Mobile App - Push Service' => '',
     'Must be updated manually. Check compatibility with newer HumHub versions before updating.' => '',
+    'Outstanding database migrations:' => '',
+    'Refresh' => '',
     'The module(s) are no longer maintained and should be uninstalled.' => '',
+    'Update Database' => '',
+    'Your database is <b>up-to-date</b>.' => '',
 ];

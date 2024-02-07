@@ -8,12 +8,21 @@ Version 1.16 (Unreleased)
 -------------------------
 
 ### Deprecations
+- `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
+  (note: this also affects the virtual instance property `\humhub\modules\friendship\Module::$isActivated` which should
+  now read `$isEnabled`!)
 - `\humhub\components\Module::migrate()` use `getMigrationService()->migrateUp(MigrationService::ACTION_MIGRATE)` instead
 - `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
 - `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
+- `\humhub\modules\friendship\Module::getIsEnabled()` use `isFriendshipEnabled()` instead
+  (note: `\humhub\modules\friendship\Module::getIsEnabled()` and the virtual
+  property `\humhub\modules\friendship\Module::isEnabled` now return the status of the module -
+  which yields always true for core modules.)
+- `\humhub\modules\marketplace\Module::isEnabled()` use `isMarketplaceEnabled()` instead
+- `\humhub\modules\marketplace\services\ModuleService::activate()` use `enable()` instead
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types

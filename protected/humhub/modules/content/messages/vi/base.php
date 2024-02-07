@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => '<strong>Di chuyển</strong> nội dung',
     '<strong>Permalink</strong> to this post' => '<strong>Liên kết</strong> của bài viết này',
-    'Activated' => 'Đã được kích hoạt',
+    'Enabled' => 'Đã được kích hoạt',
     'Add a member to notify' => 'Thêm một thành viên vào thông báo',
     'Archived' => 'Lưu trữ',
     'Back to stream' => 'Quay lại',

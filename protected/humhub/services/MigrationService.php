@@ -11,11 +11,13 @@ namespace humhub\services;
 use humhub\commands\MigrateController;
 use humhub\components\Application;
 use humhub\components\Event;
+use humhub\components\Migration;
 use humhub\components\Module;
 use humhub\events\MigrationEvent;
+use humhub\helpers\DataTypeHelper;
 use humhub\interfaces\ApplicationInterface;
-use humhub\libs\Helpers;
 use Throwable;
+use uninstall;
 use Yii;
 use yii\base\ActionEvent;
 use yii\base\Component;
@@ -23,6 +25,8 @@ use yii\base\Controller;
 use yii\base\InvalidConfigException;
 use yii\base\Module as BaseModule;
 use yii\console\ExitCode;
+use yii\db\Exception;
+use yii\db\MigrationInterface;
 
 /**
  * @since 1.16
@@ -44,7 +48,7 @@ class MigrationService extends Component
      */
     public function __construct(?BaseModule $module = null)
     {
-        Helpers::checkClassType($module, [ApplicationInterface::class, Module::class, null]);
+        DataTypeHelper::ensureClassType($module, [ApplicationInterface::class, Module::class, null]);
 
         $this->module = $module ?? Yii::$app;
 
@@ -70,7 +74,7 @@ class MigrationService extends Component
 
         $realpath = $this->getPath(true);
 
-        if ($realpath === false || !is_dir($realpath)) {
+        if ($realpath === null || !is_dir($realpath)) {
             Yii::debug("Module has no migrations directory.", $this->module->id);
             $this->path = null;
         }
@@ -199,7 +203,7 @@ class MigrationService extends Component
             ]
         );
 
-        return $this->checkMigrationStatus($result);
+        return $this->checkMigrationStatus($result, $controller->getLastMigration());
     }
 
     /**
@@ -243,7 +247,7 @@ class MigrationService extends Component
      * @throws InvalidConfigException
      * @throws Throwable
      */
-    private function checkMigrationStatus(MigrationEvent $result): bool
+    private function checkMigrationStatus(MigrationEvent $result, ?MigrationInterface $migration): bool
     {
         $this->lastMigrationOutput = $result->output ?: 'Migration output unavailable';
         $this->lastMigrationResult = $result->result;
@@ -260,12 +264,25 @@ class MigrationService extends Component
         /** @see \yii\console\controllers\BaseMigrateController::actionUp() */
         if ($result->result > ExitCode::OK) {
             $errorMessage = "Migration failed!";
+            $exception = null;
 
-            if (YII_DEBUG) {
-                throw new InvalidConfigException($errorMessage);
+            if ($migration instanceof Migration && $exception = $migration->getLastException()) {
+                $errorMessage .= "\n" . $exception->getMessage() . "\nSee application log for full trace.";
+            } elseif (
+                preg_match(
+                    '@^Exception:\s+(?<message>.*?$)\s+(?<trace>.*?\{main\})$@ms',
+                    $result->output ?? '',
+                    $matches
+                )
+            ) {
+                $errorMessage .= "\n" . $matches['message'] . "\nSee application log for full trace.";
             }
 
             Yii::error($errorMessage, $this->module->id);
+
+            if (YII_DEBUG) {
+                throw new InvalidConfigException($errorMessage, 0, $exception);
+            }
 
             return false;
         }
@@ -295,12 +312,12 @@ class MigrationService extends Component
         ob_start();
         require_once($uninstallMigration);
 
-        $migration = new \uninstall();
+        $migration = new uninstall();
         $migration->compact = false;
 
         try {
             $result->result = $migration->up() === false ? ExitCode::UNSPECIFIED_ERROR : ExitCode::OK;
-        } catch (\yii\db\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error($ex, $this->module->id);
             $result->result = ExitCode::UNSPECIFIED_ERROR;
         }
@@ -311,19 +328,19 @@ class MigrationService extends Component
          */
         $migrations = opendir($path);
         $params = [];
-        while (false !== ($migration = readdir($migrations))) {
-            if ($migration === '.' || $migration === '..' || $migration === 'uninstall.php') {
+        while (false !== ($filename = readdir($migrations))) {
+            if ($filename === '.' || $filename === '..' || $filename === 'uninstall.php') {
                 continue;
             }
 
             $command ??= Yii::$app->db->createCommand()->delete('migration', 'version = :version', $params);
 
-            $version = str_replace('.php', '', $migration);
+            $version = str_replace('.php', '', $filename);
             $command->bindValue(':version', $version)->execute();
             $result->output .= "    > migration entry $version removed.\n";
         }
 
-        return $this->checkMigrationStatus($result);
+        return $this->checkMigrationStatus($result, $migration);
     }
 
     /**

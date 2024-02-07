@@ -464,7 +464,7 @@ class ModuleManager extends Component
     }
 
     /**
-     * Checks if a moduleId exists, regardless it's activated or not
+     * Checks if a moduleId exists, regardless it's enabled or not
      *
      * @param string $id
      *

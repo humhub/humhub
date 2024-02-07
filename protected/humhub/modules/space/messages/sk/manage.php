@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => '',
     '<strong>Space</strong> settings' => '',
     'Actions' => '',
-    'Activate' => '',
+    'Enable' => '',
     'Add <strong>Modules</strong>' => '',
     'Advanced access settings' => '',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',

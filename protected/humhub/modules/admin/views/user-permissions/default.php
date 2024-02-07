@@ -23,7 +23,7 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
         '<div class="alert alert-danger">' .
         Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
         '</div>',
-    'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Deactivate'),
+    'enableProfilePermissions.button.disable' => Yii::t('AdminModule.user', 'Disable'),
 ]]);
 
 /** @var \humhub\modules\user\Module $userModule */

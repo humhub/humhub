@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>Mekan</strong> Modülleri',
   '<strong>Space</strong> settings' => '<strong>Mekan</strong> ayarları',
   'Actions' => 'Eylemler',
-  'Activate' => 'Etkinleştir',
+  'Enable' => 'Etkinleştir',
   'Add <strong>Modules</strong>' => '<strong>Modül</strong> ekle',
   'Advanced access settings' => 'Gelişmiş erişim ayarları ',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => '',

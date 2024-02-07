@@ -126,6 +126,8 @@ class AuthController extends Controller
             'invite' => $invite,
             'canRegister' => $invite->allowSelfInvite(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
+            'showLoginForm' => $this->module->showLoginForm || Yii::$app->request->get('showLoginForm', false),
+            'showRegistrationForm' => $this->module->showRegistrationForm
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {
@@ -204,7 +206,10 @@ class AuthController extends Controller
         $inviteRegistrationService = InviteRegistrationService::createFromRequestOrEmail($attributes['email'] ?? null);
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
-        if (!$inviteRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
+        if (!$inviteRegistrationService->isValid() &&
+            !$linkRegistrationService->isValid() &&
+            (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->module->allowUserRegistrationFromAuthClientIds))
+        ) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'You\'re not registered.'));
             return $this->redirect(['/user/auth/login']);

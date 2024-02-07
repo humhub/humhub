@@ -31,7 +31,7 @@ class RequestController extends Controller
      */
     public function beforeAction($action)
     {
-        if (!$this->module->getIsEnabled()) {
+        if (!$this->module->isFriendshipEnabled()) {
             throw new HttpException(404, 'Friendship system is not enabled!');
         }
 

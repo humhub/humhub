@@ -10,7 +10,7 @@ namespace humhub\modules\comment\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
 use humhub\modules\comment\models\forms\CommentForm;
@@ -65,7 +65,7 @@ class CommentController extends Controller
             $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
             /** @var Comment|ContentActiveRecord $modelClass */
-            $modelClass = Helpers::checkClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            $modelClass = DataTypeHelper::matchClassType($modelClass, [Comment::class, ContentActiveRecord::class], true);
             $this->target = $modelClass::findOne(['id' => $modelPk]);
 
             if (!$this->target) {

@@ -31,7 +31,6 @@ use yii\web\HttpException;
  */
 class GroupController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -118,18 +117,12 @@ class GroupController extends Controller
 
         $this->checkGroupAccess($group);
 
-        // Save changed permission states
-        if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
-            $permission = Yii::$app->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            Yii::$app->user->permissionManager->setGroupState($group->id, $permission, Yii::$app->request->post('state'));
-
-            return $this->asJson([]);
+        if (!$group->isNewRecord) {
+            // Save changed permission state
+            $return = Yii::$app->user->permissionManager->handlePermissionStateChange($group->id);
         }
 
-        return $this->render('permissions', ['group' => $group]);
+        return $return ?? $this->render('permissions', ['group' => $group]);
     }
 
     public function actionManageGroupUsers()

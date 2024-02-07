@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => '<strong>Спільнота</strong> модулі',
     '<strong>Space</strong> settings' => '<strong>Спільнота</strong> налаштування',
     'Actions' => 'Дії',
-    'Activate' => 'Активувати',
+    'Enable' => 'Активувати',
     'Add <strong>Modules</strong>' => 'Додати <strong>Модулі</strong>',
     'Advanced access settings' => 'Розширені налаштування доступу',
     'Archive' => 'Архів',

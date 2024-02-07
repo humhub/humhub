@@ -2,10 +2,10 @@
 
 return [
     '<strong>Maintenance</strong> Mode' => 'Moda <strong>Pemeliharaan</strong>',
-    'Activate' => 'Aktifkan',
+    'Enable' => 'Aktifkan',
     'Back to overview' => 'Kembali ke overview',
     'Dashboard' => 'Beranda',
-    'Deactivate' => 'Matikan',
+    'Disable' => 'Matikan',
     'Delete' => 'Hapus',
     'Friendship' => 'Persahabatan',
     'General' => 'Umum',

@@ -3,6 +3,10 @@ HumHub Changelog
 
 1.16.0 (Unreleased)
 -------------------
+- Fix #6770: Improve migration error messages
+- Enh #6750: Code de-duplication by introducing `PermissionManager::handlePermissionStateChange()`
+- Fix #6772: Polymorphic relation lookup (Regression #6587)
+- Enh #6745: Harmonise term `enabled/disabled` vs `active/inactive` for modules
 - Fix #6754: Regression due to return type (#6550)
 - Enh #6550: Improve module migrations
 - Fix #6237: Migration errors during module activation are ignored
@@ -41,3 +45,15 @@ HumHub Changelog
 - Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false
 - Enh #131: Online Indicator- People Cards, Members Snippet, My Profile
 - Fix #6774: When enableMailSummaries is false in the configuration file, prevent accessing the "E-Mail Summaries" page in the account settings
+- Fix #6777: Allow access to pending registrations to non-system admins
+- Enh #6783: Lowercase user email before save
+- Enh #6786: Improve password hashing
+- Enh #6788: Allow to disable login/registration form via configuration file
+- Enh #6788: Allow new user registration of specified SSO providers via configuration file
+- Fix #6790: Fix marketplace searching
+- Fix #6811: `SpaceModelMembership::removeMember()` should always return a boolean value (returns void if success)
+- Fix #6808: On small screens, in the "Spaces" page, for spaces not having an image, the acronym text is not vertically centered
+- Enh #6812: Reduce people filter options depending on what filtered users have
+- Fix #6810: Top menu on small screens: the previous page remains active when the new page is in the drop-down submenu
+- Fix #6830: Wrong view filename after module enabling
+- Enh #6838: Fix LDAP encryption labels and allow ignore also part of DNs
