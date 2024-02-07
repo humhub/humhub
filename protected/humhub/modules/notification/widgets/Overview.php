@@ -68,5 +68,3 @@ class Overview extends JsWidget
         ];
     }
 }
-
-?>

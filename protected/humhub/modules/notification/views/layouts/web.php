@@ -14,7 +14,9 @@ use yii\helpers\Html;
 /** @var string $relativeUrl */
 
 ?>
-<li class="<?php if ($isNew) : ?>new<?php endif; ?>"
+<li class="<?php if ($isNew):
+?>new<?php
+           endif; ?>"
     data-notification-id="<?= $record->id ?>"
     data-notification-group="<?= !empty($record->baseModel->getGroupkey()) ? Html::encode(get_class($record->baseModel)) . ':' . Html::encode($record->baseModel->getGroupKey()) : '' ?>">
 
@@ -30,7 +32,7 @@ use yii\helpers\Html;
             <?php endif; ?>
 
             <!-- show space image -->
-            <?php if ($space) : ?>
+            <?php if ($space): ?>
                 <img class="media-object img-rounded img-space pull-left"
                      data-src="holder.js/20x20" alt="20x20"
                      style="width: 20px; height: 20px;"
@@ -43,7 +45,7 @@ use yii\helpers\Html;
                 <?= $content; ?>
 
                 <br> <?= TimeAgo::widget(['timestamp' => $record->created_at]); ?>
-                <?php if ($isNew) : ?>
+                <?php if ($isNew): ?>
                     <span class="label label-danger"><?= Yii::t('NotificationModule.base', 'New'); ?></span>
                 <?php endif; ?>
             </div>

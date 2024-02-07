@@ -25,7 +25,6 @@ use humhub\modules\admin\permissions\ManageSettings;
  */
 class NotificationSettings extends Model
 {
-
     /**
      * Will hold the selected notification settings. Note this will only be filled with selected settings
      * and not with deselected notification settings.
@@ -286,5 +285,4 @@ class NotificationSettings extends Model
         $settingsManager = Yii::$app->getModule('notification')->settings->user();
         $settingsManager->reload();
     }
-
 }

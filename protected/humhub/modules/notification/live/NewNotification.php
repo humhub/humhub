@@ -18,7 +18,6 @@ use humhub\modules\content\models\Content;
  */
 class NewNotification extends LiveEvent
 {
-
     /**
      * @var int the id of the new notification
      */
@@ -47,5 +46,4 @@ class NewNotification extends LiveEvent
         parent::init();
         $this->visibility = Content::VISIBILITY_OWNER;
     }
-
 }

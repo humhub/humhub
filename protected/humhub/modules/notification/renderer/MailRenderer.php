@@ -28,7 +28,6 @@ namespace humhub\modules\notification\renderer;
  */
 class MailRenderer extends \humhub\components\rendering\MailRenderer
 {
-
     /**
      * @inheritdoc
      */
@@ -48,5 +47,4 @@ class MailRenderer extends \humhub\components\rendering\MailRenderer
      * @inheritdoc
      */
     public $defaultTextViewPath = '@notification/views/mails/plaintext';
-
 }

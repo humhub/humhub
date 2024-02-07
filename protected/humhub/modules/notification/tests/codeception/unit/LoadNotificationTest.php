@@ -9,7 +9,6 @@ use Codeception\Specify;
 
 class LoadNotificationTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testDefaultView()
@@ -43,5 +42,4 @@ class LoadNotificationTest extends HumHubDbTestCase
         $this->assertEquals(6, max($ids));
         $this->assertEquals(1, min($ids));
     }
-
 }

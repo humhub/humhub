@@ -1,11 +1,9 @@
 <?php
 
-
 use humhub\components\Migration;
 
 class m150204_103433_html5_notified extends Migration
 {
-
     public function up()
     {
         if (!$this->isInitialInstallation()) {

@@ -23,7 +23,6 @@ use yii\base\InvalidConfigException;
  */
 abstract class NotificationCategory extends BaseObject
 {
-
     /**
      * @var string the category id
      */
@@ -112,5 +111,4 @@ abstract class NotificationCategory extends BaseObject
     {
         return true;
     }
-
 }

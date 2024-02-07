@@ -29,7 +29,6 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\mail\MessageInterface;
 
-
 /**
  * A BaseNotification class describes the behaviour and the type of a Notification.
  * A BaseNotification is created and can be sent to one or multiple users over different targets.
@@ -45,7 +44,6 @@ use yii\mail\MessageInterface;
  */
 abstract class BaseNotification extends SocialActivity
 {
-
     /**
      * @var boolean automatically mark notification as seen after click on it
      */
@@ -591,5 +589,4 @@ abstract class BaseNotification extends SocialActivity
     {
         return true;
     }
-
 }

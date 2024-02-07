@@ -108,7 +108,6 @@ class OverviewController extends Controller
                 } else {
                     throw new IntegrityException('Invalid base model (' . $notificationRecord->class . ') found for notification');
                 }
-
             } catch (IntegrityException $ex) {
                 $notificationRecord->delete();
                 Yii::warning('Deleted inconsistent notification with id ' . $notificationRecord->id . '. ' . $ex->getMessage());

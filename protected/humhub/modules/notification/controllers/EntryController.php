@@ -27,7 +27,6 @@ use humhub\components\access\ControllerAccess;
  */
 class EntryController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -100,5 +99,4 @@ class EntryController extends Controller
 
         return $content->getUrl();
     }
-
 }

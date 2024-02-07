@@ -11,7 +11,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class SpecialNotification extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */

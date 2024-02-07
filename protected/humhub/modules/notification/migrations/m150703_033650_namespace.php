@@ -1,14 +1,11 @@
 <?php
 
-
 use humhub\components\Migration;
 use humhub\modules\notification\models\Notification;
 use yii\db\Expression;
 
-
 class m150703_033650_namespace extends Migration
 {
-
     public function up()
     {
         $this->renameClass('Notification', Notification::class);

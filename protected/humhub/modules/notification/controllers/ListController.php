@@ -117,7 +117,6 @@ class ListController extends Controller
 
         $update['notifications'] = [];
         foreach ($unnotified as $notification) {
-
             if ($includeContent && Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
                 try {
                     $baseModel = $notification->getBaseModel();
@@ -139,5 +138,4 @@ class ListController extends Controller
 
         return $update;
     }
-
 }

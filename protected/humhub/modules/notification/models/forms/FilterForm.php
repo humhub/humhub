@@ -13,7 +13,6 @@ use yii\db\ActiveQuery;
  */
 class FilterForm extends Model
 {
-
     /**
      * Contains the current module filters
      * @var array
@@ -171,5 +170,4 @@ class FilterForm extends Model
 
         return $pagination;
     }
-
 }

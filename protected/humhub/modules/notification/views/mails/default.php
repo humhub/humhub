@@ -1,4 +1,6 @@
-<?php use humhub\widgets\mails\MailButtonList;
+<?php
+
+use humhub\widgets\mails\MailButtonList;
 
 $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 <?= $html; ?>

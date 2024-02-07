@@ -15,7 +15,6 @@ use humhub\modules\notification\targets\MailTarget;
  */
 class SpecialNotificationCategory extends NotificationCategory
 {
-
     public $id = 'test_special';
 
     public function getDefaultSetting(BaseTarget $target)
@@ -48,5 +47,4 @@ class SpecialNotificationCategory extends NotificationCategory
     {
         return 'Test Special Category';
     }
-
 }

@@ -21,7 +21,6 @@ use yii\base\Widget;
  */
 class UpdateNotificationCount extends Widget
 {
-
     /**
      * @inheritdoc
      */

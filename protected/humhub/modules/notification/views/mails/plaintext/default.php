@@ -9,4 +9,4 @@
 
 
 <?= Yii::t('NotificationModule.base', 'View online:') ?> <?= urldecode($url) ?>
-<?php $this->endContent(); ?>
+<?php $this->endContent();

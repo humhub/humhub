@@ -22,7 +22,6 @@ use humhub\modules\notification\live\NewNotification;
  */
 class WebTarget extends BaseTarget
 {
-
     /**
      * @inheritdoc
      */
@@ -61,5 +60,4 @@ class WebTarget extends BaseTarget
     {
         return Yii::t('NotificationModule.targets', 'Web');
     }
-
 }

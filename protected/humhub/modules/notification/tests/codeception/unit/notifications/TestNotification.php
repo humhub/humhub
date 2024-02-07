@@ -11,5 +11,4 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class TestNotification extends BaseNotification
 {
-
 }

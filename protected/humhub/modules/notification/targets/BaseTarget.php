@@ -27,7 +27,6 @@ use humhub\modules\notification\components\NotificationCategory;
  */
 abstract class BaseTarget extends BaseObject
 {
-
     /**
      * Unique target id has to be defined by subclasses.
      * @var string
@@ -272,5 +271,4 @@ abstract class BaseTarget extends BaseObject
 
         return ($enabled === null) ? $this->defaultSetting : boolval($enabled);
     }
-
 }

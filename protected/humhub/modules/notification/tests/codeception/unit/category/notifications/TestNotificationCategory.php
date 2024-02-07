@@ -14,7 +14,6 @@ use humhub\modules\notification\targets\BaseTarget;
  */
 class TestNotificationCategory extends NotificationCategory
 {
-
     public $id = 'test';
 
     public function getDefaultSetting(BaseTarget $target)
@@ -37,5 +36,4 @@ class TestNotificationCategory extends NotificationCategory
     {
         return 'Test Category';
     }
-
 }

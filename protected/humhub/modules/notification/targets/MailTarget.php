@@ -20,7 +20,6 @@ use yii\helpers\Url;
  */
 class MailTarget extends BaseTarget
 {
-
     /**
      * @inheritdoc
      */
@@ -92,5 +91,4 @@ class MailTarget extends BaseTarget
         // Do not send mail notifications for example content during installlation.
         return parent::isActive() && Yii::$app->isInstalled();
     }
-
 }

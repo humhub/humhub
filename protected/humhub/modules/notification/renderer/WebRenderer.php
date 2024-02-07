@@ -18,7 +18,6 @@ use humhub\components\rendering\DefaultViewPathRenderer;
  */
 class WebRenderer extends DefaultViewPathRenderer
 {
-
     /**
      * @inheritdoc
      */
@@ -28,5 +27,4 @@ class WebRenderer extends DefaultViewPathRenderer
      * @inheritdoc
      */
     public $defaultViewPath = '@notification/views';
-
 }

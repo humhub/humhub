@@ -26,7 +26,6 @@ use yii\helpers\Console;
  */
 class Events extends BaseObject
 {
-
     /**
      * On User delete, also delete all posts
      *
@@ -129,8 +128,6 @@ class Events extends BaseObject
                     $notification->delete();
                 }
             }
-
-
         }
     }
 
@@ -190,5 +187,4 @@ class Events extends BaseObject
             $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
-
 }

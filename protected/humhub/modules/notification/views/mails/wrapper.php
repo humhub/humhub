@@ -1,4 +1,4 @@
-<?php if (!empty($headline)) : ?>
+<?php if (!empty($headline)): ?>
     <tr>
         <td align="center" valign="top" class="fix-box">
             <!-- start container width 600px -->

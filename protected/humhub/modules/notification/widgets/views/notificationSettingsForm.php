@@ -1,4 +1,5 @@
 <?php
+
 /* @var $model NotificationSettings */
 /* @var $form yii\widgets\ActiveForm */
 /* @var $showSpaces boolean */
@@ -14,7 +15,7 @@ use yii\bootstrap\Html;
 <br/>
 <?= $form->field($model, 'desktopNotifications')->checkbox(); ?>
 
-<?php if ($showSpaces) : ?>
+<?php if ($showSpaces): ?>
     <?= humhub\modules\space\widgets\SpacePickerField::widget([
         'form' => $form,
         'model' => $model,

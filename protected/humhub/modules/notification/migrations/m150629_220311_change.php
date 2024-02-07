@@ -1,11 +1,9 @@
 <?php
 
-
 use yii\db\Migration;
 
 class m150629_220311_change extends Migration
 {
-
     public function up()
     {
         $this->renameColumn('notification', 'source_object_model', 'source_class');

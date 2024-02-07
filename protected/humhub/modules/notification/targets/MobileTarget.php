@@ -21,7 +21,6 @@ use yii\di\NotInstantiableException;
  */
 class MobileTarget extends BaseTarget
 {
-
     /**
      * @inheritdoc
      */
@@ -73,5 +72,4 @@ class MobileTarget extends BaseTarget
 
         return $this->provider->isActive($user);
     }
-
 }

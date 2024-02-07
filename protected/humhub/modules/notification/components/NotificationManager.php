@@ -228,7 +228,6 @@ class NotificationManager
                 $query->union(Membership::getSpaceMembersQuery($container, true, false)
                     ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
             }
-
         } elseif ($container instanceof User) {
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
@@ -493,5 +492,4 @@ class NotificationManager
         }
         return $result;
     }
-
 }
