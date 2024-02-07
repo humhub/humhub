@@ -164,7 +164,7 @@ class DashboardMemberStreamQueryTest extends DashboardStreamTest
 
     public function testSpaceFollowerDoesNotSeePublicContentOnPrivateSpace()
     {
-        $this->assertSpaceFollowerDoesSee(Space::VISIBILITY_NONE, Content::VISIBILITY_PUBLIC);
+        $this->assertSpaceFollowerDoesNotSee(Space::VISIBILITY_NONE, Content::VISIBILITY_PUBLIC);
     }
 
     public function testSpaceFollowerDoesNotSeePrivateContentOnPrivateSpace()
