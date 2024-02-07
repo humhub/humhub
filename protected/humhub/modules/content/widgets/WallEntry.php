@@ -8,18 +8,16 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\content\widgets\stream\StreamEntryWidget;
+use humhub\components\Widget;
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\controllers\DashboardController;
-use humhub\modules\stream\actions\Stream;
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuEntry;
-use Yii;
 use humhub\modules\user\controllers\ProfileController;
-use humhub\components\Widget;
-use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentContainerController;
+use Yii;
 
 /**
  * WallEntry is responsible to show a content inside a stream/wall.

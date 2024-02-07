@@ -24,6 +24,7 @@ use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\authclient\BaseClient;
+use yii\base\Exception;
 use yii\captcha\CaptchaAction;
 use yii\web\Cookie;
 use yii\web\HttpException;
@@ -125,6 +126,8 @@ class AuthController extends Controller
             'invite' => $invite,
             'canRegister' => $invite->allowSelfInvite(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
+            'showLoginForm' => $this->module->showLoginForm || Yii::$app->request->get('showLoginForm', false),
+            'showRegistrationForm' => $this->module->showRegistrationForm
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {
@@ -157,7 +160,8 @@ class AuthController extends Controller
 
         $user = $authClientService->getUser();
 
-        if (Yii::$app->settings->get('maintenanceMode') && !$user->isSystemAdmin()) {
+        if (Yii::$app->settings->get('maintenanceMode') && !($user && $user->isSystemAdmin())) {
+            Yii::$app->getView()->warn(ControllerAccess::getMaintenanceModeWarningText());
             return $this->redirect(['/user/auth/login']);
         }
 
@@ -178,6 +182,7 @@ class AuthController extends Controller
      * @param BaseClient $authClient
      * @return Response|\yii\console\Response|\yii\web\Response
      * @throws HttpException
+     * @throws Exception
      */
     private function register(BaseClient $authClient)
     {
@@ -190,7 +195,7 @@ class AuthController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
-        // Check if AuthClient provide a ID for the user (mandatory)
+        // Check that AuthClient provides an ID for the user (mandatory)
         if (!isset($attributes['id'])) {
             Yii::warning('Could not register user automatically: AuthClient ' . get_class($authClient) . ' provided no ID attribute.', 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'Missing ID AuthClient Attribute from AuthClient.'));
@@ -198,16 +203,19 @@ class AuthController extends Controller
         }
 
         $authClientService = new AuthClientService($authClient);
-        $tokenRegistrationService = new InviteRegistrationService((string)Yii::$app->request->get('token'));
+        $inviteRegistrationService = InviteRegistrationService::createFromRequestOrEmail($attributes['email'] ?? null);
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
-        if (!$tokenRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
+        if (!$inviteRegistrationService->isValid() &&
+            !$linkRegistrationService->isValid() &&
+            (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->module->allowUserRegistrationFromAuthClientIds))
+        ) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
-            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', "You're not registered."));
+            Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'You\'re not registered.'));
             return $this->redirect(['/user/auth/login']);
         }
 
-        if ($linkRegistrationService->isValid() && !empty($attributes['email'])) {
+        if (!empty($attributes['email']) && $linkRegistrationService->isValid()) {
             $linkRegistrationService->convertToInvite($attributes['email']);
         }
 

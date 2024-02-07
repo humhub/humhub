@@ -4,7 +4,7 @@ return [
     '(Also visible to non-members of this space)' => '(Widoczne również dla osób niebędących członkami tej strefy)',
     '<strong>Move</strong> content' => '<strong>Przenieś</strong> zawartość',
     '<strong>Permalink</strong> to this post' => '<strong>Link</strong> do tego postu',
-    'Activated' => 'Aktywowane',
+    'Enabled' => 'Aktywowane',
     'Add a member to notify' => 'Dodaj członka do powiadomienia',
     'Add tag...' => 'Dodaj znacznik...',
     'Archived' => 'Zarchiwizowany',

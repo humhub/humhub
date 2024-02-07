@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -76,7 +77,17 @@ class ModuleService
         return true;
     }
 
+    /**
+     * @return bool
+     * @deprecated since v1.16; use static::enable()
+     * @see static::enable()
+     */
     public function activate(): bool
+    {
+        return $this->enable();
+    }
+
+    public function enable(): bool
     {
         return $this->module instanceof CoreModule && $this->module->enable();
     }
@@ -111,8 +122,8 @@ class ModuleService
             'success' => true,
             'status' => Yii::t('MarketplaceModule.base', 'Update successful'),
             'message' => Yii::t('MarketplaceModule.base', 'Module "{moduleName}" has been updated to version {newVersion} successfully.', [
-                'moduleName' => $moduleInfo['latestCompatibleVersion']['name'],
-                'newVersion' => $moduleInfo['latestCompatibleVersion']['version'],
+                    'moduleName' => $moduleInfo['latestCompatibleVersion']['name'],
+                    'newVersion' => $moduleInfo['latestCompatibleVersion']['version'],
             ])
         ];
     }

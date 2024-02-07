@@ -144,7 +144,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
      */
     private function isFriendShipEnabled()
     {
-        return Yii::$app->getModule('friendship')->getIsEnabled();
+        return Yii::$app->getModule('friendship')->isFriendshipEnabled();
     }
 
     /**

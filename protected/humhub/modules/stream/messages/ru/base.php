@@ -1,8 +1,7 @@
 <?php
-
-return [
-    'Show {i} more.' => 'Показать ещё {i}',
-    'Date "From" should be before "To"!' => '',
-    'The content could not be found.' => '',
-    'You are not allowed to view this content.' => '',
-];
+return array (
+  'Date "From" should be before "To"!' => 'Дата «От» должна быть раньше «До»!',
+  'Show {i} more.' => 'Показать ещё {i}',
+  'The content could not be found.' => 'Содержимое не найдено.',
+  'You are not allowed to view this content.' => 'Вам не разрешено просматривать этот контент.',
+);

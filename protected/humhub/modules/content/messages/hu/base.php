@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '<strong>Hivatkozás</strong> ehhez a bejegyzéshez',
   '<strong>Scheduling</strong> Options' => '<strong>Ütemezési</strong> beállítások',
   'Activate scheduling' => 'Ütemezés aktiválása',
-  'Activated' => 'Aktiválva',
+  'Enabled' => 'Aktiválva',
   'Add a member to notify' => 'Értesítendő tag hozzáadása',
   'Add tag...' => 'Címke hozzáadása…',
   'Archived' => 'Archivált',

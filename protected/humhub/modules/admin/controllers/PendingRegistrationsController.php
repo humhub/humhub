@@ -19,6 +19,10 @@ use yii\web\HttpException;
 
 class PendingRegistrationsController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public $adminOnly = false;
 
     /**
      * @inheritDoc
@@ -34,7 +38,7 @@ class PendingRegistrationsController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [

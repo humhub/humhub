@@ -6,7 +6,7 @@ return array (
   '<strong>Permalink</strong> to this post' => '<strong>Raccourci</strong> vers cette publication',
   '<strong>Scheduling</strong> Options' => 'Options de <strong>planification</strong>',
   'Activate scheduling' => 'Activer la planification',
-  'Activated' => 'Activé',
+  'Enabled' => 'Activé',
   'Add a member to notify' => 'Ajouter un membre à notifier',
   'Add tag...' => 'Ajouter un mot-clé...',
   'Archived' => 'Archivé',

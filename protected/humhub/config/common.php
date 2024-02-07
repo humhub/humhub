@@ -24,7 +24,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.15.0-beta.1',
+    'version' => '1.16.0',
     'minRecommendedPhpVersion' => '7.4',
     'minSupportedPhpVersion' => '7.4',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
@@ -173,7 +173,6 @@ $config = [
     ],
     'params' => [
         'installed' => false,
-        'databaseInstalled' => false,
         'databaseDefaultStorageEngine' => 'InnoDB',
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
@@ -225,6 +224,7 @@ $config = [
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
             'sr' => 'Сербисцх',
+            'eu' => 'Basque'
         ],
         'ldap' => [
             // LDAP date field formats

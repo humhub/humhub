@@ -8,10 +8,10 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerModuleState;
 use ReflectionClass;
 use Yii;
-use humhub\modules\content\models\ContentContainerModuleState;
-use humhub\modules\content\models\ContentContainer;
 use yii\base\InvalidConfigException;
 
 /**
@@ -163,13 +163,21 @@ class ContentContainerModuleManager extends \yii\base\Component
         $this->_available = [];
 
         foreach (Yii::$app->moduleManager->getModules() as $module) {
-            if ($module instanceof ContentContainerModule && $module->isActivated &&
-                $module->hasContentContainerType(get_class($this->contentContainer))) {
+            if ($this->isAvailableModule($module)) {
                 $this->_available[$module->id] = $module;
             }
         }
 
         return $this->_available;
+    }
+
+    public function isAvailableModule($module): bool
+    {
+        return
+            $module instanceof ContentContainerModule
+            && $module->getIsEnabled()
+            && $module->hasContentContainerType(get_class($this->contentContainer))
+            && self::getDefaultState(get_class($this->contentContainer), $module->id) !== ContentContainerModuleState::STATE_NOT_AVAILABLE;
     }
 
     /**
@@ -317,13 +325,13 @@ class ContentContainerModuleManager extends \yii\base\Component
     /**
      * This method is called to determine classes of Content models which can be posted on wall.
      *
-     * @since 1.13
      * @param ContentContainerActiveRecord|null $contentContainer
      * @return ContentActiveRecord[]
+     * @since 1.13
      */
     public function getContentClasses(): array
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->id, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->id, function () {
             $contentClasses = [];
             foreach ($this->getEnabled() as $moduleId) {
                 $module = Yii::$app->getModule($moduleId);

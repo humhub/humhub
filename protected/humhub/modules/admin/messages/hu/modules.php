@@ -1,7 +1,6 @@
 <?php
 return array (
   '%moduleName% - Set as default module' => '%moduleName% - Beállítás alapértelmezett modulként',
-  'Activated' => 'Aktiválva',
   'Always activated' => 'Mindig aktiválva van',
   'Are you sure? *ALL* module data will be lost!' => 'Biztos vagy benne? *MINDEN* modul adat elvész!',
   'Are you sure? *ALL* module related data and files will be lost!' => 'Biztos vagy benne? *MINDEN* a modullal kapcsolatos és fájl elvész!',
@@ -10,11 +9,15 @@ return array (
   'Deactivated' => 'Deaktiválva',
   'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'Ennek a modulnak a deaktiválása még nem fejeződött be. Kérjük, próbálja újra néhány perc múlva.',
   'Enable module...' => 'Modul bekapcsolása...',
+  'Enabled' => 'Aktiválva',
   'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Itt kiválaszthatod, hogy egy modul automatikusan aktiválódjon-e egy közösségben vagy felhasználói profilban. Ha azt szeretnéd, hogy a modul legyen aktiválva, válaszd a "mindig aktiválva" lehetőséget.',
+  'Module deactivation in progress. This process may take a moment.' => 'Modul deaktiválása folyamatban. Ez a folyamat eltarthat egy ideig.',
   'Module path %path% is not writeable!' => 'A(z ) %path% modulútvonal nem írható!',
+  'Not available' => 'Nem elérhető',
   'Save' => 'Mentés',
   'Space default state' => 'Közösség alapértelmezett állapota',
   'Spaces' => 'Közösségek',
+  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
   'User default state' => 'Felhasználó alapértelmezett állapota',
   'Users' => 'Felhasználók',
 );

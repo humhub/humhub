@@ -67,6 +67,10 @@ class FilterService
             return true;
         }
 
+        if ($this->categoryId == -1) {
+            return empty($this->module->categories);
+        }
+
         return is_array($this->module->categories) && in_array($this->categoryId, $this->module->categories);
     }
 

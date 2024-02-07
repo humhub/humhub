@@ -25,6 +25,7 @@ return [
         'el',
         'es',
         'et',
+        'eu',
         'fa-IR',
         'fi',
         'fr',

@@ -25,7 +25,6 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\db\Query;
 use yii\web\HttpException;
@@ -56,7 +55,7 @@ class UserController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageUsers::class, ManageGroups::class]],
@@ -100,22 +99,21 @@ class UserController extends Controller
     public function actionEdit()
     {
         $user = UserEditForm::findOne(['id' => Yii::$app->request->get('id')]);
-        $user->initGroupSelection();
 
-        if ($user == null) {
+        if ($user === null) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
         }
 
-        $authClientUserService = new AuthClientUserService($user);
+        $user->initGroupSelection();
 
-        $canEditAdminFields = Yii::$app->user->isAdmin() || !$user->isSystemAdmin();
-        $canEditPassword = $canEditAdminFields && $authClientUserService->canChangePassword();
+        if ($user->canEditAdminFields()) {
+            $user->scenario = User::SCENARIO_EDIT_ADMIN;
+            $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
+        }
 
-        $user->scenario = 'editAdmin';
-        $user->profile->scenario = Profile::SCENARIO_EDIT_ADMIN;
         $profile = $user->profile;
 
-        if ($canEditPassword) {
+        if ($user->canEditPassword()) {
             if (!($password = PasswordEditForm::findOne(['user_id' => $user->id]))) {
                 $password = new PasswordEditForm();
                 $password->user_id = $user->id;
@@ -140,13 +138,13 @@ class UserController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 25,
-                    'readonly' => !$authClientUserService->canChangeUsername(),
+                    'readonly' => !$user->getAuthClientUserService()->canChangeUsername(),
                 ],
                 'email' => [
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
-                    'readonly' => !$authClientUserService->canChangeEmail()
+                    'readonly' => !$user->getAuthClientUserService()->canChangeEmail()
                 ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
@@ -163,7 +161,7 @@ class UserController extends Controller
             ],
         ];
 
-        if ($canEditAdminFields) {
+        if ($user->canEditAdminFields()) {
             $definition['elements']['User']['elements']['status'] = [
                 'type' => 'dropdownlist',
                 'class' => 'form-control',
@@ -178,7 +176,7 @@ class UserController extends Controller
         }
 
         // Change Password Form
-        if ($canEditPassword) {
+        if ($user->canEditPassword()) {
             $definition['elements']['Password'] = [
                 'type' => 'form',
                 'title' => Yii::t('AdminModule.user', 'Password'),
@@ -215,25 +213,23 @@ class UserController extends Controller
 
         ];
 
-        if ($canEditAdminFields) {
-            if (!$user->isCurrentUser()) {
-                $definition['buttons']['delete'] = [
-                    'type' => 'submit',
-                    'label' => Yii::t('AdminModule.user', 'Delete'),
-                    'class' => 'btn btn-danger',
-                ];
-            }
+        if ($user->canEditAdminFields() && !$user->isCurrentUser()) {
+            $definition['buttons']['delete'] = [
+                'type' => 'submit',
+                'label' => Yii::t('AdminModule.user', 'Delete'),
+                'class' => 'btn btn-danger',
+            ];
         }
 
         $form = new HForm($definition);
         $form->models['User'] = $user;
         $form->models['Profile'] = $profile;
-        if ($canEditPassword) {
+        if ($user->canEditPassword()) {
             $form->models['Password'] = $password;
         }
 
         if ($form->submitted('save') && $form->validate()) {
-            if ($canEditPassword) {
+            if ($user->canEditPassword()) {
                 if (!empty($password->newPassword)) {
                     $password->setPassword($password->newPassword);
                 }

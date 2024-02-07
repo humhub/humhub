@@ -44,7 +44,7 @@ $userModel = Yii::$app->user->identity;
                 'link' => false,
                 'width' => 32,
                 'htmlOptions' => ['id' => 'user-account-image'],
-                'hideOnlineStatus' => true,
+                'showSelfOnlineStatus' => true,
             ]) ?>
 
             <b class="caret"></b>

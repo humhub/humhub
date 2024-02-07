@@ -28,7 +28,7 @@ class BaseAccountController extends \humhub\components\Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY]
@@ -46,7 +46,7 @@ class BaseAccountController extends \humhub\components\Controller
     public function init()
     {
         $this->appendPageTitle(\Yii::t('UserModule.base', 'My Account'));
-        return parent::init();
+        parent::init();
     }
 
     /**

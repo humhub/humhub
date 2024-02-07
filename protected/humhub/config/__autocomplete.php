@@ -13,7 +13,7 @@
  */
 class Yii {
     /**
-     * @var \yii\web\Application|\yii\console\Application|\humhub\components\Application|__Application|__WebApplication
+     * @var \yii\web\Application|\yii\console\Application|\humhub\components\Application|\humhub\components\console\Application|\humhub\interfaces\ApplicationInterface|__Application|__WebApplication
      */
     public static $app;
 }
@@ -51,4 +51,20 @@ class __Application {
  */
 class __WebApplication extends \humhub\components\Application
 {
+}
+
+if (!class_exists(WeakReference::class)) {
+    class WeakReference
+    {
+        /* Methods */
+        public static function create(object $object): self
+        {
+            return new static();
+        }
+
+        public function get(): ?object
+        {
+            return null;
+        }
+    }
 }

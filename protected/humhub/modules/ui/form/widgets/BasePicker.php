@@ -2,9 +2,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use humhub\components\ActiveRecord;
 use Yii;
-use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -48,8 +46,15 @@ abstract class BasePicker extends JsInputWidget
 
     /**
      * Disabled items
+     * @var array
      */
     public $disabledItems;
+
+    /**
+     * Disables the picker field
+     * @var bool
+     */
+    public $disabled = false;
 
     /**
      * Default route used for search queries.
@@ -415,10 +420,11 @@ abstract class BasePicker extends JsInputWidget
             'load-more' => Yii::t('UserModule.chooser', 'Load more'),
             'input-too-short' => Yii::t('UserModule.chooser', 'Please enter at least {n} character', ['n' => $this->minInput]),
             'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed characters ({n}).', ['n' => $this->maxInput]),
-            'default-results' => $this->getDefaultResultData()
+            'default-results' => $this->getDefaultResultData(),
+            'disabled' => $this->disabled
         ];
 
-        if(!empty($this->disabledItems)) {
+        if (!empty($this->disabledItems)) {
             $result['disabled-items'] = $this->disabledItems;
         }
 

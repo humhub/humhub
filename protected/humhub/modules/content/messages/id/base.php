@@ -70,7 +70,7 @@ return [
     'in' => 'pada',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
-    'Activated' => '',
+    'Enabled' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
     'Deleted' => '',

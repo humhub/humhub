@@ -3,17 +3,12 @@
 /**
  * Application configuration shared by all test types
  */
+
 $default = [
     'name' => 'HumHub Test',
     'language' => 'en-US',
     'params' => [
         'installed' => true,
-        'settings' => [
-            'core' => [
-                'name' => 'HumHub Test',
-                'baseUrl' => 'http://localhost:8080',
-            ],
-        ]
     ],
     'controllerMap' => [
         'fixture' => [
@@ -31,6 +26,13 @@ $default = [
             'showScriptName' => true,
             'scriptUrl' => '/index-test.php',
         ],
+    ],
+    'container' => [
+        'definitions' => [
+            \Codeception\Lib\Connector\Yii2\TestMailer::class => [
+                'class' => \tests\codeception\_support\TestMailer::class,
+            ]
+        ]
     ],
     'modules' => [
         'user' => [

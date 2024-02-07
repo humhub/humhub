@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => '<strong>ช่องว่าง</strong> โมดูล',
     '<strong>Space</strong> settings' => '<strong>ช่องว่าง</strong> การตั้งค่า',
     'Actions' => 'การกระทำ',
-    'Activate' => 'เปิดใช้งาน',
+    'Enable' => 'เปิดใช้งาน',
     'Add <strong>Modules</strong>' => 'เพิ่ม <strong>โมดูล</strong>',
     'Advanced access settings' => 'การตั้งค่าการเข้าถึงขั้นสูง',
     'Archive' => 'เอกสารเก่า',

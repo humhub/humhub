@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -13,9 +13,14 @@ use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\marketplace\models\Module as OnlineModelModule;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\queue\helpers\QueueHelper;
+use humhub\services\MigrationService;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\db\StaleObjectException;
 use yii\helpers\Json;
 use yii\web\AssetBundle;
 
@@ -24,6 +29,7 @@ use yii\web\AssetBundle;
  *
  * @property-read string $name
  * @property-read string $description
+ * @property-read array $keywords
  * @property-read bool $isActivated
  * @property SettingsManager $settings
  * @author luke
@@ -56,7 +62,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules name provided by module.json file
+     * Returns the module's name provided by module.json file
      *
      * @return string Name
      */
@@ -72,7 +78,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules description provided by module.json file
+     * Returns the module's description provided by module.json file
      *
      * @return string Description
      */
@@ -88,7 +94,7 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Returns modules version number provided by module.json file
+     * Returns the module's version number provided by module.json file
      *
      * @return string Version Number
      */
@@ -118,6 +124,22 @@ class Module extends \yii\base\Module
         }
 
         return $url;
+    }
+
+    /**
+     * Returns module's keywords provided by module.json file
+     *
+     * @return array List of keywords
+     */
+    public function getKeywords(): array
+    {
+        $info = $this->getModuleInfo();
+
+        if ($info['keywords']) {
+            return (array)$info['keywords'];
+        }
+
+        return [];
     }
 
     /**
@@ -208,34 +230,51 @@ class Module extends \yii\base\Module
     }
 
     /**
-     * Check this module is activated
+     * Check this module is enabled
      *
      * @return bool
      */
-    public function getIsActivated(): bool
+    public function getIsEnabled(): bool
     {
         return Yii::$app->hasModule($this->id) &&
             !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
     }
 
     /**
+     * @see          static::getIsEnabled()
+     * @deprecated since 1.16; use static::getIsEnabled() instead.
+     * @noinspection PhpUnused
+     */
+    public function getIsActivated(): bool
+    {
+        return $this->getIsEnabled();
+    }
+
+    /**
      * Enables this module
      *
-     * @return boolean
+     * @return bool|null Result of migration or null if beforeEnable() returned false (since v1.16)
+     * @throws InvalidConfigException
      */
     public function enable()
     {
         Yii::$app->moduleManager->enable($this);
-        $this->migrate();
+        $result = $this->getMigrationService()->migrateUp();
 
-        return true;
+        if ($result === false) {
+            Yii::$app->moduleManager->disable($this);
+            Yii::error('Could not enable module. Database Migration failed! See previous error for result.', $this->id);
+            return false;
+        }
+
+        return $result;
     }
 
     /**
      * Disables a module
      *
      * This should delete all data created by this module.
-     * When override this method make sure to invoke call `parent::disable()` **AFTER** your implementation as
+     * When overriding this method, make sure to invoke call `parent::disable()` **AFTER** your implementation as
      *
      * ```php
      * public function disable()
@@ -244,56 +283,40 @@ class Module extends \yii\base\Module
      *     parent::disable();
      * }
      * ```
+     *
+     * @return bool|null Result uninstall-migration or null if beforeDisable() returned false (since v1.16)
+     * @throws InvalidConfigException
+     * @throws StaleObjectException
+     * @throws Throwable
      */
     public function disable()
     {
-        /**
-         * Remove database tables
-         */
-        $migrationPath = $this->getBasePath() . '/migrations';
-        $uninstallMigration = $migrationPath . '/uninstall.php';
-        if (file_exists($uninstallMigration)) {
-
-            /**
-             * Execute Uninstall Migration
-             */
-            ob_start();
-            require_once($uninstallMigration);
-            $migration = new \uninstall;
-            try {
-                $migration->up();
-            } catch (\yii\db\Exception $ex) {
-                Yii::error($ex);
-            }
-            ob_get_clean();
-
-            /**
-             * Delete all Migration Table Entries
-             */
-            $migrations = opendir($migrationPath);
-            while (false !== ($migration = readdir($migrations))) {
-                if ($migration == '.' || $migration == '..' || $migration == 'uninstall.php') {
-                    continue;
-                }
-                Yii::$app->db->createCommand()->delete('migration', ['version' => str_replace('.php', '', $migration)])->execute();
-            }
+        try {
+            $result = $this->getMigrationService()->uninstall();
+            ContentContainerSetting::deleteAll(['module_id' => $this->id]);
+            Setting::deleteAll(['module_id' => $this->id]);
+        } catch (Throwable $ex) {
+            Yii::error($ex, $this->id);
+            $result = false;
         }
 
-        ContentContainerSetting::deleteAll(['module_id' => $this->id]);
-        Setting::deleteAll(['module_id' => $this->id]);
-
         Yii::$app->moduleManager->disable($this);
+
+        return $result;
     }
 
     /**
      * Execute all not applied module migrations
+     * @deprecated since v1.16; use static::getMigrationService()->migrateUp()
      */
     public function migrate()
     {
-        $migrationPath = $this->basePath . '/migrations';
-        if (is_dir($migrationPath)) {
-            \humhub\commands\MigrateController::webMigrateUp($migrationPath);
-        }
+        return $this->getMigrationService()->migrateUp();
+    }
+
+    public function getMigrationService(): MigrationService
+    {
+        return new MigrationService($this);
     }
 
     /**
@@ -319,10 +342,15 @@ class Module extends \yii\base\Module
      */
     public function update()
     {
-        if($this->beforeUpdate() !== false) {
-            $this->migrate();
-            $this->afterUpdate();
+        if (!$this->beforeUpdate()) {
+            return null;
         }
+
+        $result = $this->getMigrationService()->migrateUp();
+
+        $this->afterUpdate();
+
+        return $result;
     }
 
     /**
@@ -337,13 +365,11 @@ class Module extends \yii\base\Module
         return true;
     }
 
-
     /**
      * Called right after the module update.
      */
     public function afterUpdate()
     {
-
     }
 
     /**
@@ -363,9 +389,9 @@ class Module extends \yii\base\Module
      * This function should also make sure the module is installed on the given container in case the permission
      * only affects installed features.
      *
-     * @since 0.21
      * @param \humhub\modules\content\components\ContentContainerActiveRecord $contentContainer optional contentcontainer
      * @return array list of permissions
+     * @since 0.21
      */
     public function getPermissions($contentContainer = null)
     {
@@ -375,8 +401,8 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of notification classes this module provides.
      *
-     * @since 1.1
      * @return array list of notification classes
+     * @since 1.1
      */
     public function getNotifications()
     {
@@ -404,8 +430,8 @@ class Module extends \yii\base\Module
     /**
      * Determines whether the module has notification classes or not
      *
-     * @since 1.2
      * @return boolean has notifications
+     * @since 1.2
      */
     public function hasNotifications()
     {
@@ -415,8 +441,8 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of activity class names this modules provides.
      *
-     * @since 1.2
      * @return array list of activity class names
+     * @since 1.2
      */
     public function getActivityClasses()
     {
@@ -444,8 +470,8 @@ class Module extends \yii\base\Module
     /**
      * Returns a list of asset class names this modules provides.
      *
-     * @since 1.2.8
      * @return array list of asset class names
+     * @since 1.2.8
      */
     public function getAssetClasses()
     {
@@ -460,7 +486,7 @@ class Module extends \yii\base\Module
         $assetDirectory = $this->getBasePath() . DIRECTORY_SEPARATOR . 'assets';
         if (is_dir($assetDirectory)) {
             foreach (FileHelper::findFiles($assetDirectory, ['recursive' => false,]) as $file) {
-                $assetClass =  $assetNamespace . '\\' . basename($file, '.php');
+                $assetClass = $assetNamespace . '\\' . basename($file, '.php');
                 if (is_subclass_of($assetClass, AssetBundle::class)) {
                     $assets[] = $assetClass;
                 }
@@ -468,5 +494,17 @@ class Module extends \yii\base\Module
         }
 
         return $assets;
+    }
+
+    public function getOnlineModule(): ?OnlineModelModule
+    {
+        /* @var \humhub\modules\marketplace\Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        if (!$marketplaceModule->enabled) {
+            return null;
+        }
+
+        return $marketplaceModule->onlineModuleManager->getModule($this->id);
     }
 }

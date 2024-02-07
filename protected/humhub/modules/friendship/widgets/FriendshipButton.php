@@ -113,13 +113,8 @@ class FriendshipButton extends \yii\base\Widget
      */
     public function run()
     {
-        if (!Yii::$app->getModule('friendship')->getIsEnabled()) {
-            return;
-        }
-        
-        // Do not display a buttton if user is it self or guest
-        if ($this->user->isCurrentUser() || Yii::$app->user->isGuest) {
-            return;
+        if (!self::isVisibleForUser($this->user)) {
+            return '';
         }
 
         return $this->render('friendshipButton', [
@@ -127,6 +122,13 @@ class FriendshipButton extends \yii\base\Widget
             'friendshipState' => Friendship::getStateForUser(Yii::$app->user->getIdentity(), $this->user),
             'options' => $this->getOptions(),
         ]);
+    }
+
+    public static function isVisibleForUser(User $user): bool
+    {
+        return !Yii::$app->user->isGuest &&
+            Yii::$app->getModule('friendship')->isFriendshipEnabled() &&
+            !$user->isCurrentUser();
     }
 
 }

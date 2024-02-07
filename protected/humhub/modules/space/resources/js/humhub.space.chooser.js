@@ -46,19 +46,13 @@ humhub.module('space.chooser', function (module, require, $) {
 
         this.initEvents();
         this.initSpaceSearch();
+        this.initMessageCounters();
     };
 
     SpaceChooser.prototype.initEvents = function () {
         this.lazyLoad = module.config.lazyLoad && !this.hasItems();
 
         var that = this;
-
-        $('[data-space-guid]').find('[data-message-count]').each(function () {
-            var $this = $(this);
-            if ($this.data('message-count') > 0) {
-                $this.show();
-            }
-        });
 
         // Forward click events to actual link
         this.$.on('click', SELECTOR_ITEM, function (evt) {
@@ -99,6 +93,12 @@ humhub.module('space.chooser', function (module, require, $) {
             that.handleNewContent(liveEvents);
         });
     };
+
+    SpaceChooser.prototype.initMessageCounters = function () {
+        $('[data-space-guid] [data-message-count]').each(function () {
+            $(this).toggle($(this).data('message-count') > 0);
+        });
+    }
 
     SpaceChooser.prototype.handleNewContent = function (liveEvents) {
         var that = this;
@@ -276,6 +276,7 @@ humhub.module('space.chooser', function (module, require, $) {
                 that.appendItem(space);
             });
 
+            that.initMessageCounters();
             that.highlight(input, SELECTOR_ITEM_REMOTE);
             that.onChange(input);
 

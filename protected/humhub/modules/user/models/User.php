@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2015 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\behaviors\GUID;
+use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
@@ -42,28 +43,30 @@ use yii\web\IdentityInterface;
 /**
  * This is the model class for table "user".
  *
- * @property integer $id
- * @property string $guid
  * @property integer $status
  * @property string $username
  * @property string $email
  * @property string $auth_mode
  * @property string $language
  * @property string $time_zone
- * @property string $created_at
- * @property integer $created_by
- * @property string $updated_at
- * @property integer $updated_by
  * @property string $last_login
  * @property string $authclient_id
  * @property string $auth_key
- * @property integer $visibility
- * @property integer $contentcontainer_id
- * @property Profile $profile
- * @property Password $currentPassword
+ * @property-read string $authKey
  * @property Auth[] $auths
- * @property string $displayName
- * @property string $displayNameSub
+ * @property Password $currentPassword
+ * @property-read ActiveQuery|null $friends
+ * @property-read Group[] $groups
+ * @property-read ActiveQuery $groupUsers
+ * @property-read Session[] $httpSessions
+ * @property-read Group[] $managerGroups
+ * @property-read GroupUser[] $managerGroupsUser
+ * @property-write bool $mustChangePassword
+ * @property-read User|null $originator
+ * @property-read PasswordRecoveryService $passwordRecoveryService
+ * @property Profile $profile
+ * @property-read array $searchAttributes
+ * @property-read Space[] $spaces
  * @mixin Followable
  */
 class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
@@ -165,10 +168,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
                 return $model->getAttribute($attribute) !== $model->getOldAttribute($attribute);
             }],
             [['created_by', 'updated_by'], 'integer'],
-            [['status'], 'in', 'range' => array_keys(self::getStatusOptions())],
-            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => Profile::SCENARIO_EDIT_ADMIN],
+            [['status'], 'in', 'range' => array_keys(self::getStatusOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
+            [['visibility'], 'in', 'range' => array_keys(self::getVisibilityOptions()), 'on' => self::SCENARIO_EDIT_ADMIN],
             [['tagsField', 'blockedUsersField'], 'safe'],
-            [['guid'], 'string', 'max' => 45],
+            [['guid'], UUIDValidator::class],
+            [['guid'], 'unique'],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
             [['language'], 'string', 'max' => 5],
@@ -176,7 +180,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             [['email'], 'unique'],
             [['email'], 'email'],
             [['email'], 'string', 'max' => 150],
-            [['guid'], 'unique'],
             [['username'], 'validateForbiddenUsername', 'on' => [self::SCENARIO_REGISTRATION]],
         ];
 
@@ -278,14 +281,17 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         return parent::__get($name);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios[static::SCENARIO_LOGIN] = ['username', 'password'];
-        $scenarios[static::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
-        $scenarios[static::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
-        $scenarios[static::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
-        $scenarios[static::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
+        $scenarios[self::SCENARIO_LOGIN] = ['username', 'password'];
+        $scenarios[self::SCENARIO_EDIT_ADMIN] = ['username', 'email', 'status', 'visibility', 'language', 'tagsField'];
+        $scenarios[self::SCENARIO_EDIT_ACCOUNT_SETTINGS] = ['language', 'visibility', 'time_zone', 'tagsField', 'blockedUsersField'];
+        $scenarios[self::SCENARIO_REGISTRATION_EMAIL] = ['username', 'email', 'time_zone'];
+        $scenarios[self::SCENARIO_REGISTRATION] = ['username', 'time_zone'];
 
         return $scenarios;
     }
@@ -434,7 +440,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
      */
     public function getFriends()
     {
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             return Friendship::getFriendsQuery($this);
         }
 
@@ -563,9 +569,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $this->time_zone = Yii::$app->settings->get('defaultTimeZone');
         }
 
-        if (empty($this->email)) {
-            $this->email = null;
-        }
+        $this->email = empty($this->email) ? null : strtolower($this->email);
 
         return parent::beforeSave($insert);
     }
@@ -750,7 +754,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
 
         // Friend
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             return (Friendship::getStateForUser($this, $user) == Friendship::STATE_FRIENDS);
         }
 
@@ -925,7 +929,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     {
         $groups = [];
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $groups[self::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
             $groups[self::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
         } else {
@@ -954,7 +958,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             return self::USERGROUP_SELF;
         }
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             if (Friendship::getStateForUser($this, $user) === Friendship::STATE_FRIENDS) {
                 return self::USERGROUP_FRIEND;
             }

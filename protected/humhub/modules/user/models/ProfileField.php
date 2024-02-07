@@ -9,11 +9,10 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
 use yii\db\ActiveQuery;
-use yii\helpers\Html;
 
 /**
  * This is the model class for table "profile_field".
@@ -45,7 +44,6 @@ use yii\helpers\Html;
  */
 class ProfileField extends ActiveRecord
 {
-
     /**
      * Field Type Instance
      *
@@ -151,12 +149,15 @@ class ProfileField extends ActiveRecord
      */
     public function getFieldType(): ?BaseType
     {
-        if ($this->_fieldType != null)
+        if ($this->_fieldType != null) {
             return $this->_fieldType;
+        }
 
-        if ($this->field_type_class != '' && Helpers::CheckClassType($this->field_type_class, fieldtype\BaseType::class)) {
-            $type = $this->field_type_class;
-            $this->_fieldType = new $type;
+        if (
+            $this->field_type_class != ''
+            && $type = DataTypeHelper::matchClassType($this->field_type_class, fieldtype\BaseType::class, true)
+        ) {
+            $this->_fieldType = new $type();
             $this->_fieldType->setProfileField($this);
             return $this->_fieldType;
         }
@@ -288,7 +289,6 @@ class ProfileField extends ActiveRecord
     {
 
         if (!$this->isNewRecord) {
-
             // Dont allow changes of internal_name - Maybe not the best way to check it.
             $currentProfileField = ProfileField::findOne(['id' => $this->id]);
             if ($this->field_type_class != $currentProfileField->field_type_class) {
@@ -329,5 +329,4 @@ class ProfileField extends ActiveRecord
 
         return "UserModule.profile";
     }
-
 }

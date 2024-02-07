@@ -21,7 +21,7 @@ class FriendsPanel extends \yii\base\Widget
 {
 
     /**
-     * @var User the target user 
+     * @var User the target user
      */
     public $user;
 
@@ -35,7 +35,7 @@ class FriendsPanel extends \yii\base\Widget
      */
     public function run()
     {
-        if (!Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (!Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             return;
         }
 

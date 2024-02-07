@@ -156,11 +156,11 @@ abstract class BaseNotification extends SocialActivity
             $date = null;
         }
 
-        if(!empty($this->record->payload)) {
+        if (!empty($this->record->payload)) {
             $this->payload = Json::decode($this->record->payload);
         }
 
-        if($this->hasContent()) {
+        if ($this->hasContent()) {
             $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
             $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], false);
         } else {
@@ -223,7 +223,7 @@ abstract class BaseNotification extends SocialActivity
             throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
         }
 
-        if ($this->isOriginator($user)) {
+        if ($this->suppressSendToOriginator && $this->isOriginator($user)) {
             return;
         }
 
@@ -241,8 +241,8 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Returns a non html encoded mail subject which will be used in the notification e-mail
      *
-     * @see \humhub\modules\notification\targets\MailTarget
      * @return string the subject
+     * @see \humhub\modules\notification\targets\MailTarget
      */
     public function getMailSubject()
     {
@@ -383,9 +383,9 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Set additional data
      *
-     * @since 1.11
      * @param $payload
      * @return $this
+     * @since 1.11
      */
     public function payload($payload)
     {
@@ -583,9 +583,9 @@ abstract class BaseNotification extends SocialActivity
     /**
      * This method is invoked right before a mail will be send for this notificatoin
      *
-     * @see \humhub\modules\notification\targets\MailTarget
      * @param \yii\mail\MessageInterface $message
      * @return boolean when true the mail will be send
+     * @see \humhub\modules\notification\targets\MailTarget
      */
     public function beforeMailSend(MessageInterface $message)
     {

@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => 'A közösség <strong>moduljai</strong>',
   '<strong>Space</strong> settings' => '<strong>Közösség</strong> beállításai',
   'Actions' => 'Műveletek',
-  'Activate' => 'Bekapcsolás',
+  'Enable' => 'Bekapcsolás',
   'Add <strong>Modules</strong>' => '<strong>Modulok</strong> hozzáadása',
   'Advanced access settings' => 'Speciális hozzáférési beállítások',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'A közösség összes tagját eltávolítjuk, kivéve a moderátorokat és adminisztrátorokat. Minden függőben lévő meghívást és tagsági kérelmet megszüntetünk.',

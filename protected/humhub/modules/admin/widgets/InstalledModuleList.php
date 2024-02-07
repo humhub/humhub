@@ -43,7 +43,7 @@ class InstalledModuleList extends Widget
         $activeModules = [];
         $inactiveModules = [];
         foreach ($modules as $module) {
-            if ($module->isActivated) {
+            if ($module->getIsEnabled()) {
                 $activeModules[] = $module;
             } else {
                 $inactiveModules[] = $module;

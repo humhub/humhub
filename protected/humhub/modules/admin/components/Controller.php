@@ -62,12 +62,9 @@ class Controller extends \humhub\components\Controller
     }
 
     /**
-     * Returns access rules for the standard access control behavior
-     *
-     * @return array the access permissions
-     * @see AccessControl
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         // Use by default ManageSettings permission if method is not overwritten by custom module
         if ($this->module->id !== 'admin') {

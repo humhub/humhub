@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'Activate' => 'Aktivizoni',
     'Add Licence Key' => 'Shto çelësin e licencës',
     'Configure' => 'Konfiguro',
+    'Enable' => 'Aktivizoni',
     'Information' => 'Informacion',
     'No modules installed yet. Install some to enhance the functionality!' => 'Nuk është instaluar ende asnjë modul.  Instaloni disa për të përmirësuar funksionalitetin!',
     'Search' => 'Kërko',
@@ -38,11 +38,10 @@ The license was successfully removed!
     '<strong>Activate</strong> your Professional Edition' => '',
     '<strong>General</strong> Settings' => '',
     'A new update is available (HumHub %version%)!' => '',
-    'Activate now' => '',
-    'Activated' => '',
     'Add purchased module by licence key' => '',
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
     'All' => '',
+    'All modules' => '',
     'All {moduleId} module content will be deleted. Continue?' => '',
     'Allow module versions in beta status' => '',
     'Available Updates' => '',
@@ -63,6 +62,8 @@ The license was successfully removed!
     'Deprecated' => '',
     'Download of module failed!' => '',
     'Edit licence' => '',
+    'Enable now' => '',
+    'Enabled' => '',
     'Featured' => '',
     'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
     'General Settings' => '',
@@ -84,8 +85,9 @@ The license was successfully removed!
     'Marketplace is disabled.' => '',
     'Max. users:' => '',
     'Module "{moduleName}" has been updated to version {newVersion} successfully.' => '',
-    'Module <strong>activated</strong>' => '',
+    'Module <strong>enabled</strong>' => '',
     'Module <strong>installed</strong>' => '',
+    'Module Administration' => '',
     'Module configuration' => '',
     'Module directory %modulePath% is not writeable!' => '',
     'Module download failed! (%error%)' => '',
@@ -95,7 +97,7 @@ The license was successfully removed!
 ' => '',
     'Module licence key cannot be empty!
 ' => '',
-    'Module not found or activated!
+    'Module not found or enabled!
 ' => '',
     'Module not found!
 ' => '',
@@ -105,6 +107,7 @@ The license was successfully removed!
     'No license key? Find out more about the {pro} or contact us.' => '',
     'No modules found.' => '',
     'No purchased modules found!' => '',
+    'No, thank you!' => '',
     'Official' => '',
     'Ok' => '',
     'PROFESSIONAL EDITION' => '',
@@ -129,8 +132,9 @@ The license was successfully removed!
     'Upgrade to Professional Edition' => '',
     'Version:' => '',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
-    'Well done! To make the module available within your network, you will also need to activate it. Do you want to activate it now?' => '',
-    'Well done! You have successful installed an activated the module!' => '',
+    'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
+    'Well done! You have successfully installed and enabled the module!' => '',
+    'Without category' => '',
     'Would you like to jump straight to it?' => '',
     'Your HumHub installation is up to date!' => '',
 ];

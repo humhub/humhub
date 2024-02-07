@@ -42,7 +42,7 @@ return [
     '<strong>Move</strong> content' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
-    'Activated' => '',
+    'Enabled' => '',
     'Add tag...' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',

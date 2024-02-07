@@ -1,5 +1,5 @@
 <?php
 return array (
-  'Pinned' => '',
-  'Unpinned' => '',
+  'Pinned' => '고정',
+  'Unpinned' => '고정 해제',
 );
