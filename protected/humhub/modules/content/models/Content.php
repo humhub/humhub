@@ -214,9 +214,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
         }
 
         $this->archived ??= 0;
-        $this->visibility ??= self::VISIBILITY_PRIVATE;
         $this->pinned ??= 0;
         $this->state ??= Content::STATE_PUBLISHED;
+
+        $this->visibility ??= self::VISIBILITY_PRIVATE;
+        // Force to private content for private space or if user has no permission to create public content
+        if ($this->container instanceof Space && $this->visibility === self::VISIBILITY_PUBLIC) {
+            if ($this->container->visibility === Space::VISIBILITY_NONE ||
+                !$this->container->can(CreatePublicContent::class)) {
+                $this->visibility = self::VISIBILITY_PRIVATE;
+            }
+        }
 
         if ($insert) {
             $this->created_by ??= Yii::$app->user->id;
