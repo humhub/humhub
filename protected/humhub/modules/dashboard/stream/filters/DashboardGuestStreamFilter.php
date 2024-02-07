@@ -16,7 +16,6 @@ use yii\db\Query;
  */
 class DashboardGuestStreamFilter extends StreamQueryFilter
 {
-
     /**
      * @inheritDoc
      */

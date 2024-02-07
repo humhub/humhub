@@ -1,8 +1,6 @@
 <?php
 
-
 namespace dashboard;
-
 
 use humhub\modules\content\models\Content;
 use humhub\modules\dashboard\Module;
@@ -74,7 +72,7 @@ class DashboardStreamTest extends HumHubDbTestCase
         $this->becomeUser($authorUserName);
         $post = new Post(['message' => 'Test Content']);
 
-        if($container) {
+        if ($container) {
             $post->content->container = $container;
         }
 

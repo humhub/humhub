@@ -19,7 +19,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * Possible options to include profile posts into the dashboard stream
      *
@@ -71,5 +70,4 @@ class Module extends \humhub\components\Module
         $module = Yii::$app->getModule('dashboard');
         return $module;
     }
-
 }

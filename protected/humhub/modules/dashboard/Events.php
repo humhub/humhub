@@ -20,7 +20,6 @@ use yii\base\Event;
  */
 class Events
 {
-
     /**
      * TopMenu init event callback
      *
@@ -41,5 +40,4 @@ class Events
             'isActive' => MenuLink::isActiveState('dashboard')
         ]));
     }
-
 }

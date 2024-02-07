@@ -1,4 +1,5 @@
 <?php
+
 namespace dashboard;
 
 /**
@@ -19,7 +20,7 @@ namespace dashboard;
 class FunctionalTester extends \FunctionalTester
 {
     use _generated\FunctionalTesterActions;
-    
+
    /**
     * Define custom actions here
     */

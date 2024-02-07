@@ -8,12 +8,10 @@ use Codeception\Specify;
 use humhub\modules\post\models\Post;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use humhub\modules\space\models\Space;
-
 use humhub\modules\content\models\Content;
 
 class DashboardStreamActionTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     /**
@@ -56,14 +54,14 @@ class DashboardStreamActionTest extends HumHubDbTestCase
         $this->becomeUser('User2');
         $space = Space::findOne(['id' => 2]);
 
-        $post1 = new Post;
+        $post1 = new Post();
         $post1->message = "Private Post";
         $post1->content->setContainer($space);
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->id;
 
-        $post2 = new Post;
+        $post2 = new Post();
         $post2->message = "Public Post";
         $post2->content->setContainer($space);
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
@@ -87,14 +85,14 @@ class DashboardStreamActionTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $space = Space::findOne(['id' => 1]);
 
-        $post1 = new Post;
+        $post1 = new Post();
         $post1->message = "Private Post";
         $post1->content->setContainer($space);
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->id;
 
-        $post2 = new Post;
+        $post2 = new Post();
         $post2->message = "Public Post";
         $post2->content->setContainer($space);
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
@@ -116,14 +114,14 @@ class DashboardStreamActionTest extends HumHubDbTestCase
     {
         $this->becomeUser('Admin');
 
-        $post1 = new Post;
+        $post1 = new Post();
         $post1->message = "Own Private Post";
         $post1->content->container = Yii::$app->user->getIdentity();
         $post1->content->visibility = Content::VISIBILITY_PRIVATE;
         $post1->save();
         $w1 = $post1->content->id;
 
-        $post2 = new Post;
+        $post2 = new Post();
         $post2->message = "Own Public Post";
         $post2->content->container = Yii::$app->user->getIdentity();
         $post2->content->visibility = Content::VISIBILITY_PUBLIC;
@@ -143,6 +141,8 @@ class DashboardStreamActionTest extends HumHubDbTestCase
         $action->init();
 
         $streamEntries = $action->getStreamQuery()->all();
-        return  array_map(static function($entry) {return $entry->id; }, $streamEntries);
+        return  array_map(static function ($entry) {
+            return $entry->id;
+        }, $streamEntries);
     }
 }
