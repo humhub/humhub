@@ -104,8 +104,8 @@ class LdapSettings extends Model
      */
     public $encryptionTypes = [
         '' => 'None',
-        'tls' => 'TLS (aka SSLV2)',
-        'ssl' => 'SSL',
+        'tls' => 'StartTLS',
+        'ssl' => 'SSL/TLS',
     ];
 
     /**
@@ -159,7 +159,6 @@ class LdapSettings extends Model
     public function attributeHints()
     {
         return [
-            'encryption' => Yii::t('LdapModule.base', 'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.'),
             'username' => Yii::t('LdapModule.base', 'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.'),
             'passwordField' => Yii::t('LdapModule.base', 'The default credentials password (used only with username above).'),
             'baseDn' => Yii::t('LdapModule.base', 'The default base DN used for searching for accounts.'),
