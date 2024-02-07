@@ -9,7 +9,9 @@ use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use Throwable;
 use Yii;
+use yii\base\Exception;
 
 class DashboardStreamTest extends HumHubDbTestCase
 {
@@ -64,8 +66,8 @@ class DashboardStreamTest extends HumHubDbTestCase
      * @param $visibility
      * @param null $container
      * @return Content
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function createContent($visibility, $container = null, $authorUserName = 'Admin')
     {

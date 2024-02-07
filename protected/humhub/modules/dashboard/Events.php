@@ -23,8 +23,8 @@ class Events
     /**
      * TopMenu init event callback
      *
-     * @see TopMenu
      * @param Event $event
+     * @see TopMenu
      */
     public static function onTopMenuInit($event)
     {

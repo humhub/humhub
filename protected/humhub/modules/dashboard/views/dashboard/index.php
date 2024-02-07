@@ -20,7 +20,7 @@ use humhub\libs\Html;
             'contentContainer' => $contentContainer,
             'showProfilePostForm' => $showProfilePostForm
         ]);
-?>
+        ?>
     </div>
     <div class="col-md-4 layout-sidebar-container">
         <?= Sidebar::widget([
@@ -32,7 +32,7 @@ use humhub\libs\Html;
                 ]
             ]
         ]);
-?>
+        ?>
         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
     </div>
 </div>

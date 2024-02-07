@@ -48,7 +48,7 @@ class DashboardStreamActionTest extends HumHubDbTestCase
     /**
      * if a user follows a space is the PUBLIC  post included
      * the private not
-    */
+     */
     public function testSpaceFollow()
     {
         $this->becomeUser('User2');
@@ -79,7 +79,7 @@ class DashboardStreamActionTest extends HumHubDbTestCase
     /**
      * When member of a space, public & private content should returned.
      * When no member no content should be returned.
-    */
+     */
     public function testSpaceMembership()
     {
         $this->becomeUser('Admin');
@@ -109,7 +109,7 @@ class DashboardStreamActionTest extends HumHubDbTestCase
 
     /**
      * Own profile content should appear with visibility Private & Public
-    */
+     */
     public function testOwnContent()
     {
         $this->becomeUser('Admin');
@@ -141,7 +141,7 @@ class DashboardStreamActionTest extends HumHubDbTestCase
         $action->init();
 
         $streamEntries = $action->getStreamQuery()->all();
-        return  array_map(static function ($entry) {
+        return array_map(static function ($entry) {
             return $entry->id;
         }, $streamEntries);
     }

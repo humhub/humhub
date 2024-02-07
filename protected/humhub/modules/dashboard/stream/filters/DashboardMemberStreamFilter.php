@@ -135,7 +135,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ];
         }
 
-        $visibilityOrCondition[] = ['AND', 'content.visibility = :visibilityPrivate',  $privateVisibilityOrCondition];
+        $visibilityOrCondition[] = ['AND', 'content.visibility = :visibilityPrivate', $privateVisibilityOrCondition];
 
         $this->query->andWhere($visibilityOrCondition);
     }

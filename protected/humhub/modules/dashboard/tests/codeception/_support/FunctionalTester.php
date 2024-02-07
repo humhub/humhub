@@ -2,6 +2,8 @@
 
 namespace dashboard;
 
+use Codeception\Lib\Friend;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -13,15 +15,15 @@ namespace dashboard;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class FunctionalTester extends \FunctionalTester
 {
     use _generated\FunctionalTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Define custom actions here
+     */
 }
