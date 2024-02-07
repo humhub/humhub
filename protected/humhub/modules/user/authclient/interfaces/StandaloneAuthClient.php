@@ -21,7 +21,6 @@ use yii\web\Response;
  */
 interface StandaloneAuthClient
 {
-
     /**
      * Custom auth action implementation
      *

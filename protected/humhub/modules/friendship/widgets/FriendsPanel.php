@@ -20,7 +20,6 @@ use yii\base\Widget;
  */
 class FriendsPanel extends Widget
 {
-
     /**
      * @var User the target user
      */

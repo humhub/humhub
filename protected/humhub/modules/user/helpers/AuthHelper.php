@@ -9,7 +9,6 @@
 
 namespace humhub\modules\user\helpers;
 
-
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
@@ -27,7 +26,6 @@ use yii\web\HttpException;
  */
 class AuthHelper
 {
-
     /**
      * Checks if limited access is allowed for unauthenticated users.
      *

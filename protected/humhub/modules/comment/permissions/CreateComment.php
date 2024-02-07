@@ -18,7 +18,6 @@ use Yii;
  */
 class CreateComment extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

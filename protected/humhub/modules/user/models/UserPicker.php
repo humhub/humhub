@@ -17,7 +17,6 @@ use humhub\modules\user\models\UserFilter;
  */
 class UserPicker
 {
-
     /**
      * Creates a json user array used in the userpicker js frontend.
      * The $cfg is used to specify the filter values the following values are available:

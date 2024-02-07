@@ -19,7 +19,6 @@ use yii\base\Widget;
  */
 class PendingApprovals extends Widget
 {
-
     /**
      * @var Space
      */

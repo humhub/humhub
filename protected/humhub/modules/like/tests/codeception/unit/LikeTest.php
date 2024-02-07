@@ -13,7 +13,6 @@ use humhub\modules\post\models\Post;
 
 class LikeTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testLikePost()

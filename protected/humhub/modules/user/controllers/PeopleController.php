@@ -23,7 +23,6 @@ use yii\helpers\Url;
  */
 class PeopleController extends Controller
 {
-
     /**
      * @inheritdoc
      */

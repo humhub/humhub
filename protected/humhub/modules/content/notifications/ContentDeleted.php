@@ -50,5 +50,3 @@ class ContentDeleted extends BaseNotification
         ]);
     }
 }
-
-?>

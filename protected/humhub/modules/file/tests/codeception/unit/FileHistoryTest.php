@@ -14,7 +14,6 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class FileHistoryTest extends HumHubDbTestCase
 {
-
     public function testRecordWithEnabledHistory()
     {
         $file = $this->prepareFile();

@@ -28,7 +28,6 @@ use yii\validators\EmailValidator;
  */
 class Invite extends Model
 {
-
     /**
      * @var string user's username or email address
      */

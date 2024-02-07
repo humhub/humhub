@@ -19,7 +19,6 @@ use humhub\modules\stream\widgets\StreamViewer;
  */
 class Stream extends Widget
 {
-
     public static function widget($config = [])
     {
         $config['class'] = StreamViewer::class;

@@ -17,7 +17,6 @@ use humhub\modules\user\models\User;
  */
 class CanMention extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

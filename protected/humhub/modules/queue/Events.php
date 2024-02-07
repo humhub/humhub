@@ -26,7 +26,6 @@ use humhub\modules\queue\helpers\QueueHelper;
  */
 class Events extends BaseObject
 {
-
     /**
      * Cron call back
      *

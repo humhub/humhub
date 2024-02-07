@@ -44,12 +44,14 @@ use humhub\widgets\mails\MailButtonList;
                     'buttons' => [
                         humhub\widgets\mails\MailButton::widget([
                             'url' => $url,
-                            'text' => Yii::t('SpaceModule.notification',
-                                'View Online'),
+                            'text' => Yii::t(
+                                'SpaceModule.notification',
+                                'View Online'
+                            ),
                         ]),
                     ],
                 ]);
-                ?>
+?>
             </td>
         </tr>
     </table>

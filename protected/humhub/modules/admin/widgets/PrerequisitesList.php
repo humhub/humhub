@@ -19,7 +19,6 @@ use yii\base\Widget;
  */
 class PrerequisitesList extends Widget
 {
-
     /**
      * @inheritdoc
      */

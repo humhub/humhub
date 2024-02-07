@@ -243,7 +243,8 @@ class ApproveUserForm extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        $this->subject = Yii::t('AdminModule.user',
+        $this->subject = Yii::t(
+            'AdminModule.user',
             "Account Request for '{displayName}' has been approved.",
             ['{displayName}' => Html::encode($this->user->displayName)]
         );
@@ -279,7 +280,8 @@ class ApproveUserForm extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        $this->subject = Yii::t('AdminModule.user',
+        $this->subject = Yii::t(
+            'AdminModule.user',
             'Account Request for \'{displayName}\' has been declined.',
             ['{displayName}' => Html::encode($this->user->displayName)]
         );
@@ -291,7 +293,8 @@ class ApproveUserForm extends Model
             ]);
         } else {
             $this->message = static::getDefaultDeclineMessage(
-                Html::encode($this->user->displayName), Html::encode($this->admin->displayName)
+                Html::encode($this->user->displayName),
+                Html::encode($this->admin->displayName)
             );
         }
 
@@ -308,7 +311,9 @@ class ApproveUserForm extends Model
      */
     public static function getDefaultApprovalMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}', $loginUrl = '{loginUrl}')
     {
-        return Yii::t('AdminModule.user', "Hello {displayName},\n\n" .
+        return Yii::t(
+            'AdminModule.user',
+            "Hello {displayName},\n\n" .
             "Your account has been activated.\n\n" .
             "Click here to login:\n{loginUrl}\n\n" .
             "Kind Regards\n" .
@@ -317,7 +322,8 @@ class ApproveUserForm extends Model
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
                 '{loginUrl}' => $loginUrl,
-            ]);
+            ]
+        );
     }
 
     /**
@@ -329,13 +335,16 @@ class ApproveUserForm extends Model
      */
     public static function getDefaultDeclineMessage($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}')
     {
-        return Yii::t('AdminModule.user', "Hello {displayName},\n\n" .
+        return Yii::t(
+            'AdminModule.user',
+            "Hello {displayName},\n\n" .
             "Your account request has been declined.\n\n" .
             "Kind Regards\n" .
             "{AdminName}\n\n",
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
-            ]);
+            ]
+        );
     }
 }

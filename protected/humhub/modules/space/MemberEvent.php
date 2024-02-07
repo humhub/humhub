@@ -19,7 +19,6 @@ use yii\base\Event;
  */
 class MemberEvent extends Event
 {
-
     /**
      * @var models\Space
      */

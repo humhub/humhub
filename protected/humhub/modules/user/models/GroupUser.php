@@ -27,8 +27,7 @@ use yii\db\ActiveQuery;
  */
 class GroupUser extends ActiveRecord
 {
-
-    const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_REGISTRATION = 'registration';
 
     /**
      * @inheritdoc

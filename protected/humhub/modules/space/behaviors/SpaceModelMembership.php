@@ -39,7 +39,6 @@ use yii\validators\EmailValidator;
  */
 class SpaceModelMembership extends Behavior
 {
-
     private $_spaceOwner = null;
 
     /**
@@ -232,7 +231,7 @@ class SpaceModelMembership extends Behavior
     public function inviteMemberByEMail($email, $originatorUserId)
     {
         // Invalid E-Mail
-        $validator = new EmailValidator;
+        $validator = new EmailValidator();
         if (!$validator->validate($email)) {
             return false;
         }
@@ -336,6 +335,7 @@ class SpaceModelMembership extends Behavior
                 case Membership::STATUS_APPLICANT:
                     // If user is an applicant of this space add user and return.
                     $this->addMember($userId);
+                    // no break
                 case Membership::STATUS_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
@@ -403,8 +403,7 @@ class SpaceModelMembership extends Behavior
         bool   $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
         bool   $showAtDashboard = true
-    ): bool
-    {
+    ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
             return false;
@@ -554,8 +553,11 @@ class SpaceModelMembership extends Behavior
             MemberRemoved::instance()->about($this->owner)->from($user)->create();
         }
 
-        MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_REMOVED,
-            new MemberEvent(['space' => $this->owner, 'user' => $user]));
+        MemberEvent::trigger(
+            Membership::class,
+            Membership::EVENT_MEMBER_REMOVED,
+            new MemberEvent(['space' => $this->owner, 'user' => $user])
+        );
     }
 
     /**
@@ -570,7 +572,7 @@ class SpaceModelMembership extends Behavior
     {
         if ($membership->originator && $membership->isCurrentUser()) {
             InviteDeclined::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($membership->originator);
-        } else if (Yii::$app->user->identity) {
+        } elseif (Yii::$app->user->identity) {
             InviteRevoked::instance()->from(Yii::$app->user->identity)->about($this->owner)->send($user);
         }
     }

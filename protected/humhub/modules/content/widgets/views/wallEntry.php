@@ -40,17 +40,17 @@ use yii\helpers\Url;
                 'width' => 40,
                 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]
             ]);
-            ?>
+?>
 
             <?php if ($showContentContainer && $container instanceof Space): ?>
                 <?=
-                SpaceImage::widget([
-                    'space' => $container,
-                    'width' => 20,
-                    'htmlOptions' => ['class' => 'img-space'],
-                    'link' => 'true',
-                    'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
-                ]);
+    SpaceImage::widget([
+        'space' => $container,
+        'width' => 20,
+        'htmlOptions' => ['class' => 'img-space'],
+        'link' => 'true',
+        'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
+    ]);
                 ?>
             <?php endif; ?>
 

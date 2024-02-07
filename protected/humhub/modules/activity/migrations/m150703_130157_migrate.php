@@ -6,10 +6,8 @@ use humhub\modules\activity\models\Activity;
 use humhub\modules\space\models\Space;
 use yii\db\Query;
 
-
 class m150703_130157_migrate extends Migration
 {
-
     public function up()
     {
         $this->renameClass('Activity', Activity::class);

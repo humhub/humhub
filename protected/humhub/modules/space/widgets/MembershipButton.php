@@ -23,7 +23,6 @@ use yii\helpers\Json;
  */
 class MembershipButton extends Widget
 {
-
     /**
      * @var Space
      */

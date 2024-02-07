@@ -26,7 +26,7 @@ use yii\bootstrap\Html;
             ConfigController::USECASE_COMMUNITY => Yii::t('InstallerModule.base', 'My community'),
             ConfigController::USECASE_OTHER => Yii::t('InstallerModule.base', 'Skip this step, I want to set up everything manually'),
         ]);
-        ?>
+?>
 
         <hr>
 

@@ -19,7 +19,6 @@ use humhub\modules\post\models\Post;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @var array content classes to excludes from streams
      */

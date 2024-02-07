@@ -21,7 +21,6 @@ use humhub\modules\space\models\Space;
  */
 class MembershipHelper
 {
-
     /**
      * Returns an array of spaces where the given user is owner.
      *

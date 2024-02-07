@@ -17,5 +17,5 @@ use humhub\modules\admin\widgets\PendingRegistrations;
         'searchModel' => $searchModel,
         'types' => $types,
     ]);
-    ?>
+?>
 </div>

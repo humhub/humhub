@@ -211,7 +211,7 @@ abstract class BasePicker extends JsInputWidget
      * @param ActiveRecord $item selected item
      * @return string item option text
      */
-    protected abstract function getItemText($item);
+    abstract protected function getItemText($item);
 
     /**
      * Used to retrieve the option image url of a given $item.
@@ -219,7 +219,7 @@ abstract class BasePicker extends JsInputWidget
      * @param ActiveRecord $item selected item
      * @return string|null image url or null if no selection image required.
      */
-    protected abstract function getItemImage($item);
+    abstract protected function getItemImage($item);
 
     /**
      * @inhertidoc

@@ -19,7 +19,6 @@ use yii\base\Event;
  */
 class FriendshipEvent extends Event
 {
-
     /**
      * @var User first user
      */

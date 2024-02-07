@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m150703_024635_activityTypes extends Migration
 {
-
     public function up()
     {
         /**

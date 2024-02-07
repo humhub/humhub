@@ -5,6 +5,7 @@ namespace humhub\modules\web\security\helpers;
 use Exception;
 use Psr\Http\Message\MessageInterface;
 use TypeError;
+
 use function array_keys;
 use function file_exists;
 use function file_get_contents;
@@ -38,8 +39,8 @@ use function strpos;
  */
 class CSPBuilder
 {
-    const FORMAT_APACHE = 'apache';
-    const FORMAT_NGINX = 'nginx';
+    public const FORMAT_APACHE = 'apache';
+    public const FORMAT_NGINX = 'nginx';
 
     /**
      * @var array
@@ -391,8 +392,7 @@ class CSPBuilder
         $directive = 'script-src',
         $script = '',
         $algorithm = 'sha384'
-    )
-    {
+    ) {
         $ruleKeys = array_keys($this->policies);
         if (in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] [] = [
@@ -421,7 +421,7 @@ class CSPBuilder
             $this->compile();
         }
         foreach ($this->getRequireHeaders() as $header) {
-            list ($key, $value) = $header;
+            list($key, $value) = $header;
             $message = $message->withAddedHeader($key, $value);
         }
         foreach ($this->getHeaderKeys($legacy) as $key) {
@@ -464,8 +464,7 @@ class CSPBuilder
         $directive = 'script-src',
         $hash = '',
         $algorithm = 'sha384'
-    )
-    {
+    ) {
         $ruleKeys = array_keys($this->policies);
         if (in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] [] = [
@@ -498,8 +497,7 @@ class CSPBuilder
     public function saveSnippet(
         $outputFile,
         $format = self::FORMAT_NGINX
-    )
-    {
+    ) {
         if ($this->needsCompile) {
             $this->compile();
         }
@@ -554,7 +552,7 @@ class CSPBuilder
             $this->compile();
         }
         foreach ($this->getRequireHeaders() as $header) {
-            list ($key, $value) = $header;
+            list($key, $value) = $header;
             header($key . ': ' . $value);
         }
         foreach ($this->getHeaderKeys($legacy) as $key) {

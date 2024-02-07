@@ -15,7 +15,6 @@ use yii\db\Connection;
  */
 class Events extends BaseObject
 {
-
     public static function onConnectionAfterOpen($event)
     {
         /* @var $connection Connection */

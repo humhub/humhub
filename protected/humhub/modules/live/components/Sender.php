@@ -20,7 +20,6 @@ use yii\base\Component;
  */
 class Sender extends Component
 {
-
     /**
      * @var BaseDriver|array|string
      */

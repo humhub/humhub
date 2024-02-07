@@ -11,7 +11,6 @@ use yii\base\Model;
  */
 class OEmbedProviderForm extends Model
 {
-
     public $name;
     public $endpoint;
     public $pattern;

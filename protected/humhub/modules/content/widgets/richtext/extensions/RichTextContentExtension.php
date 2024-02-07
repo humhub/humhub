@@ -28,13 +28,13 @@ abstract class RichTextContentExtension extends Model implements RichTextExtensi
      * @param RichTextExtensionMatch $match
      * @return string
      */
-    public abstract function initMatch(array $match): RichTextExtensionMatch;
+    abstract public function initMatch(array $match): RichTextExtensionMatch;
 
     /**
      * @param array $match
      * @return string
      */
-    public abstract function getRegex(): string;
+    abstract public function getRegex(): string;
 
     /**
      * @param $text

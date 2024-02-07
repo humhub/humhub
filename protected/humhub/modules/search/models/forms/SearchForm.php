@@ -16,10 +16,10 @@ use Yii;
  */
 class SearchForm extends Model
 {
-    const SCOPE_ALL = 'all';
-    const SCOPE_USER = 'user';
-    const SCOPE_SPACE = 'space';
-    const SCOPE_CONTENT = 'content';
+    public const SCOPE_ALL = 'all';
+    public const SCOPE_USER = 'user';
+    public const SCOPE_SPACE = 'space';
+    public const SCOPE_CONTENT = 'content';
 
     public $keyword = '';
     public $scope = '';

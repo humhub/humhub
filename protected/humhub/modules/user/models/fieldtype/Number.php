@@ -19,7 +19,6 @@ use Yii;
  */
 class Number extends BaseType
 {
-
     /**
      * Maximum Int Value
      *
@@ -109,5 +108,3 @@ class Number extends BaseType
     }
 
 }
-
-?>

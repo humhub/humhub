@@ -18,7 +18,6 @@ use yii\base\BaseObject;
  */
 abstract class LiveEvent extends BaseObject
 {
-
     /**
      * @see \humhub\modules\content\components\ContentContainerActiveRecord
      * @var int

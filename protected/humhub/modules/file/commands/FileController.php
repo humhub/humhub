@@ -22,7 +22,6 @@ use yii\console\widgets\Table;
  */
 class FileController extends Controller
 {
-
     /**
      * Overview of uploaded files and automatically generated variants.
      */

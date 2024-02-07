@@ -94,9 +94,9 @@ use yii\helpers\Html;
  */
 class Upload extends Widget
 {
-    const DEFAULT_SUBMIT_NAME = 'fileList[]';
-    const DEFAULT_UPLOAD_NAME = 'files[]';
-    const DEFAULT_ATTRIBUTE_NAME = 'files';
+    public const DEFAULT_SUBMIT_NAME = 'fileList[]';
+    public const DEFAULT_UPLOAD_NAME = 'files[]';
+    public const DEFAULT_ATTRIBUTE_NAME = 'files';
 
     /**
      * @var Model the model the file array should be

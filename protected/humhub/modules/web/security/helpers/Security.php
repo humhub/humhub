@@ -5,11 +5,12 @@ namespace humhub\modules\web\security\helpers;
 use Exception;
 use humhub\modules\web\security\models\SecuritySettings;
 use Yii;
+
 use function random_bytes;
 
 class Security
 {
-    const SESSION_KEY_NONCE = 'security-script-src-nonce';
+    public const SESSION_KEY_NONCE = 'security-script-src-nonce';
 
     /**
      * @throws Exception

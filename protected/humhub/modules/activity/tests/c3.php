@@ -1,4 +1,5 @@
 <?php
+
 // @codingStandardsIgnoreFile
 // @codeCoverageIgnoreStart
 
@@ -293,7 +294,7 @@ if ($requestedC3Report) {
         return __c3_exit();
     }
 
-    list($codeCoverage,) = __c3_factory($completeReport);
+    list($codeCoverage, ) = __c3_factory($completeReport);
 
     switch ($route) {
         case 'html':
@@ -333,7 +334,7 @@ if ($requestedC3Report) {
             return __c3_exit();
     }
 } else {
-    list($codeCoverage,) = __c3_factory(null);
+    list($codeCoverage, ) = __c3_factory(null);
     $codeCoverage->start(C3_CODECOVERAGE_TESTNAME);
     if (!array_key_exists('HTTP_X_CODECEPTION_CODECOVERAGE_DEBUG', $_SERVER)) {
         register_shutdown_function(

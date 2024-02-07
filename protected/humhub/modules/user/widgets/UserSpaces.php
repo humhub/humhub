@@ -21,7 +21,6 @@ use yii\base\Widget;
  */
 class UserSpaces extends Widget
 {
-
     /**
      * @var User
      */
@@ -51,5 +50,3 @@ class UserSpaces extends Widget
     }
 
 }
-
-?>

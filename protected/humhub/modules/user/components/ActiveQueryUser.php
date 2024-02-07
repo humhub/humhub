@@ -33,12 +33,12 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     /**
      * @event Event an event that is triggered when only visible users are requested via [[visible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event Event an event that is triggered when only active users are requested via [[active()]].
      */
-    const EVENT_CHECK_ACTIVE = 'checkActive';
+    public const EVENT_CHECK_ACTIVE = 'checkActive';
 
     /**
      * Limit to active users

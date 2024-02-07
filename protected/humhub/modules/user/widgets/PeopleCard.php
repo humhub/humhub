@@ -19,7 +19,6 @@ use humhub\modules\user\models\User;
  */
 class PeopleCard extends Widget
 {
-
     /**
      * @var User
      */

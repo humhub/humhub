@@ -369,7 +369,7 @@ class ContentTag extends ActiveRecord
      */
     public static function typeQuery($query)
     {
-        $instance = new static;
+        $instance = new static();
         if ($instance->includeTypeQuery && static::class != ContentTag::class) {
             $query->andWhere(['content_tag.type' => static::class]);
         }
@@ -385,7 +385,7 @@ class ContentTag extends ActiveRecord
      */
     public static function moduleQuery($query)
     {
-        $instance = new static;
+        $instance = new static();
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
         }
@@ -456,7 +456,7 @@ class ContentTag extends ActiveRecord
     {
         $query = $content->getTags(static::class);
         static::moduleQuery($query);
-        $instance = new static;
+        $instance = new static();
 
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
@@ -475,7 +475,7 @@ class ContentTag extends ActiveRecord
     {
         $query = $content->getTagRelations()->innerJoin('content_tag', 'content_tag_relation.tag_id = content_tag.id');
 
-        $instance = new static;
+        $instance = new static();
         if (!empty($instance->moduleId)) {
             $query->andWhere(['content_tag.module_id' => $instance->moduleId]);
         }
@@ -557,7 +557,7 @@ class ContentTag extends ActiveRecord
         $instance = new static();
         if (empty($condition)) {
             $condition = ['type' => $instance->type];
-        } else if (!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
+        } elseif (!empty($condition) && !isset($condition['module_id']) && !isset($condition['type'])) {
             $condition['type'] = $instance->type;
         }
 

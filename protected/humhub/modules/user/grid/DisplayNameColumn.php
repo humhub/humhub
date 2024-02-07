@@ -18,7 +18,6 @@ use yii\bootstrap\Html;
  */
 class DisplayNameColumn extends BaseColumn
 {
-
     /**
      * @inheritdoc
      */

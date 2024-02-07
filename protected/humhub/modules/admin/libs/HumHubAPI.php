@@ -19,7 +19,6 @@ use Yii;
  */
 class HumHubAPI
 {
-
     /**
      * HumHub API
      *

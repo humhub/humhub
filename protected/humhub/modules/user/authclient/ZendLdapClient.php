@@ -7,7 +7,6 @@
 
 namespace humhub\modules\user\authclient;
 
-
 use humhub\modules\ldap\authclient\LdapAuth;
 
 /**
@@ -19,5 +18,4 @@ use humhub\modules\ldap\authclient\LdapAuth;
  */
 class ZendLdapClient extends LdapAuth
 {
-
 }

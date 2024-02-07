@@ -201,7 +201,9 @@ class SettingController extends Controller
 
             if ($mail->send()) {
                 $this->view->info(
-                    Yii::t('AdminModule.settings', 'Saved and sent test email to: {address}',
+                    Yii::t(
+                        'AdminModule.settings',
+                        'Saved and sent test email to: {address}',
                         ['address' => $user->email]
                     )
                 );
@@ -394,7 +396,8 @@ class SettingController extends Controller
         return $this->redirect(
             [
                 'caching'
-            ]);
+            ]
+        );
     }
 
     /**

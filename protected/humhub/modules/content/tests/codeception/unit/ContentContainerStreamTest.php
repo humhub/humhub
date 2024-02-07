@@ -13,7 +13,6 @@ use humhub\modules\stream\actions\ContentContainerStream;
 
 class ContentContainerStreamTest extends HumHubDbTestCase
 {
-
     /**
      * @var Space
      */
@@ -190,7 +189,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
             $content['state'] = Content::STATE_PUBLISHED;
         }
 
-        $post = new Post;
+        $post = new Post();
         $post->message = $message;
         $post->content->setContainer($this->space);
         $post->content->setAttributes($content, false);

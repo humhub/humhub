@@ -5,7 +5,6 @@ use yii\db\Expression;
 
 class m160415_180332_wall_remove extends Migration
 {
-
     public function up()
     {
 

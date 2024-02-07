@@ -8,4 +8,3 @@ echo Yii::t('ContentModule.activities', '{displayName} created a new {contentTit
     '{displayName}' => '<strong>' . Html::encode($originator->displayName) . '</strong>',
     '{contentTitle}' => $this->context->getContentInfo($source)
 ]);
-?>

@@ -20,7 +20,6 @@ use yii\base\Event;
  */
 class FollowEvent extends Event
 {
-
     /**
      * @var User
      */

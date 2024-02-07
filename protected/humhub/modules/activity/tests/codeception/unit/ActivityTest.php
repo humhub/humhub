@@ -11,7 +11,6 @@ use humhub\modules\post\models\Post;
 
 class ActivityTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testCreateActivity()

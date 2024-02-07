@@ -12,4 +12,3 @@ return [
         ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountMenuInit']],
     ]
 ];
-?>

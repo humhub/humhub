@@ -25,7 +25,7 @@ use Yii;
  */
 class ContentContainerBlockedUsers extends ActiveRecord
 {
-    const BLOCKED_USERS_SETTING = 'blockedUsers';
+    public const BLOCKED_USERS_SETTING = 'blockedUsers';
 
     public static function tableName()
     {

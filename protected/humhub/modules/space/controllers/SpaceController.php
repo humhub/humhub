@@ -36,7 +36,6 @@ use yii\db\Expression;
  */
 class SpaceController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */

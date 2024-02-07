@@ -2,7 +2,6 @@
 
 use humhub\components\Migration;
 
-
 /**
  * Class m231024_062218_content_was_published
  */
@@ -13,7 +12,9 @@ class m231024_062218_content_was_published extends Migration
      */
     public function safeUp()
     {
-        $this->safeAddColumn('content', 'was_published',
+        $this->safeAddColumn(
+            'content',
+            'was_published',
             $this->boolean()->defaultValue(false)->notNull()->after('state')
         );
     }

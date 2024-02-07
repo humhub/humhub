@@ -14,7 +14,6 @@ use Yii;
 use yii\base\Model;
 use yii\validators\Validator;
 
-
 /**
  * IconValidator validates input from the IconPicker
  *
@@ -23,7 +22,6 @@ use yii\validators\Validator;
  */
 class IconValidator extends Validator
 {
-
     /**
      * @param Model $model
      * @param string $attribute

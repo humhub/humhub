@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m150910_223305_fix_user_follow extends Migration
 {
-
     public function up()
     {
         $activities = (new Query())->select("activity.*, content.user_id, user_follow.id as follow_id")->from('activity')

@@ -21,7 +21,6 @@ use yii\web\HttpException;
  */
 class IndexController extends Controller
 {
-
     /**
      * @inheritdoc
      */

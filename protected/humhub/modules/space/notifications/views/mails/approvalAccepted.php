@@ -66,7 +66,7 @@ use yii\helpers\Url;
                     humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
 
-                ?>
+?>
             </td>
         </tr>
     </table>

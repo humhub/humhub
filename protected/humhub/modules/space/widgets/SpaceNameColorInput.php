@@ -6,7 +6,6 @@ use humhub\components\Widget;
 
 class SpaceNameColorInput extends Widget
 {
-
     public $model;
     public $form;
 

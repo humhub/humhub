@@ -27,7 +27,7 @@ use humhub\widgets\mails\MailButtonList;
                     'date' => $date,
                     'space' => $space
                 ])
-                ?>
+?>
             </td>
         </tr>
         <tr>
@@ -36,12 +36,12 @@ use humhub\widgets\mails\MailButtonList;
         <tr>
             <td>
                 <?=
-                MailButtonList::widget(['buttons' =>
-                    [
-                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notification', 'View Online')
-                        ])
-                    ]]);
-                ?>
+MailButtonList::widget(['buttons' =>
+    [
+        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notification', 'View Online')
+        ])
+    ]]);
+?>
             </td>
         </tr>
     </table>

@@ -14,7 +14,6 @@ use yii\base\Exception;
 
 class MentionTest extends HumHubDbTestCase
 {
-
     /**
      * @throws Exception
      */

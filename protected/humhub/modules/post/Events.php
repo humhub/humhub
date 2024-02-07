@@ -17,7 +17,6 @@ use yii\base\Event;
  */
 class Events extends BaseObject
 {
-
     /**
      * Callback to validate module database records.
      *

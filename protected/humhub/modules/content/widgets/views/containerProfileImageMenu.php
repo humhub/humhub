@@ -47,5 +47,6 @@ if (!isset($confirmBody)) {
             Yii::t('SpaceModule.base', '<strong>Confirm</strong> image deletion'),
             $confirmBody,
             Yii::t('SpaceModule.base', 'Delete'),
-            Yii::t('SpaceModule.base', 'Cancel')) ?>
+            Yii::t('SpaceModule.base', 'Cancel')
+        ) ?>
 </div>

@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class SecurityForm extends Model
 {
-
     /**
      * @var boolean allow guest acccess
      */

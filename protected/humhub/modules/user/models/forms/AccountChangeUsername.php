@@ -21,7 +21,6 @@ use yii\base\Model;
  */
 class AccountChangeUsername extends Model
 {
-
     /**
      * @var string the users password
      */

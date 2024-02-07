@@ -18,7 +18,6 @@ use humhub\modules\content\models\Content;
  */
 class LegitimationChanged extends LiveEvent
 {
-
     /**
      * @var array the legitimation array
      */

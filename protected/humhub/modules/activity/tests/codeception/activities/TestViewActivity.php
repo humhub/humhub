@@ -11,7 +11,6 @@ use humhub\modules\activity\components\BaseActivity;
  */
 class TestViewActivity extends BaseActivity
 {
-
     public $moduleId = 'test';
 
     public $viewName = 'testWithView';

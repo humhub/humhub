@@ -20,7 +20,6 @@ use yii\db\Expression;
  */
 class Session extends DbSession
 {
-
     /**
      * @inheritdoc
      */
@@ -67,7 +66,7 @@ class Session extends DbSession
             }
 
             $expire = time() + $this->getTimeout();
-            $query = new Query;
+            $query = new Query();
             $exists = $query->select(['id'])
                 ->from($this->sessionTable)
                 ->where(['id' => $id])

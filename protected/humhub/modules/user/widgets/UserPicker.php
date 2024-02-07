@@ -38,7 +38,6 @@ use humhub\modules\user\models\UserFilter;
  */
 class UserPicker extends Widget
 {
-
     /**
      * Id of input element which should replaced
      *
@@ -281,5 +280,3 @@ class UserPicker extends Widget
         return $userInfo;
     }
 }
-
-?>

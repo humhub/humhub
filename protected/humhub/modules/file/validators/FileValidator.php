@@ -24,7 +24,6 @@ use humhub\modules\file\libs\FileHelper;
  */
 class FileValidator extends \yii\validators\FileValidator
 {
-
     /**
      * @var boolean allow only file extensions which are specified in administration section
      */

@@ -29,15 +29,14 @@ use yii\helpers\Url;
  */
 class MailSummary extends Component
 {
-
     /**
      * Intervals
      */
-    const INTERVAL_NONE = 0;
-    const INTERVAL_HOURLY = 1;
-    const INTERVAL_DAILY = 2;
-    const INTERVAL_WEEKLY = 3;
-    const INTERVAL_MONTHLY = 4;
+    public const INTERVAL_NONE = 0;
+    public const INTERVAL_HOURLY = 1;
+    public const INTERVAL_DAILY = 2;
+    public const INTERVAL_WEEKLY = 3;
+    public const INTERVAL_MONTHLY = 4;
 
     /**
      * @var User the user

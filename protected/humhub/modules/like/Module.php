@@ -21,7 +21,6 @@ use humhub\modules\content\components\ContentActiveRecord;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

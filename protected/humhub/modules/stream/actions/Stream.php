@@ -49,55 +49,55 @@ abstract class Stream extends Action
      * This can be used for adding filters.
      * @since 1.7
      */
-    const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
+    public const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
 
     /**
      * @event Event triggered after stream filter handlers are applied
      * This can be used for last modifications to the query.
      * @since 1.7
      */
-    const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
+    public const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
 
     /**
      * @event Event triggered after query fetch, can be used to manipulate the
      * stream response. E.g. inject additional entries.
      * @since 1.7
      */
-    const EVENT_AFTER_FETCH = 'afterQueryFetch';
+    public const EVENT_AFTER_FETCH = 'afterQueryFetch';
 
     /**
      * Sort by creation sort value
      */
-    const SORT_CREATED_AT = 'c';
+    public const SORT_CREATED_AT = 'c';
 
     /**
      * Sort by update sort value
      */
-    const SORT_UPDATED_AT = 'u';
+    public const SORT_UPDATED_AT = 'u';
 
     /**
      * @var string
      * @deprecated since 1.6 use ActivityStreamAction
      */
-    const MODE_NORMAL = 'normal';
+    public const MODE_NORMAL = 'normal';
 
     /**
      * @var string
      * @deprecated since 1.6 use ActivityStreamAction
      */
-    const MODE_ACTIVITY = 'activity';
+    public const MODE_ACTIVITY = 'activity';
 
     /**
      * @var string
      * @deprecated since 1.7 use BaseStreamEntryWidget::VIEW_MODE_DASHBOARD
      */
-    const FROM_DASHBOARD = 'dashboard';
+    public const FROM_DASHBOARD = 'dashboard';
 
     /**
      * Maximum wall entries per request
      * @deprecated since 1.7 not in use
      */
-    const MAX_LIMIT = 50;
+    public const MAX_LIMIT = 50;
 
     /**
      * Optional stream user if no user is specified, the current logged in user will be used.

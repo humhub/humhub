@@ -48,24 +48,25 @@ if ($filter->day) {
         <div class="col-md-3 col-md-push-1" style="padding-right:0">
             <?= $form->field($filter, 'term')->textInput(
                 [
-                    'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
-                    'maxlength' => 200,
-                    'style' => 'height:40px'
-                ])->label(false) ?>
+                                'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
+                                'maxlength' => 200,
+                                'style' => 'height:40px'
+                            ]
+            )->label(false) ?>
         </div>
         <div class="col-md-2" style="padding-right:0">
             <?= $form->field($filter, 'day')->widget(DatePicker::class, [
-                'dateFormat' => Yii::$app->formatter->dateInputFormat,
-                'options' => [
-                    'placeholder' => Yii::t('AdminModule.information', 'Select day'),
-                    'style' => 'height:40px'
-                ]])->label(false) ?>
+                            'dateFormat' => Yii::$app->formatter->dateInputFormat,
+                            'options' => [
+                                'placeholder' => Yii::t('AdminModule.information', 'Select day'),
+                                'style' => 'height:40px'
+                            ]])->label(false) ?>
         </div>
         <div class="col-md-4" style="padding-right:0">
             <?= $form->field($filter, 'levels')->widget(MultiSelect::class, [
-                'items' => $filter->getLevelSelection(),
-                'placeholderMore' => Yii::t('AdminModule.information', 'Select level...')
-            ])->label(false) ?>
+                            'items' => $filter->getLevelSelection(),
+                            'placeholderMore' => Yii::t('AdminModule.information', 'Select level...')
+                        ])->label(false) ?>
         </div>
         <div class="col-md-3">
             <?= $form->field($filter, 'category')->dropDownList($filter->getCategorySelection(), ['style' => 'height:40px'])->label(false) ?>

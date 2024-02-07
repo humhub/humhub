@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class SampleDataForm extends Model
 {
-
     /**
      * @var boolean create sample data
      */

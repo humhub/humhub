@@ -29,7 +29,6 @@ use yii\db\ActiveQuery;
  */
 class Mentioning extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

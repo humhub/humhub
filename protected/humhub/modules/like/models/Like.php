@@ -33,7 +33,6 @@ use yii\db\ActiveRecord;
  */
 class Like extends ContentAddonActiveRecord
 {
-
     /**
      * @inheritdoc
      */

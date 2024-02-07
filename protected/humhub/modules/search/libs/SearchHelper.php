@@ -24,7 +24,6 @@ use yii\db\ActiveRecord;
  */
 class SearchHelper extends BaseObject
 {
-
     /**
      * Checks if given text matches a search query.
      *

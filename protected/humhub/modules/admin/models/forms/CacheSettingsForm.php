@@ -15,7 +15,7 @@ use yii\base\Model;
  */
 class CacheSettingsForm extends Model
 {
-    const EVENT_FETCH_RELOADABLE_SCRIPTS = 'fetchReloadableScripts';
+    public const EVENT_FETCH_RELOADABLE_SCRIPTS = 'fetchReloadableScripts';
 
     public $type;
     public $expireTime;

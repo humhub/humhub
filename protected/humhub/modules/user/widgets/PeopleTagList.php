@@ -20,7 +20,6 @@ use humhub\components\Widget;
  */
 class PeopleTagList extends Widget
 {
-
     /**
      * @var User
      */

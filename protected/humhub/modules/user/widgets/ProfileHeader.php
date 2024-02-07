@@ -23,7 +23,6 @@ use yii\base\Widget;
  */
 class ProfileHeader extends Widget
 {
-
     /**
      * @var User
      */
@@ -89,5 +88,3 @@ class ProfileHeader extends Widget
     }
 
 }
-
-?>

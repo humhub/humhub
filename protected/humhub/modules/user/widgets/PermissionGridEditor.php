@@ -25,7 +25,6 @@ use humhub\libs\DropDownGridColumn;
  */
 class PermissionGridEditor extends GridView
 {
-
     /**
      * @var boolean hide not changeable permissions
      */

@@ -20,7 +20,6 @@ use yii\helpers\Url;
  */
 class Events extends BaseObject
 {
-
     /**
      * Add friends navigation entry to account menu
      *

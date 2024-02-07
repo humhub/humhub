@@ -21,9 +21,8 @@ use yii\helpers\Html;
  */
 class Text extends BaseType
 {
-
-    const VALIDATOR_EMAIL = "email";
-    const VALIDATOR_URL = "url";
+    public const VALIDATOR_EMAIL = "email";
+    public const VALIDATOR_URL = "url";
 
     /**
      * Minimum Text Length

@@ -23,16 +23,15 @@ use yii\base\InvalidConfigException;
  */
 class Collection extends Component
 {
-
     /**
      * @event Event an event raised before the clients are set.
      */
-    const EVENT_BEFORE_CLIENTS_SET = 'client_set_before';
+    public const EVENT_BEFORE_CLIENTS_SET = 'client_set_before';
 
     /**
      * @event Event an event raised after the clients are set.
      */
-    const EVENT_AFTER_CLIENTS_SET = 'client_set';
+    public const EVENT_AFTER_CLIENTS_SET = 'client_set';
 
     /**
      * @var array list of Auth clients with their configuration in format: 'clientId' => [...]

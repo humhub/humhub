@@ -31,23 +31,23 @@ class StreamQuery extends Model
     /**
      * @event Event triggered before filterHandlers are applied, this can be used to add custom stream filters.
      */
-    const EVENT_BEFORE_FILTER = 'beforeFilter';
+    public const EVENT_BEFORE_FILTER = 'beforeFilter';
 
     /**
      * @event Event triggered after filterHandlers are applied.
      */
-    const EVENT_AFTER_FILTER = 'afterFilter';
+    public const EVENT_AFTER_FILTER = 'afterFilter';
 
     /**
      * Default channels
      */
-    const CHANNEL_DEFAULT = 'default';
-    const CHANNEL_ACTIVITY = 'activity';
+    public const CHANNEL_DEFAULT = 'default';
+    public const CHANNEL_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
      */
-    const MAX_LIMIT = 20;
+    public const MAX_LIMIT = 20;
 
     /**
      * Can be set to filter specific content types.
@@ -508,7 +508,7 @@ class StreamQuery extends Model
     {
         if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } else if (Yii::$app->request->isConsoleRequest) {
+        } elseif (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
         } else {
             $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;
@@ -550,7 +550,9 @@ class StreamQuery extends Model
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
                             "content.id > :from"
                         ],
-                    ], [':from' => $this->from]);
+                    ],
+                    [':from' => $this->from]
+                );
             } elseif (!empty($this->to)) {
                 $this->_query->andWhere(
                     ['or',
@@ -559,7 +561,9 @@ class StreamQuery extends Model
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
                             "content.id < :to"
                         ],
-                    ], [':to' => $this->to]);
+                    ],
+                    [':to' => $this->to]
+                );
             }
         } else {
             $this->_query->orderBy('content.created_at DESC,content.id DESC');
@@ -571,7 +575,9 @@ class StreamQuery extends Model
                             "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:from)",
                             "content.id < :from"
                         ],
-                    ], [':from' => $this->from]);
+                    ],
+                    [':from' => $this->from]
+                );
             } elseif (!empty($this->to)) {
                 $this->_query->andWhere(
                     ['or',
@@ -580,7 +586,9 @@ class StreamQuery extends Model
                             "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:to)",
                             "content.id > :to"
                         ],
-                    ], [':to' => $this->to]);
+                    ],
+                    [':to' => $this->to]
+                );
             }
         }
 

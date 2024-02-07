@@ -22,9 +22,8 @@ use Yii;
  */
 class CommentLink extends Widget
 {
-
-    const MODE_INLINE = 'inline';
-    const MODE_POPUP = 'popup';
+    public const MODE_INLINE = 'inline';
+    public const MODE_POPUP = 'popup';
 
     /**
      * @var CommentModel|ContentActiveRecord

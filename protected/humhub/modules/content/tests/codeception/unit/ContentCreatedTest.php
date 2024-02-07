@@ -13,7 +13,6 @@ use humhub\modules\user\models\User;
 
 class ContentCreatedTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     /**

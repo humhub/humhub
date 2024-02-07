@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\stream\actions;
-
 
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\StreamSuppressQuery;

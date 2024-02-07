@@ -38,7 +38,7 @@ class IncludeGroupNotification extends BaseNotification
      */
     public function category()
     {
-        return new AdminNotificationCategory;
+        return new AdminNotificationCategory();
     }
 
     /**

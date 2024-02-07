@@ -30,7 +30,6 @@ use yii\db\ActiveRecord;
  */
 class Password extends ActiveRecord
 {
-
     /**
      * Additional Fields for Scenarios
      */

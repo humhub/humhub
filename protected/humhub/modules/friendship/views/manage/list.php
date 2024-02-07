@@ -36,7 +36,7 @@ use humhub\widgets\GridView;
                 ],
             ]],
     ]);
-    ?>
+?>
 
 </div>
 

@@ -26,7 +26,6 @@ use yii\web\HttpException;
  */
 class ModuleController extends Controller
 {
-
     /**
      * @inheritdoc
      */

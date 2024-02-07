@@ -16,7 +16,6 @@ use yii\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
-
     /**
      * Used to retrieve the auth clients in a static way
      * @var string

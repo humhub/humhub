@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\stream;
-
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
@@ -20,31 +18,30 @@ use yii\base\Model;
  */
 class StreamEntryOptions extends Model
 {
-
     /**
      * Used when rendering the entry in default context e.g. in a container stream (default)
      */
-    const VIEW_CONTEXT_DEFAULT = 'default';
+    public const VIEW_CONTEXT_DEFAULT = 'default';
 
     /**
      * Used when rendering the entry on the dashboard
      */
-    const VIEW_CONTEXT_DASHBOARD = 'dashboard';
+    public const VIEW_CONTEXT_DASHBOARD = 'dashboard';
 
     /**
      * Used when rendering the entry on the search stream
      */
-    const VIEW_CONTEXT_SEARCH = 'search';
+    public const VIEW_CONTEXT_SEARCH = 'search';
 
     /**
      * Used when rendering the entry e.g. as single stream entry
      */
-    const VIEW_CONTEXT_DETAIL = 'detail';
+    public const VIEW_CONTEXT_DETAIL = 'detail';
 
     /**
      * Used when rendering the entry in a modal
      */
-    const VIEW_CONTEXT_MODAL = 'modal';
+    public const VIEW_CONTEXT_MODAL = 'modal';
 
     /**
      * @var string the active view context used for the stream entry rendering

@@ -19,12 +19,11 @@ use yii\base\Component;
  */
 abstract class BaseFileHandler extends Component
 {
-
     /**
      * Output list position
      */
-    const POSITION_TOP = '1';
-    const POSITION_STANDARD = '5';
+    public const POSITION_TOP = '1';
+    public const POSITION_STANDARD = '5';
 
     /**
      * @var int the position of the file handler

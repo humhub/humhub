@@ -29,7 +29,6 @@ use yii\helpers\BaseUrl;
  */
 class InitialData
 {
-
     public static function bootstrap()
     {
         // Seems database is already initialized
@@ -82,7 +81,7 @@ class InitialData
 
 
         // Add Categories
-        $cGeneral = new ProfileFieldCategory;
+        $cGeneral = new ProfileFieldCategory();
         $cGeneral->title = "General";
         $cGeneral->sort_order = 100;
         $cGeneral->visibility = 1;
@@ -92,7 +91,7 @@ class InitialData
             throw new Exception(print_r($cGeneral->getErrors(), true));
         }
 
-        $cCommunication = new ProfileFieldCategory;
+        $cCommunication = new ProfileFieldCategory();
         $cCommunication->title = "Communication";
         $cCommunication->sort_order = 200;
         $cCommunication->visibility = 1;
@@ -100,7 +99,7 @@ class InitialData
         $cCommunication->description = '';
         $cCommunication->save();
 
-        $cSocial = new ProfileFieldCategory;
+        $cSocial = new ProfileFieldCategory();
         $cSocial->title = "Social bookmarks";
         $cSocial->sort_order = 300;
         $cSocial->visibility = 1;

@@ -24,7 +24,6 @@ use yii\base\Widget;
  */
 class FileUploadList extends Widget
 {
-
     /**
      * @var String unique id of this uploader
      */

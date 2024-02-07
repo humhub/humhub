@@ -5,7 +5,6 @@ use yii\db\Schema;
 
 class m160227_073020_birthday_date extends Migration
 {
-
     public function up()
     {
         $table = Yii::$app->db->schema->getTableSchema('profile');

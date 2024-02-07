@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\admin\models\forms;
-
 
 use DateTime;
 use Exception;
@@ -23,18 +21,18 @@ class LogFilterForm extends Model
     /**
      * default pagination  size
      */
-    const PAGE_SIZE = 10;
+    public const PAGE_SIZE = 10;
 
 
     /**
      * default category filter for including all
      */
-    const FILTER_CATEGORY_NONE = 'none';
+    public const FILTER_CATEGORY_NONE = 'none';
 
     /**
      * special category filter for merging yii/* filter categories
      */
-    const FILTER_CATEGORY_OTHER = 'other';
+    public const FILTER_CATEGORY_OTHER = 'other';
 
     /**
      * @var string single category filter

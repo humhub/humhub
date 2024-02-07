@@ -20,7 +20,6 @@ use yii\db\ActiveRecord;
  */
 class QueueExclusive extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

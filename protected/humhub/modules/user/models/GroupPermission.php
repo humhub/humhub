@@ -5,7 +5,6 @@ namespace humhub\modules\user\models;
 use humhub\libs\BasePermission;
 use yii\db\ActiveRecord;
 
-
 /**
  * This is the model class for table "group_permission".
  *

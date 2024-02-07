@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\stream\actions;
-
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
@@ -79,8 +77,8 @@ trait LegacyStreamTrait
         $underlyingObject->populateRelation('content', $content);
 
         $result['output'] = static::renderEntry($underlyingObject, false);
-        $result['pinned'] = (boolean)$content->pinned;
-        $result['archived'] = (boolean)$content->archived;
+        $result['pinned'] = (bool)$content->pinned;
+        $result['archived'] = (bool)$content->archived;
         $result['guid'] = $content->guid;
         $result['id'] = $content->id;
 

@@ -17,7 +17,6 @@ use humhub\modules\user\widgets\UserPicker;
 use Yii;
 use yii\web\Controller;
 
-
 /**
  * Search Controller provides action for searching users.
  *
@@ -26,7 +25,6 @@ use yii\web\Controller;
  */
 class SearchController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -88,5 +86,3 @@ class SearchController extends Controller
         return $this->asJson($results);
     }
 }
-
-?>

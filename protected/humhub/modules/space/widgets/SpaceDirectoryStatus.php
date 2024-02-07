@@ -19,7 +19,6 @@ use Yii;
  */
 class SpaceDirectoryStatus extends Widget
 {
-
     /**
      * @var Space
      */

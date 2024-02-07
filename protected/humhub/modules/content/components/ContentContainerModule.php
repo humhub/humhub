@@ -24,7 +24,6 @@ use humhub\modules\content\models\ContentContainerPermission;
  */
 class ContentContainerModule extends Module
 {
-
     /**
      * @inheritdoc
      */

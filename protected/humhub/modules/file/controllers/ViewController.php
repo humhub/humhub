@@ -22,7 +22,6 @@ use humhub\modules\file\handler\FileHandlerCollection;
  */
 class ViewController extends Controller
 {
-
     /**
      * @inheritdoc
      */

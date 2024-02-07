@@ -21,7 +21,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
  */
 class VisibilityLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */

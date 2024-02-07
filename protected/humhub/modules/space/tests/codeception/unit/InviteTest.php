@@ -13,7 +13,6 @@ use humhub\modules\space\models\Space;
 
 class InviteTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testInviteAccept()

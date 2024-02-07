@@ -20,7 +20,6 @@ use humhub\libs\Helpers;
  */
 class ContentCreated extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -103,5 +102,3 @@ class ContentCreated extends BaseNotification
     }
 
 }
-
-?>

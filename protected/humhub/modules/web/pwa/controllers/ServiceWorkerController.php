@@ -24,7 +24,6 @@ use yii\helpers\Url;
  */
 class ServiceWorkerController extends Controller
 {
-
     /**
      * Allow guest access independently from guest mode setting.
      *

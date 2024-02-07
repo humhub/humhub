@@ -31,21 +31,20 @@ use Yii;
  */
 class WallEntry extends Widget
 {
-
     /**
      * Edit form is loaded to the wallentry itself.
      */
-    const EDIT_MODE_INLINE = 'inline';
+    public const EDIT_MODE_INLINE = 'inline';
 
     /**
      * Opens the edit page in a new window.
      */
-    const EDIT_MODE_NEW_WINDOW = 'new_window';
+    public const EDIT_MODE_NEW_WINDOW = 'new_window';
 
     /**
      * Edit form is loaded into a modal.
      */
-    const EDIT_MODE_MODAL = 'modal';
+    public const EDIT_MODE_MODAL = 'modal';
 
     /**
      * The content object

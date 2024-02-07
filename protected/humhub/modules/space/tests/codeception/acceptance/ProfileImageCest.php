@@ -7,7 +7,6 @@ use space\AcceptanceTester;
 
 class ProfileImageCest
 {
-
     /**
      * Create Private Spaces
      *

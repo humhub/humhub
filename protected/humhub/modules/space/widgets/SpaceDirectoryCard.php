@@ -18,7 +18,6 @@ use humhub\modules\space\models\Space;
  */
 class SpaceDirectoryCard extends Widget
 {
-
     /**
      * @var Space
      */

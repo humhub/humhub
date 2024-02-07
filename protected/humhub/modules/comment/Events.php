@@ -25,7 +25,6 @@ use yii\base\Event;
  */
 class Events extends Component
 {
-
     /**
      * On content deletion make sure to delete all its comments
      *

@@ -31,7 +31,7 @@ class Registration extends HForm
     /**
      * @event \yii\web\UserEvent triggered after successful registration.
      */
-    const EVENT_AFTER_REGISTRATION = 'afterRegistration';
+    public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
 
     /**
      * @var boolean show password creation form

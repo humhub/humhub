@@ -21,7 +21,6 @@ use yii\helpers\ArrayHelper;
  */
 class FileHandlerButtonDropdown extends Widget
 {
-
     /**
      * @var string the primary button html code, if not set the first handler will be used
      */

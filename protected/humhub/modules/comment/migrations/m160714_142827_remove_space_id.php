@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m160714_142827_remove_space_id extends Migration
 {
-
     public function up()
     {
         try {

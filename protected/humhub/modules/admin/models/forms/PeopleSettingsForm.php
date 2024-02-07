@@ -20,7 +20,6 @@ use yii\base\Model;
  */
 class PeopleSettingsForm extends Model
 {
-
     public $detail1;
     public $detail2;
     public $detail3;

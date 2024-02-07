@@ -19,12 +19,9 @@ use humhub\widgets\BaseSidebar;
  */
 class ProfileSidebar extends BaseSidebar
 {
-
     /**
      * @var User the user this sidebar belongs to
      */
     public $user;
 
 }
-
-?>

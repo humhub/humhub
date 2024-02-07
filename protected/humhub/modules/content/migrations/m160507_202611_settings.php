@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m160507_202611_settings extends Migration
 {
-
     public function up()
     {
         $this->createTable('contentcontainer_setting', [

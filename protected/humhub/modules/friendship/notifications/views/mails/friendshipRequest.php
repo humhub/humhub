@@ -52,7 +52,7 @@ use humhub\widgets\mails\MailContentContainerInfoBox;
                 MailButtonList::widget(['buttons' => [
                     humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
-                ?>
+?>
             </td>
         </tr>
     </table>

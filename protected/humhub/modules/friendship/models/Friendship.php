@@ -31,24 +31,23 @@ use yii\db\Query;
  */
 class Friendship extends ActiveRecord
 {
+    /**
+     * @event \humhub\modules\friendship\FriendshipEvent
+     */
+    public const EVENT_FRIENDSHIP_CREATED = 'friendshipCreated';
 
     /**
      * @event \humhub\modules\friendship\FriendshipEvent
      */
-    const EVENT_FRIENDSHIP_CREATED = 'friendshipCreated';
-
-    /**
-     * @event \humhub\modules\friendship\FriendshipEvent
-     */
-    const EVENT_FRIENDSHIP_REMOVED = 'friendshipRemoved';
+    public const EVENT_FRIENDSHIP_REMOVED = 'friendshipRemoved';
 
     /**
      * Friendship States
      */
-    const STATE_NONE = 0;
-    const STATE_FRIENDS = 1;
-    const STATE_REQUEST_RECEIVED = 2;
-    const STATE_REQUEST_SENT = 3;
+    public const STATE_NONE = 0;
+    public const STATE_FRIENDS = 1;
+    public const STATE_REQUEST_RECEIVED = 2;
+    public const STATE_REQUEST_SENT = 3;
 
     /**
      * @inheritdoc

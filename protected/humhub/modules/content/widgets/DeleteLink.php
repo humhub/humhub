@@ -23,7 +23,6 @@ use yii\base\Widget;
  */
 class DeleteLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */

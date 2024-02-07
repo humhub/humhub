@@ -33,7 +33,6 @@ use yii\db\ActiveQuery;
  */
 class ListBox extends Widget
 {
-
     /**
      * @var ActiveQuery
      */

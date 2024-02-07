@@ -20,7 +20,6 @@ use humhub\modules\space\models\Membership;
  */
 class ChangeOwnerForm extends Model
 {
-
     /**
      * @var Space
      */

@@ -22,7 +22,6 @@ use yii\base\Widget;
  */
 class FollowButton extends Widget
 {
-
     /**
      * @var User
      */

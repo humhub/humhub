@@ -20,7 +20,6 @@ use Yii;
  */
 class SecurityTabMenu extends TabMenu
 {
-
     /**
      * @var Space
      */

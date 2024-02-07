@@ -11,7 +11,6 @@ namespace tests\codeception\unit\modules\content\widgets;
 use humhub\modules\content\widgets\richtext\RichText;
 use tests\codeception\_support\HumHubDbTestCase;
 
-
 class RichtextPreviewTest extends HumHubDbTestCase
 {
     public function testStripHtml()

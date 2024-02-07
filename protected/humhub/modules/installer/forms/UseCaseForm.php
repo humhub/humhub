@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class UseCaseForm extends Model
 {
-
     /**
      * @var string use case
      */

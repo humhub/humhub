@@ -18,7 +18,6 @@ use yii\base\InvalidConfigException;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * Maximum comments to load at once
      *

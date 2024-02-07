@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m140703_104527_profile_birthdayfield extends Migration
 {
-
     public function up()
     {
         if (!$this->isInitialInstallation()) {

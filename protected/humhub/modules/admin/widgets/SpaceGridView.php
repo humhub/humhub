@@ -15,5 +15,4 @@ use humhub\widgets\GridView;
  */
 class SpaceGridView extends GridView
 {
-
 }

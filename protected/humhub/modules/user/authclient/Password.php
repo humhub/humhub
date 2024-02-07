@@ -17,7 +17,6 @@ use humhub\modules\user\models\User;
  */
 class Password extends BaseFormAuth implements interfaces\PrimaryClient
 {
-
     /**
      * @inheritdoc
      */

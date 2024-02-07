@@ -203,7 +203,7 @@ class Chooser extends Widget
     {
         /** @var PermissionManager $manager */
         $manager = Yii::$app->user->permissionmanager;
-        return $manager->can(new CreatePublicSpace) || $manager->can(new CreatePrivateSpace());
+        return $manager->can(new CreatePublicSpace()) || $manager->can(new CreatePrivateSpace());
     }
 
     /**

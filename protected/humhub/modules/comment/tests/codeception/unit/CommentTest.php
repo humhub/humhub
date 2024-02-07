@@ -12,7 +12,6 @@ use humhub\modules\comment\models\Comment;
 
 class CommentTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testCreateComment()

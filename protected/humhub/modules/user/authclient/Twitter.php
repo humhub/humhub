@@ -15,7 +15,6 @@ use yii\authclient\OAuth2;
  */
 class Twitter extends OAuth2
 {
-
     /**
      * @inheritdoc
      */

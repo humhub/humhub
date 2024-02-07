@@ -6,7 +6,6 @@
  * @license https://www.humhub.com/licences
  */
 
-
 namespace humhub\modules\space\components;
 
 use humhub\events\ActiveQueryEvent;
@@ -20,7 +19,6 @@ use Throwable;
 use Yii;
 use yii\db\ActiveQuery;
 
-
 /**
  * ActiveQuerySpace is used to query Space records.
  *
@@ -31,7 +29,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
     /**
      * @event Event an event that is triggered when only visible spaces are requested via [[visible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * Only returns spaces which are visible for this user

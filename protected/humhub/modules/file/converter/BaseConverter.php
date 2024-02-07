@@ -21,7 +21,6 @@ use yii\base\BaseObject;
  */
 abstract class BaseConverter extends BaseObject
 {
-
     /**
      * @var File the file record
      */

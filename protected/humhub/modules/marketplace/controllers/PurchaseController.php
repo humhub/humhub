@@ -23,7 +23,6 @@ use Yii;
  */
 class PurchaseController extends Controller
 {
-
     /**
      * @var string
      */

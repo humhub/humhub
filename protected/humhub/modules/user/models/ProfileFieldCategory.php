@@ -31,7 +31,6 @@ use yii\db\ActiveQuery;
  */
 class ProfileFieldCategory extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

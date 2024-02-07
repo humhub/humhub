@@ -7,4 +7,3 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
 ];
-?>

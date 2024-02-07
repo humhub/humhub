@@ -24,7 +24,6 @@ use humhub\modules\user\widgets\UserListBox;
  */
 class ListController extends Controller
 {
-
     /**
      * Returns an list of all friends of a user
      *

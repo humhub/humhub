@@ -19,7 +19,6 @@ use humhub\widgets\BaseSidebar;
  */
 class Sidebar extends BaseSidebar
 {
-
     /**
      * @var Space the space this sidebar is in
      */

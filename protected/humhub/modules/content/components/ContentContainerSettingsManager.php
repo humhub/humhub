@@ -20,7 +20,6 @@ use Yii;
  */
 class ContentContainerSettingsManager extends BaseSettingsManager
 {
-
     /**
      * @inheritdoc
      */

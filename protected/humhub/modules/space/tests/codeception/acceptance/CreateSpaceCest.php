@@ -7,7 +7,6 @@ use space\AcceptanceTester;
 
 class CreateSpaceCest
 {
-
     /**
      * Create Private Spaces
      *

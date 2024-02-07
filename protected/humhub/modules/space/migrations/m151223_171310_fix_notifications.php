@@ -9,7 +9,6 @@ use yii\db\Query;
  */
 class m151223_171310_fix_notifications extends Migration
 {
-
     public function up()
     {
         $query = new Query();

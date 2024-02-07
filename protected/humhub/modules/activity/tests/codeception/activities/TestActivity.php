@@ -13,7 +13,6 @@ use yii\helpers\Url;
  */
 class TestActivity extends BaseActivity
 {
-
     public $moduleId = 'test';
 
     public $viewName = 'testNoView';

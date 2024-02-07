@@ -20,8 +20,10 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
     'enableProfilePermissions.question.enable' => Yii::t('AdminModule.user', 'Allow users to set individual permissions for their own profile?'),
     'enableProfilePermissions.button.enable' => Yii::t('AdminModule.user', 'Allow'),
 
-    'enableProfilePermissions.question.disable' => Yii::t('AdminModule.user',
-            'Deactivate individual profile permissions?') . '<br><br>' .
+    'enableProfilePermissions.question.disable' => Yii::t(
+        'AdminModule.user',
+        'Deactivate individual profile permissions?'
+    ) . '<br><br>' .
         '<div class="alert alert-danger">' .
         Yii::t('AdminModule.user', '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!') .
         '</div>',
@@ -30,7 +32,7 @@ $this->registerJsConfig('admin', $adminSettingsJsConfig = ['text' => [
 
 /** @var Module $userModule */
 $userModule = Yii::$app->getModule('user');
-$enabledProfilePermissions = (boolean)$userModule->settings->get('enableProfilePermissions', false);
+$enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePermissions', false);
 
 ?>
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>

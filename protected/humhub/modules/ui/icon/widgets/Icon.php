@@ -38,18 +38,18 @@ use yii\base\InvalidConfigException;
  */
 class Icon extends Widget
 {
-    const SIZE_XS = 'xs';
-    const SIZE_SM = 'sm';
-    const SIZE_LG = 'lg';
-    const SIZE_2x = '2x';
-    const SIZE_3x = '3x';
-    const SIZE_4x = '4x';
-    const SIZE_5x = '5x';
-    const SIZE_6x = '6x';
-    const SIZE_7x = '7x';
-    const SIZE_8x = '8x';
-    const SIZE_9x = '9x';
-    const SIZE_10x = '10x';
+    public const SIZE_XS = 'xs';
+    public const SIZE_SM = 'sm';
+    public const SIZE_LG = 'lg';
+    public const SIZE_2x = '2x';
+    public const SIZE_3x = '3x';
+    public const SIZE_4x = '4x';
+    public const SIZE_5x = '5x';
+    public const SIZE_6x = '6x';
+    public const SIZE_7x = '7x';
+    public const SIZE_8x = '8x';
+    public const SIZE_9x = '9x';
+    public const SIZE_10x = '10x';
 
     /**
      * @var array contains all available names which should be supported by the main icon provider

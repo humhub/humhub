@@ -22,17 +22,16 @@ use Yii;
  */
 class Birthday extends BaseType
 {
-
     /**
      * The public property $defaultHideAge is configured by loadFieldConfig in BaseType and looks like an integer
      * but is stored as string. The value for $hideAge (the user input) looks like an integer and is stored as integer.
      */
 
-    const DEFAULT_HIDE_AGE_YES = '1';
-    const DEFAULT_HIDE_AGE_NO = '0';
+    public const DEFAULT_HIDE_AGE_YES = '1';
+    public const DEFAULT_HIDE_AGE_NO = '0';
 
-    const HIDE_AGE_YES = 1;
-    const HIDE_AGE_NO = 0;
+    public const HIDE_AGE_YES = 1;
+    public const HIDE_AGE_NO = 0;
 
     /**
      * @inheritdoc
@@ -181,8 +180,11 @@ class Birthday extends BaseType
     public function getUserValue(User $user, $raw = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
-            new DateTimeZone(Yii::$app->formatter->timeZone));
+        $birthdayDate = \DateTime::createFromFormat(
+            'Y-m-d',
+            $user->profile->$internalName ?? '',
+            new DateTimeZone(Yii::$app->formatter->timeZone)
+        );
 
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
         $hideAge = $user->profile->$internalNameHideAge;

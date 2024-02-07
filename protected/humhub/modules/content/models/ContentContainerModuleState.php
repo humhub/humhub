@@ -24,16 +24,16 @@ use yii\db\ActiveRecord;
 class ContentContainerModuleState extends ActiveRecord
 {
     /** @var int */
-    const STATE_DISABLED = 0;
+    public const STATE_DISABLED = 0;
 
     /** @var int */
-    const STATE_ENABLED = 1;
+    public const STATE_ENABLED = 1;
 
     /** @var int */
-    const STATE_FORCE_ENABLED = 2;
+    public const STATE_FORCE_ENABLED = 2;
 
     /** @var int */
-    const STATE_NOT_AVAILABLE = 3;
+    public const STATE_NOT_AVAILABLE = 3;
 
     /**
      * @inheritdoc

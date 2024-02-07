@@ -15,7 +15,6 @@ use humhub\modules\queue\ActiveJob;
 
 class PublishScheduledContents extends ActiveJob
 {
-
     /**
      * @inheritdoc
      */

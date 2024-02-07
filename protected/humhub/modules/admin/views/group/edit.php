@@ -59,7 +59,7 @@ use humhub\modules\space\widgets\SpacePickerField;
             'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.'),
         ]);
     }
-    ?>
+?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>

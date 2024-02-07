@@ -22,7 +22,6 @@ use humhub\modules\file\libs\FileHelper;
  */
 class FileCompat extends ActiveRecord
 {
-
     /**
      * Returns all files belongs to a given HActiveRecord Object.
      *

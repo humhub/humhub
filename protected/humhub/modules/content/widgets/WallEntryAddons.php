@@ -17,7 +17,6 @@ use yii\helpers\ArrayHelper;
  */
 class WallEntryAddons extends BaseStack
 {
-
     /**
      * Object derived from ContentActiveRecord
      *
@@ -68,5 +67,3 @@ class WallEntryAddons extends BaseStack
     }
 
 }
-
-?>

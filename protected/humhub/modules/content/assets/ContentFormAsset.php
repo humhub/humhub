@@ -19,7 +19,6 @@ use yii\web\View;
  */
 class ContentFormAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

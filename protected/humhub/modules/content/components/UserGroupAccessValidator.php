@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\components;
 
-
 use Yii;
 use humhub\components\access\ActionAccessValidator;
 use humhub\modules\admin\permissions\ManageSpaces;

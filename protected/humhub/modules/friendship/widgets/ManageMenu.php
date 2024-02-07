@@ -19,7 +19,6 @@ use humhub\modules\friendship\models\Friendship;
  */
 class ManageMenu extends TabMenu
 {
-
     /**
      * @var User
      */

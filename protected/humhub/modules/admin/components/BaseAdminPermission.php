@@ -19,7 +19,6 @@ use humhub\modules\user\models\Group;
  */
 class BaseAdminPermission extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

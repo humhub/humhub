@@ -8,7 +8,6 @@
 
 namespace activity\functional;
 
-
 use humhub\modules\comment\activities\NewComment;
 use humhub\modules\content\activities\ContentCreated;
 use humhub\modules\like\activities\Liked;

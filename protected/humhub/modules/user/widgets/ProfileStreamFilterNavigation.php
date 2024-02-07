@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\user\widgets;
-
 
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
 use humhub\modules\ui\filter\widgets\RadioFilterInput;
@@ -15,12 +13,11 @@ use Yii;
  */
 class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
 {
-
     /**
      * Extra filter category for profile scope
      * @since 1.6
      */
-    const FILTER_BLOCK_SCOPE = 'scope';
+    public const FILTER_BLOCK_SCOPE = 'scope';
 
     /**
      * @inheritDoc

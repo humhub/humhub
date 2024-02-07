@@ -13,7 +13,6 @@ use yii\helpers\Html;
  */
 class UploadProgress extends JsWidget
 {
-
     public $jsWidget = "ui.progress.Progress";
 
     public $visible = false;

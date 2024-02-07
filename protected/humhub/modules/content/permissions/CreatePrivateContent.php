@@ -18,7 +18,6 @@ use Yii;
  */
 class CreatePrivateContent extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

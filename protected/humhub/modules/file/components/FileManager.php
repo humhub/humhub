@@ -28,7 +28,6 @@ use yii\helpers\ArrayHelper;
  */
 class FileManager extends Component
 {
-
     /**
      * @var ActiveRecord
      */

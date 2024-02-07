@@ -20,7 +20,6 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
  */
 class ContentCreated extends BaseActivity implements ConfigurableActivityInterface
 {
-
     /**
      * @inheritdoc
      */

@@ -18,5 +18,4 @@ use humhub\modules\user\actions\ProfileStreamAction;
  */
 class ProfileStream extends ProfileStreamAction
 {
-
 }

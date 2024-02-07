@@ -2,7 +2,6 @@
 
 namespace humhub\modules\space\widgets;
 
-
 use humhub\widgets\BaseStack;
 
 /**
@@ -14,10 +13,7 @@ use humhub\widgets\BaseStack;
  */
 class HeaderControls extends BaseStack
 {
-
     public $seperator = "&nbsp;";
     public $space;
 
 }
-
-?>

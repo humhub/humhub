@@ -16,7 +16,6 @@ use yii\base\Widget;
  */
 class NewSpaces extends Widget
 {
-
     public $showMoreButton = false;
 
     /**

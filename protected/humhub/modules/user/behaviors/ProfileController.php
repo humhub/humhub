@@ -28,7 +28,6 @@ use humhub\components\Controller;
  */
 class ProfileController extends Behavior
 {
-
     /**
      * @var User the user
      */
@@ -93,5 +92,3 @@ class ProfileController extends Behavior
     }
 
 }
-
-?>

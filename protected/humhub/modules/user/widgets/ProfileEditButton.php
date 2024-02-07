@@ -23,7 +23,6 @@ namespace humhub\modules\user\widgets;
 use Yii;
 use yii\base\Widget;
 
-
 /**
  * ProfileEditButtonWidget
  *
@@ -33,7 +32,6 @@ use yii\base\Widget;
  */
 class ProfileEditButton extends Widget
 {
-
     public $user;
 
     public function run()

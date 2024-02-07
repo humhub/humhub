@@ -28,7 +28,6 @@ use yii\helpers\Json;
  */
 class BaseType extends Model
 {
-
     /**
      * @event Event an event raised after init. Can be used to add custom field types.
      *
@@ -44,7 +43,7 @@ class BaseType extends Model
      *
      * @since 1.12
      */
-    const EVENT_INIT = "fieldTypesInit";
+    public const EVENT_INIT = "fieldTypesInit";
 
     /**
      * @var string

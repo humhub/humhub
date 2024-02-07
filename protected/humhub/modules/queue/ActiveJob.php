@@ -19,7 +19,6 @@ use humhub\modules\queue\interfaces\JobInterface;
  */
 abstract class ActiveJob extends BaseObject implements JobInterface
 {
-
     /**
      * Runs this job
      */

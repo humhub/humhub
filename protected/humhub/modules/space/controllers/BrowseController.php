@@ -27,7 +27,6 @@ use yii\web\Response;
  */
 class BrowseController extends Controller
 {
-
     /**
      * @inheritdoc
      */

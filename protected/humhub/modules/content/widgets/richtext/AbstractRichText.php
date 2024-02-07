@@ -330,7 +330,7 @@ abstract class AbstractRichText extends JsWidget
                 return $converter->convertToMarkdown($content, $options);
             case static::FORMAT_PLAINTEXT:
                 return $converter->convertToPlaintext($content, $options);
-            case static:: FORMAT_SHORTTEXT:
+            case static::FORMAT_SHORTTEXT:
                 return $converter->convertToShortText($content, $options);
             default:
                 return Html::encode($converter->convertToPlaintext($content, $options));

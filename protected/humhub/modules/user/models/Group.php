@@ -24,7 +24,6 @@ use yii\db\StaleObjectException;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-
 /**
  * This is the model class for table "group".
  *
@@ -51,8 +50,7 @@ use yii\helpers\Url;
  */
 class Group extends ActiveRecord
 {
-
-    const SCENARIO_EDIT = 'edit';
+    public const SCENARIO_EDIT = 'edit';
 
     /**
      * @inheritdoc
@@ -430,10 +428,16 @@ class Group extends ActiveRecord
 
             Yii::$app->i18n->setUserLocale($manager);
 
-            $html = Yii::t('UserModule.auth', 'Hello {displayName},',
-                    ['displayName' => $manager->displayName]) . "<br><br>\n\n" .
-                Yii::t('UserModule.auth', 'a new user {displayName} needs approval.',
-                    ['displayName' => $user->displayName]) . "<br><br>\n\n" .
+            $html = Yii::t(
+                'UserModule.auth',
+                'Hello {displayName},',
+                ['displayName' => $manager->displayName]
+            ) . "<br><br>\n\n" .
+                Yii::t(
+                    'UserModule.auth',
+                    'a new user {displayName} needs approval.',
+                    ['displayName' => $user->displayName]
+                ) . "<br><br>\n\n" .
                 Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .
                 Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
@@ -508,10 +512,10 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-                $this->isNewRecord ||
+            $this->isNewRecord ||
                 $this->is_admin_group ||
                 $this->is_default_group ||
                 $this->is_protected
-            );
+        );
     }
 }

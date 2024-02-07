@@ -26,7 +26,6 @@ use humhub\modules\content\models\Content;
  */
 abstract class BaseActivity extends SocialActivity
 {
-
     /**
      * Default content visibility of this Activity.
      * @var int

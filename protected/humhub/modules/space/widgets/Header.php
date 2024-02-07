@@ -20,7 +20,6 @@ use yii\base\Widget;
  */
 class Header extends Widget
 {
-
     /**
      * @var Space the Space which this header belongs to
      */

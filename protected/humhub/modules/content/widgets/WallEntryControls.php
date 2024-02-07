@@ -18,7 +18,6 @@ use yii\helpers\ArrayHelper;
  */
 class WallEntryControls extends Menu
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -52,7 +51,7 @@ class WallEntryControls extends Menu
     {
         if (!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
-        } else if (!$this->renderOptions) {
+        } elseif (!$this->renderOptions) {
             $this->renderOptions = new WallStreamEntryOptions();
         }
     }
@@ -179,7 +178,7 @@ class WallEntryControls extends Menu
      * @param array $arr
      * @return boolean
      */
-    function isAssoc($arr)
+    public function isAssoc($arr)
     {
         if ([] === $arr) {
             return false;

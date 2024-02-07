@@ -13,10 +13,7 @@ use humhub\widgets\BaseStack;
  */
 class ProfileHeaderControls extends BaseStack
 {
-
     public $seperator = "&nbsp;";
     public $user;
 
 }
-
-?>

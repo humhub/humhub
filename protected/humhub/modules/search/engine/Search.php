@@ -28,15 +28,14 @@ use yii\base\Component;
  */
 abstract class Search extends Component
 {
-
-    const EVENT_SEARCH_ATTRIBUTES = 'search_attributes';
-    const EVENT_ON_REBUILD = 'onRebuild';
-    const DOCUMENT_TYPE_USER = 'user';
-    const DOCUMENT_TYPE_SPACE = 'space';
-    const DOCUMENT_TYPE_CONTENT = 'content';
-    const DOCUMENT_TYPE_OTHER = 'other';
-    const DOCUMENT_VISIBILITY_PUBLIC = 'public';
-    const DOCUMENT_VISIBILITY_PRIVATE = 'private';
+    public const EVENT_SEARCH_ATTRIBUTES = 'search_attributes';
+    public const EVENT_ON_REBUILD = 'onRebuild';
+    public const DOCUMENT_TYPE_USER = 'user';
+    public const DOCUMENT_TYPE_SPACE = 'space';
+    public const DOCUMENT_TYPE_CONTENT = 'content';
+    public const DOCUMENT_TYPE_OTHER = 'other';
+    public const DOCUMENT_VISIBILITY_PUBLIC = 'public';
+    public const DOCUMENT_VISIBILITY_PRIVATE = 'private';
 
     /**
      * @var int the minimum length of a search token

@@ -4,7 +4,6 @@ use humhub\components\Migration;
 use yii\db\Query;
 use yii\db\Schema;
 
-
 class m151010_124437_group_permissions extends Migration
 {
     public function up()

@@ -24,7 +24,6 @@ use Yii;
  */
 class TrackingWidget extends Widget
 {
-
     /**
      * @inheritdoc
      */

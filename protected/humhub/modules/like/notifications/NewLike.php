@@ -21,7 +21,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class NewLike extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */

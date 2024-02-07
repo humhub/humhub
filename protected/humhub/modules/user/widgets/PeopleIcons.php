@@ -18,7 +18,6 @@ use humhub\modules\user\models\User;
  */
 class PeopleIcons extends Widget
 {
-
     /**
      * @var User
      */

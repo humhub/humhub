@@ -13,7 +13,6 @@ use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\InvalidConfigException;
 
-
 class RichTextOembedTest extends HumHubDbTestCase
 {
     /*

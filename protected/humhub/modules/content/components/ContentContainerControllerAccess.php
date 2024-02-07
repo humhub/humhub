@@ -22,11 +22,11 @@ use humhub\modules\user\models\User;
  */
 class ContentContainerControllerAccess extends StrictAccess
 {
-    const RULE_SPACE_ONLY = 'space';
-    const RULE_PROFILE_ONLY = 'profile';
+    public const RULE_SPACE_ONLY = 'space';
+    public const RULE_PROFILE_ONLY = 'profile';
 
-    const RULE_USER_GROUP_ONLY = 'userGroup';
-    const RULE_CONTAINER_ACCESS = 'containerAccess';
+    public const RULE_USER_GROUP_ONLY = 'userGroup';
+    public const RULE_CONTAINER_ACCESS = 'containerAccess';
 
     /**
      * @var ContentContainerActiveRecord

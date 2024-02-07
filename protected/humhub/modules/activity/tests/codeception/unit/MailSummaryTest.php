@@ -8,7 +8,6 @@
 
 namespace humhub\modules\activity\tests\codeception\unit;
 
-
 use Codeception\Module\Yii2;
 use humhub\components\mail\Message;
 use humhub\modules\activity\components\MailSummary;

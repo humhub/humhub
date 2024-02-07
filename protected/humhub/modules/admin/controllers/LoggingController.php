@@ -21,7 +21,6 @@ use humhub\modules\admin\models\Log;
  */
 class LoggingController extends Controller
 {
-
     /**
      * @inheritdoc
      */

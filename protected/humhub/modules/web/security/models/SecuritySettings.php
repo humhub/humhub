@@ -12,7 +12,6 @@ use yii\helpers\Url;
 use humhub\modules\web\security\helpers\CSPBuilder;
 use humhub\modules\web\security\Module;
 
-
 /**
  * The SecuritySettings are used to load and parse a security config file.
  * The config file path is defined in the security module class.
@@ -36,22 +35,22 @@ use humhub\modules\web\security\Module;
  */
 class SecuritySettings extends Model
 {
-    const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
-    const HEADER_CONTENT_SECRUITY_POLICY_IE = 'X-Content-Security-Policy';
-    const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY = 'Content-Security-Policy-Report-Only';
-    const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE = 'X-Content-Security-Policy-Report-Only';
+    public const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
+    public const HEADER_CONTENT_SECRUITY_POLICY_IE = 'X-Content-Security-Policy';
+    public const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY = 'Content-Security-Policy-Report-Only';
+    public const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE = 'X-Content-Security-Policy-Report-Only';
 
-    const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
-    const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
-    const HEADER_STRICT_TRANSPORT_SECURITY = 'Strict-Transport-Security';
-    const HEADER_X_FRAME_OPTIONS = 'X-Frame-Options';
+    public const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
+    public const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
+    public const HEADER_STRICT_TRANSPORT_SECURITY = 'Strict-Transport-Security';
+    public const HEADER_X_FRAME_OPTIONS = 'X-Frame-Options';
 
-    const HEADER_REFERRER_POLICY = 'Referrer-Policy';
-    const HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES = 'X-Permitted-Cross-Domain-Policies';
+    public const HEADER_REFERRER_POLICY = 'Referrer-Policy';
+    public const HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES = 'X-Permitted-Cross-Domain-Policies';
 
-    const HEADER_PUBLIC_KEY_PINS = 'Public-Key-Pins';
+    public const HEADER_PUBLIC_KEY_PINS = 'Public-Key-Pins';
 
-    const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
+    public const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
 
     /**
      * @var [] static config cache

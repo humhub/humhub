@@ -6,7 +6,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 
 class m160221_222312_public_permission_change extends Migration
 {
-
     public function up()
     {
         $this->update('contentcontainer_permission', [

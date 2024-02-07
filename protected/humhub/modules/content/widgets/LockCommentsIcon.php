@@ -30,12 +30,12 @@ class LockCommentsIcon extends Icon
     /**
      * Icon name used for content with locked comments
      */
-    const ICON_LOCKED = 'comment-o';
+    public const ICON_LOCKED = 'comment-o';
 
     /**
      * Icon name used for content with unlocked comments
      */
-    const ICON_UNLOCKED = 'comment';
+    public const ICON_UNLOCKED = 'comment';
 
     /**
      * Returns a comments status icon with tooltip for the given $model.

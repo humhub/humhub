@@ -22,7 +22,6 @@ use yii\helpers\Url;
 
 class Events extends BaseObject
 {
-
     /**
      * On console application initialization
      *

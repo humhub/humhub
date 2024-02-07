@@ -5,9 +5,7 @@ $finder = (new PhpCsFixer\Finder())
         'messages/',
     ])
     ->in([
-        'protected/humhub/modules/ldap',
-        'protected/humhub/modules/notification',
-        'protected/humhub/modules/dashboard',
+        'protected/humhub/modules',
     ]);
 
 return (new PhpCsFixer\Config())

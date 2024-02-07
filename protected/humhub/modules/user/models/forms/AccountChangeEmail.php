@@ -21,7 +21,6 @@ use humhub\modules\user\components\CheckPasswordValidator;
  */
 class AccountChangeEmail extends Model
 {
-
     /**
      * @var string the users password
      */

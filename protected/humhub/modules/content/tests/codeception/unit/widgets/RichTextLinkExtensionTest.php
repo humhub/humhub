@@ -12,7 +12,6 @@ use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensio
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use tests\codeception\_support\HumHubDbTestCase;
 
-
 class RichTextLinkExtensionTest extends HumHubDbTestCase
 {
     /*

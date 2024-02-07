@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m140303_125031_password extends Migration
 {
-
     public function up()
     {
 

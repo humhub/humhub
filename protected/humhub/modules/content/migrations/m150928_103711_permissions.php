@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m150928_103711_permissions extends Migration
 {
-
     public function up()
     {
         $this->createTable('contentcontainer_permission', [

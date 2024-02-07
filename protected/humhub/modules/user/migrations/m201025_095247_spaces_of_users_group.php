@@ -4,7 +4,6 @@ use humhub\components\Migration;
 use yii\db\Expression;
 use yii\db\Query;
 
-
 /**
  * Class m201025_095247_spaces_of_users_group
  */

@@ -20,7 +20,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdocs
      */
@@ -62,7 +61,7 @@ class Module extends \humhub\components\Module
 
             if ($module instanceof \humhub\components\Module) {
                 foreach ($module->getActivityClasses() as $class) {
-                    $activity = new $class;
+                    $activity = new $class();
                     if ($activity instanceof ConfigurableActivityInterface) {
                         $activities[] = $activity;
                     }

@@ -19,7 +19,6 @@ use Yii;
  */
 class SearchResultSet
 {
-
     /**
      * @var SearchResult[] the search rsults
      */

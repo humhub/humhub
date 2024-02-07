@@ -21,7 +21,6 @@ use yii\bootstrap\Html;
  */
 class InviteDeclined extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -37,7 +36,7 @@ class InviteDeclined extends BaseNotification
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
@@ -60,7 +59,8 @@ class InviteDeclined extends BaseNotification
     {
         return $this->getInfoText(
             Html::tag('strong', Html::encode($this->originator->displayName)),
-            Html::tag('strong', Html::encode($this->getSpace()->name)));
+            Html::tag('strong', Html::encode($this->getSpace()->name))
+        );
     }
 
     private function getInfoText($displayName, $spaceName)

@@ -24,7 +24,6 @@ use yii\db\Query;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

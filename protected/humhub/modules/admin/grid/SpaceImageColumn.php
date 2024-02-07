@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class SpaceImageColumn extends SpaceBaseColumn
 {
-
     /**
      * @inheritdoc
      */

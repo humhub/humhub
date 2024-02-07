@@ -24,7 +24,6 @@ use yii\db\ActiveQuery;
  */
 class ContentContainerSetting extends SettingActiveRecord
 {
-
     /** @inheritdoc */
     public const CACHE_KEY_FORMAT = 'settings-%s-%d';
 

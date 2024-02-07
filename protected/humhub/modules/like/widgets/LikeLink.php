@@ -19,7 +19,6 @@ use yii\helpers\Url;
  */
 class LikeLink extends Widget
 {
-
     /**
      * The Object to be liked
      *
@@ -125,5 +124,3 @@ class LikeLink extends Widget
     }
 
 }
-
-?>

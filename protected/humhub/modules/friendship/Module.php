@@ -15,7 +15,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

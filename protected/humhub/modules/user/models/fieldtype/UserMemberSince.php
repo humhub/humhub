@@ -19,7 +19,6 @@ use Yii;
  */
 class UserMemberSince extends BaseTypeVirtual
 {
-
     /**
      * @inheritDoc
      */

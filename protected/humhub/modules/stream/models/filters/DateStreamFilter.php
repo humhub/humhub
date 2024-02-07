@@ -22,8 +22,8 @@ use yii\helpers\FormatConverter;
  */
 class DateStreamFilter extends StreamQueryFilter
 {
-    const CATEGORY_FROM = 'date_filter_from';
-    const CATEGORY_TO = 'date_filter_to';
+    public const CATEGORY_FROM = 'date_filter_from';
+    public const CATEGORY_TO = 'date_filter_to';
 
     /**
      * Created from date

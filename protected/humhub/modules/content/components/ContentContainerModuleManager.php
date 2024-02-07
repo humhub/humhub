@@ -290,7 +290,7 @@ class ContentContainerModuleManager extends Component
     {
         $moduleState = ContentContainerModuleState::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
         if ($moduleState === null) {
-            $moduleState = new ContentContainerModuleState;
+            $moduleState = new ContentContainerModuleState();
             $moduleState->contentcontainer_id = $this->contentContainer->contentcontainer_id;
             $moduleState->module_id = $id;
         }

@@ -23,7 +23,6 @@ use yii\helpers\Url;
  */
 class Members extends Widget
 {
-
     /**
      * @var int maximum members to display
      */

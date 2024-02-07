@@ -1,8 +1,6 @@
 <?php
 
-
 namespace modules\user\tests\codeception\unit\stream;
-
 
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;

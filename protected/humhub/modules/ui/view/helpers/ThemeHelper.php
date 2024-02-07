@@ -14,7 +14,6 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
 
-
 /**
  * ThemeHelper
  *
@@ -56,7 +55,8 @@ class ThemeHelper
                 $themes = ArrayHelper::merge(
                     $themes,
                     self::getThemesByPath(
-                        $moduleThemePath, ['publishResources' => true]
+                        $moduleThemePath,
+                        ['publishResources' => true]
                     )
                 );
             }

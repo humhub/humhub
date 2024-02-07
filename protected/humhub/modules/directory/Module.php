@@ -14,7 +14,6 @@ namespace humhub\modules\directory;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @deprecated since 1.11 will be removed with v1.12
      */

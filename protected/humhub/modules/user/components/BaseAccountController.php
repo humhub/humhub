@@ -20,7 +20,6 @@ use humhub\components\access\ControllerAccess;
  */
 class BaseAccountController extends Controller
 {
-
     /**
      * @inheritdoc
      */

@@ -8,7 +8,9 @@
 
 /* @var $activities string */
 
-use humhub\modules\ui\mail\DefaultMailStyle; ?>
+use humhub\modules\ui\mail\DefaultMailStyle;
+
+?>
 
 <tr>
     <td align="center" valign="top" class="fix-box">

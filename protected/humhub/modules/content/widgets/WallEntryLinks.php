@@ -16,7 +16,6 @@ use humhub\widgets\BaseStack;
  */
 class WallEntryLinks extends BaseStack
 {
-
     /**
      * @var ContentActiveRecord
      */

@@ -4,7 +4,7 @@ use content\AcceptanceTester;
 
 class ScheduledCest
 {
-    const DATE_FORMAT = 'short';
+    public const DATE_FORMAT = 'short';
 
     public function testCreateDraftPost(AcceptanceTester $I)
     {

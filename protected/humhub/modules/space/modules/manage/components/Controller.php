@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class Controller extends ContentContainerController
 {
-
     protected function getAccessRules()
     {
         return [

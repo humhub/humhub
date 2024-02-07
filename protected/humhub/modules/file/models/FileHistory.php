@@ -13,7 +13,6 @@ use humhub\modules\user\models\User;
 use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 
-
 /**
  * This is the model class for table "file_history".
  *
@@ -31,7 +30,7 @@ use yii\db\IntegrityException;
  */
 class FileHistory extends ActiveRecord
 {
-    const VARIANT_PREFIX = 'old-';
+    public const VARIANT_PREFIX = 'old-';
 
     /**
      * {@inheritdoc}
@@ -128,7 +127,7 @@ class FileHistory extends ActiveRecord
      */
     public static function createEntryForFile(File $file): bool
     {
-        $entry = new static;
+        $entry = new static();
         $entry->file_id = $file->id;
         $entry->created_by = empty($file->old_updated_by) ? $file->updated_by : $file->old_updated_by;
         $entry->created_at = empty($file->old_updated_at) ? $file->updated_at : $file->old_updated_at;

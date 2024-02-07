@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m170118_162332_streamchannel extends Migration
 {
-
     public function up()
     {
         $this->addColumn('content', 'stream_channel', $this->char(15)->null());

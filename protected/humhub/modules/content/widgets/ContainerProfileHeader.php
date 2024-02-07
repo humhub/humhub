@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\user\controllers\ImageController;

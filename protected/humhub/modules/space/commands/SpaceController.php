@@ -34,7 +34,6 @@ use yii\helpers\Console;
  */
 class SpaceController extends Controller
 {
-
     public function actionAssignAllMembers($spaceId)
     {
         $space = Space::findOne(['id' => $spaceId]);

@@ -13,7 +13,6 @@ namespace humhub\modules\user\authclient;
  */
 class GitHub extends \yii\authclient\clients\GitHub
 {
-
     /**
      * @inheritdoc
      */

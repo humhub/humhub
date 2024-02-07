@@ -28,7 +28,6 @@ use yii\web\HttpException;
  */
 class MarketplaceController extends Controller
 {
-
     /**
      * @inerhitdoc
      */

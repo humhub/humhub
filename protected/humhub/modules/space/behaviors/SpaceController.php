@@ -31,7 +31,6 @@ use humhub\components\Controller;
  */
 class SpaceController extends Behavior
 {
-
     /**
      * @var Space
      */

@@ -76,51 +76,51 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * User Status Flags
      */
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
-    const STATUS_NEED_APPROVAL = 2;
-    const STATUS_SOFT_DELETED = 3;
+    public const STATUS_DISABLED = 0;
+    public const STATUS_ENABLED = 1;
+    public const STATUS_NEED_APPROVAL = 2;
+    public const STATUS_SOFT_DELETED = 3;
 
     /**
      * Visibility Modes
      */
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2; // Visible for all (also guests)
-    const VISIBILITY_HIDDEN = 3; // Invisible
+    public const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
+    public const VISIBILITY_ALL = 2; // Visible for all (also guests)
+    public const VISIBILITY_HIDDEN = 3; // Invisible
 
     /**
      * User Markdown Editor Modes
      */
-    const EDITOR_RICH_TEXT = 0;
-    const EDITOR_PLAIN = 1;
+    public const EDITOR_RICH_TEXT = 0;
+    public const EDITOR_PLAIN = 1;
 
     /**
      * User Groups
      */
-    const USERGROUP_SELF = 'u_self';
-    const USERGROUP_FRIEND = 'u_friend';
-    const USERGROUP_USER = 'u_user';
-    const USERGROUP_GUEST = 'u_guest';
+    public const USERGROUP_SELF = 'u_self';
+    public const USERGROUP_FRIEND = 'u_friend';
+    public const USERGROUP_USER = 'u_user';
+    public const USERGROUP_GUEST = 'u_guest';
 
     /**
      * Scenarios
      */
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
-    const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTRATION = 'registration';
-    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
-    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
-    const SCENARIO_APPROVE = 'approve';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_LOGIN = 'login';
+    public const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    public const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
+    public const SCENARIO_APPROVE = 'approve';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event UserEvent an event that is triggered when the user is soft deleted (without contents) and also before complete deletion.
      */
-    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
+    public const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
 
     /**
      * A initial group for the user assigned while registration.
@@ -776,10 +776,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $module = Yii::$app->getModule('content');
 
         return $module->adminCanViewAllContent && (
-                $this->isSystemAdmin()
+            $this->isSystemAdmin()
                 || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
                 || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
-            );
+        );
     }
 
     /**

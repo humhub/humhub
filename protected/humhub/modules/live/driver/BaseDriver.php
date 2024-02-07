@@ -20,7 +20,6 @@ use humhub\modules\user\models\User;
  */
 abstract class BaseDriver extends BaseObject
 {
-
     /**
      * Sends a live event
      *

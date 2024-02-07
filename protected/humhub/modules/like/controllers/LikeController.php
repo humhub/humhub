@@ -28,7 +28,6 @@ use yii\web\HttpException;
  */
 class LikeController extends ContentAddonController
 {
-
     /**
      * @param $action
      * @return bool

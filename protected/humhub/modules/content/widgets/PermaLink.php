@@ -23,7 +23,6 @@ use yii\helpers\Url;
  */
 class PermaLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -43,5 +42,3 @@ class PermaLink extends Widget
     }
 
 }
-
-?>

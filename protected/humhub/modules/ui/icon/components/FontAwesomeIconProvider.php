@@ -13,7 +13,6 @@ use humhub\modules\ui\icon\widgets\Icon;
  */
 class FontAwesomeIconProvider implements IconProvider
 {
-
     /**
      * @return string
      */

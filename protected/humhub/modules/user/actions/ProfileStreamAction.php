@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\user\actions;
 
 use humhub\modules\stream\actions\ContentContainerStream;

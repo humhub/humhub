@@ -20,7 +20,6 @@ use yii\base\InvalidConfigException;
  */
 class UserLastLogin extends BaseTypeVirtual
 {
-
     /**
      * @inheritDoc
      * @throws InvalidConfigException

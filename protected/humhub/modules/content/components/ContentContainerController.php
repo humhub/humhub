@@ -41,7 +41,6 @@ use yii\web\HttpException;
  */
 class ContentContainerController extends Controller
 {
-
     /**
      * Specifies if a contentContainer (e.g. Space or User) is required to run this controller.
      * Set this to false, if your controller should also act on global scope.

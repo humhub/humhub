@@ -75,11 +75,12 @@ use yii\helpers\Html;
                             return Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
                                 Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
                                 Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
-                                Yii::t('base', 'Delete'))->xs()->loader(false);
+                                Yii::t('base', 'Delete')
+                            )->xs()->loader(false);
                         },
                     ],
                 ],
             ]]);
-        ?>
+?>
     </div>
 </div>

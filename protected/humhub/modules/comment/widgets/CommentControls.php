@@ -20,7 +20,6 @@ use yii\helpers\Url;
  */
 class CommentControls extends Menu
 {
-
     /**
      * @var Comment
      */

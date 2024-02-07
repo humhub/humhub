@@ -52,16 +52,16 @@ class ConfigController extends Controller
      */
     public $access = ControllerAccess::class;
 
-    const EVENT_INSTALL_SAMPLE_DATA = 'install_sample_data';
+    public const EVENT_INSTALL_SAMPLE_DATA = 'install_sample_data';
 
     /**
      * Use Cases
      */
-    const USECASE_SOCIAL_INTRANET = 'intranet';
-    const USECASE_EDUCATION = 'education';
-    const USECASE_CLUB = 'club';
-    const USECASE_COMMUNITY = 'community';
-    const USECASE_OTHER = 'other';
+    public const USECASE_SOCIAL_INTRANET = 'intranet';
+    public const USECASE_EDUCATION = 'education';
+    public const USECASE_CLUB = 'club';
+    public const USECASE_COMMUNITY = 'community';
+    public const USECASE_OTHER = 'other';
 
     /**
      * Before each config controller action check if

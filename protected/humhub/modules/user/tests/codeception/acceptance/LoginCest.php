@@ -8,7 +8,6 @@ use user\AcceptanceTester;
 
 class LoginCest
 {
-
     public function testUserLogin(AcceptanceTester $I)
     {
         $I->wantTo('ensure that login works');

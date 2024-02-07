@@ -21,7 +21,6 @@ use yii\base\InvalidConfigException;
  */
 class AccountSettingsMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      * @throws InvalidConfigException

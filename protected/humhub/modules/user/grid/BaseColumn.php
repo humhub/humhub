@@ -22,7 +22,6 @@ use yii\helpers\ArrayHelper;
  */
 abstract class BaseColumn extends DataColumn
 {
-
     /**
      * @var string|null name of user attribute
      */
@@ -49,7 +48,7 @@ abstract class BaseColumn extends DataColumn
 
             return User::findOne([$attribute => ArrayHelper::getValue($record, $attribute)]);
         } else {
-            throw new InvalidArgumentException;
+            throw new InvalidArgumentException();
         }
     }
 }

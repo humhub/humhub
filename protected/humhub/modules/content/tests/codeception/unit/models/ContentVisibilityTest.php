@@ -20,7 +20,6 @@ use yii\base\Exception;
 
 class ContentVisibilityTest extends ContentModelTest
 {
-
     public function testDefaultVisibilityPrivateSpace()
     {
         $this->space->visibility = Space::VISIBILITY_NONE;

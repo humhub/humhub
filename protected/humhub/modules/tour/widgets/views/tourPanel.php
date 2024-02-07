@@ -15,7 +15,8 @@ TourAsset::register($this);
         'li',
         Html::a(
             Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
-            Url::to(["/tour/tour/hide-panel", "ajax" => 1]), [
+            Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
+            [
                 'data' => [
                     'action-click' => 'tour.hidePanel',
                     'action-confirm-header' => Html::tag('i', '', ['class' => ['fa', 'fa-eye-slash']]) . Yii::t('TourModule.base', ' Remove panel'),
@@ -27,7 +28,7 @@ TourAsset::register($this);
         )
     );
 
-    ?>
+?>
 
     <!-- Display panel menu widget -->
     <?php echo PanelMenu::widget(['id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml]); ?>

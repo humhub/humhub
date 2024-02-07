@@ -12,9 +12,9 @@ use Yii;
 
 class RadioFilterInput extends CheckboxFilterInput
 {
-    const STYLE_CHECKBOX = 'checkbox';
-    const STYLE_RADIO = 'radio';
-    const STYLE_CUSTOM = 'custom';
+    public const STYLE_CHECKBOX = 'checkbox';
+    public const STYLE_RADIO = 'radio';
+    public const STYLE_CUSTOM = 'custom';
 
     /**
      * @var string data-action-click handler of the input event

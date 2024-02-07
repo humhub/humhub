@@ -25,7 +25,6 @@ use humhub\modules\user\models\fieldtype\BaseType;
  */
 class UserProfileController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -70,7 +69,7 @@ class UserProfileController extends Controller
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
         if ($category == null) {
-            $category = new ProfileFieldCategory;
+            $category = new ProfileFieldCategory();
         }
 
         $category->translation_category = $category->getTranslationCategory();
@@ -90,11 +89,13 @@ class UserProfileController extends Controller
         $id = (int)Yii::$app->request->get('id');
 
         $category = ProfileFieldCategory::findOne(['id' => $id]);
-        if ($category == null)
+        if ($category == null) {
             throw new HttpException(500, Yii::t('AdminModule.user', 'Could not load category.'));
+        }
 
-        if (count($category->fields) != 0)
+        if (count($category->fields) != 0) {
             throw new HttpException(500, Yii::t('AdminModule.user', 'You can only delete empty categories!'));
+        }
 
         $category->delete();
 

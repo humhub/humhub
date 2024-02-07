@@ -24,7 +24,6 @@ use yii\db\Expression;
  */
 class UserSearch extends User
 {
-
     /**
      * @var ActiveQueryUser
      */

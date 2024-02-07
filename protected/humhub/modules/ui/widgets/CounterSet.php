@@ -7,7 +7,6 @@
 
 namespace humhub\modules\ui\widgets;
 
-
 use humhub\components\Widget;
 
 /**

@@ -60,7 +60,9 @@ AdminAsset::register($this);
 
         <div class="modal-footer">
             <?= Html::a(
-                Yii::t('AdminModule.modules', 'Save'), '#', [
+                Yii::t('AdminModule.modules', 'Save'),
+                '#',
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'action-click' => 'admin.moduleSetAsDefault',
@@ -69,7 +71,8 @@ AdminAsset::register($this);
                 ]
             ) ?>
             <?= Html::button(
-                Yii::t('AdminModule.modules', 'Close'), [
+                Yii::t('AdminModule.modules', 'Close'),
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'dismiss' => 'modal',

@@ -22,7 +22,6 @@ use yii\base\Event;
  */
 class SearchAttributesEvent extends Event
 {
-
     /**
      * @var array Reference to the currently added search attributes
      */

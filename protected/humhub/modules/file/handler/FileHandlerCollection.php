@@ -21,20 +21,19 @@ use yii\base\Component;
  */
 class FileHandlerCollection extends Component
 {
-
     /**
      * @event the init event - use to register file handlers
      */
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
     /**
      * Collection Types
      */
-    const TYPE_VIEW = 'view';
-    const TYPE_IMPORT = 'import';
-    const TYPE_EXPORT = 'export';
-    const TYPE_CREATE = 'create';
-    const TYPE_EDIT = 'edit';
+    public const TYPE_VIEW = 'view';
+    public const TYPE_IMPORT = 'import';
+    public const TYPE_EXPORT = 'export';
+    public const TYPE_CREATE = 'create';
+    public const TYPE_EDIT = 'edit';
 
     /**
      * @var string current collection type

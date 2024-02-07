@@ -25,7 +25,6 @@ use yii\helpers\Console;
  */
 class Events extends BaseObject
 {
-
     /**
      * On init of the WallEntryAddonWidget, attach the files of the content.
      *

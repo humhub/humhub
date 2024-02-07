@@ -17,7 +17,6 @@ namespace humhub\modules\file\models;
  */
 class FileContent extends File
 {
-
     /**
      * @var string file content
      */

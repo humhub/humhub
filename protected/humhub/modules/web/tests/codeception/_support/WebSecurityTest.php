@@ -1,8 +1,6 @@
 <?php
 
-
 namespace web;
-
 
 use humhub\modules\web\Module;
 use humhub\modules\web\security\helpers\Security;

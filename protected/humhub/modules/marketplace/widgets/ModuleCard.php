@@ -18,7 +18,6 @@ use humhub\modules\marketplace\models\Module;
  */
 class ModuleCard extends Widget
 {
-
     public Module $module;
 
     /**

@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m140701_000611_profile_genderfield extends Migration
 {
-
     public function up()
     {
 

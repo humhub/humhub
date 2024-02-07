@@ -21,7 +21,6 @@ use humhub\modules\user\models\forms\Login;
  */
 class BaseFormAuth extends BaseClient
 {
-
     /**
      * @var Login the login form model
      */

@@ -8,15 +8,14 @@
 
 namespace humhub\modules\ui\filter\models;
 
-
 use Yii;
 use yii\base\Model;
 
 abstract class Filter extends Model
 {
-    const AUTO_LOAD_GET = 0;
-    const AUTO_LOAD_POST = 1;
-    const AUTO_LOAD_ALL = 2;
+    public const AUTO_LOAD_GET = 0;
+    public const AUTO_LOAD_POST = 1;
+    public const AUTO_LOAD_ALL = 2;
 
     /**
      * @var string can be used to overwrite the default formName used by [[load()]]
@@ -33,7 +32,7 @@ abstract class Filter extends Model
      */
     protected $isLoaded = false;
 
-    public abstract function apply();
+    abstract public function apply();
 
     public function init()
     {

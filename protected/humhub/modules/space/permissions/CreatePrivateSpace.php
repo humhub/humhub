@@ -16,7 +16,6 @@ use Yii;
  */
 class CreatePrivateSpace extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

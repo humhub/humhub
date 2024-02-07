@@ -10,7 +10,6 @@ use humhub\components\Widget;
  */
 class UserWall extends Widget
 {
-
     /**
      * @var User $user
      */

@@ -9,7 +9,6 @@ namespace humhub\modules\queue\driver;
 
 use yii\queue\db\Command;
 
-
 /**
  * Class MySQLCommand
  *
@@ -18,6 +17,4 @@ use yii\queue\db\Command;
  */
 class MySQLCommand extends Command
 {
-
-
 }

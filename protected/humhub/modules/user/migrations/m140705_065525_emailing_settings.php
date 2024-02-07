@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m140705_065525_emailing_settings extends Migration
 {
-
     public function up()
     {
 

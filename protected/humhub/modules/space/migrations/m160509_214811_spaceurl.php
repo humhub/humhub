@@ -6,7 +6,6 @@ use humhub\components\Migration;
 
 class m160509_214811_spaceurl extends Migration
 {
-
     public function up()
     {
         if (!class_exists('URLify')) {

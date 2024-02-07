@@ -22,7 +22,6 @@ use yii\helpers\Html;
  */
 class CountrySelect extends Select
 {
-
     /**
      * Returns Form Definition for edit/create this field.
      *

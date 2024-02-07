@@ -21,7 +21,6 @@ use humhub\modules\user\models\Group;
  */
 class AddGroupMemberForm extends Model
 {
-
     /**
      * GroupId selection array of the form.
      * @var array

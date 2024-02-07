@@ -22,7 +22,6 @@ use yii\db\ActiveRecord;
  */
 class ContentContainerPermission extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

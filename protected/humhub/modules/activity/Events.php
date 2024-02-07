@@ -33,7 +33,6 @@ use yii\db\StaleObjectException;
  */
 class Events extends BaseObject
 {
-
     /**
      * Handles cron hourly run event to send mail summaries to the users
      *

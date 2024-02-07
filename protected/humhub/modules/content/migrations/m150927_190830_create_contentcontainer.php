@@ -6,7 +6,6 @@ use humhub\components\Migration;
 
 class m150927_190830_create_contentcontainer extends Migration
 {
-
     public function up()
     {
         $this->createTable('contentcontainer', [

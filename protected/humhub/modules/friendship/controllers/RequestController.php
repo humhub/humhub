@@ -26,7 +26,6 @@ use yii\web\Response;
  */
 class RequestController extends Controller
 {
-
     /**
      * @inheritdoc
      * @throws HttpException

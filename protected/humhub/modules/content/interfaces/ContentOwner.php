@@ -13,7 +13,6 @@ use humhub\modules\content\models\Content;
  */
 interface ContentOwner
 {
-
     /**
      * @returns Content content instance of this content owner
      */

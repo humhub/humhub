@@ -19,5 +19,4 @@ use humhub\modules\space\widgets\HeaderControlsMenu;
  */
 class Menu extends HeaderControlsMenu
 {
-
 }

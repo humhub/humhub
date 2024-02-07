@@ -21,7 +21,6 @@ use yii\bootstrap\Html;
  */
 class UserFollowButton extends Widget
 {
-
     /**
      * @var User
      */

@@ -10,7 +10,6 @@ use yii\base\Exception;
 
 class TopicTest extends HumHubDbTestCase
 {
-
     /**
      * Make sure space admin is allowed to create content by default
      * @throws Exception

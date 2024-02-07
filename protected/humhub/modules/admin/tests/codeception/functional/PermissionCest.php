@@ -13,7 +13,6 @@ use tests\codeception\_pages\AdminPage;
 
 class PermissionCest
 {
-
     public function testSeeAdminInformation(FunctionalTester $I)
     {
         $I->wantTo('ensure that see admin information permission works');

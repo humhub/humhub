@@ -14,5 +14,4 @@ use humhub\modules\post\models\Post;
 
 class TestContentManagePermission extends ManageContent
 {
-
 }

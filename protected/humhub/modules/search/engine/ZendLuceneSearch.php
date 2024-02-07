@@ -45,7 +45,6 @@ use ZendSearch\Lucene\SearchIndexInterface;
  */
 class ZendLuceneSearch extends Search
 {
-
     /**
      * @var SearchIndexInterface the lucence index
      */
@@ -165,8 +164,9 @@ class ZendLuceneSearch extends Search
     {
         $indexPath = $this->getIndexPath();
         foreach (new DirectoryIterator($indexPath) as $fileInfo) {
-            if ($fileInfo->isDot())
+            if ($fileInfo->isDot()) {
                 continue;
+            }
             FileHelper::unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 

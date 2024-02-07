@@ -21,7 +21,6 @@ use Yii;
  */
 class SpaceDirectoryIcons extends Widget
 {
-
     /**
      * @var Space
      */

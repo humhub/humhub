@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets;
-
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -20,7 +18,6 @@ use Yii;
  */
 class HiddenIcon extends Icon
 {
-
     /**
      * Returns a visibility icon with tooltip for the given $model.
      *

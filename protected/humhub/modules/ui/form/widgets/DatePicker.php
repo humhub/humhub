@@ -26,7 +26,7 @@ use yii\jui\JuiAsset;
  */
 class DatePicker extends BaseDatePicker
 {
-    const LANGUAGEMAPPING = [
+    public const LANGUAGEMAPPING = [
         'nb-NO' => 'nb',
         'nn-NO' => 'nn',
         'fa-IR' => 'fa',

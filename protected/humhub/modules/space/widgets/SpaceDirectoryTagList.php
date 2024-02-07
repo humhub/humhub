@@ -20,7 +20,6 @@ use humhub\components\Widget;
  */
 class SpaceDirectoryTagList extends Widget
 {
-
     /**
      * @var Space
      */

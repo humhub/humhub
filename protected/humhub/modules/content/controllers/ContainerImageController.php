@@ -20,8 +20,8 @@ use humhub\modules\content\components\ContentContainerController;
  */
 abstract class ContainerImageController extends ContentContainerController
 {
-    const TYPE_PROFILE_IMAGE = 'image';
-    const TYPE_PROFILE_BANNER_IMAGE = 'banner';
+    public const TYPE_PROFILE_IMAGE = 'image';
+    public const TYPE_PROFILE_BANNER_IMAGE = 'banner';
 
     /**
      * @var string file upload name for profile image, this exists due to legacy compatibility for views prio to v1.4

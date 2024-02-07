@@ -11,4 +11,3 @@ echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
 ]);
 
 echo ' "' . RichText::preview($source->message, 100) . '"';
-?>

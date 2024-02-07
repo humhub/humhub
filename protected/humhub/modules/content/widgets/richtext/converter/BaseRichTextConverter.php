@@ -37,47 +37,47 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      * Option key for excluding blocks or extensions.
      * Note, this option affects the cached result.
      */
-    const OPTION_EXCLUDE = 'exclude';
+    public const OPTION_EXCLUDE = 'exclude';
 
     /**
      * Option key for overwriting default link target _blank.
      * Note, this option affects the cached result.
      */
-    const OPTION_LINK_TARGET = 'linkTarget';
+    public const OPTION_LINK_TARGET = 'linkTarget';
 
     /**
      * Option key used for rendering links as plain text.
      * Note, this option affects the cached result.
      */
-    const OPTION_LINK_AS_TEXT = 'linkAsText';
+    public const OPTION_LINK_AS_TEXT = 'linkAsText';
 
     /**
      * Option key used for rendering images as links.
      * Note, this option affects the cached result.
      */
-    const OPTION_IMAGE_AS_LINK = 'imageAsLink';
+    public const OPTION_IMAGE_AS_LINK = 'imageAsLink';
 
     /**
      * Option key used for rendering images as url links.
      * Note, this option affects the cached result.
      */
-    const OPTION_IMAGE_AS_URL = 'imageAsText';
+    public const OPTION_IMAGE_AS_URL = 'imageAsText';
 
     /**
      * Option key for preventing link target attribute.
      * Note, this option affects the cached result.
      */
-    const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
+    public const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
 
     /**
      * Cache key can be used to cache parser results
      */
-    const OPTION_CACHE_KEY = 'cacheKey';
+    public const OPTION_CACHE_KEY = 'cacheKey';
 
     /**
      * Maximum entries in the cache
      */
-    const MAX_CACHE_ENTRIES = 200;
+    public const MAX_CACHE_ENTRIES = 200;
 
     /**
      * @inheritdoc
@@ -97,12 +97,12 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     /**
      * @event triggered before text is parsed
      */
-    const EVENT_BEFORE_PARSE = 'beforeParse';
+    public const EVENT_BEFORE_PARSE = 'beforeParse';
 
     /**
      * @event triggered after text is parsed
      */
-    const EVENT_AFTER_PARSE = 'afterParse';
+    public const EVENT_AFTER_PARSE = 'afterParse';
 
     /**
      * @var RichTextLinkExtension[]

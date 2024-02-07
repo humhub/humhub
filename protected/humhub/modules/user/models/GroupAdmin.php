@@ -17,7 +17,6 @@ use humhub\components\ActiveRecord;
  */
 class GroupAdmin extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

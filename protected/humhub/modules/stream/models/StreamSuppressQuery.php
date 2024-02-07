@@ -26,7 +26,6 @@ use yii\base\Exception;
  */
 class StreamSuppressQuery extends StreamQuery
 {
-
     /**
      * @var boolean marks query as executed
      */

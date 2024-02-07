@@ -26,7 +26,9 @@ use humhub\modules\ui\menu\MenuEntry;
                 <?= Icon::get('caret-down', ['htmlOptions' => ['data-toggle' => 'dropdown']]) ?>
                 <ul class="dropdown-menu pull-right">
                     <?php foreach ($entries as $e => $entry) : ?>
-                        <?php if ($e < $menu->visibleEntriesNum) continue; ?>
+                        <?php if ($e < $menu->visibleEntriesNum) {
+                            continue;
+                        } ?>
                         <li>
                             <?= $entry->render() ?>
                         </li>

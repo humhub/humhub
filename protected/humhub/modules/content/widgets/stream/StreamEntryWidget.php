@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\stream;
-
 
 use Exception;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -17,7 +15,6 @@ use Yii;
  */
 abstract class StreamEntryWidget extends JsWidget
 {
-
     /**
      * @inheritDoc
      */

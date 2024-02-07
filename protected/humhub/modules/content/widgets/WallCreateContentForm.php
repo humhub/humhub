@@ -28,7 +28,6 @@ use yii\web\HttpException;
  */
 abstract class WallCreateContentForm extends Widget
 {
-
     /**
      * @var string form submit route/url (required)
      */

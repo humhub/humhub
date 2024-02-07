@@ -20,7 +20,6 @@ use yii\web\Response;
  */
 class PermaController extends Controller
 {
-
     /**
      * Action to process comment permalink URL
      *

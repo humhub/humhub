@@ -14,7 +14,6 @@ use yii\helpers\Html;
  */
 class WallEntryControlLink extends Widget
 {
-
     /**
      * @var string link label
      */

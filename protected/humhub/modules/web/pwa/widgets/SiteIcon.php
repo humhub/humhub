@@ -18,7 +18,6 @@ use yii\base\Exception;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
-
 /**
  * Class SiteIcon handles icons of the installation.
  * Those icons will be used to represent the application in components such as mobile apps, bookmarks, etc.

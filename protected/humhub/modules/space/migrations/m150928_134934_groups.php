@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m150928_134934_groups extends Migration
 {
-
     public function up()
     {
         $this->addColumn('space_membership', 'group_id', Schema::TYPE_STRING . " DEFAULT 'member'");

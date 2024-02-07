@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m141022_094635_addDefaults extends Migration
 {
-
     public function up()
     {
         $this->insert('setting', ['name' => 'defaultVisibility', 'module_id' => 'space', 'value' => '1']);

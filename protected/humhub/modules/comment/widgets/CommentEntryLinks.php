@@ -18,7 +18,6 @@ use humhub\widgets\BaseStack;
  */
 class CommentEntryLinks extends BaseStack
 {
-
     /**
      * @var Comment
      */
@@ -41,7 +40,7 @@ class CommentEntryLinks extends BaseStack
     /**
      * Initialize default widgets for Comment links
      */
-    function initDefaultWidgets()
+    public function initDefaultWidgets()
     {
         if (!($this->object instanceof Comment)) {
             return;

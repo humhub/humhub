@@ -17,4 +17,3 @@ return [
         ['class' => WallEntryLinks::class, 'event' => WallEntryLinks::EVENT_INIT, 'callback' => ['humhub\modules\like\Events', 'onWallEntryLinksInit']],
     ],
 ];
-?>

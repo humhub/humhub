@@ -97,4 +97,4 @@ AdminPendingRegistrationsAsset::register($this);
 
     ]
 ]) ?>
-<?= Html:: endTag('div');
+<?= Html::endTag('div');

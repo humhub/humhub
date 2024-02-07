@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class OEmbedSettingsForm extends Model
 {
-
     /**
      * @var bool
      */

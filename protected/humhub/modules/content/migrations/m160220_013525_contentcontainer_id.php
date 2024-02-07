@@ -12,22 +12,27 @@ use yii\db\Expression;
  */
 class m160220_013525_contentcontainer_id extends Migration
 {
-
     public function up()
     {
         // Add contentcontainer_id to content table
         $this->addColumn('content', 'contentcontainer_id', $this->integer());
 
         // Set content container for space content
-        $this->update('content', [
+        $this->update(
+            'content',
+            [
             'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:spaceModel AND pk=space_id)', [':spaceModel' => Space::class])
-        ], ['IS NOT', 'space_id', new Expression('NULL')]
+        ],
+            ['IS NOT', 'space_id', new Expression('NULL')]
         );
 
         // Set content container for user content
-        $this->update('content', [
+        $this->update(
+            'content',
+            [
             'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:userModel AND pk=user_id)', [':userModel' => \humhub\modules\user\models\User::class])
-        ], ['IS', 'space_id', new Expression('NULL')]
+        ],
+            ['IS', 'space_id', new Expression('NULL')]
         );
 
         // Ensure created_by is set to user_id

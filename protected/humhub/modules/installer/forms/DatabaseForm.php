@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class DatabaseForm extends Model
 {
-
     /**
      * @var string hostname
      */

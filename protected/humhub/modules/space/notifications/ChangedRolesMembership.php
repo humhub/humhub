@@ -35,7 +35,7 @@ class ChangedRolesMembership extends BaseNotification
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
@@ -81,6 +81,7 @@ class ChangedRolesMembership extends BaseNotification
                 '{displayName}' => $displayName,
                 '{roleName}' => $roleName,
                 '{spaceName}' => $spaceName,
-            ]);
+            ]
+        );
     }
 }

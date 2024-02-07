@@ -10,8 +10,8 @@ namespace humhub\modules\stream\models\filters;
 
 class ContentTypeStreamFilter extends StreamQueryFilter
 {
-    const CATEGORY_INCLUDES = 'includes';
-    const CATEGORY_EXCLUDES = 'excludes';
+    public const CATEGORY_INCLUDES = 'includes';
+    public const CATEGORY_EXCLUDES = 'excludes';
 
     public $includes;
 

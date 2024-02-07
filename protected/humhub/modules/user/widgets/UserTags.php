@@ -13,7 +13,6 @@ use yii\base\Widget;
  */
 class UserTags extends Widget
 {
-
     public $user;
 
     public function run()
@@ -22,5 +21,3 @@ class UserTags extends Widget
     }
 
 }
-
-?>

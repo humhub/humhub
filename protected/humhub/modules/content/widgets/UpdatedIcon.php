@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets;
-
 
 use DateTime;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -25,7 +23,7 @@ class UpdatedIcon extends Icon
     /**
      * The icon name used for rendering
      */
-    const ICON_NAME = 'clock-o';
+    public const ICON_NAME = 'clock-o';
 
     /**
      * Creates an updated icon with tooltip containing a formatted date

@@ -67,6 +67,6 @@ use humhub\widgets\TimeAgo;
                 ],
             ],
         ]);
-        ?>
+?>
     </div>
 </div>

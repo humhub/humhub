@@ -162,8 +162,10 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                         <?php foreach ($results as $result): ?>
                             <?php try { ?>
                                 <?php if ($result instanceof ContentActiveRecord) : ?>
-                                    <?= StreamEntryWidget::renderStreamEntry($result,
-                                        (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) ?>
+                                    <?= StreamEntryWidget::renderStreamEntry(
+                                        $result,
+                                        (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)
+                                    ) ?>
                                 <?php elseif ($result instanceof ContentContainerActiveRecord) : ?>
                                     <?= $result->getWallOut() ?>
                                 <?php else: ?>

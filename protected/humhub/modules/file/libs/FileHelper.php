@@ -29,7 +29,6 @@ use yii\helpers\Url;
  */
 class FileHelper extends \yii\helpers\FileHelper
 {
-
     /**
      * Checks if given fileName has a extension
      *

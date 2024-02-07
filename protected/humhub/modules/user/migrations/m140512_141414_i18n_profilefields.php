@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140512_141414_i18n_profilefields extends Migration
 {
-
     public function up()
     {
         $this->addColumn('profile_field', 'translation_category', 'varchar(255) DEFAULT NULL');

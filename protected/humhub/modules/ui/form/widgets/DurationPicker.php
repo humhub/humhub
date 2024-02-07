@@ -23,7 +23,6 @@ use humhub\modules\ui\form\widgets\JsInputWidget;
  */
 class DurationPicker extends JsInputWidget
 {
-
     /**
      * @inheritdoc
      */

@@ -29,7 +29,6 @@ use humhub\modules\live\live\LegitimationChanged;
  */
 class Push extends BaseDriver
 {
-
     /**
      * @var string the used Redis push channel
      */

@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m131023_170135_initial extends Migration
 {
-
     public function up()
     {
         $this->createTable('like', [

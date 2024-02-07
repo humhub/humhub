@@ -18,7 +18,6 @@ use Yii;
  */
 class CanLike extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

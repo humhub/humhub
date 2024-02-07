@@ -19,7 +19,6 @@ use yii\db\ActiveQuery;
  */
 class Live extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

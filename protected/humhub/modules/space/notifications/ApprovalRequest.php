@@ -21,7 +21,6 @@ use yii\helpers\ArrayHelper;
  */
 class ApprovalRequest extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -76,7 +75,7 @@ class ApprovalRequest extends BaseNotification
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**

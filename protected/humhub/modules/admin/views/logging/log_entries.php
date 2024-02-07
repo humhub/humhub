@@ -46,7 +46,7 @@ use yii\log\Logger;
                             $labelClass = 'label-danger';
                             $levelName = Yii::t('AdminModule.information', 'Error');
                     }
-                    ?>
+            ?>
 
                     <h4 class="media-heading">
                         <span class="label <?= $labelClass; ?>"><?= Html::encode($levelName) ?></span>&nbsp;

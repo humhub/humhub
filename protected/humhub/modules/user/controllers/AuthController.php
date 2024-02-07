@@ -43,12 +43,12 @@ class AuthController extends Controller
      * @event Triggered after an successful login. Note: In contrast to User::EVENT_AFTER_LOGIN, this event is triggered
      * after the response is generated.
      */
-    const EVENT_AFTER_LOGIN = 'afterLogin';
+    public const EVENT_AFTER_LOGIN = 'afterLogin';
 
     /**
      * @event Triggered after an successful login but before checking user status
      */
-    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
+    public const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
 
     /**
      * @inheritdoc

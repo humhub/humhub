@@ -23,7 +23,6 @@ use yii\helpers\Console;
  */
 class MailSummaryProcessor
 {
-
     /**
      * Processes mail summary for given interval
      *

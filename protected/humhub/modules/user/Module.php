@@ -20,7 +20,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -317,11 +316,11 @@ class Module extends \humhub\components\Module
      */
     public function canMention($object)
     {
-//        $content = $object->content;
+        //        $content = $object->content;
 
-//        if(!isset($content->container)) {
-//            return false;
-//        }
+        //        if(!isset($content->container)) {
+        //            return false;
+        //        }
 
         if ($object->permissionManager->can(CanMention::class)) {
             return true;

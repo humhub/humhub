@@ -17,7 +17,7 @@ use Yii;
  */
 class MarketplaceService
 {
-    const API_URL_ADD_LICENCE_KEY = 'v1/modules/registerPaid';
+    public const API_URL_ADD_LICENCE_KEY = 'v1/modules/registerPaid';
 
     public function getMarketplaceModule(): MarketplaceModule
     {

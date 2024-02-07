@@ -33,7 +33,7 @@ $likedRecord = $viewable->getLikedRecord();
                     'date' => $date,
                     'space' => $space
                 ])
-                ?>
+?>
             </td>
         </tr>
         <tr>
@@ -42,12 +42,12 @@ $likedRecord = $viewable->getLikedRecord();
         <tr>
             <td>
                 <?=
-                MailButtonList::widget([
-                    'buttons' => [
-                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('LikeModule.notifications', 'View Online')])
-                    ]
-                ])
-                ?>
+MailButtonList::widget([
+    'buttons' => [
+        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('LikeModule.notifications', 'View Online')])
+    ]
+])
+?>
             </td>
         </tr>
     </table>

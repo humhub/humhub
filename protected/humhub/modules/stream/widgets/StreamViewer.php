@@ -22,7 +22,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class StreamViewer extends JsWidget
 {
-
     /**
      * @var ContentContainerActiveRecord the content container if this stream belongs to one (optional)
      */

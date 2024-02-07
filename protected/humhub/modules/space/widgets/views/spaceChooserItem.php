@@ -19,7 +19,7 @@ use yii\helpers\Html;
                 'htmlOptions' => [
                     'class' => 'pull-left',
                 ]]);
-            ?>
+?>
             <div class="media-body">
                 <strong class="space-name"><?= Html::encode($space->name); ?></strong>
                 <?= $badge ?>

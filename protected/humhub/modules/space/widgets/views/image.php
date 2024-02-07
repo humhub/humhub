@@ -12,4 +12,3 @@ echo Html::img($space->getProfileImage()->getUrl(), $imageHtmlOptions);
 if ($link == true) :
     echo Html::endTag('a');
 endif;
-?>

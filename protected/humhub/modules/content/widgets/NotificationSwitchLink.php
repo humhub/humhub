@@ -22,7 +22,6 @@ use yii\base\Widget;
  */
 class NotificationSwitchLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -44,5 +43,3 @@ class NotificationSwitchLink extends Widget
     }
 
 }
-
-?>

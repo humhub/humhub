@@ -286,8 +286,10 @@ class InviteForm extends Model
 
                 $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]));
+                    $this->addError(
+                        $attribute,
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email])
+                    );
                     continue;
                 }
 

@@ -174,7 +174,7 @@ abstract class ItemDrop extends Model
     {
         if ($newIndex < 0) {
             return 0;
-        } else if ($newIndex >= count($itemsToSort) + 1) {
+        } elseif ($newIndex >= count($itemsToSort) + 1) {
             return count($itemsToSort) - 1;
         }
 

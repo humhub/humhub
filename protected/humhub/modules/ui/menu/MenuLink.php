@@ -191,7 +191,7 @@ class MenuLink extends MenuEntry
      */
     public static function createByArray($item)
     {
-        $entry = new static;
+        $entry = new static();
 
         if (isset($item['id'])) {
             $entry->id = $item['id'];

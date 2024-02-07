@@ -15,7 +15,6 @@ use humhub\modules\content\widgets\WallEntry;
  */
 class WallEntryTest extends WallEntry
 {
-
     public $wallEntryLayout = "@humhub/modules/content/tests/codeception/unit/widgets/views/wallEntry.php";
 
     /**

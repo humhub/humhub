@@ -23,7 +23,6 @@ use yii\helpers\Url;
  */
 class FriendshipButton extends Widget
 {
-
     /**
      * @var User the target user
      */

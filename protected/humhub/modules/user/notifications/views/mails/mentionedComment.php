@@ -22,7 +22,7 @@ use humhub\widgets\mails\MailButtonList;
                     'date' => $date,
                     'space' => $space,
                 ]);
-                ?>
+?>
             </td>
         </tr>
         <tr>
@@ -36,14 +36,14 @@ use humhub\widgets\mails\MailButtonList;
         <tr>
             <td style="padding:10px;border:1px solid <?= Yii::$app->view->theme->variable('background-color-secondary') ?>;border-radius:4px;">
                 <?=
-                humhub\widgets\mails\MailContentEntry::widget([
-                    'originator' => $contentRecord->owner,
-                    'receiver' => $record->user,
-                    'content' => $contentRecord,
-                    'date' => $date,
-                    'space' => $space
-                ]);
-                ?>
+humhub\widgets\mails\MailContentEntry::widget([
+    'originator' => $contentRecord->owner,
+    'receiver' => $record->user,
+    'content' => $contentRecord,
+    'date' => $date,
+    'space' => $space
+]);
+?>
             </td>
         </tr>
         <tr>
@@ -52,10 +52,10 @@ use humhub\widgets\mails\MailButtonList;
         <tr>
             <td>
                 <?=
-                MailButtonList::widget(['buttons' => [
-                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notification', 'View Online')])
-                ]]);
-                ?>
+MailButtonList::widget(['buttons' => [
+    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notification', 'View Online')])
+]]);
+?>
             </td>
         </tr>
     </table>

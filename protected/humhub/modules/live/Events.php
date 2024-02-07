@@ -24,7 +24,6 @@ use yii\base\BaseObject;
  */
 class Events extends BaseObject
 {
-
     /**
      * On hourly cron job, add database cleanup task
      */

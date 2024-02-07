@@ -86,10 +86,13 @@ use yii\web\View;
 
                                                                         <!-- check if activity object has a space -->
                                                                         <?php if ($space !== null): ?>
-                                                                            <?= Html::a($space->displayName,
-                                                                                $space->createUrl(null, [], true), [
-                                                                                    'style' => 'text-decoration: none; color: #555555;'
-                                                                                ]) ?>
+                                                                            <?= Html::a(
+                                                                                $space->displayName,
+                                                                                $space->createUrl(null, [], true),
+                                                                                [
+                                                                                                                                                                'style' => 'text-decoration: none; color: #555555;'
+                                                                                                                                                            ]
+                                                                            ) ?>
                                                                         <?php endif; ?>
 
                                                                         <?php if ($url != '') : ?>

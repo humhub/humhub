@@ -55,7 +55,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
         $this->assertNull($model->getFieldType());
 
         $model->load($validParams, '');
-        $fieldType = new Text;
+        $fieldType = new Text();
         $fieldType->setProfileField($model);
         $this->assertEquals($fieldType, $model->getFieldType());
     }

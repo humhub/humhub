@@ -50,4 +50,3 @@ if (isset($cfg['modules'])) {
 if (isset($cfg['fixtures'])) {
     Configuration::append(['fixtures' => $cfg['fixtures']]);
 }
-?>

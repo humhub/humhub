@@ -17,7 +17,6 @@ use humhub\modules\live\components\LiveEvent;
  */
 class NewComment extends LiveEvent
 {
-
     /**
      * @var int the id of the new comment
      */

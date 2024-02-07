@@ -20,7 +20,6 @@ use humhub\modules\user\models\User;
  */
 interface PrimaryClient
 {
-
     /**
      * Returns the user model of this auth client
      *

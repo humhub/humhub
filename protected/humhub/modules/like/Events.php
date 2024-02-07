@@ -21,7 +21,6 @@ use Yii;
  */
 class Events extends \yii\base\BaseObject
 {
-
     /**
      * On User delete, also delete all comments
      *

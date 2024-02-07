@@ -13,7 +13,6 @@ use yii\helpers\Url;
  */
 class TestActivityDefaultLayout extends BaseActivity
 {
-
     public $moduleId = 'test';
 
     public function html()

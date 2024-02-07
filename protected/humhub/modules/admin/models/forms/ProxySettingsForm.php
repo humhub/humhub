@@ -10,7 +10,6 @@ use yii\base\Model;
  */
 class ProxySettingsForm extends Model
 {
-
     public $enabled;
     public $server;
     public $port;

@@ -23,7 +23,6 @@ use yii\base\Widget;
  */
 class ArchiveLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -45,5 +44,3 @@ class ArchiveLink extends Widget
     }
 
 }
-
-?>

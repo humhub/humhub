@@ -26,8 +26,12 @@ class MembershipTest extends HumHubDbTestCase
 
         // Check approval mails are send and notification
         $this->assertSentEmail(1); // Approval notification admin mail
-        $this->assertHasNotification(ApprovalRequest::class, $space,
-            Yii::$app->user->id, 'Approval Request Notification');
+        $this->assertHasNotification(
+            ApprovalRequest::class,
+            $space,
+            Yii::$app->user->id,
+            'Approval Request Notification'
+        );
 
         // check cached version
         $membership = Membership::findMembership(1, Yii::$app->user->id);
@@ -43,8 +47,12 @@ class MembershipTest extends HumHubDbTestCase
 
         $space->addMember(2);
         $this->assertSentEmail(2); //Approval notification admin mail
-        $this->assertHasNotification(ApprovalRequestAccepted::class, $space, 1,
-            'Approval Accepted Notification');
+        $this->assertHasNotification(
+            ApprovalRequestAccepted::class,
+            $space,
+            1,
+            'Approval Accepted Notification'
+        );
 
         $memberships = Membership::findByUser($user1)->all();
         $this->assertNotEmpty($memberships, 'get all memberships of user query.');
@@ -68,8 +76,12 @@ class MembershipTest extends HumHubDbTestCase
         $space->requestMembership(Yii::$app->user->id, 'Let me in!');
 
         $this->assertSentEmail(1); // Approval notification admin mail
-        $this->assertHasNotification(ApprovalRequest::class, $space,
-            Yii::$app->user->id, 'Approval Request Notification');
+        $this->assertHasNotification(
+            ApprovalRequest::class,
+            $space,
+            Yii::$app->user->id,
+            'Approval Request Notification'
+        );
 
         // check cached version
         $membership = Membership::findMembership(1, Yii::$app->user->id);
@@ -85,8 +97,12 @@ class MembershipTest extends HumHubDbTestCase
 
         $space->removeMember(2);
         $this->assertSentEmail(2); // Rejection notification admin mail
-        $this->assertHasNotification(ApprovalRequestDeclined::class, $space, 1,
-            'Approval Accepted Notification');
+        $this->assertHasNotification(
+            ApprovalRequestDeclined::class,
+            $space,
+            1,
+            'Approval Accepted Notification'
+        );
     }
 
     public function testChangeRoleMembership()

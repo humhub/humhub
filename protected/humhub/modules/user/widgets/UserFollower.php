@@ -14,7 +14,6 @@ use yii\base\Widget;
  */
 class UserFollower extends Widget
 {
-
     /**
      * @var User
      */

@@ -12,7 +12,6 @@ use yii\base\Model;
  */
 class LogsSettingsForm extends Model
 {
-
     public $logsDateLimit;
 
     /**

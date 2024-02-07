@@ -47,7 +47,7 @@ use humhub\widgets\mails\MailButtonList;
                     'space' => $space,
                     'isComment' => true
                 ])
-                ?>
+?>
             </td>
         </tr>
         <tr>
@@ -56,10 +56,10 @@ use humhub\widgets\mails\MailButtonList;
         <tr>
             <td>
                 <?=
-                MailButtonList::widget(['buttons' => [
-                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
-                ]]);
-                ?>
+MailButtonList::widget(['buttons' => [
+    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
+]]);
+?>
             </td>
         </tr>
     </table>

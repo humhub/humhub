@@ -23,7 +23,6 @@ use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
  */
 class SyncUsers extends ActiveJob
 {
-
     /**
      * @inheritdoc
      */

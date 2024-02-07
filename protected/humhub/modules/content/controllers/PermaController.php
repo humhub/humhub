@@ -24,7 +24,6 @@ use yii\web\HttpException;
  */
 class PermaController extends Controller
 {
-
     /**
      * @inheritdoc
      */

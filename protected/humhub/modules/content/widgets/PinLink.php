@@ -25,7 +25,6 @@ use humhub\modules\content\components\ContentContainerController;
  */
 class PinLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -50,5 +49,3 @@ class PinLink extends Widget
     }
 
 }
-
-?>

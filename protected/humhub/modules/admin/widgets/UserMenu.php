@@ -23,7 +23,6 @@ use humhub\modules\ui\menu\widgets\TabMenu;
  */
 class UserMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      */

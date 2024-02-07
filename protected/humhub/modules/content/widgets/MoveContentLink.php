@@ -19,7 +19,6 @@ use Yii;
  */
 class MoveContentLink extends WallEntryControlLink
 {
-
     /**
      * @var ContentActiveRecord
      */

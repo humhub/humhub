@@ -5,7 +5,6 @@ use humhub\components\Migration;
 
 class m140907_140822_zip_field_to_text extends Migration
 {
-
     public function up()
     {
         if (!$this->isInitialInstallation()) {

@@ -28,11 +28,14 @@ class PublishDraftLink extends Widget
 
         $publishUrl = Url::to(['/content/content/publish-draft', 'id' => $this->content->content->id]);
 
-        return Html::tag('li',
+        return Html::tag(
+            'li',
             Html::a(
                 '<i class="fa fa-mail-reply-all"></i> '
                 . Yii::t('ContentModule.base', 'Publish draft'),
-                '#', ['data-action-click' => 'publishDraft', 'data-action-url' => $publishUrl])
+                '#',
+                ['data-action-click' => 'publishDraft', 'data-action-url' => $publishUrl]
+            )
         );
     }
 

@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class ConfigBasicForm extends Model
 {
-
     /**
      * @var string name of installation
      */

@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m141019_093319_mentioning extends Migration
 {
-
     public function up()
     {
         $this->createTable('user_mentioning', [

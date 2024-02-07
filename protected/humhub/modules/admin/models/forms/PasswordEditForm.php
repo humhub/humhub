@@ -10,7 +10,7 @@ use humhub\modules\user\models\Password;
  */
 class PasswordEditForm extends Password
 {
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
 
     /**
      * @inheritdoc

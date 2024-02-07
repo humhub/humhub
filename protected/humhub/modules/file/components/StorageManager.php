@@ -25,7 +25,6 @@ use yii\web\UploadedFile;
  */
 class StorageManager extends Component implements StorageManagerInterface
 {
-
     /**
      * @var string file name of the base file (without variant)
      */

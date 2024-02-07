@@ -21,7 +21,6 @@ use yii\base\Widget;
  */
 class FileUploadButton extends Widget
 {
-
     /**
      * @var String unique id of this uploader
      */
@@ -63,5 +62,3 @@ class FileUploadButton extends Widget
     }
 
 }
-
-?>

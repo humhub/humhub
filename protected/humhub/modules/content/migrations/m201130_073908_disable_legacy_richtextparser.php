@@ -2,7 +2,6 @@
 
 use humhub\components\Migration;
 
-
 /**
  * Class m201130_073907_default_permissions
  */

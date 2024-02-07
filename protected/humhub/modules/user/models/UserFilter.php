@@ -18,7 +18,6 @@ use Yii;
  */
 class UserFilter extends User
 {
-
     /**
      * Returns a UserFilter instance for the given $user or the current user identity
      * if $user is not provided.

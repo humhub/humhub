@@ -16,7 +16,6 @@ use yii\base\Model;
  */
 class BasicSettingsForm extends Model
 {
-
     public $name;
     public $baseUrl;
     public $defaultLanguage;
@@ -90,11 +89,17 @@ class BasicSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'defaultTimeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+            'defaultTimeZone' => Yii::t(
+                'AdminModule.settings',
+                'Reported database time: {dateTime}',
+                [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),
-            'timeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+            'timeZone' => Yii::t(
+                'AdminModule.settings',
+                'Reported database time: {dateTime}',
+                [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),

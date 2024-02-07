@@ -8,7 +8,6 @@
 
 namespace humhub\modules\file\libs;
 
-
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
@@ -25,7 +24,6 @@ use yii\imagine\Image;
  */
 class ImageHelper
 {
-
     /**
      * Fix orientation of JPEG images based on EXIF information
      *

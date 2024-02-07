@@ -32,7 +32,6 @@ use humhub\modules\activity\widgets\Activity as ActivityStreamEntryWidget;
  */
 class Activity extends ContentActiveRecord
 {
-
     /**
      * @inheritdoc
      */

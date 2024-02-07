@@ -12,7 +12,6 @@ use user\AcceptanceTester;
 
 class InviteLinkCest
 {
-
     /**
      * @param AcceptanceTester $I
      * @throws Exception
@@ -86,4 +85,3 @@ class InviteLinkCest
     }
 
 }
-

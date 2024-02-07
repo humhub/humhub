@@ -25,13 +25,13 @@ $categories = $user->profile->getProfileFieldCategories();
                 <?php
                 $firstClass = "";
             endforeach;
-            ?>
+?>
         </ul>
         <?php $firstClass = "active" ?>
         <div class="tab-content">
             <?php foreach ($categories as $category): ?>
                 <div class="tab-pane <?php
-                echo $firstClass;
+    echo $firstClass;
                 $firstClass = "";
                 ?>" id="profile-category-<?= $category->id ?>">
                     <form class="form-horizontal" role="form">

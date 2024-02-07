@@ -35,11 +35,11 @@ class ActiveQueryContent extends ActiveQuery
      * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
      */
-    const USER_RELATED_SCOPE_OWN = 1;
-    const USER_RELATED_SCOPE_SPACES = 2;
-    const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
-    const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
-    const USER_RELATED_SCOPE_OWN_PROFILE = 5;
+    public const USER_RELATED_SCOPE_OWN = 1;
+    public const USER_RELATED_SCOPE_SPACES = 2;
+    public const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
+    public const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
+    public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
 
     /**
      * State filter that is used for queries. By default, only Published content is returned.
@@ -166,7 +166,7 @@ class ActiveQueryContent extends ActiveQuery
                 $contentTagQuery->andWhere('content_tag_relation.content_id=content.id');
                 $this->andWhere(['content.id' => $contentTagQuery]);
             }
-        } else if ($mode == 'OR') {
+        } elseif ($mode == 'OR') {
             $names = array_map(function ($v) {
                 return $v->name;
             }, $contentTags);

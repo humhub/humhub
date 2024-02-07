@@ -26,8 +26,7 @@ use yii\widgets\ActiveForm;
  */
 class UploadInput extends JsWidget
 {
-
-    const DEFAULT_FORM_NAME = 'fileList';
+    public const DEFAULT_FORM_NAME = 'fileList';
 
     /**
      * javascript widget implementation.
@@ -203,7 +202,7 @@ class UploadInput extends JsWidget
         $files = [];
         if ($model && $attribute) {
             $files = Html::getAttributeValue($model, $attribute);
-        } else if ($submitName) {
+        } elseif ($submitName) {
             $postSubmit = $submitName;
 
             if (static::endsWith('[]', $postSubmit)) {

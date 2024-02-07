@@ -25,7 +25,6 @@ use humhub\components\ActiveRecord;
  */
 class Session extends ActiveRecord
 {
-
     /**
      * @return string the associated database table name
      */

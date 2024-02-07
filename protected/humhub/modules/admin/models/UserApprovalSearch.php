@@ -22,7 +22,6 @@ use humhub\modules\user\models\User;
  */
 class UserApprovalSearch extends User
 {
-
     public function attributes()
     {
         // add related fields to searchable attributes

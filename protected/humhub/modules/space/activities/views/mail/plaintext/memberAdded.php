@@ -11,4 +11,3 @@ echo Yii::t('ActivityModule.base', "{displayName} joined the space {spaceName}",
     '{displayName}' => $originator->displayName,
     '{spaceName}' => '"' . Helpers::truncateText($source->name, 40) . '"'
 ]);
-?>

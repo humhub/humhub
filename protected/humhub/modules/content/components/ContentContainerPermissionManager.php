@@ -20,7 +20,6 @@ use Yii;
  */
 class ContentContainerPermissionManager extends PermissionManager
 {
-
     /**
      * @var ContentContainerActiveRecord
      */
@@ -56,7 +55,7 @@ class ContentContainerPermissionManager extends PermissionManager
      */
     protected function createPermissionRecord()
     {
-        $permission = new ContentContainerPermission;
+        $permission = new ContentContainerPermission();
         $permission->contentcontainer_id = $this->contentContainer->contentcontainer_id;
         return $permission;
     }

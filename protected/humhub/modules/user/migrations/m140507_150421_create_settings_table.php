@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140507_150421_create_settings_table extends Migration
 {
-
     public function up()
     {
 

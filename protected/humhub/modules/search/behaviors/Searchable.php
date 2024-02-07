@@ -23,7 +23,6 @@ use humhub\modules\search\interfaces\Searchable as SearchableInterface;
  */
 class Searchable extends Behavior
 {
-
     public function events()
     {
         return [

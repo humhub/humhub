@@ -5,7 +5,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
-
 /* @var $this View */
 /* @var $model LogFilterForm */
 ?>

@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m160205_203955_foreign_keys extends Migration
 {
-
     public function up()
     {
         try {

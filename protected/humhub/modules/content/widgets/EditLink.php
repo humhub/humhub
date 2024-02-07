@@ -23,7 +23,6 @@ use yii\base\Widget;
  */
 class EditLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -58,5 +57,3 @@ class EditLink extends Widget
     }
 
 }
-
-?>

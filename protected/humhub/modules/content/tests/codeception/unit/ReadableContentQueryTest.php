@@ -14,7 +14,6 @@ use yii\base\Exception;
 
 class ReadableContentQueryTest extends HumHubDbTestCase
 {
-
     /**
      * @var User
      */
@@ -57,35 +56,35 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->privateSpace = Space::findOne(['id' => 5]);
         $this->user = Yii::$app->user->identity;
 
-        $this->globalPrivatePost = new Post;
+        $this->globalPrivatePost = new Post();
         $this->globalPrivatePost->message = "Global Public Post";
         $this->globalPrivatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->globalPrivatePost->save();
 
-        $this->globalPublicPost = new Post;
+        $this->globalPublicPost = new Post();
         $this->globalPublicPost->message = "Global Private Post";
         $this->globalPublicPost->content->visibility = Content::VISIBILITY_PUBLIC;
         $this->globalPublicPost->save();
 
-        $this->publicSpacePublicPost = new Post;
+        $this->publicSpacePublicPost = new Post();
         $this->publicSpacePublicPost->message = "Public Space Public Post";
         $this->publicSpacePublicPost->content->visibility = Content::VISIBILITY_PUBLIC;
         $this->publicSpacePublicPost->content->setContainer($this->publicSpace);
         $this->publicSpacePublicPost->save();
 
-        $this->publicSpacePrivatePost = new Post;
+        $this->publicSpacePrivatePost = new Post();
         $this->publicSpacePrivatePost->message = "Public Space Private Post";
         $this->publicSpacePrivatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->publicSpacePrivatePost->content->setContainer($this->publicSpace);
         $this->publicSpacePrivatePost->save();
 
-        $this->profilePublicPost = new Post;
+        $this->profilePublicPost = new Post();
         $this->profilePublicPost->message = "Profile Public Post";
         $this->profilePublicPost->content->visibility = Content::VISIBILITY_PUBLIC;
         $this->profilePublicPost->content->setContainer($this->user);
         $this->profilePublicPost->save();
 
-        $this->profilePrivatePost = new Post;
+        $this->profilePrivatePost = new Post();
         $this->profilePrivatePost->message = "Profile Private Post";
         $this->profilePrivatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->profilePrivatePost->content->setContainer($this->user);
@@ -95,13 +94,13 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         // Note: public content in a private space should not exist
-        $this->privateSpacePublicPost = new Post;
+        $this->privateSpacePublicPost = new Post();
         $this->privateSpacePublicPost->message = "Private Space Public Post";
         $this->privateSpacePublicPost->content->visibility = Content::VISIBILITY_PUBLIC;
         $this->privateSpacePublicPost->content->setContainer($this->privateSpace);
         $this->privateSpacePublicPost->save();
 
-        $this->privateSpacePrivatePost = new Post;
+        $this->privateSpacePrivatePost = new Post();
         $this->privateSpacePrivatePost->message = "Private Space Private Post";
         $this->privateSpacePrivatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->privateSpacePrivatePost->content->setContainer($this->privateSpace);
@@ -408,7 +407,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
 
 
         // This could be an old post, and the user was removed from the space
-        $privateSpacePost = new Post;
+        $privateSpacePost = new Post();
         $privateSpacePost->message = "Profile Public Post";
         $privateSpacePost->content->visibility = Content::VISIBILITY_PUBLIC;
         $privateSpacePost->content->setContainer($this->user);

@@ -22,11 +22,10 @@ use yii\base\InvalidConfigException;
  */
 class IconFactory extends Component
 {
-
     /**
      * @event \yii\base\Event triggered after init, can be used to overwrite the [[defaultProvider]]
      */
-    const EVENT_AFTER_INIT = 'afterInit';
+    public const EVENT_AFTER_INIT = 'afterInit';
 
     /**
      * @var IconProvider
