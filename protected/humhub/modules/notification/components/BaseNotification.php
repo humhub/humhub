@@ -69,7 +69,7 @@ abstract class BaseNotification extends SocialActivity
     protected $_groupKey = null;
 
     /**
-     * @var \humhub\modules\notification\components\NotificationCategory cached category instance
+     * @var NotificationCategory cached category instance
      */
     protected $_category = null;
 
@@ -105,7 +105,7 @@ abstract class BaseNotification extends SocialActivity
      *
      * If the Notification configuration should be configurable subclasses have to overwrite this method.
      *
-     * @return \humhub\modules\notification\components\NotificationCategory
+     * @return NotificationCategory
      */
     public function getCategory()
     {
@@ -123,7 +123,7 @@ abstract class BaseNotification extends SocialActivity
      * to the returned category. If no category instance is returned, the BaseNotification behavriour (targets) will not be
      * configurable.
      *
-     * @return \humhub\modules\notification\components\NotificationCategory
+     * @return NotificationCategory
      */
     protected function category()
     {
@@ -583,7 +583,7 @@ abstract class BaseNotification extends SocialActivity
     /**
      * This method is invoked right before a mail will be send for this notificatoin
      *
-     * @param \yii\mail\MessageInterface $message
+     * @param MessageInterface $message
      * @return boolean when true the mail will be send
      * @see \humhub\modules\notification\targets\MailTarget
      */

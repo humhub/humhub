@@ -116,7 +116,7 @@ class FilterForm extends Model
     public function getNotifications(): array
     {
         if ($this->notifications == null) {
-            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function($notification) {
+            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function ($notification) {
                 return $notification->getCategory() != null;
             });
         }

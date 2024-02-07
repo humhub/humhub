@@ -52,7 +52,7 @@ class MobileTarget extends BaseTarget
      */
     public function handle(BaseNotification $notification, User $user)
     {
-        if($this->provider) {
+        if ($this->provider) {
             $this->provider->handle($notification, $user);
         }
     }
@@ -67,7 +67,7 @@ class MobileTarget extends BaseTarget
 
     public function isActive(User $user = null)
     {
-        if(!parent::isActive() || !$this->provider) {
+        if (!parent::isActive() || !$this->provider) {
             return false;
         }
 

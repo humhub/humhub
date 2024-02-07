@@ -10,16 +10,16 @@ namespace humhub\modules\notification\renderer;
 
 /**
  * The MailTargetRenderer is used to render Notifications for the MailTarget.
- * 
+ *
  * A BaseNotification can overwrite the default view and layout by setting a specific $viewName and
  * defining the following files:
- * 
+ *
  * Overwrite default html view for this notification:
  * @module/views/notification/mail/viewname.php
- * 
+ *
  * Overwrite default mail layout for this notification:
  * @module/views/layouts/notification/mail/viewname.php
- * 
+ *
  * Overwrite default mail text layout for this notification:
  * @module/views/layouts/notification/mail/plaintext/viewname.php
  *

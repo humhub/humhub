@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\notification\targets;
 
 use humhub\modules\notification\components\BaseNotification;
@@ -17,6 +18,7 @@ interface MobileTargetProvider
      * @return boolean
      */
     public function handle(BaseNotification $notification, User $user);
+
     /**
      * @param User|null $user
      * @return boolean

@@ -8,7 +8,9 @@
 
 namespace humhub\modules\notification\widgets;
 
+use humhub\modules\notification\models\Notification;
 use Yii;
+use yii\base\Widget;
 
 /**
  * UpdateNotificationCount widget is an LayoutAddon widget for updating the notification count
@@ -17,7 +19,7 @@ use Yii;
  * @author buddha
  * @since 1.2
  */
-class UpdateNotificationCount extends \yii\base\Widget
+class UpdateNotificationCount extends Widget
 {
 
     /**
@@ -30,7 +32,7 @@ class UpdateNotificationCount extends \yii\base\Widget
         }
 
         return $this->render('updateNotificationCount', [
-            'count' => \humhub\modules\notification\models\Notification::findUnseen()->count()
+            'count' => Notification::findUnseen()->count()
         ]);
     }
 }

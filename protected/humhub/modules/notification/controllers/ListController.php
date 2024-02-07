@@ -8,11 +8,15 @@
 
 namespace humhub\modules\notification\controllers;
 
+use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\modules\notification\models\Notification;
+use Throwable;
 use Yii;
 use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
+use yii\web\HttpException;
 
 /**
  * ListController
@@ -33,7 +37,7 @@ class ListController extends Controller
 
     /**
      * Returns a List of all notifications for an user
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionIndex()
     {
@@ -56,7 +60,7 @@ class ListController extends Controller
             } catch (IntegrityException $ie) {
                 $notification->delete();
                 Yii::warning('Deleted inconsistent notification with id ' . $notification->id . '. ' . $ie->getMessage());
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 Yii::error('Could not display notification: ' . $notification->id . '(' . $e . ')');
             }
         }
@@ -71,7 +75,7 @@ class ListController extends Controller
 
     /**
      * Marks all notifications as seen
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionMarkAsSeen()
     {
@@ -79,7 +83,7 @@ class ListController extends Controller
 
         $count = Notification::updateAll(['seen' => 1], ['user_id' => Yii::$app->user->id]);
 
-        return $this->asJson( [
+        return $this->asJson([
             'success' => true,
             'count' => $count
         ]);
@@ -102,8 +106,8 @@ class ListController extends Controller
      *
      * @param bool $includeContent weather or not to include the actual notification content
      * @return string JSON String
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public static function getUpdates($includeContent = true)
     {
@@ -118,7 +122,7 @@ class ListController extends Controller
                 try {
                     $baseModel = $notification->getBaseModel();
 
-                    if($baseModel->validate()) {
+                    if ($baseModel->validate()) {
                         $update['notifications'][] = $baseModel;
                     } else {
                         throw new IntegrityException('Invalid base model found for notification');

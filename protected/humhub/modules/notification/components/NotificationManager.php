@@ -20,6 +20,8 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * The NotificationManager component is responsible for sending BaseNotifications to Users over different
@@ -63,9 +65,9 @@ class NotificationManager
      * Sends the given $notification to all enabled targets of the given $users if possible
      * as bulk message.
      *
-     * @param \humhub\modules\notification\components\BaseNotification $notification
+     * @param BaseNotification $notification
      * @param ActiveQueryUser $userQuery
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function sendBulk(BaseNotification $notification, $userQuery)
     {
@@ -111,9 +113,9 @@ class NotificationManager
     /**
      * Sends the given $notification to all enabled targets of a single user.
      *
-     * @param \humhub\modules\notification\components\BaseNotification $notification
+     * @param BaseNotification $notification
      * @param User $user target user
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function send(BaseNotification $notification, User $user)
     {
@@ -126,7 +128,7 @@ class NotificationManager
      *
      * @param User $user |null the user
      * @return BaseTarget[] the target
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getTargets(User $user = null)
     {
@@ -157,7 +159,7 @@ class NotificationManager
      *
      * @param string $class
      * @return BaseTarget
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getTarget($class)
     {
@@ -193,7 +195,7 @@ class NotificationManager
      *
      * @param Content $content
      * @return ActiveQueryUser
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getFollowers(Content $content)
     {
@@ -425,7 +427,7 @@ class NotificationManager
      * Returns all available Notifications
      *
      * @return BaseNotification[]
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getNotifications()
     {
@@ -466,7 +468,7 @@ class NotificationManager
     /**
      * Searches for all Notifications exported by modules.
      * @return array
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     protected function searchModuleNotifications()
     {

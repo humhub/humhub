@@ -23,7 +23,7 @@ class m131023_170033_initial extends Migration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ], '');
+        ], '');
     }
 
     public function down()

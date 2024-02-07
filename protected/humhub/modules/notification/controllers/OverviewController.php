@@ -13,8 +13,10 @@ use humhub\components\Controller;
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\widgets\OverviewWidget;
+use Throwable;
 use Yii;
 use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 
 /**
  * ListController
@@ -39,8 +41,8 @@ class OverviewController extends Controller
     /**
      * @param bool $reload if the request is a reload request
      * @return string
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionIndex($reload = false)
     {
@@ -89,14 +91,14 @@ class OverviewController extends Controller
      *
      * @param $notifications Notification[]
      * @return array
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     private function prepareNotifications($notifications)
     {
         $result = [];
         foreach ($notifications as $notificationRecord) {
-            /* @var $notificationRecord \humhub\modules\notification\models\Notification */
+            /* @var $notificationRecord Notification */
 
             try {
                 $baseModel = $notificationRecord->getBaseModel();

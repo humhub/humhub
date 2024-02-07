@@ -1,9 +1,11 @@
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php use humhub\widgets\mails\MailButtonList;
+
+$this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 <?= $html; ?>
-<br />
-<br />
+    <br/>
+    <br/>
 <?=
-\humhub\widgets\mails\MailButtonList::widget([
+MailButtonList::widget([
     'buttons' => [
         humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('ContentModule.notifications', 'View Online')])
     ]
