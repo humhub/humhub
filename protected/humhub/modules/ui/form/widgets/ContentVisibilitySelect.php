@@ -118,7 +118,7 @@ class ContentVisibilitySelect extends InputWidget
 
         // Should hide on private spaces (Only provide private content visibility option)
         // or if user has no permission to create public content
-        if ($contentContainer instanceof Space) {
+        if ($contentContainer instanceof Space && $contentContainer->visibility !== Space::VISIBILITY_ALL) {
             /** @var Space $contentContainer */
             if ($contentContainer->visibility === Space::VISIBILITY_NONE ||
                 !$contentContainer->can(CreatePublicContent::class)) {

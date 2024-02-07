@@ -219,7 +219,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
 
         $this->visibility ??= self::VISIBILITY_PRIVATE;
         // Force to private content for private space or if user has no permission to create public content
-        if ($this->container instanceof Space && $this->visibility === self::VISIBILITY_PUBLIC) {
+        if ($this->container instanceof Space &&
+            $this->container->visibility !== Space::VISIBILITY_ALL &&
+            $this->visibility === self::VISIBILITY_PUBLIC) {
             if ($this->container->visibility === Space::VISIBILITY_NONE ||
                 !$this->container->can(CreatePublicContent::class)) {
                 $this->visibility = self::VISIBILITY_PRIVATE;
