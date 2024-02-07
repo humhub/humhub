@@ -1,6 +1,8 @@
 HumHub Changelog
 ================
 
+
+
 1.16.0 (Unreleased)
 -------------------
 - Fix #6770: Improve migration error messages
@@ -57,3 +59,5 @@ HumHub Changelog
 - Fix #6810: Top menu on small screens: the previous page remains active when the new page is in the drop-down submenu
 - Fix #6830: Wrong view filename after module enabling
 - Enh #6838: Fix LDAP encryption labels and allow ignore also part of DNs
+- Enh #6490: Update button style on force password form
+
