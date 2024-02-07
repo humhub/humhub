@@ -4,8 +4,8 @@ use humhub\widgets\mails\MailButtonList;
 
 $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
 <?= $html; ?>
-    <br/>
-    <br/>
+<br/>
+<br/>
 <?=
 MailButtonList::widget([
     'buttons' => [

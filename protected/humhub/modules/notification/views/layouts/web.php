@@ -14,9 +14,7 @@ use yii\helpers\Html;
 /** @var string $relativeUrl */
 
 ?>
-<li class="<?php if ($isNew):
-?>new<?php
-           endif; ?>"
+<li class="<?php if ($isNew): ?>new<?php endif; ?>"
     data-notification-id="<?= $record->id ?>"
     data-notification-group="<?= !empty($record->baseModel->getGroupkey()) ? Html::encode(get_class($record->baseModel)) . ':' . Html::encode($record->baseModel->getGroupKey()) : '' ?>">
 
