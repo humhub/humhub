@@ -37,7 +37,7 @@ class WallEntryAddons extends BaseStack
      * ```
      * @var array
      * @deprecated since 1.7 use WallStreamEntryOptions
-    */
+     */
     public $widgetOptions = [];
 
     /**
@@ -50,17 +50,17 @@ class WallEntryAddons extends BaseStack
      */
     public function addWidget($className, $params = [], $options = [])
     {
-        if($this->renderOptions) {
-            if($this->renderOptions->isAddonDisabled($className)) {
+        if ($this->renderOptions) {
+            if ($this->renderOptions->isAddonDisabled($className)) {
                 return;
             }
 
-            if(is_array($this->renderOptions->getAddonWidgetOptions($className))) {
+            if (is_array($this->renderOptions->getAddonWidgetOptions($className))) {
                 $params = ArrayHelper::merge($params, $this->renderOptions->getAddonWidgetOptions($className));
             }
         }
 
-        if(isset($this->widgetOptions[$className])) {
+        if (isset($this->widgetOptions[$className])) {
             $params = ArrayHelper::merge($params, $this->widgetOptions[$className]);
         }
 

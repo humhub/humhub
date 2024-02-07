@@ -13,7 +13,7 @@ use humhub\modules\user\models\User;
 
 /**
  * PeopleActionsButton shows directory options (following or friendship) for listed users
- * 
+ *
  * @since 1.9
  * @author Luke
  */

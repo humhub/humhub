@@ -18,7 +18,7 @@ class m131023_165625_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
 
         $this->createTable('wall_entry', [
             'id' => 'pk',
@@ -28,7 +28,7 @@ class m131023_165625_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
 
 
         $this->createTable('content', [
@@ -45,7 +45,7 @@ class m131023_165625_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
     }
 
     public function down()

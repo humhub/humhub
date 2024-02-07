@@ -35,7 +35,8 @@ abstract class Filter extends Model
 
     public abstract function apply();
 
-    public function init() {
+    public function init()
+    {
         if (Yii::$app->request->isConsoleRequest) {
             return;
         }
@@ -43,14 +44,15 @@ abstract class Filter extends Model
         if ($this->autoLoad === static::AUTO_LOAD_ALL) {
             $this->load(Yii::$app->request->get());
             $this->load(Yii::$app->request->post());
-        } elseif($this->autoLoad === static::AUTO_LOAD_GET) {
+        } elseif ($this->autoLoad === static::AUTO_LOAD_GET) {
             $this->load(Yii::$app->request->get());
-        } elseif($this->autoLoad === static::AUTO_LOAD_POST) {
+        } elseif ($this->autoLoad === static::AUTO_LOAD_POST) {
             $this->load(Yii::$app->request->post());
         }
     }
 
-    public function formName() {
+    public function formName()
+    {
         return $this->formName ?: parent::formName();
     }
 

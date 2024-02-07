@@ -9,13 +9,14 @@
 namespace humhub\modules\installer\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * Sample Data Form
  *
  * @since 0.5
  */
-class SampleDataForm extends \yii\base\Model
+class SampleDataForm extends Model
 {
 
     /**

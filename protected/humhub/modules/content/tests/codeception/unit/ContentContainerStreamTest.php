@@ -143,7 +143,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     public function testDeletedContent()
     {
         $this->becomeUser('User2');
-        $deleteId = $this->createPost('Something to delete',['visibility' => Content::VISIBILITY_PRIVATE]);
+        $deleteId = $this->createPost('Something to delete', ['visibility' => Content::VISIBILITY_PRIVATE]);
 
         $content = Content::findOne(['id' => $deleteId]);
         $content->softDelete();

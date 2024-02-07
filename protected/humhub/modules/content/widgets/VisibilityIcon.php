@@ -10,6 +10,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 
 /**
@@ -47,7 +48,7 @@ class VisibilityIcon extends Icon
      *
      * @param ContentActiveRecord $model
      * @return Icon
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function getByModel(ContentActiveRecord $model)
     {
@@ -62,7 +63,7 @@ class VisibilityIcon extends Icon
      */
     private static function getVisibilityIcon(ContentActiveRecord $model)
     {
-        if($model->content->container instanceof User && $model->content->isPrivate() && !Yii::$app->getModule('friendship')->settings->get('enable')) {
+        if ($model->content->container instanceof User && $model->content->isPrivate() && !Yii::$app->getModule('friendship')->settings->get('enable')) {
             return static::ICON_PRIVATE;
         }
 
@@ -74,41 +75,41 @@ class VisibilityIcon extends Icon
      *
      * @param ContentActiveRecord $model
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
     private static function getVisibilityTitle(ContentActiveRecord $model)
     {
         $container = $model->content->container;
 
-        if($model->content->isPublic()) {
+        if ($model->content->isPublic()) {
             return static::getPublicVisibilityText();
         }
 
 
-        if(!$container) { // private global
+        if (!$container) { // private global
             return Yii::t('ContentModule.base', 'Visible to all signed in users');
         }
 
-        if($model->content->container instanceof Space) {
+        if ($model->content->container instanceof Space) {
             return Yii::t('ContentModule.base', 'Visible to all Space members');
         }
 
-        if($model->content->container instanceof User) {
-            $iamAuthor =  $model->content->createdBy->is(Yii::$app->user->getIdentity());
-            $isMyProfile =  $model->content->container->is(Yii::$app->user->getIdentity());
+        if ($model->content->container instanceof User) {
+            $iamAuthor = $model->content->createdBy->is(Yii::$app->user->getIdentity());
+            $isMyProfile = $model->content->container->is(Yii::$app->user->getIdentity());
 
-            if(Yii::$app->getModule('friendship')->settings->get('enable')) {
+            if (Yii::$app->getModule('friendship')->settings->get('enable')) {
                 return $isMyProfile
-                    ?  Yii::t('ContentModule.base', 'Visible to your friends')
+                    ? Yii::t('ContentModule.base', 'Visible to your friends')
                     : Yii::t('ContentModule.base', 'Visible to friends of {displayName}',
                         ['displayName' => Html::encode($model->content->container->getDisplayName())]);
             }
 
             // Private no friendships
-            if($isMyProfile) {
+            if ($isMyProfile) {
                 return $iamAuthor
-                    ?  Yii::t('ContentModule.base', 'Visible only to you') // My own private profile post
-                    :  Yii::t('ContentModule.base', 'Visible to you and {displayName}',
+                    ? Yii::t('ContentModule.base', 'Visible only to you') // My own private profile post
+                    : Yii::t('ContentModule.base', 'Visible to you and {displayName}',
                         ['displayName' => Html::encode($model->content->createdBy->getDisplayName())]); // Someone posted private content on my profile
             }
 

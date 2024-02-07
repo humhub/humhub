@@ -4,6 +4,7 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 namespace humhub\modules\content\models;
 
 use yii\db\ActiveRecord;

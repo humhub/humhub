@@ -37,7 +37,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
      */
     protected function initScopeFilterBlock()
     {
-        if(!$this->isScopeFilterSupported()) {
+        if (!$this->isScopeFilterSupported()) {
             return;
         }
 
@@ -62,7 +62,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
      */
     protected function initScopeFilter()
     {
-        if(!$this->isScopeFilterSupported()) {
+        if (!$this->isScopeFilterSupported()) {
             return;
         }
 

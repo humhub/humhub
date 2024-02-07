@@ -13,6 +13,7 @@ use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\Module;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\InviteUsers;
@@ -115,7 +116,7 @@ class CreateController extends Controller
      */
     protected function createSpaceModel()
     {
-        /* @var \humhub\modules\space\Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('space');
 
         $model = new Space();

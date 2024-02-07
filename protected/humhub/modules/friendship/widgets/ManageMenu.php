@@ -8,6 +8,7 @@
 
 namespace humhub\modules\friendship\widgets;
 
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
@@ -20,7 +21,7 @@ class ManageMenu extends TabMenu
 {
 
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 

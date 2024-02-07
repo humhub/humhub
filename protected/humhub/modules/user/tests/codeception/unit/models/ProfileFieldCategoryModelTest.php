@@ -39,12 +39,12 @@ class ProfileFieldCategoryModelTest extends HumHubDbTestCase
         $this->assertFalse($model->delete());
 
         $validParams = [
-           'title' => 'Hobbies',
+            'title' => 'Hobbies',
             'sort_order' => 500
         ];
         $model = new ProfileFieldCategory();
         $model->load($validParams, '');
         $this->assertTrue($model->save());
-        $this->assertEquals(1,  $model->delete());
+        $this->assertEquals(1, $model->delete());
     }
 }

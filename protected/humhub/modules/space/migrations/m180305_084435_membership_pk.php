@@ -12,7 +12,7 @@ class m180305_084435_membership_pk extends Migration
         try {
             $this->dropForeignKey('fk_space_membership-space_id', 'space_membership');
             $this->dropForeignKey('fk_space_membership-user_id', 'space_membership');
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error($ex->getMessage());
         }
 

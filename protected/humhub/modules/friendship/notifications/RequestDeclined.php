@@ -31,8 +31,8 @@ class RequestDeclined extends BaseNotification
     public $viewName = "friendshipDeclined";
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $requireSource = false;
 
     /**

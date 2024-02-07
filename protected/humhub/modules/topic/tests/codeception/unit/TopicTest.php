@@ -6,13 +6,14 @@ use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\base\Exception;
 
 class TopicTest extends HumHubDbTestCase
 {
 
     /**
      * Make sure space admin is allowed to create content by default
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testSpaceAdminCanCreateTopic()
     {
@@ -32,7 +33,7 @@ class TopicTest extends HumHubDbTestCase
 
     /**
      * Make sure moderator is allowed to create content by default
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testSpaceModeratorCanCreateTopic()
     {
@@ -52,7 +53,7 @@ class TopicTest extends HumHubDbTestCase
 
     /**
      * Make sure user is not allowed to create content by default
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testSpaceMemberCanNotCreateTopic()
     {
@@ -71,7 +72,7 @@ class TopicTest extends HumHubDbTestCase
 
     /**
      * Make sure user is not allowed to create content by default
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testAttachTopicByInstance()
     {
@@ -95,7 +96,7 @@ class TopicTest extends HumHubDbTestCase
 
     /**
      * Make sure user is not allowed to create content by default
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testAttachTopicById()
     {

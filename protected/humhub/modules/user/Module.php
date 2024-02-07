@@ -204,7 +204,7 @@ class Module extends \humhub\components\Module
                 new permissions\ViewAboutPage(),
             ];
 
-            if(Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
+            if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
                 $permissions[] = new permissions\CanMention();
             }
 
@@ -306,7 +306,7 @@ class Module extends \humhub\components\Module
      */
     public function allowBlockUsers(): bool
     {
-        return (bool) $this->settings->get('auth.blockUsers', true);
+        return (bool)$this->settings->get('auth.blockUsers', true);
     }
 
     /**

@@ -8,7 +8,9 @@
 
 namespace humhub\modules\like\controllers;
 
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\like\Module;
+use humhub\modules\user\models\User;
 use Yii;
 use humhub\modules\like\models\Like;
 use humhub\modules\user\widgets\UserListBox;
@@ -47,7 +49,7 @@ class LikeController extends ContentAddonController
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::class,
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['show-likes']
             ]
         ];
@@ -125,7 +127,7 @@ class LikeController extends ContentAddonController
     public function actionUserList()
     {
 
-        $query = \humhub\modules\user\models\User::find();
+        $query = User::find();
         $query->leftJoin('like', 'like.created_by=user.id');
         $query->where([
             'like.object_id' => $this->contentId,

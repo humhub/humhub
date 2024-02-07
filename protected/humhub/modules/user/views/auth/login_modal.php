@@ -147,7 +147,7 @@ use yii\widgets\ActiveForm;
 
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_username').focus();
     });

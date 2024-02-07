@@ -6,9 +6,10 @@ use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\LoaderWidget;
+use yii\web\View;
 
 /**
- * @var $this \yii\web\View
+ * @var $this View
  * @var $space Space
  * @var $model RequestMembershipForm
  */

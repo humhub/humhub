@@ -4,6 +4,10 @@ namespace tests\codeception\unit\modules\space;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\notifications\ApprovalRequest;
+use humhub\modules\space\notifications\ApprovalRequestAccepted;
+use humhub\modules\space\notifications\ApprovalRequestDeclined;
+use humhub\modules\space\notifications\ChangedRolesMembership;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
@@ -22,7 +26,7 @@ class MembershipTest extends HumHubDbTestCase
 
         // Check approval mails are send and notification
         $this->assertSentEmail(1); // Approval notification admin mail
-        $this->assertHasNotification(\humhub\modules\space\notifications\ApprovalRequest::class, $space,
+        $this->assertHasNotification(ApprovalRequest::class, $space,
             Yii::$app->user->id, 'Approval Request Notification');
 
         // check cached version
@@ -39,7 +43,7 @@ class MembershipTest extends HumHubDbTestCase
 
         $space->addMember(2);
         $this->assertSentEmail(2); //Approval notification admin mail
-        $this->assertHasNotification(\humhub\modules\space\notifications\ApprovalRequestAccepted::class, $space, 1,
+        $this->assertHasNotification(ApprovalRequestAccepted::class, $space, 1,
             'Approval Accepted Notification');
 
         $memberships = Membership::findByUser($user1)->all();
@@ -64,7 +68,7 @@ class MembershipTest extends HumHubDbTestCase
         $space->requestMembership(Yii::$app->user->id, 'Let me in!');
 
         $this->assertSentEmail(1); // Approval notification admin mail
-        $this->assertHasNotification(\humhub\modules\space\notifications\ApprovalRequest::class, $space,
+        $this->assertHasNotification(ApprovalRequest::class, $space,
             Yii::$app->user->id, 'Approval Request Notification');
 
         // check cached version
@@ -81,7 +85,7 @@ class MembershipTest extends HumHubDbTestCase
 
         $space->removeMember(2);
         $this->assertSentEmail(2); // Rejection notification admin mail
-        $this->assertHasNotification(\humhub\modules\space\notifications\ApprovalRequestDeclined::class, $space, 1,
+        $this->assertHasNotification(ApprovalRequestDeclined::class, $space, 1,
             'Approval Accepted Notification');
     }
 
@@ -89,7 +93,7 @@ class MembershipTest extends HumHubDbTestCase
     {
         $membership = Membership::findMembership(3, 2);
 
-        \humhub\modules\space\notifications\ChangedRolesMembership::instance()
+        ChangedRolesMembership::instance()
             ->about($membership)
             ->from(User::findOne(['id' => 1]))
             ->send($membership->user);

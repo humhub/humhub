@@ -16,6 +16,7 @@ use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Action;
+use yii\base\Exception;
 use yii\filters\HttpCache;
 use yii\web\HttpException;
 
@@ -176,7 +177,7 @@ class DownloadAction extends Action
     /**
      * Returns the file module
      *
-     * @return \humhub\modules\file\Module
+     * @return Module
      */
     protected function getModule()
     {
@@ -282,7 +283,7 @@ class DownloadAction extends Action
 
     /**
      * @return string the secret key for file download tokens
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     private static function getDownloadTokenKey()
     {

@@ -34,6 +34,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "space".
@@ -57,9 +58,9 @@ use yii\db\ActiveQuery;
  * @property-read array $privilegedGroupUsers
  * @property-read array $searchAttributes
  *
- * @mixin \humhub\components\behaviors\GUID
- * @mixin \humhub\modules\space\behaviors\SpaceModelMembership
- * @mixin \humhub\modules\user\behaviors\Followable
+ * @mixin GUID
+ * @mixin SpaceModelMembership
+ * @mixin Followable
  * @noinspection PropertiesInspection
  */
 class Space extends ContentContainerActiveRecord implements Searchable
@@ -287,7 +288,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         }
 
         if (empty($this->url)) {
-            $this->url = new \yii\db\Expression('NULL');
+            $this->url = new Expression('NULL');
         }
 
         // Make sure visibility attribute is not empty
@@ -368,7 +369,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             return false;
         }
 
-        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function() use ($userId) {
+        $user = Yii::$app->runtimeCache->getOrSet(User::class . '#' . $userId, function () use ($userId) {
             return User::findOne($userId);
         });
 
@@ -683,8 +684,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
             ->andWhere(['IN', 'group_id', [self::USERGROUP_ADMIN, self::USERGROUP_MODERATOR]])
             ->andWhere(['space_id' => $this->id])
             ->andWhere(['!=', 'user_id', $owner->id])
-            ->andWhere(['user.status' => User::STATUS_ENABLED])
-        ;
+            ->andWhere(['user.status' => User::STATUS_ENABLED]);
 
         foreach ($query->all() as $membership) {
             $groups[$membership->group_id][] = $membership->user;

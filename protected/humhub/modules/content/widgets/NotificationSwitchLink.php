@@ -8,6 +8,10 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use Yii;
+use yii\base\Widget;
+
 /**
  * NotificationSwitch for Wall Entries
  *
@@ -16,11 +20,11 @@ namespace humhub\modules\content\widgets;
  * @package humhub.modules_core.wall.widgets
  * @since 0.10
  */
-class NotificationSwitchLink extends \yii\base\Widget
+class NotificationSwitchLink extends Widget
 {
 
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $content;
 
@@ -29,13 +33,13 @@ class NotificationSwitchLink extends \yii\base\Widget
      */
     public function run()
     {
-        if (\Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest) {
             return;
         }
 
         return $this->render('notificationSwitchLink', [
-                    'content' => $this->content->content,
-                    'state' => $this->content->isFollowedByUser(\Yii::$app->user->id, true)
+            'content' => $this->content->content,
+            'state' => $this->content->isFollowedByUser(Yii::$app->user->id, true)
         ]);
     }
 

@@ -66,7 +66,6 @@ class LoginCest
     }
 
 
-
     public function testChangePassword(AcceptanceTester $I)
     {
         $user = User::findOne(['id' => 4]);

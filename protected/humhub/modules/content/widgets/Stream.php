@@ -8,18 +8,21 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\components\Widget;
+use humhub\modules\stream\widgets\StreamViewer;
+
 /**
  * Stream Wrapper for older theme versions
  *
  * @deprecated since version 1.2
  * @author Luke
  */
-class Stream extends \humhub\components\Widget
+class Stream extends Widget
 {
 
     public static function widget($config = [])
     {
-        $config['class'] = \humhub\modules\stream\widgets\StreamViewer::class;
+        $config['class'] = StreamViewer::class;
         return parent::widget($config);
     }
 

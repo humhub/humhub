@@ -50,10 +50,10 @@ humhub.module('live.poll', function (module, require, $) {
 
         $(window)
             .on('blur', this.onWindowBlur.bind(this))
-            .on('focus',this.onWindowFocus.bind(this));
+            .on('focus', this.onWindowFocus.bind(this));
 
         var that = this;
-        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function() {
+        $(document).on('mousemove keydown mousedown touchstart', object.debounce(function () {
             that.stopIdle();
         }, 200));
 
@@ -64,28 +64,28 @@ humhub.module('live.poll', function (module, require, $) {
     };
 
     PollClient.prototype.generateSubscriberId = function () {
-        return  '_' + Math.random().toString(36).substr(2, 9);
+        return '_' + Math.random().toString(36).substr(2, 9);
     };
 
     PollClient.prototype.initBroadCast = function () {
-        if(!window.BroadcastChannel) {
+        if (!window.BroadcastChannel) {
             return;
         }
 
         this.channel = new BroadcastChannel('live.poll');
 
         var that = this;
-        this.channel.onmessage = function(evt) {
-            if(!evt.data) {
+        this.channel.onmessage = function (evt) {
+            if (!evt.data) {
                 return;
             }
 
-            if(evt.data.subscriberId === that.subscriberId) {
+            if (evt.data.subscriberId === that.subscriberId) {
                 // We triggered the event, so nothing todo
                 return;
             }
 
-            if(!that.focus) {
+            if (!that.focus) {
                 // Seems this is an inactive tab, so let others do the job...
                 that.resetPollTimeout(that.options.maxInterval);
             }
@@ -130,7 +130,7 @@ humhub.module('live.poll', function (module, require, $) {
     PollClient.prototype.resetPollTimeout = function (delay) {
         clearTimeout(this.timeout);
 
-        if(delay) {
+        if (delay) {
             this.setDelay(delay);
         }
 
@@ -199,12 +199,12 @@ humhub.module('live.poll', function (module, require, $) {
      */
     PollClient.prototype.handleUpdate = function (response) {
 
-        if(this.lastTs >= response.queryTime) {
+        if (this.lastTs >= response.queryTime) {
             // We already have a more recent update
             return;
         }
 
-        if(this.subscriberId === response.subscriberId) {
+        if (this.subscriberId === response.subscriberId) {
             // Just to make sure we do not handle our own broadcast event
             return;
         }
@@ -216,7 +216,7 @@ humhub.module('live.poll', function (module, require, $) {
 
         this.resetPollTimeout();
 
-        if(!response.subscriberId) {
+        if (!response.subscriberId) {
             // If subscriberId is present, this data was already sent
             this.broadCast(EVENT_TYPE_UPDATE, {
                 queryTime: response.queryTime,
@@ -227,8 +227,8 @@ humhub.module('live.poll', function (module, require, $) {
         this.triggerEventUpdates(response);
     };
 
-    PollClient.prototype.triggerEventUpdates = function(response) {
-        if(object.isObject(response.events)) {
+    PollClient.prototype.triggerEventUpdates = function (response) {
+        if (object.isObject(response.events)) {
             var events = this.groupEvents(response.events);
 
             $.each(events, function (type, events) {
@@ -247,7 +247,7 @@ humhub.module('live.poll', function (module, require, $) {
     PollClient.prototype.broadCast = function (type, data) {
         data = data || {};
 
-        if(!this.channel || data.subscriberId) {
+        if (!this.channel || data.subscriberId) {
             return;
         }
 
@@ -265,7 +265,7 @@ humhub.module('live.poll', function (module, require, $) {
         var that = this;
         $.each(events, function (id, liveEvent) {
             // Filter out already triggered events.
-            if(that.lastIds && that.lastIds.indexOf(id) > -1) {
+            if (that.lastIds && that.lastIds.indexOf(id) > -1) {
                 return; // continue
             }
 
@@ -280,7 +280,7 @@ humhub.module('live.poll', function (module, require, $) {
     };
 
     PollClient.prototype.handleUpdateError = function (e) {
-        if(!navigator.onLine) {
+        if (!navigator.onLine) {
             this.resetPollTimeout(this.options.maxInterval);
             module.log.info('Poll request blocked due to offline status');
         } else {

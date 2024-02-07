@@ -10,6 +10,7 @@ namespace humhub\modules\comment\controllers;
 use humhub\components\Controller;
 use humhub\modules\comment\models\Comment;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * PermaController provides URL to view a Comment.
@@ -24,7 +25,7 @@ class PermaController extends Controller
      * Action to process comment permalink URL
      *
      * @param $id
-     * @return \yii\console\Response|\yii\web\Response
+     * @return \yii\console\Response|Response
      * @throws NotFoundHttpException
      */
     public function actionIndex($id)

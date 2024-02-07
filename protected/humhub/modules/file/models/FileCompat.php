@@ -8,6 +8,10 @@
 
 namespace humhub\modules\file\models;
 
+use Exception;
+use humhub\components\ActiveRecord;
+use humhub\libs\MimeHelper;
+use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 
 /**
@@ -16,27 +20,27 @@ use humhub\modules\file\libs\FileHelper;
  * @since 1.2
  * @author Luke
  */
-class FileCompat extends \humhub\components\ActiveRecord
+class FileCompat extends ActiveRecord
 {
 
     /**
      * Returns all files belongs to a given HActiveRecord Object.
      *
-     * @deprecated since version 1.2
-     * @param \humhub\components\ActiveRecord $object
+     * @param ActiveRecord $object
      * @return array of File instances
+     * @deprecated since version 1.2
      */
-    public static function getFilesOfObject(\humhub\components\ActiveRecord $object)
+    public static function getFilesOfObject(ActiveRecord $object)
     {
         return $object->fileManager->findAll();
     }
 
     /**
      * Returns the path of stored file
-     * 
-     * @deprecated since version 1.2
+     *
      * @param string $suffix
      * @return string path to file
+     * @deprecated since version 1.2
      */
     public function getStoredFilePath($suffix = '')
     {
@@ -45,15 +49,15 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Return the preview image url of the file
-     * 
-     * @deprecated since version 1.2
+     *
      * @param int $maxWidth
      * @param int $maxHeight
      * @return string
+     * @deprecated since version 1.2
      */
     public function getPreviewImageUrl($maxWidth = 1000, $maxHeight = 1000)
     {
-        $previewImage = new \humhub\modules\file\converter\PreviewImage();
+        $previewImage = new PreviewImage();
         $previewImage->applyFile($this);
         return $previewImage->getUrl();
     }
@@ -62,15 +66,15 @@ class FileCompat extends \humhub\components\ActiveRecord
      * Attaches a given list of files to an record (HActiveRecord).
      * This is used when uploading files before the record is created yet.
      *
-     * @deprecated since version 1.2
      * @param \yii\db\ActiveRecord $object is a HActiveRecord
      * @param string $files is a comma seperated list of newly uploaded file guids
-     * @throws \Exception
+     * @throws Exception
+     * @deprecated since version 1.2
      */
     public static function attachPrecreated($object, $files)
     {
-        if (!$object instanceof \humhub\components\ActiveRecord) {
-            throw new \Exception('Invalid object given - require instance of \humhub\components\ActiveRecord!');
+        if (!$object instanceof ActiveRecord) {
+            throw new Exception('Invalid object given - require instance of \humhub\components\ActiveRecord!');
         }
         $object->fileManager->attach($files);
     }
@@ -78,9 +82,9 @@ class FileCompat extends \humhub\components\ActiveRecord
     /**
      * Returns the filename
      *
-     * @deprecated since version 1.2
      * @param string $suffix
      * @return string
+     * @deprecated since version 1.2
      */
     public function getFilename($suffix = "")
     {
@@ -96,9 +100,9 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Returns an array with informations about the file
-     * 
-     * @deprecated since version 1.2
+     *
      * @return type
+     * @deprecated since version 1.2
      */
     public function getInfoArray()
     {
@@ -109,12 +113,12 @@ class FileCompat extends \humhub\components\ActiveRecord
         $info['name'] = $this->file_name;
         $info['title'] = $this->title;
         $info['size'] = $this->size;
-        $info['mimeIcon'] = \humhub\libs\MimeHelper::getMimeIconClassByExtension($this->getExtension());
+        $info['mimeIcon'] = MimeHelper::getMimeIconClassByExtension($this->getExtension());
         $info['mimeBaseType'] = $this->getMimeBaseType();
         $info['mimeSubType'] = $this->getMimeSubType();
         $info['url'] = $this->getUrl("", false);
 
-        $previewImage = new \humhub\modules\file\converter\PreviewImage();
+        $previewImage = new PreviewImage();
         $previewImage->applyFile($this);
         $info['thumbnailUrl'] = $previewImage->getUrl();
 
@@ -122,8 +126,8 @@ class FileCompat extends \humhub\components\ActiveRecord
     }
 
     /**
-     * @deprecated since version 1.2
      * @return string
+     * @deprecated since version 1.2
      */
     public function getMimeBaseType()
     {
@@ -136,8 +140,8 @@ class FileCompat extends \humhub\components\ActiveRecord
     }
 
     /**
-     * @deprecated since version 1.2
      * @return string
+     * @deprecated since version 1.2
      */
     public function getMimeSubType()
     {
@@ -151,9 +155,9 @@ class FileCompat extends \humhub\components\ActiveRecord
 
     /**
      * Returns the extension of the file_name
-     * 
-     * @deprecated since version 1.2
+     *
      * @return string the extension
+     * @deprecated since version 1.2
      */
     public function getExtension()
     {

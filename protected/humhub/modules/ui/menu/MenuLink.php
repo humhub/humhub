@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\menu;
 
+use Exception;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\widgets\Button;
@@ -123,7 +124,7 @@ class MenuLink extends MenuEntry
     /**
      * @param $icon Icon|string the icon instance or icon name
      * * @return static
-     * @throws \Exception
+     * @throws Exception
      */
     public function setIcon($icon, $right = false, $raw = false)
     {

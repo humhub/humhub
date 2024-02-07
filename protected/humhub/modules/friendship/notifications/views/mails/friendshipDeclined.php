@@ -19,6 +19,9 @@
 /* @var record \humhub\modules\notification\models\Notification */
 /* @var html string */
 /* @var text string */
+
+use humhub\widgets\mails\MailButtonList;
+
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
@@ -35,8 +38,8 @@
             <td>
                 <?=
 
-                \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
-                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
+                MailButtonList::widget(['buttons' => [
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
 
                 ?>
@@ -62,6 +65,6 @@
                 </table>
             </td>
         </tr>
-        */?>
+        */ ?>
     </table>
 <?php $this->endContent();

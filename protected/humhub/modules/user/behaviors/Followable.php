@@ -131,7 +131,7 @@ class Followable extends Behavior
         if ($userId instanceof User) {
             $userId = $userId->id;
         } elseif (!$userId || $userId == "") {
-            $userId = \Yii::$app->user->id;
+            $userId = Yii::$app->user->id;
         }
 
         if (!isset($this->_followerCache[$userId])) {

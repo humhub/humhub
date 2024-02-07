@@ -9,6 +9,7 @@
 namespace humhub\modules\live\driver;
 
 use Firebase\JWT\JWT;
+use Throwable;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -57,7 +58,7 @@ class Push extends BaseDriver
      * Initializes the live push component.
      * This method will initialize the [[redis]] property to make sure it refers to a valid redis connection.
      *
-     * @throws \yii\base\InvalidConfigException if [[redis]] is invalid.
+     * @throws InvalidConfigException if [[redis]] is invalid.
      */
     public function init()
     {
@@ -99,7 +100,7 @@ class Push extends BaseDriver
      * the contentContainer id legitmation.
      *
      * @return string the JWT string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function generateJwtAuthorization()
     {

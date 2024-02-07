@@ -7,7 +7,7 @@ use humhub\modules\user\models\User;
 
 $text = Yii::t('UserModule.account',
     'You have successfully changed your username.<br>Your new username is {newUsername}.',
-    ['{newUsername}' =>$newUsername]);
+    ['{newUsername}' => $newUsername]);
 
 $text = str_replace("<br>", "\n", $text);
 ?>

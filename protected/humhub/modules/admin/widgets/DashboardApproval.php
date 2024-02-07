@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\components\Widget;
 use humhub\modules\admin\models\UserApprovalSearch;
 
 /**
@@ -11,7 +12,7 @@ use humhub\modules\admin\models\UserApprovalSearch;
  * @since 0.7
  * @author Luke
  */
-class DashboardApproval extends \humhub\components\Widget
+class DashboardApproval extends Widget
 {
 
     public function run()

@@ -27,7 +27,7 @@ class UserAddedNotification extends BaseNotification
 
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -35,7 +35,7 @@ class UserAddedNotification extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {

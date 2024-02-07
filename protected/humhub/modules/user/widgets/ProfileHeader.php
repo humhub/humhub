@@ -13,6 +13,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\controllers\ImageController;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Widget;
 
 /**
  * Displays the profile header of a user
@@ -20,7 +21,7 @@ use Yii;
  * @since 0.5
  * @author Luke
  */
-class ProfileHeader extends \yii\base\Widget
+class ProfileHeader extends Widget
 {
 
     /**

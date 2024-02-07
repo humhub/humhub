@@ -41,7 +41,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
      */
     public function apply()
     {
-        if(!$this->isActive()) {
+        if (!$this->isActive()) {
             return parent::apply();
         }
 

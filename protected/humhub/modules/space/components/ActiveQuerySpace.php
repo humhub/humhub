@@ -16,6 +16,7 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -45,7 +46,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
         if ($user === null && !Yii::$app->user->isGuest) {
             try {
                 $user = Yii::$app->user->getIdentity();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Yii::error($e, 'space');
             }
         }

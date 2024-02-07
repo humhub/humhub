@@ -9,13 +9,14 @@
 namespace humhub\modules\installer\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * Use Case Form
  *
  * @since 0.5
  */
-class UseCaseForm extends \yii\base\Model
+class UseCaseForm extends Model
 {
 
     /**

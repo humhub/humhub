@@ -2,6 +2,7 @@
 
 namespace humhub\modules\activity\tests\codeception\activities;
 
+use humhub\modules\activity\components\BaseActivity;
 use Yii;
 use yii\helpers\Url;
 
@@ -10,7 +11,8 @@ use yii\helpers\Url;
  *
  * @author buddha
  */
-class TestActivityDefaultLayout extends \humhub\modules\activity\components\BaseActivity {
+class TestActivityDefaultLayout extends BaseActivity
+{
 
     public $moduleId = 'test';
 

@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\Html;
 use humhub\modules\user\models\Password;
 use humhub\widgets\Button;
 use yii\helpers\Url;
@@ -45,7 +46,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
     </div>
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(function () {
         // set cursor to current password field
         $('#password-currentpassword').focus();

@@ -84,37 +84,37 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
     public function testDisableControlsMenu()
     {
-        $this->assertWallEntryControlsNotContains('preferences',  (new WallStreamEntryOptions)->disableControlsMenu());
+        $this->assertWallEntryControlsNotContains('preferences', (new WallStreamEntryOptions)->disableControlsMenu());
     }
 
     public function testDisableAddonsMenu()
     {
-        $this->assertWallEntryContains('stream-entry-addons',  new WallStreamEntryOptions);
+        $this->assertWallEntryContains('stream-entry-addons', new WallStreamEntryOptions);
         $this->assertWallEntryNotContains('stream-entry-addons', (new WallStreamEntryOptions)->disableAddons());
     }
 
     public function testDisableCommentAddonsMenu()
     {
-        $this->assertWallEntryContains('comment-container',  new WallStreamEntryOptions);
+        $this->assertWallEntryContains('comment-container', new WallStreamEntryOptions);
         $this->assertWallEntryNotContains('comment-container', (new WallStreamEntryOptions)->disableCommentAddon());
     }
 
     public function testDisableWallEntryLinksAddonsMenu()
     {
-        $this->assertWallEntryContains('wall-entry-links',  new WallStreamEntryOptions);
+        $this->assertWallEntryContains('wall-entry-links', new WallStreamEntryOptions);
         $this->assertWallEntryNotContains('wall-entry-links', (new WallStreamEntryOptions)->disableWallEntryLinks());
     }
 
     public function testSearchStreamDoesOnlyIncludePermalink()
     {
-        $this->assertWallEntryControlsContains('Permalink',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Delete',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Edit',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Move to archive',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Move',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Pin to top',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Turn on notifications',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Change to "Public"',  (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsContains('Permalink', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Delete', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Edit', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Move to archive', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Move', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Pin to top', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Turn on notifications', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $this->assertWallEntryControlsNotContains('Change to "Public"', (new WallStreamEntryOptions)->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
     }
 
     private function testDisableControlsItem($searchStr, $renderOptions)

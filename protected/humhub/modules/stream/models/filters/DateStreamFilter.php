@@ -51,7 +51,7 @@ class DateStreamFilter extends StreamQueryFilter
     public function validateDateFrom()
     {
         if ($this->isFilteredFrom() && $this->isFilteredTo() && $this->dateFrom > $this->dateTo) {
-            $this->addError(self::CATEGORY_FROM, Yii::t('StreamModule.base','Date "From" should be before "To"!'));
+            $this->addError(self::CATEGORY_FROM, Yii::t('StreamModule.base', 'Date "From" should be before "To"!'));
         }
     }
 

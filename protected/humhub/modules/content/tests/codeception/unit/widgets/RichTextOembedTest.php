@@ -11,6 +11,7 @@ namespace tests\codeception\unit\modules\content\widgets;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\base\InvalidConfigException;
 
 
 class RichTextOembedTest extends HumHubDbTestCase
@@ -51,7 +52,7 @@ class RichTextOembedTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testParseSingleOembed()
     {
@@ -72,7 +73,7 @@ class RichTextOembedTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testParseMultipleOembeds()
     {
@@ -94,7 +95,7 @@ class RichTextOembedTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testParseOembedsWithMax()
     {
@@ -115,7 +116,7 @@ class RichTextOembedTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testParseOembedsWithZeroMax()
     {

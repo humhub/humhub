@@ -9,6 +9,7 @@ use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\stream\actions\Stream;
 use humhub\widgets\JsWidget;
 use Yii;
+use yii\base\Exception;
 use yii\base\Model;
 
 /**
@@ -67,12 +68,12 @@ class StreamEntryOptions extends Model
      */
     public function __construct($base = null, $config = [])
     {
-        if(is_array($base)) {
+        if (is_array($base)) {
             $config = $base;
             $base = null;
         }
 
-        if($base) {
+        if ($base) {
             $this->viewContext = $base->viewContext;
             $this->widgetClass = $base->widgetClass;
         }
@@ -86,7 +87,7 @@ class StreamEntryOptions extends Model
     public function init()
     {
         parent::init();
-        if(!$this->viewContext) {
+        if (!$this->viewContext) {
             if (Yii::$app->request->isConsoleRequest) {
                 $this->viewContext = static::VIEW_CONTEXT_DEFAULT;
             } else {
@@ -158,13 +159,14 @@ class StreamEntryOptions extends Model
      * @param string|array $viewMode
      * @return bool
      */
-    public function isViewContext($viewContexts) {
-        if(!is_array($viewContexts)) {
+    public function isViewContext($viewContexts)
+    {
+        if (!is_array($viewContexts)) {
             return $this->viewContext === $viewContexts;
         }
 
         foreach ($viewContexts as $viewContext) {
-            if($this->viewContext === $viewContext) {
+            if ($this->viewContext === $viewContext) {
                 return true;
             }
         }
@@ -180,19 +182,19 @@ class StreamEntryOptions extends Model
      */
     public function isShowContainerInformation(ContentActiveRecord $model)
     {
-        if(!$model->content->container) {
+        if (!$model->content->container) {
             return false;
         }
 
-        if($model->content->container->is($model->content->createdBy)) {
+        if ($model->content->container->is($model->content->createdBy)) {
             return false;
         }
 
-        if(!ContentContainerHelper::getCurrent()) {
+        if (!ContentContainerHelper::getCurrent()) {
             return true;
         }
 
-        if(!ContentContainerHelper::getCurrent()->is($model->content->container)) {
+        if (!ContentContainerHelper::getCurrent()->is($model->content->container)) {
             return true;
         }
 
@@ -202,7 +204,7 @@ class StreamEntryOptions extends Model
     /**
      * @param ContentActiveRecord $model
      * @return bool whether or not this entry should be displayed as pinned in the current context
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function isPinned(ContentActiveRecord $model)
     {

@@ -8,7 +8,6 @@ use humhub\components\Widget;
 /**
  * Wall shows a space as wall entry, e.g. in the search
  */
-
 class Wall extends Widget
 {
     /*

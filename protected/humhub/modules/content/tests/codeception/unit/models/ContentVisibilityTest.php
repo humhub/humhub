@@ -16,6 +16,7 @@ use Codeception\Specify;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\Exception;
 
 class ContentVisibilityTest extends ContentModelTest
 {
@@ -112,7 +113,7 @@ class ContentVisibilityTest extends ContentModelTest
      * Visibility integrity check missing!
      *
      * @skip
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testCreatePublicContentOnPrivateSpace()
     {

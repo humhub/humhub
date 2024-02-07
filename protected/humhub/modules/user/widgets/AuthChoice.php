@@ -88,7 +88,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         foreach ($clients as $client) {
 
             // Don't show clients which need login form
-            if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
+            if (!$client instanceof BaseFormAuth) {
                 $result[] = $client;
             }
         }

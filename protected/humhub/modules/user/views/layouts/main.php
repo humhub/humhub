@@ -3,8 +3,9 @@
 use humhub\assets\AppAsset;
 use humhub\widgets\FooterMenu;
 use yii\helpers\Html;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $content string */
 
 AppAsset::register($this);
@@ -23,7 +24,7 @@ AppAsset::register($this);
 <body class="login-container">
 <?php $this->beginBody() ?>
 <?= $content; ?>
-<br />
+<br/>
 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_LOGIN]); ?>
 <?php $this->endBody() ?>
 </body>

@@ -64,7 +64,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     /**
      * Panel columns
      */
-    const PANEL_COLUMN_1= 0;
+    const PANEL_COLUMN_1 = 0;
     const PANEL_COLUMN_2 = 1;
     const PANEL_COLUMN_3 = 2;
     const PANEL_COLUMN_4 = 3;
@@ -163,7 +163,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         ], static::PANEL_COLUMN_2);
 
 
-        if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
+        if (TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
                 'title' => Yii::t('StreamModule.filter', 'Topic'),
                 'sortOrder' => 300
@@ -177,13 +177,13 @@ class WallStreamFilterNavigation extends FilterNavigation
      */
     protected function initFilters()
     {
-       $this->initBasicFilters();
-       $this->initVisibilityFilters();
-       $this->initSortFilters();
-       $this->initTopicFilter();
-       $this->initContentTypeFilter();
-       $this->initOriginatorFilter();
-       $this->initDateFilters();
+        $this->initBasicFilters();
+        $this->initVisibilityFilters();
+        $this->initSortFilters();
+        $this->initTopicFilter();
+        $this->initContentTypeFilter();
+        $this->initOriginatorFilter();
+        $this->initDateFilters();
     }
 
     protected function initBasicFilters()
@@ -208,14 +208,14 @@ class WallStreamFilterNavigation extends FilterNavigation
 
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
-            'title' =>  Yii::t('ContentModule.base', 'Archived'),
+            'title' => Yii::t('ContentModule.base', 'Archived'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
 
 
         $this->addFilter([
             'id' => static::FILTER_HIDDEN,
-            'title' =>  Yii::t('ContentModule.base', 'Hidden'),
+            'title' => Yii::t('ContentModule.base', 'Hidden'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
     }
@@ -225,7 +225,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         $container = ContentContainerHelper::getCurrent();
 
         // Private spaces do not have public content
-        if($container && $container->canAccessPrivateContent()
+        if ($container && $container->canAccessPrivateContent()
             && ($container instanceof User
                 || ($container instanceof Space && $container->visibility !== Space::VISIBILITY_NONE))) {
 
@@ -259,7 +259,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'category' => 'sort',
             'radioGroup' => 'sort',
             'force' => true,
-            'title' =>  Yii::t('ContentModule.base', 'Creation time'),
+            'title' => Yii::t('ContentModule.base', 'Creation time'),
             'checked' => $defaultSorting === Stream::SORT_CREATED_AT,
             'value' => Stream::SORT_CREATED_AT,
             'sortOrder' => 100
@@ -268,7 +268,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilter([
             'id' => static::FILTER_SORT_UPDATE,
             'class' => RadioFilterInput::class,
-            'title' =>  Yii::t('ContentModule.base', 'Last update'),
+            'title' => Yii::t('ContentModule.base', 'Last update'),
             'category' => 'sort',
             'radioGroup' => 'sort',
             'force' => true,
@@ -280,7 +280,7 @@ class WallStreamFilterNavigation extends FilterNavigation
 
     private function initTopicFilter()
     {
-        if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
+        if (TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilter([
                 'id' => static::FILTER_TOPICS,
                 'class' => PickerFilterInput::class,

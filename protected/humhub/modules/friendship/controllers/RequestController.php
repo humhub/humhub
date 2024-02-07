@@ -8,6 +8,7 @@
 
 namespace humhub\modules\friendship\controllers;
 
+use Exception;
 use humhub\components\Controller;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\Module;
@@ -15,6 +16,7 @@ use humhub\modules\friendship\widgets\FriendshipButton;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * Membership Handling Controller
@@ -88,8 +90,8 @@ class RequestController extends Controller
      * Get result for the friendship actions
      *
      * @param User $user
-     * @return string|\yii\console\Response|\yii\web\Response
-     * @throws \Exception
+     * @return string|\yii\console\Response|Response
+     * @throws Exception
      */
     protected function getActionResult(User $user)
     {

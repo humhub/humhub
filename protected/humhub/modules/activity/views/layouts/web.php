@@ -13,16 +13,16 @@ use humhub\modules\space\widgets\Image;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
-/* @var $originator \humhub\modules\user\models\User  */
-/* @var $clickable boolean  */
-/* @var $record ActiveRecord  */
+/* @var $originator \humhub\modules\user\models\User */
+/* @var $clickable boolean */
+/* @var $record ActiveRecord */
 
 ?>
 
 
 <?php if ($clickable) : ?>
-<a href="<?= Url::to(['/activity/link', 'id' => $record->id])?>">
-<?php endif; ?>
+<a href="<?= Url::to(['/activity/link', 'id' => $record->id]) ?>">
+    <?php endif; ?>
 
     <div class="media">
         <?php if ($originator !== null) : ?>
@@ -57,6 +57,6 @@ use yii\helpers\Url;
         </div>
     </div>
 
-<?php if ($clickable) : ?>
+    <?php if ($clickable) : ?>
 </a>
 <?php endif; ?>

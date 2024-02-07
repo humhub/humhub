@@ -26,7 +26,7 @@ class WebSecurityTest extends HumHubDbTestCase
     {
         /** @var $module Module */
         $module = Yii::$app->getModule('web');
-        $configFile = realpath(__DIR__.'/../data/security/'.$configFile);
+        $configFile = realpath(__DIR__ . '/../data/security/' . $configFile);
         $module->security = Json::decode(file_get_contents($configFile));
     }
 }

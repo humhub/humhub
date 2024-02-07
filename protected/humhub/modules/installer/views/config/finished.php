@@ -2,6 +2,7 @@
 
 use yii\helpers\Url;
 use yii\helpers\Html;
+
 ?>
 <div class="panel panel-default animated fadeIn">
 

@@ -2,6 +2,8 @@
 
 namespace tests\codeception\unit\modules\like;
 
+use humhub\modules\like\activities\Liked;
+use humhub\modules\like\notifications\NewLike;
 use Yii;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -22,13 +24,13 @@ class LikeTest extends HumHubDbTestCase
             'object_model' => Post::class,
             'object_id' => 1
         ]);
-        
+
         Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 1]))->set('notification.like_email', 1);
 
         $this->assertTrue($like->save(), 'Save like.');
         $this->assertMailSent(1, 'Like notification sent');
-        $this->assertHasNotification(\humhub\modules\like\notifications\NewLike::class, $like);
-        $this->assertHasActivity(\humhub\modules\like\activities\Liked::class, $like);
+        $this->assertHasNotification(NewLike::class, $like);
+        $this->assertHasActivity(Liked::class, $like);
     }
 
 }

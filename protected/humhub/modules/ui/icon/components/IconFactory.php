@@ -1,8 +1,10 @@
 <?php
+
 namespace humhub\modules\ui\icon\components;
 
 use Yii;
 use yii\base\Component;
+use yii\base\InvalidConfigException;
 
 /**
  * IconFactory handles the registration and access of IconProviders.
@@ -18,7 +20,7 @@ use yii\base\Component;
  * @see DevtoolsIconProvider
  * @since 1.4
  */
-class IconFactory  extends Component
+class IconFactory extends Component
 {
 
     /**
@@ -48,11 +50,11 @@ class IconFactory  extends Component
 
     /**
      * @return IconFactory singleton instance
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function getInstance()
     {
-        if(!static::$instance) {
+        if (!static::$instance) {
             static::$instance = Yii::createObject(['class' => static::class]);
         }
 
@@ -68,7 +70,7 @@ class IconFactory  extends Component
     public static function registerProvider(IconProvider $instance, $isDefault = false)
     {
         static::$provider[$instance->getId()] = $instance;
-        if($isDefault) {
+        if ($isDefault) {
             static::$defaultProvider = $instance;
         }
     }
@@ -87,13 +89,13 @@ class IconFactory  extends Component
     /**
      * @param $icon
      * @param array $options
-     * @see IconProvider::render()
      * @return mixed
+     * @see IconProvider::render()
      */
     public function render($icon, $options = [])
     {
         $result = $this->getProvider($icon->lib)->render($icon, $options);
-        if(empty($result)) {
+        if (empty($result)) {
             $result = static::$fallbackProvider->render($icon, $options);
         }
 
@@ -106,11 +108,11 @@ class IconFactory  extends Component
      */
     public function getProvider($providerId = null)
     {
-        if(empty($providerId)) {
+        if (empty($providerId)) {
             return static::$defaultProvider;
         }
 
-        if(!isset(static::$provider[$providerId])) {
+        if (!isset(static::$provider[$providerId])) {
             Yii::warning(Yii::t('UiModule.icon', 'No icon provider registered for provider id {id}', ['id' => $providerId]));
             return static::$defaultProvider;
         }
@@ -122,13 +124,13 @@ class IconFactory  extends Component
      *
      * @param $listDefinition
      * @param null $providerId
-     * @see IconProvider::renderList()
      * @return mixed
+     * @see IconProvider::renderList()
      */
     public function renderList($listDefinition, $providerId = null)
     {
         $result = $this->getProvider($providerId)->renderList($listDefinition);
-        if(empty($result)) {
+        if (empty($result)) {
             $result = static::$fallbackProvider->renderList($listDefinition);
         }
 
@@ -139,8 +141,8 @@ class IconFactory  extends Component
      * Returns the supported icon names of the IconProvider
      *
      * @param null $providerId
-     * @see IconProvider::getNames()
      * @return string[]
+     * @see IconProvider::getNames()
      */
     public function getNames($providerId = null)
     {

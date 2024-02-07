@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use DateTimeZone;
+use humhub\libs\DbDateValidator;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
@@ -118,7 +120,7 @@ class Birthday extends BaseType
         // Add validation for birthdate
         $rules[] = [
             $this->profileField->internal_name,
-            \humhub\libs\DbDateValidator::class,
+            DbDateValidator::class,
             'format' => 'medium',
             'convertToFormat' => 'Y-m-d',
             'max' => time(),
@@ -180,7 +182,7 @@ class Birthday extends BaseType
     {
         $internalName = $this->profileField->internal_name;
         $birthdayDate = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+            new DateTimeZone(Yii::$app->formatter->timeZone));
 
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
         $hideAge = $user->profile->$internalNameHideAge;
@@ -210,7 +212,7 @@ class Birthday extends BaseType
          */
         if ($hideAge === self::HIDE_AGE_YES) {
             // See: https://github.com/humhub/humhub/issues/5187#issuecomment-888178022
-            
+
             $month = Yii::$app->formatter->asDate($birthdayDate, 'php:F');
             $day = Yii::$app->formatter->asDate($birthdayDate, 'php:d');
             if (preg_match('/(' . preg_quote($day) . '.+' . preg_quote($month) . '|' . preg_quote($month) . '.+' . preg_quote($day) . ')/', $longDate, $m)) {

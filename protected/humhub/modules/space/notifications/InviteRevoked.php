@@ -36,7 +36,7 @@ class InviteRevoked extends BaseNotification
     public $viewName = 'inviteDeclined';
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -44,7 +44,7 @@ class InviteRevoked extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getSpace()
     {

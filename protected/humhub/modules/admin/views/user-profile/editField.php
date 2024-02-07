@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
     <br>
 
     <?php $form = ActiveForm::begin(); ?>
-        <?= $hForm->render($form); ?>
+    <?= $hForm->render($form); ?>
     <?php ActiveForm::end(); ?>
 </div>
 
@@ -32,14 +32,13 @@ use yii\widgets\ActiveForm;
     /**
      * Switcher for Sub Forms (FormField Type)
      */
-    var checkFieldTypeFormState = function()
-    {
+    var checkFieldTypeFormState = function () {
         $("#edit-profile-field-root .form-group").show();
 
         // Hide all form type specific forms
         $(".fieldTypeSettings").hide();
 
-        var $fieldTypeSelect =  $("#profilefield-field_type_class");
+        var $fieldTypeSelect = $("#profilefield-field_type_class");
         var fieldTypeClass = $fieldTypeSelect.val();
         var showTypeSettings = fieldTypeClass.replace(/[\\]/g, '_');
 
@@ -49,8 +48,8 @@ use yii\widgets\ActiveForm;
         var $selectedOption = $fieldTypeSelect.find(':selected');
         var hideFields = $selectedOption.data('hiddenFields');
 
-        hideFields.forEach(function(value) {
-            $('.field-profilefield-'+value).hide();
+        hideFields.forEach(function (value) {
+            $('.field-profilefield-' + value).hide();
         })
     };
 

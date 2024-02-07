@@ -47,7 +47,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
     <?php if (!$group->is_admin_group): ?>
-        <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool) $group->is_default_group]); ?>
+        <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool)$group->is_default_group]); ?>
     <?php endif; ?>
 
     <?= Button::save()->submit(); ?>

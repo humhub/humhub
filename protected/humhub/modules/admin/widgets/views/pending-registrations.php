@@ -1,13 +1,14 @@
 <?php
 
 use humhub\modules\admin\assets\AdminPendingRegistrationsAsset;
+use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/** @var $searchModel \humhub\modules\admin\models\PendingRegistrationSearch */
+/** @var $searchModel PendingRegistrationSearch */
 /** @var $dataProvider yii\data\ActiveDataProvider */
 /** @var $types array */
 
@@ -66,7 +67,7 @@ AdminPendingRegistrationsAsset::register($this);
         'created_at',
         [
             'attribute' => 'source',
-            'filter' => \yii\helpers\Html::activeDropDownList($searchModel, 'source', $types),
+            'filter' => Html::activeDropDownList($searchModel, 'source', $types),
             'options' => ['width' => '40px'],
             'format' => 'raw',
             'value' => function ($data) use ($types) {

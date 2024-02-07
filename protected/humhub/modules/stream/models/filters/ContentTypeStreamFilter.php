@@ -17,7 +17,8 @@ class ContentTypeStreamFilter extends StreamQueryFilter
 
     public $excludes;
 
-    public function init() {
+    public function init()
+    {
         $this->includes = $this->streamQuery->includes;
         $this->excludes = $this->streamQuery->excludes;
         parent::init();
@@ -38,7 +39,7 @@ class ContentTypeStreamFilter extends StreamQueryFilter
 
     public function apply()
     {
-        if(!empty($this->includes)) {
+        if (!empty($this->includes)) {
             if (is_string($this->includes)) {
                 $this->includes = [$this->includes];
             }
@@ -50,7 +51,7 @@ class ContentTypeStreamFilter extends StreamQueryFilter
             }
         }
 
-        if(!empty($this->excludes)) {
+        if (!empty($this->excludes)) {
             if (is_string($this->excludes)) {
                 $this->excludes = [$this->excludes];
             }

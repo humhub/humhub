@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 use humhub\modules\user\models\User;
 
@@ -10,7 +11,7 @@ use humhub\modules\user\models\User;
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
-        <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-follower-panel']); ?>
+        <?php echo PanelMenu::widget(['id' => 'profile-follower-panel']); ?>
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
@@ -32,7 +33,7 @@ use humhub\modules\user\models\User;
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->
-        <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'profile-following-panel']); ?>
+        <?php echo PanelMenu::widget(['id' => 'profile-following-panel']); ?>
 
         <div class="panel-heading">
             <?php echo Yii::t('UserModule.base', '<strong>Following</strong>'); ?>
@@ -41,7 +42,8 @@ use humhub\modules\user\models\User;
         <div class="panel-body">
             <?php foreach ($following as $followingUser): ?>
                 <a href="<?php echo $followingUser->getUrl(); ?>">
-                    <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
+                    <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>"
+                         class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-toggle="tooltip" data-placement="top" title=""

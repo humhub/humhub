@@ -37,7 +37,7 @@ class ManageMembersCest
 
         $space = Space::findOne(4);
 
-        if(!$space->ownerUser->id === 2) {
+        if (!$space->ownerUser->id === 2) {
             $I->see('Change owner did not work');
         }
     }

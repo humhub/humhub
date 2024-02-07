@@ -39,11 +39,11 @@ class RadioFilterInput extends CheckboxFilterInput
     {
         parent::init();
 
-        if(!$this->style) {
+        if (!$this->style) {
             $this->style = ($this->force) ? static::STYLE_RADIO : static::STYLE_CHECKBOX;
         }
 
-        if($this->style === static::STYLE_RADIO) {
+        if ($this->style === static::STYLE_RADIO) {
             $this->iconActive = 'fa-dot-circle-o';
             $this->iconInActive = 'fa-circle-o';
         }
@@ -70,7 +70,7 @@ class RadioFilterInput extends CheckboxFilterInput
         $this->options['data-radio-group'] = $this->radioGroup;
         $this->options['data-filter-value'] = $this->value;
 
-        if($this->force) {
+        if ($this->force) {
             $this->options['data-radio-force'] = 1;
         }
     }

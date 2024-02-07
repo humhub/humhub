@@ -74,7 +74,7 @@ class ContentStateService extends Component
     {
         // Always convert to integer before comparing,
         // because right after save the content->state may be a string
-        return (int) $this->content->state === (int) $state;
+        return (int)$this->content->state === (int)$state;
     }
 
     public function isPublished(): bool
@@ -83,12 +83,12 @@ class ContentStateService extends Component
     }
 
     /**
-     * @since 1.14.3
      * @return bool
+     * @since 1.14.3
      */
     public function wasPublished(): bool
     {
-        return (bool) $this->content->was_published;
+        return (bool)$this->content->was_published;
     }
 
     public function isDraft(): bool
@@ -114,7 +114,7 @@ class ContentStateService extends Component
      */
     public function canChange($state): bool
     {
-        return in_array((int) $state, $this->states);
+        return in_array((int)$state, $this->states);
     }
 
     /**
@@ -125,7 +125,7 @@ class ContentStateService extends Component
      */
     public function set($state, array $options = []): bool
     {
-        $state = (int) $state;
+        $state = (int)$state;
 
         if (!$this->canChange($state)) {
             return false;

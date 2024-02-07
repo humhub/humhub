@@ -84,9 +84,9 @@ class SecurityController extends Controller
         $return = $space->permissionManager->handlePermissionStateChange($groupId);
 
         return $return ?? $this->render('permissions', [
-                    'space' => $space,
-                    'groups' => $groups,
-                    'groupId' => $groupId
+            'space' => $space,
+            'groups' => $groups,
+            'groupId' => $groupId
         ]);
     }
 }

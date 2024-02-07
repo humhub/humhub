@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user;
 
+use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -130,7 +131,7 @@ class Events extends BaseObject
                         $follow->delete();
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
                     $follow->delete();
                 }
@@ -183,7 +184,7 @@ class Events extends BaseObject
             'label' => Yii::t('UserModule.base', 'People'),
             'url' => ['/user/people'],
             'sortOrder' => 200,
-            'isActive' =>  MenuLink::isActiveState('user', 'people'),
+            'isActive' => MenuLink::isActiveState('user', 'people'),
         ]));
     }
 

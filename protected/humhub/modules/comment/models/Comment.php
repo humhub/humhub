@@ -193,7 +193,7 @@ class Comment extends ContentAddonActiveRecord
     /**
      * Returns the commented record e.g. a Post
      *
-     * @return \humhub\modules\content\components\ContentActiveRecord
+     * @return ContentActiveRecord
      */
     public function getCommentedRecord()
     {

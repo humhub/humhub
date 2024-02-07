@@ -18,5 +18,5 @@ use yii\queue\Job;
  */
 interface JobInterface extends Job
 {
-    
+
 }

@@ -4,10 +4,12 @@ namespace humhub\modules\ui\icon\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\ui\Module;
+use Throwable;
 use Yii;
 use humhub\libs\Html;
 use humhub\modules\ui\icon\components\IconProvider;
 use humhub\modules\ui\icon\components\IconFactory;
+use yii\base\InvalidConfigException;
 
 /**
  * The Icon widget is used as abstraction layer for rendering icons.
@@ -751,7 +753,7 @@ class Icon extends Widget
      *
      * @param null $providerId
      * @return string[]
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @see IconFactory::getNames()
      */
     public static function getNames($providerId = null)
@@ -771,7 +773,7 @@ class Icon extends Widget
      *
      * @param $listDefinition
      * @return mixed
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function renderList($listDefinition)
     {
@@ -780,7 +782,7 @@ class Icon extends Widget
 
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function run()
     {
@@ -991,8 +993,8 @@ class Icon extends Widget
     public function asString()
     {
         try {
-            return (string) $this;
-        } catch (\Throwable $e) {
+            return (string)$this;
+        } catch (Throwable $e) {
             Yii::error($e);
         }
 
@@ -1007,7 +1009,7 @@ class Icon extends Widget
         try {
             $result = $this::widget($this->asArray());
             return $result ?: '';
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
 

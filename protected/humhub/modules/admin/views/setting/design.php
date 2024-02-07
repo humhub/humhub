@@ -1,16 +1,18 @@
 <?php
 
 use humhub\libs\LogoImage;
+use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $model DesignSettingsForm */
 
-\humhub\modules\admin\assets\AdminAsset::register($this);
+AdminAsset::register($this);
 
 $this->registerJsConfig('admin', [
     'text' => [
@@ -108,6 +110,6 @@ $iconUrl = SiteIcon::getUrl(140);
     <hr>
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-    <?= \humhub\widgets\DataSaved::widget(); ?>
+    <?= DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
 </div>

@@ -4,6 +4,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;
 use yii\helpers\Url;
@@ -11,7 +12,7 @@ use yii\helpers\Url;
 class PublishDraftLink extends Widget
 {
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $content;
 

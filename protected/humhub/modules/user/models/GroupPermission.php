@@ -1,7 +1,9 @@
 <?php
 
 namespace humhub\modules\user\models;
+
 use humhub\libs\BasePermission;
+use yii\db\ActiveRecord;
 
 
 /**
@@ -13,7 +15,7 @@ use humhub\libs\BasePermission;
  * @property string $class
  * @property integer $state
  */
-class GroupPermission extends \yii\db\ActiveRecord
+class GroupPermission extends ActiveRecord
 {
     /**
      * @inheritdoc

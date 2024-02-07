@@ -66,13 +66,13 @@ class ApprovalRequest extends BaseNotification
     public function getMailSubject()
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
-                    '{displayName}' => $this->originator->displayName,
-                    '{spaceName}' => $this->source->name
+            '{displayName}' => $this->originator->displayName,
+            '{spaceName}' => $this->source->name
         ]);
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -97,8 +97,8 @@ class ApprovalRequest extends BaseNotification
     public function html()
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
-                    '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
+            '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
         ]);
     }
 

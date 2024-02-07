@@ -2,10 +2,12 @@
 
 namespace humhub\modules\content\interfaces;
 
+use humhub\modules\content\models\Content;
+
 /**
  * Interface for classes which are able to return content instances.
  *
- * @see \humhub\modules\content\models\Content
+ * @see Content
  * @author buddha
  * @since 1.2
  */
@@ -13,7 +15,7 @@ interface ContentOwner
 {
 
     /**
-     * @returns \humhub\modules\content\models\Content content instance of this content owner
+     * @returns Content content instance of this content owner
      */
     public function getContent();
 

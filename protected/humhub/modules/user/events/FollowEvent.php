@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\events;
 
+use humhub\components\ActiveRecord;
+use humhub\modules\user\models\User;
 use yii\base\Event;
 
 /**
@@ -20,12 +22,12 @@ class FollowEvent extends Event
 {
 
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 
     /**
-     * @var \humhub\components\ActiveRecord the followed item
+     * @var ActiveRecord the followed item
      */
     public $target;
 

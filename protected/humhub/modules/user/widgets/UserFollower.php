@@ -3,6 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\user\models\User;
+use yii\base\Widget;
 
 /**
  * UserFollowerWidget lists all followers of the user
@@ -11,7 +12,7 @@ use humhub\modules\user\models\User;
  * @since 0.5
  * @author Luke
  */
-class UserFollower extends \yii\base\Widget
+class UserFollower extends Widget
 {
 
     /**

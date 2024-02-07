@@ -204,11 +204,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
                 ->disableControlsEntry(DropdownDivider::class);
         }
 
-        if($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
+        if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
             $this->renderOptions->disableControlsEntryDelete();
         }
 
-        if($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
+        if ($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
             $this->renderOptions->enableContainerInformationInTitle();
         }
     }
@@ -332,7 +332,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             return [];
         }
 
-        if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
+        if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
             return [
                 [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]
             ];
@@ -351,8 +351,8 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]
         ];
 
-        if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT, WallStreamEntryOptions::VIEW_CONTEXT_DETAIL])) {
-            $result[] =  [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]];
+        if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT, WallStreamEntryOptions::VIEW_CONTEXT_DETAIL])) {
+            $result[] = [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]];
         }
 
         if (!empty($this->getEditUrl())) {

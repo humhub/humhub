@@ -3,6 +3,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\widgets\BaseStack;
 
 /**
  * WallEntryLinksWidget is an instance of StackWidget.
@@ -13,7 +14,7 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class WallEntryLinks extends \humhub\widgets\BaseStack
+class WallEntryLinks extends BaseStack
 {
 
     /**

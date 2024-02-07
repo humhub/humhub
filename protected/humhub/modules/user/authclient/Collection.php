@@ -13,6 +13,7 @@ use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 
 /**
  * Extended AuthClient collection with event support
@@ -65,7 +66,7 @@ class Collection extends Component
      * @param string $id service id.
      * @param bool $load
      * @return ClientInterface auth client instance.
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getClient($id, $load = true)
     {
@@ -115,7 +116,7 @@ class Collection extends Component
      * @param string $id auth client id.
      * @param array $config auth client instance configuration.
      * @return ClientInterface auth client instance.
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function createClient($id, $config)
     {

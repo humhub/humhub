@@ -5,6 +5,7 @@ namespace humhub\modules\admin\models\forms;
 
 
 use DateTime;
+use Exception;
 use humhub\libs\DateHelper;
 use humhub\modules\admin\models\Log;
 use Yii;
@@ -123,7 +124,8 @@ class LogFilterForm extends Model
     /**
      * @return string the current page url with filters
      */
-    public function getUrl() {
+    public function getUrl()
+    {
         return $this->pagination->createUrl($this->pagination->getPage(true), static::PAGE_SIZE);
     }
 
@@ -132,7 +134,7 @@ class LogFilterForm extends Model
      */
     private function filterTerm()
     {
-        if(empty($this->term)) {
+        if (empty($this->term)) {
             return;
         }
 
@@ -150,7 +152,7 @@ class LogFilterForm extends Model
      */
     private function filterLevels()
     {
-        if(empty($this->levels)) {
+        if (empty($this->levels)) {
             return;
         }
 
@@ -165,11 +167,11 @@ class LogFilterForm extends Model
      */
     private function filterCategory()
     {
-        if(empty($this->category) || $this->category === static::FILTER_CATEGORY_NONE) {
+        if (empty($this->category) || $this->category === static::FILTER_CATEGORY_NONE) {
             return;
         }
 
-        if($this->category === static::FILTER_CATEGORY_OTHER) {
+        if ($this->category === static::FILTER_CATEGORY_OTHER) {
             $this->query->andWhere(['LIKE', 'category', 'yii\\']);
             return;
         }
@@ -183,22 +185,22 @@ class LogFilterForm extends Model
     private function filterDay()
     {
         try {
-            if(empty($this->day)) {
+            if (empty($this->day)) {
                 return;
             }
 
             $dayDT = new DateTime(DateHelper::parseDateTime($this->day), DateHelper::getSystemTimeZone());
 
             $endDT = clone $dayDT;
-            $endDT->setTime(23,59,59);
+            $endDT->setTime(23, 59, 59);
             $end = $endDT->getTimestamp();
 
-            $start = $dayDT->setTime(0,0,0)->getTimestamp();
+            $start = $dayDT->setTime(0, 0, 0)->getTimestamp();
 
             $this->query->andWhere(['<=', 'log_time', $end]);
             $this->query->andWhere(['>=', 'log_time', $start]);
 
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Yii::error($e, 'admin');
         }
     }
@@ -220,7 +222,7 @@ class LogFilterForm extends Model
 
         $result = [];
         foreach ($levelsArr as $logArr) {
-            if(!isset($logArr['level']) || !static::getLevelLabel($logArr['level'])) {
+            if (!isset($logArr['level']) || !static::getLevelLabel($logArr['level'])) {
                 continue;
             }
 
@@ -266,9 +268,9 @@ class LogFilterForm extends Model
     {
         $categoryArr = Log::find()->select('category')->distinct()->asArray()->all();
 
-        $result = [static::FILTER_CATEGORY_NONE => Yii::t('AdminModule.information','Select category..')];
+        $result = [static::FILTER_CATEGORY_NONE => Yii::t('AdminModule.information', 'Select category..')];
         foreach ($categoryArr as $logArr) {
-            if(!isset($logArr['category']) || strpos($logArr['category'], 'yii\\') === 0) {
+            if (!isset($logArr['category']) || strpos($logArr['category'], 'yii\\') === 0) {
                 continue;
             }
 

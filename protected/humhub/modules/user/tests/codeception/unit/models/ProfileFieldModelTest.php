@@ -181,6 +181,6 @@ class ProfileFieldModelTest extends HumHubDbTestCase
         $model = new ProfileField();
         $model->load($validParams, '');
         $this->assertTrue($model->save());
-        $this->assertEquals(1,  $model->delete());
+        $this->assertEquals(1, $model->delete());
     }
 }

@@ -8,9 +8,11 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use Collator;
 use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.
@@ -29,18 +31,18 @@ class CountrySelect extends Select
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Supported ISO3166 country codes'),
-                        'elements' => [
-                            'options' => [
-                                'type' => 'textarea',
-                                'label' => Yii::t('UserModule.profile', 'Possible values'),
-                                'class' => 'form-control',
-                                'hint' => Yii::t('UserModule.profile', 'Comma separated country codes, e.g. DE,EN,AU')
-                            ]
-                        ]
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Supported ISO3166 country codes'),
+                'elements' => [
+                    'options' => [
+                        'type' => 'textarea',
+                        'label' => Yii::t('UserModule.profile', 'Possible values'),
+                        'class' => 'form-control',
+                        'hint' => Yii::t('UserModule.profile', 'Comma separated country codes, e.g. DE,EN,AU')
                     ]
+                ]
+            ]
         ]);
     }
 
@@ -70,8 +72,8 @@ class CountrySelect extends Select
             }
         }
 
-        // Sort countries list based on user language   
-        $col = new \Collator(Yii::$app->language);
+        // Sort countries list based on user language
+        $col = new Collator(Yii::$app->language);
         $col->asort($items);
 
         return $items;
@@ -86,7 +88,7 @@ class CountrySelect extends Select
         $value = $user->profile->$internalName;
 
         if (!$raw) {
-            return \yii\helpers\Html::encode(iso3166Codes::country($value));
+            return Html::encode(iso3166Codes::country($value));
         }
 
         return $value;

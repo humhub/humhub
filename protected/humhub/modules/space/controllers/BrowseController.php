@@ -13,8 +13,10 @@ use humhub\components\behaviors\AccessControl;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
+use Throwable;
 use Yii;
 use yii\data\Pagination;
+use yii\web\Response;
 
 /**
  * BrowseController
@@ -60,8 +62,8 @@ class BrowseController extends Controller
     }
 
     /**
-     * @return \yii\web\Response
-     * @throws \Throwable
+     * @return Response
+     * @throws Throwable
      */
     public function actionSearchLazy()
     {

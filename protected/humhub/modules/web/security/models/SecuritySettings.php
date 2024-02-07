@@ -2,6 +2,7 @@
 
 namespace humhub\modules\web\security\models;
 
+use Exception;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -94,7 +95,7 @@ class SecuritySettings extends Model
     /**
      * Initializes a static CSPBuilder instance by means of the given `csp` configuration definition.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function initCSP()
     {
@@ -104,7 +105,7 @@ class SecuritySettings extends Model
 
         $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
 
-        if($this->isCspReportEnabled()) {
+        if ($this->isCspReportEnabled()) {
             $this->csp->setReportUri(Url::toRoute('/web/security-report'));
         }
     }
@@ -132,7 +133,7 @@ class SecuritySettings extends Model
      * > Note: If the `csp` configuration section is given, the Content-Security-Policy of the `header` section will be ignored.
      *
      * @return null|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCSPHeader()
     {
@@ -148,7 +149,7 @@ class SecuritySettings extends Model
     public function getCSPHeaderKeys()
     {
         // If the `csp section is set to report-only`
-        if($this->isReportOnlyCSP()) {
+        if ($this->isReportOnlyCSP()) {
             return [static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE];
         }
 
@@ -162,7 +163,7 @@ class SecuritySettings extends Model
      */
     public function isReportOnlyCSP()
     {
-        if(!$this->hasSection($this->cspSection)) {
+        if (!$this->hasSection($this->cspSection)) {
             return false;
         }
 
@@ -187,16 +188,16 @@ class SecuritySettings extends Model
      *
      * @param $header
      * @return null|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getHeader(string $header): ?string
     {
         if ($this->isCSPHeaderKey($header)) {
 
             // Make sure a nonce has been created and attached
-            if(!$this->isNonceSupportActive() && !$this->isReportOnlyCSP()) {
+            if (!$this->isNonceSupportActive() && !$this->isReportOnlyCSP()) {
                 Security::setNonce();
-            } elseif (!$this->nonceAttached ) {
+            } elseif (!$this->nonceAttached) {
                 $this->csp->nonce('script-src', Security::getNonce(true));
                 $this->nonceAttached = true;
             }

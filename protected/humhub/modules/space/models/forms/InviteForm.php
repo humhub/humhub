@@ -160,7 +160,7 @@ class InviteForm extends Model
     /**
      * Invites selected members immediately
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function inviteMembers()
     {

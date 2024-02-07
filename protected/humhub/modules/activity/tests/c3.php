@@ -8,6 +8,10 @@
  * @author tiger
  */
 
+use Codeception\Configuration;
+use Codeception\Coverage\Filter;
+use Codeception\Util\FileSystem;
+
 if (isset($_COOKIE['CODECEPTION_CODECOVERAGE'])) {
     $cookie = json_decode($_COOKIE['CODECEPTION_CODECOVERAGE'], true);
 
@@ -96,8 +100,8 @@ if (file_exists($configFile)) {
 }
 
 try {
-    \Codeception\Configuration::config($configFile);
-} catch (\Exception $e) {
+    Configuration::config($configFile);
+} catch (Exception $e) {
     __c3_error($e->getMessage());
 }
 
@@ -138,7 +142,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
                 unlink($path . '.tar.gz');
             }
 
-            $phar->compress(\Phar::GZ);
+            $phar->compress(Phar::GZ);
 
             // close the file so that we can rename it
             unset($phar);
@@ -168,7 +172,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
 
     function __c3_build_phpunit_report(PHP_CodeCoverage $codeCoverage, $path)
     {
-        $writer = new PHP_CodeCoverage_Report_XML(\PHPUnit_Runner_Version::id());
+        $writer = new PHP_CodeCoverage_Report_XML(PHPUnit_Runner_Version::id());
         $writer->process($codeCoverage, $path . 'phpunit');
 
         if (file_exists($path . '.tar')) {
@@ -185,7 +189,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
                 unlink($path . '.tar.gz');
             }
 
-            $phar->compress(\Phar::GZ);
+            $phar->compress(Phar::GZ);
 
             // close the file so that we can rename it
             unset($phar);
@@ -225,7 +229,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
             } else {
                 $phpCoverage = unserialize(file_get_contents($filename));
             }
-            
+
             return array($phpCoverage, $file);
         } else {
             $phpCoverage = new PHP_CodeCoverage();
@@ -234,16 +238,16 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
         if (isset($_SERVER['HTTP_X_CODECEPTION_CODECOVERAGE_SUITE'])) {
             $suite = $_SERVER['HTTP_X_CODECEPTION_CODECOVERAGE_SUITE'];
             try {
-                $settings = \Codeception\Configuration::suiteSettings($suite, \Codeception\Configuration::config());
+                $settings = Configuration::suiteSettings($suite, Configuration::config());
             } catch (Exception $e) {
                 __c3_error($e->getMessage());
             }
         } else {
-            $settings = \Codeception\Configuration::config();
+            $settings = Configuration::config();
         }
 
         try {
-            \Codeception\Coverage\Filter::setup($phpCoverage)
+            Filter::setup($phpCoverage)
                 ->whiteList($settings)
                 ->blackList($settings);
         } catch (Exception $e) {
@@ -263,7 +267,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
 
     function __c3_clear()
     {
-        \Codeception\Util\FileSystem::doEmptyDir(C3_CODECOVERAGE_MEDIATE_STORAGE);
+        FileSystem::doEmptyDir(C3_CODECOVERAGE_MEDIATE_STORAGE);
     }
 }
 
@@ -289,7 +293,7 @@ if ($requestedC3Report) {
         return __c3_exit();
     }
 
-    list($codeCoverage, ) = __c3_factory($completeReport);
+    list($codeCoverage,) = __c3_factory($completeReport);
 
     switch ($route) {
         case 'html':
@@ -329,7 +333,7 @@ if ($requestedC3Report) {
             return __c3_exit();
     }
 } else {
-    list($codeCoverage, ) = __c3_factory(null);
+    list($codeCoverage,) = __c3_factory(null);
     $codeCoverage->start(C3_CODECOVERAGE_TESTNAME);
     if (!array_key_exists('HTTP_X_CODECEPTION_CODECOVERAGE_DEBUG', $_SERVER)) {
         register_shutdown_function(

@@ -31,7 +31,7 @@ class ApprovalRequestDeclined extends BaseNotification
     public $viewName = 'approvalDeclined';
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -39,7 +39,7 @@ class ApprovalRequestDeclined extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {

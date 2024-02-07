@@ -35,7 +35,7 @@ class LegitimationChanged extends LiveEvent
     public function init()
     {
         parent::init();
-        
+
         $this->visibility = Content::VISIBILITY_OWNER;
     }
 

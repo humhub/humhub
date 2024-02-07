@@ -9,13 +9,14 @@
 namespace humhub\modules\installer\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * Security Settings Form
  *
  * @since 0.5
  */
-class SecurityForm extends \yii\base\Model
+class SecurityForm extends Model
 {
 
     /**

@@ -8,9 +8,12 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use DateTimeZone;
 use humhub\libs\DbDateValidator;
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * Date Field
@@ -30,8 +33,8 @@ class Date extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'DATE');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'DATE');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -51,14 +54,14 @@ class Date extends BaseType
         ];
         return parent::getFieldRules($rules);
     }
-    
+
     /**
      * @inheritdoc
      */
     public function getFormDefinition($definition = [])
     {
         return count($definition) > 0 ? parent::getFormDefinition($definition) : [];
-    } 
+    }
 
     /**
      * @inheritdoc
@@ -80,12 +83,12 @@ class Date extends BaseType
     {
         $internalName = $this->profileField->internal_name;
         $date = \DateTime::createFromFormat('Y-m-d', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+            new DateTimeZone(Yii::$app->formatter->timeZone));
 
         if ($date === false)
             return "";
 
-        return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDate($date, 'long');
+        return $raw ? Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDate($date, 'long');
     }
 
 }

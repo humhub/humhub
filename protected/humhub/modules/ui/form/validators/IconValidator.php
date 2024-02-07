@@ -11,6 +11,7 @@ namespace humhub\modules\ui\form\validators;
 use humhub\modules\ui\form\widgets\IconPicker;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
+use yii\base\Model;
 use yii\validators\Validator;
 
 
@@ -24,7 +25,7 @@ class IconValidator extends Validator
 {
 
     /**
-     * @param \yii\base\Model $model
+     * @param Model $model
      * @param string $attribute
      */
     public function validateAttribute($model, $attribute)

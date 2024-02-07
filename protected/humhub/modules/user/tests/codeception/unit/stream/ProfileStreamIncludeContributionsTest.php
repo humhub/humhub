@@ -31,7 +31,7 @@ class ProfileStreamIncludeContributionsTest extends ProfileStreamTest
     public function testProfileOwnerDoesNotSeePublicSpacePostWithoutContributionsFilter()
     {
         $this->createPost(Space::findOne(2), Content::VISIBILITY_PUBLIC);
-        $this->assertEmpty( $this->createQuery(false)->all());
+        $this->assertEmpty($this->createQuery(false)->all());
     }
 
     /**
@@ -54,7 +54,7 @@ class ProfileStreamIncludeContributionsTest extends ProfileStreamTest
     public function testProfileOwnerDoesNotSeePrivateSpacePostWithoutContributionsFilter()
     {
         $this->createPost(Space::findOne(2), Content::VISIBILITY_PRIVATE);
-        $this->assertEmpty( $this->createQuery(false)->all());
+        $this->assertEmpty($this->createQuery(false)->all());
     }
 
     /**

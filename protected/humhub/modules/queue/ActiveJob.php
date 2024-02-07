@@ -13,7 +13,7 @@ use humhub\modules\queue\interfaces\JobInterface;
 
 /**
  * ActiveJob
- * 
+ *
  * @since 1.3
  * @author Luke
  */

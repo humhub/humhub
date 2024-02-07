@@ -2,6 +2,7 @@
 
 namespace space\acceptance;
 
+use Exception;
 use space\AcceptanceTester;
 
 class CreateSpaceCest
@@ -11,7 +12,7 @@ class CreateSpaceCest
      * Create Private Spaces
      *
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testCreateSpace(AcceptanceTester $I)
     {
@@ -47,7 +48,7 @@ class CreateSpaceCest
         try {
             $I->waitForText('Add Modules', 5, '#globalModal');
             $I->click('Next', '#globalModal');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Do this if it's not present.
         }
 

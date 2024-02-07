@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\controllers;
 
+use humhub\components\behaviors\AccessControl;
 use Yii;
 use humhub\components\Controller;
 use humhub\modules\content\models\WallEntry;
@@ -31,7 +32,7 @@ class PermaController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::class,
+                'class' => AccessControl::class,
                 'guestAllowedActions' => ['index', 'wall-entry']
             ]
         ];

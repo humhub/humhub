@@ -2,12 +2,16 @@
 /**
  * This is the initial test bootstrap, which will load the default test bootstrap from the humhub core
  */
+
 // Parse the environment arguments (Note: only simple --env ENV is supported no comma sepration merge...)
+use Codeception\Configuration;
+use Codeception\Util\Autoload;
+
 $env = isset($GLOBALS['env']) ? $GLOBALS['env'] : [];
 
 // If environment was set try loading special environment config else load default
 if (count($env) > 0) {
-    \Codeception\Configuration::append(['environment' => $env]);
+    Configuration::append(['environment' => $env]);
 
 
     $envCfgFile = dirname(__DIR__) . '/config/env/test.' . $env[0][0] . '.php';
@@ -36,14 +40,14 @@ Yii::setAlias('@root', $cfg['humhub_root']);
 Yii::setAlias('@humhubTests', $cfg['humhub_root'] . '/protected/humhub/tests');
 
 // Load all supporting test classes needed for test execution
-\Codeception\Util\Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_support'));
-\Codeception\Util\Autoload::addNamespace('tests\codeception\fixtures', Yii::getAlias('@humhubTests/codeception/fixtures'));
-\Codeception\Util\Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_pages'));
-if(isset($cfg['modules'])) {
-    \Codeception\Configuration::append(['humhub_modules' => $cfg['modules']]);
+Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_support'));
+Autoload::addNamespace('tests\codeception\fixtures', Yii::getAlias('@humhubTests/codeception/fixtures'));
+Autoload::addNamespace('', Yii::getAlias('@humhubTests/codeception/_pages'));
+if (isset($cfg['modules'])) {
+    Configuration::append(['humhub_modules' => $cfg['modules']]);
 }
 
-if(isset($cfg['fixtures'])) {
-    \Codeception\Configuration::append(['fixtures' => $cfg['fixtures']]);
+if (isset($cfg['fixtures'])) {
+    Configuration::append(['fixtures' => $cfg['fixtures']]);
 }
 ?>

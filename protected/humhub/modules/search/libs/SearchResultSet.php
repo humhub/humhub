@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\libs;
 
+use Exception;
 use humhub\components\ActiveRecord;
 use Yii;
 
@@ -58,7 +59,7 @@ class SearchResultSet
             }
             try {
                 $instance = $modelClass::findOne(['id' => $result->pk]);
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 Yii::info('Could not load result model class ' . $result->model . ". Error: " . $ex->getMessage(), 'search');
                 continue;
             }

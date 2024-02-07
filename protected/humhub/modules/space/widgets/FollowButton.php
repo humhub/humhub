@@ -9,6 +9,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\bootstrap\Html;
 use yii\base\Widget;
@@ -23,7 +24,7 @@ class FollowButton extends Widget
 {
 
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $space;
 
@@ -38,12 +39,12 @@ class FollowButton extends Widget
     public $unfollowLabel = null;
 
     /**
-     * @var string options for follow button 
+     * @var string options for follow button
      */
     public $followOptions = ['class' => 'btn btn-primary btn-sm'];
 
     /**
-     * @var array options for unfollow button 
+     * @var array options for unfollow button
      */
     public $unfollowOptions = ['class' => 'btn btn-primary btn-sm active'];
 
@@ -62,8 +63,8 @@ class FollowButton extends Widget
 
         if (!isset($this->followOptions['class'])) {
             $this->followOptions['class'] = '';
-        } 
-        
+        }
+
         if (!isset($this->unfollowOptions['class'])) {
             $this->unfollowOptions['class'] = '';
         }
@@ -71,12 +72,12 @@ class FollowButton extends Widget
         if (!isset($this->followOptions['style'])) {
             $this->followOptions['style'] = '';
         }
-        
+
         if (!isset($this->unfollowOptions['style'])) {
             $this->unfollowOptions['style'] = '';
         }
     }
- 
+
     /**
      * @inheritdoc
      */
@@ -103,15 +104,15 @@ class FollowButton extends Widget
         // Add SpaceIds
         $this->followOptions['data-content-container-id'] = $this->space->id;
         $this->unfollowOptions['data-content-container-id'] = $this->space->id;
-        
+
         // Add JS Action
         $this->followOptions['data-action-click'] = 'content.container.follow';
         $this->unfollowOptions['data-action-click'] = 'content.container.unfollow';
-        
+
         // Add Action Url
         $this->followOptions['data-action-url'] = $this->space->createUrl('/space/space/follow');
         $this->unfollowOptions['data-action-url'] = $this->space->createUrl('/space/space/unfollow');
-        
+
         // Add Action Url
         $this->followOptions['data-ui-loader'] = '';
         $this->unfollowOptions['data-ui-loader'] = '';
@@ -129,7 +130,7 @@ class FollowButton extends Widget
         }
 
         return Html::a($this->unfollowLabel, '#', $this->unfollowOptions) .
-               Html::a($this->followLabel, '#', $this->followOptions);
+            Html::a($this->followLabel, '#', $this->followOptions);
     }
 
 }

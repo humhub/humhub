@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use yii\base\Widget;
 use yii\helpers\Url;
 use humhub\modules\content\permissions\CreatePublicContent;
 
@@ -17,11 +19,11 @@ use humhub\modules\content\permissions\CreatePublicContent;
  * @package humhub.modules_core.wall.widgets
  * @since 1.2
  */
-class VisibilityLink extends \yii\base\Widget
+class VisibilityLink extends Widget
 {
 
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $contentRecord;
 
@@ -32,22 +34,22 @@ class VisibilityLink extends \yii\base\Widget
     {
         $content = $this->contentRecord->content;
         $contentContainer = $content->container;
-        
+
         // If content is global
         if ($contentContainer === null) {
             return;
         }
 
         // Prevent Change to "Public" in private spaces
-        if(!$content->canEdit() || (!$content->visibility && !$contentContainer->visibility)) {
+        if (!$content->canEdit() || (!$content->visibility && !$contentContainer->visibility)) {
             return;
-        } elseif($content->isPrivate() && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
+        } elseif ($content->isPrivate() && !$contentContainer->permissionManager->can(new CreatePublicContent())) {
             return;
         }
-        
-        return $this->render('visibilityLink', [ 
-                'content' => $content,
-                'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id])
+
+        return $this->render('visibilityLink', [
+            'content' => $content,
+            'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id])
         ]);
     }
 }

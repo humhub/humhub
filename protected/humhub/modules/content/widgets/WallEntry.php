@@ -8,7 +8,9 @@
 
 namespace humhub\modules\content\widgets;
 
+use Exception;
 use humhub\components\Widget;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\dashboard\controllers\DashboardController;
@@ -22,7 +24,7 @@ use Yii;
 /**
  * WallEntry is responsible to show a content inside a stream/wall.
  *
- * @see \humhub\modules\content\components\ContentActiveRecord
+ * @see ContentActiveRecord
  * @since 0.20
  * @author luke
  * @deprecated since 1.7 use WallStreamEntryWidget
@@ -48,7 +50,7 @@ class WallEntry extends Widget
     /**
      * The content object
      *
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $contentObject;
 
@@ -234,7 +236,7 @@ class WallEntry extends Widget
      * Note this function does not call
      *
      * @return string the output
-     * @throws \Exception
+     * @throws Exception
      * @deprecated since 1.4
      */
     public function renderWallEntry()
@@ -247,7 +249,7 @@ class WallEntry extends Widget
                 $result = $this->render($this->widgetLayout, $this->getLayoutViewParams());
                 $out = $this->afterRun($result);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             ob_end_clean();
             throw $e;
         }

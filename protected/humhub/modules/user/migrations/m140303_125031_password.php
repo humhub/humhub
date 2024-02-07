@@ -2,6 +2,7 @@
 
 
 use yii\db\Migration;
+use yii\db\Query;
 
 class m140303_125031_password extends Migration
 {
@@ -18,17 +19,17 @@ class m140303_125031_password extends Migration
             'password' => 'text DEFAULT NULL',
             'salt' => 'text DEFAULT NULL',
             'created_at' => 'datetime DEFAULT NULL',
-                ], '');
+        ], '');
 
         $this->createIndex('idx_user_id', 'user_password', 'user_id', false);
 
 
         // Fix: Migrate Passwords from User Table to UserPasswords
         $algorithm = 'sha1md5';
-        $rows = (new \yii\db\Query())
-                ->select("*")
-                ->from('user')
-                ->all();
+        $rows = (new Query())
+            ->select("*")
+            ->from('user')
+            ->all();
         foreach ($rows as $row) {
             $password = str_replace('___enc___', '', $row['password']);
             $this->update('user_password', ['user_id' => $row['id'], 'password' => $password, 'algorithm' => $algorithm, 'salt' => Yii::$app->settings->get('secret'), 'created_at' => date('Y-m-d G:i:s')]);

@@ -21,7 +21,7 @@ class m131023_170159_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
     }
 
     public function down()

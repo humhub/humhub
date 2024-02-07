@@ -18,6 +18,8 @@ use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
+use Throwable;
+use yii\base\InvalidConfigException;
 
 
 class RichTextShortTextConverterTest extends HumHubDbTestCase
@@ -27,7 +29,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
      */
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertLinkToShortText()
     {
@@ -37,7 +39,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertTextWithMaxLength()
     {
@@ -54,7 +56,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertMultiParagraphWithMaxLength()
     {
@@ -64,7 +66,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertLinkWithSpecialCharToShortText()
     {
@@ -74,7 +76,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertRelativeLinkToShortText()
     {
@@ -84,7 +86,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertRelativeLinkWithSpecialCharToShortText()
     {
@@ -94,7 +96,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testEmptyLinkLabelToShortText()
     {
@@ -104,7 +106,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testInvalidProtocolLinkToShortText()
     {
@@ -114,7 +116,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testLinkWithMarkedText()
     {
@@ -124,7 +126,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertLinkifiedLink()
     {
@@ -152,7 +154,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageToShortText()
     {
@@ -162,7 +164,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithSpecialCharToShortText()
     {
@@ -172,7 +174,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertRelativeImageToShortText()
     {
@@ -182,7 +184,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertRelativeImageWithSpecialCharToShortText()
     {
@@ -192,7 +194,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithTitleText()
     {
@@ -202,7 +204,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithSizeToShortText()
     {
@@ -212,7 +214,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithSizeAndNoTitleToShortText()
     {
@@ -222,7 +224,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithImageAlignmentRight()
     {
@@ -232,7 +234,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithImageAlignmentLeft()
     {
@@ -242,7 +244,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
     }
 
     /**
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function testConvertImageWithImageAlignmentCenter()
     {
@@ -329,7 +331,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
@@ -360,7 +362,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
@@ -384,7 +386,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
@@ -408,7 +410,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
 
@@ -432,7 +434,7 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Need to catch since hash saving will fail
         }
         $this->assertConversionResult(
@@ -698,9 +700,9 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             "Test\\\nBreak",
             "Test<br>\nBreak", [
-                RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
-                RichTextToShortTextConverter::OPTION_NL2BR => true
-            ]);
+            RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
+            RichTextToShortTextConverter::OPTION_NL2BR => true
+        ]);
     }
 
     public function testHardBreakWithoutNewLine()
@@ -800,14 +802,14 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "This is a...", [
             RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
             RichTextToShortTextConverter::OPTION_MAX_LENGTH => 9
-            ]);
+        ]);
 
         $this->assertConversionResult(
             "IgnoreSinceCached...",
             "This is a long text...", [
             RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
             RichTextToShortTextConverter::OPTION_MAX_LENGTH => 19
-            ]);
+        ]);
     }
 
     public function testMixedConverterCachedResult()

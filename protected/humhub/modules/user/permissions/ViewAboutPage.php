@@ -8,13 +8,14 @@
 
 namespace humhub\modules\user\permissions;
 
+use humhub\libs\BasePermission;
 use Yii;
 use humhub\modules\user\models\User;
 
 /**
  * ViewAboutPage Permission
  */
-class ViewAboutPage extends \humhub\libs\BasePermission
+class ViewAboutPage extends BasePermission
 {
 
     /**
@@ -38,8 +39,8 @@ class ViewAboutPage extends \humhub\libs\BasePermission
     public function __construct($config = [])
     {
         parent::__construct($config);
-        $this->title = \Yii::t('UserModule.base', 'View your about page');
-        $this->description = \Yii::t('UserModule.base', 'Allows access to your about page with personal information');
+        $this->title = Yii::t('UserModule.base', 'View your about page');
+        $this->description = Yii::t('UserModule.base', 'Allows access to your about page with personal information');
     }
 
     /**

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\view\helpers;
 
+use Exception;
 use humhub\modules\ui\view\components\Theme;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -44,7 +45,7 @@ class ThemeHelper
             if (is_array($module) || is_string($module)) {
                 try {
                     $module = Yii::$app->getModule($id);
-                } catch (\Exception $ex) {
+                } catch (Exception $ex) {
                     Yii::error('Could not load module to fetch themes! Module: ' . $id . ' Error: ' . $ex->getMessage(), 'ui');
                     continue;
                 }

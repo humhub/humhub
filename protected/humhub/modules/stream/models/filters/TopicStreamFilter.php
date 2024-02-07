@@ -35,7 +35,7 @@ class TopicStreamFilter extends StreamQueryFilter
 
     public function apply()
     {
-        if(empty($this->topics)) {
+        if (empty($this->topics)) {
             return;
         }
 
@@ -43,6 +43,6 @@ class TopicStreamFilter extends StreamQueryFilter
             ->from('content_tag_relation')
             ->where(['and', 'content_tag_relation.content_id = content.id', ['in', 'content_tag_relation.tag_id', $this->topics]]);
 
-        $this->query->andWhere( ['=', new Expression('('.count($this->topics).')'), $subQuery]);
+        $this->query->andWhere(['=', new Expression('(' . count($this->topics) . ')'), $subQuery]);
     }
 }

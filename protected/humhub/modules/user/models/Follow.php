@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
@@ -148,7 +149,7 @@ class Follow extends ActiveRecord
             if ($targetClass != "" && is_subclass_of($targetClass, ActiveRecord::class)) {
                 return $targetClass::findOne(['id' => $this->object_id]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Avoid errors in integrity check
             Yii::error($e);
         }
@@ -234,8 +235,8 @@ class Follow extends ActiveRecord
     public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)
     {
         $subQuery = self::find()
-                ->where(['user_follow.object_model' => get_class($target), 'user_follow.object_id' => $target->getPrimaryKey()])
-                ->andWhere('user_follow.user_id=user.id');
+            ->where(['user_follow.object_model' => get_class($target), 'user_follow.object_id' => $target->getPrimaryKey()])
+            ->andWhere('user_follow.user_id=user.id');
 
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);

@@ -9,6 +9,7 @@
 namespace humhub\modules\content\models;
 
 use humhub\components\SettingActiveRecord;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "contentcontainer_setting".
@@ -68,7 +69,7 @@ class ContentContainerSetting extends SettingActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getContentcontainer()
     {

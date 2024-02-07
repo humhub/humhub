@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "profile_field_category".
@@ -102,7 +103,7 @@ class ProfileFieldCategory extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFields()
     {

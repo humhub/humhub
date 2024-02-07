@@ -14,7 +14,8 @@ use humhub\modules\friendship\models\Friendship;
 <?php elseif ($friendshipState === Friendship::STATE_REQUEST_RECEIVED) : ?>
     <div class="<?= $options['acceptFriendRequest']['groupClass'] ?>">
         <?= Html::a($options['acceptFriendRequest']['title'], '#', $options['acceptFriendRequest']['attrs']); ?>
-        <button type="button" class="<?= $options['acceptFriendRequest']['togglerClass'] ?> dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="<?= $options['acceptFriendRequest']['togglerClass'] ?> dropdown-toggle"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>

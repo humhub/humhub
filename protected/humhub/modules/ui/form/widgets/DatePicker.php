@@ -56,7 +56,7 @@ class DatePicker extends BaseDatePicker
             ? static::LANGUAGEMAPPING[$this->pickerLanguage]
             : $this->pickerLanguage;
 
-        if(!$this->pickerLanguage) {
+        if (!$this->pickerLanguage) {
             $this->pickerLanguage = 'en-US';
         }
 
@@ -104,13 +104,13 @@ class DatePicker extends BaseDatePicker
     private function registerLanguageAsset()
     {
 
-        if($this->pickerLanguage === 'ru') {
+        if ($this->pickerLanguage === 'ru') {
             DatePickerRussianLanguageAsset::register($this->getView());
             return;
         }
 
         $assetBundle = DatePickerLanguageAsset::register($this->getView());
-        if(substr($this->pickerLanguage, 0 , 2) === 'en') {
+        if (substr($this->pickerLanguage, 0, 2) === 'en') {
             $assetBundle->autoGenerate = false;
             $assetBundle->js[] = "ui/i18n/datepicker-{$this->pickerLanguage}.js";
         } else {

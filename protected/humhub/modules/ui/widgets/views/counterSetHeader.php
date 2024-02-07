@@ -6,9 +6,11 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\ui\view\components\View;
+use humhub\modules\ui\widgets\CounterSetItem;
 
-/* @var $this \humhub\modules\ui\view\components\View */
-/* @var $counters \humhub\modules\ui\widgets\CounterSetItem[] */
+/* @var $this View */
+/* @var $counters CounterSetItem[] */
 
 ?>
 

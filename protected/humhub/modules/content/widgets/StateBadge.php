@@ -9,11 +9,13 @@ namespace humhub\modules\content\widgets;
 
 use DateTime;
 use DateTimeZone;
+use Exception;
 use humhub\components\Widget;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * Can be used to render an archive icon for archived content.
@@ -25,8 +27,8 @@ class StateBadge extends Widget
     public ?ContentActiveRecord $model;
 
     /**
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Exception
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     public function run()
     {
@@ -38,8 +40,8 @@ class StateBadge extends Widget
             case Content::STATE_SCHEDULED:
                 $scheduledDateTime = new DateTime($this->model->content->scheduled_at, new DateTimeZone('UTC'));
                 return Html::tag('span', Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
-                        'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
-                    ]),
+                    'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
+                ]),
                     ['class' => 'label label-warning label-state-scheduled']
                 );
             case Content::STATE_DELETED:

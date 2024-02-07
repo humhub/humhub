@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use DateTime;
 use Yii;
 use humhub\libs\Html;
 use yii\helpers\Json;
@@ -51,7 +52,7 @@ class DurationPicker extends JsInputWidget
         }
     }
 
-    public static function getDuration(\DateTime $start, \DateTime $end)
+    public static function getDuration(DateTime $start, DateTime $end)
     {
         $duration = $start->diff($end);
         return $duration->h . ':' . $duration->m;

@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "contentcontainer".
@@ -87,7 +88,7 @@ class ContentContainer extends ActiveRecord
     /**
      * @param $guid
      * @return ContentContainerActiveRecord|null
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      * @since 1.4
      */
     public static function findRecord($guid)

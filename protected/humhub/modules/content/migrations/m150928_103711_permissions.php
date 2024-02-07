@@ -19,7 +19,7 @@ class m150928_103711_permissions extends Migration
 
         try {
             $this->addPrimaryKey('contentcontainer_permission_pk', 'contentcontainer_permission', ['permission_id', 'group_id', 'module_id', 'contentcontainer_id']);
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error($ex->getMessage());
         }
     }

@@ -68,7 +68,7 @@ class CommentControls extends Menu
                 'id' => $this->comment->id,
             ]);
 
-            if($isAdmin) {
+            if ($isAdmin) {
                 $adminDeleteModalUrl = Url::to(['/comment/comment/get-admin-delete-modal',
                     'objectModel' => $this->comment->object_model,
                     'objectId' => $this->comment->object_id,
@@ -81,7 +81,7 @@ class CommentControls extends Menu
                 'data-content-delete-url' => $deleteUrl
             ];
 
-            if($isAdmin) {
+            if ($isAdmin) {
                 $htmlOptions['data-admin-delete-modal-url'] = $adminDeleteModalUrl;
             }
 

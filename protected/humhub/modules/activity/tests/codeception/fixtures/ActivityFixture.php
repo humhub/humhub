@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\activity\tests\codeception\fixtures;
 
 use yii\test\ActiveFixture;

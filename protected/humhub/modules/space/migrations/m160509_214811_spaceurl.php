@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\space\components\UrlValidator;
 use yii\db\Query;
 use humhub\components\Migration;
 
@@ -16,11 +17,11 @@ class m160509_214811_spaceurl extends Migration
         $this->createIndex('url-unique', 'space', 'url', true);
 
         $rows = (new Query())
-                ->select("*")
-                ->from('space')
-                ->all();
+            ->select("*")
+            ->from('space')
+            ->all();
         foreach ($rows as $row) {
-            $url = \humhub\modules\space\components\UrlValidator::autogenerateUniqueSpaceUrl($row['name']);
+            $url = UrlValidator::autogenerateUniqueSpaceUrl($row['name']);
             $this->updateSilent('space', ['url' => $url], ['id' => $row['id']]);
         }
     }

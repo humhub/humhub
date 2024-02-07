@@ -16,11 +16,11 @@ class PeopleFiltersTest extends HumHubDbTestCase
     {
         $peopleFilters = new PeopleFilters();
         $this->assertEquals([
-                '' => 'Any',
-                1 => 'Administrator',
-                2 => 'Users',
-                3 => 'Moderators'
-            ], $this->getFilterOptions('groupId', $peopleFilters));
+            '' => 'Any',
+            1 => 'Administrator',
+            2 => 'Users',
+            3 => 'Moderators'
+        ], $this->getFilterOptions('groupId', $peopleFilters));
     }
 
     public function testProfileFieldFilters()
@@ -75,7 +75,7 @@ class PeopleFiltersTest extends HumHubDbTestCase
         if (isset($filter['widget'])) {
             /* @var PeopleFilterPicker $widget */
             $widget = new $filter['widget']($filter['widgetOptions']);
-            $suggestions =  $widget->getSuggestions();
+            $suggestions = $widget->getSuggestions();
             $options = [];
             foreach ($suggestions as $suggestion) {
                 $options[] = $suggestion['id'];

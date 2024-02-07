@@ -1,6 +1,7 @@
 <?php
 
 use yii\db\Migration;
+use yii\db\Schema;
 
 class m160227_073020_birthday_date extends Migration
 {
@@ -9,7 +10,7 @@ class m160227_073020_birthday_date extends Migration
     {
         $table = Yii::$app->db->schema->getTableSchema('profile');
         if (isset($table->columns['birthday'])) {
-            $this->alterColumn('profile', 'birthday', \yii\db\Schema::TYPE_DATE);
+            $this->alterColumn('profile', 'birthday', Schema::TYPE_DATE);
         }
     }
 

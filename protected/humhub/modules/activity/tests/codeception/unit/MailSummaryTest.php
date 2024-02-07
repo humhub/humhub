@@ -24,6 +24,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Yii;
+use yii\base\InvalidConfigException;
 
 class MailSummaryTest extends HumHubDbTestCase
 {
@@ -470,7 +471,7 @@ class MailSummaryTest extends HumHubDbTestCase
      * @param $user
      * @param $interval
      * @return MailSummary
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function createSummary($user, $interval)
     {

@@ -62,7 +62,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
      */
     protected function getQuery()
     {
-        return \humhub\modules\content\models\ContentContainerDefaultPermission::find()
+        return ContentContainerDefaultPermission::find()
             ->where(['contentcontainer_class' => $this->contentContainerClass]);
     }
 

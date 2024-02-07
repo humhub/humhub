@@ -8,6 +8,8 @@
 
 namespace humhub\modules\queue\models;
 
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "queue_exclusive".
  *
@@ -16,7 +18,7 @@ namespace humhub\modules\queue\models;
  * @property integer $job_status
  * @property string $last_update
  */
-class QueueExclusive extends \yii\db\ActiveRecord
+class QueueExclusive extends ActiveRecord
 {
 
     /**

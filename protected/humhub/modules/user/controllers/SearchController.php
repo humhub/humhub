@@ -8,9 +8,12 @@
 
 namespace humhub\modules\user\controllers;
 
+use Exception;
+use humhub\components\behaviors\AccessControl;
 use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image;
+use humhub\modules\user\widgets\UserPicker;
 use Yii;
 use yii\web\Controller;
 
@@ -31,7 +34,7 @@ class SearchController extends Controller
     {
         return [
             'acl' => [
-                'class' => \humhub\components\behaviors\AccessControl::class,
+                'class' => AccessControl::class,
             ]
         ];
     }
@@ -49,7 +52,7 @@ class SearchController extends Controller
     {
         Yii::$app->response->format = 'json';
 
-        return \humhub\modules\user\widgets\UserPicker::filter([
+        return UserPicker::filter([
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true,
             'disableFillUser' => false
@@ -60,7 +63,7 @@ class SearchController extends Controller
     /**
      * JSON Search interface for Mentioning
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function actionMentioning()
     {
@@ -71,7 +74,7 @@ class SearchController extends Controller
         $query = User::find()->visible()->search((string)Yii::$app->request->get('keyword'));
 
         foreach ($query->limit(10)->all() as $container) {
-            if($container->permissionManager->can(CanMention::class)) {
+            if ($container->permissionManager->can(CanMention::class)) {
                 $results[] = [
                     'guid' => $container->guid,
                     'type' => 'u',

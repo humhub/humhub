@@ -12,19 +12,21 @@ use humhub\components\Application;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\user\events\UserEvent;
 use Yii;
+use yii\base\BaseObject;
+use yii\base\Event;
 
 /**
  * Admin Module provides the administrative backend for HumHub installations.
  *
  * @since 0.5
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
 
     /**
      * On Init of Dashboard Sidebar, add the approve notification widget
      *
-     * @param \yii\base\Event $event the event
+     * @param Event $event the event
      */
     public static function onDashboardSidebarInit($event)
     {
@@ -48,7 +50,7 @@ class Events extends \yii\base\BaseObject
     /**
      * Callback on daily cron job run
      *
-     * @param \yii\base\Event $event
+     * @param Event $event
      */
     public static function onCronDailyRun($event)
     {
@@ -60,8 +62,9 @@ class Events extends \yii\base\BaseObject
     /**
      * @param $event UserEvent
      */
-    public static function onSwitchUser($event) {
-        if(Yii::$app instanceof Application) {
+    public static function onSwitchUser($event)
+    {
+        if (Yii::$app instanceof Application) {
             AdminMenu::reset();
         }
     }

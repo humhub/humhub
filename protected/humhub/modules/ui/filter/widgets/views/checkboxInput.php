@@ -6,9 +6,10 @@
  *
  */
 
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $options array */
 /* @var $title string */
 /* @var $value boolean */

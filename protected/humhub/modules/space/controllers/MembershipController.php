@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\controllers;
 
+use Exception;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\forms\InviteForm;
@@ -20,9 +21,13 @@ use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\widgets\ModalClose;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\Json;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -152,10 +157,10 @@ class MembershipController extends ContentContainerController
 
     /**
      * Revokes Membership for this workspace
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function actionRevokeMembership()
     {
@@ -224,7 +229,7 @@ class MembershipController extends ContentContainerController
     /**
      * @return string
      * @throws \yii\base\Exception
-     * @throws \yii\web\ForbiddenHttpException
+     * @throws ForbiddenHttpException
      */
     public function actionResetInviteLink()
     {
@@ -303,8 +308,8 @@ class MembershipController extends ContentContainerController
      * Get result for the membership actions
      *
      * @param Space $space
-     * @return string|\yii\console\Response|\yii\web\Response
-     * @throws \Exception
+     * @return string|\yii\console\Response|Response
+     * @throws Exception
      */
     protected function getActionResult(Space $space)
     {

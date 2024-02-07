@@ -2,7 +2,9 @@
 
 namespace humhub\modules\content\controllers;
 
+use Exception;
 use Yii;
+use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use humhub\libs\ProfileImage;
@@ -78,7 +80,7 @@ abstract class ContainerImageController extends ContentContainerController
             try {
                 $profileImage = $this->getImageByType($type);
                 $profileImage->setNew($model->image);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return $this->asJson([
                     'files' => [
                         [
@@ -132,7 +134,7 @@ abstract class ContainerImageController extends ContentContainerController
 
     /**
      * Deletes the profile image or profile banner
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionDelete($type)
     {

@@ -8,10 +8,13 @@
 
 namespace humhub\modules\like\models;
 
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\like\activities\Liked;
 use Yii;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\like\notifications\NewLike;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "like".
@@ -51,9 +54,9 @@ class Like extends ContentAddonActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
-                    \yii\db\ActiveRecord::class,
+                    ActiveRecord::class,
                 ]
             ]
         ];
@@ -77,15 +80,14 @@ class Like extends ContentAddonActiveRecord
     {
         return Yii::$app->cache->getOrSet(
             "likes_{$objectModel}_{$objectId}",
-            function() use ($objectModel, $objectId) {
-            return Like::find()
-                ->where([
-                    'object_model' => $objectModel,
-                    'object_id' => $objectId
-                ])
-                ->with('user')
-                ->all()
-                ;
+            function () use ($objectModel, $objectId) {
+                return Like::find()
+                    ->where([
+                        'object_model' => $objectModel,
+                        'object_id' => $objectId
+                    ])
+                    ->with('user')
+                    ->all();
             },
             Yii::$app->settings->get('cache.expireTime')
         );
@@ -99,7 +101,7 @@ class Like extends ContentAddonActiveRecord
         Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
 
         if ($insert) {
-            \humhub\modules\like\activities\Liked::instance()->about($this)->save();
+            Liked::instance()->about($this)->save();
 
             if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
                 // This is required for comments where $this->getSoruce()->createdBy contains the comment author.

@@ -12,6 +12,7 @@ use humhub\modules\admin\Module;
 use humhub\modules\queue\ActiveJob;
 use humhub\modules\user\models\Invite;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * CleanupLog deletes older log records from log table
@@ -22,7 +23,7 @@ class CleanupPendingRegistrations extends ActiveJob
 {
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function run()
     {

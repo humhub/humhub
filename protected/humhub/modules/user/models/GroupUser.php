@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\search\libs\SearchHelper;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "group_admin".
@@ -107,7 +108,7 @@ class GroupUser extends ActiveRecord
     /**
      * Returns all Group relation
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroup()
     {
@@ -117,7 +118,7 @@ class GroupUser extends ActiveRecord
     /**
      * Returns all User relation
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

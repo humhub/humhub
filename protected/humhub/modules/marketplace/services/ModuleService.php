@@ -8,6 +8,7 @@
 
 namespace humhub\modules\marketplace\services;
 
+use Exception;
 use humhub\components\Module as CoreModule;
 use humhub\modules\marketplace\components\OnlineModuleManager;
 use humhub\modules\marketplace\Module as MarketplaceModule;
@@ -114,7 +115,7 @@ class ModuleService
 
         try {
             $this->module->publishAssets(true);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Yii::error($e);
         }
 
@@ -122,8 +123,8 @@ class ModuleService
             'success' => true,
             'status' => Yii::t('MarketplaceModule.base', 'Update successful'),
             'message' => Yii::t('MarketplaceModule.base', 'Module "{moduleName}" has been updated to version {newVersion} successfully.', [
-                    'moduleName' => $moduleInfo['latestCompatibleVersion']['name'],
-                    'newVersion' => $moduleInfo['latestCompatibleVersion']['version'],
+                'moduleName' => $moduleInfo['latestCompatibleVersion']['name'],
+                'newVersion' => $moduleInfo['latestCompatibleVersion']['version'],
             ])
         ];
     }

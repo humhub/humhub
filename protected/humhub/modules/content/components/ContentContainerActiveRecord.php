@@ -72,7 +72,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * The behavior which will be attached to the base controller.
      *
      * @since 1.3
-     * @see \humhub\modules\content\components\ContentContainerController
+     * @see ContentContainerController
      * @var string class name of additional the controller behavior
      */
     public $controllerBehavior = null;

@@ -167,7 +167,7 @@ class GroupTest extends HumHubDbTestCase
         $user = User::findOne(['username' => 'User1']);
         $user2 = User::findOne(['username' => 'User2']);
         static::assertFalse($group->removeUser($user));
-        static::assertTrue((boolean) $group->removeUser($user2));
+        static::assertTrue((boolean)$group->removeUser($user2));
     }
 
     public function testReturnSpaceRelationship()

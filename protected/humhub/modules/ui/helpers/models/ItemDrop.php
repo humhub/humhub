@@ -13,6 +13,8 @@
 
 namespace humhub\modules\ui\helpers\models;
 
+use Exception;
+use Throwable;
 use Yii;
 use yii\base\Model;
 use yii\db\ActiveQuery;
@@ -100,7 +102,7 @@ abstract class ItemDrop extends Model
         try {
             $this->moveItemIndex();
             return true;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
 
@@ -112,7 +114,7 @@ abstract class ItemDrop extends Model
      * @param $id
      * @param $newIndex
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @throws \yii\db\Exception
      */
     protected function run()
@@ -126,11 +128,11 @@ abstract class ItemDrop extends Model
             $tableName = $this->getTableName();
 
             // Load all items to sort and exclude the model we want to resort
-            $itemsToSort = $this->getSortItemsQuery()->andWhere(['!=', $tableName.'.id', $this->id])->all();
+            $itemsToSort = $this->getSortItemsQuery()->andWhere(['!=', $tableName . '.id', $this->id])->all();
 
             $newIndex = $this->validateIndex($this->index, $itemsToSort);
 
-            if($this->getSortOrder($model) === $newIndex) {
+            if ($this->getSortOrder($model) === $newIndex) {
                 return true;
             }
 
@@ -144,10 +146,10 @@ abstract class ItemDrop extends Model
             }
 
             $transaction->commit();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $transaction->rollBack();
             throw $e;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $transaction->rollBack();
             throw $e;
         }
@@ -158,7 +160,7 @@ abstract class ItemDrop extends Model
      */
     protected function beginTransaction()
     {
-        return call_user_func($this->modelClass.'::getDb')->beginTransaction();
+        return call_user_func($this->modelClass . '::getDb')->beginTransaction();
     }
 
     /**
@@ -173,7 +175,7 @@ abstract class ItemDrop extends Model
         if ($newIndex < 0) {
             return 0;
         } else if ($newIndex >= count($itemsToSort) + 1) {
-           return count($itemsToSort) - 1;
+            return count($itemsToSort) - 1;
         }
 
         return $newIndex;
@@ -211,7 +213,7 @@ abstract class ItemDrop extends Model
     protected function getTableName()
     {
         /* @var $schema TableSchema */
-        $schema = call_user_func($this->modelClass.'::getTableSchema');
+        $schema = call_user_func($this->modelClass . '::getTableSchema');
         return $schema->fullName;
     }
 
@@ -223,7 +225,7 @@ abstract class ItemDrop extends Model
      */
     protected function getModel()
     {
-        if(!$this->model) {
+        if (!$this->model) {
             $this->model = $this->loadModel();
         }
 
@@ -237,7 +239,7 @@ abstract class ItemDrop extends Model
      */
     protected function loadModel()
     {
-        return call_user_func($this->modelClass.'::findOne', ['id' => $this->id]);
+        return call_user_func($this->modelClass . '::findOne', ['id' => $this->id]);
     }
 
     /**
@@ -250,13 +252,14 @@ abstract class ItemDrop extends Model
      *
      * @return ActiveQuery
      */
-    protected function getSortItemsQuery() {
-        if($this->sortQuery) {
+    protected function getSortItemsQuery()
+    {
+        if ($this->sortQuery) {
             return $this->sortQuery;
         }
 
-        $query = call_user_func($this->modelClass.'::find');
-        if($this->targetIdField) {
+        $query = call_user_func($this->modelClass . '::find');
+        if ($this->targetIdField) {
             $query->where([$this->targetIdField => $this->targetId]);
         }
 
@@ -266,8 +269,9 @@ abstract class ItemDrop extends Model
     /**
      * Responsible for updating the target on the model e.g:
      */
-    protected function updateTarget() {
-        if($this->targetIdField) {
+    protected function updateTarget()
+    {
+        if ($this->targetIdField) {
             $targetId = $this->targetId ? $this->targetId : new Expression('NULL');
             $this->getModel()->updateAttributes([$this->targetIdField => $targetId]);
         }

@@ -8,7 +8,6 @@ use humhub\components\Widget;
 /**
  * UserWall shows a user as wall entry, e.g. in the search
  */
-
 class UserWall extends Widget
 {
 

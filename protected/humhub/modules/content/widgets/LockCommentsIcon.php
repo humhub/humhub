@@ -9,6 +9,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\ui\icon\widgets\Icon;
+use Throwable;
 use Yii;
 
 /**
@@ -41,7 +42,7 @@ class LockCommentsIcon extends Icon
      *
      * @param ContentActiveRecord $model
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function getByModel(ContentActiveRecord $model, bool $displayEnabledIcon = false): string
     {
@@ -68,7 +69,7 @@ class LockCommentsIcon extends Icon
      *
      * @param ContentActiveRecord $model
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
     private static function getCommentsStatusIconTitle(ContentActiveRecord $model): string
     {

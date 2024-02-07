@@ -10,6 +10,8 @@ namespace humhub\modules\file\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
+use yii\db\ActiveQuery;
+use yii\db\IntegrityException;
 
 
 /**
@@ -55,7 +57,7 @@ class FileHistory extends ActiveRecord
     /**
      * Gets query for [[File]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFile()
     {
@@ -65,7 +67,7 @@ class FileHistory extends ActiveRecord
     /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCreatedBy()
     {
@@ -102,7 +104,7 @@ class FileHistory extends ActiveRecord
      *
      * @param File $file
      * @return bool
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      */
     public static function isEnabled(File $file)
     {

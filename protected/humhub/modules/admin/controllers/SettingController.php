@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use Exception;
 use humhub\libs\LogoImage;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
@@ -207,7 +208,7 @@ class SettingController extends Controller
             } else {
                 $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.') . ' ' . $e->getMessage());
         }
 
@@ -295,9 +296,9 @@ class SettingController extends Controller
         }
 
         return $this->render('oembed', [
-                'providers' => $providers,
-                'settings' => $settings,
-            ]);
+            'providers' => $providers,
+            'settings' => $settings,
+        ]);
     }
 
     public function actionLogs()
@@ -310,7 +311,7 @@ class SettingController extends Controller
 
         // I wish..
         if ($dating) {
-            $dating = date('Y-m-d H:i:s', (int) $dating->log_time);
+            $dating = date('Y-m-d H:i:s', (int)$dating->log_time);
         } else {
             $dating = "the begining of time";
         }
@@ -365,9 +366,9 @@ class SettingController extends Controller
         }
 
         return $this->render('oembed_edit', [
-                'model' => $form,
-                'name' => $name
-            ]);
+            'model' => $form,
+            'name' => $name
+        ]);
     }
 
     /**
@@ -397,8 +398,8 @@ class SettingController extends Controller
     }
 
     /**
-     * @since 1.16
      * @return string Activity output that can be used for logging
+     * @since 1.16
      */
     public static function flushCache(): string
     {

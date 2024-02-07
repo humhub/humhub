@@ -8,6 +8,7 @@
 
 namespace humhub\modules\friendship\controllers;
 
+use Exception;
 use Yii;
 use yii\web\HttpException;
 use humhub\modules\user\models\User;
@@ -28,7 +29,7 @@ class ListController extends Controller
      * Returns an list of all friends of a user
      *
      * @throws HttpException
-     * @throws \Exception
+     * @throws Exception
      */
     public function actionPopup()
     {

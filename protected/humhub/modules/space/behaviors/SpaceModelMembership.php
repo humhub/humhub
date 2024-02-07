@@ -24,9 +24,11 @@ use humhub\modules\space\notifications\InviteRevoked;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Behavior;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\validators\EmailValidator;
 
 /**
@@ -392,8 +394,8 @@ class SpaceModelMembership extends Behavior
      * @param bool $showAtDashboard add member without any notifications
      * @param string $groupId
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function addMember(
         int    $userId,
@@ -484,8 +486,8 @@ class SpaceModelMembership extends Behavior
      *
      * @param integer|null $userId of User to Remove
      * @return bool
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Throwable
+     * @throws InvalidConfigException
+     * @throws Throwable
      */
     public function removeMember($userId = null)
     {
@@ -521,8 +523,8 @@ class SpaceModelMembership extends Behavior
      * @param Membership $membership
      * @param User $user
      * @throws Exception
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     private function handleRemoveMembershipEvent(Membership $membership, User $user)
     {
@@ -562,7 +564,7 @@ class SpaceModelMembership extends Behavior
      *
      * @param Membership $membership
      * @param User $user
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     private function handleCancelInvitationEvent(Membership $membership, User $user)
     {
@@ -579,7 +581,7 @@ class SpaceModelMembership extends Behavior
      *
      * @param Membership $membership
      * @param User $user
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     private function handleCancelApplicantEvent(Membership $membership, User $user)
     {

@@ -32,9 +32,9 @@ abstract class BaseDriver extends BaseObject
     /**
      * Returns the JavaScript Configuration for this driver
      *
-     * @since 1.3
-     * @see \humhub\widgets\CoreJsConfig
      * @return array the JS Configuratoin
+     * @see \humhub\widgets\CoreJsConfig
+     * @since 1.3
      */
     abstract public function getJsConfig();
 

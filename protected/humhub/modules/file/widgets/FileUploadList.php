@@ -9,6 +9,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use yii\base\Widget;
 
 /**
  * FileUploadListWidget works in combination of FileUploadButtonWidget and is
@@ -21,7 +22,7 @@ use humhub\components\ActiveRecord;
  * @since 0.5
  * @deprecated since version 1.2
  */
-class FileUploadList extends \yii\base\Widget
+class FileUploadList extends Widget
 {
 
     /**
@@ -46,8 +47,8 @@ class FileUploadList extends \yii\base\Widget
             $files = $this->object->fileManager->find()->all();
         }
         return $this->render('fileUploadList', [
-                    'uploaderId' => $this->uploaderId,
-                    'files' => $files
+            'uploaderId' => $this->uploaderId,
+            'files' => $files
         ]);
     }
 

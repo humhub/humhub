@@ -14,6 +14,7 @@ use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\Module;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Component;
 use yii\base\InvalidConfigException;
@@ -137,7 +138,7 @@ class LicenceManager extends Component
                 if (static::remove()) {
                     return true;
                 }
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Yii::error('Could not fetch/remove licence: ' . $e->getMessage());
             }
         }

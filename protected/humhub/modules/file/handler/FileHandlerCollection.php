@@ -8,8 +8,10 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use Yii;
+use yii\base\Component;
 
 /**
  * FileHandlerCollection
@@ -17,7 +19,7 @@ use Yii;
  * @since 1.2
  * @author Luke
  */
-class FileHandlerCollection extends \yii\base\Component
+class FileHandlerCollection extends Component
 {
 
     /**
@@ -40,7 +42,7 @@ class FileHandlerCollection extends \yii\base\Component
     public $type;
 
     /**
-     * @var \humhub\modules\file\models\File
+     * @var File
      */
     public $file = null;
 
@@ -88,7 +90,7 @@ class FileHandlerCollection extends \yii\base\Component
      * Returns registered handlers by type
      *
      * @param string|array $type or multiple type array
-     * @param \humhub\modules\file\models\File $file the file (optional)
+     * @param File $file the file (optional)
      * @return BaseFileHandler[] the registered handlers
      */
     public static function getByType($types, $file = null)

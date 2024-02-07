@@ -2,6 +2,7 @@
 
 
 use humhub\components\Migration;
+use yii\db\Query;
 
 class m140701_000611_profile_genderfield extends Migration
 {
@@ -13,7 +14,7 @@ class m140701_000611_profile_genderfield extends Migration
         // (Typically the installer creates initial data.)
         if (!$this->isInitialInstallation()) {
 
-            $row = (new \yii\db\Query())
+            $row = (new Query())
                 ->select("*")
                 ->from('profile_field_category')
                 ->where(['title' => 'General'])

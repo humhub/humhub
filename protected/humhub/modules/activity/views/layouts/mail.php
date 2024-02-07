@@ -10,8 +10,9 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use yii\helpers\Html;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $space Space */
 /* @var $url string */
 /* @var $contentContainer ContentContainerActiveRecord */

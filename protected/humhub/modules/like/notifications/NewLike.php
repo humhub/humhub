@@ -8,6 +8,7 @@
 
 namespace humhub\modules\like\notifications;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use Yii;
 use yii\bootstrap\Html;
@@ -55,7 +56,7 @@ class NewLike extends BaseNotification
     {
         $model = $this->getLikedRecord();
 
-        if(!$model instanceof ContentOwner) {
+        if (!$model instanceof ContentOwner) {
             return '';
         }
 
@@ -63,14 +64,14 @@ class NewLike extends BaseNotification
 
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes your {contentTitle}.", [
-                        'displayNames' => $this->getGroupUserDisplayNames(false),
-                        'contentTitle' => $contentInfo
+                'displayNames' => $this->getGroupUserDisplayNames(false),
+                'contentTitle' => $contentInfo
             ]);
         }
 
         return Yii::t('LikeModule.notifications', "{displayName} likes your {contentTitle}.", [
-                    'displayName' => $this->originator->displayName,
-                    'contentTitle' => $contentInfo
+            'displayName' => $this->originator->displayName,
+            'contentTitle' => $contentInfo
         ]);
     }
 
@@ -81,7 +82,7 @@ class NewLike extends BaseNotification
     {
         $model = $this->getLikedRecord();
 
-        if(!$model instanceof ContentOwner) {
+        if (!$model instanceof ContentOwner) {
             return '';
         }
 
@@ -89,21 +90,21 @@ class NewLike extends BaseNotification
 
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes {contentTitle}.", [
-                        'displayNames' => $this->getGroupUserDisplayNames(),
-                        'contentTitle' => $contentInfo
+                'displayNames' => $this->getGroupUserDisplayNames(),
+                'contentTitle' => $contentInfo
             ]);
         }
 
         return Yii::t('LikeModule.notifications', "{displayName} likes {contentTitle}.", [
-                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    'contentTitle' => $contentInfo
+            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'contentTitle' => $contentInfo
         ]);
     }
 
     /**
      * The liked record
      *
-     * @return \humhub\components\ActiveRecord
+     * @return ActiveRecord
      */
     public function getLikedRecord()
     {

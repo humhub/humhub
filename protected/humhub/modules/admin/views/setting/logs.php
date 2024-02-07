@@ -1,13 +1,15 @@
 <?php
 
+use humhub\modules\admin\models\forms\LogFilterForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $logsCount integer */
 /* @var $dating string */
 /* @var $limitAgeOptions array */
-/* @var $model \humhub\modules\admin\models\forms\LogFilterForm */
+/* @var $model LogFilterForm */
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 

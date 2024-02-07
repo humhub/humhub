@@ -12,7 +12,7 @@ use humhub\modules\marketplace\models\Module;
 
 /**
  * ModuleCard shows a card with module data
- * 
+ *
  * @since 1.11
  * @author Luke
  */

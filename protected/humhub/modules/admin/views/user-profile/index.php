@@ -21,7 +21,7 @@ $categoryItems[] = [
             'title' => Yii::t('AdminModule.user', 'Add new category'),
             'class' => 'tt'
         ],
-        ]),
+    ]),
     'encode' => false,
     'url' => Url::to(['edit-category'])
 ];

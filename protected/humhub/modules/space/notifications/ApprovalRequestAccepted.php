@@ -31,7 +31,7 @@ class ApprovalRequestAccepted extends BaseNotification
     public $viewName = "approvalAccepted";
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -39,7 +39,7 @@ class ApprovalRequestAccepted extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {
@@ -55,7 +55,7 @@ class ApprovalRequestAccepted extends BaseNotification
             Html::tag('strong', Html::encode($this->originator->displayName)),
             Html::tag('strong', Html::encode($this->source->name)));
     }
-    
+
     private function getInfoText($displayName, $spaceName)
     {
         return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the space {spaceName}', [

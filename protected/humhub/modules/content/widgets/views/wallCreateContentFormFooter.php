@@ -100,12 +100,12 @@ use yii\helpers\Html;
                         <?php endif; ?>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
-                                    ->icon('edit')
-                                    ->options([
-                                        'data-state' => Content::STATE_DRAFT,
-                                        'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
-                                        'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
-                                    ]) ?>
+                                ->icon('edit')
+                                ->options([
+                                    'data-state' => Content::STATE_DRAFT,
+                                    'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
+                                    'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
+                                ]) ?>
                         </li>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)

@@ -23,6 +23,7 @@ namespace humhub\modules\space\commands;
 use Yii;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
@@ -31,7 +32,7 @@ use yii\helpers\Console;
  * @package humhub.modules_core.space.console
  * @since 0.5
  */
-class SpaceController extends \yii\console\Controller
+class SpaceController extends Controller
 {
 
     public function actionAssignAllMembers($spaceId)

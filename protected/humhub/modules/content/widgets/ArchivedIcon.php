@@ -37,7 +37,7 @@ class ArchivedIcon extends Icon
      */
     public static function getByModel(ContentActiveRecord $model)
     {
-        if(!$model->content->isArchived()) {
+        if (!$model->content->isArchived()) {
             return '';
         }
 

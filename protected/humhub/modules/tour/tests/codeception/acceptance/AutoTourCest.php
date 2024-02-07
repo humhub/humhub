@@ -8,6 +8,7 @@
 
 namespace humhub\modules\tour\tests\codeception\acceptance;
 
+use Exception;
 use tour\AcceptanceTester;
 use Yii;
 
@@ -16,7 +17,7 @@ class AutoTourCest
     /**
      * @skip
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testAutoTour(AcceptanceTester $I)
     {

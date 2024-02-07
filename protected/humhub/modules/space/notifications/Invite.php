@@ -36,7 +36,7 @@ class Invite extends BaseNotification
     public $markAsSeenOnClick = false;
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -44,7 +44,7 @@ class Invite extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getSpace()
     {
@@ -52,7 +52,7 @@ class Invite extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getUrl()
     {
@@ -60,7 +60,7 @@ class Invite extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {

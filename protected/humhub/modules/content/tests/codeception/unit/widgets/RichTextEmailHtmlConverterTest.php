@@ -27,8 +27,8 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
         $this->assertConversionResult(
             'Test[Link](https://www.humhub.com/de)Test',
             '<p>Test Link Test</p>', [
-                RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
-            ]);
+            RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
+        ]);
     }
 
     public function testConvertImageToHtml()
@@ -66,7 +66,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
     public function testConvertImageDescription()
     {
         $this->assertConversionResult(
-        '![](http://local/image.jpg "Image <description> "text"")',
+            '![](http://local/image.jpg "Image <description> "text"")',
             '<p><img src="http://local/image.jpg" alt="" title="Image &lt;description&gt; &quot;text&quot;" style="max-width: 100%;"></p>');
     }
 

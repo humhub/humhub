@@ -16,7 +16,7 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
- * MembershipButton shows various membership related buttons in space header. 
+ * MembershipButton shows various membership related buttons in space header.
  *
  * @author luke
  * @since 0.11

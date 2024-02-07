@@ -2,7 +2,9 @@
 
 namespace humhub\modules\live\models;
 
+use humhub\components\ActiveRecord;
 use humhub\modules\content\models\ContentContainer;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "live".
@@ -15,7 +17,7 @@ use humhub\modules\content\models\ContentContainer;
  *
  * @property Contentcontainer $contentcontainer
  */
-class Live extends \humhub\components\ActiveRecord
+class Live extends ActiveRecord
 {
 
     /**
@@ -40,7 +42,7 @@ class Live extends \humhub\components\ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getContentcontainer()
     {

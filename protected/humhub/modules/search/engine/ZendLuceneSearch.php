@@ -8,6 +8,8 @@
 
 namespace humhub\modules\search\engine;
 
+use ArrayObject;
+use DirectoryIterator;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\search\commands\SearchController;
@@ -16,6 +18,7 @@ use humhub\modules\search\libs\SearchResult;
 use humhub\modules\search\libs\SearchResultSet;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use LimitIterator;
 use Yii;
 use yii\helpers\FileHelper;
 use yii\helpers\VarDumper;
@@ -26,11 +29,13 @@ use ZendSearch\Lucene\Document\Field;
 use ZendSearch\Lucene\Exception\RuntimeException;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
+use ZendSearch\Lucene\Search\Query\AbstractQuery;
 use ZendSearch\Lucene\Search\Query\Boolean;
 use ZendSearch\Lucene\Search\Query\MultiTerm;
 use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
 use ZendSearch\Lucene\Search\Query\Wildcard;
 use ZendSearch\Lucene\Search\QueryParser;
+use ZendSearch\Lucene\SearchIndexInterface;
 
 /**
  * ZendLucenceSearch Engine
@@ -42,7 +47,7 @@ class ZendLuceneSearch extends Search
 {
 
     /**
-     * @var \ZendSearch\Lucene\SearchIndexInterface the lucence index
+     * @var SearchIndexInterface the lucence index
      */
     public $index = null;
 
@@ -159,7 +164,7 @@ class ZendLuceneSearch extends Search
     public function flush()
     {
         $indexPath = $this->getIndexPath();
-        foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
+        foreach (new DirectoryIterator($indexPath) as $fileInfo) {
             if ($fileInfo->isDot())
                 continue;
             FileHelper::unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
@@ -181,9 +186,9 @@ class ZendLuceneSearch extends Search
         }
 
         if (!isset($options['sortField']) || $options['sortField'] == '') {
-            $hits = new \ArrayObject($index->find($query));
+            $hits = new ArrayObject($index->find($query));
         } else {
-            $hits = new \ArrayObject($index->find($query, $options['sortField']));
+            $hits = new ArrayObject($index->find($query, $options['sortField']));
         }
 
         $resultSet = new SearchResultSet();
@@ -191,7 +196,7 @@ class ZendLuceneSearch extends Search
         $resultSet->pageSize = $options['pageSize'];
         $resultSet->page = $options['page'];
 
-        $hits = new \LimitIterator($hits->getIterator(), ($options['page'] - 1) * $options['pageSize'], $options['pageSize']);
+        $hits = new LimitIterator($hits->getIterator(), ($options['page'] - 1) * $options['pageSize'], $options['pageSize']);
         foreach ($hits as $hit) {
             $document = $hit->getDocument();
 
@@ -211,7 +216,7 @@ class ZendLuceneSearch extends Search
      *
      * @param string $keyword
      * @param array $options
-     * @return \ZendSearch\Lucene\Search\Query\AbstractQuery
+     * @return AbstractQuery
      */
     protected function buildQuery($keyword, $options)
     {

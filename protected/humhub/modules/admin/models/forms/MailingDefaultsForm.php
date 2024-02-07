@@ -3,12 +3,13 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * @package humhub.modules_core.admin.forms
  * @since 0.5
  */
-class MailingDefaultsForm extends \yii\base\Model
+class MailingDefaultsForm extends Model
 {
 
     public $receive_email_activities;

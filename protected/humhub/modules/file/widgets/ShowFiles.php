@@ -11,13 +11,14 @@ namespace humhub\modules\file\widgets;
 use humhub\components\ActiveRecord;
 use humhub\modules\file\converter\PreviewImage;
 use Yii;
+use yii\base\Widget;
 
 /**
  * This widget is used include the files functionality to a wall entry.
  *
  * @since 0.5
  */
-class ShowFiles extends \yii\base\Widget
+class ShowFiles extends Widget
 {
     /**
      * @var ActiveRecord Object to show files from

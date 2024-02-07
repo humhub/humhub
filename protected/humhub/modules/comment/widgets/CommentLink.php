@@ -50,14 +50,14 @@ class CommentLink extends Widget
 
         /** @var Module $module */
         $module = Yii::$app->getModule('comment');
-        
+
         if (
             !$module->canComment($this->object)
             || (
                 CommentModel::isSubComment($this->object)
                 && !$module->canComment($this->object->content->getPolymorphicRelation())
             )
-        ){
+        ) {
             return '';
         }
 

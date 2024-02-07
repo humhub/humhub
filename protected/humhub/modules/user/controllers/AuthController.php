@@ -22,6 +22,7 @@ use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\base\Exception;
@@ -146,7 +147,7 @@ class AuthController extends Controller
      *
      * @param BaseClient $authClient
      * @return Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function onAuthSuccess(BaseClient $authClient)
     {
@@ -325,7 +326,7 @@ class AuthController extends Controller
 
     /**
      * Logouts a User
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionLogout()
     {

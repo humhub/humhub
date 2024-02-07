@@ -29,17 +29,17 @@ class SearchForm extends Model
 
     public function init()
     {
-        $page = (int) Yii::$app->request->get('page');
+        $page = (int)Yii::$app->request->get('page');
         $this->page = $page < 1 ? 1 : $page;
 
-        $pageSize = (int) Yii::$app->settings->get('paginationSize');
+        $pageSize = (int)Yii::$app->settings->get('paginationSize');
         $this->pageSize = $pageSize < 1 ? 1 : $pageSize;
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() 
+    public function rules()
     {
         return [
             [['keyword', 'scope', 'page', 'limitSpaceGuids'], 'safe']

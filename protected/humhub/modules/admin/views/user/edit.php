@@ -1,9 +1,10 @@
 <?php
 
+use humhub\compat\HForm;
 use humhub\libs\Html;
 use yii\bootstrap\ActiveForm;
 
-/* @var $hForm \humhub\compat\HForm */
+/* @var $hForm HForm */
 /* @var $user \humhub\modules\user\models\User */
 ?>
 
@@ -15,6 +16,6 @@ use yii\bootstrap\ActiveForm;
 </div>
 <div class="panel-body">
     <?php $form = ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => '', 'style' => 'display:none']]); ?>
-        <?= $hForm->render($form); ?>
+    <?= $hForm->render($form); ?>
     <?php ActiveForm::end(); ?>
 </div>

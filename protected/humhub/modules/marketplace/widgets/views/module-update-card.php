@@ -27,7 +27,8 @@ Assets::register($this);
     </div>
     <div class="card-body">
         <div class="card-title"><?= $module->name ?></div>
-        <div><?= Yii::$app->moduleManager->getModule($module->id)->getVersion() ?> → <?= $module->latestCompatibleVersion ?></div>
+        <div><?= Yii::$app->moduleManager->getModule($module->id)->getVersion() ?>
+            → <?= $module->latestCompatibleVersion ?></div>
     </div>
     <?= ModuleUpdateActionButtons::widget(['module' => $module]) ?>
 </div>

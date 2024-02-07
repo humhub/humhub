@@ -9,13 +9,14 @@
 namespace humhub\modules\installer\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * ConfigBasicForm holds basic application settings.
  *
  * @since 0.5
  */
-class ConfigBasicForm extends \yii\base\Model
+class ConfigBasicForm extends Model
 {
 
     /**

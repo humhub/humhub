@@ -70,13 +70,13 @@ class StreamQuery extends Model
 
     /**
      * The user which requested the stream. By default the current user identity.
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 
     /**
      * Can be set to filter content of a specific user
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $originator;
 
@@ -589,7 +589,7 @@ class StreamQuery extends Model
     /**
      * Sets up and apply filters.
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function setupFilters()
     {
@@ -618,7 +618,7 @@ class StreamQuery extends Model
      * }
      * ```
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.6
      */
     protected function beforeApplyFilters()
@@ -629,7 +629,7 @@ class StreamQuery extends Model
     /**
      * Is called right after applying query filters.
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.6
      */
     protected function afterApplyFilters()

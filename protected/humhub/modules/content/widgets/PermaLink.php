@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
+use yii\base\Widget;
 use yii\helpers\Url;
 
 /**
@@ -19,11 +21,11 @@ use yii\helpers\Url;
  * @package humhub.modules_core.wall.widgets
  * @since 0.5
  */
-class PermaLink extends \yii\base\Widget
+class PermaLink extends Widget
 {
 
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $content;
 
@@ -33,10 +35,10 @@ class PermaLink extends \yii\base\Widget
     public function run()
     {
         $permaLink = Url::to(['/content/perma', 'id' => $this->content->content->id], true);
-        
+
         return $this->render('permaLink', [
-                    'permaLink' => $permaLink,
-                    'id' => $this->content->content->id
+            'permaLink' => $permaLink,
+            'id' => $this->content->content->id
         ]);
     }
 

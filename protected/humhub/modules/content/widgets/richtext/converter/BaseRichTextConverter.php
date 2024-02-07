@@ -12,6 +12,7 @@ use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
+use Throwable;
 use Yii;
 
 /**
@@ -235,7 +236,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
             $result = $this->onAfterParse($result);
 
             return $result;
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             Yii::error($t);
             return '[ParserError]';
         }

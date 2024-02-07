@@ -12,12 +12,14 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\LinkRegistrationService;
+use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use humhub\modules\user\models\User;
 use yii\helpers\Url;
+use yii\validators\EmailValidator;
 
 /**
  * Invite Form Model
@@ -54,7 +56,7 @@ class Invite extends Model
     {
         if ($this->$attribute != "") {
             foreach ($this->getEmails() as $email) {
-                $validator = new \yii\validators\EmailValidator();
+                $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
                     $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', ["{email}" => $email]));
                     continue;
@@ -89,7 +91,7 @@ class Invite extends Model
      * @param bool $adminIsAlwaysAllowed
      * @return bool
      * @throws InvalidConfigException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function canInviteByEmail(bool $adminIsAlwaysAllowed = false)
     {
@@ -105,7 +107,7 @@ class Invite extends Model
      *
      * @param bool $adminIsAlwaysAllowed
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @throws InvalidConfigException
      */
     public function canInviteByLink(bool $adminIsAlwaysAllowed = false)

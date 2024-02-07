@@ -8,13 +8,15 @@
 
 namespace humhub\modules\live\components;
 
+use yii\base\BaseObject;
+
 /**
  * LiveEvent implements a message which can be send via live communication
  *
  * @since 1.2
  * @author Luke
  */
-abstract class LiveEvent extends \yii\base\BaseObject
+abstract class LiveEvent extends BaseObject
 {
 
     /**
@@ -31,7 +33,7 @@ abstract class LiveEvent extends \yii\base\BaseObject
 
     /**
      * Returns the data of this event as array
-     * 
+     *
      * @return array the live event data
      */
     public function getData()

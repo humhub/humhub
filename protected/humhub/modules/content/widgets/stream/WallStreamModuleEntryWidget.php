@@ -42,7 +42,7 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
      */
     protected function renderHeadImage()
     {
-        return Html::a( $this->renderIconImage(), $this->getPermaLink());
+        return Html::a($this->renderIconImage(), $this->getPermaLink());
     }
 
     /**
@@ -52,7 +52,7 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
      */
     private function renderIconImage()
     {
-        $icon =  Icon::get($this->getIcon(), ['fixedWidth' => true]);
+        $icon = Icon::get($this->getIcon(), ['fixedWidth' => true]);
         return $icon ? $icon->asString() : '';
     }
 

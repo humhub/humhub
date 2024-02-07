@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\controllers;
 
+use humhub\components\Controller;
 use Yii;
 use yii\web\HttpException;
 use humhub\components\behaviors\AccessControl;
@@ -19,7 +20,7 @@ use humhub\modules\file\handler\FileHandlerCollection;
  *
  * @since 1.2
  */
-class ViewController extends \humhub\components\Controller
+class ViewController extends Controller
 {
 
     /**
@@ -55,11 +56,11 @@ class ViewController extends \humhub\components\Controller
         }
 
         return $this->renderAjax('index', [
-                    'file' => $file,
-                    'importHandler' => $importHandler,
-                    'exportHandler' => $exportHandler,
-                    'editHandler' => $editHandler,
-                    'viewHandler' => $viewHandler
+            'file' => $file,
+            'importHandler' => $importHandler,
+            'exportHandler' => $exportHandler,
+            'editHandler' => $editHandler,
+            'viewHandler' => $viewHandler
         ]);
     }
 

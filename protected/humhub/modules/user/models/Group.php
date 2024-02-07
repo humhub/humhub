@@ -15,7 +15,14 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
+use yii\db\StaleObjectException;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 
 /**
@@ -243,7 +250,7 @@ class Group extends ActiveRecord
 
     /**
      * Returns all user which are defined as manager in this group as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getManager()
     {
@@ -276,7 +283,7 @@ class Group extends ActiveRecord
 
     /**
      * Returns all GroupUser relations for this group as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroupUsers()
     {
@@ -294,7 +301,7 @@ class Group extends ActiveRecord
         $query->leftJoin('group_user', 'group_user.user_id=user.id AND group_user.group_id=:groupId', [
             ':groupId' => $this->id,
         ]);
-        $query->andWhere(['IS NOT', 'group_user.id', new \yii\db\Expression('NULL')]);
+        $query->andWhere(['IS NOT', 'group_user.id', new Expression('NULL')]);
         $query->multiple = true;
 
         return $query;
@@ -334,7 +341,7 @@ class Group extends ActiveRecord
      * @param User $user user id or user model
      * @param bool $isManager mark as group manager
      * @return bool true - on success adding user, false - if already member or cannot be added by some reason
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function addUser($user, $isManager = false)
     {
@@ -370,8 +377,8 @@ class Group extends ActiveRecord
      * Removes a user from the group.
      * @param User|string $user userId or user model
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function removeUser($user)
     {
@@ -417,7 +424,7 @@ class Group extends ActiveRecord
         }
 
         $group = self::findOne($user->registrationGroupId);
-        $approvalUrl = \yii\helpers\Url::to(["/admin/approval"], true);
+        $approvalUrl = Url::to(["/admin/approval"], true);
 
         foreach ($group->manager as $manager) {
 
@@ -429,7 +436,7 @@ class Group extends ActiveRecord
                     ['displayName' => $user->displayName]) . "<br><br>\n\n" .
                 Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .
-                \yii\helpers\Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
+                Html::a($approvalUrl, $approvalUrl) . "<br/> <br/>\n";
 
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
                 'message' => $html,
@@ -483,7 +490,7 @@ class Group extends ActiveRecord
 
     /**
      * Returns all GroupSpace relations for this group as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      * @since 1.8
      */
     public function getGroupSpaces()
@@ -501,10 +508,10 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-            $this->isNewRecord ||
-            $this->is_admin_group ||
-            $this->is_default_group ||
-            $this->is_protected
-        );
+                $this->isNewRecord ||
+                $this->is_admin_group ||
+                $this->is_default_group ||
+                $this->is_protected
+            );
     }
 }

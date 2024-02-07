@@ -52,8 +52,8 @@ class PurchaseController extends Controller
         $purchasedModules = $this->module->onlineModuleManager->getPurchasedModules(false);
 
         $html = $this->renderAjax('list', [
-            'modules' => $purchasedModules
-        ] + $addKeyResult);
+                'modules' => $purchasedModules
+            ] + $addKeyResult);
 
         if (Yii::$app->request->isGet) {
             return $html;

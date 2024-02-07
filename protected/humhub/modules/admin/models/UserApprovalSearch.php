@@ -8,7 +8,9 @@
 
 namespace humhub\modules\admin\models;
 
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 use humhub\modules\user\models\User;
@@ -49,8 +51,8 @@ class UserApprovalSearch extends User
      *
      * @param array $params
      * @return ActiveDataProvider
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function search($params = [])
     {

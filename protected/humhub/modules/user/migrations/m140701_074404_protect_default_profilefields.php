@@ -13,23 +13,23 @@ class m140701_074404_protect_default_profilefields extends Migration
 
         $this->update('profile_field', [
             'is_system' => 1
-                ], 'internal_name="gender" OR internal_name="street" OR internal_name="zip" OR internal_name="city" OR internal_name="country"');
+        ], 'internal_name="gender" OR internal_name="street" OR internal_name="zip" OR internal_name="city" OR internal_name="country"');
         $this->update('profile_field', [
             'is_system' => 1
-                ], 'internal_name="state" OR internal_name="about" OR internal_name="phone_private" OR internal_name="phone_work" OR internal_name="mobile"');
+        ], 'internal_name="state" OR internal_name="about" OR internal_name="phone_private" OR internal_name="phone_work" OR internal_name="mobile"');
         $this->update('profile_field', [
             'is_system' => 1
-                ], 'internal_name="mobile" OR internal_name="fax" OR internal_name="im_skype" OR internal_name="im_msn" OR internal_name="im_icq"');
+        ], 'internal_name="mobile" OR internal_name="fax" OR internal_name="im_skype" OR internal_name="im_msn" OR internal_name="im_icq"');
         $this->update('profile_field', [
             'is_system' => 1
-                ], 'internal_name="im_xmpp" OR internal_name="url" OR internal_name="url_facebook" OR internal_name="url_linkedin" OR internal_name="url_xing"');
+        ], 'internal_name="im_xmpp" OR internal_name="url" OR internal_name="url_facebook" OR internal_name="url_linkedin" OR internal_name="url_xing"');
         $this->update('profile_field', [
             'is_system' => 1
-                ], 'internal_name="url_youtube" OR internal_name="url_vimeo" OR internal_name="url_flickr" OR internal_name="url_myspace" OR internal_name="url_googleplus" OR internal_name="url_twitter"');
+        ], 'internal_name="url_youtube" OR internal_name="url_vimeo" OR internal_name="url_flickr" OR internal_name="url_myspace" OR internal_name="url_googleplus" OR internal_name="url_twitter"');
 
         $this->update('profile_field', [
             'is_system' => 1
-                ], 'title="General" OR title="Communication" OR title="Social bookmarks"');
+        ], 'title="General" OR title="Communication" OR title="Social bookmarks"');
     }
 
     public function down()

@@ -1,9 +1,11 @@
 <?php
 
+use humhub\components\Migration;
+use yii\db\Query;
 use yii\db\Schema;
 
 
-class m151010_124437_group_permissions extends \humhub\components\Migration
+class m151010_124437_group_permissions extends Migration
 {
     public function up()
     {
@@ -16,8 +18,8 @@ class m151010_124437_group_permissions extends \humhub\components\Migration
         ]);
 
         $this->addPrimaryKey('permission_pk', 'group_permission', ['permission_id', 'group_id', 'module_id']);
-        
-        $groups = (new \yii\db\Query())->select("group.*")->from('group');
+
+        $groups = (new Query())->select("group.*")->from('group');
         foreach ($groups->each() as $group) {
             if ($group['can_create_public_spaces'] != 1) {
                 $this->insertSilent('group_permission', [
@@ -37,11 +39,11 @@ class m151010_124437_group_permissions extends \humhub\components\Migration
                     'state' => '0'
                 ]);
             }
-        }     
-        
+        }
+
         $this->dropColumn('group', 'can_create_public_spaces');
         $this->dropColumn('group', 'can_create_private_spaces');
-        
+
     }
 
     public function down()

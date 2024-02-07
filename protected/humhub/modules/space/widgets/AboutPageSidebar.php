@@ -2,13 +2,14 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use Yii;
 
 class AboutPageSidebar extends Sidebar
 {
     /**
-     * @var \humhub\modules\space\models\Space the space this sidebar is in
+     * @var Space the space this sidebar is in
      */
     public $space;
 

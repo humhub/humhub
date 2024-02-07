@@ -85,7 +85,8 @@ class BaseType extends Model
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->trigger(self::EVENT_INIT);
@@ -133,14 +134,14 @@ class BaseType extends Model
     /**
      * Returns additional form field item options for all field types.
      *
-     * @internal
      * @return array
+     * @internal
      */
     final public function getFieldTypeItemOptions()
     {
         $result = [];
         foreach ($this->getFieldTypes() as $field_class => $label) {
-            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class.'::getHiddenFormFields')];
+            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class . '::getHiddenFormFields')];
         }
         return $result;
     }

@@ -30,7 +30,7 @@ abstract class TabMenu extends Menu
 
     public function render($view, $params = [])
     {
-        if(!$this->renderSingleTab && !$this->hasMultipleEntries(MenuLink::class)) {
+        if (!$this->renderSingleTab && !$this->hasMultipleEntries(MenuLink::class)) {
             return '';
         }
 

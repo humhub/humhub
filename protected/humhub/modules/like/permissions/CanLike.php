@@ -8,13 +8,15 @@
 
 namespace humhub\modules\like\permissions;
 
+use humhub\libs\BasePermission;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * CanLike Permission
  */
-class CanLike extends \humhub\libs\BasePermission
+class CanLike extends BasePermission
 {
 
     /**
@@ -58,8 +60,8 @@ class CanLike extends \humhub\libs\BasePermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('LikeModule.permissions', 'Can like');
-        $this->description = \Yii::t('LikeModule.permissions', 'Allows user to like content');
+        $this->title = Yii::t('LikeModule.permissions', 'Can like');
+        $this->description = Yii::t('LikeModule.permissions', 'Allows user to like content');
     }
 
 }

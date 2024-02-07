@@ -9,6 +9,8 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\libs\BasePermission;
+use humhub\modules\content\components\ContentActiveRecord;
+use yii\base\Widget;
 
 /**
  * Edit Link for Wall Entries
@@ -19,11 +21,11 @@ use humhub\libs\BasePermission;
  * @package humhub.modules_core.wall.widgets
  * @since 0.10
  */
-class EditLink extends \yii\base\Widget
+class EditLink extends Widget
 {
 
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $model = null;
 
@@ -31,7 +33,7 @@ class EditLink extends \yii\base\Widget
      * @var string edit route.
      */
     public $url;
-    
+
     /**
      * @var defines the edit type of the wallentry
      */
@@ -43,14 +45,14 @@ class EditLink extends \yii\base\Widget
      */
     public function run()
     {
-        if(!$this->url) {
+        if (!$this->url) {
             return;
         }
 
         if ($this->model->content->canEdit()) {
             return $this->render('editLink', [
-                        'editUrl' => $this->url,
-                        'mode' => $this->mode
+                'editUrl' => $this->url,
+                'mode' => $this->mode
             ]);
         }
     }

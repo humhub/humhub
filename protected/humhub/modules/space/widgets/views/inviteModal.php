@@ -1,15 +1,17 @@
 <?php
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $canInviteByEmail bool */
 /* @var $canInviteByLink bool */
 /* @var $canAddWithoutInvite bool */
 /* @var $submitText string */
 /* @var $submitAction string */
-/* @var $model \humhub\modules\space\models\forms\InviteForm */
+/* @var $model InviteForm */
 /* @var $attribute string */
 
 /* @var $searchUrl string */
 
+use humhub\modules\space\models\forms\InviteForm;
+use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
@@ -118,7 +120,7 @@ $form = ActiveForm::begin([
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
                         <a href="#" class="pull-right"
-                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>",
+                           data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
                            data-action-click-url="<?= $model->space->createUrl('/space/membership/reset-invite-link') ?>">

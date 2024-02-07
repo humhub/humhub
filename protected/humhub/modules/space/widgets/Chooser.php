@@ -2,6 +2,7 @@
 
 namespace humhub\modules\space\widgets;
 
+use Exception;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\assets\SpaceChooserAsset;
@@ -12,7 +13,9 @@ use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\Follow;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\Query;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -49,8 +52,8 @@ class Chooser extends Widget
 
     /**
      * @inheritdoc
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function run()
     {
@@ -76,8 +79,8 @@ class Chooser extends Widget
 
     /**
      * @return array
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     protected function getViewParams()
     {
@@ -120,7 +123,7 @@ class Chooser extends Widget
     /**
      * @param string $output
      * @return mixed|string
-     * @throws \Throwable
+     * @throws Throwable
      */
     protected function renderItems($output = '')
     {
@@ -168,7 +171,7 @@ class Chooser extends Widget
 
     /**
      * @return Space[]
-     * @throws \Throwable
+     * @throws Throwable
      */
     protected function getFollowSpaces()
     {
@@ -181,7 +184,7 @@ class Chooser extends Widget
 
     /**
      * @return Membership[]
-     * @throws \Throwable
+     * @throws Throwable
      */
     protected function getMemberships()
     {
@@ -194,7 +197,7 @@ class Chooser extends Widget
 
     /**
      * @return bool
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function canCreateSpace()
     {
@@ -244,7 +247,7 @@ class Chooser extends Widget
      * @param bool $withChooserItem
      * @param array $itemOptions
      * @return array
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getSpaceResult($space, $withChooserItem = true, $itemOptions = [])
     {
@@ -263,7 +266,7 @@ class Chooser extends Widget
 
     /**
      * @return mixed|string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function getLazyLoadResult()
     {

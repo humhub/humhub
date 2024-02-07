@@ -32,7 +32,7 @@ class ImageHelper
      * @see https://github.com/yiisoft/yii2-imagine/issues/44
      * @param $image ImageInterface
      * @param $file File|string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function fixJpegOrientation($image, $file)
     {

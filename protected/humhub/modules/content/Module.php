@@ -93,16 +93,16 @@ class Module extends \humhub\components\Module
 
     /**
      * @param ContentContainerActiveRecord $container
-     * @since 1.6
      * @return int
+     * @since 1.6
      */
     public function getMaxPinnedContent(ContentContainerActiveRecord $container)
     {
-        if($container instanceof User) {
+        if ($container instanceof User) {
             return $this->maxPinnedProfileContent;
         }
 
-        if($container instanceof Space) {
+        if ($container instanceof Space) {
             return $this->maxPinnedSpaceContent;
         }
 

@@ -18,6 +18,7 @@ use humhub\modules\user\widgets\UserListBox;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\space\widgets\Menu;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 use yii\db\Expression;
 
@@ -64,7 +65,7 @@ class SpaceController extends ContentContainerController
 
     /**
      * Generic Start Action for Profile
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function actionIndex()
     {
@@ -93,7 +94,7 @@ class SpaceController extends ContentContainerController
      * Default space homepage
      *
      * @return string the rendering result.
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function actionHome()
     {

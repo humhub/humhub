@@ -33,7 +33,7 @@ class InviteAccepted extends BaseNotification
     public $viewName = 'inviteAccepted';
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
@@ -41,7 +41,7 @@ class InviteAccepted extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {

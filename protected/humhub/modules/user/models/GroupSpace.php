@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\modules\space\models\Space;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -60,7 +61,7 @@ class GroupSpace extends ActiveRecord
     /**
      * Gets query for [[Group]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroup()
     {
@@ -70,7 +71,7 @@ class GroupSpace extends ActiveRecord
     /**
      * Gets query for [[Space]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {

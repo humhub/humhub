@@ -13,8 +13,12 @@ use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Yii;
 use yii\base\Component;
+use yii\base\ErrorException;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
 use yii\base\Exception;
 use yii\helpers\FileHelper;
@@ -38,8 +42,8 @@ class OnlineModuleManager extends Component
      * @param string $moduleId
      * @throws Exception
      * @throws HttpException
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\InvalidConfigException
+     * @throws ErrorException
+     * @throws InvalidConfigException
      */
     public function install($moduleId)
     {
@@ -94,8 +98,8 @@ class OnlineModuleManager extends Component
     private function removeModuleDir($path)
     {
         if (is_dir($path)) {
-            $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS), RecursiveIteratorIterator::CHILD_FIRST
             );
 
             foreach ($files as $fileinfo) {
@@ -156,8 +160,8 @@ class OnlineModuleManager extends Component
      * @param string $moduleId
      * @throws Exception
      * @throws HttpException
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\InvalidConfigException
+     * @throws ErrorException
+     * @throws InvalidConfigException
      */
     public function update($moduleId)
     {

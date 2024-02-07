@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\notifications;
 
+use humhub\modules\comment\models\Comment;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
@@ -42,7 +44,7 @@ class Mentioned extends BaseNotification
      */
     public function getViewName()
     {
-        if ($this->source instanceof \humhub\modules\comment\models\Comment) {
+        if ($this->source instanceof Comment) {
             return 'mentionedComment';
         }
 
@@ -52,7 +54,7 @@ class Mentioned extends BaseNotification
     /**
      * inheritdoc
      */
-    public function send(\humhub\modules\user\models\User $user)
+    public function send(User $user)
     {
         // Do additional access check here, because the mentioned user may have no access to the content
         if (!$this->source->content->canView($user)) {
@@ -68,9 +70,9 @@ class Mentioned extends BaseNotification
     public function getMailSubject()
     {
         return Yii::t('UserModule.notification', "{displayName} just mentioned you in {contentTitle} \"{preview}\"", [
-                    'displayName' => $this->originator->displayName,
-                    'contentTitle' => $this->getContentName(),
-                    'preview' => $this->getContentPlainTextPreview()
+            'displayName' => $this->originator->displayName,
+            'contentTitle' => $this->getContentName(),
+            'preview' => $this->getContentPlainTextPreview()
         ]);
     }
 
@@ -80,8 +82,8 @@ class Mentioned extends BaseNotification
     public function html()
     {
         return Yii::t('UserModule.notification', '{displayName} mentioned you in {contentTitle}.', [
-                    'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                    'contentTitle' => $this->getContentInfo($this->source)
+            'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
+            'contentTitle' => $this->getContentInfo($this->source)
         ]);
     }
 }

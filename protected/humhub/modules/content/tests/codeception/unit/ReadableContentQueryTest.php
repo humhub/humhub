@@ -3,12 +3,14 @@
 namespace tests\codeception\unit\modules\content;
 
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\post\models\Post;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
+use yii\base\Exception;
 
 class ReadableContentQueryTest extends HumHubDbTestCase
 {
@@ -110,8 +112,8 @@ class ReadableContentQueryTest extends HumHubDbTestCase
      * This test queries all visible global posts for User1 (not the content owner)
      * The should be able to see both global content, since he is member of the network.
      *
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function testGlobalContentAsMember()
     {
@@ -158,7 +160,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
     {
         $this->becomeUser('User3');
 
-        $this->posts  = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
 
         $this->assertPostCount(1);
         $this->assertInPosts($this->publicSpacePublicPost);
@@ -169,7 +171,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->allowGuestAccess(true);
         $this->logout();
 
-        $this->posts  = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
 
         $this->assertPostCount(1);
         $this->assertInPosts($this->publicSpacePublicPost);
@@ -447,7 +449,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
     {
         $found = false;
         foreach ($this->posts as $postResult) {
-            if($postResult->id === $post->id) {
+            if ($postResult->id === $post->id) {
                 $found = true;
                 break;
             }

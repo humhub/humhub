@@ -13,6 +13,8 @@ use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\activity\Module;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
+use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
@@ -38,7 +40,7 @@ class MailSummary extends Component
     const INTERVAL_MONTHLY = 4;
 
     /**
-     * @var \humhub\modules\user\models\User the user
+     * @var User the user
      */
     public $user;
 
@@ -104,7 +106,7 @@ class MailSummary extends Component
                 Yii::$app->i18n->autosetLocale();
                 return true;
             }
-        } catch (\Throwable $ex) {
+        } catch (Throwable $ex) {
             Yii::error('Could not send mail to: ' . $this->user->email . ' - Error:  ' . $ex->getMessage());
         } finally {
             Yii::$app->i18n->autosetLocale();
