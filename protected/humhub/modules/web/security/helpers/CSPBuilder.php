@@ -392,8 +392,7 @@ class CSPBuilder
         $directive = 'script-src',
         $script = '',
         $algorithm = 'sha384'
-    )
-    {
+    ) {
         $ruleKeys = array_keys($this->policies);
         if (in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] [] = [
@@ -465,8 +464,7 @@ class CSPBuilder
         $directive = 'script-src',
         $hash = '',
         $algorithm = 'sha384'
-    )
-    {
+    ) {
         $ruleKeys = array_keys($this->policies);
         if (in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] [] = [
@@ -499,8 +497,7 @@ class CSPBuilder
     public function saveSnippet(
         $outputFile,
         $format = self::FORMAT_NGINX
-    )
-    {
+    ) {
         if ($this->needsCompile) {
             $this->compile();
         }

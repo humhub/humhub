@@ -309,10 +309,9 @@ class Membership extends ActiveRecord
      */
     public static function findByUser(
         User $user = null,
-             $membershipStatus = self::STATUS_MEMBER,
-             $spaceStatus = Space::STATUS_ENABLED
-    )
-    {
+        $membershipStatus = self::STATUS_MEMBER,
+        $spaceStatus = Space::STATUS_ENABLED
+    ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();
         }
