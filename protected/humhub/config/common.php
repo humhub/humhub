@@ -97,6 +97,11 @@ $config = [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
+                'SearchModule.*' => [
+                    // Temporary: During conversion of the search module
+                    'class' => PhpMessageSource::class,
+                    'basePath' => '@humhub/messages'
+                ],
                 'custom' => [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
