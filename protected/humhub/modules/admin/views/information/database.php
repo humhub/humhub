@@ -45,9 +45,9 @@ use humhub\modules\ui\view\components\View;
                 Yii::t('AdminModule.information', 'Update Database'),
                 ['/admin/information/database', 'migrate' => 1],
                 [
-                                'id' => 'migrationRun',
-                                'class' => 'btn btn-primary pull-right',
-                            ]
+                                            'id' => 'migrationRun',
+                                            'class' => 'btn btn-primary pull-right',
+                                        ]
             ); ?>
         </p>
     <?php elseif ($migrationStatus === InformationController::DB_ACTION_RUN): ?>

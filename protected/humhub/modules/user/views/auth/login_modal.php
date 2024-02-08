@@ -87,15 +87,15 @@ use yii\widgets\ActiveForm;
                                             Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
                                             $passwordRecoveryRoute,
                                             ArrayHelper::merge([
-                                                                                        'id' => 'recoverPasswordBtn',
-                                                                                    ], is_array($passwordRecoveryRoute) ? [
-                                                                                        'data' => [
-                                                                                            'action-click' => 'ui.modal.load',
-                                                                                            'action-url' => Url::to($passwordRecoveryRoute),
-                                                                                        ]
-                                                                                    ] : [
-                                                                                        'target' => '_blank',
-                                                                                    ]),
+                                                                                                                                'id' => 'recoverPasswordBtn',
+                                                                                                                            ], is_array($passwordRecoveryRoute) ? [
+                                                                                                                                'data' => [
+                                                                                                                                    'action-click' => 'ui.modal.load',
+                                                                                                                                    'action-url' => Url::to($passwordRecoveryRoute),
+                                                                                                                                ]
+                                                                                                                            ] : [
+                                                                                                                                'target' => '_blank',
+                                                                                                                            ]),
                                         ) ?>
                                     </small>
                                 </div>
@@ -126,8 +126,8 @@ use yii\widgets\ActiveForm;
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                                                                        'captchaAction' => '/user/auth/captcha',
-                                                                    ])->label(false); ?>
+                                                                                                                'captchaAction' => '/user/auth/captcha',
+                                                                                                            ])->label(false); ?>
                         <?php endif; ?>
                         <hr>
 

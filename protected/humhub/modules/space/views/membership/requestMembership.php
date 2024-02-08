@@ -43,12 +43,12 @@ SpaceAsset::register($this);
                 Yii::t('SpaceModule.base', 'Send'),
                 '#',
                 [
-                                'class' => ['btn', 'btn-primary'],
-                                'data' => [
-                                    'action-click' => 'space.requestMembershipSend',
-                                    'action-url' => $space->createUrl('/space/membership/request-membership-form'),
-                                ]
-                            ]
+                                            'class' => ['btn', 'btn-primary'],
+                                            'data' => [
+                                                'action-click' => 'space.requestMembershipSend',
+                                                'action-url' => $space->createUrl('/space/membership/request-membership-form'),
+                                            ]
+                                        ]
             ) ?>
 
             <?= Html::button(

@@ -20,17 +20,17 @@ ContentContainerAsset::register($this);
         '<i class="fa fa-bell-slash-o"></i> ' . Yii::t('ContentModule.base', 'Turn off notifications'),
         Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
         [
-                'id' => "notification_off_$content->id",
-                'class' => ['turnOffNotifications'],
-                'style' => [
-                    'display' => $state ? 'block' : 'none',
-                ],
-                'data' => [
-                    'action-click' => 'content.container.turnOffNotifications',
-                    'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
-                    'content-id' => $content->id,
+                    'id' => "notification_off_$content->id",
+                    'class' => ['turnOffNotifications'],
+                    'style' => [
+                        'display' => $state ? 'block' : 'none',
+                    ],
+                    'data' => [
+                        'action-click' => 'content.container.turnOffNotifications',
+                        'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
+                        'content-id' => $content->id,
+                    ]
                 ]
-            ]
     ); ?>
 
     <?= Html::a(

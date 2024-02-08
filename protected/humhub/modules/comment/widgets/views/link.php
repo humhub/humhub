@@ -41,6 +41,6 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     ) ?>
 <?php else : ?>
     <?= Button::asLink($label . $commentCountSpan)
-            ->action('comment.toggleComment', null, '#comment_' . $id) ?>
+                ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
 

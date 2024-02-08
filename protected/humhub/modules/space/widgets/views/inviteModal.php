@@ -77,26 +77,26 @@ $form = ActiveForm::begin([
             <br><br>
 
             <?= $form->field($model, 'invite')
-                            ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
+                                        ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
 
             <?php if ($canAddWithoutInvite) : ?>
                 <br/>
                 <?= $form
-                            ->field($model, 'withoutInvite')
-                            ->label(Yii::t(
-                                'SpaceModule.base',
-                                'Add users without invitation'
-                            ))
-                            ->checkbox() ?>
+                                        ->field($model, 'withoutInvite')
+                                        ->label(Yii::t(
+                                            'SpaceModule.base',
+                                            'Add users without invitation'
+                                        ))
+                                        ->checkbox() ?>
                 <br/>
 
                 <?= $form
-                                ->field($model, 'allRegisteredUsers')
-                                ->label(Yii::t(
-                                    'SpaceModule.base',
-                                    'Select all registered users'
-                                ))
-                                ->checkbox() ?>
+                                            ->field($model, 'allRegisteredUsers')
+                                            ->label(Yii::t(
+                                                'SpaceModule.base',
+                                                'Select all registered users'
+                                            ))
+                                            ->checkbox() ?>
             <?php endif; ?>
 
         </div>
@@ -156,9 +156,9 @@ $form = ActiveForm::begin([
         ->link('mailto:' .
             '?subject=' . rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])) .
             '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
-                'originator' => Yii::$app->user->identity,
-                'space' => $model->space,
-                'registrationUrl' => $model->getInviteLink()
+    'originator' => Yii::$app->user->identity,
+    'space' => $model->space,
+    'registrationUrl' => $model->getInviteLink()
             ])))
         ->style(['display' => 'none'])
         ->id('space-invite-send-link-by-email-btn')

@@ -80,15 +80,15 @@ use yii\bootstrap\ActiveForm;
                 </div>
                 <br>
                 <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
-                                        ->link('mailto:' .
-                                            '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
-                                            '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
-                                                'originator' => Yii::$app->user->identity,
-                                                'registrationUrl' => $model->getInviteLink()
-                                            ])))
-                                        ->id('global-invite-send-link-by-email-btn')
-                                        ->icon('paper-plane')
-                                        ->loader(false)
+                                                            ->link('mailto:' .
+                                                                '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
+                                                                '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
+                                                                    'originator' => Yii::$app->user->identity,
+                                                                    'registrationUrl' => $model->getInviteLink()
+                                                                ])))
+                                                            ->id('global-invite-send-link-by-email-btn')
+                                                            ->icon('paper-plane')
+                                                            ->loader(false)
             ?>
             </div>
         <?php endif; ?>

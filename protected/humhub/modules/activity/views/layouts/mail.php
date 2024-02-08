@@ -90,8 +90,8 @@ use yii\web\View;
                                                                                 $space->displayName,
                                                                                 $space->createUrl(null, [], true),
                                                                                 [
-                                                                                                                                                                'style' => 'text-decoration: none; color: #555555;'
-                                                                                                                                                            ]
+                                                                                                                                                                                                                                            'style' => 'text-decoration: none; color: #555555;'
+                                                                                                                                                                                                                                        ]
                                                                             ) ?>
                                                                         <?php endif; ?>
 
