@@ -342,15 +342,10 @@ class Module extends \yii\base\Module
      */
     public function update()
     {
-        if (!$this->beforeUpdate()) {
-            return null;
+        if ($this->beforeUpdate() !== false) {
+            $this->migrate();
+            $this->afterUpdate();
         }
-
-        $result = $this->getMigrationService()->migrateUp();
-
-        $this->afterUpdate();
-
-        return $result;
     }
 
     /**
@@ -359,6 +354,8 @@ class Module extends \yii\base\Module
      * The update will cancel if this function does return false;
      *
      * @return bool
+     * @deprecated
+     *
      */
     public function beforeUpdate()
     {
@@ -367,6 +364,8 @@ class Module extends \yii\base\Module
 
     /**
      * Called right after the module update.
+     *
+     * @deprecated
      */
     public function afterUpdate()
     {

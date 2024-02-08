@@ -39,7 +39,7 @@ class Request extends BaseNotification
      */
     public function getUrl()
     {
-        return $this->originator->getUrl();
+        return $this->originator->getUrl(true);
     }
 
     /**

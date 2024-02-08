@@ -70,6 +70,7 @@ class ContentVisibilityTest extends ContentModelTest
 
     public function testCreatePublicContentOnProtectedSpace()
     {
+        $this->space->addMember(Yii::$app->user->id);
         $this->space->visibility = Space::VISIBILITY_REGISTERED_ONLY;
 
         $newModel = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [

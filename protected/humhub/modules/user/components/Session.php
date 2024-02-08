@@ -42,6 +42,14 @@ class Session extends DbSession
     /**
      * @inheritDoc
      */
+    public function getTimeout()
+    {
+        return (int) Yii::$app->user->authTimeout;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function getCookieParams()
     {
         $params = parent::getCookieParams();
