@@ -6,7 +6,7 @@ $finder = (new PhpCsFixer\Finder())
         'views/',
     ])
     ->in([
-        'protected/humhub/modules',
+        'protected/humhub',
     ]);
 
 return (new PhpCsFixer\Config())

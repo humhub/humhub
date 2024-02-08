@@ -127,7 +127,9 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject"
-        ]
+        ],
+        "cs:fix": "protected/vendor/bin/php-cs-fixer fix",
+        "cs:check": "protected/vendor/bin/php-cs-fixer fix --dry-run --diff"
     },
     "extra": {
         "yii\\composer\\Installer::postCreateProject": {

@@ -18,7 +18,6 @@ use yii\base\BootstrapInterface;
  */
 class LanguageSelector implements BootstrapInterface
 {
-
     /**
      * @inheritdoc
      */

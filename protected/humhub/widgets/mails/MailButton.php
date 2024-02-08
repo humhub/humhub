@@ -18,19 +18,18 @@ use Yii;
  */
 class MailButton extends \yii\base\Widget
 {
-
     /**
      * @var string hex color, default is primary theme color
      */
     public $color;
 
     /**
-     * @var string can be used instead of $color and accepts values as primary|info|success or any other theme variable etc. 
+     * @var string can be used instead of $color and accepts values as primary|info|success or any other theme variable etc.
      */
     public $type;
 
     /**
-     * @var string target url 
+     * @var string target url
      */
     public $url;
 

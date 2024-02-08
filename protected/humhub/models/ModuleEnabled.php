@@ -17,8 +17,7 @@ use Yii;
  */
 class ModuleEnabled extends \yii\db\ActiveRecord
 {
-
-    const CACHE_ID_ALL_IDS = 'enabledModuleIds';
+    public const CACHE_ID_ALL_IDS = 'enabledModuleIds';
 
     /**
      * @inheritdoc

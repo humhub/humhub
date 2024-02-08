@@ -17,7 +17,6 @@ namespace humhub\widgets;
  */
 class StatusBar extends \yii\base\Widget
 {
-
     /**
      * @inheritdoc
      */

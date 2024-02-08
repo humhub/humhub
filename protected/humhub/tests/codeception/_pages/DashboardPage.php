@@ -10,7 +10,6 @@ use tests\codeception\_support\BasePage;
  */
 class DashboardPage extends BasePage
 {
-
     public $route = 'dashboard/dashboard';
 
 }

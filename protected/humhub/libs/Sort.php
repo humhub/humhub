@@ -15,7 +15,6 @@ namespace humhub\libs;
  */
 class Sort
 {
-
     /**
      * @param array $arr The input array.
      * @param string $field The attribute or array key to which holds the sort order

@@ -22,7 +22,6 @@ use humhub\components\Controller;
  */
 class ErrorController extends Controller
 {
-
     /**
      * This is the action to handle external exceptions.
      */

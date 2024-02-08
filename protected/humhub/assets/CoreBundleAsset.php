@@ -29,11 +29,11 @@ use humhub\modules\user\assets\UserPickerAsset;
  */
 class CoreBundleAsset extends WebStaticAssetBundle
 {
-    const BUNDLE_NAME = 'defer';
+    public const BUNDLE_NAME = 'defer';
 
     public $defaultDepends = false;
 
-    const STATIC_DEPENDS = [
+    public const STATIC_DEPENDS = [
         AppAsset::class,
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,

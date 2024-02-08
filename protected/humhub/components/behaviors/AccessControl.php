@@ -112,7 +112,7 @@ class AccessControl extends ActionFilter
     /**
      * Only allow admins access to this controller
      *
-     * @var boolean
+     * @var bool
      * @deprecated since 1.2.2 use ['adminOnly'] rule instead
      */
     public $adminOnly = false;

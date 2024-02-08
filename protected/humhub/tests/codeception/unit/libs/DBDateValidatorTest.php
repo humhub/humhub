@@ -7,7 +7,6 @@
 
 namespace humhub\tests\codeception\unit\libs;
 
-
 use Yii;
 use humhub\libs\DbDateValidator;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -25,7 +24,7 @@ class DBDateValidatorTest extends HumHubDbTestCase
         Yii::$app->timeZone = 'Europe/Berlin';
         Yii::$app->setLanguage('en-US');
         $this->becomeUser('admin');
-         Yii::$app->user->identity->setAttribute('time_zone', 'Europe/London');
+        Yii::$app->user->identity->setAttribute('time_zone', 'Europe/London');
     }
 
     public function testInitValues()

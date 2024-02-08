@@ -48,7 +48,7 @@ $envCfg = dirname(__DIR__) . '/../config/env/env.php';
 $env = file_exists($envCfg) ? require($envCfg) : [];
 
 return yii\helpers\ArrayHelper::merge(
-// Default Test Config
+    // Default Test Config
     $default,
     // User Overwrite
     require(dirname(__DIR__) . '/../config/common.php'),

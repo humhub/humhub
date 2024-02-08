@@ -34,7 +34,6 @@ use humhub\components\rendering\Viewable;
  */
 class DefaultViewPathRenderer extends \humhub\components\rendering\ViewPathRenderer
 {
-
     /**
      * @var string fallback view
      */

@@ -18,11 +18,10 @@ use yii\helpers\Console;
  */
 class IntegrityController extends Controller
 {
-
     /**
      * @event Event an event that is triggered when the integritychecker is started.
      */
-    const EVENT_ON_RUN = "run";
+    public const EVENT_ON_RUN = "run";
 
     /**
      * @inheritdoc
@@ -60,7 +59,7 @@ class IntegrityController extends Controller
      * If not in interactive mode, it returns true otherwise a confirm dialog will be shown.
      *
      * @param string $headline
-     * @return boolean
+     * @return bool
      */
     public function showFix($message)
     {

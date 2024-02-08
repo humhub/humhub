@@ -18,7 +18,6 @@ use humhub\components\assets\AssetBundle;
  */
 class NProgressStyleAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

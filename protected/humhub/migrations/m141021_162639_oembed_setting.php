@@ -6,7 +6,6 @@ use yii\helpers\Json;
 
 class m141021_162639_oembed_setting extends Migration
 {
-
     public function up()
     {
         $this->insert('setting', [

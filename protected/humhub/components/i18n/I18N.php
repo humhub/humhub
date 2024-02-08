@@ -21,7 +21,6 @@ use yii\i18n\I18N as BaseI18N;
  */
 class I18N extends BaseI18N
 {
-
     /**
      * @var string path which contains message overwrites
      */

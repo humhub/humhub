@@ -39,7 +39,6 @@ use yii\web\UploadedFile;
  */
 class ProfileImage
 {
-
     /**
      * @var String is the guid of user or space
      */
@@ -93,7 +92,7 @@ class ProfileImage
      * Returns the URl of the Modified Profile Image
      *
      * @param String $prefix Prefix of the returned image
-     * @param boolean $scheme URL Scheme
+     * @param bool $scheme URL Scheme
      * @return String Url of the profile image
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\Exception
@@ -151,7 +150,7 @@ class ProfileImage
      * @param Int $y
      * @param Int $h
      * @param Int $w
-     * @return boolean indicates the success
+     * @return bool indicates the success
      * @throws \yii\base\Exception
      */
     public function cropOriginal($x, $y, $h, $w)

@@ -1,13 +1,11 @@
 <?php
 
-
 namespace humhub\libs;
 
 //https://github.com/discourse/discourse/blob/master/lib/emoji/db.json
 class EmojiMap
 {
-
-    const MAP = [
+    public const MAP = [
         'grinning' => '😀',
         'smiley' => '😃',
         'smile' => '😄',

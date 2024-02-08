@@ -16,7 +16,6 @@ use yii\test\InitDbFixture;
  */
 class FixtureHelper extends Module
 {
-
     /**
      * Redeclare visibility because codeception includes all public methods that do not start with "_"
      * and are not excluded by module settings, in actor class.
@@ -39,7 +38,7 @@ class FixtureHelper extends Module
     public function _beforeSuite($settings = [])
     {
         //Prevents [ReflectionException] Class db does not exist for included module tests
-        include __DIR__.'/../functional/_bootstrap.php';
+        include __DIR__ . '/../functional/_bootstrap.php';
         $this->unloadFixtures();
         $this->loadFixtures();
     }

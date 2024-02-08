@@ -214,7 +214,7 @@ class Module extends \yii\base\Module
 
     /**
      * Determines whether or not this module has an asset directory.
-     * @return boolean
+     * @return bool
      */
     private function hasAssets()
     {
@@ -430,7 +430,7 @@ class Module extends \yii\base\Module
     /**
      * Determines whether the module has notification classes or not
      *
-     * @return boolean has notifications
+     * @return bool has notifications
      * @since 1.2
      */
     public function hasNotifications()

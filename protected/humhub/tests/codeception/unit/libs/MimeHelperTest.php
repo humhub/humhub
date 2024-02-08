@@ -68,7 +68,7 @@ class MimeHelperTest extends Unit
      */
     public function testUnknownExtensionFileObject()
     {
-        $temp = new File;
+        $temp = new File();
         $temp->file_name = 'test.unknown';
 
         $this->assertEquals(MimeHelper::ICON_FILE, MimeHelper::getMimeIconClassByExtension($temp));

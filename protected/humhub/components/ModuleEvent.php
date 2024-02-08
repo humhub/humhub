@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\components;
-
 
 use Yii;
 
