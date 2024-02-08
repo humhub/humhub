@@ -39,7 +39,7 @@
         "npm-asset/clipboard-polyfill": "^3.0",
         "npm-asset/codemirror": "^5.59",
         "npm-asset/font-awesome": "^4.7.0",
-        "npm-asset/humhub-prosemirror-richtext": "2.0.*",
+        "npm-asset/humhub-prosemirror-richtext": "2.1.*",
         "npm-asset/imagesloaded": "^5.0",
         "npm-asset/intersection-observer": "^0.7.0",
         "npm-asset/jplayer": "^2.9",
