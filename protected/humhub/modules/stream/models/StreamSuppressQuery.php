@@ -27,7 +27,7 @@ use yii\base\Exception;
 class StreamSuppressQuery extends StreamQuery
 {
     /**
-     * @var boolean marks query as executed
+     * @var bool marks query as executed
      */
     protected $isQueryExecuted = false;
 
@@ -42,7 +42,7 @@ class StreamSuppressQuery extends StreamQuery
     protected $lastContentId;
 
     /**
-     * @var boolean return
+     * @var bool return
      */
     protected $suppressionsOnly = false;
 
@@ -186,7 +186,7 @@ class StreamSuppressQuery extends StreamQuery
      * @param array $results a reference of the current results
      * @param Content $content the content object to check
      *
-     * @return boolean is suppressed item
+     * @return bool is suppressed item
      */
     protected function isSuppressed(&$results, $content)
     {

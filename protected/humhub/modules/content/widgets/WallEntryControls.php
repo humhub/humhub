@@ -176,7 +176,7 @@ class WallEntryControls extends Menu
      * Checks if the given $array is an associative array or not.
      *
      * @param array $arr
-     * @return boolean
+     * @return bool
      */
     public function isAssoc($arr)
     {

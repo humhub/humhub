@@ -102,7 +102,7 @@ class User extends \yii\web\User
      *
      * @param string|string[]|BasePermission $permission
      *
-     * @return boolean
+     * @return bool
      * @throws InvalidConfigException
      * @throws Throwable
      * @since 1.2
@@ -156,7 +156,7 @@ class User extends \yii\web\User
     /**
      * Checks if the system configuration allows access for guests
      *
-     * @return boolean is guest access enabled and allowed
+     * @return bool is guest access enabled and allowed
      * @deprecated since 1.4
      */
     public static function isGuestAccessEnabled()
@@ -181,7 +181,7 @@ class User extends \yii\web\User
     }
 
     /**
-     * @return boolean
+     * @return bool
      * @deprecated since 1.14
      */
     public function canDeleteAccount()
@@ -201,7 +201,7 @@ class User extends \yii\web\User
     /**
      * Determines if this user must change the password.
      *
-     * @return boolean
+     * @return bool
      * @since 1.8
      */
     public function mustChangePassword()

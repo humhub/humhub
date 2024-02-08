@@ -29,7 +29,7 @@ class ProfileHeader extends Widget
     public $user;
 
     /**
-     * @var boolean is owner of the current profile
+     * @var bool is owner of the current profile
      */
     protected $isProfileOwner = false;
 

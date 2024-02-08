@@ -13,9 +13,9 @@ use yii\base\InvalidArgumentException;
 /**
  * Class ContentTagRelation
  *
- * @property integer $id
- * @property integer $content_id
- * @property integer $tag_id
+ * @property int $id
+ * @property int $content_id
+ * @property int $tag_id
  *
  * @since 1.2.2
  * @author buddha

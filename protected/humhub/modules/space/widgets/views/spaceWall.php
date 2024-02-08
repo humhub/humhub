@@ -15,7 +15,7 @@ use yii\helpers\Html;
                     'space' => $space,
                     'width' => 40
                 ]);
-?>
+                ?>
             </a>
             <div class="media-body">
                 <!-- show username with link and creation time-->

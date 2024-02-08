@@ -55,7 +55,7 @@ abstract class Menu extends JsWidget
      * Removes the entry from the navigation
      *
      * @param MenuEntry $entry
-     * @return boolean
+     * @return bool
      */
     public function removeEntry($entry)
     {

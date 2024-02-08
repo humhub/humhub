@@ -176,7 +176,7 @@ class NotificationManager
      *
      * @param User $user
      * @param Space $space
-     * @return boolean
+     * @return bool
      */
     public function isFollowingSpace(User $user, Space $space)
     {
@@ -207,7 +207,7 @@ class NotificationManager
      * only members with send_notifications settings are returned.
      *
      * @param ContentContainerActiveRecord $container
-     * @param boolean $public
+     * @param bool $public
      * @return ActiveQueryUser
      */
     public function getContainerFollowers(ContentContainerActiveRecord $container, $public = true)
@@ -370,7 +370,7 @@ class NotificationManager
     /**
      * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
      *
-     * @param integer $value
+     * @param int $value
      * @param User $user
      */
     public function setDesktopNoficationSettings($value = 0, User $user = null)
@@ -384,7 +384,7 @@ class NotificationManager
      * Determines the enable_html5_desktop_notifications setting either for the given user or global if no user is given.
      * By default the setting is enabled.
      * @param User $user
-     * @return integer
+     * @return int
      */
     public function getDesktopNoficationSettings(User $user = null)
     {
@@ -400,7 +400,7 @@ class NotificationManager
      *
      * @param User $user user instance for which this settings will aplly
      * @param Space $space which notifications will be followed / unfollowed
-     * @param boolean $follow the setting value (true by default)
+     * @param bool $follow the setting value (true by default)
      */
     public function setSpaceSetting(User $user = null, Space $space, $follow = true)
     {

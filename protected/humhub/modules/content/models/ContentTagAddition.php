@@ -12,7 +12,7 @@ use yii\db\ActiveRecord;
 /**
  * Class ContentTagAddition
  *
- * @property integer $id
+ * @property int $id
  * @perperty integer $tag_id
  *
  * @since 1.2.2

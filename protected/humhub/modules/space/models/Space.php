@@ -43,11 +43,11 @@ use yii\db\Expression;
  * @property string $description
  * @property string $about
  * @property string $url
- * @property integer $join_policy
- * @property integer $status
- * @property integer $sort_order
- * @property integer $auto_add_new_members
- * @property integer $default_content_visibility
+ * @property int $join_policy
+ * @property int $status
+ * @property int $sort_order
+ * @property int $auto_add_new_members
+ * @property int $default_content_visibility
  * @property string $color
  * @property User $ownerUser the owner of this space
  * @property-read AdvancedSettings $advancedSettings
@@ -444,7 +444,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
     /**
      * Returns wether or not a Space is archived.
      *
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
     public function isArchived()

@@ -69,7 +69,7 @@ class ConfigController extends Controller
      *  - Database Migrated Up
      *  - Not already configured (e.g. update)
      *
-     * @param boolean
+     * @param bool
      */
     public function beforeAction($action)
     {

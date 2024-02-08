@@ -7,8 +7,8 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "log".
  *
- * @property integer $id
- * @property integer $level
+ * @property int $id
+ * @property int $level
  * @property string $category
  * @property double $log_time
  * @property string $prefix

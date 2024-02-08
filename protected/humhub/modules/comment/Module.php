@@ -76,7 +76,7 @@ class Module extends \humhub\components\Module
      * Checks if given content object can be commented by current user
      *
      * @param Comment|ContentActiveRecord $object
-     * @return boolean can comment
+     * @return bool can comment
      * @throws Exception
      * @throws InvalidConfigException
      */

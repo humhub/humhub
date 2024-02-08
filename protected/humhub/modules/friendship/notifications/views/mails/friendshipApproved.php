@@ -10,14 +10,15 @@
 /* @var $viewable humhub\modules\space\notifications\ApprovalRequestApproved */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
-/* @var $isNew boolean */
+/* @var $isNew bool */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var source yii\db\ActiveRecord */
 /* @var contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var space humhub\modules\space\models\Space */
 /* @var record \humhub\modules\notification\models\Notification */
 /* @var html string */
+
 /* @var text string */
 
 use humhub\widgets\mails\MailButtonList;
@@ -42,7 +43,7 @@ use humhub\widgets\mails\MailButtonList;
                     humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
 
-?>
+                ?>
             </td>
         </tr>
     </table>

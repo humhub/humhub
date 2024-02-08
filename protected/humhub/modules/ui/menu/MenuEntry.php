@@ -79,7 +79,7 @@ abstract class MenuEntry extends BaseObject
     }
 
     /**
-     * @return boolean is active
+     * @return bool is active
      */
     public function getIsActive()
     {
@@ -95,7 +95,7 @@ abstract class MenuEntry extends BaseObject
     }
 
     /**
-     * @param $state boolean
+     * @param $state bool
      * @return static
      */
     public function setIsActive($state)

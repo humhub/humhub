@@ -121,13 +121,13 @@ class AbstractRichTextEditor extends JsInputWidget
     /**
      * If set to true the picker will be focused automatically.
      *
-     * @var boolean
+     * @var bool
      */
     public $focus = false;
 
     /**
      * Disables the input field.
-     * @var boolean
+     * @var bool
      */
     public $disabled = false;
 
@@ -149,7 +149,7 @@ class AbstractRichTextEditor extends JsInputWidget
     public $visible = true;
 
     /**
-     * @var boolean defines if the default label should be rendered.
+     * @var bool defines if the default label should be rendered.
      */
     public $label = false;
 

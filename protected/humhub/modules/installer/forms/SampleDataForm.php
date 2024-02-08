@@ -19,7 +19,7 @@ use yii\base\Model;
 class SampleDataForm extends Model
 {
     /**
-     * @var boolean create sample data
+     * @var bool create sample data
      */
     public $sampleData;
 

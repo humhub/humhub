@@ -49,7 +49,7 @@ class Theme extends BaseTheme
     private $_baseUrl = null;
 
     /**
-     * @var boolean indicates that resources should be published via assetManager
+     * @var bool indicates that resources should be published via assetManager
      */
     public $publishResources = false;
 
@@ -136,7 +136,7 @@ class Theme extends BaseTheme
     /**
      * Checks whether the Theme is currently active.
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -183,7 +183,7 @@ class Theme extends BaseTheme
     /**
      * Publishs theme assets (e.g. images or css)
      *
-     * @param boolean|null $force
+     * @param bool|null $force
      *
      * @return string url of published resources
      */

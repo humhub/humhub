@@ -38,7 +38,7 @@ abstract class BaseActivity extends SocialActivity
     public $recordClass = Activity::class;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $clickable = true;
 
@@ -151,7 +151,7 @@ abstract class BaseActivity extends SocialActivity
     /**
      * Stores the activity in database
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

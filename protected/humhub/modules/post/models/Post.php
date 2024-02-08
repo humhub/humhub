@@ -21,13 +21,13 @@ use yii\helpers\Url;
 /**
  * This is the model class for table "post".
  *
- * @property integer $id
+ * @property int $id
  * @property string $message
  * @property string $url
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  */
 class Post extends ContentActiveRecord implements Searchable
 {

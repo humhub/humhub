@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
-/* @var $canRegister boolean */
+/* @var $canRegister bool */
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */
@@ -67,12 +67,12 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                                     Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
                                     $passwordRecoveryRoute,
                                     [
-                                                                'id' => 'password-recovery-link',
-                                                                'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
-                                                                'data' => [
-                                                                    'pjax-prevent' => true,
-                                                                ]
-                                                            ]
+                                        'id' => 'password-recovery-link',
+                                        'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
+                                        'data' => [
+                                            'pjax-prevent' => true,
+                                        ]
+                                    ]
                                 ) ?>
                             </small>
                         </div>
@@ -111,8 +111,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                         <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
 
                         <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                                                    'captchaAction' => '/user/auth/captcha',
-                                                ])->label(false); ?>
+                            'captchaAction' => '/user/auth/captcha',
+                        ])->label(false); ?>
                     </div>
                 <?php endif; ?>
                 <hr>

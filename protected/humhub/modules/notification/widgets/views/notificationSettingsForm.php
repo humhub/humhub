@@ -2,7 +2,7 @@
 
 /* @var $model NotificationSettings */
 /* @var $form yii\widgets\ActiveForm */
-/* @var $showSpaces boolean */
+/* @var $showSpaces bool */
 
 /* @var $defaultSpaces Space[] */
 

@@ -131,7 +131,7 @@ class UserPicker
      * is of type boolean, the it will define the disabled field of the result directly.
      *
      * @param type $user
-     * @param BasePermission|boolean|null if boolean is given
+     * @param BasePermission|bool|null if boolean is given
      * @return type
      */
     private static function createJSONUserInfo($user, $permission = null, $priority = null, $disabledText = null)

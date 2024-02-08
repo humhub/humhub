@@ -77,26 +77,26 @@ $form = ActiveForm::begin([
             <br><br>
 
             <?= $form->field($model, 'invite')
-                                        ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
+                ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
 
             <?php if ($canAddWithoutInvite) : ?>
                 <br/>
                 <?= $form
-                                        ->field($model, 'withoutInvite')
-                                        ->label(Yii::t(
-                                            'SpaceModule.base',
-                                            'Add users without invitation'
-                                        ))
-                                        ->checkbox() ?>
+                ->field($model, 'withoutInvite')
+                ->label(Yii::t(
+                    'SpaceModule.base',
+                    'Add users without invitation'
+                ))
+                ->checkbox() ?>
                 <br/>
 
                 <?= $form
-                                            ->field($model, 'allRegisteredUsers')
-                                            ->label(Yii::t(
-                                                'SpaceModule.base',
-                                                'Select all registered users'
-                                            ))
-                                            ->checkbox() ?>
+                    ->field($model, 'allRegisteredUsers')
+                    ->label(Yii::t(
+                        'SpaceModule.base',
+                        'Select all registered users'
+                    ))
+                    ->checkbox() ?>
             <?php endif; ?>
 
         </div>
@@ -109,9 +109,9 @@ $form = ActiveForm::begin([
                 ); ?>
                 <br><br>
                 <?= $form->field($model, 'inviteEmails')->textarea([
-                'id' => 'space-invite-by-email',
-                'rows' => '3',
-                'placeholder' => Yii::t('SpaceModule.base', 'Email addresses'),
+                    'id' => 'space-invite-by-email',
+                    'rows' => '3',
+                    'placeholder' => Yii::t('SpaceModule.base', 'Email addresses'),
                 ]); ?>
             </div>
         <?php endif; ?>
@@ -125,9 +125,9 @@ $form = ActiveForm::begin([
                 <br><br>
 
                 <div><strong><?= Yii::t(
-                    'SpaceModule.base',
-                    'Invite link'
-                ) ?></strong></div>
+                            'SpaceModule.base',
+                            'Invite link'
+                        ) ?></strong></div>
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
@@ -156,15 +156,15 @@ $form = ActiveForm::begin([
         ->link('mailto:' .
             '?subject=' . rawurlencode(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $model->space->name, 'appName' => Yii::$app->name])) .
             '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInviteSpace'), [
-    'originator' => Yii::$app->user->identity,
-    'space' => $model->space,
-    'registrationUrl' => $model->getInviteLink()
+                'originator' => Yii::$app->user->identity,
+                'space' => $model->space,
+                'registrationUrl' => $model->getInviteLink()
             ])))
         ->style(['display' => 'none'])
         ->id('space-invite-send-link-by-email-btn')
         ->icon('paper-plane')
         ->loader(false)
-?>
+    ?>
 </div>
 <?php ActiveForm::end() ?>
 

@@ -50,7 +50,7 @@ class LicenceManager extends Component
     /**
      * Returns the current licence object
      *
-     * @param boolean $useCache
+     * @param bool $useCache
      * @return Licence
      */
     public static function get($useCache = true)
@@ -148,7 +148,7 @@ class LicenceManager extends Component
     /**
      * Removes the licence from this installation and the HumHub Marketplace
      *
-     * @return boolean
+     * @return bool
      */
     public static function remove()
     {

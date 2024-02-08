@@ -45,7 +45,7 @@ use yii\web\IdentityInterface;
 /**
  * This is the model class for table "user".
  *
- * @property integer $status
+ * @property int $status
  * @property string $username
  * @property string $email
  * @property string $auth_mode
@@ -129,7 +129,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     public $registrationGroupId = null;
 
     /**
-     * @var boolean is system admin (cached)
+     * @var bool is system admin (cached)
      */
     private $_isSystemAdmin = null;
 
@@ -244,8 +244,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Checks if user is system administrator
      *
-     * @param boolean $cached Used cached result if available
-     * @return boolean user is system admin
+     * @param bool $cached Used cached result if available
+     * @return bool user is system admin
      */
     public function isSystemAdmin($cached = true)
     {
@@ -407,7 +407,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
 
     /**
      * Checks if the user has at least one group assigned.
-     * @return boolean
+     * @return bool
      */
     public function hasGroup()
     {
@@ -460,7 +460,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * Specifies whether the user should appear in user lists or in the search.
      *
-     * @return boolean is visible
+     * @return bool is visible
      * @since 1.2.3
      */
     public function isVisible()
@@ -776,10 +776,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         $module = Yii::$app->getModule('content');
 
         return $module->adminCanViewAllContent && (
-            $this->isSystemAdmin()
+                $this->isSystemAdmin()
                 || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
                 || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
-        );
+            );
     }
 
     /**
@@ -852,7 +852,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
     /**
      * User can approve other users
      *
-     * @return boolean
+     * @return bool
      * @throws InvalidConfigException
      */
     public function canApproveUsers()

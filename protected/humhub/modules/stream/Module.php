@@ -43,7 +43,7 @@ class Module extends \humhub\components\Module
     public $streamSuppressLimit = 2;
 
     /**
-     * @var boolean show contents of deactivated users in stream
+     * @var bool show contents of deactivated users in stream
      */
     public $showDeactivatedUserContent = true;
 

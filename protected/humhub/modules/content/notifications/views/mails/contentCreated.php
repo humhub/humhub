@@ -4,7 +4,7 @@
 /* @var $viewable humhub\modules\content\notifications\ContentCreated */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */

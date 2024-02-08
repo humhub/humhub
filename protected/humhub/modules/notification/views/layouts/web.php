@@ -8,7 +8,7 @@ use yii\helpers\Html;
 /** @var \humhub\modules\user\models\User $originator */
 /** @var Space $space */
 /** @var Notification $record */
-/** @var boolean $isNew */
+/** @var bool $isNew */
 /** @var string $content */
 /** @var string $url */
 /** @var string $relativeUrl */

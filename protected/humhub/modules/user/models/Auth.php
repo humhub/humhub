@@ -8,8 +8,8 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "user_auth".
  *
- * @property integer $id
- * @property integer $user_id
+ * @property int $id
+ * @property int $user_id
  * @property string $source
  * @property string $source_id
  *

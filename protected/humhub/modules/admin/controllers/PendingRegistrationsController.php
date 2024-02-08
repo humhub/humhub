@@ -102,7 +102,7 @@ class PendingRegistrationsController extends Controller
     /**
      * Resend a invite
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
      */
@@ -124,7 +124,7 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete an invite
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
      * @throws Throwable
@@ -147,7 +147,7 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete all invitations
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
      * @throws Throwable
@@ -168,7 +168,7 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete all or selected invitation
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
      * @throws Throwable

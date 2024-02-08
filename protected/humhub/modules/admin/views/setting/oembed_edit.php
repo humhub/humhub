@@ -79,7 +79,7 @@ JS, View::POS_LOAD);
             } else {
                 echo Yii::t('AdminModule.settings', 'Edit OEmbed provider');
             }
-?>
+            ?>
         </h4>
     </div>
 

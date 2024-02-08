@@ -36,7 +36,7 @@ class Module extends \humhub\components\Module
     public $monthlySummaryDay = 1;
 
     /**
-     * @var boolean enable mail summary feature
+     * @var bool enable mail summary feature
      * @since 1.4
      */
     public $enableMailSummaries = true;

@@ -26,7 +26,7 @@ class NotificationSettingsForm extends Widget
     public $model;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $showSpaces = true;
 

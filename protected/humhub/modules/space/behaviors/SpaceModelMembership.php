@@ -44,8 +44,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Checks if given userId is Member of this Space.
      *
-     * @param integer $userId
-     * @return boolean
+     * @param int $userId
+     * @return bool
      */
     public function isMember($userId = '')
     {
@@ -93,8 +93,8 @@ class SpaceModelMembership extends Behavior
      *
      * If no UserId is given, current UserId will be used
      *
-     * @param User|integer|null $user User instance or userId
-     * @return boolean
+     * @param User|int|null $user User instance or userId
+     * @return bool
      */
     public function isAdmin($user = null)
     {
@@ -120,8 +120,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Sets Owner for this workspace
      *
-     * @param User|integer|null $userId
-     * @return boolean
+     * @param User|int|null $userId
+     * @return bool
      */
     public function setSpaceOwner($user = null)
     {
@@ -189,8 +189,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Sets Owner for this workspace
      *
-     * @param integer $userId
-     * @return boolean
+     * @param int $userId
+     * @return bool
      */
     public function setAdmin($userId = null)
     {
@@ -226,7 +226,7 @@ class SpaceModelMembership extends Behavior
      * Invites a not registered member to this space
      *
      * @param string $email
-     * @param integer $originatorUserId
+     * @param int $originatorUserId
      */
     public function inviteMemberByEMail($email, $originatorUserId)
     {
@@ -271,7 +271,7 @@ class SpaceModelMembership extends Behavior
     /**
      * Requests Membership
      *
-     * @param integer $userId
+     * @param int $userId
      * @param string $message
      */
     public function requestMembership($userId, $message = '')
@@ -322,8 +322,8 @@ class SpaceModelMembership extends Behavior
      * If user is already invited, retrigger invitation.
      * If user is applicant approve it.
      *
-     * @param integer $userId
-     * @param integer $originatorId
+     * @param int $userId
+     * @param int $originatorId
      * @param bool $sendInviteNotification
      */
     public function inviteMember($userId, $originatorId, $sendInviteNotification = true)
@@ -335,7 +335,7 @@ class SpaceModelMembership extends Behavior
                 case Membership::STATUS_APPLICANT:
                     // If user is an applicant of this space add user and return.
                     $this->addMember($userId);
-                    // no break
+                // no break
                 case Membership::STATUS_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
@@ -369,8 +369,8 @@ class SpaceModelMembership extends Behavior
     /**
      * Sends an Invite Notification to the given user.
      *
-     * @param integer $userId
-     * @param integer $originatorId
+     * @param int $userId
+     * @param int $originatorId
      */
     protected function sendInviteNotification($userId, $originatorId)
     {
@@ -403,7 +403,8 @@ class SpaceModelMembership extends Behavior
         bool   $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
         bool   $showAtDashboard = true
-    ): bool {
+    ): bool
+    {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
             return false;
@@ -483,7 +484,7 @@ class SpaceModelMembership extends Behavior
     /**
      * Remove Membership
      *
-     * @param integer|null $userId of User to Remove
+     * @param int|null $userId of User to Remove
      * @return bool
      * @throws InvalidConfigException
      * @throws Throwable

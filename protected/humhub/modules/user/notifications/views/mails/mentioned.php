@@ -3,11 +3,12 @@
 /* @var $viewable humhub\modules\user\notifications\Mentioned */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
+
 /* @var $record Notification */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -27,7 +28,7 @@ use humhub\widgets\mails\MailButtonList;
                     'date' => $date,
                     'space' => $space
                 ])
-?>
+                ?>
             </td>
         </tr>
         <tr>
@@ -36,12 +37,12 @@ use humhub\widgets\mails\MailButtonList;
         <tr>
             <td>
                 <?=
-MailButtonList::widget(['buttons' =>
-    [
-        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notification', 'View Online')
-        ])
-    ]]);
-?>
+                MailButtonList::widget(['buttons' =>
+                    [
+                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('UserModule.notification', 'View Online')
+                        ])
+                    ]]);
+                ?>
             </td>
         </tr>
     </table>

@@ -43,7 +43,7 @@ class FileHandlerButtonDropdown extends Widget
     public $handlers;
 
     /**
-     * @var boolean if true the dropdown-menu will be assigned with an dropdown-menu-right class.
+     * @var bool if true the dropdown-menu will be assigned with an dropdown-menu-right class.
      */
     public $pullRight = false;
 

@@ -77,7 +77,7 @@ class UserGroupForm extends Model
 
     /**
      * Aligns the given group selection with the db
-     * @return boolean
+     * @return bool
      */
     public function save()
     {
@@ -101,7 +101,7 @@ class UserGroupForm extends Model
     /**
      * Checks if the given group (id or model object) is contained in the form selection
      * @param type $groupId groupId or Group model object
-     * @return boolean true if contained in selection else false
+     * @return bool true if contained in selection else false
      */
     private function isInGroupSelection($groupId)
     {
@@ -114,7 +114,7 @@ class UserGroupForm extends Model
     /**
      * Checks if the user is member of the given group (id or model object)
      * @param type $groupId $groupId groupId or Group model object
-     * @return boolean true if user is member else false
+     * @return bool true if user is member else false
      */
     private function isCurrentlyMemberOf($groupId)
     {

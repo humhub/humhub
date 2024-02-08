@@ -34,22 +34,22 @@ class Registration extends HForm
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
 
     /**
-     * @var boolean show password creation form
+     * @var bool show password creation form
      */
     public $enablePasswordForm = true;
 
     /**
-     * @var boolean show checkbox to force to change password on first log in
+     * @var bool show checkbox to force to change password on first log in
      */
     public $enableMustChangePassword = false;
 
     /**
-     * @var boolean show e-mail field
+     * @var bool show e-mail field
      */
     public $enableEmailField = false;
 
     /**
-     * @var boolean|null require user approval by admin after registration.
+     * @var bool|null require user approval by admin after registration.
      */
     public $enableUserApproval = false;
 
@@ -257,7 +257,7 @@ class Registration extends HForm
     /**
      * Registers users
      *
-     * @return boolean state
+     * @return bool state
      */
     public function register(ClientInterface $authClient = null)
     {

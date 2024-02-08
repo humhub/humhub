@@ -116,7 +116,7 @@ class AuthClientUserService
     /**
      * Determines if this user is able to change the password.
      *
-     * @return boolean
+     * @return bool
      */
     public function canChangePassword(): bool
     {

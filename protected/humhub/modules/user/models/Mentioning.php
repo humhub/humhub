@@ -22,10 +22,10 @@ use yii\db\ActiveQuery;
  * This is the model class for table "user_mentioning".
  * The followings are the available columns in table 'user_mentioning':
  *
- * @property integer $id
+ * @property int $id
  * @property string $object_model
- * @property integer $object_id
- * @property integer $user_id
+ * @property int $object_id
+ * @property int $user_id
  */
 class Mentioning extends ActiveRecord
 {

@@ -9,11 +9,11 @@ use yii\db\ActiveQuery;
 /**
  * This is the model class for table "live".
  *
- * @property integer $id
- * @property integer $contentcontainer_id
- * @property integer $visibility
+ * @property int $id
+ * @property int $contentcontainer_id
+ * @property int $visibility
  * @property string $serialized_data
- * @property integer $created_at
+ * @property int $created_at
  *
  * @property Contentcontainer $contentcontainer
  */

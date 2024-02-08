@@ -18,19 +18,19 @@ use yii\db\Query;
 /**
  * This is the model class for table "notification".
  *
- * @property integer $id
+ * @property int $id
  * @property string $class
- * @property integer $user_id
- * @property integer $seen
+ * @property int $user_id
+ * @property int $seen
  * @property string $source_class
- * @property integer $source_pk
- * @property integer $space_id
- * @property integer $emailed
+ * @property int $source_pk
+ * @property int $space_id
+ * @property int $emailed
  * @property string module
  * @property string $created_at
- * @property integer $desktop_notified
- * @property integer $originator_user_id
- * @property integer $send_web_notifications
+ * @property int $desktop_notified
+ * @property int $originator_user_id
+ * @property int $send_web_notifications
  * @property string $payload
  * @property User|null $originator
  * @property User $user
@@ -215,7 +215,7 @@ class Notification extends ActiveRecord
     /**
      * Loads a certain amount ($limit) of grouped notifications from a given id set by $from.
      *
-     * @param integer $from notification id which was the last loaded entry.
+     * @param int $from notification id which was the last loaded entry.
      * @param int $limit count of results.
      * @return Notification[]
      * @throws Throwable

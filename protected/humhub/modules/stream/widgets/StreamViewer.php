@@ -51,7 +51,7 @@ class StreamViewer extends JsWidget
     /**
      * Show default wall filters
      *
-     * @var boolean
+     * @var bool
      */
     public $showFilters = true;
 

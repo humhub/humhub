@@ -13,7 +13,7 @@ use yii\helpers\Html;
 
 /* @var $this View */
 /* @var $objectModel string */
-/* @var $objectId integer */
+/* @var $objectId int */
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $submitUrl string */
 /* @var $fileHandlers BaseFileHandler[] */
@@ -51,17 +51,17 @@ $contentModule = Yii::$app->getModule('content');
                 'max' => $contentModule->maxAttachedFiles,
                 'cssButtonClass' => 'btn-sm btn-info',
             ]);
-echo FileHandlerButtonDropdown::widget([
-    'primaryButton' => $uploadButton,
-    'handlers' => $fileHandlers,
-    'cssButtonClass' => 'btn-info btn-sm',
-    'pullRight' => true,
-]);
-echo Button::info()
-    ->icon('send')
-    ->cssClass('btn-comment-submit')->sm()
-    ->action('editSubmit', $submitUrl)->submit();
-?></div>
+            echo FileHandlerButtonDropdown::widget([
+                'primaryButton' => $uploadButton,
+                'handlers' => $fileHandlers,
+                'cssButtonClass' => 'btn-info btn-sm',
+                'pullRight' => true,
+            ]);
+            echo Button::info()
+                ->icon('send')
+                ->cssClass('btn-comment-submit')->sm()
+                ->action('editSubmit', $submitUrl)->submit();
+            ?></div>
     </div>
 
     <div id="comment_upload_progress_<?= $comment->id ?>" style="display:none; margin:10px 0;"></div>

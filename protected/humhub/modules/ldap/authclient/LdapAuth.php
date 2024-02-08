@@ -67,7 +67,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * The useSsl and useStartTls options are mutually exclusive, but useStartTls should be favored
      * if the server and LDAP client library support it.
      *
-     * @var boolean
+     * @var bool
      */
     public $useSsl = false;
 
@@ -79,7 +79,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * The useSsl and useStartTls options are mutually exclusive.
      * The useStartTls option should be favored over useSsl but not all servers support this newer mechanism.
      *
-     * @var boolean
+     * @var bool
      */
     public $useStartTls = false;
 
@@ -137,7 +137,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Automatically refresh user profiles on cron run
      *
-     * @var boolean|null
+     * @var bool|null
      */
     public $autoRefreshUsers = null;
 

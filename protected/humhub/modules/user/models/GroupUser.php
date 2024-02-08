@@ -15,13 +15,13 @@ use yii\db\ActiveQuery;
 /**
  * This is the model class for table "group_admin".
  *
- * @property integer $id
- * @property integer $user_id
- * @property integer $group_id
+ * @property int $id
+ * @property int $user_id
+ * @property int $group_id
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property User $user
  * @property Group $group
  */

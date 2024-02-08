@@ -14,7 +14,7 @@ use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
 /* @var $originator \humhub\modules\user\models\User */
-/* @var $clickable boolean */
+/* @var $clickable bool */
 /* @var $record ActiveRecord */
 
 ?>

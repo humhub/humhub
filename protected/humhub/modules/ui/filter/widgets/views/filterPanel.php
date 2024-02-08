@@ -10,7 +10,7 @@ use humhub\modules\ui\filter\widgets\FilterBlock;
 use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
-/* @var $span integer */
+/* @var $span int */
 /* @var $blocks [] */
 
 $colSpan = $span <= 4 ? 12 / $span : 6;

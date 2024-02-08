@@ -8,7 +8,7 @@
 
 /**
  * @var $this View
- * @var $enabled boolean
+ * @var $enabled bool
  * @var $errorMessage string
  * @var $model LdapSettings
  * @var $userCount string

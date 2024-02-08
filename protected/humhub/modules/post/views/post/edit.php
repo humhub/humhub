@@ -37,18 +37,18 @@ use yii\bootstrap\ActiveForm;
                 'max' => Yii::$app->getModule('content')->maxAttachedFiles,
                 'cssButtonClass' => 'btn-sm btn-info',
             ]);
-echo FileHandlerButtonDropdown::widget([
-    'primaryButton' => $uploadButton,
-    'handlers' => $fileHandlers,
-    'cssButtonClass' => 'btn-info btn-sm',
-    'pullRight' => true,
-]);
-echo Button::info()
-    ->icon('send')
-    ->action('editSubmit', $submitUrl)
-    ->cssClass(' btn-comment-submit')->sm()
-    ->submit();
-?></div>
+            echo FileHandlerButtonDropdown::widget([
+                'primaryButton' => $uploadButton,
+                'handlers' => $fileHandlers,
+                'cssButtonClass' => 'btn-info btn-sm',
+                'pullRight' => true,
+            ]);
+            echo Button::info()
+                ->icon('send')
+                ->action('editSubmit', $submitUrl)
+                ->cssClass(' btn-comment-submit')->sm()
+                ->submit();
+            ?></div>
     </div>
 
     <?= UploadProgress::widget(['id' => 'post_upload_progress_' . $model->post->id]) ?>

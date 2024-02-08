@@ -4,7 +4,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\Url;
 
 /* @var $this humhub\modules\ui\view\components\View */
-/* @var $isAdmin boolean */
+/* @var $isAdmin bool */
 ?>
 <li>
     <!-- load modal confirm widget -->

@@ -7,9 +7,9 @@ use yii\base\Model;
 
 /**
  * FileSettingsForm
- * @property integer $maxFileSize
- * @property integer $excludeMediaFilesPreview Exclude media files from stream attachment list
- * @property integer $useXSendfile
+ * @property int $maxFileSize
+ * @property int $excludeMediaFilesPreview Exclude media files from stream attachment list
+ * @property int $useXSendfile
  * @property string $allowedExtensions
  *
  * @since 0.5
@@ -66,7 +66,7 @@ class FileSettingsForm extends Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

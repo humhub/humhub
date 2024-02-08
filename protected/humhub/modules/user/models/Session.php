@@ -15,8 +15,8 @@ use humhub\components\ActiveRecord;
  *
  * The followings are the available columns in table 'user_http_session':
  * @property string $id
- * @property integer $expire
- * @property integer $user_id
+ * @property int $expire
+ * @property int $user_id
  * @property string $data
  *
  * @package humhub.modules_core.user.models

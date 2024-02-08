@@ -44,7 +44,7 @@ class NotificationSettings extends Model
     public $user;
 
     /**
-     * @var boolean manage if the user/users should receive desktop notifications.
+     * @var bool manage if the user/users should receive desktop notifications.
      */
     public $desktopNotifications;
 
@@ -104,7 +104,7 @@ class NotificationSettings extends Model
 
     /**
      * Checks if this form has already been saved before.
-     * @return boolean
+     * @return bool
      */
     public function isUserSettingLoaded()
     {
@@ -151,7 +151,7 @@ class NotificationSettings extends Model
     /**
      * Saves the settings for the given user (or global if no user is given).
      *
-     * @return boolean if the save process was successful else false
+     * @return bool if the save process was successful else false
      * @throws HttpException
      */
     public function save()
@@ -256,7 +256,7 @@ class NotificationSettings extends Model
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function canResetAllUsers()
     {

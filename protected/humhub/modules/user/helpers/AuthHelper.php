@@ -29,7 +29,7 @@ class AuthHelper
     /**
      * Checks if limited access is allowed for unauthenticated users.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isGuestAccessEnabled()
     {

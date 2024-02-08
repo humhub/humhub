@@ -25,11 +25,11 @@ use yii\db\Query;
 /**
  * This is the model class for table "user_follow".
  *
- * @property integer $id
+ * @property int $id
  * @property string $object_model
- * @property integer $object_id
- * @property integer $user_id
- * @property integer $send_notifications
+ * @property int $object_id
+ * @property int $user_id
+ * @property int $send_notifications
  */
 class Follow extends ActiveRecord
 {
@@ -160,7 +160,7 @@ class Follow extends ActiveRecord
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
      * @param User $user
-     * @param boolean|null $withNotifications by notification setting (default is null without notification handling)
+     * @param bool|null $withNotifications by notification setting (default is null without notification handling)
      * @return ActiveQuery Space query of all followed spaces
      * @since 1.2
      */
@@ -228,7 +228,7 @@ class Follow extends ActiveRecord
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
      * @param ActiveRecord $target
-     * @param boolean $withNotifications
+     * @param bool $withNotifications
      * @return ActiveQueryUser
      */
     public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)

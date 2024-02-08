@@ -97,18 +97,18 @@ $columns[] = [
         'dataProvider' => $dataProvider,
         'columns' => $columns,
     ]);
-?>
+    ?>
 
     <br>
     <?= Html::button(Yii::t('AdminModule.user', 'Approve all selected'), [
-    'class' => 'btn btn-success btn-sm bulk-actions-button bulk-actions-button-approve',
-    'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be approved and notified by e-mail.'),
-]) ?>
+        'class' => 'btn btn-success btn-sm bulk-actions-button bulk-actions-button-approve',
+        'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be approved and notified by e-mail.'),
+    ]) ?>
     &nbsp;
     <?= Html::button(Yii::t('AdminModule.user', 'Decline all selected'), [
-    'class' => 'btn btn-danger btn-sm bulk-actions-button bulk-actions-button-decline',
-    'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be deleted and notified by e-mail.'),
-]) ?>
+        'class' => 'btn btn-danger btn-sm bulk-actions-button bulk-actions-button-decline',
+        'data-confirm' => Yii::t('AdminModule.user', 'Are you really sure? The selected users will be deleted and notified by e-mail.'),
+    ]) ?>
 
     <?= Html::endForm() ?>
 </div>

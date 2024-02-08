@@ -15,9 +15,9 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "contentcontainer_module".
  *
- * @property integer $contentcontainer_id
+ * @property int $contentcontainer_id
  * @property string $module_id
- * @property integer $module_state
+ * @property int $module_state
  *
  * @property ContentContainer $contentContainer
  */

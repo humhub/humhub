@@ -108,12 +108,12 @@ abstract class AbstractRichText extends JsWidget
     public $text = "";
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $encode = true;
 
     /**
-     * @var boolean enables the edit rendering mode
+     * @var bool enables the edit rendering mode
      */
     public $edit = false;
 

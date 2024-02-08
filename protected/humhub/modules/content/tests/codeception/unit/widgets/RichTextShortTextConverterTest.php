@@ -769,9 +769,9 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "Test\\\nBreak",
             "Test<br>\nBreak",
             [
-            RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
-            RichTextToShortTextConverter::OPTION_NL2BR => true
-        ]
+                RichTextToShortTextConverter::OPTION_PRESERVE_SPACES => true,
+                RichTextToShortTextConverter::OPTION_NL2BR => true
+            ]
         );
     }
 
@@ -885,18 +885,18 @@ class RichTextShortTextConverterTest extends HumHubDbTestCase
             "This **is a long** text we will truncate",
             "This is a...",
             [
-            RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => 9
-        ]
+                RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
+                RichTextToShortTextConverter::OPTION_MAX_LENGTH => 9
+            ]
         );
 
         $this->assertConversionResult(
             "IgnoreSinceCached...",
             "This is a long text...",
             [
-            RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => 19
-        ]
+                RichTextToShortTextConverter::OPTION_CACHE_KEY => 'test2',
+                RichTextToShortTextConverter::OPTION_MAX_LENGTH => 19
+            ]
         );
     }
 

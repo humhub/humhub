@@ -26,24 +26,24 @@ class Module extends \humhub\components\Module
     public $controllerNamespace = 'humhub\modules\space\controllers';
 
     /**
-     * @var boolean Allow global admins (super admin) access to private content also when no member
+     * @var bool Allow global admins (super admin) access to private content also when no member
      */
     public $globalAdminCanAccessPrivateContent = false;
 
     /**
      *
-     * @var boolean Do not allow multiple spaces with the same name
+     * @var bool Do not allow multiple spaces with the same name
      */
     public $useUniqueSpaceNames = true;
 
     /**
-     * @var boolean defines if the space following is disabled or not.
+     * @var bool defines if the space following is disabled or not.
      * @since 1.2
      */
     public $disableFollow = false;
 
     /**
-     * @var boolean defines if a space members can add anyone the the space without invitation
+     * @var bool defines if a space members can add anyone the the space without invitation
      * @since 1.8
      */
     public $membersCanAddWithoutInvite = false;

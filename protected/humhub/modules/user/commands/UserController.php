@@ -33,12 +33,12 @@ use humhub\modules\user\models\Group;
 class UserController extends Controller
 {
     /**
-     * @var boolean True - Hard Delete, error if Space Owner
+     * @var bool True - Hard Delete, error if Space Owner
      */
     public $full;
 
     /**
-     * @var boolean True - Hard Delete including owned Spaces
+     * @var bool True - Hard Delete including owned Spaces
      */
     public $force;
 

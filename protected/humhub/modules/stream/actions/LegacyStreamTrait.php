@@ -111,7 +111,7 @@ trait LegacyStreamTrait
      *
      * @param ContentActiveRecord $record content record instance
      * @param $options array render options
-     * @param boolean $partial whether or not to use renderPartial over renderAjax
+     * @param bool $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
      * @throws \Exception
      * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry() instead
@@ -174,7 +174,7 @@ trait LegacyStreamTrait
     /**
      * Is inital stream requests (show first stream content)
      *
-     * @return boolean Is initial request
+     * @return bool Is initial request
      * @deprecated since 1.6 use StreamQuery::isInitialQuery
      */
     protected function isInitialRequest()

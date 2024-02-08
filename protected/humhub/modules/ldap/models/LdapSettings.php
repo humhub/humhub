@@ -24,12 +24,12 @@ class LdapSettings extends Model
     public const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $enabled;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $refreshUsers;
 
@@ -210,7 +210,7 @@ class LdapSettings extends Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

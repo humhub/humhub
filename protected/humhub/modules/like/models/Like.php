@@ -20,14 +20,14 @@ use yii\db\ActiveRecord;
  * This is the model class for table "like".
  *
  * The followings are the available columns in table 'like':
- * @property integer $id
- * @property integer $target_user_id
+ * @property int $id
+ * @property int $target_user_id
  * @property string $object_model
- * @property integer $object_id
+ * @property int $object_id
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  *
  * @since 0.5
  */

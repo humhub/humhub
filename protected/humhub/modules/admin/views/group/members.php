@@ -17,7 +17,7 @@ use humhub\modules\user\widgets\UserPickerField;
 /* @var $addGroupMemberForm AddGroupMemberForm */
 /* @var $searchModel UserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
-/* @var $isManagerApprovalSetting boolean */
+/* @var $isManagerApprovalSetting bool */
 
 AdminGroupAsset::register($this);
 ?>
@@ -57,58 +57,58 @@ AdminGroupAsset::register($this);
     <div class="table-responsive">
         <?php
         $actionUrl = Url::to(['edit-manager-role']);
-echo GridView::widget(
-    [
-        'dataProvider' => $dataProvider,
-        #'filterModel' => $searchModel,
-        'summary' => '',
-        'columns' => [
-            ['class' => ImageColumn::class],
-            ['class' => DisplayNameColumn::class],
+        echo GridView::widget(
             [
-                'attribute' => 'created_at',
-                'label' => Yii::t('AdminModule.user', 'Member since'),
-                'format' => 'datetime',
-                'options' => ['style' => 'width:160px; min-width:160px;'],
-            ],
-            [
-                'attribute' => 'is_manager',
-                'visible' => $isManagerApprovalSetting,
-                'label' => Yii::t('AdminModule.user', 'Group Manager'),
-                'format' => 'raw',
-                'value' => function ($data) use ($group, $actionUrl) {
-                    $isManager = $group->isManager($data);
-                    $yesSelected = ($isManager) ? 'selected' : '';
-                    $noSelected = ($isManager) ? '' : 'selected';
-                    $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
-                    $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
-                    $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
-                    return $result;
-                }
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'options' => ['style' => 'width:40px; min-width:40px;'],
-                'buttons' => [
-                    'view' => function ($url, $model) {
-                        return false;
-                    },
-                    'update' => function ($url, $model) use ($group) {
-                        return false;
-                    },
-                    'delete' => function ($url, $model) use ($group) {
-                        return Button::danger()
-                            ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
-                            ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
-                            ->icon('remove')->xs()
-                            ->confirm();
-                    }
+                'dataProvider' => $dataProvider,
+                #'filterModel' => $searchModel,
+                'summary' => '',
+                'columns' => [
+                    ['class' => ImageColumn::class],
+                    ['class' => DisplayNameColumn::class],
+                    [
+                        'attribute' => 'created_at',
+                        'label' => Yii::t('AdminModule.user', 'Member since'),
+                        'format' => 'datetime',
+                        'options' => ['style' => 'width:160px; min-width:160px;'],
+                    ],
+                    [
+                        'attribute' => 'is_manager',
+                        'visible' => $isManagerApprovalSetting,
+                        'label' => Yii::t('AdminModule.user', 'Group Manager'),
+                        'format' => 'raw',
+                        'value' => function ($data) use ($group, $actionUrl) {
+                            $isManager = $group->isManager($data);
+                            $yesSelected = ($isManager) ? 'selected' : '';
+                            $noSelected = ($isManager) ? '' : 'selected';
+                            $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
+                            $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
+                            $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
+                            return $result;
+                        }
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'options' => ['style' => 'width:40px; min-width:40px;'],
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                return false;
+                            },
+                            'update' => function ($url, $model) use ($group) {
+                                return false;
+                            },
+                            'delete' => function ($url, $model) use ($group) {
+                                return Button::danger()
+                                    ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
+                                    ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
+                                    ->icon('remove')->xs()
+                                    ->confirm();
+                            }
+                        ],
+                    ],
                 ],
-            ],
-        ],
-    ]
-);
-?>
+            ]
+        );
+        ?>
     </div>
 </div>
 <?php $this->endContent(); ?>

@@ -145,7 +145,7 @@ class StreamResponse
     }
 
     /**
-     * @param $isLast boolean sets the isLast flag of the response
+     * @param $isLast bool sets the isLast flag of the response
      */
     private function isLast($isLast)
     {

@@ -151,7 +151,7 @@ class FilePreview extends JsWidget
      * Checks whether the file should be highlighed in the results or not.
      *
      * @param File $file
-     * @return boolean is highlighed
+     * @return bool is highlighed
      */
     protected function isHighlighed(File $file)
     {

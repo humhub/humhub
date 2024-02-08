@@ -31,7 +31,7 @@ class DateTime extends BaseType
     /**
      * Checkbox show also time picker
      *
-     * @var boolean
+     * @var bool
      */
     public $showTimePicker = false;
 

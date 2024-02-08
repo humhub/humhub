@@ -24,7 +24,7 @@ class Comment extends Widget
     public $comment = null;
 
     /**
-     * @var boolean indicator that comment has just changed
+     * @var bool indicator that comment has just changed
      */
     public $justEdited = false;
 

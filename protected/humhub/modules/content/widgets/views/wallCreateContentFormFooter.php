@@ -22,7 +22,7 @@ use yii\helpers\Html;
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
 /* @var $fileHandlers BaseFileHandler[] */
-/* @var $canSwitchVisibility boolean */
+/* @var $canSwitchVisibility bool */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
