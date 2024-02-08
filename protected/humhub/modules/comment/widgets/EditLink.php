@@ -44,10 +44,10 @@ class EditLink extends WidgetMenuEntry
         ]);
 
         return Html::a(
-            Icon::get('edit') . ' ' . Yii::t('CommentModule.base', 'Edit'),
-            '#',
-            ['class' => 'comment-edit-link', 'data-action-click' => 'edit', 'data-action-url' => $editUrl]
-        ) .
+                Icon::get('edit') . ' ' . Yii::t('CommentModule.base', 'Edit'),
+                '#',
+                ['class' => 'comment-edit-link', 'data-action-click' => 'edit', 'data-action-url' => $editUrl]
+            ) .
             Html::a(
                 Icon::get('edit') . ' ' . Yii::t('CommentModule.base', 'Cancel Edit'),
                 '#',

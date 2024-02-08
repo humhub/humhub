@@ -429,10 +429,10 @@ class Group extends ActiveRecord
             Yii::$app->i18n->setUserLocale($manager);
 
             $html = Yii::t(
-                'UserModule.auth',
-                'Hello {displayName},',
-                ['displayName' => $manager->displayName]
-            ) . "<br><br>\n\n" .
+                    'UserModule.auth',
+                    'Hello {displayName},',
+                    ['displayName' => $manager->displayName]
+                ) . "<br><br>\n\n" .
                 Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
@@ -512,10 +512,10 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-            $this->isNewRecord ||
+                $this->isNewRecord ||
                 $this->is_admin_group ||
                 $this->is_default_group ||
                 $this->is_protected
-        );
+            );
     }
 }

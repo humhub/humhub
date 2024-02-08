@@ -335,7 +335,7 @@ class SpaceModelMembership extends Behavior
                 case Membership::STATUS_APPLICANT:
                     // If user is an applicant of this space add user and return.
                     $this->addMember($userId);
-                    // no break
+                // no break
                 case Membership::STATUS_MEMBER:
                     // If user is already a member just ignore the invitation.
                     return;
@@ -403,7 +403,8 @@ class SpaceModelMembership extends Behavior
         bool   $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
         bool   $showAtDashboard = true
-    ): bool {
+    ): bool
+    {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
             return false;
