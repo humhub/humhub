@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.3 (Unreleased)
--------------------
+1.15.3 (February 8, 2024)
+-------------------------
 - Fix #6713: Keep class option for Pjax Widget
 - Enh #6779: Added Twig Sandbox Extension for Statistic Tracking Codes
 - Fix #6791: Fix number of filtered modules on Marketplace
