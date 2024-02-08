@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f650ac9740329dfb7ad39e618c9518db",
+    "content-hash": "27b6dbe921cf9d2e5a4d1a624c33debc",
     "packages": [
         {
             "name": "async-aws/core",
@@ -3805,10 +3805,10 @@
         },
         {
             "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "2.0.4",
+            "version": "2.1.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.0.4.tgz"
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.1.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -11240,12 +11240,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "b5487e145d10e6d9a19b59c8dac2a058f5dfe63d"
+                "reference": "93f700b3ce0a4f87ca3219e591f2f9c85e1d53c9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/b5487e145d10e6d9a19b59c8dac2a058f5dfe63d",
-                "reference": "b5487e145d10e6d9a19b59c8dac2a058f5dfe63d",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/93f700b3ce0a4f87ca3219e591f2f9c85e1d53c9",
+                "reference": "93f700b3ce0a4f87ca3219e591f2f9c85e1d53c9",
                 "shasum": ""
             },
             "conflict": {
@@ -11327,7 +11327,7 @@
                 "codeigniter4/framework": "<=4.4.2",
                 "codeigniter4/shield": "<1.0.0.0-beta8",
                 "codiad/codiad": "<=2.8.4",
-                "composer/composer": "<1.10.27|>=2,<2.2.22|>=2.3,<2.6.4",
+                "composer/composer": "<1.10.27|>=2,<2.2.23|>=2.3,<2.7",
                 "concrete5/concrete5": "<9.2.3",
                 "concrete5/core": "<8.5.8|>=9,<9.1",
                 "contao-components/mediaelement": ">=2.14.2,<2.21.1",
@@ -11793,7 +11793,7 @@
                 "symfony/security-guard": ">=2.8,<3.4.48|>=4,<4.4.23|>=5,<5.2.8",
                 "symfony/security-http": ">=2.3,<2.3.41|>=2.4,<2.7.51|>=2.8,<2.8.50|>=3,<3.4.26|>=4,<4.2.12|>=4.3,<4.3.8|>=4.4,<4.4.7|>=5,<5.0.7|>=5.1,<5.2.8|>=5.3,<5.3.2|>=5.4,<5.4.31|>=6,<6.3.8",
                 "symfony/serializer": ">=2,<2.0.11|>=4.1,<4.4.35|>=5,<5.3.12",
-                "symfony/symfony": "<4.4.51|>=5,<5.4.31|>=6,<6.3.8",
+                "symfony/symfony": ">=2,<4.4.51|>=5,<5.4.31|>=6,<6.3.8",
                 "symfony/translation": ">=2,<2.0.17",
                 "symfony/twig-bridge": ">=2,<4.4.51|>=5,<5.4.31|>=6,<6.3.8",
                 "symfony/ux-autocomplete": "<2.11.2",
@@ -11968,7 +11968,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-02-08T00:13:48+00:00"
+            "time": "2024-02-08T20:04:35+00:00"
         },
         {
             "name": "softcreatr/jsonpath",

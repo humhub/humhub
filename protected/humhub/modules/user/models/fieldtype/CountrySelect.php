@@ -13,7 +13,6 @@ use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
 use humhub\libs\Html;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.
