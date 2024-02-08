@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-exif": "*",
         "ext-intl": "*",
         "ext-json": "*",
@@ -118,7 +118,7 @@
         },
         "platform-check": false,
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         },
         "allow-plugins": {
             "yiisoft/yii2-composer": true
