@@ -1,7 +1,8 @@
 <?php
 
 use humhub\components\Migration;
-
+use yii\db\Expression;
+use yii\db\Query;
 
 /**
  * Class m201025_095247_spaces_of_users_group
@@ -25,10 +26,10 @@ class m201025_095247_spaces_of_users_group extends Migration
         $this->addForeignKey('fk-group_space-group', 'group_space', 'group_id', '`group`', 'id', 'CASCADE');
 
         //Old default group migration here.
-        $rows = (new \yii\db\Query())
+        $rows = (new Query())
             ->select("*")
             ->from('group')
-            ->where(['is not', 'group.space_id', new \yii\db\Expression('NULL')])
+            ->where(['is not', 'group.space_id', new Expression('NULL')])
             ->all();
         foreach ($rows as $row) {
 
@@ -40,7 +41,7 @@ class m201025_095247_spaces_of_users_group extends Migration
 
         try {
             $this->dropForeignKey('fk_group-space_id', 'group');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
         }
 
         $this->safeDropColumn('group', 'space_id');

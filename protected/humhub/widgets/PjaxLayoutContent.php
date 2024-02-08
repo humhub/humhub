@@ -19,7 +19,6 @@ use humhub\assets\PjaxAsset;
  */
 class PjaxLayoutContent extends \humhub\components\Widget
 {
-
     /**
      * @var array options passed to pjax scrpit
      */

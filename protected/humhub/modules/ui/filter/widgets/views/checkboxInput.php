@@ -6,15 +6,16 @@
  *
  */
 
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $options array */
 /* @var $title string */
-/* @var $value boolean */
-/* @var $checked boolean */
-/* @var $iconInActive boolean */
-/* @var $iconActive boolean */
+/* @var $value bool */
+/* @var $checked bool */
+/* @var $iconInActive bool */
+/* @var $iconActive bool */
 ?>
 
 <?= Html::beginTag('a', $options) ?>

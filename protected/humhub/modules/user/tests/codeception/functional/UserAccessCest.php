@@ -13,7 +13,6 @@ use user\FunctionalTester;
 
 class UserAccessCest
 {
-
     public function testDisabledUserAccess(FunctionalTester $I)
     {
         $I->wantTo('ensure that disabled users have no access');

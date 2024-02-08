@@ -19,7 +19,6 @@ use humhub\modules\user\models\User as ModelUser;
  */
 class CheckPasswordValidator extends Validator
 {
-
     /**
      * @var User the user
      */
@@ -45,7 +44,7 @@ class CheckPasswordValidator extends Validator
      * Checks if current user has a password set.
      *
      * @param User $user the user or null for current
-     * @return boolean
+     * @return bool
      */
     public static function hasPassword(ModelUser $user = null): bool
     {

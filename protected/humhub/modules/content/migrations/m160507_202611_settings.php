@@ -6,7 +6,6 @@ use yii\db\Query;
 
 class m160507_202611_settings extends Migration
 {
-
     public function up()
     {
         $this->createTable('contentcontainer_setting', [
@@ -21,11 +20,11 @@ class m160507_202611_settings extends Migration
 
         // Import old user settings
         $rows = (new Query())
-                ->select("*, contentcontainer.id as cid")
-                ->from('user_setting')
-                ->leftJoin('contentcontainer', 'user_setting.user_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => \humhub\modules\user\models\User::class])
-                ->andWhere('contentcontainer.id IS NOT NULL')
-                ->all();
+            ->select("*, contentcontainer.id as cid")
+            ->from('user_setting')
+            ->leftJoin('contentcontainer', 'user_setting.user_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => \humhub\modules\user\models\User::class])
+            ->andWhere('contentcontainer.id IS NOT NULL')
+            ->all();
         foreach ($rows as $row) {
             $this->insertSilent('contentcontainer_setting', [
                 'module_id' => $row['module_id'],
@@ -37,11 +36,11 @@ class m160507_202611_settings extends Migration
 
         // Import old space settings
         $rows = (new Query())
-                ->select("*, contentcontainer.id as cid")
-                ->from('space_setting')
-                ->leftJoin('contentcontainer', 'space_setting.space_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => humhub\modules\space\models\Space::class])
-                ->andWhere('contentcontainer.id IS NOT NULL')
-                ->all();
+            ->select("*, contentcontainer.id as cid")
+            ->from('space_setting')
+            ->leftJoin('contentcontainer', 'space_setting.space_id = contentcontainer.pk AND contentcontainer.class=:class', [':class' => humhub\modules\space\models\Space::class])
+            ->andWhere('contentcontainer.id IS NOT NULL')
+            ->all();
         foreach ($rows as $row) {
             $this->insertSilent('contentcontainer_setting', [
                 'module_id' => $row['module_id'],

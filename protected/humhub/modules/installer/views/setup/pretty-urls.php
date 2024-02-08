@@ -20,10 +20,10 @@ use yii\helpers\Url;
                 'components' => [<br>
                 <div style="padding-left: 1.75rem;">
                     'urlManager' => [<br>
-                        <div style="padding-left: 1.75rem;">
-                            'showScriptName' => false,<br>
-                            'enablePrettyUrl' => true<br>
-                        </div>
+                    <div style="padding-left: 1.75rem;">
+                        'showScriptName' => false,<br>
+                        'enablePrettyUrl' => true<br>
+                    </div>
                     ]<br>
                 </div>
                 ]

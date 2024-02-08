@@ -12,15 +12,16 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "contentcontainer".
  *
- * @property integer $id
+ * @property int $id
  * @property string $guid
  * @property string $class
- * @property integer $pk
- * @property integer $owner_user_id
+ * @property int $pk
+ * @property int $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  * @noinspection PropertiesInspection
@@ -87,7 +88,7 @@ class ContentContainer extends ActiveRecord
     /**
      * @param $guid
      * @return ContentContainerActiveRecord|null
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      * @since 1.4
      */
     public static function findRecord($guid)

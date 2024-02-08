@@ -19,7 +19,6 @@ namespace humhub\components\rendering;
  */
 interface Renderer
 {
-
     /**
      * Renders the given $viewable.
      *

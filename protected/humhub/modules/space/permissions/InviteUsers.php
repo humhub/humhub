@@ -17,7 +17,6 @@ use Yii;
  */
 class InviteUsers extends BasePermission
 {
-
     /**
      * @inheritdoc
      */

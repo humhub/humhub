@@ -12,7 +12,6 @@ use Yii;
 use yii\bootstrap\Html;
 use humhub\modules\notification\components\BaseNotification;
 
-
 class UserAddedNotification extends BaseNotification
 {
     /**
@@ -27,15 +26,15 @@ class UserAddedNotification extends BaseNotification
 
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {

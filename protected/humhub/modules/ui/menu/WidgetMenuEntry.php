@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\menu;
 
+use Exception;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
 use humhub\libs\Html;
@@ -38,8 +39,8 @@ class WidgetMenuEntry extends MenuEntry
     public function renderEntry($extraHtmlOptions = [])
     {
         try {
-            return call_user_func($this->widgetClass.'::widget', $this->widgetOptions);
-        } catch(\Exception $e) {
+            return call_user_func($this->widgetClass . '::widget', $this->widgetOptions);
+        } catch (Exception $e) {
             Yii::error($e);
         }
     }

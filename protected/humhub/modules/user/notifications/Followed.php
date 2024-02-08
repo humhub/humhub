@@ -19,7 +19,6 @@ use yii\db\IntegrityException;
  */
 class Followed extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\topic\models\forms;
 
-
 use humhub\modules\topic\models\Topic;
 use yii\base\Model;
 

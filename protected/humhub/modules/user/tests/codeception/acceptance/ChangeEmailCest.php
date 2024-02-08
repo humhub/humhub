@@ -1,4 +1,5 @@
 <?php
+
 namespace user\acceptance;
 
 use user\AcceptanceTester;

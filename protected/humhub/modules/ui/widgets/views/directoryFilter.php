@@ -10,7 +10,7 @@
 ?>
 
 <div class="<?= $data['wrapperClass'] ?>">
-    <?php if(isset($data['title'])) : ?>
+    <?php if (isset($data['title'])) : ?>
         <div class="<?= $data['titleClass'] ?>"><?= $data['title'] ?></div>
     <?php endif; ?>
     <?= $filterInput ?>

@@ -19,7 +19,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class Invite extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -36,15 +35,15 @@ class Invite extends BaseNotification
     public $markAsSeenOnClick = false;
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getSpace()
     {
@@ -52,7 +51,7 @@ class Invite extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getUrl()
     {
@@ -60,7 +59,7 @@ class Invite extends BaseNotification
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {
@@ -72,9 +71,13 @@ class Invite extends BaseNotification
      */
     public function html()
     {
-        return $this->getInfoText(Html::tag('strong',
-            Html::encode($this->originator->displayName)), Html::tag('strong',
-            Html::encode($this->getSpace()->displayName)));
+        return $this->getInfoText(Html::tag(
+            'strong',
+            Html::encode($this->originator->displayName)
+        ), Html::tag(
+            'strong',
+            Html::encode($this->getSpace()->displayName)
+        ));
 
     }
 

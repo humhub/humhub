@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets;
-
 
 use humhub\modules\ui\menu\WidgetMenuEntry;
 
@@ -13,5 +11,4 @@ use humhub\modules\ui\menu\WidgetMenuEntry;
  */
 class LegacyWallEntryControlLink extends WidgetMenuEntry
 {
-
 }

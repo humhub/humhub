@@ -20,7 +20,6 @@ use yii\helpers\StringHelper;
  */
 class PeopleDetails extends Widget
 {
-
     /**
      * @var User
      */

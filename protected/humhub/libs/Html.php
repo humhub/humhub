@@ -116,7 +116,7 @@ class Html extends \yii\bootstrap\Html
         }
 
         if (!isset($options['showIcon']) || $options['showIcon'] === true) {
-            $label = Icon::get('back')->asString().' '. $label;
+            $label = Icon::get('back')->asString() . ' ' . $label;
         }
 
         if (empty($url)) {

@@ -81,7 +81,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public $wallEntryClass;
 
     /**
-     * @var boolean should the originator automatically follows this content when saved.
+     * @var bool should the originator automatically follows this content when saved.
      */
     public $autoFollow = true;
 
@@ -249,7 +249,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @param array $labels
      * @param bool $includeContentName
-     * @return Label[]|\string[] content labels used for example in wallentrywidget
+     * @return Label[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
     public function getLabels($labels = [], $includeContentName = true)
@@ -309,7 +309,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Determines whether or not the record has an additional createPermission set.
      *
-     * @return boolean
+     * @return bool
      * @since 1.13
      */
     public function hasCreatePermission()
@@ -368,7 +368,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Determines weather or not this records has an additional managePermission set.
      *
-     * @return boolean
+     * @return bool
      * @since 1.2.1
      */
     public function hasManagePermission()
@@ -609,7 +609,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Related Content model
      *
-     * @return \yii\db\ActiveQuery|ActiveQueryContent
+     * @return ActiveQuery|ActiveQueryContent
      */
     public function getContent()
     {

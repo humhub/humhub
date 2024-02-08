@@ -24,7 +24,6 @@ use yii\web\JsExpression;
  */
 class ShowMorePager extends \humhub\widgets\LinkPager
 {
-
     /**
      * @var Pagination the pagination object that this pager is associated with.
      * You must set this property in order to make LinkPager work.

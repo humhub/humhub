@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\components;
 
+use Exception;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
 use Yii;
@@ -24,7 +25,6 @@ use yii\web\UploadedFile;
  */
 class StorageManager extends Component implements StorageManagerInterface
 {
-
     /**
      * @var string file name of the base file (without variant)
      */
@@ -36,7 +36,7 @@ class StorageManager extends Component implements StorageManagerInterface
     protected $storagePath = '@filestore';
 
     /**
-     * @var integer file mode
+     * @var int file mode
      */
     public $fileMode = 0744;
 
@@ -145,7 +145,7 @@ class StorageManager extends Component implements StorageManagerInterface
     protected function getPath()
     {
         if ($this->file->guid == '') {
-            throw new \Exception('File GUID empty!');
+            throw new Exception('File GUID empty!');
         }
 
         $basePath = Yii::getAlias($this->storagePath);

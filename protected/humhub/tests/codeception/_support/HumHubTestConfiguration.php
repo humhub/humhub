@@ -16,14 +16,14 @@ use Yii;
  */
 class HumHubTestConfiguration
 {
-   /**
-    * This function is used for retrieving the humhub configuration for
-    * a given test suite by merging default configuration with the test configuration and
-    * environment configuration of the user.
-    *
-    * @param type $suite
-    * @return type
-    */
+    /**
+     * This function is used for retrieving the humhub configuration for
+     * a given test suite by merging default configuration with the test configuration and
+     * environment configuration of the user.
+     *
+     * @param type $suite
+     * @return type
+     */
     public static function getSuiteConfig($suite)
     {
         $config = self::initConfig($suite);

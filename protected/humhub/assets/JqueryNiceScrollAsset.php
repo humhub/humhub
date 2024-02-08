@@ -17,7 +17,6 @@ use humhub\components\assets\WebStaticAssetBundle;
  */
 class JqueryNiceScrollAsset extends WebStaticAssetBundle
 {
-
     /**
      * @inheritdoc
      */

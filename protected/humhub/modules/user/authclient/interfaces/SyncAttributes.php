@@ -19,7 +19,6 @@ namespace humhub\modules\user\authclient\interfaces;
  */
 interface SyncAttributes
 {
-
     /**
      * Returns attribute names which should be synced on login
      *

@@ -30,14 +30,15 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
     });
 
     SimpleStream.prototype.onEmptyStream = function () {
-        var modal = Component.instance(this.$.closest('.modal'));;
-        if(modal) {
+        var modal = Component.instance(this.$.closest('.modal'));
+
+        if (modal) {
             modal.close();
         }
     };
 
     SimpleStream.prototype.reloadEntry = function (entry) {
-        if(!entry) {
+        if (!entry) {
             entry = Component.instance(this.$.find('[data-stream-entry]:first'));
         }
 

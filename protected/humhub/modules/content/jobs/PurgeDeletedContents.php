@@ -14,7 +14,6 @@ use Yii;
 
 class PurgeDeletedContents extends LongRunningActiveJob
 {
-
     /**
      * @inheritdoc
      */

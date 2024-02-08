@@ -7,6 +7,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\like\Module;
 use Yii;
+use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -16,9 +17,8 @@ use yii\helpers\Url;
  * @package humhub.modules_core.like
  * @since 0.5
  */
-class LikeLink extends \yii\base\Widget
+class LikeLink extends Widget
 {
-
     /**
      * The Object to be liked
      *
@@ -124,5 +124,3 @@ class LikeLink extends \yii\base\Widget
     }
 
 }
-
-?>

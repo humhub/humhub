@@ -15,7 +15,6 @@ use humhub\modules\queue\ActiveJob;
 use humhub\modules\user\models\Group;
 use Yii;
 
-
 /**
  * CheckForNewVersion checks for new HumHub version and sends a notification to
  * the administrators
@@ -25,7 +24,6 @@ use Yii;
  */
 class CheckForNewVersion extends ActiveJob
 {
-
     /**
      * @inheritdoc
      */

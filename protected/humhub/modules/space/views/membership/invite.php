@@ -1,4 +1,5 @@
 <?php
+
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\InviteModal;

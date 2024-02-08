@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\models;
 
-
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use Yii;

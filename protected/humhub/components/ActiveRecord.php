@@ -26,7 +26,6 @@ use yii\validators\Validator;
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
-
     /**
      * @var \humhub\modules\file\components\FileManager
      */
@@ -41,7 +40,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * @event Event is used to append rules what defined in [[rules()]].
      */
-    const EVENT_APPEND_RULES = 'appendRules';
+    public const EVENT_APPEND_RULES = 'appendRules';
 
     /**
      * @inheritdoc
@@ -180,7 +179,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function __unserialize($unserializedArr)
     {
         $this->init();
-        $this->setAttributes($unserializedArr['attributes'],false);
+        $this->setAttributes($unserializedArr['attributes'], false);
         $this->setOldAttributes($unserializedArr['oldAttributes']);
     }
 

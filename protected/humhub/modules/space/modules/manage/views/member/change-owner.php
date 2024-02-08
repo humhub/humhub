@@ -21,11 +21,11 @@ use humhub\widgets\Button;
 
         <?php $form = ActiveForm::begin([]); ?>
 
-            <?= $form->field($model, 'ownerId')->dropDownList($model->getNewOwnerArray()) ?>
+        <?= $form->field($model, 'ownerId')->dropDownList($model->getNewOwnerArray()) ?>
 
-            <hr>
+        <hr>
 
-            <?= Button::danger(Yii::t('SpaceModule.manage', 'Transfer ownership'))->action('client.submit')->confirm() ?>
+        <?= Button::danger(Yii::t('SpaceModule.manage', 'Transfer ownership'))->action('client.submit')->confirm() ?>
 
         <?php ActiveForm::end(); ?>
 

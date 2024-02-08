@@ -20,7 +20,6 @@ use Yii;
  */
 class ModuleInstalledActionButtons extends Widget
 {
-
     /**
      * @var Module
      */

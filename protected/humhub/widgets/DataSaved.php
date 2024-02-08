@@ -18,7 +18,6 @@ namespace humhub\widgets;
  */
 class DataSaved extends \yii\base\Widget
 {
-
     /**
      * Displays / Run the Widget
      */

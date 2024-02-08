@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use DateTimeZone;
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
@@ -31,6 +32,7 @@ use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\web\IdentityInterface;
@@ -38,7 +40,7 @@ use yii\web\IdentityInterface;
 /**
  * This is the model class for table "user".
  *
- * @property integer $status
+ * @property int $status
  * @property string $username
  * @property string $email
  * @property string $auth_mode
@@ -69,51 +71,51 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * User Status Flags
      */
-    const STATUS_DISABLED = 0;
-    const STATUS_ENABLED = 1;
-    const STATUS_NEED_APPROVAL = 2;
-    const STATUS_SOFT_DELETED = 3;
+    public const STATUS_DISABLED = 0;
+    public const STATUS_ENABLED = 1;
+    public const STATUS_NEED_APPROVAL = 2;
+    public const STATUS_SOFT_DELETED = 3;
 
     /**
      * Visibility Modes
      */
-    const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
-    const VISIBILITY_ALL = 2; // Visible for all (also guests)
-    const VISIBILITY_HIDDEN = 3; // Invisible
+    public const VISIBILITY_REGISTERED_ONLY = 1; // Only for registered members
+    public const VISIBILITY_ALL = 2; // Visible for all (also guests)
+    public const VISIBILITY_HIDDEN = 3; // Invisible
 
     /**
      * User Markdown Editor Modes
      */
-    const EDITOR_RICH_TEXT = 0;
-    const EDITOR_PLAIN = 1;
+    public const EDITOR_RICH_TEXT = 0;
+    public const EDITOR_PLAIN = 1;
 
     /**
      * User Groups
      */
-    const USERGROUP_SELF = 'u_self';
-    const USERGROUP_FRIEND = 'u_friend';
-    const USERGROUP_USER = 'u_user';
-    const USERGROUP_GUEST = 'u_guest';
+    public const USERGROUP_SELF = 'u_self';
+    public const USERGROUP_FRIEND = 'u_friend';
+    public const USERGROUP_USER = 'u_user';
+    public const USERGROUP_GUEST = 'u_guest';
 
     /**
      * Scenarios
      */
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
-    const SCENARIO_LOGIN = 'login';
-    const SCENARIO_REGISTRATION = 'registration';
-    const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
-    const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
-    const SCENARIO_APPROVE = 'approve';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_LOGIN = 'login';
+    public const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_REGISTRATION_EMAIL = 'registration_email';
+    public const SCENARIO_EDIT_ACCOUNT_SETTINGS = 'editAccountSettings';
+    public const SCENARIO_APPROVE = 'approve';
 
     /**
      * @event Event an event that is triggered when the user visibility is checked via [[isVisible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event UserEvent an event that is triggered when the user is soft deleted (without contents) and also before complete deletion.
      */
-    const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
+    public const EVENT_BEFORE_SOFT_DELETE = 'beforeSoftDelete';
 
     /**
      * A initial group for the user assigned while registration.
@@ -122,7 +124,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     public $registrationGroupId = null;
 
     /**
-     * @var boolean is system admin (cached)
+     * @var bool is system admin (cached)
      */
     private $_isSystemAdmin = null;
 
@@ -229,7 +231,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public function validateTimeZone($attribute, $params)
     {
-        if (!in_array($this->$attribute, \DateTimeZone::listIdentifiers())) {
+        if (!in_array($this->$attribute, DateTimeZone::listIdentifiers())) {
             $this->$attribute = null;
         }
     }
@@ -237,8 +239,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * Checks if user is system administrator
      *
-     * @param boolean $cached Used cached result if available
-     * @return boolean user is system admin
+     * @param bool $cached Used cached result if available
+     * @return bool user is system admin
      */
     public function isSystemAdmin($cached = true)
     {
@@ -382,7 +384,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     /**
      * Returns all GroupUser relations of this user as ActiveQuery
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroupUsers()
     {
@@ -391,7 +393,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     /**
      * Returns all Group relations of this user as ActiveQuery
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroups()
     {
@@ -400,7 +402,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     /**
      * Checks if the user has at least one group assigned.
-     * @return boolean
+     * @return bool
      */
     public function hasGroup()
     {
@@ -409,7 +411,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     /**
      * Returns all GroupUser relations this user is a manager of as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getManagerGroupsUser()
     {
@@ -418,7 +420,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
 
     /**
      * Returns all Groups this user is a maanger of as ActiveQuery.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getManagerGroups()
     {
@@ -431,7 +433,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * Returns all user this user is related as friend as ActiveQuery.
      * Returns null if the friendship module is deactivated.
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFriends()
     {
@@ -453,7 +455,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * Specifies whether the user should appear in user lists or in the search.
      *
-     * @return boolean is visible
+     * @return bool is visible
      * @since 1.2.3
      */
     public function isVisible()
@@ -641,7 +643,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      */
     public function getDisplayName(): string
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () {
             /** @var Module $module */
             $module = Yii::$app->getModule('user');
 
@@ -742,10 +744,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         $module = Yii::$app->getModule('content');
 
         return $module->adminCanViewAllContent && (
-                $this->isSystemAdmin()
+            $this->isSystemAdmin()
                 || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
                 || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
-            );
+        );
     }
 
 
@@ -771,8 +773,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * User can approve other users
      *
-     * @return boolean
-     * @throws \yii\base\InvalidConfigException
+     * @return bool
+     * @throws InvalidConfigException
      */
     public function canApproveUsers()
     {

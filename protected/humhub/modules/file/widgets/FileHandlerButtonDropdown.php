@@ -8,7 +8,9 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\file\handler\BaseFileHandler;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -17,9 +19,8 @@ use yii\helpers\ArrayHelper;
  * @since 1.2
  * @author Luke
  */
-class FileHandlerButtonDropdown extends \humhub\components\Widget
+class FileHandlerButtonDropdown extends Widget
 {
-
     /**
      * @var string the primary button html code, if not set the first handler will be used
      */
@@ -37,12 +38,12 @@ class FileHandlerButtonDropdown extends \humhub\components\Widget
     public $cssButtonClass = 'btn-success';
 
     /**
-     * @var \humhub\modules\file\handler\BaseFileHandler[] the handlers to show
+     * @var BaseFileHandler[] the handlers to show
      */
     public $handlers;
 
     /**
-     * @var boolean if true the dropdown-menu will be assigned with an dropdown-menu-right class.
+     * @var bool if true the dropdown-menu will be assigned with an dropdown-menu-right class.
      */
     public $pullRight = false;
 

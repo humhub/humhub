@@ -22,7 +22,10 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\CanMention;
 use humhub\modules\user\widgets\Image as UserImage;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * Controller used for mentioning (user/space) searches
@@ -59,7 +62,7 @@ class MentioningController extends Controller
     /**
      * Find all users and spaces on mentioning request from RichText editor
      *
-     * @return \yii\web\Response
+     * @return Response
      */
     public function actionIndex()
     {
@@ -89,7 +92,7 @@ class MentioningController extends Controller
      * Find space members on mentioning request from RichText editor on Post form
      *
      * @param int $id
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
      */
     public function actionSpace($id)
@@ -126,10 +129,10 @@ class MentioningController extends Controller
     /**
      * Find users followed to the Content on mentioning request from RichText editor on Comment form
      *
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function actionContent()
     {

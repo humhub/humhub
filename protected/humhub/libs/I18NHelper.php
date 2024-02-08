@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\libs;
 
 use humhub\components\Module;

@@ -16,7 +16,7 @@ use yii\base\Exception;
 /**
  * This is the model class for table "setting".
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $value
  * @property string $module_id
@@ -67,7 +67,7 @@ class Setting extends SettingActiveRecord
      */
     public static function get($name, $moduleId = '')
     {
-        list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
+        list($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->get($name);
     }
 
@@ -82,7 +82,7 @@ class Setting extends SettingActiveRecord
      */
     public static function set($name, $value, $moduleId = '')
     {
-        list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
+        list($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->set($name, $value);
     }
 
@@ -111,7 +111,7 @@ class Setting extends SettingActiveRecord
      * @param string $name
      * @param string $moduleId
      *
-     * @return boolean
+     * @return bool
      */
     public static function isFixed($name, $moduleId = '')
     {
@@ -121,7 +121,7 @@ class Setting extends SettingActiveRecord
     /**
      * Checks if Humhub is installed
      *
-     * @return boolean
+     * @return bool
      * @deprecated since v1.16; use Yii::$app->isInstalled()
      * @see Yii::$app->isInstalled()
      */

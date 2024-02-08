@@ -212,7 +212,7 @@ class AccountController extends BaseAccountController
         // Handle permission state change
         $return = $this->getUser()->permissionManager->handlePermissionStateChange($currentGroup);
 
-        return $return ??  $this->render('permissions', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
+        return $return ?? $this->render('permissions', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
     }
 
     public function actionConnectedAccounts()

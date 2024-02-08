@@ -25,12 +25,11 @@ use yii\base\Model;
  */
 class MailSummaryForm extends Model
 {
-
     /**
      * Space limit modes (include or exclude)
      */
-    const LIMIT_MODE_EXCLUDE = 0;
-    const LIMIT_MODE_INCLUDE = 1;
+    public const LIMIT_MODE_EXCLUDE = 0;
+    public const LIMIT_MODE_INCLUDE = 1;
 
     /**
      * @var array of selected activities to include
@@ -58,7 +57,7 @@ class MailSummaryForm extends Model
     public $user;
 
     /**
-     * @var boolean indicates that custom user settings were loaded
+     * @var bool indicates that custom user settings were loaded
      */
     public $userSettingsLoaded = false;
 
@@ -148,7 +147,7 @@ class MailSummaryForm extends Model
      * If the 'user' attribute is set, the user settings are loaded if present.
      * Otherwise the system defaults will be loaded.
      *
-     * @return boolean
+     * @return bool
      */
     public function loadCurrent()
     {
@@ -176,7 +175,7 @@ class MailSummaryForm extends Model
     /**
      * Saves the current model values to the current user or globally.
      *
-     * @return boolean success
+     * @return bool success
      */
     public function save()
     {
@@ -244,7 +243,7 @@ class MailSummaryForm extends Model
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function canResetAllUsers()
     {

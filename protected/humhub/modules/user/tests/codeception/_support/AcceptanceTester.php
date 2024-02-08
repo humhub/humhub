@@ -1,6 +1,8 @@
 <?php
+
 namespace user;
 
+use Codeception\Lib\Friend;
 use humhub\modules\user\models\User;
 
 /**
@@ -14,17 +16,17 @@ use humhub\modules\user\models\User;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class AcceptanceTester extends \AcceptanceTester
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Define custom actions here
+     */
 
     public function impersonateUser($userName)
     {
@@ -50,7 +52,7 @@ class AcceptanceTester extends \AcceptanceTester
     {
         $options = array_merge([
             'categoryTitle' => 'Test fields',
-            'internalName' => preg_replace( '/[^a-z0-9]+/i', '_', strtolower($title)),
+            'internalName' => preg_replace('/[^a-z0-9]+/i', '_', strtolower($title)),
             'required' => false,
             'visible' => false,
             'showAtRegistration' => false,

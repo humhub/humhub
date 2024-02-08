@@ -1,5 +1,9 @@
 <?php
-\humhub\modules\admin\widgets\AdminMenu::markAsActive('settings');
+
+use humhub\modules\admin\widgets\AdminMenu;
+use humhub\modules\admin\widgets\SettingsMenu;
+
+AdminMenu::markAsActive('settings');
 ?>
 
 <?php $this->beginContent('@admin/views/layouts/main.php') ?>
@@ -7,7 +11,7 @@
     <div class="panel-heading">
         <?= Yii::t('AdminModule.user', '<strong>Settings</strong> and Configuration'); ?>
     </div>
-    <?= \humhub\modules\admin\widgets\SettingsMenu::widget(); ?>
+    <?= SettingsMenu::widget(); ?>
 
     <?= $content; ?>
 </div>

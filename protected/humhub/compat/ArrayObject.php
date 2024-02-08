@@ -9,7 +9,6 @@
 
 namespace Zend\Stdlib;
 
-
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
@@ -28,12 +27,12 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
      * Properties of the object have their normal functionality
      * when accessed as list (var_dump, foreach, etc.).
      */
-    const STD_PROP_LIST = 1;
+    public const STD_PROP_LIST = 1;
 
     /**
      * Entries can be accessed as properties (read and write).
      */
-    const ARRAY_AS_PROPS = 2;
+    public const ARRAY_AS_PROPS = 2;
 
     /**
      * @var array
@@ -133,7 +132,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
     {
         $ret = null;
         if ($this->flag == self::ARRAY_AS_PROPS) {
-            $ret =& $this->offsetGet($key);
+            $ret = & $this->offsetGet($key);
 
             return $ret;
         }
@@ -296,7 +295,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
         if (!$this->offsetExists($key)) {
             return $ret;
         }
-        $ret =& $this->storage[$key];
+        $ret = & $this->storage[$key];
 
         return $ret;
     }
@@ -425,7 +424,7 @@ class ArrayObject implements IteratorAggregate, ArrayAccess, Countable
                     $this->setIteratorClass($v);
                     break;
                 case 'protectedProperties':
-//                    continue;
+                    //                    continue;
 
                     // HUMHUB MODIFICATION
                     continue 2;

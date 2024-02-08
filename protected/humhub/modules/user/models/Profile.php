@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 use yii\base\Exception;
@@ -16,7 +17,7 @@ use yii\base\Exception;
 /**
  * This is the model class for table "profile".
  *
- * @property integer $user_id
+ * @property int $user_id
  * @property string $firstname
  * @property string $lastname
  * @property string $title
@@ -26,7 +27,7 @@ use yii\base\Exception;
  * @property string $city
  * @property string $country
  * @property string $state
- * @property integer $birthday_hide_year
+ * @property int $birthday_hide_year
  * @property string $birthday
  * @property string $about
  * @property string $phone_private
@@ -35,7 +36,7 @@ use yii\base\Exception;
  * @property string $fax
  * @property string $im_skype
  * @property string $im_msn
- * @property integer $im_icq
+ * @property int $im_icq
  * @property string $im_xmpp
  * @property string $url
  * @property string $url_facebook
@@ -243,7 +244,7 @@ class Profile extends ActiveRecord
                 $fieldDefinition = $profileField->fieldType->getFieldFormDefinition($this->user);
 
                 if (isset($fieldDefinition[$profileField->internal_name]) && !empty($profileField->description)) {
-                    $fieldDefinition[$profileField->internal_name]['hint'] =  Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
+                    $fieldDefinition[$profileField->internal_name]['hint'] = Yii::t($profileField->getTranslationCategory() ?: $profileFieldCategory->getTranslationCategory(), $profileField->description);
                 }
 
                 $category['elements'] = array_merge($category['elements'], $fieldDefinition);
@@ -391,7 +392,7 @@ class Profile extends ActiveRecord
     public function softDelete()
     {
         $module = Yii::$app->getModule('user');
-        /* @var $module \humhub\modules\user\Module */
+        /* @var $module Module */
 
         foreach (array_keys($this->getAttributes()) as $name) {
             if (!in_array($name, $module->softDeleteKeepProfileFields) && $name !== 'user_id') {

@@ -1,12 +1,15 @@
 <?php
 
+use humhub\components\SettingsManager;
 use humhub\libs\Html;
+use humhub\modules\admin\models\forms\MailingSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
-/* @var $model \humhub\modules\admin\models\forms\MailingSettingsForm */
-/* @var \humhub\components\SettingsManager $settings */
+/* @var $this View */
+/* @var $model MailingSettingsForm */
+/* @var SettingsManager $settings */
 
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>

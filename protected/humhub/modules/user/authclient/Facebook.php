@@ -13,7 +13,6 @@ namespace humhub\modules\user\authclient;
  */
 class Facebook extends \yii\authclient\clients\Facebook
 {
-
     /**
      * @inheritdoc
      */

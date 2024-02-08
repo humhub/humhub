@@ -6,7 +6,6 @@ use yii\base\Widget;
 
 class WallEntryLabels extends Widget
 {
-
     /**
      * Content Object with SIContentBehaviour
      * @var type
@@ -24,5 +23,3 @@ class WallEntryLabels extends Widget
     }
 
 }
-
-?>

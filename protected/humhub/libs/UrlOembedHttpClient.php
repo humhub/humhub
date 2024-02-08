@@ -7,11 +7,11 @@ use yii\helpers\Json;
 
 class UrlOembedHttpClient implements UrlOembedClient
 {
-    const RESPONSE_UNAUTHORIZED = 'Unauthorized';
+    public const RESPONSE_UNAUTHORIZED = 'Unauthorized';
 
-    const RESPONSE_NOT_FOUND = 'Not Found';
+    public const RESPONSE_NOT_FOUND = 'Not Found';
 
-    const ERROR_RESPONSES = [
+    public const ERROR_RESPONSES = [
         self::RESPONSE_NOT_FOUND,
         self::RESPONSE_UNAUTHORIZED
     ];

@@ -67,7 +67,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     public $migrationPath = '@humhub/migrations';
 
     /**
-     * @var boolean also include migration paths of all enabled modules
+     * @var bool also include migration paths of all enabled modules
      */
     public bool $includeModuleMigrations = false;
 

@@ -9,25 +9,26 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\user\notifications\Mentioned;
 use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "user_mentioning".
  * The followings are the available columns in table 'user_mentioning':
  *
- * @property integer $id
+ * @property int $id
  * @property string $object_model
- * @property integer $object_id
- * @property integer $user_id
+ * @property int $object_id
+ * @property int $user_id
  */
 class Mentioning extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -43,7 +44,7 @@ class Mentioning extends ActiveRecord
     {
         return [
             [
-                'class' => \humhub\components\behaviors\PolymorphicRelation::class,
+                'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ContentActiveRecord::class, ContentAddonActiveRecord::class],
             ],
         ];
@@ -141,7 +142,7 @@ class Mentioning extends ActiveRecord
             return [];
         }
 
-        if(is_string($guids)) {
+        if (is_string($guids)) {
             $guids = [$guids];
         }
 
@@ -149,7 +150,7 @@ class Mentioning extends ActiveRecord
 
         foreach ($guids as $guid) {
             $user = User::findOne(['guid' => $guid]);
-            if(!$user) {
+            if (!$user) {
                 continue;
             }
 
@@ -178,11 +179,11 @@ class Mentioning extends ActiveRecord
     /**
      * Related user
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {
-        return $this->hasOne(\humhub\modules\user\models\User::class, ['id' => 'user_id']);
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
 }

@@ -422,7 +422,9 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Database connection time: {dbTime} - Configured time zone: {time}',
+                    'hint' => Yii::t(
+                        'AdminModule.information',
+                        'Database connection time: {dbTime} - Configured time zone: {time}',
                         [
                             'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
                             'time' => Yii::$app->formatter->asTime(time(), 'short'),
@@ -451,9 +453,10 @@ class SelfTest
             $sslPort = 443;
             $httpPort = 80;
             $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
-            isset($_SERVER['HTTPS'])
+                isset($_SERVER['HTTPS'])
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
-                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
+                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
+            );
             $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
                 . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
                 ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
@@ -467,7 +470,9 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Detected URL: {currentBaseUrl}',
+                    'hint' => Yii::t(
+                        'AdminModule.information',
+                        'Detected URL: {currentBaseUrl}',
                         ['currentBaseUrl' => $currentBaseUrl]
                     ),
                 ];

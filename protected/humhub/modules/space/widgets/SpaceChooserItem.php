@@ -11,25 +11,24 @@ use Yii;
  */
 class SpaceChooserItem extends Widget
 {
-
     /**
      * @var string
      */
     public $space;
 
     /**
-     * @var integer
+     * @var int
      */
     public $updateCount = 0;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $visible = true;
 
     /**
      * If true the item will be marked as a following space
-     * @var boolean
+     * @var bool
      */
     public $isFollowing = false;
 

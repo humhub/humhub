@@ -23,7 +23,6 @@ use humhub\modules\ui\menu\widgets\LeftNavigation;
  */
 class AccountMenu extends LeftNavigation
 {
-
     /**
      * @inheritdoc
      */

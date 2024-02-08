@@ -8,7 +8,6 @@ use user\AcceptanceTester;
 
 class LoginCest
 {
-
     public function testUserLogin(AcceptanceTester $I)
     {
         $I->wantTo('ensure that login works');
@@ -64,7 +63,6 @@ class LoginCest
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is not approved yet!');
     }
-
 
 
     public function testChangePassword(AcceptanceTester $I)

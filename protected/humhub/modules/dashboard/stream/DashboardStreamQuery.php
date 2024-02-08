@@ -33,5 +33,4 @@ class DashboardStreamQuery extends ActivityStreamQuery
 
         parent::beforeApplyFilters();
     }
-
 }

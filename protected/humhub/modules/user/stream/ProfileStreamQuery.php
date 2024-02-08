@@ -13,7 +13,6 @@ use humhub\modules\stream\models\ContentContainerStreamQuery;
  */
 class ProfileStreamQuery extends ContentContainerStreamQuery
 {
-
     /**
      * @var bool|null can be used to set a default state for the IncludeAllContributionsFilter
      */

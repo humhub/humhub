@@ -17,7 +17,7 @@ class RichTextEmojiExtension extends RichTextContentExtension
     /**
      * @inheritdoc
      */
-    const REGEX = '/[:|;](([A-Za-z0-9_\-+])+)[:|;]/';
+    public const REGEX = '/[:|;](([A-Za-z0-9_\-+])+)[:|;]/';
 
     /**
      * @inheritdoc

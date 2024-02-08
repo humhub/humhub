@@ -18,7 +18,6 @@ use yii\queue\sync\Queue;
  */
 class Sync extends Queue
 {
-
     /**
      * @inheritdoc
      */

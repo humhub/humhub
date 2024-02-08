@@ -24,7 +24,6 @@ use yii\web\HttpException;
  */
 class UserPermissionsController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -84,7 +83,7 @@ class UserPermissionsController extends Controller
 
         /** @var Module $userModule */
         $userModule = Yii::$app->getModule('user');
-        $oldState = (boolean)$userModule->settings->get('enableProfilePermissions', false);
+        $oldState = (bool)$userModule->settings->get('enableProfilePermissions', false);
         $newState = false;
         if (Yii::$app->request->post('isEnabled') === 'true') {
             $newState = true;

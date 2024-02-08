@@ -41,6 +41,7 @@ use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
@@ -65,25 +66,25 @@ use yii\helpers\Url;
  * Note: Instances of this class are automatically created and saved by the [[ContentActiveRecord]] model and should not
  * manually be created or deleted to maintain data integrity.
  *
- * @property integer $id
+ * @property int $id
  * @property string $guid
  * @property string $object_model
- * @property integer $object_id
+ * @property int $object_id
  * @property string $stream_sort_date
  * @property string $stream_channel
- * @property integer $contentcontainer_id
- * @property integer $visibility
- * @property integer $pinned
- * @property integer $archived
- * @property integer $hidden
- * @property integer $state
- * @property integer $was_published
+ * @property int $contentcontainer_id
+ * @property int $visibility
+ * @property int $pinned
+ * @property int $archived
+ * @property int $hidden
+ * @property int $state
+ * @property int $was_published
  * @property string $scheduled_at
- * @property integer $locked_comments
+ * @property int $locked_comments
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property ContentContainer $contentContainer
  * @property-read mixed $contentName
  * @property-read mixed $content
@@ -462,7 +463,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * Checks if the content visiblity is set to public.
      *
-     * @return boolean
+     * @return bool
      */
     public function isPublic()
     {
@@ -472,7 +473,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * Checks if the content visibility is set to private.
      *
-     * @return boolean
+     * @return bool
      */
     public function isPrivate()
     {
@@ -522,9 +523,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * Checks if the user can pin this content.
      * This is only allowed for workspace owner.
      *
-     * @return boolean
+     * @return bool
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function canPin(): bool
     {
@@ -553,7 +554,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * Checks if current content object is archived
      *
-     * @return boolean
+     * @return bool
      * @throws Exception
      */
     public function isArchived(): bool
@@ -709,7 +710,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @return bool determines if the current user is generally permitted to move content on the given container (or the related container if no container was provided)
      * @throws IntegrityException
      * @throws Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function checkMovePermission(ContentContainerActiveRecord $container = null)
     {
@@ -746,7 +747,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * HActiveRecordContent (e.g. Post) to overwrite this behavior.
      * e.g. in case there is no wall entry available for this content.
      *
-     * @param boolean $scheme
+     * @param bool $scheme
      * @return string the URL
      * @since 0.11.1
      */
@@ -866,12 +867,12 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      *  - The user is granted the managePermission set by the model record class
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
-     * @param User|integer $user user instance or user id
+     * @param User|int $user user instance or user id
      * @return bool can edit/create this content
      * @throws Exception
      * @throws IntegrityException
      * @throws Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.1
      */
     public function canEdit($user = null): bool
@@ -952,7 +953,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @param bool $allowCaching
      * @return bool
      * @throws Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @see PermissionManager::can()
      * @since 1.2.1
      */
@@ -1050,7 +1051,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * @returns \humhub\modules\content\models\Content content instance of this content owner
+     * @returns Content content instance of this content owner
      */
     public function getContent()
     {
@@ -1074,7 +1075,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * @returns boolean true if this content has been updated, otherwise false
+     * @returns bool true if this content has been updated, otherwise false
      * @since 1.7
      */
     public function isUpdated()

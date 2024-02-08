@@ -22,7 +22,6 @@ use yii\helpers\Url;
  */
 class Form extends WallCreateContentForm
 {
-
     /**
      * @inheritdoc
      */

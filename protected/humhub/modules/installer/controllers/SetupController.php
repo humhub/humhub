@@ -8,6 +8,7 @@
 
 namespace humhub\modules\installer\controllers;
 
+use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\libs\DynamicConfig;
@@ -126,7 +127,7 @@ class SetupController extends Controller
                 DynamicConfig::save($config);
 
                 return $this->redirect(['migrate']);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errorMessage = $e->getMessage();
             }
         }

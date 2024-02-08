@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140321_000917_content extends Migration
 {
-
     public function up()
     {
         // Fix: empty user_id in content table

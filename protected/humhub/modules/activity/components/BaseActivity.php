@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\components;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use yii\base\InvalidConfigException;
 use yii\base\Exception;
 use yii\db\ActiveRecord;
@@ -25,7 +26,6 @@ use humhub\modules\content\models\Content;
  */
 abstract class BaseActivity extends SocialActivity
 {
-
     /**
      * Default content visibility of this Activity.
      * @var int
@@ -38,7 +38,7 @@ abstract class BaseActivity extends SocialActivity
     public $recordClass = Activity::class;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $clickable = true;
 
@@ -67,8 +67,8 @@ abstract class BaseActivity extends SocialActivity
     /**
      * Creates an activity model and determines the contentContainer/visibility
      *
-     * @throws \yii\base\Exception
      * @return static
+     * @throws Exception
      */
     public function create()
     {
@@ -113,7 +113,7 @@ abstract class BaseActivity extends SocialActivity
     /**
      * Builder function for setting ContentContainerActiveRecord
      *
-     * @param \humhub\modules\content\components\ContentContainerActiveRecord $container
+     * @param ContentContainerActiveRecord $container
      * @return BaseActivity
      */
     public function container($container)
@@ -125,8 +125,8 @@ abstract class BaseActivity extends SocialActivity
     /**
      * Saves the underlying Activity model record.
      *
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\base\Exception
+     * @throws InvalidConfigException
+     * @throws Exception
      */
     private function saveModelInstance()
     {
@@ -151,7 +151,7 @@ abstract class BaseActivity extends SocialActivity
     /**
      * Stores the activity in database
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

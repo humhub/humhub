@@ -3,6 +3,7 @@
 use humhub\commands\CronController;
 use humhub\modules\content\Events;
 use humhub\commands\IntegrityController;
+use humhub\modules\content\Module;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
@@ -10,7 +11,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 
 return [
     'id' => 'content',
-    'class' => \humhub\modules\content\Module::class,
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],

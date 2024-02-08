@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
+use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
 use humhub\libs\Html;
@@ -9,6 +10,7 @@ use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 
 /**
  * AbstractRichText serves as the base class for rich text implementations.
@@ -106,12 +108,12 @@ abstract class AbstractRichText extends JsWidget
     public $text = "";
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $encode = true;
 
     /**
-     * @var boolean enables the edit rendering mode
+     * @var bool enables the edit rendering mode
      */
     public $edit = false;
 
@@ -191,7 +193,7 @@ abstract class AbstractRichText extends JsWidget
      * @param $text string RichText content
      * @param ActiveRecord $record
      * @return array
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function postProcess($text, $record, $attribute = null)
     {
@@ -252,7 +254,7 @@ abstract class AbstractRichText extends JsWidget
 
     /**
      * @return AbstractRichTextConverter the related post-processor
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.8
      */
     public static function getConverter(): AbstractRichTextConverter
@@ -285,7 +287,7 @@ abstract class AbstractRichText extends JsWidget
      * @param $text string rich text content to be rendered
      * @param array $config rich text widget options
      * @return string render result
-     * @throws \Exception
+     * @throws Exception
      */
     public static function output($text, $config = []): string
     {
@@ -309,7 +311,7 @@ abstract class AbstractRichText extends JsWidget
      * @param string $format
      * @param array $options
      * @return string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.8
      * @see AbstractRichTextConverter
      */
@@ -328,7 +330,7 @@ abstract class AbstractRichText extends JsWidget
                 return $converter->convertToMarkdown($content, $options);
             case static::FORMAT_PLAINTEXT:
                 return $converter->convertToPlaintext($content, $options);
-            case static:: FORMAT_SHORTTEXT:
+            case static::FORMAT_SHORTTEXT:
                 return $converter->convertToShortText($content, $options);
             default:
                 return Html::encode($converter->convertToPlaintext($content, $options));
@@ -344,7 +346,7 @@ abstract class AbstractRichText extends JsWidget
      * @param $maxLength int max length of the preview
      * @param array $config rich text widget options
      * @return string render result
-     * @throws \Exception
+     * @throws Exception
      */
     public static function preview($text, $maxLength = 0, $config = []): string
     {

@@ -16,18 +16,17 @@ use humhub\modules\user\models\User;
  */
 class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
 {
-
     /**
      * Option key used for rendering images as HTML tag with token
      * for receiver user to allow see image from email readers
      */
-    const OPTION_RECEIVER_USER = 'receiver';
+    public const OPTION_RECEIVER_USER = 'receiver';
 
     /**
      * Convert the following style classes to inline styles,
      * It is required for some email clients which ignore styles from head <style>
      */
-    const CLASS_STYLES = [
+    public const CLASS_STYLES = [
         'pull-left' => ['float' => 'left'],
         'pull-right' => ['float' => 'right'],
         'center-block' => ['display' => 'block', 'margin' => 'auto'],

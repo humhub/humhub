@@ -66,7 +66,7 @@ $config = [
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
-                \yii\log\DbTarget::class =>[
+                \yii\log\DbTarget::class => [
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [

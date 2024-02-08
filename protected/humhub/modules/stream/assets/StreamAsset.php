@@ -15,7 +15,6 @@ use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\ui\filter\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
 
-
 /**
  * Stream related assets.
  *

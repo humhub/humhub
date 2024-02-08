@@ -9,6 +9,7 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
+use yii\base\Widget;
 
 /**
  * Admin Delete Modal for Wall Entries
@@ -16,7 +17,7 @@ use humhub\modules\content\models\forms\AdminDeleteContentForm;
  * This widget will be shown when admin deletes someone's content
  *
  */
-class AdminDeleteModal extends \yii\base\Widget
+class AdminDeleteModal extends Widget
 {
     /**
      * @var AdminDeleteContentForm

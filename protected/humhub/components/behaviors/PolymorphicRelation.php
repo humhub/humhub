@@ -40,7 +40,7 @@ class PolymorphicRelation extends Behavior
     public string $pkAttribute = 'object_id';
 
     /**
-     * @var boolean if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
+     * @var bool if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
      */
     public bool $strict = false;
 
@@ -148,7 +148,7 @@ class PolymorphicRelation extends Behavior
      *
      * @param mixed $object
      *
-     * @return boolean
+     * @return bool
      */
     private function validateUnderlyingObjectType(?object $object)
     {

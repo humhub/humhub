@@ -6,7 +6,6 @@ use user\AcceptanceTester;
 
 class ImpersonateCest
 {
-
     public function testUserImpersonation(AcceptanceTester $I)
     {
         $I->wantTo('ensure that impersonation works');

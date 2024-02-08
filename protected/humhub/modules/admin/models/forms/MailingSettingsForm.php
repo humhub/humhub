@@ -13,11 +13,11 @@ use yii\base\Model;
  */
 class MailingSettingsForm extends Model
 {
-    const TRANSPORT_SMTP = 'smtp';
-    const TRANSPORT_FILE = 'file';
-    const TRANSPORT_DSN = 'dsn';
-    const TRANSPORT_PHP = 'php';
-    const TRANSPORT_CONFIG = 'config';
+    public const TRANSPORT_SMTP = 'smtp';
+    public const TRANSPORT_FILE = 'file';
+    public const TRANSPORT_DSN = 'dsn';
+    public const TRANSPORT_PHP = 'php';
+    public const TRANSPORT_CONFIG = 'config';
 
     public $systemEmailAddress;
     public $systemEmailName;
@@ -44,8 +44,9 @@ class MailingSettingsForm extends Model
         $this->dsn = $settingsManager->get('mailer.dsn');
         $this->hostname = $settingsManager->get('mailer.hostname');
         $this->username = $settingsManager->get('mailer.username');
-        if ($settingsManager->get('mailer.password') != '')
+        if ($settingsManager->get('mailer.password') != '') {
             $this->password = '---invisible---';
+        }
 
         $this->useSmtps = $settingsManager->get('mailer.useSmtps');
         $this->port = $settingsManager->get('mailer.port');
@@ -111,7 +112,7 @@ class MailingSettingsForm extends Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

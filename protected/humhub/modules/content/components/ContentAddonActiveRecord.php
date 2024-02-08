@@ -16,6 +16,7 @@ use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Exception;
 
@@ -42,12 +43,12 @@ use yii\base\Exception;
 class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, ViewableInterface, EditableInterface, DeletableInterface
 {
     /**
-     * @var boolean also update underlying contents last update stream sorting
+     * @var bool also update underlying contents last update stream sorting
      */
     protected $updateContentStreamSort = true;
 
     /**
-     * @var boolean automatic following of the addon creator to the related content
+     * @var bool automatic following of the addon creator to the related content
      */
     protected $automaticContentFollowing = true;
 
@@ -168,7 +169,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
     /**
      * Checks if this content addon can be changed
      *
-     * @return boolean
+     * @return bool
      * @deprecated since 1.4
      * @see static::canEdit()
      */
@@ -181,7 +182,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
      * Checks if this record can be edited
      *
      * @param User|int|null $user the user
-     * @return boolean
+     * @return bool
      * @since 1.4
      */
     public function canEdit($user = null): bool
@@ -194,7 +195,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
             /** @var User $user */
             try {
                 $user = Yii::$app->user->getIdentity();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Yii::error($e->getMessage());
                 return false;
             }
@@ -261,7 +262,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
     /**
      * After saving content addon, mark underlying content as updated.
      *
-     * @return boolean
+     * @return bool
      */
     public function afterSave($insert, $changedAttributes)
     {

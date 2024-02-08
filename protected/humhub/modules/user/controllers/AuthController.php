@@ -22,6 +22,7 @@ use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\base\Exception;
@@ -42,12 +43,12 @@ class AuthController extends Controller
      * @event Triggered after an successful login. Note: In contrast to User::EVENT_AFTER_LOGIN, this event is triggered
      * after the response is generated.
      */
-    const EVENT_AFTER_LOGIN = 'afterLogin';
+    public const EVENT_AFTER_LOGIN = 'afterLogin';
 
     /**
      * @event Triggered after an successful login but before checking user status
      */
-    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
+    public const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
 
     /**
      * @inheritdoc
@@ -146,7 +147,7 @@ class AuthController extends Controller
      *
      * @param BaseClient $authClient
      * @return Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function onAuthSuccess(BaseClient $authClient)
     {
@@ -325,7 +326,7 @@ class AuthController extends Controller
 
     /**
      * Logouts a User
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionLogout()
     {

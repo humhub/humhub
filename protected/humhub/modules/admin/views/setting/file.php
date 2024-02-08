@@ -1,16 +1,20 @@
 <?php
 /**
- * @var $this \humhub\modules\ui\view\components\View
- * @var \humhub\modules\admin\models\forms\FileSettingsForm $model
+ * @var $this View
+ * @var FileSettingsForm $model
  * @var float $maxUploadSize
  * @var string $maxUploadSizeText
  * @var string $currentImageLibrary
  */
 
+use humhub\modules\admin\models\forms\FileSettingsForm;
+use humhub\modules\file\Module;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 
-/** @var \humhub\modules\file\Module $fileModule */
+/** @var Module $fileModule */
 $fileModule = Yii::$app->getModule('file');
 
 ?>
@@ -26,7 +30,7 @@ $fileModule = Yii::$app->getModule('file');
 <?= $form->field($model, 'allowedExtensions')->textarea(['class' => 'form-control']); ?>
 <p class="help-block"><?= Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'); ?></p>
 
-<br />
+<br/>
 
 <?= $form->field($model, 'useXSendfile')->checkbox(['disabled' => $fileModule->settings->isFixed('useXSendfile')]); ?>
 <?= $form->field($model, 'excludeMediaFilesPreview')->checkbox(['disabled' => $fileModule->settings->isFixed('excludeMediaFilesPreview')]); ?>
@@ -35,7 +39,7 @@ $fileModule = Yii::$app->getModule('file');
 
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-<?= \humhub\widgets\DataSaved::widget(); ?>
+<?= DataSaved::widget(); ?>
 <?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>

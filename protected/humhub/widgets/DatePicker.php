@@ -8,7 +8,6 @@
 
 namespace humhub\widgets;
 
-
 /**
  * DatePicker
  *
@@ -18,5 +17,4 @@ namespace humhub\widgets;
  */
 class DatePicker extends \humhub\modules\ui\form\widgets\DatePicker
 {
-
 }

@@ -5,11 +5,12 @@ use humhub\commands\IntegrityController;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\commands\CronController;
+use humhub\modules\user\Module;
 use humhub\widgets\TopMenu;
 
 return [
     'id' => 'user',
-    'class' => \humhub\modules\user\Module::class,
+    'class' => Module::class,
     'isCoreModule' => true,
     'urlManagerRules' => [
         ['class' => 'humhub\modules\user\components\UrlRule'],
@@ -28,4 +29,3 @@ return [
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
     ]
 ];
-?>

@@ -26,14 +26,14 @@ class BasePermission extends BaseObject
     /**
      * @event Event an event that is triggered when the permission is initialized via [[init()]].
      */
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
     /**
      * Permission States
      */
-    const STATE_DEFAULT = '';
-    const STATE_ALLOW = 1;
-    const STATE_DENY = 0;
+    public const STATE_DEFAULT = '';
+    public const STATE_ALLOW = 1;
+    public const STATE_DENY = 0;
 
     /**
      * @var string id of the permission (default is classname)
@@ -220,7 +220,7 @@ class BasePermission extends BaseObject
     /**
      * Checks if permission state can be changed
      *
-     * @return boolean
+     * @return bool
      */
     public function canChangeState($groupId)
     {
@@ -230,7 +230,7 @@ class BasePermission extends BaseObject
     /**
      * Checks the given id belongs to this permission
      *
-     * @return boolean
+     * @return bool
      */
     public function hasId($id)
     {

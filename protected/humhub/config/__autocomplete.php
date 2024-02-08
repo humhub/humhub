@@ -11,7 +11,8 @@
  * }
  * ```
  */
-class Yii {
+class Yii
+{
     /**
      * @var \yii\web\Application|\yii\console\Application|\humhub\components\Application|\humhub\components\console\Application|\humhub\interfaces\ApplicationInterface|__Application|__WebApplication
      */
@@ -39,7 +40,8 @@ class Yii {
  * @property \yii\web\User|__WebUser $user
  * @property \yii\caching\ArrayCache $runtimeCache
  */
-class __Application {
+class __Application
+{
 }
 
 /**

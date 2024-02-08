@@ -7,7 +7,6 @@ use Yii;
 
 class HumHubApiTestCest
 {
-
     /**
      * @var string $recordModelClass Class name of the model to find a record
      */

@@ -16,7 +16,6 @@ namespace humhub\modules\space\modules\manage;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

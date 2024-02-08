@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m161031_161947_file_directories extends Migration
 {
-
     public function up()
     {
         $uploadsDir = Yii::getAlias("@webroot/uploads/file");

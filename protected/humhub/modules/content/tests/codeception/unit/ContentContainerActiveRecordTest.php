@@ -16,7 +16,6 @@ use Yii;
 
 class ContentContainerActiveRecordTest extends HumHubDbTestCase
 {
-
     public function testUserIsNotASpace()
     {
         $user = User::findOne(['id' => 1]);

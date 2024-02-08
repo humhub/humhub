@@ -32,7 +32,7 @@ class SecurityTest extends WebSecurityTest
         Security::applyHeader(true);
 
         $this->assertStringContainsString(Security::getNonce(), Yii::$app->response->headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY));
-        $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY),  'max-age=31536000');
+        $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY), 'max-age=31536000');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_XSS_PROTECTION), '1; mode=block');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_CONTENT_TYPE), 'nosniff');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_FRAME_OPTIONS), 'deny');

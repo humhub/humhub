@@ -18,7 +18,6 @@ use yii\base\Event;
  */
 class ParameterEvent extends Event
 {
-
     /**
      * @var array the parameter references
      */

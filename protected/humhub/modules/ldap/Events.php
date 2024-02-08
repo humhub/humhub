@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -50,5 +51,4 @@ class Events extends BaseObject
             $collection->setClient('ldap', array_merge($settings->getLdapAuthDefinition(), $configParams));
         }
     }
-
 }

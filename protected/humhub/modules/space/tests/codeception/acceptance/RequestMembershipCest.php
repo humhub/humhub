@@ -7,13 +7,14 @@
 
 namespace space\acceptance;
 
+use Exception;
 use space\AcceptanceTester;
 
 class RequestMembershipCest
 {
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testRequestMembershipAccept(AcceptanceTester $I)
     {
@@ -24,7 +25,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request Membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null, '#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -49,7 +50,7 @@ class RequestMembershipCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testRequestMembershipDecline(AcceptanceTester $I)
     {
@@ -60,7 +61,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request Membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null, '#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -95,7 +96,7 @@ class RequestMembershipCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testRequestMembershipRevoke(AcceptanceTester $I)
     {
@@ -106,7 +107,7 @@ class RequestMembershipCest
         $I->seeElement('[data-space-request-membership]');
         $I->click('[data-space-request-membership]');
 
-        $I->waitForText('Request Membership', null,'#globalModal');
+        $I->waitForText('Request Membership', null, '#globalModal');
         $I->fillField('#request-message', 'Hi, I want to join this space.');
         $I->click('Send', '#globalModal');
         $I->waitForText('Your request was successfully submitted to the space administrators.');
@@ -118,7 +119,7 @@ class RequestMembershipCest
         $I->click('Confirm');
         $I->waitForText('Join'); // Back to dashboard
         $I->amOnSpace1();
-        $I->waitForText('Join', null,'[data-space-request-membership]');
+        $I->waitForText('Join', null, '[data-space-request-membership]');
 
         $I->amAdmin(true);
         $I->dontSeeInNotifications('Peter Tester requests membership for the space Space 1');

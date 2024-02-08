@@ -611,9 +611,9 @@ class RichTextHtmlConverterTest extends HumHubDbTestCase
         );
     }
 
-   /*
-    * Tables
-    */
+    /*
+     * Tables
+     */
 
     /**
      * @skip see https://github.com/cebe/markdown/issues/179

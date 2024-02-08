@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\live\assets;
-
 
 use humhub\assets\SocketIoAsset;
 use humhub\components\assets\AssetBundle;

@@ -18,7 +18,6 @@ use yii\web\AssetBundle;
  */
 class Select2BootstrapAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

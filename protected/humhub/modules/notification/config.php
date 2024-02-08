@@ -22,4 +22,3 @@ return [
         ['class' => LayoutAddons::class, 'event' => LayoutAddons::EVENT_BEFORE_RUN, 'callback' => [Events::class, 'onLayoutAddons']]
     ],
 ];
-?>

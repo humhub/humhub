@@ -68,7 +68,7 @@ class ModuleManager extends Component
     /**
      * Create a backup on module folder deletion
      *
-     * @var boolean
+     * @var bool
      */
     public bool $createBackup = true;
 
@@ -468,7 +468,7 @@ class ModuleManager extends Component
      *
      * @param string $id
      *
-     * @return boolean
+     * @return bool
      */
     public function hasModule($id)
     {

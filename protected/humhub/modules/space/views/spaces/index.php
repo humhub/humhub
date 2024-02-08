@@ -31,14 +31,14 @@ CardsAsset::register($this);
 
 <div class="row cards">
     <?php if (!$spaces->exists()): ?>
-    <div class="col-md-12">
-        <div class="panel panel-default">
-            <div class="panel-body">
-                <strong><?= Yii::t('SpaceModule.base', 'No results found!'); ?></strong><br/>
-                <?= Yii::t('SpaceModule.base', 'Try other keywords or remove filters.'); ?>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <strong><?= Yii::t('SpaceModule.base', 'No results found!'); ?></strong><br/>
+                    <?= Yii::t('SpaceModule.base', 'Try other keywords or remove filters.'); ?>
+                </div>
             </div>
         </div>
-    </div>
     <?php endif; ?>
 
     <?php foreach ($spaces->with('contentContainerRecord')->all() as $space) : ?>

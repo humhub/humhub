@@ -1,22 +1,24 @@
 <?php
 
+use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $objectModel string */
-/* @var $objectId integer */
+/* @var $objectId int */
 /* @var $comment \humhub\modules\comment\models\Comment */
 /* @var $submitUrl string */
 /* @var $fileHandlers BaseFileHandler[] */
 
-/** @var \humhub\modules\content\Module $contentModule */
+/** @var Module $contentModule */
 $contentModule = Yii::$app->getModule('content');
 
 ?>

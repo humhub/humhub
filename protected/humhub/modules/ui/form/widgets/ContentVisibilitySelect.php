@@ -16,7 +16,6 @@ use Yii;
 use yii\bootstrap\InputWidget;
 use yii\bootstrap\Html;
 
-
 /**
  * ContentVisibilitySelect is a uniform form field for setting the visibility of a content.
  *

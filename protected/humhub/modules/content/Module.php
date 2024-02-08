@@ -25,7 +25,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -33,13 +32,13 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.1
-     * @var boolean global admin can see all content
+     * @var bool global admin can see all content
      */
     public $adminCanViewAllContent = false;
 
     /**
      * @since 1.1
-     * @var boolean global admin can edit/delete all content
+     * @var bool global admin can edit/delete all content
      */
     public $adminCanEditAllContent = true;
 
@@ -57,13 +56,13 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.2
-     * @var integer Maximum allowed file uploads for posts/comments
+     * @var int Maximum allowed file uploads for posts/comments
      */
     public $maxAttachedFiles = 50;
 
     /**
      * @since 1.3
-     * @var integer Maximum allowed number of oembeds in richtexts
+     * @var int Maximum allowed number of oembeds in richtexts
      */
     public $maxOembeds = 5;
 

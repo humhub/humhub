@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\stream;
 
 use humhub\modules\comment\widgets\Comments;
@@ -45,7 +44,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
     /**
      * Used when rendering the entry on the dashboard
      */
-    const VIEW_CONTEXT_SEARCH = 'search';
+    public const VIEW_CONTEXT_SEARCH = 'search';
 
     /**
      * @var array contains option settings for wall entry addons widgets, e.g. used to disable widgets
@@ -314,7 +313,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
     }
 
     /**
-     * @return boolean checks if the given addon widget class is disabled
+     * @return bool checks if the given addon widget class is disabled
      */
     public function isAddonDisabled($widgetClass)
     {

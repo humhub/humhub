@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -32,12 +33,12 @@ class TextArea extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Text area field options'),
-                        'elements' => [
-                        ]
-        ]]);
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Text area field options'),
+                'elements' => [
+                ]
+            ]]);
     }
 
     /**
@@ -46,11 +47,11 @@ class TextArea extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'TEXT');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'TEXT');
             Yii::$app->db->createCommand($query)->execute();
         }
-        
+
         return parent::save();
     }
 

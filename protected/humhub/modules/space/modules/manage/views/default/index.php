@@ -6,11 +6,12 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
 
-/* @var $this \humhub\modules\ui\view\components\View
- * @var $model \humhub\modules\space\models\Space
+/* @var $this View
+ * @var $model Space
  */
 
 ?>

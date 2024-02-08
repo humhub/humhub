@@ -6,9 +6,9 @@ coverage:
     enabled: true
     remote: false
     include:
-    - ../models/*
-    - ../widgets/*
-    - ../Module.php
+        - ../models/*
+        - ../widgets/*
+        - ../Module.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true

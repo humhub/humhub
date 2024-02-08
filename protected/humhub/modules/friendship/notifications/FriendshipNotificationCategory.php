@@ -23,7 +23,6 @@ use humhub\modules\notification\targets\MobileTarget;
  */
 class FriendshipNotificationCategory extends NotificationCategory
 {
-
     /**
      * Category Id
      * @var string

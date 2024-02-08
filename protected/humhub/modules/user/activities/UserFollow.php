@@ -20,7 +20,6 @@ use Yii;
  */
 class UserFollow extends BaseActivity implements ConfigurableActivityInterface
 {
-
     /**
      * @inheritdoc
      */

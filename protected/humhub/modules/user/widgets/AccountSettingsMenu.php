@@ -13,16 +13,17 @@ use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use yii\authclient\ClientInterface;
+use yii\base\InvalidConfigException;
 
 /**
  * Account Settings Tab Menu
  */
 class AccountSettingsMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
@@ -49,8 +50,8 @@ class AccountSettingsMenu extends TabMenu
     /**
      * Returns optional authclients
      *
-     * @return \yii\authclient\ClientInterface[]
-     * @throws \yii\base\InvalidConfigException
+     * @return ClientInterface[]
+     * @throws InvalidConfigException
      */
     protected function getSecondaryAuthProviders()
     {

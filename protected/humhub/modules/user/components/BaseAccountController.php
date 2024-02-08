@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\components\Controller;
 use Yii;
 use humhub\components\access\ControllerAccess;
 
@@ -17,9 +18,8 @@ use humhub\components\access\ControllerAccess;
  * @since 1.1
  * @author luke
  */
-class BaseAccountController extends \humhub\components\Controller
+class BaseAccountController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -45,7 +45,7 @@ class BaseAccountController extends \humhub\components\Controller
      */
     public function init()
     {
-        $this->appendPageTitle(\Yii::t('UserModule.base', 'My Account'));
+        $this->appendPageTitle(Yii::t('UserModule.base', 'My Account'));
         parent::init();
     }
 

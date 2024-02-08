@@ -2,7 +2,9 @@
 
 namespace humhub\modules\content\controllers;
 
+use Exception;
 use Yii;
+use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 use humhub\libs\ProfileImage;
@@ -18,8 +20,8 @@ use humhub\modules\content\components\ContentContainerController;
  */
 abstract class ContainerImageController extends ContentContainerController
 {
-    const TYPE_PROFILE_IMAGE = 'image';
-    const TYPE_PROFILE_BANNER_IMAGE = 'banner';
+    public const TYPE_PROFILE_IMAGE = 'image';
+    public const TYPE_PROFILE_BANNER_IMAGE = 'banner';
 
     /**
      * @var string file upload name for profile image, this exists due to legacy compatibility for views prio to v1.4
@@ -78,7 +80,7 @@ abstract class ContainerImageController extends ContentContainerController
             try {
                 $profileImage = $this->getImageByType($type);
                 $profileImage->setNew($model->image);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 return $this->asJson([
                     'files' => [
                         [
@@ -132,7 +134,7 @@ abstract class ContainerImageController extends ContentContainerController
 
     /**
      * Deletes the profile image or profile banner
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionDelete($type)
     {

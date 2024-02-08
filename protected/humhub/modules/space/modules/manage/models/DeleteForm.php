@@ -19,7 +19,6 @@ use yii\base\Model;
  */
 class DeleteForm extends Model
 {
-
     /**
      * @var string the space name to check
      */

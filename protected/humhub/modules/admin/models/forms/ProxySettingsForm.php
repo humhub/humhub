@@ -3,13 +3,13 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * ProxySettingsForm
  */
-class ProxySettingsForm extends \yii\base\Model
+class ProxySettingsForm extends Model
 {
-
     public $enabled;
     public $server;
     public $port;
@@ -62,7 +62,7 @@ class ProxySettingsForm extends \yii\base\Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

@@ -12,20 +12,19 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\WallEntry;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
 /**
  * This is the model class for table "post".
  *
- * @property integer $id
+ * @property int $id
  * @property string $message
  * @property string $url
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  */
 class Post extends ContentActiveRecord
 {
@@ -47,7 +46,7 @@ class Post extends ContentActiveRecord
     /**
      * Scenarios
      */
-    const SCENARIO_AJAX_VALIDATION = 'ajaxValidation';
+    public const SCENARIO_AJAX_VALIDATION = 'ajaxValidation';
 
     /**
      * @inheritdoc

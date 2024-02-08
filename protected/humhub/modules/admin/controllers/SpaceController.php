@@ -66,8 +66,8 @@ class SpaceController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
         ]);
     }
 
@@ -138,12 +138,12 @@ class SpaceController extends Controller
         }
 
         return $this->render('settings', [
-                'model' => $form,
-                'joinPolicyOptions' => $joinPolicyOptions,
-                'visibilityOptions' => $visibilityOptions,
-                'contentVisibilityOptions' => $contentVisibilityOptions,
-                'indexModuleSelection' => $indexModuleSelection
-            ]);
+            'model' => $form,
+            'joinPolicyOptions' => $joinPolicyOptions,
+            'visibilityOptions' => $visibilityOptions,
+            'contentVisibilityOptions' => $contentVisibilityOptions,
+            'indexModuleSelection' => $indexModuleSelection
+        ]);
     }
 
     /**

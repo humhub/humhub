@@ -9,17 +9,18 @@
 namespace humhub\modules\post;
 
 use humhub\modules\post\models\Post;
+use yii\base\BaseObject;
+use yii\base\Event;
 
 /**
  * Event callbacks for the post module
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * Callback to validate module database records.
      *
-     * @param \yii\base\Event $event
+     * @param Event $event
      */
     public static function onIntegrityCheck($event)
     {

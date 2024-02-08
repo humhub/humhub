@@ -13,9 +13,11 @@ use yii\helpers\Url;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
-                    <a id="notification_overview_markseen" href="#" data-action-click="notification.markAsSeen" data-action-url="<?= Url::to(['/notification/list/mark-as-seen']); ?>" class="pull-right heading-link" >
+                    <a id="notification_overview_markseen" href="#" data-action-click="notification.markAsSeen"
+                       data-action-url="<?= Url::to(['/notification/list/mark-as-seen']); ?>"
+                       class="pull-right heading-link">
                         <b><?= Yii::t('NotificationModule.base', 'Mark all as seen'); ?></b>
-                    </a> 
+                    </a>
                 </div>
                 <div class="panel-body">
                     <?= $overview ?>
@@ -28,7 +30,7 @@ use yii\helpers\Url;
                     <strong><?= Yii::t('NotificationModule.base', 'Filter'); ?></strong>
                     <hr style="margin-bottom:0px"/>
                 </div>
-                
+
                 <div class="panel-body">
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
                     <div style="padding-left: 5px;">

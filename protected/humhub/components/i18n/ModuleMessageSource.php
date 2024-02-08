@@ -13,7 +13,6 @@ use humhub\libs\I18NHelper;
 use Yii;
 use yii\base\InvalidConfigException;
 
-
 /**
  * ModuleMessageSource
  *

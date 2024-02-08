@@ -13,6 +13,7 @@ use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\content\models\ContentTag;
+use yii\db\ActiveRecord;
 
 /**
  * This InputWidget provides a generic ContentTag Dropdown
@@ -42,7 +43,7 @@ class ContentTagPicker extends BasePicker
     public function init()
     {
         parent::init();
-        if($this->showDefaults) {
+        if ($this->showDefaults) {
             $this->defaultResults = $this->findDefaults();
         }
     }
@@ -52,7 +53,7 @@ class ContentTagPicker extends BasePicker
         $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true)
             ->limit($this->limit);
 
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function() use ($query) {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () use ($query) {
             return $query->all();
         });
     }
@@ -61,7 +62,7 @@ class ContentTagPicker extends BasePicker
     {
         $instance = new static();
         $query = call_user_func([$instance->itemClass, 'find']);
-        if(!empty($term)) {
+        if (!empty($term)) {
             $query->andWhere(['like', 'content_tag.name', $term]);
         }
         return static::jsonResult($query->limit($instance->limit)->all());
@@ -69,15 +70,15 @@ class ContentTagPicker extends BasePicker
 
     public static function searchByContainer($term, $contentContainer, $includeGlobal = true)
     {
-        if(!$contentContainer) {
+        if (!$contentContainer) {
             return static::search($term);
         }
 
         $instance = new static();
         $query = call_user_func([$instance->itemClass, 'findByContainer'], $contentContainer, $includeGlobal);
 
-        if(!empty($term)) {
-            $query->andWhere(['like','content_tag.name', $term]);
+        if (!empty($term)) {
+            $query->andWhere(['like', 'content_tag.name', $term]);
         }
 
         return static::jsonResult($query->limit($instance->limit)->all());
@@ -86,7 +87,7 @@ class ContentTagPicker extends BasePicker
     public static function jsonResult($tags)
     {
         $result = [];
-        foreach($tags as $tag) {
+        foreach ($tags as $tag) {
             $result[] = [
                 'id' => $tag->id,
                 'text' => $tag->name
@@ -99,12 +100,12 @@ class ContentTagPicker extends BasePicker
     /**
      * Used to retrieve the option text of a given $item.
      *
-     * @param \yii\db\ActiveRecord $item selected item
+     * @param ActiveRecord $item selected item
      * @return string item option text
      */
     protected function getItemText($item)
     {
-        if(!$item instanceof ContentTag) {
+        if (!$item instanceof ContentTag) {
             return;
         }
 
@@ -114,7 +115,7 @@ class ContentTagPicker extends BasePicker
     /**
      * Used to retrieve the option image url of a given $item.
      *
-     * @param \yii\db\ActiveRecord $item selected item
+     * @param ActiveRecord $item selected item
      * @return string|null image url or null if no selection image required.
      */
     protected function getItemImage($item)

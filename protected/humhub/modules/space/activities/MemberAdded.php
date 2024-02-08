@@ -41,7 +41,7 @@ class MemberAdded extends BaseActivity implements ConfigurableActivityInterface
 
     public function getUrl()
     {
-        if($this->originator) {
+        if ($this->originator) {
             return $this->originator->getUrl();
         }
 

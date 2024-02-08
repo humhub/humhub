@@ -1,5 +1,8 @@
 <?php
+
 namespace stream;
+
+use Codeception\Lib\Friend;
 
 /**
  * Inherited Methods
@@ -12,19 +15,20 @@ namespace stream;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class AcceptanceTester extends \AcceptanceTester
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Define custom actions here
+     */
 
-    public function fillDateFilter($field, $value) {
+    public function fillDateFilter($field, $value)
+    {
         $this->fillField('[data-filter-id=' . $field . ']', $value);
         // Focus out the filled date input in order to run the filtering:
         $this->click('.filter-block strong');

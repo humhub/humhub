@@ -12,7 +12,7 @@ class m210310_103412_fix_hash extends Migration
      */
     public function safeUp()
     {
-        $this->update('file', ['hash_sha1' => NULL]);
+        $this->update('file', ['hash_sha1' => null]);
         $this->alterColumn('file', 'hash_sha1', $this->string(40)->null());
     }
 

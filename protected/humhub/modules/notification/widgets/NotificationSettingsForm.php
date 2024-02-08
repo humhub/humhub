@@ -1,9 +1,11 @@
 <?php
+
 namespace humhub\modules\notification\widgets;
 
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\space\models\Space;
 use Yii;
+use yii\base\Widget;
 use yii\widgets\ActiveForm;
 
 /**
@@ -11,23 +13,23 @@ use yii\widgets\ActiveForm;
  *
  * @author buddha
  */
-class NotificationSettingsForm extends \yii\base\Widget
+class NotificationSettingsForm extends Widget
 {
     /**
      * @var ActiveForm
      */
     public $form;
-    
+
     /**
      * @var NotificationSettings
      */
     public $model;
-    
+
     /**
-     * @var boolean
+     * @var bool
      */
     public $showSpaces = true;
-    
+
     /**
      * Spaces which should be added by default to the space chooser result as suggestion
      * @var Space[]
@@ -41,7 +43,7 @@ class NotificationSettingsForm extends \yii\base\Widget
     {
         $this->defaultSpaces = Yii::$app->notification->getNonNotificationSpaces($this->model->user);
 
-        
+
         return $this->render('notificationSettingsForm', [
             'form' => $this->form,
             'model' => $this->model,
