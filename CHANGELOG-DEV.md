@@ -60,4 +60,4 @@ HumHub Changelog
 - Fix #6830: Wrong view filename after module enabling
 - Enh #6838: Fix LDAP encryption labels and allow ignore also part of DNs
 - Enh #6490: Update button style on force password form
-
+- Enh #6847: Use prosemirror file handler flag

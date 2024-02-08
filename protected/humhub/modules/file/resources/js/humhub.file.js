@@ -282,7 +282,7 @@ humhub.module('file', function (module, require, $) {
             }
 
             this.$form.append('<input type="hidden" name="' + name + '" value="' + file.guid + '">');
-            if (this.preview) {
+            if (this.preview && (typeof humhub.prosemirrorFileHandler === 'undefined' || humhub.prosemirrorFileHandler === false)) {
                 this.preview.show();
                 this.preview.add(file);
             }
