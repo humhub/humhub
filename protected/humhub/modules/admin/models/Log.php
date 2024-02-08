@@ -10,7 +10,7 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $level
  * @property string $category
- * @property double $log_time
+ * @property float $log_time
  * @property string $prefix
  * @property string $message
  */

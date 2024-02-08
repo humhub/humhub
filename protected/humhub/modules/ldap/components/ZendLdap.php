@@ -45,8 +45,7 @@ class ZendLdap extends Ldap
         $collectionClass = null,
         $timelimit = 0,
         $pageSize = 10000
-    )
-    {
+    ) {
         if (is_array($filter)) {
             $options = array_change_key_case($filter, CASE_LOWER);
             foreach ($options as $key => $value) {

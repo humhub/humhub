@@ -3,6 +3,7 @@
 $finder = (new PhpCsFixer\Finder())
     ->exclude([
         'messages/',
+        'views/',
     ])
     ->in([
         'protected/humhub/modules',
@@ -10,6 +11,10 @@ $finder = (new PhpCsFixer\Finder())
 
 return (new PhpCsFixer\Config())
     ->setRules([
-        '@PSR12' => true,
+        '@PER-CS' => true,
+        'phpdoc_scalar' => true,
+        'cast_spaces' => false,
+        'single_line_empty_body' => false,
     ])
     ->setFinder($finder);
+
