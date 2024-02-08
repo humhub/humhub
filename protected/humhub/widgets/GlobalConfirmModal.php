@@ -19,7 +19,6 @@ use Yii;
  */
 class GlobalConfirmModal extends \yii\base\Widget
 {
-
     /**
      * @inheritdoc
      */

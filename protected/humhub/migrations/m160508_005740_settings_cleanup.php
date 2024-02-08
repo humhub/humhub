@@ -5,7 +5,6 @@ use yii\db\Expression;
 
 class m160508_005740_settings_cleanup extends Migration
 {
-
     public function up()
     {
         $this->dropColumn('setting', 'created_at');

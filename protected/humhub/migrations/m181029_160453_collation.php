@@ -38,7 +38,7 @@ class m181029_160453_collation extends Migration
     protected function migrateTable($dbName, $tableName)
     {
         #print 'Migrate table ' . $tableName . " to collation: utf8mb4\n";
-        
+
         try {
             $this->db->createCommand('ALTER TABLE `' . $tableName . '` CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci')->execute();
         } catch (\Exception $e) {

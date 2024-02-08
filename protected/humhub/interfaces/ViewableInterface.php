@@ -19,7 +19,7 @@ interface ViewableInterface
     /**
      * Checks if user can view this element.
      *
-     * @param User|integer|string|null $user User instance or user id, null - current user
+     * @param User|int|string|null $user User instance or user id, null - current user
      * @return bool
      */
     public function canView($user = null): bool;

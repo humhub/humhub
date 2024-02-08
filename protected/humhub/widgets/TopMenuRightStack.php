@@ -19,7 +19,6 @@ use humhub\modules\user\components\User;
  */
 class TopMenuRightStack extends BaseStack
 {
-
     /**
      * @inheritdoc
      */

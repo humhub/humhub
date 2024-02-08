@@ -10,6 +10,5 @@ use tests\codeception\_support\BasePage;
  */
 class AdminPage extends BasePage
 {
-
     public $route = 'admin';
 }

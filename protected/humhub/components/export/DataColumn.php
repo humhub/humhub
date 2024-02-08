@@ -74,7 +74,7 @@ class DataColumn extends Column
         if ($this->label === null) {
             if ($provider instanceof ActiveDataProvider && $provider->query instanceof ActiveQueryInterface) {
                 /* @var $model Model */
-                $model = new $provider->query->modelClass;
+                $model = new $provider->query->modelClass();
                 $label = $model->getAttributeLabel($this->attribute);
             } else {
                 $models = $provider->getModels();
@@ -96,7 +96,7 @@ class DataColumn extends Column
      * Returns the data cell value.
      * @param mixed $model the data model
      * @param mixed $key the key associated with the data model
-     * @param integer $index zero-based index of data model among models array returned by [[GridView::dataProvider]].
+     * @param int $index zero-based index of data model among models array returned by [[GridView::dataProvider]].
      * @return string the data cell value
      */
     public function getDataCellValue($model, $key, $index)

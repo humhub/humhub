@@ -13,7 +13,6 @@ use Yii;
  */
 class WebHelper extends Module
 {
-
     /**
      * Method called before any suite tests run. Loads User fixture login user
      * to use in acceptance and functional tests.
@@ -21,7 +20,7 @@ class WebHelper extends Module
      */
     public function _beforeSuite($settings = [])
     {
-        include __DIR__.'/../acceptance/_bootstrap.php';
+        include __DIR__ . '/../acceptance/_bootstrap.php';
         $this->initModules();
     }
 
@@ -34,7 +33,8 @@ class WebHelper extends Module
      * Initializes modules defined in @tests/codeception/config/test.config.php
      * Note the config key in test.config.php is modules and not humhubModules!
      */
-    protected function initModules() {
+    protected function initModules()
+    {
         $cfg = \Codeception\Configuration::config();
         if(!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);

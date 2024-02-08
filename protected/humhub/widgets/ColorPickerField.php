@@ -19,6 +19,4 @@ use humhub\modules\ui\form\widgets\ColorPicker;
  */
 class ColorPickerField extends ColorPicker
 {
-
-
 }

@@ -46,7 +46,7 @@ class StdClassConfig extends StdClass
      */
     public $default;
 
-// StdClassConfigurable meta-properties
+    // StdClassConfigurable meta-properties
 
     protected bool $__StdClassConfigurable_isFixed = false;
 
@@ -55,7 +55,7 @@ class StdClassConfig extends StdClass
      */
     protected bool $__StdClassConfigurable_loading = true;
 
-// StdClassConfig meta-properties
+    // StdClassConfig meta-properties
 
     /**
      * @var bool Denotes if dynamic properties can be added (false) or the set of properties is fix.
@@ -280,8 +280,11 @@ class StdClassConfig extends StdClass
         $parent = $trace[$i]['object'] ?? null;
 
         if (!$parent instanceof StdClassConfigurable) {
-            throw new RuntimeException(sprintf('Method %s can only be called from a %s instance itself', __METHOD__,
-                StdClassConfigurable::class));
+            throw new RuntimeException(sprintf(
+                'Method %s can only be called from a %s instance itself',
+                __METHOD__,
+                StdClassConfigurable::class
+            ));
         }
 
         try {
