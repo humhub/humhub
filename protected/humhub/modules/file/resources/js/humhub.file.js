@@ -491,12 +491,21 @@ humhub.module('file', function (module, require, $) {
         inputField.removeAttr('accept');
     }
 
-    var getFileUrl = function (guid, download) {
-        var tmpl = download ? module.config.url.download : module.config.url.load;
-        return tmpl.replace('-guid-', guid);
+    var getFileUrl = function (guid, mode) {
+        var url = module.config.url.load;
+
+        if (typeof mode !== 'undefined') {
+            if (mode === 'download' || mode === true || mode === 1) {
+                url = module.config.url.download
+            } else if (mode === 'view') {
+                url = module.config.url.view;
+            }
+        }
+
+        return url.replace('-guid-', guid);
     };
 
-    var filterFileUrl = function (url, download) {
+    var filterFileUrl = function (url, mode) {
         var result = {
             url: url,
             guid: null
@@ -504,7 +513,7 @@ humhub.module('file', function (module, require, $) {
 
         if (url.indexOf('file-guid:') === 0 || url.indexOf('file-guid-') === 0) {
             result.guid = url.substr(10, url.length);
-            result.url = humhub.modules.file.getFileUrl(result.guid, download);
+            result.url = humhub.modules.file.getFileUrl(result.guid, mode);
         }
 
         return result;
