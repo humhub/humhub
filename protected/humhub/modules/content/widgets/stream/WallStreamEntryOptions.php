@@ -313,7 +313,7 @@ class WallStreamEntryOptions extends StreamEntryOptions
     }
 
     /**
-     * @return boolean checks if the given addon widget class is disabled
+     * @return bool checks if the given addon widget class is disabled
      */
     public function isAddonDisabled($widgetClass)
     {

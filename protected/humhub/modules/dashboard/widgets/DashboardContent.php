@@ -16,7 +16,7 @@ class DashboardContent extends Widget
     public $contentContainer;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $showProfilePostForm = false;
 

@@ -5,7 +5,7 @@
 /* @var $title string */
 /* @var $subTitle string */
 /* @var $classPrefix string */
-/* @var $canEdit boolean */
+/* @var $canEdit bool */
 /* @var $coverCropUrl string */
 /* @var $imageCropUrl string */
 /* @var $coverDeleteUrl string */

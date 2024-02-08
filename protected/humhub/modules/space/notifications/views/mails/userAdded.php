@@ -10,14 +10,15 @@
 /* @var $viewable humhub\modules\user\notifications\Followed */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
-/* @var $isNew boolean */
+/* @var $isNew bool */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
 /* @var $record Notification */
 /* @var $html string */
+
 /* @var $text string */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -54,7 +55,7 @@ use humhub\widgets\mails\MailContentContainerInfoBox;
                     humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
 
-?>
+                ?>
             </td>
         </tr>
     </table>

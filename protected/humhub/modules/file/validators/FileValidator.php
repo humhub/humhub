@@ -25,12 +25,12 @@ use humhub\modules\file\libs\FileHelper;
 class FileValidator extends \yii\validators\FileValidator
 {
     /**
-     * @var boolean allow only file extensions which are specified in administration section
+     * @var bool allow only file extensions which are specified in administration section
      */
     public $useDefaultExtensionRestriction = true;
 
     /**
-     * @var boolean deny double file extensions
+     * @var bool deny double file extensions
      */
     public $denyDoubleFileExtensions;
 

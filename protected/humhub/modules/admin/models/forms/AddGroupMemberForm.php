@@ -29,7 +29,7 @@ class AddGroupMemberForm extends Model
 
     /**
      * User model object
-     * @var integer
+     * @var int
      */
     public $groupId;
 

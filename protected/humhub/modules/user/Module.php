@@ -26,12 +26,12 @@ class Module extends \humhub\components\Module
     public $controllerNamespace = 'humhub\modules\user\controllers';
 
     /**
-     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false)
+     * @var bool option to translate all invite mails except self invites to the default language (true) or user language (false)
      */
     public $sendInviteMailsInGlobalLanguage = true;
 
     /**
-     * @var boolean default state of remember me checkbox on login page
+     * @var bool default state of remember me checkbox on login page
      */
     public $loginRememberMeDefault = true;
 
@@ -63,7 +63,7 @@ class Module extends \humhub\components\Module
     public $userListPaginationSize = 8;
 
     /**
-     * @var boolean allow admin users to modify user profile image and banner
+     * @var bool allow admin users to modify user profile image and banner
      * @since 1.2
      * @see widgets\ProfileHeader
      */
@@ -100,13 +100,13 @@ class Module extends \humhub\components\Module
     public $displayNameSubCallback = null;
 
     /**
-     * @var boolean defines if the user following is disabled or not.
+     * @var bool defines if the user following is disabled or not.
      * @since 1.2
      */
     public $disableFollow = false;
 
     /**
-     * @var boolean defines mark user e-mail field as required
+     * @var bool defines mark user e-mail field as required
      * @since 1.2.2
      */
     public $emailRequired = true;
@@ -277,7 +277,7 @@ class Module extends \humhub\components\Module
 
     /**
      * Get default group id
-     * @return integer|null
+     * @return int|null
      */
     public function getDefaultGroupId()
     {
@@ -312,7 +312,7 @@ class Module extends \humhub\components\Module
      * Checks if user can be mentioned
      *
      * @param ContentActiveRecord $object
-     * @return boolean can like
+     * @return bool can like
      */
     public function canMention($object)
     {

@@ -96,7 +96,7 @@ abstract class BaseConverter extends BaseObject
      * Sets file for the converter
      *
      * @param File $file
-     * @return boolean returns false if file cannot be converted
+     * @return bool returns false if file cannot be converted
      */
     public function applyFile(File $file)
     {

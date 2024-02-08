@@ -28,7 +28,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public $maxShowClients = 2;
 
     /**
-     * @var boolean show auth button colors
+     * @var bool show auth button colors
      */
     public $showButtonColors = false;
 

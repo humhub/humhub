@@ -136,7 +136,7 @@ class PollController extends Controller
      * Checks if the live event is visible for the current user.
      *
      * @param LiveEvent $liveEvent
-     * @return boolean is visible
+     * @return bool is visible
      */
     protected function checkVisibility(LiveEvent $liveEvent)
     {

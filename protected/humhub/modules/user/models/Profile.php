@@ -17,7 +17,7 @@ use yii\base\Exception;
 /**
  * This is the model class for table "profile".
  *
- * @property integer $user_id
+ * @property int $user_id
  * @property string $firstname
  * @property string $lastname
  * @property string $title
@@ -27,7 +27,7 @@ use yii\base\Exception;
  * @property string $city
  * @property string $country
  * @property string $state
- * @property integer $birthday_hide_year
+ * @property int $birthday_hide_year
  * @property string $birthday
  * @property string $about
  * @property string $phone_private
@@ -36,7 +36,7 @@ use yii\base\Exception;
  * @property string $fax
  * @property string $im_skype
  * @property string $im_msn
- * @property integer $im_icq
+ * @property int $im_icq
  * @property string $im_xmpp
  * @property string $url
  * @property string $url_facebook

@@ -21,9 +21,9 @@ use yii\db\Query;
 /**
  * This is the model class for table "user_friendship".
  *
- * @property integer $id
- * @property integer $user_id
- * @property integer $friend_user_id
+ * @property int $id
+ * @property int $user_id
+ * @property int $friend_user_id
  * @property string $created_at
  *
  * @property User $friendUser

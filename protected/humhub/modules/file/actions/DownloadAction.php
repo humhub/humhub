@@ -33,7 +33,7 @@ class DownloadAction extends Action
 {
     /**
      * @see HttpCache
-     * @var boolean enable Http Caching
+     * @var bool enable Http Caching
      */
     public bool $enableHttpCache = true;
 
@@ -48,7 +48,7 @@ class DownloadAction extends Action
     protected ?string $variant = null;
 
     /**
-     * @var boolean force download response
+     * @var bool force download response
      */
     protected bool $download = false;
 
@@ -225,7 +225,7 @@ class DownloadAction extends Action
     /**
      * Checks if XSendFile downloads are enabled
      *
-     * @return boolean
+     * @return bool
      */
     protected function useXSendFile()
     {

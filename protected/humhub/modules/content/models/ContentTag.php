@@ -47,14 +47,14 @@ use yii\db\IntegrityException;
  *
  * An instance of this class will automatically be created by calling `$tag->addition`
  *
- * @property integer $id
+ * @property int $id
  * @property string name
  * @property string module_id
- * @property integer contentcontainer_id
+ * @property int contentcontainer_id
  * @property string type
- * @property integer parent_id
+ * @property int parent_id
  * @property string color
- * @property integer sort_order
+ * @property int sort_order
  *
  * @property ContentContainerActiveRecord $container
  * @property ContentContainer $contentContainer

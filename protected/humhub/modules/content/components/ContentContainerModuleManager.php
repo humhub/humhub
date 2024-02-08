@@ -46,7 +46,7 @@ class ContentContainerModuleManager extends Component
      * Disables a module for the content container
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      * @throws Exception
      */
     public function disable($id)
@@ -68,7 +68,7 @@ class ContentContainerModuleManager extends Component
      * Enables a module for this content container
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      * @throws Exception
      */
     public function enable($id)
@@ -90,7 +90,7 @@ class ContentContainerModuleManager extends Component
      * Checks whether the module is activated or not
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      */
     public function isEnabled($id)
     {
@@ -106,7 +106,7 @@ class ContentContainerModuleManager extends Component
      * Checks whether the module can be enabled or not
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      * @throws Exception
      */
     public function canEnable($id)
@@ -123,7 +123,7 @@ class ContentContainerModuleManager extends Component
      * Checks whether the module can be disabled or not
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      */
     public function canDisable($id)
     {

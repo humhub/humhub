@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  *
  * @property string $id
  * @property string $job_message_id
- * @property integer $job_status
+ * @property int $job_status
  * @property string $last_update
  */
 class QueueExclusive extends ActiveRecord

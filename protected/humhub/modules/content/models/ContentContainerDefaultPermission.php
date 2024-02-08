@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property string $group_id
  * @property string $module_id
  * @property string $class
- * @property integer $state
+ * @property int $state
  */
 class ContentContainerDefaultPermission extends ActiveRecord
 {

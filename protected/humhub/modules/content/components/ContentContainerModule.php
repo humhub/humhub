@@ -67,7 +67,7 @@ class ContentContainerModule extends Module
      * Checks whether the module is enabled the given content container class.
      *
      * @param string $class the class of content container
-     * @return boolean
+     * @return bool
      */
     public function hasContentContainerType($class)
     {

@@ -14,9 +14,9 @@ use yii\db\ActiveQuery;
 /**
  * This is the model class for table "contentcontainer_setting".
  *
- * @property integer $id
+ * @property int $id
  * @property string $module_id
- * @property integer $contentcontainer_id
+ * @property int $contentcontainer_id
  * @property string $name
  * @property string $value
  * @property ContentContainer $contentcontainer

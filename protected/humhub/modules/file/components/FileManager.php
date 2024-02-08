@@ -38,7 +38,7 @@ class FileManager extends Component
      * This is required when uploaded before the related content is saved.
      *
      * @param string|array|File $files of File records or comma separeted list of file guids or single File record
-     * @param boolean $steal steal when already assigned to other record
+     * @param bool $steal steal when already assigned to other record
      */
     public function attach($files, $steal = false)
     {

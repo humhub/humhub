@@ -8,12 +8,13 @@
 /* @var $viewable humhub\modules\space\notifications\ApprovalRequest */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
 /* @var $record Notification */
+
 /* @var $message string */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -47,7 +48,7 @@ use humhub\widgets\mails\MailButtonList;
                     'space' => $space,
                     'isComment' => true
                 ])
-?>
+                ?>
             </td>
         </tr>
         <tr>
@@ -56,10 +57,10 @@ use humhub\widgets\mails\MailButtonList;
         <tr>
             <td>
                 <?=
-MailButtonList::widget(['buttons' => [
-    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
-]]);
-?>
+                MailButtonList::widget(['buttons' => [
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
+                ]]);
+                ?>
             </td>
         </tr>
     </table>

@@ -8,11 +8,12 @@
 /* @var $viewable humhub\modules\like\notifications\NewLike */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $space humhub\modules\space\models\Space */
+
 /* @var $record Notification */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -33,7 +34,7 @@ $likedRecord = $viewable->getLikedRecord();
                     'date' => $date,
                     'space' => $space
                 ])
-?>
+                ?>
             </td>
         </tr>
         <tr>
@@ -42,12 +43,12 @@ $likedRecord = $viewable->getLikedRecord();
         <tr>
             <td>
                 <?=
-MailButtonList::widget([
-    'buttons' => [
-        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('LikeModule.notifications', 'View Online')])
-    ]
-])
-?>
+                MailButtonList::widget([
+                    'buttons' => [
+                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('LikeModule.notifications', 'View Online')])
+                    ]
+                ])
+                ?>
             </td>
         </tr>
     </table>

@@ -45,7 +45,7 @@ use yii\mail\MessageInterface;
 abstract class BaseNotification extends SocialActivity
 {
     /**
-     * @var boolean automatically mark notification as seen after click on it
+     * @var bool automatically mark notification as seen after click on it
      */
     public $markAsSeenOnClick = true;
 
@@ -57,7 +57,7 @@ abstract class BaseNotification extends SocialActivity
     /**
      * @since 1.2.3
      * @see NotificationManager
-     * @var boolean do not send this notification also to the originator
+     * @var bool do not send this notification also to the originator
      */
     public $suppressSendToOriginator = true;
 
@@ -251,7 +251,7 @@ abstract class BaseNotification extends SocialActivity
      * Checks if the given $user is the originator of this notification.
      *
      * @param User $user
-     * @return boolean
+     * @return bool
      */
     public function isOriginator(User $user)
     {
@@ -262,7 +262,7 @@ abstract class BaseNotification extends SocialActivity
      * Checks if the originator blocked the given $user in order to avoid receive any notifications from the $user.
      *
      * @param User $user
-     * @return boolean
+     * @return bool
      * @since 1.10
      */
     public function isBlockedFromUser(User $user): bool
@@ -582,7 +582,7 @@ abstract class BaseNotification extends SocialActivity
      * This method is invoked right before a mail will be send for this notificatoin
      *
      * @param MessageInterface $message
-     * @return boolean when true the mail will be send
+     * @return bool when true the mail will be send
      * @see \humhub\modules\notification\targets\MailTarget
      */
     public function beforeMailSend(MessageInterface $message)

@@ -1,6 +1,6 @@
 <?php
 /* @var $this View */
-/* @var $isPinned boolean */
+/* @var $isPinned bool */
 /* @var $unpinUrl string */
 
 /* @var $pinUrl string */

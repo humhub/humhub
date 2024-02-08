@@ -48,7 +48,7 @@ class NewContent extends LiveEvent
     public $sourceId;
 
     /**
-     * @var boolean if true it's meant to be a silent content creation
+     * @var bool if true it's meant to be a silent content creation
      */
     public $silent;
 

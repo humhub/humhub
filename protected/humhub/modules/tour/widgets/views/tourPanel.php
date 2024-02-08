@@ -28,7 +28,7 @@ TourAsset::register($this);
         )
     );
 
-?>
+    ?>
 
     <!-- Display panel menu widget -->
     <?php echo PanelMenu::widget(['id' => 'getting-started-panel', 'extraMenus' => $removeOptionHtml]); ?>

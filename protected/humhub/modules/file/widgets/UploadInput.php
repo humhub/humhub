@@ -135,7 +135,7 @@ class UploadInput extends JsWidget
     public $visible = false;
 
     /**
-     * @var boolean defines if uploaded files should set the show_in_stream flag, this has only effect if the underlying action does support the showInStream request parameter
+     * @var bool defines if uploaded files should set the show_in_stream flag, this has only effect if the underlying action does support the showInStream request parameter
      */
     public $hideInStream = false;
 
@@ -143,7 +143,7 @@ class UploadInput extends JsWidget
     /**
      * This flag can be used in order to only allow a single guid to be submitted.
      * Note that already attached files have to be removed manually.
-     * @var boolean
+     * @var bool
      */
     public $single = false;
 

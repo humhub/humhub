@@ -82,7 +82,7 @@ class Collection extends Component
     /**
      * Checks if client exists in the hub.
      * @param string $id client id.
-     * @return boolean whether client exist.
+     * @return bool whether client exist.
      */
     public function hasClient($id)
     {

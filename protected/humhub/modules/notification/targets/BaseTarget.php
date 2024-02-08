@@ -58,7 +58,7 @@ abstract class BaseTarget extends BaseObject
     /**
      * Will be used as default enable setting, if there is no user specific setting and no
      * global setting and also no default setting for this target for a given NotificationCategory.
-     * @var boolean
+     * @var bool
      */
     public $defaultSetting = false;
 
@@ -107,7 +107,7 @@ abstract class BaseTarget extends BaseObject
      * Used to acknowledge the seding/processing of the given $notification.
      *
      * @param BaseNotification $notification notification to be acknowledged
-     * @param boolean $state true if successful otherwise false
+     * @param bool $state true if successful otherwise false
      */
     public function acknowledge(BaseNotification $notification, $state = true)
     {
@@ -118,7 +118,7 @@ abstract class BaseTarget extends BaseObject
     }
 
     /**
-     * @return boolean Check if the given $notification has already been processed.
+     * @return bool Check if the given $notification has already been processed.
      */
     public function isAcknowledged(BaseNotification $notification)
     {
@@ -220,7 +220,7 @@ abstract class BaseTarget extends BaseObject
      *
      * @param BaseNotification $notification
      * @param User $user
-     * @return boolean
+     * @return bool
      * @see BaseTarget::isCategoryEnabled()
      * @see BaseTarget::isActive()
      */
@@ -237,7 +237,7 @@ abstract class BaseTarget extends BaseObject
 
     /**
      * Checks if the settings for this target are editable.
-     * @return boolean
+     * @return bool
      */
     public function isEditable(user $user = null)
     {
@@ -249,7 +249,7 @@ abstract class BaseTarget extends BaseObject
      *
      * @param NotificationCategory $category
      * @param User $user
-     * @return boolean
+     * @return bool
      */
     public function isCategoryEnabled(NotificationCategory $category, User $user = null)
     {

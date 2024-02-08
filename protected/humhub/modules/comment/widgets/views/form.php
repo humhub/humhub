@@ -15,10 +15,10 @@ use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $objectModel string */
-/* @var $objectId integer */
+/* @var $objectId int */
 /* @var $model Comment */
 /* @var $id string unique object id */
-/* @var $isNestedComment boolean */
+/* @var $isNestedComment bool */
 /* @var $contentModule Module */
 /* @var $mentioningUrl string */
 /* @var $isHidden bool */
@@ -70,17 +70,17 @@ $placeholder = ($isNestedComment)
                 'max' => $contentModule->maxAttachedFiles,
                 'cssButtonClass' => 'btn-sm btn-info',
             ]);
-echo FileHandlerButtonDropdown::widget([
-    'primaryButton' => $uploadButton,
-    'handlers' => $fileHandlers,
-    'cssButtonClass' => 'btn-info btn-sm',
-    'pullRight' => true,
-]);
-echo Button::info()
-    ->icon('send')
-    ->cssClass('btn-comment-submit')->sm()
-    ->action('submit', $submitUrl)->submit();
-?></div>
+            echo FileHandlerButtonDropdown::widget([
+                'primaryButton' => $uploadButton,
+                'handlers' => $fileHandlers,
+                'cssButtonClass' => 'btn-info btn-sm',
+                'pullRight' => true,
+            ]);
+            echo Button::info()
+                ->icon('send')
+                ->cssClass('btn-comment-submit')->sm()
+                ->action('submit', $submitUrl)->submit();
+            ?></div>
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>

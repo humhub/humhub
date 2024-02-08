@@ -87,7 +87,7 @@ class CommentForm extends yii\base\Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      * @throws ServerErrorHttpException
      */
     public function save()

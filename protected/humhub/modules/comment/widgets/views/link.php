@@ -10,11 +10,11 @@ use humhub\modules\comment\models\Comment;
 
 /* @var $this View */
 /* @var $objectModel string */
-/* @var $objectId integer */
+/* @var $objectId int */
 /* @var $id string unique object id */
-/* @var $commentCount integer */
+/* @var $commentCount int */
 /* @var $mode string */
-/* @var $isNestedComment boolean */
+/* @var $isNestedComment bool */
 /* @var $comment Comment */
 /* @var $module Module */
 
@@ -41,6 +41,6 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     ) ?>
 <?php else : ?>
     <?= Button::asLink($label . $commentCountSpan)
-            ->action('comment.toggleComment', null, '#comment_' . $id) ?>
+        ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
 

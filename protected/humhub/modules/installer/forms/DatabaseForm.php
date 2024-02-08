@@ -24,7 +24,7 @@ class DatabaseForm extends Model
     public $hostname;
 
     /**
-     * @var integer port
+     * @var int port
      */
     public $port;
 

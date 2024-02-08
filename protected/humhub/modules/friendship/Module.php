@@ -23,7 +23,7 @@ class Module extends \humhub\components\Module
     /**
      * Returns if the friendship system is enabled
      *
-     * @return boolean is enabled
+     * @return bool is enabled
      */
     public function isFriendshipEnabled(): bool
     {

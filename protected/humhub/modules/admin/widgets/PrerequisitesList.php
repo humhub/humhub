@@ -30,7 +30,7 @@ class PrerequisitesList extends Widget
     /**
      * Check there is an error
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasError()
     {

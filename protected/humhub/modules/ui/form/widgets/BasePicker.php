@@ -75,21 +75,21 @@ abstract class BasePicker extends JsInputWidget
     /**
      * Maximum amount of selection items.
      *
-     * @var integer
+     * @var int
      */
     public $maxSelection = 50;
 
     /**
      * Minimum character input before triggering search query.
      *
-     * @var integer
+     * @var int
      */
     public $minInput = 3;
 
     /**
      * Minimum character input before triggering search query.
      *
-     * @var integer
+     * @var int
      */
     public $maxInput = 20;
 
@@ -195,13 +195,13 @@ abstract class BasePicker extends JsInputWidget
     /**
      * If set to true the picker will be focused automatically.
      *
-     * @var boolean
+     * @var bool
      */
     public $focus = false;
 
     /**
      * @inheritdoc
-     * @var boolean
+     * @var bool
      */
     public $init = true;
 
@@ -310,7 +310,7 @@ abstract class BasePicker extends JsInputWidget
      * Responsible for building the option data for an item.
      *
      * @param mixed $item
-     * @param boolean $selected
+     * @param bool $selected
      * @return array
      */
     protected function buildItemOption($item, $selected = true)

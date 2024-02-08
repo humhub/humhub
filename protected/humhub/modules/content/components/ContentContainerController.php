@@ -45,7 +45,7 @@ class ContentContainerController extends Controller
      * Specifies if a contentContainer (e.g. Space or User) is required to run this controller.
      * Set this to false, if your controller should also act on global scope.
      *
-     * @var boolean require cguid container parameter
+     * @var bool require cguid container parameter
      */
     public $requireContainer = true;
 

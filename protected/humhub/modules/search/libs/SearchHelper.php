@@ -29,7 +29,7 @@ class SearchHelper extends BaseObject
      *
      * @param string $query
      * @param string $text
-     * @return boolean
+     * @return bool
      */
     public static function matchQuery($query, $text)
     {

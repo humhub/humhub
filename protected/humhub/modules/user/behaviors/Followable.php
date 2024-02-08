@@ -57,8 +57,8 @@ class Followable extends Behavior
      * Follows the owner object
      *
      * @param int $userId
-     * @param boolean $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
-     * @return boolean
+     * @param bool $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
+     * @return bool
      */
     public function follow($userId = null, $withNotifications = true)
     {
@@ -94,7 +94,7 @@ class Followable extends Behavior
      * Unfollows the owner object
      *
      * @param int $userId
-     * @return boolean
+     * @return bool
      */
     public function unfollow($userId = null)
     {
@@ -123,8 +123,8 @@ class Followable extends Behavior
      * Note that the followers for this owner will be cached.
      *
      * @param int $userId
-     * @param boolean $withNotifications if true, only return true when also notifications enabled
-     * @return boolean Is object followed by user
+     * @param bool $withNotifications if true, only return true when also notifications enabled
+     * @return bool Is object followed by user
      */
     public function isFollowedByUser($userId = null, $withNotifications = false)
     {

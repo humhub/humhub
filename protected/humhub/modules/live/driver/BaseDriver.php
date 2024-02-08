@@ -24,7 +24,7 @@ abstract class BaseDriver extends BaseObject
      * Sends a live event
      *
      * @param LiveEvent $liveEvent The live event to send
-     * @return boolean indicates the sent was successful
+     * @return bool indicates the sent was successful
      */
     abstract public function send(LiveEvent $liveEvent);
 

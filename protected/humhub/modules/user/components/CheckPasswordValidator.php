@@ -44,7 +44,7 @@ class CheckPasswordValidator extends Validator
      * Checks if current user has a password set.
      *
      * @param User $user the user or null for current
-     * @return boolean
+     * @return bool
      */
     public static function hasPassword(ModelUser $user = null): bool
     {

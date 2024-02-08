@@ -17,11 +17,11 @@ use yii\db\IntegrityException;
 /**
  * This is the model class for table "contentcontainer".
  *
- * @property integer $id
+ * @property int $id
  * @property string $guid
  * @property string $class
- * @property integer $pk
- * @property integer $owner_user_id
+ * @property int $pk
+ * @property int $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
  * @noinspection PropertiesInspection

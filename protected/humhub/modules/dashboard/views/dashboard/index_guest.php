@@ -23,7 +23,7 @@ use humhub\widgets\FooterMenu;
                 ],
             ]
         ]);
-?>
+        ?>
         <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
     </div>
 </div>

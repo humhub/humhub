@@ -29,8 +29,8 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
             'Test[Link](https://www.humhub.com/de)Test',
             '<p>Test Link Test</p>',
             [
-            RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
-        ]
+                RichTextToHtmlConverter::OPTION_LINK_AS_TEXT => true,
+            ]
         );
     }
 
@@ -48,8 +48,8 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
             'Test![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->file_name . '")Test',
             '<p>Test<img src="http://localhost/index-test.php?r=file%2Ffile%2Fdownload&amp;guid=' . $file->guid . '&amp;hash_sha1=&amp;token=' . $token . '" alt="test_image.jpg" style="max-width: 100%;">Test</p>',
             [
-            RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $admin,
-        ]
+                RichTextToEmailHtmlConverter::OPTION_RECEIVER_USER => $admin,
+            ]
         );
 
         $this->assertConversionResult(

@@ -61,7 +61,7 @@ abstract class NotificationCategory extends BaseObject
      * or another default value.
      *
      * @param BaseTarget $target
-     * @return boolean
+     * @return bool
      */
     public function getDefaultSetting(BaseTarget $target)
     {
@@ -105,7 +105,7 @@ abstract class NotificationCategory extends BaseObject
      * category won't be visible in the global notification settings.
      *
      * @param User $user
-     * @return boolean
+     * @return bool
      */
     public function isVisible(User $user = null)
     {

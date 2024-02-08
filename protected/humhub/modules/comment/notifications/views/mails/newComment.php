@@ -3,8 +3,8 @@
 /* @var $viewable humhub\modules\comment\notifications\NewComment */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
-/* @var $isNew boolean */
+/* @var $isNew bool */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
@@ -34,7 +34,7 @@ use humhub\modules\notification\models\Notification;
                 'date' => $comment->updated_at,
                 'space' => $space
             ]);
-?>
+            ?>
         </td>
     </tr>
     <tr>
@@ -43,25 +43,25 @@ use humhub\modules\notification\models\Notification;
     <tr>
         <td>
             <?=
-humhub\widgets\mails\MailHeadline::widget([
-    'level' => 3,
-    'text' => $contentRecord->getContentName() . ':',
-    'style' => 'text-transform:capitalize;'
-])
-?>
+            humhub\widgets\mails\MailHeadline::widget([
+                'level' => 3,
+                'text' => $contentRecord->getContentName() . ':',
+                'style' => 'text-transform:capitalize;'
+            ])
+            ?>
         </td>
     </tr>
     <tr>
         <td style="padding:10px; border:1px solid <?= Yii::$app->view->theme->variable('background-color-secondary') ?>; border-radius:4px;">
             <?=
-humhub\widgets\mails\MailContentEntry::widget([
-    'originator' => $contentRecord->owner,
-    'receiver' => $record->user,
-    'content' => $contentRecord,
-    'date' => $contentRecord->content->updated_at,
-    'space' => $space
-]);
-?>
+            humhub\widgets\mails\MailContentEntry::widget([
+                'originator' => $contentRecord->owner,
+                'receiver' => $record->user,
+                'content' => $contentRecord,
+                'date' => $contentRecord->content->updated_at,
+                'space' => $space
+            ]);
+            ?>
         </td>
     </tr>
     <tr>
@@ -70,13 +70,13 @@ humhub\widgets\mails\MailContentEntry::widget([
     <tr>
         <td>
             <?=
-humhub\widgets\mails\MailButtonList::widget(['buttons' => [
-    humhub\widgets\mails\MailButton::widget([
-        'url' => $url,
-        'text' => Yii::t('CommentModule.notification', 'View Online')
-    ])
-]]);
-?>
+            humhub\widgets\mails\MailButtonList::widget(['buttons' => [
+                humhub\widgets\mails\MailButton::widget([
+                    'url' => $url,
+                    'text' => Yii::t('CommentModule.notification', 'View Online')
+                ])
+            ]]);
+            ?>
         </td>
     </tr>
 </table>

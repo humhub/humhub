@@ -74,7 +74,7 @@ class Module extends \humhub\components\Module
     /**
      * Checks if database connections works
      *
-     * @return boolean state of database connection
+     * @return bool state of database connection
      */
     public function checkDBConnection()
     {

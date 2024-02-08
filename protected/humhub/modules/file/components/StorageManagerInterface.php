@@ -23,7 +23,7 @@ interface StorageManagerInterface
      * Checks if the requested file or version exists.
      *
      * @param string $variant optional the variant string
-     * @return boolean
+     * @return bool
      */
     public function has($variant = null);
 

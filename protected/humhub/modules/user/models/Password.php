@@ -19,8 +19,8 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "user_password".
  *
- * @property integer $id
- * @property integer $user_id
+ * @property int $id
+ * @property int $user_id
  * @property string $algorithm
  * @property string $password
  * @property string $salt

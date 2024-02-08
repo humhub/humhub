@@ -21,7 +21,7 @@ class UploadButton extends UploadInput
 
     /**
      * Show button tooltip on mousover.
-     * @var boolean
+     * @var bool
      */
     public $tooltip = true;
 

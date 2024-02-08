@@ -8,7 +8,7 @@ use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\space\models\Space;
 
 /* @var $wallCreateContentForm WallCreateContentForm */
-/* @var $defaultVisibility integer */
+/* @var $defaultVisibility int */
 /* @var $contentContainer ContentContainerActiveRecord */
 
 ContentFormAsset::register($this);

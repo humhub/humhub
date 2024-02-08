@@ -44,8 +44,8 @@ class StateBadge extends Widget
                 return Html::tag(
                     'span',
                     Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
-                    'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
-                ]),
+                        'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
+                    ]),
                     ['class' => 'label label-warning label-state-scheduled']
                 );
             case Content::STATE_DELETED:

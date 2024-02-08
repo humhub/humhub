@@ -166,7 +166,7 @@ class StreamQuery extends Model
     protected $_query;
 
     /**
-     * @var boolean query built
+     * @var bool query built
      */
     protected $_built = false;
 
@@ -809,7 +809,7 @@ class StreamQuery extends Model
     /**
      * Is inital stream requests (show first stream content)
      *
-     * @return boolean Whether or not this query is considered as initial stream query.
+     * @return bool Whether or not this query is considered as initial stream query.
      */
     public function isInitialQuery()
     {

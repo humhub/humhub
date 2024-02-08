@@ -48,7 +48,7 @@ class Module extends \humhub\components\Module
      *  - Content::VISIBILITY_OWNER (10)         (No visibility, direct to the user)
      *
      * @param User $user the User
-     * @param boolean $cached use caching
+     * @param bool $cached use caching
      * @return array multi dimensional array of user content container ids
      */
     public function getLegitimateContentContainerIds(User $user, $cached = true)

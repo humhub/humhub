@@ -27,21 +27,21 @@ use yii\helpers\Url;
 /**
  * This is the model class for table "group".
  *
- * @property integer $id
- * @property integer $space_id
+ * @property int $id
+ * @property int $space_id
  * @property string $name
  * @property string $description
  * @property string $created_at
- * @property integer $created_by
- * @property integer $sort_order
- * @property integer $show_at_directory
- * @property integer $show_at_registration
+ * @property int $created_by
+ * @property int $sort_order
+ * @property int $show_at_directory
+ * @property int $show_at_registration
  * @property string $updated_at
- * @property integer $updated_by
- * @property integer $is_admin_group
- * @property integer $is_default_group
- * @property integer $is_protected
- * @property integer $notify_users
+ * @property int $updated_by
+ * @property int $is_admin_group
+ * @property int $is_default_group
+ * @property int $is_protected
+ * @property int $notify_users
  *
  * @property User[] $manager
  * @property Space|null $defaultSpace
@@ -260,7 +260,7 @@ class Group extends ActiveRecord
 
     /**
      * Checks if this group has at least one Manager assigned.
-     * @return boolean
+     * @return bool
      */
     public function hasManager()
     {
@@ -307,7 +307,7 @@ class Group extends ActiveRecord
 
     /**
      * Checks if this group has at least one user assigned.
-     * @return boolean
+     * @return bool
      */
     public function hasUsers()
     {

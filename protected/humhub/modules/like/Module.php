@@ -27,7 +27,7 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * @var boolean automatic follow liked content
+     * @var bool automatic follow liked content
      * @since 1.2.5
      */
     public $autoFollowLikedContent = false;
@@ -78,7 +78,7 @@ class Module extends \humhub\components\Module
      * Checks if given content object can be liked
      *
      * @param Like|ContentActiveRecord $object
-     * @return boolean can like
+     * @return bool can like
      */
     public function canLike($object)
     {

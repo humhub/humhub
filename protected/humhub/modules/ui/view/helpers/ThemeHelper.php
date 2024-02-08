@@ -158,7 +158,7 @@ class ThemeHelper
      * Returns an array of all used themes
      *
      * @param Theme $theme
-     * @param boolean $includeBaseTheme should the given theme also included in the theme tree
+     * @param bool $includeBaseTheme should the given theme also included in the theme tree
      * @return Theme[] the parent themes
      */
     public static function getThemeTree(Theme $theme, $includeBaseTheme = true)

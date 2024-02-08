@@ -64,7 +64,7 @@ $iconUrl = SiteIcon::getUrl(140);
         '' => Yii::t('AdminModule.settings', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
-?>
+    ?>
     <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
     <br>
     <br>
@@ -84,8 +84,8 @@ $iconUrl = SiteIcon::getUrl(140);
                 <?= Button::info()->icon('cloud-upload')->id('admin-logo-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-logo-image')
-                ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
-                ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+                    ->action('admin.deletePageLogo', Url::to(['/admin/setting/delete-logo-image']))
+                    ->style(LogoImage::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>
@@ -101,8 +101,8 @@ $iconUrl = SiteIcon::getUrl(140);
                 <?= Button::info()->icon('cloud-upload')->id('admin-icon-upload-button')->sm()->loader(false) ?>
 
                 <?= Button::danger()->id('admin-delete-icon-image')
-                ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
-                ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+                    ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
+                    ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>

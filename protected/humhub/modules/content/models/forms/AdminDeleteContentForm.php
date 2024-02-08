@@ -23,7 +23,7 @@ class AdminDeleteContentForm extends Model
     public $message;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $notify;
 

@@ -11,8 +11,8 @@ use yii\helpers\Html;
 /* @var  $previewImage PreviewImage */
 /* @var  $files \humhub\modules\file\models\File[] */
 /* @var  $object ActiveRecord */
-/* @var  $excludeMediaFilesPreview boolean */
-/* @var  $showPreview boolean */
+/* @var  $excludeMediaFilesPreview bool */
+/* @var  $showPreview bool */
 
 $videoExtensions = ['webm', 'mp4', 'ogv', 'mov'];
 $images = [];

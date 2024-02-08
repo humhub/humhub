@@ -67,9 +67,9 @@ class PermissionManager extends Component
      *
      * @param string|array|BasePermission $permission
      * @param array $params
-     * @param boolean $allowCaching
+     * @param bool $allowCaching
      *
-     * @return boolean
+     * @return bool
      * @throws InvalidConfigException
      */
     public function can($permission, $params = [], $allowCaching = true)
@@ -126,7 +126,7 @@ class PermissionManager extends Component
      *
      * @param BasePermission $permission
      *
-     * @return boolean
+     * @return bool
      */
     protected function verify(BasePermission $permission)
     {
@@ -313,7 +313,7 @@ class PermissionManager extends Component
      *
      * @param string $groupId
      * @param BasePermission $permission
-     * @param boolean $returnDefaultState
+     * @param bool $returnDefaultState
      * @return string|int the state
      */
     private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)

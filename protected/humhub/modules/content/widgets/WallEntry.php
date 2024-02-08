@@ -56,7 +56,7 @@ class WallEntry extends Widget
     /**
      * Indicates the post was just edited
      *
-     * @var boolean
+     * @var bool
      */
     public $justEdited = false;
 
@@ -120,17 +120,17 @@ class WallEntry extends Widget
 
     /**
      * @deprecated since 1.2 use $addonOptions of ShowFiles Widget or disable 'show_in_stream' file flag.
-     * @var boolean show files widget containing a list of all assigned files
+     * @var bool show files widget containing a list of all assigned files
      */
     public $showFiles = true;
 
     /**
-     * @var boolean if set to false, the WallEntryControls won't be rendered
+     * @var bool if set to false, the WallEntryControls won't be rendered
      */
     public $renderControls = true;
 
     /**
-     * @var boolean if set to false, the WallEntryAddons won't be rendered (like/comments/etc)
+     * @var bool if set to false, the WallEntryAddons won't be rendered (like/comments/etc)
      */
     public $renderAddons = true;
 

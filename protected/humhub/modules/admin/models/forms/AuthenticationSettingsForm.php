@@ -99,7 +99,7 @@ class AuthenticationSettingsForm extends Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

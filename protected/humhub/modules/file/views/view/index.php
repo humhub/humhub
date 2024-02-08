@@ -19,11 +19,11 @@ use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 
     <?php
     $thumbnailUrl = '';
-$previewImage = new PreviewImage();
-if ($previewImage->applyFile($file)) {
-    $thumbnailUrl = $previewImage->getUrl();
-}
-?>
+    $previewImage = new PreviewImage();
+    if ($previewImage->applyFile($file)) {
+        $thumbnailUrl = $previewImage->getUrl();
+    }
+    ?>
 
     <img src="<?= $thumbnailUrl; ?>" class="pull-left" style="padding-right:12px">
 

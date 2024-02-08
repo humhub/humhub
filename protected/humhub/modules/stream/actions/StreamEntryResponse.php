@@ -38,12 +38,12 @@ class StreamEntryResponse extends Model
     public $output;
 
     /**
-     * @var boolean content pinned flag
+     * @var bool content pinned flag
      */
     public $pinned;
 
     /**
-     * @var boolean content archived flag
+     * @var bool content archived flag
      */
     public $archived;
 

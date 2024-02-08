@@ -12,22 +12,25 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
 use humhub\modules\like\models\Like;
+use Throwable;
 use Yii;
+use yii\base\BaseObject;
+use yii\db\StaleObjectException;
 
 /**
  * Events provides callbacks to handle events.
  *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
     /**
      * On User delete, also delete all comments
      *
      * @param Event $event
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public static function onUserDelete($event)
     {
@@ -44,8 +47,8 @@ class Events extends \yii\base\BaseObject
      *
      * @param $event
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public static function onActiveRecordDelete($event)
     {

@@ -31,8 +31,8 @@ class ZendLdap extends Ldap
      * @param array $attributes
      * @param string|null $sort
      * @param string|null $collectionClass
-     * @param integer $timelimit
-     * @param integer $pageSize
+     * @param int $timelimit
+     * @param int $pageSize
      * @return array
      * @throws Exception\LdapException
      */

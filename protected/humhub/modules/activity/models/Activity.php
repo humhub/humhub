@@ -22,11 +22,11 @@ use humhub\modules\activity\widgets\Activity as ActivityStreamEntryWidget;
 /**
  * This is the model class for table "activity".
  *
- * @property integer $id
+ * @property int $id
  * @property string $class
  * @property string $module
  * @property string $object_model
- * @property integer $object_id
+ * @property int $object_id
  *
  * @mixin PolymorphicRelation
  */

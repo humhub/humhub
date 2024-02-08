@@ -102,8 +102,8 @@ class Events extends BaseObject
         $event->sender->addWidget(
             widgets\WallEntryLinks::class,
             [
-            'object' => $event->sender->object,
-        ],
+                'object' => $event->sender->object,
+            ],
             ['sortOrder' => 10]
         );
     }

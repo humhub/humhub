@@ -51,7 +51,7 @@ class ZendLuceneSearch extends Search
     public $index = null;
 
     /**
-     * @var integer sets the `termsPerQueryLimit` property for the lucene index.
+     * @var int sets the `termsPerQueryLimit` property for the lucene index.
      * This limits the number of terms in a search query, which also results in a
      * limitation of the number of items a search term can match.
      *

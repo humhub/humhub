@@ -16,13 +16,13 @@ interface MobileTargetProvider
     /**
      * @param BaseNotification $notification
      * @param User $user
-     * @return boolean
+     * @return bool
      */
     public function handle(BaseNotification $notification, User $user);
 
     /**
      * @param User|null $user
-     * @return boolean
+     * @return bool
      */
     public function isActive(User $user = null);
 }

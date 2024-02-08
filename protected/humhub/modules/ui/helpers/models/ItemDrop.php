@@ -40,12 +40,12 @@ abstract class ItemDrop extends Model
     public $modelClass;
 
     /**
-     * @var integer
+     * @var int
      */
     public $modelId;
 
     /**
-     * @var integer new model index
+     * @var int new model index
      */
     public $index;
 
@@ -55,7 +55,7 @@ abstract class ItemDrop extends Model
     public $formName = 'ItemDrop';
 
     /**
-     * @var integer|null the id of the target used for dragging items between lists
+     * @var int|null the id of the target used for dragging items between lists
      */
     public $targetId;
 

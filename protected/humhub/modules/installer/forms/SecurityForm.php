@@ -19,32 +19,32 @@ use yii\base\Model;
 class SecurityForm extends Model
 {
     /**
-     * @var boolean allow guest acccess
+     * @var bool allow guest acccess
      */
     public $allowGuestAccess;
 
     /**
-     * @var boolean need approval
+     * @var bool need approval
      */
     public $internalRequireApprovalAfterRegistration;
 
     /**
-     * @var boolean allow anonymous registration
+     * @var bool allow anonymous registration
      */
     public $internalAllowAnonymousRegistration;
 
     /**
-     * @var boolean allow invite from external users by email
+     * @var bool allow invite from external users by email
      */
     public $canInviteExternalUsersByEmail;
 
     /**
-     * @var boolean allow invite from external users by link
+     * @var bool allow invite from external users by link
      */
     public $canInviteExternalUsersByLink;
 
     /**
-     * @var boolean enable friendship system
+     * @var bool enable friendship system
      */
     public $enableFriendshipModule;
 

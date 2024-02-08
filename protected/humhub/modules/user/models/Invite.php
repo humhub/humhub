@@ -20,16 +20,16 @@ use yii\helpers\Url;
 /**
  * This is the model class for table "user_invite".
  *
- * @property integer $id
- * @property integer $user_originator_id
- * @property integer $space_invite_id
+ * @property int $id
+ * @property int $user_originator_id
+ * @property int $space_invite_id
  * @property string $email
  * @property string $source
  * @property string $token
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property string $language
  * @property string $firstname
  * @property string $lastname
@@ -295,7 +295,7 @@ class Invite extends ActiveRecord
     /**
      * Allow users to invite themself
      *
-     * @return boolean allow self invite
+     * @return bool allow self invite
      */
     public function allowSelfInvite()
     {

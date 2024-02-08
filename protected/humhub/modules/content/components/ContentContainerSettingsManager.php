@@ -37,7 +37,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      *
      * @param string $name
      * @param string $default
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
     public function getInherit($name, $default = null)
@@ -54,7 +54,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      *
      * @param string $name
      * @param string $default
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
     public function getSerializedInherit($name, $default = null)

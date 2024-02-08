@@ -9,8 +9,8 @@
 /* @var $viewable humhub\modules\user\notifications\Followed */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
-/* @var $isNew boolean */
+/* @var $isNew bool */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var $source yii\db\ActiveRecord */
 /* @var $contentContainer ContentContainerActiveRecord */
@@ -51,7 +51,7 @@ use humhub\widgets\mails\MailButtonList;
                         ]),
                     ],
                 ]);
-?>
+                ?>
             </td>
         </tr>
     </table>

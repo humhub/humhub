@@ -36,7 +36,7 @@ class StorageManager extends Component implements StorageManagerInterface
     protected $storagePath = '@filestore';
 
     /**
-     * @var integer file mode
+     * @var int file mode
      */
     public $fileMode = 0744;
 

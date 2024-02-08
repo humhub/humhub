@@ -33,7 +33,7 @@ class FileHelper extends \yii\helpers\FileHelper
      * Checks if given fileName has a extension
      *
      * @param string $fileName the filename
-     * @return boolean has extension
+     * @return bool has extension
      */
     public static function hasExtension($fileName)
     {
