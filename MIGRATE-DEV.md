@@ -6,6 +6,7 @@ for full version.
 
 Version 1.16 (Unreleased)
 -------------------------
+At least PHP 8.0 is required with this version.
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
