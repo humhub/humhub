@@ -33,6 +33,8 @@ class SearchRequest extends Model
     public ?string $dateFrom = null;
     public ?string $dateTo = null;
 
+    public array $topic = [];
+
     public $contentContainer = [];
 
     public $orderBy = 'content.created_at';
@@ -51,7 +53,7 @@ class SearchRequest extends Model
     public function rules()
     {
         return [
-            [['keyword'], 'safe'],
+            [['keyword', 'topic'], 'safe'],
             [['keyword'], 'required'],
             [['contentType'], 'in', 'range' => array_keys(static::getContentTypes())],
             [['dateFrom', 'dateTo'], 'date', 'format' => 'php:' . FormatConverter::convertDateIcuToPhp(self::DATE_FORMAT)],

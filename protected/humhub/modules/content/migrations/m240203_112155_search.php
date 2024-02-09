@@ -1,6 +1,7 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
+
 
 /**
  * Class m240203_112155_search
@@ -12,7 +13,7 @@ class m240203_112155_search extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('content_fulltext', [
+        $this->safeCreateTable('content_fulltext', [
             'content_id' => $this->integer(),
             'contents' => $this->text(),
             'comments' => $this->text(),

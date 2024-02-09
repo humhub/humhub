@@ -9,11 +9,13 @@ namespace humhub\modules\content\widgets;
 
 use humhub\libs\Html;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\topic\models\Topic;
+use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use Yii;
 
 /**
- * SpaceDirectoryFilters displays the filters on the directory spaces page
+ * SearchFilters displays the filters on the content searching page
  *
  * @since 1.9
  * @author Luke
@@ -29,7 +31,7 @@ class SearchFilters extends DirectoryFilters
     {
         $this->addFilter('keyword', [
             'title' => Yii::t('ContentModule.search', 'Find Content based on keywords'),
-            'placeholder' => Yii::t('SpaceModule.base', 'Search...'),
+            'placeholder' => Yii::t('ContentModule.search', 'Search...'),
             'type' => 'input',
             'wrapperClass' => 'col-md-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
@@ -37,43 +39,47 @@ class SearchFilters extends DirectoryFilters
         ]);
 
         $this->addFilter('orderBy', [
-            'title' => Yii::t('SpaceModule.base', 'Sorting'),
+            'title' => Yii::t('ContentModule.search', 'Sorting'),
             'type' => 'dropdown',
             'options' => [
-                SearchRequest::ORDER_BY_SCORE => Yii::t('SpaceModule.base', 'Best'),
-                SearchRequest::ORDER_BY_CREATION_DATE => Yii::t('SpaceModule.base', 'Newest first'),
+                SearchRequest::ORDER_BY_SCORE => Yii::t('ContentModule.search', 'Best'),
+                SearchRequest::ORDER_BY_CREATION_DATE => Yii::t('ContentModule.search', 'Newest first'),
             ],
             'sortOrder' => 200,
         ]);
 
         $this->addFilter('contentType', [
-            'title' => Yii::t('SpaceModule.base', 'Content type'),
+            'title' => Yii::t('ContentModule.search', 'Content type'),
             'type' => 'dropdown',
-            'options' => array_merge(['' => Yii::t('SpaceModule.base', 'Any')], SearchRequest::getContentTypes()),
+            'options' => array_merge(['' => Yii::t('ContentModule.search', 'Any')], SearchRequest::getContentTypes()),
             'sortOrder' => 300,
         ]);
 
         $this->addFilter('dateFrom', [
-            'title' => Yii::t('SpaceModule.base', 'Date From'),
+            'title' => Yii::t('ContentModule.search', 'Date From'),
             'type' => 'date',
             'sortOrder' => 400,
         ]);
 
         $this->addFilter('dateTo', [
-            'title' => Yii::t('SpaceModule.base', 'Date To'),
+            'title' => Yii::t('ContentModule.search', 'Date To'),
             'type' => 'date',
             'sortOrder' => 420,
         ]);
 
-        /*
         $this->addFilter('topic', [
-            'title' => Yii::t('SpaceModule.base', 'Topic'),
-            'type' => 'input',
-            'sortOrder' => 420,
+            'title' => Yii::t('ContentModule.search', 'Topic'),
+            'type' => 'widget',
+            'widget' => TopicPicker::class,
+            'widgetOptions' => [
+                'selection' => $this->getTopicsFromRequest()
+            ],
+            'sortOrder' => 430,
         ]);
 
+        /*
         $this->addFilter('author', [
-            'title' => Yii::t('SpaceModule.base', 'Author'),
+            'title' => Yii::t('ContentModule.search', 'Author'),
             'type' => 'input',
             'sortOrder' => 500,
         ]);
@@ -81,7 +87,7 @@ class SearchFilters extends DirectoryFilters
 
         /*
         $this->addFilter('status', [
-            'title' => Yii::t('SpaceModule.base', 'Status'),
+            'title' => Yii::t('ContentModule.search', 'Status'),
             'type' => 'dropdown',
             'options' => [
                 '' => 'Any',
@@ -90,7 +96,7 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 500,
         ]);
         $this->addFilter('space', [
-            'title' => Yii::t('SpaceModule.base', 'Space'),
+            'title' => Yii::t('ContentModule.search', 'Space'),
             'type' => 'input',
             'sortOrder' => 500,
         ]);
@@ -98,7 +104,7 @@ class SearchFilters extends DirectoryFilters
 
         /*
         $this->addFilter('profile', [
-            'title' => Yii::t('SpaceModule.base', 'Profile'),
+            'title' => Yii::t('ContentModule.search', 'Profile'),
             'type' => 'input',
             'sortOrder' => 500,
         ]);
@@ -113,5 +119,15 @@ class SearchFilters extends DirectoryFilters
         }
 
         return parent::getDefaultValue($filter);
+    }
+
+    protected function getTopicsFromRequest(): array
+    {
+        $topics = Yii::$app->request->get('topic');
+        if (!is_array($topics) || empty($topics)) {
+            return [];
+        }
+
+        return Topic::find()->where(['IN', 'id', $topics])->all();
     }
 }

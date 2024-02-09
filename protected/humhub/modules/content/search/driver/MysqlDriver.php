@@ -80,6 +80,11 @@ class MysqlDriver extends AbstractDriver
             $query->andWhere(['<=', 'content.created_at', $request->dateTo . ' 23:59:59']);
         }
 
+        if (!empty($request->topic)) {
+            $query->leftJoin('content_tag_relation', 'content_tag_relation.content_id = content.id')
+                ->andWhere(['IN', 'content_tag_relation.tag_id', $request->topic]);
+        }
+
         if ($request->author) {
             $query->andWhere(['content.created_by' => $request->author->id]);
         }
