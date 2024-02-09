@@ -1,4 +1,9 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace humhub\modules\content\search\driver;
 
@@ -66,6 +71,13 @@ class MysqlDriver extends AbstractDriver
 
         if (!empty($request->contentType)) {
             $query->andWhere(['content.object_model' => $request->contentType]);
+        }
+
+        if (!empty($request->dateFrom)) {
+            $query->andWhere(['>=', 'content.created_at', $request->dateFrom . ' 00:00:00']);
+        }
+        if (!empty($request->dateTo)) {
+            $query->andWhere(['<=', 'content.created_at', $request->dateTo . ' 23:59:59']);
         }
 
         if ($request->author) {

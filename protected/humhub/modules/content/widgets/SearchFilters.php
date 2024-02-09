@@ -53,19 +53,19 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 300,
         ]);
 
-        /*
-        $this->addFilter('dateForm', [
+        $this->addFilter('dateFrom', [
             'title' => Yii::t('SpaceModule.base', 'Date From'),
-            'type' => 'input',
+            'type' => 'date',
             'sortOrder' => 400,
         ]);
 
         $this->addFilter('dateTo', [
             'title' => Yii::t('SpaceModule.base', 'Date To'),
-            'type' => 'input',
+            'type' => 'date',
             'sortOrder' => 420,
         ]);
 
+        /*
         $this->addFilter('topic', [
             'title' => Yii::t('SpaceModule.base', 'Topic'),
             'type' => 'input',

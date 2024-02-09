@@ -9,6 +9,7 @@ namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -142,6 +143,17 @@ abstract class DirectoryFilters extends Widget
                 $inputOptions['data-action-change'] = 'cards.applyFilters';
                 $inputHtml = $data['widget']::widget(array_merge(['name' => $filter, 'options' => $inputOptions], $data['widgetOptions']));
                 break;
+
+            case 'date':
+                $format = $data['format'] ?? 'short';
+                $value = self::getValue($filter);
+                $inputHtml = DatePicker::widget([
+                    'name' => $filter,
+                    'value' => empty($value) ? '' : Yii::$app->formatter->asDate($value, $format),
+                    'dateFormat' => $format
+                ]);
+                break;
+
             case 'input':
             case 'text':
             default:
