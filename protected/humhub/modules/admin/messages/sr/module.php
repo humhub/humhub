@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Installed' => '',
-];
+return array (
+  'Installed' => 'Instalirano',
+);
