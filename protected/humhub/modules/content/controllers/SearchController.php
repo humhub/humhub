@@ -33,7 +33,7 @@ class SearchController extends Controller
         }
 
         return $this->render('index', [
-            'searchOptions' => $this->searchRequest,
+            'searchRequest' => $this->searchRequest,
             'resultSet' => $resultSet,
         ]);
     }
