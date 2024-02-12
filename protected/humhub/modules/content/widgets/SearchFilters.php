@@ -12,6 +12,8 @@ use humhub\modules\content\search\SearchRequest;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\widgets\DirectoryFilters;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 
 /**
@@ -77,13 +79,16 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 430,
         ]);
 
-        /*
         $this->addFilter('author', [
             'title' => Yii::t('ContentModule.search', 'Author'),
-            'type' => 'input',
+            'type' => 'widget',
+            'widget' => UserPickerField::class,
+            'widgetOptions' => [
+                'selection' => $this->getAuthorsFromRequest(),
+                'defaultResults' => $this->getCurrentUserAuthor()
+            ],
             'sortOrder' => 500,
         ]);
-        */
 
         /*
         $this->addFilter('status', [
@@ -129,5 +134,24 @@ class SearchFilters extends DirectoryFilters
         }
 
         return Topic::find()->where(['IN', 'id', $topics])->all();
+    }
+
+    protected function getAuthorsFromRequest(): array
+    {
+        $authors = Yii::$app->request->get('author');
+        if (!is_array($authors) || empty($authors)) {
+            return [];
+        }
+
+        return User::find()->where(['IN', 'guid', $authors])->all();
+    }
+
+    protected function getCurrentUserAuthor(): array
+    {
+        if (Yii::$app->user->isGuest) {
+            return [];
+        }
+
+        return User::find()->where(['id' => Yii::$app->user->id])->all();
     }
 }

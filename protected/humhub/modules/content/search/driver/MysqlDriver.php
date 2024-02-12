@@ -85,8 +85,9 @@ class MysqlDriver extends AbstractDriver
                 ->andWhere(['IN', 'content_tag_relation.tag_id', $request->topic]);
         }
 
-        if ($request->author) {
-            $query->andWhere(['content.created_by' => $request->author->id]);
+        if (!empty($request->author)) {
+            $query->leftJoin('user', 'user.id = content.created_by')
+                ->andWhere(['IN', 'user.guid', $request->author]);
         }
 
         if ($request->user !== null) {
