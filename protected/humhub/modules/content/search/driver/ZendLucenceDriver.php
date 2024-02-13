@@ -28,6 +28,7 @@ use ZendSearch\Lucene\SearchIndexInterface;
 
 class ZendLucenceDriver extends AbstractDriver
 {
+
     private ?SearchIndexInterface $_index = null;
 
     public function purge(): void
@@ -46,30 +47,30 @@ class ZendLucenceDriver extends AbstractDriver
     public function update(Content $content): void
     {
         $document = new Document();
-        $document->addField(Field::keyword('content.id', $content->id));
-        $document->addField(Field::keyword('content.visibility', $content->visibility));
-        $document->addField(Field::keyword('content.class', $content->object_model));
-        $document->addField(Field::unStored('content.tags', implode(', ',
+        $document->addField(Field::keyword('id', $content->id));
+        $document->addField(Field::keyword('visibility', $content->visibility));
+        $document->addField(Field::keyword('class', $content->object_model));
+        $document->addField(Field::keyword('created_at', strtotime($content->created_at)));
+        $document->addField(Field::keyword('created_by', $content->created_by));
+        $document->addField(Field::unStored('tags', implode(', ',
             array_map(function (ContentTag $tag) {
                 return $tag->name;
             }, $content->tags))));
 
         if ($content->container) {
-            $document->addField(Field::keyword('content.container_id', $content->container->id));
+            $document->addField(Field::keyword('container_id', $content->container->id));
         }
-        $document->addField(Field::keyword('content.created_at', strtotime($content->created_at)));
 
-        $document->addField(Field::keyword('content.created_by', $content->created_by));
         if ($content->createdBy) {
-            $document->addField(Field::unStored('content.created_by_name', $content->createdBy->displayName));
+            $document->addField(Field::unStored('created_by_name', $content->createdBy->displayName));
         }
 
-        $document->addField(Field::keyword('content.updated_at', strtotime($content->created_at)));
+        $document->addField(Field::keyword('updated_at', strtotime($content->created_at)));
         if ($content->updatedBy) {
             //$document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
         }
-        $document->addField(Field::unStored('content.comments', (new ContentSearchService($content))->getCommentsAsText()));
-        $document->addField(Field::unStored('content.files', (new ContentSearchService($content))->getFileContentAsText()));
+        $document->addField(Field::unStored('comments', (new ContentSearchService($content))->getCommentsAsText()));
+        $document->addField(Field::unStored('files', (new ContentSearchService($content))->getFileContentAsText()));
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
             $document->addField(Field::unStored($attributeName, $attributeValue));
@@ -98,33 +99,10 @@ class ZendLucenceDriver extends AbstractDriver
 
     public function search(SearchRequest $request): ResultSet
     {
-        $query = new Boolean();
-        foreach ($request->getKeywords() as $keyword) {
-            if (mb_strlen($keyword) < 3) {
-                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new Term(mb_strtolower($keyword))), true);
-            } else {
-                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard(new Term(mb_strtolower($keyword))), true);
-            }
-        }
-
-        if (!empty($request->contentType)) {
-            $query->addSubquery(new QueryTerm(new Term($request->contentType, 'content.class')), true);
-        }
-
-        if ($request->author) {
-            $query->addSubquery(new QueryTerm(new Term($request->author->id, 'content.created_by')), true);
-        }
-
-        if ($request->user !== null) {
-            //$this->addQueryFilterUser($query, $options->contentTypes);
-        }
-        if ($request->contentContainer !== null) {
-            //$this->addQueryFilterContentContainer($query, $options->contentTypes);
-        }
-
+        $query = $this->buildSearchQuery($request);
 
         if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
-            $hits = new ArrayObject($this->getIndex()->find($query, 'content.created_at', SORT_DESC));
+            $hits = new ArrayObject($this->getIndex()->find($query, 'created_at', SORT_DESC));
         } else {
             $hits = new ArrayObject($this->getIndex()->find($query));
         }
@@ -142,7 +120,7 @@ class ZendLucenceDriver extends AbstractDriver
 
         foreach ($hits as $hit) {
             try {
-                $contentId = $hit->getDocument()->getField('content.id')->getUtf8Value();
+                $contentId = $hit->getDocument()->getField('id')->getUtf8Value();
             } catch (\Exception $ex) {
                 throw new \Exception('Could not get content id from Lucence search result');
             }
@@ -157,6 +135,35 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         return $resultSet;
+    }
+
+    protected function buildSearchQuery(SearchRequest $request): Boolean
+    {
+        $query = new Boolean();
+        foreach ($request->getKeywords() as $keyword) {
+            if (mb_strlen($keyword) < 3) {
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new Term(mb_strtolower($keyword))), true);
+            } else {
+                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard(new Term(mb_strtolower($keyword))), true);
+            }
+        }
+
+        if (!empty($request->contentType)) {
+            $query->addSubquery(new QueryTerm(new Term($request->contentType, 'class')), true);
+        }
+
+        if ($request->author) {
+            $query->addSubquery(new QueryTerm(new Term($request->author->id, 'created_by')), true);
+        }
+
+        if ($request->user !== null) {
+            //$this->addQueryFilterUser($query, $options->contentTypes);
+        }
+        if ($request->contentContainer !== null) {
+            //$this->addQueryFilterContentContainer($query, $options->contentTypes);
+        }
+
+        return $query;
     }
 
     private function getIndex(): Index

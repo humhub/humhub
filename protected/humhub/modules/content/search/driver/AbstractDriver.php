@@ -5,10 +5,10 @@ namespace humhub\modules\content\search\driver;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
+use yii\base\Component;
 
-abstract class AbstractDriver
+abstract class AbstractDriver extends Component
 {
-
     abstract public function purge(): void;
 
     abstract public function update(Content $content): void;
