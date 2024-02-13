@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Administrative' => '',
-    'Receive Notifications for administrative events like available updates.' => '',
-    'There is a new HumHub Version ({version}) available.' => '',
+    'Administrative' => 'Administrativno',
+    'Receive Notifications for administrative events like available updates.' => 'Primajte obaviještenja o administrativnim događajima kao što su dostupna ažuriranja.',
+    'There is a new HumHub Version ({version}) available.' => 'Dostupna je nova verzija HumHub ({version}).',
 ];
