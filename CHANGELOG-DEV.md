@@ -61,3 +61,4 @@ HumHub Changelog
 - Enh #6838: Fix LDAP encryption labels and allow ignore also part of DNs
 - Enh #6490: Update button style on force password form
 - Enh #6847: Use prosemirror file handler flag
+- Fix #6839: The getObjectModel() method should work for all ActiveRecord classes

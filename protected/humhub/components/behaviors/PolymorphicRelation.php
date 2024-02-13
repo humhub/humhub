@@ -11,8 +11,6 @@ namespace humhub\components\behaviors;
 use Exception;
 use humhub\components\ActiveRecord;
 use humhub\helpers\DataTypeHelper;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -119,7 +117,7 @@ class PolymorphicRelation extends Behavior
 
     public static function getObjectModel(ActiveRecordInterface $object): string
     {
-        return $object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord
+        return $object instanceof ActiveRecord
             ? $object::getObjectModel()
             : get_class($object);
     }
