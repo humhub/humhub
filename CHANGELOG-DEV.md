@@ -62,3 +62,4 @@ HumHub Changelog
 - Enh #6490: Update button style on force password form
 - Enh #6847: Use prosemirror file handler flag
 - Fix #6839: The getObjectModel() method should work for all ActiveRecord classes
+- Fix #6849: In the "Module Administration" page, remove "Show in Marketplace" for modules not in the `@app/modules` directory
