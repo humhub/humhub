@@ -21,8 +21,11 @@ use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\Query\Boolean;
+use ZendSearch\Lucene\Search\Query\MultiTerm;
+use ZendSearch\Lucene\Search\Query\Range;
 use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
 use ZendSearch\Lucene\Search\Query\Term as TermQuery;
+use ZendSearch\Lucene\Search\Query\Wildcard;
 use ZendSearch\Lucene\Search\QueryParser;
 use ZendSearch\Lucene\SearchIndexInterface;
 
@@ -50,12 +53,12 @@ class ZendLucenceDriver extends AbstractDriver
         $document->addField(Field::keyword('id', $content->id));
         $document->addField(Field::keyword('visibility', $content->visibility));
         $document->addField(Field::keyword('class', $content->object_model));
-        $document->addField(Field::keyword('created_at', strtotime($content->created_at)));
-        $document->addField(Field::keyword('created_by', $content->created_by));
-        $document->addField(Field::unStored('tags', implode(', ',
-            array_map(function (ContentTag $tag) {
-                return $tag->name;
-            }, $content->tags))));
+        $document->addField(Field::keyword('created_at', $content->created_at));
+        $document->addField(Field::keyword('created_by', ($author = $content->createdBy) ? $author->guid : ''));
+        $document->addField(Field::keyword('tags', empty($content->tags) ? ''
+            : '-' . implode('-', array_map(function (ContentTag $tag) {
+                return $tag->id;
+            }, $content->tags)) . '-'));
 
         if ($content->container) {
             $document->addField(Field::keyword('container_id', $content->container->id));
@@ -142,18 +145,41 @@ class ZendLucenceDriver extends AbstractDriver
         $query = new Boolean();
         foreach ($request->getKeywords() as $keyword) {
             if (mb_strlen($keyword) < 3) {
-                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Term(new Term(mb_strtolower($keyword))), true);
+                $query->addSubquery(new TermQuery(new Term(mb_strtolower($keyword))), true);
             } else {
-                $query->addSubquery(new \ZendSearch\Lucene\Search\Query\Wildcard(new Term(mb_strtolower($keyword))), true);
+                $query->addSubquery(new Wildcard(new Term(mb_strtolower($keyword))), true);
             }
+        }
+
+        if (!empty($request->dateFrom) || !empty($request->dateTo)) {
+            $dateFrom = empty($request->dateFrom)
+                ? null
+                : new Term($request->dateFrom . ' 00:00:00', 'created_at');
+            $dateTo = empty($request->dateTo)
+                ? null
+                : new Term($request->dateTo . ' 23:59:59', 'created_at');
+            $query->addSubquery(new Range($dateFrom, $dateTo, true), true);
+        }
+
+        if (!empty($request->topic)) {
+            Wildcard::setMinPrefixLength(0);
+            foreach ($request->topic as $topic) {
+                $query->addSubquery(new Wildcard(new Term('*-' . $topic . '-*', 'tags')), true);
+            }
+        }
+
+        if ($request->author) {
+            $authors = [];
+            $signs = [];
+            foreach ($request->author as $author) {
+                $authors[] = new Term($author, 'created_by');
+                $signs[] = null;
+            }
+            $query->addSubquery(new MultiTerm($authors, $signs), true);
         }
 
         if (!empty($request->contentType)) {
             $query->addSubquery(new QueryTerm(new Term($request->contentType, 'class')), true);
-        }
-
-        if ($request->author) {
-            $query->addSubquery(new QueryTerm(new Term($request->author->id, 'created_by')), true);
         }
 
         if ($request->user !== null) {
