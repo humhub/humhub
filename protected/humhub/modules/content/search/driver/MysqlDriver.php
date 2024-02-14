@@ -70,7 +70,7 @@ class MysqlDriver extends AbstractDriver
 
         $matchDbFields = 'content_fulltext.contents, content_fulltext.comments, content_fulltext.files';
 
-        $query->addSelect(['*', 'MATCH(' . $matchDbFields . ') AGAINST ("' . Yii::$app->db->quoteValue($againstSqlQuery) . '" IN BOOLEAN MODE) as score']);
+        $query->addSelect(['content.*', 'MATCH(' . $matchDbFields . ') AGAINST ("' . Yii::$app->db->quoteValue($againstSqlQuery) . '" IN BOOLEAN MODE) as score']);
         $query->andWhere('MATCH(' . $matchDbFields . ') AGAINST (:key IN BOOLEAN MODE)', ['key' => $againstSqlQuery]);
 
         if (!empty($request->contentType)) {
