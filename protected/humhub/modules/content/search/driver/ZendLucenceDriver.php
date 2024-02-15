@@ -163,9 +163,11 @@ class ZendLucenceDriver extends AbstractDriver
 
         if (!empty($request->topic)) {
             Wildcard::setMinPrefixLength(0);
+            $subQuery = new Boolean();
             foreach ($request->topic as $topic) {
-                $query->addSubquery(new Wildcard(new Term('*-' . $topic . '-*', 'tags')), true);
+                $subQuery->addSubquery(new Wildcard(new Term('*-' . $topic . '-*', 'tags')));
             }
+            $query->addSubquery($subQuery, true);
         }
 
         if ($request->author) {
