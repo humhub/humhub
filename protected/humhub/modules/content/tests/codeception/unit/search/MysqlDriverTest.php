@@ -11,8 +11,4 @@ class MysqlDriverTest extends AbstractDriverTestSuite
     {
         return new MysqlDriver();
     }
-
-    protected function updateNewAddedContents(): void
-    {
-    }
 }

@@ -23,8 +23,6 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
     abstract protected function createDriver(): AbstractDriver;
 
-    abstract protected function updateNewAddedContents(): void;
-
     protected function _before()
     {
         $this->searchDriver = $this->createDriver();
@@ -71,7 +69,10 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
     private function getSearchRequest(): SearchRequest
     {
-        $this->updateNewAddedContents();
+        foreach (Content::find()->where(['visibility' => Content::VISIBILITY_PUBLIC])->each() as $content) {
+            $this->searchDriver->delete($content);
+            $this->searchDriver->update($content);
+        }
 
         return new SearchRequest();
     }
