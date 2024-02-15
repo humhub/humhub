@@ -281,28 +281,4 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
     {
         return $this->hasOne(User::class, ['id' => 'created_by']);
     }
-
-    /**
-     * Returns the class used in the polymorphic content relation.
-     * By default this function will return the static class.
-     *
-     * Subclasses of existing content record classes may overwrite this function in order to remain the actual
-     * base type as follows:
-     *
-     * ```
-     * public static function getObjectModel(): string {
-     *     return BaseType::class
-     * }
-     * ```
-     *
-     * This will force the usage of the `BaseType` class when creating, deleting or querying the content relation.
-     * This is used in cases in which a subclass extends a base record class without implementing a custom content type.
-     *
-     * @return string
-     */
-    public static function getObjectModel(): string
-    {
-        return static::class;
-    }
-
 }
