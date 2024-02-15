@@ -89,18 +89,18 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
 
-        $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test1']);
+        $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Driver Test1']);
         $post1->content->created_at = '2024-02-01 10:00:00';
         $post1->save();
-        $post2 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test2']);
+        $post2 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Driver Test2']);
         $post2->content->created_at = '2024-01-02 12:00:00';
         $post2->save();
-        $post3 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Test Test3']);
+        $post3 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Driver Test3']);
         $post3->content->created_at = '2023-12-04 22:00:00';
         $post3->save();
 
         $request = $this->getSearchRequest();
-        $request->keyword = 'Test';
+        $request->keyword = 'Driver';
 
         $request->dateFrom = '2024-02-01';
         $result = $this->searchDriver->search($request);
