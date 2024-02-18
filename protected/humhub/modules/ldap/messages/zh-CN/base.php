@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '在生产环境中强烈建议使用ATLS / SSL，以防止明文传输密码',
     'Base DN' => '基于DN',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '定义过滤器应用，当尝试登录。 ％的uid替换登录操作的用户名。例如：＆QUOT;（sAMAccountName赋=％S）和QUOT;或QUOT;（UID =％S）和QUOT',
     'E-Mail Address Attribute' => '邮件属性',

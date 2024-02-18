@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'SSL / TLS açık metin olarak iletilir şifreleri önlemek için üretim ortamlarında tercih edilir.',
     'Base DN' => 'DN Temeli',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Giriş denendiğinde, uygulamak için filtreyi tanımlar. % uid giriş eylem adı değiştirir. Örnek: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'E-posta adres özelliği',

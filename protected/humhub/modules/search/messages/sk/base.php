@@ -4,6 +4,7 @@ return array (
   'Advanced search settings' => 'Nastavenia rozšíreného vyhľadávania',
   'All' => 'Všetko',
   'Content' => 'Obsah',
+  'Search' => 'Hľadať',
   'Search for user, spaces and content' => 'Vyhľadajte používateľa, priestory a obsah',
   'Search only in certain spaces:' => 'Hľadať len v určitých priestoroch:',
   'Spaces' => 'Priestory',

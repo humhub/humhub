@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'TLS/SSL ',
     'Base DN' => 'DN bazė',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Nurodo filtrą, kai bandoma prisijungti. %s pakeičia vartotojo vardą į prisijungimo veiksmą. Pavyzdys &quot;(sAMAccountName=%s)&quot; ar &quot;(uid=%s)&quot;',
     'Enable LDAP Support' => 'Leisti LDAP palaikymą',

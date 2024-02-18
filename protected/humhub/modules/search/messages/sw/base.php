@@ -5,6 +5,7 @@ return [
     'Advanced search settings' => '',
     'All' => '',
     'Content' => '',
+    'Search' => '',
     'Search for user, spaces and content' => '',
     'Search only in certain spaces:' => '',
     'Spaces' => '',

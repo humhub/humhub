@@ -1,14 +1,14 @@
 <?php
-
-return [
-    'Content' => 'Saturs',
-    'Spaces' => 'Vietas',
-    'Users' => 'Lietotāji',
-    '<strong>Search </strong> results' => '',
-    'Advanced search settings' => '',
-    'All' => '',
-    'Search for user, spaces and content' => '',
-    'Search only in certain spaces:' => '',
-    'Specify space' => '',
-    'Your search returned no matches.' => '',
-];
+return array (
+  '<strong>Search </strong> results' => '',
+  'Advanced search settings' => '',
+  'All' => '',
+  'Content' => 'Saturs',
+  'Search' => 'Meklēt',
+  'Search for user, spaces and content' => '',
+  'Search only in certain spaces:' => '',
+  'Spaces' => 'Vietas',
+  'Specify space' => '',
+  'Users' => 'Lietotāji',
+  'Your search returned no matches.' => '',
+);
