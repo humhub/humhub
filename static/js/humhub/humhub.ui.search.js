@@ -17,9 +17,22 @@ humhub.module('ui.search', function(module, require, $) {
                 that.search();
             }
         });
+
+        this.$.find('#dropdown-search').niceScroll({
+            cursorwidth: "7",
+            cursorborder: "",
+            cursorcolor: "#555",
+            cursoropacitymax: "0.2",
+            nativeparentscrolling: false,
+            railpadding: {top: 0, right: 0, left: 0, bottom: 0}
+        });
     }
 
     Search.prototype.menu = function() {
+        const keywordInput = this.$.find('.dropdown-search-keyword');
+        if (keywordInput.length) {
+            keywordInput.focus();
+        }
     }
 
     Search.prototype.search = function() {
@@ -27,7 +40,8 @@ humhub.module('ui.search', function(module, require, $) {
 
         this.$.find('.dropdown-search-provider').each(function () {
             const provider = $(this);
-            provider.addClass('provider-searching').show();
+            provider.addClass('provider-searching').show()
+                .find('.dropdown-search-provider-title > span').hide();
             loader.set(provider.find('.dropdown-search-provider-content'), {size: '8px', css: {padding: '0px'}});
 
             const data = {

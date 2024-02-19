@@ -35,6 +35,13 @@ interface SearchProviderInterface
     public function getTotal(): int;
 
     /**
+     * Get searched results
+     *
+     * @return SearchRecordInterface[]
+     */
+    public function getRecords();
+
+    /**
      * Search results
      *
      * @return void

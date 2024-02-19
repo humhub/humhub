@@ -8,13 +8,26 @@
 namespace humhub\modules\space\search;
 
 use humhub\interfaces\SearchProviderInterface;
+use humhub\modules\space\components\SpaceDirectoryQuery;
 use Yii;
 use yii\helpers\Url;
 
+/**
+ * SpaceSearchProvider
+ *
+ * @author luke
+ * @since 1.16
+ */
 class SpaceSearchProvider implements SearchProviderInterface
 {
     public ?string $keyword = null;
+    public int $pageSize = 4;
 
+    protected ?int $totalCount = null;
+
+    /**
+     * @var SearchProviderInterface[]|null
+     */
     protected ?array $results = null;
 
     /**
@@ -42,8 +55,17 @@ class SpaceSearchProvider implements SearchProviderInterface
             return;
         }
 
-        $this->results = ['total' => 5];
-        // TODO: Implement search process here
+        $spaceDirectoryQuery = new SpaceDirectoryQuery([
+            'defaultFilters' => ['keyword' => $this->keyword],
+            'pageSize' => $this->pageSize
+        ]);
+
+        $this->totalCount = $spaceDirectoryQuery->pagination->totalCount;
+
+        $this->results = [];
+        foreach ($spaceDirectoryQuery->all() as $space) {
+            $this->results[] = new SearchRecord($space);
+        }
     }
 
     /**
@@ -59,6 +81,14 @@ class SpaceSearchProvider implements SearchProviderInterface
      */
     public function getTotal(): int
     {
-        return isset($this->results['total']) ? (int) $this->results['total'] : 0;
+        return isset($this->totalCount) ? (int) $this->totalCount : 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRecords(): array
+    {
+        return $this->results ?? [];
     }
 }

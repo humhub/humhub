@@ -8,13 +8,26 @@
 namespace humhub\modules\user\search;
 
 use humhub\interfaces\SearchProviderInterface;
+use humhub\modules\user\components\PeopleQuery;
 use Yii;
 use yii\helpers\Url;
 
+/**
+ * UserSearchProvider
+ *
+ * @author luke
+ * @since 1.16
+ */
 class UserSearchProvider implements SearchProviderInterface
 {
     public ?string $keyword = null;
+    public int $pageSize = 4;
 
+    protected ?int $totalCount = null;
+
+    /**
+     * @var SearchProviderInterface[]|null
+     */
     protected ?array $results = null;
 
     /**
@@ -42,8 +55,17 @@ class UserSearchProvider implements SearchProviderInterface
             return;
         }
 
-        $this->results = ['total' => 12];
-        // TODO: Implement search process here
+        $peopleQuery = new PeopleQuery([
+            'defaultFilters' => ['keyword' => $this->keyword],
+            'pageSize' => $this->pageSize
+        ]);
+
+        $this->totalCount = $peopleQuery->pagination->totalCount;
+
+        $this->results = [];
+        foreach ($peopleQuery->all() as $user) {
+            $this->results[] = new SearchRecord($user);
+        }
     }
 
     /**
@@ -59,6 +81,14 @@ class UserSearchProvider implements SearchProviderInterface
      */
     public function getTotal(): int
     {
-        return isset($this->results['total']) ? (int) $this->results['total'] : 0;
+        return isset($this->totalCount) ? (int) $this->totalCount : 0;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRecords(): array
+    {
+        return $this->results ?? [];
     }
 }
