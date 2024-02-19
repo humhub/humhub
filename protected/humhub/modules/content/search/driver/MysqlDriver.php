@@ -7,6 +7,7 @@
 
 namespace humhub\modules\content\search\driver;
 
+use humhub\libs\SearchQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentFulltext;
 use humhub\modules\content\models\ContentTag;
@@ -63,15 +64,12 @@ class MysqlDriver extends AbstractDriver
         $query->leftJoin('content_fulltext', 'content_fulltext.content_id=content.id');
         $query->andWhere('content_fulltext.content_id IS NOT NULL');
 
-        $againstSqlQuery = '';
-        foreach ($request->getKeywords() as $keyword) {
-            $againstSqlQuery .= '+' . $keyword . ' ';
-        }
+        $fullTextQuery = $this->createMysqlFullTextQuery($request->searchQuery, [
+            'content_fulltext.contents', 'content_fulltext.comments', 'content_fulltext.files'
+        ]);
 
-        $matchDbFields = 'content_fulltext.contents, content_fulltext.comments, content_fulltext.files';
-
-        $query->addSelect(['content.*', 'MATCH(' . $matchDbFields . ') AGAINST ("' . Yii::$app->db->quoteValue($againstSqlQuery) . '" IN BOOLEAN MODE) as score']);
-        $query->andWhere('MATCH(' . $matchDbFields . ') AGAINST (:key IN BOOLEAN MODE)', ['key' => $againstSqlQuery]);
+        $query->addSelect(['content.*', $fullTextQuery . ' as score']);
+        $query->andWhere($fullTextQuery);
 
         if (!empty($request->contentType)) {
             $query->andWhere(['content.object_model' => $request->contentType]);
@@ -123,18 +121,39 @@ class MysqlDriver extends AbstractDriver
         return $resultSet;
     }
 
+    private function createMysqlFullTextQuery(SearchQuery $query, array $matchFields = []): string
+    {
+        $againstQuery = '';
+
+        foreach ($query->andTerms as $keyword) {
+            $againstQuery .= '+' . $keyword . ' ';
+        }
+        foreach ($query->orTerms as $keyword) {
+            $againstQuery .= $keyword . ' ';
+        }
+        foreach ($query->orTerms as $keyword) {
+            $againstQuery .= $keyword . ' ';
+        }
+
+        return sprintf(
+            'MATCH(%s) AGAINST (%s IN BOOLEAN MODE)',
+            implode(', ', $matchFields),
+            Yii::$app->db->quoteValue($againstQuery)
+        );
+    }
+
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery
     {
         $query->andWhere(['content.state' => Content::STATE_PUBLISHED]);
 
         $query->joinWith('contentContainer');
-        $query->leftJoin('space', 'contentcontainer.pk=space.id AND contentcontainer.class=:spaceClass', [':spaceClass' => Space::class]);
-        $query->leftJoin('user cuser', 'contentcontainer.pk=cuser.id AND contentcontainer.class=:userClass', [':userClass' => User::class]);
+        $query->leftJoin('space', 'contentcontainer . pk = space . id and contentcontainer .class=:spaceClass', [':spaceClass' => Space::class]);
+        $query->leftJoin('user cuser', 'contentcontainer . pk = cuser . id and contentcontainer .class=:userClass', [':userClass' => User::class]);
 
         if (!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
 
-            $query->leftJoin('space_membership', 'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
+            $query->leftJoin('space_membership', 'contentcontainer . pk = space_membership . space_id and contentcontainer .class=:spaceClass and space_membership . user_id =:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
             if ($user->canViewAllContent(Space::class)) {
                 // Don't restrict if user can view all content:
@@ -143,6 +162,7 @@ class MysqlDriver extends AbstractDriver
                 // User must be a space's member OR Space and Content are public
                 $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
             }
+
             if ($user->canViewAllContent(User::class)) {
                 // Don't restrict if user can view all content:
                 $conditionUserPrivateRestriction = '';
@@ -167,7 +187,8 @@ class MysqlDriver extends AbstractDriver
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
             $globalCondition = 'content.contentcontainer_id IS NULL';
-        } elseif (AuthHelper::isGuestAccessEnabled()) {
+        } elseif
+        (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';

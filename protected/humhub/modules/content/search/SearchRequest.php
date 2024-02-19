@@ -8,6 +8,7 @@
 namespace humhub\modules\content\search;
 
 use DateTime;
+use humhub\libs\SearchQuery;
 use humhub\modules\content\models\ContentType;
 use humhub\modules\user\models\User;
 use Yii;
@@ -40,6 +41,8 @@ class SearchRequest extends Model
     public $contentContainer = [];
 
     public $orderBy = 'content.created_at';
+
+    public ?SearchQuery $searchQuery;
 
     public function init()
     {
@@ -84,6 +87,8 @@ class SearchRequest extends Model
     public function afterValidate()
     {
         parent::afterValidate();
+
+        $this->searchQuery = new SearchQuery($this->keyword);
 
         $this->normalizeDate('dateFrom');
         $this->normalizeDate('dateTo');
