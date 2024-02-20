@@ -1,13 +1,15 @@
 #dropdown-search.dropdown-menu {
     left: auto;
     right: 0;
-    max-height: 800px;
     max-width: 100%;
     min-width: 350px;
-    padding: 20px;
+    padding: 0;
     border-radius: 6px;
-    li:hover {
-        color: inherit;
+
+    .dropdown-search-list {
+        list-style: none;
+        padding: 20px;
+        height: 100%;
     }
 
     .arrow {
@@ -77,6 +79,9 @@
             > span {
                 font-size: 80%;
             }
+        }
+        &:hover {
+            color: inherit;
         }
         &.provider-searched {
             display: block;
