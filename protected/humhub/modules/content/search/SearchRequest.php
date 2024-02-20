@@ -42,7 +42,7 @@ class SearchRequest extends Model
 
     public $orderBy = 'content.created_at';
 
-    public ?SearchQuery $searchQuery;
+    public ?SearchQuery $searchQuery = null;
 
     public function init()
     {
@@ -88,8 +88,6 @@ class SearchRequest extends Model
     {
         parent::afterValidate();
 
-        $this->searchQuery = new SearchQuery($this->keyword);
-
         $this->normalizeDate('dateFrom');
         $this->normalizeDate('dateTo');
     }
@@ -103,6 +101,15 @@ class SearchRequest extends Model
         $format = FormatConverter::convertDateIcuToPhp(self::DATE_FORMAT, 'date', Yii::$app->formatter->locale);
 
         $this->$dateFieldName = DateTime::createFromFormat($format, $this->$dateFieldName)->format('Y-m-d');
+    }
+
+    public function getSearchQuery(): SearchQuery
+    {
+        if ($this->searchQuery === null) {
+            $this->searchQuery = new SearchQuery($this->keyword);
+        }
+
+        return $this->searchQuery;
     }
 
 }

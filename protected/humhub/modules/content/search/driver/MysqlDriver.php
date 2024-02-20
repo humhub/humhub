@@ -64,7 +64,7 @@ class MysqlDriver extends AbstractDriver
         $query->leftJoin('content_fulltext', 'content_fulltext.content_id=content.id');
         $query->andWhere('content_fulltext.content_id IS NOT NULL');
 
-        $fullTextQuery = $this->createMysqlFullTextQuery($request->searchQuery, [
+        $fullTextQuery = $this->createMysqlFullTextQuery($request->getSearchQuery(), [
             'content_fulltext.contents', 'content_fulltext.comments', 'content_fulltext.files'
         ]);
 
