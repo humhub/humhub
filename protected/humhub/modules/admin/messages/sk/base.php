@@ -32,7 +32,7 @@ return array (
   'Enable' => 'Povoliť',
   'Enable module...' => 'Povoliť modul...',
   'Files' => 'Súbory',
-  'General' => '',
+  'General' => 'Všeobecné',
   'Groups' => 'Skupiny',
   'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)' => 'Skupiny (Poznámka: Správcovskú skupinu tohto používateľa nie je možné spravovať s vašimi oprávneniami)',
   'Inactive Modules' => 'Neaktívne Moduly',

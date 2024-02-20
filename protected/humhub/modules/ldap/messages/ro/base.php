@@ -13,7 +13,6 @@ return [
     'User Filter' => '유저 필터',
     'Username' => '유저네임',
     'Username Attribute' => '유저네임 속성',
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
     'E-Mail Address Attribute' => '',
     'ID Attribute' => '',

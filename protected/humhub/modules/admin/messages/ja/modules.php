@@ -17,7 +17,7 @@ return array (
   'Save' => '保存',
   'Space default state' => 'スペースのデフォルト状態',
   'Spaces' => 'スペース',
-  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'このモジュールは現在 {nbContainers} ユーザーまたはスペースによって使用されています。可用性を変更するとモジュールで作成されたすべてのコンテンツが失われます。進めますか？',
   'User default state' => 'ユーザーのデフォルト状態',
   'Users' => 'ユーザー',
 );

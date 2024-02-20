@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> comment deleting' => '<strong>Potvrďte</strong> odstránenie komentára',
+  '<strong>Confirm</strong> comment deleting' => '<strong>Potvrdiť</strong> odstránenie komentára',
   '<strong>Delete</strong> comment?' => '<strong>Odstrániť</strong> komentár?',
   '<strong>Permalink</strong> to this comment' => '<strong>Trvalý odkaz</strong> na tento komentár',
   'Cancel' => 'Zrušiť',
