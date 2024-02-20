@@ -7,11 +7,10 @@
 
 namespace humhub\widgets;
 
-use humhub\interfaces\SearchProviderInterface;
+use humhub\components\SearchProvider;
 use humhub\modules\content\search\ContentSearchProvider;
 use humhub\modules\space\search\SpaceSearchProvider;
 use humhub\modules\user\search\UserSearchProvider;
-use yii\helpers\Url;
 
 /**
  * SearchMenu Widget for TopMenuRightStack
@@ -25,7 +24,7 @@ class SearchMenu extends JsWidget
     public $jsWidget = 'ui.search';
 
     /**
-     * @var string[]|SearchProviderInterface[] $searchProviders
+     * @var string[]|SearchProvider[] $searchProviders
      */
     protected array $searchProviders = [
         ContentSearchProvider::class,
@@ -53,7 +52,9 @@ class SearchMenu extends JsWidget
     }
 
     /**
-     * @param string|SearchProviderInterface $searchProvider
+     * Add search provider
+     *
+     * @param string|SearchProvider $searchProvider
      */
     public function addProvider($searchProvider)
     {

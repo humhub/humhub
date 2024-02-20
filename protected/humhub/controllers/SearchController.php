@@ -8,7 +8,7 @@
 namespace humhub\controllers;
 
 use humhub\components\Controller;
-use humhub\widgets\SearchProvider;
+use humhub\widgets\SearchProviderWidget;
 use Yii;
 
 /**
@@ -20,7 +20,7 @@ class SearchController extends Controller
     {
         $this->forcePostRequest();
 
-        return SearchProvider::widget([
+        return SearchProviderWidget::widget([
             'searchProvider' => Yii::$app->request->post('provider'),
             'keyword' => Yii::$app->request->post('keyword')
         ]);

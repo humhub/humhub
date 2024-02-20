@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\interfaces\SearchProviderInterface;
+use humhub\components\SearchProvider;
 use humhub\libs\Html;
 use humhub\widgets\Button;
 
 /* @var array $options */
-/* @var SearchProviderInterface $searchProvider */
+/* @var SearchProvider $searchProvider */
 ?>
 <?= Html::beginTag('li', $options) ?>
     <div class="dropdown-search-provider-title">
@@ -21,16 +21,20 @@ use humhub\widgets\Button;
     </div>
     <div class="dropdown-search-provider-content">
         <?php if ($searchProvider->isSearched()) : ?>
-            <?php foreach ($searchProvider->getRecords() as $record) : ?>
-                <a href="<?= $record->getUrl() ?>" class="dropdown-search-provider-content-item">
-                    <span><?= $record->getImage() ?></span>
-                    <span>
-                        <?= Html::encode($record->getTitle()) ?>
-                        <span><?= Html::encode($record->getDescription()) ?></span>
-                    </span>
-                </a>
-            <?php endforeach; ?>
-            <?= Button::defaultType(Yii::t('base', 'Show all results'))
+            <?php if ($searchProvider->hasRecords()) : ?>
+                <?php foreach ($searchProvider->getRecords() as $record) : ?>
+                    <a href="<?= $record->getUrl() ?>" class="dropdown-search-provider-content-item">
+                        <span><?= $record->getImage() ?></span>
+                        <span>
+                            <?= Html::encode($record->getTitle()) ?>
+                            <span><?= Html::encode($record->getDescription()) ?></span>
+                        </span>
+                    </a>
+                <?php endforeach; ?>
+            <?php else : ?>
+                <div class="dropdown-search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
+            <?php endif; ?>
+            <?= Button::defaultType($searchProvider->getAllResultsText())
                 ->link($searchProvider->getAllResultsUrl())
                 ->cssClass('dropdown-search-provider-show-all')
                 ->loader(false) ?>

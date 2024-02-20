@@ -7,10 +7,9 @@
 
 namespace humhub\modules\content\search;
 
-use humhub\interfaces\SearchProviderInterface;
+use humhub\components\SearchProvider;
 use humhub\modules\content\Module;
 use Yii;
-use yii\helpers\Url;
 
 /**
  * ContentSearchProvider
@@ -18,17 +17,9 @@ use yii\helpers\Url;
  * @author luke
  * @since 1.16
  */
-class ContentSearchProvider implements SearchProviderInterface
+class ContentSearchProvider extends SearchProvider
 {
-    public ?string $keyword = null;
-    public int $pageSize = 4;
-
-    protected ?int $totalCount = null;
-
-    /**
-     * @var SearchProviderInterface[]|null
-     */
-    protected ?array $results = null;
+    protected ?string $route = '/content/search';
 
     /**
      * @inheritdoc
@@ -36,14 +27,6 @@ class ContentSearchProvider implements SearchProviderInterface
     public function getName(): string
     {
         return Yii::t('ContentModule.base', 'Content');
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getAllResultsUrl(): string
-    {
-        return Url::to(['/content/search', 'keyword' => $this->keyword]);
     }
 
     /**
@@ -69,29 +52,5 @@ class ContentSearchProvider implements SearchProviderInterface
         foreach ($resultSet->results as $content) {
             $this->results[] = new SearchRecord($content);
         }
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function isSearched(): bool
-    {
-        return $this->results !== null;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTotal(): int
-    {
-        return isset($this->totalCount) ? (int) $this->totalCount : 0;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getRecords(): array
-    {
-        return $this->results ?? [];
     }
 }

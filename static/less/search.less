@@ -6,6 +6,9 @@
     min-width: 350px;
     padding: 20px;
     border-radius: 6px;
+    li:hover {
+        color: inherit;
+    }
 
     .arrow {
         position: absolute;
@@ -120,10 +123,13 @@
                 }
             }
         }
+        .dropdown-search-provider-no-results {
+            margin-top: 15px;
+        }
         .dropdown-search-provider-show-all {
             margin-top: 20px;
             width: 100%;
-            &:hover, &:active {
+            &:hover, &:active, &:focus {
                 background: #d7d7d7;
             }
         }

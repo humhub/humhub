@@ -7,18 +7,18 @@
 
 namespace humhub\widgets;
 
+use humhub\components\SearchProvider;
 use humhub\components\Widget;
-use humhub\interfaces\SearchProviderInterface;
 use Yii;
 
 /**
- * SearchProvider Widget
+ * Search Provider Widget
  * @since 1.16
  */
-class SearchProvider extends Widget
+class SearchProviderWidget extends Widget
 {
     /**
-     * @var string|SearchProviderInterface|null $searchProvider
+     * @var string|SearchProvider|null $searchProvider
      */
     public $searchProvider;
 
@@ -35,7 +35,7 @@ class SearchProvider extends Widget
 
     protected function initSearchProvider()
     {
-        if ($this->searchProvider instanceof SearchProviderInterface) {
+        if ($this->searchProvider instanceof SearchProvider) {
             return;
         }
 
@@ -45,7 +45,7 @@ class SearchProvider extends Widget
                 'keyword' => $this->keyword
             ]);
 
-            if ($this->searchProvider instanceof SearchProviderInterface) {
+            if ($this->searchProvider instanceof SearchProvider) {
                 $this->searchProvider->search();
             }
         }
@@ -56,7 +56,7 @@ class SearchProvider extends Widget
      */
     public function beforeRun()
     {
-        return parent::beforeRun() && $this->searchProvider instanceof SearchProviderInterface;
+        return parent::beforeRun() && $this->searchProvider instanceof SearchProvider;
     }
 
     /**

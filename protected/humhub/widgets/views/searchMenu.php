@@ -6,16 +6,16 @@
  */
 
 use humhub\assets\SearchAsset;
-use humhub\interfaces\SearchProviderInterface;
+use humhub\components\SearchProvider;
 use humhub\libs\Html;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
-use humhub\widgets\SearchProvider;
+use humhub\widgets\SearchProviderWidget;
 use yii\web\View;
 
 /* @var View $this */
 /* @var array $options */
-/* @var SearchProviderInterface[] $searchProviders */
+/* @var SearchProvider[] $searchProviders */
 
 SearchAsset::register($this);
 ?>
@@ -40,7 +40,7 @@ SearchAsset::register($this);
             <?= Html::input('text', 'keyword', '', ['class' => 'dropdown-search-keyword form-control']) ?>
         </li>
         <?php foreach ($searchProviders as $searchProvider) : ?>
-            <?= SearchProvider::widget(['searchProvider' => $searchProvider]) ?>
+            <?= SearchProviderWidget::widget(['searchProvider' => $searchProvider]) ?>
         <?php endforeach; ?>
     </ul>
 <?= Html::endTag('li') ?>
