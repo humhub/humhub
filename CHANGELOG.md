@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.15.4 (Unreleased)
+-------------------
+- Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support) 
+
+
 1.15.3 (February 8, 2024)
 -------------------------
 - Fix #6713: Keep class option for Pjax Widget
