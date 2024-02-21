@@ -3,6 +3,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\space\models\Space;
 use Yii;
 
 /**
@@ -12,7 +13,7 @@ use Yii;
 class SpaceChooserItem extends Widget
 {
     /**
-     * @var string
+     * @var Space
      */
     public $space;
 
