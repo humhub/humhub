@@ -32,6 +32,16 @@ class ContentSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
+    public function getAllResultsText(): string
+    {
+        return $this->hasRecords()
+            ? Yii::t('base', 'Show all results')
+            : Yii::t('ContentModule.base', 'Advanced Content Search');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function search(): void
     {
         if ($this->keyword === null) {

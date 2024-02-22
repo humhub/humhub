@@ -70,9 +70,7 @@ abstract class SearchProvider
      */
     public function getAllResultsText(): string
     {
-        return $this->hasRecords()
-            ? Yii::t('base', 'Show all results')
-            : Yii::t('base', 'Advanced search');
+        return Yii::t('base', 'Show all results');
     }
 
     /**

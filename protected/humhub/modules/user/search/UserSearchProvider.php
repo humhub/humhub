@@ -32,6 +32,16 @@ class UserSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
+    public function getAllResultsText(): string
+    {
+        return $this->hasRecords()
+            ? Yii::t('base', 'Show all results')
+            : Yii::t('UserModule.base', 'Advanced Profile Search');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function search(): void
     {
         if ($this->keyword === null) {

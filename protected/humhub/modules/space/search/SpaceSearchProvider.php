@@ -32,6 +32,16 @@ class SpaceSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
+    public function getAllResultsText(): string
+    {
+        return $this->hasRecords()
+            ? Yii::t('base', 'Show all results')
+            : Yii::t('SpaceModule.base', 'Advanced Spaces Search');
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function search(): void
     {
         if ($this->keyword === null) {

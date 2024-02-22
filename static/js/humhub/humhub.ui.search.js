@@ -93,7 +93,7 @@ humhub.module('ui.search', function(module, require, $) {
 
     Search.prototype.refreshSize = function () {
         this.getPanel().css('height', 'auto');
-        const maxHeight = $(window).height() - this.getPanel().offset().top;
+        const maxHeight = $(window).height() - this.getPanel().offset().top - 80;
         if (this.getPanel().height() > maxHeight) {
             this.getPanel().css('height', maxHeight);
         }
