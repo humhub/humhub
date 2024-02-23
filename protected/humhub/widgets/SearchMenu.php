@@ -24,6 +24,11 @@ class SearchMenu extends JsWidget
     public $jsWidget = 'ui.search';
 
     /**
+     * @inheritdoc
+     */
+    public $init = true;
+
+    /**
      * @var string[]|SearchProvider[] $searchProviders
      */
     protected array $searchProviders = [

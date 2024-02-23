@@ -9,12 +9,19 @@ humhub.module('ui.search', function(module, require, $) {
         const that = this;
 
         that.selectors = {
+            toggler: '#search-menu[data-toggle=dropdown]',
             panel: '#dropdown-search',
             list: '.dropdown-search-list',
+            form: '.dropdown-search-form',
             input: 'input.dropdown-search-keyword',
             provider: '.dropdown-search-provider',
             providerContent: '.dropdown-search-provider-content',
-            providerCounter: '.dropdown-search-provider-title > span'
+            providerCounter: '.dropdown-search-provider-title > span',
+            additionalToggler: {
+                form: 'form[data-toggle="humhub.ui.search"]',
+                input: 'input[type=text]:first',
+                submit: '[type=submit]'
+            }
         }
 
         $(document).on('click', that.selectors.panel, function (e) {
@@ -40,6 +47,38 @@ humhub.module('ui.search', function(module, require, $) {
             that.refreshSize();
         })
 
+        that.initAdditionalToggle();
+    }
+
+    Search.prototype.initAdditionalToggle = function () {
+        const that = this;
+        const form = $(that.selectors.additionalToggler.form);
+
+        if (form.length === 0) {
+            return;
+        }
+
+        const search = function (keyword) {
+            that.getForm().hide();
+            that.getInput().val(keyword);
+            that.showPanel().search();
+        }
+
+        form.find(that.selectors.additionalToggler.submit).on('click', function (e) {
+            search($(this).closest('form').find(that.selectors.additionalToggler.input).val());
+            return false;
+        });
+
+        form.find(that.selectors.additionalToggler.input).on('keypress', function (e) {
+            if (e.which === 13) {
+                e.preventDefault();
+                search($(this).val());
+            }
+        });
+    }
+
+    Search.prototype.getToggler = function () {
+        return this.$.find(this.selectors.toggler);
     }
 
     Search.prototype.getPanel = function () {
@@ -54,6 +93,10 @@ humhub.module('ui.search', function(module, require, $) {
         return this.$.find(this.selectors.provider);
     }
 
+    Search.prototype.getForm = function () {
+        return this.$.find(this.selectors.form);
+    }
+
     Search.prototype.getInput = function () {
         return this.$.find(this.selectors.input);
     }
@@ -63,10 +106,20 @@ humhub.module('ui.search', function(module, require, $) {
         return input.length === 1 && input.is(':visible');
     }
 
-    Search.prototype.menu = function () {
-        if (this.hasInput()) {
-            this.getInput().focus();
+    Search.prototype.isVisiblePanel = function () {
+        return this.$.hasClass('open');
+    }
+
+    Search.prototype.showPanel = function () {
+        if (!this.isVisiblePanel()) {
+            this.getToggler().dropdown('toggle');
         }
+        return this;
+    }
+
+    Search.prototype.menu = function () {
+        this.getForm().show();
+        this.getInput().focus();
     }
 
     Search.prototype.search = function () {
