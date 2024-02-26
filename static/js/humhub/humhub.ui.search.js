@@ -12,6 +12,7 @@ humhub.module('ui.search', function(module, require, $) {
             toggler: '#search-menu[data-toggle=dropdown]',
             panel: '#dropdown-search',
             list: '.dropdown-search-list',
+            arrow: '.dropdown-header > .arrow',
             form: '.dropdown-search-form',
             input: 'input.dropdown-search-keyword',
             provider: '.dropdown-search-provider',
@@ -58,26 +59,46 @@ humhub.module('ui.search', function(module, require, $) {
             return;
         }
 
+        const input = form.find(that.selectors.additionalToggler.input);
+        const submit = form.find(that.selectors.additionalToggler.submit);
+
         const search = function (keyword) {
             that.getForm().hide();
             that.getInput().val(keyword);
+            that.setCurrentToggler(submit);
             that.showPanel().search();
         }
 
-        form.find(that.selectors.additionalToggler.submit).on('click', function (e) {
-            search($(this).closest('form').find(that.selectors.additionalToggler.input).val());
+        submit.on('click', function () {
+            search(input.val());
             return false;
         });
 
-        form.find(that.selectors.additionalToggler.input).on('keypress', function (e) {
+        input.on('keypress', function (e) {
             if (e.which === 13) {
                 e.preventDefault();
                 search($(this).val());
             }
         });
+
+        that.$.on('hide.bs.dropdown', function (e) {
+            if (input.is(':focus')) {
+                e.preventDefault();
+            }
+        })
     }
 
-    Search.prototype.getToggler = function () {
+    Search.prototype.setCurrentToggler = function (toggleElement) {
+        return this.currentToggler = toggleElement;
+    }
+
+    Search.prototype.getCurrentToggler = function () {
+        return typeof(this.currentToggler) === 'undefined'
+            ? this.$.find(this.selectors.toggler)
+            : this.currentToggler;
+    }
+
+    Search.prototype.getMenuToggler = function () {
         return this.$.find(this.selectors.toggler);
     }
 
@@ -87,6 +108,10 @@ humhub.module('ui.search', function(module, require, $) {
 
     Search.prototype.getList = function () {
         return this.$.find(this.selectors.list);
+    }
+
+    Search.prototype.getArrow = function () {
+        return this.$.find(this.selectors.arrow);
     }
 
     Search.prototype.getProviders = function () {
@@ -112,18 +137,28 @@ humhub.module('ui.search', function(module, require, $) {
 
     Search.prototype.showPanel = function () {
         if (!this.isVisiblePanel()) {
-            this.getToggler().dropdown('toggle');
+            this.getMenuToggler().dropdown('toggle');
         }
         return this;
     }
 
+    Search.prototype.isSearched = function () {
+        return this.$.find('.dropdown-search-provider.provider-searched').length > 0;
+    }
+
     Search.prototype.menu = function () {
+        this.setCurrentToggler(undefined);
         this.getForm().show();
         this.getInput().focus();
     }
 
     Search.prototype.search = function () {
         const that = this;
+
+        if (that.previousKeyword === that.getInput().val()) {
+            that.refreshSize();
+            return;
+        }
 
         this.getProviders().each(function () {
             const provider = $(this);
@@ -141,14 +176,40 @@ humhub.module('ui.search', function(module, require, $) {
                 provider.replaceWith(response.html);
                 that.refreshSize();
             });
+
+            that.previousKeyword = data.keyword;
         });
     }
 
     Search.prototype.refreshSize = function () {
-        this.getPanel().css('height', 'auto');
+        // Set proper panel height
         const maxHeight = $(window).height() - this.getPanel().offset().top - 80;
-        if (this.getPanel().height() > maxHeight) {
-            this.getPanel().css('height', maxHeight);
+        this.getPanel().css('height', this.getPanel().height() > maxHeight ? maxHeight : 'auto');
+
+        // Centralize panel if it is over window
+        const menuTogglerLeft = this.getMenuToggler().offset().left;
+        const currentTogglerLeft = this.getCurrentToggler().offset().left;
+        const windowWidth = $(window).width();
+        const panelWidth = this.getPanel().width();
+        let isPanelShifted = false;
+        if (menuTogglerLeft === currentTogglerLeft) {
+            this.getPanel().css('left', '');
+        } else {
+            this.getPanel().css('left', currentTogglerLeft - menuTogglerLeft);
+            isPanelShifted = true;
+        }
+        if (this.getPanel().offset().left < 0 || this.getPanel().offset().left + panelWidth > windowWidth) {
+            this.getPanel().css('left', -(menuTogglerLeft - (windowWidth - panelWidth) / 2));
+            isPanelShifted = true;
+        }
+
+        // Set arrow pointer position to current toggler
+        if (!isPanelShifted) {
+            this.getArrow().css('right', '');
+        } else if (currentTogglerLeft === this.getPanel().offset().left) {
+            this.getArrow().css('right', panelWidth - 30);
+        } else {
+            this.getArrow().css('right', panelWidth - currentTogglerLeft - this.getPanel().offset().left + 12);
         }
     }
 
