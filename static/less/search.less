@@ -89,10 +89,10 @@
         }
     }
 
-    .dropdown-search-provider {
+    .search-provider {
         display: none;
         padding-top: 20px;
-        .dropdown-search-provider-title {
+        .search-provider-title {
             font-weight: 600;
             font-size: 16px;
             color: #000;
@@ -107,12 +107,12 @@
             display: block;
         }
         &.provider-searching {
-            .dropdown-search-provider-title, .dropdown-search-provider-content {
+            .search-provider-title, .search-provider-content {
                 float: left;
             }
         }
-        .dropdown-search-provider-content {
-            > a.dropdown-search-provider-content-item {
+        .search-provider-content {
+            a.search-provider-record {
                 display: flex;
                 align-items: center;
                 padding: 10px;
@@ -121,7 +121,7 @@
                     background: #f8f8f8;
                     border-radius: 3px;
                 }
-                > span:first-child {
+                .search-provider-record-image {
                     width: 36px;
                     flex: 0 0 36px;
                     > i {
@@ -129,7 +129,7 @@
                         color: @info;
                     }
                 }
-                > span:last-child {
+                .search-provider-record-text {
                     font-weight: 600;
                     padding-left: 10px;
                     flex: 1;
@@ -137,21 +137,29 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
-                    > span {
+                    .highlight {
+                        background: transparent;
+                        font-weight: 800;
+                        color: #333;
+                    }
+                    .search-provider-record-desc {
                         display: block;
                         font-size: 80%;
                         font-weight: 400;
                         color: #555;
                         text-overflow: ellipsis;
                         overflow: hidden;
+                        .highlight {
+                            font-weight: 700;
+                        }
                     }
                 }
             }
         }
-        .dropdown-search-provider-no-results {
+        .search-provider-no-results {
             margin-top: 15px;
         }
-        .dropdown-search-provider-show-all {
+        .search-provider-show-all {
             margin-top: 20px;
             width: 100%;
             &:hover, &:active, &:focus {
@@ -177,14 +185,14 @@
     }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 390px) {
     .dropdown.search-menu {
         position: initial;
     }
     #dropdown-search.dropdown-menu {
         width: 100%;
         min-width: initial;
-        .arrow {
+        .dropdown-header .arrow {
             right: 25px;
         }
     }

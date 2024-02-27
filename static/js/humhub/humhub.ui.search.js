@@ -16,9 +16,11 @@ humhub.module('ui.search', function(module, require, $) {
             arrow: '.dropdown-header > .arrow',
             form: '.dropdown-search-form',
             input: 'input.dropdown-search-keyword',
-            provider: '.dropdown-search-provider',
-            providerContent: '.dropdown-search-provider-content',
-            providerCounter: '.dropdown-search-provider-title > span',
+            provider: '.search-provider',
+            providerSearched: '.search-provider.provider-searched',
+            providerContent: '.search-provider-content',
+            providerRecord: '.search-provider-record',
+            providerCounter: '.search-provider-title > span',
             backdrop: '.dropdown-backdrop',
             additionalToggler: {
                 form: 'form[data-toggle="humhub.ui.search"]',
@@ -163,7 +165,7 @@ humhub.module('ui.search', function(module, require, $) {
     }
 
     Search.prototype.isSearched = function () {
-        return this.$.find('.dropdown-search-provider.provider-searched').length > 0;
+        return this.$.find(this.selectors.providerSearched).length > 0;
     }
 
     Search.prototype.menu = function () {
@@ -184,6 +186,11 @@ humhub.module('ui.search', function(module, require, $) {
 
         this.getProviders().each(function () {
             const provider = $(this);
+
+            if (provider.hasClass('provider-searching')) {
+                return;
+            }
+
             provider.addClass('provider-searching').show()
                 .find(that.selectors.providerCounter).hide();
             loader.set(provider.find(that.selectors.providerContent), {size: '8px', css: {padding: '0px'}});
@@ -195,7 +202,9 @@ humhub.module('ui.search', function(module, require, $) {
                 keyword: that.getInput().val()
             };
             client.post(module.config.url, {data}).then(function (response) {
-                provider.replaceWith(response.html);
+                const newProviderContent = $(response.html);
+                provider.replaceWith(newProviderContent);
+                newProviderContent.find(that.selectors.providerRecord).highlight(data.keyword);
                 that.refreshSize();
             });
 
@@ -205,7 +214,7 @@ humhub.module('ui.search', function(module, require, $) {
 
     Search.prototype.refreshSize = function () {
         // Set proper panel height
-        const maxHeight = $(window).height() - this.getPanel().offset().top - 80;
+        const maxHeight = $(window).height() - this.getPanel().offset().top - ($(window).width() > 390 ? 80 : 0);
         this.getPanel().css('height', 'auto');
         if (this.getPanel().height() > maxHeight) {
             this.getPanel().css('height', maxHeight);

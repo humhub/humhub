@@ -73,7 +73,7 @@ class SearchProviderWidget extends Widget
     protected function getOptions(): array
     {
         return [
-            'class' => 'dropdown-search-provider' . ($this->searchProvider->isSearched() ? ' provider-searched' : ''),
+            'class' => 'search-provider' . ($this->searchProvider->isSearched() ? ' provider-searched' : ''),
             'data-provider' => get_class($this->searchProvider)
         ];
     }
