@@ -18,6 +18,7 @@ humhub.module('ui.search', function(module, require, $) {
             provider: '.dropdown-search-provider',
             providerContent: '.dropdown-search-provider-content',
             providerCounter: '.dropdown-search-provider-title > span',
+            backdrop: '.dropdown-backdrop',
             additionalToggler: {
                 form: 'form[data-toggle="humhub.ui.search"]',
                 input: 'input[type=text]:first',
@@ -46,6 +47,9 @@ humhub.module('ui.search', function(module, require, $) {
 
         that.$.on('shown.bs.dropdown', function () {
             that.refreshSize();
+            if (that.getBackdrop().length === 0) {
+                that.$.append('<div class="' + that.selectors.backdrop.replace('.', '') + '">');
+            }
         })
 
         that.initAdditionalToggle();
@@ -84,6 +88,9 @@ humhub.module('ui.search', function(module, require, $) {
         that.$.on('hide.bs.dropdown', function (e) {
             if (input.is(':focus')) {
                 e.preventDefault();
+                if (that.getBackdrop().length === 0) {
+                    that.$.append('<div class="' + that.selectors.backdrop.replace('.', '') + '">');
+                }
             }
         })
     }
@@ -100,6 +107,10 @@ humhub.module('ui.search', function(module, require, $) {
 
     Search.prototype.getMenuToggler = function () {
         return this.$.find(this.selectors.toggler);
+    }
+
+    Search.prototype.getBackdrop = function () {
+        return this.$.find(this.selectors.backdrop);
     }
 
     Search.prototype.getPanel = function () {
@@ -184,7 +195,10 @@ humhub.module('ui.search', function(module, require, $) {
     Search.prototype.refreshSize = function () {
         // Set proper panel height
         const maxHeight = $(window).height() - this.getPanel().offset().top - 80;
-        this.getPanel().css('height', this.getPanel().height() > maxHeight ? maxHeight : 'auto');
+        this.getPanel().css('height', 'auto');
+        if (this.getPanel().height() > maxHeight) {
+            this.getPanel().css('height', maxHeight);
+        }
 
         // Centralize panel if it is over window
         const menuTogglerLeft = this.getMenuToggler().offset().left;
