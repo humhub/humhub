@@ -11,6 +11,7 @@ humhub.module('ui.search', function(module, require, $) {
         that.selectors = {
             toggler: '#search-menu[data-toggle=dropdown]',
             panel: '#dropdown-search',
+            close: '#dropdown-search-close',
             list: '.dropdown-search-list',
             arrow: '.dropdown-header > .arrow',
             form: '.dropdown-search-form',
@@ -28,6 +29,10 @@ humhub.module('ui.search', function(module, require, $) {
 
         $(document).on('click', that.selectors.panel, function (e) {
             e.stopPropagation();
+        });
+
+        $(document).on('click', that.selectors.close, function () {
+            that.getMenuToggler().dropdown('toggle');
         });
 
         that.getInput().on('keypress', function (e) {
@@ -49,6 +54,10 @@ humhub.module('ui.search', function(module, require, $) {
             that.refreshSize();
             if (that.getBackdrop().length === 0) {
                 that.$.append('<div class="' + that.selectors.backdrop.replace('.', '') + '">');
+            }
+            if (that.getList().is(':visible')) {
+                // refresh NiceScroll after reopen it with searched results
+                that.getList().hide().show();
             }
         })
 
@@ -170,6 +179,8 @@ humhub.module('ui.search', function(module, require, $) {
             that.refreshSize();
             return;
         }
+
+        this.getList().show();
 
         this.getProviders().each(function () {
             const provider = $(this);

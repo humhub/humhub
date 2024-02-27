@@ -9,40 +9,61 @@
     box-shadow: 0 0 8px #CCC;
     top: 115%;
 
-    .dropdown-search-list {
-        list-style: none;
-        padding: 20px;
-        height: 100%;
-    }
-
-    .arrow {
-        position: absolute;
-        display: block;
-        width: 0;
-        height: 0;
-        border-color: transparent;
-        border-style: solid;
-        border-width: 8px;
-        right: 10px;
-        margin-left: -18px;
-        border-top-width: 0;
-        border-bottom-color: #fff;
-        top: -8px;
-        z-index: 1035;
-    }
-
     .dropdown-header {
         font-weight: 600;
         color: #000;
-        padding: 0;
+        padding: 20px;
+        margin: 0;
+        flex: 0 0 auto;
+        .arrow {
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 8px;
+            right: 10px;
+            margin-left: -18px;
+            border-top-width: 0;
+            border-bottom-color: #CCC;
+            top: -8px;
+            z-index: 1035;
+            &:after {
+                position: absolute;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 8px;
+                content: " ";
+                top: 1px;
+                margin-left: -8px;
+                border-top-width: 0;
+                border-bottom-color: #FFF;
+                z-index: 1035;
+            }
+        }
+        #dropdown-search-close {
+            float: right;
+            font-size: 18px;
+            cursor: pointer;
+        }
     }
 
     .dropdown-search-form {
         position: relative;
+        padding: 0 20px 20px;
+        flex: 0 1 auto;
         .dropdown-search-keyword {
             background: #f8f8f8;
             border-color: #f3f3f3;
             padding-left: 32px;
+            &:-webkit-autofill,
+            &:-webkit-autofill:hover,
+            &:-webkit-autofill:focus,
+            &:-webkit-autofill:active {
+                -webkit-text-fill-color: #777 !important;
+                -webkit-box-shadow: 0 0 0 30px #f8f8f8 inset !important;
+            }
         }
         .dropdown-search-button {
             position: absolute;
@@ -54,6 +75,17 @@
             &:active {
                 box-shadow: none;
             }
+        }
+    }
+
+    .dropdown-search-list {
+        list-style: none;
+        padding: 0 20px 20px;
+        display: none;
+        flex: 0 1 auto;
+        > li:first-child {
+            margin-top: 0;
+            padding-top: 0;
         }
     }
 
@@ -129,6 +161,10 @@
     }
 }
 
+.open > #dropdown-search.dropdown-menu {
+    display: flex;
+    flex-direction: column;
+}
 
 .dropdown.search-menu {
     .dropdown-backdrop {
