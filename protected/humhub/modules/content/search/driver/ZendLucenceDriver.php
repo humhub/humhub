@@ -55,6 +55,8 @@ class ZendLucenceDriver extends AbstractDriver
         $document->addField(Field::keyword('class', $content->object_model));
         $document->addField(Field::keyword('created_at', $content->created_at));
         $document->addField(Field::keyword('created_by', ($author = $content->createdBy) ? $author->guid : ''));
+        $document->addField(Field::keyword('updated_at', $content->updated_at));
+        $document->addField(Field::keyword('updated_by', ($author = $content->updatedBy) ? $author->guid : ''));
         $document->addField(Field::keyword('tags', empty($content->tags) ? ''
             : '-' . implode('-', array_map(function (ContentTag $tag) {
                 return $tag->id;
@@ -64,14 +66,6 @@ class ZendLucenceDriver extends AbstractDriver
             $document->addField(Field::keyword('container_id', $content->container->id));
         }
 
-        if ($content->createdBy) {
-            $document->addField(Field::unStored('created_by_name', $content->createdBy->displayName));
-        }
-
-        $document->addField(Field::keyword('updated_at', strtotime($content->created_at)));
-        if ($content->updatedBy) {
-            //$document->addField(Field::keyword('content.updated_by', $content->updatedBy->getDisplayName()));
-        }
         $document->addField(Field::unStored('comments', (new ContentSearchService($content))->getCommentsAsText()));
         $document->addField(Field::unStored('files', (new ContentSearchService($content))->getFileContentAsText()));
 

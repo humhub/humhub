@@ -69,7 +69,7 @@ class ContentSearchService
     {
         $result = '';
         foreach (Comment::findAll(['object_model' => $this->content->object_model, 'object_id' => $this->content->object_id]) as $comment) {
-            $result .= $comment->user->getDisplayName() . ': ' . $comment->message . "\n\n";
+            $result .= "\n\n" . $comment->message . "\n\n";
             // ToDo: Add related files
         }
         return $result;

@@ -41,8 +41,6 @@ class MysqlDriver extends AbstractDriver
                     return $tag->name;
                 }, $content->tags)) . " \n";
 
-        $record->contents .= $content->createdBy->displayName . " \n";
-
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
             $record->contents .= $attributeValue . " \n";
         }
@@ -93,13 +91,6 @@ class MysqlDriver extends AbstractDriver
         }
 
         $this->addQueryFilterVisibility($query);
-
-        if ($request->user !== null) {
-            //$this->addQueryFilterUser($query, $options->contentTypes);
-        }
-        if ($request->contentContainer !== null) {
-            //$this->addQueryFilterContentContainer($query, $options->contentTypes);
-        }
 
         if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
             $query->orderBy(['content.created_at' => SORT_DESC]);
