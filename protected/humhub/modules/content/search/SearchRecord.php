@@ -9,6 +9,7 @@ namespace humhub\modules\content\search;
 
 use humhub\interfaces\SearchRecordInterface;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\Image;
@@ -58,24 +59,21 @@ class SearchRecord implements SearchRecordInterface
     public function getDescription(): string
     {
         $record = $this->content->getPolymorphicRelation();
+        $text = '';
 
         if (isset($record->description)) {
-            return $record->description;
-        }
-        if (isset($record->message)) {
-            return $record->message;
-        }
-        if (isset($record->page_content)) {
-            return $record->page_content;
-        }
-        if (isset($record->text)) {
-            return $record->text;
-        }
-        if (isset($record->article)) {
-            return $record->article;
+            $text = $record->description;
+        } elseif (isset($record->message)) {
+            $text = $record->message;
+        } elseif (isset($record->page_content)) {
+            $text = $record->page_content;
+        } elseif (isset($record->text)) {
+            $text = $record->text;
+        } elseif (isset($record->article)) {
+            $text = $record->article;
         }
 
-        return '';
+        return $text === '' ? '' : RichText::output($text, ['record' => $record]);
     }
 
     /**

@@ -21,6 +21,7 @@ humhub.module('ui.search', function(module, require, $) {
             providerContent: '.search-provider-content',
             providerRecord: '.search-provider-record',
             providerCounter: '.search-provider-title > span',
+            providerShowAll: '.search-provider-show-all',
             backdrop: '.dropdown-backdrop',
             additionalToggler: {
                 form: 'form[data-toggle="humhub.ui.search"]',
@@ -33,7 +34,7 @@ humhub.module('ui.search', function(module, require, $) {
             e.stopPropagation();
         });
 
-        $(document).on('click', that.selectors.close, function () {
+        $(document).on('click', that.selectors.close + ', ' + that.selectors.providerShowAll, function () {
             that.getMenuToggler().dropdown('toggle');
         });
 
@@ -53,13 +54,16 @@ humhub.module('ui.search', function(module, require, $) {
         });
 
         that.$.on('shown.bs.dropdown', function () {
-            that.refreshSize();
+            that.refreshPositionSize();
             if (that.getBackdrop().length === 0) {
                 that.$.append('<div class="' + that.selectors.backdrop.replace('.', '') + '">');
             }
             if (that.getList().is(':visible')) {
                 // refresh NiceScroll after reopen it with searched results
                 that.getList().hide().show();
+            }
+            if (that.getInput().is(':visible')) {
+                that.getInput().focus();
             }
         })
 
@@ -171,14 +175,21 @@ humhub.module('ui.search', function(module, require, $) {
     Search.prototype.menu = function () {
         this.setCurrentToggler(undefined);
         this.getForm().show();
-        this.getInput().focus();
     }
 
     Search.prototype.search = function () {
         const that = this;
+        const data = {
+            provider: null,
+            keyword: that.getInput().val()
+        };
 
-        if (that.previousKeyword === that.getInput().val()) {
-            that.refreshSize();
+        if (data.keyword === '') {
+            return;
+        }
+
+        if (that.previousKeyword === data.keyword) {
+            that.refreshPositionSize();
             return;
         }
 
@@ -195,24 +206,27 @@ humhub.module('ui.search', function(module, require, $) {
                 .find(that.selectors.providerCounter).hide();
             loader.set(provider.find(that.selectors.providerContent), {size: '8px', css: {padding: '0px'}});
 
-            that.refreshSize();
+            that.refreshPositionSize();
 
-            const data = {
-                provider: provider.data('provider'),
-                keyword: that.getInput().val()
-            };
+            data.provider = provider.data('provider');
             client.post(module.config.url, {data}).then(function (response) {
                 const newProviderContent = $(response.html);
+                newProviderContent.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]').each(function () {
+                    Widget.instance($(this));
+                });
+                newProviderContent.find('.search-provider-record-desc').each(function () {
+                    $(this).html($(this).html().replace(/(<([^>]+)>)/gi, ' '));
+                });
                 provider.replaceWith(newProviderContent);
                 newProviderContent.find(that.selectors.providerRecord).highlight(data.keyword);
-                that.refreshSize();
+                that.refreshPositionSize();
             });
 
             that.previousKeyword = data.keyword;
         });
     }
 
-    Search.prototype.refreshSize = function () {
+    Search.prototype.refreshPositionSize = function () {
         // Set proper panel height
         const maxHeight = $(window).height() - this.getPanel().offset().top - ($(window).width() > 390 ? 80 : 0);
         this.getPanel().css('height', 'auto');

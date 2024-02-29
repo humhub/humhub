@@ -27,7 +27,7 @@ use humhub\widgets\Button;
                         <span class="search-provider-record-image"><?= $record->getImage() ?></span>
                         <span class="search-provider-record-text">
                             <?= Html::encode($record->getTitle()) ?>
-                            <span class="search-provider-record-desc"><?= Html::encode($record->getDescription()) ?></span>
+                            <span class="search-provider-record-desc"><?= $record->getDescription() ?></span>
                         </span>
                     </a>
                 <?php endforeach; ?>
