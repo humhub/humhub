@@ -28,7 +28,7 @@ $hasResults = $resultSet !== null && count($resultSet->results);
 
     </div>
 
-    <?php if (!$hasResults): ?>
+    <?php if (!$hasResults && $resultSet !== null): ?>
         <div class="row cards">
             <div class="col-md-12">
                 <div class="panel panel-default">
@@ -39,7 +39,9 @@ $hasResults = $resultSet !== null && count($resultSet->results);
                 </div>
             </div>
         </div>
-    <?php else: ?>
+    <?php endif; ?>
+
+    <?php if ($hasResults): ?>
         <div class="search-results">
         <?php foreach ($resultSet->results as $result): ?>
             <?= StreamEntryWidget::renderStreamEntry($result->getModel(),
