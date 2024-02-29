@@ -57,6 +57,7 @@ class ZendLucenceDriver extends AbstractDriver
         $document->addField(Field::keyword('created_by', ($author = $content->createdBy) ? $author->guid : ''));
         $document->addField(Field::keyword('updated_at', $content->updated_at));
         $document->addField(Field::keyword('updated_by', ($author = $content->updatedBy) ? $author->guid : ''));
+        $document->addField(Field::keyword('space', ($space = $content->container) ? $space->guid : ''));
         $document->addField(Field::keyword('tags', empty($content->tags) ? ''
             : '-' . implode('-', array_map(function (ContentTag $tag) {
                 return $tag->id;
@@ -172,6 +173,16 @@ class ZendLucenceDriver extends AbstractDriver
                 $signs[] = null;
             }
             $query->addSubquery(new MultiTerm($authors, $signs), true);
+        }
+
+        if ($request->space) {
+            $spaces = [];
+            $signs = [];
+            foreach ($request->space as $space) {
+                $spaces[] = new Term($space, 'space');
+                $signs[] = null;
+            }
+            $query->addSubquery(new MultiTerm($spaces, $signs), true);
         }
 
         if (!empty($request->contentType)) {

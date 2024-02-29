@@ -38,6 +38,8 @@ class SearchRequest extends Model
 
     public array $author = [];
 
+    public array $space = [];
+
     public $contentContainer = [];
 
     public $orderBy = 'content.created_at';
@@ -56,7 +58,7 @@ class SearchRequest extends Model
     public function rules()
     {
         return [
-            [['keyword', 'topic', 'author'], 'safe'],
+            [['keyword', 'topic', 'author', 'space'], 'safe'],
             [['keyword'], 'required'],
             [['contentType'], 'in', 'range' => array_keys(static::getContentTypes())],
             [['dateFrom', 'dateTo'], 'date', 'format' => 'php:' . FormatConverter::convertDateIcuToPhp(self::DATE_FORMAT)],

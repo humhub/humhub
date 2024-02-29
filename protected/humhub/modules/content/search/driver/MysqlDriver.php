@@ -90,6 +90,11 @@ class MysqlDriver extends AbstractDriver
                 ->andWhere(['IN', 'user.guid', $request->author]);
         }
 
+        if (!empty($request->space)) {
+            $query->andWhere(['contentcontainer.class' => Space::class])
+                ->andWhere(['IN', 'contentcontainer.guid', $request->space]);
+        }
+
         $this->addQueryFilterVisibility($query);
 
         if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {

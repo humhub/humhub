@@ -9,6 +9,8 @@ namespace humhub\modules\content\widgets;
 
 use humhub\libs\Html;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\widgets\DirectoryFilters;
@@ -99,13 +101,17 @@ class SearchFilters extends DirectoryFilters
                 'archived' => 'Archived',
             ],
             'sortOrder' => 500,
-        ]);
+        ]);*/
+
         $this->addFilter('space', [
             'title' => Yii::t('ContentModule.search', 'Space'),
-            'type' => 'input',
-            'sortOrder' => 500,
+            'type' => 'widget',
+            'widget' => SpacePickerField::class,
+            'widgetOptions' => [
+                'selection' => $this->getSpacesFromRequest()
+            ],
+            'sortOrder' => 600,
         ]);
-        */
 
         /*
         $this->addFilter('profile', [
@@ -153,5 +159,15 @@ class SearchFilters extends DirectoryFilters
         }
 
         return User::find()->where(['id' => Yii::$app->user->id])->all();
+    }
+
+    protected function getSpacesFromRequest(): array
+    {
+        $spaces = Yii::$app->request->get('space');
+        if (!is_array($spaces) || empty($spaces)) {
+            return [];
+        }
+
+        return Space::find()->where(['IN', 'guid', $spaces])->all();
     }
 }
