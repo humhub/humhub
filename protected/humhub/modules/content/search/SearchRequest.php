@@ -62,7 +62,7 @@ class SearchRequest extends Model
             [['keyword'], 'required'],
             [['contentType'], 'in', 'range' => array_keys(static::getContentTypes())],
             [['dateFrom', 'dateTo'], 'date', 'format' => 'php:' . FormatConverter::convertDateIcuToPhp(self::DATE_FORMAT)],
-            //[['page'], 'numeric'],
+            [['page'], 'integer'],
             //[['pageSize'], 'numeric'],
             [['orderBy'], 'in', 'range' => [static::ORDER_BY_SCORE, static::ORDER_BY_CREATION_DATE]],
         ];

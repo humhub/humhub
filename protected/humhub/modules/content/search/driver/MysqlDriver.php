@@ -107,6 +107,7 @@ class MysqlDriver extends AbstractDriver
         $resultSet->pagination = new Pagination();
         $resultSet->pagination->totalCount = $query->count();
         $resultSet->pagination->pageSize = $request->pageSize;
+        $resultSet->pagination->setPage($request->page - 1, true);
 
         $query->offset($resultSet->pagination->offset)->limit($resultSet->pagination->limit);
 

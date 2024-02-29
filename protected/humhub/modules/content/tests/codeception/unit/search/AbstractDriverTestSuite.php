@@ -250,6 +250,29 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertEquals($post2->content->id, $result->results[2]->content->id);
     }
 
+    public function testPagination()
+    {
+        $space = Space::findOne(['id' => 1]);
+        $this->becomeUser('Admin');
+        for ($i = 1; $i <= 5; $i++) {
+            (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Pagination ' . $i]))->save();
+        }
+
+        $request = $this->getSearchRequest();
+        $request->keyword = 'Pagination';
+        $request->pageSize = 2;
+
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(2, count($result->results));
+
+        $request->page = 2;
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(2, count($result->results));
+
+        $request->page = 3;
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(1, count($result->results));
+    }
 
     public function testFilterBySpace()
     {

@@ -109,6 +109,7 @@ class ZendLucenceDriver extends AbstractDriver
         $resultSet->pagination = new Pagination();
         $resultSet->pagination->totalCount = count($hits);
         $resultSet->pagination->pageSize = $request->pageSize;
+        $resultSet->pagination->setPage($request->page - 1, true);
 
         $hits = new \LimitIterator(
             $hits->getIterator(),
