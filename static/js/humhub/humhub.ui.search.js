@@ -227,8 +227,14 @@ humhub.module('ui.search', function(module, require, $) {
     }
 
     Search.prototype.refreshPositionSize = function () {
+        // Set proper top position when additional toggler is used instead of original/main
+        this.getPanel().css('top', this.getMenuToggler().css('visibility') === 'hidden'
+            ? this.getCurrentToggler().position().top + this.getCurrentToggler().outerHeight() + this.getArrow().outerHeight() - 5
+            : '');
+
         // Set proper panel height
-        const maxHeight = $(window).height() - this.getPanel().offset().top - ($(window).width() > 390 ? 80 : 0);
+        const panelTop = this.getPanel().position().top + this.$.offset().top - $(window).scrollTop();
+        const maxHeight = $(window).height() - panelTop - ($(window).width() > 390 ? 80 : 0);
         this.getPanel().css('height', 'auto');
         if (this.getPanel().height() > maxHeight) {
             this.getPanel().css('height', maxHeight);
