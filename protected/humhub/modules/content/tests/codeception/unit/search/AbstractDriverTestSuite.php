@@ -211,6 +211,54 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertEquals(4, count($result->results));
     }
 
+    public function testFilterBySpace()
+    {
+        $this->becomeUser('Admin');
+
+        $space1 = Space::findOne(['id' => 1]);
+        (new Post($space1, Content::VISIBILITY_PUBLIC, ['message' => 'TestSpace Post1']))->save();
+
+        $space2 = Space::findOne(['id' => 2]);
+        (new Post($space2, Content::VISIBILITY_PUBLIC, ['message' => 'TestSpace Post2']))->save();
+        (new Post($space2, Content::VISIBILITY_PUBLIC, ['message' => 'TestSpace Post3']))->save();
+
+        $space3 = Space::findOne(['id' => 3]);
+        (new Post($space3, Content::VISIBILITY_PUBLIC, ['message' => 'TestSpace Post4']))->save();
+        (new Post($space3, Content::VISIBILITY_PUBLIC, ['message' => 'TestSpace Post5']))->save();
+        (new Post($space3, Content::VISIBILITY_PUBLIC, ['message' => 'TestSpace Post6']))->save();
+
+        // Search by filter "Space"
+        $request = $this->getSearchRequest();
+        $request->keyword = 'TestSpace';
+
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(6, count($result->results));
+
+        $request->space = [$space1->guid];
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(1, count($result->results));
+
+        $request->space = [$space2->guid];
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(2, count($result->results));
+
+        $request->space = [$space3->guid];
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(3, count($result->results));
+
+        $request->space = [$space1->guid, $space3->guid];
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(4, count($result->results));
+
+        $request->space = [$space2->guid, $space3->guid];
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(5, count($result->results));
+
+        $request->space = [$space1->guid, $space2->guid, $space3->guid];
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(6, count($result->results));
+    }
+
     public function testOrderBy()
     {
         $space = Space::findOne(['id' => 1]);
@@ -272,11 +320,5 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->page = 3;
         $result = $this->searchDriver->search($request);
         $this->assertEquals(1, count($result->results));
-    }
-
-    public function testFilterBySpace()
-    {
-
-        $this->assertTrue(true);
     }
 }
