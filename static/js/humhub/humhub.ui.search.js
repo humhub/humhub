@@ -43,6 +43,9 @@ humhub.module('ui.search', function(module, require, $) {
                 that.search();
             }
         });
+        that.getInput().on('keyup', function () {
+            setTimeout(() => that.search(true), 500);
+        });
 
         that.getList().niceScroll({
             cursorwidth: '7',
@@ -81,11 +84,11 @@ humhub.module('ui.search', function(module, require, $) {
         const input = form.find(that.selectors.additionalToggler.input);
         const submit = form.find(that.selectors.additionalToggler.submit);
 
-        const search = function (keyword) {
+        const search = function (keyword, forceCurrentSearching) {
             that.getForm().hide();
             that.getInput().val(keyword);
             that.setCurrentToggler(submit);
-            that.showPanel().search();
+            that.showPanel().search(forceCurrentSearching);
         }
 
         submit.on('click', function () {
@@ -98,6 +101,9 @@ humhub.module('ui.search', function(module, require, $) {
                 e.preventDefault();
                 search($(this).val());
             }
+        });
+        input.on('keyup', function () {
+            setTimeout(() => search($(this).val(), true), 500);
         });
 
         that.$.on('hide.bs.dropdown', function (e) {
@@ -177,7 +183,7 @@ humhub.module('ui.search', function(module, require, $) {
         this.getForm().show();
     }
 
-    Search.prototype.search = function () {
+    Search.prototype.search = function (forceCurrentSearching) {
         const that = this;
         const data = {
             provider: null,
@@ -198,7 +204,7 @@ humhub.module('ui.search', function(module, require, $) {
         this.getProviders().each(function () {
             const provider = $(this);
 
-            if (provider.hasClass('provider-searching')) {
+            if (!forceCurrentSearching && provider.hasClass('provider-searching')) {
                 return;
             }
 
@@ -210,6 +216,11 @@ humhub.module('ui.search', function(module, require, $) {
 
             data.provider = provider.data('provider');
             client.post(module.config.url, {data}).then(function (response) {
+                if (data.keyword !== that.getInput().val()) {
+                    // Skip this request because other with new keyword was sent
+                    return;
+                }
+
                 const newProviderContent = $(response.html);
                 newProviderContent.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]').each(function () {
                     Widget.instance($(this));
