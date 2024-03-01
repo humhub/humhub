@@ -42,12 +42,8 @@ class SpaceSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function search(): void
+    public function searchResults(): array
     {
-        if ($this->keyword === null) {
-            return;
-        }
-
         $spaceDirectoryQuery = new SpaceDirectoryQuery([
             'defaultFilters' => ['keyword' => $this->keyword],
             'pageSize' => $this->pageSize
@@ -55,9 +51,11 @@ class SpaceSearchProvider extends SearchProvider
 
         $this->totalCount = $spaceDirectoryQuery->pagination->totalCount;
 
-        $this->results = [];
+        $results = [];
         foreach ($spaceDirectoryQuery->all() as $space) {
-            $this->results[] = new SearchRecord($space);
+            $results[] = new SearchRecord($space);
         }
+
+        return $results;
     }
 }

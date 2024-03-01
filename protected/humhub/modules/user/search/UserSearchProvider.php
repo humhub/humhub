@@ -42,12 +42,8 @@ class UserSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function search(): void
+    public function searchResults(): array
     {
-        if ($this->keyword === null) {
-            return;
-        }
-
         $peopleQuery = new PeopleQuery([
             'defaultFilters' => ['keyword' => $this->keyword],
             'pageSize' => $this->pageSize
@@ -55,9 +51,11 @@ class UserSearchProvider extends SearchProvider
 
         $this->totalCount = $peopleQuery->pagination->totalCount;
 
-        $this->results = [];
+        $results = [];
         foreach ($peopleQuery->all() as $user) {
-            $this->results[] = new SearchRecord($user);
+            $results[] = new SearchRecord($user);
         }
+
+        return $results;
     }
 }

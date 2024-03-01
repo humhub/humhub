@@ -42,12 +42,8 @@ class ContentSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function search(): void
+    public function searchResults(): array
     {
-        if ($this->keyword === null) {
-            return;
-        }
-
         /* @var Module $module */
         $module = Yii::$app->getModule('content');
 
@@ -58,9 +54,11 @@ class ContentSearchProvider extends SearchProvider
 
         $this->totalCount = $resultSet->pagination->totalCount;
 
-        $this->results = [];
+        $results = [];
         foreach ($resultSet->results as $content) {
-            $this->results[] = new SearchRecord($content);
+            $results[] = new SearchRecord($content);
         }
+
+        return $results;
     }
 }

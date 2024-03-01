@@ -21,6 +21,7 @@ abstract class SearchProvider
 {
     public ?string $keyword = null;
     public int $pageSize = 4;
+    public int $cacheTimeout = 180;
 
     protected ?int $totalCount = null;
 
@@ -44,9 +45,26 @@ abstract class SearchProvider
     /**
      * Search results
      *
+     * @return SearchRecordInterface[]
+     */
+    abstract public function searchResults(): array;
+
+    /**
+     * Run search process and cache results
+     *
      * @return void
      */
-    abstract public function search(): void;
+    public function search(): void
+    {
+        if ($this->keyword === null) {
+            return;
+        }
+
+        $this->results = Yii::$app->runtimeCache->getOrSet(
+            get_class() . Yii::$app->user->id . ':search:' . $this->keyword,
+            [$this, 'searchResults'],
+            $this->cacheTimeout);
+    }
 
     /**
      * Get URL to all results
