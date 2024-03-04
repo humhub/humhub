@@ -1,6 +1,8 @@
 <?php
 
 use humhub\components\Migration;
+use humhub\modules\content\jobs\SearchRebuildIndex;
+use humhub\modules\file\libs\FileHelper;
 
 
 /**
@@ -20,7 +22,17 @@ class m240203_112155_search extends Migration
             'files' => $this->text(),
         ]);
 
-        $this->execute("ALTER TABLE content_fulltext ADD FULLTEXT INDEX ftx (contents ASC, comments ASC, files ASC)");
+        $this->safeAddForeignKey('fk_content_fulltext', 'content_fulltext', 'content_id', 'content', 'id', 'CASCADE', 'CASCADE');
+
+        try {
+            $this->execute("ALTER TABLE content_fulltext ADD FULLTEXT INDEX ftx (contents ASC, comments ASC, files ASC)");
+
+            Yii::$app->queue->push(new SearchRebuildIndex());
+
+            FileHelper::removeDirectory(Yii::getAlias('@runtime/searchdb'));
+        } catch (\Exception $ex) {
+            Yii::error('Could not execute content fulltext search migration: ' . $ex->getMessage());
+        }
     }
 
     /**

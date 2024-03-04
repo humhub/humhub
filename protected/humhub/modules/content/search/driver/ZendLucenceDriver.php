@@ -209,7 +209,7 @@ class ZendLucenceDriver extends AbstractDriver
         QueryParser::setDefaultEncoding('utf-8');
         Analyzer::setDefault(new CaseInsensitive());
         QueryParser::setDefaultOperator(QueryParser::B_AND);
-        Lucene::setTermsPerQueryLimit(10000);
+        Lucene::setTermsPerQueryLimit(4096);
 
         try {
             $this->_index = Lucene::open($this->getIndexPath());
