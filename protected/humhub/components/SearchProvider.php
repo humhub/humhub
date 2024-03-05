@@ -61,7 +61,7 @@ abstract class SearchProvider
             return;
         }
 
-        $this->results = Yii::$app->runtimeCache->getOrSet(
+        $this->results = Yii::$app->cache->getOrSet(
             static::class . Yii::$app->user->id . ':search:' . $this->keyword,
             [$this, 'searchResults'],
             $this->cacheTimeout);
