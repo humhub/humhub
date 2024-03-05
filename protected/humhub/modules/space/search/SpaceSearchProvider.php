@@ -19,6 +19,7 @@ use Yii;
  */
 class SpaceSearchProvider extends SearchProvider
 {
+    public bool $showOnEmpty = false;
     protected ?string $route = '/spaces';
 
     /**

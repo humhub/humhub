@@ -19,6 +19,7 @@ use Yii;
  */
 class UserSearchProvider extends SearchProvider
 {
+    public bool $showOnEmpty = false;
     protected ?string $route = '/people';
 
     /**

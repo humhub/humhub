@@ -34,7 +34,9 @@ humhub.module('ui.search', function(module, require, $) {
             e.stopPropagation();
         });
 
-        $(document).on('click', that.selectors.close + ', ' + that.selectors.providerShowAll, function () {
+        $(document).on('click', that.selectors.close + ', '
+            + that.selectors.providerRecord + ', '
+            + that.selectors.providerShowAll, function () {
             that.getMenuToggler().dropdown('toggle');
         });
 
@@ -42,9 +44,8 @@ humhub.module('ui.search', function(module, require, $) {
             if (e.which === 13) {
                 that.search();
             }
-        });
-        that.getInput().on('keyup', function () {
-            setTimeout(() => that.search(true), 500);
+        }).on('keyup', function () {
+            that.searchTimeout(() => that.search(true));
         });
 
         that.getList().niceScroll({
@@ -101,9 +102,8 @@ humhub.module('ui.search', function(module, require, $) {
                 e.preventDefault();
                 search($(this).val());
             }
-        });
-        input.on('keyup', function () {
-            setTimeout(() => search($(this).val(), true), 500);
+        }).on('keyup', function () {
+            that.searchTimeout(() => search($(this).val(), true));
         });
 
         that.$.on('hide.bs.dropdown', function (e) {
@@ -183,6 +183,13 @@ humhub.module('ui.search', function(module, require, $) {
         this.getForm().show();
     }
 
+    Search.prototype.searchTimeout = function (searchFunction) {
+        if (typeof this.currentSearchTimeout !== 'undefined') {
+            clearTimeout(this.currentSearchTimeout);
+        }
+        this.currentSearchTimeout = setTimeout(searchFunction, 500);
+    }
+
     Search.prototype.search = function (forceCurrentSearching) {
         const that = this;
         const data = {
@@ -229,7 +236,12 @@ humhub.module('ui.search', function(module, require, $) {
                     $(this).html($(this).html().replace(/(<([^>]+)>)/gi, ' '));
                 });
                 provider.replaceWith(newProviderContent);
-                newProviderContent.find(that.selectors.providerRecord).highlight(data.keyword);
+                const records = newProviderContent.find(that.selectors.providerRecord);
+                if (records.length) {
+                    records.highlight(data.keyword);
+                } else if (newProviderContent.data('show-on-empty') === undefined) {
+                    newProviderContent.hide();
+                }
                 that.refreshPositionSize();
             });
 

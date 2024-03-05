@@ -22,6 +22,7 @@ abstract class SearchProvider
     public ?string $keyword = null;
     public int $pageSize = 4;
     public int $cacheTimeout = 180;
+    public bool $showOnEmpty = true;
 
     protected ?int $totalCount = null;
 

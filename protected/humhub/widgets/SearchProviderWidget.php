@@ -74,7 +74,8 @@ class SearchProviderWidget extends Widget
     {
         return [
             'class' => 'search-provider' . ($this->searchProvider->isSearched() ? ' provider-searched' : ''),
-            'data-provider' => get_class($this->searchProvider)
+            'data-provider' => get_class($this->searchProvider),
+            'data-show-on-empty' => $this->searchProvider->showOnEmpty
         ];
     }
 }
