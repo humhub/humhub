@@ -3,8 +3,9 @@ HumHub Changelog
 
 1.15.4 (Unreleased)
 -------------------
-- Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support) 
+- Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support)
 - Fix #6859: Hide scheduled and draft content on other user profile pages
+- Fix #6871: Cache is not deleted after deleting a value in the settings
 
 1.15.3 (February 8, 2024)
 -------------------------

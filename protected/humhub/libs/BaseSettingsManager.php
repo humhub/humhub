@@ -15,7 +15,6 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
-use yii\db\conditions\LikeCondition;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
 
@@ -81,7 +80,7 @@ abstract class BaseSettingsManager extends Component
         }
 
         if ($value === null) {
-             $this->delete($name);
+            $this->delete($name);
             return;
         }
 
@@ -194,6 +193,8 @@ abstract class BaseSettingsManager extends Component
         if (isset($this->_loaded[$name])) {
             unset($this->_loaded[$name]);
         }
+
+        $this->invalidateCache();
     }
 
     /**
