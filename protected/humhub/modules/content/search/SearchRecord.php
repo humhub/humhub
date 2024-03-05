@@ -73,7 +73,7 @@ class SearchRecord implements SearchRecordInterface
             $text = $record->article;
         }
 
-        return $text === '' ? '' : RichText::output($text, ['record' => $record]);
+        return $text === '' ? '' : RichText::output(strip_tags($text), ['record' => $record]);
     }
 
     /**

@@ -91,7 +91,8 @@ use yii\helpers\Url;
  * @property-read ActiveQuery $tagRelations
  * @property-read ContentActiveRecord $model
  * @property-read mixed $contentDescription
- * @property-read StateServiceInterface $stateService
+ * @property-read ContentStateService $stateService
+ * @property-read ContentTag[] $tags
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
