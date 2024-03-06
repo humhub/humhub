@@ -355,8 +355,8 @@ class Group extends ActiveRecord
         $newGroupUser->created_at = date('Y-m-d H:i:s');
         $newGroupUser->created_by = Yii::$app->user->id;
         $newGroupUser->is_group_manager = $isManager;
-        if ($newGroupUser->save() && !Yii::$app->user->isGuest) {
-            if ($this->notify_users) {
+        if ($newGroupUser->save()) {
+            if ($this->notify_users && !Yii::$app->user->isGuest) {
                 if (!($user instanceof User)) {
                     $user = User::findOne(['id' => $user]);
                 }
@@ -429,10 +429,10 @@ class Group extends ActiveRecord
             Yii::$app->i18n->setUserLocale($manager);
 
             $html = Yii::t(
-                'UserModule.auth',
-                'Hello {displayName},',
-                ['displayName' => $manager->displayName]
-            ) . "<br><br>\n\n" .
+                    'UserModule.auth',
+                    'Hello {displayName},',
+                    ['displayName' => $manager->displayName]
+                ) . "<br><br>\n\n" .
                 Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
@@ -512,10 +512,10 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-            $this->isNewRecord ||
+                $this->isNewRecord ||
                 $this->is_admin_group ||
                 $this->is_default_group ||
                 $this->is_protected
-        );
+            );
     }
 }
