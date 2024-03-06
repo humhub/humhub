@@ -30,6 +30,10 @@ humhub.module('ui.search', function(module, require, $) {
             }
         }
 
+        $(document).on('pjax:end', function () {
+            that.reset();
+        });
+
         $(document).on('click', that.selectors.panel, function (e) {
             e.stopPropagation();
         });
@@ -174,6 +178,13 @@ humhub.module('ui.search', function(module, require, $) {
         return this;
     }
 
+    Search.prototype.hidePanel = function () {
+        if (this.isVisiblePanel()) {
+            this.getMenuToggler().dropdown('toggle');
+        }
+        return this;
+    }
+
     Search.prototype.isSearched = function () {
         return this.$.find(this.selectors.providerSearched).length > 0;
     }
@@ -263,6 +274,17 @@ humhub.module('ui.search', function(module, require, $) {
 
             that.previousKeyword = data.keyword;
         });
+    }
+
+    Search.prototype.reset = function () {
+        this.getInput().val('');
+        this.getProviders().hide();
+        this.hidePanel();
+
+        const additionalInput = $(this.selectors.additionalToggler.form + ' ' + this.selectors.additionalToggler.input);
+        if (additionalInput.length) {
+            additionalInput.val('');
+        }
     }
 
     Search.prototype.refreshPositionSize = function () {
