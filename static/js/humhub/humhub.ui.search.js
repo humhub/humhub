@@ -184,10 +184,20 @@ humhub.module('ui.search', function(module, require, $) {
     }
 
     Search.prototype.searchTimeout = function (searchFunction) {
-        if (typeof this.currentSearchTimeout !== 'undefined') {
-            clearTimeout(this.currentSearchTimeout);
+        const that = this;
+
+        if (typeof that.currentSearchTimeout !== 'undefined') {
+            clearTimeout(that.currentSearchTimeout);
         }
-        this.currentSearchTimeout = setTimeout(searchFunction, 500);
+
+        that.currentSearchTimeout = setTimeout(function () {
+            that.currentSearchTimeout = undefined;
+            searchFunction();
+        }, 500);
+
+        // Run this only to display a search loader immediately,
+        // The real search process will be rejected while currentSearchTimeout is set
+        searchFunction();
     }
 
     Search.prototype.search = function (forceCurrentSearching) {
@@ -220,6 +230,12 @@ humhub.module('ui.search', function(module, require, $) {
             loader.set(provider.find(that.selectors.providerContent), {size: '8px', css: {padding: '0px'}});
 
             that.refreshPositionSize();
+
+            if (typeof that.currentSearchTimeout !== 'undefined') {
+                // Don't run the search process while time is not expired,
+                // This action was called only to display the search loader
+                return;
+            }
 
             data.provider = provider.data('provider');
             client.post(module.config.url, {data}).then(function (response) {
