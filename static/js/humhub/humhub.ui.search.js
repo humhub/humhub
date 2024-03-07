@@ -20,6 +20,7 @@ humhub.module('ui.search', function(module, require, $) {
             providerSearched: '.search-provider.provider-searched',
             providerContent: '.search-provider-content',
             providerRecord: '.search-provider-record',
+            providerRecordText: '.search-provider-record-text',
             providerCounter: '.search-provider-title > span',
             providerShowAll: '.search-provider-show-all',
             backdrop: '.dropdown-backdrop',
@@ -265,7 +266,7 @@ humhub.module('ui.search', function(module, require, $) {
                 provider.replaceWith(newProviderContent);
                 const records = newProviderContent.find(that.selectors.providerRecord);
                 if (records.length) {
-                    records.highlight(data.keyword);
+                    records.find(that.selectors.providerRecordText).highlight(data.keyword);
                 } else if (newProviderContent.data('show-on-empty') === undefined) {
                     newProviderContent.hide();
                 }

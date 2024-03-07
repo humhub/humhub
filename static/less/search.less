@@ -117,6 +117,9 @@
             }
         }
         .search-provider-content {
+            > .loader {
+                margin-top: 8px;
+            }
             a.search-provider-record {
                 display: flex;
                 align-items: center;
@@ -146,11 +149,6 @@
                     white-space: nowrap;
                     text-overflow: ellipsis;
                     overflow: hidden;
-                    .highlight {
-                        background: transparent;
-                        font-weight: 800;
-                        color: #333;
-                    }
                     .search-provider-record-desc {
                         display: block;
                         font-size: 12px;
