@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27b6dbe921cf9d2e5a4d1a624c33debc",
+    "content-hash": "bed5ad2e39ed71e5a3b838242319c488",
     "packages": [
         {
             "name": "async-aws/core",
@@ -3774,6 +3774,18 @@
             "type": "npm-asset",
             "license": [
                 "(OFL-1.1 AND MIT)"
+            ]
+        },
+        {
+            "name": "npm-asset/fontsource--open-sans",
+            "version": "5.0.25",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@fontsource/open-sans/-/open-sans-5.0.25.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "OFL-1.1"
             ]
         },
         {
@@ -13277,5 +13289,5 @@
     "platform-overrides": {
         "php": "8.0"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
