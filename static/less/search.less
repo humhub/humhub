@@ -13,7 +13,7 @@
         font-size: 20px;
         font-weight: 600;
         color: #000;
-        padding: 24px;
+        padding: 24px 24px 16px;
         margin: 0;
         flex: 0 0 auto;
         .arrow {
@@ -52,12 +52,14 @@
 
     .dropdown-search-form {
         position: relative;
-        padding: 0 16px 24px;
+        padding: 0 16px 16px;
         flex: 0 1 auto;
         .dropdown-search-keyword {
             background: #f8f8f8;
             border-color: #f3f3f3;
+            border-radius: 6px;
             padding-left: 32px;
+            font-weight: 500;
             &:-webkit-autofill,
             &:-webkit-autofill:hover,
             &:-webkit-autofill:focus,
@@ -72,7 +74,8 @@
             background: none;
             border: 0;
             font-size: 16px;
-            color: #555 !important;
+            font-weight: 600;
+            color: #7A7A7A !important;
             &:active {
                 box-shadow: none;
             }
@@ -92,9 +95,9 @@
 
     .search-provider {
         display: none;
-        padding-top: 24px;
+        padding-top: 16px;
         .search-provider-title {
-            padding-left: 8px;
+            padding: 8px;
             font-weight: 600;
             font-size: 18px;
             color: #000;
@@ -118,7 +121,6 @@
                 display: flex;
                 align-items: center;
                 padding: 8px;
-                margin-top: 8px;
                 &:hover, &:focus {
                     background: #f8f8f8;
                     border-radius: 3px;
@@ -136,7 +138,7 @@
                     }
                 }
                 .search-provider-record-text {
-                    font-size: 16px;
+                    font-size: 14px;
                     font-weight: 500;
                     padding-left: 16px;
                     flex: 1;
@@ -151,7 +153,7 @@
                     }
                     .search-provider-record-desc {
                         display: block;
-                        font-size: 14px;
+                        font-size: 12px;
                         font-weight: 400;
                         color: #555;
                         text-overflow: ellipsis;
@@ -168,14 +170,17 @@
         }
         .search-provider-actions {
             padding: 16px 8px 0;
-        }
-        .search-provider-show-all {
-            width: 100%;
-            color: #555 !important;
-            background: #F3F3F3;
-            &:hover, &:active, &:focus {
-                background: #d7d7d7;
-                box-shadow: none;
+            .btn {
+                width: 100%;
+                font-size: 12px;
+                color: #555 !important;
+                background: #F3F3F3;
+                border-radius: 4px;
+
+                &:hover, &:active, &:focus {
+                    background: #d7d7d7;
+                    box-shadow: none;
+                }
             }
         }
     }
