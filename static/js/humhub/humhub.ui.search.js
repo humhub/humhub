@@ -256,6 +256,7 @@ humhub.module('ui.search', function(module, require, $) {
                     return;
                 }
 
+                // Prepare and set new content
                 const newProviderContent = $(response.html);
                 newProviderContent.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]').each(function () {
                     Widget.instance($(this));
@@ -270,6 +271,10 @@ humhub.module('ui.search', function(module, require, $) {
                 } else if (newProviderContent.data('show-on-empty') === undefined) {
                     newProviderContent.hide();
                 }
+
+                // Set focus to first record
+                that.getList().find(that.selectors.providerRecord).first().focus();
+
                 that.refreshPositionSize();
             });
 
