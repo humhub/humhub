@@ -10,9 +10,10 @@
     top: 115%;
 
     .dropdown-header {
+        font-size: 20px;
         font-weight: 600;
         color: #000;
-        padding: 20px;
+        padding: 24px;
         margin: 0;
         flex: 0 0 auto;
         .arrow {
@@ -51,7 +52,7 @@
 
     .dropdown-search-form {
         position: relative;
-        padding: 0 20px 20px;
+        padding: 0 16px 24px;
         flex: 0 1 auto;
         .dropdown-search-keyword {
             background: #f8f8f8;
@@ -80,7 +81,7 @@
 
     .dropdown-search-list {
         list-style: none;
-        padding: 0 20px 20px;
+        padding: 0 16px 24px;
         display: none;
         flex: 0 1 auto;
         > li:first-child {
@@ -91,13 +92,14 @@
 
     .search-provider {
         display: none;
-        padding-top: 20px;
+        padding-top: 24px;
         .search-provider-title {
+            padding-left: 8px;
             font-weight: 600;
-            font-size: 16px;
+            font-size: 18px;
             color: #000;
             > span {
-                font-size: 80%;
+                font-size: 14px;
             }
         }
         &:hover {
@@ -115,8 +117,8 @@
             a.search-provider-record {
                 display: flex;
                 align-items: center;
-                padding: 10px;
-                margin-top: 5px;
+                padding: 8px;
+                margin-top: 8px;
                 &:hover, &:focus {
                     background: #f8f8f8;
                     border-radius: 3px;
@@ -131,8 +133,9 @@
                     }
                 }
                 .search-provider-record-text {
-                    font-weight: 600;
-                    padding-left: 10px;
+                    font-size: 16px;
+                    font-weight: 500;
+                    padding-left: 16px;
                     flex: 1;
                     min-width: 0;
                     white-space: nowrap;
@@ -145,7 +148,7 @@
                     }
                     .search-provider-record-desc {
                         display: block;
-                        font-size: 80%;
+                        font-size: 14px;
                         font-weight: 400;
                         color: #555;
                         text-overflow: ellipsis;
@@ -160,11 +163,16 @@
         .search-provider-no-results {
             margin-top: 15px;
         }
+        .search-provider-actions {
+            padding: 16px 8px 0;
+        }
         .search-provider-show-all {
-            margin-top: 20px;
             width: 100%;
+            color: #555 !important;
+            background: #F3F3F3;
             &:hover, &:active, &:focus {
                 background: #d7d7d7;
+                box-shadow: none;
             }
         }
     }

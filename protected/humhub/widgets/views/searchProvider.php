@@ -34,10 +34,12 @@ use humhub\widgets\Button;
             <?php else : ?>
                 <div class="search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
             <?php endif; ?>
-            <?= Button::defaultType($searchProvider->getAllResultsText())
-                ->link($searchProvider->getAllResultsUrl())
-                ->cssClass('search-provider-show-all')
-                ->loader(false) ?>
+            <div class="search-provider-actions">
+                <?= Button::defaultType($searchProvider->getAllResultsText())
+                    ->link($searchProvider->getAllResultsUrl())
+                    ->cssClass('search-provider-show-all')
+                    ->loader(false) ?>
+            </div>
         <?php endif; ?>
     </div>
     <div class="clearfix"></div>
