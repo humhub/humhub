@@ -42,6 +42,9 @@ $hasResults = $resultSet !== null && count($resultSet->results);
     <?php endif; ?>
 
     <?php if ($hasResults): ?>
+        <div class="search-results-header">
+            <?= Yii::t('ContentModule.search', 'Results ({count})', ['count' => $resultSet->pagination->totalCount]) ?>
+        </div>
         <div class="search-results">
         <?php foreach ($resultSet->results as $result): ?>
             <?= StreamEntryWidget::renderStreamEntry($result->getModel(),
