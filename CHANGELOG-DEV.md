@@ -66,3 +66,4 @@ HumHub Changelog
 - Fix #6863: If a top menu entry opens a modal box, don't mark it as active when clicked
 - Enh #6873: Change people header with selected group
 - Fix #6875: On Group::addUser(), if the current user is not logged in (console command or user registration), the method returns false even if the user was added to the group
+- Enh #6874: Update open-sans font from composer
