@@ -39,7 +39,10 @@ SearchAsset::register($this);
                 ->action('search')
                 ->cssClass('dropdown-search-button')
                 ->loader(false) ?>
-            <?= Html::input('text', 'keyword', '', ['class' => 'dropdown-search-keyword form-control']) ?>
+            <?= Html::input('text', 'keyword', '', [
+                'class' => 'dropdown-search-keyword form-control',
+                'autocomplete' => 'off'
+            ]) ?>
         </div>
         <ul class="dropdown-search-list">
             <?php foreach ($searchProviders as $searchProvider) : ?>
