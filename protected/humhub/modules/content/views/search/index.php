@@ -16,18 +16,18 @@ CardsAsset::register($this);
 
 $hasResults = $resultSet !== null && count($resultSet->results);
 ?>
-<div class="container" data-action-component="stream.SimpleStream">
+<div class="container" data-action-component="stream.SimpleStream" data-ui-init>
     <div class="panel panel-default">
         <div class="panel-heading">
             <strong><?= Yii::t('ContentModule.search', 'Search') ?></strong>
         </div>
 
         <div class="panel-body">
-            <?= SearchFilters::widget(); ?>
+            <?= SearchFilters::widget(['submitLoader' => '#content-search-body']); ?>
         </div>
-
     </div>
 
+    <div id="content-search-body">
     <?php if (!$hasResults && $resultSet !== null): ?>
         <div class="row cards">
             <div class="col-md-12">
@@ -55,6 +55,7 @@ $hasResults = $resultSet !== null && count($resultSet->results);
             <?= LinkPager::widget(['pagination' => $resultSet->pagination]) ?>
         </div>
     <?php endif; ?>
+    </div>
 </div>
 
 <?php if ($hasResults && $searchRequest->keyword !== '') : ?>

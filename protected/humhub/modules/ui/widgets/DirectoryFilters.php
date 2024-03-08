@@ -39,6 +39,12 @@ abstract class DirectoryFilters extends Widget
     public $paginationUsed = true;
 
     /**
+     * @var string|null Selector of html form which should be replaced with loader on submit a form
+     * @since 1.16
+     */
+    public ?string $submitLoader = null;
+
+    /**
      * @inheritDoc
      */
     public function init()
@@ -64,7 +70,21 @@ abstract class DirectoryFilters extends Widget
      */
     public function run()
     {
-        return $this->render('@humhub/modules/ui/widgets/views/directoryFilters', ['directoryFilters' => $this]);
+        return $this->render('@humhub/modules/ui/widgets/views/directoryFilters', [
+            'directoryFilters' => $this,
+            'options' => $this->getOptions()
+        ]);
+    }
+
+    protected function getOptions(): array
+    {
+        $options = ['class' => 'form-search'];
+
+        if (is_string($this->submitLoader)) {
+            $options['data-submit-loader'] = $this->submitLoader;
+        }
+
+        return $options;
     }
 
     public function renderFilters(): string
