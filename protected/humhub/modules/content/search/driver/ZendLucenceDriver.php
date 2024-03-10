@@ -50,7 +50,7 @@ class ZendLucenceDriver extends AbstractDriver
     public function update(Content $content): void
     {
         $document = new Document();
-        $document->addField(Field::keyword('id', $content->id));
+        $document->addField(Field::keyword('content_id', $content->id));
         $document->addField(Field::keyword('visibility', $content->visibility));
         $document->addField(Field::keyword('class', $content->object_model));
         $document->addField(Field::keyword('created_at', $content->created_at));
@@ -84,7 +84,7 @@ class ZendLucenceDriver extends AbstractDriver
 
     public function delete(Content $content): void
     {
-        $query = new TermQuery(new Term($content->id, 'id'));
+        $query = new TermQuery(new Term($content->id, 'content_id'));
         foreach ($this->getIndex()->find($query) as $result) {
             try {
                 $this->getIndex()->delete($result->id);
@@ -117,9 +117,11 @@ class ZendLucenceDriver extends AbstractDriver
             $resultSet->pagination->pageSize
         );
 
+
         foreach ($hits as $hit) {
+
             try {
-                $contentId = $hit->getDocument()->getField('id')->getUtf8Value();
+                $contentId = $hit->getDocument()->getField('content_id')->getUtf8Value();
             } catch (\Exception $ex) {
                 throw new \Exception('Could not get content id from Lucence search result');
             }
@@ -127,7 +129,7 @@ class ZendLucenceDriver extends AbstractDriver
             if ($content !== null) {
                 $resultSet->results[] = $content;
             } else {
-                throw new Exception('Could not load result!');
+                throw new Exception('Could not load result! Content ID: '. $contentId);
                 // ToDo: Delete Result
                 Yii::error("Could not load search result content: " . $contentId);
             }
@@ -139,13 +141,27 @@ class ZendLucenceDriver extends AbstractDriver
     protected function buildSearchQuery(SearchRequest $request): Boolean
     {
         $query = new Boolean();
-        foreach ($request->getKeywords() as $keyword) {
-            if (mb_strlen($keyword) < 3) {
-                $query->addSubquery(new TermQuery(new Term(mb_strtolower($keyword))), true);
+
+        foreach ($request->getSearchQuery()->orTerms as $term) {
+            if (mb_strlen($term) < 3) {
+                $query->addSubquery(new TermQuery(new Term(mb_strtolower($term))), null);
             } else {
-                $query->addSubquery(new Wildcard(new Term(mb_strtolower($keyword))), true);
+                $query->addSubquery(new Wildcard(new Term(mb_strtolower($term))), null);
             }
         }
+
+        foreach ($request->getSearchQuery()->andTerms as $term) {
+            if (mb_strlen($term) < 3) {
+                $query->addSubquery(new TermQuery(new Term(mb_strtolower($term))), true);
+            } else {
+                $query->addSubquery(new Wildcard(new Term(mb_strtolower($term))), true);
+            }
+        }
+
+        foreach ($request->getSearchQuery()->andTerms as $term) {
+            $query->addSubquery(new TermQuery(new Term(mb_strtolower($term))), false);
+        }
+
 
         if (!empty($request->dateFrom) || !empty($request->dateTo)) {
             $dateFrom = empty($request->dateFrom)
@@ -188,13 +204,6 @@ class ZendLucenceDriver extends AbstractDriver
 
         if (!empty($request->contentType)) {
             $query->addSubquery(new QueryTerm(new Term($request->contentType, 'class')), true);
-        }
-
-        if ($request->user !== null) {
-            //$this->addQueryFilterUser($query, $options->contentTypes);
-        }
-        if ($request->contentContainer !== null) {
-            //$this->addQueryFilterContentContainer($query, $options->contentTypes);
         }
 
         return $query;
