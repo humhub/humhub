@@ -53,6 +53,10 @@ humhub.module('ui.search', function(module, require, $) {
             that.searchTimeout(() => that.search(true));
         });
 
+        that.getList().on('keypress', function () {
+            that.getCurrentInput().focus();
+        });
+
         that.getList().niceScroll({
             cursorwidth: '7',
             cursorborder: '',
@@ -168,6 +172,22 @@ humhub.module('ui.search', function(module, require, $) {
         return input.length === 1 && input.is(':visible');
     }
 
+    Search.prototype.getAdditionalInput = function () {
+        return $(this.selectors.additionalToggler.form + ' ' + this.selectors.additionalToggler.input);
+    }
+
+    Search.prototype.hasAdditionalInput = function (isVisible) {
+        const input = this.getAdditionalInput();
+        if (input.length === 0) {
+            return false;
+        }
+        return typeof isVisible === 'undefined' || isVisible ? input.is(':visible') : !input.is(':visible');
+    }
+
+    Search.prototype.getCurrentInput = function () {
+        return this.hasAdditionalInput() ? this.getAdditionalInput() : this.getInput();
+    }
+
     Search.prototype.isVisiblePanel = function () {
         return this.$.hasClass('open');
     }
@@ -228,6 +248,10 @@ humhub.module('ui.search', function(module, require, $) {
             return;
         }
 
+        if (that.hasAdditionalInput(false)) {
+            that.getAdditionalInput().val(data.keyword);
+        }
+
         this.getList().show();
 
         this.getProviders().each(function () {
@@ -283,14 +307,9 @@ humhub.module('ui.search', function(module, require, $) {
     }
 
     Search.prototype.reset = function () {
-        this.getInput().val('');
+        this.getCurrentInput().val('');
         this.getProviders().hide();
         this.hidePanel();
-
-        const additionalInput = $(this.selectors.additionalToggler.form + ' ' + this.selectors.additionalToggler.input);
-        if (additionalInput.length) {
-            additionalInput.val('');
-        }
     }
 
     Search.prototype.refreshPositionSize = function () {
