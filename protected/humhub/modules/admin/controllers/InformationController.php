@@ -33,6 +33,8 @@ class InformationController extends Controller
     public const DB_ACTION_RUN = 1;
     public const DB_ACTION_PENDING = 2;
 
+    private const DB_MIGRATION_RESULT_KEY = 'DBMigrationResult';
+
     /**
      * @inheritdoc
      */
@@ -93,17 +95,25 @@ class InformationController extends Controller
 
         if ($migrate === self::DB_ACTION_RUN) {
             $migrationService->migrateUp();
-            $migrationOutput = sprintf(
+            Yii::$app->session->set(self::DB_MIGRATION_RESULT_KEY, sprintf(
                 "%s\n%s",
                 $migrationService->getLastMigrationOutput(),
                 SettingController::flushCache()
-            );
-        } else {
+            ));
+            return $this->redirect(['/admin/information/database']);
+        }
+
+        $migrationOutput = Yii::$app->session->get(self::DB_MIGRATION_RESULT_KEY);
+
+        if ($migrationOutput === null) {
             $migrate = $migrationService->hasMigrationsPending()
                 ? self::DB_ACTION_PENDING
                 : self::DB_ACTION_CHECK;
 
             $migrationOutput = $migrationService->getLastMigrationOutput();
+        } else {
+            Yii::$app->session->remove(self::DB_MIGRATION_RESULT_KEY);
+            $migrate = self::DB_ACTION_RUN;
         }
 
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
