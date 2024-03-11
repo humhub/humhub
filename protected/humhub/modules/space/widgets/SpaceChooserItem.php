@@ -3,6 +3,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\space\models\Space;
 use Yii;
 
 /**
@@ -11,25 +12,24 @@ use Yii;
  */
 class SpaceChooserItem extends Widget
 {
-
     /**
-     * @var string
+     * @var Space
      */
     public $space;
 
     /**
-     * @var integer
+     * @var int
      */
     public $updateCount = 0;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $visible = true;
 
     /**
      * If true the item will be marked as a following space
-     * @var boolean
+     * @var bool
      */
     public $isFollowing = false;
 

@@ -7,7 +7,6 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class ApprovalTest extends HumHubDbTestCase
 {
-
     /**
      * Tests user approval for 1 user without group assignment and one user with group assignment.
      */

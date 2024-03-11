@@ -19,14 +19,13 @@ use Yii;
  */
 class Controller extends \humhub\components\Controller
 {
-
     /**
      * @inheritdoc
      */
     public $subLayout = "@humhub/modules/admin/views/layouts/main";
 
     /**
-     * @var boolean if true only allows access for system admins else the access is restricted by getAccessRules()
+     * @var bool if true only allows access for system admins else the access is restricted by getAccessRules()
      */
     public $adminOnly = true;
 

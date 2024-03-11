@@ -18,7 +18,6 @@ use yii\base\Event;
  */
 class SearchAddEvent extends Event
 {
-
     /**
      * @var array Reference to the currently added search attributes
      */

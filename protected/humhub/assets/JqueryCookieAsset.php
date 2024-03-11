@@ -17,7 +17,6 @@ use yii\web\AssetBundle;
  */
 class JqueryCookieAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

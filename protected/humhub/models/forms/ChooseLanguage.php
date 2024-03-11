@@ -17,7 +17,6 @@ use yii\base\Model;
  */
 class ChooseLanguage extends Model
 {
-
     /**
      * @var string the language
      */
@@ -47,7 +46,7 @@ class ChooseLanguage extends Model
      * Stores language as cookie
      *
      * @since 1.2
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

@@ -1,10 +1,11 @@
 <?php
 
+use humhub\modules\space\models\Space;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
-/* @var $space \humhub\modules\space\models\Space */
+/* @var $space Space */
 
 ?>
 <?php if (!empty($space->getTags())) : ?>

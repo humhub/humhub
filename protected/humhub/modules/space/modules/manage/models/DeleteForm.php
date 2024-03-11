@@ -19,7 +19,6 @@ use yii\base\Model;
  */
 class DeleteForm extends Model
 {
-
     /**
      * @var string the space name to check
      */
@@ -39,7 +38,8 @@ class DeleteForm extends Model
     {
         return [
             ['confirmSpaceName', 'required'],
-            ['confirmSpaceName', 'compare', 'compareValue' => $this->spaceName],
+            ['confirmSpaceName', 'compare', 'compareValue' => $this->spaceName,
+                'message' => Yii::t('SpaceModule.base', 'Incorrect name, try again.')],
         ];
     }
 
@@ -49,7 +49,7 @@ class DeleteForm extends Model
     public function attributeLabels()
     {
         return [
-            'confirmSpaceName' => Yii::t('SpaceModule.manage', 'Space name'),
+            'confirmSpaceName' => Yii::t('SpaceModule.base', 'Space Name'),
         ];
     }
 

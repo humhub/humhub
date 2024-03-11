@@ -44,7 +44,7 @@ return array (
   'Create new group' => 'Új csoport létrehozása',
   'Create new profile category' => 'Új profil-kategória létrehozása',
   'Create new profile field' => 'Új profil-mező létrehozása',
-  'Deactivate' => 'Deaktivál',
+  'Disable' => 'Deaktivál',
   'Deactivate individual profile permissions?' => 'Deaktiválja az egyes profilengedélyeket?',
   'Decline' => 'Nem vesz részt',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Következő felhasználó elutasítása és törlése: <strong>{displayName}</strong>',

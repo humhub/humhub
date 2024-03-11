@@ -1,11 +1,9 @@
 <?php
 
-
 use yii\db\Migration;
 
 class m150429_223856_optimize extends Migration
 {
-
     public function up()
     {
         $this->createIndex('index_user_id', 'notification', 'user_id', false);

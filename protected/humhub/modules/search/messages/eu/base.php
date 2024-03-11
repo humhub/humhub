@@ -4,6 +4,7 @@ return array (
   'Advanced search settings' => '',
   'All' => 'Denak',
   'Content' => '',
+  'Search' => 'Bilatu',
   'Search for user, spaces and content' => '',
   'Search only in certain spaces:' => '',
   'Spaces' => 'Espazioak',

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Activate' => 'Aktivizoni',
+    'Enable' => 'Aktivizoni',
     'Delete' => 'Fshij',
     'Modules' => 'Modulet',
     '-' => '',

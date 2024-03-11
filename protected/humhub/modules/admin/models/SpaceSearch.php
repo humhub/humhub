@@ -21,7 +21,6 @@ use yii\data\ActiveDataProvider;
  */
 class SpaceSearch extends Space
 {
-
     public $freeText;
     public $memberCount;
     public $owner;

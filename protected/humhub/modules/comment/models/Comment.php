@@ -26,26 +26,25 @@ use yii\base\Exception;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
-
 /**
  * This is the model class for table "comment".
  *
- * @property integer $id
+ * @property int $id
  * @property string $message
- * @property integer $object_id
+ * @property int $object_id
  * @property string $object_model
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property-read string $url @since 1.10.2
  *
  * @since 0.5
  */
 class Comment extends ContentAddonActiveRecord
 {
-    const CACHE_KEY_COUNT = 'commentCount_%s_%s';
-    const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
+    public const CACHE_KEY_COUNT = 'commentCount_%s_%s';
+    public const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
 
     /**
      * @inheritdoc
@@ -193,7 +192,7 @@ class Comment extends ContentAddonActiveRecord
     /**
      * Returns the commented record e.g. a Post
      *
-     * @return \humhub\modules\content\components\ContentActiveRecord
+     * @return ContentActiveRecord
      */
     public function getCommentedRecord()
     {
@@ -367,7 +366,7 @@ class Comment extends ContentAddonActiveRecord
 
     /**
      * TODO: Unify with Content::isUpdated() see https://github.com/humhub/humhub/pull/4380
-     * @returns boolean true if this comment has been updated, otherwise false
+     * @returns bool true if this comment has been updated, otherwise false
      * @since 1.7
      */
     public function isUpdated()

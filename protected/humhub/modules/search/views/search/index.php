@@ -25,7 +25,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 ?>
 <script <?= Html::nonce() ?>>
 
-    $(document).on('humhub:ready', function() {
+    $(document).on('humhub:ready', function () {
         $('#search-input-field').focus();
 
         $('#collapse-search-settings').on('show.bs.collapse', function () {
@@ -87,7 +87,7 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 
                             <div id="collapse-search-settings" class="panel-collapse collapse">
                                 <br>
-                                <?=  Yii::t('SearchModule.base', 'Search only in certain spaces:') ?>
+                                <?= Yii::t('SearchModule.base', 'Search only in certain spaces:') ?>
                                 <?= SpacePickerField::widget([
                                     'id' => 'space_filter',
                                     'model' => $model,
@@ -113,7 +113,8 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                     <div
                         class="panel-heading"><?= Yii::t('SearchModule.base', '<strong>Search </strong> results') ?></div>
                     <div class="list-group">
-                        <a data-pjax-prevent href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_ALL]); ?>'
+                        <a data-pjax-prevent
+                           href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_ALL]); ?>'
                            class="list-group-item<?= ($model->scope === SearchForm::SCOPE_ALL) ? ' active' : '' ?>">
                             <div>
                                 <div class="edit_group "><?= Yii::t('SearchModule.base', 'All') ?>
@@ -122,7 +123,8 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                             </div>
                         </a>
                         <br/>
-                        <a data-pjax-prevent href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_CONTENT]); ?>'
+                        <a data-pjax-prevent
+                           href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_CONTENT]); ?>'
                            class="list-group-item<?= ($model->scope === SearchForm::SCOPE_CONTENT) ? ' active' : '' ?>">
                             <div>
                                 <div class="edit_group "><?= Yii::t('SearchModule.base', 'Content') ?>
@@ -130,7 +132,8 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                                 </div>
                             </div>
                         </a>
-                        <a data-pjax-prevent href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_USER]); ?>'
+                        <a data-pjax-prevent
+                           href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_USER]); ?>'
                            class="list-group-item<?= ($model->scope === SearchForm::SCOPE_USER) ? ' active' : '' ?>">
                             <div>
                                 <div class="edit_group "><?= Yii::t('SearchModule.base', 'Users') ?>
@@ -138,7 +141,8 @@ humhub\modules\stream\assets\StreamAsset::register($this);
                                 </div>
                             </div>
                         </a>
-                        <a data-pjax-prevent href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_SPACE]); ?>'
+                        <a data-pjax-prevent
+                           href='<?= Url::to(['/search/search/index', 'SearchForm[keyword]' => $model->keyword, 'SearchForm[limitSpaceGuids]' => $model->limitSpaceGuids, 'SearchForm[scope]' => SearchForm::SCOPE_SPACE]); ?>'
                            class="list-group-item<?= ($model->scope === SearchForm::SCOPE_SPACE) ? ' active' : '' ?>">
                             <div>
                                 <div class="edit_group "><?= Yii::t('SearchModule.base', 'Spaces') ?>
@@ -156,21 +160,27 @@ humhub\modules\stream\assets\StreamAsset::register($this);
 
                     <?php if (count($results) > 0): ?>
                         <?php foreach ($results as $result): ?>
-                            <?php try {  ?>
+                            <?php try { ?>
                                 <?php if ($result instanceof ContentActiveRecord) : ?>
-                                    <?= StreamEntryWidget::renderStreamEntry($result,
-                                        (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH))?>
+                                    <?= StreamEntryWidget::renderStreamEntry(
+                                        $result,
+                                        (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)
+                                    ) ?>
                                 <?php elseif ($result instanceof ContentContainerActiveRecord) : ?>
                                     <?= $result->getWallOut() ?>
                                 <?php else: ?>
                                     No Output for Class <?= get_class($result); ?>
                                 <?php endif; ?>
-                            <?php } catch(\Throwable $e) {Yii::error($e);} ?>
+                            <?php } catch (Throwable $e) {
+                                Yii::error($e);
+                            } ?>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <div class="panel panel-default">
                             <div class="panel-body">
-                                <p><strong><?= Yii::t('SearchModule.base', 'Your search returned no matches.') ?></strong></p>
+                                <p>
+                                    <strong><?= Yii::t('SearchModule.base', 'Your search returned no matches.') ?></strong>
+                                </p>
                             </div>
                         </div>
                     <?php endif; ?>

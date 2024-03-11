@@ -3,7 +3,7 @@
 return [
     '<strong>Move</strong> content' => 'محتوى <strong> نقل </strong>',
     '<strong>Permalink</strong> to this post' => 'الوصلة الدائمة لهذه المحتويات',
-    'Activated' => 'تم التفعيل',
+    'Enabled' => 'تم التفعيل',
     'Add a member to notify' => 'إضافة عضو للتنبيه',
     'Archived' => 'أرشيف',
     'Back to stream' => 'العودة للمحتويات',

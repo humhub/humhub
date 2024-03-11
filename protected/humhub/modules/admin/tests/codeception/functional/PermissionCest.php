@@ -3,14 +3,16 @@
 namespace admin\functional;
 
 use admin\FunctionalTester;
+use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageModules;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\admin\permissions\SeeAdminInformation;
 use tests\codeception\_pages\AdminPage;
 
 class PermissionCest
 {
-
     public function testSeeAdminInformation(FunctionalTester $I)
     {
         $I->wantTo('ensure that see admin information permission works');
@@ -53,7 +55,7 @@ class PermissionCest
         $I->expectTo('see permission denied message');
         $I->see('You are not permitted to access this section.');
 
-        $I->setGroupPermission(3, new \humhub\modules\admin\permissions\ManageUsers());
+        $I->setGroupPermission(3, new ManageUsers());
 
         $I->amOnPage(['/admin/user']);
         $I->expectTo('not to see permission denied message');
@@ -104,7 +106,7 @@ class PermissionCest
         $I->expectTo('see permission denied message');
         $I->see('You are not permitted to access this section.');
 
-        $I->setGroupPermission(3, new \humhub\modules\admin\permissions\ManageGroups());
+        $I->setGroupPermission(3, new ManageGroups());
 
         $I->amOnPage(['/admin/user']);
         $I->expectTo('not to see permission denied message');
@@ -155,7 +157,7 @@ class PermissionCest
         $I->expectTo('see permission denied message');
         $I->see('You are not permitted to access this section.');
 
-        $I->setGroupPermission(3, new \humhub\modules\admin\permissions\ManageSettings());
+        $I->setGroupPermission(3, new ManageSettings());
 
         $I->amOnPage(['/admin/user']);
         $I->expectTo('not to see permission denied message');

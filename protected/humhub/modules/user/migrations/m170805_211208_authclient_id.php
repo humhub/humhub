@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m170805_211208_authclient_id extends Migration
 {
-
     public function safeUp()
     {
         $this->addColumn('user', 'authclient_id', $this->string(60)->null());

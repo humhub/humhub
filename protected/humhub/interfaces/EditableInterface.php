@@ -16,11 +16,10 @@ use humhub\modules\user\models\User;
  */
 interface EditableInterface
 {
-
     /**
      * Checks if the given user can edit/create this element.
      *
-     * @param User|integer|string|null $user user instance or user id
+     * @param User|int|string|null $user user instance or user id
      * @return bool
      */
     public function canEdit($user = null): bool;

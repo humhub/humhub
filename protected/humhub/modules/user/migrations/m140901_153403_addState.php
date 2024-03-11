@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140901_153403_addState extends Migration
 {
-
     public function up()
     {
         $this->addColumn('user_module', 'state', 'int(4)');

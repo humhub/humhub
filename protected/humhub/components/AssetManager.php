@@ -75,7 +75,7 @@ class AssetManager extends \yii\web\AssetManager
             array_unshift($bundle->depends, CoreBundleAsset::class);
 
             // Allows to add defer to non HumHub AssetBundles
-            if(property_exists($bundle,'defer') && $bundle->defer) {
+            if(property_exists($bundle, 'defer') && $bundle->defer) {
                 $bundle->jsOptions['defer'] = 'defer';
             }
         }

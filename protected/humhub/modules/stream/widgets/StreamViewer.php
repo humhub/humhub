@@ -22,7 +22,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class StreamViewer extends JsWidget
 {
-
     /**
      * @var ContentContainerActiveRecord the content container if this stream belongs to one (optional)
      */
@@ -52,7 +51,7 @@ class StreamViewer extends JsWidget
     /**
      * Show default wall filters
      *
-     * @var boolean
+     * @var bool
      */
     public $showFilters = true;
 
@@ -127,17 +126,17 @@ class StreamViewer extends JsWidget
             'stream-empty-filter-class' => $this->messageStreamEmptyWithFiltersCss
         ];
 
-        $contentId = (int) Yii::$app->request->getQueryParam('contentId');
+        $contentId = (int)Yii::$app->request->getQueryParam('contentId');
         if ($contentId > 0) {
             $result['stream-contentid'] = $contentId;
         }
 
-        $commentId = (int) Yii::$app->request->getQueryParam('commentId');
+        $commentId = (int)Yii::$app->request->getQueryParam('commentId');
         if ($commentId > 0) {
             $result['stream-commentid'] = $commentId;
         }
 
-        $topicId = (int) Yii::$app->request->getQueryParam('topicId');
+        $topicId = (int)Yii::$app->request->getQueryParam('topicId');
         if ($topicId > 0 && $topic = Topic::findOne($topicId)) {
             $result['stream-topic'] = ['id' => $topic->id, 'name' => $topic->name];
         }
@@ -175,16 +174,16 @@ class StreamViewer extends JsWidget
         }
 
         $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation))
-            ? call_user_func($this->streamFilterNavigation.'::widget', [
+            ? call_user_func($this->streamFilterNavigation . '::widget', [
                 'definition' => $this->filters,
                 'componentId' => $this->getId(true)
             ])
             : '';
 
         return $this->render($this->view, [
-                'filterNav' => $filterNav,
-                'contentContainer' => $this->contentContainer,
-                'options' => $this->getOptions(),
+            'filterNav' => $filterNav,
+            'contentContainer' => $this->contentContainer,
+            'options' => $this->getOptions(),
         ]);
     }
 }

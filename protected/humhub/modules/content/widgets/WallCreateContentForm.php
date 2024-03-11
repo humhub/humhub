@@ -28,7 +28,6 @@ use yii\web\HttpException;
  */
 abstract class WallCreateContentForm extends Widget
 {
-
     /**
      * @var string form submit route/url (required)
      */
@@ -107,7 +106,7 @@ abstract class WallCreateContentForm extends Widget
     {
         Yii::$app->response->format = 'json';
 
-        $visibility = (int) Yii::$app->request->post('visibility', Content::VISIBILITY_PRIVATE);
+        $visibility = (int)Yii::$app->request->post('visibility', Content::VISIBILITY_PRIVATE);
         if ($visibility === Content::VISIBILITY_PUBLIC && !$contentContainer->can(CreatePublicContent::class)) {
             $visibility = Content::VISIBILITY_PRIVATE;
         }

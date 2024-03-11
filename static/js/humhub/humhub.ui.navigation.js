@@ -8,11 +8,8 @@ humhub.module('ui.navigation', function (module, require, $) {
 
     var initTopNav = function () {
         // Default implementation for topbar. Activate li on click.
-        $('#top-menu-nav a').on('click', function () {
-            var $this = $(this);
-            if (!$this.is('#space-menu') && !$this.is('#top-dropdown-menu')) {
-                module.setActiveItem($this);
-            }
+        $('#top-menu-nav a:not(#space-menu):not(#top-dropdown-menu):not(data-action-click="ui.modal.load")').on('click', function () {
+            module.setActiveItem($(this));
         });
 
         event.on('humhub:ready', function () {
@@ -50,8 +47,9 @@ humhub.module('ui.navigation', function (module, require, $) {
     };
 
     var setActiveItem = function ($item) {
+        $('#top-menu-nav li').removeClass('active');
+
         if (!$item || !$item.length) {
-            $('#top-menu-nav li').removeClass('active');
             return;
         }
 

@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => '<strong></strong>',
     '<strong>Space</strong> settings' => '<strong></strong>',
     'Actions' => 'Действия',
-    'Activate' => 'Активиране',
+    'Enable' => 'Активиране',
     'Add <strong>Modules</strong>' => 'Добави <strong>Модули</strong>',
     'Advanced access settings' => 'Разширени настройки за достъп',
     'Archive' => 'Архив',

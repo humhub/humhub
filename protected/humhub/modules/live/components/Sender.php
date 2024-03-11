@@ -8,6 +8,7 @@
 
 namespace humhub\modules\live\components;
 
+use humhub\modules\live\driver\BaseDriver;
 use Yii;
 use yii\base\Component;
 
@@ -19,9 +20,8 @@ use yii\base\Component;
  */
 class Sender extends Component
 {
-
     /**
-     * @var \humhub\modules\live\driver\BaseDriver|array|string
+     * @var BaseDriver|array|string
      */
     public $driver = [];
 
@@ -36,7 +36,7 @@ class Sender extends Component
 
     /**
      * Sends a live event
-     * 
+     *
      * @param LiveEvent $event the live event
      */
     public function send($event)

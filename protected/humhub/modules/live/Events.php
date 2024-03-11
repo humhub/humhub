@@ -14,16 +14,16 @@ use humhub\modules\space\MemberEvent;
 use humhub\modules\user\events\FollowEvent;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\BaseObject;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @since 1.2
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * On hourly cron job, add database cleanup task
      */

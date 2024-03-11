@@ -19,7 +19,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class ApprovalRequestAccepted extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -31,15 +30,15 @@ class ApprovalRequestAccepted extends BaseNotification
     public $viewName = "approvalAccepted";
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {
@@ -53,9 +52,10 @@ class ApprovalRequestAccepted extends BaseNotification
     {
         return $this->getInfoText(
             Html::tag('strong', Html::encode($this->originator->displayName)),
-            Html::tag('strong', Html::encode($this->source->name)));
+            Html::tag('strong', Html::encode($this->source->name))
+        );
     }
-    
+
     private function getInfoText($displayName, $spaceName)
     {
         return Yii::t('SpaceModule.notification', '{displayName} approved your membership for the space {spaceName}', [

@@ -1,13 +1,12 @@
 <?php
-
-return [
-    'Content' => 'Příspěvky',
-    'Sorting' => 'Řazení',
-    'Visibility' => 'Viditelnost',
-    'Author' => '',
-    'Content Type' => '',
-    'Date from' => '',
-    'Date to' => '',
-    'Scope' => '',
-    'Topic' => '',
-];
+return array (
+  'Author' => 'Autor',
+  'Content' => 'Příspěvky',
+  'Content Type' => 'Typ obsahu',
+  'Date from' => 'Datum od',
+  'Date to' => 'Date to',
+  'Scope' => 'Rozsah',
+  'Sorting' => 'Řazení',
+  'Topic' => 'Téma',
+  'Visibility' => 'Viditelnost',
+);

@@ -1,12 +1,14 @@
 <?php
 
+use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 use yii\helpers\Url;
+
 ?>
 <?php if ($user->hasTags()) : ?>
     <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
 
-        <?php echo \humhub\widgets\PanelMenu::widget(['id' => 'user-tags-panel']); ?>
+        <?php echo PanelMenu::widget(['id' => 'user-tags-panel']); ?>
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>User</strong> tags'); ?></div>
         <div class="panel-body">

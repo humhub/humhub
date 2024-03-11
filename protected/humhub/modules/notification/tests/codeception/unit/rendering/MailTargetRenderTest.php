@@ -9,7 +9,6 @@ use humhub\modules\notification\targets\MailTarget;
 
 class MailTargetRenderTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testDefaultView()
@@ -20,5 +19,4 @@ class MailTargetRenderTest extends HumHubDbTestCase
         $this->assertStringContainsString('<h1>TestedMailViewNotificationHTML</h1>', $renderer->render($notification));
         $this->assertStringContainsString('TestedMailViewNotificationText', $renderer->renderText($notification));
     }
-
 }

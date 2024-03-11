@@ -4,7 +4,7 @@ return [
     '(Also visible to non-members of this space)' => '(Vidljivo i nečlanovima ovog prostora)',
     '<strong>Move</strong> content' => '<strong>Premjesti</strong> sadržaj',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> na ovu objavu',
-    'Activated' => 'Aktivirano',
+    'Enabled' => 'Aktivirano',
     'Add a member to notify' => 'Dodaj člana za obaviještavanje',
     'Archived' => 'Arhivirano',
     'Attach Files' => 'Priložite datoteke',

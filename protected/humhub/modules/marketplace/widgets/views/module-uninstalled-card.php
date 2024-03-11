@@ -26,7 +26,8 @@ use humhub\modules\ui\icon\widgets\Icon;
         <?= ModuleControls::widget(['module' => $module]) ?>
     </div>
     <div class="card-body">
-        <div class="card-title"><?= $module->marketplaceLink($module->name) . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
+        <div
+            class="card-title"><?= $module->marketplaceLink($module->name) . ($module->featured ? ' ' . Icon::get('star')->color('info') : '') ?></div>
         <div><?= $module->latestVersion ?></div>
         <div><?= $module->marketplaceLink($module->description) ?></div>
     </div>

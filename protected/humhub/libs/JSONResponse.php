@@ -19,8 +19,8 @@ use yii\web\Response;
  */
 class JSONResponse extends BaseObject
 {
-    const RESULT_KEY_OUTPUT = 'output';
-    const RESULT_KEY_SUCCESS = 'success';
+    public const RESULT_KEY_OUTPUT = 'output';
+    public const RESULT_KEY_SUCCESS = 'success';
 
     /**
      * The resulting json array

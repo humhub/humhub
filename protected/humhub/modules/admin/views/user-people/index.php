@@ -20,7 +20,7 @@ use humhub\widgets\Button;
         <?= Yii::t('AdminModule.user', 'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. '); ?>
     </div>
 
-    <br />
+    <br/>
 
     <?php $form = ActiveForm::begin(); ?>
 
@@ -29,7 +29,8 @@ use humhub\widgets\Button;
     <?= $form->field($model, 'detail3')->dropDownList($model->getDetailOptions()); ?>
 
     <?= $form->field($model, 'defaultSorting')->dropDownList(PeopleSettingsForm::getSortingOptions()); ?>
-    <div id="defaultSortingGroupSelector"<?php if ($model->defaultSorting !== '') : ?> style="display:none"<?php endif; ?>>
+    <div
+        id="defaultSortingGroupSelector"<?php if ($model->defaultSorting !== '') : ?> style="display:none"<?php endif; ?>>
         <?= $form->field($model, 'defaultSortingGroup')->dropDownList(PeopleSettingsForm::getSortingGroupOptions()); ?>
     </div>
 
@@ -38,7 +39,7 @@ use humhub\widgets\Button;
     <?php ActiveForm::end(); ?>
 </div>
 <script <?= Html::nonce() ?>>
-$('select[name="PeopleSettingsForm[defaultSorting]"]').change(function(){
-    $('#defaultSortingGroupSelector').toggle($(this).val() === '');
-})
+    $('select[name="PeopleSettingsForm[defaultSorting]"]').change(function () {
+        $('#defaultSortingGroupSelector').toggle($(this).val() === '');
+    })
 </script>

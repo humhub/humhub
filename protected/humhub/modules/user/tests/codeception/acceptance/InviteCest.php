@@ -7,6 +7,7 @@
 
 namespace user\acceptance;
 
+use Exception;
 use tests\codeception\_pages\DirectoryMemberPage;
 use user\AcceptanceTester;
 
@@ -14,7 +15,7 @@ class InviteCest
 {
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDashboardInviteByMail(AcceptanceTester $I)
     {

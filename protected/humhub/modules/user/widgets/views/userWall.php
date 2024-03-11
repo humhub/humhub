@@ -1,7 +1,8 @@
 <?php
 
 use humhub\libs\Html;
-use humhub\modules\user\models\User;use humhub\modules\user\widgets\Image;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\Image;
 use humhub\modules\user\widgets\PeopleTagList;
 
 /* @var User $user */

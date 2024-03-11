@@ -19,8 +19,8 @@
  */
 
 return [
-    ['name' => 'testSetting1', 'value' => 'Test Setting 1 for User Admin', 'module_id' => 'user', 'contentcontainer_id' => 1 ],
-    ['name' => 'testSetting2', 'value' => 'Test Setting 2 for User Admin', 'module_id' => 'user', 'contentcontainer_id' => 1 ],
-    ['name' => 'testSetting1', 'value' => 'Test Setting 1 for User User1', 'module_id' => 'user', 'contentcontainer_id' => 2 ],
-    ['name' => 'testSetting2', 'value' => 'Test Setting 2 for User User1', 'module_id' => 'user', 'contentcontainer_id' => 2 ],
+    ['name' => 'testSetting1', 'value' => 'Test Setting 1 for User Admin', 'module_id' => 'user', 'contentcontainer_id' => 1],
+    ['name' => 'testSetting2', 'value' => 'Test Setting 2 for User Admin', 'module_id' => 'user', 'contentcontainer_id' => 1],
+    ['name' => 'testSetting1', 'value' => 'Test Setting 1 for User User1', 'module_id' => 'user', 'contentcontainer_id' => 2],
+    ['name' => 'testSetting2', 'value' => 'Test Setting 2 for User User1', 'module_id' => 'user', 'contentcontainer_id' => 2],
 ];

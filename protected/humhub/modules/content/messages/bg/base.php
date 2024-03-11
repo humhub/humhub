@@ -4,7 +4,7 @@ return [
     '(Also visible to non-members of this space)' => '(Вижда се и за нечленове на това пространство)',
     '<strong>Move</strong> content' => '<strong>Преместване</strong> на съдържание',
     '<strong>Permalink</strong> to this post' => '<strong>Постоянна връзка</strong> към тази публикация',
-    'Activated' => 'Активиран',
+    'Enabled' => 'Активиран',
     'Add a member to notify' => 'Добавете член, който да уведомите',
     'Archived' => 'Архивирано',
     'Attach Files' => 'Прикачи файлове',

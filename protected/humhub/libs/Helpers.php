@@ -81,7 +81,7 @@ class Helpers
      * Shorten a text string
      *
      * @param string $text - Text string you will shorten
-     * @param integer $length - Count of characters to show
+     * @param int $length - Count of characters to show
      *
      * @return string
      */
@@ -129,8 +129,8 @@ class Helpers
      * @deprecated since 1.11 Use mb_substr() instead.
      *
      * @param string $str
-     * @param integer $from
-     * @param integer $len
+     * @param int $from
+     * @param int $len
      *
      * @return string
      */
@@ -189,8 +189,10 @@ class Helpers
         switch ($last) {
             case 'g':
                 $val *= 1024;
+                // no break
             case 'm':
                 $val *= 1024;
+                // no break
             case 'k':
                 $val *= 1024;
         }

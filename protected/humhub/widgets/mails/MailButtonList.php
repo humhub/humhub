@@ -16,7 +16,6 @@ namespace humhub\widgets\mails;
  */
 class MailButtonList extends \yii\base\Widget
 {
-
     /**
      * @var string hex color
      */

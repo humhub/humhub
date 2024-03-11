@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets;
-
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\ui\icon\widgets\Icon;
@@ -25,7 +23,7 @@ class ArchivedIcon extends Icon
     /**
      * The icon name used for rendering
      */
-    const ICON_NAME = 'archive';
+    public const ICON_NAME = 'archive';
 
     /**
      * Renders an archive icon with tooltip for archived ContentActiveRecord models.
@@ -37,7 +35,7 @@ class ArchivedIcon extends Icon
      */
     public static function getByModel(ContentActiveRecord $model)
     {
-        if(!$model->content->isArchived()) {
+        if (!$model->content->isArchived()) {
             return '';
         }
 

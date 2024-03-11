@@ -18,7 +18,6 @@ use Yii;
  */
 class UserFilter extends User
 {
-
     /**
      * Returns a UserFilter instance for the given $user or the current user identity
      * if $user is not provided.
@@ -43,8 +42,8 @@ class UserFilter extends User
      * @param type $maxResults
      * @param type $friendsOnly
      * @param type $permission
-     * @deprecated since 1.2 use
      * @return type
+     * @deprecated since 1.2 use
      */
     public function getUserPickerResult($keywords = null, $maxResults = null, $friendsOnly = false, $permission = null)
     {
@@ -64,8 +63,8 @@ class UserFilter extends User
         if (!$friendsOnly && count($friends) < $maxResults) {
             $additionalUser = [];
             //Here we filter with permission since we don't want to have non friend user without the permission in the result
-            foreach($this->getUserByFilter($keywords, ($maxResults - count($friends)), $permission) as $user) {
-                if(!$this->containsUser($friends, $user)) {
+            foreach ($this->getUserByFilter($keywords, ($maxResults - count($friends)), $permission) as $user) {
+                if (!$this->containsUser($friends, $user)) {
                     $additionalUser[] = $user;
                 }
             }
@@ -77,8 +76,8 @@ class UserFilter extends User
 
     private function containsUser($userArr, $user)
     {
-        foreach($userArr as $currentUser) {
-            if($currentUser->id === $user->id) {
+        foreach ($userArr as $currentUser) {
+            if ($currentUser->id === $user->id) {
                 return true;
             }
         }
@@ -139,7 +138,7 @@ class UserFilter extends User
         }
 
         //We filter active user by default
-        if(($active != null && $active) || $active == null) {
+        if (($active != null && $active) || $active == null) {
             $query->active();
         }
 

@@ -9,6 +9,7 @@
 namespace humhub\modules\content\assets;
 
 use yii\web\AssetBundle;
+use yii\web\View;
 
 /**
  * Asset for stream content create form resources.
@@ -18,11 +19,10 @@ use yii\web\AssetBundle;
  */
 class ContentFormAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => \yii\web\View::POS_END];
+    public $jsOptions = ['position' => View::POS_END];
 
     /**
      * @inheritdoc

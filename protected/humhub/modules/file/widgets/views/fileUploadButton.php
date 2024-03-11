@@ -34,7 +34,8 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.bas
     <i class="fa fa-cloud-upload"></i>
 
     <input id="fileUploaderButton_<?php echo $uploaderId; ?>" type="file" name="files[]"
-           data-url="<?php echo Url::to(['/file/file/upload', 'objectModel' => $objectModel, 'objectId' => $objectId]); ?>" multiple>
+           data-url="<?php echo Url::to(['/file/file/upload', 'objectModel' => $objectModel, 'objectId' => $objectId]); ?>"
+           multiple>
 </span>
 
 <script <?= Html::nonce() ?>>

@@ -13,13 +13,12 @@ use Yii;
 
 /**
  * SpaceDirectoryStatus shows status like "Archived" for spaces cards
- * 
+ *
  * @since 1.10
  * @author Luke
  */
 class SpaceDirectoryStatus extends Widget
 {
-
     /**
      * @var Space
      */

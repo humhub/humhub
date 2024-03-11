@@ -1,13 +1,12 @@
 <?php
-
-return [
-    'Content' => 'Obsah',
-    'Author' => '',
-    'Content Type' => '',
-    'Date from' => '',
-    'Date to' => '',
-    'Scope' => '',
-    'Sorting' => '',
-    'Topic' => '',
-    'Visibility' => '',
-];
+return array (
+  'Author' => 'Autor',
+  'Content' => 'Obsah',
+  'Content Type' => 'Typ Obsahu',
+  'Date from' => 'Dátum od',
+  'Date to' => 'Dátum do',
+  'Scope' => 'Rozsah',
+  'Sorting' => 'Triedenie',
+  'Topic' => 'Téme',
+  'Visibility' => 'Viditeľnosť',
+);

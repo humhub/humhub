@@ -8,6 +8,7 @@
 
 namespace humhub\modules\search\events;
 
+use humhub\modules\search\interfaces\Searchable;
 use yii\base\Event;
 
 /**
@@ -15,20 +16,19 @@ use yii\base\Event;
  *
  * The event object holds an reference to the search index attributes.
  * Modules like comments or files can add additional attributes to it.
- * 
+ *
  * @author luke
  * @since 1.2.3
  */
 class SearchAttributesEvent extends Event
 {
-
     /**
      * @var array Reference to the currently added search attributes
      */
     public $attributes;
 
     /**
-     * @var \humhub\modules\search\interfaces\Searchable the searchable record
+     * @var Searchable the searchable record
      */
     public $record;
 

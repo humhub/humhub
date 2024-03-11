@@ -8,7 +8,6 @@
 
 namespace humhub\controllers;
 
-
 use humhub\components\Controller;
 use humhub\models\UrlOembed;
 use Yii;

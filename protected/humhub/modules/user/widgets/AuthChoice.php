@@ -16,7 +16,6 @@ use yii\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
-
     /**
      * Used to retrieve the auth clients in a static way
      * @var string
@@ -29,7 +28,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public $maxShowClients = 2;
 
     /**
-     * @var boolean show auth button colors
+     * @var bool show auth button colors
      */
     public $showButtonColors = false;
 
@@ -88,7 +87,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         foreach ($clients as $client) {
 
             // Don't show clients which need login form
-            if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
+            if (!$client instanceof BaseFormAuth) {
                 $result[] = $client;
             }
         }

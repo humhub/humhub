@@ -8,7 +8,6 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>Модули</strong> сообщества',
   '<strong>Space</strong> settings' => '<strong>Настройки</strong> сообщества',
   'Actions' => 'Действия',
-  'Activate' => 'Активировать',
   'Add <strong>Modules</strong>' => '<strong>Добавить</strong> модули',
   'Advanced access settings' => 'Расширенные настройки доступа',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'Все участники, за исключением модераторов и администраторов этого сообщества, будут удалены. Все ожидающие приглашения и запросы на членство будут аннулированы.',
@@ -25,6 +24,7 @@ return array (
   'Currently there are no modules available for this space!' => 'В настоящее время нет доступных модулей для этого сообщества!',
   'Delete' => 'Удалить',
   'Don\'t receive notifications for new content' => 'Не получать уведомления о новом контенте',
+  'Enable' => 'Активировать',
   'Hide posts on dashboard' => 'Скрывать записи',
   'Invited By' => 'Приглашён',
   'Members' => 'Участники',
@@ -53,6 +53,6 @@ return array (
   'This option will show new content from this space at your dashboard' => 'Эта опция будет отображать новый контент из этого сообщества на Вашей панели «События»',
   'Transfer ownership' => 'Передать другому владельцу',
   'Unarchive' => 'Разархивировать',
-  'e.g. example for {baseUrl}/s/example' => 'например, для {baseUrl}/s/example',
+  'e.g. example for {baseUrl}/s/example' => 'например: {baseUrl}/s/example',
   'never' => 'никогда',
 );

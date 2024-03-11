@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\components\assets;
 
 use Yii;
@@ -9,7 +8,6 @@ use yii\web\Application;
 use yii\web\AssetBundle as BaseAssetBundle;
 use humhub\assets\CoreBundleAsset;
 use humhub\modules\ui\view\components\View;
-
 
 /**
  * This base asset bundle class adds some additional properties as well ass default loading behavior for HumHub assets.
@@ -130,7 +128,7 @@ class AssetBundle extends BaseAssetBundle
 
         if(!$this->isAsync() && $this->isDefer()) {
             $this->jsOptions['defer'] = 'defer';
-        } else if($this->isAsync()) {
+        } elseif($this->isAsync()) {
             $this->jsOptions['async'] = 'async';
         }
 
@@ -138,7 +136,7 @@ class AssetBundle extends BaseAssetBundle
 
         if(!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = true;
-        } else if(!isset($this->publishOptions['forceCopy'])) {
+        } elseif(!isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = false;
         }
 

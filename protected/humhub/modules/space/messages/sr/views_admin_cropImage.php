@@ -1,5 +1,4 @@
 <?php
-
-return [
-    '<strong>Modify</strong> image' => '',
-];
+return array (
+  '<strong>Modify</strong> image' => '<strong>Izmeni</strong> sliku',
+);

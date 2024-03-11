@@ -23,14 +23,13 @@ use Yii;
  */
 class BaseStack extends Widget
 {
-
-    const EVENT_INIT = 'init';
-    const EVENT_RUN = 'run';
+    public const EVENT_INIT = 'init';
+    public const EVENT_RUN = 'run';
 
     /**
      * Default value for the sort order if no sort order value is specified in the widget.
      */
-    const DEFAULT_SORT_ORDER = 9000;
+    public const DEFAULT_SORT_ORDER = 9000;
 
     /**
      * Holds all added widgets

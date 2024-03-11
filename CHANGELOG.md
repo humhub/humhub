@@ -1,11 +1,22 @@
 HumHub Changelog
 ================
 
-1.15.3 (Unreleased)
--------------------
+1.15.3 (February 8, 2024)
+-------------------------
+- Fix #6713: Keep class option for Pjax Widget
 - Enh #6779: Added Twig Sandbox Extension for Statistic Tracking Codes
 - Fix #6791: Fix number of filtered modules on Marketplace
+- Fix #6744: Make sure to call `humhub\components\Module::update()` on Module updates
 - Fix #6796: Files in the RichText doesn't open as new tab
+- Fix #6800: Fix missed domain of profile url in email notifications
+- Fix #6801: Add missed twemoji images
+- Fix: Iso3166Codes class calls
+- Fix #6813: Fix for displaying whether I follow a user
+- Fix #6126: `Session::$timeout` takes effect before configured `User::$authTimeout`
+- Fix #6795: Fix searching of disabled users in Administration
+- Fix #6834: Fix notification switcher in wall stream entry context menu
+- Fix #6836: Fix check permission of changing content to public from context menu
+- Fix #6837: Fix saving of public content
 
 1.15.2 (December 19, 2023)
 --------------------------

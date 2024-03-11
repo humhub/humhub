@@ -6,13 +6,15 @@
  *
  */
 
+use humhub\modules\topic\models\forms\ContentTopicsForm;
 use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
 
-/* @var $this \humhub\modules\ui\view\components\View */
-/* @var $model \humhub\modules\topic\models\forms\ContentTopicsForm */
+/* @var $this View */
+/* @var $model ContentTopicsForm */
 
 ?>
 

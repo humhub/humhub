@@ -5,7 +5,7 @@ return [
     '<strong>Delete</strong> content?' => '<strong>Eliminar</strong> contingut?',
     '<strong>Move</strong> content' => '<strong>Moure</strong> contingut',
     '<strong>Permalink</strong> to this post' => '<strong>Enllaç</strong> a la publicació',
-    'Activated' => 'Activat',
+    'Enabled' => 'Activat',
     'Add a member to notify' => 'Afegir un membre a notificar',
     'Add tag...' => 'Afegir etiqueta...',
     'Archived' => 'Arxivat',

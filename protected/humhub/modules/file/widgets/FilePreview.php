@@ -93,7 +93,7 @@ class FilePreview extends JsWidget
             'prevent-popover' => $this->preventPopover,
             'popover-position' => $this->popoverPosition,
             'file-edit' => $this->edit,
-            'exclude-media-files-preview' => (int) $this->excludeMediaFilesPreview
+            'exclude-media-files-preview' => (int)$this->excludeMediaFilesPreview
         ];
     }
 
@@ -151,7 +151,7 @@ class FilePreview extends JsWidget
      * Checks whether the file should be highlighed in the results or not.
      *
      * @param File $file
-     * @return boolean is highlighed
+     * @return bool is highlighed
      */
     protected function isHighlighed(File $file)
     {

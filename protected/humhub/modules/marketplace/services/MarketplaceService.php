@@ -17,7 +17,7 @@ use Yii;
  */
 class MarketplaceService
 {
-    const API_URL_ADD_LICENCE_KEY = 'v1/modules/registerPaid';
+    public const API_URL_ADD_LICENCE_KEY = 'v1/modules/registerPaid';
 
     public function getMarketplaceModule(): MarketplaceModule
     {
@@ -74,7 +74,7 @@ class MarketplaceService
     public function getPendingModuleUpdateCount(): int
     {
         return MarketplaceModule::isMarketplaceEnabled()
-            ? (int) $this->getSettings()->get('pendingModuleUpdateCount')
+            ? (int)$this->getSettings()->get('pendingModuleUpdateCount')
             : 0;
     }
 }

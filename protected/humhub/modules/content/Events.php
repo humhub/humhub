@@ -27,7 +27,6 @@ use yii\helpers\Console;
  */
 class Events extends BaseObject
 {
-
     /**
      * Callback when a user is soft deleted.
      *
@@ -100,9 +99,12 @@ class Events extends BaseObject
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\WallEntryLinks::class, [
-            'object' => $event->sender->object,
-        ], ['sortOrder' => 10]
+        $event->sender->addWidget(
+            widgets\WallEntryLinks::class,
+            [
+                'object' => $event->sender->object,
+            ],
+            ['sortOrder' => 10]
         );
     }
 

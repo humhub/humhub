@@ -35,13 +35,12 @@ use Yii;
  */
 class ViewPathRenderer extends \yii\base\BaseObject implements Renderer
 {
-
     /**
      * Can be used to search the parent's view folder (e.g. the modules base view folder) for the view file.
      * Otherwise this renderer searches for a direct views subdirectory.
      *
      * This field is ignored if $viewPath is given.
-     * @var boolean if set to true the renderer will search in the parents view directory for the view.
+     * @var bool if set to true the renderer will search in the parents view directory for the view.
      */
     public $parent = false;
 
@@ -126,7 +125,7 @@ class ViewPathRenderer extends \yii\base\BaseObject implements Renderer
      * The default implementation returns the 'views' subdirectory under the directory containing the notification class file.
      *
      * @param Viewable $viewable The viewable
-     * @param boolean $useSubPath use the subpath if provided
+     * @param bool $useSubPath use the subpath if provided
      * @return string the directory containing the view files for this notification.
      */
     public function getViewPath(Viewable $viewable, $useSubPath = true)

@@ -79,7 +79,7 @@ class UserEditForm extends User
 
     /**
      * Aligns the given group selection with the db
-     * @return boolean
+     * @return bool
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -89,7 +89,7 @@ class UserEditForm extends User
                 if (!$this->isInGroupSelection($userGroup)) {
                     /* @var $groupUser GroupUser */
                     $groupUser = $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one();
-                    if(!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
+                    if (!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
                         $groupUser->delete();
                     }
                 }
@@ -115,7 +115,7 @@ class UserEditForm extends User
     /**
      * Checks if the given group (id or model object) is contained in the form selection
      * @param int|Group $groupId groupId or Group model object
-     * @return boolean true if contained in selection else false
+     * @return bool true if contained in selection else false
      */
     private function isInGroupSelection($groupId)
     {
@@ -127,8 +127,8 @@ class UserEditForm extends User
 
     /**
      * Checks if the user is member of the given group (id or model object)
-     * @param integer $groupId $groupId groupId or Group model object
-     * @return boolean true if user is member else false
+     * @param int $groupId $groupId groupId or Group model object
+     * @return bool true if user is member else false
      */
     private function isCurrentlyMemberOf($groupId)
     {
@@ -149,8 +149,8 @@ class UserEditForm extends User
      */
     public static function getGroupItems($groups = null)
     {
-        if(!$groups) {
-            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() :  Group::findAll(['is_admin_group' => '0']) ;
+        if (!$groups) {
+            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() : Group::findAll(['is_admin_group' => '0']);
         }
 
         $result = [];

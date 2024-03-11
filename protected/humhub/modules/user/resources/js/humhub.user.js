@@ -1,17 +1,17 @@
-humhub.module('user', function(module, require, $) {
+humhub.module('user', function (module, require, $) {
 
-    var isGuest = function() {
+    var isGuest = function () {
         return module.config.isGuest;
     };
-    
-    var guid = function() {
+
+    var guid = function () {
         return module.config.guid;
     };
 
-    var getLocale = function() {
+    var getLocale = function () {
         return module.config.locale;
     };
-    
+
     module.export({
         isGuest: isGuest,
         guid: guid,

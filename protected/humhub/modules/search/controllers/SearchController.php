@@ -28,7 +28,7 @@ class SearchController extends Controller
      * View context used for the search view
      * @see View::$viewContext
      */
-    const VIEW_CONTEXT = 'search';
+    public const VIEW_CONTEXT = 'search';
 
     /**
      * @var string the current search keyword
@@ -40,7 +40,7 @@ class SearchController extends Controller
      */
     public function init()
     {
-        $this->appendPageTitle(\Yii::t('SearchModule.base', 'Search'));
+        $this->appendPageTitle(Yii::t('SearchModule.base', 'Search'));
         $this->view->setViewContext(static::VIEW_CONTEXT);
         parent::init();
     }
@@ -92,16 +92,16 @@ class SearchController extends Controller
         // Store static for use in widgets (e.g. fileList)
         self::$keyword = $model->keyword;
 
-        $pagination = new Pagination;
+        $pagination = new Pagination();
         $pagination->totalCount = $searchResultSet->total;
         $pagination->pageSize = $searchResultSet->pageSize;
 
         return $this->render('index', [
-                    'model' => $model,
-                    'results' => $searchResultSet->getResultInstances(),
-                    'pagination' => $pagination,
-                    'totals' => $model->getTotals($model->keyword, $options),
-                    'limitSpaces' => $limitSpaces
+            'model' => $model,
+            'results' => $searchResultSet->getResultInstances(),
+            'pagination' => $pagination,
+            'totals' => $model->getTotals($model->keyword, $options),
+            'limitSpaces' => $limitSpaces
         ]);
     }
 

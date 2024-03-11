@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\LoaderWidget;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
@@ -29,7 +30,7 @@ use yii\helpers\Html;
         <ul class="media-list"></ul>
     </li>
     <li id="loader_notifications">
-        <?= \humhub\widgets\LoaderWidget::widget(); ?>
+        <?= LoaderWidget::widget(); ?>
     </li>
     <li>
         <div class="dropdown-footer">

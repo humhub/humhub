@@ -14,15 +14,15 @@ use humhub\widgets\ModalDialog;
     'header' => Yii::t('MarketplaceModule.base', 'Module <strong>installed</strong>')
 ]) ?>
 
-    <div class="modal-body">
-        <?= Yii::t('MarketplaceModule.base', 'Well done! To make the module available within your network, you will also need to activate it. Do you want to activate it now?') ?>
-    </div>
+<div class="modal-body">
+    <?= Yii::t('MarketplaceModule.base', 'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?') ?>
+</div>
 
-    <div class="modal-footer">
-        <?= ModalButton::cancel() ?>
-        <?= ModalButton::primary(Yii::t('MarketplaceModule.base', 'Activate now'))
-            ->action('marketplace.enable', ['/marketplace/browse/enable'])
-            ->options(['data-module-id' => $moduleId]) ?>
-    </div>
+<div class="modal-footer">
+    <?= ModalButton::cancel(Yii::t('MarketplaceModule.base', 'No, thank you!')) ?>
+    <?= ModalButton::primary(Yii::t('MarketplaceModule.base', 'Enable now'))
+        ->action('marketplace.enable', ['/marketplace/browse/enable'])
+        ->options(['data-module-id' => $moduleId]) ?>
+</div>
 
 <?php ModalDialog::end() ?>

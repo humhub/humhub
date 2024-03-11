@@ -576,8 +576,8 @@ trait HumHubHelperTrait
 
         $this->expectExceptionMessageRegExp(
             sprintf(
-            // Php < 8 uses: "Argument n passed to class::method() ..."
-            // PHP > 7 uses: "class::method(): Argument #n ($argument) ..."
+                // Php < 8 uses: "Argument n passed to class::method() ..."
+                // PHP > 7 uses: "class::method(): Argument #n ($argument) ..."
                 '@^((Argument %d passed to )?%s::%s\\(\\)(?(2)|: Argument #%d \\(\\$%s\\))) must be of( the)? type %s, %s given, called in /.*@',
                 $argumentNumber,
                 $calledClass,

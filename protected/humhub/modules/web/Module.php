@@ -33,7 +33,7 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.8
-     * @var boolean Disable Service Worker and PWA Support
+     * @var bool Disable Service Worker and PWA Support
      */
     public $enableServiceWorker = true;
 

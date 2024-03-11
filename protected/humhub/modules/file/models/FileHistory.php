@@ -10,7 +10,8 @@ namespace humhub\modules\file\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\user\models\User;
-
+use yii\db\ActiveQuery;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "file_history".
@@ -29,7 +30,7 @@ use humhub\modules\user\models\User;
  */
 class FileHistory extends ActiveRecord
 {
-    const VARIANT_PREFIX = 'old-';
+    public const VARIANT_PREFIX = 'old-';
 
     /**
      * {@inheritdoc}
@@ -55,7 +56,7 @@ class FileHistory extends ActiveRecord
     /**
      * Gets query for [[File]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFile()
     {
@@ -65,7 +66,7 @@ class FileHistory extends ActiveRecord
     /**
      * Gets query for [[CreatedBy]].
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getCreatedBy()
     {
@@ -102,7 +103,7 @@ class FileHistory extends ActiveRecord
      *
      * @param File $file
      * @return bool
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      */
     public static function isEnabled(File $file)
     {
@@ -126,7 +127,7 @@ class FileHistory extends ActiveRecord
      */
     public static function createEntryForFile(File $file): bool
     {
-        $entry = new static;
+        $entry = new static();
         $entry->file_id = $file->id;
         $entry->created_by = empty($file->old_updated_by) ? $file->updated_by : $file->old_updated_by;
         $entry->created_at = empty($file->old_updated_at) ? $file->updated_at : $file->old_updated_at;

@@ -8,7 +8,6 @@ use Yii;
 
 class ImpersonateTest extends HumHubDbTestCase
 {
-
     public function testImpersonateByAdmin()
     {
         $this->becomeUser('Admin');

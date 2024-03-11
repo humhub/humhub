@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'Web' => '',
-];
+return array (
+  'Web' => 'Web',
+);

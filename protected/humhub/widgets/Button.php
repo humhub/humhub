@@ -23,7 +23,6 @@ use yii\helpers\Url;
  */
 class Button extends BootstrapComponent
 {
-
     public $_loader = true;
     public $_link = false;
 
@@ -64,7 +63,8 @@ class Button extends BootstrapComponent
         return self::defaultType($text)->link($url)->icon('back')->right()->loader(true)->sm();
     }
 
-    public static function userPickerSelfSelect($selector, $text = null) {
+    public static function userPickerSelfSelect($selector, $text = null)
+    {
         if (!$text) {
             $text = Yii::t('base', 'Select Me');
         }
@@ -166,14 +166,14 @@ class Button extends BootstrapComponent
      */
     public function onAction($event, $handler, $url = null, $target = null)
     {
-        $this->htmlOptions['data-action-'.$event] = $handler;
+        $this->htmlOptions['data-action-' . $event] = $handler;
 
         if ($url) {
-            $this->htmlOptions['data-action-'.$event.'-url'] = Url::to($url);
+            $this->htmlOptions['data-action-' . $event . '-url'] = Url::to($url);
         }
 
         if ($target) {
-            $this->htmlOptions['data-action-'.$event.'-target'] = $target;
+            $this->htmlOptions['data-action-' . $event . '-target'] = $target;
         }
 
         return $this;
@@ -261,6 +261,6 @@ class Button extends BootstrapComponent
      */
     public function getTypedClass($type)
     {
-        return 'btn-'.$type;
+        return 'btn-' . $type;
     }
 }

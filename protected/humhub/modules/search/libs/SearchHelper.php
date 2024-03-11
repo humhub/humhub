@@ -24,13 +24,12 @@ use yii\db\ActiveRecord;
  */
 class SearchHelper extends BaseObject
 {
-
     /**
      * Checks if given text matches a search query.
      *
      * @param string $query
      * @param string $text
-     * @return boolean
+     * @return bool
      */
     public static function matchQuery($query, $text)
     {

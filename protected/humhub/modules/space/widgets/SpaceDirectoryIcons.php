@@ -21,7 +21,6 @@ use Yii;
  */
 class SpaceDirectoryIcons extends Widget
 {
-
     /**
      * @var Space
      */
@@ -44,7 +43,7 @@ class SpaceDirectoryIcons extends Widget
             $membersCountQuery->visible();
         }
 
-        $count = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, function() use ($membersCountQuery) {
+        $count = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, function () use ($membersCountQuery) {
             return $membersCountQuery->count();
         });
 

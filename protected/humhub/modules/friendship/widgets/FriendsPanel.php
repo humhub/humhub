@@ -10,6 +10,7 @@ namespace humhub\modules\friendship\widgets;
 
 use Yii;
 use humhub\modules\friendship\models\Friendship;
+use yii\base\Widget;
 
 /**
  * A panel which shows users friends in sidebar
@@ -17,9 +18,8 @@ use humhub\modules\friendship\models\Friendship;
  * @since 1.1
  * @author luke
  */
-class FriendsPanel extends \yii\base\Widget
+class FriendsPanel extends Widget
 {
-
     /**
      * @var User the target user
      */
@@ -45,11 +45,11 @@ class FriendsPanel extends \yii\base\Widget
         $friends = $querz->limit($this->limit)->all();
 
         return $this->render('friendsPanel', [
-                    'friends' => $friends,
-                    'friendsShowLimit' => $this->limit,
-                    'totalCount' => $totalCount,
-                    'limit' => $this->limit,
-                    'user' => $this->user,
+            'friends' => $friends,
+            'friendsShowLimit' => $this->limit,
+            'totalCount' => $totalCount,
+            'limit' => $this->limit,
+            'user' => $this->user,
         ]);
     }
 

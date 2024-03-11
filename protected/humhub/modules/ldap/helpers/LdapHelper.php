@@ -18,7 +18,6 @@ use Yii;
  */
 class LdapHelper
 {
-
     /**
      * Checks if LDAP is supported by this environment.
      *
@@ -51,7 +50,5 @@ class LdapHelper
         }
 
         return false;
-
     }
-
 }

@@ -60,7 +60,7 @@ class TopicPicker extends ContentTagPicker
      */
     public function run()
     {
-        if(!static::canAddTopic($this->contentContainer) && !static::hasTopics($this->contentContainer)) {
+        if (!static::canAddTopic($this->contentContainer) && !static::hasTopics($this->contentContainer)) {
             return $this->emptyResult();
         }
 
@@ -97,11 +97,11 @@ class TopicPicker extends ContentTagPicker
      */
     private static function hasTopics(ContentContainerActiveRecord $container = null)
     {
-        if(!$container) {
-            return (bool) Topic::find()->count();
+        if (!$container) {
+            return (bool)Topic::find()->count();
         }
 
-        return (bool) Topic::findByContainer($container)->count();
+        return (bool)Topic::findByContainer($container)->count();
     }
 
     /**
@@ -112,7 +112,7 @@ class TopicPicker extends ContentTagPicker
     public static function jsonResult($tags)
     {
         $result = parent::jsonResult($tags);
-        foreach($result as $key => $tag) {
+        foreach ($result as $key => $tag) {
             $result[$key]['image'] = Yii::$app->getModule('topic')->icon;
         }
 

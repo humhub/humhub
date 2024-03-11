@@ -1,10 +1,11 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\installer\forms\ConfigBasicForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
 /**
- * @var $model \humhub\modules\installer\forms\ConfigBasicForm
+ * @var $model ConfigBasicForm
  */
 
 ?>

@@ -10,7 +10,6 @@ use Yii;
 
 class FollowTest extends HumHubDbTestCase
 {
-
     public function testFollowUser()
     {
         $this->becomeUser('User1');

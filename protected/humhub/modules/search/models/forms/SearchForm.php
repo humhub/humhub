@@ -16,10 +16,10 @@ use Yii;
  */
 class SearchForm extends Model
 {
-    const SCOPE_ALL = 'all';
-    const SCOPE_USER = 'user';
-    const SCOPE_SPACE = 'space';
-    const SCOPE_CONTENT = 'content';
+    public const SCOPE_ALL = 'all';
+    public const SCOPE_USER = 'user';
+    public const SCOPE_SPACE = 'space';
+    public const SCOPE_CONTENT = 'content';
 
     public $keyword = '';
     public $scope = '';
@@ -29,17 +29,17 @@ class SearchForm extends Model
 
     public function init()
     {
-        $page = (int) Yii::$app->request->get('page');
+        $page = (int)Yii::$app->request->get('page');
         $this->page = $page < 1 ? 1 : $page;
 
-        $pageSize = (int) Yii::$app->settings->get('paginationSize');
+        $pageSize = (int)Yii::$app->settings->get('paginationSize');
         $this->pageSize = $pageSize < 1 ? 1 : $pageSize;
     }
 
     /**
      * @inheritdoc
      */
-    public function rules() 
+    public function rules()
     {
         return [
             [['keyword', 'scope', 'page', 'limitSpaceGuids'], 'safe']

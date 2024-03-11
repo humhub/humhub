@@ -1,5 +1,8 @@
 <?php
 
+use humhub\modules\space\models\forms\InviteForm;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\services\LinkRegistrationService;
 use user\FunctionalTester;
 
 class LinkInviteCest
@@ -10,8 +13,8 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
 
-        $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
-        $inviteForm->space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm();
+        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
@@ -36,12 +39,12 @@ class LinkInviteCest
 
 
         // Generate Token
-        $space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
-        $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
+        $space = Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm();
         $inviteForm->space = $space;
         $inviteUrl = $inviteForm->getInviteLink();
 
-        $linkRegistrationService = new \humhub\modules\user\services\LinkRegistrationService(null, $space);
+        $linkRegistrationService = new LinkRegistrationService(null, $space);
         $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => $space->id]);
         $I->seeResponseCodeIs(200);
 
@@ -62,8 +65,8 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
-        $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
-        $inviteForm->space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm();
+        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
@@ -96,7 +99,7 @@ class LinkInviteCest
         $I->see('Dashboard');
 
         $userId = \humhub\modules\user\models\User::findOne(['username' => 'NewUser']);
-        $space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
+        $space = Space::findOne(['name' => 'Space 2']);
 
         if (!$space->isMember($userId)) {
             $I->see('User is not member of invited Space!');

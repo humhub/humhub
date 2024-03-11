@@ -16,7 +16,7 @@ class AdminDeleteCommentForm extends yii\base\Model
     public $message;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $notify;
 

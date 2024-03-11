@@ -14,8 +14,11 @@ use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\user\models\Invite;
+use Throwable;
 use Yii;
+use yii\base\Exception;
 use yii\web\HttpException;
+use yii\web\Response;
 
 class PendingRegistrationsController extends Controller
 {
@@ -74,10 +77,10 @@ class PendingRegistrationsController extends Controller
      * Export user list as csv or xlsx
      *
      * @param string $format supported format by phpspreadsheet
-     * @return \yii\web\Response
+     * @return Response
      * @throws \PhpOffice\PhpSpreadsheet\Exception
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionExport($format)
     {
@@ -99,7 +102,7 @@ class PendingRegistrationsController extends Controller
     /**
      * Resend a invite
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
      */
@@ -121,10 +124,10 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete an invite
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionDelete($id)
     {
@@ -144,10 +147,10 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete all invitations
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionDeleteAll()
     {
@@ -165,10 +168,10 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete all or selected invitation
      *
-     * @param integer $id
+     * @param int $id
      * @return string
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionDeleteAllSelected()
     {

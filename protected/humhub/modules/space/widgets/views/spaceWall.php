@@ -2,6 +2,7 @@
 
 use humhub\modules\space\widgets\Image;
 use yii\helpers\Html;
+
 ?>
 
 <div class="panel panel-default">
@@ -18,7 +19,8 @@ use yii\helpers\Html;
             </a>
             <div class="media-body">
                 <!-- show username with link and creation time-->
-                <h4 class="media-heading"><a href="<?= $space->getUrl(); ?>"><?= Html::encode($space->displayName); ?></a> </h4>
+                <h4 class="media-heading"><a
+                        href="<?= $space->getUrl(); ?>"><?= Html::encode($space->displayName); ?></a></h4>
                 <h5><?= Html::encode($space->description); ?></h5>
             </div>
         </div>

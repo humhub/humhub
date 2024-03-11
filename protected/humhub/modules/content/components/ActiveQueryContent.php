@@ -11,12 +11,16 @@ namespace humhub\modules\content\components;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
+use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
+use yii\db\Query;
 
 /**
  * ActiveQueryContent is an enhanced ActiveQuery with additional selectors for especially content.
@@ -31,11 +35,11 @@ class ActiveQueryContent extends ActiveQuery
      * Own content scope for userRelated
      * @see ActiveQueryContent::userRelated
      */
-    const USER_RELATED_SCOPE_OWN = 1;
-    const USER_RELATED_SCOPE_SPACES = 2;
-    const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
-    const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
-    const USER_RELATED_SCOPE_OWN_PROFILE = 5;
+    public const USER_RELATED_SCOPE_OWN = 1;
+    public const USER_RELATED_SCOPE_SPACES = 2;
+    public const USER_RELATED_SCOPE_FOLLOWED_SPACES = 3;
+    public const USER_RELATED_SCOPE_FOLLOWED_USERS = 4;
+    public const USER_RELATED_SCOPE_OWN_PROFILE = 5;
 
     /**
      * State filter that is used for queries. By default, only Published content is returned.
@@ -55,9 +59,9 @@ class ActiveQueryContent extends ActiveQuery
     /**
      * Only returns user readable records
      *
-     * @param \humhub\modules\user\models\User $user
-     * @return \humhub\modules\content\components\ActiveQueryContent
-     * @throws \Throwable
+     * @param User $user
+     * @return ActiveQueryContent
+     * @throws Throwable
      */
     public function readable($user = null)
     {
@@ -126,14 +130,14 @@ class ActiveQueryContent extends ActiveQuery
      * Limits the returned records to the given ContentContainer.
      *
      * @param ContentContainerActiveRecord $container |null or null for global content
-     * @return \humhub\modules\content\components\ActiveQueryContent
-     * @throws \yii\base\Exception
+     * @return ActiveQueryContent
+     * @throws Exception
      */
     public function contentContainer($container)
     {
         if ($container === null) {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
-            $this->andWhere(['IS', 'contentcontainer.pk', new \yii\db\Expression('NULL')]);
+            $this->andWhere(['IS', 'contentcontainer.pk', new Expression('NULL')]);
         } else {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
             $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => get_class($container)]);
@@ -162,7 +166,7 @@ class ActiveQueryContent extends ActiveQuery
                 $contentTagQuery->andWhere('content_tag_relation.content_id=content.id');
                 $this->andWhere(['content.id' => $contentTagQuery]);
             }
-        } else if ($mode == 'OR') {
+        } elseif ($mode == 'OR') {
             $names = array_map(function ($v) {
                 return $v->name;
             }, $contentTags);
@@ -197,13 +201,13 @@ class ActiveQueryContent extends ActiveQuery
      *
      * @param array $scopes
      * @param User $user
-     * @return \humhub\modules\content\components\ActiveQueryContent
-     * @throws \Throwable
+     * @return ActiveQueryContent
+     * @throws Throwable
      */
     public function userRelated($scopes = [], $user = null)
     {
         if ($user === null) {
-            if ( Yii::$app->user->isGuest) {
+            if (Yii::$app->user->isGuest) {
                 return $this->andWhere('false');
             }
 
@@ -222,11 +226,11 @@ class ActiveQueryContent extends ActiveQuery
         }
 
         if (in_array(self::USER_RELATED_SCOPE_SPACES, $scopes)) {
-            $spaceMemberships = (new \yii\db\Query())
+            $spaceMemberships = (new Query())
                 ->select("sm.id")
                 ->from('space_membership')
                 ->leftJoin('space sm', 'sm.id=space_membership.space_id')
-                ->where('space_membership.user_id=:userId AND space_membership.status=' . \humhub\modules\space\models\Membership::STATUS_MEMBER);
+                ->where('space_membership.user_id=:userId AND space_membership.status=' . Membership::STATUS_MEMBER);
             $conditions[] = 'contentcontainer.pk IN (' . Yii::$app->db->getQueryBuilder()->build($spaceMemberships)[0] . ') AND contentcontainer.class = :spaceClass';
             $params[':userId'] = $user->id;
             $params[':spaceClass'] = Space::class;
@@ -238,7 +242,7 @@ class ActiveQueryContent extends ActiveQuery
         }
 
         if (in_array(self::USER_RELATED_SCOPE_FOLLOWED_SPACES, $scopes)) {
-            $spaceFollow = (new \yii\db\Query())
+            $spaceFollow = (new Query())
                 ->select("sf.id")
                 ->from('user_follow')
                 ->leftJoin('space sf', 'sf.id=user_follow.object_id AND user_follow.object_model=:spaceClass')
@@ -249,7 +253,7 @@ class ActiveQueryContent extends ActiveQuery
         }
 
         if (in_array(self::USER_RELATED_SCOPE_FOLLOWED_USERS, $scopes)) {
-            $userFollow = (new \yii\db\Query())
+            $userFollow = (new Query())
                 ->select(["uf.id"])
                 ->from('user_follow')
                 ->leftJoin('user uf', 'uf.id=user_follow.object_id AND user_follow.object_model=:userClass')

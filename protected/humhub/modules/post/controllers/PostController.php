@@ -19,7 +19,10 @@ use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\Form;
+use Throwable;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -33,8 +36,8 @@ class PostController extends ContentContainerController
      * @param $id
      * @return string
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\Exception
+     * @throws Throwable
+     * @throws Exception
      */
     public function actionView($id)
     {
@@ -62,9 +65,9 @@ class PostController extends ContentContainerController
 
     /**
      * @return array|mixed
-     * @throws \Throwable
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function actionPost()
     {

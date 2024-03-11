@@ -27,7 +27,7 @@ class AccountTopMenu extends Menu
     public $id = 'account-top-menu';
 
     /**
-     * @var boolean show user name
+     * @var bool show user name
      */
     public $showUserName = true;
 

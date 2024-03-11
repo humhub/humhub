@@ -1,4 +1,5 @@
 <?php
+
 return [
     ['id' => 1, 'class' => 'humhub\modules\notification\tests\codeception\unit\category\notifications\TestNotification', 'user_id' => 2, 'created_at' => '2014-08-08 05:36:05', 'send_web_notifications' => 1],
     ['id' => 2, 'class' => 'humhub\modules\notification\tests\codeception\unit\category\notifications\TestNotification', 'user_id' => 2, 'created_at' => '2014-08-08 05:37:05', 'send_web_notifications' => 1],

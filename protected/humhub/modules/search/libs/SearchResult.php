@@ -15,7 +15,6 @@ namespace humhub\modules\search\libs;
  */
 class SearchResult
 {
-
     /**
      * Type
      *

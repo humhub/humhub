@@ -30,7 +30,7 @@ return [
     'Your lastname' => '',
     'Your mobile phone number' => '',
     'Your phone number at work' => '',
-    'Your skills, knowledge and experience (comma seperated)' => '',
+    'Your skills, knowledge and experience' => '',
     'Your title or position' => '',
     '« Prev' => '',
 ];

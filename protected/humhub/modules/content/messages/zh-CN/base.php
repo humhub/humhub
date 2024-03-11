@@ -2,7 +2,7 @@
 
 return [
     '<strong>Permalink</strong> to this post' => '获取该记录<strong>链接</strong>',
-    'Activated' => '启用',
+    'Enabled' => '启用',
     'Add a member to notify' => '增加一个通知成员',
     'Archived' => '已存档',
     'Back to stream' => '返回动态',

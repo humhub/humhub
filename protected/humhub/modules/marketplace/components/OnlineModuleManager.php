@@ -13,11 +13,14 @@ use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\models\Module as ModelModule;
 use humhub\modules\marketplace\Module;
 use humhub\modules\marketplace\services\MarketplaceService;
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Yii;
 use yii\base\Component;
 use yii\base\ErrorException;
-use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\web\HttpException;
+use yii\base\Exception;
 use yii\helpers\FileHelper;
 use yii\web\ServerErrorHttpException;
 use ZipArchive;
@@ -29,18 +32,20 @@ use ZipArchive;
  */
 class OnlineModuleManager extends Component
 {
-    const EVENT_BEFORE_UPDATE = 'beforeUpdate';
-    const EVENT_AFTER_UPDATE = 'afterUpdate';
+    public const EVENT_BEFORE_UPDATE = 'beforeUpdate';
+    public const EVENT_AFTER_UPDATE = 'afterUpdate';
 
     private $_modules = null;
 
     /**
      * Installs latest compatible module version
      *
-     * @param $moduleId
+     * @param string $moduleId
      * @return void
-     * @throws ServerErrorHttpException
+     * @throws Exception
+     * @throws HttpException
      * @throws InvalidConfigException
+     * @throws ServerErrorHttpException
      */
     public function install($moduleId)
     {
@@ -81,8 +86,9 @@ class OnlineModuleManager extends Component
     private function removeModuleDir($path)
     {
         if (is_dir($path)) {
-            $files = new \RecursiveIteratorIterator(
-                new \RecursiveDirectoryIterator($path, \RecursiveDirectoryIterator::SKIP_DOTS), \RecursiveIteratorIterator::CHILD_FIRST
+            $files = new RecursiveIteratorIterator(
+                new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
+                RecursiveIteratorIterator::CHILD_FIRST
             );
 
             foreach ($files as $fileinfo) {
@@ -98,7 +104,7 @@ class OnlineModuleManager extends Component
 
     private function unzip($file, $folder)
     {
-        $zip = new ZipArchive;
+        $zip = new ZipArchive();
         $res = $zip->open($file);
         if ($res !== true) {
             return false;
@@ -189,6 +195,8 @@ class OnlineModuleManager extends Component
      * @throws InvalidConfigException
      * @throws ServerErrorHttpException
      * @throws ErrorException
+     * @throws HttpException
+     * @throws InvalidConfigException
      */
     public function update($moduleId)
     {
@@ -207,7 +215,7 @@ class OnlineModuleManager extends Component
         $this->install($moduleId);
 
         $updatedModule = Yii::$app->moduleManager->getModule($moduleId);
-        $updatedModule->getMigrationService()->migrateUp();
+        $updatedModule->update();
 
         (new MarketplaceService())->refreshPendingModuleUpdateCount();
 
@@ -243,7 +251,7 @@ class OnlineModuleManager extends Component
         $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
         if ($this->_modules === null || !is_array($this->_modules)) {
             $this->_modules = HumHubAPI::request('v1/modules/list', [
-                'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
+                'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates')
             ]);
 
             foreach ($module->moduleBlacklist as $blacklistedModuleId) {
@@ -341,7 +349,7 @@ class OnlineModuleManager extends Component
         }
 
         return HumHubAPI::request('v1/modules/info', [
-            'id' => $moduleId, 'includeBetaVersions' => (boolean)$module->settings->get('includeBetaUpdates')
+            'id' => $moduleId, 'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates')
         ]);
     }
 

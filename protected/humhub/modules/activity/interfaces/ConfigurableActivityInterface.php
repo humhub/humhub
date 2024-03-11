@@ -19,7 +19,6 @@ namespace humhub\modules\activity\interfaces;
  */
 interface ConfigurableActivityInterface
 {
-
     /**
      * Returns the title of the activity, which is displayed on the configuration page.
      *

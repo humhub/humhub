@@ -12,13 +12,12 @@ use humhub\modules\user\models\User;
 
 /**
  * PeopleIcons shows footer icons for people cards
- * 
+ *
  * @since 1.9
  * @author Luke
  */
 class PeopleIcons extends Widget
 {
-
     /**
      * @var User
      */

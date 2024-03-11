@@ -9,7 +9,6 @@ use humhub\components\rendering\MailLayoutRenderer;
 
 class MailLayoutRendererTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testExistingTextView()
@@ -26,7 +25,7 @@ class MailLayoutRendererTest extends HumHubDbTestCase
         $renderer = new MailLayoutRenderer(['parent' => true]);
         $this->assertEquals('TestViewText', $renderer->renderText($viewable));
     }
-    
+
     public function testNonExistingTextLayout()
     {
         try {

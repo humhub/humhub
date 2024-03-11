@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\modules\space\models\Space;
 use yii\base\Widget;
 
 /**
@@ -18,9 +19,8 @@ use yii\base\Widget;
  */
 class PendingApprovals extends Widget
 {
-
     /**
-     * @var \humhub\modules\space\models\Space
+     * @var Space
      */
     public $space;
 

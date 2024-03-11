@@ -5,7 +5,7 @@ return [
     '<strong>Delete</strong> content?' => '<strong>刪除</strong>內容?',
     '<strong>Move</strong> content' => '<strong>移動</strong>內容',
     '<strong>Permalink</strong> to this post' => '這篇貼文的<strong>永久連結</strong>',
-    'Activated' => '已啟用',
+    'Enabled' => '已啟用',
     'Add a member to notify' => '添加被通知成員',
     'Add tag...' => '添加標籤...',
     'Archived' => '封存的貼文',

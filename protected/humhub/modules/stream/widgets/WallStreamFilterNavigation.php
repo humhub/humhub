@@ -64,38 +64,38 @@ class WallStreamFilterNavigation extends FilterNavigation
     /**
      * Panel columns
      */
-    const PANEL_COLUMN_1= 0;
-    const PANEL_COLUMN_2 = 1;
-    const PANEL_COLUMN_3 = 2;
-    const PANEL_COLUMN_4 = 3;
+    public const PANEL_COLUMN_1 = 0;
+    public const PANEL_COLUMN_2 = 1;
+    public const PANEL_COLUMN_3 = 2;
+    public const PANEL_COLUMN_4 = 3;
 
-    const FILTER_BLOCK_BASIC = 'basic';
-    const FILTER_BLOCK_VISIBILITY = 'visibility';
-    const FILTER_BLOCK_SORTING = 'sorting';
-    const FILTER_BLOCK_SCOPE = 'scope';
-    const FILTER_BLOCK_CONTENT_TYPE = 'contentType';
-    const FILTER_BLOCK_TOPIC = 'topics';
-    const FILTER_BLOCK_ORIGINATORS = 'originators';
-    const FILTER_BLOCK_DATE_FROM = 'dateFrom';
-    const FILTER_BLOCK_DATE_TO = 'dateTo';
+    public const FILTER_BLOCK_BASIC = 'basic';
+    public const FILTER_BLOCK_VISIBILITY = 'visibility';
+    public const FILTER_BLOCK_SORTING = 'sorting';
+    public const FILTER_BLOCK_SCOPE = 'scope';
+    public const FILTER_BLOCK_CONTENT_TYPE = 'contentType';
+    public const FILTER_BLOCK_TOPIC = 'topics';
+    public const FILTER_BLOCK_ORIGINATORS = 'originators';
+    public const FILTER_BLOCK_DATE_FROM = 'dateFrom';
+    public const FILTER_BLOCK_DATE_TO = 'dateTo';
 
-    const FILTER_USER_INVOVLED = 'entry_userinvolved';
-    const FILTER_MINE = 'entry_mine';
-    const FILTER_FILES = 'entry_files';
+    public const FILTER_USER_INVOVLED = 'entry_userinvolved';
+    public const FILTER_MINE = 'entry_mine';
+    public const FILTER_FILES = 'entry_files';
 
-    const FILTER_VISIBILITY_PUBLIC = 'visibility_public';
-    const FILTER_VISIBILITY_PRIVATE = 'visibility_private';
-    const FILTER_ARCHIVED = 'entry_archived';
-    const FILTER_HIDDEN = 'entry_hidden';
-    const FILTER_CONTENT_TYPE = 'content_type';
-    const FILTER_TOPICS = 'topic';
-    const FILTER_ORIGINATORS = 'originators';
+    public const FILTER_VISIBILITY_PUBLIC = 'visibility_public';
+    public const FILTER_VISIBILITY_PRIVATE = 'visibility_private';
+    public const FILTER_ARCHIVED = 'entry_archived';
+    public const FILTER_HIDDEN = 'entry_hidden';
+    public const FILTER_CONTENT_TYPE = 'content_type';
+    public const FILTER_TOPICS = 'topic';
+    public const FILTER_ORIGINATORS = 'originators';
 
-    const FILTER_SORT_CREATION = 'sort_creation';
-    const FILTER_SORT_UPDATE = 'sort_update';
+    public const FILTER_SORT_CREATION = 'sort_creation';
+    public const FILTER_SORT_UPDATE = 'sort_update';
 
-    const FILTER_DATE_FROM = 'date_from';
-    const FILTER_DATE_TO = 'date_to';
+    public const FILTER_DATE_FROM = 'date_from';
+    public const FILTER_DATE_TO = 'date_to';
 
     public $jsWidget = 'stream.wall.WallStreamFilter';
 
@@ -163,7 +163,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         ], static::PANEL_COLUMN_2);
 
 
-        if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
+        if (TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
                 'title' => Yii::t('StreamModule.filter', 'Topic'),
                 'sortOrder' => 300
@@ -177,13 +177,13 @@ class WallStreamFilterNavigation extends FilterNavigation
      */
     protected function initFilters()
     {
-       $this->initBasicFilters();
-       $this->initVisibilityFilters();
-       $this->initSortFilters();
-       $this->initTopicFilter();
-       $this->initContentTypeFilter();
-       $this->initOriginatorFilter();
-       $this->initDateFilters();
+        $this->initBasicFilters();
+        $this->initVisibilityFilters();
+        $this->initSortFilters();
+        $this->initTopicFilter();
+        $this->initContentTypeFilter();
+        $this->initOriginatorFilter();
+        $this->initDateFilters();
     }
 
     protected function initBasicFilters()
@@ -208,14 +208,14 @@ class WallStreamFilterNavigation extends FilterNavigation
 
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
-            'title' =>  Yii::t('ContentModule.base', 'Archived'),
+            'title' => Yii::t('ContentModule.base', 'Archived'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
 
 
         $this->addFilter([
             'id' => static::FILTER_HIDDEN,
-            'title' =>  Yii::t('ContentModule.base', 'Hidden'),
+            'title' => Yii::t('ContentModule.base', 'Hidden'),
             'sortOrder' => 200
         ], static::FILTER_BLOCK_BASIC);
     }
@@ -225,7 +225,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         $container = ContentContainerHelper::getCurrent();
 
         // Private spaces do not have public content
-        if($container && $container->canAccessPrivateContent()
+        if ($container && $container->canAccessPrivateContent()
             && ($container instanceof User
                 || ($container instanceof Space && $container->visibility !== Space::VISIBILITY_NONE))) {
 
@@ -259,7 +259,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'category' => 'sort',
             'radioGroup' => 'sort',
             'force' => true,
-            'title' =>  Yii::t('ContentModule.base', 'Creation time'),
+            'title' => Yii::t('ContentModule.base', 'Creation time'),
             'checked' => $defaultSorting === Stream::SORT_CREATED_AT,
             'value' => Stream::SORT_CREATED_AT,
             'sortOrder' => 100
@@ -268,7 +268,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilter([
             'id' => static::FILTER_SORT_UPDATE,
             'class' => RadioFilterInput::class,
-            'title' =>  Yii::t('ContentModule.base', 'Last update'),
+            'title' => Yii::t('ContentModule.base', 'Last update'),
             'category' => 'sort',
             'radioGroup' => 'sort',
             'force' => true,
@@ -280,7 +280,7 @@ class WallStreamFilterNavigation extends FilterNavigation
 
     private function initTopicFilter()
     {
-        if(TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
+        if (TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilter([
                 'id' => static::FILTER_TOPICS,
                 'class' => PickerFilterInput::class,

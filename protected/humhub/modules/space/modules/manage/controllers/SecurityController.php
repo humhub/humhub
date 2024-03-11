@@ -51,10 +51,10 @@ class SecurityController extends Controller
 
         $visibilities = [];
         if ($space->visibility === Space::VISIBILITY_NONE ||
-            Yii::$app->user->permissionManager->can(new CreatePrivateSpace)) {
+            Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
             $visibilities[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
-        $canCreatePublicSpace = Yii::$app->user->permissionManager->can(new CreatePublicSpace);
+        $canCreatePublicSpace = Yii::$app->user->permissionManager->can(new CreatePublicSpace());
         if ($space->visibility === Space::VISIBILITY_REGISTERED_ONLY ||
             $canCreatePublicSpace) {
             $visibilities[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Registered users only)');
@@ -84,9 +84,9 @@ class SecurityController extends Controller
         $return = $space->permissionManager->handlePermissionStateChange($groupId);
 
         return $return ?? $this->render('permissions', [
-                    'space' => $space,
-                    'groups' => $groups,
-                    'groupId' => $groupId
+            'space' => $space,
+            'groups' => $groups,
+            'groupId' => $groupId
         ]);
     }
 }

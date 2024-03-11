@@ -20,7 +20,6 @@ use humhub\modules\notification\models\forms\NotificationSettings;
  */
 class UserController extends BaseAccountController
 {
-
     public function actionIndex()
     {
         $form = new NotificationSettings(['user' => Yii::$app->user->getIdentity()]);

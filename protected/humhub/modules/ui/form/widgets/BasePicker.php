@@ -4,6 +4,7 @@ namespace humhub\modules\ui\form\widgets;
 
 use Yii;
 use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -74,21 +75,21 @@ abstract class BasePicker extends JsInputWidget
     /**
      * Maximum amount of selection items.
      *
-     * @var integer
+     * @var int
      */
     public $maxSelection = 50;
 
     /**
      * Minimum character input before triggering search query.
      *
-     * @var integer
+     * @var int
      */
     public $minInput = 3;
 
     /**
      * Minimum character input before triggering search query.
      *
-     * @var integer
+     * @var int
      */
     public $maxInput = 20;
 
@@ -142,7 +143,7 @@ abstract class BasePicker extends JsInputWidget
     /**
      * Model instance.
      *
-     * @var \yii\db\ActiveRecord
+     * @var ActiveRecord
      */
     public $model;
 
@@ -194,31 +195,31 @@ abstract class BasePicker extends JsInputWidget
     /**
      * If set to true the picker will be focused automatically.
      *
-     * @var boolean
+     * @var bool
      */
     public $focus = false;
 
     /**
      * @inheritdoc
-     * @var boolean
+     * @var bool
      */
     public $init = true;
 
     /**
      * Used to retrieve the option text of a given $item.
      *
-     * @param \yii\db\ActiveRecord $item selected item
+     * @param ActiveRecord $item selected item
      * @return string item option text
      */
-    protected abstract function getItemText($item);
+    abstract protected function getItemText($item);
 
     /**
      * Used to retrieve the option image url of a given $item.
      *
-     * @param \yii\db\ActiveRecord $item selected item
+     * @param ActiveRecord $item selected item
      * @return string|null image url or null if no selection image required.
      */
-    protected abstract function getItemImage($item);
+    abstract protected function getItemImage($item);
 
     /**
      * @inhertidoc
@@ -309,7 +310,7 @@ abstract class BasePicker extends JsInputWidget
      * Responsible for building the option data for an item.
      *
      * @param mixed $item
-     * @param boolean $selected
+     * @param bool $selected
      * @return array
      */
     protected function buildItemOption($item, $selected = true)

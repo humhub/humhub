@@ -2,7 +2,7 @@
 return array (
   'Likes' => '',
   'Receive Notifications when someone likes your content.' => '',
-  'View Online' => '',
+  'View Online' => 'Zobraziť Online',
   '{displayNames} likes your {contentTitle}.' => '',
   '{displayNames} likes {contentTitle}.' => '',
   '{displayName} likes your {contentTitle}.' => '',

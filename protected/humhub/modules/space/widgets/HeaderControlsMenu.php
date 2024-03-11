@@ -47,7 +47,7 @@ class HeaderControlsMenu extends DropdownMenu
     {
         parent::init();
 
-        if(!$this->label) {
+        if (!$this->label) {
             $this->label = Icon::get('controls');
         }
 

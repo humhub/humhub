@@ -20,7 +20,6 @@ use yii\data\Pagination;
  */
 class SpaceDirectoryQuery extends ActiveQuerySpace
 {
-
     /**
      * @var Pagination
      */

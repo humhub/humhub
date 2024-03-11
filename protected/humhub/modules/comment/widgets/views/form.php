@@ -15,10 +15,10 @@ use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $objectModel string */
-/* @var $objectId integer */
+/* @var $objectId int */
 /* @var $model Comment */
 /* @var $id string unique object id */
-/* @var $isNestedComment boolean */
+/* @var $isNestedComment bool */
 /* @var $contentModule Module */
 /* @var $mentioningUrl string */
 /* @var $isHidden bool */

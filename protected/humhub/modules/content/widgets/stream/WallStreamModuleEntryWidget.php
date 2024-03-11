@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\stream;
-
 
 use Exception;
 use humhub\libs\Html;
@@ -15,7 +13,7 @@ use humhub\modules\ui\icon\widgets\Icon;
  */
 abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
 {
-    const DEFAULT_ICON = 'comment';
+    public const DEFAULT_ICON = 'comment';
 
     /**
      * @inheritDoc
@@ -42,7 +40,7 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
      */
     protected function renderHeadImage()
     {
-        return Html::a( $this->renderIconImage(), $this->getPermaLink());
+        return Html::a($this->renderIconImage(), $this->getPermaLink());
     }
 
     /**
@@ -52,7 +50,7 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
      */
     private function renderIconImage()
     {
-        $icon =  Icon::get($this->getIcon(), ['fixedWidth' => true]);
+        $icon = Icon::get($this->getIcon(), ['fixedWidth' => true]);
         return $icon ? $icon->asString() : '';
     }
 
@@ -75,5 +73,5 @@ abstract class WallStreamModuleEntryWidget extends WallStreamEntryWidget
     /**
      * @return string a non encoded plain text title (no html allowed) used in the header of the widget
      */
-    protected abstract function getTitle();
+    abstract protected function getTitle();
 }

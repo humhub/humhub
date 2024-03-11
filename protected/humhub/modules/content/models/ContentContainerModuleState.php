@@ -15,25 +15,25 @@ use yii\db\ActiveRecord;
 /**
  * This is the model class for table "contentcontainer_module".
  *
- * @property integer $contentcontainer_id
+ * @property int $contentcontainer_id
  * @property string $module_id
- * @property integer $module_state
+ * @property int $module_state
  *
  * @property ContentContainer $contentContainer
  */
 class ContentContainerModuleState extends ActiveRecord
 {
     /** @var int */
-    const STATE_DISABLED = 0;
+    public const STATE_DISABLED = 0;
 
     /** @var int */
-    const STATE_ENABLED = 1;
+    public const STATE_ENABLED = 1;
 
     /** @var int */
-    const STATE_FORCE_ENABLED = 2;
+    public const STATE_FORCE_ENABLED = 2;
 
     /** @var int */
-    const STATE_NOT_AVAILABLE = 3;
+    public const STATE_NOT_AVAILABLE = 3;
 
     /**
      * @inheritdoc
@@ -52,7 +52,7 @@ class ContentContainerModuleState extends ActiveRecord
         $states = [
             self::STATE_NOT_AVAILABLE => Yii::t('AdminModule.modules', 'Not available'),
             self::STATE_DISABLED => Yii::t('AdminModule.modules', 'Deactivated'),
-            self::STATE_ENABLED => Yii::t('AdminModule.modules', 'Activated'),
+            self::STATE_ENABLED => Yii::t('AdminModule.modules', 'Enabled'),
             self::STATE_FORCE_ENABLED => Yii::t('AdminModule.modules', 'Always activated')
         ];
 

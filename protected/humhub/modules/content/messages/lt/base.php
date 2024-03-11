@@ -2,7 +2,7 @@
 
 return [
     '<strong>Permalink</strong> to this post' => '<strong>Priskirti</strong> nuorodą šiam įrašui',
-    'Activated' => 'Aktyvuota',
+    'Enabled' => 'Aktyvuota',
     'Add a member to notify' => 'Pridėti narį prie pranešimų',
     'Archived' => 'Archyvuotas',
     'Back to stream' => 'Grįžti į sieną',

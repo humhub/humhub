@@ -35,10 +35,10 @@ use yii\web\UploadedFile;
  *
  * The following are the available columns in table 'file':
  *
- * @property integer $id
+ * @property int $id
  * @property string $guid
- * @property integer $state
- * @property integer|null $category Note, categories are still experimental. Expect changes in v1.16 (ToDo)
+ * @property int $state
+ * @property int|null $category Note, categories are still experimental. Expect changes in v1.16 (ToDo)
  * @property string $file_name
  * @property string $title
  * @property string $mime_type
@@ -64,14 +64,14 @@ use yii\web\UploadedFile;
  * ```
  *
  * @property string|null $object_model
- * @property integer|null $object_id
- * @property integer|null $content_id
- * @property integer $sort_order
+ * @property int|null $object_id
+ * @property int|null $content_id
+ * @property int $sort_order
  * @property string|null $created_at
- * @property integer|null $created_by
+ * @property int|null $created_by
  * @property string|null $updated_at
- * @property integer|null $updated_by
- * @property integer|null $show_in_stream
+ * @property int|null $updated_by
+ * @property int|null $show_in_stream
  * @property string|null $hash_sha1
  *
  * @property StorageManager $store
@@ -242,7 +242,7 @@ class File extends FileCompat implements ViewableInterface
      * - download: force download option (default: false)
      *
      * @param array $params the params
-     * @param boolean $absolute
+     * @param bool $absolute
      * @return string the url to the file download
      */
     public function getUrl($params = [], $absolute = true)
@@ -351,7 +351,7 @@ class File extends FileCompat implements ViewableInterface
     /**
      * Checks if this file record is already attached to record.
      *
-     * @return boolean is whether in use or not
+     * @return bool is whether in use or not
      */
     public function isAssigned()
     {

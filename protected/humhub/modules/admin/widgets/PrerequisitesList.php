@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\libs\SelfTest;
+use yii\base\Widget;
 
 /**
  * PrerequisitesList widget shows all current prerequisites
@@ -16,9 +17,8 @@ use humhub\libs\SelfTest;
  * @since 1.1
  * @author Luke
  */
-class PrerequisitesList extends \yii\base\Widget
+class PrerequisitesList extends Widget
 {
-
     /**
      * @inheritdoc
      */
@@ -30,7 +30,7 @@ class PrerequisitesList extends \yii\base\Widget
     /**
      * Check there is an error
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasError()
     {

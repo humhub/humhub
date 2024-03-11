@@ -16,7 +16,6 @@ use humhub\modules\content\models\Content;
 
 class ContentEditTest extends HumHubDbTestCase
 {
-
     public function testNewContentIsNotEdited()
     {
         $this->becomeUser('User2');

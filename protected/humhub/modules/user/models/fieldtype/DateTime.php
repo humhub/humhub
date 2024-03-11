@@ -8,9 +8,12 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use DateTimeZone;
 use humhub\libs\DbDateValidator;
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Html;
 
 /**
  * ProfileFieldTypeDateTime
@@ -28,7 +31,7 @@ class DateTime extends BaseType
     /**
      * Checkbox show also time picker
      *
-     * @var boolean
+     * @var bool
      */
     public $showTimePicker = false;
 
@@ -52,17 +55,17 @@ class DateTime extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
-                        'elements' => [
-                            'showTimePicker' => [
-                                'type' => 'checkbox',
-                                'label' => Yii::t('UserModule.profile', 'Show date/time picker'),
-                                'class' => 'form-control',
-                            ],
-                        ]
-        ]]);
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Date(-time) field options'),
+                'elements' => [
+                    'showTimePicker' => [
+                        'type' => 'checkbox',
+                        'label' => Yii::t('UserModule.profile', 'Show date/time picker'),
+                        'class' => 'form-control',
+                    ],
+                ]
+            ]]);
     }
 
     /**
@@ -71,8 +74,8 @@ class DateTime extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'DATETIME');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'DATETIME');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -111,15 +114,17 @@ class DateTime extends BaseType
     {
         $internalName = $this->profileField->internal_name;
 
-        $date = \DateTime::createFromFormat('Y-m-d H:i:s', $user->profile->$internalName ?? '',
-            new \DateTimeZone(Yii::$app->formatter->timeZone));
+        $date = \DateTime::createFromFormat(
+            'Y-m-d H:i:s',
+            $user->profile->$internalName ?? '',
+            new DateTimeZone(Yii::$app->formatter->timeZone)
+        );
 
-        if ($date === false)
+        if ($date === false) {
             return "";
+        }
 
-        return $raw ? \yii\helpers\Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDatetime($date, 'long');
+        return $raw ? Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDatetime($date, 'long');
     }
 
 }
-
-?>

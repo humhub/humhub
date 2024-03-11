@@ -11,8 +11,8 @@ use yii\helpers\Url;
  * @var $currentSpace Space
  * @var $noSpaceHtml string
  *
- * @var $canCreateSpace boolean
- * @var $canAccessDirectory boolean
+ * @var $canCreateSpace bool
+ * @var $canAccessDirectory bool
  *
  * @var $renderedItems string
  */

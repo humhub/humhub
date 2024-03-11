@@ -1,11 +1,9 @@
 <?php
 
-
 use yii\db\Migration;
 
 class m140930_212528_fix_default extends Migration
 {
-
     public function up()
     {
         $this->alterColumn('notification', 'emailed', 'tinyint(4) NOT NULL DEFAULT \'0\'');

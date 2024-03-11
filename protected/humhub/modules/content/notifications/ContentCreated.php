@@ -20,7 +20,6 @@ use humhub\libs\Helpers;
  */
 class ContentCreated extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -36,7 +35,7 @@ class ContentCreated extends BaseNotification
      */
     public function category()
     {
-        return new \humhub\modules\content\notifications\ContentCreatedNotificationCategory();
+        return new ContentCreatedNotificationCategory();
     }
 
     /**
@@ -103,5 +102,3 @@ class ContentCreated extends BaseNotification
     }
 
 }
-
-?>

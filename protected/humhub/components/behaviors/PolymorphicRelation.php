@@ -11,8 +11,6 @@ namespace humhub\components\behaviors;
 use Exception;
 use humhub\components\ActiveRecord;
 use humhub\helpers\DataTypeHelper;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -40,7 +38,7 @@ class PolymorphicRelation extends Behavior
     public string $pkAttribute = 'object_id';
 
     /**
-     * @var boolean if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
+     * @var bool if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
      */
     public bool $strict = false;
 
@@ -119,7 +117,7 @@ class PolymorphicRelation extends Behavior
 
     public static function getObjectModel(ActiveRecordInterface $object): string
     {
-        return $object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord
+        return $object instanceof ActiveRecord
             ? $object::getObjectModel()
             : get_class($object);
     }
@@ -148,7 +146,7 @@ class PolymorphicRelation extends Behavior
      *
      * @param mixed $object
      *
-     * @return boolean
+     * @return bool
      */
     private function validateUnderlyingObjectType(?object $object)
     {

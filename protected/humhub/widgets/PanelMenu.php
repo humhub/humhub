@@ -19,7 +19,6 @@ use yii\base\Widget;
  */
 class PanelMenu extends Widget
 {
-
     /**
      * @var String unique id from panel element
      */

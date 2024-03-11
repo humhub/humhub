@@ -13,8 +13,8 @@ use humhub\modules\file\widgets\UploadInput;
  */
 class ProsemirrorRichTextEditor extends AbstractRichTextEditor
 {
-    const MENU_CLASS_FOCUS = 'focusMenu';
-    const MENU_CLASS_PLAIN = 'plainMenu';
+    public const MENU_CLASS_FOCUS = 'focusMenu';
+    public const MENU_CLASS_PLAIN = 'plainMenu';
 
     /**
      * @inheritdoc

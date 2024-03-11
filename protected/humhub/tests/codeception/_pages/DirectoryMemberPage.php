@@ -10,7 +10,6 @@ use tests\codeception\_support\BasePage;
  */
 class DirectoryMemberPage extends BasePage
 {
-
     public $route = 'user/people';
 
 }

@@ -46,7 +46,7 @@ class JPlayerPlaylistWidget extends JsWidget
         $asset = JplayerModuleAsset::register($this->getView());
 
         $options = $this->getOptions();
-        $options['data-swf-path'] = $asset->baseUrl.'/jplayer';
+        $options['data-swf-path'] = $asset->baseUrl . '/jplayer';
 
         return $this->render('jPlayerAudio', [
             'containerId' => $this->getContainerId(),
@@ -69,7 +69,7 @@ class JPlayerPlaylistWidget extends JsWidget
     public function getData()
     {
         return [
-            'container-id' => '#'.$this->getContainerId()
+            'container-id' => '#' . $this->getContainerId()
         ];
     }
 
@@ -82,7 +82,7 @@ class JPlayerPlaylistWidget extends JsWidget
 
     public function getContainerId()
     {
-        return $this->getId(true).'-container';
+        return $this->getId(true) . '-container';
     }
 
 }

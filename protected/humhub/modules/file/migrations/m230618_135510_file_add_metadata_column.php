@@ -33,7 +33,7 @@ class m230618_135510_file_add_metadata_column extends Migration
             $this->table,
             'metadata',
             $this->string(4000)
-                 ->after('size')
+                ->after('size')
         );
     }
 }

@@ -13,6 +13,7 @@ use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 
 /**
  * Extended AuthClient collection with event support
@@ -22,16 +23,15 @@ use yii\base\InvalidArgumentException;
  */
 class Collection extends Component
 {
-
     /**
      * @event Event an event raised before the clients are set.
      */
-    const EVENT_BEFORE_CLIENTS_SET = 'client_set_before';
+    public const EVENT_BEFORE_CLIENTS_SET = 'client_set_before';
 
     /**
      * @event Event an event raised after the clients are set.
      */
-    const EVENT_AFTER_CLIENTS_SET = 'client_set';
+    public const EVENT_AFTER_CLIENTS_SET = 'client_set';
 
     /**
      * @var array list of Auth clients with their configuration in format: 'clientId' => [...]
@@ -65,7 +65,7 @@ class Collection extends Component
      * @param string $id service id.
      * @param bool $load
      * @return ClientInterface auth client instance.
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getClient($id, $load = true)
     {
@@ -82,7 +82,7 @@ class Collection extends Component
     /**
      * Checks if client exists in the hub.
      * @param string $id client id.
-     * @return boolean whether client exist.
+     * @return bool whether client exist.
      */
     public function hasClient($id)
     {
@@ -115,7 +115,7 @@ class Collection extends Component
      * @param string $id auth client id.
      * @param array $config auth client instance configuration.
      * @return ClientInterface auth client instance.
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function createClient($id, $config)
     {

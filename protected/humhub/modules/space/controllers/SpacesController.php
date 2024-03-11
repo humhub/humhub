@@ -22,7 +22,6 @@ use yii\helpers\Url;
  */
 class SpacesController extends Controller
 {
-
     /**
      * @inheritdoc
      */

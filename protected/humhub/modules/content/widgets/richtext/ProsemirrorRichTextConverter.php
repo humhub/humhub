@@ -15,7 +15,6 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConvert
  */
 class ProsemirrorRichTextConverter extends AbstractRichTextConverter
 {
-
     /**
      * @inheritdoc
      */

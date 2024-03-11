@@ -13,10 +13,10 @@ use yii\helpers\Url;
 ?>
 
 <?= Html::beginForm(Url::to([$directoryFilters->pageUrl]), 'get', ['class' => 'form-search']); ?>
-    <?php if ($directoryFilters->paginationUsed) : ?>
-        <?= Html::hiddenInput('page', '1'); ?>
-    <?php endif; ?>
-    <div class="row">
-        <?= $directoryFilters->renderFilters() ?>
-    </div>
+<?php if ($directoryFilters->paginationUsed) : ?>
+    <?= Html::hiddenInput('page', '1'); ?>
+<?php endif; ?>
+<div class="row">
+    <?= $directoryFilters->renderFilters() ?>
+</div>
 <?= Html::endForm(); ?>

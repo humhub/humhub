@@ -12,7 +12,7 @@ use humhub\libs\Html;
 
 /**
  * Dropdown stream filter input type.
- * 
+ *
  * @since 1.6
  * @package humhub\modules\ui\filter\widgets
  */

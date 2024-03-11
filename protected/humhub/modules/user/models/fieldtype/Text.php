@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Html;
@@ -20,9 +21,8 @@ use yii\helpers\Html;
  */
 class Text extends BaseType
 {
-
-    const VALIDATOR_EMAIL = "email";
-    const VALIDATOR_URL = "url";
+    public const VALIDATOR_EMAIL = "email";
+    public const VALIDATOR_URL = "url";
 
     /**
      * Minimum Text Length
@@ -157,8 +157,8 @@ class Text extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'VARCHAR(255)');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'VARCHAR(255)');
             Yii::$app->db->createCommand($query)->execute();
         }
 

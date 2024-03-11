@@ -28,7 +28,7 @@ use humhub\widgets\Button;
     </div>
     <div class="col-xs-6 col-sm-5 col-md-6"><?= $module->getDescription() ?></div>
     <div class="col-xs-5 col-sm-3 module-actions">
-        <?= Button::asLink(Yii::t('SpaceModule.manage', 'Activate'))
+        <?= Button::asLink(Yii::t('SpaceModule.manage', 'Enable'))
             ->cssClass('btn btn-sm btn-info enable')
             ->style($space->moduleManager->isEnabled($module->id) ? 'display:none' : '')
             ->loader()
@@ -36,7 +36,7 @@ use humhub\widgets\Button;
                 'data-action-click' => 'content.container.enableModule',
                 'data-action-url' => $space->createUrl('/space/manage/module/enable', ['moduleId' => $module->id]),
             ]) ?>
-        <?= Button::asLink(Yii::t('ContentModule.base', 'Activated'))
+        <?= Button::asLink(Yii::t('ContentModule.base', 'Enabled'))
             ->icon('check')
             ->cssClass('btn btn-sm btn-info active disable')
             ->style(!$space->moduleManager->isEnabled($module->id) ? 'display:none' : '')

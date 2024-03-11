@@ -8,7 +8,7 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>スペース</strong> のモジュール',
   '<strong>Space</strong> settings' => '<strong>スペース</strong>の設定',
   'Actions' => 'アクション',
-  'Activate' => '作動させる',
+  'Enable' => '作動させる',
   'Add <strong>Modules</strong>' => '追加 <strong>モジュール</strong>',
   'Advanced access settings' => '上級者向けのアクセス設定',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'このスペースのモデレーターと管理者を除くすべてのメンバーが削除されます。保留中のすべての招待状とメンバーシップ リクエストは終了します。',
