@@ -51,10 +51,14 @@ humhub.module('ui.search', function(module, require, $) {
             }
         }).on('keyup', function () {
             that.searchTimeout(() => that.search(true));
+        }).on('keydown', function (e) {
+            return that.switchFocus(e.currentTarget.tagName, e.which);
         });
 
         that.getList().on('keypress', function () {
             that.getCurrentInput().focus();
+        }).on('keydown', function (e) {
+            return that.switchFocus(e.currentTarget.tagName, e.which);
         });
 
         that.getList().niceScroll({
@@ -113,6 +117,8 @@ humhub.module('ui.search', function(module, require, $) {
             }
         }).on('keyup', function () {
             that.searchTimeout(() => search($(this).val(), true));
+        }).on('keydown', function (e) {
+            return that.switchFocus(e.currentTarget.tagName, e.which);
         });
 
         that.$.on('hide.bs.dropdown', function (e) {
@@ -296,9 +302,6 @@ humhub.module('ui.search', function(module, require, $) {
                     newProviderContent.hide();
                 }
 
-                // Set focus to first record
-                that.getList().find(that.selectors.providerRecord).first().focus();
-
                 that.refreshPositionSize();
             });
 
@@ -351,6 +354,33 @@ humhub.module('ui.search', function(module, require, $) {
         } else {
             this.getArrow().css('right', panelWidth - currentTogglerLeft - this.getPanel().offset().left + 12);
         }
+    }
+
+    Search.prototype.switchFocus = function (tag, key) {
+        if (key !== 38 && key !== 40) {
+            return true;
+        }
+
+        const dir = key === 38 ? 'up' : 'down';
+        const links = this.getList().find('a:visible');
+
+        if (tag === 'INPUT') {
+            if (dir === 'down') {
+                links.first().focus();
+                return false;
+            } else if (dir === 'up') {
+                links.last().focus();
+                return false;
+            }
+        } else if (tag === 'UL') {
+            if ((dir === 'down' && links.last().is(':focus')) ||
+                (dir === 'up' && links.first().is(':focus'))) {
+                this.getCurrentInput().focus();
+                return false;
+            }
+        }
+
+        return true;
     }
 
     module.export = Search;
