@@ -27,7 +27,7 @@ class UserSearchProvider extends SearchProvider
      */
     public function getName(): string
     {
-        return Yii::t('UserModule.base', 'Profile');
+        return Yii::t('UserModule.base', 'People');
     }
 
     /**
