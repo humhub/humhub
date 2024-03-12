@@ -122,7 +122,7 @@ humhub.module('ui.search', function(module, require, $) {
         });
 
         that.$.on('hide.bs.dropdown', function (e) {
-            if (input.is(':focus')) {
+            if (input.is(':focus') && input.val().trim() !== '') {
                 e.preventDefault();
                 if (that.getBackdrop().length === 0) {
                     that.$.append('<div class="' + that.selectors.backdrop.replace('.', '') + '">');
@@ -242,10 +242,17 @@ humhub.module('ui.search', function(module, require, $) {
         const that = this;
         const data = {
             provider: null,
-            keyword: that.getInput().val()
+            keyword: that.getInput().val().trim()
         };
 
         if (data.keyword === '') {
+            that.getList().hide();
+            that.getInput().val('');
+            that.previousKeyword = '';
+            that.refreshPositionSize();
+            if (!that.hasInput()) {
+                that.hidePanel();
+            }
             return;
         }
 
