@@ -39,10 +39,12 @@ abstract class DirectoryFilters extends Widget
     public $paginationUsed = true;
 
     /**
-     * @var string|null Selector of html form which should be replaced with loader on submit a form
+     * @var array|null Additional form data, can be used for JavaScript actions:
+     *      'action-url' - URL to submit the filters form by AJAX request
+     *      'action-content' - Html element selector for update with response from the action URL
      * @since 1.16
      */
-    public ?string $submitLoader = null;
+    public ?array $data = null;
 
     /**
      * @inheritDoc
@@ -80,8 +82,8 @@ abstract class DirectoryFilters extends Widget
     {
         $options = ['class' => 'form-search'];
 
-        if (is_string($this->submitLoader)) {
-            $options['data-submit-loader'] = $this->submitLoader;
+        if (is_array($this->data)) {
+            $options['data'] = $this->data;
         }
 
         return $options;

@@ -183,8 +183,6 @@ humhub.module('stream.Stream', function (module, require, $) {
             this.initWidget();
         }
 
-        this.initSubmitLoader();
-
         return this.clear()
             .show()
             .loadInit()
@@ -236,12 +234,6 @@ humhub.module('stream.Stream', function (module, require, $) {
         this.filter.on('afterChange', function () {
             that.init();
         })
-    };
-
-    Stream.prototype.initSubmitLoader = function () {
-        this.$.find('form[data-submit-loader]').on('submit', function () {
-            loader.set($(this).data('submit-loader'));
-        });
     };
 
     Stream.prototype.loadInit = function () {

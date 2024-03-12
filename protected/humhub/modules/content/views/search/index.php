@@ -1,20 +1,15 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use humhub\assets\CardsAsset;
-use humhub\libs\Html;
-use humhub\modules\content\search\ResultSet;
-use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\widgets\SearchFilters;
-use humhub\modules\content\widgets\stream\StreamEntryWidget;
-use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
-use humhub\widgets\LinkPager;
-
-/* @var $resultSet ResultSet|null */
-/* @var $searchRequest SearchRequest */
+use yii\helpers\Url;
 
 CardsAsset::register($this);
-
-$hasResults = $resultSet !== null && count($resultSet->results);
 ?>
 <div class="container" data-action-component="stream.SimpleStream" data-ui-init>
     <div class="panel panel-default">
@@ -23,47 +18,12 @@ $hasResults = $resultSet !== null && count($resultSet->results);
         </div>
 
         <div class="panel-body">
-            <?= SearchFilters::widget(['submitLoader' => '#content-search-body']); ?>
+            <?= SearchFilters::widget(['data' => [
+                'action-url' => Url::to(['/content/search/results']),
+                'action-content' => '#content-search-body'
+            ]]) ?>
         </div>
     </div>
 
-    <div id="content-search-body">
-    <?php if (!$hasResults && $resultSet !== null): ?>
-        <div class="row cards">
-            <div class="col-md-12">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        <strong><?= Yii::t('ContentModule.search', 'No results found!'); ?></strong><br/>
-                        <?= Yii::t('ContentModule.search', 'Try other keywords or remove filters.'); ?>
-                    </div>
-                </div>
-            </div>
-        </div>
-    <?php endif; ?>
-
-    <?php if ($hasResults): ?>
-        <div class="search-results-header">
-            <?= Yii::t('ContentModule.search', 'Results ({count})', ['count' => $resultSet->pagination->totalCount]) ?>
-        </div>
-        <div class="search-results">
-        <?php foreach ($resultSet->results as $result): ?>
-            <?= StreamEntryWidget::renderStreamEntry($result->getModel(),
-                (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) ?>
-        <?php endforeach; ?>
-        </div>
-        <div class="pagination-container">
-            <?= LinkPager::widget(['pagination' => $resultSet->pagination]) ?>
-        </div>
-    <?php endif; ?>
-    </div>
+    <div id="content-search-body"></div>
 </div>
-
-<?php if ($hasResults && $searchRequest->keyword !== '') : ?>
-<script <?= Html::nonce() ?>>
-$(document).on('humhub:ready', function() {
-<?php foreach (explode(' ', $searchRequest->keyword) as $keyword) : ?>
-    $('.search-results').highlight('<?= Html::encode($keyword) ?>');
-<?php endforeach; ?>
-});
-</script>
-<?php endif; ?>
