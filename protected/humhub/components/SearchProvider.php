@@ -44,11 +44,12 @@ abstract class SearchProvider
     abstract public function getName(): string;
 
     /**
-     * Search results
+     * Run search process, result may be cached
      *
-     * @return SearchRecordInterface[]
+     * @return array 'totalCount' - Number of total searched records,
+     *               'results'    - Array of searched records SearchRecordInterface[]
      */
-    abstract public function searchResults(): array;
+    abstract public function runSearch(): array;
 
     /**
      * Run search process and cache results
@@ -61,10 +62,13 @@ abstract class SearchProvider
             return;
         }
 
-        $this->results = Yii::$app->cache->getOrSet(
+        $data = Yii::$app->cache->getOrSet(
             static::class . Yii::$app->user->id . ':search:' . $this->keyword,
-            [$this, 'searchResults'],
+            [$this, 'runSearch'],
             $this->cacheTimeout);
+
+        $this->totalCount = $data['totalCount'] ?? 0;
+        $this->results = $data['results'] ?? [];
     }
 
     /**

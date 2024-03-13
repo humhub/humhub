@@ -42,7 +42,7 @@ class ContentSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function searchResults(): array
+    public function runSearch(): array
     {
         /* @var Module $module */
         $module = Yii::$app->getModule('content');
@@ -52,13 +52,14 @@ class ContentSearchProvider extends SearchProvider
             'pageSize' => $this->pageSize
         ]));
 
-        $this->totalCount = $resultSet->pagination->totalCount;
-
         $results = [];
         foreach ($resultSet->results as $content) {
             $results[] = new SearchRecord($content);
         }
 
-        return $results;
+        return [
+            'totalCount' => $resultSet->pagination->totalCount,
+            'results' => $results
+        ];
     }
 }

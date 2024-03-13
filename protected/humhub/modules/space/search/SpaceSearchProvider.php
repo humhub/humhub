@@ -43,20 +43,21 @@ class SpaceSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function searchResults(): array
+    public function runSearch(): array
     {
         $spaceDirectoryQuery = new SpaceDirectoryQuery([
             'defaultFilters' => ['keyword' => $this->keyword],
             'pageSize' => $this->pageSize
         ]);
 
-        $this->totalCount = $spaceDirectoryQuery->pagination->totalCount;
-
         $results = [];
         foreach ($spaceDirectoryQuery->all() as $space) {
             $results[] = new SearchRecord($space);
         }
 
-        return $results;
+        return [
+            'totalCount' => $spaceDirectoryQuery->pagination->totalCount,
+            'results' => $results
+        ];
     }
 }

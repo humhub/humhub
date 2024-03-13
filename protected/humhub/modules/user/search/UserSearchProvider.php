@@ -43,20 +43,21 @@ class UserSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function searchResults(): array
+    public function runSearch(): array
     {
         $peopleQuery = new PeopleQuery([
             'defaultFilters' => ['keyword' => $this->keyword],
             'pageSize' => $this->pageSize
         ]);
 
-        $this->totalCount = $peopleQuery->pagination->totalCount;
-
         $results = [];
         foreach ($peopleQuery->all() as $user) {
             $results[] = new SearchRecord($user);
         }
 
-        return $results;
+        return [
+            'totalCount' => $peopleQuery->pagination->totalCount,
+            'results' => $results
+        ];
     }
 }
