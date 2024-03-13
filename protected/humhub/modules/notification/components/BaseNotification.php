@@ -159,16 +159,23 @@ abstract class BaseNotification extends SocialActivity
         }
 
         if ($this->hasContent()) {
-            $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
-            $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], false);
+            $content = $this->getContent();
+            $object_model = explode("\\", $content->object_model);
+
+            if (count($object_model) && $object_model[count($object_model) - 1] == "CustomGallery") {
+                $relativeUrl = \humhub\modules\gallery\helpers\Url::toCustomGallery($content->container, $content->object_id);
+            } else {
+                $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $content->id], false);
+            }
+            $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $content->id], true);
         } else {
-            $url = Url::to(['/notification/entry', 'id' => $this->record->id], true);
             $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id], false);
+            $url = Url::to(['/notification/entry', 'id' => $this->record->id], true);
         }
 
         $result = [
-            'url' => $url,
             'relativeUrl' => $relativeUrl,
+            'url' => $url,
             'date' => $date,
             'isNew' => !$this->record->seen,
         ];

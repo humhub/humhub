@@ -68,3 +68,4 @@ HumHub Changelog
 - Fix #6875: On Group::addUser(), if the current user is not logged in (console command or user registration), the method returns false even if the user was added to the group
 - Enh #6874: Update open-sans font from composer
 - Enh #6707: Uninstalling modules should be done in a background job
+- Fix #174: Fix Gallery Link Issue
