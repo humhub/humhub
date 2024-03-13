@@ -31,8 +31,8 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
     });
 
     SimpleStream.prototype.init = function () {
-        Stream.prototype.init.call(this);
         this.initActionForm();
+        Stream.prototype.init.call(this);
     };
 
     SimpleStream.prototype.initActionForm = function () {
@@ -44,7 +44,7 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
 
         const submit = function (form) {
             const params = form.serialize().replace(/(^|&)r=.*?(&|$)/, '$1');
-            const content = that.getActionContent(form);
+            const content = that.getActionContent();
             loader.set(content);
             that.refreshAddressBar(params);
 
@@ -60,8 +60,10 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
         form.on('submit', function (e) {
             e.preventDefault();
             submit($(this));
-        });
-        form.first().submit();
+        }).first().submit();
+
+        // Prevent auto loading of stream content when the action form is used instead
+        that.options.autoLoad = false;
     };
 
     SimpleStream.prototype.onEmptyStream = function () {
@@ -99,14 +101,11 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
     };
 
     SimpleStream.prototype.getActionForm = function () {
-        return this.$.find('form[data-action-url][data-action-content]');
+        return this.$.find('form[data-action-url]');
     }
 
-    SimpleStream.prototype.getActionContent = function (form) {
-        if (typeof form === 'undefined') {
-            form = this.getActionForm();
-        }
-        return form.length ? $(form.data('action-content')) : null;
+    SimpleStream.prototype.getActionContent = function () {
+        return this.$.find(this.options.contentSelector);
     }
 
     SimpleStream.prototype.switchPage = function (e) {

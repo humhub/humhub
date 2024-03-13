@@ -18,12 +18,9 @@ CardsAsset::register($this);
         </div>
 
         <div class="panel-body">
-            <?= SearchFilters::widget(['data' => [
-                'action-url' => Url::to(['/content/search/results']),
-                'action-content' => '#content-search-body'
-            ]]) ?>
+            <?= SearchFilters::widget(['data' => ['action-url' => Url::to(['/content/search/results'])]]) ?>
         </div>
     </div>
 
-    <div id="content-search-body"></div>
+    <div data-stream-content></div>
 </div>

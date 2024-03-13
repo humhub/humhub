@@ -41,7 +41,6 @@ abstract class DirectoryFilters extends Widget
     /**
      * @var array|null Additional form data, can be used for JavaScript actions:
      *      'action-url' - URL to submit the filters form by AJAX request
-     *      'action-content' - Html element selector for update with response from the action URL
      * @since 1.16
      */
     public ?array $data = null;
