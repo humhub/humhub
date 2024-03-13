@@ -50,8 +50,14 @@ $hasResults = $resultSet !== null && count($resultSet->results);
 
 <?php if ($hasResults && $searchRequest->keyword !== '') : ?>
 <script <?= Html::nonce() ?>>
+$('.search-results [data-ui-widget]').on('afterInit', function() {
+    if ($(this).data('isHighlighted')) {
+        return;
+    }
+    $(this).data('isHighlighted', true);
 <?php foreach (explode(' ', $searchRequest->keyword) as $keyword) : ?>
-    $('.search-results').highlight('<?= Html::encode($keyword) ?>');
+    $(this).highlight('<?= Html::encode($keyword) ?>');
 <?php endforeach; ?>
+});
 </script>
 <?php endif; ?>
