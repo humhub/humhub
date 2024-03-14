@@ -1,6 +1,6 @@
 <?php
 return array (
-  '"My Spaces" Sorting' => '',
+  '"My Spaces" Sorting' => 'Сортировка "Моих сообществ"',
   '1 month' => '1 месяц',
   '1 week' => '1 неделя',
   '1 year' => '1 год',
@@ -32,8 +32,8 @@ return array (
   'Currently no provider active!' => 'В настоящее ни один сервис не активиен!',
   'Currently there are {count} records in the database dating from {dating}.' => 'В настоящее время в базе данных имеется {count} записей, датированных от {dating}.',
   'Custom DSN' => 'Пользовательский DSN',
-  'Custom sort order (alphabetical if not defined)' => '',
-  'Custom sort order can be defined in the Space advanced settings.' => '',
+  'Custom sort order (alphabetical if not defined)' => 'Пользовательский порядок сортировки (алфавитный, если не определён)',
+  'Custom sort order can be defined in the Space advanced settings.' => 'Пользовательский порядок сортировки можно задать в расширенных настройках сообщества.',
   'DSN' => 'DSN',
   'DSN Examples:' => 'Примеры DSN:',
   'Dashboard' => 'События',

@@ -17,7 +17,7 @@ return array (
   'Save' => 'Bewaar',
   'Space default state' => 'Standaard ruimtestatus',
   'Spaces' => 'Ruimtes',
-  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'De module wordt momenteel gebruikt door {nbContainers} gebruikers of ruimtes. Als u de beschikbaarheid ervan wijzigt, gaat alle inhoud die met de module is gemaakt verloren. Doorgaan?',
   'User default state' => 'Standaard gebruikersstatus:',
   'Users' => 'Gebruikers',
 );
