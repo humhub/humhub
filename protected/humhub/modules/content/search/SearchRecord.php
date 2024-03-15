@@ -8,11 +8,13 @@
 namespace humhub\modules\content\search;
 
 use humhub\interfaces\SearchRecordInterface;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
+use Yii;
 
 /**
  * Search Record for Content
@@ -58,22 +60,23 @@ class SearchRecord implements SearchRecordInterface
      */
     public function getDescription(): string
     {
-        $record = $this->content->getPolymorphicRelation();
-        $text = '';
+        $description = [];
 
-        if (isset($record->description)) {
-            $text = $record->description;
-        } elseif (isset($record->message)) {
-            $text = $record->message;
-        } elseif (isset($record->page_content)) {
-            $text = $record->page_content;
-        } elseif (isset($record->text)) {
-            $text = $record->text;
-        } elseif (isset($record->article)) {
-            $text = $record->article;
+        $author = $this->content->createdBy;
+        if ($author instanceof User) {
+            $description[] = $author->getDisplayName();
         }
 
-        return $text === '' ? '' : RichText::output(strip_tags($text), ['record' => $record]);
+        $container = $this->content->container;
+        if ($container instanceof ContentContainerActiveRecord && !$container->is($author)) {
+            $description[] = $container->getDisplayName();
+        }
+
+        if ($this->content->created_at !== null) {
+            $description[] = Yii::$app->formatter->asDate($this->content->created_at, 'short');
+        }
+
+        return implode(' &middot; ', $description);
     }
 
     /**

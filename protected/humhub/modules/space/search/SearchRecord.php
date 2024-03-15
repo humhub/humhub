@@ -42,7 +42,7 @@ class SearchRecord implements SearchRecordInterface
      */
     public function getTitle(): string
     {
-        return $this->space->displayName;
+        return $this->space->getDisplayName();
     }
 
     /**
@@ -50,7 +50,7 @@ class SearchRecord implements SearchRecordInterface
      */
     public function getDescription(): string
     {
-        return $this->space->displayName;
+        return $this->space->getDisplayNameSub();
     }
 
     /**
