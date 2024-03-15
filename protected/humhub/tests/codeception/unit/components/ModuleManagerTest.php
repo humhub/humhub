@@ -32,6 +32,7 @@ use yii\caching\ArrayCache;
 use yii\db\StaleObjectException;
 use yii\helpers\FileHelper;
 use yii\log\Logger;
+use yii\web\ServerErrorHttpException;
 
 require_once __DIR__ . '/bootstrap/ModuleAutoLoaderTest.php';
 
@@ -735,6 +736,24 @@ class ModuleManagerTest extends HumHubDbTestCase
     }
 
     /**
+     * @noinspection MissedFieldInspection
+     */
+    public function testEnableModulesWithRequirements()
+    {
+        Yii::$app->set('moduleManager', $this->moduleManager);
+
+        $moduleWithRequirements = $this->moduleManager->getModule(static::$testModuleRoot . '/moduleWithRequirements');
+        $module1 = $this->moduleManager->getModule(static::$testModuleRoot . '/module1');
+
+        $this->expectException(ServerErrorHttpException::class);
+        $this->expectExceptionMessage('This module cannot work without enabled module "module1"');
+        static::assertFalse($moduleWithRequirements->enable());
+
+        static::assertTrue($module1->enable());
+        static::assertTrue($moduleWithRequirements->enable());
+    }
+
+    /**
      * @throws InvalidConfigException
      */
     public function testFilterModules()
@@ -1116,6 +1135,7 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'module1',
                 'module2',
                 'moduleWithMigration',
+                'moduleWithRequirements',
                 'coreModule',
                 'installerModule',
                 'invalidModule1',
