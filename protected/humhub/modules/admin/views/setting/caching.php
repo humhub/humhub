@@ -13,8 +13,9 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<?= $form->field($model, 'type')->dropDownList($cacheTypes, ['readonly' => Yii::$app->settings->isFixed('cache.class')]) ?>
-
+<?php if (!Yii::$app->settings->isFixed('cache.class')): ?>
+    <?= $form->field($model, 'type')->dropDownList($cacheTypes, ['readonly' => Yii::$app->settings->isFixed('cache.class')]) ?>
+<?php endif; ?>
 
 <?= $form->field($model, 'expireTime')->textInput(['readonly' => Yii::$app->settings->isFixed('cache.expireTime')]) ?>
 
