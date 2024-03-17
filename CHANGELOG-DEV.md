@@ -69,3 +69,4 @@ HumHub Changelog
 - Enh #6874: Update open-sans font from composer
 - Enh #6707: Uninstalling modules should be done in a background job
 - Enh #25: Improve contrast of @default button color
+- Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
