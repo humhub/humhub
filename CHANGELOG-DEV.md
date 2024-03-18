@@ -70,3 +70,4 @@ HumHub Changelog
 - Enh #6707: Uninstalling modules should be done in a background job
 - Enh #25: Improve contrast of @default button color
 - Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
+- Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
