@@ -51,7 +51,7 @@ return array (
   'Visible for all (also unregistered users)' => 'Профиль видим для всех (включая гостей на сайте)',
   'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Мы только что отправили электронное письмо с подтверждением на Ваш новый адрес.<br>Пожалуйста проверьте Вашу почту и следуйте инструкциям внутри письма.',
   'You are currently the owner of following spaces:' => 'В настоящее время вы являетесь владельцем следующих сообществ:',
-  'You cannot use this username.' => '',
+  'You cannot use this username.' => 'Вы не можете использовать это имя пользователя.',
   'You have requested to change your e-mail address.<br>Your new e-mail address is {newemail}.<br><br>To confirm your new e-mail address please click on the button below.' => 'Вы запросили смену своего адреса электронной почты.<br>Ваш новый адрес электронной почты - {newemail}.<br><br>Чтобы подтвердить свой новый адрес электронной почты, нажмите кнопку ниже.',
   'You have successfully changed your username.<br>Your new username is {newUsername}.' => 'Вы успешно изменили своё имя пользователя.<br>Ваше новое имя пользователя - {newUsername}.',
   'You must transfer ownership or delete these spaces before you can delete your account.' => 'Вы должны передать права владения другому пользователю или удалить эти сообщества, прежде чем сможете удалить свою учётную запись.',

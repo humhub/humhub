@@ -1,6 +1,13 @@
 HumHub Changelog
 ================
 
+1.15.4 (Unreleased)
+-------------------
+- Enh #6888: Better support for custom caches
+- Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support)
+- Fix #6859: Hide scheduled and draft content on other user profile pages
+- Fix #6871: Cache is not deleted after deleting a value in the settings
+
 1.15.3 (February 8, 2024)
 -------------------------
 - Fix #6713: Keep class option for Pjax Widget

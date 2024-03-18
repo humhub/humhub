@@ -389,7 +389,17 @@ div.form-group {
         }
 
         .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
-            background-color: fade(@link, 60%);
+            background: @default;
+            color: @text-color-default !important;
+
+            &:hover, &:focus {
+                background: #dedede !important;
+                border-color: #dedede;
+            }
+            &:active, &.active {
+                background: #cacaca !important;
+                border-color: #cacaca;
+            }
         }
 
         .btn.dropdown-toggle {

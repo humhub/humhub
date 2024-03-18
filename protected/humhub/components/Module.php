@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
+use humhub\modules\admin\jobs\RemoveModuleJob;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\marketplace\models\Module as OnlineModelModule;
@@ -236,8 +237,10 @@ class Module extends \yii\base\Module
      */
     public function getIsEnabled(): bool
     {
-        return Yii::$app->hasModule($this->id) &&
-            !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
+        return
+            Yii::$app->hasModule($this->id)
+            && !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]))
+            && !QueueHelper::isQueued(new RemoveModuleJob(['moduleId' => $this->id]));
     }
 
     /**

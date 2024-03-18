@@ -2,7 +2,6 @@
 
 namespace humhub\modules\stream\models\filters;
 
-use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use Yii;
 
@@ -21,7 +20,7 @@ class DraftContentStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
-        if ($this->streamQuery instanceof ActivityStreamQuery && $this->streamQuery->activity) {
+        if (!$this->allowStateContent()) {
             return;
         }
 
