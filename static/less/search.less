@@ -147,21 +147,23 @@
                     }
                 }
                 .search-provider-record-text {
-                    font-size: 14px;
-                    font-weight: 500;
                     padding-left: 16px;
                     flex: 1;
                     min-width: 0;
-                    white-space: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    .search-provider-record-desc {
+                    > span {
                         display: block;
-                        font-size: 12px;
-                        font-weight: 400;
-                        color: #555;
                         text-overflow: ellipsis;
                         overflow: hidden;
+                        white-space: nowrap;
+                        &:first-child { //Title
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
+                        &:last-child { // Description
+                            font-size: 12px;
+                            font-weight: 400;
+                            color: #555;
+                        }
                     }
                 }
             }

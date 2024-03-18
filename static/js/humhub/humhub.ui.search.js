@@ -298,7 +298,7 @@ humhub.module('ui.search', function(module, require, $) {
                 newProviderContent.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]').each(function () {
                     Widget.instance($(this));
                 });
-                newProviderContent.find('.search-provider-record-desc').each(function () {
+                newProviderContent.find(that.selectors.providerRecordText + ' > span').each(function () {
                     $(this).html($(this).html().replace(/(<([^>]+)>)/gi, ' '));
                 });
                 provider.replaceWith(newProviderContent);

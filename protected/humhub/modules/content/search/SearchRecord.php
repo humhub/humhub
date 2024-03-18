@@ -10,6 +10,7 @@ namespace humhub\modules\content\search;
 use humhub\interfaces\SearchRecordInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
@@ -48,11 +49,7 @@ class SearchRecord implements SearchRecordInterface
      */
     public function getTitle(): string
     {
-        $record = $this->content->getPolymorphicRelation();
-
-        return $record instanceof Post
-            ? $this->content->createdBy->displayName
-            : $this->content->getContentDescription();
+        return RichText::output($this->content->getContentDescription(), ['record' => $this->content->getModel()]);
     }
 
     /**
