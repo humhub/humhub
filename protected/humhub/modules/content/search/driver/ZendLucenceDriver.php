@@ -23,7 +23,6 @@ use ZendSearch\Lucene\Lucene;
 use ZendSearch\Lucene\Search\Query\Boolean;
 use ZendSearch\Lucene\Search\Query\MultiTerm;
 use ZendSearch\Lucene\Search\Query\Range;
-use ZendSearch\Lucene\Search\Query\Term as QueryTerm;
 use ZendSearch\Lucene\Search\Query\Term as TermQuery;
 use ZendSearch\Lucene\Search\Query\Wildcard;
 use ZendSearch\Lucene\Search\QueryParser;
@@ -31,7 +30,6 @@ use ZendSearch\Lucene\SearchIndexInterface;
 
 class ZendLucenceDriver extends AbstractDriver
 {
-
     private ?SearchIndexInterface $_index = null;
 
     public function purge(): void
@@ -39,8 +37,9 @@ class ZendLucenceDriver extends AbstractDriver
         $indexPath = $this->getIndexPath();
 
         foreach (new \DirectoryIterator($indexPath) as $fileInfo) {
-            if ($fileInfo->isDot())
+            if ($fileInfo->isDot()) {
                 continue;
+            }
             FileHelper::unlink($indexPath . DIRECTORY_SEPARATOR . $fileInfo->getFilename());
         }
 
@@ -119,7 +118,6 @@ class ZendLucenceDriver extends AbstractDriver
 
 
         foreach ($hits as $hit) {
-
             try {
                 $contentId = $hit->getDocument()->getField('content_id')->getUtf8Value();
             } catch (\Exception $ex) {
@@ -142,26 +140,30 @@ class ZendLucenceDriver extends AbstractDriver
     {
         $query = new Boolean();
 
+        $keywordQuery = new Boolean();
         foreach ($request->getSearchQuery()->orTerms as $term) {
             if (mb_strlen($term) < 3) {
-                $query->addSubquery(new TermQuery(new Term(mb_strtolower($term))), null);
+                $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), null);
             } else {
-                $query->addSubquery(new Wildcard(new Term(mb_strtolower($term))), null);
+                $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), null);
             }
         }
 
         foreach ($request->getSearchQuery()->andTerms as $term) {
             if (mb_strlen($term) < 3) {
-                $query->addSubquery(new TermQuery(new Term(mb_strtolower($term))), true);
+                $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), true);
             } else {
-                $query->addSubquery(new Wildcard(new Term(mb_strtolower($term))), true);
+                $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), true);
             }
         }
 
-        foreach ($request->getSearchQuery()->andTerms as $term) {
-            $query->addSubquery(new TermQuery(new Term(mb_strtolower($term))), false);
+        foreach ($request->getSearchQuery()->notTerms as $term) {
+            $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), false);
         }
 
+        if (count($keywordQuery->getSubqueries())) {
+            $query->addSubquery($keywordQuery, true);
+        }
 
         if (!empty($request->dateFrom) || !empty($request->dateTo)) {
             $dateFrom = empty($request->dateFrom)
@@ -203,7 +205,7 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         if (!empty($request->contentType)) {
-            $query->addSubquery(new QueryTerm(new Term($request->contentType, 'class')), true);
+            $query->addSubquery(new TermQuery(new Term($request->contentType, 'class')), true);
         }
 
         return $query;

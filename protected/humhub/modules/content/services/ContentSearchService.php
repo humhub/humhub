@@ -2,7 +2,6 @@
 
 namespace humhub\modules\content\services;
 
-use humhub\modules\activity\models\Activity;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\jobs\SearchDeleteDocument;
 use humhub\modules\content\jobs\SearchUpdateDocument;
@@ -44,6 +43,7 @@ class ContentSearchService
         if (!$this->isIndexable()) {
             return;
         }
+
         if ($asActiveJob) {
             Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->content->id]));
         } else {
@@ -75,9 +75,9 @@ class ContentSearchService
         return $result;
     }
 
-    public function isIndexable()
+    public function isIndexable(): bool
     {
-        return !($this->content->object_model === Activity::class);
+        return $this->content->stream_channel === Content::STREAM_CHANNEL_DEFAULT;
     }
 
     private function getSearchDriver(): AbstractDriver

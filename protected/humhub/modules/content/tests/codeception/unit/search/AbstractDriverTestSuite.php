@@ -8,6 +8,7 @@ use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\driver\MysqlDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\tests\codeception\unit\TestContent;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
@@ -73,8 +74,8 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     private function getSearchRequest(): SearchRequest
     {
         foreach (Content::find()->where(['visibility' => Content::VISIBILITY_PUBLIC])->each() as $content) {
-            $this->searchDriver->delete($content);
-            $this->searchDriver->update($content);
+            (new ContentSearchService($content))->delete(false);
+            (new ContentSearchService($content))->update(false);
         }
 
         return new SearchRequest();
