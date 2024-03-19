@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support)
 - Fix #6859: Hide scheduled and draft content on other user profile pages
 - Fix #6871: Cache is not deleted after deleting a value in the settings
+- Fix #6894: Fix obsolete notifications
 
 1.15.3 (February 8, 2024)
 -------------------------
