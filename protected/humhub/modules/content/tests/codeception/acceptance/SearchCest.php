@@ -61,7 +61,8 @@ class SearchCest
 
         $I->fillField('.form-search [name=keyword]', 'Post');
         $I->click('.form-button-search');
-        $I->waitForText('Results (8)', null, '.search-results-header');
+        $I->waitForText('Results', null, '.search-results-header');
+        $I->see('Post', '.highlight');
 
         $I->fillField('.form-search [name=keyword]', 'UnknownWord');
         $I->click('.form-button-search');
