@@ -117,7 +117,7 @@ class Post extends ContentActiveRecord
      */
     public function getIcon()
     {
-        return 'fa-comment';
+        return 'fa-comment-o';
     }
 
     /**

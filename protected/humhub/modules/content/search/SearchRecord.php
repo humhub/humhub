@@ -37,11 +37,7 @@ class SearchRecord implements SearchRecordInterface
      */
     public function getImage(): string
     {
-        $record = $this->content->getPolymorphicRelation();
-
-        return $record instanceof Post
-            ? Image::widget(['user' => $this->content->createdBy, 'width' => 36, 'link' => false, 'hideOnlineStatus' => true])
-            : Icon::get($record->getIcon() ?? 'comment', ['fixedWidth' => true])->asString();
+        return Icon::get($this->content->getPolymorphicRelation()->getIcon() ?? 'comment', ['fixedWidth' => true])->asString();
     }
 
     /**
