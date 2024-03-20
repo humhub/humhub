@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.4 (Unreleased)
--------------------
+1.15.4 (March 20, 2024)
+-----------------------
 - Enh #6888: Better support for custom caches
 - Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support)
 - Fix #6859: Hide scheduled and draft content on other user profile pages
