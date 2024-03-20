@@ -58,7 +58,8 @@ class CoreJsConfig extends Widget
                     ],
                     'url' => [
                         'download' => Url::to(['/file/file/download', 'download' => true, 'guid' => '-guid-'], true),
-                        'load' => Url::to(['/file/file/download', 'guid' => '-guid-'], true)
+                        'load' => Url::to(['/file/file/download', 'guid' => '-guid-'], true),
+                        'view' => Url::to(['/file/view', 'guid' => '-guid-'], true)
                     ],
                     'text' => [
                         'error.upload' => Yii::t('base', 'Some files could not be uploaded:'),
