@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e089ae6498d514221b66159ef672acc1",
+    "content-hash": "e67e666e172463c6dfd7be67d874286c",
     "packages": [
         {
             "name": "async-aws/core",
@@ -3805,10 +3805,10 @@
         },
         {
             "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "2.0.5",
+            "version": "2.0.6",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.0.5.tgz"
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.0.6.tgz"
             },
             "type": "npm-asset",
             "license": [
