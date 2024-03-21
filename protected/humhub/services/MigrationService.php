@@ -16,6 +16,7 @@ use humhub\components\Module;
 use humhub\events\MigrationEvent;
 use humhub\helpers\DataTypeHelper;
 use humhub\interfaces\ApplicationInterface;
+use humhub\modules\admin\models\forms\CacheSettingsForm;
 use Throwable;
 use uninstall;
 use Yii;
@@ -42,6 +43,12 @@ class MigrationService extends Component
     private ?string $path;
     private ?int $lastMigrationResult = null;
     private ?string $lastMigrationOutput = null;
+
+    public const DB_ACTION_CHECK = 0;
+    public const DB_ACTION_RUN = 1;
+    public const DB_ACTION_PENDING = 2;
+    public const DB_ACTION_SESSION = 3;
+    private const SESSION_LAST_MIGRATION_OUTPUT = 'DBLastMigrationOutput';
 
     /**
      * @param Module|ApplicationInterface|Application|null $module
@@ -352,5 +359,49 @@ class MigrationService extends Component
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         return Yii::createObject(static::class, [$module]);
+    }
+
+    /**
+     * Store the last migration output in Session
+     */
+    private function storeLastMigrationOutput(): void
+    {
+        Yii::$app->session->set(self::SESSION_LAST_MIGRATION_OUTPUT, $this->getLastMigrationOutput());
+    }
+
+    /**
+     * Restore the last migration output from Session
+     */
+    private function restoreLastMigrationOutput(): void
+    {
+        $this->lastMigrationOutput = Yii::$app->session->get(self::SESSION_LAST_MIGRATION_OUTPUT);
+        Yii::$app->session->remove(self::SESSION_LAST_MIGRATION_OUTPUT);
+    }
+
+    /**
+     * Run migration by requested action
+     *
+     * @param int $action Requested action
+     * @return int Output action
+     */
+    public function runAction(int $action = self::DB_ACTION_CHECK): int
+    {
+        if ($action === self::DB_ACTION_RUN) {
+            $this->migrateUp();
+            $this->lastMigrationOutput .= "\n" . CacheSettingsForm::flushCache();
+            $this->storeLastMigrationOutput();
+            return self::DB_ACTION_SESSION;
+        }
+
+        // Try to restore last migration result from store(Sessions)
+        $this->restoreLastMigrationOutput();
+
+        if ($this->lastMigrationOutput === null) {
+            return $this->hasMigrationsPending()
+                ? self::DB_ACTION_PENDING
+                : self::DB_ACTION_CHECK;
+        }
+
+        return self::DB_ACTION_RUN;
     }
 }
