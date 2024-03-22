@@ -1,6 +1,6 @@
 <?php
 return array (
-  '"Push Notifications (Firebase)" module and setup of Firebase API Key required' => '"プッシュ通知（Firebase）" モジュールとFirebase API Keyの設定が必要です',
+  '"Push Notifications (Firebase)" module and setup of Firebase API Key required' => '「プッシュ通知（Firebase）」 モジュールとFirebase API Keyの設定が必要です',
   '<strong>CronJob</strong> Status' => '<strong>Cronジョブ</strong> ステータス',
   '<strong>Queue</strong> Status' => '<strong>キュー</strong> ステータス',
   'About HumHub' => 'HumHubについて',

@@ -1,0 +1,12 @@
+{
+  "id": "moduleWithRequirements",
+  "version": "1.0",
+  "name": "My Example Module With Requirements",
+  "description": "My testing module with Requirements",
+  "humhub": {
+    "minVersion": "1.16"
+  },
+  "keywords": ["module", "requirements"],
+  "homepage": "https://www.example.com",
+  "licence": "AGPL-3.0-or-later"
+}

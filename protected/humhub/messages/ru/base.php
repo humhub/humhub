@@ -1,6 +1,6 @@
 <?php
 return array (
-  '<strong>Confirm</strong> Action' => '<strong>Подтвержите действие</strong>',
+  '<strong>Confirm</strong> Action' => '<strong>Подтвердите </strong>действие',
   '<strong>Latest</strong> updates' => '<strong>Последние</strong> обновления',
   '<strong>Mail</strong> summary' => '<strong>Email рассылка</strong>',
   'Actions' => 'Действия',

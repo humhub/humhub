@@ -84,7 +84,7 @@ class ModuleAutoLoader implements BootstrapInterface
 
         foreach ($folders as $folder) {
             try {
-                $moduleConfig = include $folder . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                $moduleConfig = static::getModuleConfigByPath($folder);
                 if ($preventDuplicatedModules && isset($moduleIdFolders[$moduleConfig['id']])) {
                     Yii::error('Duplicated module "' . $moduleConfig['id'] . '"(' . $folder . ') is already loaded from the folder "' . $moduleIdFolders[$moduleConfig['id']] . '"');
                 } else {
@@ -101,7 +101,8 @@ class ModuleAutoLoader implements BootstrapInterface
             foreach (Yii::$app->moduleManager->overwriteModuleBasePath as $overwriteModuleId => $overwriteModulePath) {
                 if (isset($moduleIdFolders[$overwriteModuleId]) && $moduleIdFolders[$overwriteModuleId] !== $overwriteModulePath) {
                     try {
-                        $moduleConfig = include $overwriteModulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+                        $moduleConfig = static::getModuleConfigByPath($overwriteModulePath);
+
                         Yii::info('Overwrite path of the module "' . $overwriteModuleId . '" to the folder "' . $overwriteModulePath . '"');
                         // Remove original config
                         unset($modules[$moduleIdFolders[$overwriteModuleId]]);
@@ -117,6 +118,12 @@ class ModuleAutoLoader implements BootstrapInterface
 
         return $modules;
     }
+
+    private static function getModuleConfigByPath(string $modulePath): array
+    {
+        return include $modulePath . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE;
+    }
+
 
     /**
      * Find all directories with a configuration file inside

@@ -68,4 +68,7 @@ HumHub Changelog
 - Fix #6875: On Group::addUser(), if the current user is not logged in (console command or user registration), the method returns false even if the user was added to the group
 - Enh #6874: Update open-sans font from composer
 - Enh #6707: Uninstalling modules should be done in a background job
+- Enh #25: Improve contrast of @default button color
+- Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
+- Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
 - Fix #6881: Fix layout styles after run migration
