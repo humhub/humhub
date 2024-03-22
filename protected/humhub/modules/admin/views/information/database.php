@@ -7,8 +7,8 @@
  */
 
 use humhub\libs\Html;
-use humhub\modules\admin\controllers\InformationController;
 use humhub\modules\ui\view\components\View;
+use humhub\services\MigrationService;
 
 /**
  * @var $this View
@@ -33,7 +33,7 @@ use humhub\modules\ui\view\components\View;
 </div>
 
 <div>
-    <?php if ($migrationStatus === InformationController::DB_ACTION_PENDING): ?>
+    <?php if ($migrationStatus === MigrationService::DB_ACTION_PENDING): ?>
         <p><?= Yii::t('AdminModule.information', 'Outstanding database migrations:'); ?></p>
         <div class="well">
     <pre>
@@ -50,7 +50,7 @@ use humhub\modules\ui\view\components\View;
                 ]
             ); ?>
         </p>
-    <?php elseif ($migrationStatus === InformationController::DB_ACTION_RUN): ?>
+    <?php elseif ($migrationStatus === MigrationService::DB_ACTION_RUN): ?>
         <p><?= Yii::t('AdminModule.information', 'Database migration results:'); ?></p>
         <div class="well">
     <pre>

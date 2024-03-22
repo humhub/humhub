@@ -29,10 +29,6 @@ use Yii;
  */
 class InformationController extends Controller
 {
-    public const DB_ACTION_CHECK = 0;
-    public const DB_ACTION_RUN = 1;
-    public const DB_ACTION_PENDING = 2;
-
     /**
      * @inheritdoc
      */
@@ -87,23 +83,14 @@ class InformationController extends Controller
         return $this->render('prerequisites', ['checks' => SelfTest::getResults()]);
     }
 
-    public function actionDatabase(int $migrate = self::DB_ACTION_CHECK)
+    public function actionDatabase(int $migrate = MigrationService::DB_ACTION_CHECK)
     {
         $migrationService = MigrationService::create();
 
-        if ($migrate === self::DB_ACTION_RUN) {
-            $migrationService->migrateUp();
-            $migrationOutput = sprintf(
-                "%s\n%s",
-                $migrationService->getLastMigrationOutput(),
-                SettingController::flushCache()
-            );
-        } else {
-            $migrate = $migrationService->hasMigrationsPending()
-                ? self::DB_ACTION_PENDING
-                : self::DB_ACTION_CHECK;
+        $migrate = $migrationService->runAction($migrate);
 
-            $migrationOutput = $migrationService->getLastMigrationOutput();
+        if ($migrate === MigrationService::DB_ACTION_SESSION) {
+            return $this->redirect(['/admin/information/database']);
         }
 
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
@@ -118,7 +105,7 @@ class InformationController extends Controller
             [
                 'rebuildSearchRunning' => QueueHelper::isQueued($rebuildSearchJob),
                 'databaseName' => $databaseInfo->getDatabaseName(),
-                'migrationOutput' => $migrationOutput,
+                'migrationOutput' => $migrationService->getLastMigrationOutput(),
                 'migrationStatus' => $migrate,
             ]
         );
