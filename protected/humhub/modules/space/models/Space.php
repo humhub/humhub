@@ -318,7 +318,7 @@ class Space extends ContentContainerActiveRecord implements Searchable
         $this->getProfileImage()->delete();
         $this->getProfileBannerImage()->delete();
 
-        Follow::deleteAll(['object_id' => $this->id, 'object_model' => 'Space']);
+        Follow::deleteAll(['object_id' => $this->id, 'object_model' => static::class]);
 
         foreach (Membership::findAll(['space_id' => $this->id]) as $spaceMembership) {
             $spaceMembership->delete();
