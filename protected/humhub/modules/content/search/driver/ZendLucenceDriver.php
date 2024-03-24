@@ -127,7 +127,7 @@ class ZendLucenceDriver extends AbstractDriver
             if ($content !== null) {
                 $resultSet->results[] = $content;
             } else {
-                throw new Exception('Could not load result! Content ID: '. $contentId);
+                throw new Exception('Could not load result! Content ID: ' . $contentId);
                 // ToDo: Delete Result
                 Yii::error("Could not load search result content: " . $contentId);
             }
@@ -140,21 +140,15 @@ class ZendLucenceDriver extends AbstractDriver
     {
         $query = new Boolean();
 
+        Wildcard::setMinPrefixLength(0);
+
         $keywordQuery = new Boolean();
         foreach ($request->getSearchQuery()->orTerms as $term) {
-            if (mb_strlen($term) < 3) {
-                $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), null);
-            } else {
-                $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), null);
-            }
+            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), null);
         }
 
         foreach ($request->getSearchQuery()->andTerms as $term) {
-            if (mb_strlen($term) < 3) {
-                $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), true);
-            } else {
-                $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), true);
-            }
+            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), true);
         }
 
         foreach ($request->getSearchQuery()->notTerms as $term) {
@@ -176,7 +170,6 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         if (!empty($request->topic)) {
-            Wildcard::setMinPrefixLength(0);
             $subQuery = new Boolean();
             foreach ($request->topic as $topic) {
                 $subQuery->addSubquery(new Wildcard(new Term('*-' . $topic . '-*', 'tags')));
@@ -220,7 +213,7 @@ class ZendLucenceDriver extends AbstractDriver
         QueryParser::setDefaultEncoding('utf-8');
         Analyzer::setDefault(new CaseInsensitive());
         QueryParser::setDefaultOperator(QueryParser::B_AND);
-        Lucene::setTermsPerQueryLimit(4096);
+        Lucene::setTermsPerQueryLimit(1024 * 1024);
 
         try {
             $this->_index = Lucene::open($this->getIndexPath());
