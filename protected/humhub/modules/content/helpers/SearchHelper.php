@@ -30,8 +30,12 @@ class SearchHelper extends BaseObject
      */
     public static function matchQuery($query, $text)
     {
-        foreach (explode(" ", $query) as $keyword) {
-            if (!empty($keyword) && strpos($text, $keyword) !== false) {
+        if ($text === null) {
+            return false;
+        }
+
+        foreach (explode(' ', $query) as $keyword) {
+            if ($keyword !== '' && strpos($text, $keyword) !== false) {
                 return true;
             }
         }

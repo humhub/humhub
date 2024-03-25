@@ -23,6 +23,11 @@ class SearchController extends Controller
      */
     public $subLayout = '@content/views/search/_layout';
 
+    /**
+     * @note The current search request, required for File highlighting
+     */
+    public ?SearchRequest $searchRequest = null;
+
     public function actionIndex()
     {
         return $this->render('index');
@@ -32,13 +37,13 @@ class SearchController extends Controller
     {
         $resultSet = null;
 
-        $searchRequest = new SearchRequest();
-        if ($searchRequest->load(Yii::$app->request->get(), '') && $searchRequest->validate()) {
-            $resultSet = $this->module->getSearchDriver()->search($searchRequest);
+        $this->searchRequest = new SearchRequest();
+        if ($this->searchRequest->load(Yii::$app->request->get(), '') && $this->searchRequest->validate()) {
+            $resultSet = $this->module->getSearchDriver()->search($this->searchRequest);
         }
 
         return $this->renderAjax('results', [
-            'searchRequest' => $searchRequest,
+            'searchRequest' => $this->searchRequest,
             'resultSet' => $resultSet,
         ]);
     }
