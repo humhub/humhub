@@ -27,11 +27,13 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     protected function _before()
     {
         $this->searchDriver = $this->createDriver();
+        $this->searchDriver->purge();
 
         /** @var Module $module */
         $module = Yii::$app->getModule('content');
 
         $module->set('search', ['class' => get_class($this->searchDriver)]);
+
 
         parent::_before();
     }
