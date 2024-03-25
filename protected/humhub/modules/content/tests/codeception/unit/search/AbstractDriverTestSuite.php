@@ -5,7 +5,7 @@ namespace humhub\modules\content\tests\codeception\unit\search;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
-use humhub\modules\content\search\driver\MysqlDriver;
+use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
@@ -47,8 +47,10 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         #$this->assertEquals(1, count($this->getSearchResultByKeyword('Marabru')->results));
 
         $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabru Leav Abcd')->results));
-        $this->assertEquals(0, count($this->getSearchResultByKeyword('+Marabru +Leav +Abcd')->results));
+        $this->assertEquals(0, count($this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results));
         $this->assertEquals(0, count($this->getSearchResultByKeyword('Marabru Leav +Abcd')->results));
+
+        $this->assertEquals(1, count($this->getSearchResultByKeyword('Some -Marabru')->results));
 
         // Wildcards
         $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabr*')->results));
@@ -56,19 +58,18 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
     public function testShortKeywords()
     {
-        if ($this->searchDriver instanceof MysqlDriver) {
-            // Not possible on MySQLDriver
-            return;
-        }
-
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
         // Short keywords
-        $this->assertEquals(0, count($this->getSearchResultByKeyword('M')->results));
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('X')->results));
+        $this->assertEquals(0, count($this->getSearchResultByKeyword('R')->results));
+        $this->assertEquals(1, count($this->getSearchResultByKeyword('T')->results));
+        if ($this->searchDriver instanceof ZendLucenceDriver) {
+            // MysqlDriver can find only at least 2 char exist after "X"
+            $this->assertEquals(1, count($this->getSearchResultByKeyword('X')->results));
+        }
     }
 
     private function getSearchRequest(): SearchRequest

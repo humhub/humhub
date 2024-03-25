@@ -123,19 +123,19 @@ class MysqlDriver extends AbstractDriver
         $againstQuery = '';
 
         foreach ($query->andTerms as $keyword) {
-            $againstQuery .= '+' . $keyword . '* ';
+            $againstQuery .= '+' . rtrim($keyword, '*') . '* ';
         }
         foreach ($query->orTerms as $keyword) {
-            $againstQuery .= $keyword . '* ';
+            $againstQuery .= rtrim($keyword, '*') . '* ';
         }
-        foreach ($query->orTerms as $keyword) {
-            $againstQuery .= $keyword . ' ';
+        foreach ($query->notTerms as $keyword) {
+            $againstQuery .= '-' . $keyword . ' ';
         }
 
         return sprintf(
             'MATCH(%s) AGAINST (%s IN BOOLEAN MODE)',
             implode(', ', $matchFields),
-            Yii::$app->db->quoteValue($againstQuery)
+            Yii::$app->db->quoteValue(trim($againstQuery))
         );
     }
 
