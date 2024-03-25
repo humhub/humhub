@@ -143,23 +143,6 @@ class Events extends BaseObject
         }
     }
 
-    public static function onCronHourly($event)
-    {
-        try {
-            /** @var Controller $controller */
-            $controller = $event->sender;
-
-            $controller->stdout("Optimizing search index...\n");
-
-            $searchDriver = static::getModule()->getSearchDriver();
-            $searchDriver->optimize();
-
-            $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
-        } catch (\Throwable $e) {
-            $controller->stderr($e->getMessage() . "\n'");
-            Yii::error($e);
-        }
-    }
 
     private static function canPublishScheduledContent(): bool
     {
