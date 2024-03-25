@@ -40,7 +40,7 @@ class Form extends Widget
     /**
      * @var string
      */
-    public $mentioningUrl = '/search/mentioning/content';
+    public $mentioningUrl = '/user/mentioning/content';
 
     /**
      * @var bool

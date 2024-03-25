@@ -16,6 +16,8 @@ Yii::setAlias('@themes', '@webroot/themes');
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
+Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
+Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
 // Workaround: If OpenSSL extension is not available (#3852)
 if (!defined('PKCS7_DETACHED')) {
@@ -76,9 +78,6 @@ $config = [
                 ],
             ],
         ],
-        'search' => [
-            'class' => \humhub\modules\search\engine\ZendLuceneSearch::class,
-        ],
         'settings' => [
             'class' => \humhub\components\SettingsManager::class,
             'moduleId' => 'base',
@@ -95,6 +94,11 @@ $config = [
                     'basePath' => '@humhub/messages'
                 ],
                 'humhub.yii' => [
+                    'class' => PhpMessageSource::class,
+                    'basePath' => '@humhub/messages'
+                ],
+                'SearchModule.*' => [
+                    // Temporary: During conversion of the search module
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
@@ -253,9 +257,6 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
-        ],
-        'search' => [
-            'zendLucenceDataDir' => '@runtime/searchdb',
         ],
         'curl' => [
             // Check SSL certificates on cURL requests

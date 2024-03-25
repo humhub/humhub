@@ -675,4 +675,15 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public function afterMove(ContentContainerActiveRecord $container = null)
     {
     }
+
+    /**
+     * Returns a Key=>Value array with additional contents to be indexed.
+     * General information and addons like comments, authors, files and tags will be indexed automatically.
+     *
+     * @return array
+     */
+    public function getSearchAttributes()
+    {
+        return [];
+    }
 }

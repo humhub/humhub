@@ -13,10 +13,6 @@ use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
-use humhub\modules\search\events\SearchAddEvent;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\search\jobs\DeleteDocument;
-use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\activities\Created;
 use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\behaviors\SpaceModelMembership;
@@ -25,7 +21,6 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\space\widgets\Wall;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\Follow;
@@ -63,7 +58,7 @@ use yii\db\Expression;
  * @mixin Followable
  * @noinspection PropertiesInspection
  */
-class Space extends ContentContainerActiveRecord implements Searchable
+class Space extends ContentContainerActiveRecord
 {
     // Join Policies
     public const JOIN_POLICY_NONE = 0; // No Self Join Possible
@@ -257,11 +252,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
     {
         parent::afterSave($insert, $changedAttributes);
 
-        Yii::$app->queue->push(new UpdateDocument([
-            'activeRecordClass' => get_class($this),
-            'primaryKey' => $this->id
-        ]));
-
         $user = User::findOne(['id' => $this->created_by]);
 
         if ($insert) {
@@ -311,12 +301,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
         foreach ($this->moduleManager->getEnabled() as $module) {
             $this->moduleManager->disable($module);
         }
-
-        Yii::$app->queue->push(new DeleteDocument([
-            'activeRecordClass' => get_class($this),
-            'primaryKey' => $this->id
-        ]));
-
 
         $this->getProfileImage()->delete();
         $this->getProfileBannerImage()->delete();
@@ -404,24 +388,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
         return false;
     }
 
-    /**
-     * Returns an array of informations used by search subsystem.
-     * Function is defined in interface ISearchable
-     *
-     * @return array
-     */
-    public function getSearchAttributes()
-    {
-        $attributes = [
-            'title' => $this->name,
-            'tags' => implode(', ', $this->getTags()),
-            'description' => $this->description
-        ];
-
-        $this->trigger(self::EVENT_SEARCH_ADD, new SearchAddEvent($attributes));
-
-        return $attributes;
-    }
 
     /**
      * Archive this Space
@@ -523,13 +489,6 @@ class Space extends ContentContainerActiveRecord implements Searchable
         return ($this->isMember($user));
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getWallOut()
-    {
-        return Wall::widget(['space' => $this]);
-    }
 
     /**
      * Returns all Membership relations with status = STATUS_MEMBER.

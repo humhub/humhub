@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\search\libs\SearchHelper;
 use yii\db\ActiveQuery;
 
 /**
@@ -87,9 +86,6 @@ class GroupUser extends ActiveRecord
                     $groupSpace->space->addMember($this->user->id);
                 }
             }
-            if ($this->user !== null) {
-                $this->user->updateSearch();
-            }
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -100,7 +96,6 @@ class GroupUser extends ActiveRecord
      */
     public function afterDelete()
     {
-        SearchHelper::queueUpdate($this->user);
         parent::afterDelete();
     }
 

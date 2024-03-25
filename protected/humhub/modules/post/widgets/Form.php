@@ -30,7 +30,7 @@ class Form extends WallCreateContentForm
     /**
      * @var string
      */
-    public $mentioningUrl = '/search/mentioning/space';
+    public $mentioningUrl = '/user/mentioning/space';
 
     /**
      * Get params for form rendering
