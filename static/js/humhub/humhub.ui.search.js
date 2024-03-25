@@ -330,7 +330,7 @@ humhub.module('ui.search', function(module, require, $) {
 
         // Set proper panel height
         const panelTop = this.getPanel().position().top + this.$.offset().top - $(window).scrollTop();
-        const maxHeight = $(window).height() - panelTop - ($(window).width() > 390 ? 80 : 0);
+        const maxHeight = $(window).height() - panelTop - ($(window).width() > 440 ? 80 : 0);
         this.getPanel().css('height', 'auto');
         if (this.getPanel().height() > maxHeight) {
             this.getPanel().css('height', maxHeight);
