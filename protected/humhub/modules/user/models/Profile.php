@@ -172,6 +172,7 @@ class Profile extends ActiveRecord
         Yii::t('UserModule.profile', 'TikTok URL');
         Yii::t('UserModule.profile', 'Instagram URL');
         Yii::t('UserModule.profile', 'Twitter URL');
+        Yii::t('UserModule.profile', 'Mastodon URL');
     }
 
     /**

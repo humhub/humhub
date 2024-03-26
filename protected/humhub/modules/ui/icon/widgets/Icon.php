@@ -390,6 +390,8 @@ class Icon extends Widget
         'mars-stroke',
         'mars-stroke-h',
         'mars-stroke-v',
+        'mastodon',
+        'mastodon-square',
         'maxcdn',
         'meanpath',
         'medium',
