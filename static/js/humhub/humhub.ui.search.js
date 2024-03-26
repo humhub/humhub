@@ -310,6 +310,11 @@ humhub.module('ui.search', function(module, require, $) {
                 }
 
                 that.refreshPositionSize();
+            }).catch(function (e) {
+                module.log.error(e, true);
+                loader.reset(provider.find(that.selectors.providerContent));
+                provider.hide();
+                that.refreshPositionSize();
             });
 
             that.previousKeyword = data.keyword;
