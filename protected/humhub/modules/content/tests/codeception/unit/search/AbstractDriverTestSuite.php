@@ -330,4 +330,34 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $result = $this->searchDriver->search($request);
         $this->assertEquals(1, count($result->results));
     }
+
+    public function testContentState()
+    {
+        $this->becomeUser('Admin');
+
+        $space = Space::findOne(['id' => 1]);
+
+        $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post1']);
+        $post1->save();
+        $post2 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post2']);
+        $post2->save();
+        $post3 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post3']);
+        $post3->content->getStateService()->set(Content::STATE_DRAFT);
+        $post3->save();
+
+        $request = $this->getSearchRequest();
+        $request->keyword = 'TestState';
+
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(2, count($result->results));
+
+        $post1->content->getStateService()->draft();
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(1, count($result->results));
+
+        $post1->content->getStateService()->publish();
+        $post3->content->getStateService()->publish();
+        $result = $this->searchDriver->search($request);
+        $this->assertEquals(3, count($result->results));
+    }
 }
