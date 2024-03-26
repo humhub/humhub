@@ -37,7 +37,7 @@ class SearchFilters extends DirectoryFilters
             'title' => Yii::t('ContentModule.search', 'Find Content based on keywords'),
             'placeholder' => Yii::t('ContentModule.search', 'Search...'),
             'type' => 'input',
-            'inputOptions' => ['autocomplete' => 'off'],
+            'inputOptions' => ['autocomplete' => 'off', 'data-highlight' => '.search-results'],
             'wrapperClass' => 'col-md-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,

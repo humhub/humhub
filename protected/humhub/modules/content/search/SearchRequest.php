@@ -27,7 +27,7 @@ class SearchRequest extends Model
 
     public $page = 1;
 
-    public $pageSize = 25;
+    public $pageSize = 3;
 
     public $contentType = '';
 
