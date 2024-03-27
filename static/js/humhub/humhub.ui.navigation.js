@@ -8,7 +8,7 @@ humhub.module('ui.navigation', function (module, require, $) {
 
     var initTopNav = function () {
         // Default implementation for topbar. Activate li on click.
-        $('#top-menu-nav a:not(#space-menu):not(#top-dropdown-menu):not(data-action-click="ui.modal.load")').on('click', function () {
+        $('#top-menu-nav a:not(#space-menu):not(#top-dropdown-menu):not([data-action-click="ui.modal.load"])').on('click', function () {
             module.setActiveItem($(this));
         });
 
