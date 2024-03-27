@@ -349,13 +349,11 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertEquals(2, count($result->results));
 
         $post1->content->getStateService()->draft();
-        $this->searchDriver->purge();
         $result = $this->getSearchResultByKeyword('TestState');
         $this->assertEquals(1, count($result->results));
 
         $post1->content->getStateService()->publish();
         $post3->content->getStateService()->publish();
-        $this->searchDriver->purge();
         $result = $this->getSearchResultByKeyword('TestState');
         $this->assertEquals(3, count($result->results));
     }
