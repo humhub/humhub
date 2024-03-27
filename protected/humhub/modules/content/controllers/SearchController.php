@@ -40,7 +40,7 @@ class SearchController extends Controller
     {
         $resultSet = null;
 
-        $this->searchRequest = new SearchRequest();
+        $this->searchRequest = new SearchRequest(['pageSize' => 3]);
         if ($this->searchRequest->load(Yii::$app->request->get(), '') && $this->searchRequest->validate()) {
             $resultSet = $this->module->getSearchDriver()->search($this->searchRequest);
         }
