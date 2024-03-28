@@ -27,13 +27,15 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     protected function _before()
     {
         $this->searchDriver = $this->createDriver();
-        $this->searchDriver->purge();
 
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('content');
-
         $module->set('search', ['class' => get_class($this->searchDriver)]);
 
+        // Link it to object from Module because it is used in other methods as global,
+        // it fixes issue on deleting item from indexing after unpublish a Content
+        $this->searchDriver = $module->getSearchDriver();
+        $this->searchDriver->purge();
 
         parent::_before();
     }
@@ -329,5 +331,32 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->page = 3;
         $result = $this->searchDriver->search($request);
         $this->assertEquals(1, count($result->results));
+    }
+
+    public function testContentState()
+    {
+        $this->becomeUser('Admin');
+
+        $space = Space::findOne(['id' => 1]);
+
+        $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post1']);
+        $post1->save();
+        $post2 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post2']);
+        $post2->save();
+        $post3 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post3']);
+        $post3->content->getStateService()->set(Content::STATE_DRAFT);
+        $post3->save();
+
+        $result = $this->getSearchResultByKeyword('TestState');
+        $this->assertEquals(2, count($result->results));
+
+        $post1->content->getStateService()->draft();
+        $result = $this->getSearchResultByKeyword('TestState');
+        $this->assertEquals(1, count($result->results));
+
+        $post1->content->getStateService()->publish();
+        $post3->content->getStateService()->publish();
+        $result = $this->getSearchResultByKeyword('TestState');
+        $this->assertEquals(3, count($result->results));
     }
 }
