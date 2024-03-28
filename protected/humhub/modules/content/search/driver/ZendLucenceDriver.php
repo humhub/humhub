@@ -94,11 +94,11 @@ class ZendLucenceDriver extends AbstractDriver
         $this->commit();
     }
 
-    public function search(SearchRequest $request): ResultSet
+    public function runSearch(): ResultSet
     {
-        $query = $this->buildSearchQuery($request);
+        $query = $this->buildSearchQuery();
 
-        if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
+        if ($this->request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
             $hits = new ArrayObject($this->getIndex()->find($query, 'created_at', SORT_DESC));
         } else {
             $hits = new ArrayObject($this->getIndex()->find($query));
@@ -107,8 +107,8 @@ class ZendLucenceDriver extends AbstractDriver
         $resultSet = new ResultSet();
         $resultSet->pagination = new Pagination();
         $resultSet->pagination->totalCount = count($hits);
-        $resultSet->pagination->pageSize = $request->pageSize;
-        $resultSet->pagination->setPage($request->page - 1, true);
+        $resultSet->pagination->pageSize = $this->request->pageSize;
+        $resultSet->pagination->setPage($this->request->page - 1, true);
 
         $hits = new \LimitIterator(
             $hits->getIterator(),
@@ -136,22 +136,22 @@ class ZendLucenceDriver extends AbstractDriver
         return $resultSet;
     }
 
-    protected function buildSearchQuery(SearchRequest $request): Boolean
+    protected function buildSearchQuery(): Boolean
     {
         $query = new Boolean();
 
         Wildcard::setMinPrefixLength(0);
 
         $keywordQuery = new Boolean();
-        foreach ($request->getSearchQuery()->orTerms as $term) {
+        foreach ($this->request->getSearchQuery()->orTerms as $term) {
             $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), null);
         }
 
-        foreach ($request->getSearchQuery()->andTerms as $term) {
+        foreach ($this->request->getSearchQuery()->andTerms as $term) {
             $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), true);
         }
 
-        foreach ($request->getSearchQuery()->notTerms as $term) {
+        foreach ($this->request->getSearchQuery()->notTerms as $term) {
             $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), false);
         }
 
@@ -159,46 +159,46 @@ class ZendLucenceDriver extends AbstractDriver
             $query->addSubquery($keywordQuery, true);
         }
 
-        if (!empty($request->dateFrom) || !empty($request->dateTo)) {
-            $dateFrom = empty($request->dateFrom)
+        if (!empty($this->request->dateFrom) || !empty($this->request->dateTo)) {
+            $dateFrom = empty($this->request->dateFrom)
                 ? null
-                : new Term($request->dateFrom . ' 00:00:00', 'created_at');
-            $dateTo = empty($request->dateTo)
+                : new Term($this->request->dateFrom . ' 00:00:00', 'created_at');
+            $dateTo = empty($this->request->dateTo)
                 ? null
-                : new Term($request->dateTo . ' 23:59:59', 'created_at');
+                : new Term($this->request->dateTo . ' 23:59:59', 'created_at');
             $query->addSubquery(new Range($dateFrom, $dateTo, true), true);
         }
 
-        if (!empty($request->topic)) {
+        if (!empty($this->request->topic)) {
             $subQuery = new Boolean();
-            foreach ($request->topic as $topic) {
+            foreach ($this->request->topic as $topic) {
                 $subQuery->addSubquery(new Wildcard(new Term('*-' . $topic . '-*', 'tags')));
             }
             $query->addSubquery($subQuery, true);
         }
 
-        if ($request->author) {
+        if ($this->request->author) {
             $authors = [];
             $signs = [];
-            foreach ($request->author as $author) {
+            foreach ($this->request->author as $author) {
                 $authors[] = new Term($author, 'created_by');
                 $signs[] = null;
             }
             $query->addSubquery(new MultiTerm($authors, $signs), true);
         }
 
-        if ($request->space) {
+        if ($this->request->space) {
             $spaces = [];
             $signs = [];
-            foreach ($request->space as $space) {
+            foreach ($this->request->space as $space) {
                 $spaces[] = new Term($space, 'space');
                 $signs[] = null;
             }
             $query->addSubquery(new MultiTerm($spaces, $signs), true);
         }
 
-        if (!empty($request->contentType)) {
-            $query->addSubquery(new TermQuery(new Term($request->contentType, 'class')), true);
+        if (!empty($this->request->contentType)) {
+            $query->addSubquery(new TermQuery(new Term($this->request->contentType, 'class')), true);
         }
 
         return $query;

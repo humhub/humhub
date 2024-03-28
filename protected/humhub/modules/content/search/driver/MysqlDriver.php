@@ -56,48 +56,48 @@ class MysqlDriver extends AbstractDriver
         ContentFulltext::deleteAll(['content_id' => $content->id]);
     }
 
-    public function search(SearchRequest $request): ResultSet
+    public function runSearch(): ResultSet
     {
         $query = Content::find();
         $query->leftJoin('content_fulltext', 'content_fulltext.content_id=content.id');
         $query->andWhere('content_fulltext.content_id IS NOT NULL');
 
-        $fullTextQuery = $this->createMysqlFullTextQuery($request->getSearchQuery(), [
+        $fullTextQuery = $this->createMysqlFullTextQuery($this->request->getSearchQuery(), [
             'content_fulltext.contents', 'content_fulltext.comments', 'content_fulltext.files'
         ]);
 
         $query->addSelect(['content.*', $fullTextQuery . ' as score']);
         $query->andWhere($fullTextQuery);
 
-        if (!empty($request->contentType)) {
-            $query->andWhere(['content.object_model' => $request->contentType]);
+        if (!empty($this->request->contentType)) {
+            $query->andWhere(['content.object_model' => $this->request->contentType]);
         }
 
-        if (!empty($request->dateFrom)) {
-            $query->andWhere(['>=', 'content.created_at', $request->dateFrom . ' 00:00:00']);
+        if (!empty($this->request->dateFrom)) {
+            $query->andWhere(['>=', 'content.created_at', $this->request->dateFrom . ' 00:00:00']);
         }
-        if (!empty($request->dateTo)) {
-            $query->andWhere(['<=', 'content.created_at', $request->dateTo . ' 23:59:59']);
+        if (!empty($this->request->dateTo)) {
+            $query->andWhere(['<=', 'content.created_at', $this->request->dateTo . ' 23:59:59']);
         }
 
-        if (!empty($request->topic)) {
+        if (!empty($this->request->topic)) {
             $query->leftJoin('content_tag_relation', 'content_tag_relation.content_id = content.id')
-                ->andWhere(['IN', 'content_tag_relation.tag_id', $request->topic]);
+                ->andWhere(['IN', 'content_tag_relation.tag_id', $this->request->topic]);
         }
 
-        if (!empty($request->author)) {
+        if (!empty($this->request->author)) {
             $query->leftJoin('user', 'user.id = content.created_by')
-                ->andWhere(['IN', 'user.guid', $request->author]);
+                ->andWhere(['IN', 'user.guid', $this->request->author]);
         }
 
-        if (!empty($request->space)) {
+        if (!empty($this->request->space)) {
             $query->andWhere(['contentcontainer.class' => Space::class])
-                ->andWhere(['IN', 'contentcontainer.guid', $request->space]);
+                ->andWhere(['IN', 'contentcontainer.guid', $this->request->space]);
         }
 
         $this->addQueryFilterVisibility($query);
 
-        if ($request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
+        if ($this->request->orderBy === SearchRequest::ORDER_BY_CREATION_DATE) {
             $query->orderBy(['content.created_at' => SORT_DESC]);
         } else {
             $query->orderBy(['score' => SORT_DESC]);
@@ -106,8 +106,8 @@ class MysqlDriver extends AbstractDriver
         $resultSet = new ResultSet();
         $resultSet->pagination = new Pagination();
         $resultSet->pagination->totalCount = $query->count();
-        $resultSet->pagination->pageSize = $request->pageSize;
-        $resultSet->pagination->setPage($request->page - 1, true);
+        $resultSet->pagination->pageSize = $this->request->pageSize;
+        $resultSet->pagination->setPage($this->request->page - 1, true);
 
         $query->offset($resultSet->pagination->offset)->limit($resultSet->pagination->limit);
 
