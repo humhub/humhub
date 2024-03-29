@@ -65,15 +65,14 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
-        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Y Test X']))->save();
 
         // Short keywords
         $this->assertEquals(0, count($this->getSearchResultByKeyword('R')->results));
         $this->assertEquals(1, count($this->getSearchResultByKeyword('T')->results));
-        if ($this->searchDriver instanceof ZendLucenceDriver) {
-            // MysqlDriver can find only at least 2 char exist after "X"
-            $this->assertEquals(1, count($this->getSearchResultByKeyword('X')->results));
-        }
+
+        // Most search indexes do not index individual letters.
+
     }
 
     private function getSearchRequest(): SearchRequest
