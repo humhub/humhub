@@ -8,6 +8,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use yii\base\Exception;
 use yii\data\Pagination;
@@ -56,15 +57,15 @@ class ZendLucenceDriver extends AbstractDriver
         $document->addField(Field::keyword('created_by', ($author = $content->createdBy) ? $author->guid : ''));
         $document->addField(Field::keyword('updated_at', $content->updated_at));
         $document->addField(Field::keyword('updated_by', ($author = $content->updatedBy) ? $author->guid : ''));
-        $document->addField(Field::keyword('space', ($space = $content->container) ? $space->guid : ''));
         $document->addField(Field::keyword('tags', empty($content->tags) ? ''
             : '-' . implode('-', array_map(function (ContentTag $tag) {
                 return $tag->id;
             }, $content->tags)) . '-'));
 
-        if ($content->container) {
-            $document->addField(Field::keyword('container_id', $content->container->id));
-        }
+        $container = $content->container;
+        $document->addField(Field::keyword('container_guid', $container ? $container->guid : ''));
+        $document->addField(Field::keyword('container_visibility', $container ? $container->visibility : ''));
+        $document->addField(Field::keyword('container_class', $container ? get_class($container) : ''));
 
         $document->addField(Field::unStored('comments', (new ContentSearchService($content))->getCommentsAsText()));
         $document->addField(Field::unStored('files', (new ContentSearchService($content))->getFileContentAsText()));
@@ -187,7 +188,7 @@ class ZendLucenceDriver extends AbstractDriver
             $spaces = [];
             $signs = [];
             foreach ($request->space as $space) {
-                $spaces[] = new Term($space, 'space');
+                $spaces[] = new Term($space, 'container_guid');
                 $signs[] = null;
             }
             $query->addSubquery(new MultiTerm($spaces, $signs), true);
@@ -196,6 +197,32 @@ class ZendLucenceDriver extends AbstractDriver
         if (!empty($request->contentType)) {
             $query->addSubquery(new TermQuery(new Term($request->contentType, 'class')), true);
         }
+
+        $query = $this->addQueryFilterVisibility($query);
+
+        return $query;
+    }
+
+    protected function addQueryFilterVisibility(Boolean $query): Boolean
+    {
+        $subQueries = new Boolean();
+
+        if (!Yii::$app->user->isGuest) {
+            $subQueries->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')));
+
+            // TODO: Select Private Content which is visible only for current User
+            // $subQueries->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')));
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
+            // TODO: Implement conditions for anonymous user
+            // space.visibility = Space::VISIBILITY_ALL AND content.visibility = Content::VISIBILITY_PUBLIC
+            //   OR
+            // user.visibility = User::VISIBILITY_ALL AND content.visibility = Content::VISIBILITY_PUBLIC
+            return $query;
+        } else {
+            return $query;
+        }
+
+        $query->addSubquery($subQueries, true);
 
         return $query;
     }
