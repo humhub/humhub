@@ -42,7 +42,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     {
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
-        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Something Other']))->save();
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
         // Test Multiple AND Keywords
@@ -52,7 +52,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertEquals(0, count($this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results));
         $this->assertEquals(0, count($this->getSearchResultByKeyword('Marabru Leav +Abcd')->results));
 
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('Some -Marabru')->results));
+        $this->assertEquals(1, count($this->getSearchResultByKeyword('Something -Marabru')->results));
 
         // Wildcards
         $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabr*')->results));
