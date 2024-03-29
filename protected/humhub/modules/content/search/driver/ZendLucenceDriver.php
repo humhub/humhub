@@ -160,12 +160,21 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         if (!empty($request->dateFrom) || !empty($request->dateTo)) {
-            $dateFrom = empty($request->dateFrom)
-                ? null
-                : new Term($request->dateFrom . ' 00:00:00', 'created_at');
-            $dateTo = empty($request->dateTo)
-                ? null
-                : new Term($request->dateTo . ' 23:59:59', 'created_at');
+            if (str_contains(get_called_class(), 'Solr')) {
+                $dateFrom = empty($request->dateFrom)
+                    ? new Term('*', 'created_at')
+                    : new Term('"' . $request->dateFrom . ' 00:00:00"', 'created_at');
+                $dateTo = empty($request->dateTo)
+                    ? new Term('*', 'created_at')
+                    : new Term('"' . $request->dateTo . ' 23:59:59"', 'created_at');
+            } else {
+                $dateFrom = empty($request->dateFrom)
+                    ? null
+                    : new Term($request->dateFrom . ' 00:00:00', 'created_at');
+                $dateTo = empty($request->dateTo)
+                    ? null
+                    : new Term($request->dateTo . ' 23:59:59', 'created_at');
+            }
             $query->addSubquery(new Range($dateFrom, $dateTo, true), true);
         }
 
