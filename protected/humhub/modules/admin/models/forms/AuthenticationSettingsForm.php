@@ -97,6 +97,16 @@ class AuthenticationSettingsForm extends Model
     }
 
     /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'If enabled, you can select the managers in the group settings.'),
+        ];
+    }
+
+    /**
      * Saves the form
      *
      * @return bool
