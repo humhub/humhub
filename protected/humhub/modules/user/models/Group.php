@@ -115,7 +115,7 @@ class Group extends ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('UserModule.base', 'Name'),
             'defaultSpaceGuid' => Yii::t('UserModule.base', 'Default Space'),
-            'managerGuids' => Yii::t('UserModule.base', 'Registration approval managers'),
+            'managerGuids' => Yii::t('UserModule.base', 'Managers'),
             'description' => Yii::t('UserModule.base', 'Description'),
             'created_at' => Yii::t('UserModule.base', 'Created at'),
             'created_by' => Yii::t('UserModule.base', 'Created by'),
@@ -135,7 +135,6 @@ class Group extends ActiveRecord
     public function attributeHints()
     {
         return [
-            'managerGuids' => Yii::t('UserModule.base', 'Users who are allowed to approve pending users and who will be notified about new registrations.'),
             'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
             'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
             'show_at_directory' => Yii::t('AdminModule.user', 'Will be used as a filter in \'People\'.'),

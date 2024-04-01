@@ -102,7 +102,7 @@ class AuthenticationSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'If enabled, you can select the managers in the group settings.'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'You can select the managers - who can approve pending users and who will be notified about new registrations - in the group settings.'),
         ];
     }
 
