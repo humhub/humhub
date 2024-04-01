@@ -80,7 +80,7 @@ class AuthenticationSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Require group admin approval after registration'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Require group manager approval after registration'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.user', 'New users can register'),
             'internalUsersCanInviteByEmail' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
             'internalUsersCanInviteByLink' => Yii::t('AdminModule.user', 'Members can invite external users by link'),
