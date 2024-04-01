@@ -160,12 +160,8 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         if (!empty($this->request->dateFrom) || !empty($this->request->dateTo)) {
-            $dateFrom = empty($this->request->dateFrom)
-                ? null
-                : new Term($this->request->dateFrom . ' 00:00:00', 'created_at');
-            $dateTo = empty($this->request->dateTo)
-                ? null
-                : new Term($this->request->dateTo . ' 23:59:59', 'created_at');
+            $dateFrom = $this->convertRangeValue('created_at', $this->request->dateFrom, ' 00:00:00');
+            $dateTo = $this->convertRangeValue('created_at', $this->request->dateTo, ' 23:59:59');
             $query->addSubquery(new Range($dateFrom, $dateTo, true), true);
         }
 
@@ -203,6 +199,21 @@ class ZendLucenceDriver extends AbstractDriver
 
         return $query;
     }
+
+    /**
+     * ZendLucene and Solr sometimes require a different format here.
+     * e.g. Sol needs a "*" instead of "null" and quoted dates with time
+     *
+     * @param string $field
+     * @param string|null $value
+     * @param string $suffix
+     * @return Term|null
+     */
+    protected function convertRangeValue(string $field, ?string $value, string $suffix = ''): ?Term
+    {
+        return empty($value) ? null : new Term($value . $suffix, $field);
+    }
+
 
     private function getIndex(): Index
     {

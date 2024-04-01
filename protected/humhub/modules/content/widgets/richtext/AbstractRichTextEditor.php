@@ -77,7 +77,7 @@ class AbstractRichTextEditor extends JsInputWidget
      *
      * @var string
      */
-    protected $mentioningRoute = "/search/mentioning";
+    protected $mentioningRoute = '/user/mentioning';
 
     /**
      * Back up content each X seconds, 0 - to don't back up
@@ -294,6 +294,6 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public function getMentioningUrl()
     {
-        return ($this->mentioningUrl) ? $this->mentioningUrl : Url::to([$this->mentioningRoute]);
+        return $this->mentioningUrl ?: Url::to([$this->mentioningRoute]);
     }
 }

@@ -27,13 +27,15 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     protected function _before()
     {
         $this->searchDriver = $this->createDriver();
-        $this->searchDriver->purge();
 
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('content');
-
         $module->set('search', ['class' => get_class($this->searchDriver)]);
 
+        // Link it to object from Module because it is used in other methods as global,
+        // it fixes issue on deleting item from indexing after unpublish a Content
+        $this->searchDriver = $module->getSearchDriver();
+        $this->searchDriver->purge();
 
         parent::_before();
     }
@@ -42,7 +44,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
     {
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
-        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Something Other']))->save();
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
         // Test Multiple AND Keywords
@@ -52,7 +54,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertEquals(0, count($this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results));
         $this->assertEquals(0, count($this->getSearchResultByKeyword('Marabru Leav +Abcd')->results));
 
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('Some -Marabru')->results));
+        $this->assertEquals(1, count($this->getSearchResultByKeyword('Something -Marabru')->results));
 
         // Wildcards
         $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabr*')->results));
@@ -63,15 +65,14 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $space = Space::findOne(['id' => 1]);
         $this->becomeUser('Admin');
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Some Other']))->save();
-        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Y Test X']))->save();
 
         // Short keywords
         $this->assertEquals(0, count($this->getSearchResultByKeyword('R')->results));
         $this->assertEquals(1, count($this->getSearchResultByKeyword('T')->results));
-        if ($this->searchDriver instanceof ZendLucenceDriver) {
-            // MysqlDriver can find only at least 2 char exist after "X"
-            $this->assertEquals(1, count($this->getSearchResultByKeyword('X')->results));
-        }
+
+        // Most search indexes do not index individual letters.
+
     }
 
     private function getSearchRequest(): SearchRequest
@@ -329,5 +330,32 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->page = 3;
         $result = $this->searchDriver->search($request);
         $this->assertEquals(1, count($result->results));
+    }
+
+    public function testContentState()
+    {
+        $this->becomeUser('Admin');
+
+        $space = Space::findOne(['id' => 1]);
+
+        $post1 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post1']);
+        $post1->save();
+        $post2 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post2']);
+        $post2->save();
+        $post3 = new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'TestState Post3']);
+        $post3->content->getStateService()->set(Content::STATE_DRAFT);
+        $post3->save();
+
+        $result = $this->getSearchResultByKeyword('TestState');
+        $this->assertEquals(2, count($result->results));
+
+        $post1->content->getStateService()->draft();
+        $result = $this->getSearchResultByKeyword('TestState');
+        $this->assertEquals(1, count($result->results));
+
+        $post1->content->getStateService()->publish();
+        $post3->content->getStateService()->publish();
+        $result = $this->getSearchResultByKeyword('TestState');
+        $this->assertEquals(3, count($result->results));
     }
 }

@@ -8,6 +8,16 @@ Version 1.16 (Unreleased)
 -------------------------
 At least PHP 8.0 is required with this version.
 
+#### Removed
+- `\humhub\modules\search\*` The existing search module was removed and the related features merged
+  into the 'content', 'user' and 'space' modules.
+
+### Behaviour change
+- New Meta Search API (TBD) 
+- `/search/mentioning` -> `/user/mentioning`
+- 
+
+
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
   (note: this also affects the virtual instance property `\humhub\modules\friendship\Module::$isActivated` which should
