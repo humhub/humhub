@@ -5,7 +5,6 @@ namespace humhub\modules\content\tests\codeception\unit\search;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
-use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
@@ -19,7 +18,6 @@ use Yii;
 
 abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 {
-
     protected ?AbstractDriver $searchDriver = null;
 
     abstract protected function createDriver(): AbstractDriver;
@@ -48,16 +46,16 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
         // Test Multiple AND Keywords
-        #$this->assertEquals(1, count($this->getSearchResultByKeyword('Marabru')->results));
+        #$this->assertCount(1, $this->getSearchResultByKeyword('Marabru')->results);
 
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabru Leav Abcd')->results));
-        $this->assertEquals(0, count($this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results));
-        $this->assertEquals(0, count($this->getSearchResultByKeyword('Marabru Leav +Abcd')->results));
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav Abcd')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('Marabru Leav +Abcd')->results);
 
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('Something -Marabru')->results));
+        $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marabru')->results);
 
         // Wildcards
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('Marabr*')->results));
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabr*')->results);
     }
 
     public function testShortKeywords()
@@ -68,8 +66,8 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Y Test X']))->save();
 
         // Short keywords
-        $this->assertEquals(0, count($this->getSearchResultByKeyword('R')->results));
-        $this->assertEquals(1, count($this->getSearchResultByKeyword('T')->results));
+        $this->assertCount(0, $this->getSearchResultByKeyword('R')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('T')->results);
 
         // Most search indexes do not index individual letters.
 
@@ -111,22 +109,18 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->keyword = 'Driver';
 
         $request->dateFrom = '2024-02-01';
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(1, count($result->results));
+        $this->assertCount(1, $this->searchDriver->search($request)->results);
 
         $request->dateFrom = '2024-01-02';
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->dateFrom = null;
         $request->dateTo = '2024-01-02';
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->dateFrom = '2023-12-01';
         $request->dateTo = '2024-01-02';
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
     }
 
     public function testFilterTopics()
@@ -154,20 +148,16 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->keyword = 'Test';
 
         $request->topic = [$topic1->id];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->topic = [$topic1->id, $topic2->id];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(3, count($result->results));
+        $this->assertCount(3, $this->searchDriver->search($request)->results);
 
         $request->topic = [$topic2->id];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->topic = [$topic3->id];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(1, count($result->results));
+        $this->assertCount(1, $this->searchDriver->search($request)->results);
     }
 
     public function testFilterContentType()
@@ -183,9 +173,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->keyword = 'Test';
         $request->contentType = TestContent::class;
 
-        $result = $this->searchDriver->search($request);
-
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
     }
 
     public function testFilterAuthor()
@@ -207,16 +195,13 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->keyword = 'TestAuthor';
         $request->author = [User::findOne(['username' => 'User2'])->guid];
 
-        $result = $this->searchDriver->search($request);
-
-        $this->assertEquals(3, count($result->results));
+        $this->assertCount(3, $this->searchDriver->search($request)->results);
 
         // Search by keyword without filter "Author"
         $request = new SearchRequest();
         $request->keyword = 'TestAuthor';
-        $result = $this->searchDriver->search($request);
 
-        $this->assertEquals(4, count($result->results));
+        $this->assertCount(4, $this->searchDriver->search($request)->results);
     }
 
     public function testFilterBySpace()
@@ -239,32 +224,26 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request = $this->getSearchRequest();
         $request->keyword = 'TestSpace';
 
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(6, count($result->results));
+        $this->assertCount(6, $this->searchDriver->search($request)->results);
 
         $request->space = [$space1->guid];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(1, count($result->results));
+        $this->assertCount(1, $this->searchDriver->search($request)->results);
 
         $request->space = [$space2->guid];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->space = [$space3->guid];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(3, count($result->results));
+        $this->assertCount(3, $this->searchDriver->search($request)->results);
 
         $request->space = [$space1->guid, $space3->guid];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(4, count($result->results));
+        $this->assertCount(4, $this->searchDriver->search($request)->results);
 
         $request->space = [$space2->guid, $space3->guid];
         $result = $this->searchDriver->search($request);
-        $this->assertEquals(5, count($result->results));
+        $this->assertCount(5, $this->searchDriver->search($request)->results);
 
         $request->space = [$space1->guid, $space2->guid, $space3->guid];
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(6, count($result->results));
+        $this->assertCount(6, $this->searchDriver->search($request)->results);
     }
 
     public function testOrderBy()
@@ -289,7 +268,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->orderBy = SearchRequest::ORDER_BY_CREATION_DATE;
         $result = $this->searchDriver->search($request);
 
-        $this->assertEquals(3, count($result->results));
+        $this->assertCount(3, $result->results);
         $this->assertEquals($post2->content->id, $result->results[0]->content->id);
         $this->assertEquals($post3->content->id, $result->results[1]->content->id);
         $this->assertEquals($post1->content->id, $result->results[2]->content->id);
@@ -300,7 +279,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->orderBy = SearchRequest::ORDER_BY_SCORE;
         $result = $this->searchDriver->search($request);
 
-        $this->assertEquals(3, count($result->results));
+        $this->assertCount(3, $result->results);
 
         $this->assertEquals($post3->content->id, $result->results[0]->content->id); // +2 Best hit, keyword position, keyword twice
         $this->assertEquals($post1->content->id, $result->results[1]->content->id); // +1 Keyword position
@@ -320,16 +299,13 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $request->keyword = 'Pagination';
         $request->pageSize = 2;
 
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->page = 2;
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->searchDriver->search($request)->results);
 
         $request->page = 3;
-        $result = $this->searchDriver->search($request);
-        $this->assertEquals(1, count($result->results));
+        $this->assertCount(1, $this->searchDriver->search($request)->results);
     }
 
     public function testContentState()
@@ -346,16 +322,96 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $post3->content->getStateService()->set(Content::STATE_DRAFT);
         $post3->save();
 
-        $result = $this->getSearchResultByKeyword('TestState');
-        $this->assertEquals(2, count($result->results));
+        $this->assertCount(2, $this->getSearchResultByKeyword('TestState')->results);
 
         $post1->content->getStateService()->draft();
-        $result = $this->getSearchResultByKeyword('TestState');
-        $this->assertEquals(1, count($result->results));
+        $this->assertCount(1, $this->getSearchResultByKeyword('TestState')->results);
 
         $post1->content->getStateService()->publish();
         $post3->content->getStateService()->publish();
-        $result = $this->getSearchResultByKeyword('TestState');
-        $this->assertEquals(3, count($result->results));
+        $this->assertCount(3, $this->getSearchResultByKeyword('TestState')->results);
+    }
+
+    public function testContentVisibility()
+    {
+        $this->becomeUser('Admin');
+
+        $space1 = Space::findOne(['id' => 1]);
+        $space1->visibility = Space::VISIBILITY_ALL;
+        $space1->save();
+        ($allPublicPost = new Post($space1, Content::VISIBILITY_PUBLIC, ['message' => 'TestVisibility All Public']))->save();
+        ($allPrivatePost = new Post($space1, Content::VISIBILITY_PRIVATE, ['message' => 'TestVisibility All Private']))->save();
+
+        $space2 = Space::findOne(['id' => 2]);
+        $space2->visibility = Space::VISIBILITY_REGISTERED_ONLY;
+        $space2->save();
+        ($userPublicPost = new Post($space2, Content::VISIBILITY_PUBLIC, ['message' => 'TestVisibility User Public']))->save();
+        ($userPrivatePost = new Post($space2, Content::VISIBILITY_PRIVATE, ['message' => 'TestVisibility User Private']))->save();
+
+        $space3 = Space::findOne(['id' => 3]);
+        $space3->visibility = Space::VISIBILITY_NONE; // Private
+        $space3->save();
+        ($memberPublicPost = new Post($space3, Content::VISIBILITY_PUBLIC, ['message' => 'TestVisibility Member Public']))->save();
+        ($memberPrivatePost = new Post($space3, Content::VISIBILITY_PRIVATE, ['message' => 'TestVisibility Member Private']))->save();
+
+        // Admin
+        $this->assertCount(6, $this->getSearchResultByKeyword('TestVisibility')->results);
+
+        // Guest - Disabled guest access
+        $this->logout();
+        $this->assertCount(0, $this->getSearchResultByKeyword('TestVisibility')->results);
+
+        // Guest - Enabled guest access
+        Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', true);
+        $results = $this->getSearchResultByKeyword('TestVisibility')->results;
+        $this->assertCount(1, $results);
+        $this->assertEquals($allPublicPost->id, $results[0]->object_id);
+
+        // User - not member of the test Spaces
+        $this->becomeUser('User3');
+        $results = $this->getSearchResultByKeyword('TestVisibility')->results;
+        $this->assertCount(1, $results);
+        $this->assertEquals($allPublicPost->id, $results[0]->object_id);
+
+        // User - member of the Space 1
+        $user = User::findOne(['username' => 'User3']);
+        $space1->addMember($user->id);
+        $results = $this->getSearchResultByKeyword('TestVisibility')->results;
+        $this->assertCount(2, $results);
+        $this->assertEquals([
+            $allPublicPost->id,
+            $allPrivatePost->id
+        ], $this->getObjectIds($results));
+
+        // User - member of the Space 1 and Space 2
+        $space2->addMember($user->id);
+        $results = $this->getSearchResultByKeyword('TestVisibility')->results;
+        $this->assertCount(4, $results);
+        $this->assertEquals([
+            $allPublicPost->id,
+            $allPrivatePost->id,
+            $userPublicPost->id,
+            $userPrivatePost->id
+        ], $this->getObjectIds($results));
+
+        // User - member of all Spaces
+        $space3->addMember($user->id);
+        $results = $this->getSearchResultByKeyword('TestVisibility')->results;
+        $this->assertCount(6, $results);
+        $this->assertEquals([
+            $allPublicPost->id,
+            $allPrivatePost->id,
+            $userPublicPost->id,
+            $userPrivatePost->id,
+            $memberPublicPost->id,
+            $memberPrivatePost->id
+        ], $this->getObjectIds($results));
+    }
+
+    private function getObjectIds(array $results): array
+    {
+        $results = array_map(function (Content $content) {return $content->object_id;}, $results);
+        sort($results);
+        return $results;
     }
 }
