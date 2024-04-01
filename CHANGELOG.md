@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.5 (Unreleased)
+-----------------------
+- Enh #6899: Fix a missed module config file
+
 1.15.4 (March 20, 2024)
 -----------------------
 - Enh #6888: Better support for custom caches
