@@ -29,11 +29,6 @@ class SearchRequest extends Model
 
     public int $pageSize = 25;
 
-    /**
-     * @var int Number of pages that should be cached, 0 - don't cache
-     */
-    public int $cachePageNumber = 0;
-
     public $contentType = '';
 
     public ?string $dateFrom = null;

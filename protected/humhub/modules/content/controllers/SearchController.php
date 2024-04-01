@@ -40,9 +40,9 @@ class SearchController extends Controller
     {
         $resultSet = null;
 
-        $this->searchRequest = new SearchRequest(['pageSize' => 3, 'cachePageNumber' => 10]);
+        $this->searchRequest = new SearchRequest(['pageSize' => 3]);
         if ($this->searchRequest->load(Yii::$app->request->get(), '') && $this->searchRequest->validate()) {
-            $resultSet = $this->module->getSearchDriver()->search($this->searchRequest);
+            $resultSet = $this->module->getSearchDriver()->searchCached($this->searchRequest, 10);
         }
 
         $page = $resultSet ? $resultSet->pagination->getPage() + 1 : 1;

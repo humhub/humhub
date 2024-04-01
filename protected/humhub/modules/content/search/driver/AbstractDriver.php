@@ -11,8 +11,6 @@ use yii\base\Model;
 
 abstract class AbstractDriver extends Component
 {
-    public ?SearchRequest $request = null;
-
     abstract public function purge(): void;
 
     abstract public function update(Content $content): void;
@@ -20,44 +18,46 @@ abstract class AbstractDriver extends Component
     abstract public function delete(Content $content): void;
 
     /**
-     * Run search process, result may be cached
+     * Run search process
      *
      * // Add private content, which is in Space content containers where the user is member of
      * // Add private content, of User content containers where the user is friend or self
-     *
      * // Add all public content
+     *
+     * @param SearchRequest $request
      * @return ResultSet
      */
-    abstract public function runSearch(): ResultSet;
+    abstract public function search(SearchRequest $request): ResultSet;
 
     /**
      * Run search process and cache results
      *
      * @param SearchRequest $request
+     * @param int Number of pages that should be cached, 0 - don't cache
      * @return ResultSet
      */
-    public function search(SearchRequest $request): ResultSet
+    public function searchCached(SearchRequest $request, int $cachePageNumber = 0): ResultSet
     {
-        $this->request = $request;
-
-        if ($this->request->cachePageNumber < 1) {
+        if ($cachePageNumber < 1) {
             // Search results without caching
-            return $this->runSearch();
+            return $this->search($request);
         }
 
         // Store original pagination
-        $origPage = $this->request->page - 1;
-        $origPageSize = $this->request->pageSize;
+        $origPage = $request->page - 1;
+        $origPageSize = $request->pageSize;
 
         // Set pagination to load results from DB or Cache with bigger portion than original page size
-        $cachePageSize = $origPageSize * $this->request->cachePageNumber;
-        $cachePage = (int) ceil(($this->request->page * $origPageSize) / $cachePageSize);
-        $this->request->page = $cachePage;
-        $this->request->pageSize = $cachePageSize;
+        $cachePageSize = $origPageSize * $cachePageNumber;
+        $cachePage = (int) ceil(($request->page * $origPageSize) / $cachePageSize);
+        $request->page = $cachePage;
+        $request->pageSize = $cachePageSize;
 
         /* @var ResultSet $resultSet */
         // Load results from cache or Search & Cache
-        $resultSet = Yii::$app->cache->getOrSet($this->getSearchCacheKey(), [$this, 'runSearch']);
+        $resultSet = Yii::$app->cache->getOrSet($this->getSearchCacheKey($request), function () use ($request) {
+            return $this->search($request);
+        });
 
         // Extract part of results only for the current(original requested) page
         $slicePageStart = ($origPage - ($cachePageSize * ($cachePage - 1)) / $origPageSize) * $origPageSize;
@@ -70,15 +70,11 @@ abstract class AbstractDriver extends Component
         return $resultSet;
     }
 
-    protected function getSearchCacheKey(): string
+    protected function getSearchCacheKey(SearchRequest $request): string
     {
-        if ($this->request instanceof Model) {
-            $requestFilters = array_filter($this->request->getAttributes(), function ($value) {
-                return is_scalar($value) || is_array($value);
-            });
-        } else {
-            $requestFilters = [];
-        }
+        $requestFilters = array_filter($request->getAttributes(), function ($value) {
+            return is_scalar($value) || is_array($value);
+        });
 
         return static::class . Yii::$app->user->id . sha1(json_encode($requestFilters));
     }
