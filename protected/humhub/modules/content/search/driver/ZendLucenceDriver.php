@@ -11,6 +11,7 @@ use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\data\Pagination;
@@ -220,21 +221,48 @@ class ZendLucenceDriver extends AbstractDriver
         $permissionQuery = new Boolean();
 
         if (!Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+
             // Public Content
             $permissionQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')));
 
-            // Private Space Content
-            $privateSpaceContentQuery = new Boolean();
-            $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
-            $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')), true);
-            $privateSpacesListQuery = new MultiTerm();
+            // Own created content is always visible
+            $permissionQuery->addSubquery(new TermQuery(new Term($user->guid, 'created_by')));
 
-            foreach (Membership::getUserSpaces() as $space) {
-                $privateSpacesListQuery->addTerm(new Term($space->guid, 'container_guid'));
+            if ($user->canViewAllContent(Space::class)) {
+                // Don't restrict if user can view all Space content:
+                $permissionQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')));
+            } else {
+                // Private Space Content
+                $privateSpaceContentQuery = new Boolean();
+                $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
+                $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')), true);
+
+                $privateSpacesListQuery = new MultiTerm();
+                $membershipSpaces = Membership::getUserSpaces();
+                if (empty($membershipSpaces)) {
+                    $privateSpacesListQuery->addTerm(new Term('no-membership-spaces', 'container_guid'));
+                } else {
+                    foreach ($membershipSpaces as $space) {
+                        $privateSpacesListQuery->addTerm(new Term($space->guid, 'container_guid'));
+                    }
+                }
+                $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
+
+                $permissionQuery->addSubquery($privateSpaceContentQuery);
             }
 
-            $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
-            $permissionQuery->addSubquery($privateSpaceContentQuery);
+            if ($user->canViewAllContent(User::class)) {
+                // Don't restrict if user can view all User content:
+                $permissionQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')));
+            } else {
+                // Private User Content
+                $privateUserContentQuery = new Boolean();
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')), true);
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term($user->guid, 'container_guid')), true);
+                $permissionQuery->addSubquery($privateUserContentQuery);
+            }
         } elseif (AuthHelper::isGuestAccessEnabled()) {
             // Guest Content
             $guestContentQuery = new Boolean();
