@@ -8,20 +8,20 @@
 namespace humhub\controllers;
 
 use humhub\components\Controller;
-use humhub\widgets\SearchProviderWidget;
+use humhub\widgets\MetaSearchProviderWidget;
 use Yii;
 
 /**
  * @since 1.16
  */
-class SearchController extends Controller
+class MetaSearchController extends Controller
 {
     public function actionIndex()
     {
         $this->forcePostRequest();
 
-        return SearchProviderWidget::widget([
-            'searchProvider' => Yii::$app->request->post('provider'),
+        return MetaSearchProviderWidget::widget([
+            'provider' => Yii::$app->request->post('provider'),
             'keyword' => Yii::$app->request->post('keyword')
         ]);
     }

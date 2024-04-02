@@ -7,7 +7,7 @@
 
 namespace humhub\modules\space\search;
 
-use humhub\interfaces\SearchRecordInterface;
+use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 
@@ -17,7 +17,7 @@ use humhub\modules\space\widgets\Image;
  * @author luke
  * @since 1.16
  */
-class SearchRecord implements SearchRecordInterface
+class SearchRecord implements MetaSearchResultInterface
 {
     public ?Space $space = null;
 

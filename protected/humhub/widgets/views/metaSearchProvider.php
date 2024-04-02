@@ -5,24 +5,24 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\components\SearchProvider;
+use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\libs\Html;
 use humhub\widgets\Button;
 
 /* @var array $options */
-/* @var SearchProvider $searchProvider */
+/* @var MetaSearchProviderInterface $provider */
 ?>
 <?= Html::beginTag('li', $options) ?>
     <div class="search-provider-title">
-        <?= $searchProvider->getName() ?>
-        <?php if ($searchProvider->isSearched()) : ?>
-            <?= Html::tag('span', '(' . $searchProvider->getTotal() . ')') ?>
+        <?= $provider->getName() ?>
+        <?php if ($provider->getService()->isSearched()) : ?>
+            <?= Html::tag('span', '(' . $provider->getService()->getTotal() . ')') ?>
         <?php endif; ?>
     </div>
     <div class="search-provider-content">
-        <?php if ($searchProvider->isSearched()) : ?>
-            <?php if ($searchProvider->hasRecords()) : ?>
-                <?php foreach ($searchProvider->getRecords() as $record) : ?>
+        <?php if ($provider->getService()->isSearched()) : ?>
+            <?php if ($provider->getService()->hasResults()) : ?>
+                <?php foreach ($provider->getService()->getResults() as $record) : ?>
                     <a href="<?= $record->getUrl() ?>" class="search-provider-record">
                         <span class="search-provider-record-image"><?= $record->getImage() ?></span>
                         <span class="search-provider-record-text">
@@ -35,8 +35,8 @@ use humhub\widgets\Button;
                 <div class="search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
             <?php endif; ?>
             <div class="search-provider-actions">
-                <?= Button::defaultType($searchProvider->getAllResultsText())
-                    ->link($searchProvider->getAllResultsUrl())
+                <?= Button::defaultType($provider->getAllResultsText())
+                    ->link($provider->getService()->getUrl())
                     ->cssClass('search-provider-show-all')
                     ->loader(false) ?>
             </div>

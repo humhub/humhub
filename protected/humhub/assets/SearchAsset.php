@@ -35,7 +35,7 @@ class SearchAsset extends AssetBundle
     public static function register($view)
     {
         $view->registerJsConfig('ui.search', [
-            'url' => Url::to(['/search']),
+            'url' => Url::to(['/meta-search']),
         ]);
 
         return parent::register($view);
