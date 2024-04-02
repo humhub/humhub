@@ -6,17 +6,17 @@
  */
 
 use humhub\assets\SearchAsset;
-use humhub\components\SearchProvider;
+use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\libs\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
-use humhub\widgets\SearchProviderWidget;
+use humhub\widgets\MetaSearchProviderWidget;
 use yii\web\View;
 
 /* @var View $this */
 /* @var array $options */
-/* @var SearchProvider[] $searchProviders */
+/* @var MetaSearchProviderInterface[] $providers */
 
 SearchAsset::register($this);
 ?>
@@ -45,8 +45,8 @@ SearchAsset::register($this);
             ]) ?>
         </div>
         <ul class="dropdown-search-list">
-            <?php foreach ($searchProviders as $searchProvider) : ?>
-                <?= SearchProviderWidget::widget(['searchProvider' => $searchProvider]) ?>
+            <?php foreach ($providers as $provider) : ?>
+                <?= MetaSearchProviderWidget::widget(['provider' => $provider]) ?>
             <?php endforeach; ?>
         </ul>
     </div>
