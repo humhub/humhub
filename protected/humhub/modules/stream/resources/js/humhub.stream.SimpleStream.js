@@ -42,28 +42,63 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
             return;
         }
 
-        const submit = function (form) {
-            const params = form.serialize().replace(/(^|&)r=.*?(&|$)/, '$1');
-            const content = that.getActionContent();
-            loader.set(content);
-            that.refreshAddressBar(params);
+        that.actionForm = form;
+        that.highlightInput = form.find('input[data-highlight]');
 
-            client.get(form.data('action-url'), {data: params}).then(function (response) {
-                content.html(response.response).find('[data-ui-widget]').each(function () {
-                    Widget.instance($(this));
+        that.actionForm.setContent = function (content) {
+            const resultsContent = that.getActionContent().find('[data-stream-action-form-results]');
+            if (resultsContent.length) {
+                resultsContent.append(content);
+            } else {
+                that.getActionContent().html(content);
+            }
+            const widgets = that.getActionContent().find(that.highlightInput.data('highlight') + ' [data-ui-widget]');
+
+            if (that.highlightInput.length && that.highlightInput.val() !== '') {
+                widgets.on('afterInit', function() {
+                    if (!$(this).data('isHighlighted')) {
+                        $(this).data('isHighlighted', true);
+                        that.highlightInput.val().split(' ').forEach((keyword) => $(this).highlight(keyword));
+                    }
                 });
-            }).catch(function (err) {
-                module.log.error(err, true);
+            }
+
+            widgets.each(function () {
+                Widget.instance($(this));
             });
+        }
+
+        const filters = function () {
+            return form.serialize().replace(/(^|&)r=.*?(&|$)/, '$1');
+        }
+
+        const setStreamUrl = function () {
+            // Set stream URL from the form action URL and current filters
+            that.options.stream = form.data('action-url')
+                + (form.data('action-url').indexOf('?') === -1 ? '?' : '&')
+                + filters();
         }
 
         form.on('submit', function (e) {
             e.preventDefault();
-            submit($(this));
-        }).first().submit();
+            const params = filters();
+            const content = that.getActionContent();
+            loader.set(content);
+            that.refreshAddressBar(params);
+            setStreamUrl();
 
-        // Prevent auto loading of stream content when the action form is used instead
-        that.options.autoLoad = false;
+            client.get(form.data('action-url'), {data: params}).then(function (response) {
+                that.handleResponseActionForm(response);
+            }).catch(function (err) {
+                module.log.error(err, true);
+            });
+        });
+
+        setStreamUrl();
+
+        // Activate auto load next pages by scroll down action
+        that.options.scrollSupport = true;
+        that.options.scrollOptions = {root: null, rootMargin: '100px'};
     };
 
     SimpleStream.prototype.onEmptyStream = function () {
@@ -156,6 +191,31 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
                 }
             });
     };
+
+    SimpleStream.prototype.handleResponse = function (request) {
+        return typeof this.actionForm !== 'undefined'
+            ? this.handleResponseActionForm(request.response)
+            : Stream.prototype.handleResponse.call(this, request);
+    }
+
+    SimpleStream.prototype.handleResponseActionForm = function (response) {
+        this.actionForm.setContent(response.content);
+        this.state.lastEntryLoaded = response.isLast;
+
+        // Update stream URL for next page
+        this.options.stream = this.options.stream.replace(/(\?|&)page=\d+/i, '$1')
+            + '&page=' + (parseInt(response.page) + 1);
+        this.options.stream = this.options.stream.replace('?&', '?').replace('&&', '&');
+
+        // Load next page when the stream end indicator is visible on screen
+        const streamEnd = this.$content.find('.stream-end:first');
+        if (streamEnd.length && !response.isLast &&
+            streamEnd.offset().top - 100 < $(window).scrollTop() + $(window).innerHeight()) {
+            this.load();
+        }
+
+        return Promise.resolve();
+    }
 
     module.export = SimpleStream;
 });

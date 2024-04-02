@@ -57,6 +57,9 @@ class MysqlDriver extends AbstractDriver
         ContentFulltext::deleteAll(['content_id' => $content->id]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function search(SearchRequest $request): ResultSet
     {
         $query = Content::find();

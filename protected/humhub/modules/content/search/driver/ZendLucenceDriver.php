@@ -110,6 +110,9 @@ class ZendLucenceDriver extends AbstractDriver
         $this->commit();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function search(SearchRequest $request): ResultSet
     {
         $query = $this->buildSearchQuery($request);

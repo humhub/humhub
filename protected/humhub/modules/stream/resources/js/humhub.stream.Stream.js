@@ -160,8 +160,7 @@ humhub.module('stream.Stream', function (module, require, $) {
             contentSelector: "[data-stream-content]",
             streamEntryClass: StreamEntry,
             loadCount: STREAM_LOAD_COUNT,
-            initLoadCount: STREAM_INIT_COUNT,
-            autoLoad: true
+            initLoadCount: STREAM_INIT_COUNT
         };
     };
 
@@ -182,10 +181,6 @@ humhub.module('stream.Stream', function (module, require, $) {
 
         if (!this.$content) {
             this.initWidget();
-        }
-
-        if (!this.options.autoLoad) {
-            return Promise.resolve();
         }
 
         return this.clear()

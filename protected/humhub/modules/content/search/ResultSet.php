@@ -27,4 +27,20 @@ class ResultSet
      * @var Pagination
      */
     public $pagination;
+
+    public function __serialize(): array
+    {
+        return [
+            'results' => array_map(function (Content $result) {return $result->id;}, $this->results),
+            'pagination' => $this->pagination
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->pagination = $data['pagination'];
+        $this->results = empty($data['results'])
+            ? []
+            : Content::find()->where(['IN', 'id', $data['results']])->all();
+    }
 }
