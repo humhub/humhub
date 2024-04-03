@@ -147,10 +147,13 @@ class RegistrationController extends Controller
 
         $linkRegistrationService->storeInSession();
 
-        $form = new Invite(['source' => Invite::SOURCE_INVITE_BY_LINK]);
+        $form = new Invite([
+            'source' => Invite::SOURCE_INVITE_BY_LINK,
+            'scenario' => Invite::SCENARIO_INVITE_BY_LINK_FORM,
+        ]);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $invite = $linkRegistrationService->convertToInvite($form->email);
-            $invite->sendInviteMail();
+            $invite?->sendInviteMail();
             return $this->render('@user/views/auth/register_success', ['model' => $invite]);
         }
 

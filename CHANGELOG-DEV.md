@@ -75,3 +75,4 @@ HumHub Changelog
 - Fix #6908: Fix default mentioning URL
 - Enh #6901: Auto load pages on content search
 - Fix #6913: Fix API tests
+- Fix #6730: Invitation link for existing user
