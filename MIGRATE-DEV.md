@@ -4,7 +4,7 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
-Version 1.16 (Unreleased)
+Version 1.16 (April 2024)
 -------------------------
 At least PHP 8.0 is required with this version.
 
@@ -13,10 +13,9 @@ At least PHP 8.0 is required with this version.
   into the 'content', 'user' and 'space' modules.
 
 ### Behaviour change
-- New Meta Search API (TBD) 
-- `/search/mentioning` -> `/user/mentioning`
-- 
-
+- New Meta Search API 
+- Controller route change: `/search/mentioning` -> `/user/mentioning`
+- `Yii::$app->search()` is not longer available. See Content/User/Spaces search for alternatives.
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
