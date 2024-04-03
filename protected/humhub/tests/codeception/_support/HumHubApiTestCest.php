@@ -22,16 +22,16 @@ class HumHubApiTestCest
         $this->enableRestModule();
     }
 
-    protected function enableRestModule()
+    protected function enableRestModule(): void
     {
-        /* @var Module $module */
-        $module = Yii::$app->moduleManager->getModule('rest');
-        if (!$module) {
-            return false;
+        if (!Yii::$app->moduleManager->hasModule('rest')) {
+            return;
         }
 
         Yii::$app->moduleManager->enableModules(['rest']);
 
+        /* @var Module $module */
+        $module = Yii::$app->moduleManager->getModule('rest');
         $module->settings->set('enabledForAllUsers', true);
         $module->settings->set('enableBasicAuth', true);
     }

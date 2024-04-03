@@ -74,3 +74,4 @@ HumHub Changelog
 - Enh #6904: Content Search: Add Tests regarding `state`
 - Fix #6908: Fix default mentioning URL
 - Enh #6901: Auto load pages on content search
+- Fix #6913: Fix API tests
