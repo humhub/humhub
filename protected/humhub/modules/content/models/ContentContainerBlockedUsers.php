@@ -18,14 +18,14 @@ use Yii;
 /**
  * Class ContentContainerBlockedUsers
  *
- * @property integer $contentcontainer_id
- * @property integer $user_id
+ * @property int $contentcontainer_id
+ * @property int $user_id
  *
  * @since 1.10
  */
 class ContentContainerBlockedUsers extends ActiveRecord
 {
-    const BLOCKED_USERS_SETTING = 'blockedUsers';
+    public const BLOCKED_USERS_SETTING = 'blockedUsers';
 
     public static function tableName()
     {

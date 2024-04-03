@@ -32,7 +32,6 @@ use yii\web\HttpException;
  */
 class ProfileController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */

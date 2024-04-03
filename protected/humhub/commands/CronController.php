@@ -21,22 +21,21 @@ use yii\helpers\Console;
  */
 class CronController extends Controller
 {
-
     /**
      * @event Event an event that is triggered when the hourly cron is started.
      */
-    const EVENT_ON_HOURLY_RUN = "hourly";
+    public const EVENT_ON_HOURLY_RUN = "hourly";
 
     /**
      * @event Event an event that is triggered when the daily cron is started.
      */
-    const EVENT_ON_DAILY_RUN = "daily";
+    public const EVENT_ON_DAILY_RUN = "daily";
 
 
     /**
      * @var string mutex to acquire
      */
-    const MUTEX_ID = 'cron-mutex';
+    public const MUTEX_ID = 'cron-mutex';
 
 
     /**

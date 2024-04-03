@@ -9,7 +9,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-/* @var $canRegister boolean */
+/* @var $canRegister bool */
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */
@@ -147,7 +147,7 @@ use yii\widgets\ActiveForm;
 
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).on('humhub:ready', function () {
         $('#login_username').focus();
     });

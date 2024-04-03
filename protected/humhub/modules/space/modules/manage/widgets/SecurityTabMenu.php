@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
 use Yii;
@@ -19,9 +20,8 @@ use Yii;
  */
 class SecurityTabMenu extends TabMenu
 {
-
     /**
-     * @var \humhub\modules\space\models\Space
+     * @var Space
      */
     public $space;
 

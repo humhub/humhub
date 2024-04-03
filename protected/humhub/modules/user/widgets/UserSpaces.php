@@ -10,6 +10,8 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
+use humhub\modules\user\models\User;
+use yii\base\Widget;
 
 /**
  * UserSpaces widget shows all users public and active spaces in sidebar.
@@ -17,11 +19,10 @@ use humhub\modules\space\models\Membership;
  * @since 0.5
  * @author Luke
  */
-class UserSpaces extends \yii\base\Widget
+class UserSpaces extends Widget
 {
-
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 
@@ -36,18 +37,16 @@ class UserSpaces extends \yii\base\Widget
     public function run()
     {
         $query = Membership::getUserSpaceQuery($this->user)
-                ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
-                ->andWhere(['space.status' => Space::STATUS_ENABLED]);
+            ->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE])
+            ->andWhere(['space.status' => Space::STATUS_ENABLED]);
 
         $showMoreLink = ($query->count() > $this->maxSpaces);
 
         return $this->render('userSpaces', [
-                    'user' => $this->user,
-                    'spaces' => $query->limit($this->maxSpaces)->all(),
-                    'showMoreLink' => $showMoreLink,
+            'user' => $this->user,
+            'spaces' => $query->limit($this->maxSpaces)->all(),
+            'showMoreLink' => $showMoreLink,
         ]);
     }
 
 }
-
-?>

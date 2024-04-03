@@ -9,6 +9,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\ui\icon\widgets\Icon;
+use Throwable;
 use Yii;
 
 /**
@@ -29,19 +30,19 @@ class LockCommentsIcon extends Icon
     /**
      * Icon name used for content with locked comments
      */
-    const ICON_LOCKED = 'comment-o';
+    public const ICON_LOCKED = 'comment-o';
 
     /**
      * Icon name used for content with unlocked comments
      */
-    const ICON_UNLOCKED = 'comment';
+    public const ICON_UNLOCKED = 'comment';
 
     /**
      * Returns a comments status icon with tooltip for the given $model.
      *
      * @param ContentActiveRecord $model
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public static function getByModel(ContentActiveRecord $model, bool $displayEnabledIcon = false): string
     {
@@ -68,7 +69,7 @@ class LockCommentsIcon extends Icon
      *
      * @param ContentActiveRecord $model
      * @return string
-     * @throws \Throwable
+     * @throws Throwable
      */
     private static function getCommentsStatusIconTitle(ContentActiveRecord $model): string
     {

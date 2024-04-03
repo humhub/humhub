@@ -48,14 +48,14 @@ class PickerFilterInput extends FilterInput
             $this->pickerOptions['selection'] = $pickerItemClass::find()
                 ->where(['IN', $this->getPicker()->itemKey, $filters])
                 ->all();
-        } else if($pickerItems = $this->getPickerItems()) {
+        } elseif ($pickerItems = $this->getPickerItems()) {
             $this->pickerOptions['selection'] = array_intersect($filters, array_keys($pickerItems));
         }
     }
 
     protected function getPicker(): BasePicker
     {
-        return new $this->picker;
+        return new $this->picker();
     }
 
     /**

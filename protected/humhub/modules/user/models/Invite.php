@@ -14,36 +14,37 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
 use yii\captcha\CaptchaValidator;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
 /**
  * This is the model class for table "user_invite".
  *
- * @property integer $id
- * @property integer $user_originator_id
- * @property integer $space_invite_id
+ * @property int $id
+ * @property int $user_originator_id
+ * @property int $space_invite_id
  * @property string $email
  * @property string $source
  * @property string $token
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property string $language
  * @property string $firstname
  * @property string $lastname
  * @property string $captcha
  *
  * @property Space $space
+ * @property User|null $originator
  */
 class Invite extends ActiveRecord
 {
-
-    const SOURCE_SELF = 'self';
-    const SOURCE_INVITE = 'invite';
-    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
-    const EMAIL_TOKEN_LENGTH = 12;
-    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
+    public const SOURCE_SELF = 'self';
+    public const SOURCE_INVITE = 'invite';
+    public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    public const EMAIL_TOKEN_LENGTH = 12;
+    public const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
 
@@ -275,7 +276,7 @@ class Invite extends ActiveRecord
     /**
      * Return user which triggered this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getOriginator()
     {
@@ -285,7 +286,7 @@ class Invite extends ActiveRecord
     /**
      * Return space which is involved in this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {
@@ -295,7 +296,7 @@ class Invite extends ActiveRecord
     /**
      * Allow users to invite themself
      *
-     * @return boolean allow self invite
+     * @return bool allow self invite
      */
     public function allowSelfInvite()
     {

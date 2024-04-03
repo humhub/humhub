@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140226_111945_ldap extends Migration
 {
-
     public function up()
     {
         $this->addColumn('profile_field', 'ldap_attribute', 'string');

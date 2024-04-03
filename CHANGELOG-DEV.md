@@ -1,6 +1,8 @@
 HumHub Changelog
 ================
 
+
+
 1.16.0 (Unreleased)
 -------------------
 - Fix #6770: Improve migration error messages
@@ -57,3 +59,19 @@ HumHub Changelog
 - Fix #6810: Top menu on small screens: the previous page remains active when the new page is in the drop-down submenu
 - Fix #6830: Wrong view filename after module enabling
 - Enh #6838: Fix LDAP encryption labels and allow ignore also part of DNs
+- Enh #6490: Update button style on force password form
+- Enh #6847: Use prosemirror file handler flag
+- Fix #6839: The getObjectModel() method should work for all ActiveRecord classes
+- Fix #6849: In the "Module Administration" page, remove "Show in Marketplace" for modules not in the `@app/modules` directory
+- Fix #6863: If a top menu entry opens a modal box, don't mark it as active when clicked
+- Enh #6873: Change people header with selected group
+- Fix #6875: On Group::addUser(), if the current user is not logged in (console command or user registration), the method returns false even if the user was added to the group
+- Enh #6874: Update open-sans font from composer
+- Enh #6707: Uninstalling modules should be done in a background job
+- Enh #25: Improve contrast of @default button color
+- Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
+- Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
+- Enh #6904: Content Search: Add Tests regarding `state`
+- Fix #6908: Fix default mentioning URL
+- Enh #6901: Auto load pages on content search
+- Fix #6913: Fix API tests

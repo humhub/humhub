@@ -17,7 +17,6 @@ use Yii;
  */
 class LinkedIn extends \yii\authclient\clients\LinkedIn
 {
-
     /**
      * @inheritdoc
      */

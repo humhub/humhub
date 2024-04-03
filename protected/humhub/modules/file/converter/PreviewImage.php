@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\converter;
 
+use Exception;
 use humhub\modules\admin\models\Log;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\Module;
@@ -106,7 +107,7 @@ class PreviewImage extends BaseConverter
 
                 $image->save($this->file->store->get($fileName), $options);
             }
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             $message = 'Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage();
             $count = Log::find()->where(['message' => $message])->count();
 

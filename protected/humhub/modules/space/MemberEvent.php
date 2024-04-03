@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space;
 
+use humhub\modules\user\models\User;
 use yii\base\Event;
 
 /**
@@ -18,14 +19,13 @@ use yii\base\Event;
  */
 class MemberEvent extends Event
 {
-
     /**
      * @var models\Space
      */
     public $space;
 
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 

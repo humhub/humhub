@@ -11,6 +11,7 @@ namespace humhub\components;
 use humhub\models\Setting;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\admin\jobs\DisableModuleJob;
+use humhub\modules\admin\jobs\RemoveModuleJob;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\marketplace\models\Module as OnlineModelModule;
@@ -214,7 +215,7 @@ class Module extends \yii\base\Module
 
     /**
      * Determines whether or not this module has an asset directory.
-     * @return boolean
+     * @return bool
      */
     private function hasAssets()
     {
@@ -236,8 +237,10 @@ class Module extends \yii\base\Module
      */
     public function getIsEnabled(): bool
     {
-        return Yii::$app->hasModule($this->id) &&
-            !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]));
+        return
+            Yii::$app->hasModule($this->id)
+            && !QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $this->id]))
+            && !QueueHelper::isQueued(new RemoveModuleJob(['moduleId' => $this->id]));
     }
 
     /**
@@ -342,15 +345,10 @@ class Module extends \yii\base\Module
      */
     public function update()
     {
-        if (!$this->beforeUpdate()) {
-            return null;
+        if ($this->beforeUpdate() !== false) {
+            $this->migrate();
+            $this->afterUpdate();
         }
-
-        $result = $this->getMigrationService()->migrateUp();
-
-        $this->afterUpdate();
-
-        return $result;
     }
 
     /**
@@ -359,6 +357,8 @@ class Module extends \yii\base\Module
      * The update will cancel if this function does return false;
      *
      * @return bool
+     * @deprecated
+     *
      */
     public function beforeUpdate()
     {
@@ -367,6 +367,8 @@ class Module extends \yii\base\Module
 
     /**
      * Called right after the module update.
+     *
+     * @deprecated
      */
     public function afterUpdate()
     {
@@ -430,7 +432,7 @@ class Module extends \yii\base\Module
     /**
      * Determines whether the module has notification classes or not
      *
-     * @return boolean has notifications
+     * @return bool has notifications
      * @since 1.2
      */
     public function hasNotifications()

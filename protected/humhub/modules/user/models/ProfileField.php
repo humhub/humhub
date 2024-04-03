@@ -12,33 +12,35 @@ use humhub\components\ActiveRecord;
 use humhub\helpers\DataTypeHelper;
 use humhub\modules\user\models\fieldtype\BaseType;
 use Yii;
+use yii\base\Exception;
 use yii\db\ActiveQuery;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "profile_field".
  *
- * @property integer $id
- * @property integer $profile_field_category_id
+ * @property int $id
+ * @property int $profile_field_category_id
  * @property string $module_id
  * @property string $field_type_class
  * @property string $field_type_config
  * @property string $internal_name
  * @property string $title
  * @property string $description
- * @property integer $sort_order
- * @property integer $required
- * @property integer $show_at_registration
- * @property integer $editable
- * @property integer $visible
+ * @property int $sort_order
+ * @property int $required
+ * @property int $show_at_registration
+ * @property int $editable
+ * @property int $visible
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property string $ldap_attribute
  * @property string $translation_category
- * @property integer $is_system
- * @property integer $searchable
- * @property integer $directory_filter
+ * @property int $is_system
+ * @property int $searchable
+ * @property int $directory_filter
  *
  * @property-read BaseType $fieldType
  */
@@ -145,7 +147,7 @@ class ProfileField extends ActiveRecord
      * Returns the ProfileFieldType Class for this Profile Field
      *
      * @return BaseType
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getFieldType(): ?BaseType
     {
@@ -240,7 +242,7 @@ class ProfileField extends ActiveRecord
                     ],
                     'profile_field_category_id' => [
                         'type' => 'dropdownlist',
-                        'items' => \yii\helpers\ArrayHelper::map($categories, 'id', 'title'),
+                        'items' => ArrayHelper::map($categories, 'id', 'title'),
                         'class' => 'form-control',
                     ],
                     'field_type_class' => [

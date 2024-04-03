@@ -3,6 +3,7 @@
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
+
 ?>
 
 <div class="panel panel-default">
@@ -30,7 +31,6 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
             </li>
         <?php endforeach; ?>
     </ul>
-
 
 
     <div class="panel-body" style="padding-top: 0px;">

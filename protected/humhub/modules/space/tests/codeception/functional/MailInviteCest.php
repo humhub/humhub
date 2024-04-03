@@ -11,6 +11,7 @@ namespace space\functional;
 use space\FunctionalTester;
 use Yii;
 use yii\helpers\Url;
+use yii\mail\MessageInterface;
 
 class MailInviteCest
 {
@@ -29,15 +30,15 @@ class MailInviteCest
 
         $I->seeEmailIsSent(2);
 
-        /* @var $messages \yii\mail\MessageInterface[] */
+        /* @var $messages MessageInterface[] */
         $messages = $I->grabSentEmails();
 
 
-        if(!array_key_exists('a@test.de', $messages[0]->getTo())) {
+        if (!array_key_exists('a@test.de', $messages[0]->getTo())) {
             $I->see('a@test.de not in mails');
         }
 
-        if(!array_key_exists('b@test.de', $messages[1]->getTo())) {
+        if (!array_key_exists('b@test.de', $messages[1]->getTo())) {
             $I->see('b@test.de not in mails');
         }
 
@@ -48,11 +49,11 @@ class MailInviteCest
 
         $I->amOnRoute('/user/registration', ['token' => $token]);
         $I->see('Account registration');
-        $I->fillField( 'User[username]', 'NewUser');
-        $I->fillField(    'Password[newPassword]', 'NewUser123');
-        $I->fillField(    'Password[newPasswordConfirm]', 'NewUser123');
-        $I->fillField(    'Profile[firstname]', 'New');
-        $I->fillField(    'Profile[lastname]', 'User');
+        $I->fillField('User[username]', 'NewUser');
+        $I->fillField('Password[newPassword]', 'NewUser123');
+        $I->fillField('Password[newPasswordConfirm]', 'NewUser123');
+        $I->fillField('Profile[firstname]', 'New');
+        $I->fillField('Profile[lastname]', 'User');
         $I->click('#registration-form [type="submit"]');
 
         $I->see('Dashboard');

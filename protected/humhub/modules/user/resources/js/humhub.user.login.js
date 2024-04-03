@@ -12,7 +12,7 @@ humhub.module('user.login', function (module, require, $) {
             }
 
             var url = new URL(original, window.location.origin);
-            if(checked) {
+            if (checked) {
                 url.searchParams.set('rememberMe', 1);
             }
 
@@ -25,7 +25,7 @@ humhub.module('user.login', function (module, require, $) {
         var originalLoginButtonText = $(buttonSelector).html();
         $(buttonSelector).html(message + " (" + delaySeconds + ")").prop('disabled', true);
 
-        var delayTimer = setInterval(function() {
+        var delayTimer = setInterval(function () {
             $(buttonSelector).html(message + " (" + --delaySeconds + ")");
             if (delaySeconds <= 0) {
                 clearInterval(delayTimer);

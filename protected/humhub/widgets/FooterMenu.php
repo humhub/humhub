@@ -18,11 +18,11 @@ use humhub\modules\ui\menu\widgets\Menu;
  */
 class FooterMenu extends Menu
 {
-    const LOCATION_ACCOUNT_MENU = 'account_menu';
-    const LOCATION_LOGIN = 'login';
-    const LOCATION_SIDEBAR = 'sidebar';
-    const LOCATION_FULL_PAGE = 'full';
-    const LOCATION_EMAIL = 'mail';
+    public const LOCATION_ACCOUNT_MENU = 'account_menu';
+    public const LOCATION_LOGIN = 'login';
+    public const LOCATION_SIDEBAR = 'sidebar';
+    public const LOCATION_FULL_PAGE = 'full';
+    public const LOCATION_EMAIL = 'mail';
 
     /**
      * @var string location of footer menu (e.g. login, mail, sidebar)

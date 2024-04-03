@@ -3,15 +3,15 @@
 namespace humhub\modules\admin\models\forms;
 
 use Yii;
+use yii\base\Model;
 
 /**
  * SettingsForm
  *
  * @since 0.5
  */
-class StatisticSettingsForm extends \yii\base\Model
+class StatisticSettingsForm extends Model
 {
-
     public $trackingHtmlCode;
 
     /**
@@ -60,7 +60,7 @@ class StatisticSettingsForm extends \yii\base\Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

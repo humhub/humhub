@@ -19,6 +19,8 @@ return [
     'Users' => 'Usuários',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => '',
     'Module deactivation in progress. This process may take a moment.' => '',
+    'Module uninstall in progress. This process may take a moment.' => '',
     'Not available' => '',
     'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+    'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => '',
 ];

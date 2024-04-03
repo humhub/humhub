@@ -6,7 +6,7 @@
 humhub.module('stream', function (module, require, $) {
     var event = require('event');
 
-    var unload = function() {
+    var unload = function () {
         event.off('.stream');
     };
 

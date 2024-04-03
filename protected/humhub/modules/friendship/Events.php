@@ -9,6 +9,8 @@
 namespace humhub\modules\friendship;
 
 use Yii;
+use yii\base\BaseObject;
+use yii\base\Event;
 use yii\helpers\Url;
 
 /**
@@ -16,13 +18,12 @@ use yii\helpers\Url;
  *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * Add friends navigation entry to account menu
      *
-     * @param \yii\base\Event $event
+     * @param Event $event
      */
     public static function onAccountMenuInit($event)
     {

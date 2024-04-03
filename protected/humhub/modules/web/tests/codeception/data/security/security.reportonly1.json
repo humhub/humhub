@@ -1,6 +1,6 @@
 {
-  "csp": {
-    "nonce": true,
-    "report-only": true
-  }
+    "csp": {
+        "nonce": true,
+        "report-only": true
+    }
 }

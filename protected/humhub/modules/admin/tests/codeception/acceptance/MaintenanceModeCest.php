@@ -8,7 +8,6 @@ use Yii;
 
 class MaintenanceModeCest
 {
-
     public function testAdminLoginWithMO(AcceptanceTester $I)
     {
         $I->wantTo('ensure that login works for admin');

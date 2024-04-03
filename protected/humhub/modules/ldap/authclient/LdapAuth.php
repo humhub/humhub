@@ -9,6 +9,7 @@
 namespace humhub\modules\ldap\authclient;
 
 use DateTime;
+use Exception;
 use humhub\libs\StringHelper;
 use humhub\modules\ldap\Module;
 use humhub\modules\user\authclient\BaseFormAuth;
@@ -37,7 +38,6 @@ use Laminas\Ldap\Node;
  */
 class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
-
     /**
      * @var Ldap
      */
@@ -67,7 +67,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * The useSsl and useStartTls options are mutually exclusive, but useStartTls should be favored
      * if the server and LDAP client library support it.
      *
-     * @var boolean
+     * @var bool
      */
     public $useSsl = false;
 
@@ -79,7 +79,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      * The useSsl and useStartTls options are mutually exclusive.
      * The useStartTls option should be favored over useSsl but not all servers support this newer mechanism.
      *
-     * @var boolean
+     * @var bool
      */
     public $useStartTls = false;
 
@@ -137,7 +137,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Automatically refresh user profiles on cron run
      *
-     * @var boolean|null
+     * @var bool|null
      */
     public $autoRefreshUsers = null;
 
@@ -268,8 +268,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if (isset($attributes['uid']) && !empty($attributes['uid'])) {
             $conditions[] = ['username' => $attributes['uid']];
         }
-        if ($conditions)
+        if ($conditions) {
             $query->andWhere($conditions);
+        }
 
         return $query->one();
     }
@@ -283,7 +284,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         if ($node !== null) {
             $this->setUserAttributes(array_merge(['dn' => $node], $node->getAttributes()));
             return true;
-        } else if ($this->login instanceof Login) {
+        } elseif ($this->login instanceof Login) {
             $this->countFailedLoginAttempts();
         }
 
@@ -424,7 +425,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public function getLdap()
     {
         if ($this->_ldap === null) {
-
             $options = [
                 'host' => $this->hostname,
                 'port' => $this->port,
@@ -448,7 +448,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Sets an Zend LDAP Instance
      *
-     * @param \Laminas\Ldap\Ldap $ldap
+     * @param Ldap $ldap
      */
     public function setLdap(Ldap $ldap)
     {
@@ -534,9 +534,9 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                     }
                 }
             }
-        } catch (\Laminas\Ldap\Exception\LdapException $ex) {
+        } catch (LdapException $ex) {
             Yii::error('Could not connect to LDAP instance: ' . $ex->getMessage(), 'ldap');
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error('An error occurred while user sync: ' . $ex->getMessage(), 'ldap');
         }
     }

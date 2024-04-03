@@ -19,7 +19,6 @@ use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
  */
 class Liked extends BaseActivity implements ConfigurableActivityInterface
 {
-
     /**
      * @inheritdoc
      */

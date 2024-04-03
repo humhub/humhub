@@ -16,7 +16,8 @@ class BlockedUsersStreamFilter extends StreamQueryFilter
      */
     private $blockedUsers;
 
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         if (!empty($this->streamQuery->user) && $this->streamQuery->user instanceof User) {

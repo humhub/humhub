@@ -21,16 +21,15 @@ use yii\base\Model;
  */
 class LdapSettings extends Model
 {
-
-    const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
+    public const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $enabled;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $refreshUsers;
 
@@ -211,7 +210,7 @@ class LdapSettings extends Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {
@@ -223,8 +222,9 @@ class LdapSettings extends Model
         $settings->set('port', $this->port);
         $settings->set('encryption', $this->encryption);
         $settings->set('username', $this->username);
-        if ($this->passwordField !== static::PASSWORD_FIELD_DUMMY)
+        if ($this->passwordField !== static::PASSWORD_FIELD_DUMMY) {
             $settings->set('password', $this->passwordField);
+        }
         $settings->set('baseDn', $this->baseDn);
         $settings->set('loginFilter', $this->loginFilter);
         $settings->set('userFilter', $this->userFilter);
@@ -258,7 +258,7 @@ class LdapSettings extends Model
             'baseDn' => $this->baseDn,
             'loginFilter' => $this->loginFilter,
             'userFilter' => $this->userFilter,
-            'autoRefreshUsers' => (boolean)$this->refreshUsers,
+            'autoRefreshUsers' => (bool)$this->refreshUsers,
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute,
@@ -278,5 +278,4 @@ class LdapSettings extends Model
 
         return (bool)$settings->get('enabled');
     }
-
 }

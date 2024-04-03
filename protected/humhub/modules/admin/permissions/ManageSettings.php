@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\permissions;
 
 use humhub\modules\admin\components\BaseAdminPermission;
+use Yii;
 
 /**
  * ManageSettings Permission allows access to settings section within the admin area.
@@ -26,8 +27,8 @@ class ManageSettings extends BaseAdminPermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('AdminModule.permissions', 'Manage Settings');
-        $this->description = \Yii::t('AdminModule.permissions', 'Can manage general settings.');
+        $this->title = Yii::t('AdminModule.permissions', 'Manage Settings');
+        $this->description = Yii::t('AdminModule.permissions', 'Can manage general settings.');
     }
 
 }

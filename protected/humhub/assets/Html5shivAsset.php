@@ -19,7 +19,6 @@ use yii\web\AssetBundle;
  */
 class Html5shivAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

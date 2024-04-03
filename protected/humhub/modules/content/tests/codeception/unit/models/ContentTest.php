@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit\modules\content;
 
+use Exception;
 use humhub\modules\content\tests\codeception\unit\TestContent;
 use modules\content\tests\codeception\_support\ContentModelTest;
 
@@ -31,8 +32,8 @@ class ContentTest extends ContentModelTest
         $this->assertIsString($this->testContent->updated_at);
         $this->assertEquals($this->testContent->updated_by, Yii::$app->user->id);
         $this->assertEquals($this->testContent->updated_at, $this->testContent->created_at);
-        $this->assertEquals($this->testContent->stream_channel,Content::STREAM_CHANNEL_DEFAULT);
-        $this->assertEquals($this->testContent->contentcontainer_id,$this->space->contentcontainer_id);
+        $this->assertEquals($this->testContent->stream_channel, Content::STREAM_CHANNEL_DEFAULT);
+        $this->assertEquals($this->testContent->contentcontainer_id, $this->space->contentcontainer_id);
     }
 
     public function testInvalidPolymorphicRelation1()
@@ -46,7 +47,7 @@ class ContentTest extends ContentModelTest
         try {
             $testContent->save();
             $this->assertTrue(false, 'Content should not be saved!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertTrue(true);
         }
     }
@@ -62,7 +63,7 @@ class ContentTest extends ContentModelTest
         try {
             $testContent->save();
             $this->assertTrue(false, 'Content should not be saved!');
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->assertTrue(true);
         }
     }

@@ -10,15 +10,21 @@
 /* @var $viewable humhub\modules\space\notifications\ApprovalRequestAccepted */
 /* @var $url string */
 /* @var $date string */
-/* @var $isNew boolean */
-/* @var $isNew boolean */
+/* @var $isNew bool */
+/* @var $isNew bool */
 /* @var $originator \humhub\modules\user\models\User */
 /* @var source yii\db\ActiveRecord */
 /* @var contentContainer \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var space humhub\modules\space\models\Space */
 /* @var record \humhub\modules\notification\models\Notification */
 /* @var html string */
+
 /* @var text string */
+
+use humhub\widgets\mails\MailButtonList;
+use humhub\widgets\mails\MailContentContainerImage;
+use yii\helpers\Url;
+
 ?>
 
 <?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
@@ -39,11 +45,12 @@
                 <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
                     <tr>
                         <td width="109"></td>
-                        <td width="50"><?= \humhub\widgets\mails\MailContentContainerImage::widget(['container' => $originator])?></td>
+                        <td width="50"><?= MailContentContainerImage::widget(['container' => $originator]) ?></td>
                         <td width="109"></td>
-                        <td width="25"><img src="<?= \yii\helpers\Url::to('@web-static/img/mail_ico_check.png', true); ?>" /></td>
+                        <td width="25"><img
+                                src="<?= Url::to('@web-static/img/mail_ico_check.png', true); ?>"/></td>
                         <td width="109"></td>
-                        <td width="50"><?= \humhub\widgets\mails\MailContentContainerImage::widget(['container' => $space])?></td>
+                        <td width="50"><?= MailContentContainerImage::widget(['container' => $space]) ?></td>
                         <td></td>
                     </tr>
                 </table>
@@ -56,8 +63,8 @@
             <td>
                 <?=
 
-                \humhub\widgets\mails\MailButtonList::widget(['buttons' => [
-                        humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
+                MailButtonList::widget(['buttons' => [
+                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
                 ]]);
 
                 ?>

@@ -2,7 +2,7 @@
 
 use tests\codeception\_pages\LoginPage;
 use yii\helpers\Url;
-use \Facebook\WebDriver\WebDriverKeys;
+use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Inherited Methods
@@ -97,21 +97,24 @@ class AcceptanceTester extends BaseTester
         $this->amOnRoute($params);
     }
 
-    public function dontSeeInDropDown($selector, $text) {
+    public function dontSeeInDropDown($selector, $text)
+    {
         $this->click($selector);
         $this->wait(1);
         $this->dontSee($text, $selector);
         $this->click($selector);
     }
 
-    public function seeInDropDown($selector, $text) {
+    public function seeInDropDown($selector, $text)
+    {
         $this->click($selector);
         $this->wait(1);
         $this->see($text, $selector);
         $this->click($selector);
     }
 
-    public function allowGuestAccess() {
+    public function allowGuestAccess()
+    {
         $this->amOnRoute(['/admin/authentication']);
         $this->jsClick('#authenticationsettingsform-allowguestaccess');
         $this->click('button.btn-primary', '#authentication-settings-form');
@@ -119,7 +122,8 @@ class AcceptanceTester extends BaseTester
         $this->guestAccessAllowed = true;
     }
 
-    public function amOnRoute($route) {
+    public function amOnRoute($route)
+    {
         $this->amOnPage(Url::to($route));
     }
 
@@ -135,7 +139,7 @@ class AcceptanceTester extends BaseTester
         foreach ($topics as $topic) {
             $this->fillField('#topic-name', $topic);
             $this->click('.input-group-btn .btn-default');
-            $this->waitForText($topic, null,'.layout-content-container .table-hover');
+            $this->waitForText($topic, null, '.layout-content-container .table-hover');
         }
     }
 
@@ -253,9 +257,9 @@ class AcceptanceTester extends BaseTester
     public function enableModule($guid, $moduleId)
     {
         $this->amOnSpace($guid, '/space/manage/module');
-        $this->seeElement('.enable-module-'.$moduleId);
-        $this->jsClick('.enable-module-'.$moduleId);
-        $this->waitForElement('.disable-module-'.$moduleId);
+        $this->seeElement('.enable-module-' . $moduleId);
+        $this->jsClick('.enable-module-' . $moduleId);
+        $this->waitForElement('.disable-module-' . $moduleId);
         $this->amOnSpace($guid);
     }
 
@@ -298,7 +302,7 @@ class AcceptanceTester extends BaseTester
         $this->waitForText($text, 5, '.notifications');
 
         if($click) {
-            $this->click($text,'.notifications');
+            $this->click($text, '.notifications');
             $this->wait(2);
         } else {
             $this->click('.notifications .fa-bell');

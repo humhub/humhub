@@ -17,11 +17,10 @@ use humhub\libs\WidgetCreateEvent;
  */
 class Widget extends \yii\base\Widget
 {
-
     /**
      * @event WidgetCreateEvent an event raised before creating a widget.
      */
-    const EVENT_CREATE = 'create';
+    public const EVENT_CREATE = 'create';
 
     /**
      * @var bool if set to false this widget won't be rendered
@@ -60,7 +59,7 @@ class Widget extends \yii\base\Widget
             $widget = Yii::createObject($config);
             $out = '';
             if ($widget->beforeRun()) {
-                $result = (empty($widget->widgetLayout)) ?  $widget->run() : $widget->render($widget->widgetLayout, $widget->getLayoutViewParams());
+                $result = (empty($widget->widgetLayout)) ? $widget->run() : $widget->render($widget->widgetLayout, $widget->getLayoutViewParams());
                 $out = $widget->afterRun($result);
             }
         } catch (\Throwable $e) {

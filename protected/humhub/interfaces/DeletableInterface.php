@@ -19,7 +19,7 @@ interface DeletableInterface
     /**
      * Checks if given item can be deleted.
      *
-     * @param User|integer|string|null $user user instance or user id
+     * @param User|int|string|null $user user instance or user id
      * @return bool
      */
     public function canDelete($user = null): bool;

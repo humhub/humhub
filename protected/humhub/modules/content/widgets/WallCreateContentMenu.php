@@ -116,7 +116,7 @@ class WallCreateContentMenu extends Menu
     {
         $this->initEntries();
         $countEntries = count($this->entries);
-        $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');;
+        $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');
 
         if ($hasEntryWithForm && $countEntries > 1) {
             return true;

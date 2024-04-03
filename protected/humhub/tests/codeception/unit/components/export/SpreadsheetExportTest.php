@@ -5,7 +5,6 @@
  * @license https://www.humhub.com/licences
  */
 
-
 namespace humhub\tests\codeception\unit;
 
 use Codeception\Test\Unit;
@@ -21,7 +20,7 @@ use yii\data\ArrayDataProvider;
  */
 class SpreadsheetExportTest extends Unit
 {
-    const TEST_FILE = 'test.csv';
+    public const TEST_FILE = 'test.csv';
 
     /**
      * @var \UnitTester

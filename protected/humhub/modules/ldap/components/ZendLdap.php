@@ -1,15 +1,12 @@
 <?php
 
-
 namespace humhub\modules\ldap\components;
-
 
 use Laminas\Ldap\Ldap;
 use Laminas\Ldap\Filter;
 use Laminas\Ldap\Dn;
 use Laminas\Ldap\Exception;
 use Laminas\Ldap\ErrorHandler;
-
 
 class ZendLdap extends Ldap
 {
@@ -34,16 +31,21 @@ class ZendLdap extends Ldap
      * @param array $attributes
      * @param string|null $sort
      * @param string|null $collectionClass
-     * @param integer $timelimit
-     * @param integer $pageSize
+     * @param int $timelimit
+     * @param int $pageSize
      * @return array
      * @throws Exception\LdapException
      */
     public function multiPageSearch(
-        $filter, $basedn, $scope, array $attributes = array(), $sort = null,
-        $collectionClass = null, $timelimit = 0, $pageSize = 10000
-    )
-    {
+        $filter,
+        $basedn,
+        $scope,
+        array $attributes = [],
+        $sort = null,
+        $collectionClass = null,
+        $timelimit = 0,
+        $pageSize = 10000
+    ) {
         if (is_array($filter)) {
             $options = array_change_key_case($filter, CASE_LOWER);
             foreach ($options as $key => $value) {
@@ -88,18 +90,21 @@ class ZendLdap extends Ldap
             do {
                 ldap_control_paged_result($resource, $pageSize, true, $cookie);
 
-                $result = ldap_search($resource, $basedn, $filter,
+                $result = ldap_search(
+                    $resource,
+                    $basedn,
+                    $filter,
                     $attributes
                 );
                 foreach (ldap_get_entries($resource, $result) as $item) {
-                    if (!is_array($item))
+                    if (!is_array($item)) {
                         continue;
+                    }
 
                     array_push($results, (array)$item);
                 }
                 ldap_control_paged_result_response($resource, $result, $cookie);
             } while ($cookie);
-
         }
         ErrorHandler::stop();
         if (count($results) == 0) {
@@ -117,7 +122,15 @@ class ZendLdap extends Ldap
         // define("LDAP_CONTROL_PAGEDRESULTS", "1.2.840.113556.1.4.319");
 
         do {
-            $result = ldap_search($resource, $basedn, $filter, $attributes, $attributesOnly, 0, $timelimit, null,
+            $result = ldap_search(
+                $resource,
+                $basedn,
+                $filter,
+                $attributes,
+                $attributesOnly,
+                0,
+                $timelimit,
+                null,
                 [['oid' => '1.2.840.113556.1.4.319', 'value' => ['size' => $sizelimit, 'cookie' => $cookie]]]
             );
 
@@ -141,6 +154,4 @@ class ZendLdap extends Ldap
 
         return $results;
     }
-
-
 }

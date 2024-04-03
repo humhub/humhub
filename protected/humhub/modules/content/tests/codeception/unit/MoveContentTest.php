@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  *
  */
+
 namespace humhub\modules\content\tests\codeception\unit;
 
 use humhub\libs\BasePermission;
@@ -78,16 +79,16 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertEquals(2, $profilePost->created_by);
 
         // Admin is allowed to move this content
-        $this->assertTrue($profilePost->canMove()  !== true);
+        $this->assertTrue($profilePost->canMove() !== true);
 
         // Admin is allowed to move this content to space2 as space admin
-        $this->assertTrue($profilePost->canMove($space2)  !== true);
+        $this->assertTrue($profilePost->canMove($space2) !== true);
 
         // Admin is not allowed to move this content to space1 since author can't create private content
         $this->assertTrue($profilePost->canMove($space1) !== true);
 
         // Admin is allowed to move this content to space3 as member
-        $this->assertTrue($profilePost->canMove($space3)  !== true);
+        $this->assertTrue($profilePost->canMove($space3) !== true);
     }
 
     public function testCanMoveSpaceContentAsSpaceAdmin()
@@ -105,13 +106,13 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertTrue($post->canMove() === true);
 
         // Can not be moved to current space
-        $this->assertTrue($post->canMove($space2)  !== true);
+        $this->assertTrue($post->canMove($space2) !== true);
 
         // Space Admin is not allowed to move this content to space1 since User1 is not member os space1
         $this->assertTrue($post->canMove($space1) !== true);
 
         // Space Admin is not allowed to move this content to space3 since User1 is only member os space3
-        $this->assertTrue($post->canMove($space3)  !== true);
+        $this->assertTrue($post->canMove($space3) !== true);
 
         // Space Admin is allowed to move this content to space3 since User1 admin on space4
         $this->assertTrue($post->canMove($space4) === true);
@@ -124,7 +125,7 @@ class MoveContentTest extends HumHubDbTestCase
         $space3 = Space::findOne(3);
         $space4 = Space::findOne(4);
 
-       $this->setGroupPermission(3, ManageUsers::class);
+        $this->setGroupPermission(3, ManageUsers::class);
 
         $this->becomeUser('User2');
 
@@ -134,7 +135,7 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertTrue($post->canMove() === true);
 
         // Can not be moved to current space
-        $this->assertTrue($post->canMove($space2)  !== true);
+        $this->assertTrue($post->canMove($space2) !== true);
 
         // User Manager is not allowed to move this content to space1 since User1 is not member os space1
         $this->assertTrue($post->canMove($space1) === true);
@@ -204,7 +205,7 @@ class MoveContentTest extends HumHubDbTestCase
         $this->becomeUser('User2');
 
         // User2 is usermanager and has permission to move content
-        $this->assertEquals(true, $post->move($space3) );
+        $this->assertEquals(true, $post->move($space3));
 
         $spaceContent = Content::findOne(['id' => 11]);
         $this->assertTrue($spaceContent->container instanceof Space);
@@ -221,7 +222,7 @@ class MoveContentTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         // User2 is usermanager and has permission to move content
-        $this->assertEquals(true, $post->move($space3, true) );
+        $this->assertEquals(true, $post->move($space3, true));
 
         $spaceContent = Content::findOne(['id' => 11]);
         $this->assertTrue($spaceContent->container instanceof Space);

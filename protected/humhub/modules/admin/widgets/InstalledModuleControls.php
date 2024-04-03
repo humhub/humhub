@@ -90,7 +90,13 @@ class InstalledModuleControls extends Menu
             ]));
         }
 
-        if (MarketplaceModule::isMarketplaceEnabled()) {
+        /** @var \humhub\modules\marketplace\Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        if (
+            MarketplaceModule::isMarketplaceEnabled()
+            && dirname($this->module->basePath) === Yii::getAlias($marketplaceModule->modulesPath)
+        ) {
             $this->addEntry(new MenuLink([
                 'id' => 'info',
                 'label' => Yii::t('AdminModule.base', 'Show in Marketplace'),

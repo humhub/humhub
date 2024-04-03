@@ -17,7 +17,6 @@ use yii\base\InvalidArgumentException;
  */
 class Formatter extends \yii\i18n\Formatter
 {
-
     /**
      * @inheritdoc
      */

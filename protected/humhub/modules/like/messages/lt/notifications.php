@@ -1,10 +1,10 @@
 <?php
 return array (
-  'Likes' => '',
-  'Receive Notifications when someone likes your content.' => '',
-  'View Online' => '',
-  '{displayNames} likes your {contentTitle}.' => '',
-  '{displayNames} likes {contentTitle}.' => '',
-  '{displayName} likes your {contentTitle}.' => '',
-  '{displayName} likes {contentTitle}.' => '',
+  'Likes' => 'Patiktukai',
+  'Receive Notifications when someone likes your content.' => 'Gaukite pranešimus, kai kam nors patinka jūsų turinys.',
+  'View Online' => 'Žiūrėti',
+  '{displayNames} likes your {contentTitle}.' => '{displayNames} patinka tavo {contentTitle}.',
+  '{displayNames} likes {contentTitle}.' => '{displayNames} patinka {contentTitle}.',
+  '{displayName} likes your {contentTitle}.' => '{displayName} patinka tavo {contentTitle}.',
+  '{displayName} likes {contentTitle}.' => '{displayName} patinka {contentTitle}.',
 );

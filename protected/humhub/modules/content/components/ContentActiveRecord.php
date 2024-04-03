@@ -81,7 +81,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     public $wallEntryClass;
 
     /**
-     * @var boolean should the originator automatically follows this content when saved.
+     * @var bool should the originator automatically follows this content when saved.
      */
     public $autoFollow = true;
 
@@ -249,7 +249,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @param array $labels
      * @param bool $includeContentName
-     * @return Label[]|\string[] content labels used for example in wallentrywidget
+     * @return Label[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
     public function getLabels($labels = [], $includeContentName = true)
@@ -309,7 +309,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Determines whether or not the record has an additional createPermission set.
      *
-     * @return boolean
+     * @return bool
      * @since 1.13
      */
     public function hasCreatePermission()
@@ -368,7 +368,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Determines weather or not this records has an additional managePermission set.
      *
-     * @return boolean
+     * @return bool
      * @since 1.2.1
      */
     public function hasManagePermission()
@@ -485,29 +485,6 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
-     * Returns the class used in the polymorphic content relation.
-     * By default this function will return the static class.
-     *
-     * Subclasses of existing content record classes may overwrite this function in order to remain the actual
-     * base type as follows:
-     *
-     * ```
-     * public static function getObjectModel(): string {
-     *     return BaseType::class
-     * }
-     * ```
-     *
-     * This will force the usage of the `BaseType` class when creating, deleting or querying the content relation.
-     * This is used in cases in which a subclass extends the a base record class without implementing a custom content type.
-     *
-     * @return string
-     */
-    public static function getObjectModel(): string
-    {
-        return static::class;
-    }
-
-    /**
      * Marks this content for deletion (soft delete).
      * Use `hardDelete()` method to delete record immediately.
      *
@@ -609,7 +586,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * Related Content model
      *
-     * @return \yii\db\ActiveQuery|ActiveQueryContent
+     * @return ActiveQuery|ActiveQueryContent
      */
     public function getContent()
     {
@@ -697,5 +674,16 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      */
     public function afterMove(ContentContainerActiveRecord $container = null)
     {
+    }
+
+    /**
+     * Returns a Key=>Value array with additional contents to be indexed.
+     * General information and addons like comments, authors, files and tags will be indexed automatically.
+     *
+     * @return array
+     */
+    public function getSearchAttributes()
+    {
+        return [];
     }
 }

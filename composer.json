@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=7.4",
+        "php": ">=8.0",
         "ext-exif": "*",
         "ext-intl": "*",
         "ext-json": "*",
@@ -39,14 +39,15 @@
         "npm-asset/clipboard-polyfill": "^3.0",
         "npm-asset/codemirror": "^5.59",
         "npm-asset/font-awesome": "^4.7.0",
-        "npm-asset/humhub-prosemirror-richtext": "^2.0.0",
+        "npm-asset/fontsource--open-sans": "^5.0",
+        "npm-asset/humhub-prosemirror-richtext": "2.1.*",
         "npm-asset/imagesloaded": "^5.0",
         "npm-asset/intersection-observer": "^0.7.0",
         "npm-asset/jplayer": "^2.9",
         "npm-asset/jquery": "~3.6.3",
-        "npm-asset/jquery-ui": "^1.13.2",
         "npm-asset/jquery-autosize": "^1.0",
         "npm-asset/jquery-knob": "^1.2",
+        "npm-asset/jquery-ui": "^1.13.2",
         "npm-asset/jquery.cookie": "^1.4.1",
         "npm-asset/kbw.timeentry": "^2.0",
         "npm-asset/nprogress": "^0.2",
@@ -87,7 +88,6 @@
     "replace": {
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
         "codeception/codeception": "^4.0",
         "codeception/module-asserts": "^1.0",
         "codeception/module-filesystem": "^1.0",
@@ -96,7 +96,9 @@
         "codeception/module-yii2": "^1.0",
         "codeception/specify": "^1.0",
         "codeception/verify": "~0.5.0 || ^1.1.0",
+        "friendsofphp/php-cs-fixer": "^3.49",
         "phpcompatibility/php-compatibility": "^9.0",
+        "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
         "yiisoft/yii2-debug": "^2.1.0",
         "yiisoft/yii2-faker": "^2.0.0",
@@ -117,7 +119,7 @@
         },
         "platform-check": false,
         "platform": {
-            "php": "7.4"
+            "php": "8.0"
         },
         "allow-plugins": {
             "yiisoft/yii2-composer": true
@@ -126,7 +128,9 @@
     "scripts": {
         "post-create-project-cmd": [
             "yii\\composer\\Installer::postCreateProject"
-        ]
+        ],
+        "cs:fix": "protected/vendor/bin/php-cs-fixer fix",
+        "cs:check": "protected/vendor/bin/php-cs-fixer fix --dry-run --diff"
     },
     "extra": {
         "yii\\composer\\Installer::postCreateProject": {

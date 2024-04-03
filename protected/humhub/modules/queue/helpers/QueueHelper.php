@@ -23,7 +23,6 @@ use humhub\modules\queue\models\QueueExclusive;
  */
 class QueueHelper extends BaseObject
 {
-
     public static function isQueued(ExclusiveJobInterface $job)
     {
         $queueExclusive = QueueExclusive::findOne(['id' => $job->getExclusiveJobId()]);

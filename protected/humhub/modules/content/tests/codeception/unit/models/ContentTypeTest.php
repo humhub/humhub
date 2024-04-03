@@ -18,7 +18,6 @@ use modules\content\tests\codeception\_support\ContentModelTest;
 
 class ContentTypeTest extends ContentModelTest
 {
-
     public function _before()
     {
         parent::_before();

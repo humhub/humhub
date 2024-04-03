@@ -74,7 +74,7 @@ trait ApplicationTrait
     /**
      * Checks if Humhub is installed
      *
-     * @return boolean
+     * @return bool
      * @since 1.16
      */
     public function isInstalled(): bool

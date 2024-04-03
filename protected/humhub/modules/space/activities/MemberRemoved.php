@@ -20,7 +20,6 @@ use Yii;
  */
 class MemberRemoved extends BaseActivity implements ConfigurableActivityInterface
 {
-
     /**
      * @inheritdoc
      */

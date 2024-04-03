@@ -89,7 +89,7 @@ class PeopleQuery extends ActiveQueryUser
         $fields = Yii::$app->request->get('fields', $this->defaultFilters['fields'] ?? []);
 
         // Remove empty filters
-        $fields = array_filter($fields, function($value) {
+        $fields = array_filter($fields, function ($value) {
             return $value !== '';
         });
 

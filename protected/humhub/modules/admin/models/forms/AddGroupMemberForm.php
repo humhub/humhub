@@ -21,7 +21,6 @@ use humhub\modules\user\models\Group;
  */
 class AddGroupMemberForm extends Model
 {
-
     /**
      * GroupId selection array of the form.
      * @var array
@@ -30,7 +29,7 @@ class AddGroupMemberForm extends Model
 
     /**
      * User model object
-     * @var integer
+     * @var int
      */
     public $groupId;
 
@@ -67,14 +66,14 @@ class AddGroupMemberForm extends Model
             throw new HttpException(404, Yii::t('AdminModule.user', 'Group not found!'));
         }
 
-        if($group->is_admin_group && !Yii::$app->user->isAdmin()) {
+        if ($group->is_admin_group && !Yii::$app->user->isAdmin()) {
             throw new HttpException(403);
         }
 
         foreach ($this->userGuids as $userGuid) {
             $user = User::findIdentityByAccessToken($userGuid);
             if ($user) {
-               $group->addUser($user);
+                $group->addUser($user);
             }
         }
 

@@ -3,6 +3,7 @@
 use humhub\modules\installer\controllers\ConfigController;
 use yii\bootstrap\ActiveForm;
 use yii\bootstrap\Html;
+
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">
 

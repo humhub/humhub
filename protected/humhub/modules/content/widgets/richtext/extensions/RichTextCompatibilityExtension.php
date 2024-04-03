@@ -24,7 +24,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
     /**
      * Content module db setting used to deactivate this feature
      */
-    const DB_SETTING_KEY = 'richtextCompatMode';
+    public const DB_SETTING_KEY = 'richtextCompatMode';
 
     /**
      * @inheritdoc

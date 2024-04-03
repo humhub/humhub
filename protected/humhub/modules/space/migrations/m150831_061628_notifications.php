@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m150831_061628_notifications extends Migration
 {
-
     public function up()
     {
         $this->update('notification', ['class' => 'humhub\modules\space\notifications\ApprovalRequest'], ['class' => 'SpaceApprovalRequestNotification']);

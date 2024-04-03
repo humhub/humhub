@@ -18,6 +18,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\authclient\ClientInterface;
@@ -129,7 +130,7 @@ class RegistrationController extends Controller
      * @param null $spaceId
      * @return string
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws StaleObjectException
      */
     public function actionByLink(?string $token = null, $spaceId = null)

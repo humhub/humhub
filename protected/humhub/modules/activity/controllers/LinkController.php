@@ -20,7 +20,6 @@ use yii\web\HttpException;
  */
 class LinkController extends Controller
 {
-
     /**
      * Returns the link for the given activity.
      */

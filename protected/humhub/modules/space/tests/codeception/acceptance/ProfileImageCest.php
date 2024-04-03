@@ -2,16 +2,16 @@
 
 namespace space\acceptance;
 
+use Exception;
 use space\AcceptanceTester;
 
 class ProfileImageCest
 {
-
     /**
      * Create Private Spaces
      *
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testBannerUploadAndDelete(AcceptanceTester $I)
     {
@@ -38,7 +38,7 @@ class ProfileImageCest
         $I->wantToTest('the deletion of the space banner');
         $I->amGoingTo('press the delete button');
         $I->click('.profile-banner-image-container .image-upload-buttons .btn-danger');
-        $I->waitForText('Confirm image deletion', null,'#globalModalConfirm');
+        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
         $I->jsShow('.profile-banner-image-container .image-upload-buttons');
@@ -48,7 +48,7 @@ class ProfileImageCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testProfileImageUploadAndDelete(AcceptanceTester $I)
     {
@@ -62,7 +62,7 @@ class ProfileImageCest
 
         $I->waitForElementVisible('.profile-user-photo-container .space-acronym');
         $I->wait(2); // wait for animation
-        $I->see('S2','.profile-user-photo-container .space-acronym');
+        $I->see('S2', '.profile-user-photo-container .space-acronym');
         $I->jsShow('.profile-user-photo-container .image-upload-buttons');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .btn-info');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-edit');
@@ -78,12 +78,12 @@ class ProfileImageCest
         $I->amGoingTo('press the delete button');
 
         $I->click('.profile-user-photo-container .image-upload-buttons .btn-danger');
-        $I->waitForText('Confirm image deletion', null,'#globalModalConfirm');
+        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForElementVisible('.profile-user-photo-container .space-acronym');
         $I->wait(2); // wait for animation
-        $I->see('S2','.profile-user-photo-container .space-acronym');
+        $I->see('S2', '.profile-user-photo-container .space-acronym');
         $I->jsShow('.profile-user-photo-container .image-upload-buttons');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .btn-info');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-edit');
@@ -147,8 +147,8 @@ class ProfileImageCest
 
     private function deleteImage(AcceptanceTester $I, $containerClass)
     {
-        $I->jsClick($containerClass.' .image-upload-buttons .btn-danger');
-        $I->waitForText('Confirm image deletion', null,'#globalModalConfirm');
+        $I->jsClick($containerClass . ' .image-upload-buttons .btn-danger');
+        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
     }
 }

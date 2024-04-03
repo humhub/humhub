@@ -11,7 +11,6 @@ use humhub\modules\notification\targets\WebTarget;
 
 class WebTargetRenderTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testDefaultView()
@@ -38,5 +37,4 @@ class WebTargetRenderTest extends HumHubDbTestCase
         $this->assertStringContainsString('New', $result);
         $this->assertStringContainsString('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $result);
     }
-
 }

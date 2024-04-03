@@ -16,9 +16,9 @@ use Yii;
 
 class PasswordRecoveryService
 {
-    const SETTING_TOKEN = 'passwordRecoveryToken';
-    const TOKEN_MAX_LIFE_TIME = 24 * 60 * 60;
-    const LIMIT_EMAIL_SEND_TIME = 10 * 60;
+    public const SETTING_TOKEN = 'passwordRecoveryToken';
+    public const TOKEN_MAX_LIFE_TIME = 24 * 60 * 60;
+    public const LIMIT_EMAIL_SEND_TIME = 10 * 60;
 
     public User $user;
 
@@ -39,7 +39,7 @@ class PasswordRecoveryService
             return false;
         }
 
-        return (int) $savedToken['time'] + self::LIMIT_EMAIL_SEND_TIME >= time();
+        return (int)$savedToken['time'] + self::LIMIT_EMAIL_SEND_TIME >= time();
     }
 
     /**
@@ -113,7 +113,7 @@ class PasswordRecoveryService
         }
 
         // Token must not be older than 24 hours
-        return (int) $savedToken['time'] + self::TOKEN_MAX_LIFE_TIME >= time();
+        return (int)$savedToken['time'] + self::TOKEN_MAX_LIFE_TIME >= time();
     }
 
     /**

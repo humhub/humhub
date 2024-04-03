@@ -32,7 +32,7 @@ class View extends \yii\web\View
     /**
      * the id of the sidebar block
      */
-    const BLOCK_SIDEBAR = 'sidebar';
+    public const BLOCK_SIDEBAR = 'sidebar';
 
     /**
      * @var string page title

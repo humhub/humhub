@@ -104,7 +104,7 @@ class FilterInput extends Widget
         $this->options['data-filter-category'] = $this->category;
         $this->options['class'] = $this->filterClass;
 
-        if($this->multiple) {
+        if ($this->multiple) {
             $this->options['data-filter-multiple'] = 1;
         }
     }

@@ -24,7 +24,6 @@ use yii\base\Exception;
  */
 class Activity extends StreamEntryWidget
 {
-
     /**
      * @var ActivityModel is the current activity object.
      */

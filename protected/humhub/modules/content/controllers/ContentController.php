@@ -17,9 +17,11 @@ use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\stream\actions\StreamEntryResponse;
+use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\db\IntegrityException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
@@ -33,7 +35,6 @@ use yii\web\Response;
  */
 class ContentController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -197,8 +198,8 @@ class ContentController extends Controller
      * @return Response
      * @throws Exception
      * @throws InvalidConfigException
-     * @throws \Throwable
-     * @throws \yii\db\IntegrityException
+     * @throws Throwable
+     * @throws IntegrityException
      */
     public function actionToggleVisibility($id)
     {
@@ -207,7 +208,7 @@ class ContentController extends Controller
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canEdit()) {
+        } elseif (!$content->canEdit() || (!$content->visibility && !$content->container->visibility)) {
             throw new ForbiddenHttpException();
         } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
             throw new ForbiddenHttpException();
@@ -233,8 +234,8 @@ class ContentController extends Controller
      * @return Response
      * @throws Exception
      * @throws InvalidConfigException
-     * @throws \Throwable
-     * @throws \yii\db\IntegrityException
+     * @throws Throwable
+     * @throws IntegrityException
      */
     public function switchCommentsStatus(int $id, bool $lockComments): Response
     {
@@ -261,8 +262,8 @@ class ContentController extends Controller
      * @return Response
      * @throws Exception
      * @throws InvalidConfigException
-     * @throws \Throwable
-     * @throws \yii\db\IntegrityException
+     * @throws Throwable
+     * @throws IntegrityException
      */
     public function actionLockComments($id)
     {
@@ -276,8 +277,8 @@ class ContentController extends Controller
      * @return Response
      * @throws Exception
      * @throws InvalidConfigException
-     * @throws \Throwable
-     * @throws \yii\db\IntegrityException
+     * @throws Throwable
+     * @throws IntegrityException
      */
     public function actionUnlockComments($id)
     {

@@ -702,9 +702,9 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $module->doEnable = true;
         static::assertTrue($module->enable());
-//        static::assertEquals(ExitCode::OK, $module->migrationResult);
-//        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-//        static::assertLogRegex('@\*\*\* applied m230911_000100_create_test_table \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
+        //        static::assertEquals(ExitCode::OK, $module->migrationResult);
+        //        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::assertLogRegex('@\*\*\* applied m230911_000100_create_test_table \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
         static::logFlush();
 
         $this->assertEvents([
@@ -718,20 +718,20 @@ class ModuleManagerTest extends HumHubDbTestCase
             ],
         ]);
 
-//        $module->doDisable = false;
-//        static::assertNull($module->disable());
-//        static::assertNull($module->migrationResult);
-//        static::assertNull($module->migrationOutput);
-//        $this->assertEvents();
-//
-//        static::assertLog('Module has not been disabled due to beforeDisable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-//        static::logFlush();
+        //        $module->doDisable = false;
+        //        static::assertNull($module->disable());
+        //        static::assertNull($module->migrationResult);
+        //        static::assertNull($module->migrationOutput);
+        //        $this->assertEvents();
+        //
+        //        static::assertLog('Module has not been disabled due to beforeDisable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::logFlush();
 
         $module->doDisable = true;
         static::assertTrue($module->disable());
-//        static::assertEquals(ExitCode::OK, $module->migrationResult);
-//        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-//        static::assertLogRegex('@    > drop table test_module_with_migration \.\.\. done \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
+        //        static::assertEquals(ExitCode::OK, $module->migrationResult);
+        //        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::assertLogRegex('@    > drop table test_module_with_migration \.\.\. done \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
         static::logFlush();
     }
 
@@ -986,7 +986,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         }
 
         static::assertInstanceOf($this->moduleClass, $module = $this->moduleManager->getModule($this->moduleId));
-//        $module->setBasePath($basePath);
+        //        $module->setBasePath($basePath);
 
         static::assertEquals($isCore, $this->moduleManager->isCoreModule($this->moduleId));
 

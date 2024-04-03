@@ -35,7 +35,7 @@ class ManageController extends ContentContainerController
     {
         parent::init();
 
-        if($this->contentContainer instanceof User) {
+        if ($this->contentContainer instanceof User) {
             $this->subLayout = "@humhub/modules/user/views/account/_layout";
         }
     }
@@ -67,7 +67,7 @@ class ManageController extends ContentContainerController
     private function getTopicProvider()
     {
         return new ActiveDataProvider([
-            'query' =>  Topic::findByContainer($this->contentContainer)->orderBy('sort_order, name'),
+            'query' => Topic::findByContainer($this->contentContainer)->orderBy('sort_order, name'),
             'pagination' => [
                 'pageSize' => 20,
             ],

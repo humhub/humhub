@@ -31,7 +31,7 @@ class ContentContainerStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
-        if(!$this->container) {
+        if (!$this->container) {
             return;
         }
 
@@ -42,9 +42,9 @@ class ContentContainerStreamFilter extends StreamQueryFilter
 
         // Limit to public posts when no member
         if (!$this->container->canAccessPrivateContent($user)) {
-            if(Yii::$app->user->isGuest) {
+            if (Yii::$app->user->isGuest) {
                 $this->query->andWhere('content.visibility = :visibility', [':visibility' => Content::VISIBILITY_PUBLIC]);
-            } else if (!Yii::$app->user->getIdentity()->canViewAllContent(get_class($this->container))) {
+            } elseif (!Yii::$app->user->getIdentity()->canViewAllContent(get_class($this->container))) {
                 // Limit only if current User/Admin cannot view all content
                 $this->query->andWhere('content.visibility = :visibility OR content.created_by = :userId', [
                     ':visibility' => Content::VISIBILITY_PUBLIC,

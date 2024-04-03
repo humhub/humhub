@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m141015_173305_follow_notifications extends Migration
 {
-
     public function up()
     {
         $this->renameTable('follow', 'user_follow');

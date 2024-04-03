@@ -27,16 +27,16 @@ $isActivity = $entry->object_model === Activity::class;
         'data' => [
             'content-container-id' => $entry->contentcontainer_id,
             'stream-entry' => 1,
-            'stream-pinned' => (int) $isPinned,
+            'stream-pinned' => (int)$isPinned,
             'action-component' => $jsWidget,
             'content-key' => $entry->id
         ]
-    ])?>
+    ]) ?>
 <?php endif; ?>
 
 <?= $content ?>
 
 <?php if (!$isActivity) : ?>
-    <?= Html::endTag('div')?>
+    <?= Html::endTag('div') ?>
 <?php endif; ?>
 

@@ -16,7 +16,6 @@ use humhub\components\Widget;
  */
 class SpaceTags extends Widget
 {
-
     /**
      * @var Space
      */
@@ -31,5 +30,3 @@ class SpaceTags extends Widget
     }
 
 }
-
-?>

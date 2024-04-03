@@ -20,6 +20,8 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * The NotificationManager component is responsible for sending BaseNotifications to Users over different
@@ -63,9 +65,9 @@ class NotificationManager
      * Sends the given $notification to all enabled targets of the given $users if possible
      * as bulk message.
      *
-     * @param \humhub\modules\notification\components\BaseNotification $notification
+     * @param BaseNotification $notification
      * @param ActiveQueryUser $userQuery
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function sendBulk(BaseNotification $notification, $userQuery)
     {
@@ -111,9 +113,9 @@ class NotificationManager
     /**
      * Sends the given $notification to all enabled targets of a single user.
      *
-     * @param \humhub\modules\notification\components\BaseNotification $notification
+     * @param BaseNotification $notification
      * @param User $user target user
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function send(BaseNotification $notification, User $user)
     {
@@ -126,7 +128,7 @@ class NotificationManager
      *
      * @param User $user |null the user
      * @return BaseTarget[] the target
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getTargets(User $user = null)
     {
@@ -157,7 +159,7 @@ class NotificationManager
      *
      * @param string $class
      * @return BaseTarget
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getTarget($class)
     {
@@ -174,7 +176,7 @@ class NotificationManager
      *
      * @param User $user
      * @param Space $space
-     * @return boolean
+     * @return bool
      */
     public function isFollowingSpace(User $user, Space $space)
     {
@@ -193,7 +195,7 @@ class NotificationManager
      *
      * @param Content $content
      * @return ActiveQueryUser
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getFollowers(Content $content)
     {
@@ -205,7 +207,7 @@ class NotificationManager
      * only members with send_notifications settings are returned.
      *
      * @param ContentContainerActiveRecord $container
-     * @param boolean $public
+     * @param bool $public
      * @return ActiveQueryUser
      */
     public function getContainerFollowers(ContentContainerActiveRecord $container, $public = true)
@@ -226,7 +228,6 @@ class NotificationManager
                 $query->union(Membership::getSpaceMembersQuery($container, true, false)
                     ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
             }
-
         } elseif ($container instanceof User) {
             // Note the notification follow logic for users is currently not implemented.
             // TODO: perhaps return only friends if public is false?
@@ -369,7 +370,7 @@ class NotificationManager
     /**
      * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
      *
-     * @param integer $value
+     * @param int $value
      * @param User $user
      */
     public function setDesktopNoficationSettings($value = 0, User $user = null)
@@ -383,7 +384,7 @@ class NotificationManager
      * Determines the enable_html5_desktop_notifications setting either for the given user or global if no user is given.
      * By default the setting is enabled.
      * @param User $user
-     * @return integer
+     * @return int
      */
     public function getDesktopNoficationSettings(User $user = null)
     {
@@ -399,7 +400,7 @@ class NotificationManager
      *
      * @param User $user user instance for which this settings will aplly
      * @param Space $space which notifications will be followed / unfollowed
-     * @param boolean $follow the setting value (true by default)
+     * @param bool $follow the setting value (true by default)
      */
     public function setSpaceSetting(User $user = null, Space $space, $follow = true)
     {
@@ -425,7 +426,7 @@ class NotificationManager
      * Returns all available Notifications
      *
      * @return BaseNotification[]
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getNotifications()
     {
@@ -466,7 +467,7 @@ class NotificationManager
     /**
      * Searches for all Notifications exported by modules.
      * @return array
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     protected function searchModuleNotifications()
     {
@@ -491,5 +492,4 @@ class NotificationManager
         }
         return $result;
     }
-
 }

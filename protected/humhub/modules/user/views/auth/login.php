@@ -10,7 +10,7 @@ use yii\widgets\ActiveForm;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
-/* @var $canRegister boolean */
+/* @var $canRegister bool */
 /* @var $model Login */
 /* @var $invite Invite */
 /* @var $info string */

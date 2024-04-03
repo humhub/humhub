@@ -14,7 +14,6 @@ use yii\test\ActiveFixture;
 
 class FileHistoryFixture extends ActiveFixture
 {
-
     public $modelClass = FileHistory::class;
     public $dataFile = '@file/tests/codeception/fixtures/data/file-history.php';
 

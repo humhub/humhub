@@ -2,6 +2,7 @@
 
 namespace humhub\modules\user;
 
+use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
@@ -24,19 +25,6 @@ use yii\base\BaseObject;
  */
 class Events extends BaseObject
 {
-
-    /**
-     * On rebuild of the search index, rebuild all user records
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onSearchRebuild($event)
-    {
-        foreach (User::find()->active()->each() as $user) {
-            Yii::$app->search->add($user);
-        }
-    }
-
     /**
      * On delete of a Content or ContentAddon
      *
@@ -130,7 +118,7 @@ class Events extends BaseObject
                         $follow->delete();
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
                     $follow->delete();
                 }
@@ -183,7 +171,7 @@ class Events extends BaseObject
             'label' => Yii::t('UserModule.base', 'People'),
             'url' => ['/user/people'],
             'sortOrder' => 200,
-            'isActive' =>  MenuLink::isActiveState('user', 'people'),
+            'isActive' => MenuLink::isActiveState('user', 'people'),
         ]));
     }
 

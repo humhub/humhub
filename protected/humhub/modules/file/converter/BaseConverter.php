@@ -21,7 +21,6 @@ use yii\base\BaseObject;
  */
 abstract class BaseConverter extends BaseObject
 {
-
     /**
      * @var File the file record
      */
@@ -96,8 +95,8 @@ abstract class BaseConverter extends BaseObject
     /**
      * Sets file for the converter
      *
-     * @param \humhub\modules\file\models\File $file
-     * @return boolean returns false if file cannot be converted
+     * @param File $file
+     * @return bool returns false if file cannot be converted
      */
     public function applyFile(File $file)
     {

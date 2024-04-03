@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m151226_164234_authclient extends Migration
 {
-
     public function up()
     {
         $this->createTable('user_auth', [

@@ -16,7 +16,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
-
 /**
  * Class ProfileHeaderCounter
  *
@@ -25,7 +24,6 @@ use yii\helpers\Url;
  */
 class ProfileHeaderCounterSet extends CounterSet
 {
-
     /**
      * @var User
      */

@@ -17,7 +17,6 @@ use humhub\modules\ui\widgets\CounterSetItem;
 use Yii;
 use yii\helpers\Url;
 
-
 /**
  * Class HeaderCounterSet
  * @package humhub\modules\space\widgets

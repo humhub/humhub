@@ -11,6 +11,7 @@ namespace user\functional;
 use user\FunctionalTester;
 use Yii;
 use yii\helpers\Url;
+use yii\mail\MessageInterface;
 
 class MailInviteCest
 {
@@ -30,15 +31,15 @@ class MailInviteCest
         $I->seeEmailIsSent(2);
 
 
-        /* @var $messages \yii\mail\MessageInterface[] */
+        /* @var $messages MessageInterface[] */
         $messages = $I->grabSentEmails();
 
 
-        if(!array_key_exists('a@test.de', $messages[0]->getTo())) {
+        if (!array_key_exists('a@test.de', $messages[0]->getTo())) {
             $I->see('a@test.de not in mails');
         }
 
-        if(!array_key_exists('b@test.de', $messages[1]->getTo())) {
+        if (!array_key_exists('b@test.de', $messages[1]->getTo())) {
             $I->see('b@test.de not in mails');
         }
 
@@ -72,15 +73,15 @@ class MailInviteCest
         $I->sendAjaxPostRequest(Url::to(['/user/invite']), ['Invite[emails]' => 'a@test.de,b@test.de']);
         $I->seeEmailIsSent(2);
 
-        /* @var $messages \yii\mail\MessageInterface[] */
+        /* @var $messages MessageInterface[] */
         $messages = $I->grabSentEmails();
 
 
-        if(!array_key_exists('a@test.de', $messages[0]->getTo())) {
+        if (!array_key_exists('a@test.de', $messages[0]->getTo())) {
             $I->see('a@test.de not in mails');
         }
 
-        if(!array_key_exists('b@test.de', $messages[1]->getTo())) {
+        if (!array_key_exists('b@test.de', $messages[1]->getTo())) {
             $I->see('b@test.de not in mails');
         }
 

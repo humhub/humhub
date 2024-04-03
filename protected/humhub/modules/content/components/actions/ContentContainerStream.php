@@ -16,5 +16,4 @@ namespace humhub\modules\content\components\actions;
  */
 class ContentContainerStream extends \humhub\modules\stream\actions\ContentContainerStream
 {
-    
 }

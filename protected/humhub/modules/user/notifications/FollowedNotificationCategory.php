@@ -18,7 +18,6 @@ use humhub\modules\notification\components\NotificationCategory;
  */
 class FollowedNotificationCategory extends NotificationCategory
 {
-
     /**
      * @inheritdoc
      */

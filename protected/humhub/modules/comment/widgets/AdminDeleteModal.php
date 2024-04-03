@@ -9,6 +9,7 @@
 namespace humhub\modules\comment\widgets;
 
 use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
+use yii\base\Widget;
 
 /**
  * Admin Delete Modal for Comments
@@ -16,7 +17,7 @@ use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
  * This widget will be shown when admin deletes someone's comment
  *
  */
-class AdminDeleteModal extends \yii\base\Widget
+class AdminDeleteModal extends Widget
 {
     /**
      * @var AdminDeleteCommentForm

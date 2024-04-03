@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,15 +7,17 @@
  */
 
 /**
- * @var $this \yii\web\View
- * @var $enabled boolean
+ * @var $this View
+ * @var $enabled bool
  * @var $errorMessage string
- * @var $model \humhub\modules\ldap\models\LdapSettings
+ * @var $model LdapSettings
  * @var $userCount string
  */
 
+use humhub\modules\ldap\models\LdapSettings;
 use yii\helpers\Html;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\web\View;
 
 ?>
 

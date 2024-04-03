@@ -1,9 +1,9 @@
-humhub.module('post', function(module, require, $) {
+humhub.module('post', function (module, require, $) {
     var Widget = require('ui.widget').Widget;
 
     var Post = Widget.extend();
 
-    Post.prototype.init = function() {
+    Post.prototype.init = function () {
         var that = this;
 
         if (this.data('dynamic-font-size')) {

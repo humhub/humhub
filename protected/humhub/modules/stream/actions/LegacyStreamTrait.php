@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\stream\actions;
-
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
@@ -79,8 +77,8 @@ trait LegacyStreamTrait
         $underlyingObject->populateRelation('content', $content);
 
         $result['output'] = static::renderEntry($underlyingObject, false);
-        $result['pinned'] = (boolean) $content->pinned;
-        $result['archived'] = (boolean) $content->archived;
+        $result['pinned'] = (bool)$content->pinned;
+        $result['archived'] = (bool)$content->archived;
         $result['guid'] = $content->guid;
         $result['id'] = $content->id;
 
@@ -113,12 +111,12 @@ trait LegacyStreamTrait
      *
      * @param ContentActiveRecord $record content record instance
      * @param $options array render options
-     * @param boolean $partial whether or not to use renderPartial over renderAjax
+     * @param bool $partial whether or not to use renderPartial over renderAjax
      * @return string rendered wallentry
      * @throws \Exception
      * @deprecated since 1.7 use StreamEntryWidget::renderStreamEntry() instead
      */
-    public static function renderEntry(ContentActiveRecord $record, $options =  [], $partial = true)
+    public static function renderEntry(ContentActiveRecord $record, $options = [], $partial = true)
     {
         // TODO should be removed in next major version
         // Compatibility with pre 1.2.2
@@ -132,12 +130,12 @@ trait LegacyStreamTrait
         }
 
 
-        if(is_subclass_of($record->wallEntryClass, WallStreamEntryWidget::class, true)) {
+        if (is_subclass_of($record->wallEntryClass, WallStreamEntryWidget::class, true)) {
             // This was added just in case we somehow run this with a new wall entry widget
             return StreamEntryWidget::renderStreamEntry($record);
         }
 
-        return static::renderLegacyWallEntry( $record, $options, $partial);
+        return static::renderLegacyWallEntry($record, $options, $partial);
     }
 
     /**
@@ -176,7 +174,7 @@ trait LegacyStreamTrait
     /**
      * Is inital stream requests (show first stream content)
      *
-     * @return boolean Is initial request
+     * @return bool Is initial request
      * @deprecated since 1.6 use StreamQuery::isInitialQuery
      */
     protected function isInitialRequest()
@@ -193,14 +191,19 @@ trait LegacyStreamTrait
         $this->setupCriteria();
         $this->setupFilters();
     }
-    /**
-     * @deprecated since 1.7 use Stream::beforeApplyFilters()
-     */
-    public function setupCriteria(){}
 
     /**
      * @deprecated since 1.7 use Stream::beforeApplyFilters()
      */
-    public function setupFilters(){ }
+    public function setupCriteria()
+    {
+    }
+
+    /**
+     * @deprecated since 1.7 use Stream::beforeApplyFilters()
+     */
+    public function setupFilters()
+    {
+    }
 
 }

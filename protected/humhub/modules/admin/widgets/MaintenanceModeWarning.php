@@ -18,7 +18,6 @@ use Yii;
  */
 class MaintenanceModeWarning extends Widget
 {
-
     /**
      * {@inheritdoc}
      */

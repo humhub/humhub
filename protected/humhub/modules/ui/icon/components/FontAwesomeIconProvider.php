@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\ui\icon\components;
 
 use humhub\libs\Html;
@@ -12,7 +13,6 @@ use humhub\modules\ui\icon\widgets\Icon;
  */
 class FontAwesomeIconProvider implements IconProvider
 {
-
     /**
      * @return string
      */
@@ -27,33 +27,33 @@ class FontAwesomeIconProvider implements IconProvider
      */
     public function render($icon, $options = [])
     {
-        $icon = Icon::get($icon,$options);
+        $icon = Icon::get($icon, $options);
 
         $options = $icon->htmlOptions;
 
-        Html::addCssClass($options, 'fa fa-'.$icon->name);
+        Html::addCssClass($options, 'fa fa-' . $icon->name);
 
-        if($icon->size) {
+        if ($icon->size) {
             Html::addCssClass($options, $this->getIconSizeClass($icon));
         }
 
-        if($icon->fixedWidth) {
+        if ($icon->fixedWidth) {
             Html::addCssClass($options, 'fa-fw');
         }
 
-        if($icon->listItem) {
+        if ($icon->listItem) {
             Html::addCssClass($options, 'fa-li');
         }
 
-        if($icon->right) {
+        if ($icon->right) {
             Html::addCssClass($options, 'fa-pull-right');
         }
 
-        if($icon->left) {
+        if ($icon->left) {
             Html::addCssClass($options, 'fa-pull-left');
         }
 
-        if($icon->border) {
+        if ($icon->border) {
             Html::addCssClass($options, 'fa-border');
         }
 
@@ -61,20 +61,19 @@ class FontAwesomeIconProvider implements IconProvider
 
         $ariaElement = '';
 
-        if($icon->tooltip) {
+        if ($icon->tooltip) {
             $options['role'] = 'img';
             Html::addTooltip($options, $icon->tooltip);
             $ariaLabel = $icon->ariaLabel ?? $icon->tooltip;
             $ariaElement = Html::tag('span', $ariaLabel, ['class' => 'sr-only']);
         }
 
-        if($icon->color) {
+        if ($icon->color) {
             Html::addCssStyle($options, ['color' => $icon->color]);
         }
 
 
-
-        return Html::beginTag('i', $options).Html::endTag('i') . $ariaElement;
+        return Html::beginTag('i', $options) . Html::endTag('i') . $ariaElement;
     }
 
     /**
@@ -84,13 +83,12 @@ class FontAwesomeIconProvider implements IconProvider
     public function renderList($listDefinition)
     {
         $items = [];
-        foreach ($listDefinition as $listItem)
-        {
+        foreach ($listDefinition as $listItem) {
             $text = reset($listItem);
             $iconName = key($listItem);
             $options = (isset($listItem['options'])) ? $listItem['options'] : [];
             $options['listItem'] = true;
-            $items[] = $this->render($iconName, $options).$text;
+            $items[] = $this->render($iconName, $options) . $text;
         }
 
         return Html::ul($items, ['class' => 'fa-ul', 'encode' => false]);

@@ -49,6 +49,7 @@ return [
     'Add users without invitation' => '',
     'Admin' => '',
     'Administrators' => '',
+    'Advanced Spaces Search' => '',
     'Any' => '',
     'As owner you cannot revoke your membership!' => '',
     'Blocked users' => '',

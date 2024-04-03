@@ -14,7 +14,6 @@ use yii\test\ActiveFixture;
 
 class UrlOembedFixture extends ActiveFixture
 {
-
     public $modelClass = UrlOembed::class;
 
 }

@@ -43,7 +43,7 @@ class Followable extends Behavior
     public function getFollowRecord($userId)
     {
         $userId = ($userId instanceof User) ? $userId->id : $userId;
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $userId, function () use ($userId) {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->owner->getPrimaryKey() . '-' . $userId, function () use ($userId) {
             return Follow::find()
                 ->where([
                     'object_model' => get_class($this->owner),
@@ -57,8 +57,8 @@ class Followable extends Behavior
      * Follows the owner object
      *
      * @param int $userId
-     * @param boolean $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
-     * @return boolean
+     * @param bool $withNotifications (since 1.2) sets the send_notifications setting of the membership default true
+     * @return bool
      */
     public function follow($userId = null, $withNotifications = true)
     {
@@ -94,7 +94,7 @@ class Followable extends Behavior
      * Unfollows the owner object
      *
      * @param int $userId
-     * @return boolean
+     * @return bool
      */
     public function unfollow($userId = null)
     {
@@ -123,15 +123,15 @@ class Followable extends Behavior
      * Note that the followers for this owner will be cached.
      *
      * @param int $userId
-     * @param boolean $withNotifications if true, only return true when also notifications enabled
-     * @return boolean Is object followed by user
+     * @param bool $withNotifications if true, only return true when also notifications enabled
+     * @return bool Is object followed by user
      */
     public function isFollowedByUser($userId = null, $withNotifications = false)
     {
         if ($userId instanceof User) {
             $userId = $userId->id;
         } elseif (!$userId || $userId == "") {
-            $userId = \Yii::$app->user->id;
+            $userId = Yii::$app->user->id;
         }
 
         if (!isset($this->_followerCache[$userId])) {
@@ -190,8 +190,11 @@ class Followable extends Behavior
      */
     public function getFollowingQuery($query)
     {
-        $query->leftJoin('user_follow', 'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-            ['object_model' => get_class($this->owner)]);
+        $query->leftJoin(
+            'user_follow',
+            'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
+            ['object_model' => get_class($this->owner)]
+        );
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
         return $query;
     }

@@ -8,6 +8,7 @@
 namespace stream\acceptance;
 
 use DateTime;
+use Exception;
 use stream\AcceptanceTester;
 use Yii;
 
@@ -15,7 +16,7 @@ class StreamCest
 {
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDeletePost(AcceptanceTester $I)
     {
@@ -45,7 +46,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testArchivePost(AcceptanceTester $I)
     {
@@ -109,7 +110,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testPinPost(AcceptanceTester $I)
     {
@@ -150,7 +151,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testEditPost(AcceptanceTester $I)
     {
@@ -197,7 +198,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testEmptyStream(AcceptanceTester $I)
     {
@@ -231,7 +232,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFilterInvolved(AcceptanceTester $I)
     {
@@ -286,7 +287,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testSortStream(AcceptanceTester $I)
     {
@@ -335,7 +336,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDateFilter(AcceptanceTester $I)
     {

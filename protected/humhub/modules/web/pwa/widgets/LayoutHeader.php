@@ -22,7 +22,6 @@ use humhub\modules\ui\view\components\View;
  */
 class LayoutHeader extends Widget
 {
-
     /**
      * Registers mobile app related Head Tags
      *

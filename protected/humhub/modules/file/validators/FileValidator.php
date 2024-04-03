@@ -10,6 +10,7 @@ namespace humhub\modules\file\validators;
 
 use humhub\modules\file\Module;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\web\UploadedFile;
 use humhub\modules\file\models\File;
 use humhub\modules\file\libs\FileHelper;
@@ -23,14 +24,13 @@ use humhub\modules\file\libs\FileHelper;
  */
 class FileValidator extends \yii\validators\FileValidator
 {
-
     /**
-     * @var boolean allow only file extensions which are specified in administration section
+     * @var bool allow only file extensions which are specified in administration section
      */
     public $useDefaultExtensionRestriction = true;
 
     /**
-     * @var boolean deny double file extensions
+     * @var bool deny double file extensions
      */
     public $denyDoubleFileExtensions;
 
@@ -88,7 +88,7 @@ class FileValidator extends \yii\validators\FileValidator
 
             $model->file_name = preg_replace($pattern, '_', $model->file_name);
 
-            if($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
+            if ($this->denyDoubleFileExtensions && preg_match('/\.\w{2,3}\.\w{2,3}$/', $model->file_name)) {
                 $this->addError($model, $attribute, Yii::t('FileModule.base', 'Double file extensions are not allowed!'));
             }
         }
@@ -99,7 +99,7 @@ class FileValidator extends \yii\validators\FileValidator
      * Checks if given uploaded file have correct type (extension) according current validator settings.
      * @param UploadedFile $file
      * @return bool
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function validateExtension($file)
     {

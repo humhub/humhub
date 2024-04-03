@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\marketplace\Module;
 use yii\db\Migration;
 
 /**
@@ -12,7 +13,7 @@ class m200715_171721_defaultOption extends Migration
      */
     public function safeUp()
     {
-        /** @var \humhub\modules\marketplace\Module $module */
+        /** @var Module $module */
         $module = Yii::$app->getModule('marketplace');
         $module->settings->set('includeCommunityModules', 1);
     }

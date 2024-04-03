@@ -7,7 +7,6 @@ use user\AcceptanceTester;
 
 class InvisibleUserCest
 {
-
     public function testUserInvisible(AcceptanceTester $I)
     {
         $userName = 'Sara Tester';

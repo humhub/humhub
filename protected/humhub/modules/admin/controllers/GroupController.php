@@ -98,8 +98,10 @@ class GroupController extends Controller
                         Yii::$app->queue->push($job);
                     }
 
-                    $this->view->info(Yii::t('AdminModule.user',
-                        'The Space memberships of all group members will be updated. This may take up to several minutes.'));
+                    $this->view->info(Yii::t(
+                        'AdminModule.user',
+                        'The Space memberships of all group members will be updated. This may take up to several minutes.'
+                    ));
                 }
             }
         }
@@ -195,14 +197,16 @@ class GroupController extends Controller
         $value = Yii::$app->request->post('value');
 
         if ($value === null) {
-            throw new HttpException(400,
+            throw new HttpException(
+                400,
                 Yii::t('AdminModule.user', 'No value found!')
             );
         }
 
         $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->post('userId')));
         if ($groupUser === null) {
-            throw new HttpException(404,
+            throw new HttpException(
+                404,
                 Yii::t('AdminModule.user', 'Group user not found!')
             );
         }
@@ -248,8 +252,10 @@ class GroupController extends Controller
             'query' => $query,
             'fillUser' => true,
             'fillUserQuery' => $group->getUsers(),
-            'disabledText' => Yii::t('AdminModule.user',
-                'User is already a member of this group.'),
+            'disabledText' => Yii::t(
+                'AdminModule.user',
+                'User is already a member of this group.'
+            ),
         ]);
 
         return $result;

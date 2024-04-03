@@ -50,7 +50,7 @@ class JsWidget extends Widget
 
     /**
      * Used to hide/show the actual input element.
-     * @var boolean
+     * @var bool
      */
     public $visible = true;
 
@@ -63,7 +63,7 @@ class JsWidget extends Widget
      * If set to true or 'fast', 'slow' or a integer duration in milliseconds the jsWidget will fade in the root element after initialization.
      * This can be handy for widgets which need some time to initialize.
      *
-     * @var bool|string|integer
+     * @var bool|string|int
      * @since 1.2.2
      */
     public $fadeIn = false;
@@ -151,7 +151,7 @@ class JsWidget extends Widget
      *
      * Note that the id is automatically included within the <code>getOptions()<code> function.
      *
-     * @param boolean $autoGenerate
+     * @param bool $autoGenerate
      * @return string
      */
     public function getId($autoGenerate = true)

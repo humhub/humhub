@@ -2,15 +2,18 @@
 
 namespace humhub\modules\web\security\helpers;
 
+use Exception;
 use humhub\modules\web\security\models\SecuritySettings;
 use Yii;
 
+use function random_bytes;
+
 class Security
 {
-    const SESSION_KEY_NONCE = 'security-script-src-nonce';
+    public const SESSION_KEY_NONCE = 'security-script-src-nonce';
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public static function applyHeader($withCsp = false)
     {
@@ -52,11 +55,11 @@ class Security
 
     /**
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     private static function createNonce()
     {
-        return base64_encode(\random_bytes(18));
+        return base64_encode(random_bytes(18));
     }
 
     public static function setNonce($nonce = null)
@@ -72,7 +75,7 @@ class Security
      * @param bool $create creates a new nonce if none given
      *
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public static function getNonce($create = false)
     {

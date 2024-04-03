@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\components\Widget;
 use humhub\modules\web\security\helpers\Security;
 use Twig\Environment;
 use Twig\Extension\SandboxExtension;
@@ -21,9 +22,8 @@ use Yii;
  * @since 1.1
  * @author Luke
  */
-class TrackingWidget extends \humhub\components\Widget
+class TrackingWidget extends Widget
 {
-
     /**
      * @inheritdoc
      */
