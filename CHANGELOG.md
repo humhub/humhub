@@ -4,6 +4,7 @@ HumHub Changelog
 1.15.5 (Unreleased)
 -----------------------
 - Enh #6899: Fix a missed module config file
+- Fix #6913: Fix API tests
 
 1.15.4 (March 20, 2024)
 -----------------------
