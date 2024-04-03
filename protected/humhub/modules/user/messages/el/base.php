@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Group</strong> members - {group}' => 'Μέλη <strong>Ομάδας</strong> - {group}',
     'All' => 'Όλα',
     'Created at' => 'Δημιουργήθηκε στις',
     'Created by' => 'Δημιουργήθηκε από',
@@ -38,6 +37,7 @@ return [
     '<strong>Member</strong> of these Spaces' => '',
     '<strong>People</strong>' => '',
     '<strong>User</strong> tags' => '',
+    'Advanced Profile Search' => '',
     'Allow users to mention you' => '',
     'Allows access to your about page with personal information' => '',
     'Any' => '',
