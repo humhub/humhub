@@ -1,14 +1,14 @@
 <?php
 return array (
-  '<strong>Search </strong> results' => '',
-  'Advanced search settings' => '',
+  '<strong>Search </strong> results' => '<strong>Paieškos </strong> rezultatai',
+  'Advanced search settings' => 'Išplėstinės paieškos nustatymai',
   'All' => 'Visi',
   'Content' => 'Turinys',
   'Search' => 'Ieškoti',
-  'Search for user, spaces and content' => '',
-  'Search only in certain spaces:' => '',
+  'Search for user, spaces and content' => 'Naudotojo, erdvių ir turinio paieška',
+  'Search only in certain spaces:' => 'Ieškoti tik erdvėse:',
   'Spaces' => 'Erdvės',
-  'Specify space' => '',
+  'Specify space' => 'Nurodykite erdvę',
   'Users' => 'Vartotojai',
-  'Your search returned no matches.' => '',
+  'Your search returned no matches.' => 'Nerasta',
 );

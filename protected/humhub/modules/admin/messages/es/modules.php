@@ -17,7 +17,7 @@ return array (
   'Save' => 'Guardar',
   'Space default state' => 'Estado por defecto del espacio',
   'Spaces' => 'Espacios',
-  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'Este módulo está actualmente siendo utilizado por {nbContainers} usuarios o espacios. Si cambias su disponibilidad todo el contenido creado con este módulo se perderá. ¿Quieres continuar?',
   'User default state' => 'Estado por defecto del usuario',
   'Users' => 'Usuarios',
 );

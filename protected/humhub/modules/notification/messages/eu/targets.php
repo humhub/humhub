@@ -1,7 +1,6 @@
 <?php
-
-return [
-    'E-Mail' => '',
-    'Mobile' => '',
-    'Web' => '',
-];
+return array (
+  'E-Mail' => 'E-pota',
+  'Mobile' => 'Mugikorra',
+  'Web' => 'Webgunea',
+);
