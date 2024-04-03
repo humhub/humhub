@@ -3,16 +3,16 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\controllers\SearchController;
+use humhub\modules\content\helpers\SearchHelper;
+use humhub\modules\file\converter\TextConverter;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
+use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use humhub\widgets\JsWidget;
-use humhub\modules\file\models\File;
-use humhub\modules\file\libs\FileHelper;
-use humhub\modules\search\libs\SearchHelper;
-use humhub\modules\search\controllers\SearchController;
-use humhub\modules\file\converter\TextConverter;
 
 /**
  *
@@ -156,11 +156,14 @@ class FilePreview extends JsWidget
     protected function isHighlighed(File $file)
     {
         if (Yii::$app->controller instanceof SearchController) {
-            if (SearchController::$keyword !== null) {
+            /** @var SearchController $searchController */
+            $searchController = Yii::$app->controller;
+
+            if (!empty($searchController->searchRequest->keyword)) {
                 $converter = new TextConverter();
                 if (
                     $converter->applyFile($file) &&
-                    SearchHelper::matchQuery(SearchController::$keyword, $converter->getContentAsText())
+                    SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
                 ) {
                     return true;
                 }

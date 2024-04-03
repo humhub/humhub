@@ -30,6 +30,8 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
      */
     public $pageSize = 25;
 
+    public array $defaultFilters = [];
+
     /**
      * @inheritdoc
      */
@@ -58,14 +60,14 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
     public function filterByKeyword(): SpaceDirectoryQuery
     {
-        $keyword = Yii::$app->request->get('keyword', '');
+        $keyword = Yii::$app->request->get('keyword', $this->defaultFilters['keyword'] ?? '');
 
         return $this->search($keyword);
     }
 
     public function filterByConnection(): SpaceDirectoryQuery
     {
-        $connection = Yii::$app->request->get('connection');
+        $connection = Yii::$app->request->get('connection', $this->defaultFilters['connection'] ?? null);
 
         $this->filterByConnectionArchived($connection === 'archived');
 

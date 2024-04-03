@@ -209,6 +209,11 @@
     @import "modules.less";
 }
 
+@prev-search: false;
+& when not(@prev-search) {
+    @import "search.less";
+}
+
 @prev-select2: false;
 & when not(@prev-select2) {
     @import "../css/select2Theme/build.less";

@@ -193,6 +193,8 @@ abstract class BaseSettingsManager extends Component
         if (isset($this->_loaded[$name])) {
             unset($this->_loaded[$name]);
         }
+
+        $this->invalidateCache();
     }
 
     /**

@@ -58,4 +58,15 @@ class AcceptanceTester extends \AcceptanceTester
             $this->see($notArchivedContent);
         }
     }
+
+    public function metaSearch(string $keyword, bool $checkResult = true): void
+    {
+        $this->fillField(['name' => 'keyword'], $keyword);
+        $this->waitForText('Content', null, '.search-provider-title');
+        $this->see('People', '.search-provider-title');
+        $this->see('Spaces', '.search-provider-title');
+        if ($checkResult) {
+            $this->waitForText($keyword, null, '.highlight');
+        }
+    }
 }

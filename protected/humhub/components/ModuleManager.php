@@ -27,6 +27,7 @@ use yii\base\InvalidConfigException;
 use yii\db\StaleObjectException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\FileHelper;
+use yii\web\ServerErrorHttpException;
 
 /**
  * ModuleManager handles all installed modules.
@@ -623,6 +624,8 @@ class ModuleManager extends Component
      */
     public function enable(Module $module)
     {
+        $this->checkRequirements($module);
+
         $this->trigger(static::EVENT_BEFORE_MODULE_ENABLE, new ModuleEvent(['module' => $module]));
 
         if (!ModuleEnabled::findOne(['module_id' => $module->id])) {
@@ -687,6 +690,28 @@ class ModuleManager extends Component
             if ($module !== null) {
                 $module->disable();
             }
+        }
+    }
+
+    /**
+     * Check module requirements
+     *
+     * @param Module $module
+     * @throws ServerErrorHttpException
+     * @since 1.16
+     */
+    private function checkRequirements(Module $module)
+    {
+        $requirementsPath = $module->getBasePath() . DIRECTORY_SEPARATOR . 'requirements.php';
+        if (!file_exists($requirementsPath)) {
+            return;
+        }
+
+        $requirementCheckResult = include($requirementsPath);
+
+        if (is_string($requirementCheckResult)) {
+            Yii::error('Error enabling the "' . $module->id . '" module: ' . $requirementCheckResult, 'module');
+            throw new ServerErrorHttpException($requirementCheckResult);
         }
     }
 }
