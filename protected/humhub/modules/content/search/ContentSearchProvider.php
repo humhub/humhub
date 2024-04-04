@@ -7,19 +7,21 @@
 
 namespace humhub\modules\content\search;
 
-use humhub\components\SearchProvider;
+use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\modules\content\Module;
+use humhub\services\MetaSearchService;
 use Yii;
 
 /**
- * ContentSearchProvider
+ * Content Meta Search Provider
  *
  * @author luke
  * @since 1.16
  */
-class ContentSearchProvider extends SearchProvider
+class ContentSearchProvider implements MetaSearchProviderInterface
 {
-    protected ?string $route = '/content/search';
+    private ?MetaSearchService $service = null;
+    public ?string $keyword = null;
 
     /**
      * @inheritdoc
@@ -32,9 +34,17 @@ class ContentSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
+    public function getRoute(): string
+    {
+        return '/content/search';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAllResultsText(): string
     {
-        return $this->hasRecords()
+        return $this->getService()->hasResults()
             ? Yii::t('base', 'Show all results')
             : Yii::t('ContentModule.base', 'Advanced Content Search');
     }
@@ -42,14 +52,22 @@ class ContentSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function runSearch(): array
+    public function getIsHiddenWhenEmpty(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getResults(int $maxResults): array
     {
         /* @var Module $module */
         $module = Yii::$app->getModule('content');
 
         $resultSet = $module->getSearchDriver()->search(new SearchRequest([
-            'keyword' => $this->keyword,
-            'pageSize' => $this->pageSize
+            'keyword' => $this->getKeyword(),
+            'pageSize' => $maxResults
         ]));
 
         $results = [];
@@ -61,5 +79,25 @@ class ContentSearchProvider extends SearchProvider
             'totalCount' => $resultSet->pagination->totalCount,
             'results' => $results
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getService(): MetaSearchService
+    {
+        if ($this->service === null) {
+            $this->service = new MetaSearchService($this);
+        }
+
+        return $this->service;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getKeyword(): ?string
+    {
+        return $this->keyword;
     }
 }

@@ -2,7 +2,6 @@
 
 return [
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> til dette opslag',
-    'Enabled' => 'Aktiveret',
     'Add a member to notify' => 'Tilføjet et medlem til notifikation',
     'Archived' => 'Arkiveret',
     'Back to stream' => 'Tilbage til stream',
@@ -18,6 +17,7 @@ return [
     'Delete' => 'Slet',
     'Edit' => 'Rediger',
     'Enable' => 'Aktiver',
+    'Enabled' => 'Aktiveret',
     'Filter' => 'Filter',
     'Invalid content id given!' => 'Ugyldigt indholds id oplyst!',
     'Last update' => 'Seneste opdatering',
@@ -40,6 +40,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cancel Edit' => '',
     'Cannot notify the author.' => '',

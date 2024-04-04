@@ -20,6 +20,7 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 class MysqlDriver extends AbstractDriver
 {
@@ -56,6 +57,9 @@ class MysqlDriver extends AbstractDriver
         ContentFulltext::deleteAll(['content_id' => $content->id]);
     }
 
+    /**
+     * @inheritdoc
+     */
     public function search(SearchRequest $request): ResultSet
     {
         $query = Content::find();
@@ -190,7 +194,8 @@ class MysqlDriver extends AbstractDriver
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';
         } else {
-            return $query;
+            // Exclude all contents from searching when guest access is disabled
+            return $query->where(new Expression('NULL'));
         }
 
         $query->andWhere("{$conditionSpace} OR {$conditionUser} OR {$globalCondition}");

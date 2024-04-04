@@ -7,16 +7,16 @@
 
 namespace humhub\widgets;
 
-use humhub\components\SearchProvider;
+use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\modules\content\search\ContentSearchProvider;
 use humhub\modules\space\search\SpaceSearchProvider;
 use humhub\modules\user\search\UserSearchProvider;
 
 /**
- * SearchMenu Widget for TopMenuRightStack
+ * Meta Search Widget for TopMenuRightStack
  * @since 1.16
  */
-class SearchMenu extends JsWidget
+class MetaSearchWidget extends JsWidget
 {
     /**
      * @inheritdoc
@@ -29,9 +29,9 @@ class SearchMenu extends JsWidget
     public $init = true;
 
     /**
-     * @var string[]|SearchProvider[] $searchProviders
+     * @var string[]|MetaSearchProviderInterface[] $searchProviders
      */
-    protected array $searchProviders = [
+    protected array $providers = [
         ContentSearchProvider::class,
         UserSearchProvider::class,
         SpaceSearchProvider::class
@@ -42,9 +42,9 @@ class SearchMenu extends JsWidget
      */
     public function run()
     {
-        return $this->render('searchMenu', [
+        return $this->render('metaSearch', [
             'options' => $this->getOptions(),
-            'searchProviders' => $this->searchProviders
+            'providers' => $this->providers
         ]);
     }
 
@@ -57,12 +57,12 @@ class SearchMenu extends JsWidget
     }
 
     /**
-     * Add search provider
+     * Add a search provider
      *
-     * @param string|SearchProvider $searchProvider
+     * @param string|MetaSearchProviderInterface $searchProvider
      */
-    public function addProvider($searchProvider)
+    public function addProvider($provider)
     {
-        $this->searchProviders[] = $searchProvider;
+        $this->providers[] = $provider;
     }
 }

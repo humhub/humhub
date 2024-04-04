@@ -83,6 +83,8 @@ return [
     'You are not allowed to run this action.' => 'Anda tidak diizinkan menjalankan tindakan ini.',
     'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => '',
     'My Profile' => '',
+    'No results' => '',
+    'Show all results' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',
     'Toggle stream entry menu' => '',

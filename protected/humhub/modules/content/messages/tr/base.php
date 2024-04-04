@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => '<strong>İçeriği</strong> taşı',
     '<strong>Permalink</strong> to this post' => '<strong>İçerik</strong> bağlantısı',
-    'Enabled' => 'Aktif',
     'Add a member to notify' => 'Bilgilendirme için bir kullanıcı ekle',
     'Add tag...' => 'Etiket ekle..',
     'Archived' => 'Arşiv',
@@ -27,6 +26,7 @@ return [
     'Delete' => 'Sil',
     'Edit' => 'Düzenle',
     'Enable' => 'Etkinleştirme',
+    'Enabled' => 'Aktif',
     'Filter' => 'Filtre',
     'I\'m involved' => 'Ben de bu işin içindeyim',
     'Invalid content id given!' => 'Geçersiz içerik kimliği!',
@@ -92,6 +92,7 @@ return [
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
+    'Advanced Content Search' => '',
     'Cannot notify the author.' => '',
     'Create as draft' => '',
     'Deleted' => '',

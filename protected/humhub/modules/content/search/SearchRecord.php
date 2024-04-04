@@ -7,14 +7,12 @@
 
 namespace humhub\modules\content\search;
 
-use humhub\interfaces\SearchRecordInterface;
+use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\post\models\Post;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\Image;
 use Yii;
 
 /**
@@ -23,7 +21,7 @@ use Yii;
  * @author luke
  * @since 1.16
  */
-class SearchRecord implements SearchRecordInterface
+class SearchRecord implements MetaSearchResultInterface
 {
     public ?Content $content = null;
 

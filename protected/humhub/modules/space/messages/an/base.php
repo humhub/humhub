@@ -58,6 +58,7 @@ return [
     'Admin' => '',
     'Administrator:' => '',
     'Administrators' => '',
+    'Advanced Spaces Search' => '',
     'Any' => '',
     'As owner you cannot revoke your membership!' => '',
     'Blocked users' => '',

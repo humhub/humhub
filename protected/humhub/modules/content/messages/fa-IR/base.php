@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => '<strong>جابجایی</strong> محتوا',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> به این پست',
-    'Enabled' => 'فعال شد',
     'Add a member to notify' => 'افزودن یک کاربر به آگهی',
     'Archived' => 'بایگانی شده',
     'Back to stream' => 'بازگشت به جریان',
@@ -21,6 +20,7 @@ return [
     'Delete' => 'حذف',
     'Edit' => 'ویرایش',
     'Enable' => 'فعال',
+    'Enabled' => 'فعال شد',
     'Filter' => 'پالایه',
     'Invalid request method!' => 'متد فراخوانی نادرست!',
     'Last update' => 'آخرین به‌روزرسانی',
@@ -63,6 +63,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

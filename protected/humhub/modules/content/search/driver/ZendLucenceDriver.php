@@ -8,6 +8,10 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\data\Pagination;
@@ -49,25 +53,15 @@ class ZendLucenceDriver extends AbstractDriver
     public function update(Content $content): void
     {
         $document = new Document();
-        $document->addField(Field::keyword('content_id', $content->id));
-        $document->addField(Field::keyword('visibility', $content->visibility));
-        $document->addField(Field::keyword('class', $content->object_model));
-        $document->addField(Field::keyword('created_at', $content->created_at));
-        $document->addField(Field::keyword('created_by', ($author = $content->createdBy) ? $author->guid : ''));
-        $document->addField(Field::keyword('updated_at', $content->updated_at));
-        $document->addField(Field::keyword('updated_by', ($author = $content->updatedBy) ? $author->guid : ''));
-        $document->addField(Field::keyword('space', ($space = $content->container) ? $space->guid : ''));
-        $document->addField(Field::keyword('tags', empty($content->tags) ? ''
-            : '-' . implode('-', array_map(function (ContentTag $tag) {
-                return $tag->id;
-            }, $content->tags)) . '-'));
 
-        if ($content->container) {
-            $document->addField(Field::keyword('container_id', $content->container->id));
+        $unStoredFields = ['comments', 'files'];
+        foreach ($this->getFields($content) as $field => $value) {
+            if (in_array($field, $unStoredFields)) {
+                $document->addField(Field::unStored($field, $value));
+            } else {
+                $document->addField(Field::keyword($field, $value));
+            }
         }
-
-        $document->addField(Field::unStored('comments', (new ContentSearchService($content))->getCommentsAsText()));
-        $document->addField(Field::unStored('files', (new ContentSearchService($content))->getFileContentAsText()));
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
             $document->addField(Field::unStored($attributeName, $attributeValue));
@@ -79,6 +73,28 @@ class ZendLucenceDriver extends AbstractDriver
         } catch (RuntimeException $e) {
             Yii::error('Could not add document to search index. Error: ' . $e->getMessage(), 'search');
         }
+    }
+
+    protected function getFields(Content $content): array
+    {
+        return [
+            'content_id' => $content->id,
+            'visibility' => $content->visibility === Content::VISIBILITY_PUBLIC ? Content::VISIBILITY_PUBLIC : Content::VISIBILITY_PRIVATE,
+            'class' => $content->object_model,
+            'created_at' => $content->created_at,
+            'created_by' => ($author = $content->createdBy) ? $author->guid : '',
+            'updated_at' => $content->updated_at,
+            'updated_by' => ($author = $content->updatedBy) ? $author->guid : '',
+            'tags' => empty($content->tags) ? ''
+                : '-' . implode('-', array_map(function (ContentTag $tag) {
+                    return $tag->id;
+                }, $content->tags)) . '-',
+            'container_guid' => ($container = $content->container) ? $container->guid : '',
+            'container_visibility' => $container ? $container->visibility : '',
+            'container_class' => $container ? get_class($container) : '',
+            'comments' => (new ContentSearchService($content))->getCommentsAsText(),
+            'files' => (new ContentSearchService($content))->getFileContentAsText()
+        ];
     }
 
     public function delete(Content $content): void
@@ -94,6 +110,9 @@ class ZendLucenceDriver extends AbstractDriver
         $this->commit();
     }
 
+    /**
+     * @inheritdoc
+     */
     public function search(SearchRequest $request): ResultSet
     {
         $query = $this->buildSearchQuery($request);
@@ -187,7 +206,7 @@ class ZendLucenceDriver extends AbstractDriver
             $spaces = [];
             $signs = [];
             foreach ($request->space as $space) {
-                $spaces[] = new Term($space, 'space');
+                $spaces[] = new Term($space, 'container_guid');
                 $signs[] = null;
             }
             $query->addSubquery(new MultiTerm($spaces, $signs), true);
@@ -196,6 +215,74 @@ class ZendLucenceDriver extends AbstractDriver
         if (!empty($request->contentType)) {
             $query->addSubquery(new TermQuery(new Term($request->contentType, 'class')), true);
         }
+
+        return $this->addQueryFilterVisibility($query);
+    }
+
+    protected function addQueryFilterVisibility(Boolean $query): Boolean
+    {
+        $permissionQuery = new Boolean();
+
+        if (!Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->getIdentity();
+
+            // Public Content
+            $permissionQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')));
+
+            // Own created content is always visible
+            $permissionQuery->addSubquery(new TermQuery(new Term($user->guid, 'created_by')));
+
+            if ($user->canViewAllContent(Space::class)) {
+                // Don't restrict if user can view all Space content:
+                $permissionQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')));
+            } else {
+                // Private Space Content
+                $privateSpaceContentQuery = new Boolean();
+                $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
+                $privateSpaceContentQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')), true);
+
+                $privateSpacesListQuery = new MultiTerm();
+                $membershipSpaces = Membership::getUserSpaces();
+                if (empty($membershipSpaces)) {
+                    $privateSpacesListQuery->addTerm(new Term('no-membership-spaces', 'container_guid'));
+                } else {
+                    foreach ($membershipSpaces as $space) {
+                        $privateSpacesListQuery->addTerm(new Term($space->guid, 'container_guid'));
+                    }
+                }
+                $privateSpaceContentQuery->addSubquery($privateSpacesListQuery, true);
+
+                $permissionQuery->addSubquery($privateSpaceContentQuery);
+            }
+
+            if ($user->canViewAllContent(User::class)) {
+                // Don't restrict if user can view all User content:
+                $permissionQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')));
+            } else {
+                // Private User Content
+                $privateUserContentQuery = new Boolean();
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')), true);
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term($user->guid, 'container_guid')), true);
+                $permissionQuery->addSubquery($privateUserContentQuery);
+            }
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
+            // Guest Content
+            $guestContentQuery = new Boolean();
+            $guestContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')), true);
+            $guestContentQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')), true);
+            $guestSpaceListQuery = new MultiTerm();
+            foreach (Space::findAll(['visibility' => Space::VISIBILITY_ALL]) as $space) {
+                $guestSpaceListQuery->addTerm(new Term($space->guid, 'container_guid'));
+            }
+            $guestContentQuery->addSubquery($guestSpaceListQuery, true);
+            $permissionQuery->addSubquery($guestContentQuery);
+        } else {
+            // Exclude all contents from searching when guest access is disabled
+            $permissionQuery->addSubquery(new TermQuery(new Term('Denied', 'visibility')));
+        }
+
+        $query->addSubquery($permissionQuery, true);
 
         return $query;
     }
