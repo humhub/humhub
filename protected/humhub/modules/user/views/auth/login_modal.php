@@ -67,8 +67,8 @@ use yii\widgets\ActiveForm;
 
                     <?php if ($showLoginForm): ?>
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
-                        <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => Yii::t('UserModule.auth', 'username or email')]); ?>
-                        <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => Yii::t('UserModule.auth', 'password')]); ?>
+                        <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')]); ?>
+                        <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]); ?>
                         <?= $form->field($model, 'rememberMe')->checkbox(); ?>
                         <hr>
                         <div class="row">
@@ -122,7 +122,7 @@ use yii\widgets\ActiveForm;
 
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
-                        <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => Yii::t('UserModule.auth', 'email')]); ?>
+                        <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]); ?>
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
                             <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                             <?= $form->field($invite, 'captcha')->widget(Captcha::class, [

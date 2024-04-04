@@ -58,6 +58,7 @@ return [
     'LinkedIn URL' => '',
     'Male' => '',
     'Markdown' => '',
+    'Mastodon URL' => '',
     'Maximum length' => '',
     'Maximum value' => '',
     'Minimum length' => '',

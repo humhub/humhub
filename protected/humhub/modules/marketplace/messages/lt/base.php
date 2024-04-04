@@ -2,10 +2,10 @@
 return array (
   '
 Module successfully disabled!
-' => '',
+' => 'Modulis sėkmingai išjungtas!',
   '
 Module successfully enabled!
-' => '',
+' => 'Modulis sėkmingai įjungtas!',
   '
 No active Professional Edition license found!
 ' => '',
@@ -22,10 +22,10 @@ The license was successfully removed!
 ' => '',
   '--- Disable module: {moduleId} ---
 
-' => '',
+' => '--- Išjungti modulį: {moduleId} ---',
   '--- Enable module: {moduleId} ---
 
-' => '',
+' => '--- Įjungti modulį: {moduleId} ---',
   '<strong>Activate</strong> your Professional Edition' => '',
   '<strong>General</strong> Settings' => '',
   'A new update is available (HumHub %version%)!' => '',
@@ -60,10 +60,10 @@ The license was successfully removed!
   'Enabled' => 'Aktyvuota',
   'Featured' => '',
   'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
-  'General Settings' => '',
+  'General Settings' => 'Pagrindiniai nustatymai',
   'Great!' => '',
   'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
-  'Information' => '',
+  'Information' => 'Informacija',
   'Install' => 'Įdiegti',
   'Installed' => 'Instaliuota',
   'Invalid module licence key!' => '',
@@ -95,7 +95,7 @@ The license was successfully removed!
   'Module not found or enabled!
 ' => '',
   'Module not found!
-' => '',
+' => 'Modulis nerastas!',
   'More info' => 'Daugiau informacijos',
   'New' => 'Naujas',
   'No compatible module version found!' => 'Nerasta suderinamos modulio versijos!',
@@ -114,7 +114,7 @@ The license was successfully removed!
   'Remove licence key' => '',
   'Save and update' => '',
   'Search' => 'Ieškoti',
-  'Search...' => '',
+  'Search...' => 'Ieškoti...',
   'Settings' => 'Nustatymai',
   'Stop updating' => '',
   'Tags' => 'Žymos',
@@ -123,7 +123,7 @@ The license was successfully removed!
   'Third-party Modules are not covered by Professional Edition agreements.' => '',
   'Third-party disclaimer' => '',
   'This Module was developed by a third-party.' => '',
-  'Try other keywords or remove filters.' => '',
+  'Try other keywords or remove filters.' => 'Išbandykite kitus raktažodžius arba pašalinkite filtrus.',
   'Uninstalled' => '',
   'Update' => 'Atnaujinimai',
   'Update all' => '',

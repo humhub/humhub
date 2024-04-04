@@ -32,6 +32,7 @@ return array (
   'Log out' => '',
   'Login' => 'Autentificare',
   'New user needs approval' => '',
+  'Password' => 'Password',
   'Password recovery' => '',
   'Password reset' => '',
   'Please check your email and follow the instructions!' => '',
@@ -48,6 +49,7 @@ return array (
   'Sign in' => 'Inregistrare',
   'To log in with your new account, click the button below.' => '',
   'User or Password incorrect.' => '',
+  'Username or Email' => '',
   'We’ve sent you an email containing a link that will allow you to reset your password.' => '',
   'Your email' => '',
   'Your password' => '',
@@ -55,7 +57,4 @@ return array (
   'Your password is incorrect!' => '',
   'a new user {displayName} needs approval.' => '',
   'back to home' => '',
-  'email' => '',
-  'password' => '',
-  'username or email' => '',
 );

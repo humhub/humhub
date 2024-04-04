@@ -52,7 +52,6 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Похоже, вы нажали на недействительную ссылку для сброса пароля. Попробуйте ещё раз.',
     'Language' => 'Язык',
     'Last Login' => 'Последний вход',
-    'Manager' => 'Manager',
     'Mentioning' => 'Упомянут(а)',
     'Missing E-Mail Attribute from AuthClient.' => 'Отсутствует атрибут Email от AuthClient.',
     'Missing ID AuthClient Attribute from AuthClient.' => 'Отсутствует атрибут ID AuthClient от AuthClient.',
@@ -120,4 +119,6 @@ return [
     'invited you to join {space} on {name}.' => 'приглашает Вас присоединиться к сообществу {space} на {name}',
     'or' => 'или',
     'Advanced Profile Search' => '',
+    'Group Manager(s)' => '',
+    'The Group Manager can approve pending registrations of this group.' => '',
 ];

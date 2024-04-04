@@ -1,11 +1,11 @@
 <?php
 return array (
+  'Add user' => 'Добавить пользователя',
   'An unexpected error occurred while loading the result.' => 'Возникла неожиданная ошибка при загрузке результата.',
   'Load more' => 'Показать ещё',
   'No results found.' => 'Нет результатов.',
   'No users found for the given query.' => 'Пользователей по данному запросу не найдено.',
   'Please enter at least {n} character' => 'Пожалуйста, введите не менее {n} символов',
-  'Select user...' => 'Выберите пользователя...',
   'Select {n,plural,=1{item} other{items}}' => 'Выберите {n,plural,=1{элемент} other{элементы}}',
   'Select {n,plural,=1{user} other{users}}' => 'Выберите {n,plural,=1{пользователя} other{пользователей}}',
   'Select...' => 'Выберите...',

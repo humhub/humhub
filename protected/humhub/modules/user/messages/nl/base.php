@@ -52,7 +52,6 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Het lijkt erop dat u op een ongeldige koppeling voor het opnieuw instellen van uw wachtwoord heeft geklikt. Probeer het opnieuw.',
     'Language' => 'Taal',
     'Last Login' => 'Laatste login',
-    'Manager' => 'Manager',
     'Mentioning' => 'Naam vermelden',
     'Missing E-Mail Attribute from AuthClient.' => 'Ontbrekend e-mail attribuut van AuthClient.',
     'Missing ID AuthClient Attribute from AuthClient.' => 'Ontbrekend ID AuthClient attribuut van AuthClient.',
@@ -120,4 +119,6 @@ return [
     'invited you to join {space} on {name}.' => 'nodigt u uit om deel te nemen aan {space} op {name}.',
     'or' => 'of',
     'Advanced Profile Search' => '',
+    'Group Manager(s)' => '',
+    'The Group Manager can approve pending registrations of this group.' => '',
 ];

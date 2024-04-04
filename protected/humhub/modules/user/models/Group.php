@@ -115,7 +115,7 @@ class Group extends ActiveRecord
             'id' => 'ID',
             'name' => Yii::t('UserModule.base', 'Name'),
             'defaultSpaceGuid' => Yii::t('UserModule.base', 'Default Space'),
-            'managerGuids' => Yii::t('UserModule.base', 'Manager'),
+            'managerGuids' => Yii::t('UserModule.base', 'Group Manager(s)'),
             'description' => Yii::t('UserModule.base', 'Description'),
             'created_at' => Yii::t('UserModule.base', 'Created at'),
             'created_by' => Yii::t('UserModule.base', 'Created by'),
@@ -135,6 +135,7 @@ class Group extends ActiveRecord
     public function attributeHints()
     {
         return [
+            'managerGuids' => Yii::t('UserModule.base', 'The Group Manager can approve pending registrations of this group.'),
             'notify_users' => Yii::t('AdminModule.user', 'Send notifications to users when added to or removed from the group.'),
             'show_at_registration' => Yii::t('AdminModule.user', 'Make the group selectable at registration.'),
             'show_at_directory' => Yii::t('AdminModule.user', 'Will be used as a filter in \'People\'.'),
@@ -429,10 +430,10 @@ class Group extends ActiveRecord
             Yii::$app->i18n->setUserLocale($manager);
 
             $html = Yii::t(
-                    'UserModule.auth',
-                    'Hello {displayName},',
-                    ['displayName' => $manager->displayName]
-                ) . "<br><br>\n\n" .
+                'UserModule.auth',
+                'Hello {displayName},',
+                ['displayName' => $manager->displayName]
+            ) . "<br><br>\n\n" .
                 Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
@@ -512,10 +513,10 @@ class Group extends ActiveRecord
     public function canDelete()
     {
         return Yii::$app->user->can(ManageGroups::class) && !(
-                $this->isNewRecord ||
+            $this->isNewRecord ||
                 $this->is_admin_group ||
                 $this->is_default_group ||
                 $this->is_protected
-            );
+        );
     }
 }

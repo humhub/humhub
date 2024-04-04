@@ -60,7 +60,7 @@ The license was successfully removed!
   'Enabled' => 'Aktibatuta',
   'Featured' => '',
   'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => '',
-  'General Settings' => '',
+  'General Settings' => 'Ezarpen orokorrak',
   'Great!' => '',
   'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
   'Information' => 'Informazioa',
@@ -97,7 +97,7 @@ The license was successfully removed!
   'Module not found!
 ' => '',
   'More info' => '',
-  'New' => '',
+  'New' => 'Berria',
   'No compatible module version found!' => '',
   'No license key? Find out more about the {pro} or contact us.' => '',
   'No modules found.' => '',

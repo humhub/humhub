@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'A jelszavad helytelen!',
   'a new user {displayName} needs approval.' => 'egy új felhasználó {displayName} jóváhagyásra vár.',
   'back to home' => 'Vissza a főoldalra',
-  'email' => 'e-mail',
-  'password' => 'jelszó',
-  'username or email' => 'felhasználónév vagy e-mail',
+  'Password' => 'jelszó',
+  'Username or Email' => 'felhasználónév vagy e-mail',
 );

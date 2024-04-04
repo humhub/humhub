@@ -52,7 +52,6 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Úgy tűnik, hogy érvénytelen jelszó-visszaállítási hivatkozásra kattintott. Kérljük próbálja újra.',
     'Language' => 'Nyelv',
     'Last Login' => 'Utolsó bejelentkezés',
-    'Manager' => 'Kezelő',
     'Mentioning' => 'Említés',
     'Missing E-Mail Attribute from AuthClient.' => 'Az AuthClient-ből hiányzik az email attribútum.',
     'Missing ID AuthClient Attribute from AuthClient.' => 'Az AuthClient-ből hiányzik az AuthClient azonosító attribútum.',
@@ -120,4 +119,6 @@ return [
     'invited you to join {space} on {name}.' => 'meghívott, hogy csatlakozz ehhez: {space} itt: {name}.',
     'or' => 'vagy',
     'Advanced Profile Search' => '',
+    'Group Manager(s)' => '',
+    'The Group Manager can approve pending registrations of this group.' => '',
 ];

@@ -308,12 +308,11 @@ class SpaceModelMembership extends Behavior
      * @return ActiveQueryUser
      * @since 1.3
      */
-    public function getAdminsQuery()
+    public function getAdminsQuery(): ActiveQueryUser
     {
-        $query = Membership::getSpaceMembersQuery($this->owner);
-        $query->andWhere(['space_membership.group_id' => Space::USERGROUP_ADMIN]);
-
-        return $query;
+        return $this->owner->getMemberListService()
+            ->getAdminQuery()
+            ->andWhere(['space_membership.group_id' => Space::USERGROUP_ADMIN]);
     }
 
     /**

@@ -1,13 +1,12 @@
 <?php
-
-return [
-    'Author' => '',
-    'Content' => '',
-    'Content Type' => '',
-    'Date from' => '',
-    'Date to' => '',
-    'Scope' => '',
-    'Sorting' => '',
-    'Topic' => '',
-    'Visibility' => '',
-];
+return array (
+  'Author' => 'Egilea',
+  'Content' => 'Edukia',
+  'Content Type' => '',
+  'Date from' => '',
+  'Date to' => '',
+  'Scope' => '',
+  'Sorting' => '',
+  'Topic' => '',
+  'Visibility' => '',
+);

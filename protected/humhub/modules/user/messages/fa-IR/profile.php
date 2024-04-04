@@ -108,6 +108,7 @@ return [
     'Last login date of the user' => '',
     'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Markdown' => '',
+    'Mastodon URL' => '',
     'Must contain at least one character.' => '',
     'Other:' => '',
     'This profile is no longer available!' => '',

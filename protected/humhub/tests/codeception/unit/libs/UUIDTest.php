@@ -124,9 +124,9 @@ class UUIDTest extends HumHubDbTestCase
     public function testFixtures()
     {
         $toCheck = [
-           '@content/tests/codeception/fixtures/data/contentcontainer.php' => 'guid',
-           '@space/tests/codeception/fixtures/data/space.php' => 'guid',
-           '@user/tests/codeception/fixtures/data/user.php' => 'guid',
+            '@content/tests/codeception/fixtures/data/contentcontainer.php' => 'guid',
+            '@space/tests/codeception/fixtures/data/space.php' => 'guid',
+            '@user/tests/codeception/fixtures/data/user.php' => 'guid',
         ];
 
         foreach ($toCheck as $file => $column) {

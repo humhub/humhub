@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Sua senha está incorreta!',
   'a new user {displayName} needs approval.' => 'o novo usuário {displayName} precisa de aprovação.',
   'back to home' => 'voltar ao início',
-  'email' => 'e-mail',
-  'password' => 'senha',
-  'username or email' => 'usuário ou e-mail',
+  'Password' => 'senha',
+  'Username or Email' => 'usuário ou e-mail',
 );

@@ -33,8 +33,8 @@ class MailContentContainerImage extends \yii\base\Widget
                 : $this->container->createUrl('/user/profile', [], true);
 
         return $this->render('mailContentContainerImage', [
-                    'container' => $this->container,
-                    'url' => $url,
+            'container' => $this->container,
+            'url' => $url,
         ]);
     }
 

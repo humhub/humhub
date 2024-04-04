@@ -1,11 +1,11 @@
 <?php
 return array (
+  'Add user' => '添加使用者',
   'An unexpected error occurred while loading the result.' => '',
   'Load more' => '載入更多',
   'No results found.' => '',
   'No users found for the given query.' => '',
   'Please enter at least {n} character' => '',
-  'Select user...' => '',
   'Select {n,plural,=1{item} other{items}}' => '',
   'Select {n,plural,=1{user} other{users}}' => '',
   'Select...' => '',

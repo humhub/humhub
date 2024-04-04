@@ -239,7 +239,7 @@ abstract class BasePicker extends JsInputWidget
      */
     public function run()
     {
-        if ($this->selection != null && !is_array($this->selection)) {
+        if ($this->selection !== null && !is_array($this->selection)) {
             $this->selection = [$this->selection];
         }
 
@@ -281,7 +281,7 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function getSelectedOptions()
     {
-        if (!$this->selection && $this->model != null) {
+        if ($this->selection === null && $this->model !== null) {
             $attribute = $this->attribute;
             if (strrpos($attribute, '[') !== false) {
                 $this->selection = $this->loadItems(Html::getAttributeValue($this->model, $attribute));
@@ -289,7 +289,6 @@ abstract class BasePicker extends JsInputWidget
                 $this->selection = $this->loadItems($this->model->$attribute);
             }
         }
-
 
         if (!$this->selection) {
             $this->selection = [];

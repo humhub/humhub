@@ -18,12 +18,12 @@ class m131023_165755_initial extends Migration
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ], '');
+        ], '');
 
 
         $this->createTable('module_enabled', [
             'module_id' => 'varchar(100) NOT NULL',
-                ], '');
+        ], '');
 
         $this->addPrimaryKey('pk_module_enabled', 'module_enabled', 'module_id');
     }

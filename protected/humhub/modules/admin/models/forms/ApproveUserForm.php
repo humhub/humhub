@@ -3,6 +3,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
@@ -11,7 +12,6 @@ use yii\base\Model;
 use yii\db\StaleObjectException;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\user\models\User;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
@@ -52,6 +52,7 @@ class ApproveUserForm extends Model
      */
     protected $_isBulkAction = false;
 
+    public const USER_SETTINGS_NB_MSG_SENT = 'approvalNbMessageSent';
 
     /**
      * @inerhitdoc
@@ -147,6 +148,27 @@ class ApproveUserForm extends Model
     }
 
     /**
+     * Sends a message to the user requesting an account
+     * @return bool
+     */
+    public function sendMessage(): bool
+    {
+        if (!$this->message) {
+            $this->setSendMessageDefaults();
+        }
+
+        if ($this->send()) {
+            Yii::$app->settings->user($this->user)->set(
+                self::USER_SETTINGS_NB_MSG_SENT,
+                static::getNumberMessageSent($this->user->id) + 1
+            );
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Approves user by sending approval mail and updating user status and running initial approval logic.
      * @return bool
      */
@@ -163,7 +185,12 @@ class ApproveUserForm extends Model
         $this->user->status = User::STATUS_ENABLED;
         $this->user->setScenario(User::SCENARIO_APPROVE);
 
-        return $this->user->save() && $this->send();
+        if ($this->user->save() && $this->send()) {
+            Yii::$app->settings->user($this->user)->delete(self::USER_SETTINGS_NB_MSG_SENT);
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -178,9 +205,30 @@ class ApproveUserForm extends Model
             $this->setDeclineDefaults();
         }
 
-        return $this->validate() &&
-            $this->send() &&
-            $this->user->delete();
+        if ($this->validate() && $this->send() && $this->user->delete()) {
+            Yii::$app->settings->user($this->user)->delete(self::USER_SETTINGS_NB_MSG_SENT);
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function bulkSendMessage()
+    {
+        if (!$this->validate()) {
+            return false;
+        }
+
+        foreach ($this->users as $user) {
+            $this->user = $user;
+            $this->setSendMessageDefaults();
+            $this->sendMessage();
+        }
+
+        return true;
     }
 
     /**
@@ -230,6 +278,38 @@ class ApproveUserForm extends Model
         $mail->setTo($this->user->email);
         $mail->setSubject($this->subject);
         return $mail->send();
+    }
+
+    /**
+     * Sets the subject and message attribute texts for user decline
+     * @return void
+     */
+    public function setSendMessageDefaults()
+    {
+        Yii::$app->i18n->setUserLocale($this->user);
+
+        /** @var Module $module */
+        $module = Yii::$app->getModule('user');
+
+        $this->subject = Yii::t(
+            'AdminModule.user',
+            'About the account request for \'{displayName}\'.',
+            ['{displayName}' => Html::encode($this->user->displayName)]
+        );
+
+        if (!empty($module->settings->get('auth.registrationSendMessageMailContent'))) {
+            $this->message = Yii::t('AdminModule.user', $module->settings->get('auth.registrationSendMessageMailContent'), [
+                '{displayName}' => Html::encode($this->user->displayName),
+                '{AdminName}' => Html::encode($this->admin->displayName),
+            ]);
+        } else {
+            $this->message = static::getDefaultSendMessageMailContent(
+                Html::encode($this->user->displayName),
+                Html::encode($this->admin->displayName)
+            );
+        }
+
+        Yii::$app->i18n->autosetLocale();
     }
 
     /**
@@ -302,6 +382,29 @@ class ApproveUserForm extends Model
     }
 
     /**
+     * Returns the default send message. If not parameters set, the placeholder names are returned.
+     *
+     * @param string $userDisplayName
+     * @param string $adminDisplayName
+     * @return string
+     */
+    public static function getDefaultSendMessageMailContent($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}')
+    {
+        return Yii::t(
+            'AdminModule.user',
+            "Hello {displayName},\n\n" .
+            "Your account creation is under review.\n" .
+            "Could you tell us the motivation behind your registration?\n\n" .
+            "Kind Regards\n" .
+            "{AdminName}\n\n",
+            [
+                '{displayName}' => $userDisplayName,
+                '{AdminName}' => $adminDisplayName,
+            ]
+        );
+    }
+
+    /**
      * Returns the default approval message. If not parameters set, the placeholder names are returned.
      *
      * @param string $userDisplayName
@@ -347,4 +450,18 @@ class ApproveUserForm extends Model
             ]
         );
     }
+
+    /**
+     * @param int $userId
+     * @return int
+     * @throws \Throwable
+     */
+    public static function getNumberMessageSent(int $userId): int
+    {
+        $user = User::findOne($userId);
+        return $user !== null ?
+            (int)Yii::$app->settings->user($user)->get(self::USER_SETTINGS_NB_MSG_SENT, 0) :
+            0;
+    }
+
 }

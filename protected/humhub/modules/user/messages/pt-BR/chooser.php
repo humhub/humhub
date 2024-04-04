@@ -1,11 +1,11 @@
 <?php
 return array (
+  'Add user' => 'Adicionar usuário',
   'An unexpected error occurred while loading the result.' => 'Um erro aconteceu ao carregar o resultado',
   'Load more' => 'Carregar mais',
   'No results found.' => 'Nenhum resultado encontrado.',
   'No users found for the given query.' => 'Nenhum usuário encontrado para o filtro informado.',
   'Please enter at least {n} character' => 'Por favor informe pelo menos {n} caracteres',
-  'Select user...' => 'Selecione o usuário...',
   'Select {n,plural,=1{item} other{items}}' => 'Selecione {n,plural,=1{item} other{itens}}',
   'Select {n,plural,=1{user} other{users}}' => 'Selecione {n,plural,=1{usuário} other{usuários}}',
   'Select...' => 'Selecione...',

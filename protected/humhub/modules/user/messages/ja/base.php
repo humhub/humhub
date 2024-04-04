@@ -52,7 +52,6 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => '無効なパスワードです。リセットリンクをクリックしたようです。もう一度お試しください。',
     'Language' => '言語',
     'Last Login' => '最終ログイン',
-    'Manager' => 'マネージャー',
     'Mentioning' => 'メンション',
     'Missing E-Mail Attribute from AuthClient.' => 'AuthClient からのメール属性がありません。',
     'Missing ID AuthClient Attribute from AuthClient.' => 'AuthClient からの AuthClient ID 属性がありません。',
@@ -120,4 +119,6 @@ return [
     'invited you to join {space} on {name}.' => 'はあなたを"{name}"のスペース"{space}"に招待しました。',
     'or' => 'または',
     'Advanced Profile Search' => '',
+    'Group Manager(s)' => '',
+    'The Group Manager can approve pending registrations of this group.' => '',
 ];

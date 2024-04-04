@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Jūsų slaptažodis yra neteisingas!',
   'a new user {displayName} needs approval.' => '{displayName} laukia patvirtinimo',
   'back to home' => 'atgal į namų puslapį',
-  'email' => 'elektroninio pašto adresas',
-  'password' => 'slaptažodis',
-  'username or email' => 'vartotojo vardas arba elektroninio pašto adresas',
+  'Password' => 'slaptažodis',
+  'Username or Email' => 'vartotojo vardas arba elektroninio pašto adresas',
 );

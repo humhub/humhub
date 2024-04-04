@@ -115,5 +115,6 @@ return [
     '{attribute} is required!' => '{attribute} obrigatório!',
     'Diverse' => '',
     'Instagram URL' => '',
+    'Mastodon URL' => '',
     'TikTok URL' => '',
 ];

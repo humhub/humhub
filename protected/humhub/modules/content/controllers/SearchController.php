@@ -20,7 +20,6 @@ use Yii;
  */
 class SearchController extends Controller
 {
-
     /**
      * @inheritdoc
      */
