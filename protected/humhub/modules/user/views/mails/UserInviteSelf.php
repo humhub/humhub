@@ -1,8 +1,11 @@
 <?php
 
 use humhub\modules\ui\mail\DefaultMailStyle;
-use yii\helpers\Url;
 use yii\helpers\Html;
+
+/**
+ * @var $registrationUrl string
+ */
 
 ?>
 <tr>
@@ -126,7 +129,7 @@ use yii\helpers\Html;
 
                                                         <span
                                                             style="color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
-                                                            <a href="<?php echo Url::toRoute(['/user/registration', 'token' => $token], true); ?>"
+                                                            <a href="<?= $registrationUrl ?>"
                                                                style="text-decoration: none; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#fff') ?>; font-weight: 300;">
                                                                 <strong><?php echo Yii::t('UserModule.base', 'Sign up'); ?></strong>
                                                             </a>

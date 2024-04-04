@@ -8,10 +8,10 @@
 namespace humhub\interfaces;
 
 /**
- * Search Record Interface
+ * Meta Search Result Interface
  * @since 1.16
  */
-interface SearchRecordInterface
+interface MetaSearchResultInterface
 {
     /**
      * Get image of the Search Record

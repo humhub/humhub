@@ -24,7 +24,7 @@ class TopMenuRightStack extends BaseStack
      */
     public function init()
     {
-        $this->addWidget(SearchMenu::class, [], ['sortOrder' => 100]);
+        $this->addWidget(MetaSearchWidget::class, [], ['sortOrder' => 100]);
         parent::init();
     }
 

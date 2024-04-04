@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => 'محتوى <strong> نقل </strong>',
     '<strong>Permalink</strong> to this post' => 'الوصلة الدائمة لهذه المحتويات',
-    'Enabled' => 'تم التفعيل',
     'Add a member to notify' => 'إضافة عضو للتنبيه',
     'Archived' => 'أرشيف',
     'Back to stream' => 'العودة للمحتويات',
@@ -22,6 +21,7 @@ return [
     'Delete' => 'حذف',
     'Edit' => 'تحرير',
     'Enable' => 'تفعيل',
+    'Enabled' => 'تم التفعيل',
     'Filter' => 'تصفية',
     'I\'m involved' => 'أين أنا متورط',
     'Invalid content id given!' => 'تم تقديم معرف محتوى غير صالح!',
@@ -72,6 +72,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

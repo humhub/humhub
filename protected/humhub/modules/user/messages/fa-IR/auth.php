@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'گذرواژ شما نادرست است!',
   'a new user {displayName} needs approval.' => 'یک کاربر جدید {displayName} نیاز به تأیید دارد.',
   'back to home' => 'بازگشت به خانه',
-  'email' => 'ایمیل',
-  'password' => 'گذرواژ',
-  'username or email' => 'نام كاربری یا ایمیل',
+  'Password' => 'گذرواژ',
+  'Username or Email' => 'نام كاربری یا ایمیل',
 );

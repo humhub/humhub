@@ -218,14 +218,14 @@ class NotificationManager
         if ($container instanceof Space) {
             $isDefault = $this->isDefaultNotificationSpace($container);
 
-            $query = Membership::getSpaceMembersQuery($container, true, true);
+            $query = $container->getMemberListService()->getNotificationQuery();
 
             if ($public) {
                 // Add explicit follower and non explicit follower if $isDefault
                 $query->union($this->findFollowers($container, $isDefault));
             } elseif ($isDefault) {
                 // Add all members without explicit following and no notification settings.
-                $query->union(Membership::getSpaceMembersQuery($container, true, false)
+                $query->union($container->getMemberListService()->getNotificationQuery(false)
                     ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
             }
         } elseif ($container instanceof User) {

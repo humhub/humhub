@@ -7,20 +7,21 @@
 
 namespace humhub\modules\space\search;
 
-use humhub\components\SearchProvider;
+use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\modules\space\components\SpaceDirectoryQuery;
+use humhub\services\MetaSearchService;
 use Yii;
 
 /**
- * SpaceSearchProvider
+ * Space Meta Search Provider
  *
  * @author luke
  * @since 1.16
  */
-class SpaceSearchProvider extends SearchProvider
+class SpaceSearchProvider implements MetaSearchProviderInterface
 {
-    public bool $showOnEmpty = false;
-    protected ?string $route = '/spaces';
+    private ?MetaSearchService $service = null;
+    public ?string $keyword = null;
 
     /**
      * @inheritdoc
@@ -33,9 +34,17 @@ class SpaceSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
+    public function getRoute(): string
+    {
+        return '/spaces';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAllResultsText(): string
     {
-        return $this->hasRecords()
+        return $this->getService()->hasResults()
             ? Yii::t('base', 'Show all results')
             : Yii::t('SpaceModule.base', 'Advanced Spaces Search');
     }
@@ -43,11 +52,19 @@ class SpaceSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function runSearch(): array
+    public function getIsHiddenWhenEmpty(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getResults(int $maxResults): array
     {
         $spaceDirectoryQuery = new SpaceDirectoryQuery([
-            'defaultFilters' => ['keyword' => $this->keyword],
-            'pageSize' => $this->pageSize
+            'defaultFilters' => ['keyword' => $this->getKeyword()],
+            'pageSize' => $maxResults
         ]);
 
         $results = [];
@@ -59,5 +76,25 @@ class SpaceSearchProvider extends SearchProvider
             'totalCount' => $spaceDirectoryQuery->pagination->totalCount,
             'results' => $results
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getService(): MetaSearchService
+    {
+        if ($this->service === null) {
+            $this->service = new MetaSearchService($this);
+        }
+
+        return $this->service;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getKeyword(): ?string
+    {
+        return $this->keyword;
     }
 }

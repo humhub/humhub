@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Group</strong> members - {group}' => '<strong>Grupas</strong> dalībnieki - {group}',
     'Delete' => 'Dzēst',
     'Description' => 'Apraksts',
     'Edit' => 'Rediģēt',
@@ -19,6 +18,7 @@ return [
     '<strong>Member</strong> of these Spaces' => '',
     '<strong>People</strong>' => '',
     '<strong>User</strong> tags' => '',
+    'Advanced Profile Search' => '',
     'All' => '',
     'Allow users to mention you' => '',
     'Allows access to your about page with personal information' => '',

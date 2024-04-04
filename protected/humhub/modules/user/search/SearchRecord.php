@@ -7,7 +7,7 @@
 
 namespace humhub\modules\user\search;
 
-use humhub\interfaces\SearchRecordInterface;
+use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
@@ -18,7 +18,7 @@ use humhub\modules\user\widgets\Image;
  * @author luke
  * @since 1.16
  */
-class SearchRecord implements SearchRecordInterface
+class SearchRecord implements MetaSearchResultInterface
 {
     public ?User $user = null;
 

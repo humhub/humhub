@@ -2,7 +2,6 @@
 
 return [
     '<strong>Permalink</strong> to this post' => '<strong>Pastāvīgā saite</strong> uz šo ierakstu',
-    'Enabled' => 'Aktivizēti',
     'Add a member to notify' => 'Pievienot dalībnieku lai notificētu',
     'Archived' => 'Arhivēts',
     'Cancel' => 'Atcelt',
@@ -14,6 +13,7 @@ return [
     'Could not find requested content!' => 'Nevar atrast pieprasīto saturu!',
     'Delete' => 'Dzēst',
     'Edit' => 'Rediģēt',
+    'Enabled' => 'Aktivizēti',
     'Invalid content id given!' => 'Norādīts kļūdains satura id!',
     'Invalid request method!' => 'Kļūdaina pieprasījuma metode!',
     'Last update' => 'Pēdējais atjauninājums',
@@ -40,6 +40,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Back to stream' => '',
     'Cannot notify the author.' => '',

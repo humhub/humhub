@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => '<strong>Di chuyển</strong> nội dung',
     '<strong>Permalink</strong> to this post' => '<strong>Liên kết</strong> của bài viết này',
-    'Enabled' => 'Đã được kích hoạt',
     'Add a member to notify' => 'Thêm một thành viên vào thông báo',
     'Archived' => 'Lưu trữ',
     'Back to stream' => 'Quay lại',
@@ -23,6 +22,7 @@ return [
     'Deleted' => 'Đã xóa',
     'Edit' => 'Chỉnh sửa',
     'Enable' => 'Kích hoạt',
+    'Enabled' => 'Đã được kích hoạt',
     'Filter' => 'Lọc',
     'I\'m involved' => 'Nơi tôi đã tham dự',
     'Invalid content id given!' => 'ID nội dung không hợp lệ!',
@@ -73,6 +73,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

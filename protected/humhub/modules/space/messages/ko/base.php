@@ -159,6 +159,7 @@ return [
     '{count} members' => '{count}명의 회원',
     '{email} is not valid!' => '{email}이 유효하지 않습니다!',
     '<strong>Leave</strong> Space' => '',
+    'Advanced Spaces Search' => '',
     'Incorrect name, try again.' => '',
     'Leave' => '',
     'Space Name' => '',

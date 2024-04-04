@@ -7,20 +7,21 @@
 
 namespace humhub\modules\user\search;
 
-use humhub\components\SearchProvider;
+use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\modules\user\components\PeopleQuery;
+use humhub\services\MetaSearchService;
 use Yii;
 
 /**
- * UserSearchProvider
+ * User Meta Search Provider
  *
  * @author luke
  * @since 1.16
  */
-class UserSearchProvider extends SearchProvider
+class UserSearchProvider implements MetaSearchProviderInterface
 {
-    public bool $showOnEmpty = false;
-    protected ?string $route = '/people';
+    private ?MetaSearchService $service = null;
+    public ?string $keyword = null;
 
     /**
      * @inheritdoc
@@ -33,9 +34,17 @@ class UserSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
+    public function getRoute(): string
+    {
+        return '/people';
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getAllResultsText(): string
     {
-        return $this->hasRecords()
+        return $this->getService()->hasResults()
             ? Yii::t('base', 'Show all results')
             : Yii::t('UserModule.base', 'Advanced Profile Search');
     }
@@ -43,11 +52,19 @@ class UserSearchProvider extends SearchProvider
     /**
      * @inheritdoc
      */
-    public function runSearch(): array
+    public function getIsHiddenWhenEmpty(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getResults(int $maxResults): array
     {
         $peopleQuery = new PeopleQuery([
-            'defaultFilters' => ['keyword' => $this->keyword],
-            'pageSize' => $this->pageSize
+            'defaultFilters' => ['keyword' => $this->getKeyword()],
+            'pageSize' => $maxResults
         ]);
 
         $results = [];
@@ -59,5 +76,25 @@ class UserSearchProvider extends SearchProvider
             'totalCount' => $peopleQuery->pagination->totalCount,
             'results' => $results
         ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getService(): MetaSearchService
+    {
+        if ($this->service === null) {
+            $this->service = new MetaSearchService($this);
+        }
+
+        return $this->service;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getKeyword(): ?string
+    {
+        return $this->keyword;
     }
 }

@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Dein Passwort ist nicht korrekt!',
   'a new user {displayName} needs approval.' => 'Neuer Benutzer {displayName} benötigt eine Freischaltung.',
   'back to home' => 'zurück zur Startseite',
-  'email' => 'E-Mail',
-  'password' => 'Passwort',
-  'username or email' => 'Benutzername oder E-Mail',
+  'Password' => 'Passwort',
+  'Username or Email' => 'Benutzername oder E-Mail',
 );

@@ -9,6 +9,8 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\components\access\ControllerAccess;
+use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\Module;
 use humhub\modules\user\models\ProfileField;
@@ -17,8 +19,6 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\StaleObjectException;
 use yii\web\HttpException;
-use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\models\forms\ApproveUserForm;
 use yii\web\Response;
 
 /**
@@ -31,6 +31,7 @@ class ApprovalController extends Controller
      */
     public $adminOnly = false;
 
+    public const ACTION_SEND_MESSAGE = 'send_message';
     public const ACTION_APPROVE = 'approve';
     public const ACTION_DECLINE = 'decline';
 
@@ -135,6 +136,30 @@ class ApprovalController extends Controller
      * @throws Throwable
      * @throws InvalidConfigException
      */
+    public function actionSendMessage($id)
+    {
+        $model = new ApproveUserForm($id);
+        $model->setSendMessageDefaults();
+        if ($model->load(Yii::$app->request->post())) {
+            if ($model->sendMessage()) {
+                $this->view->success(Yii::t('AdminModule.user', 'The message has been sent by email.'));
+                return $this->redirect(['index']);
+            }
+            $this->view->error(Yii::t('AdminModule.user', 'Could not send the message to the user!'));
+        }
+
+        return $this->render('send-message', [
+            'model' => $model->user,
+            'approveFormModel' => $model
+        ]);
+    }
+
+    /**
+     * @param $id
+     * @return string|\yii\console\Response|\yii\web\Response
+     * @throws \Throwable
+     * @throws \yii\base\InvalidConfigException
+     */
     public function actionApprove($id)
     {
         $model = new ApproveUserForm($id);
@@ -198,15 +223,22 @@ class ApprovalController extends Controller
 
         $model = new ApproveUserForm($usersId);
 
+        if ($action === self::ACTION_SEND_MESSAGE && $model->bulkSendMessage()) {
+            $this->view->success(Yii::t('AdminModule.user', 'The users were notified by email.'));
+            return $this->redirect(['index']);
+        }
+
         if ($action === self::ACTION_APPROVE && $model->bulkApprove()) {
             $this->view->success(Yii::t('AdminModule.user', 'The registrations were approved and the users were notified by email.'));
             return $this->redirect(['index']);
-        } elseif ($action === self::ACTION_DECLINE && $model->bulkDecline()) {
+        }
+
+        if ($action === self::ACTION_DECLINE && $model->bulkDecline()) {
             $this->view->success(Yii::t('AdminModule.user', 'The registrations were declined and the users were notified by email.'));
             return $this->redirect(['index']);
-        } else {
-            throw new HttpException(400, 'Invalid action!');
         }
+
+        throw new HttpException(400, 'Invalid action!');
     }
 
 }

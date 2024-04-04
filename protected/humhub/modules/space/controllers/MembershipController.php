@@ -313,7 +313,7 @@ class MembershipController extends ContentContainerController
         }
 
         return $this->renderAjaxContent(UserListBox::widget([
-            'query' => Membership::getSpaceMembersQuery($this->getSpace())->visible(),
+            'query' => $this->getSpace()->getMemberListService()->getQuery(),
             'title' => Yii::t('SpaceModule.manage', "<strong>Members</strong>"),
         ]));
     }

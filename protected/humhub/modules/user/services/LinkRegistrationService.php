@@ -12,8 +12,10 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
 use yii\base\Exception;
+use yii\db\StaleObjectException;
 
 /**
  * LinkRegistrationService is responsible for registrations (Global or per Space) using an Invite Link.
@@ -88,23 +90,32 @@ final class LinkRegistrationService
         return $newToken;
     }
 
-    public function convertToInvite(string $email): Invite
+    /**
+     * @throws Exception
+     * @throws Throwable
+     * @throws StaleObjectException
+     */
+    public function convertToInvite(string $email): ?Invite
     {
         // Deleting any previous email invitation or abandoned link invitation
-        $oldInvite = Invite::findOne(['email' => $email]);
-        if ($oldInvite !== null) {
+        $oldInvites = Invite::findAll(['email' => $email]);
+        foreach ($oldInvites as $oldInvite) {
             $oldInvite->delete();
         }
 
         $invite = new Invite([
             'email' => $email,
-            'scenario' => 'invite',
             'language' => Yii::$app->language,
         ]);
         $invite->skipCaptchaValidation = true;
         $invite->source = Invite::SOURCE_INVITE_BY_LINK;
         if ($this->space) {
             $invite->space_invite_id = $this->space->id;
+        }
+
+        if ($invite->isRegisteredUser()) {
+            $invite->sendAlreadyRegisteredUserMail();
+            return null;
         }
 
         if (!$invite->save()) {
