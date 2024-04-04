@@ -37,10 +37,12 @@ class MysqlDriver extends AbstractDriver
         $record = new ContentFulltext();
         $record->content_id = $content->id;
 
-        $record->contents = implode(', ',
-                array_map(function (ContentTag $tag) {
-                    return $tag->name;
-                }, $content->tags)) . " \n";
+        $record->contents = implode(
+            ', ',
+            array_map(function (ContentTag $tag) {
+                return $tag->name;
+            }, $content->tags)
+        ) . " \n";
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
             $record->contents .= $attributeValue . " \n";

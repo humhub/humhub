@@ -21,7 +21,6 @@ use yii\console\Controller;
 
 class SearchController extends Controller
 {
-
     /**
      * Optimizes the search index
      */

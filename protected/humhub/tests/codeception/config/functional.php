@@ -13,8 +13,8 @@ $testConfig = [
             // it's not recommended to run functional tests with CSRF validation enabled
             'enableCsrfValidation' => false,
             'cookieValidationKey' => 'test'
-        // but if you absolutely need it set cookie domain to localhost
-        /*
+            // but if you absolutely need it set cookie domain to localhost
+            /*
           'csrfCookie' => [
           'domain' => 'localhost',
           ],
