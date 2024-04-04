@@ -1,7 +1,6 @@
 HumHub Changelog
 ================
 
-
 1.16.0 (Unreleased)
 -------------------
 - Fix #6770: Improve migration error messages
@@ -82,3 +81,5 @@ HumHub Changelog
 - Fix #6730: Invitation link for existing user
 - Enh #6147: New space service `MemberListService`
 - Enh #6487: Remove general setting "Server Timezone"
+- Enh #6552: Allow module initializing on each loading
+
