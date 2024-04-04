@@ -74,6 +74,7 @@ HumHub Changelog
 - Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
 - Enh #6904: Content Search: Add Tests regarding `state`
 - Fix #6908: Fix default mentioning URL
+- Enh #6879: Better UX for the maintenance mode administration form
 - Enh #6901: Auto load pages on content search
 - Fix #6913: Fix API tests
 - Fix #6730: Invitation link for existing user

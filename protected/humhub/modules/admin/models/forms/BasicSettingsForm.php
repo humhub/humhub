@@ -3,12 +3,12 @@
 namespace humhub\modules\admin\models\forms;
 
 use DateTimeZone;
-use Yii;
 use humhub\libs\DynamicConfig;
-use humhub\modules\space\models\Space;
-use humhub\modules\stream\actions\Stream;
 use humhub\libs\TimezoneHelper;
+use humhub\modules\ui\icon\widgets\Icon;
+use Yii;
 use yii\base\Model;
+use yii\bootstrap\Alert;
 
 /**
  * BasicSettingsForm
@@ -80,6 +80,7 @@ class BasicSettingsForm extends Model
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
             'maintenanceMode' => Yii::t('AdminModule.settings', 'Enable maintenance mode'),
+            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
         ];
     }
 
@@ -104,7 +105,12 @@ class BasicSettingsForm extends Model
                 ]
             ),
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
-            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
+            'maintenanceMode' => Alert::widget([
+                'options' => ['class' => 'alert-danger'],
+                'body' =>
+                    Icon::get('exclamation-triangle') . ' ' .
+                    Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.')
+            ]),
         ];
     }
 
