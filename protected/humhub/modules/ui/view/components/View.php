@@ -32,7 +32,7 @@ class View extends \yii\web\View
     /**
      * the id of the sidebar block
      */
-    const BLOCK_SIDEBAR = 'sidebar';
+    public const BLOCK_SIDEBAR = 'sidebar';
 
     /**
      * @var string page title
@@ -457,7 +457,7 @@ class View extends \yii\web\View
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
 
-        if (Yii::$app->params['installed']) {
+        if (Yii::$app->isInstalled()) {
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower(key($viewStatus));
@@ -487,7 +487,7 @@ class View extends \yii\web\View
         }
 
         // Since the JsConfig accesses user queries it fails before installation.
-        if (Yii::$app->params['installed']) {
+        if (Yii::$app->isInstalled()) {
             CoreJsConfig::widget();
         }
 

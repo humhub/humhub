@@ -19,7 +19,6 @@ use Yii;
  */
 class UserMemberSince extends BaseTypeVirtual
 {
-
     /**
      * @inheritDoc
      */
@@ -29,6 +28,6 @@ class UserMemberSince extends BaseTypeVirtual
             return '';
         }
 
-        return Yii::$app->formatter->asDate($user->created_at,'long');
+        return Yii::$app->formatter->asDate($user->created_at, 'long');
     }
 }

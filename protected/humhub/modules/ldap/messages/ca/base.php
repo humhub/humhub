@@ -6,7 +6,6 @@ return [
     'Password' => 'Contrasenya',
     'Port' => 'Port',
     'Username' => 'Nom d\'usuari',
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
     'Base DN' => '',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
     'E-Mail Address Attribute' => '',

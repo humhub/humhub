@@ -14,36 +14,39 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
 use yii\captcha\CaptchaValidator;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
 /**
  * This is the model class for table "user_invite".
  *
- * @property integer $id
- * @property integer $user_originator_id
- * @property integer $space_invite_id
+ * @property int $id
+ * @property int $user_originator_id
+ * @property int $space_invite_id
  * @property string $email
  * @property string $source
  * @property string $token
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property string $language
  * @property string $firstname
  * @property string $lastname
  * @property string $captcha
  *
  * @property Space $space
+ * @property User|null $originator
  */
 class Invite extends ActiveRecord
 {
-
-    const SOURCE_SELF = 'self';
-    const SOURCE_INVITE = 'invite';
-    const SOURCE_INVITE_BY_LINK = 'invite_by_link';
-    const EMAIL_TOKEN_LENGTH = 12;
-    const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
+    public const SOURCE_SELF = 'self';
+    public const SOURCE_INVITE = 'invite';
+    public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
+    public const SCENARIO_INVITE = 'invite';
+    public const SCENARIO_INVITE_BY_LINK_FORM = 'invite_by_link_form';
+    public const EMAIL_TOKEN_LENGTH = 12;
+    public const LINK_TOKEN_LENGTH = 14; // Should be different that EMAIL_TOKEN_LENGTH
 
     public $captcha;
 
@@ -73,9 +76,9 @@ class Invite extends ActiveRecord
             [['email'], 'string', 'max' => 150],
             [['language'], 'string', 'max' => 10],
             [['email'], 'required'],
-            [['email'], 'unique'],
+            [['email'], 'unique', 'except' => self::SCENARIO_INVITE_BY_LINK_FORM],
             [['email'], 'email'],
-            [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha', 'on' => static::SOURCE_INVITE],
+            [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha', 'on' => [self::SCENARIO_INVITE, self::SCENARIO_INVITE_BY_LINK_FORM]],
         ];
     }
 
@@ -85,10 +88,12 @@ class Invite extends ActiveRecord
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['invite'] = ['email'];
+        $scenarios[self::SCENARIO_INVITE] = ['email'];
+        $scenarios[self::SCENARIO_INVITE_BY_LINK_FORM] = ['email'];
 
         if ($this->showCaptureInRegisterForm()) {
-            $scenarios['invite'][] = 'captcha';
+            $scenarios[self::SCENARIO_INVITE][] = 'captcha';
+            $scenarios[self::SCENARIO_INVITE_BY_LINK_FORM][] = 'captcha';
         }
 
         return $scenarios;
@@ -174,13 +179,12 @@ class Invite extends ActiveRecord
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
             ], [
-                'token' => $this->token,
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
             $result = $mail->send();
-        } elseif ($this->source == self::SOURCE_INVITE && $this->space !== null) {
+        } elseif ($this->source === self::SOURCE_INVITE && $this->space !== null) {
             if ($module->sendInviteMailsInGlobalLanguage) {
                 Yii::$app->setLanguage(Yii::$app->settings->get('defaultLanguage'));
             }
@@ -189,7 +193,6 @@ class Invite extends ActiveRecord
                 'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
                 'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSpace'
             ], [
-                'token' => $this->token,
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
                 'space' => $this->space,
@@ -201,7 +204,7 @@ class Invite extends ActiveRecord
 
             // Switch back to users language
             Yii::$app->setLanguage(Yii::$app->user->language);
-        } elseif ($this->source == self::SOURCE_INVITE) {
+        } elseif ($this->source === self::SOURCE_INVITE) {
 
             // Switch to systems default language
             if ($module->sendInviteMailsInGlobalLanguage) {
@@ -214,7 +217,6 @@ class Invite extends ActiveRecord
             ], [
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
-                'token' => $this->token,
                 'registrationUrl' => $registrationUrl
             ]);
             $mail->setTo($this->email);
@@ -233,7 +235,7 @@ class Invite extends ActiveRecord
      *
      * @return bool
      */
-    private function isRegisteredUser(): bool
+    public function isRegisteredUser(): bool
     {
         return User::find()->where(['email' => $this->email])->exists();
     }
@@ -275,7 +277,7 @@ class Invite extends ActiveRecord
     /**
      * Return user which triggered this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getOriginator()
     {
@@ -285,7 +287,7 @@ class Invite extends ActiveRecord
     /**
      * Return space which is involved in this invite
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getSpace()
     {
@@ -295,7 +297,7 @@ class Invite extends ActiveRecord
     /**
      * Allow users to invite themself
      *
-     * @return boolean allow self invite
+     * @return bool allow self invite
      */
     public function allowSelfInvite()
     {

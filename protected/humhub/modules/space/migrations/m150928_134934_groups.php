@@ -5,12 +5,11 @@ use yii\db\Migration;
 
 class m150928_134934_groups extends Migration
 {
-
     public function up()
     {
-        $this->addColumn('space_membership', 'group_id', Schema::TYPE_STRING. " DEFAULT 'member'");
+        $this->addColumn('space_membership', 'group_id', Schema::TYPE_STRING . " DEFAULT 'member'");
         $this->update('space_membership', ['group_id' => 'admin'], 'space_membership.admin_role=1');
-        
+
         $this->dropColumn('space_membership', 'admin_role');
         $this->dropColumn('space_membership', 'share_role');
         $this->dropColumn('space_membership', 'invite_role');

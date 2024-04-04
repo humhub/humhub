@@ -12,6 +12,7 @@ use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
+use Throwable;
 use Yii;
 
 /**
@@ -36,47 +37,47 @@ abstract class BaseRichTextConverter extends GithubMarkdown
      * Option key for excluding blocks or extensions.
      * Note, this option affects the cached result.
      */
-    const OPTION_EXCLUDE = 'exclude';
+    public const OPTION_EXCLUDE = 'exclude';
 
     /**
      * Option key for overwriting default link target _blank.
      * Note, this option affects the cached result.
      */
-    const OPTION_LINK_TARGET = 'linkTarget';
+    public const OPTION_LINK_TARGET = 'linkTarget';
 
     /**
      * Option key used for rendering links as plain text.
      * Note, this option affects the cached result.
      */
-    const OPTION_LINK_AS_TEXT = 'linkAsText';
+    public const OPTION_LINK_AS_TEXT = 'linkAsText';
 
     /**
      * Option key used for rendering images as links.
      * Note, this option affects the cached result.
      */
-    const OPTION_IMAGE_AS_LINK = 'imageAsLink';
+    public const OPTION_IMAGE_AS_LINK = 'imageAsLink';
 
     /**
      * Option key used for rendering images as url links.
      * Note, this option affects the cached result.
      */
-    const OPTION_IMAGE_AS_URL = 'imageAsText';
+    public const OPTION_IMAGE_AS_URL = 'imageAsText';
 
     /**
      * Option key for preventing link target attribute.
      * Note, this option affects the cached result.
      */
-    const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
+    public const OPTION_PREV_LINK_TARGET = 'prevLinkTarget';
 
     /**
      * Cache key can be used to cache parser results
      */
-    const OPTION_CACHE_KEY = 'cacheKey';
+    public const OPTION_CACHE_KEY = 'cacheKey';
 
     /**
      * Maximum entries in the cache
      */
-    const MAX_CACHE_ENTRIES = 200;
+    public const MAX_CACHE_ENTRIES = 200;
 
     /**
      * @inheritdoc
@@ -96,12 +97,12 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     /**
      * @event triggered before text is parsed
      */
-    const EVENT_BEFORE_PARSE = 'beforeParse';
+    public const EVENT_BEFORE_PARSE = 'beforeParse';
 
     /**
      * @event triggered after text is parsed
      */
-    const EVENT_AFTER_PARSE = 'afterParse';
+    public const EVENT_AFTER_PARSE = 'afterParse';
 
     /**
      * @var RichTextLinkExtension[]
@@ -235,7 +236,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
             $result = $this->onAfterParse($result);
 
             return $result;
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             Yii::error($t);
             return '[ParserError]';
         }
@@ -263,7 +264,7 @@ abstract class BaseRichTextConverter extends GithubMarkdown
     {
         $evt = new Event(['result' => $text]);
         Event::trigger($this, static::EVENT_BEFORE_PARSE, $evt);
-        $text = $evt->result;
+        $text = (string)$evt->result;
 
         // Remove leading new backslash new lines e.g. "Test\\\n" -> "Test"
         $text = preg_replace('/\\\\(\n|\r){1,2}$/', '', $text);
@@ -445,11 +446,6 @@ REGEXP;
 
     protected function renderImage($block)
     {
-        $text = $block['text'];
-
-        // Remove image alignment extension from image alt text
-        $block['text'] = preg_replace('/>?<?$/', '', $text);
-
         if ($this->getOption(static::OPTION_IMAGE_AS_URL, false)) {
             return Html::encode($block['url']);
         }
@@ -521,7 +517,20 @@ REGEXP;
      */
     protected function renderPlainImage(LinkParserBlock $linkBlock): string
     {
-        return parent::renderImage($linkBlock->block);
+        $block = $linkBlock->block;
+
+        if (isset($block['refkey'])) {
+            if (($ref = $this->lookupReference($block['refkey'])) !== false) {
+                $linkBlock->block = array_merge($block, $ref);
+            } else {
+                if (strncmp($block['orig'], '![', 2) === 0) {
+                    return '![' . $this->renderAbsy($this->parseInline(substr($block['orig'], 2)));
+                }
+                return $block['orig'];
+            }
+        }
+
+        return '<img' . $linkBlock->renderImageAttributes() . ($this->html5 ? '>' : ' />');
     }
 
     /**
@@ -531,7 +540,7 @@ REGEXP;
      */
     protected function br2nl($text)
     {
-        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", $text);
+        return preg_replace('/\<br(\s*)?\/?\>/i', "\n", (string)$text);
     }
 
     /**

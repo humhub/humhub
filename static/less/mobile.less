@@ -21,12 +21,6 @@
         padding-top: 105px;
     }
 
-    .modal-open #layout-content {
-        > .container {
-            overflow-x: unset; // This fixes broken (invisible) richtext editor nav in ios safari...
-        }
-    }
-
     // Layout Contents: Adjusting the contents to fit perfectly on mobile devices
     #layout-content {
         // Layout Space: Space navigation
@@ -36,7 +30,6 @@
                 white-space: nowrap;
                 overflow-x: auto;
             }
-
         }
 
         .left-navigation .list-group::-webkit-scrollbar {
@@ -126,10 +119,6 @@
 
 
         // Space
-        .space-acronym {
-            padding: 6px 0 !important;
-        }
-
         .panel-profile .panel-profile-header .img-profile-header-background {
             min-height: 80px !important;
         }

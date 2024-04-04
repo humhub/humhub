@@ -9,6 +9,7 @@
 namespace humhub\modules\user\events;
 
 use humhub\components\Event;
+use humhub\modules\user\models\User;
 
 /**
  * UserEvent
@@ -19,7 +20,7 @@ use humhub\components\Event;
 class UserEvent extends Event
 {
     /**
-     * @var \humhub\modules\user\models\User the user
+     * @var User the user
      */
     public $user;
 }

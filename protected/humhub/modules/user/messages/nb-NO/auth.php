@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Passordet du oppgav stemmer ikke. Vennligst prøv igjen.',
   'a new user {displayName} needs approval.' => 'en ny bruker {displayName} trenger godkjenning.',
   'back to home' => 'tilbake',
-  'email' => 'e-post',
-  'password' => 'passord',
-  'username or email' => 'brukernavn eller e-post',
+  'Password' => 'passord',
+  'Username or Email' => 'brukernavn eller e-post',
 );

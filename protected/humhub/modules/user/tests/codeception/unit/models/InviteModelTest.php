@@ -115,9 +115,9 @@ class InviteModelTest extends HumHubDbTestCase
     {
         $model = new Invite();
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', false);
-        $this->assertFalse((boolean) $model->allowSelfInvite());
+        $this->assertFalse((bool)$model->allowSelfInvite());
 
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', true);
-        $this->assertTrue((boolean) $model->allowSelfInvite());
+        $this->assertTrue((bool)$model->allowSelfInvite());
     }
 }

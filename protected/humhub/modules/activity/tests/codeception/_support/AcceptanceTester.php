@@ -1,4 +1,5 @@
 <?php
+
 namespace activity;
 
 use Codeception\Lib\Friend;
@@ -17,12 +18,12 @@ use Codeception\Lib\Friend;
  * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
+ */
 class AcceptanceTester extends \AcceptanceTester
 {
     use _generated\AcceptanceTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Define custom actions here
+     */
 }

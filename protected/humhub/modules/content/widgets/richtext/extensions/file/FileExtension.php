@@ -2,12 +2,14 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\file;
 
+use Exception;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\models\FileUpload;
+use Throwable;
 use Yii;
 use humhub\components\ActiveRecord;
 use yii\web\UploadedFile;
@@ -101,7 +103,7 @@ class FileExtension extends RichTextLinkExtension
             $record->fileManager->attach($file);
 
             return true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Yii::error($e);
             return false;
         }
@@ -155,7 +157,7 @@ class FileExtension extends RichTextLinkExtension
             $fileUpload->setStoredFileContent($data);
             $this->attach($record, $fileUpload);
             return $fileUpload;
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             Yii::error($e);
         }
 

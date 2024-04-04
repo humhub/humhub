@@ -16,7 +16,6 @@ use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
-
 /**
  * Class ProfileHeaderCounter
  *
@@ -25,7 +24,6 @@ use yii\helpers\Url;
  */
 class ProfileHeaderCounterSet extends CounterSet
 {
-
     /**
      * @var User
      */
@@ -36,7 +34,7 @@ class ProfileHeaderCounterSet extends CounterSet
      */
     public function init()
     {
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $this->counters[] = new CounterSetItem([
                 'label' => Yii::t('UserModule.profile', 'Friends'),
                 'value' => Friendship::getFriendsQuery($this->user)->count(),

@@ -8,12 +8,9 @@
 
 namespace humhub\modules\comment;
 
-use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\comment\models\Comment;
-use humhub\modules\search\events\SearchAttributesEvent;
-use humhub\modules\search\engine\Search;
 use Yii;
 use yii\base\Component;
 use yii\base\Event;
@@ -25,7 +22,6 @@ use yii\base\Event;
  */
 class Events extends Component
 {
-
     /**
      * On content deletion make sure to delete all its comments
      *
@@ -117,30 +113,6 @@ class Events extends Component
             'object' => $wallEntryAddons->object,
             'renderOptions' => $wallEntryAddons->renderOptions,
         ], ['sortOrder' => 30]);
-    }
-
-    /**
-     * Handles the SearchAttributesEvent and adds related comments
-     *
-     * @param SearchAttributesEvent $event
-     * @since 1.2.3
-     */
-    public static function onSearchAttributes(SearchAttributesEvent $event)
-    {
-        if (!isset($event->attributes['comments'])) {
-            $event->attributes['comments'] = [];
-        }
-
-        foreach (Comment::findAll(['object_model' => PolymorphicRelation::getObjectModel($event->record), 'object_id' => $event->record->id]) as $comment) {
-            /* @var $comment Comment */
-            $event->attributes['comments'][$comment->id] = [
-                'author' => ($comment->user !== null) ? $comment->user->displayName : '',
-                'message' => $comment->message
-            ];
-
-            // Add comment related attributes (e.g. files)
-            Event::trigger(Search::class, Search::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($event->attributes['comments'][$comment->id], $comment));
-        }
     }
 
 }

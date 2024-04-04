@@ -21,7 +21,6 @@ use humhub\modules\user\models\forms\Login;
  */
 class BaseFormAuth extends BaseClient
 {
-
     /**
      * @var Login the login form model
      */
@@ -65,7 +64,7 @@ class BaseFormAuth extends BaseClient
     /**
      * How much seconds current user (who tried to log in by this client auth form) is delayed for login action
      *
-     * @return integer
+     * @return int
      * @since 1.8
      */
     public function getDelayedLoginTime()
@@ -78,7 +77,7 @@ class BaseFormAuth extends BaseClient
     /**
      * Check if current user (who tried to log in by this client auth form) is delayed for login action
      *
-     * @return boolean
+     * @return bool
      * @since 1.8
      */
     public function isDelayedLoginAction()
@@ -89,8 +88,8 @@ class BaseFormAuth extends BaseClient
     /**
      * Get a failed login attempts count
      *
-     * @since 1.8
      * @return int
+     * @since 1.8
      */
     public function getFailedLoginAttemptsCount()
     {

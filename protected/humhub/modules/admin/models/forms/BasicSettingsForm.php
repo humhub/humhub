@@ -2,10 +2,13 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use DateTimeZone;
 use humhub\libs\DynamicConfig;
 use humhub\libs\TimezoneHelper;
+use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
+use yii\bootstrap\Alert;
 
 /**
  * BasicSettingsForm
@@ -13,7 +16,6 @@ use yii\base\Model;
  */
 class BasicSettingsForm extends Model
 {
-
     public $name;
     public $baseUrl;
     public $defaultLanguage;
@@ -54,11 +56,8 @@ class BasicSettingsForm extends Model
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
             [['defaultTimeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
-            [['baseUrl'], function ($attribute, $params, $validator) {
-                if (substr($this->$attribute, 0, 7) !== 'http://' && substr($this->$attribute, 0, 8) !== 'https://') {
-                    $this->addError($attribute, Yii::t('AdminModule.base', 'Base URL needs to begin with http:// or https://'));
-                }
-            }],
+            [['baseUrl'], 'url', 'pattern' => '/^{schemes}:\/\/([A-Z0-9][A-Z0-9_\-\.]*)+(?::\d{1,5})?(?:$|[?\/#])/i'],
+            [['baseUrl'], 'trim'],
             ['maintenanceModeInfo', 'safe'],
         ];
     }
@@ -78,6 +77,7 @@ class BasicSettingsForm extends Model
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
             'defaultStreamSort' => Yii::t('AdminModule.settings', 'Default stream content order'),
             'maintenanceMode' => Yii::t('AdminModule.settings', 'Enable maintenance mode'),
+            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
         ];
     }
 
@@ -87,18 +87,26 @@ class BasicSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'defaultTimeZone' => Yii::t('AdminModule.settings', 'Reported database time: {dateTime}', [
+            'defaultTimeZone' => Yii::t(
+                'AdminModule.settings',
+                'Reported database time: {dateTime}',
+                [
                     'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
                 ]
             ),
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
-            'maintenanceModeInfo' => Yii::t('AdminModule.settings', 'Add custom info text for maintenance mode. Displayed on the login page.'),
+            'maintenanceMode' => Alert::widget([
+                'options' => ['class' => 'alert-danger'],
+                'body' =>
+                    Icon::get('exclamation-triangle') . ' ' .
+                    Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.')
+            ]),
         ];
     }
 
     /**
      * Saves the form
-     * @return boolean
+     * @return bool
      */
     public function save()
     {

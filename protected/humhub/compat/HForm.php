@@ -26,18 +26,18 @@ use yii\widgets\ActiveField;
  */
 class HForm extends \yii\base\Component
 {
-    const EVENT_BEFORE_VALIDATE = 'beforeValidate';
-    const EVENT_AFTER_VALIDATE = 'afterValidate';
+    public const EVENT_BEFORE_VALIDATE = 'beforeValidate';
+    public const EVENT_AFTER_VALIDATE = 'afterValidate';
 
     /**
      * @since 1.2.6
      */
-    const EVENT_AFTER_INIT = 'afterInit';
+    public const EVENT_AFTER_INIT = 'afterInit';
 
     /**
      * @since 1.2.6
      */
-    const EVENT_BEFORE_RENDER = 'beforeRender';
+    public const EVENT_BEFORE_RENDER = 'beforeRender';
 
     public $showErrorSummary;
 
@@ -52,7 +52,7 @@ class HForm extends \yii\base\Component
     public $definition = [];
 
     /**
-     * @var boolean manually mark form as submitted
+     * @var bool manually mark form as submitted
      */
     public $markedAsSubmitted = false;
 
@@ -226,6 +226,10 @@ class HForm extends \yii\base\Component
 
         if ($model) {
             $options = $this->getOptionsFromDefinition($definition);
+
+            if (isset($model->$name, $options['value'])) {
+                unset($options['value']);
+            }
 
             if (isset($definition['type'])) {
                 switch ($definition['type']) {

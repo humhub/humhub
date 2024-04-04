@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => '<strong>Flytt</strong> innhold',
     '<strong>Permalink</strong> to this post' => '@@@@',
-    'Activated' => 'Aktivert',
     'Add a member to notify' => 'Legg til en følger',
     'Archived' => 'Arkivert',
     'Back to stream' => 'Tilbake til nyhetsstrøm',
@@ -23,6 +22,7 @@ return [
     'Deleted' => 'Slettet',
     'Edit' => 'Rediger',
     'Enable' => 'Aktiver',
+    'Enabled' => 'Aktivert',
     'Filter' => 'Filter',
     'I\'m involved' => 'Der jeg deltar',
     'Invalid content id given!' => 'Ugyldig innholds-ID angitt!',
@@ -73,6 +73,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

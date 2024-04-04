@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Şifreniz yanlış!',
   'a new user {displayName} needs approval.' => 'yeni bir kullanıcı {displayName} onayı gerekiyor.',
   'back to home' => 'anasayfaya dön',
-  'email' => 'E-posta',
-  'password' => 'Şifre',
-  'username or email' => 'Kullanıcı Adı / E-posta',
+  'Password' => 'Şifre',
+  'Username or Email' => 'Kullanıcı Adı / E-posta',
 );

@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Vaša lozinka nije točna!',
   'a new user {displayName} needs approval.' => 'novi korisnik {displayName} treba odobrenje.',
   'back to home' => 'povratak na početno',
-  'email' => 'email',
-  'password' => 'lozinka',
-  'username or email' => 'korisničko ime ili email',
+  'Password' => 'lozinka',
+  'Username or Email' => 'korisničko ime ili email',
 );

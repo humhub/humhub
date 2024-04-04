@@ -8,7 +8,7 @@
  * @var int|null $delayedJobs
  * @var int|null $doneJobs
  * @var int|null $reservedJobs
- * @var boolean $canClearQueue
+ * @var bool $canClearQueue
  */
 
 use humhub\widgets\Button;

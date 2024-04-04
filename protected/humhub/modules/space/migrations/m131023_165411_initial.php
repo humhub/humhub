@@ -3,9 +3,10 @@
 
 use yii\db\Migration;
 
-class m131023_165411_initial extends Migration {
-
-    public function up() {
+class m131023_165411_initial extends Migration
+{
+    public function up()
+    {
         $this->createTable('space', [
             'id' => 'pk',
             'guid' => 'varchar(45) DEFAULT NULL',
@@ -21,7 +22,7 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
 
         $this->createTable('space_follow', [
             'user_id' => 'int(11) NOT NULL',
@@ -30,7 +31,7 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
 
         $this->addPrimaryKey('pk_space_follow', 'space_follow', 'user_id,space_id');
 
@@ -42,10 +43,11 @@ class m131023_165411_initial extends Migration {
             'created_by' => 'int(11) NOT NULL',
             'updated_at' => 'datetime NOT NULL',
             'updated_by' => 'int(11) NOT NULL',
-                ], '');
+        ], '');
     }
 
-    public function down() {
+    public function down()
+    {
         echo "m131023_165411_initial does not support migration down.\n";
         return false;
     }

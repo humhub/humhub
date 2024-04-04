@@ -49,7 +49,7 @@ use Yii;
  */
 class AdminMenu extends LeftNavigation
 {
-    const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
+    public const SESSION_CAN_SEE_ADMIN_SECTION = 'user.canSeeAdminSection';
 
     /**
      * @inheritdoc

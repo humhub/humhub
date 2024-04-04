@@ -15,7 +15,6 @@ namespace humhub\libs;
  */
 class Sort
 {
-
     /**
      * @param array $arr The input array.
      * @param string $field The attribute or array key to which holds the sort order
@@ -29,13 +28,22 @@ class Sort
             $sortA = static::getSortValue($a, $field, $default);
             $sortB = static::getSortValue($b, $field, $default);
 
-            if ($sortA == $sortB) {
-                return 0;
-            } elseif ($sortA < $sortB) {
-                return -1;
-            } else {
-                return 1;
+            if (!is_array($sortA)) {
+                $sortA = [$sortA];
             }
+            if (!is_array($sortB)) {
+                $sortB = [$sortB];
+            }
+
+            foreach ($sortA as $s => $sortAItem) {
+                $sortBItem = $sortB[$s] ?? $default;
+                if ($sortAItem == $sortBItem) {
+                    // Go to compare next sort value
+                    continue;
+                }
+                return $sortAItem < $sortBItem ? -1 : 1;
+            }
+            return 0;
         });
 
         return $arr;

@@ -19,7 +19,6 @@ namespace humhub\components\rendering;
  */
 class MailRenderer extends DefaultViewPathRenderer
 {
-
     /**
      * @inheritdoc
      */

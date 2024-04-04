@@ -1,11 +1,11 @@
 <?php
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $options array */
 /* @var $title string */
 /* @var $subTitle string */
 /* @var $classPrefix string */
-/* @var $canEdit boolean */
+/* @var $canEdit bool */
 /* @var $coverCropUrl string */
 /* @var $imageCropUrl string */
 /* @var $coverDeleteUrl string */
@@ -16,14 +16,17 @@
 /* @var $coverUploadName string */
 /* @var $imageUploadName string */
 
-/* @var $container \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $container ContentContainerActiveRecord */
 
 /**
  * Note: Inline styles have been retained for legacy theme compatibility (prior to v1.4)
  */
 
 use humhub\modules\content\assets\ContainerHeaderAsset;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
+use humhub\modules\ui\view\components\View;
+use humhub\widgets\Button;
 use yii\helpers\Html;
 
 ContainerHeaderAsset::register($this);
@@ -47,10 +50,12 @@ $profileImageHeight = $container->getProfileImage()->height();
         <?= $container->getProfileBannerImage()->render('width:100%', ['class' => 'img-profile-header-background']) ?>
 
         <!-- show user name and title -->
+
         <div class="img-profile-data">
-            <h1 class="<?= $classPrefix ?>"><?= Html::encode($title) ?></h1>
+            <h1 class="<?= $classPrefix ?>"><?= Button::asLink(Html::encode($title))->link($container->getUrl()) ?></h1>
             <h2 class="<?= $classPrefix ?>"><?= Html::encode($subTitle) ?></h2>
         </div>
+
 
         <?php if ($canEdit) : ?>
             <div class="image-upload-loader" style="padding:<?= $bannerProgressBarPadding ?>">
@@ -75,7 +80,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
         <?php if ($container->getProfileImage()->hasImage()) : ?>
             <a data-ui-gallery="spaceHeader" href="<?= $container->profileImage->getUrl('_org') ?>">
-                <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false]) ?>
+                <?= $container->getProfileImage()->render($profileImageWidth - 10, ['class' => 'img-profile-header-background profile-user-photo', 'link' => false, 'showSelfOnlineStatus' => true]) ?>
             </a>
         <?php else : ?>
             <?= $container->getProfileImage()->render($profileImageHeight - 10, ['class' => 'img-profile-header-background profile-user-photo']) ?>

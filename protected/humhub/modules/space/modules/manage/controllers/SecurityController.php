@@ -51,10 +51,10 @@ class SecurityController extends Controller
 
         $visibilities = [];
         if ($space->visibility === Space::VISIBILITY_NONE ||
-            Yii::$app->user->permissionManager->can(new CreatePrivateSpace)) {
+            Yii::$app->user->permissionManager->can(new CreatePrivateSpace())) {
             $visibilities[Space::VISIBILITY_NONE] = Yii::t('SpaceModule.base', 'Private (Invisible)');
         }
-        $canCreatePublicSpace = Yii::$app->user->permissionManager->can(new CreatePublicSpace);
+        $canCreatePublicSpace = Yii::$app->user->permissionManager->can(new CreatePublicSpace());
         if ($space->visibility === Space::VISIBILITY_REGISTERED_ONLY ||
             $canCreatePublicSpace) {
             $visibilities[Space::VISIBILITY_REGISTERED_ONLY] = Yii::t('SpaceModule.base', 'Public (Registered users only)');
@@ -68,33 +68,25 @@ class SecurityController extends Controller
     }
 
     /**
-     * Shows space permessions
+     * Shows space permissions
      */
     public function actionPermissions()
     {
         $space = $this->getSpace();
 
-        $groups = $space->getUserGroups();
+        $groups = $space::getUserGroups();
         $groupId = Yii::$app->request->get('groupId', Space::USERGROUP_MEMBER);
         if (!array_key_exists($groupId, $groups)) {
             throw new HttpException(500, 'Invalid group id given!');
         }
 
         // Handle permission state change
-        if (Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = $space->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            $space->permissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
-            return [];
-        }
+        $return = $space->permissionManager->handlePermissionStateChange($groupId);
 
-        return $this->render('permissions', [
-                    'space' => $space,
-                    'groups' => $groups,
-                    'groupId' => $groupId
+        return $return ?? $this->render('permissions', [
+            'space' => $space,
+            'groups' => $groups,
+            'groupId' => $groupId
         ]);
     }
 }

@@ -21,7 +21,6 @@ use humhub\modules\stream\actions\ContentContainerStream;
 
 class SpaceContentPermissionTest extends HumHubDbTestCase
 {
-
     /**
      *  - User is the owner of the content
      *  - User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
@@ -42,7 +41,7 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->space->visibility = Space::VISIBILITY_ALL;
         $this->space->save();
 
-        $this->privatePost = new Post;
+        $this->privatePost = new Post();
         if (version_compare(PHP_VERSION, '7.4', '<')) {
             $this->privatePost->silentContentCreation = true;
         }
@@ -51,7 +50,7 @@ class SpaceContentPermissionTest extends HumHubDbTestCase
         $this->privatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->privatePost->save();
 
-        $this->publicPost = new Post;
+        $this->publicPost = new Post();
         if (version_compare(PHP_VERSION, '7.4', '<')) {
             $this->publicPost->silentContentCreation = true;
         }

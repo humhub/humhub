@@ -44,9 +44,9 @@ class AppAsset extends WebStaticAssetBundle
      */
     public $jsPosition = View::POS_HEAD;
 
-    const BUNDLE_NAME = 'app';
+    public const BUNDLE_NAME = 'app';
 
-    const STATIC_DEPENDS = [
+    public const STATIC_DEPENDS = [
         JqueryAsset::class,
         JuiBootstrapBridgeAsset::class,
         JuiAsset::class,

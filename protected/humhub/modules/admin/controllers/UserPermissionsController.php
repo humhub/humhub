@@ -11,13 +11,10 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
-use humhub\modules\content\models\ContentContainerDefaultPermission;
 use humhub\modules\content\models\ContentContainerPermission;
-use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
-use yii\db\Expression;
 use yii\web\HttpException;
 
 /**
@@ -27,7 +24,6 @@ use yii\web\HttpException;
  */
 class UserPermissionsController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -47,7 +43,7 @@ class UserPermissionsController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageUsers::class]],
@@ -72,17 +68,9 @@ class UserPermissionsController extends Controller
         }
 
         // Handle permission state change
-        if (Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = $defaultPermissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            $defaultPermissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
-            return [];
-        }
+        $return = $defaultPermissionManager->handlePermissionStateChange($groupId);
 
-        return $this->render('default', [
+        return $return ?? $this->render('default', [
             'defaultPermissionManager' => $defaultPermissionManager,
             'groups' => $groups,
             'groupId' => $groupId,
@@ -95,7 +83,7 @@ class UserPermissionsController extends Controller
 
         /** @var Module $userModule */
         $userModule = Yii::$app->getModule('user');
-        $oldState = (boolean)$userModule->settings->get('enableProfilePermissions', false);
+        $oldState = (bool)$userModule->settings->get('enableProfilePermissions', false);
         $newState = false;
         if (Yii::$app->request->post('isEnabled') === 'true') {
             $newState = true;

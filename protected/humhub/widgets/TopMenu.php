@@ -20,7 +20,6 @@ use humhub\modules\user\components\User;
  */
 class TopMenu extends Menu
 {
-
     /**
      * @inheritdoc
      */

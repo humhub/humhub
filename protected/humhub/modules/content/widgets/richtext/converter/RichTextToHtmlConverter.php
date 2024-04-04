@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
+use HTMLPurifier_Config;
 use humhub\libs\Html;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use yii\helpers\HtmlPurifier;
@@ -42,7 +43,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     /**
      * @var string HtmlPurifier HTML.AllowedAttributes configuration
      */
-    public $htmlAllowedAttributes = 'img.src,img.alt,img.title,code.class,a.rel,a.target,a.href,a.title,th.align,td.align,ol.start';
+    public $htmlAllowedAttributes = 'img.src,img.alt,img.title,img.width,img.height,img.class,img.style,code.class,a.rel,a.target,a.href,a.title,th.align,td.align,ol.start';
 
     /**
      * @var bool whether the output should be purified
@@ -71,6 +72,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
         }
 
         return HtmlPurifier::process($text, function ($config) {
+            /* @var HTMLPurifier_Config $config */
             // Make sure we use non xhtml tags, unfortunately HTML5 is not supported by html purifier
             $config->set('HTML.Doctype', $this->doctype);
 
@@ -85,6 +87,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
             $htmlDefinition = $config->getHTMLDefinition(true);
 
             $htmlDefinition->addAttribute('a', 'target', 'Text');
+            $htmlDefinition->addAttribute('img', 'style', 'Text');
         });
     }
 

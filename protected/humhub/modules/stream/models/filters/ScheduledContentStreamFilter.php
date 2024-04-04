@@ -7,7 +7,6 @@
 
 namespace humhub\modules\stream\models\filters;
 
-use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use Yii;
 
@@ -26,15 +25,23 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
-        if ($this->streamQuery instanceof ActivityStreamQuery && $this->streamQuery->activity) {
+        if (!$this->allowStateContent()) {
             return;
         }
 
         if ($this->allowPinContent()) {
             $this->fetchScheduledContent();
-        } else {
-            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_SCHEDULED];
+        } elseif (!Yii::$app->user->isGuest) {
+            $this->streamQuery->stateFilterCondition[] = $this->getScheduledCondition();
         }
+    }
+
+    private function getScheduledCondition(): array
+    {
+        return ['AND',
+            ['content.state' => Content::STATE_SCHEDULED],
+            ['content.created_by' => Yii::$app->user->id]
+        ];
     }
 
     /**
@@ -43,10 +50,7 @@ class ScheduledContentStreamFilter extends StreamQueryFilter
     private function fetchScheduledContent(): void
     {
         $scheduledQuery = clone $this->query;
-        $scheduledQuery->andWhere([
-            'AND', ['content.state' => Content::STATE_SCHEDULED],
-            ['content.created_by' => Yii::$app->user->id]]
-        );
+        $scheduledQuery->andWhere($this->getScheduledCondition());
         $scheduledQuery->limit(100);
         $this->scheduledContent = $scheduledQuery->all();
     }

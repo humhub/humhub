@@ -12,7 +12,6 @@ use Codeception\Module;
  */
 class TestHelper extends Module
 {
-
     /**
      * Method called before any suite tests run. Loads User fixture login user
      * to use in acceptance and functional tests.
@@ -20,7 +19,7 @@ class TestHelper extends Module
      */
     public function _beforeSuite($settings = [])
     {
-        include __DIR__.'/../functional/_bootstrap.php';
+        include __DIR__ . '/../functional/_bootstrap.php';
     }
 
 }

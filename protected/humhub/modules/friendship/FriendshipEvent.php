@@ -8,24 +8,24 @@
 
 namespace humhub\modules\friendship;
 
+use humhub\modules\user\models\User;
 use yii\base\Event;
 
 /**
  * FriendshipEvent
- * 
+ *
  * @since 1.2
  * @author Luke
  */
 class FriendshipEvent extends Event
 {
-
     /**
-     * @var \humhub\modules\user\models\User first user
+     * @var User first user
      */
     public $user1;
 
     /**
-     * @var \humhub\modules\user\models\User second user
+     * @var User second user
      */
     public $user2;
 

@@ -19,14 +19,13 @@ use Yii;
  */
 class Controller extends \humhub\components\Controller
 {
-
     /**
      * @inheritdoc
      */
     public $subLayout = "@humhub/modules/admin/views/layouts/main";
 
     /**
-     * @var boolean if true only allows access for system admins else the access is restricted by getAccessRules()
+     * @var bool if true only allows access for system admins else the access is restricted by getAccessRules()
      */
     public $adminOnly = true;
 
@@ -62,12 +61,9 @@ class Controller extends \humhub\components\Controller
     }
 
     /**
-     * Returns access rules for the standard access control behavior
-     *
-     * @return array the access permissions
-     * @see AccessControl
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         // Use by default ManageSettings permission if method is not overwritten by custom module
         if ($this->module->id !== 'admin') {

@@ -44,13 +44,13 @@ use yii\helpers\ArrayHelper;
  */
 abstract class BootstrapComponent extends Widget
 {
-    const TYPE_PRIMARY = 'primary';
-    const TYPE_DEFAULT = 'default';
-    const TYPE_INFO = 'info';
-    const TYPE_WARNING = 'warning';
-    const TYPE_DANGER = 'danger';
-    const TYPE_SUCCESS = 'success';
-    const TYPE_NONE = 'none';
+    public const TYPE_PRIMARY = 'primary';
+    public const TYPE_DEFAULT = 'default';
+    public const TYPE_INFO = 'info';
+    public const TYPE_WARNING = 'warning';
+    public const TYPE_DANGER = 'danger';
+    public const TYPE_SUCCESS = 'success';
+    public const TYPE_NONE = 'none';
 
     public $type;
     public $htmlOptions = [];
@@ -376,7 +376,7 @@ abstract class BootstrapComponent extends Widget
     {
         $text = ($this->encode) ? Html::encode($this->text) : $this->text;
         if ($this->_icon) {
-            return ($this->_iconRight) ? $text.' '.$this->_icon : $this->_icon.' '.$text;
+            return ($this->_iconRight) ? $text . ' ' . $this->_icon : $this->_icon . ' ' . $text;
         }
 
         return $text;

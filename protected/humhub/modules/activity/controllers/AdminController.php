@@ -25,7 +25,7 @@ class AdminController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageSettings::class],

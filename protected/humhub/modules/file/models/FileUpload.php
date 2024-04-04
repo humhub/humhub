@@ -21,7 +21,6 @@ use humhub\modules\file\validators\FileValidator;
  */
 class FileUpload extends File
 {
-
     /**
      * @var UploadedFile the uploaded file
      */

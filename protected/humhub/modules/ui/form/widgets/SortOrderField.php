@@ -11,7 +11,6 @@ namespace humhub\modules\ui\form\widgets;
 use Yii;
 use yii\bootstrap\InputWidget;
 
-
 /**
  * SortOrderField is a uniform form field for setting a numeric sort order for model classes.
  *
@@ -33,7 +32,6 @@ use yii\bootstrap\InputWidget;
  */
 class SortOrderField extends InputWidget
 {
-
     /**
      * @var int the default value
      */

@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140902_091234_session_key_length extends Migration
 {
-
     public function up()
     {
         $this->alterColumn('user_http_session', 'id', 'char(64) NOT NULL');

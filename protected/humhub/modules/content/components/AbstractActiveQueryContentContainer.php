@@ -19,7 +19,7 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
      *
      * @var int
      */
-    const MAX_SEARCH_NEEDLES = 5;
+    public const MAX_SEARCH_NEEDLES = 5;
 
     /**
      * During search, keyword will be walked through and each character of the set will be changed to another

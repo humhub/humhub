@@ -8,14 +8,14 @@
 
 namespace humhub\modules\activity\models;
 
+use humhub\modules\activity\components\MailSummary;
+use humhub\modules\activity\Module;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\models\ContentContainerSetting;
-use Yii;
-use yii\base\Model;
-use yii\base\Exception;
-use humhub\modules\activity\Module;
-use humhub\modules\activity\components\MailSummary;
 use humhub\modules\user\models\User;
+use Yii;
+use yii\base\Exception;
+use yii\base\Model;
 
 /**
  * MailSummaryForm
@@ -25,12 +25,11 @@ use humhub\modules\user\models\User;
  */
 class MailSummaryForm extends Model
 {
-
     /**
      * Space limit modes (include or exclude)
      */
-    const LIMIT_MODE_EXCLUDE = 0;
-    const LIMIT_MODE_INCLUDE = 1;
+    public const LIMIT_MODE_EXCLUDE = 0;
+    public const LIMIT_MODE_INCLUDE = 1;
 
     /**
      * @var array of selected activities to include
@@ -58,7 +57,7 @@ class MailSummaryForm extends Model
     public $user;
 
     /**
-     * @var boolean indicates that custom user settings were loaded
+     * @var bool indicates that custom user settings were loaded
      */
     public $userSettingsLoaded = false;
 
@@ -122,6 +121,7 @@ class MailSummaryForm extends Model
             MailSummary::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Hourly'),
             MailSummary::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Daily'),
             MailSummary::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Weekly'),
+            MailSummary::INTERVAL_MONTHLY => Yii::t('ActivityModule.base', 'Monthly'),
         ];
     }
 
@@ -147,7 +147,7 @@ class MailSummaryForm extends Model
      * If the 'user' attribute is set, the user settings are loaded if present.
      * Otherwise the system defaults will be loaded.
      *
-     * @return boolean
+     * @return bool
      */
     public function loadCurrent()
     {
@@ -175,7 +175,7 @@ class MailSummaryForm extends Model
     /**
      * Saves the current model values to the current user or globally.
      *
-     * @return boolean success
+     * @return bool success
      */
     public function save()
     {
@@ -243,7 +243,7 @@ class MailSummaryForm extends Model
     }
 
     /**
-     * @return boolean
+     * @return bool
      */
     public function canResetAllUsers()
     {

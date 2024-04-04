@@ -19,7 +19,6 @@ use yii\db\IntegrityException;
  */
 class Followed extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -48,7 +47,7 @@ class Followed extends BaseNotification
             throw new IntegrityException('Originator cannot be null.');
         }
 
-        return $this->originator->getUrl();
+        return $this->originator->getUrl(true);
     }
 
     /**

@@ -11,4 +11,3 @@ echo Yii::t('ActivityModule.base', "{displayName} created the new space {spaceNa
     '{displayName}' => $originator->displayName,
     '{spaceName}' => '"' . Helpers::truncateText($source->name, 25) . '"'
 ]);
-?>

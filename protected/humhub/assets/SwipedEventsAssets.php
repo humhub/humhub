@@ -17,7 +17,6 @@ use humhub\components\assets\AssetBundle;
  */
 class SwipedEventsAssets extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

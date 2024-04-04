@@ -8,7 +8,7 @@ return [
     '<strong>Space</strong> Modules' => '<strong>Space</strong>模組',
     '<strong>Space</strong> settings' => '<strong>Space</strong>設定',
     'Actions' => '操作',
-    'Activate' => '啟用',
+    'Enable' => '啟用',
     'Add <strong>Modules</strong>' => '添加<strong>模組</strong>',
     'Advanced access settings' => '進階存取設定',
     'Archive' => '封存',

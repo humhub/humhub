@@ -38,12 +38,13 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
             <div class="row">
                 <div class="col-md-3" data-ui-widget="humhub.content.container.Header" data-ui-init>
-                    <div class="image-upload-container profile-user-photo-container" style="width: 140px; height: 140px;">
+                    <div class="image-upload-container profile-user-photo-container"
+                         style="width: 140px; height: 140px;">
                         <?= Html::img($user->getProfileImage()->getUrl(), [
                             'id' => 'welcome-modal-profile-image',
                             'class' => 'img-profile-header-background',
                             'style' => 'width:100%'
-                        ])?>
+                        ]) ?>
 
                         <div class="image-upload-loader" style="padding-top: 60px;">
                             <?= $profileImageUpload->progress() ?>
@@ -59,7 +60,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     </div>
 
                     <p class="help-block text-center">
-                        <?= Icon::get('arrow-up')?>
+                        <?= Icon::get('arrow-up') ?>
                         <br>
                         <?= Yii::t('TourModule.base', 'Drag a photo here or click to browse your files'); ?>
                     </p>
@@ -84,13 +85,13 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
                     <div class="row">
                         <div class="col-md-12">
-                            <?php echo $form->field($user, 'tags')->widget(ContainerTagPicker::class, ['placeholderMore' => Yii::t('TourModule.base', 'Your skills, knowledge and experience (comma seperated)')]); ?>
+                            <?php echo $form->field($user, 'tagsField')->widget(ContainerTagPicker::class, ['placeholderMore' => Yii::t('TourModule.base', 'Your skills, knowledge and experience')]); ?>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
-                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::class, ['dateFormat' => Yii::$app->formatter->dateInputFormat, 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
+                            <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::class, ['dateFormat' => 'medium', 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                         </div>
                         <div class="col-md-6">
                             <br><br>
@@ -117,7 +118,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         <div class="col-md-12 text-right">
                             <hr>
                             <br>
-                            <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.base', 'Save and close'))?>
+                            <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.base', 'Save and close')) ?>
                         </div>
                     </div>
 

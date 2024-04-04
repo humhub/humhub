@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'TLS / SSL е силно предпочитан в среди с реален трафик, за да се предотврати предаването на пароли в ясен текст.',
     'Base DN' => 'Основен DN',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Определя филтъра, който да се приложи при опит за влизане. %s замества потребителското име в действието за влизане. Пример: "(sAMAccountName=%s)" или "(uid=%s)"',
     'E-Mail Address Attribute' => 'Атрибут на имейл адрес',

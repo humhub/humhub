@@ -5,10 +5,10 @@ use yii\bootstrap\Html;
 use yii\helpers\Url;
 use humhub\modules\user\widgets\PermissionGridEditor;
 
-/** @var $multipleGroups bool **/
-/** @var $group string **/
-/** @var $groups string[] **/
-/** @var $user \humhub\modules\user\models\User  **/
+/** @var $multipleGroups bool * */
+/** @var $group string * */
+/** @var $groups string[] * */
+/** @var $user \humhub\modules\user\models\User  * */
 ?>
 
 <div class="panel-heading">
@@ -29,12 +29,13 @@ use humhub\modules\user\widgets\PermissionGridEditor;
             <ul class="nav nav-tabs" role="tablist">
                 <?php foreach ($groups as $groupId => $groupTitle) : ?>
                     <li role="presentation" class="<?php if ($groupId == $group): ?>active<?php endif; ?>">
-                        <a href="<?= Url::to(['permissions', 'groupId' => $groupId]); ?>" role="tab" ><?= Html::encode($groupTitle); ?></a>
+                        <a href="<?= Url::to(['permissions', 'groupId' => $groupId]); ?>"
+                           role="tab"><?= Html::encode($groupTitle); ?></a>
                     </li>
                 <?php endforeach; ?>
             </ul>
         </div>
-        <br />
+        <br/>
     <?php endif; ?>
 
     <div class="tab-content">

@@ -282,7 +282,7 @@ humhub.module('file', function (module, require, $) {
             }
 
             this.$form.append('<input type="hidden" name="' + name + '" value="' + file.guid + '">');
-            if (this.preview) {
+            if (this.preview && (typeof humhub.prosemirrorFileHandler === 'undefined' || humhub.prosemirrorFileHandler === false)) {
                 this.preview.show();
                 this.preview.add(file);
             }
@@ -491,12 +491,21 @@ humhub.module('file', function (module, require, $) {
         inputField.removeAttr('accept');
     }
 
-    var getFileUrl = function (guid, download) {
-        var tmpl = download ? module.config.url.download : module.config.url.load;
-        return tmpl.replace('-guid-', guid);
+    var getFileUrl = function (guid, mode) {
+        var url = module.config.url.load;
+
+        if (typeof mode !== 'undefined') {
+            if (mode === 'download' || mode === true || mode === 1) {
+                url = module.config.url.download
+            } else if (mode === 'view') {
+                url = module.config.url.view;
+            }
+        }
+
+        return url.replace('-guid-', guid);
     };
 
-    var filterFileUrl = function (url, download) {
+    var filterFileUrl = function (url, mode) {
         var result = {
             url: url,
             guid: null
@@ -504,7 +513,7 @@ humhub.module('file', function (module, require, $) {
 
         if (url.indexOf('file-guid:') === 0 || url.indexOf('file-guid-') === 0) {
             result.guid = url.substr(10, url.length);
-            result.url = humhub.modules.file.getFileUrl(result.guid, download);
+            result.url = humhub.modules.file.getFileUrl(result.guid, mode);
         }
 
         return result;
@@ -544,6 +553,21 @@ humhub.module('file', function (module, require, $) {
             });
 
             upload.finish();
+        });
+
+        // Bootstrap 3 drop-down menu auto dropup according to screen position
+        // Must be removed when Humhub uses Bootstrap 4+
+        var dropdownButtonSelector = '.upload-buttons > .btn-group';
+        $(document).on("shown.bs.dropdown", dropdownButtonSelector, function () {
+            var $ul = $(this).children(".dropdown-menu");
+            var $button = $(this).children(".dropdown-toggle");
+            var ulOffset = $ul.offset();
+            var spaceUp = (ulOffset.top - $button.height() - $ul.height()) - $(window).scrollTop();
+            var spaceDown = $(window).scrollTop() + $(window).height() - (ulOffset.top + $ul.height());
+            if (spaceDown < 0 && (spaceUp >= 0 || spaceUp > spaceDown))
+                $(this).addClass("dropup");
+        }).on("hidden.bs.dropdown", dropdownButtonSelector, function () {
+            $(this).removeClass("dropup");
         });
     };
 

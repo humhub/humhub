@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m170119_160740_initial extends Migration
 {
-
     public function up()
     {
         $this->createTable('live', [

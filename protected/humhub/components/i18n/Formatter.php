@@ -17,7 +17,6 @@ use yii\base\InvalidArgumentException;
  */
 class Formatter extends \yii\i18n\Formatter
 {
-
     /**
      * @inheritdoc
      */
@@ -37,7 +36,7 @@ class Formatter extends \yii\i18n\Formatter
     {
         parent::init();
 
-        if (Yii::$app->params['installed'] && Yii::$app->getModule('admin') !== null && !empty(Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat'))) {
+        if (Yii::$app->isInstalled() && Yii::$app->getModule('admin') !== null && !empty(Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat'))) {
             $this->dateInputFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         }
     }

@@ -8,17 +8,18 @@
 
 namespace humhub\modules\file\actions;
 
+use humhub\helpers\DataTypeHelper;
 use humhub\libs\Html;
-use humhub\modules\file\libs\ImageHelper;
-use Yii;
-use yii\base\Action;
-use yii\web\UploadedFile;
-use humhub\libs\Helpers;
-use humhub\modules\file\models\FileUpload;
-use humhub\modules\file\libs\FileHelper;
-use humhub\modules\file\models\File;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\libs\ImageHelper;
+use humhub\modules\file\models\File;
+use humhub\modules\file\models\FileUpload;
+use Yii;
+use yii\base\Action;
+use yii\db\ActiveRecord;
+use yii\web\UploadedFile;
 
 /**
  * UploadAction provides an Ajax/JSON way to upload new files
@@ -28,7 +29,6 @@ use humhub\modules\content\components\ContentAddonActiveRecord;
  */
 class UploadAction extends Action
 {
-
     /**
      * The record to whom this files belongs to.
      * Optional, since "free" files can also attached to a record later.
@@ -136,8 +136,8 @@ class UploadAction extends Action
         }
 
 
-        if ($model != '' && $pk != '' && Helpers::CheckClassType($model, \yii\db\ActiveRecord::class)) {
-
+        /** @var ActiveRecord|string $model */
+        if ($model != '' && $pk != '' && $model = DataTypeHelper::matchClassType($model, ActiveRecord::class, true)) {
             $record = $model::findOne(['id' => $pk]);
             if ($record !== null && ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord)) {
                 if ($record->content->canEdit()) {

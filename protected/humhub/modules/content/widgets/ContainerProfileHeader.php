@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\user\controllers\ImageController;
@@ -91,7 +90,7 @@ class ContainerProfileHeader extends JsWidget
         $this->coverUploadName = $this->imageUploadName = 'images[]';
         $this->classPrefix = 'profile';
 
-        if(!Yii::$app->user->isGuest) {
+        if (!Yii::$app->user->isGuest) {
             /** @TODO move this out of ImageController layer... */
             $this->canEdit = ImageController::canEditProfileImage($this->container);
         }

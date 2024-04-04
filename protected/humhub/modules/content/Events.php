@@ -13,11 +13,11 @@ use humhub\commands\IntegrityController;
 use humhub\components\Event;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\search\libs\SearchHelper;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
+use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
@@ -27,7 +27,6 @@ use yii\helpers\Console;
  */
 class Events extends BaseObject
 {
-
     /**
      * Callback when a user is soft deleted.
      *
@@ -100,41 +99,13 @@ class Events extends BaseObject
      */
     public static function onWallEntryAddonInit($event)
     {
-        $event->sender->addWidget(widgets\WallEntryLinks::class, [
-            'object' => $event->sender->object,
-        ], ['sortOrder' => 10]
+        $event->sender->addWidget(
+            widgets\WallEntryLinks::class,
+            [
+                'object' => $event->sender->object,
+            ],
+            ['sortOrder' => 10]
         );
-    }
-
-    /**
-     * On rebuild of the search index, rebuild all user records
-     *
-     * @param Event $event
-     */
-    public static function onSearchRebuild($event)
-    {
-        foreach (Content::find()->each() as $content) {
-            /* @var Content $content */
-            $contentObject = $content->getPolymorphicRelation();
-            if ($contentObject instanceof Searchable && $content->getStateService()->isPublished()) {
-                Yii::$app->search->add($contentObject);
-            }
-        }
-    }
-
-    /**
-     * After a components\ContentActiveRecord was saved
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onContentActiveRecordSave($event)
-    {
-        /** @var ContentActiveRecord $record */
-        $record = $event->sender;
-
-        if ($record->content->getStateService()->isPublished()) {
-            SearchHelper::queueUpdate($record);
-        }
     }
 
     /**
@@ -146,7 +117,8 @@ class Events extends BaseObject
     {
         /** @var ContentActiveRecord $record */
         $record = $event->sender;
-        SearchHelper::queueDelete($record);
+
+        (new ContentSearchService($record->content))->delete();
     }
 
     /**
@@ -171,10 +143,6 @@ class Events extends BaseObject
         }
     }
 
-    private static function getModule(): Module
-    {
-        return Yii::$app->getModule('content');
-    }
 
     private static function canPublishScheduledContent(): bool
     {
@@ -190,4 +158,8 @@ class Events extends BaseObject
         }
     }
 
+    private static function getModule(): Module
+    {
+        return Yii::$app->getModule('content');
+    }
 }

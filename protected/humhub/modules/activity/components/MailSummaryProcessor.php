@@ -8,11 +8,11 @@
 
 namespace humhub\modules\activity\components;
 
+use Exception;
 use humhub\modules\activity\Module;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Console;
-use humhub\modules\activity\components\MailSummary;
-use humhub\modules\user\models\User;
 
 /**
  * MailSummaryProcessor is called by cron on given intervals (daily or hourly)
@@ -23,7 +23,6 @@ use humhub\modules\user\models\User;
  */
 class MailSummaryProcessor
 {
-
     /**
      * Processes mail summary for given interval
      *
@@ -38,20 +37,19 @@ class MailSummaryProcessor
         $processed = 0;
         $mailsSent = 0;
 
-        if ($interval == MailSummary::INTERVAL_DAILY) {
-            if ($interactive) {
-                Console::startProgress($processed, $totalUsers, 'Sending daily e-mail summary to users... ', false);
-            }
-        } elseif ($interval === MailSummary::INTERVAL_HOURLY) {
-            if ($interactive) {
-                Console::startProgress($processed, $totalUsers, 'Sending hourly e-mail summary to users... ', false);
-            }
-        } elseif ($interval === MailSummary::INTERVAL_WEEKLY) {
-            if ($interactive) {
-                Console::startProgress($processed, $totalUsers, 'Sending weekly e-mail summary to users... ', false);
-            }
-        } else {
+        $intervalNames = [
+            MailSummary::INTERVAL_HOURLY => 'hourly',
+            MailSummary::INTERVAL_DAILY => 'daily',
+            MailSummary::INTERVAL_WEEKLY => 'weekly',
+            MailSummary::INTERVAL_MONTHLY => 'monthly',
+        ];
+
+        if (!array_key_exists($interval, $intervalNames)) {
             return;
+        }
+
+        if ($interactive) {
+            Console::startProgress($processed, $totalUsers, 'Sending ' . $intervalNames[$interval] . ' e-mail summary to users... ', false);
         }
 
         foreach ($users->each() as $user) {
@@ -60,15 +58,15 @@ class MailSummaryProcessor
             try {
                 if (self::checkUser($user, $interval)) {
                     $mailSummary = Yii::createObject([
-                                'class' => MailSummary::class,
-                                'user' => $user,
-                                'interval' => $interval
+                        'class' => MailSummary::class,
+                        'user' => $user,
+                        'interval' => $interval
                     ]);
                     if ($mailSummary->send()) {
                         $mailsSent++;
                     }
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 Yii::error('Could not send activity mail to: ' . $user->displayName . ' (' . $ex->getMessage() . ')', 'activity');
             }
 
@@ -76,7 +74,7 @@ class MailSummaryProcessor
             Yii::$app->getModule('activity')->settings->flushContentContainer($user);
 
             if ($interactive) {
-                Console::updateProgress( ++$processed, $totalUsers);
+                Console::updateProgress(++$processed, $totalUsers);
             }
 
         }
@@ -102,8 +100,8 @@ class MailSummaryProcessor
 
         /* @var $activityModule Module */
         $activityModule = Yii::$app->getModule('activity');
-        $defaultInterval = (int) $activityModule->settings->get('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
-        $wantedInterval = (int) $activityModule->settings->user($user)->get('mailSummaryInterval', $defaultInterval);
+        $defaultInterval = (int)$activityModule->settings->get('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
+        $wantedInterval = (int)$activityModule->settings->user($user)->get('mailSummaryInterval', $defaultInterval);
 
         return $interval === $wantedInterval;
     }

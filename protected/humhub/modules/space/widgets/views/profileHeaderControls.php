@@ -1,14 +1,16 @@
 <?php
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 
-/* @var $container \humhub\modules\space\models\Space */
+/* @var $container Space */
 
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\FollowButton;
 use humhub\modules\space\widgets\HeaderControls;
 use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\space\widgets\HeaderCounterSet;
 use humhub\modules\space\widgets\InviteButton;
 use humhub\modules\space\widgets\MembershipButton;
+use humhub\modules\ui\view\components\View;
 
 ?>
 
@@ -23,7 +25,10 @@ use humhub\modules\space\widgets\MembershipButton;
                         [InviteButton::class, ['space' => $container], ['sortOrder' => 10]],
                         [MembershipButton::class, [
                             'space' => $container,
-                            'options' => ['becomeMember' => ['mode' => 'link']],
+                            'options' => [
+                                'becomeMember' => ['mode' => 'link'],
+                                'acceptInvite' => ['mode' => 'link']
+                            ],
                         ], ['sortOrder' => 20]],
                         [FollowButton::class, [
                             'space' => $container,
@@ -37,4 +42,3 @@ use humhub\modules\space\widgets\MembershipButton;
         </div>
     </div>
 </div>
-

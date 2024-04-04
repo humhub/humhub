@@ -8,9 +8,10 @@
 
 namespace humhub\modules\comment\widgets;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Widget;
-use humhub\modules\comment\Module;
 use humhub\modules\comment\models\Comment as CommentModel;
+use humhub\modules\comment\Module;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\handler\FileHandlerCollection;
 use Yii;
@@ -39,7 +40,7 @@ class Form extends Widget
     /**
      * @var string
      */
-    public $mentioningUrl = '/search/mentioning/content';
+    public $mentioningUrl = '/user/mentioning/content';
 
     /**
      * @var bool
@@ -81,7 +82,7 @@ class Form extends Widget
         }
 
         return $this->render('form', [
-            'objectModel' => get_class($this->object),
+            'objectModel' => PolymorphicRelation::getObjectModel($this->object),
             'objectId' => $this->object->getPrimaryKey(),
             'id' => $this->object->getUniqueId(),
             'model' => $this->model,

@@ -8,10 +8,11 @@
 
 namespace humhub\modules\admin\widgets;
 
+use humhub\widgets\GridView;
+
 /**
  * @inheritdoc
  */
-class SpaceGridView extends \humhub\widgets\GridView
+class SpaceGridView extends GridView
 {
-
 }

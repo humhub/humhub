@@ -37,7 +37,9 @@ class IsOnlineService
 
     public function getStatus(): bool
     {
-        return $this->isEnabled() && Yii::$app->cache->exists($this->getCacheKey());
+        return
+            $this->isEnabled()
+            && Yii::$app->cache->exists($this->getCacheKey());
     }
 
     public function isEnabled(): bool

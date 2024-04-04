@@ -15,10 +15,10 @@ use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $objectModel string */
-/* @var $objectId integer */
+/* @var $objectId int */
 /* @var $model Comment */
 /* @var $id string unique object id */
-/* @var $isNestedComment boolean */
+/* @var $isNestedComment bool */
 /* @var $contentModule Module */
 /* @var $mentioningUrl string */
 /* @var $isHidden bool */
@@ -68,12 +68,12 @@ $placeholder = ($isNestedComment)
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-info',
+                'cssButtonClass' => 'btn-sm btn-default',
             ]);
             echo FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-info btn-sm',
+                'cssButtonClass' => 'btn-sm btn-default',
                 'pullRight' => true,
             ]);
             echo Button::info()

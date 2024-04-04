@@ -7,6 +7,8 @@ use humhub\modules\comment\permissions\CreateComment;
 use humhub\modules\comment\notifications\NewComment;
 use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * CommentModule adds the comment content addon functionalities.
@@ -16,7 +18,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * Maximum comments to load at once
      *
@@ -75,9 +76,9 @@ class Module extends \humhub\components\Module
      * Checks if given content object can be commented by current user
      *
      * @param Comment|ContentActiveRecord $object
-     * @return boolean can comment
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @return bool can comment
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function canComment($object)
     {

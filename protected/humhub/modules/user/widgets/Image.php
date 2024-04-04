@@ -23,7 +23,7 @@ use Yii;
 class Image extends BaseImage
 {
     /**
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 
@@ -34,12 +34,14 @@ class Image extends BaseImage
 
     public bool $hideOnlineStatus = false;
 
+    public bool $showSelfOnlineStatus = false;
+
     /**
      * @inheritdoc
      */
     public function run()
     {
-        if ($this->user->status == User::STATUS_SOFT_DELETED) {
+        if ($this->user->status === User::STATUS_SOFT_DELETED) {
             $this->link = false;
         }
 
@@ -50,7 +52,7 @@ class Image extends BaseImage
             $this->imageOptions['data-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
             $this->imageOptions['data-html'] = 'true';
-            $this->imageOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->user->displayName);
+            $this->imageOptions['data-original-title'] = $this->tooltipText ?: Html::encode($this->user->displayName);
             Html::addCssClass($this->imageOptions, 'tt');
         }
 
@@ -60,7 +62,11 @@ class Image extends BaseImage
         $html = Html::img($this->user->getProfileImage()->getUrl(), $this->imageOptions);
 
         $isOnlineService = new IsOnlineService($this->user);
-        if (!$this->hideOnlineStatus && $isOnlineService->isEnabled()) {
+        if (
+            !$this->hideOnlineStatus
+            && ($this->showSelfOnlineStatus || $this->user->id !== Yii::$app->user->id)
+            && $isOnlineService->isEnabled()
+        ) {
             $imgSize = 'img-size-medium';
             if ($this->width < 28) {
                 $imgSize = 'img-size-small';

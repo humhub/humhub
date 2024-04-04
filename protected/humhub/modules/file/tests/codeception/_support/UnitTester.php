@@ -8,6 +8,9 @@
 
 namespace file;
 
+use Codeception\Actor;
+use Codeception\Lib\Friend;
+
 /**
  * Inherited Methods
  * @method void wantToTest($text)
@@ -19,15 +22,15 @@ namespace file;
  * @method void am($role)
  * @method void lookForwardTo($achieveValue)
  * @method void comment($description)
- * @method \Codeception\Lib\Friend haveFriend($name, $actorClass = null)
+ * @method Friend haveFriend($name, $actorClass = null)
  *
  * @SuppressWarnings(PHPMD)
-*/
-class UnitTester extends \Codeception\Actor
+ */
+class UnitTester extends Actor
 {
     use _generated\UnitTesterActions;
 
-   /**
-    * Define custom actions here
-    */
+    /**
+     * Define custom actions here
+     */
 }

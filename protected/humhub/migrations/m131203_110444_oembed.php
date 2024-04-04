@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m131203_110444_oembed extends Migration
 {
-
     public function up()
     {
         $this->createTable('url_oembed', [

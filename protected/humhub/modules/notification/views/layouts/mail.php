@@ -22,7 +22,7 @@
                                     <!-- start content top-->
                                     <tr>
                                         <td valign="top" align="left">
-                                            <?=  $content ?>
+                                            <?= $content ?>
                                         </td>
                                     </tr>
                                     <!--start space height -->

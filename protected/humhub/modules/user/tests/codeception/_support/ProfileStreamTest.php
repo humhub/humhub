@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\user\tests\codeception\_support;
-
 
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;

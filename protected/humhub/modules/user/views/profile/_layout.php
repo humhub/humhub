@@ -4,7 +4,6 @@ use humhub\modules\user\widgets\ProfileHeader;
 use humhub\modules\user\widgets\ProfileMenu;
 use humhub\widgets\FooterMenu;
 
-
 $user = $this->context->contentContainer;
 
 ?>

@@ -8,7 +8,6 @@
 
 namespace humhub\widgets;
 
-
 use humhub\modules\ui\menu\widgets\Menu;
 
 /**
@@ -19,5 +18,4 @@ use humhub\modules\ui\menu\widgets\Menu;
  */
 class BaseMenu extends Menu
 {
-
 }

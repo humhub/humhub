@@ -19,7 +19,6 @@ use yii\helpers\Url;
  */
 class LockCommentsLink extends Widget
 {
-
     /**
      * @var ContentActiveRecord
      */

@@ -136,10 +136,7 @@ class InviteForm extends Model
         // Allow users to perform this action if this is allowed by config file
         // Pre-check if user is member of the space in question
         if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
-            $membership = Membership::findOne([
-                'space_id' => $this->space->id,
-                'user_id' => Yii::$app->user->identity->id,
-            ]);
+            $membership = Membership::findMembership($this->space->id, Yii::$app->user->identity->id);
 
             if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                 return true;
@@ -163,7 +160,7 @@ class InviteForm extends Model
     /**
      * Invites selected members immediately
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function inviteMembers()
     {
@@ -216,13 +213,9 @@ class InviteForm extends Model
      */
     private function addUserToInviteList(User $user): bool
     {
-        $membership = Membership::findOne([
-            'space_id' => $this->space->id,
-            'user_id' => $user->id,
-            'status' => Membership::STATUS_MEMBER,
-        ]);
+        $membership = Membership::findMembership($this->space->id, $user->id);
 
-        if ($membership) {
+        if ($membership && (int)$membership->status === Membership::STATUS_MEMBER) {
             return false;
         }
 
@@ -293,8 +286,10 @@ class InviteForm extends Model
 
                 $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]));
+                    $this->addError(
+                        $attribute,
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email])
+                    );
                     continue;
                 }
 

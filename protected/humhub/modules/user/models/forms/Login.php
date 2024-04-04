@@ -8,13 +8,11 @@ use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\base\Model;
 
-
 /**
  * LoginForm is the model behind the login form.
  */
 class Login extends Model
 {
-
     /**
      * @var string user's username or email address
      */
@@ -26,7 +24,7 @@ class Login extends Model
     public $password;
 
     /**
-     * @var boolean remember user
+     * @var bool remember user
      */
     public $rememberMe = false;
 
@@ -62,8 +60,8 @@ class Login extends Model
     public function attributeLabels()
     {
         return [
-            'username' => Yii::t('UserModule.auth', 'username or email'),
-            'password' => Yii::t('UserModule.auth', 'password'),
+            'username' => Yii::t('UserModule.auth', 'Username or Email'),
+            'password' => Yii::t('UserModule.auth', 'Password'),
             'rememberMe' => Yii::t('UserModule.auth', 'Remember me'),
         ];
     }

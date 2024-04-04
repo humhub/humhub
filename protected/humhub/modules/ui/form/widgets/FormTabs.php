@@ -18,7 +18,6 @@ use yii\base\Model;
  */
 class FormTabs extends Tabs
 {
-
     /**
      * @var TabbedFormModel
      */

@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\modules\ui\icon\components;
 
 use humhub\modules\ui\icon\widgets\Icon;

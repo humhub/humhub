@@ -119,7 +119,7 @@ class SettingsManager extends BaseSettingsManager
      * changed at runtime.
      *
      * @param string $name
-     * @return boolean
+     * @return bool
      */
     public function isFixed(string $name): bool
     {

@@ -1,17 +1,19 @@
 <?php
 
+use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\admin\assets\AdminAsset;
+use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
-use humhub\widgets\LoaderWidget;
 use yii\helpers\Url;
+use yii\web\View;
 
 /**
- * @var $this \yii\web\View
- * @var $module \humhub\components\Module
- * @var $model \humhub\modules\admin\models\forms\ModuleSetAsDefaultForm
+ * @var $this View
+ * @var $module Module
+ * @var $model ModuleSetAsDefaultForm
  */
 
 AdminAsset::register($this);
@@ -48,12 +50,19 @@ AdminAsset::register($this);
                     </div>
                 <?php endif; ?>
                 <br>
+                <?php if ($model->mustConfirmModuleDeactivation()) : ?>
+                    <div class="col-md-12">
+                        <?= $form->field($model, 'moduleDeactivationConfirmed')->checkbox() ?>
+                    </div>
+                <?php endif; ?>
             </div>
         </div>
 
         <div class="modal-footer">
             <?= Html::a(
-                Yii::t('AdminModule.modules', 'Save'), '#', [
+                Yii::t('AdminModule.modules', 'Save'),
+                '#',
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'action-click' => 'admin.moduleSetAsDefault',
@@ -62,7 +71,8 @@ AdminAsset::register($this);
                 ]
             ) ?>
             <?= Html::button(
-                Yii::t('AdminModule.modules', 'Close'), [
+                Yii::t('AdminModule.modules', 'Close'),
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'dismiss' => 'modal',

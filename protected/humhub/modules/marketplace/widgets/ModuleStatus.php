@@ -23,7 +23,6 @@ use Yii;
  */
 class ModuleStatus extends Widget
 {
-
     public Module $module;
 
     /**
@@ -55,13 +54,13 @@ class ModuleStatus extends Widget
 
         if ($this->module->isProOnly()) {
             $this->_status = 'professional';
-        } else if ($this->module->featured) {
+        } elseif ($this->module->featured) {
             $this->_status = 'featured';
-        } else if (!$this->module->isThirdParty) {
+        } elseif (!$this->module->isThirdParty) {
             $this->_status = 'official';
-        } else if ($this->module->isPartner) {
+        } elseif ($this->module->isPartner) {
             $this->_status = 'partner';
-        } else if ($this->module->isDeprecated) {
+        } elseif ($this->module->isDeprecated) {
             $this->_status = 'deprecated';
         } else {
             $this->_status = 'none';

@@ -11,10 +11,12 @@ namespace humhub\modules\live\controllers;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\live\components\LiveEvent;
+use humhub\modules\live\driver\Poll;
 use humhub\modules\live\models\Live;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
 use yii\base\Exception;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 
 /**
@@ -63,7 +65,7 @@ class PollController extends Controller
         }
 
         if (parent::beforeAction($action)) {
-            if (!Yii::$app->live->driver instanceof \humhub\modules\live\driver\Poll) {
+            if (!Yii::$app->live->driver instanceof Poll) {
                 throw new Exception('Polling is only available when using the live database driver!');
             }
 
@@ -134,7 +136,7 @@ class PollController extends Controller
      * Checks if the live event is visible for the current user.
      *
      * @param LiveEvent $liveEvent
-     * @return boolean is visible
+     * @return bool is visible
      */
     protected function checkVisibility(LiveEvent $liveEvent)
     {
@@ -145,7 +147,7 @@ class PollController extends Controller
      * Creates a query to lookup live events.
      *
      * @param int $lastQueryTime the last lookup
-     * @return \yii\db\ActiveQuery the query
+     * @return ActiveQuery the query
      */
     protected function buildLookupQuery($lastQueryTime)
     {

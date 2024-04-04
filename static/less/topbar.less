@@ -94,6 +94,10 @@
             span {
                 font-size: 12px;
             }
+
+            #user-account-image {
+                margin-bottom: 0;
+            }
         }
     }
 
@@ -105,6 +109,28 @@
     .topbar-actions {
         position: relative;
         z-index: 3;
+    }
+
+    .dropdown-menu {
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 0 8px #CCC;
+        top: 105%;
+        .arrow {
+            position: absolute;
+            display: block;
+            width: 0;
+            height: 0;
+            border-color: transparent;
+            border-style: solid;
+            border-width: 8px;
+            left: 50%;
+            margin-left: -18px;
+            border-top-width: 0;
+            border-bottom-color: #fff;
+            top: -16px;
+            z-index: 1035;
+        }
     }
 
     .notifications {
@@ -132,39 +158,6 @@
             position: absolute;
             top: 4px;
             right: -2px;
-        }
-
-        .arrow:after {
-            position: absolute;
-            display: block;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            border-width: 10px;
-            content: " ";
-            top: 1px;
-            margin-left: -10px;
-            border-top-width: 0;
-            border-bottom-color: #fff;
-            z-index: 1035;
-        }
-
-        .arrow {
-            position: absolute;
-            display: block;
-            width: 0;
-            height: 0;
-            border-color: transparent;
-            border-style: solid;
-            z-index: 1001;
-            border-width: 11px;
-            left: 50%;
-            margin-left: -18px;
-            border-top-width: 0;
-            border-bottom-color: rgba(0, 0, 0, 0.15);
-            top: -19px;
-            z-index: 1035;
         }
 
         .dropdown-menu {
@@ -209,13 +202,17 @@
 
     .dropdown-footer {
         margin: 10px 10px 5px;
+
         .btn.btn-default {
             border: 1px solid @default;
             box-shadow: none;
+            width: 100%;
+
             &:hover {
                 border-color: @background3;
                 background: @background3;
             }
+
             &:active {
                 border-color: @text-color-secondary;
                 background: white;

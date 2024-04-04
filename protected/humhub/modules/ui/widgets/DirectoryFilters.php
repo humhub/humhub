@@ -9,6 +9,7 @@ namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\widgets\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -24,7 +25,7 @@ abstract class DirectoryFilters extends Widget
     /**
      * @var array Filters
      */
-    protected $filters = [];
+    public $filters = [];
 
     /**
      * @var string Main page URL, used to reset and submit a form with filters
@@ -36,6 +37,13 @@ abstract class DirectoryFilters extends Widget
      * @since 1.11
      */
     public $paginationUsed = true;
+
+    /**
+     * @var array|null Additional form data, can be used for JavaScript actions:
+     *      'action-url' - URL to submit the filters form by AJAX request
+     * @since 1.16
+     */
+    public ?array $data = null;
 
     /**
      * @inheritDoc
@@ -63,18 +71,36 @@ abstract class DirectoryFilters extends Widget
      */
     public function run()
     {
-        return $this->render('@humhub/modules/ui/widgets/views/directoryFilters', ['directoryFilters' => $this]);
+        return $this->render('@humhub/modules/ui/widgets/views/directoryFilters', [
+            'directoryFilters' => $this,
+            'options' => $this->getOptions()
+        ]);
+    }
+
+    protected function getOptions(): array
+    {
+        $options = ['class' => 'form-search'];
+
+        if (is_array($this->data)) {
+            $options['data'] = $this->data;
+        }
+
+        return $options;
     }
 
     public function renderFilters(): string
     {
         $filtersHtml = '';
         foreach ($this->filters as $filter => $data) {
-            $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
-                'directoryFilters' => $this,
-                'filter' => $filter,
-                'data' => array_merge(self::getDefaultFilterData(), $data),
-            ]);
+            $data = array_merge(self::getDefaultFilterData(), $data);
+            $filterInput = $this->renderFilterInput($filter, $data);
+
+            if ($filterInput !== $data['beforeInput'] . $data['afterInput']) {
+                $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
+                    'data' => $data,
+                    'filterInput' => $filterInput
+                ]);
+            }
         }
         return $filtersHtml;
     }
@@ -134,10 +160,26 @@ abstract class DirectoryFilters extends Widget
             case 'info':
                 $inputHtml = $data['info'];
                 break;
+
             case 'widget':
                 $inputOptions['data-action-change'] = 'cards.applyFilters';
-                $inputHtml = $data['widget']::widget(array_merge(['name' => $filter, 'options' => $inputOptions], $data['widgetOptions']));
+                $options = ['name' => $filter, 'options' => $inputOptions];
+                if (isset($data['widgetOptions']) && is_array($data['widgetOptions'])) {
+                    $options = array_merge($options, $data['widgetOptions']);
+                }
+                $inputHtml = $data['widget']::widget($options);
                 break;
+
+            case 'date':
+                $format = $data['format'] ?? 'short';
+                $value = self::getValue($filter);
+                $inputHtml = DatePicker::widget([
+                    'name' => $filter,
+                    'value' => empty($value) ? '' : Yii::$app->formatter->asDate($value, $format),
+                    'dateFormat' => $format
+                ]);
+                break;
+
             case 'input':
             case 'text':
             default:

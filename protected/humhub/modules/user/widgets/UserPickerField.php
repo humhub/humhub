@@ -2,10 +2,9 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\user\models\User;
 use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -80,22 +79,27 @@ class UserPickerField extends BasePicker
         $allowMultiple = $this->maxSelection !== 1;
         $result['placeholder'] = ($this->placeholder != null)
             ? $this->placeholder
-            : Yii::t('UserModule.chooser', 'Select {n,plural,=1{user} other{users}}',
-                ['n' => ($allowMultiple) ? 2 : 1]);
+            : Yii::t(
+                'UserModule.chooser',
+                'Select {n,plural,=1{user} other{users}}',
+                ['n' => ($allowMultiple) ? 2 : 1]
+            );
 
         if ($this->placeholder && !$this->placeholderMore) {
             $result['placeholder-more'] = $this->placeholder;
         } else {
             $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore
-                : Yii::t('UserModule.chooser', 'Select user...');
+                : Yii::t('UserModule.chooser', 'Add user');
         }
 
         $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');
 
         if ($this->maxSelection) {
-            $result['maximum-selected'] = Yii::t('UserModule.chooser',
+            $result['maximum-selected'] = Yii::t(
+                'UserModule.chooser',
                 'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.',
-                ['n' => $this->maxSelection]);
+                ['n' => $this->maxSelection]
+            );
         }
         return $result;
     }

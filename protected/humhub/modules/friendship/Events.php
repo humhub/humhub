@@ -9,24 +9,25 @@
 namespace humhub\modules\friendship;
 
 use Yii;
+use yii\base\BaseObject;
+use yii\base\Event;
 use yii\helpers\Url;
 
 /**
  * Events provides callbacks for all defined module events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * Add friends navigation entry to account menu
-     * 
-     * @param \yii\base\Event $event
+     *
+     * @param Event $event
      */
     public static function onAccountMenuInit($event)
     {
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $event->sender->addItem([
                 'label' => Yii::t('FriendshipModule.base', 'Friends'),
                 'url' => Url::to(['/friendship/manage']),

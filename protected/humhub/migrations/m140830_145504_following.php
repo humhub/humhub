@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140830_145504_following extends Migration
 {
-
     public function up()
     {
 

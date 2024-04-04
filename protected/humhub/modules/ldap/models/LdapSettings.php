@@ -21,16 +21,15 @@ use yii\base\Model;
  */
 class LdapSettings extends Model
 {
-
-    const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
+    public const PASSWORD_FIELD_DUMMY = '---HIDDEN---';
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $enabled;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $refreshUsers;
 
@@ -104,8 +103,8 @@ class LdapSettings extends Model
      */
     public $encryptionTypes = [
         '' => 'None',
-        'tls' => 'TLS (aka SSLV2)',
-        'ssl' => 'SSL',
+        'tls' => 'StartTLS',
+        'ssl' => 'SSL/TLS',
     ];
 
     /**
@@ -159,7 +158,6 @@ class LdapSettings extends Model
     public function attributeHints()
     {
         return [
-            'encryption' => Yii::t('LdapModule.base', 'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.'),
             'username' => Yii::t('LdapModule.base', 'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.'),
             'passwordField' => Yii::t('LdapModule.base', 'The default credentials password (used only with username above).'),
             'baseDn' => Yii::t('LdapModule.base', 'The default base DN used for searching for accounts.'),
@@ -212,7 +210,7 @@ class LdapSettings extends Model
     /**
      * Saves the form
      *
-     * @return boolean
+     * @return bool
      */
     public function save()
     {
@@ -224,8 +222,9 @@ class LdapSettings extends Model
         $settings->set('port', $this->port);
         $settings->set('encryption', $this->encryption);
         $settings->set('username', $this->username);
-        if ($this->passwordField !== static::PASSWORD_FIELD_DUMMY)
+        if ($this->passwordField !== static::PASSWORD_FIELD_DUMMY) {
             $settings->set('password', $this->passwordField);
+        }
         $settings->set('baseDn', $this->baseDn);
         $settings->set('loginFilter', $this->loginFilter);
         $settings->set('userFilter', $this->userFilter);
@@ -259,7 +258,7 @@ class LdapSettings extends Model
             'baseDn' => $this->baseDn,
             'loginFilter' => $this->loginFilter,
             'userFilter' => $this->userFilter,
-            'autoRefreshUsers' => (boolean)$this->refreshUsers,
+            'autoRefreshUsers' => (bool)$this->refreshUsers,
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute,
@@ -279,5 +278,4 @@ class LdapSettings extends Model
 
         return (bool)$settings->get('enabled');
     }
-
 }

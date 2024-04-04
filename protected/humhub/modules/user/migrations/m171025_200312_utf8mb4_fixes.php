@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m171025_200312_utf8mb4_fixes extends Migration
 {
-
     public function safeUp()
     {
         $this->alterColumn('user_http_session', 'id', 'char(64) NOT NULL');

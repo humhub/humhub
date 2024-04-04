@@ -10,7 +10,6 @@ use tests\codeception\_support\BasePage;
  */
 class AccountSettingsPage extends BasePage
 {
-
     public $route = 'user/account/edit';
 
     public function clickPermissions()

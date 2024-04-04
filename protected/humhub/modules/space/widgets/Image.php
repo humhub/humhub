@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\BaseImage;
 use yii\bootstrap\Html;
 
@@ -17,7 +18,7 @@ use yii\bootstrap\Html;
 class Image extends BaseImage
 {
     /**
-     * @var \humhub\modules\space\models\Space
+     * @var Space
      */
     public $space;
 
@@ -81,12 +82,12 @@ class Image extends BaseImage
         }
 
         return $this->render('@space/widgets/views/image', [
-                    'space' => $this->space,
-                    'acronym' => $this->getAcronym(),
-                    'link' => $this->link,
-                    'linkOptions' => $this->linkOptions,
-                    'acronymHtmlOptions' => $acronymHtmlOptions,
-                    'imageHtmlOptions' => $imageHtmlOptions
+            'space' => $this->space,
+            'acronym' => $this->getAcronym(),
+            'link' => $this->link,
+            'linkOptions' => $this->linkOptions,
+            'acronymHtmlOptions' => $acronymHtmlOptions,
+            'imageHtmlOptions' => $imageHtmlOptions
         ]);
     }
 

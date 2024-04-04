@@ -188,7 +188,7 @@ humhub.module('client', function (module, require, $) {
         } else if (cfg instanceof $.Event) {
             originalEvent = cfg;
             cfg = {};
-        } else if (!object.isString(url)) {
+        } else if (url && !object.isString(url)) {
             cfg = url;
             url = cfg.url;
         }
@@ -422,6 +422,7 @@ humhub.module('client', function (module, require, $) {
     };
 
     var formStateChanged = function ($form) {
+        $form.find(':focus').blur(); // Unfocus in order to update textarea value from RichText editor
         return $form.data('state') && $form.data('state') !== serializeFormState($form);
     };
 

@@ -20,7 +20,6 @@ use Yii;
  */
 class ContentContainerSettingsManager extends BaseSettingsManager
 {
-
     /**
      * @inheritdoc
      */
@@ -38,10 +37,11 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      *
      * @param string $name
      * @param string $default
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
-    public function getInherit($name, $default = null) {
+    public function getInherit($name, $default = null)
+    {
         $result = $this->get($name);
         return ($result !== null) ? $result
             : Yii::$app->getModule($this->moduleId)->settings->get($name, $default);
@@ -54,10 +54,11 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      *
      * @param string $name
      * @param string $default
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
-    public function getSerializedInherit($name, $default = null) {
+    public function getSerializedInherit($name, $default = null)
+    {
         $result = $this->getSerialized($name);
         return ($result !== null) ? $result
             : Yii::$app->getModule($this->moduleId)->settings->getSerialized($name, $default);
@@ -86,7 +87,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      */
     protected function getCacheKey(): string
     {
-        /** @var \humhub\components\SettingActiveRecord $modelClass */
+        /** @var SettingActiveRecord $modelClass */
         $modelClass = $this->modelClass;
         return $modelClass::getCacheKey($this->moduleId, $this->contentContainer->contentcontainer_id);
     }

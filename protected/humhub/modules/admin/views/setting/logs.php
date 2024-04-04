@@ -1,22 +1,28 @@
 <?php
 
+use humhub\modules\admin\models\forms\LogFilterForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 
-/* @var $this \humhub\modules\ui\view\components\View */
-/* @var $logsCount integer */
+/* @var $this View */
+/* @var $logsCount int */
 /* @var $dating string */
 /* @var $limitAgeOptions array */
-/* @var $model \humhub\modules\admin\models\forms\LogFilterForm */
+/* @var $model LogFilterForm */
 ?>
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
 
-<p><?= Yii::t('AdminModule.settings',
-        'Old logs can significantly increase the size of your database while providing little information.') ?>
+<p><?= Yii::t(
+        'AdminModule.settings',
+        'Old logs can significantly increase the size of your database while providing little information.'
+    ) ?>
 </p>
-<p><?= Yii::t('AdminModule.settings',
+<p><?= Yii::t(
+        'AdminModule.settings',
         'Currently there are {count} records in the database dating from {dating}.',
-        ['count' => $logsCount, 'dating' => $dating]) ?>
+        ['count' => $logsCount, 'dating' => $dating]
+    ) ?>
 </p>
 <br>
 

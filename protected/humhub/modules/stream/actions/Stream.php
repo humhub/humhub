@@ -11,6 +11,7 @@ namespace humhub\modules\stream\actions;
 use humhub\components\Request;
 use humhub\modules\stream\events\StreamResponseEvent;
 use humhub\modules\user\models\User;
+use Throwable;
 use Yii;
 use yii\base\Action;
 use yii\base\Exception;
@@ -19,6 +20,7 @@ use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\stream\models\WallStreamQuery;
 use humhub\modules\content\models\Content;
+use yii\base\InvalidConfigException;
 
 /**
  * Stream is the basic action for content streams.
@@ -47,55 +49,55 @@ abstract class Stream extends Action
      * This can be used for adding filters.
      * @since 1.7
      */
-    const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
+    public const EVENT_BEFORE_APPLY_FILTERS = 'beforeApplyFilters';
 
     /**
      * @event Event triggered after stream filter handlers are applied
      * This can be used for last modifications to the query.
      * @since 1.7
      */
-    const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
+    public const EVENT_AFTER_APPLY_FILTERS = 'afterApplyFilters';
 
     /**
      * @event Event triggered after query fetch, can be used to manipulate the
      * stream response. E.g. inject additional entries.
-     *  @since 1.7
+     * @since 1.7
      */
-    const EVENT_AFTER_FETCH = 'afterQueryFetch';
+    public const EVENT_AFTER_FETCH = 'afterQueryFetch';
 
     /**
      * Sort by creation sort value
      */
-    const SORT_CREATED_AT = 'c';
+    public const SORT_CREATED_AT = 'c';
 
     /**
      * Sort by update sort value
      */
-    const SORT_UPDATED_AT = 'u';
+    public const SORT_UPDATED_AT = 'u';
 
     /**
      * @var string
      * @deprecated since 1.6 use ActivityStreamAction
      */
-    const MODE_NORMAL = 'normal';
+    public const MODE_NORMAL = 'normal';
 
     /**
      * @var string
      * @deprecated since 1.6 use ActivityStreamAction
      */
-    const MODE_ACTIVITY = 'activity';
+    public const MODE_ACTIVITY = 'activity';
 
     /**
      * @var string
      * @deprecated since 1.7 use BaseStreamEntryWidget::VIEW_MODE_DASHBOARD
      */
-    const FROM_DASHBOARD = 'dashboard';
+    public const FROM_DASHBOARD = 'dashboard';
 
     /**
      * Maximum wall entries per request
      * @deprecated since 1.7 not in use
      */
-    const MAX_LIMIT = 50;
+    public const MAX_LIMIT = 50;
 
     /**
      * Optional stream user if no user is specified, the current logged in user will be used.
@@ -179,13 +181,13 @@ abstract class Stream extends Action
 
     /**
      * @inheritdoc
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function init()
     {
         parent::init();
 
-        if(!$this->user) {
+        if (!$this->user) {
             $this->user = Yii::$app->user->identity;
         }
 
@@ -198,7 +200,7 @@ abstract class Stream extends Action
         if (!Yii::$app->request->isConsoleRequest) {
             $this->streamQuery->load(Yii::$app->request->get());
 
-            if(!$this->viewContext) {
+            if (!$this->viewContext) {
                 $this->viewContext = Yii::$app->request->get('viewContext');
             }
         }
@@ -229,7 +231,7 @@ abstract class Stream extends Action
      *
      * @param array $options instance attribute options
      * @return StreamQuery
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.6
      */
     protected function initQuery($options = [])
@@ -257,7 +259,7 @@ abstract class Stream extends Action
      * ```
      *
      * When overriding this method, make sure you call the parent implementation at the beginning of your function.
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function beforeApplyFilters()
     {
@@ -309,11 +311,11 @@ abstract class Stream extends Action
         $this->filters = $this->streamQuery->filters;
         $this->user = $this->streamQuery->user;
 
-        if(!$this->streamEntryOptions) {
+        if (!$this->streamEntryOptions) {
             $this->streamEntryOptions = $this->initStreamEntryOptions();
         }
 
-        if($this->streamEntryWidgetClass) {
+        if ($this->streamEntryWidgetClass) {
             $this->streamEntryOptions->overwriteWidgetClass($this->streamEntryWidgetClass);
         }
 
@@ -327,7 +329,7 @@ abstract class Stream extends Action
     {
         $instance = new StreamEntryOptions();
 
-        if($this->viewContext) {
+        if ($this->viewContext) {
             $instance->viewContext($this->viewContext);
         }
 
@@ -336,7 +338,7 @@ abstract class Stream extends Action
 
     /**
      * @inheritdoc
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function run()
     {
@@ -344,7 +346,7 @@ abstract class Stream extends Action
 
         $entries = $this->streamQuery->all();
 
-        if(!empty($entries)) {
+        if (!empty($entries)) {
             $this->addResponseEntries($entries, $response);
         } else {
             $this->handleEmptyResponse($response);
@@ -360,14 +362,14 @@ abstract class Stream extends Action
      *
      * @param StreamResponse $response
      * @throws Exception
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.7
      */
     private function addResponseEntries($entries, StreamResponse $response)
     {
         foreach ($entries as $content) {
             $streamEntry = $this->getStreamEntryResult($content, $this->streamEntryOptions);
-            if($streamEntry) {
+            if ($streamEntry) {
                 $response->addEntry($streamEntry);
             }
         }
@@ -378,14 +380,14 @@ abstract class Stream extends Action
      *
      * @param StreamResponse $response
      * @throws Exception
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.7
      */
     private function handleEmptyResponse(StreamResponse $response)
     {
-        if($this->streamQuery->isSingleContentQuery()) {
+        if ($this->streamQuery->isSingleContentQuery()) {
             $content = Content::findOne(['id' => $this->streamQuery->contentId]);
-            if(!$content) {
+            if (!$content) {
                 $response->setError(400, Yii::t('StreamModule.base', 'The content could not be found.'));
             } elseif (!$content->canView()) {
                 $response->setError(403, Yii::t('StreamModule.base', 'You are not allowed to view this content.'));
@@ -398,7 +400,7 @@ abstract class Stream extends Action
      * @param Content $content
      * @param StreamEntryOptions|null $options
      * @return array|null
-     * @throws \Throwable
+     * @throws Throwable
      */
     private function getStreamEntryResult(Content $content, StreamEntryOptions $options = null)
     {
@@ -412,7 +414,7 @@ abstract class Stream extends Action
             }
 
             return StreamEntryResponse::getAsArray($content, $options);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             // Don't kill the stream action in prod environments in case the rendering of an entry fails.
             if (YII_ENV_PROD) {
                 Yii::error($e);

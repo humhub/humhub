@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Widget;
 
@@ -19,9 +20,8 @@ use yii\base\Widget;
  */
 class Header extends Widget
 {
-
     /**
-     * @var \humhub\modules\space\models\Space the Space which this header belongs to
+     * @var Space the Space which this header belongs to
      */
     public $space;
 

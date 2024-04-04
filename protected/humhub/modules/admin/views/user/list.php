@@ -7,13 +7,14 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
+use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
 /**
  * @var $searchModel UserSearch
- * @var $dataProvider \yii\data\ActiveDataProvider
+ * @var $dataProvider ActiveDataProvider
  * @var $showPendingRegistrations bool
  */
 ?>
@@ -21,7 +22,7 @@ use yii\widgets\ActiveForm;
 <div class="panel-body">
 
     <div class="pull-right">
-        <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('add')->sm()->link(['/admin/user/add']) ?>
+        <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('user-plus')->sm()->link(['/admin/user/add']) ?>
         <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
     </div>
 
@@ -30,7 +31,7 @@ use yii\widgets\ActiveForm;
         <?= Yii::t('AdminModule.user', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
 
-    <br />
+    <br/>
 
     <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/user/list'])]); ?>
     <div class="row">

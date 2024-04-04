@@ -1,7 +1,7 @@
 <?php
 return array (
-  '<strong>Notification</strong> Overview' => '',
-  '<strong>Notification</strong> Settings' => '',
+  '<strong>Notification</strong> Overview' => '<strong>알림</strong> 개요',
+  '<strong>Notification</strong> Settings' => '<strong>알림</strong> 설정',
   'Allow desktop notifications by default.' => '기본적으로 데스크톱 알림을 허용합니다.',
   'Do you want to reset the settings concerning email summaries for all users?' => '모든 사용자의 이메일 요약 관련 설정을 재설정하시겠습니까?',
   'Do you want to reset the settings concerning notifications for all users?' => '모든 사용자에 대한 알림 관련 설정을 재설정하시겠습니까?',
@@ -25,6 +25,6 @@ return array (
   'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => '이 보기에서는 지정된 알림 카테고리에 대해 원하는 대상을 선택하여 알림 설정을 구성할 수 있습니다.',
   'Type' => '형식',
   'View online:' => '온라인 보기',
-  '{displayName} and {displayName2}' => '',
-  '{displayName} and {number} others' => '',
+  '{displayName} and {displayName2}' => '{displayName}님과 {displayName2}',
+  '{displayName} and {number} others' => '{displayName}님과 {number}들',
 );

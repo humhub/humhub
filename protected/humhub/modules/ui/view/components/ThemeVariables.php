@@ -8,13 +8,10 @@
 
 namespace humhub\modules\ui\view\components;
 
-use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\Module;
 use humhub\modules\ui\view\helpers\ThemeHelper;
-
 use Yii;
 use yii\base\Component;
-
 
 /**
  * ThemeVariables provides access to LESS variables of a given [[Theme]].
@@ -25,7 +22,7 @@ use yii\base\Component;
  */
 class ThemeVariables extends Component
 {
-    const SETTING_PREFIX = 'theme.var.';
+    public const SETTING_PREFIX = 'theme.var.';
 
     /**
      * @var Theme
@@ -38,7 +35,7 @@ class ThemeVariables extends Component
     public $module;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $settingsLoaded = false;
 
@@ -56,11 +53,12 @@ class ThemeVariables extends Component
      *
      * @param $key
      * @param $default
+     *
      * @return string|null
      */
     public function get($key, $default = null)
     {
-        if (!BaseSettingsManager::isDatabaseInstalled()) {
+        if (!Yii::$app->isDatabaseInstalled()) {
             return null;
         }
 
@@ -94,6 +92,7 @@ class ThemeVariables extends Component
      * The prefix is necessary to separate the theme variables
      *
      * @param $key
+     *
      * @return string
      */
     protected function getSettingKey($key)
@@ -133,5 +132,4 @@ class ThemeVariables extends Component
             );
         }
     }
-
 }

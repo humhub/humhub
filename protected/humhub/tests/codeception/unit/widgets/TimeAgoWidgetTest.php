@@ -1,4 +1,5 @@
 <?php
+
 namespace humhub\tests\codeception\unit\models;
 
 use DateTime;
@@ -85,7 +86,7 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
     public function testHideTimeAfterNotMatches()
     {
         // TS outside of default 172800 but default deactivated
-        $ts = (new DateTime())->setTime(12,00,00)->getTimestamp();
+        $ts = (new DateTime())->setTime(12, 00, 00)->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'timeAgoBefore' => 1]);
         $this->assertStringContainsString('12:00 PM</time>', $result);
     }

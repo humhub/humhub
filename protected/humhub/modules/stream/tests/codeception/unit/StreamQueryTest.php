@@ -6,6 +6,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\StreamQuery;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\base\Exception;
@@ -19,11 +20,11 @@ class StreamQueryTest extends HumHubDbTestCase
         parent::_before();
 
         // Clear fixture content
-        foreach(Content::find()->all() as $content) {
+        foreach (Content::find()->all() as $content) {
             $content->delete();
         }
 
-        $this->space =  Space::findOne(['id' => 1]);
+        $this->space = Space::findOne(['id' => 1]);
     }
 
     /**
@@ -33,18 +34,40 @@ class StreamQueryTest extends HumHubDbTestCase
      * @return Post
      * @throws Exception
      */
-    protected function createPost($text, $streamSort = null )
+    protected function createPost($text, $streamSort = null)
     {
         $this->becomeUser('Admin');
 
         $post = new Post(['message' => $text]);
         $post->save();
 
-        if($streamSort) {
+        if ($streamSort) {
             $post->content->updateAttributes(['stream_sort_date' => $streamSort]);
         }
 
         return $post;
+    }
+
+    private function removeArrayValue(array $array, $value): array
+    {
+        $i = array_search($value, $array);
+        if ($i === false) {
+            return $array;
+        }
+
+        unset($array[$i]);
+        return array_values($array);
+    }
+
+    private function arrayValuesAsClassName(array $array): array
+    {
+        foreach ($array as $i => $item) {
+            if (is_object($item)) {
+                $array[$i] = get_class($item);
+            }
+        }
+
+        return $array;
     }
 
     /**
@@ -198,5 +221,37 @@ class StreamQueryTest extends HumHubDbTestCase
         $this->assertCount(1, $result);
 
         $this->assertEquals($p1->message, $result[0]->getModel()->message);
+    }
+
+    /**
+     * Test methods to add/remove/exclude filter handlers
+     */
+    public function testFilterHandlers()
+    {
+        $streamQuery = new StreamQuery();
+        $defaultFilterHandlers = $streamQuery->filterHandlers;
+
+        $this->assertEquals([], $streamQuery->excludedFilterHandlers);
+
+        // Remove a handler but don't exclude(allow to add it later)
+        $streamQuery->removeFilterHandler(DefaultStreamFilter::class, false);
+        $customFilterHandlers = $this->removeArrayValue($defaultFilterHandlers, DefaultStreamFilter::class);
+        $this->assertEquals($customFilterHandlers, $streamQuery->filterHandlers);
+        $this->assertEquals([], $streamQuery->excludedFilterHandlers);
+
+        // Add the same handler removed before
+        $streamQuery->addFilterHandler(DefaultStreamFilter::class);
+        $customFilterHandlers[] = DefaultStreamFilter::class;
+        $this->assertEquals($customFilterHandlers, $this->arrayValuesAsClassName($streamQuery->filterHandlers));
+
+        // Remove a handler with excluding completely(deny adding it later)
+        $streamQuery->removeFilterHandler(DefaultStreamFilter::class, true);
+        $customFilterHandlers = $this->removeArrayValue($defaultFilterHandlers, DefaultStreamFilter::class);
+        $this->assertEquals($customFilterHandlers, $streamQuery->filterHandlers);
+        $this->assertEquals([DefaultStreamFilter::class], $streamQuery->excludedFilterHandlers);
+
+        // Try to add the same handler which was excluded completely(without possibility further adding)
+        $streamQuery->addFilterHandler(DefaultStreamFilter::class);
+        $this->assertEquals($customFilterHandlers, $this->arrayValuesAsClassName($streamQuery->filterHandlers));
     }
 }

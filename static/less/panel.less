@@ -157,17 +157,19 @@
             border-bottom-right-radius: 3px;
             border-bottom-left-radius: 3px;
             color: #fff;
-            pointer-events: none;
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
             h1 {
-                font-size: 30px;
-                font-weight: 100;
                 margin-bottom: 7px;
-                color: #fff;
                 max-width: 600px;
                 white-space: nowrap;
                 text-overflow: ellipsis;
+
+                a {
+                    font-size: 30px;
+                    font-weight: 100;
+                    color: #fff;
+                }
             }
 
             h2 {
@@ -177,8 +179,9 @@
             }
 
             h1.space {
-                font-size: 30px;
-                font-weight: 700;
+                a {
+                    font-weight: 700;
+                }
             }
 
             h2.space {
@@ -199,6 +202,12 @@
             .profile-user-photo {
                 border: 3px solid #fff;
                 border-radius: 5px;
+
+                // Force position of the online status because of the 3px border on the photo
+                + .user-online-status {
+                    right: -5px;
+                    bottom: -5px;
+                }
             }
         }
     }

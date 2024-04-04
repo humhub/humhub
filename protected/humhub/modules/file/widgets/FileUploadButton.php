@@ -4,6 +4,7 @@ namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use yii\base\Widget;
 
 /**
  * FileUploadButtonWidget creates an upload button / system.
@@ -18,9 +19,8 @@ use humhub\components\behaviors\PolymorphicRelation;
  * @since 0.5
  * @deprecated since version 1.2
  */
-class FileUploadButton extends \yii\base\Widget
+class FileUploadButton extends Widget
 {
-
     /**
      * @var String unique id of this uploader
      */
@@ -54,13 +54,11 @@ class FileUploadButton extends \yii\base\Widget
         }
 
         return $this->render('fileUploadButton', [
-                    'fileListFieldName' => $this->fileListFieldName,
-                    'uploaderId' => $this->uploaderId,
-                    'objectModel' => $objectModel,
-                    'objectId' => $objectId
+            'fileListFieldName' => $this->fileListFieldName,
+            'uploaderId' => $this->uploaderId,
+            'objectModel' => $objectModel,
+            'objectId' => $objectId
         ]);
     }
 
 }
-
-?>

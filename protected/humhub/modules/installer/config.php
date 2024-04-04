@@ -11,4 +11,3 @@ return [
         ['class' => Connection::class, 'event' => Connection::EVENT_AFTER_OPEN, 'callback' => [Events::class, 'onConnectionAfterOpen']],
     ],
 ];
-?>

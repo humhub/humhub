@@ -9,6 +9,7 @@
 namespace humhub\modules\live\driver;
 
 use Firebase\JWT\JWT;
+use Throwable;
 use Yii;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -28,7 +29,6 @@ use humhub\modules\live\live\LegitimationChanged;
  */
 class Push extends BaseDriver
 {
-
     /**
      * @var string the used Redis push channel
      */
@@ -57,7 +57,7 @@ class Push extends BaseDriver
      * Initializes the live push component.
      * This method will initialize the [[redis]] property to make sure it refers to a valid redis connection.
      *
-     * @throws \yii\base\InvalidConfigException if [[redis]] is invalid.
+     * @throws InvalidConfigException if [[redis]] is invalid.
      */
     public function init()
     {
@@ -99,7 +99,7 @@ class Push extends BaseDriver
      * the contentContainer id legitmation.
      *
      * @return string the JWT string
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function generateJwtAuthorization()
     {
@@ -113,7 +113,7 @@ class Push extends BaseDriver
             'sub' => Yii::$app->user->id,
             'legitmation' => Yii::$app->getModule('live')->getLegitimateContentContainerIds($user)
         ];
-        return JWT::encode($token, $this->jwtKey);
+        return JWT::encode($token, $this->jwtKey, 'HS256');
     }
 
     /**

@@ -1,4 +1,5 @@
 <?php
+
 namespace user\acceptance;
 
 use humhub\modules\user\models\fieldtype\Checkbox;
@@ -147,7 +148,7 @@ class ProfileCest
         $I->createProfileField('Test textarea field', TextArea::class, ['visible' => true, 'editable' => true]);
         $I->createProfileField('Test checkboxlist field', CheckboxList::class, [
             'visible' => true,
-            'checkboxlist-options' => 'First option'. "\r\n" . 'Second option' . "\r\n" . 'Third option',
+            'checkboxlist-options' => 'First option' . "\r\n" . 'Second option' . "\r\n" . 'Third option',
         ]);
 
         $I->amGoingTo('test profile fields visibility by user');
@@ -200,7 +201,7 @@ class ProfileCest
             $I->waitForText('Edit profile field');
             $I->click('Delete');
             $I->waitForText('Confirm');
-            $I->click('Confirm');            
+            $I->click('Confirm');
             $I->seeSuccess('Deleted');
         }
     }

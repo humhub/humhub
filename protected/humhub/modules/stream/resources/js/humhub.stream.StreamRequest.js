@@ -32,14 +32,14 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
      * @param options
      * @constructor
      */
-    var StreamRequest = function(stream, options) {
+    var StreamRequest = function (stream, options) {
         this.options = options || {};
         this.stream = stream;
         this.stream.request = this;
         this.initOptions(options);
     };
 
-    StreamRequest.prototype.initOptions = function(options) {
+    StreamRequest.prototype.initOptions = function (options) {
         this.contentId = this.options.contentId;
         if (this.options.commentId) {
             this.commentId = this.options.commentId;
@@ -48,7 +48,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         this.loader = object.defaultValue(this.options.loader, !object.isDefined(this.options.insertAfter));
         this.url = object.defaultValue(this.options.url, this.stream.options.stream);
         this.limit = object.defaultValue(this.options.limit, this.stream.options.loadCount);
-        if(!object.isDefined(this.options.to)) {
+        if (!object.isDefined(this.options.to)) {
             this.from = object.defaultValue(this.options.from, this.stream.state.lastContentId);
         } else {
             this.to = this.options.to;
@@ -57,19 +57,19 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         this.channel = this.options.channel;
     };
 
-    StreamRequest.prototype.loadSingle = function(contentId) {
+    StreamRequest.prototype.loadSingle = function (contentId) {
         this.options.contentId = contentId;
         return this.load();
     };
 
-    StreamRequest.prototype.load = function() {
+    StreamRequest.prototype.load = function () {
         this.stream.trigger('humhub:stream:beforeLoadEntries', [this.stream, this]);
 
-        if(this.stream.isLoading()) {
+        if (this.stream.isLoading()) {
             return Promise.resolve();
         }
 
-        if(this.loader) {
+        if (this.loader) {
             this.stream.loader.show(true);
         }
 
@@ -80,7 +80,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         return that._send().then(function (response) {
             that.response = response;
 
-            if(that.loader) {
+            if (that.loader) {
                 that.stream.loader.show(false);
             }
 
@@ -100,27 +100,29 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
             stream.currentXhr.abort();
         }
 
-        return client.ajax(this.url, {data:  this.getRequestData(), beforeSend: function (xhr) {
-            // Update requests do not interfer with other request
-            if(!that.isUpdateRequest()) {
-                stream.currentXhr = xhr;
+        return client.ajax(this.url, {
+            data: this.getRequestData(), beforeSend: function (xhr) {
+                // Update requests do not interfer with other request
+                if (!that.isUpdateRequest()) {
+                    stream.currentXhr = xhr;
+                }
             }
-        }}).then(function(response) {
+        }).then(function (response) {
             stream.currentXhr = undefined;
             stream.state.initialized = true;
             return response;
         });
     };
 
-    StreamRequest.prototype.getRequestData = function() {
+    StreamRequest.prototype.getRequestData = function () {
         var data = {};
 
         var that = this;
 
-        if(!this.contentId) {
+        if (!this.contentId) {
             data[this.buildRequestDataKey('sort')] = this.sort;
 
-            if(!object.isDefined(this.to)) {
+            if (!object.isDefined(this.to)) {
                 data[this.buildRequestDataKey('from')] = this.from;
             } else {
                 data[this.buildRequestDataKey('to')] = this.to;
@@ -128,7 +130,7 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
             data[this.buildRequestDataKey('limit')] = this.limit;
         }
 
-        if(this.viewContext) {
+        if (this.viewContext) {
             data['viewContext'] = this.viewContext;
         }
 
@@ -138,47 +140,47 @@ humhub.module('stream.StreamRequest', function (module, require, $) {
         }
         data[this.buildRequestDataKey('suppressionsOnly')] = this.suppressionsOnly;
 
-        if(this.options.data) {
-            $.each(this.options.data, function(key, value) {
+        if (this.options.data) {
+            $.each(this.options.data, function (key, value) {
                 data[this.buildRequestDataKey(key)] = value;
             });
         }
 
-        $.each(this.stream.filter.getFilterMap(), function(key, value) {
+        $.each(this.stream.filter.getFilterMap(), function (key, value) {
             data[that.buildRequestDataKey(key)] = value;
         });
 
         return data;
     };
 
-    StreamRequest.prototype.buildRequestDataKey = function(key) {
-        return 'StreamQuery['+key+']';
+    StreamRequest.prototype.buildRequestDataKey = function (key) {
+        return 'StreamQuery[' + key + ']';
     };
 
     StreamRequest.prototype.isLastEntryResponse = function () {
         return !this.isSingleEntryRequest() && !this.isUpdateRequest() && object.isEmpty(this.response.content);
     };
 
-    StreamRequest.prototype.getResultHtml = function() {
+    StreamRequest.prototype.getResultHtml = function () {
         var result = '';
-        this.forEachResult(function(key, entry, output) {
+        this.forEachResult(function (key, entry, output) {
             result += output;
         });
         return result;
     };
 
-    StreamRequest.prototype.forEachResult = function(handler) {
+    StreamRequest.prototype.forEachResult = function (handler) {
         var that = this;
         $.each(this.response.contentOrder, function (i, key) {
             handler.call(null, key, that.response.content[key], that.response.content[key].output);
         });
     };
 
-    StreamRequest.prototype.isSingleEntryRequest = function() {
+    StreamRequest.prototype.isSingleEntryRequest = function () {
         return !!this.contentId;
     };
 
-    StreamRequest.prototype.isUpdateRequest = function() {
+    StreamRequest.prototype.isUpdateRequest = function () {
         return !!this.to;
     };
 

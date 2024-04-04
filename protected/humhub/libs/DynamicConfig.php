@@ -20,7 +20,6 @@ use yii\helpers\ArrayHelper;
  */
 class DynamicConfig extends BaseObject
 {
-
     /**
      * Add an array to the dynamic configuration
      *

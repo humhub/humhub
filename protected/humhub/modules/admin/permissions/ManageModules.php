@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\permissions;
 
 use humhub\modules\admin\components\BaseAdminPermission;
+use Yii;
 
 /**
  * ManageModules Permission allows access to module section within the admin area.
@@ -31,8 +32,8 @@ class ManageModules extends BaseAdminPermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('AdminModule.permissions', 'Manage Modules');
-        $this->description = \Yii::t('AdminModule.permissions', 'Can manage modules within the \'Administration ->  Modules\' section.');
+        $this->title = Yii::t('AdminModule.permissions', 'Manage Modules');
+        $this->description = Yii::t('AdminModule.permissions', 'Can manage modules within the \'Administration ->  Modules\' section.');
     }
 
 }

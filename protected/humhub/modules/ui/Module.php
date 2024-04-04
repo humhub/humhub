@@ -45,7 +45,7 @@ class Module extends \humhub\components\Module
      */
     public static function getModuleInstance()
     {
-        /* @var $module static*/
+        /* @var $module static */
         $module = Yii::$app->getModule('ui');
         return $module;
     }

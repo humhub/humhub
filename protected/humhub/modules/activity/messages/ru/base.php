@@ -1,8 +1,4 @@
 <?php
-/**
- * Translation: Paul (https://paul.bid) paulbid@protonmail.com
- * 
- */
 return array (
   '<strong>E-Mail</strong> Summaries' => '<strong>Уведомления</strong> по email',
   '<strong>Latest</strong> activities' => '<strong>Лента</strong> активности',
@@ -15,6 +11,7 @@ return array (
   'Hourly' => 'Каждый час',
   'Interval' => 'Интервал',
   'Latest news' => 'Последние новости',
+  'Monthly' => 'Ежемесячно',
   'Never' => 'Никогда',
   'On this page you can configure the contents and the interval of these e-mail updates.' => 'На этой странице Вы можете настроить содержимое и интервал обновления уведомлений по электронной почте.',
   'On this page you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'На этой странице Вы можете определить поведение по умолчанию для Ваших пользователей. Эти настройки могут быть изменены пользователями на странице настроек их учётной записи.',
@@ -26,6 +23,7 @@ return array (
   'Weekly' => 'Еженедельно',
   'You will only receive an e-mail if there is something new.' => 'Вы получите электронное письмо только в случае появления чего-то нового.',
   'Your daily summary' => 'Ваша статистика за сегодня',
+  'Your monthly summary' => 'Ежемесячная рассылка',
   'Your weekly summary' => 'Ваша статистика за неделю',
   'see online' => 'смотреть онлайн',
   'via' => 'через',

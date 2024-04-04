@@ -16,7 +16,7 @@ class DashboardContent extends Widget
     public $contentContainer;
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $showProfilePostForm = false;
 
@@ -34,7 +34,7 @@ class DashboardContent extends Widget
 
         echo StreamViewer::widget([
             'streamAction' => '//dashboard/dashboard/stream',
-            'showFilters' => (boolean) Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm'),
+            'showFilters' => (bool)Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm'),
             'messageStreamEmpty' => $messageStreamEmpty
         ]);
     }

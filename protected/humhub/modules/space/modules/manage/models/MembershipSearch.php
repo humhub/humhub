@@ -21,7 +21,6 @@ use yii\data\ActiveDataProvider;
  */
 class MembershipSearch extends Membership
 {
-
     /**
      * @var string the freetext search string
      */

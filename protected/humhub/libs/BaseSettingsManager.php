@@ -15,7 +15,6 @@ use Yii;
 use yii\base\Component;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
-use yii\db\conditions\LikeCondition;
 use yii\db\StaleObjectException;
 use yii\helpers\Json;
 
@@ -57,7 +56,7 @@ abstract class BaseSettingsManager extends Component
             throw new InvalidConfigException('Module id not set!', 2);
         }
 
-        if (static::isDatabaseInstalled()) {
+        if (Yii::$app->isDatabaseInstalled()) {
             $this->loadValues();
         }
 
@@ -81,7 +80,7 @@ abstract class BaseSettingsManager extends Component
         }
 
         if ($value === null) {
-             $this->delete($name);
+            $this->delete($name);
             return;
         }
 
@@ -194,6 +193,8 @@ abstract class BaseSettingsManager extends Component
         if (isset($this->_loaded[$name])) {
             unset($this->_loaded[$name]);
         }
+
+        $this->invalidateCache();
     }
 
     /**
@@ -286,8 +287,7 @@ abstract class BaseSettingsManager extends Component
                 }
             } elseif (!is_array($prefix)) {
                 throw new InvalidArgumentTypeException(
-                    __METHOD__,
-                    [1 => '$prefix'],
+                    '$prefix',
                     ['string', 'int', 'null', \Stringable::class],
                     $prefix
                 );
@@ -303,19 +303,11 @@ abstract class BaseSettingsManager extends Component
     /**
      * Checks if settings table exists or application is not installed yet
      *
-     * @return bool
      * @since 1.3
+     * @deprecated since 1.16
      */
-    public static function isDatabaseInstalled()
+    public static function isDatabaseInstalled(): bool
     {
-        try {
-            if (in_array('setting', Yii::$app->db->schema->getTableNames())) {
-                return true;
-            }
-        } catch (\Exception $ex) {
-            return false;
-        }
-
-        return false;
+        return Yii::$app->isDatabaseInstalled(true);
     }
 }

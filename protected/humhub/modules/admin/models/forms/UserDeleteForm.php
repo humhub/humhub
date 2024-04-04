@@ -23,19 +23,18 @@ use humhub\modules\space\models\Space;
  */
 class UserDeleteForm extends Model
 {
-
     /**
      * @var User the user record to delete
      */
     public $user;
 
     /**
-     * @var boolean delete also user contributions
+     * @var bool delete also user contributions
      */
     public $deleteContributions = false;
 
     /**
-     * @var boolean delete also user spaces
+     * @var bool delete also user spaces
      */
     public $deleteSpaces = false;
 

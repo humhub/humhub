@@ -21,7 +21,6 @@ use yii\base\BaseObject;
  */
 abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInterface
 {
-
     /**
      * @var string default route to content container home
      */
@@ -48,7 +47,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
      * @param string $url
      * @return ContentContainerActiveRecord
      */
-    abstract static protected function getContentContainerByUrl(string $url): ?ContentContainerActiveRecord;
+    abstract protected static function getContentContainerByUrl(string $url): ?ContentContainerActiveRecord;
 
     /**
      * Get Content Container by guid
@@ -156,7 +155,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
 
         $ruleRoute = [];
         foreach ($ruleParts as $r => $rulePart) {
-            if (preg_match( '/^<([a-zA-Z0-9_-]+)>$/', $rulePart, $ruleParamMatch)) {
+            if (preg_match('/^<([a-zA-Z0-9_-]+)>$/', $rulePart, $ruleParamMatch)) {
                 if (!isset($params[$ruleParamMatch[1]])) {
                     return false;
                 }
@@ -254,7 +253,7 @@ abstract class ContentContainerUrlRule extends BaseObject implements UrlRuleInte
 
         $ruleParams = [];
         foreach ($ruleParts as $r => $rulePart) {
-            if (preg_match( '/^<([a-zA-Z0-9_-]+)>$/', $rulePart, $ruleParamMatch)) {
+            if (preg_match('/^<([a-zA-Z0-9_-]+)>$/', $rulePart, $ruleParamMatch)) {
                 $ruleParams[$ruleParamMatch[1]] = $requestParts[$r];
             } elseif ($rulePart !== $requestParts[$r]) {
                 // Skip the rule if at least one part is different

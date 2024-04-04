@@ -1,13 +1,13 @@
 <?php
 
 return [
-    'Activated' => 'הופעל',
     'Cancel' => 'ביטול',
     'Confirm' => 'אשר',
     'Content' => 'תוכן',
     'Delete' => 'מחק',
     'Edit' => 'עריכה',
     'Enable' => 'פעיל',
+    'Enabled' => 'הופעל',
     'Invalid request method!' => 'בעיה כלשהי',
     'This space is archived.' => 'האזור הזה מאורכב',
     '(Also visible to non-members of this space)' => '',
@@ -18,6 +18,7 @@ return [
     'Activate scheduling' => '',
     'Add a member to notify' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Archived' => '',
     'Attach Files' => '',
     'Back to stream' => '',

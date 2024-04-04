@@ -1,5 +1,4 @@
 <?php
-
-return [
-    'This content is archived' => '',
-];
+return array (
+  'This content is archived' => 'Sadržaj je arhiviran',
+);

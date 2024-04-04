@@ -22,7 +22,6 @@ use yii\helpers\Url;
 
 class Events extends BaseObject
 {
-
     /**
      * On console application initialization
      *
@@ -30,7 +29,7 @@ class Events extends BaseObject
      */
     public static function onConsoleApplicationInit($event)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isMarketplaceEnabled()) {
             return;
         }
 
@@ -47,7 +46,7 @@ class Events extends BaseObject
 
     public static function onMarketplaceAfterFilterModules(ModulesEvent $event)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isMarketplaceEnabled()) {
             return;
         }
 
@@ -56,8 +55,7 @@ class Events extends BaseObject
         }
 
         foreach ($event->modules as $m => $module) {
-            /* @var ModelModule $module */
-            if (!$module->getFilterService()->isFiltered()) {
+            if ($module instanceof ModelModule && !$module->getFilterService()->isFiltered()) {
                 unset($event->modules[$m]);
             }
         }
@@ -65,7 +63,7 @@ class Events extends BaseObject
 
     public static function onAccountTopMenuInit($event)
     {
-        if (!Module::isEnabled() ||
+        if (!Module::isMarketplaceEnabled() ||
             !Yii::$app->user->isAdmin() ||
             !Yii::$app->user->can(ManageModules::class)) {
             return;

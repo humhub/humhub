@@ -18,7 +18,6 @@ use yii\web\View;
  */
 class JqueryKnobAsset extends AssetBundle
 {
-
     public $jsOptions = ['position' => View::POS_BEGIN];
 
     /**

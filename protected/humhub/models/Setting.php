@@ -9,20 +9,20 @@
 namespace humhub\models;
 
 use humhub\components\SettingActiveRecord;
+use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\base\Exception;
 
 /**
  * This is the model class for table "setting".
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $value
  * @property string $module_id
  */
 class Setting extends SettingActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -59,13 +59,15 @@ class Setting extends SettingActiveRecord
      * Returns settings value
      *
      * @deprecated since version 1.1
+     *
      * @param string $name
      * @param string $moduleId
+     *
      * @return string the settings value
      */
     public static function get($name, $moduleId = '')
     {
-        list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
+        list($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->get($name);
     }
 
@@ -73,13 +75,14 @@ class Setting extends SettingActiveRecord
      * Sets settings value
      *
      * @deprecated since version 1.1
+     *
      * @param string $name
      * @param string $value
      * @param string $moduleId
      */
     public static function set($name, $value, $moduleId = '')
     {
-        list ($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
+        list($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
         return self::getModule($moduleId)->settings->set($name, $value);
     }
 
@@ -104,9 +107,11 @@ class Setting extends SettingActiveRecord
      *
      * @deprecated since version 1.1
      * @see \humhub\libs\BaseSettingsManager::isFixed
+     *
      * @param string $name
      * @param string $moduleId
-     * @return boolean
+     *
+     * @return bool
      */
     public static function isFixed($name, $moduleId = '')
     {
@@ -116,17 +121,20 @@ class Setting extends SettingActiveRecord
     /**
      * Checks if Humhub is installed
      *
-     * @return boolean
+     * @return bool
+     * @deprecated since v1.16; use Yii::$app->isInstalled()
+     * @see Yii::$app->isInstalled()
      */
     public static function isInstalled()
     {
-        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'] == true;
+        return Yii::$app->isInstalled();
     }
 
     /**
      * Temporary for 1.1 migration
      *
      * @deprecated since version 1.1
+     *
      * @param string $name
      * @param string $moduleId
      */
@@ -159,6 +167,7 @@ class Setting extends SettingActiveRecord
      * Temporary for 1.1 migration
      *
      * @deprecated since version 1.1
+     *
      * @param string $name
      * @param string $moduleId
      */
@@ -178,5 +187,4 @@ class Setting extends SettingActiveRecord
 
         return $module;
     }
-
 }

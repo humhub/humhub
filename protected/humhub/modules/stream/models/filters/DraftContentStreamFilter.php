@@ -2,7 +2,6 @@
 
 namespace humhub\modules\stream\models\filters;
 
-use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use Yii;
 
@@ -21,15 +20,23 @@ class DraftContentStreamFilter extends StreamQueryFilter
      */
     public function apply()
     {
-        if ($this->streamQuery instanceof ActivityStreamQuery && $this->streamQuery->activity) {
+        if (!$this->allowStateContent()) {
             return;
         }
 
         if ($this->allowPinContent()) {
             $this->fetchDraftContent();
-        } else {
-            $this->streamQuery->stateFilterCondition[] = ['content.state' => Content::STATE_DRAFT];
+        } elseif (!Yii::$app->user->isGuest) {
+            $this->streamQuery->stateFilterCondition[] = $this->getDraftCondition();
         }
+    }
+
+    private function getDraftCondition(): array
+    {
+        return ['AND',
+            ['content.state' => Content::STATE_DRAFT],
+            ['content.created_by' => Yii::$app->user->id]
+        ];
     }
 
     /**
@@ -38,10 +45,7 @@ class DraftContentStreamFilter extends StreamQueryFilter
     private function fetchDraftContent(): void
     {
         $draftQuery = clone $this->query;
-        $draftQuery->andWhere([
-                'AND', ['content.state' => Content::STATE_DRAFT],
-                ['content.created_by' => Yii::$app->user->id]]
-        );
+        $draftQuery->andWhere($this->getDraftCondition());
         $draftQuery->limit(100);
         $this->draftContent = $draftQuery->all();
     }

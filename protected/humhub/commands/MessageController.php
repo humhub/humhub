@@ -21,7 +21,6 @@ use yii\base\Exception;
  */
 class MessageController extends \yii\console\controllers\MessageController
 {
-
     /**
      * Extracts messages for a given module from source code.
      *

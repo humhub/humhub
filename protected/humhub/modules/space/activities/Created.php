@@ -18,7 +18,6 @@ use humhub\modules\content\models\Content;
  */
 class Created extends BaseActivity
 {
-
     /**
      * @inheritdoc
      */

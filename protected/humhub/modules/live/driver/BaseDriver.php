@@ -20,21 +20,20 @@ use humhub\modules\user\models\User;
  */
 abstract class BaseDriver extends BaseObject
 {
-
     /**
      * Sends a live event
      *
      * @param LiveEvent $liveEvent The live event to send
-     * @return boolean indicates the sent was successful
+     * @return bool indicates the sent was successful
      */
     abstract public function send(LiveEvent $liveEvent);
 
     /**
      * Returns the JavaScript Configuration for this driver
      *
-     * @since 1.3
-     * @see \humhub\widgets\CoreJsConfig
      * @return array the JS Configuratoin
+     * @see \humhub\widgets\CoreJsConfig
+     * @since 1.3
      */
     abstract public function getJsConfig();
 

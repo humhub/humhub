@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -22,7 +23,6 @@ use yii\helpers\Url;
  */
 class Members extends Widget
 {
-
     /**
      * @var int maximum members to display
      */
@@ -34,7 +34,7 @@ class Members extends Widget
     public $space;
 
     /**
-     * @var boolean order members by membership date
+     * @var bool order members by membership date
      * @since 1.8
      */
     public $orderByNewest;
@@ -51,7 +51,7 @@ class Members extends Widget
             'showListButton' => count($users) == $this->maxMembers,
             'urlMembersList' => $this->space->createUrl('/space/membership/members-list'),
             'privilegedUserIds' => $this->getPrivilegedUserIds(),
-            'totalMemberCount' => Membership::getSpaceMembersQuery($this->space)->visible()->count(),
+            'totalMemberCount' => $this->space->getMemberListService()->getCount(),
             'showListOptions' => [
                 'data-action-click' => 'ui.modal.load',
                 'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
@@ -62,11 +62,11 @@ class Members extends Widget
     /**
      * Returns a query for members of this space
      *
-     * @return \yii\db\ActiveQuery the query
+     * @return ActiveQuery the query
      */
     protected function getUserQuery()
     {
-        $query = Membership::getSpaceMembersQuery($this->space)->active()->visible();
+        $query = $this->space->getMemberListService()->getQuery();
         $query->limit($this->maxMembers);
         if ($this->orderByNewest) {
             $query->orderBy('space_membership.created_at Desc');

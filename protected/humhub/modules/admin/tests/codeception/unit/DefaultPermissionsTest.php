@@ -11,7 +11,6 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class DefaultPermissionsTest extends HumHubDbTestCase
 {
-
     public function testSetDefaultSpacePermission()
     {
         $this->becomeUser('Admin');
@@ -23,7 +22,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
 
         $testGroupId = $space::USERGROUP_USER;
         $testState = BasePermission::STATE_DENY;
-        $testPermission = new CanLike;
+        $testPermission = new CanLike();
 
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
             'contentContainerClass' => get_class($space),
@@ -51,7 +50,7 @@ class DefaultPermissionsTest extends HumHubDbTestCase
 
         $testGroupId = $user::USERGROUP_USER;
         $testState = BasePermission::STATE_ALLOW;
-        $testPermission = new CanLike;
+        $testPermission = new CanLike();
 
         $defaultPermissionManager = new ContentContainerDefaultPermissionManager([
             'contentContainerClass' => get_class($user),

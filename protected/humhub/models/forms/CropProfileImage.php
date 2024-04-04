@@ -21,7 +21,6 @@ use yii\web\JsExpression;
  */
 class CropProfileImage extends Model
 {
-
     /**
      * @var Int X Coordinates of the area
      */
@@ -77,7 +76,7 @@ class CropProfileImage extends Model
     public $boxWidth = '440';
 
     /**
-     * @var boolean
+     * @var bool
      */
     public $keySupport = true;
 

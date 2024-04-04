@@ -2,6 +2,7 @@ humhub.module('admin', function (module, require, $) {
     var client = require('client');
     var modal = require('ui.modal');
     var additions = require('ui.additions');
+    var status = require('ui.status');
 
     /**
      * Action will delete the current page logo.
@@ -122,15 +123,6 @@ humhub.module('admin', function (module, require, $) {
         }
     };
 
-    var changeMaintenanceMode = function (evt) {
-        evt.$trigger.prop('checked', !evt.$trigger.prop('checked'));
-        // Switch modal window text to another mode
-        evt.$trigger.data('action-confirm', module.text('maintenanceMode.question.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
-        evt.$trigger.data('action-confirm-text', module.text('maintenanceMode.button.' + (evt.$trigger.prop('checked') ? 'disable' : 'enable')));
-        // Disable/Enable maintenance mode info input:
-        $('input[name="BasicSettingsForm[maintenanceModeInfo]"]').prop('disabled', !evt.$trigger.prop('checked'));
-    };
-
     var changeIndividualProfilePermissions = function (evt) {
         evt.finish();
         evt.$trigger.prop('checked', !evt.$trigger.prop('checked'));
@@ -145,10 +137,11 @@ humhub.module('admin', function (module, require, $) {
         });
     };
 
-    var moduleSetAsDefault = function(event) {
-        modal.footerLoader();
-        client.submit(event).then(function(response) {
+    var moduleSetAsDefault = function (event) {
+        modal.footerLoader(event);
+        client.submit(event).then(function (response) {
             modal.setContent(response.data);
+            status.success(module.require('log').config.text['success.saved']);
         });
     };
 
@@ -159,7 +152,6 @@ humhub.module('admin', function (module, require, $) {
         changeLogo: changeLogo,
         deletePageIcon: deletePageIcon,
         changeIcon: changeIcon,
-        changeMaintenanceMode: changeMaintenanceMode,
         changeIndividualProfilePermissions: changeIndividualProfilePermissions,
         moduleSetAsDefault: moduleSetAsDefault,
     });

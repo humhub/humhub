@@ -29,9 +29,9 @@ class m160229_162959_multiusergroups extends Migration
         $this->execute('UPDATE group_user u SET is_group_admin = :value WHERE EXISTS (Select 1 FROM group_admin a WHERE u.user_id = a.user_id);', [':value' => 1]);
 
         // Add group columns
-        $this->addColumn('group', 'is_admin_group', Schema::TYPE_BOOLEAN. ' NOT NULL DEFAULT 0');
-        $this->addColumn('group', 'show_at_registration', Schema::TYPE_BOOLEAN. ' NOT NULL DEFAULT 1');
-        $this->addColumn('group', 'show_at_directory', Schema::TYPE_BOOLEAN. ' NOT NULL DEFAULT 1');
+        $this->addColumn('group', 'is_admin_group', Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 0');
+        $this->addColumn('group', 'show_at_registration', Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 1');
+        $this->addColumn('group', 'show_at_directory', Schema::TYPE_BOOLEAN . ' NOT NULL DEFAULT 1');
 
         // Create initial administration group
         $this->insertSilent('group', [
@@ -45,17 +45,17 @@ class m160229_162959_multiusergroups extends Migration
 
         // Determine administration group id
         $adminGroupId = (new Query())
-                ->select('id')
-                ->from('group')
-                ->where(['is_admin_group' => '1'])
-                ->scalar();
+            ->select('id')
+            ->from('group')
+            ->where(['is_admin_group' => '1'])
+            ->scalar();
 
         // Load current super_admin user
         $rows = (new Query())
-                ->select("id")
-                ->from('user')
-                ->where(['super_admin' => '1'])
-                ->all();
+            ->select("id")
+            ->from('user')
+            ->where(['super_admin' => '1'])
+            ->all();
 
         // Insert group_user for administration groups for all current super_admins
         foreach ($rows as $adminUserRow) {

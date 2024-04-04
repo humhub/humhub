@@ -21,7 +21,6 @@ use yii\helpers\Url;
  */
 class DownloadFileHandler extends BaseFileHandler
 {
-
     /**
      * @inheritdoc
      */

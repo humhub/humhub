@@ -19,7 +19,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
  */
 class ExportResultTest extends Unit
 {
-    const TEST_FILE = 'test.csv';
+    public const TEST_FILE = 'test.csv';
 
     /**
      * @var \UnitTester

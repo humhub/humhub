@@ -2,8 +2,8 @@
 
 use humhub\widgets\ColorPickerField;
 
-$containerId = time().'space-color-chooser-edit';
-    
+$containerId = time() . 'space-color-chooser-edit';
+
 if ($model->color === null) {
     $model->color = '#d1d1d1';
 }
@@ -21,5 +21,5 @@ if ($model->color === null) {
             {input}
         </div>
         {error}{hint}'
-        ])->textInput(['placeholder' => Yii::t('SpaceModule.manage', 'Space name'), 'maxlength' => 45 ]); ?>
+    ])->textInput(['placeholder' => Yii::t('SpaceModule.manage', 'Space name'), 'maxlength' => 45]); ?>
 </div>

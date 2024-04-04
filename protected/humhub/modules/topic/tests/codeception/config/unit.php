@@ -1,3 +1,5 @@
 <?php
 
-return \tests\codeception\_support\HumHubTestConfiguration::getSuiteConfig('unit');
+use tests\codeception\_support\HumHubTestConfiguration;
+
+return HumHubTestConfiguration::getSuiteConfig('unit');

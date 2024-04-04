@@ -22,7 +22,7 @@ class RichTextToEmailHtmlConverterTest extends HumHubDbTestCase
         $postedFile->save();
 
         // Check markdown image tag is converted to html tag with JWT token in params
-        $sourceMessage = '![test.txt](file-guid:'.$postedFile->guid.' "test.txt")';
+        $sourceMessage = '![test.txt](file-guid:' . $postedFile->guid . ' "test.txt")';
         $convertedMessage = RichTextToEmailHtmlConverter::process($sourceMessage, ['receiver' => $receiverUser]);
         $this->assertTrue($sourceMessage != $convertedMessage);
 

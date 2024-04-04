@@ -8,7 +8,6 @@
 
 namespace humhub\modules\file\libs;
 
-
 use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
@@ -25,14 +24,13 @@ use yii\imagine\Image;
  */
 class ImageHelper
 {
-
     /**
      * Fix orientation of JPEG images based on EXIF information
      *
      * @see https://github.com/yiisoft/yii2-imagine/issues/44
      * @param $image ImageInterface
      * @param $file File|string
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public static function fixJpegOrientation($image, $file)
     {

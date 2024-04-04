@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @var \humhub\modules\user\models\User $contentContainer
  * @var bool $showProfilePostForm
