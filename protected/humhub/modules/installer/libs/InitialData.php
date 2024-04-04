@@ -419,7 +419,19 @@ class InitialData
         $field = new ProfileField();
         $field->internal_name = "url_twitter";
         $field->title = 'Twitter URL';
-        $field->sort_order = 1000;
+        $field->sort_order = 800;
+        $field->profile_field_category_id = $cSocial->id;
+        $field->field_type_class = \humhub\modules\user\models\fieldtype\Text::class;
+        $field->is_system = 1;
+        if ($field->save()) {
+            $field->fieldType->validator = 'url';
+            $field->fieldType->save();
+        }
+
+        $field = new ProfileField();
+        $field->internal_name = "url_mastodon";
+        $field->title = 'Mastodon URL';
+        $field->sort_order = 900;
         $field->profile_field_category_id = $cSocial->id;
         $field->field_type_class = Text::class;
         $field->is_system = 1;
