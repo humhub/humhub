@@ -22,6 +22,7 @@ class UserSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
+    public ?array $params = null;
 
     /**
      * @inheritdoc
@@ -96,5 +97,13 @@ class UserSearchProvider implements MetaSearchProviderInterface
     public function getKeyword(): ?string
     {
         return $this->keyword;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getParams(): ?array
+    {
+        return null;
     }
 }

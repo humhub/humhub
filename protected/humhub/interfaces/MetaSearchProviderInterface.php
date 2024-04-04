@@ -63,4 +63,9 @@ interface MetaSearchProviderInterface
      * @return string|null
      */
     public function getKeyword(): ?string;
+
+    /**
+     * @return array|null Additional params which may be used to initialize the provider
+     */
+    public function getParams(): ?array;
 }
