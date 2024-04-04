@@ -46,6 +46,7 @@ HumHub Changelog
 - Fix #6725: Allow theme without second topbar menu
 - Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false
 - Enh #131: Online Indicator- People Cards, Members Snippet, My Profile
+- Enh #6335: Pending approvals: possibility to send a message
 - Fix #6774: When enableMailSummaries is false in the configuration file, prevent accessing the "E-Mail Summaries" page in the account settings
 - Fix #6777: Allow access to pending registrations to non-system admins
 - Enh #6783: Lowercase user email before save
