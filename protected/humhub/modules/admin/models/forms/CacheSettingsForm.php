@@ -107,6 +107,7 @@ class CacheSettingsForm extends Model
         $settingsManager->set('cache.reloadableScripts', $this->reloadableScripts);
 
         DynamicConfig::rewrite();
+        self::flushCache();
 
         return true;
     }
@@ -134,4 +135,21 @@ class CacheSettingsForm extends Model
         return [];
     }
 
+    /**
+     * @return string Activity output that can be used for logging
+     * @since 1.16
+     */
+    public static function flushCache(): string
+    {
+        $output = "Flushing cache ...";
+        Yii::$app->cache->flush();
+
+        $output .= "\nFlushing asset manager ...";
+        Yii::$app->assetManager->clear();
+
+        $output .= "\nFlushing theme cache ...";
+        Yii::$app->view->theme->activate();
+
+        return $output;
+    }
 }

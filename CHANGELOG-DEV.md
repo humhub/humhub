@@ -72,6 +72,7 @@ HumHub Changelog
 - Enh #25: Improve contrast of @default button color
 - Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
 - Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
+- Fix #6881: Fix layout styles after run migration
 - Enh #6904: Content Search: Add Tests regarding `state`
 - Enh #2758: Make sure we understand how to configure who receives notifications about new users to approve
 - Fix #6908: Fix default mentioning URL
