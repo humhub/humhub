@@ -1,5 +1,5 @@
 <?php
 return array (
   'E-Mail' => 'Elektroninio pašto adresas',
-  'Web' => '',
+  'Web' => 'Tinklapis',
 );

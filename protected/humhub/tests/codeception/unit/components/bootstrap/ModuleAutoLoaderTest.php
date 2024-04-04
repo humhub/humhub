@@ -33,7 +33,6 @@ class ModuleAutoLoaderTest extends Unit
         'humhub\modules\notification\Module' => 'notification',
         'humhub\modules\post\Module' => 'post',
         'humhub\modules\queue\Module' => 'queue',
-        'humhub\modules\search\Module' => 'search',
         'humhub\modules\space\Module' => 'space',
         'humhub\modules\stream\Module' => 'stream',
         'humhub\modules\topic\Module' => 'topic',

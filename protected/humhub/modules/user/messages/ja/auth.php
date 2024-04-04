@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'パスワードが間違っています',
   'a new user {displayName} needs approval.' => '{displayName}さんが新規登録を希望していらっしゃいます。',
   'back to home' => 'ホームに戻る',
-  'email' => 'Eメール',
-  'password' => 'パスワード',
-  'username or email' => 'ユーザー名 または Eメール',
+  'Password' => 'パスワード',
+  'Username or Email' => 'ユーザー名 または Eメール',
 );

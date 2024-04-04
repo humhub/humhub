@@ -25,6 +25,7 @@ return [
     'Admin' => '',
     'Administrator:' => '',
     'Administrators' => '',
+    'Advanced Spaces Search' => '',
     'Any' => '',
     'Archived' => '',
     'As owner you cannot revoke your membership!' => '',

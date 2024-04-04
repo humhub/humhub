@@ -13,10 +13,10 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\queue\driver\MySQL;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\queue\interfaces\QueueInfoInterface;
-use humhub\modules\search\jobs\RebuildIndex;
 use humhub\services\MigrationService;
 use ReflectionClass;
 use ReflectionException;
@@ -95,7 +95,7 @@ class InformationController extends Controller
 
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
 
-        $rebuildSearchJob = new RebuildIndex();
+        $rebuildSearchJob = new SearchRebuildIndex();
         if (Yii::$app->request->isPost && Yii::$app->request->get('rebuildSearch') == 1) {
             Yii::$app->queue->push($rebuildSearchJob);
         }

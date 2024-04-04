@@ -2,7 +2,6 @@
 
 return [
     '<strong>Permalink</strong> to this post' => '获取该记录<strong>链接</strong>',
-    'Enabled' => '启用',
     'Add a member to notify' => '增加一个通知成员',
     'Archived' => '已存档',
     'Back to stream' => '返回动态',
@@ -19,6 +18,7 @@ return [
     'Delete' => '删除',
     'Edit' => '编辑',
     'Enable' => '生效',
+    'Enabled' => '启用',
     'Filter' => '筛选',
     'Invalid content id given!' => '给出的内容ID无效！',
     'Invalid request method!' => '无效的请求方法！',
@@ -50,6 +50,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

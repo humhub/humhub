@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => '<strong>Siirrä</strong> sisältöä',
     '<strong>Permalink</strong> to this post' => '<strong>Pysyvä</strong> linkki tähän viestiin',
-    'Enabled' => 'Aktivoitu',
     'Add a member to notify' => 'Lisää käyttäjä jolle ilmoitetaan',
     'Archived' => 'Arkistoitu',
     'Back to stream' => 'Takaisin',
@@ -23,6 +22,7 @@ return [
     'Deleted' => 'Poistettu',
     'Edit' => 'Muokkaa',
     'Enable' => 'Ota käyttöön',
+    'Enabled' => 'Aktivoitu',
     'Filter' => 'Suodatin',
     'I\'m involved' => 'Missä olen mukana',
     'Invalid content id given!' => 'Virheellinen sisällön tunnus!',
@@ -73,6 +73,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

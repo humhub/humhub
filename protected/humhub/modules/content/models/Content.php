@@ -30,10 +30,10 @@ use humhub\modules\content\notifications\ContentCreated as NotificationsContentC
 use humhub\modules\content\permissions\CreatePrivateContent;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\ContentStateService;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\notification\models\Notification;
-use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\helpers\AuthHelper;
@@ -91,7 +91,8 @@ use yii\helpers\Url;
  * @property-read ActiveQuery $tagRelations
  * @property-read ContentActiveRecord $model
  * @property-read mixed $contentDescription
- * @property-read StateServiceInterface $stateService
+ * @property-read ContentStateService $stateService
+ * @property-read ContentTag[] $tags
  * @property ContentContainerActiveRecord $container
  * @mixin PolymorphicRelation
  * @mixin GUID
@@ -210,11 +211,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     }
 
     /**
-     * @return ContentActiveRecord
-     * @throws IntegrityException
      * @since 1.3
      */
-    public function getModel()
+    public function getModel(): ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
@@ -288,11 +287,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             }
         }
 
-        if ($this->getStateService()->isPublished()) {
-            SearchHelper::queueUpdate($this->getModel());
-        } else {
-            SearchHelper::queueDelete($this->getModel());
-        }
+        (new ContentSearchService($this))->update();
 
         parent::afterSave($insert, $changedAttributes);
     }

@@ -12,9 +12,6 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\WallEntry;
-use humhub\modules\search\events\SearchAddEvent;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
 
@@ -29,7 +26,7 @@ use yii\helpers\Url;
  * @property string $updated_at
  * @property int $updated_by
  */
-class Post extends ContentActiveRecord implements Searchable
+class Post extends ContentActiveRecord
 {
     /**
      * @inheritdoc
@@ -120,7 +117,7 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getIcon()
     {
-        return 'fa-comment';
+        return 'fa-comment-o';
     }
 
     /**
@@ -136,30 +133,11 @@ class Post extends ContentActiveRecord implements Searchable
      */
     public function getSearchAttributes()
     {
-        $attributes = [
+        return [
             'message' => $this->message,
-            'url' => $this->url,
-            'user' => $this->getPostAuthorName()
         ];
-
-        $this->trigger(self::EVENT_SEARCH_ADD, new SearchAddEvent($attributes));
-
-        return $attributes;
     }
 
-    /**
-     * @return string
-     */
-    private function getPostAuthorName()
-    {
-        $user = User::findOne(['id' => $this->created_by]);
-
-        if ($user !== null && $user->isActive()) {
-            return $user->getDisplayName();
-        }
-
-        return '';
-    }
 
     /**
      * @inheritDoc

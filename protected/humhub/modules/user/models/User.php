@@ -19,10 +19,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
-use humhub\modules\search\events\SearchAddEvent;
-use humhub\modules\search\interfaces\Searchable;
-use humhub\modules\search\jobs\DeleteDocument;
-use humhub\modules\search\jobs\UpdateDocument;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\authclient\Password as PasswordAuth;
@@ -34,7 +30,6 @@ use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\PasswordRecoveryService;
-use humhub\modules\user\widgets\UserWall;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
@@ -71,7 +66,7 @@ use yii\web\IdentityInterface;
  * @property-read Space[] $spaces
  * @mixin Followable
  */
-class User extends ContentContainerActiveRecord implements IdentityInterface, Searchable
+class User extends ContentContainerActiveRecord implements IdentityInterface
 {
     /**
      * User Status Flags
@@ -513,11 +508,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
             $this->moduleManager->disable($module);
         }
 
-        Yii::$app->queue->push(new DeleteDocument([
-            'activeRecordClass' => get_class($this),
-            'primaryKey' => $this->id
-        ]));
-
         // Cleanup related tables
         Invite::deleteAll(['user_originator_id' => $this->id]);
         Invite::deleteAll(['email' => $this->email]);
@@ -586,8 +576,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         // (e.g. not UserEditForm) for search rebuild
         $user = User::findOne(['id' => $this->id]);
 
-        $this->updateSearch();
-
         if ($insert) {
             if ($this->status == User::STATUS_NEED_APPROVAL) {
                 Group::notifyAdminsForUserApproval($this);
@@ -614,26 +602,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         }
     }
 
-
-    /**
-     * Update user record in search index
-     *
-     * If the user is not visible, the user will be removed from the search index.
-     */
-    public function updateSearch()
-    {
-        if ($this->isVisible()) {
-            Yii::$app->queue->push(new UpdateDocument([
-                'activeRecordClass' => get_class($this),
-                'primaryKey' => $this->id
-            ]));
-        } else {
-            Yii::$app->queue->push(new DeleteDocument([
-                'activeRecordClass' => get_class($this),
-                'primaryKey' => $this->id
-            ]));
-        }
-    }
 
     private function setUpApproved()
     {
@@ -782,53 +750,6 @@ class User extends ContentContainerActiveRecord implements IdentityInterface, Se
         );
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getWallOut()
-    {
-        return UserWall::widget(['user' => $this]);
-    }
-
-    /**
-     * Returns an array of informations used by search subsystem.
-     * Function is defined in interface ISearchable
-     *
-     * @return array
-     */
-    public function getSearchAttributes()
-    {
-        $attributes = [
-            'email' => $this->email,
-            'username' => $this->username,
-            'tags' => implode(', ', $this->getTags()),
-        ];
-
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
-
-        if ($module->includeEmailInSearch) {
-            $attributes['email'] = $this->email;
-        }
-
-        // Add user group ids
-        $groupIds = array_map(function ($group) {
-            return $group->id;
-        }, $this->groups);
-        $attributes['groups'] = $groupIds;
-
-        if (!$this->profile->isNewRecord) {
-            foreach ($this->profile->getProfileFields() as $profileField) {
-                if ($profileField->searchable) {
-                    $attributes['profile_' . $profileField->internal_name] = $profileField->getUserValue($this, false);
-                }
-            }
-        }
-
-        $this->trigger(self::EVENT_SEARCH_ADD, new SearchAddEvent($attributes));
-
-        return $attributes;
-    }
 
     /**
      *

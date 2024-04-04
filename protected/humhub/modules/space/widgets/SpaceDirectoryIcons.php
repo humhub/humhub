@@ -36,16 +36,7 @@ class SpaceDirectoryIcons extends Widget
         }
 
         $membership = $this->space->getMembership();
-        $membersCountQuery = Membership::getSpaceMembersQuery($this->space)->active();
-        if (Yii::$app->user->isGuest) {
-            $membersCountQuery->andWhere(['!=', 'user.visibility', User::VISIBILITY_HIDDEN]);
-        } else {
-            $membersCountQuery->visible();
-        }
-
-        $count = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, function () use ($membersCountQuery) {
-            return $membersCountQuery->count();
-        });
+        $membersCount = $this->space->getMemberListService()->getCount();
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,

@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Ditt lösenord är felaktigt!',
   'a new user {displayName} needs approval.' => 'en ny användare {displayName} behöver godkännande.',
   'back to home' => 'tillbaka till förstasidan',
-  'email' => 'e-post',
-  'password' => 'lösenord',
-  'username or email' => 'användarnamn eller e-post',
+  'Password' => 'lösenord',
+  'Username or Email' => 'användarnamn eller e-post',
 );

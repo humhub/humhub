@@ -16,9 +16,8 @@ use humhub\modules\comment\notifications\NewComment as NewCommentNotification;
 use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
-use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\search\libs\SearchHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -101,12 +100,7 @@ class Comment extends ContentAddonActiveRecord
      */
     public function afterDelete()
     {
-        try {
-            $this->updateContentSearch();
-        } catch (Exception $ex) {
-            Yii::error($ex);
-        }
-
+        $this->updateContentSearch();
         parent::afterDelete();
     }
 
@@ -182,10 +176,8 @@ class Comment extends ContentAddonActiveRecord
      */
     protected function updateContentSearch()
     {
-        /** @var ContentActiveRecord $content */
-        $contentRecord = $this->getCommentedRecord();
-        if ($contentRecord !== null) {
-            SearchHelper::queueUpdate($contentRecord);
+        if ($this->content) {
+            (new ContentSearchService($this->content))->update();
         }
     }
 

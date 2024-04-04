@@ -26,18 +26,6 @@ use yii\base\BaseObject;
 class Events extends BaseObject
 {
     /**
-     * On rebuild of the search index, rebuild all user records
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onSearchRebuild($event)
-    {
-        foreach (User::find()->active()->each() as $user) {
-            Yii::$app->search->add($user);
-        }
-    }
-
-    /**
      * On delete of a Content or ContentAddon
      *
      * @param \yii\base\Event $event

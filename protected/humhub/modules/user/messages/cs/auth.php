@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Vaše heslo je nesprávné!',
   'a new user {displayName} needs approval.' => 'uživatel {displayName} žádá o přístup.',
   'back to home' => 'Zpět na hlavní stránku',
-  'email' => 'E-mailová adresa',
-  'password' => 'Heslo',
-  'username or email' => 'Uživatelské jméno nebo e-mail',
+  'Password' => 'Heslo',
+  'Username or Email' => 'Uživatelské jméno nebo e-mail',
 );

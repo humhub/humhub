@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'La teva contrasenya és incorrecta!',
   'a new user {displayName} needs approval.' => 'el nou usuari {displayName} necessita ser aprovat.',
   'back to home' => 'Torna a l\'inici',
-  'email' => 'correu electrònic',
-  'password' => 'contrasenya',
-  'username or email' => 'usuari o correu',
+  'Password' => 'contrasenya',
+  'Username or Email' => 'usuari o correu',
 );

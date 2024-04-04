@@ -1,7 +1,6 @@
 <?php
 
 return [
-    '<strong>Group</strong> members - {group}' => 'የ<strong>ቡድን</strong> አባላት - {group}',
     'Delete' => 'አስወግድ',
     'Edit' => 'ማስተካከያ',
     'Invited by' => 'ጋባዡ፦ ',
@@ -23,6 +22,7 @@ return [
     '<strong>Member</strong> of these Spaces' => '',
     '<strong>People</strong>' => '',
     '<strong>User</strong> tags' => '',
+    'Advanced Profile Search' => '',
     'All' => '',
     'Allow users to mention you' => '',
     'Allows access to your about page with personal information' => '',

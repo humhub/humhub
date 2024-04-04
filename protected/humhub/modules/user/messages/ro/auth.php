@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => '',
   'a new user {displayName} needs approval.' => '',
   'back to home' => '',
-  'email' => '',
-  'password' => '',
-  'username or email' => '',
+  'Password' => '',
+  'Username or Email' => '',
 );

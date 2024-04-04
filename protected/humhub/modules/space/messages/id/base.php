@@ -63,6 +63,7 @@ return [
     'Access to this Space is restricted. Please introduce yourself to become a member.' => '',
     'Add users without invitation' => '',
     'Administrator:' => '',
+    'Advanced Spaces Search' => '',
     'Any' => '',
     'As owner you cannot revoke your membership!' => '',
     'Blocked users' => '',
