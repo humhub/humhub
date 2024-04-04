@@ -51,11 +51,11 @@ class MailCommentEntry extends \yii\base\Widget
     {
 
         return $this->render('mailCommentEntry', [
-                    'originator' => $this->originator,
-                    'receiver' => $this->receiver,
-                    'comment' => $this->comment,
-                    'space' => $this->space,
-                    'date' => $this->date
+            'originator' => $this->originator,
+            'receiver' => $this->receiver,
+            'comment' => $this->comment,
+            'space' => $this->space,
+            'date' => $this->date
         ]);
     }
 

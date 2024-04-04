@@ -28,7 +28,7 @@ class MailButtonList extends \yii\base\Widget
     public function run()
     {
         return $this->render('mailButtonList', [
-                    'buttons' => $this->buttons
+            'buttons' => $this->buttons
         ]);
     }
 }

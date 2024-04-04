@@ -8,7 +8,6 @@
 
 namespace humhub\modules\stream\models\filters;
 
-
 use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\models\ContentContainerStreamQuery;

@@ -1,31 +1,31 @@
 <?php
 
 return  [
-  'name' => 'HumHub',
-  'language' => 'en-US',
-  'timeZone' => 'Europe/Berlin',
-  'components' =>
-   [
-    'formatter' =>
+    'name' => 'HumHub',
+    'language' => 'en-US',
+    'timeZone' => 'Europe/Berlin',
+    'components' =>
      [
-      'defaultTimeZone' => 'Europe/Berlin',
-    ],
-    'user' =>
+         'formatter' =>
+          [
+              'defaultTimeZone' => 'Europe/Berlin',
+          ],
+         'user' =>
+          [
+          ],
+         'mailer' =>
+          [
+              'useFileTransport' => true,
+          ],
+         'cache' =>
+          [
+              'class' => 'yii\\caching\\DummyCache',
+              'keyPrefix' => 'humhub',
+          ],
+     ],
+    'params' =>
      [
-    ],
-    'mailer' =>
-     [
-      'useFileTransport' => true,
-    ],
-    'cache' =>
-     [
-      'class' => 'yii\\caching\\DummyCache',
-      'keyPrefix' => 'humhub',
-    ],
-  ],
-  'params' =>
-   [
-    'config_created_at' => 1509135303,
-    'horImageScrollOnMobile' => null,
-  ],
+         'config_created_at' => 1509135303,
+         'horImageScrollOnMobile' => null,
+     ],
 ];

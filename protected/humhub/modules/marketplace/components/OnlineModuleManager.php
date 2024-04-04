@@ -72,7 +72,8 @@ class OnlineModuleManager extends Component
         }
 
         if (!$this->unzip($downloadTargetFileName, $modulesPath)) {
-            $this->throwError($moduleId,
+            $this->throwError(
+                $moduleId,
                 'Could not unzip ' . $downloadTargetFileName . ' to ' . $modulesPath,
                 Yii::t('MarketplaceModule.base', 'Could not extract module!')
             );

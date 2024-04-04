@@ -82,11 +82,11 @@ class MailContentEntry extends \yii\base\Widget
         }
 
         return $this->render('mailContentEntry', [
-                    'originator' => $this->originator,
-                    'content' => $content,
-                    'space' => $this->space,
-                    'date' => $this->date,
-                    'isComment' => $this->isComment,
+            'originator' => $this->originator,
+            'content' => $content,
+            'space' => $this->space,
+            'date' => $this->date,
+            'isComment' => $this->isComment,
         ]);
     }
 }

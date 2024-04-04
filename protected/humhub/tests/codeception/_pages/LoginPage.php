@@ -31,7 +31,7 @@ class LoginPage extends BasePage
         $this->actor->fillField('Invite[email]', $email);
         $this->actor->submitForm('#invite-form', ['Invite' => [
             'email' => $email
-       ]]);
+        ]]);
     }
 
 }

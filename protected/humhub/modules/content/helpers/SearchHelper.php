@@ -8,9 +8,7 @@
 
 namespace humhub\modules\content\helpers;
 
-
 use yii\base\BaseObject;
-
 
 /**
  * SearchHelper
@@ -20,13 +18,12 @@ use yii\base\BaseObject;
  */
 class SearchHelper extends BaseObject
 {
-
     /**
      * Checks if given text matches a search query.
      *
      * @param string $query
      * @param string $text
-     * @return boolean
+     * @return bool
      */
     public static function matchQuery($query, $text)
     {

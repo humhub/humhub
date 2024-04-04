@@ -60,8 +60,7 @@ Admin Tester", $form->message);
 
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setSendMessageDefaults();
-        $this->assertEquals("Hey UnApproved User, Admin Tester has a question about your account creation."
-            , $form->message);
+        $this->assertEquals("Hey UnApproved User, Admin Tester has a question about your account creation.", $form->message);
     }
 
     public function testDefaultApproveMessage()
