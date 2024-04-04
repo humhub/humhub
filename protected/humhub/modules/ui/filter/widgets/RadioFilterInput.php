@@ -12,9 +12,9 @@ use Yii;
 
 class RadioFilterInput extends CheckboxFilterInput
 {
-    const STYLE_CHECKBOX = 'checkbox';
-    const STYLE_RADIO = 'radio';
-    const STYLE_CUSTOM = 'custom';
+    public const STYLE_CHECKBOX = 'checkbox';
+    public const STYLE_RADIO = 'radio';
+    public const STYLE_CUSTOM = 'custom';
 
     /**
      * @var string data-action-click handler of the input event
@@ -39,11 +39,11 @@ class RadioFilterInput extends CheckboxFilterInput
     {
         parent::init();
 
-        if(!$this->style) {
+        if (!$this->style) {
             $this->style = ($this->force) ? static::STYLE_RADIO : static::STYLE_CHECKBOX;
         }
 
-        if($this->style === static::STYLE_RADIO) {
+        if ($this->style === static::STYLE_RADIO) {
             $this->iconActive = 'fa-dot-circle-o';
             $this->iconInActive = 'fa-circle-o';
         }
@@ -70,7 +70,7 @@ class RadioFilterInput extends CheckboxFilterInput
         $this->options['data-radio-group'] = $this->radioGroup;
         $this->options['data-filter-value'] = $this->value;
 
-        if($this->force) {
+        if ($this->force) {
             $this->options['data-radio-force'] = 1;
         }
     }

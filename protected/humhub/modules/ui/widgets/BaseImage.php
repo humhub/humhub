@@ -22,7 +22,7 @@ class BaseImage extends Widget
     public $htmlOptions = [];
 
     /**
-     * @var boolean create link to the space or user profile
+     * @var bool create link to the space or user profile
      */
     public $link = false;
 

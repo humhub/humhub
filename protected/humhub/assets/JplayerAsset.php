@@ -17,7 +17,6 @@ use yii\web\AssetBundle;
  */
 class JplayerAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

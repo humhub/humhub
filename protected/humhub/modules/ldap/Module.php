@@ -13,7 +13,6 @@ namespace humhub\modules\ldap;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

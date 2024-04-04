@@ -10,7 +10,6 @@ use tests\codeception\_support\BasePage;
  */
 class ProfilePage extends BasePage
 {
-
     public $route = 'user/account';
 
     public function clickAbout()

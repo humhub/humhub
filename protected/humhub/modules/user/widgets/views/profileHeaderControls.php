@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\user\widgets\HeaderControlsMenu;
 use humhub\modules\user\widgets\ProfileHeaderControls;
 use humhub\modules\friendship\widgets\FriendshipButton;
@@ -7,7 +8,7 @@ use humhub\modules\user\widgets\ProfileEditButton;
 use humhub\modules\user\widgets\ProfileHeaderCounterSet;
 use humhub\modules\user\widgets\UserFollowButton;
 
-/* @var $container \humhub\modules\content\components\ContentContainerActiveRecord */
+/* @var $container ContentContainerActiveRecord */
 
 $controls = [[ProfileEditButton::class, ['user' => $container]]];
 if (!FriendshipButton::isVisibleForUser($container)) {

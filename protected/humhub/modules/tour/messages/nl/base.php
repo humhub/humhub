@@ -29,7 +29,7 @@ return array (
   'Your lastname' => 'Uw achternaam',
   'Your mobile phone number' => 'Uw mobiele telefoon nummer',
   'Your phone number at work' => 'Uw telefoonnummer op het werk',
-  'Your skills, knowledge and experience (comma seperated)' => 'Uw vaardigheden, ervaring, etc. (gescheiden met komma\'s)',
+  'Your skills, knowledge and experience' => 'Uw vaardigheden, kennis en ervaring',
   'Your title or position' => 'Uw titel of positie',
   '« Prev' => '« Vorige',
 );

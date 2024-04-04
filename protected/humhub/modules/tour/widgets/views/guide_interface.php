@@ -1,11 +1,13 @@
 <?php
 
+use humhub\libs\Html;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {
@@ -33,7 +35,7 @@ use yii\helpers\Url;
                     {
                         element: "#space-menu",
                         title: <?= json_encode(Yii::t('TourModule.base', '<strong>Space</strong> Menu')); ?>,
-                        content: <?= json_encode(Yii::t('TourModule.base', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')); ?> +"<br><br><a href='#' data-action-click='tour.next'><?=Yii::t("TourModule.base", "<strong>Start</strong> space guide"); ?></a><br><br>",
+                        content: <?= json_encode(Yii::t('TourModule.base', 'This is the most important menu and will probably be the one you use most often!<br><br>Access all the spaces you have joined and create new spaces here.<br><br>The next guide will show you how:')); ?> + "<br><br><a href='#' data-action-click='tour.next'><?=Yii::t("TourModule.base", "<strong>Start</strong> space guide"); ?></a><br><br>",
                         placement: "bottom"
                     }
                 ]

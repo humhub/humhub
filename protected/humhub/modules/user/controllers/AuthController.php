@@ -22,6 +22,7 @@ use humhub\modules\user\Module;
 use humhub\modules\user\services\AuthClientService;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\base\Exception;
@@ -42,12 +43,12 @@ class AuthController extends Controller
      * @event Triggered after an successful login. Note: In contrast to User::EVENT_AFTER_LOGIN, this event is triggered
      * after the response is generated.
      */
-    const EVENT_AFTER_LOGIN = 'afterLogin';
+    public const EVENT_AFTER_LOGIN = 'afterLogin';
 
     /**
      * @event Triggered after an successful login but before checking user status
      */
-    const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
+    public const EVENT_BEFORE_CHECKING_USER_STATUS = 'beforeCheckingUserStatus';
 
     /**
      * @inheritdoc
@@ -112,7 +113,7 @@ class AuthController extends Controller
 
         // Self Invite
         $invite = new Invite();
-        $invite->scenario = 'invite';
+        $invite->scenario = Invite::SCENARIO_INVITE;
         if ($invite->load(Yii::$app->request->post()) && $invite->selfInvite()) {
             if (Yii::$app->request->isAjax) {
                 return $this->renderAjax('register_success_modal', ['model' => $invite]);
@@ -126,6 +127,8 @@ class AuthController extends Controller
             'invite' => $invite,
             'canRegister' => $invite->allowSelfInvite(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
+            'showLoginForm' => $this->module->showLoginForm || Yii::$app->request->get('showLoginForm', false),
+            'showRegistrationForm' => $this->module->showRegistrationForm
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {
@@ -144,7 +147,7 @@ class AuthController extends Controller
      *
      * @param BaseClient $authClient
      * @return Response
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function onAuthSuccess(BaseClient $authClient)
     {
@@ -204,7 +207,10 @@ class AuthController extends Controller
         $inviteRegistrationService = InviteRegistrationService::createFromRequestOrEmail($attributes['email'] ?? null);
         $linkRegistrationService = LinkRegistrationService::createFromRequest();
 
-        if (!$inviteRegistrationService->isValid() && !$linkRegistrationService->isValid() && !$authClientService->allowSelfRegistration()) {
+        if (!$inviteRegistrationService->isValid() &&
+            !$linkRegistrationService->isValid() &&
+            (!$authClientService->allowSelfRegistration() && !in_array($authClient->id, $this->module->allowUserRegistrationFromAuthClientIds))
+        ) {
             Yii::warning('Could not register user automatically: Anonymous registration disabled. AuthClient: ' . get_class($authClient), 'user');
             Yii::$app->session->setFlash('error', Yii::t('UserModule.base', 'You\'re not registered.'));
             return $this->redirect(['/user/auth/login']);
@@ -320,7 +326,7 @@ class AuthController extends Controller
 
     /**
      * Logouts a User
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionLogout()
     {

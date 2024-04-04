@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use humhub\modules\admin\widgets\PrerequisitesList;
+
 ?>
 <div class="panel panel-default animated fadeIn">
 
@@ -14,7 +15,7 @@ use humhub\modules\admin\widgets\PrerequisitesList;
 
         <hr/>
         <?= PrerequisitesList::widget(); ?>
-        
+
         <?php if (!$hasError): ?>
             <div class="alert alert-success">
                 <?php echo Yii::t('InstallerModule.base', 'Congratulations! Everything is ok and ready to start over!'); ?>

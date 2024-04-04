@@ -21,4 +21,4 @@ return [
     ['id' => 2, 'group_id' => 2, 'space_id' => 1],
     ['id' => 3, 'group_id' => 3, 'space_id' => 1],
     ['id' => 4, 'group_id' => 3, 'space_id' => 2],
- ];
+];

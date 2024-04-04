@@ -24,9 +24,7 @@ use yii\helpers\Url;
  */
 class ServiceWorkerController extends Controller
 {
-
     /**
-
      * Allow guest access independently from guest mode setting.
      *
      * @var string
@@ -52,15 +50,15 @@ class ServiceWorkerController extends Controller
         $offlinePageUrl = Url::to(['/web/pwa-offline/index']);
         $this->baseJs .= <<<JS
             var OFFLINE_PAGE_URL = '{$offlinePageUrl}';
-        
+
             self.addEventListener('install', function (event) {
                 console.log('********** The service worker is being installed.');
-    
+
                 // Store "Offline" page
                 var offlineRequest = new Request(OFFLINE_PAGE_URL, {init: {
                     credentials: 'omit'
                 }});
-                
+
                 event.waitUntil(
                     fetch(offlineRequest).then(function (response) {
                         return caches.open('offline').then(function (cache) {

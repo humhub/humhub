@@ -3,15 +3,15 @@
 use humhub\commands\CronController;
 use humhub\modules\content\Events;
 use humhub\commands\IntegrityController;
+use humhub\modules\content\Module;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
-use humhub\modules\search\engine\Search;
 use humhub\modules\content\components\ContentActiveRecord;
 
 return [
     'id' => 'content',
-    'class' => \humhub\modules\content\Module::class,
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
@@ -19,11 +19,12 @@ return [
         ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
         ['class' => User::class, 'event' => User::EVENT_BEFORE_SOFT_DELETE, 'callback' => [Events::class, 'onUserSoftDelete']],
         ['class' => Space::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onSpaceDelete']],
-        ['class' => Search::class, 'event' => Search::EVENT_ON_REBUILD, 'callback' => [Events::class, 'onSearchRebuild']],
-        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_INSERT, 'callback' => [Events::class, 'onContentActiveRecordSave']],
-        ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_UPDATE, 'callback' => [Events::class, 'onContentActiveRecordSave']],
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentActiveRecordDelete']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
-        ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']]
+        ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']],
     ],
+    'consoleControllerMap' => [
+        'content-search' => '\humhub\modules\content\commands\SearchController'
+    ],
+
 ];

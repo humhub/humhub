@@ -8,6 +8,7 @@
 
 namespace tests\codeception\unit\modules\file;
 
+use Exception;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\models\File;
 use SplFileInfo;
@@ -91,7 +92,7 @@ class FileHelperTest extends HumHubDbTestCase
 
         $file->file_name = $path;
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('File GUID empty!');
 
         static::assertNull(FileHelper::createLink($file));
@@ -165,7 +166,7 @@ class FileHelperTest extends HumHubDbTestCase
 
         $file->file_name = $path;
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('File GUID empty!');
 
         static::assertNull(FileHelper::getFileInfos($file));

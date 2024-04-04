@@ -18,6 +18,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\InviteRegistrationService;
 use humhub\modules\user\services\LinkRegistrationService;
+use Throwable;
 use Yii;
 use yii\authclient\BaseClient;
 use yii\authclient\ClientInterface;
@@ -117,6 +118,7 @@ class RegistrationController extends Controller
 
         return $this->render('index', [
             'hForm' => $registration,
+            'showRegistrationForm' => $this->module->showRegistrationForm,
             'hasAuthClient' => $authClient !== null,
         ]);
     }
@@ -128,7 +130,7 @@ class RegistrationController extends Controller
      * @param null $spaceId
      * @return string
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws StaleObjectException
      */
     public function actionByLink(?string $token = null, $spaceId = null)
@@ -145,15 +147,19 @@ class RegistrationController extends Controller
 
         $linkRegistrationService->storeInSession();
 
-        $form = new Invite(['source' => Invite::SOURCE_INVITE_BY_LINK]);
+        $form = new Invite([
+            'source' => Invite::SOURCE_INVITE_BY_LINK,
+            'scenario' => Invite::SCENARIO_INVITE_BY_LINK_FORM,
+        ]);
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             $invite = $linkRegistrationService->convertToInvite($form->email);
-            $invite->sendInviteMail();
+            $invite?->sendInviteMail();
             return $this->render('@user/views/auth/register_success', ['model' => $invite]);
         }
 
         return $this->render('byLink', [
             'invite' => $form,
+            'showRegistrationForm' => $this->module->showRegistrationForm,
             'showAuthClients' => true,
         ]);
     }

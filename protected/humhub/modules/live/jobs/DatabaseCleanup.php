@@ -21,7 +21,6 @@ use Yii;
  */
 class DatabaseCleanup extends LongRunningActiveJob
 {
-
     /**
      * @inheritdoc
      */

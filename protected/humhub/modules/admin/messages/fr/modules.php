@@ -2,7 +2,6 @@
 
 return [
     '%moduleName% - Set as default module' => '%moduleName% est défini comme module par défaut',
-    'Activated' => 'Activé',
     'Always activated' => 'Toujours activé',
     'Are you sure? *ALL* module data will be lost!' => 'Êtes-vous sûr·e ? <strong>*TOUTES*</strong> les données du module seront définitivement perdues !',
     'Are you sure? *ALL* module related data and files will be lost!' => 'Êtes-vous sûr·e ? <strong>*TOUTES*</strong> les données et <strong>*TOUS*</strong> les fichiers du module seront définitivement perdus !',
@@ -11,12 +10,17 @@ return [
     'Deactivated' => 'Désactivé',
     'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'La désactivation de ce module n’est pas encore achevée. Veuillez ré-essayer dans quelques minutes.',
     'Enable module...' => 'Activer le module…',
+    'Enabled' => 'Activé',
     'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Ici, vous pouvez choisir d’activer par défaut le module dans les espaces et/ou les profils d’utilisation. Si le module doit rester obligatoirement activé, choisissez « Toujours activé ».',
+    'Module deactivation in progress. This process may take a moment.' => 'Module en cours de désactivation. Cette procédure peut prendre un court instant.',
     'Module path %path% is not writeable!' => 'Le dossier %path% du module n’est pas accessible en écriture.',
+    'Not available' => 'Non disponible',
     'Save' => 'Enregistrer',
     'Space default state' => 'État par défaut de l’espace',
     'Spaces' => 'Espaces',
+    'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'Le module est actuellement utilisé par {nbContainers} personnes ou espaces. Si vous modifiez sa disponibilité, tous les contenus créés avec le module seront perdus. Voulez-vous continuer ?',
     'User default state' => 'État par défaut de l’utilisateur ou de l’utilisatrice',
     'Users' => 'Utilisateurs et utilisatrices',
-    'Module deactivation in progress. This process may take a moment.' => '',
+    'Module uninstall in progress. This process may take a moment.' => '',
+    'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => '',
 ];

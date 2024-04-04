@@ -8,6 +8,7 @@
 
 namespace humhub\modules\activity\components;
 
+use Exception;
 use humhub\modules\activity\Module;
 use humhub\modules\user\models\User;
 use Yii;
@@ -22,7 +23,6 @@ use yii\helpers\Console;
  */
 class MailSummaryProcessor
 {
-
     /**
      * Processes mail summary for given interval
      *
@@ -66,7 +66,7 @@ class MailSummaryProcessor
                         $mailsSent++;
                     }
                 }
-            } catch (\Exception $ex) {
+            } catch (Exception $ex) {
                 Yii::error('Could not send activity mail to: ' . $user->displayName . ' (' . $ex->getMessage() . ')', 'activity');
             }
 

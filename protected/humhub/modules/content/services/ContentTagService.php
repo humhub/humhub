@@ -5,7 +5,6 @@ namespace humhub\modules\content\services;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
-use humhub\modules\search\libs\SearchHelper;
 use Yii;
 use yii\base\InvalidArgumentException;
 
@@ -51,7 +50,8 @@ class ContentTagService
         }
 
         $this->content->refresh();
-        SearchHelper::queueUpdate($this->content->getPolymorphicRelation());
+
+        (new ContentSearchService($this->content))->update();
 
         $contentRelation = new ContentTagRelation($this->content, $tag);
 

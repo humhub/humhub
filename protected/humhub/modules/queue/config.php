@@ -5,6 +5,7 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
 use humhub\commands\CronController;
 use humhub\modules\queue\Events;
 use humhub\modules\queue\Module;

@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\permissions;
 
 use humhub\modules\admin\components\BaseAdminPermission;
+use Yii;
 
 /**
  * SeeAdminInformation Permission allows access to information section within the admin area.
@@ -26,8 +27,8 @@ class SeeAdminInformation extends BaseAdminPermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('AdminModule.permissions', 'Access Admin Information');
-        $this->description = \Yii::t('AdminModule.permissions', 'Can access the \'Administration -> Information\' section.');
+        $this->title = Yii::t('AdminModule.permissions', 'Access Admin Information');
+        $this->description = Yii::t('AdminModule.permissions', 'Can access the \'Administration -> Information\' section.');
     }
 
 }

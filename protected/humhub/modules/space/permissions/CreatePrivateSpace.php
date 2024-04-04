@@ -16,12 +16,11 @@ use Yii;
  */
 class CreatePrivateSpace extends BasePermission
 {
-
     /**
      * @inheritdoc
      */
     protected $id = 'create_private_space';
-    
+
     /**
      * @inheritdoc
      */
@@ -42,10 +41,11 @@ class CreatePrivateSpace extends BasePermission
      */
     protected $defaultState = self::STATE_ALLOW;
 
-    public function __construct($config = []) {
+    public function __construct($config = [])
+    {
         parent::__construct($config);
-        
+
         $this->title = Yii::t('SpaceModule.permissions', 'Create Private Spaces');
         $this->description = Yii::t('SpaceModule.permissions', 'Can create hidden (private) Spaces.');
-    }    
+    }
 }

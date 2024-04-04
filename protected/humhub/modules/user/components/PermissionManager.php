@@ -9,14 +9,22 @@
 namespace humhub\modules\user\components;
 
 use humhub\components\Module;
+use humhub\helpers\DataTypeHelper;
 use humhub\libs\BasePermission;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupPermission;
 use humhub\modules\user\models\User as UserModel;
+use RuntimeException;
+use Throwable;
 use Yii;
 use yii\base\Component;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\base\Module as BaseModule;
+use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\db\StaleObjectException;
+use yii\web\HttpException;
 
 /**
  * Description of PermissionManager
@@ -27,7 +35,8 @@ class PermissionManager extends Component
 {
     /**
      * User identity.
-     * @var \humhub\modules\user\models\User
+     *
+     * @var UserModel
      */
     public $subject;
 
@@ -58,9 +67,10 @@ class PermissionManager extends Component
      *
      * @param string|array|BasePermission $permission
      * @param array $params
-     * @param boolean $allowCaching
-     * @return boolean
-     * @throws \yii\base\InvalidConfigException
+     * @param bool $allowCaching
+     *
+     * @return bool
+     * @throws InvalidConfigException
      */
     public function can($permission, $params = [], $allowCaching = true)
     {
@@ -94,6 +104,7 @@ class PermissionManager extends Component
      * Return boolean for verifyAll
      *
      * @param array $params
+     *
      * @return bool
      */
     private function isVerifyAll($params = [])
@@ -114,7 +125,8 @@ class PermissionManager extends Component
      * Verifies a single permission for a given permission subject.
      *
      * @param BasePermission $permission
-     * @return boolean
+     *
+     * @return bool
      */
     protected function verify(BasePermission $permission)
     {
@@ -131,7 +143,7 @@ class PermissionManager extends Component
      * If the permission objects $subject property is not set this method returns the currently
      * logged in user identity.
      *
-     * @return \humhub\modules\user\models\User
+     * @return UserModel
      */
     protected function getSubject()
     {
@@ -155,9 +167,9 @@ class PermissionManager extends Component
      * @param string $groupId
      * @param string|BasePermission $permission either permission class or instance
      * @param string $state
-     * @throws \Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\StaleObjectException
+     *
+     * @throws InvalidConfigException
+     * @throws Throwable
      */
     public function setGroupState($groupId, $permission, $state)
     {
@@ -168,6 +180,7 @@ class PermissionManager extends Component
         if ($state === '' || $state === null) {
             if ($record !== null) {
                 $record->delete();
+                $this->clear();
             }
             return;
         }
@@ -179,11 +192,14 @@ class PermissionManager extends Component
         $record->permission_id = $permission->getId();
         $record->module_id = $permission->getModuleId();
         $record->class = get_class($permission);
-        $record->group_id = $groupId;
+        $record->group_id = (string)$groupId; // content container permissions require a text value here
         $record->state = $state;
-        if ($record->save()) {
-            $this->clear();
+
+        if ($record->save() === false) {
+            throw new RuntimeException("Saving permission failed: " . implode('; ', $record->getErrorSummary(true)));
         }
+
+        $this->clear();
     }
 
     /**
@@ -297,7 +313,7 @@ class PermissionManager extends Component
      *
      * @param string $groupId
      * @param BasePermission $permission
-     * @param boolean $returnDefaultState
+     * @param bool $returnDefaultState
      * @return string|int the state
      */
     private function getSingleGroupState($groupId, BasePermission $permission, $returnDefaultState = true)
@@ -335,7 +351,7 @@ class PermissionManager extends Component
      * @param string $permissionId
      * @param string $moduleId
      * @return BasePermission|null
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getById($permissionId, $moduleId)
     {
@@ -355,7 +371,8 @@ class PermissionManager extends Component
      * Not used anymore, permissions are now prefetched into $_groupPermissions array
      * @param $groupId
      * @param BasePermission $permission
-     * @return array|null|\yii\db\ActiveRecord
+     *
+     * @return array|null|ActiveRecord
      * @deprecated since 1.10
      *
      */
@@ -372,7 +389,7 @@ class PermissionManager extends Component
      * Returns a list of all Permission objects
      *
      * @return array of BasePermissions
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     public function getPermissions()
     {
@@ -398,7 +415,7 @@ class PermissionManager extends Component
      *
      * @param BaseModule $module
      * @return array of BasePermissions
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function getModulePermissions(BaseModule $module)
     {
@@ -418,7 +435,7 @@ class PermissionManager extends Component
     /**
      * Creates a Permission Database record
      *
-     * @return \yii\db\ActiveRecord
+     * @return ActiveRecord
      */
     protected function createPermissionRecord()
     {
@@ -428,7 +445,7 @@ class PermissionManager extends Component
     /**
      * Creates a Permission Database Query
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     protected function getQuery()
     {
@@ -441,8 +458,8 @@ class PermissionManager extends Component
      * @param int $groupId id of the group
      * @param bool $returnOnlyChangeable
      * @return array the permission array
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function createPermissionArray($groupId, $returnOnlyChangeable = false)
     {
@@ -476,6 +493,38 @@ class PermissionManager extends Component
         return $permissions;
     }
 
+    /**
+     * @param int|string $groupId
+     *
+     * @return array|null
+     * @throws InvalidConfigException
+     * @throws HttpException
+     * @throws StaleObjectException
+     * @since 1.16
+     */
+    public function handlePermissionStateChange($groupId): ?array
+    {
+        if (Yii::$app->request->post('dropDownColumnSubmit')) {
+            Yii::$app->response->format = 'json';
+
+            $permission = $this->getById(
+                Yii::$app->request->post('permissionId'),
+                Yii::$app->request->post('moduleId')
+            );
+
+            if ($permission === null) {
+                throw new HttpException(500, 'Could not find permission!');
+            }
+
+            $groupId = DataTypeHelper::filterInt($groupId) ?? DataTypeHelper::filterString($groupId);
+            $state = DataTypeHelper::filterInt(Yii::$app->request->post('state'));
+            $this->setGroupState($groupId, $permission, $state);
+
+            return [];
+        }
+
+        return null;
+    }
 
     /**
      * Returns a query for users which are granted given permission

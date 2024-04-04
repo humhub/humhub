@@ -12,7 +12,7 @@ class OverviewWidget extends JsWidget implements Reloadable
     public $id = 'notification_overview_list';
 
     public $init = true;
-    
+
     public $notifications;
 
     public $pagination;

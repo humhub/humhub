@@ -6,15 +6,18 @@
  * @license https://www.humhub.com/licences
  */
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $space Space */
 /* @var $url string */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $html string */
 /* @var $text string */
+
 /* @var $originator User */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use yii\web\View;
+
 ?>
 
 ---

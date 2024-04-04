@@ -18,7 +18,6 @@ use yii\web\AssetBundle;
  */
 class SocketIoAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

@@ -13,7 +13,6 @@ use humhub\modules\notification\targets\WebTarget;
 
 class NotificationCategoryTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     /**
@@ -169,5 +168,4 @@ class NotificationCategoryTest extends HumHubDbTestCase
         $this->assertTrue($mailTarget->isEnabled($notification, $user));
         $this->assertTrue($webTarget->isEnabled($notification, $user));
     }
-
 }

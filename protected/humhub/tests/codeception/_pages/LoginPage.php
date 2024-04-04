@@ -10,7 +10,6 @@ use tests\codeception\_support\BasePage;
  */
 class LoginPage extends BasePage
 {
-
     public $route = 'user/auth/login';
 
     /**

@@ -4,16 +4,35 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
-Version 1.16 (Unreleased)
+Version 1.16 (April 2024)
 -------------------------
+At least PHP 8.0 is required with this version.
+
+#### Removed
+- `\humhub\modules\search\*` The existing search module was removed and the related features merged
+  into the 'content', 'user' and 'space' modules.
+
+### Behaviour change
+- New Meta Search API 
+- Controller route change: `/search/mentioning` -> `/user/mentioning`
+- `Yii::$app->search()` is not longer available. See Content/User/Spaces search for alternatives.
 
 ### Deprecations
+- `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
+  (note: this also affects the virtual instance property `\humhub\modules\friendship\Module::$isActivated` which should
+  now read `$isEnabled`!)
 - `\humhub\components\Module::migrate()` use `getMigrationService()->migrateUp(MigrationService::ACTION_MIGRATE)` instead
 - `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
 - `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canRead()` use `canView()` instead
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
+- `\humhub\modules\friendship\Module::getIsEnabled()` use `isFriendshipEnabled()` instead
+  (note: `\humhub\modules\friendship\Module::getIsEnabled()` and the virtual
+  property `\humhub\modules\friendship\Module::isEnabled` now return the status of the module -
+  which yields always true for core modules.)
+- `\humhub\modules\marketplace\Module::isEnabled()` use `isMarketplaceEnabled()` instead
+- `\humhub\modules\marketplace\services\ModuleService::activate()` use `enable()` instead
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types

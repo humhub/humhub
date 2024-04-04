@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\controllers;
 
-
 use HttpException;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerController;

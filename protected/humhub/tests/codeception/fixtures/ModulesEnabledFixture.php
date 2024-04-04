@@ -13,7 +13,6 @@ use yii\test\ActiveFixture;
 
 class ModulesEnabledFixture extends ActiveFixture
 {
-
     public $modelClass = ModuleEnabled::class;
 
 }

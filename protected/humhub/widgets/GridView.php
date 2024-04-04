@@ -7,7 +7,6 @@
 
 namespace humhub\widgets;
 
-
 use humhub\assets\GridViewAsset;
 
 /**

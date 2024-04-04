@@ -19,7 +19,7 @@ class DatePickerFilterInput extends FilterInput
      * @inheritdoc
      */
     public $type = 'date-picker';
-    
+
     /**
      * @var array Options for the DatePicker widget
      */

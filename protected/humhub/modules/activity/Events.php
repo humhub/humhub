@@ -17,12 +17,14 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
+use Throwable;
 use Yii;
 use yii\base\ActionEvent;
 use yii\base\BaseObject;
 use yii\base\Event;
 use yii\base\InvalidArgumentException;
 use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 
 /**
  * Events provides callbacks to handle events.
@@ -31,7 +33,6 @@ use yii\db\IntegrityException;
  */
 class Events extends BaseObject
 {
-
     /**
      * Handles cron hourly run event to send mail summaries to the users
      *
@@ -115,8 +116,8 @@ class Events extends BaseObject
      * Callback to validate module database records.
      *
      * @param Event $event
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public static function onIntegrityCheck($event)
     {

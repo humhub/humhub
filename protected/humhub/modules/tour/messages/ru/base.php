@@ -1,8 +1,4 @@
 <?php
-/**
- * Translation: Paul (https://paul.bid) paulbid@protonmail.com
- * 
- */
 return array (
   ' Remove panel' => 'Убрать панель',
   '<strong>Account</strong> Menu' => '<strong>Меню настроек</strong>',
@@ -33,7 +29,7 @@ return array (
   'Your lastname' => 'Ваша фамилия',
   'Your mobile phone number' => 'Номер телефона',
   'Your phone number at work' => 'Рабочий телефон',
-  'Your skills, knowledge and experience (comma seperated)' => 'Ваши навыки, знания и опыт (через запятую)',
+  'Your skills, knowledge and experience' => 'Ваши навыки, знания и опыт',
   'Your title or position' => 'Ваша должность или звание',
   '« Prev' => '« Назад',
 );

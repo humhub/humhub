@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Вашата парола е неправилна!',
   'a new user {displayName} needs approval.' => 'нов потребител {displayName} се нуждае от одобрение.',
   'back to home' => 'обратно към начална страница',
-  'email' => 'имейл',
-  'password' => 'парола',
-  'username or email' => 'потребителско име или парола',
+  'Password' => 'парола',
+  'Username or Email' => 'потребителско име или парола',
 );

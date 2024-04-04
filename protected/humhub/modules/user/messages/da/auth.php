@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Din adgangskode er forkert!',
   'a new user {displayName} needs approval.' => '',
   'back to home' => 'tilbage til hjem',
-  'email' => 'e-mail',
-  'password' => 'adgangskode',
-  'username or email' => 'brugernavn eller e-mail',
+  'Password' => 'adgangskode',
+  'Username or Email' => 'brugernavn eller e-mail',
 );

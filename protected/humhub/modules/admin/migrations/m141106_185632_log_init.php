@@ -27,8 +27,8 @@ class m141106_185632_log_init extends Migration
     private $dbTargets = [];
 
     /**
-     * @throws InvalidConfigException
      * @return DbTarget[]
+     * @throws InvalidConfigException
      */
     protected function getDbTargets()
     {

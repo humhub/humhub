@@ -10,6 +10,7 @@ use yii\captcha\Captcha;
 /**
  * @var $invite Invite
  * @var $showAuthClients bool
+ * @var $showRegistrationForm bool
  */
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
@@ -27,7 +28,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
             </div>
             <div class="panel-body">
                 <?php if ($showAuthClients && AuthChoice::hasClients()): ?>
-                    <?= AuthChoice::widget() ?>
+                    <?= AuthChoice::widget(['showOrDivider' => $showRegistrationForm]) ?>
                 <?php endif; ?>
 
                 <?php if (Yii::$app->session->hasFlash('error')): ?>
@@ -36,21 +37,24 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                     </div>
                 <?php endif; ?>
 
-                <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
-                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
 
-                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
-                    </div>
+                <?php if ($showRegistrationForm): ?>
+                    <?php $form = ActiveForm::begin(['id' => 'registration-form']); ?>
+                    <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
+                    <?php if ($invite->showCaptureInRegisterForm()) : ?>
+                        <div id="registration-form-captcha" style="display: none;">
+                            <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
+
+                            <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
+                                'captchaAction' => '/user/auth/captcha',
+                            ])->label(false); ?>
+                        </div>
+                    <?php endif; ?>
+                    <hr>
+                    <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+
+                    <?php ActiveForm::end(); ?>
                 <?php endif; ?>
-                <hr>
-                <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
-
-                <?php ActiveForm::end(); ?>
             </div>
         </div>
 
@@ -73,5 +77,3 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         <?php } ?>
 
     </script>
-
-

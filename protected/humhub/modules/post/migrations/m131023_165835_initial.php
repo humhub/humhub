@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m131023_165835_initial extends Migration
 {
-
     public function up()
     {
 
@@ -18,7 +17,7 @@ class m131023_165835_initial extends Migration
             'created_by' => 'int(11) DEFAULT NULL',
             'updated_at' => 'datetime DEFAULT NULL',
             'updated_by' => 'int(11) DEFAULT NULL',
-                ], '');
+        ], '');
     }
 
     public function down()

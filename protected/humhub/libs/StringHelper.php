@@ -97,13 +97,13 @@ class StringHelper extends \yii\helpers\StringHelper
     }
 
 
-        /**
-         * @param mixed $string String to test, and if $convert is true, to turn into string
-         * @param bool $convert
-         *
-         * @return bool
-         * @since 1.15
-         */
+    /**
+     * @param mixed $string String to test, and if $convert is true, to turn into string
+     * @param bool $convert
+     *
+     * @return bool
+     * @since 1.15
+     */
     public static function isStringable(&$string, bool $convert = true): bool
     {
         $result = static::toString($string, $type);

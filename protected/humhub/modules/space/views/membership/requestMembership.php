@@ -6,9 +6,10 @@ use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\LoaderWidget;
+use yii\web\View;
 
 /**
- * @var $this \yii\web\View
+ * @var $this View
  * @var $space Space
  * @var $model RequestMembershipForm
  */
@@ -39,7 +40,9 @@ SpaceAsset::register($this);
         <div class="modal-footer">
             <hr/>
             <?= Html::a(
-                Yii::t('SpaceModule.base', 'Send'), '#', [
+                Yii::t('SpaceModule.base', 'Send'),
+                '#',
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'action-click' => 'space.requestMembershipSend',
@@ -49,7 +52,8 @@ SpaceAsset::register($this);
             ) ?>
 
             <?= Html::button(
-                Yii::t('SpaceModule.base', 'Close'), [
+                Yii::t('SpaceModule.base', 'Close'),
+                [
                     'class' => ['btn', 'btn-primary'],
                     'data' => [
                         'dismiss' => 'modal',

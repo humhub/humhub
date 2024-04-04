@@ -8,6 +8,7 @@
 
 namespace humhub\modules\queue;
 
+use Expection;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\Event;
@@ -25,7 +26,6 @@ use humhub\modules\queue\helpers\QueueHelper;
  */
 class Events extends BaseObject
 {
-
     /**
      * Cron call back
      *
@@ -43,7 +43,7 @@ class Events extends BaseObject
      */
     public static function onQueueError(ExecEvent $event)
     {
-        /* @var $exception \Expection */
+        /* @var $exception Expection */
         $exception = $event->error;
         Yii::error('Could not execute queued job! Message: ' . $exception->getMessage() . ' Trace:' . $exception->getTraceAsString(), 'queue');
     }

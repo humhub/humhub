@@ -13,7 +13,6 @@ use yii\test\ActiveFixture;
 
 class LiveFixture extends ActiveFixture
 {
-
     public $modelClass = Live::class;
     public $dataFile = '@live/tests/codeception/fixtures/data/live.php';
 

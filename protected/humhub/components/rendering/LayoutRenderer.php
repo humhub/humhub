@@ -30,7 +30,6 @@ use Yii;
  */
 class LayoutRenderer extends ViewPathRenderer
 {
-
     /**
      * @var string layout file path
      */

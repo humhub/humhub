@@ -8,6 +8,8 @@
 
 namespace humhub\modules\content\models;
 
+use yii\db\ActiveRecord;
+
 /**
  * This is the model class for table "contentcontainer_default_permission".
  *
@@ -16,11 +18,10 @@ namespace humhub\modules\content\models;
  * @property string $group_id
  * @property string $module_id
  * @property string $class
- * @property integer $state
+ * @property int $state
  */
-class ContentContainerDefaultPermission extends \yii\db\ActiveRecord
+class ContentContainerDefaultPermission extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */

@@ -12,7 +12,7 @@ class EmojiTest extends HumHubDbTestCase
      */
     public function testEmojiMapCoversAllRichtextEmojis()
     {
-        $emoji = json_decode(file_get_contents(__dir__ . DIRECTORY_SEPARATOR .'emoji.json'), true);
+        $emoji = json_decode(file_get_contents(__dir__ . DIRECTORY_SEPARATOR . 'emoji.json'), true);
         foreach ($emoji as $key => $def) {
             $this->assertArrayHasKey($key, EmojiMap::MAP);
         }

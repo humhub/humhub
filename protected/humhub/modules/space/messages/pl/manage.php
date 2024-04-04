@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => '<strong>Moduły</strong> strefy',
     '<strong>Space</strong> settings' => 'Ustawienia <strong>Strefy</strong>',
     'Actions' => 'Akcje',
-    'Activate' => 'Aktywuj',
+    'Enable' => 'Aktywuj',
     'Add <strong>Modules</strong>' => 'Dodaj <strong>Moduły</strong>',
     'Advanced access settings' => 'Zaawansowanie ustawienia dostępu',
     'Archive' => 'Archiwizuj',

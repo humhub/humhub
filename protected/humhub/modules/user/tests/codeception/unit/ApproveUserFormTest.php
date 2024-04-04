@@ -83,7 +83,8 @@ Admin Tester", $form->message);
         Yii::$app->user->getIdentity()->setAttribute('language', 'de');
         Yii::$app->i18n->setUserLocale(Yii::$app->user->getIdentity());
 
-        $this->assertEquals('Hallo {displayName},
+        $this->assertEquals(
+            'Hallo {displayName},
 
 Dein Konto wurde aktiviert.
 
@@ -92,7 +93,8 @@ Klicke hier um dich einzuloggen:
 
 Mit freundlichen Grüßen
 {AdminName}',
-            ApproveUserForm::getDefaultApprovalMessage());
+            ApproveUserForm::getDefaultApprovalMessage()
+        );
 
         $this->setApprovalMessage(ApproveUserForm::getDefaultApprovalMessage());
 
@@ -110,8 +112,7 @@ Mit freundlichen Grüßen
 
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setApprovalDefaults();
-        $this->assertEquals("Hey UnApproved User your account was approved by Admin Tester, please click <a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a>"
-            , $form->message);
+        $this->assertEquals("Hey UnApproved User your account was approved by Admin Tester, please click <a href=\"http://localhost/index-test.php?r=user%2Fauth%2Flogin\">http://localhost/index-test.php?r=user/auth/login</a>", $form->message);
     }
 
     public function testApprovedMessageIsSentInUserLanguage()
@@ -173,8 +174,7 @@ Admin Tester", $form->message);
 
         $form = new ApproveUserForm($this->unapprovedUser->id);
         $form->setDeclineDefaults();
-        $this->assertEquals("Hey UnApproved User your account was declined by Admin Tester."
-            , $form->message);
+        $this->assertEquals("Hey UnApproved User your account was declined by Admin Tester.", $form->message);
     }
 
     public function testAdminCanSendMessageToUnapprovedUser()

@@ -11,20 +11,20 @@ settings:
     # See https://phpunit.de/manual/current/en/appendixes.annotations.html#appendixes.annotations.backupGlobals
     backup_globals: true
 coverage:
-  c3_url: 'http://localhost:8080/index-test.php'
-  enabled: true
-  remote: true
-  include:
-  - ../actions/*
-  - ../controllers/*
-  - ../components/*
-  - ../interfaces/*
-  - ../jobs/*
-  - ../views/*
-  - ../models/*
-  - ../widgets/*
-  - ../Events.php
-  - ../Module.php
+    c3_url: 'http://localhost:8080/index-test.php'
+    enabled: true
+    remote: true
+    include:
+        - ../actions/*
+        - ../controllers/*
+        - ../components/*
+        - ../interfaces/*
+        - ../jobs/*
+        - ../views/*
+        - ../models/*
+        - ../widgets/*
+        - ../Events.php
+        - ../Module.php
 
 paths:
     tests: codeception

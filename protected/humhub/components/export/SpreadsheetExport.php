@@ -57,7 +57,6 @@ use yii\i18n\Formatter;
  */
 class SpreadsheetExport extends Component
 {
-
     /**
      * @var \yii\data\DataProviderInterface the data provider for the view.
      * This property can be omitted in case [[query]] is set.
@@ -73,15 +72,15 @@ class SpreadsheetExport extends Component
      */
     public $columns = [];
     /**
-     * @var boolean whether to show the header section of the sheet.
+     * @var bool whether to show the header section of the sheet.
      */
     public $showHeader = true;
     /**
-     * @var boolean whether to show the footer section of the sheet.
+     * @var bool whether to show the footer section of the sheet.
      */
     public $showFooter = false;
     /**
-     * @var boolean enable autosize for xlsx/xls export.
+     * @var bool enable autosize for xlsx/xls export.
      */
     public $autoSize = true;
     /**

@@ -17,7 +17,6 @@ namespace humhub\widgets;
  */
 class BlueimpGallery extends \yii\base\Widget
 {
-
     /**
      * @inheritdoc
      */

@@ -14,7 +14,6 @@ use kartik\select2\Select2;
 use Yii;
 use yii\web\JsExpression;
 
-
 /**
  * IconPicker form field widget
  *

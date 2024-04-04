@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Add Topics' => '',
-    'Manage Topics' => '',
-];
+return array (
+  'Add Topics' => 'Dodaj temu',
+  'Manage Topics' => 'Upravljanje temama',
+);

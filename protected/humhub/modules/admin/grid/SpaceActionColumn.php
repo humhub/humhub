@@ -20,7 +20,6 @@ use humhub\modules\admin\controllers\UserController;
  */
 class SpaceActionColumn extends ActionColumn
 {
-
     /**
      * @inheritdoc
      */

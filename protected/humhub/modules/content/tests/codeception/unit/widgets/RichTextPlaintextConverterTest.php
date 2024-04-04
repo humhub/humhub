@@ -703,7 +703,6 @@ class RichTextPlaintextConverterTest extends HumHubDbTestCase
     }
 
 
-
     /*
      * HR
      */

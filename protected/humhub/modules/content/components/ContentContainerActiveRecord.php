@@ -31,14 +31,14 @@ use yii\web\IdentityInterface;
  * Required Methods:
  *      - getProfileImage()
  *
- * @property integer $id
- * @property integer $visibility
+ * @property int $id
+ * @property int $visibility
  * @property string $guid
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
- * @property integer $contentcontainer_id
+ * @property int $updated_by
+ * @property int $contentcontainer_id
  * @property ContentContainer $contentContainerRecord
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
@@ -72,7 +72,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * The behavior which will be attached to the base controller.
      *
      * @since 1.3
-     * @see \humhub\modules\content\components\ContentContainerController
+     * @see ContentContainerController
      * @var string class name of additional the controller behavior
      */
     public $controllerBehavior = null;
@@ -153,7 +153,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      *
      * @param string $route
      * @param array $params
-     * @param boolean|string $scheme
+     * @param bool|string $scheme
      */
     public function createUrl($route = null, $params = [], $scheme = false)
     {
@@ -167,7 +167,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Checks if the user is allowed to access private content in this container
      *
      * @param User $user
-     * @return boolean can access private content
+     * @return bool can access private content
      */
     public function canAccessPrivateContent(User $user = null)
     {
@@ -293,7 +293,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
-     * @return boolean
+     * @return bool
      * @see PermissionManager::can()
      * @since 1.2
      */
@@ -365,7 +365,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns weather or not the contentcontainer is archived. (Default false).
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
     public function isArchived()
@@ -396,7 +396,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Checks if the Content Container has Tags
      *
-     * @return boolean has tags set
+     * @return bool has tags set
      */
     public function hasTags()
     {

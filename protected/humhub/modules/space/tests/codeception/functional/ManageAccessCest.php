@@ -11,7 +11,6 @@ namespace humhub\modules\space\tests\codeception\functional;
 use FunctionalTester;
 use humhub\modules\space\models\Space;
 
-
 class ManageAccessCest
 {
     public function testSpaceAccessManage(FunctionalTester $I)

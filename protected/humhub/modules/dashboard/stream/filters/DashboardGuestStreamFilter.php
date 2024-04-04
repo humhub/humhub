@@ -16,7 +16,6 @@ use yii\db\Query;
  */
 class DashboardGuestStreamFilter extends StreamQueryFilter
 {
-
     /**
      * @inheritDoc
      */
@@ -31,14 +30,14 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
         $publicSpacesSql = (new Query())
             ->select(["contentcontainer_id"])
             ->from('space')
-            ->where(['space.visibility' =>  Space::VISIBILITY_ALL])
+            ->where(['space.visibility' => Space::VISIBILITY_ALL])
             ->andWhere(['space.status' => Space::STATUS_ENABLED]);
 
         $publicProfilesSql = (new Query())
             ->select("contentcontainer_id")
             ->from('user')
             ->where(['user.status' => User::STATUS_ENABLED])
-            ->andWhere(['user.visibility' =>  User::VISIBILITY_ALL]);
+            ->andWhere(['user.visibility' => User::VISIBILITY_ALL]);
 
         $this->query->andFilterWhere(['OR',
             ['IN', 'content.contentcontainer_id', $publicSpacesSql],

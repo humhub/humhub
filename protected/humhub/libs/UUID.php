@@ -100,7 +100,7 @@ class UUID
                 break;
 
             default:
-            return null;
+                return null;
         }
 
         $uuid = trim($uuid);
@@ -128,11 +128,11 @@ class UUID
         switch (true) {
             case $withDash === true:
                 $dash = '-';
-            break;
+                break;
 
             case $withDash === false:
                 $dash = '';
-            break;
+                break;
 
             default:
                 // use as in string

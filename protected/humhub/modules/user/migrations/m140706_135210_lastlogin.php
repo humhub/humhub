@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140706_135210_lastlogin extends Migration
 {
-
     public function up()
     {
         $this->addColumn('user', 'last_login', 'DATETIME DEFAULT NULL');

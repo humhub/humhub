@@ -9,7 +9,9 @@ namespace humhub\modules\comment\controllers;
 
 use humhub\components\Controller;
 use humhub\modules\comment\models\Comment;
+use yii\web\BadRequestHttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * PermaController provides URL to view a Comment.
@@ -19,12 +21,11 @@ use yii\web\NotFoundHttpException;
  */
 class PermaController extends Controller
 {
-
     /**
      * Action to process comment permalink URL
      *
      * @param $id
-     * @return \yii\console\Response|\yii\web\Response
+     * @return \yii\console\Response|Response
      * @throws NotFoundHttpException
      */
     public function actionIndex($id)
@@ -36,15 +37,24 @@ class PermaController extends Controller
         }
 
         $content = $comment->content;
+        $record = $content->getPolymorphicRelation();
+
+        if ($record !== null && method_exists($record, 'getCommentUrl')) {
+            return $this->redirect($record->getCommentUrl($comment->id));
+        }
+
         if ($content->container !== null) {
             return $this->redirect($content->container->createUrl(null, [
                 'contentId' => $comment->content->id,
                 'commentId' => $comment->id,
             ]));
         }
-        if (method_exists($content->getPolymorphicRelation(), 'getUrl')) {
-            return $this->redirect($content->getPolymorphicRelation()->getUrl());
+
+        if ($record !== null && method_exists($record, 'getUrl')) {
+            return $this->redirect($record->getUrl());
         }
+
+        throw new BadRequestHttpException('Content has no URL for comments');
     }
 
 }

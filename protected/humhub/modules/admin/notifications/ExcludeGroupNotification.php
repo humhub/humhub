@@ -9,6 +9,7 @@ namespace humhub\modules\admin\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\Group;
+use Yii;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -38,7 +39,7 @@ class ExcludeGroupNotification extends BaseNotification
      */
     public function category()
     {
-        return new AdminNotificationCategory;
+        return new AdminNotificationCategory();
     }
 
     /**
@@ -46,10 +47,10 @@ class ExcludeGroupNotification extends BaseNotification
      */
     public function getMailSubject()
     {
-        return \Yii::t(
+        return Yii::t(
             'AdminModule.notification',
             'Notify from {appName}. You were removed from the group.',
-            ['appName' => \Yii::$app->name]
+            ['appName' => Yii::$app->name]
         );
     }
 
@@ -58,7 +59,7 @@ class ExcludeGroupNotification extends BaseNotification
      */
     public function html()
     {
-        return \Yii::t(
+        return Yii::t(
             'AdminModule.notification',
             '{displayName} removed you from group {groupName}',
             [

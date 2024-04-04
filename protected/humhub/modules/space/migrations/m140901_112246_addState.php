@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m140901_112246_addState extends Migration
 {
-
     public function up()
     {
         $this->addColumn('space_module', 'state', 'int(4)');

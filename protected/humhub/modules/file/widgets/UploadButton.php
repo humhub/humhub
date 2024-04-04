@@ -7,7 +7,7 @@ use yii\helpers\ArrayHelper;
 
 /**
  * UploadButtonWidget renders an upload button with integrated file input.
- * 
+ *
  * @package humhub.modules_core.file.widgets
  * @since 1.2
  */
@@ -15,32 +15,32 @@ class UploadButton extends UploadInput
 {
     /**
      * Additional button html options.
-     * @var array 
+     * @var array
      */
     public $buttonOptions = [];
-    
+
     /**
      * Show button tooltip on mousover.
-     * @var boolean 
+     * @var bool
      */
     public $tooltip = true;
-    
+
     /**
      * Tooltip position.
-     * @var string 
+     * @var string
      */
     public $tooltipPosition = 'bottom';
-    
+
     /**
      * Defines the button color class like btn-default, btn-primary
-     * @var type 
+     * @var type
      */
     public $cssButtonClass = 'btn-default';
-    
+
     /**
      * Either defines a label string or true to use the default label.
      * If set to false, no button label is printed.
-     * @var type 
+     * @var type
      */
     public $label = false;
 
@@ -48,31 +48,31 @@ class UploadButton extends UploadInput
      * Draws the Upload Button output.
      */
     public function run()
-    {   
-        if($this->label === true) {
-            $this->label = '&nbsp;'.Yii::t('base', 'Upload');
-        } elseif($this->label === false) {
+    {
+        if ($this->label === true) {
+            $this->label = '&nbsp;' . Yii::t('base', 'Upload');
+        } elseif ($this->label === false) {
             $this->label = '';
         } else {
-            $this->label = '&nbsp;'.$this->label;
+            $this->label = '&nbsp;' . $this->label;
         }
-        
+
         $defaultButtonOptions = [
-            'class' => ($this->tooltip) ? 'btn '.$this->cssButtonClass.' fileinput-button tt' : 'btn '.$this->cssButtonClass.'  fileinput-button',
+            'class' => ($this->tooltip) ? 'btn ' . $this->cssButtonClass . ' fileinput-button tt' : 'btn ' . $this->cssButtonClass . '  fileinput-button',
             'title' => ($this->tooltip === true) ? Yii::t('FileModule.base', 'Upload files') : $this->tooltip,
             'data' => [
                 'placement' => $this->tooltipPosition,
-                'action-click' => "file.upload", 
-                'action-target' => '#'.$this->getId(true)
+                'action-click' => "file.upload",
+                'action-target' => '#' . $this->getId(true)
             ]
         ];
-        
+
         $options = ArrayHelper::merge($defaultButtonOptions, $this->buttonOptions);
-        
+
         return $this->render('uploadButton', [
-                    'input' => parent::run(),
-                    'options' => $options,
-                    'label' => $this->label
+            'input' => parent::run(),
+            'options' => $options,
+            'label' => $this->label
         ]);
     }
 }

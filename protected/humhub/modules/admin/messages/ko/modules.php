@@ -3,11 +3,11 @@
 return [
     'Close' => '닫기',
     'Could not find requested module!' => '요청한 모듈을 찾을 수 없습니다!',
+    'Enabled' => '활성화',
     'Save' => '저장',
     'Spaces' => '스페이스',
     'Users' => '사용자들',
     '%moduleName% - Set as default module' => '',
-    'Activated' => '',
     'Always activated' => '',
     'Are you sure? *ALL* module data will be lost!' => '',
     'Are you sure? *ALL* module related data and files will be lost!' => '',
@@ -17,6 +17,10 @@ return [
     'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => '',
     'Module deactivation in progress. This process may take a moment.' => '',
     'Module path %path% is not writeable!' => '',
+    'Module uninstall in progress. This process may take a moment.' => '',
+    'Not available' => '',
     'Space default state' => '',
+    'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => '',
+    'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => '',
     'User default state' => '',
 ];

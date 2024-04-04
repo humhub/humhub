@@ -22,9 +22,9 @@ class BootstrapColorPickerAsset extends WebStaticAssetBundle
      */
     public $js = ['js/colorpicker/js/bootstrap-colorpicker-modified.js'];
 
-     /**
-     * @inheritdoc
-     */
+    /**
+    * @inheritdoc
+    */
     public $css = ['js/colorpicker/css/bootstrap-colorpicker.min.css'];
 
 }

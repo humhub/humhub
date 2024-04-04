@@ -39,6 +39,11 @@ class Migration extends \yii\db\Migration
     protected string $driverName;
 
     /**
+     * @var Throwable|null Exception that occurred during migration
+     */
+    protected ?Throwable $lastException = null;
+
+    /**
      * Initializes static::$driverName
      *
      * @return void
@@ -726,7 +731,14 @@ class Migration extends \yii\db\Migration
      */
     private function printException(Throwable $t): void
     {
+        $this->lastException = $t;
+
         echo 'Exception: ' . $t->getMessage() . ' (' . $t->getFile() . ':' . $t->getLine() . ")\n";
         echo $t->getTraceAsString() . "\n";
+    }
+
+    public function getLastException(): ?Throwable
+    {
+        return $this->lastException;
     }
 }

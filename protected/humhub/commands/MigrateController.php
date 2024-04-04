@@ -12,7 +12,9 @@ use humhub\components\Module;
 use humhub\helpers\DatabaseHelper;
 use humhub\services\MigrationService;
 use Yii;
+use yii\console\controllers\BaseMigrateController;
 use yii\console\Exception;
+use yii\db\Migration;
 use yii\db\MigrationInterface;
 use yii\web\Application;
 
@@ -65,7 +67,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     public $migrationPath = '@humhub/migrations';
 
     /**
-     * @var boolean also include migration paths of all enabled modules
+     * @var bool also include migration paths of all enabled modules
      */
     public bool $includeModuleMigrations = false;
 
@@ -76,6 +78,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
      * @var array
      */
     protected array $migrationPathMap = [];
+
+    /**
+     * Stores the last executed migration.
+     *
+     * @var Migration|null
+     */
+    private ?Migration $lastMigration = null;
 
 
     /**
@@ -149,7 +158,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
             $this->migrationPath = $this->getMigrationPath($class);
         }
 
-        return parent::createMigration($class);
+        /**
+         * Storing the last executed migration
+         *
+         * @see BaseMigrateController::migrateUp()
+         * @see BaseMigrateController::migrateDown()
+         * */
+        return $this->lastMigration = parent::createMigration($class);
     }
 
     /**
@@ -180,7 +195,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
     protected function getMigrationPaths(): array
     {
         $migrationPaths = ['base' => $this->migrationPath];
-        foreach (Yii::$app->getModules() as $id => $config) {
+        foreach (($this->module ?? Yii::$app)->getModules() as $id => $config) {
             $class = null;
             if (is_array($config) && isset($config['class'])) {
                 $class = $config['class'];
@@ -264,5 +279,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
         }
 
         return parent::stderr($string);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getLastMigration()
+    {
+        return $this->lastMigration;
     }
 }

@@ -14,8 +14,12 @@ use humhub\modules\admin\models\forms\ApproveUserForm;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\Module;
 use humhub\modules\user\models\ProfileField;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
+use yii\db\StaleObjectException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * ApprovalController handels new user approvals
@@ -58,7 +62,7 @@ class ApprovalController extends Controller
      * @param $rule
      * @param $access
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function checkCanApproveUsers($rule, $access)
     {
@@ -84,8 +88,8 @@ class ApprovalController extends Controller
 
     /**
      * @return string
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function actionIndex()
     {
@@ -128,9 +132,9 @@ class ApprovalController extends Controller
 
     /**
      * @param $id
-     * @return string|\yii\console\Response|\yii\web\Response
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @return string|\yii\console\Response|Response
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function actionSendMessage($id)
     {
@@ -176,10 +180,10 @@ class ApprovalController extends Controller
 
     /**
      * @param $id
-     * @return string|\yii\console\Response|\yii\web\Response
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\db\StaleObjectException
+     * @return string|\yii\console\Response|Response
+     * @throws Throwable
+     * @throws InvalidConfigException
+     * @throws StaleObjectException
      */
     public function actionDecline($id)
     {
@@ -200,10 +204,10 @@ class ApprovalController extends Controller
     }
 
     /**
-     * @return string|\yii\console\Response|\yii\web\Response
+     * @return string|\yii\console\Response|Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function actionBulkActions()
     {

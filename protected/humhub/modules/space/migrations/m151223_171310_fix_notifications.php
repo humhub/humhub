@@ -2,16 +2,16 @@
 
 
 use yii\db\Migration;
+use yii\db\Query;
 
 /**
  * Fix broken notification with invalid originator_user_ids
  */
 class m151223_171310_fix_notifications extends Migration
 {
-
     public function up()
     {
-        $query = new \yii\db\Query();
+        $query = new Query();
         $query->select('notification.id')->from('notification');
         $query->andWhere(['or',
             ['class' => 'humhub\modules\space\notifications\Invite'],

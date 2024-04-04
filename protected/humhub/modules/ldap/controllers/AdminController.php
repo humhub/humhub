@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,7 +7,6 @@
  */
 
 namespace humhub\modules\ldap\controllers;
-
 
 use Exception;
 use humhub\modules\admin\components\Controller;
@@ -16,7 +16,6 @@ use humhub\modules\user\authclient\LdapAuth;
 use Laminas\Ldap\Exception\LdapException;
 use Laminas\Ldap\Ldap;
 use Yii;
-
 
 /**
  * Class AdminController
@@ -83,5 +82,4 @@ class AdminController extends Controller
             'errorMessage' => $errorMessage
         ]);
     }
-
 }

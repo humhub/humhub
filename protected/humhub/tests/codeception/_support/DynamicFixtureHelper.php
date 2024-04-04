@@ -29,9 +29,6 @@ use yii\test\InitDbFixture;
  */
 class DynamicFixtureHelper extends Module
 {
-
-    public $beforeTest = true;
-
     /**
      * Redeclare visibility because codeception includes all public methods that do not start with "_"
      * and are not excluded by module settings, in actor class.
@@ -46,6 +43,8 @@ class DynamicFixtureHelper extends Module
         getFixture as protected;
     }
 
+    public $beforeTest = true;
+
     public function _beforeSuite($settings = [])
     {
 
@@ -57,7 +56,7 @@ class DynamicFixtureHelper extends Module
         }
     }
 
-     public function _afterSuite($settings = [])
+    public function _afterSuite($settings = [])
     {
         if (!$this->beforeTest) {
             $this->unloadFixtures();

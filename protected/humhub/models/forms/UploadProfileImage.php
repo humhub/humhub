@@ -21,7 +21,6 @@ use yii\base\Model;
  */
 class UploadProfileImage extends Model
 {
-
     /**
      * @var String uploaded image
      */

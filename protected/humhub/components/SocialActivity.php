@@ -39,7 +39,6 @@ use yii\helpers\Url;
  */
 abstract class SocialActivity extends BaseObject implements rendering\Viewable
 {
-
     /**
      * User which performed the activity.
      *
@@ -202,7 +201,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     }
 
     /**
-     * @return integer related space id in case the activity source is an related contentcontainer of type space, otherwise null
+     * @return int related space id in case the activity source is an related contentcontainer of type space, otherwise null
      * @throws \yii\base\Exception
      */
     public function getSpaceId()
@@ -216,7 +215,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * Determines if this activity is related to a content. This is the case if the activitiy source
      * is of type ContentOwner.
      *
-     * @return boolean true if this activity is related to a ContentOwner else false
+     * @return bool true if this activity is related to a ContentOwner else false
      */
     public function hasContent()
     {
@@ -244,6 +243,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     /**
      * Url of the origin of this notification
      * If source is a Content / ContentAddon / ContentContainer this will automatically generated.
+     * NOTE: Returned URL must be absolute with scheme
      *
      * @return string
      */
@@ -254,9 +254,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         if ($this->source instanceof Comment) {
             $url = $this->source->getUrl();
         } else if ($this->hasContent()) {
-            $url = $this->getContent()->getUrl();
+            $url = $this->getContent()->getUrl(true);
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            $url = $this->source->getUrl();
+            $url = $this->source->getUrl(true);
         }
 
         // Create absolute URL, for E-Mails

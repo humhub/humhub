@@ -25,6 +25,7 @@ nbproject
 .idea/*
 .gitmodules
 .vscode
+.php-cs-fixer.cache
 
 themes/*
 !themes/HumHub

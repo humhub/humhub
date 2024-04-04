@@ -422,7 +422,9 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Database connection time: {dbTime} - Configured time zone: {time}',
+                    'hint' => Yii::t(
+                        'AdminModule.information',
+                        'Database connection time: {dbTime} - Configured time zone: {time}',
                         [
                             'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
                             'time' => Yii::$app->formatter->asTime(time(), 'short'),
@@ -453,7 +455,8 @@ class SelfTest
             $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
             isset($_SERVER['HTTPS'])
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
-                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
+                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
+            );
             $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
                 . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
                 ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
@@ -467,7 +470,9 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Detected URL: {currentBaseUrl}',
+                    'hint' => Yii::t(
+                        'AdminModule.information',
+                        'Detected URL: {currentBaseUrl}',
                         ['currentBaseUrl' => $currentBaseUrl]
                     ),
                 ];
@@ -808,47 +813,48 @@ class SelfTest
             ];
         }
 
-        // Check installed modules by marketplace
-        /* @var \humhub\components\Module[] $modules */
-        $modules = Yii::$app->moduleManager->getModules();
-        $deprecatedModules = [];
-        $customModules = [];
-        foreach ($modules as $module) {
-            $onlineModule = $module->getOnlineModule();
-            if ($onlineModule === null) {
-                $customModules[] = $module->name;
-            } elseif ($onlineModule->isDeprecated) {
-                $deprecatedModules[] = $module->name;
-            }
-        }
-
-        if ($deprecatedModules !== []) {
-            $checks[] = [
-                'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
-                    'modules' => implode(', ', $deprecatedModules)
-                ]),
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
-            ];
-        }
-
-        if ($customModules !== []) {
-            $checks[] = [
-                'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
-                    'modules' => implode(', ', $customModules)
-                ]),
-                'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
-            ];
-        }
-
         if (Yii::$app->isInstalled()) {
+            
+            // Check installed modules by marketplace
+            /* @var \humhub\components\Module[] $modules */
+            $modules = Yii::$app->moduleManager->getModules();
+            $deprecatedModules = [];
+            $customModules = [];
+            foreach ($modules as $module) {
+                $onlineModule = $module->getOnlineModule();
+                if ($onlineModule === null) {
+                    $customModules[] = $module->name;
+                } elseif ($onlineModule->isDeprecated) {
+                    $deprecatedModules[] = $module->name;
+                }
+            }
+
+            if ($deprecatedModules !== []) {
+                $checks[] = [
+                    'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
+                            'modules' => implode(', ', $deprecatedModules)
+                        ]),
+                    'state' => 'ERROR',
+                    'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
+                ];
+            }
+
+            if ($customModules !== []) {
+                $checks[] = [
+                    'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
+                            'modules' => implode(', ', $customModules)
+                        ]),
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
+                ];
+            }
+
             // Check Mobile App - Push Service
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
             /* @var \humhub\modules\fcmPush\Module|null $pushModule */
             $pushModule = $modules['fcm-push'] ?? null;
             if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
-                $pushModule->isActivated &&
+                $pushModule->getIsEnabled() &&
                 $pushModule->getGoService()->isConfigured()) {
                 $checks[] = [
                     'title' => $title,

@@ -11,6 +11,7 @@ namespace humhub\modules\admin\controllers;
 use humhub\components\Module;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\jobs\DisableModuleJob;
+use humhub\modules\admin\jobs\RemoveModuleJob;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
@@ -26,7 +27,6 @@ use yii\web\HttpException;
  */
 class ModuleController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -83,6 +83,8 @@ class ModuleController extends Controller
 
         if (QueueHelper::isQueued(new DisableModuleJob(['moduleId' => $moduleId]))) {
             $this->view->error(Yii::t('AdminModule.modules', 'Deactivation of this module has not been completed yet. Please retry in a few minutes.'));
+        } elseif (QueueHelper::isQueued(new RemoveModuleJob(['moduleId' => $moduleId]))) {
+            $this->view->error(Yii::t('AdminModule.modules', 'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.'));
         } else {
             $module->enable();
         }
@@ -152,7 +154,8 @@ class ModuleController extends Controller
                 throw new HttpException(500, Yii::t('AdminModule.modules', 'Module path %path% is not writeable!', ['%path%' => $module->getBasePath()]));
             }
 
-            Yii::$app->moduleManager->removeModule($module->id);
+            Yii::$app->queue->push(new RemoveModuleJob(['moduleId' => $moduleId]));
+            $this->view->info(Yii::t('AdminModule.modules', 'Module uninstall in progress. This process may take a moment.'));
         }
 
         return $this->redirectToModules();

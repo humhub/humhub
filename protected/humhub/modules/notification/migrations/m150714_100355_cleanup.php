@@ -1,11 +1,9 @@
 <?php
 
-
 use yii\db\Migration;
 
 class m150714_100355_cleanup extends Migration
 {
-
     public function up()
     {
         $this->dropColumn('notification', 'obsolete_target_object_model');

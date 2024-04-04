@@ -21,7 +21,6 @@ use humhub\modules\stream\actions\ContentContainerStream;
 
 class ProfileContentPermissionTest extends HumHubDbTestCase
 {
-
     /**
      *  - User is the owner of the content
      *  - User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
@@ -40,13 +39,13 @@ class ProfileContentPermissionTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
         $this->admin = User::findOne(['id' => 1]);
 
-        $this->privatePost = new Post;
+        $this->privatePost = new Post();
         $this->privatePost->message = "Private Space1 Post";
         $this->privatePost->content->setContainer($this->admin);
         $this->privatePost->content->visibility = Content::VISIBILITY_PRIVATE;
         $this->privatePost->save();
 
-        $this->publicPost = new Post;
+        $this->publicPost = new Post();
         $this->publicPost->message = "Public Space1 Post";
         $this->publicPost->content->setContainer($this->admin);
         $this->publicPost->content->visibility = Content::VISIBILITY_PUBLIC;

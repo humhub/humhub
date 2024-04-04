@@ -6,22 +6,22 @@ coverage:
     enabled: true
     remote: false
     include:
-    - ../activities/*
-    - ../behaviors/*
-    - ../commands/*
-    - ../components/*
-    - ../controllers/*
-    - ../helpers/*
-    - ../jobs/*
-    - ../models/*
-    - ../modules/*
-    - ../notifications/*
-    - ../permissions/*
-    - ../views/*
-    - ../widgets/*
-    - ../MemberEvent.php
-    - ../Events.php
-    - ../Module.php
+        - ../activities/*
+        - ../behaviors/*
+        - ../commands/*
+        - ../components/*
+        - ../controllers/*
+        - ../helpers/*
+        - ../jobs/*
+        - ../models/*
+        - ../modules/*
+        - ../notifications/*
+        - ../permissions/*
+        - ../views/*
+        - ../widgets/*
+        - ../MemberEvent.php
+        - ../Events.php
+        - ../Module.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true

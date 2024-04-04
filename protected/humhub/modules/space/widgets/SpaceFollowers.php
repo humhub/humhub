@@ -20,7 +20,6 @@ use yii\helpers\Url;
  */
 class SpaceFollowers extends Widget
 {
-
     /**
      * @var Space
      */

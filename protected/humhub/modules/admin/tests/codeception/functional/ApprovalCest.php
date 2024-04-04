@@ -12,7 +12,6 @@ use Yii;
 
 class ApprovalCest
 {
-
     public function testApproveByAdmin(FunctionalTester $I)
     {
         $I->wantTo('ensure that admins can approve users');

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
 use humhub\libs\Html;
@@ -28,12 +29,11 @@ use yii\helpers\Url;
  */
 class FileHelper extends \yii\helpers\FileHelper
 {
-
     /**
      * Checks if given fileName has a extension
      *
      * @param string $fileName the filename
-     * @return boolean has extension
+     * @return bool has extension
      */
     public static function hasExtension($fileName)
     {
@@ -46,7 +46,7 @@ class FileHelper extends \yii\helpers\FileHelper
          * return ($path_parts['filename'] ?? false) && ($path_parts['extension'] ?? false);
          * `
          * @see \humhub\tests\codeception\unit\libs\FileHelperTest::testHasExtensionFalsePositives()
-        */
+         */
         return (strpos($fileName, '.') !== false);
     }
 
@@ -77,9 +77,9 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Creates a file with options
      *
-     * @since 1.2
-     * @param \humhub\modules\file\models\File $file
+     * @param File $file
      * @return string the rendered HTML link
+     * @since 1.2
      */
     public static function createLink(File $file, $options = [], $htmlOptions = [])
     {
@@ -88,7 +88,7 @@ class FileHelper extends \yii\helpers\FileHelper
         $fileHandlers = FileHandlerCollection::getByType([FileHandlerCollection::TYPE_VIEW, FileHandlerCollection::TYPE_EXPORT, FileHandlerCollection::TYPE_EDIT, FileHandlerCollection::TYPE_IMPORT], $file);
         if (count($fileHandlers) === 1 && $fileHandlers[0] instanceof DownloadFileHandler) {
             $htmlOptions['target'] = '_blank';
-            $htmlOptions = array_merge($htmlOptions,  FileDownload::getFileDataAttributes($file));
+            $htmlOptions = array_merge($htmlOptions, FileDownload::getFileDataAttributes($file));
             return Html::a($label, $file->getUrl(), $htmlOptions);
         }
 
@@ -102,9 +102,9 @@ class FileHelper extends \yii\helpers\FileHelper
     /**
      * Determines the content container of a File record
      *
-     * @since 1.2
      * @param File $file
-     * @return \humhub\modules\content\components\ContentContainerActiveRecord the content container or null
+     * @return ContentContainerActiveRecord the content container or null
+     * @since 1.2
      */
     public static function getContentContainer(File $file)
     {
@@ -123,9 +123,9 @@ class FileHelper extends \yii\helpers\FileHelper
      * Returns general file infos as array
      * These information are mainly used by the frontend JavaScript application to handle files.
      *
-     * @since 1.2
      * @param File $file the file
      * @return array the file infos
+     * @since 1.2
      */
     public static function getFileInfos(File $file)
     {

@@ -8,12 +8,14 @@
 
 namespace humhub\modules\tour\controllers;
 
+use humhub\components\Controller;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\tour\Module;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * TourController
@@ -22,7 +24,7 @@ use yii\web\HttpException;
  * @package humhub.modules_core.tour.controllers
  * @since 0.5
  */
-class TourController extends \humhub\components\Controller
+class TourController extends Controller
 {
     /**
      * @inheritdoc
@@ -62,7 +64,7 @@ class TourController extends \humhub\components\Controller
     /**
      *  This is a special case, because we need to find a space to start the tour
      *
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
      */
     public function actionStartSpaceTour()

@@ -12,7 +12,6 @@ use humhub\components\Widget;
 use humhub\libs\Html;
 use Yii;
 
-
 /**
  * Labels for Wall Entries
  * This widget will attached labels like Pinned, Archived to Wall Entries
@@ -21,7 +20,6 @@ use Yii;
  */
 class Label extends BootstrapComponent
 {
-
     /**
      * @since 1.9
      */
@@ -96,7 +94,7 @@ class Label extends BootstrapComponent
      */
     public function getTypedClass($type)
     {
-        return 'label-'.$type;
+        return 'label-' . $type;
     }
 
     public function getWidgetOptions()
@@ -121,5 +119,3 @@ class Label extends BootstrapComponent
         return $labels;
     }
 }
-
-?>

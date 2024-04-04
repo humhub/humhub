@@ -18,7 +18,6 @@ use humhub\libs\Html;
  */
 class UserName extends BaseTypeVirtual
 {
-
     /**
      * @inheritDoc
      */

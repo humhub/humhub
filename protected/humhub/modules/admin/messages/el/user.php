@@ -37,7 +37,7 @@ return [
     'Create new group' => 'Δημιουργία νέας ομάδας',
     'Create new profile category' => 'Δημιουργία νέας κατηγορίας προφίλ',
     'Create new profile field' => 'Δημιουργία νέου πεδίου προφίλ',
-    'Deactivate' => 'Απενεργοποίηση',
+    'Disable' => 'Απενεργοποίηση',
     'Deactivate individual profile permissions?' => 'Απενεργοποίηση προεπιλεγμένων δικαιωμάτων προφίλ;',
     'Decline' => 'Άρνηση',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Απόρριψη &amp; διαγραφή χρήστη: <strong>{displayName}</strong>',

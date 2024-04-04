@@ -18,14 +18,13 @@ use yii\helpers\Url;
  */
 class Comment extends Widget
 {
-
     /**
      * @var \humhub\modules\comment\models\Comment the comment
      */
     public $comment = null;
 
     /**
-     * @var boolean indicator that comment has just changed
+     * @var bool indicator that comment has just changed
      */
     public $justEdited = false;
 

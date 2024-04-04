@@ -22,7 +22,7 @@ use yii\base\Component;
  */
 class ThemeVariables extends Component
 {
-    const SETTING_PREFIX = 'theme.var.';
+    public const SETTING_PREFIX = 'theme.var.';
 
     /**
      * @var Theme
@@ -35,7 +35,7 @@ class ThemeVariables extends Component
     public $module;
 
     /**
-     * @var boolean
+     * @var bool
      */
     private $settingsLoaded = false;
 

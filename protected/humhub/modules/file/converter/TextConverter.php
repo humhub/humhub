@@ -20,7 +20,6 @@ use humhub\modules\file\libs\FileHelper;
  */
 class TextConverter extends BaseConverter
 {
-
     /**
      * List of installed text conversion converters
      *

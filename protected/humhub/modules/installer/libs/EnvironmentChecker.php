@@ -17,7 +17,6 @@ use Yii;
  */
 class EnvironmentChecker
 {
-
     /**
      * Performs some essential tests on Humhub installations that are not yet fully installed.
      */

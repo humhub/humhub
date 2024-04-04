@@ -7,14 +7,14 @@
 
 namespace user\acceptance;
 
+use Exception;
 use user\AcceptanceTester;
 
 class InviteLinkCest
 {
-
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testLinkInvite(AcceptanceTester $I)
     {
@@ -55,7 +55,7 @@ class InviteLinkCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDisable(AcceptanceTester $I)
     {
@@ -67,7 +67,6 @@ class InviteLinkCest
         $I->checkOption('#authenticationsettingsform-internaluserscaninvitebyemail');
         $I->uncheckOption('#authenticationsettingsform-internaluserscaninvitebylink');
         $I->click('Save');
-
 
 
         $I->amUser2(true);
@@ -86,4 +85,3 @@ class InviteLinkCest
     }
 
 }
-

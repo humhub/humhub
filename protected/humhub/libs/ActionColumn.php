@@ -20,7 +20,6 @@ use humhub\libs\Html;
  */
 class ActionColumn extends Column
 {
-
     /**
      * @var string the ID attribute of the model, to generate action URLs.
      */

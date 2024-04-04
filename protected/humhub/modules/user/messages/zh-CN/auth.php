@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => '密码不正确',
   'a new user {displayName} needs approval.' => '',
   'back to home' => '返回主页',
-  'email' => '邮件',
-  'password' => '密码',
-  'username or email' => '用户名或邮箱',
+  'Password' => '密码',
+  'Username or Email' => '用户名或邮箱',
 );

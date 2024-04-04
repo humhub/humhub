@@ -4,7 +4,6 @@ use yii\db\Migration;
 
 class m171015_155102_contentcontainer_module extends Migration
 {
-
     public function safeUp()
     {
         $this->createTable('contentcontainer_module', [

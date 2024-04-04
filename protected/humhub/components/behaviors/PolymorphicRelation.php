@@ -10,9 +10,7 @@ namespace humhub\components\behaviors;
 
 use Exception;
 use humhub\components\ActiveRecord;
-use humhub\libs\Helpers;
-use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\helpers\DataTypeHelper;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
@@ -40,7 +38,7 @@ class PolymorphicRelation extends Behavior
     public string $pkAttribute = 'object_id';
 
     /**
-     * @var boolean if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
+     * @var bool if set to true, an exception is thrown if `object_model` and `object_id` is set but does not exist
      */
     public bool $strict = false;
 
@@ -66,16 +64,16 @@ class PolymorphicRelation extends Behavior
             return $this->cached;
         }
 
-        $record = static::loadActiveRecord(
-            $this->owner->getAttribute($this->classAttribute),
-            $this->owner->getAttribute($this->pkAttribute)
-        );
+        $className = $this->owner->getAttribute($this->classAttribute);
+        $primaryKey = $this->owner->getAttribute($this->pkAttribute);
+
+        $record = static::loadActiveRecord($className, $primaryKey);
 
         if ($this->strict && !$record && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
             throw new IntegrityException(
                 'Call to an inconsistent polymorphic relation detected on '
                 . ($this->owner === null ? 'NULL' : get_class($this->owner))
-                . ' (' . $this->owner->getAttribute($this->classAttribute) . ':' . $this->owner->getAttribute($this->pkAttribute) . ')'
+                . ' (' . $className . ':' . $primaryKey . ')'
             );
         }
 
@@ -119,7 +117,7 @@ class PolymorphicRelation extends Behavior
 
     public static function getObjectModel(ActiveRecordInterface $object): string
     {
-        return $object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord
+        return $object instanceof ActiveRecord
             ? $object::getObjectModel()
             : get_class($object);
     }
@@ -148,7 +146,7 @@ class PolymorphicRelation extends Behavior
      *
      * @param mixed $object
      *
-     * @return boolean
+     * @return bool
      */
     private function validateUnderlyingObjectType(?object $object)
     {
@@ -156,7 +154,7 @@ class PolymorphicRelation extends Behavior
             return true;
         }
 
-        if (Helpers::checkClassType($object, $this->mustBeInstanceOf, false)) { //|| $object->asa($instance) !== null
+        if (DataTypeHelper::matchClassType($object, $this->mustBeInstanceOf)) { //|| $object->asa($instance) !== null
             return true;
         }
 
@@ -169,12 +167,12 @@ class PolymorphicRelation extends Behavior
     /**
      * Loads an active record based on classname and primary key.
      *
-     * @param string $className
+     * @param string|null $className
      * @param string|int $primaryKey
      *
      * @return null|ActiveRecord|ActiveRecordInterface
      */
-    public static function loadActiveRecord(string $className, $primaryKey): ?ActiveRecordInterface
+    public static function loadActiveRecord(?string $className, $primaryKey): ?ActiveRecordInterface
     {
         if (empty($className) || empty($primaryKey)) {
             return null;

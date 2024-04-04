@@ -20,7 +20,6 @@ use humhub\modules\notification\targets\MailTarget;
  */
 class LikeNotificationCategory extends NotificationCategory
 {
-
     /**
      * @inheritdoc
      */

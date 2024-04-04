@@ -6,7 +6,7 @@ use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
 
 /* @var $newSpaces Space[] */
-/* @var $showMoreButton boolean */
+/* @var $showMoreButton bool */
 ?>
 
 <div class="panel panel-default spaces" id="new-spaces-panel">

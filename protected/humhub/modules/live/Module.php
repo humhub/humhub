@@ -24,7 +24,6 @@ use yii\db\Query;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -49,7 +48,7 @@ class Module extends \humhub\components\Module
      *  - Content::VISIBILITY_OWNER (10)         (No visibility, direct to the user)
      *
      * @param User $user the User
-     * @param boolean $cached use caching
+     * @param bool $cached use caching
      * @return array multi dimensional array of user content container ids
      */
     public function getLegitimateContentContainerIds(User $user, $cached = true)
@@ -76,7 +75,7 @@ class Module extends \humhub\components\Module
             $privateContainerQuery = Membership::getMemberSpaceContainerIdQuery($user);
 
             // Add friend container if friendship module is active
-            if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
                 $privateContainerQuery->union(Friendship::getFriendshipContainerIdQuery($user), true);
             }
 

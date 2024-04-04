@@ -6,13 +6,13 @@ coverage:
     enabled: true
     remote: false
     include:
-    - ../activities/*
-    - ../controllers/*
-    - ../models/*
-    - ../notifications/*
-    - ../widgets/*
-    - ../Events.php
-    - ../Module.php
+        - ../activities/*
+        - ../controllers/*
+        - ../models/*
+        - ../notifications/*
+        - ../widgets/*
+        - ../Events.php
+        - ../Module.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true

@@ -20,17 +20,19 @@ use humhub\tests\codeception\unit\ModuleAutoLoaderTest;
 use Some\Name\Space\module1\Module as Module1;
 use Some\Name\Space\module2\Module as Module2;
 use Some\Name\Space\moduleWithMigration\Module as ModuleWithMigration;
+use SplFileInfo;
 use tests\codeception\_support\HumHubDbTestCase;
+use Throwable;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Event;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\caching\ArrayCache;
-use yii\console\ExitCode;
 use yii\db\StaleObjectException;
 use yii\helpers\FileHelper;
 use yii\log\Logger;
+use yii\web\ServerErrorHttpException;
 
 require_once __DIR__ . '/bootstrap/ModuleAutoLoaderTest.php';
 
@@ -70,8 +72,8 @@ class ModuleManagerTest extends HumHubDbTestCase
             if ($filename !== '.' && $filename !== '..' && is_dir("$appModuleRoot/$filename")) {
                 static::$moduleDirCount++;
 
-                $config_file = new \SplFileInfo("$appModuleRoot/$filename/config.php");
-                $config_file = new \SplFileInfo($config_file->getRealPath());
+                $config_file = new SplFileInfo("$appModuleRoot/$filename/config.php");
+                $config_file = new SplFileInfo($config_file->getRealPath());
 
                 if (!$config_file->isFile() || !$config_file->isReadable()) {
                     continue;
@@ -434,12 +436,16 @@ class ModuleManagerTest extends HumHubDbTestCase
         // Workaround for internal SaaS core module
         unset($modules['hostinginfo']);
 
+        $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(array_column(
+            static::dbSelect('module_enabled', 'module_id'),
+            'module_id'
+        )));
+
         $expected = array_merge(
             [],
             array_flip(ModuleAutoLoaderTest::EXPECTED_CORE_MODULES),
-            static::$moduleDirList
+            $locallyEnabledModules
         );
-
 
         static::assertEquals($expected, $modules);
 
@@ -447,7 +453,8 @@ class ModuleManagerTest extends HumHubDbTestCase
             'enabled' => false,
             'returnClass' => true,
         ]));
-        static::assertEquals(static::$moduleDirList, $modules);
+
+        static::assertEquals($locallyEnabledModules, $modules);
     }
 
     /**
@@ -514,7 +521,7 @@ class ModuleManagerTest extends HumHubDbTestCase
      * @noinspection MissedFieldInspection
      */
     /**
-     * @throws \Throwable
+     * @throws Throwable
      * @throws InvalidConfigException
      * @throws StaleObjectException
      * @throws Exception
@@ -619,11 +626,27 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         Yii::$app->set('moduleManager', $oldMM);
 
-        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-        static::assertLog('Module has no migrations directory.', Logger::LEVEL_TRACE, [$module->id]);
+        static::assertNotLog(
+            'Module has not been enabled due to beforeEnable() returning false',
+            Logger::LEVEL_WARNING,
+            [$module->id]
+        );
+        static::assertLog(
+            'Module has no migrations directory.',
+            Logger::LEVEL_TRACE,
+            [$module->id]
+        );
 
-        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, ['module2']);
-        static::assertLogRegex('@No new migrations found\. Your system is up-to-date\.@', Logger::LEVEL_INFO, ['module2']);
+        static::assertNotLog(
+            'Module has not been enabled due to beforeEnable() returning false',
+            Logger::LEVEL_WARNING,
+            ['module2']
+        );
+        static::assertLogRegex(
+            '@No new migrations found\. Your system is up-to-date\.@',
+            Logger::LEVEL_INFO,
+            ['module2']
+        );
 
         static::logReset();
 
@@ -679,9 +702,9 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $module->doEnable = true;
         static::assertTrue($module->enable());
-//        static::assertEquals(ExitCode::OK, $module->migrationResult);
-//        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-//        static::assertLogRegex('@\*\*\* applied m230911_000100_create_test_table \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
+        //        static::assertEquals(ExitCode::OK, $module->migrationResult);
+        //        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::assertLogRegex('@\*\*\* applied m230911_000100_create_test_table \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
         static::logFlush();
 
         $this->assertEvents([
@@ -695,21 +718,39 @@ class ModuleManagerTest extends HumHubDbTestCase
             ],
         ]);
 
-//        $module->doDisable = false;
-//        static::assertNull($module->disable());
-//        static::assertNull($module->migrationResult);
-//        static::assertNull($module->migrationOutput);
-//        $this->assertEvents();
-//
-//        static::assertLog('Module has not been disabled due to beforeDisable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-//        static::logFlush();
+        //        $module->doDisable = false;
+        //        static::assertNull($module->disable());
+        //        static::assertNull($module->migrationResult);
+        //        static::assertNull($module->migrationOutput);
+        //        $this->assertEvents();
+        //
+        //        static::assertLog('Module has not been disabled due to beforeDisable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::logFlush();
 
         $module->doDisable = true;
         static::assertTrue($module->disable());
-//        static::assertEquals(ExitCode::OK, $module->migrationResult);
-//        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
-//        static::assertLogRegex('@    > drop table test_module_with_migration \.\.\. done \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
+        //        static::assertEquals(ExitCode::OK, $module->migrationResult);
+        //        static::assertNotLog('Module has not been enabled due to beforeEnable() returning false', Logger::LEVEL_WARNING, [$module->id]);
+        //        static::assertLogRegex('@    > drop table test_module_with_migration \.\.\. done \(time: \d+\.\d+s\)@', Logger::LEVEL_INFO, [$module->id]);
         static::logFlush();
+    }
+
+    /**
+     * @noinspection MissedFieldInspection
+     */
+    public function testEnableModulesWithRequirements()
+    {
+        Yii::$app->set('moduleManager', $this->moduleManager);
+
+        $moduleWithRequirements = $this->moduleManager->getModule(static::$testModuleRoot . '/moduleWithRequirements');
+        $module1 = $this->moduleManager->getModule(static::$testModuleRoot . '/module1');
+
+        $this->expectException(ServerErrorHttpException::class);
+        $this->expectExceptionMessage('This module cannot work without enabled module "module1"');
+        static::assertFalse($moduleWithRequirements->enable());
+
+        static::assertTrue($module1->enable());
+        static::assertTrue($moduleWithRequirements->enable());
     }
 
     /**
@@ -945,7 +986,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         }
 
         static::assertInstanceOf($this->moduleClass, $module = $this->moduleManager->getModule($this->moduleId));
-//        $module->setBasePath($basePath);
+        //        $module->setBasePath($basePath);
 
         static::assertEquals($isCore, $this->moduleManager->isCoreModule($this->moduleId));
 
@@ -1094,6 +1135,7 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'module1',
                 'module2',
                 'moduleWithMigration',
+                'moduleWithRequirements',
                 'coreModule',
                 'installerModule',
                 'invalidModule1',
@@ -1101,10 +1143,14 @@ class ModuleManagerTest extends HumHubDbTestCase
             ]
         ]);
 
-        static::$moduleEnabledList ??= array_column(
-            static::dbSelect('module_enabled', 'module_id'),
-            'module_id'
-        );
+        if (Yii::$app->isDatabaseInstalled()) {
+            static::$moduleEnabledList ??= array_column(
+                static::dbSelect('module_enabled', 'module_id'),
+                'module_id'
+            );
+        } else {
+            static::$moduleEnabledList ??= [];
+        }
 
         $this->moduleManager = new ModuleManagerMock();
     }

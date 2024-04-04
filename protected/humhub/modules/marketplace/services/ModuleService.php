@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -7,6 +8,7 @@
 
 namespace humhub\modules\marketplace\services;
 
+use Exception;
 use humhub\components\Module as CoreModule;
 use humhub\modules\marketplace\components\OnlineModuleManager;
 use humhub\modules\marketplace\Module as MarketplaceModule;
@@ -76,7 +78,17 @@ class ModuleService
         return true;
     }
 
+    /**
+     * @return bool
+     * @deprecated since v1.16; use static::enable()
+     * @see static::enable()
+     */
     public function activate(): bool
+    {
+        return $this->enable();
+    }
+
+    public function enable(): bool
     {
         return $this->module instanceof CoreModule && $this->module->enable();
     }
@@ -103,7 +115,7 @@ class ModuleService
 
         try {
             $this->module->publishAssets(true);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Yii::error($e);
         }
 

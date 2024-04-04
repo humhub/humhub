@@ -9,25 +9,24 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
-use humhub\modules\search\libs\SearchHelper;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "group_admin".
  *
- * @property integer $id
- * @property integer $user_id
- * @property integer $group_id
+ * @property int $id
+ * @property int $user_id
+ * @property int $group_id
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property User $user
  * @property Group $group
  */
 class GroupUser extends ActiveRecord
 {
-
-    const SCENARIO_REGISTRATION = 'registration';
+    public const SCENARIO_REGISTRATION = 'registration';
 
     /**
      * @inheritdoc
@@ -87,9 +86,6 @@ class GroupUser extends ActiveRecord
                     $groupSpace->space->addMember($this->user->id);
                 }
             }
-            if ($this->user !== null) {
-                $this->user->updateSearch();
-            }
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -100,14 +96,13 @@ class GroupUser extends ActiveRecord
      */
     public function afterDelete()
     {
-        SearchHelper::queueUpdate($this->user);
         parent::afterDelete();
     }
 
     /**
      * Returns all Group relation
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getGroup()
     {
@@ -117,7 +112,7 @@ class GroupUser extends ActiveRecord
     /**
      * Returns all User relation
      *
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getUser()
     {

@@ -7,7 +7,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
@@ -28,7 +28,6 @@ use yii\helpers\Json;
  */
 class BaseType extends Model
 {
-
     /**
      * @event Event an event raised after init. Can be used to add custom field types.
      *
@@ -44,7 +43,7 @@ class BaseType extends Model
      *
      * @since 1.12
      */
-    const EVENT_INIT = "fieldTypesInit";
+    public const EVENT_INIT = "fieldTypesInit";
 
     /**
      * @var string
@@ -70,14 +69,14 @@ class BaseType extends Model
     public $profileField = null;
 
     /**
-     * @var boolean is a virtual field (readonly)
+     * @var bool is a virtual field (readonly)
      * @see BaseTypeVirtual
      * @since 1.6
      */
     public $isVirtual = false;
 
     /**
-     * @var boolean can be used as directory filter (readonly)
+     * @var bool can be used as directory filter (readonly)
      * @since 1.9
      */
     public $canBeDirectoryFilter = false;
@@ -85,7 +84,8 @@ class BaseType extends Model
     /**
      * @inheritdoc
      */
-    public function init() {
+    public function init()
+    {
         parent::init();
 
         $this->trigger(self::EVENT_INIT);
@@ -133,14 +133,14 @@ class BaseType extends Model
     /**
      * Returns additional form field item options for all field types.
      *
-     * @internal
      * @return array
+     * @internal
      */
     final public function getFieldTypeItemOptions()
     {
         $result = [];
         foreach ($this->getFieldTypes() as $field_class => $label) {
-            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class.'::getHiddenFormFields')];
+            $result[$field_class] = ['data-hidden-fields' => call_user_func($field_class . '::getHiddenFormFields')];
         }
         return $result;
     }
@@ -172,7 +172,7 @@ class BaseType extends Model
     {
         $types = [];
         foreach ($this->getFieldTypes() as $className => $title) {
-            $className = Helpers::checkClassType($className, static::class);
+            $className = DataTypeHelper::matchClassType($className, static::class, true);
             /** @var BaseType $instance */
             $instance = new $className();
             if ($profileField !== null) {
@@ -231,7 +231,7 @@ class BaseType extends Model
      *
      * @param ProfileField|null $attributes
      * @param bool $clearErrors
-     * @return boolean
+     * @return bool
      */
     public function validate($attributes = null, $clearErrors = true)
     {

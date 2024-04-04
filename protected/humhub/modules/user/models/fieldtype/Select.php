@@ -8,9 +8,11 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
 
 /**
  * ProfileFieldTypeSelect handles numeric profile fields.
@@ -59,18 +61,18 @@ class Select extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition(ArrayHelper::merge([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Select field options'),
-                        'elements' => [
-                            'options' => [
-                                'type' => 'textarea',
-                                'label' => Yii::t('UserModule.profile', 'Possible values'),
-                                'class' => 'form-control',
-                                'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
-                            ],
-                        ]
-        ]], $definition));
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Select field options'),
+                'elements' => [
+                    'options' => [
+                        'type' => 'textarea',
+                        'label' => Yii::t('UserModule.profile', 'Possible values'),
+                        'class' => 'form-control',
+                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                    ],
+                ]
+            ]], $definition));
     }
 
     /**
@@ -79,8 +81,8 @@ class Select extends BaseType
     public function save()
     {
         $columnName = $this->profileField->internal_name;
-        if (!\humhub\modules\user\models\Profile::columnExists($columnName)) {
-            $query = Yii::$app->db->getQueryBuilder()->addColumn(\humhub\modules\user\models\Profile::tableName(), $columnName, 'VARCHAR(255)');
+        if (!Profile::columnExists($columnName)) {
+            $query = Yii::$app->db->getQueryBuilder()->addColumn(Profile::tableName(), $columnName, 'VARCHAR(255)');
             Yii::$app->db->createCommand($query)->execute();
         }
 
@@ -143,7 +145,7 @@ class Select extends BaseType
         if (!$raw) {
             $options = $this->getSelectItems();
             if (isset($options[$value])) {
-                return \yii\helpers\Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$value]));
+                return Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$value]));
             }
         }
 

@@ -16,7 +16,6 @@ use Yii;
  */
 class CreatePublicSpace extends BasePermission
 {
-
     /**
      * @inheritdoc
      */
@@ -41,10 +40,11 @@ class CreatePublicSpace extends BasePermission
      * @inheritdoc
      */
     protected $defaultState = self::STATE_ALLOW;
-    
-    public function __construct($config = []) {
+
+    public function __construct($config = [])
+    {
         parent::__construct($config);
-        
+
         $this->title = Yii::t('SpaceModule.permissions', 'Create Public Spaces');
         $this->description = Yii::t('SpaceModule.permissions', 'Can create Spaces visible to all members.');
     }

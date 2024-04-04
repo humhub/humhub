@@ -19,7 +19,6 @@ use humhub\components\rendering\MailLayoutRenderer;
  */
 class ActivityMailRenderer extends MailLayoutRenderer
 {
-
     /**
      * @inheritdoc
      */

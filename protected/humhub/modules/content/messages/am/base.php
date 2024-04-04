@@ -3,7 +3,6 @@
 return [
     '<strong>Move</strong> content' => 'ይዘቱን <strong>ያዛውሩ</strong>',
     '<strong>Permalink</strong> to this post' => 'ይህን ልጥፍ <strong>ማስፈንጠሪያ ይፍጠሩለት</strong> ',
-    'Activated' => 'አገልግሎት ይሰጣል',
     'Add a member to notify' => 'ማስታወቂያ የሚቀርብላቸውን አባላት አክል',
     'Archived' => 'ማህደር',
     'Back to stream' => 'ወደማስተላለፊያው ተመለስ',
@@ -22,6 +21,7 @@ return [
     'Delete' => 'አስወግድ',
     'Edit' => 'አርትዕ',
     'Enable' => 'እንዲጠቀሙ አድርግ',
+    'Enabled' => 'አገልግሎት ይሰጣል',
     'Filter' => 'አጣራ',
     'Invalid content id given!' => 'የሰጡት የማያገለግል የይዘት መለያ ነው!',
     'Invalid request method!' => 'የተሳሳተ የጥያቄ ዘዴ ነው!',
@@ -70,6 +70,7 @@ return [
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Add tag...' => '',
+    'Advanced Content Search' => '',
     'Attach Files' => '',
     'Cannot notify the author.' => '',
     'Comments are locked' => '',

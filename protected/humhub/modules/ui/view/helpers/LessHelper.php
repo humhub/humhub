@@ -78,13 +78,13 @@ class LessHelper
 
     /**
      * Update values of less variables if they use value from another less variables, for example:
-     *     @firstColor: #fff;
-     *     @secondColor: @firstColor;
-     *     @thirdColor: @secondColor;
+     * @firstColor: #fff;
+     * @secondColor: @firstColor;
+     * @thirdColor: @secondColor;
      *
      * @param array $variables
-     * @since 1.7
      * @return array $variables
+     * @since 1.7
      */
     public static function updateLinkedLessVariables($variables)
     {

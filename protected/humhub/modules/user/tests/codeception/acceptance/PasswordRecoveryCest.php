@@ -1,4 +1,5 @@
 <?php
+
 namespace user\acceptance;
 
 use user\AcceptanceTester;
@@ -30,7 +31,7 @@ class PasswordRecoveryCest
         $I->expectTo('see error messages');
         $I->see('E-Mail "wrong@mail.de" was not found!');
         $I->dontSee('The verification code is incorrect.');
-        
+
         $I->amGoingTo('request a recovery  mail with valid data');
         $I->fillField('#email_txt', 'user1@example.com');
         $I->fillField('#accountrecoverpassword-verifycode', 'testme');

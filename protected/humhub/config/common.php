@@ -16,6 +16,8 @@ Yii::setAlias('@themes', '@webroot/themes');
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
+Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
+Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
 // Workaround: If OpenSSL extension is not available (#3852)
 if (!defined('PKCS7_DETACHED')) {
@@ -25,8 +27,8 @@ if (!defined('PKCS7_DETACHED')) {
 $config = [
     'name' => 'HumHub',
     'version' => '1.16.0',
-    'minRecommendedPhpVersion' => '7.4',
-    'minSupportedPhpVersion' => '7.4',
+    'minRecommendedPhpVersion' => '8.1',
+    'minSupportedPhpVersion' => '8.0',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
@@ -64,7 +66,7 @@ $config = [
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
-                \yii\log\DbTarget::class =>[
+                \yii\log\DbTarget::class => [
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
@@ -75,9 +77,6 @@ $config = [
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
-        ],
-        'search' => [
-            'class' => \humhub\modules\search\engine\ZendLuceneSearch::class,
         ],
         'settings' => [
             'class' => \humhub\components\SettingsManager::class,
@@ -95,6 +94,11 @@ $config = [
                     'basePath' => '@humhub/messages'
                 ],
                 'humhub.yii' => [
+                    'class' => PhpMessageSource::class,
+                    'basePath' => '@humhub/messages'
+                ],
+                'SearchModule.*' => [
+                    // Temporary: During conversion of the search module
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
@@ -253,9 +257,6 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
-        ],
-        'search' => [
-            'zendLucenceDataDir' => '@runtime/searchdb',
         ],
         'curl' => [
             // Check SSL certificates on cURL requests

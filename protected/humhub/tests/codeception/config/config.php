@@ -9,12 +9,6 @@ $default = [
     'language' => 'en-US',
     'params' => [
         'installed' => true,
-        'settings' => [
-            'core' => [
-                'name' => 'HumHub Test',
-                'baseUrl' => 'http://localhost:8080',
-            ],
-        ]
     ],
     'controllerMap' => [
         'fixture' => [
@@ -54,7 +48,7 @@ $envCfg = dirname(__DIR__) . '/../config/env/env.php';
 $env = file_exists($envCfg) ? require($envCfg) : [];
 
 return yii\helpers\ArrayHelper::merge(
-// Default Test Config
+    // Default Test Config
     $default,
     // User Overwrite
     require(dirname(__DIR__) . '/../config/common.php'),

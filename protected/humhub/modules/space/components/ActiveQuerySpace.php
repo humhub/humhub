@@ -6,7 +6,6 @@
  * @license https://www.humhub.com/licences
  */
 
-
 namespace humhub\modules\space\components;
 
 use humhub\events\ActiveQueryEvent;
@@ -16,9 +15,9 @@ use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
 use yii\db\ActiveQuery;
-
 
 /**
  * ActiveQuerySpace is used to query Space records.
@@ -30,7 +29,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
     /**
      * @event Event an event that is triggered when only visible spaces are requested via [[visible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * Only returns spaces which are visible for this user
@@ -45,7 +44,7 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
         if ($user === null && !Yii::$app->user->isGuest) {
             try {
                 $user = Yii::$app->user->getIdentity();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Yii::error($e, 'space');
             }
         }

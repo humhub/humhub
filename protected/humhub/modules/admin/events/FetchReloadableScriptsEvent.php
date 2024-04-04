@@ -18,7 +18,6 @@ use yii\base\Event;
  */
 class FetchReloadableScriptsEvent extends Event
 {
-
     /**
      * @var array Reference to the currently added search attributes
      */

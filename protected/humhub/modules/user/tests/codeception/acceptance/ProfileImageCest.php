@@ -2,6 +2,7 @@
 
 namespace user\acceptance;
 
+use Exception;
 use user\AcceptanceTester;
 
 class ProfileImageCest
@@ -10,7 +11,7 @@ class ProfileImageCest
      * Create Private Spaces
      *
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testBannerUploadAndDelete(AcceptanceTester $I)
     {
@@ -40,7 +41,7 @@ class ProfileImageCest
         $I->wantToTest('the deletion of the space banner');
         $I->amGoingTo('press the delete button');
         $I->click('.profile-banner-image-container .image-upload-buttons .profile-image-delete');
-        $I->waitForText('Confirm image deletion', null,'#globalModalConfirm');
+        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
         $I->jsShow('.profile-banner-image-container .image-upload-buttons');
@@ -51,7 +52,7 @@ class ProfileImageCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testProfileImageUploadAndDelete(AcceptanceTester $I)
     {
@@ -81,7 +82,7 @@ class ProfileImageCest
         $I->wantToTest('the deletion of the space banner');
         $I->amGoingTo('press the delete button');
         $I->click('.profile-user-photo-container .image-upload-buttons .profile-image-delete');
-        $I->waitForText('Confirm image deletion', null,'#globalModalConfirm');
+        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-user-photo-container .img-profile-header-background[src="/static/img/default_user.jpg"]');
         $I->jsShow('.profile-user-photo-container .image-upload-buttons');
@@ -151,8 +152,8 @@ class ProfileImageCest
 
     private function deleteImage(AcceptanceTester $I, $containerClass)
     {
-        $I->jsClick($containerClass.' .image-upload-buttons .btn-danger');
-        $I->waitForText('Confirm image deletion', null,'#globalModalConfirm');
+        $I->jsClick($containerClass . ' .image-upload-buttons .btn-danger');
+        $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
     }
 }

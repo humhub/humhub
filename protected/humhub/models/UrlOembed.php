@@ -41,7 +41,7 @@ class UrlOembed extends ActiveRecord
      * @event
      * @since 1.4
      */
-    const EVENT_FETCH = 'fetch';
+    public const EVENT_FETCH = 'fetch';
 
     /**
      * @var int Maximum amount of remote fetch calls per request
@@ -348,7 +348,7 @@ class UrlOembed extends ActiveRecord
      * Checks if a given URL Supports OEmbed
      *
      * @param string $url
-     * @return boolean
+     * @return bool
      */
     public static function hasOEmbedSupport(string $url): bool
     {
@@ -474,7 +474,7 @@ class UrlOembed extends ActiveRecord
             return true;
         }
 
-        if (preg_match('#^(https?:)?//#i',$url)) {
+        if (preg_match('#^(https?:)?//#i', $url)) {
             $url = parse_url($url);
             if (!isset($url['host'])) {
                 return false;

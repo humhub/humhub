@@ -10,12 +10,12 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Mentioning;
 use humhub\modules\user\notifications\Mentioned;
 use tests\codeception\_support\HumHubDbTestCase;
+use yii\base\Exception;
 
 class MentionTest extends HumHubDbTestCase
 {
-
     /**
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function testPostMention()
     {

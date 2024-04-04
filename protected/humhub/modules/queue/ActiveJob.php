@@ -13,13 +13,12 @@ use humhub\modules\queue\interfaces\JobInterface;
 
 /**
  * ActiveJob
- * 
+ *
  * @since 1.3
  * @author Luke
  */
 abstract class ActiveJob extends BaseObject implements JobInterface
 {
-
     /**
      * Runs this job
      */

@@ -19,7 +19,6 @@ use humhub\modules\ui\form\widgets\JsInputWidget;
  */
 class ColorPicker extends JsInputWidget
 {
-
     /**
      * @deprecated since v1.2.2 use $attribute instead
      */

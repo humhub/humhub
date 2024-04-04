@@ -29,6 +29,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     </div>
     <br>
     <?php $form = ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => ''], 'acknowledge' => true]); ?>
-        <?= $hForm->render($form); ?>
+    <?= $hForm->render($form); ?>
     <?php ActiveForm::end(); ?>
 </div>

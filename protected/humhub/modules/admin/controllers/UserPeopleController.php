@@ -20,7 +20,6 @@ use yii\web\HttpException;
  */
 class UserPeopleController extends Controller
 {
-
     /**
      * @inheritdoc
      */

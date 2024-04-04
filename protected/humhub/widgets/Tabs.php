@@ -124,7 +124,7 @@ class Tabs extends \yii\bootstrap\Tabs
             if (isset($item['view'])) {
                 $view = $item['view'];
                 if ($this->viewPath && strpos($view, '@') === false) {
-                    $view = $this->viewPath . '/'.$item['view'];
+                    $view = $this->viewPath . '/' . $item['view'];
                 }
 
                 $this->items[$key]['content'] = $this->render($view, $this->getParams($item));

@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => '<strong>Módulos</strong> do Espaço',
     '<strong>Space</strong> settings' => '<strong>Configurações</strong> do Espaço',
     'Actions' => 'Ações',
-    'Activate' => 'Ativar',
+    'Enable' => 'Ativar',
     'Add <strong>Modules</strong>' => 'Adicionar <strong>Módulos</strong>',
     'Advanced access settings' => 'Configurações de acesso avançadas',
     'Archive' => 'Arquivo',

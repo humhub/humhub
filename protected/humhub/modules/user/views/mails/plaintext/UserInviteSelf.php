@@ -9,9 +9,11 @@ use yii\helpers\Html;
 <?= mb_strtoupper(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name])) ?>
 
 
-<?= Yii::t('UserModule.base',
+<?= Yii::t(
+    'UserModule.base',
     'Welcome to %appName%. Please click on the button below to proceed with your registration.',
-    ['%appName%' => Yii::$app->name]); ?>
+    ['%appName%' => Yii::$app->name]
+); ?>
 
 
 <?= Yii::t('UserModule.base', 'Sign up') ?>: <?= $registrationUrl ?>

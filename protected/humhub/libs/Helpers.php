@@ -11,8 +11,8 @@ namespace humhub\libs;
 use humhub\exceptions\InvalidArgumentClassException;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\exceptions\InvalidArgumentValueException;
+use humhub\helpers\DataTypeHelper;
 use Yii;
-use yii\base\InvalidArgumentException;
 
 /**
  * This class contains a lot of html helpers for the views
@@ -21,20 +21,68 @@ use yii\base\InvalidArgumentException;
  */
 class Helpers
 {
-    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = 1;
-    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = 2;
-    public const CLASS_CHECK_VALUE_IS_EMPTY = 4;
-    public const CLASS_CHECK_INVALID_TYPE = 8;
-    public const CLASS_CHECK_NON_EXISTING_CLASS = 16;
-    public const CLASS_CHECK_TYPE_NOT_IN_LIST = 32;
-    public const CLASS_CHECK_VALUE_IS_INSTANCE = 64;
-    public const CLASS_CHECK_VALUE_IS_NULL = 128;
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_VALUE_IS_EMPTY = DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_INVALID_TYPE = DataTypeHelper::TYPE_CHECK_INVALID_TYPE;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_NON_EXISTING_CLASS = DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_TYPE_NOT_IN_LIST = DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_VALUE_IS_INSTANCE = DataTypeHelper::TYPE_CHECK_VALUE_IS_INSTANCE;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_VALUE_IS_NULL = DataTypeHelper::TYPE_CHECK_VALUE_IS_NULL;
 
     /**
      * Shorten a text string
      *
      * @param string $text - Text string you will shorten
-     * @param integer $length - Count of characters to show
+     * @param int $length - Count of characters to show
+     *
      * @return string
      */
     public static function truncateText($text, $length): string
@@ -56,6 +104,7 @@ class Helpers
 
     /**
      * Compare two arrays values
+     *
      * @param array $a - First array to compare against..
      * @param array $b - Second array
      *
@@ -76,20 +125,27 @@ class Helpers
 
     /**
      * Temp Function to use UTF8 SubStr
+     *
      * @deprecated since 1.11 Use mb_substr() instead.
      *
      * @param string $str
-     * @param integer $from
-     * @param integer $len
+     * @param int $from
+     * @param int $len
+     *
      * @return string
      */
     public static function substru($str, $from, $len): string
     {
-        return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
+        return preg_replace(
+            '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s',
+            '$1',
+            $str
+        );
     }
 
     /**
      * Get a readable time format from seconds
+     *
      * @param string $sekunden - Seconds you will formatting
      * */
     public static function getFormattedTime($sekunden)
@@ -121,6 +177,7 @@ class Helpers
      * Source: http://php.net/manual/en/function.ini-get.php
      *
      * @param String $val
+     *
      * @return int bytes
      * @deprecated bug on PHP7 "A non well formed numeric value encountered"
      * @see \humhub\libs\Helpers::getBytesOfIniValue instead
@@ -132,8 +189,10 @@ class Helpers
         switch ($last) {
             case 'g':
                 $val *= 1024;
+                // no break
             case 'm':
                 $val *= 1024;
+                // no break
             case 'k':
                 $val *= 1024;
         }
@@ -188,240 +247,25 @@ class Helpers
     }
 
     /**
-     * Checks if the class has this class as one of its parents
-     *
-     * Code of the thrown Exception is a bit-mask consisting of the following bits
-     * - self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER: Invalid $className parameter
-     * - self::CLASS_CHECK_INVALID_TYPE_PARAMETER: Invalid $type parameter
-     * - self::CLASS_CHECK_VALUE_IS_EMPTY: Empty parameter
-     * - self::CLASS_CHECK_INVALID_TYPE: Invalid type
-     * - self::CLASS_CHECK_NON_EXISTING_CLASS: Non-existing class
-     * - self::CLASS_CHECK_TYPE_NOT_IN_LIST: Class that is not in $type parameter
-     * - self::CLASS_CHECK_VALUE_IS_INSTANCE: $className is an object instance
-     * - self::CLASS_CHECK_VALUE_IS_NULL: NULL value
-     *
-     * @param string|object|null|mixed $className Object or classname to be checked. Null may be valid if included in $type.
-     *        Everything else is invalid and either throws an error (default) or returns NULL, if $throw is false.
-     * @param string|string[] $types (List of) class, interface or trait names that are allowed.
-     *        If NULL is included, NULL values are also allowed.
-     * @param bool $throw Determines if an Exception should be thrown if $className doesn't match $type, or simply return NULL.
-     *        Invalid $types always throw an error!
-     * @param bool $strict If set to true, no invalid characters are removed from a $className string.
-     *        If set to false, please make sure you use the function's return value, rather than $className, as they might diverge
-     *
-     * @return string|null
-     * @throws InvalidArgumentTypeException|InvalidArgumentClassException|InvalidArgumentValueException
-     * @noinspection PhpDocMissingThrowsInspection
-     * @noinspection PhpUnhandledExceptionInspection
+     * @deprecated since 1.16; use DataTypeHelper::checkClassType()
+     * @see DataTypeHelper::matchClassType
      */
-    public static function checkClassType($className, $types, bool $throw = true, ?bool $strict = true): ?string
+    public static function checkClassType($className, $type = '')
     {
-        if (empty($types)) {
-            throw new InvalidArgumentValueException('$type', ['string', 'string[]'], $types, self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY);
+        if (is_string($className)) {
+            $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
         }
 
-        $types = (array)$types;
-        $valid = [];
-        $allowNull = false;
-
-        // validate the type array
-        foreach ($types as $index => &$item) {
-            if ($item === null) {
-                $allowNull = true;
-                continue;
-            }
-
-            if (is_object($item)) {
-                $valid[get_class($item)] = false;
-                continue;
-            }
-
-            if (!is_string($item)) {
-                throw new InvalidArgumentValueException(sprintf('$type[%s]', $index), ['class', 'object'], $item, self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_INVALID_TYPE);
-            }
-
-            $isTrait = false;
-
-            if (!class_exists($item) && !interface_exists($item, false) && !($isTrait = trait_exists($item, false))) {
-                throw new InvalidArgumentValueException(sprintf('$type[%s]', $index), 'a valid class/interface/trait name or an object instance', $item, self::CLASS_CHECK_INVALID_TYPE_PARAMETER + self::CLASS_CHECK_NON_EXISTING_CLASS);
-            }
-
-            $valid[$item] = $isTrait;
-        }
-        // make sure the reference is not going to be overwritten
-        unset($item);
-
-        // save the types for throwing exceptions
-        $types = array_keys($valid);
-        if ($allowNull) {
-            $types[] = null;
-        }
-
-        // check for null input
-        if ($className === null) {
-            // check if null is allowed
-            if ($allowNull) {
-                return null;
-            }
-
-            if (!$throw) {
-                return null;
-            }
-
-            throw new InvalidArgumentTypeException(
-                '$className',
-                $types,
-                $className,
-                self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_VALUE_IS_NULL
-            );
-        }
-
-        // check for other empty input
-        if (empty($className)) {
-            if ((!$strict && $allowNull) || !$throw) {
-                return null;
-            }
-
-            throw is_string($className)
-                    ? new InvalidArgumentClassException(
-                        '$className',
-                        $types,
-                        $className,
-                        self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE + self::CLASS_CHECK_TYPE_NOT_IN_LIST
-                    )
-                    : new InvalidArgumentTypeException(
-                        '$className',
-                        $types,
-                        $className,
-                        self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_VALUE_IS_EMPTY + self::CLASS_CHECK_INVALID_TYPE
-                    )
-            ;
-        }
-
-        // Validation for object instances
-        if (is_object($className)) {
-            foreach ($valid as $matchingClass => $isTrait) {
-                if ($isTrait) {
-                    if (in_array($matchingClass, static::classUsesTraits($className, false), true)) {
-                        return get_class($className);
-                    }
-                } elseif ($className instanceof $matchingClass) {
-                    return get_class($className);
-                }
-            }
-
-            if (!$throw) {
-                return null;
-            }
-
-            throw new InvalidArgumentClassException(
-                '$className',
-                $types,
-                $className,
-                self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_TYPE_NOT_IN_LIST + self::CLASS_CHECK_VALUE_IS_INSTANCE
-            );
-        }
-
-        if (!is_string($className)) {
-            if (!$throw) {
-                return null;
-            }
-
-            throw new InvalidArgumentTypeException(
-                '$className',
-                $types,
-                $className,
-                self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_INVALID_TYPE
-            );
-        }
-
-        $cleaned = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
-
-        if ($strict && $cleaned !== $className) {
-            if (!$throw) {
-                return null;
-            }
-
-            throw new InvalidArgumentClassException(
-                '$className',
-                'a valid class name or an object instance',
-                $className,
-                self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER
-            );
-        }
-
-        $className = $cleaned;
-
-        if (!class_exists($className)) {
-            if (!$throw) {
-                return null;
-            }
-
-            throw new InvalidArgumentValueException(
-                '$className',
-                'a valid class name or an object instance',
-                $className,
-                self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_NON_EXISTING_CLASS
-            );
-        }
-
-        foreach ($valid as $matchingClass => $isTrait) {
-            if ($isTrait) {
-                if (in_array($matchingClass, static::classUsesTraits($className, false), true)) {
-                    return $className;
-                }
-            } elseif (is_a($className, $matchingClass, true)) {
-                return $className;
-            }
-        }
-
-        if (!$throw) {
-            return null;
-        }
-
-        throw new InvalidArgumentClassException(
-            '$className',
-            $types,
-            $className,
-            self::CLASS_CHECK_INVALID_CLASSNAME_PARAMETER + self::CLASS_CHECK_TYPE_NOT_IN_LIST
-        );
+        return DataTypeHelper::matchClassType($className, $type, false, true);
     }
 
     /**
-     * @param string|object $class
-     * @param bool $autoload
-     *
-     * @return array|null
-     * @see https://www.php.net/manual/en/function.class-uses.php#122427
+     * @deprecated since 1.16; use DataTypeHelper::classUsesTraits()
+     * @see DataTypeHelper::classUsesTraits
      */
     public static function &classUsesTraits($class, bool $autoload = true): ?array
     {
-        $traits = [];
-
-        // Get all the traits of $class and its parent classes
-        do {
-            $class_name = is_object($class) ? get_class($class) : $class;
-
-            if (class_exists($class_name, $autoload)) {
-                $traits = array_merge(class_uses($class, $autoload), $traits);
-            }
-        } while ($class = get_parent_class($class));
-
-        // Get traits of all parent traits
-        $traits_to_search = $traits;
-        while (!empty($traits_to_search)) {
-            $new_traits = class_uses(array_pop($traits_to_search), $autoload);
-            $traits = array_merge($new_traits, $traits);
-            $traits_to_search = array_merge($new_traits, $traits_to_search);
-        };
-
-        if (count($traits) === 0) {
-            $traits = null;
-        } else {
-            $traits = array_unique($traits);
-        }
-
-        return $traits;
+        return DataTypeHelper::classUsesTraits($class, $autoload);
     }
 
     /**
@@ -442,6 +286,7 @@ class Helpers
      *
      * @param string $a First subject string to compare.
      * @param string $b Second subject string to compare.
+     *
      * @return bool true if the strings are the same, false if they are different or if
      * either is not a string.
      */
@@ -472,6 +317,7 @@ class Helpers
      * This is mainly required for grouped notifications.
      *
      * @param $event
+     *
      * @since 1.2.1
      */
     public static function SqlMode($event)

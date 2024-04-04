@@ -1,20 +1,22 @@
 <?php
 
+use humhub\libs\Html;
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 
 $isAmind = Yii::$app->user->isAdmin();
 $nextUrl = $isAmind ? Url::to(['/admin/module/list', 'tour' => 'true']) : '';
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {
                 name: 'profile',
                 nextUrl: '<?= $nextUrl; ?>',
-                steps:[
+                steps: [
                     {
                         orphan: true,
                         backdrop: true,
@@ -46,19 +48,19 @@ $nextUrl = $isAmind ? Url::to(['/admin/module/list', 'tour' => 'true']) : '';
                         placement: "bottom"
                     },
                     <?php if ($isAmind) : ?>
-                        {
-                            orphan: true,
-                            backdrop: true,
-                            title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Hurray!</strong> You\'re done!')); ?>,
-                            content: <?= json_encode(Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')); ?> + "<a href='#' data-action-click='tour.next'><?= Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
-                        }
+                    {
+                        orphan: true,
+                        backdrop: true,
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Hurray!</strong> You\'re done!')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', 'You\'ve completed the user profile guide!<br><br>To carry on with the administration guide, click here:<br /><br />')); ?> + "<a href='#' data-action-click='tour.next'><?= Yii::t("TourModule.profile", "<strong>Administration (Modules)</strong>"); ?></a><br><br>"
+                    }
                     <?php else : ?>
-                        {
-                            orphan: true,
-                            backdrop: true,
-                            title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Hurray!</strong> The End.')); ?>,
-                            content: <?= json_encode(Yii::t('TourModule.profile', "You've completed the user profile guide!")); ?>
-                        }
+                    {
+                        orphan: true,
+                        backdrop: true,
+                        title: <?= json_encode(Yii::t('TourModule.profile', '<strong>Hurray!</strong> The End.')); ?>,
+                        content: <?= json_encode(Yii::t('TourModule.profile', "You've completed the user profile guide!")); ?>
+                    }
                     <?php endif; ?>
 
                 ]

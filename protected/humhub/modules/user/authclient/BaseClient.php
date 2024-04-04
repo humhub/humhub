@@ -18,18 +18,17 @@ use humhub\modules\user\services\AuthClientService;
  */
 class BaseClient extends \yii\authclient\BaseClient
 {
-
     /**
      * @event Event an event raised on update user data.
      * @see AuthClientService::updateUser()
      */
-    const EVENT_UPDATE_USER = 'update';
+    public const EVENT_UPDATE_USER = 'update';
 
     /**
      * @event Event an event raised on create user.
      * @see AuthClientService::createUser()
      */
-    const EVENT_CREATE_USER = 'create';
+    public const EVENT_CREATE_USER = 'create';
 
     /**
      * @inheritdoc
