@@ -23,6 +23,13 @@ interface MetaSearchProviderInterface
     public function getName(): string;
 
     /**
+     * Get sort order
+     *
+     * @return int
+     */
+    public function getSortOrder(): int;
+
+    /**
      * Get text of link to go to all results
      *
      * @return string
@@ -65,7 +72,9 @@ interface MetaSearchProviderInterface
     public function getKeyword(): ?string;
 
     /**
-     * @return array|null Additional params which may be used to initialize the provider
+     * Get additional params which may be used to initialize the provider
+     *
+     * @return array|null
      */
     public function getParams(): ?array;
 }

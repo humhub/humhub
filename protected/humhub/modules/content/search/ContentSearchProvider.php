@@ -35,6 +35,14 @@ class ContentSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
+    public function getSortOrder(): int
+    {
+        return 100;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getRoute(): string
     {
         return '/content/search';

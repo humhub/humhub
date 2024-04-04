@@ -35,6 +35,14 @@ class UserSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
+    public function getSortOrder(): int
+    {
+        return 200;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getRoute(): string
     {
         return '/people';

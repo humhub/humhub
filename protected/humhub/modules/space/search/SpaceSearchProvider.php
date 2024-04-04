@@ -35,6 +35,14 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
+    public function getSortOrder(): int
+    {
+        return 300;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getRoute(): string
     {
         return '/spaces';
