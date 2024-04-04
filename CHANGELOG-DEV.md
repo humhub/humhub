@@ -82,4 +82,4 @@ HumHub Changelog
 - Enh #6147: New space service `MemberListService`
 - Enh #6487: Remove general setting "Server Timezone"
 - Enh #6552: Allow module initializing on each loading
-
+- Fix #6768 MultiSelect when empty selection is given
