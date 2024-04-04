@@ -20,7 +20,6 @@ namespace humhub\components\access;
  */
 abstract class ActionAccessValidator extends AccessValidator
 {
-
     /**
      * @var bool if set to true (default) all validator related rules have to pass otherwise only one
      */
@@ -33,7 +32,7 @@ abstract class ActionAccessValidator extends AccessValidator
      *
      * @param $rule array
      * @param $access ControllerAccess
-     * @return boolean
+     * @return bool
      */
     public function run()
     {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2019 HumHub GmbH & Co. KG
@@ -6,7 +7,6 @@
  */
 
 namespace humhub\modules\ldap\controllers;
-
 
 use Exception;
 use humhub\modules\admin\components\Controller;
@@ -17,7 +17,6 @@ use Laminas\Ldap\Exception\LdapException;
 use Laminas\Ldap\Ldap;
 use Yii;
 
-
 /**
  * Class AdminController
  * @package humhub\modules\ldap\controllers
@@ -25,9 +24,9 @@ use Yii;
 class AdminController extends Controller
 {
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageSettings::class]],
@@ -83,5 +82,4 @@ class AdminController extends Controller
             'errorMessage' => $errorMessage
         ]);
     }
-
 }

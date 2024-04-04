@@ -14,7 +14,7 @@ humhub.module('marketplace', function (module, require, $) {
         });
     };
 
-    const startUpdate = function(evt) {
+    const startUpdate = function (evt) {
         const card = evt.$trigger.closest('.card');
         card.css({width: card.outerWidth(), height: card.outerHeight()});
         evt.$trigger.parent().hide();
@@ -40,7 +40,9 @@ humhub.module('marketplace', function (module, require, $) {
                 card.after('<div class="' + card.attr('class') + '"><div class="card-panel"></div></div>');
                 card.next()
                     .css({opacity: 0, minHeight: card.outerHeight()})
-                    .animate({width: 0}, 'slow', function () {$(this).remove()});
+                    .animate({width: 0}, 'slow', function () {
+                        $(this).remove()
+                    });
                 card.animate({opacity: 0}, 'slow', function () {
                     $(this).remove();
                     const availableUpdates = $('[data-action-click="marketplace.update"]').length;
@@ -60,7 +62,7 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
-    const endFailedUpdate = function(evt, response) {
+    const endFailedUpdate = function (evt, response) {
         module.log.error(response);
         status.error(response.message);
         evt.$trigger.attr('data-update-status', 'failed')
@@ -91,7 +93,7 @@ humhub.module('marketplace', function (module, require, $) {
         runNextUpdate();
     }
 
-    const runNextUpdate = function() {
+    const runNextUpdate = function () {
         const updateAllButton = $('[data-action-click="marketplace.updateAll"]');
         if (!updateAllButton.data('is-updating-all')) {
             return;
@@ -112,7 +114,7 @@ humhub.module('marketplace', function (module, require, $) {
             .attr('class', updateAllButton.data('orig-class'));
     }
 
-    const registerLicenceKey = function(evt) {
+    const registerLicenceKey = function (evt) {
         const form = evt.$trigger.closest('form');
         const licenceKey = form.find('input[name=licenceKey]').val();
 
@@ -132,7 +134,7 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
-    const install = function(evt) {
+    const install = function (evt) {
         const installButton = evt.$trigger;
         const moduleId = installButton.data('module-id');
 
@@ -143,9 +145,9 @@ humhub.module('marketplace', function (module, require, $) {
         modal.global.show();
 
         modal.post(evt, {data: {moduleId}}).then(function () {
-            const activateButton = modal.global.$.find('[data-action-click="marketplace.activate"]').clone();
-            if (activateButton.length) {
-                installButton.after(activateButton.addClass('btn-sm'));
+            const enableButton = modal.global.$.find('[data-action-click="marketplace.enable"]').clone();
+            if (enableButton.length) {
+                installButton.after(enableButton.addClass('btn-sm'));
             }
             installButton.remove();
         }).catch(function (e) {
@@ -153,13 +155,15 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
-    const activate = function(evt) {
+    const enable = function (evt) {
         const moduleId = evt.$trigger.data('module-id');
         const moduleCard = $('button[data-module-id="' + moduleId + '"]').closest('.card');
 
         modal.post(evt, {data: {moduleId}}).then(function () {
             if (moduleCard.length) {
-                moduleCard.hide('slow', function(){ $(this).remove() });
+                moduleCard.hide('slow', function () {
+                    $(this).remove()
+                });
             }
         }).catch(function (e) {
             module.log.error(e, true);
@@ -171,6 +175,6 @@ humhub.module('marketplace', function (module, require, $) {
         updateAll,
         registerLicenceKey,
         install,
-        activate
+        enable
     });
 });

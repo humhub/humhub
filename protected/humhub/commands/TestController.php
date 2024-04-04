@@ -18,7 +18,6 @@ use yii\helpers\Console;
  */
 class TestController extends \yii\console\Controller
 {
-
     /**
      * Sends a test e-mail to the given e-mail address
      *

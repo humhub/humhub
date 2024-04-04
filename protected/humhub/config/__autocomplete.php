@@ -11,7 +11,8 @@
  * }
  * ```
  */
-class Yii {
+class Yii
+{
     /**
      * @var \yii\web\Application|\yii\console\Application|\humhub\components\Application|\humhub\components\console\Application|\humhub\interfaces\ApplicationInterface|__Application|__WebApplication
      */
@@ -28,7 +29,6 @@ class Yii {
  * @property \humhub\modules\ui\view\components\View $view
  * @property \humhub\components\SettingsManager $settings
  * @property \humhub\modules\notification\components\NotificationManager $notification
- * @property \humhub\modules\search\engine\Search $search
  * @property \humhub\components\i18n\Formatter
  * @property \humhub\components\AssetManager $assetManager
  * @property \humhub\modules\user\authclient\Collection $authClientCollection
@@ -40,7 +40,8 @@ class Yii {
  * @property \yii\web\User|__WebUser $user
  * @property \yii\caching\ArrayCache $runtimeCache
  */
-class __Application {
+class __Application
+{
 }
 
 /**
@@ -51,4 +52,20 @@ class __Application {
  */
 class __WebApplication extends \humhub\components\Application
 {
+}
+
+if (!class_exists(WeakReference::class)) {
+    class WeakReference
+    {
+        /* Methods */
+        public static function create(object $object): self
+        {
+            return new static();
+        }
+
+        public function get(): ?object
+        {
+            return null;
+        }
+    }
 }

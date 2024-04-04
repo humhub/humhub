@@ -13,7 +13,6 @@ use humhub\modules\stream\assets\StreamAsset;
 
 class ActivityAsset extends AssetBundle
 {
-
     public $sourcePath = '@activity/resources';
 
     public $js = [

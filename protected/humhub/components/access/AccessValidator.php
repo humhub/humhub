@@ -93,7 +93,7 @@ abstract class AccessValidator extends BaseObject
      * The whole rule set can be retrieved by calling `$this->access->rules`.
      *
      *
-     * @return boolean true if validation passed otherwise true
+     * @return bool true if validation passed otherwise true
      */
     abstract public function run();
 

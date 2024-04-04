@@ -1,8 +1,8 @@
 <?php
 
 return [
-    'Collapse' => '',
-    'Read more' => '',
-    'Reset filters' => '',
-    'User Interface' => '',
+    'Collapse' => 'Spusti',
+    'Read more' => 'Pročitaj više',
+    'User Interface' => 'Korisnički interfejs',
+    'Reset filters' => 'Reset filtera',
 ];

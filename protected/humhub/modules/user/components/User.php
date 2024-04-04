@@ -8,22 +8,27 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\libs\BasePermission;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\services\AuthClientUserService;
+use Throwable;
 use Yii;
 use yii\authclient\ClientInterface;
+use yii\base\InvalidConfigException;
 
 /**
  * Description of User
+ *
  * @property UserModel|null $identity
+ * @method  UserModel|null getIdentity(bool $autoRenew = true)
  * @mixin Impersonator
  * @author luke
  */
 class User extends \yii\web\User
 {
-    const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
+    public const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
 
     /**
      * @var PermissionManager
@@ -96,9 +101,10 @@ class User extends \yii\web\User
      * ```
      *
      * @param string|string[]|BasePermission $permission
-     * @return boolean
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Throwable
+     *
+     * @return bool
+     * @throws InvalidConfigException
+     * @throws Throwable
      * @since 1.2
      * @see PermissionManager::can()
      */
@@ -109,7 +115,7 @@ class User extends \yii\web\User
 
     /**
      * @return PermissionManager instance with the related identity instance as permission subject.
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getPermissionManager()
     {
@@ -150,7 +156,7 @@ class User extends \yii\web\User
     /**
      * Checks if the system configuration allows access for guests
      *
-     * @return boolean is guest access enabled and allowed
+     * @return bool is guest access enabled and allowed
      * @deprecated since 1.4
      */
     public static function isGuestAccessEnabled()
@@ -175,8 +181,8 @@ class User extends \yii\web\User
     }
 
     /**
+     * @return bool
      * @deprecated since 1.14
-     * @return boolean
      */
     public function canDeleteAccount()
     {
@@ -194,7 +200,8 @@ class User extends \yii\web\User
 
     /**
      * Determines if this user must change the password.
-     * @return boolean
+     *
+     * @return bool
      * @since 1.8
      */
     public function mustChangePassword()

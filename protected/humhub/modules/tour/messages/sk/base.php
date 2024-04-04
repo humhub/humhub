@@ -11,7 +11,7 @@ return array (
   '<strong>Remove</strong> tour panel' => '',
   '<strong>Space</strong> Menu' => '',
   '<strong>Start</strong> space guide' => '',
-  'Cancel' => '',
+  'Cancel' => 'Zrušiť',
   'Don\'t lose track of things!<br /><br />This icon will keep you informed of activities and posts that concern you directly.' => '',
   'Drag a photo here or click to browse your files' => '',
   'End guide' => '',
@@ -29,7 +29,7 @@ return array (
   'Your lastname' => '',
   'Your mobile phone number' => '',
   'Your phone number at work' => '',
-  'Your skills, knowledge and experience (comma seperated)' => '',
+  'Your skills, knowledge and experience' => '',
   'Your title or position' => '',
   '« Prev' => '',
 );

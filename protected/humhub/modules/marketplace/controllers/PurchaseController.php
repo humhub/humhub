@@ -23,7 +23,6 @@ use Yii;
  */
 class PurchaseController extends Controller
 {
-
     /**
      * @var string
      */
@@ -32,7 +31,7 @@ class PurchaseController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageModules::class]
@@ -52,8 +51,8 @@ class PurchaseController extends Controller
         $purchasedModules = $this->module->onlineModuleManager->getPurchasedModules(false);
 
         $html = $this->renderAjax('list', [
-            'modules' => $purchasedModules
-        ] + $addKeyResult);
+                'modules' => $purchasedModules
+            ] + $addKeyResult);
 
         if (Yii::$app->request->isGet) {
             return $html;

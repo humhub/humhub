@@ -8,20 +8,19 @@
 
 namespace humhub\modules\user\controllers;
 
+use humhub\components\behaviors\AccessControl;
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\ListBox;
 use humhub\modules\user\actions\ProfileStreamAction;
 use humhub\modules\user\Module;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserListBox;
+use humhub\modules\user\permissions\ViewAboutPage;
 use Yii;
 use yii\helpers\Url;
 use yii\web\HttpException;
-use yii\db\Expression;
-use humhub\modules\content\components\ContentContainerController;
-use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\UserListBox;
-use humhub\modules\space\widgets\ListBox;
-use humhub\components\behaviors\AccessControl;
-use humhub\modules\user\permissions\ViewAboutPage;
-use humhub\modules\space\models\Membership;
-use humhub\modules\space\models\Space;
 
 /**
  * ProfileController is responsible for all user profiles.
@@ -33,7 +32,6 @@ use humhub\modules\space\models\Space;
  */
 class ProfileController extends ContentContainerController
 {
-
     /**
      * @inheritdoc
      */
@@ -117,8 +115,9 @@ class ProfileController extends ContentContainerController
     {
         $this->forcePostRequest();
         $this->getUser()->unfollow();
+        $redirect = Yii::$app->request->get('redirect', false);
 
-        if (Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax && !$redirect) {
             Yii::$app->response->format = 'json';
             return ['success' => true];
         }
@@ -152,6 +151,28 @@ class ProfileController extends ContentContainerController
 
         $title = Yii::t('UserModule.base', '<strong>Member</strong> in these spaces');
         return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
+    }
+
+    public function actionBlock()
+    {
+        $this->forcePostRequest();
+
+        if ($this->contentContainer->blockForUser()) {
+            $this->view->warn(Yii::t('UserModule.base', 'The user has been blocked for you.'));
+        }
+
+        return $this->redirect($this->contentContainer->createUrl());
+    }
+
+    public function actionUnblock()
+    {
+        $this->forcePostRequest();
+
+        if ($this->contentContainer->unblockForUser()) {
+            $this->view->success(Yii::t('UserModule.base', 'The user has been unblocked for you.'));
+        }
+
+        return $this->redirect($this->contentContainer->createUrl());
     }
 
 }

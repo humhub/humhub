@@ -17,8 +17,7 @@ use Yii;
  */
 class ModuleEnabled extends \yii\db\ActiveRecord
 {
-
-    const CACHE_ID_ALL_IDS = 'enabledModuleIds';
+    public const CACHE_ID_ALL_IDS = 'enabledModuleIds';
 
     /**
      * @inheritdoc
@@ -65,16 +64,13 @@ class ModuleEnabled extends \yii\db\ActiveRecord
 
     public static function getEnabledIds()
     {
-        $enabledModules = Yii::$app->cache->get(self::CACHE_ID_ALL_IDS);
+        $cache = Yii::$app->cache;
+        $enabledModules = $cache->get(self::CACHE_ID_ALL_IDS);
         if ($enabledModules === false) {
-            $enabledModules = [];
-            foreach (\humhub\models\ModuleEnabled::find()->all() as $em) {
-                $enabledModules[] = $em->module_id;
-            }
-            Yii::$app->cache->set(self::CACHE_ID_ALL_IDS, $enabledModules);
+            $enabledModules = self::find()->select('module_id')->createCommand()->queryColumn();
+            $cache->set(self::CACHE_ID_ALL_IDS, $enabledModules);
         }
 
         return $enabledModules;
     }
-
 }

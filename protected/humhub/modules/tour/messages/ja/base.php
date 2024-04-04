@@ -29,7 +29,7 @@ return array (
   'Your lastname' => 'あなたの苗字',
   'Your mobile phone number' => 'あなたの携帯電話番号',
   'Your phone number at work' => 'あなたの勤務先の電話番号',
-  'Your skills, knowledge and experience (comma seperated)' => 'あなたのスキル、知識、経験（カンマ区切り）',
+  'Your skills, knowledge and experience' => 'あなたのスキル、知識、経験',
   'Your title or position' => 'あなたの肩書きまたは役職',
   '« Prev' => '« 戻る',
 );

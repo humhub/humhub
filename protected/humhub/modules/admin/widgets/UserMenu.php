@@ -23,7 +23,6 @@ use humhub\modules\ui\menu\widgets\TabMenu;
  */
 class UserMenu extends TabMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -45,7 +44,7 @@ class UserMenu extends TabMenu
             'url' => ['/admin/authentication'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('admin', ['authentication', 'user-permissions']) ||
-                          MenuLink::isActiveState('ldap', 'admin'),
+                MenuLink::isActiveState('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class)
         ]));
 

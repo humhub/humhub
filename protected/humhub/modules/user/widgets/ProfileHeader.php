@@ -13,6 +13,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\controllers\ImageController;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\Widget;
 
 /**
  * Displays the profile header of a user
@@ -20,16 +21,15 @@ use Yii;
  * @since 0.5
  * @author Luke
  */
-class ProfileHeader extends \yii\base\Widget
+class ProfileHeader extends Widget
 {
-
     /**
      * @var User
      */
     public $user;
 
     /**
-     * @var boolean is owner of the current profile
+     * @var bool is owner of the current profile
      */
     protected $isProfileOwner = false;
 
@@ -65,7 +65,7 @@ class ProfileHeader extends \yii\base\Widget
             // Deprecated variables below (will removed in future versions)
             'allowModifyProfileImage' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
             'allowModifyProfileBanner' => $canEditProfileImage, // @deprecated since 1.4 only in use for legacy themes
-            'friendshipsEnabled' => Yii::$app->getModule('friendship')->getIsEnabled(),
+            'friendshipsEnabled' => Yii::$app->getModule('friendship')->isFriendshipEnabled(),
             'followingEnabled' => !Yii::$app->getModule('user')->disableFollow,
             'countFriends' => -1,
             'countFollowers' => -1,
@@ -88,5 +88,3 @@ class ProfileHeader extends \yii\base\Widget
     }
 
 }
-
-?>

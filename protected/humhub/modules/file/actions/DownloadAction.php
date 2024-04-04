@@ -10,15 +10,15 @@ namespace humhub\modules\file\actions;
 
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Url;
-use yii\web\HttpException;
 use yii\base\Action;
-use humhub\modules\file\models\File;
-use humhub\modules\file\libs\FileHelper;
+use yii\base\Exception;
 use yii\filters\HttpCache;
+use yii\web\HttpException;
 
 /**
  * DownloadAction
@@ -33,7 +33,7 @@ class DownloadAction extends Action
 {
     /**
      * @see HttpCache
-     * @var boolean enable Http Caching
+     * @var bool enable Http Caching
      */
     public bool $enableHttpCache = true;
 
@@ -48,7 +48,7 @@ class DownloadAction extends Action
     protected ?string $variant = null;
 
     /**
-     * @var boolean force download response
+     * @var bool force download response
      */
     protected bool $download = false;
 
@@ -104,7 +104,7 @@ class DownloadAction extends Action
     public function run()
     {
         $fileName = $this->getFileName();
-        $mimeType = FileHelper::getMimeTypeByExtension($fileName);
+        $mimeType = FileHelper::getMimeType($this->getStoredFilePath());
 
         $options = [
             'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes, true)),
@@ -126,7 +126,7 @@ class DownloadAction extends Action
      *
      * @throws HttpException
      */
-    protected function loadFile(string $guid, ?string $token = null)
+    protected function loadFile(?string $guid, ?string $token = null)
     {
         $file = File::findOne(['guid' => $guid]);
 
@@ -144,7 +144,7 @@ class DownloadAction extends Action
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
-        if (!$file->canRead($user)) {
+        if (!$file->canView($user)) {
             throw new HttpException(401, Yii::t('FileModule.base', 'Insufficient permissions!'));
         }
 
@@ -177,7 +177,7 @@ class DownloadAction extends Action
     /**
      * Returns the file module
      *
-     * @return \humhub\modules\file\Module
+     * @return Module
      */
     protected function getModule()
     {
@@ -225,7 +225,7 @@ class DownloadAction extends Action
     /**
      * Checks if XSendFile downloads are enabled
      *
-     * @return boolean
+     * @return bool
      */
     protected function useXSendFile()
     {
@@ -283,7 +283,7 @@ class DownloadAction extends Action
 
     /**
      * @return string the secret key for file download tokens
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     private static function getDownloadTokenKey()
     {

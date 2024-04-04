@@ -16,5 +16,4 @@ namespace humhub\widgets;
  */
 class BaseSidebar extends BaseStack
 {
-    
 }

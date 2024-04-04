@@ -6,6 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\admin\Module;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\admin\Events;
 use humhub\commands\CronController;
@@ -13,7 +14,7 @@ use humhub\modules\user\components\User;
 
 return [
     'id' => 'admin',
-    'class' => \humhub\modules\admin\Module::class,
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
         [

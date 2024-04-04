@@ -11,7 +11,6 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
-use humhub\models\Setting;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
 use yii\helpers\Html;
@@ -28,11 +27,10 @@ use yii\web\ForbiddenHttpException;
  */
 class Controller extends \yii\web\Controller
 {
-
     /**
      * @event \yii\base\Event an event raised on init a controller.
      */
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
     /**
      * @var null|string the name of the sub layout to be applied to this controller's views.
@@ -51,7 +49,7 @@ class Controller extends \yii\web\Controller
     public $actionTitlesMap = [];
 
     /**
-     * @var boolean append page title
+     * @var bool append page title
      */
     public $prependActionTitles = true;
 
@@ -121,6 +119,7 @@ class Controller extends \yii\web\Controller
      * Renders a string as Ajax including assets without end page so it can be called several times.
      *
      * @param string $content
+     *
      * @return string Rendered content
      */
     public function renderAjaxPartial(string $content): string
@@ -132,6 +131,7 @@ class Controller extends \yii\web\Controller
      * Renders a static string by applying the layouts (sublayout + layout.
      *
      * @param string $content the static string being rendered
+     *
      * @return string the rendering result of the layout with the given static string as the `$content` variable.
      * If the layout is disabled, the string will be returned back.
      *
@@ -161,7 +161,7 @@ class Controller extends \yii\web\Controller
     /**
      * Throws HttpException in case the request is not an post request, otherwise returns true.
      *
-     * @return boolean returns true in case the current request is a POST
+     * @return bool returns true in case the current request is a POST
      * @throws \yii\web\HttpException
      */
     public function forcePostRequest()
@@ -223,7 +223,7 @@ class Controller extends \yii\web\Controller
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
                 $this->setJsViewStatus();
 
-                if (Setting::isInstalled()) {
+                if (Yii::$app->isInstalled()) {
                     // Update "is online" status ony on full page loads
                     (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
                 }
@@ -271,7 +271,7 @@ class Controller extends \yii\web\Controller
      *
      * @param array $map
      *            [action_id => action_page_title]
-     * @param boolean $prependActionTitles set to false if the action titles should rather be appended
+     * @param bool $prependActionTitles set to false if the action titles should rather be appended
      */
     public function setActionTitles($map = [], $prependActionTitles = true)
     {
@@ -313,6 +313,7 @@ class Controller extends \yii\web\Controller
      * Check if action cannot be intercepted
      *
      * @param string|null $actionId , NULL - to use current action
+     *
      * @return bool
      * @since 1.9
      */

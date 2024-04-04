@@ -18,5 +18,4 @@ use Yii;
  */
 class TimePicker extends \humhub\modules\ui\form\widgets\TimePicker
 {
-
 }

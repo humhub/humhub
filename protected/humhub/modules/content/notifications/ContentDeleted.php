@@ -35,7 +35,7 @@ class ContentDeleted extends BaseNotification
      */
     public function category()
     {
-        return new \humhub\modules\content\notifications\ContentCreatedNotificationCategory();
+        return new ContentCreatedNotificationCategory();
     }
 
     /**
@@ -50,5 +50,3 @@ class ContentDeleted extends BaseNotification
         ]);
     }
 }
-
-?>

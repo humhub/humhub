@@ -8,7 +8,6 @@
 
 namespace humhub\libs;
 
-use humhub\models\Setting;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
@@ -23,7 +22,6 @@ use Yii;
  */
 class SelfTest
 {
-
     /**
      * Get Results of the Application SelfTest.
      *
@@ -314,22 +312,6 @@ class SelfTest
             ];
         }
 
-        // Checks GraphicsMagick Extension
-        $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Extension', ['phpExtension' => 'GraphicsMagick']);
-        if (class_exists('Gmagick', false)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Optional')
-            ];
-        }
-
-
         $memoryLimit = ini_get('memory_limit');
         if (preg_match('/^(\d+)(.)$/', $memoryLimit, $m)) {
             if ($m[2] == 'G') {
@@ -391,22 +373,6 @@ class SelfTest
             ];
         }
 
-        // Checks SQLite3 Extension
-        $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Support', ['phpExtension' => 'SQLite3']);
-        if (class_exists('SQLite3')) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
-                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for DB Caching', ['phpExtension' => 'SQLite3'])
-            ];
-        }
-
         // Checks PDO MySQL Extension
         $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Extension', ['phpExtension' => 'PDO MySQL']);
         if (extension_loaded('pdo_mysql')) {
@@ -456,7 +422,9 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Database connection time: {dbTime} - Configured time zone: {time}',
+                    'hint' => Yii::t(
+                        'AdminModule.information',
+                        'Database connection time: {dbTime} - Configured time zone: {time}',
                         [
                             'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
                             'time' => Yii::$app->formatter->asTime(time(), 'short'),
@@ -465,7 +433,7 @@ class SelfTest
                 ];
             }
 
-            if (Setting::isInstalled()) {
+            if (Yii::$app->isInstalled()) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
                     $checks[] = [
@@ -487,7 +455,8 @@ class SelfTest
             $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
             isset($_SERVER['HTTPS'])
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
-                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http'));
+                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
+            );
             $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
                 . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
                 ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
@@ -501,7 +470,9 @@ class SelfTest
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Detected URL: {currentBaseUrl}',
+                    'hint' => Yii::t(
+                        'AdminModule.information',
+                        'Detected URL: {currentBaseUrl}',
                         ['currentBaseUrl' => $currentBaseUrl]
                     ),
                 ];
@@ -609,21 +580,7 @@ class SelfTest
             ];
         }
 
-        // Check HumHub Marketplace API Connection
-        $title = Yii::t('AdminModule.information', 'HumHub') . ' - ' . Yii::t('AdminModule.information', 'Marketplace API Connection');
-        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'WARNING'
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK'
-            ];
-        }
-
-        return $checks;
+        return self::getMarketplaceResults($checks);
     }
 
     /**
@@ -635,6 +592,7 @@ class SelfTest
      *  - hint
      *
      * @param array Results initialized before
+     *
      * @return array
      */
     public static function getDatabaseResults($checks = [])
@@ -703,7 +661,7 @@ class SelfTest
         }
 
         // Find collations and engines of all tables
-        $dbTables = Yii::$app->getDb()->createCommand('SHOW TABLE STATUS')->queryAll();
+        $dbTables = Yii::$app->getDb()->createCommand('SHOW TABLE STATUS WHERE Comment != "VIEW"')->queryAll();
         $tableCollations = [];
         $tablesWithNotRecommendedCollations = [];
         $tableEngines = [];
@@ -712,13 +670,13 @@ class SelfTest
             if (!in_array($dbTable['Collation'], $tableCollations)) {
                 $tableCollations[] = $dbTable['Collation'];
             }
-            if (stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
+            if (!is_string($dbTable['Collation']) || stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
                 $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
             }
             if (!in_array($dbTable['Engine'], $tableEngines)) {
                 $tableEngines[] = $dbTable['Engine'];
             }
-            if (stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
+            if (!is_string($dbTable['Engine']) || stripos($dbTable['Engine'], $recommendedEngine) !== 0) {
                 $tablesWithNotRecommendedEngines[] = $dbTable['Name'];
             }
         }
@@ -823,5 +781,94 @@ class SelfTest
         }
 
         return $driver;
+    }
+
+    /**
+     * Get Results of the Application SelfTest for Marketplace part.
+     *
+     * Fields
+     *  - title
+     *  - state (OK, WARNING or ERROR)
+     *  - hint
+     *
+     * @param array Results initialized before
+     *
+     * @return array
+     */
+    public static function getMarketplaceResults($checks = []): array
+    {
+        $titlePrefix = Yii::t('AdminModule.information', 'HumHub') . ' - ';
+
+        // Check HumHub Marketplace API Connection
+        $title = $titlePrefix . Yii::t('AdminModule.information', 'Marketplace API Connection');
+        if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'WARNING'
+            ];
+        } else {
+            $checks[] = [
+                'title' => $title,
+                'state' => 'OK'
+            ];
+        }
+
+        if (Yii::$app->isInstalled()) {
+            
+            // Check installed modules by marketplace
+            /* @var \humhub\components\Module[] $modules */
+            $modules = Yii::$app->moduleManager->getModules();
+            $deprecatedModules = [];
+            $customModules = [];
+            foreach ($modules as $module) {
+                $onlineModule = $module->getOnlineModule();
+                if ($onlineModule === null) {
+                    $customModules[] = $module->name;
+                } elseif ($onlineModule->isDeprecated) {
+                    $deprecatedModules[] = $module->name;
+                }
+            }
+
+            if ($deprecatedModules !== []) {
+                $checks[] = [
+                    'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
+                            'modules' => implode(', ', $deprecatedModules)
+                        ]),
+                    'state' => 'ERROR',
+                    'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
+                ];
+            }
+
+            if ($customModules !== []) {
+                $checks[] = [
+                    'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
+                            'modules' => implode(', ', $customModules)
+                        ]),
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
+                ];
+            }
+
+            // Check Mobile App - Push Service
+            $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
+            /* @var \humhub\modules\fcmPush\Module|null $pushModule */
+            $pushModule = $modules['fcm-push'] ?? null;
+            if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
+                $pushModule->getIsEnabled() &&
+                $pushModule->getGoService()->isConfigured()) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK'
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
+                ];
+            }
+        }
+
+        return $checks;
     }
 }

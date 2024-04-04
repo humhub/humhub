@@ -25,7 +25,6 @@ use yii\web\NotFoundHttpException;
  */
 class PasswordRecoveryController extends Controller
 {
-
     /**
      * @inheritdoc
      */

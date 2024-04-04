@@ -38,7 +38,7 @@ class InstalledModuleControls extends Menu
 
     public function initControls()
     {
-        if ($this->module->isActivated) {
+        if ($this->module->getIsEnabled()) {
             if ($this->module instanceof ContentContainerModule) {
                 $this->addEntry(new MenuLink([
                     'id' => 'default',
@@ -52,7 +52,7 @@ class InstalledModuleControls extends Menu
 
             $this->addEntry(new MenuLink([
                 'id' => 'deactivate',
-                'label' => Yii::t('AdminModule.base', 'Deactivate'),
+                'label' => Yii::t('AdminModule.base', 'Disable'),
                 'url' => $this->getActionUrl('/admin/module/disable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
@@ -64,7 +64,7 @@ class InstalledModuleControls extends Menu
         } else {
             $this->addEntry(new MenuLink([
                 'id' => 'deactivate',
-                'label' => Yii::t('AdminModule.base', 'Activate'),
+                'label' => Yii::t('AdminModule.base', 'Enable'),
                 'url' => $this->getActionUrl('/admin/module/enable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
@@ -90,7 +90,13 @@ class InstalledModuleControls extends Menu
             ]));
         }
 
-        if (MarketplaceModule::isEnabled()) {
+        /** @var \humhub\modules\marketplace\Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        if (
+            MarketplaceModule::isMarketplaceEnabled()
+            && dirname($this->module->basePath) === Yii::getAlias($marketplaceModule->modulesPath)
+        ) {
             $this->addEntry(new MenuLink([
                 'id' => 'info',
                 'label' => Yii::t('AdminModule.base', 'Show in Marketplace'),

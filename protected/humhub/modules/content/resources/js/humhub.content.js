@@ -33,8 +33,10 @@ humhub.module('content', function (module, require, $) {
      * @param {type} $show
      * @returns {undefined}
      */
-    Content.prototype.loader = function ($show) { /* Abstract loader function */ };
-    Content.prototype.edit = function (successHandler) {/** Abstract edit function **/};
+    Content.prototype.loader = function ($show) { /* Abstract loader function */
+    };
+    Content.prototype.edit = function (successHandler) {/** Abstract edit function **/
+    };
 
     Content.getNodeByKey = function (key) {
         return $('[data-content-key="' + key + '"]');
@@ -61,7 +63,7 @@ humhub.module('content', function (module, require, $) {
 
             var modalOptions = options.modal || module.config.modal.deleteConfirm;
 
-            if(options.$trigger && options.$trigger.is('[data-action-confirm]')) {
+            if (options.$trigger && options.$trigger.is('[data-action-confirm]')) {
                 that.deleteContent(resolve, reject);
             } else {
                 modal.confirm(modalOptions).then(function ($confirmed) {
@@ -81,7 +83,7 @@ humhub.module('content', function (module, require, $) {
 
         var loadModalUrl = that.data(DATA_ADMIN_DELETE_MODAL_URL) || module.config.adminDeleteModalUrl;
 
-        if(!loadModalUrl) {
+        if (!loadModalUrl) {
             that.delete(options);
             return;
         }
@@ -108,7 +110,7 @@ humhub.module('content', function (module, require, $) {
         });
     };
 
-    Content.prototype.deleteContent = function(resolve, reject, form) {
+    Content.prototype.deleteContent = function (resolve, reject, form) {
         var that = this;
         that.loader();
         var deleteUrl = that.data(DATA_CONTENT_DELETE_URL) || module.config.deleteUrl;
@@ -117,9 +119,9 @@ humhub.module('content', function (module, require, $) {
             id: that.getKey()
         };
 
-        if(typeof form !== 'undefined') {
+        if (typeof form !== 'undefined') {
             Object.assign(postData, {
-                ...$(form).serializeArray().reduce(function(a, e) {
+                ...$(form).serializeArray().reduce(function (a, e) {
                     a[e.name] = e.value;
                     return a;
                 })
@@ -163,7 +165,7 @@ humhub.module('content', function (module, require, $) {
         permalink(evt);
     };
 
-    var permalink = function(evt) {
+    var permalink = function (evt) {
         var options = module.config.modal.permalink;
         options.permalink = evt.$trigger.data('content-permalink');
 
@@ -182,14 +184,14 @@ humhub.module('content', function (module, require, $) {
         });
     };
 
-    var submitMove = function(evt) {
-        modal.submit(evt).then(function(response) {
-           if(response.success) {
-               if(response.message) {
-                   module.log.success(response.message);
-               }
-               event.trigger('humhub:content:afterMove', response);
-           }
+    var submitMove = function (evt) {
+        modal.submit(evt).then(function (response) {
+            if (response.success) {
+                if (response.message) {
+                    module.log.success(response.message);
+                }
+                event.trigger('humhub:content:afterMove', response);
+            }
         });
     };
 

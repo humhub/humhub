@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models;
 
+use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\activity\models\Activity;
@@ -24,24 +25,23 @@ use yii\db\Query;
 /**
  * This is the model class for table "user_follow".
  *
- * @property integer $id
+ * @property int $id
  * @property string $object_model
- * @property integer $object_id
- * @property integer $user_id
- * @property integer $send_notifications
+ * @property int $object_id
+ * @property int $user_id
+ * @property int $send_notifications
  */
 class Follow extends ActiveRecord
 {
+    /**
+     * @event \humhub\modules\user\events\FollowEvent
+     */
+    public const EVENT_FOLLOWING_CREATED = 'followCreated';
 
     /**
      * @event \humhub\modules\user\events\FollowEvent
      */
-    const EVENT_FOLLOWING_CREATED = 'followCreated';
-
-    /**
-     * @event \humhub\modules\user\events\FollowEvent
-     */
-    const EVENT_FOLLOWING_REMOVED = 'followRemoved';
+    public const EVENT_FOLLOWING_REMOVED = 'followRemoved';
 
     /**
      * @inheritdoc
@@ -148,7 +148,7 @@ class Follow extends ActiveRecord
             if ($targetClass != "" && is_subclass_of($targetClass, ActiveRecord::class)) {
                 return $targetClass::findOne(['id' => $this->object_id]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Avoid errors in integrity check
             Yii::error($e);
         }
@@ -160,7 +160,7 @@ class Follow extends ActiveRecord
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
      * @param User $user
-     * @param boolean|null $withNotifications by notification setting (default is null without notification handling)
+     * @param bool|null $withNotifications by notification setting (default is null without notification handling)
      * @return ActiveQuery Space query of all followed spaces
      * @since 1.2
      */
@@ -228,14 +228,14 @@ class Follow extends ActiveRecord
      * If $withNotifications is set only follower with the given send_notifications setting are returned.
      *
      * @param ActiveRecord $target
-     * @param boolean $withNotifications
+     * @param bool $withNotifications
      * @return ActiveQueryUser
      */
     public static function getFollowersQuery(ActiveRecord $target, $withNotifications = null)
     {
         $subQuery = self::find()
-                ->where(['user_follow.object_model' => get_class($target), 'user_follow.object_id' => $target->getPrimaryKey()])
-                ->andWhere('user_follow.user_id=user.id');
+            ->where(['user_follow.object_model' => get_class($target), 'user_follow.object_id' => $target->getPrimaryKey()])
+            ->andWhere('user_follow.user_id=user.id');
 
         if ($withNotifications === true) {
             $subQuery->andWhere(['user_follow.send_notifications' => 1]);

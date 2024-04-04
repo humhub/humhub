@@ -7,7 +7,6 @@
 
 namespace humhub\modules\user\assets;
 
-
 use humhub\components\assets\AssetBundle;
 
 class PermissionGridModuleFilterAsset extends AssetBundle

@@ -9,7 +9,6 @@ use humhub\modules\user\models\User;
 
 class DashboardGuestStreamQueryTest extends DashboardStreamTest
 {
-
     public function testGuestDoesSeePublicContentOnPublicSpace()
     {
         $content = $this->createContent(Content::VISIBILITY_PUBLIC, $this->getSpaceByVisibility(Space::VISIBILITY_ALL));
@@ -86,7 +85,7 @@ class DashboardGuestStreamQueryTest extends DashboardStreamTest
     public function testGuestDoesNotSeeArchivedContent()
     {
         $content = $this->createContent(Content::VISIBILITY_PUBLIC, $this->getSpaceByVisibility(Space::VISIBILITY_ALL));
-        $content->updateAttributes( ['archived' => 1]);
+        $content->updateAttributes(['archived' => 1]);
 
         $stream = $this->fetchDashboardContent();
         static::assertCount(0, $stream);

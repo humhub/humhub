@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\ui\mail;
 
 /**
@@ -10,5 +9,5 @@ namespace humhub\modules\ui\mail;
  */
 class DefaultMailStyle
 {
-    const DEFAULT_FONT_FAMILY = "'Open Sans',Arial,Tahoma,Helvetica,sans-serif";
+    public const DEFAULT_FONT_FAMILY = "'Open Sans',Arial,Tahoma,Helvetica,sans-serif";
 }

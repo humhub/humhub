@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'SSL/TSL به شدت در تولید محیط‌ها مورد توجه است تا از جابجایی گذرواژه‌ها در متن واضح جلوگیری شود.',
     'Base DN' => 'DN پایه',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;',
     'E-Mail Address Attribute' => 'صفات آدرس پست الكترونيكي',

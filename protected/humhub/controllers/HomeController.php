@@ -19,7 +19,6 @@ use humhub\components\Controller;
  */
 class HomeController extends Controller
 {
-
     /**
      * Redirects to the home controller/action
      *

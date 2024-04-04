@@ -18,7 +18,6 @@ use yii\helpers\ArrayHelper;
  */
 class WallEntryControls extends Menu
 {
-
     /**
      * @var ContentActiveRecord
      */
@@ -50,9 +49,9 @@ class WallEntryControls extends Menu
 
     public function initRenderOptions()
     {
-        if(!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
+        if (!$this->renderOptions && $this->wallEntryWidget instanceof WallStreamEntryWidget) {
             $this->renderOptions = $this->wallEntryWidget->renderOptions;
-        } else if(!$this->renderOptions) {
+        } elseif (!$this->renderOptions) {
             $this->renderOptions = new WallStreamEntryOptions();
         }
     }
@@ -62,7 +61,7 @@ class WallEntryControls extends Menu
      */
     public function getViewContext()
     {
-        if(!$this->renderOptions) {
+        if (!$this->renderOptions) {
             return StreamEntryOptions::VIEW_CONTEXT_DEFAULT;
         }
 
@@ -107,7 +106,7 @@ class WallEntryControls extends Menu
      */
     public function addEntry(MenuEntry $entry)
     {
-        if($this->renderOptions && $this->renderOptions->isContextMenuEntryDisabled($entry)) {
+        if ($this->renderOptions && $this->renderOptions->isContextMenuEntryDisabled($entry)) {
             return;
         }
 
@@ -131,7 +130,8 @@ class WallEntryControls extends Menu
      * @param array $params widget options
      * @param array $options entry options
      */
-    public function addWidget($className, $params = [], $options = []) {
+    public function addWidget($className, $params = [], $options = [])
+    {
         $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params, 'sortOrder' => $sortOrder]);
         $this->addEntry(new LegacyWallEntryControlLink($cfg));
@@ -152,7 +152,7 @@ class WallEntryControls extends Menu
      */
     protected function getWallEntryLink($menuItem)
     {
-        if($menuItem instanceof MenuEntry) {
+        if ($menuItem instanceof MenuEntry) {
             return $menuItem;
         }
 
@@ -176,9 +176,9 @@ class WallEntryControls extends Menu
      * Checks if the given $array is an associative array or not.
      *
      * @param array $arr
-     * @return boolean
+     * @return bool
      */
-    function isAssoc($arr)
+    public function isAssoc($arr)
     {
         if ([] === $arr) {
             return false;

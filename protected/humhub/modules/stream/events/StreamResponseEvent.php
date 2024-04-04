@@ -8,7 +8,6 @@ use yii\base\Event;
 
 class StreamResponseEvent extends Event
 {
-
     /**
      * @var Stream
      */

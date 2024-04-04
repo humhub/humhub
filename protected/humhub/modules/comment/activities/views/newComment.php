@@ -10,5 +10,4 @@ echo Yii::t('CommentModule.base', "{displayName} wrote a new comment ", [
     '{displayName}' => '<strong>' . Html::encode($originator->displayName) . '</strong>'
 ]);
 
-echo ' "' . RichText::preview($source->message,  100) . '"';
-?>
+echo ' "' . RichText::preview($source->message, 100) . '"';

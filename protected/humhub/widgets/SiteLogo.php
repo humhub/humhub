@@ -6,7 +6,6 @@ use humhub\libs\LogoImage;
 
 class SiteLogo extends \yii\base\Widget
 {
-
     public $place = 'topMenu';
 
     public function run()

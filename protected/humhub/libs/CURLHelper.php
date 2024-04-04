@@ -17,7 +17,6 @@ use Yii;
  */
 class CURLHelper
 {
-
     /**
      * Returns CURL Default Options
      *

@@ -18,7 +18,6 @@ use Yii;
  */
 class ContentContainerDefaultPermissionManager extends PermissionManager
 {
-
     /**
      * @var string
      */
@@ -30,7 +29,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
     protected function getModulePermissions(\yii\base\Module $module)
     {
         if ($module instanceof ContentContainerModule) {
-            $containerPermissions = $module->getContainerPermissions(new $this->contentContainerClass);
+            $containerPermissions = $module->getContainerPermissions(new $this->contentContainerClass());
             if (!empty($containerPermissions)) {
                 // Don't try to find container permissions in the ContentContainerModule::getPermissions() below
                 // since they are already defined in more proper method ContentContainerModule::getContainerPermissions()
@@ -41,7 +40,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
         // Try to find container permissions in the parent/general method Module::getPermissions()
         // because the module was not updated to use proper method ContentContainerModule::getContainerPermissions() yet
         if ($module instanceof Module) {
-            return $module->getPermissions(new $this->contentContainerClass);
+            return $module->getPermissions(new $this->contentContainerClass());
         }
 
         return [];
@@ -52,7 +51,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
      */
     protected function createPermissionRecord()
     {
-        $permission = new ContentContainerDefaultPermission;
+        $permission = new ContentContainerDefaultPermission();
         $permission->contentcontainer_class = $this->contentContainerClass;
         return $permission;
     }
@@ -62,7 +61,7 @@ class ContentContainerDefaultPermissionManager extends PermissionManager
      */
     protected function getQuery()
     {
-        return \humhub\modules\content\models\ContentContainerDefaultPermission::find()
+        return ContentContainerDefaultPermission::find()
             ->where(['contentcontainer_class' => $this->contentContainerClass]);
     }
 

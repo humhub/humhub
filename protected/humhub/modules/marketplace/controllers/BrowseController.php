@@ -26,7 +26,7 @@ class BrowseController extends Controller
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageModules::class]
@@ -38,7 +38,7 @@ class BrowseController extends Controller
      */
     public function beforeAction($action)
     {
-        if (!Module::isEnabled()) {
+        if (!Module::isMarketplaceEnabled()) {
             throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Marketplace is disabled.'));
         }
 
@@ -74,19 +74,33 @@ class BrowseController extends Controller
     }
 
     /**
-     * Activates a module after installation
+     * Enables a module after installation
+     *
+     * @throws NotFoundHttpException
+     * @see static::actionEnable()
+     * @deprecated since v1.16; use static::actionEnable()
      */
-    public function actionActivate()
+    public function actionActivate(): string
+    {
+        return $this->actionEnable();
+    }
+
+    /**
+     * Enables a module after installation
+     *
+     * @throws HttpException
+     */
+    public function actionEnable(): string
     {
         $this->forcePostRequest();
 
         $moduleService = $this->getModuleService();
 
-        if (!$moduleService->activate()) {
+        if (!$moduleService->enable()) {
             throw new NotFoundHttpException(Yii::t('MarketplaceModule.base', 'Could not find the requested module!'));
         }
 
-        return $this->renderAjax('activated', [
+        return $this->renderAjax('enabled', [
             'moduleConfigUrl' => $moduleService->module->getConfigUrl()
         ]);
     }

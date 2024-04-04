@@ -385,7 +385,7 @@ class SettingsManagerTest extends HumHubDbTestCase
 
         // changing the value behind the scenes
         $value2 = 'third value';
-        $this->dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
+        self::dbUpdate($table, ['value' => $value2], ['name' => $setting, 'module_id' => $module]);
         $this->assertRecordValue($value2, 'value', $table, ['name' => $setting, 'module_id' => $module]);
 
         // getting the value now should still show tho "old" value

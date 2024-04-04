@@ -1,13 +1,13 @@
 <?php
 
 use humhub\modules\marketplace\models\Licence;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
-
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 /* @var $model Licence */
 ?>
 
@@ -25,17 +25,24 @@ use yii\widgets\ActiveForm;
                     <strong>
                         <?= Yii::t('MarketplaceModule.base', 'Professional Edition is activated!'); ?>
                     </strong><br/>
-                    <?= Yii::t('MarketplaceModule.base',
-                        'Licenced for max. {number} users.', ['number' => $model->maxUsers]); ?>
+                    <?= Yii::t(
+                        'MarketplaceModule.base',
+                        'Licenced for max. {number} users.',
+                        ['number' => $model->maxUsers]
+                    ); ?>
                 </p>
             </div>
         <?php endif; ?>
 
         <p>
-            <?= Yii::t('MarketplaceModule.base',
+            <?= Yii::t(
+                'MarketplaceModule.base',
                 'No license key? Find out more about the {pro} or contact us.',
-                ['pro' => Html::a('Professional Edition', 'https://www.humhub.com',
-                    ['target' => '_blank', 'style' => 'text-decoration:underline'])]
+                ['pro' => Html::a(
+                    'Professional Edition',
+                    'https://www.humhub.com',
+                    ['target' => '_blank', 'style' => 'text-decoration:underline']
+                )]
             ); ?></p>
         <hr>
 

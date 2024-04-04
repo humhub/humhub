@@ -68,7 +68,7 @@ abstract class JsInputWidget extends JsWidget
 
     /**
      * @var array the HTML attributes for the input tag.
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see Html::renderTagAttributes for details on how attributes are being rendered.
      */
     public $options = [];
 
@@ -118,12 +118,12 @@ abstract class JsInputWidget extends JsWidget
      */
     protected function emptyResult()
     {
-        if($this->field) {
+        if ($this->field) {
             $this->field->label(false);
             // Prevents empty-help/error block rendering
             $this->field->template = '';
 
-            if($this->field instanceof ActiveField) {
+            if ($this->field instanceof ActiveField) {
                 $this->field->preventRendering = true;
             }
         }

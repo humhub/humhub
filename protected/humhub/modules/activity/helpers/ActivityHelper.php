@@ -10,7 +10,6 @@ use yii\db\ActiveQuery;
 
 class ActivityHelper
 {
-
     public static function getActivitiesQuery(?ActiveRecord $record): ?ActiveQuery
     {
         if ($record === null) {

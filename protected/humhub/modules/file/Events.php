@@ -10,20 +10,19 @@ namespace humhub\modules\file;
 
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\search\engine\Search;
 use humhub\modules\file\models\File;
+use yii\base\BaseObject;
 use yii\base\Event;
-use humhub\modules\search\events\SearchAttributesEvent;
 use humhub\modules\file\converter\TextConverter;
+use yii\helpers\Console;
 
 /**
  * Events provides callbacks to handle events.
- * 
+ *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * On init of the WallEntryAddonWidget, attach the files of the content.
      *
@@ -53,7 +52,7 @@ class Events extends \yii\base\BaseObject
             $file->delete();
         }
 
-        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
     }
 
     /**
@@ -66,7 +65,7 @@ class Events extends \yii\base\BaseObject
         $integrityController = $event->sender;
         $integrityController->showTestHeadline("File Module (" . File::find()->count() . " entries)");
 
-        foreach (File::find()->all() as $file) {
+        foreach (File::find()->each() as $file) {
             if ($file->object_model != "" && $file->object_id != "" && $file->getPolymorphicRelation() === null) {
                 if ($integrityController->showFix("Deleting file id " . $file->id . " without existing target!")) {
                     $file->delete();
@@ -101,36 +100,4 @@ class Events extends \yii\base\BaseObject
         }
         return true;
     }
-
-    /**
-     * Handles the SearchAttributesEvent and adds related files
-     * 
-     * @since 1.2.3
-     * @param SearchAttributesEvent $event
-     */
-    public static function onSearchAttributes(SearchAttributesEvent $event)
-    {
-        if (!isset($event->attributes['files'])) {
-            $event->attributes['files'] = [];
-        }
-
-        foreach (File::findAll(['object_model' => PolymorphicRelation::getObjectModel($event->record), 'object_id' => $event->record->id]) as $file) {
-            /* @var $file File */
-
-            $textContent = null;
-            $textConverter = new TextConverter();
-            if ($textConverter->applyFile($file)) {
-                $textContent = $textConverter->getContentAsText();
-            }
-
-            $event->attributes['files'][$file->id] = [
-                'name' => $file->file_name,
-                'content' => $textContent
-            ];
-
-            // Add comment related attributes
-            Event::trigger(Search::class, Search::EVENT_SEARCH_ATTRIBUTES, new SearchAttributesEvent($event->attributes['files'][$file->id], $file));
-        }
-    }
-
 }

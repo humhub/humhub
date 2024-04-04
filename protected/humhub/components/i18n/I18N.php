@@ -21,7 +21,6 @@ use yii\i18n\I18N as BaseI18N;
  */
 class I18N extends BaseI18N
 {
-
     /**
      * @var string path which contains message overwrites
      */
@@ -50,7 +49,7 @@ class I18N extends BaseI18N
      */
     public function autosetLocale()
     {
-        if (!Yii::$app->params['installed'] || Yii::$app->user->isGuest) {
+        if (!Yii::$app->isInstalled() || Yii::$app->user->isGuest) {
             $this->setGuestLocale();
         } else {
             $this->setUserLocale(Yii::$app->user->getIdentity());

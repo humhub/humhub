@@ -1,6 +1,8 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\WallEntryLabels;
@@ -10,9 +12,9 @@ use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
-/* @var $object \humhub\modules\content\models\Content */
-/* @var $container \humhub\modules\content\components\ContentContainerActiveRecord */
-/* @var $renderControls boolean */
+/* @var $object Content */
+/* @var $container ContentContainerActiveRecord */
+/* @var $renderControls bool */
 /* @var $wallEntryWidget string */
 /* @var $user \humhub\modules\user\models\User */
 /* @var $showContentContainer \humhub\modules\user\models\User */
@@ -36,7 +38,7 @@ use yii\helpers\Url;
             UserImage::widget([
                 'user' => $user,
                 'width' => 40,
-                'htmlOptions' => ['class' => 'pull-left','data-contentcontainer-id' => $user->contentcontainer_id]
+                'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]
             ]);
             ?>
 

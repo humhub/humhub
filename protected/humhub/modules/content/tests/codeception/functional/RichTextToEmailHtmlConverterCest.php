@@ -8,6 +8,7 @@
 namespace content\functional;
 
 use content\FunctionalTester;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\models\forms\CommentForm;
 use humhub\modules\file\models\File;
 use humhub\modules\post\models\Post;
@@ -15,7 +16,6 @@ use yii\symfonymailer\Message;
 
 class RichTextToEmailHtmlConverterCest
 {
-
     public function testSendEmailWithImageAndLink(FunctionalTester $I)
     {
         $I->wantTo('see image and link in email message');
@@ -78,7 +78,7 @@ class RichTextToEmailHtmlConverterCest
         $post = Post::findOne(['id' => 2]);
         $commentForm = new CommentForm($post);
         $commentForm->load([
-            'objectModel' => get_class($post),
+            'objectModel' => PolymorphicRelation::getObjectModel($post),
             'objectId' => $post->id,
             'Comment' => ['message' =>
                 'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") ' .

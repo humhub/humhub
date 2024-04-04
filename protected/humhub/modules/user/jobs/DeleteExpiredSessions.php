@@ -19,7 +19,6 @@ use humhub\modules\user\models\Session;
  */
 class DeleteExpiredSessions extends ActiveJob
 {
-
     /**
      * @inheritdoc
      */

@@ -8,13 +8,14 @@
  */
 
 use humhub\modules\content\widgets\WallEntryControls;
+use humhub\modules\topic\Module;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\modules\topic\Events;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 
 return [
     'id' => 'topic',
-    'class' => \humhub\modules\topic\Module::class,
+    'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
         ['class' => WallEntryControls::class, 'event' => WallEntryControls::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryControlsInit']],

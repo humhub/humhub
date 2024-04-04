@@ -8,25 +8,27 @@
 
 namespace humhub\modules\admin\controllers;
 
+use humhub\libs\SelfTest;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\components\DatabaseInfo;
 use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\admin\permissions\SeeAdminInformation;
+use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\queue\driver\MySQL;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\queue\interfaces\QueueInfoInterface;
-use humhub\modules\search\jobs\RebuildIndex;
+use humhub\services\MigrationService;
 use ReflectionClass;
 use ReflectionException;
 use Yii;
 
 /**
- * Informations
+ * Information
  *
  * @since 0.5
  */
 class InformationController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -37,19 +39,22 @@ class InformationController extends Controller
      */
     public $defaultAction = 'about';
 
+    /**
+     * @inheritdoc
+     */
     public function init()
     {
         $this->subLayout = '@admin/views/layouts/information';
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
-            ['permissions' => \humhub\modules\admin\permissions\SeeAdminInformation::class],
+            ['permissions' => SeeAdminInformation::class],
         ];
     }
 
@@ -75,14 +80,22 @@ class InformationController extends Controller
 
     public function actionPrerequisites()
     {
-        return $this->render('prerequisites', ['checks' => \humhub\libs\SelfTest::getResults()]);
+        return $this->render('prerequisites', ['checks' => SelfTest::getResults()]);
     }
 
-    public function actionDatabase()
+    public function actionDatabase(int $migrate = MigrationService::DB_ACTION_CHECK)
     {
+        $migrationService = MigrationService::create();
+
+        $migrate = $migrationService->runAction($migrate);
+
+        if ($migrate === MigrationService::DB_ACTION_SESSION) {
+            return $this->redirect(['/admin/information/database']);
+        }
+
         $databaseInfo = new DatabaseInfo(Yii::$app->db->dsn);
 
-        $rebuildSearchJob = new RebuildIndex();
+        $rebuildSearchJob = new SearchRebuildIndex();
         if (Yii::$app->request->isPost && Yii::$app->request->get('rebuildSearch') == 1) {
             Yii::$app->queue->push($rebuildSearchJob);
         }
@@ -92,7 +105,8 @@ class InformationController extends Controller
             [
                 'rebuildSearchRunning' => QueueHelper::isQueued($rebuildSearchJob),
                 'databaseName' => $databaseInfo->getDatabaseName(),
-                'migrate' => \humhub\commands\MigrateController::webMigrateAll(),
+                'migrationOutput' => $migrationService->getLastMigrationOutput(),
+                'migrationStatus' => $migrate,
             ]
         );
     }
@@ -102,8 +116,8 @@ class InformationController extends Controller
      */
     public function actionBackgroundJobs()
     {
-        $lastRunHourly = (int) Yii::$app->settings->getUncached('cronLastHourlyRun');
-        $lastRunDaily = (int) Yii::$app->settings->getUncached('cronLastDailyRun');
+        $lastRunHourly = (int)Yii::$app->settings->getUncached('cronLastHourlyRun');
+        $lastRunDaily = (int)Yii::$app->settings->getUncached('cronLastDailyRun');
 
         $queue = Yii::$app->queue;
 
@@ -112,7 +126,10 @@ class InformationController extends Controller
             $canClearQueue = true;
             if (Yii::$app->request->isPost && Yii::$app->request->get('clearQueue') == 1) {
                 $queue->clear();
-                $this->view->setStatusMessage('success', Yii::t('AdminModule.information', 'Queue successfully cleared.'));
+                $this->view->setStatusMessage(
+                    'success',
+                    Yii::t('AdminModule.information', 'Queue successfully cleared.')
+                );
             }
         }
 
@@ -134,7 +151,7 @@ class InformationController extends Controller
             $reflect = new ReflectionClass($queue);
             $driverName = $reflect->getShortName();
         } catch (ReflectionException $e) {
-            Yii::error('Could not determine queue driver: '. $e->getMessage());
+            Yii::error('Could not determine queue driver: ' . $e->getMessage());
         }
 
         return $this->render('background-jobs', [
@@ -148,5 +165,4 @@ class InformationController extends Controller
             'canClearQueue' => $canClearQueue
         ]);
     }
-
 }

@@ -7,12 +7,10 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
-use Yii;
 
 /**
  * WallCreateContentMenu is the widget for Menu above wall create content Form
@@ -80,10 +78,10 @@ class WallCreateContentMenu extends Menu
             }
 
             $menuOptions = [
-                'label' => ucfirst($content->getContentName()),
+                'label' => $label = ucfirst($content->getContentName()),
                 'icon' => $content->getIcon(),
                 'url' => '#',
-                'sortOrder' => $wallEntryWidget->createFormSortOrder ?? '9999999-' . $content->getContentName(),
+                'sortOrder' => [$wallEntryWidget->createFormSortOrder, $label]
             ];
             $url = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
 
@@ -118,7 +116,7 @@ class WallCreateContentMenu extends Menu
     {
         $this->initEntries();
         $countEntries = count($this->entries);
-        $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');;
+        $hasEntryWithForm = self::canCreateEntry($this->contentContainer, 'form');
 
         if ($hasEntryWithForm && $countEntries > 1) {
             return true;

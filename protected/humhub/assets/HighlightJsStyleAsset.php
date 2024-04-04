@@ -13,7 +13,6 @@ use humhub\components\assets\WebStaticAssetBundle;
 
 class HighlightJsStyleAsset extends WebStaticAssetBundle
 {
-
     /**
      * @inheritdoc
      */

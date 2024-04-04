@@ -17,6 +17,5 @@ namespace humhub\modules\queue\interfaces;
  */
 interface ExclusiveJobInterface
 {
-
     public function getExclusiveJobId();
 }

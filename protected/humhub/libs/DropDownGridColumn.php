@@ -19,7 +19,6 @@ use yii\web\JsExpression;
  */
 class DropDownGridColumn extends DataColumn
 {
-
     /**
      * @var array list of attributes which should be aditionally submitted (e.g. id)
      */

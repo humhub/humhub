@@ -13,7 +13,6 @@ use humhub\modules\stream\actions\ContentContainerStream;
 
 class ContentContainerStreamTest extends HumHubDbTestCase
 {
-
     /**
      * @var Space
      */
@@ -143,10 +142,10 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     public function testDeletedContent()
     {
         $this->becomeUser('User2');
-        $deleteId = $this->createPost('Something to delete',['visibility' => Content::VISIBILITY_PRIVATE]);
+        $deleteId = $this->createPost('Something to delete', ['visibility' => Content::VISIBILITY_PRIVATE]);
 
-        $post = Post::findOne(['id' => $deleteId]);
-        $post->content->softDelete();
+        $content = Content::findOne(['id' => $deleteId]);
+        $content->softDelete();
 
         $ids = $this->getStreamActionIds($this->space, 3);
 
@@ -190,7 +189,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
             $content['state'] = Content::STATE_PUBLISHED;
         }
 
-        $post = new Post;
+        $post = new Post();
         $post->message = $message;
         $post->content->setContainer($this->space);
         $post->content->setAttributes($content, false);

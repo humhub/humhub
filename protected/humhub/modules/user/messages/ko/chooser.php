@@ -1,7 +1,7 @@
 <?php
 return array (
   'An unexpected error occurred while loading the result.' => '',
-  'Load more' => '',
+  'Load more' => '더 보기',
   'No results found.' => '',
   'No users found for the given query.' => '',
   'Please enter at least {n} character' => '',

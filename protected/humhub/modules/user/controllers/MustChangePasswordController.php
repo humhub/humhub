@@ -20,7 +20,6 @@ use Yii;
  */
 class MustChangePasswordController extends Controller
 {
-
     /**
      * @inheritdoc
      */

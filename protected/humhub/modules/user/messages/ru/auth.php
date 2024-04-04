@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Неверный пароль!',
   'a new user {displayName} needs approval.' => 'новый пользователь {displayName} нуждается в подтверждении регистрации.',
   'back to home' => 'Вернуться на домашнюю страницу',
-  'email' => 'Email',
-  'password' => 'Пароль',
-  'username or email' => 'Имя пользователя или email',
+  'Password' => 'Пароль',
+  'Username or Email' => 'Имя пользователя или email',
 );

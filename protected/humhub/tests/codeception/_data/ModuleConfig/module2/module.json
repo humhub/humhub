@@ -1,0 +1,25 @@
+{
+  "id": "example",
+  "version": "1.0",
+  "name": "My Example Module 2",
+  "description": "My testing module 2.",
+  "humhub": {
+    "minVersion": "1.2"
+  },
+  "keywords": ["my", "cool", "two"],
+  "homepage": "https://www.example.com",
+  "authors": [
+    {
+      "name": "Tom Coder",
+      "email": "tc@example.com",
+      "role": "Developer"
+    },
+    {
+      "name": "Sarah Mustermann",
+      "email": "sm@example.com",
+      "homepage": "http://example.com",
+      "role": "Translator"
+    }
+  ],
+  "licence": "AGPL-3.0-or-later"
+}

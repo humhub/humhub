@@ -26,7 +26,6 @@ use yii\console\widgets\Table;
  */
 class SettingsController extends Controller
 {
-
     /**
      * Lists all stored settings
      *
@@ -138,4 +137,3 @@ class SettingsController extends Controller
     }
 
 }
-

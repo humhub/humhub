@@ -1,16 +1,16 @@
 <?php
 
-use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\user\models\forms\EditGroupForm;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use humhub\widgets\Button;
-use humhub\modules\user\widgets\UserPickerField;
 use humhub\modules\space\widgets\SpacePickerField;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\modules\user\models\forms\EditGroupForm;
+use humhub\modules\user\widgets\UserPickerField;
+use humhub\widgets\Button;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-/* @var $isManagerApprovalSetting boolean */
-/* @var $showDeleteButton boolean */
+/* @var $isManagerApprovalSetting bool */
+/* @var $showDeleteButton bool */
 /* @var $group EditGroupForm */
 
 ?>
@@ -34,7 +34,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?php if (!$group->isNewRecord): ?>
         <?= $form->field($group, 'updateSpaceMemberships')->checkbox(); ?>
     <?php endif; ?>
-    <?php if ($isManagerApprovalSetting && !$group->is_admin_group): ?>
+    <?php if (!$group->is_admin_group): ?>
         <?php $url = ($group->isNewRecord) ? null : Url::to(['/admin/group/admin-user-search', 'id' => $group->id]); ?>
         <?= $form->field($group, 'managerGuids')->widget(UserPickerField::class, ['selection' => $group->manager, 'url' => $url]); ?>
     <?php endif; ?>
@@ -47,7 +47,7 @@ use humhub\modules\space\widgets\SpacePickerField;
     <?= $form->field($group, 'show_at_directory')->checkbox(); ?>
     <?= $form->field($group, 'sort_order')->widget(SortOrderField::class) ?>
     <?php if (!$group->is_admin_group): ?>
-        <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool) $group->is_default_group]); ?>
+        <?= $form->field($group, 'is_default_group')->checkbox(['disabled' => (bool)$group->is_default_group]); ?>
     <?php endif; ?>
 
     <?= Button::save()->submit(); ?>

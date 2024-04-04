@@ -17,7 +17,6 @@ use humhub\components\assets\AssetBundle;
  */
 class JqueryAutosizeAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

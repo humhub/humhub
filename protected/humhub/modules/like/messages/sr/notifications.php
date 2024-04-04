@@ -1,11 +1,10 @@
 <?php
-
-return [
-    'Likes' => '',
-    'Receive Notifications when someone likes your content.' => '',
-    'View Online' => '',
-    '{displayNames} likes your {contentTitle}.' => '',
-    '{displayNames} likes {contentTitle}.' => '',
-    '{displayName} likes your {contentTitle}.' => '',
-    '{displayName} likes {contentTitle}.' => '',
-];
+return array (
+  'Likes' => 'Sviđa',
+  'Receive Notifications when someone likes your content.' => 'Dobijaj obaveštenja kada se nekome sviđa vaš sadržaj.',
+  'View Online' => 'Vidi Online',
+  '{displayNames} likes your {contentTitle}.' => '{displayNames} sviđa se vaš {contentTitle}.',
+  '{displayNames} likes {contentTitle}.' => '{displayNames} sviđa se {contentTitle}.',
+  '{displayName} likes your {contentTitle}.' => '{displayName} sviđa se vaš {contentTitle}.',
+  '{displayName} likes {contentTitle}.' => '{displayName} sviđa se {contentTitle}.',
+);

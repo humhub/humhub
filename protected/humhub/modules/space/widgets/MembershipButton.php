@@ -16,14 +16,13 @@ use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
- * MembershipButton shows various membership related buttons in space header. 
+ * MembershipButton shows various membership related buttons in space header.
  *
  * @author luke
  * @since 0.11
  */
 class MembershipButton extends Widget
 {
-
     /**
      * @var Space
      */
@@ -100,7 +99,9 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'data-action-click' => 'content.container.relationship',
                     'data-action-url' => $this->space->createUrl('/space/membership/revoke-membership'),
+                    'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
                     'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
+                    'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
                     'data-button-options' => Json::encode($this->options),
                     'data-ui-loader' => '',
                     'class' => 'btn btn-info active',

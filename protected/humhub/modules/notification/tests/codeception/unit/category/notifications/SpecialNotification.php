@@ -2,14 +2,15 @@
 
 namespace humhub\modules\notification\tests\codeception\unit\category\notifications;
 
+use humhub\modules\notification\components\BaseNotification;
+
 /**
  * Description of TestedDefaultViewNotification
  *
  * @author buddha
  */
-class SpecialNotification extends \humhub\modules\notification\components\BaseNotification
+class SpecialNotification extends BaseNotification
 {
-    
     /**
      * @inheritdoc
      */

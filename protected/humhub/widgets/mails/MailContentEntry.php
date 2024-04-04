@@ -24,7 +24,6 @@ use humhub\modules\content\interfaces\ContentOwner;
  */
 class MailContentEntry extends \yii\base\Widget
 {
-
     /**
      * @var \humhub\modules\user\models\User content originator
      */
@@ -51,7 +50,7 @@ class MailContentEntry extends \yii\base\Widget
     public $date;
 
     /**
-     * @var boolean will render the content as comment
+     * @var bool will render the content as comment
      */
     public $isComment;
 
@@ -91,4 +90,3 @@ class MailContentEntry extends \yii\base\Widget
         ]);
     }
 }
-?>

@@ -8,12 +8,14 @@
 
 namespace humhub\modules\space\notifications;
 
+use Exception;
 use humhub\modules\notification\components\BaseNotification;
+use humhub\modules\space\models\Membership;
 use Yii;
 use yii\bootstrap\Html;
 
 /**
- * @property \humhub\modules\space\models\Membership $source
+ * @property Membership $source
  * @since 1.3
  */
 class ChangedRolesMembership extends BaseNotification
@@ -33,7 +35,7 @@ class ChangedRolesMembership extends BaseNotification
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
@@ -65,7 +67,7 @@ class ChangedRolesMembership extends BaseNotification
         $groups = $this->source->space->getUserGroups();
 
         if (!isset($groups[$this->source->group_id])) {
-            throw new \Exception('The role ' . $this->source->group_id . ' is wrong for Membership');
+            throw new Exception('The role ' . $this->source->group_id . ' is wrong for Membership');
         }
 
         $displayName = $html ? Html::tag('strong', Html::encode($this->originator->displayName)) : $this->originator->displayName;
@@ -79,6 +81,7 @@ class ChangedRolesMembership extends BaseNotification
                 '{displayName}' => $displayName,
                 '{roleName}' => $roleName,
                 '{spaceName}' => $spaceName,
-            ]);
+            ]
+        );
     }
 }

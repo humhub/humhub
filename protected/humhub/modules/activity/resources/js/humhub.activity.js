@@ -38,8 +38,10 @@ humhub.module('activity', function (module, require, $) {
 
     var ActivityStreamEntry = stream.StreamEntry.extend();
 
-    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */};
-    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */};
+    ActivityStreamEntry.prototype.delete = function () {/* Not implemented */
+    };
+    ActivityStreamEntry.prototype.edit = function () {/* Not implemented */
+    };
 
     /**
      * ActivityStream implementation.
@@ -50,7 +52,7 @@ humhub.module('activity', function (module, require, $) {
     var ActivityStream = stream.Stream.extend(function (container, options) {
         stream.Stream.call(this, container, {
             scrollSupport: true,
-            scrollOptions: { rootMargin: "30px" },
+            scrollOptions: {rootMargin: "30px"},
             initLoadCount: STREAM_INIT_COUNT,
             loadCount: STREAM_LOAD_COUNT,
             autoUpdate: true,
@@ -58,10 +60,10 @@ humhub.module('activity', function (module, require, $) {
         });
     });
 
-    ActivityStream.prototype.initEvents = function(events) {
+    ActivityStream.prototype.initEvents = function (events) {
         var that = this;
-        this.on('humhub:stream:afterAddEntries', function() {
-            if(view.isLarge() && !that.$content.getNiceScroll().length) {
+        this.on('humhub:stream:afterAddEntries', function () {
+            if (view.isLarge() && !that.$content.getNiceScroll().length) {
                 that.$content.niceScroll({
                     cursorwidth: "7",
                     cursorborder: "",
@@ -76,24 +78,24 @@ humhub.module('activity', function (module, require, $) {
         });
     };
 
-    ActivityStream.prototype.isUpdateAvailable = function(events) {
+    ActivityStream.prototype.isUpdateAvailable = function (events) {
         var that = this;
 
         var updatesAvailable = false;
-        events.forEach(function(event) {
-            if(that.entry(event.data.contentId)) {
+        events.forEach(function (event) {
+            if (that.entry(event.data.contentId)) {
                 return;
             }
 
-            if(event.data.streamChannel !== 'activity') {
+            if (event.data.streamChannel !== 'activity') {
                 return;
             }
 
-            if(event.data.originator === user.guid()) {
+            if (event.data.originator === user.guid()) {
                 return;
             }
 
-            if(container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
+            if (container.guid() === event.data.sguid || container.guid() === event.data.uguid) {
                 updatesAvailable = true;
             }
         });
@@ -116,9 +118,9 @@ humhub.module('activity', function (module, require, $) {
     };
 
 
-    var unload = function() {
+    var unload = function () {
         // Cleanup nicescroll rails from dom
-        if(instance && instance.$) {
+        if (instance && instance.$) {
             instance.$content.getNiceScroll().remove();
             instance.$content.css('overflow', 'hidden');
         }

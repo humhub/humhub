@@ -10,11 +10,10 @@ namespace humhub\modules\directory;
 
 /**
  * Deprecated Directory Base Module
- * @deprecated since 1.9 
+ * @deprecated since 1.9
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @deprecated since 1.11 will be removed with v1.12
      */

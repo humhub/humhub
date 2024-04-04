@@ -5,7 +5,6 @@ use yii\db\Migration;
 
 class m160205_203840_foreign_keys extends Migration
 {
-
     public function up()
     {
         // Cleanup orphaned records

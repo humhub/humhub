@@ -8,13 +8,14 @@
 
 namespace humhub\modules\installer\controllers;
 
-use humhub\commands\MigrateController;
+use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
 use humhub\modules\installer\Module;
+use humhub\services\MigrationService;
 use Yii;
 
 /**
@@ -25,12 +26,12 @@ use Yii;
  */
 class SetupController extends Controller
 {
+    public const PASSWORD_PLACEHOLDER = 'n0thingToSeeHere!';
+
     /**
      * @inheritdoc
      */
     public $access = ControllerAccess::class;
-
-    const PASSWORD_PLACEHOLDER = 'n0thingToSeeHere!';
 
     public function actionIndex()
     {
@@ -63,17 +64,21 @@ class SetupController extends Controller
         $config = DynamicConfig::load();
 
         $model = new DatabaseForm();
-        if (isset($config['params']['installer']['db']['installer_hostname']))
+        if (isset($config['params']['installer']['db']['installer_hostname'])) {
             $model->hostname = $config['params']['installer']['db']['installer_hostname'];
+        }
 
-        if (isset($config['params']['installer']['db']['installer_database']))
+        if (isset($config['params']['installer']['db']['installer_database'])) {
             $model->database = $config['params']['installer']['db']['installer_database'];
+        }
 
-        if (isset($config['components']['db']['username']))
+        if (isset($config['components']['db']['username'])) {
             $model->username = $config['components']['db']['username'];
+        }
 
-        if (isset($config['components']['db']['password']))
+        if (isset($config['components']['db']['password'])) {
             $model->password = self::PASSWORD_PLACEHOLDER;
+        }
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             $connectionString = 'mysql:host=' . $model->hostname;
@@ -85,8 +90,9 @@ class SetupController extends Controller
             }
 
             $password = $model->password;
-            if ($password == self::PASSWORD_PLACEHOLDER)
+            if ($password == self::PASSWORD_PLACEHOLDER) {
                 $password = $config['components']['db']['password'];
+            }
 
             // Create Test DB Connection
             $dbConfig = [
@@ -121,8 +127,7 @@ class SetupController extends Controller
                 DynamicConfig::save($config);
 
                 return $this->redirect(['migrate']);
-
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $errorMessage = $e->getMessage();
             }
         }
@@ -179,15 +184,11 @@ class SetupController extends Controller
         // Flush Caches
         Yii::$app->cache->flush();
 
-        // Disable max execution time to avoid timeouts during database installation
-        @ini_set('max_execution_time', 0);
-
         // Migrate Up Database
-        MigrateController::webMigrateAll();
+        MigrationService::create()->migrateUp();
 
         DynamicConfig::rewrite();
 
-        $this->module->setDatabaseInstalled();
+        Yii::$app->setDatabaseInstalled();
     }
-
 }

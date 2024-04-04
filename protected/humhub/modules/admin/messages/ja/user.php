@@ -44,7 +44,7 @@ return array (
   'Create new group' => '新しいグループを作成',
   'Create new profile category' => 'プロフィール用カテゴリの作成',
   'Create new profile field' => 'プロフィール項目の作成',
-  'Deactivate' => '非アクティブ化',
+  'Disable' => '非アクティブ化',
   'Deactivate individual profile permissions?' => '個々のプロフィールのアクセス許可を無効にしますか？',
   'Decline' => '却下',
   'Decline & delete user: <strong>{displayName}</strong>' => '削除および却下したユーザー：<strong>{displayName}</strong>',

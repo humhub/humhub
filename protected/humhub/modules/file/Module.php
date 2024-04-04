@@ -19,7 +19,6 @@ use humhub\modules\file\handler\UploadVideoFileHandler;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */

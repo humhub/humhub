@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Salasana väärin!',
   'a new user {displayName} needs approval.' => 'käyttäjä {displayName} lähetti liittymis pyynnön',
   'back to home' => 'takaisin kotiin',
-  'email' => 'Sähkäposti',
-  'password' => 'Salasana',
-  'username or email' => 'Sähköposti tai Käyttäjätunnus',
+  'Password' => 'Salasana',
+  'Username or Email' => 'Sähköposti tai Käyttäjätunnus',
 );

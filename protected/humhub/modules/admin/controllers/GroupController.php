@@ -31,7 +31,6 @@ use yii\web\HttpException;
  */
 class GroupController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -42,13 +41,13 @@ class GroupController extends Controller
         $this->subLayout = '@admin/views/layouts/user';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Groups'));
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageGroups::class],
@@ -99,8 +98,10 @@ class GroupController extends Controller
                         Yii::$app->queue->push($job);
                     }
 
-                    $this->view->info(Yii::t('AdminModule.user',
-                        'The Space memberships of all group members will be updated. This may take up to several minutes.'));
+                    $this->view->info(Yii::t(
+                        'AdminModule.user',
+                        'The Space memberships of all group members will be updated. This may take up to several minutes.'
+                    ));
                 }
             }
         }
@@ -118,18 +119,12 @@ class GroupController extends Controller
 
         $this->checkGroupAccess($group);
 
-        // Save changed permission states
-        if (!$group->isNewRecord && Yii::$app->request->post('dropDownColumnSubmit')) {
-            $permission = Yii::$app->user->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            Yii::$app->user->permissionManager->setGroupState($group->id, $permission, Yii::$app->request->post('state'));
-
-            return $this->asJson([]);
+        if (!$group->isNewRecord) {
+            // Save changed permission state
+            $return = Yii::$app->user->permissionManager->handlePermissionStateChange($group->id);
         }
 
-        return $this->render('permissions', ['group' => $group]);
+        return $return ?? $this->render('permissions', ['group' => $group]);
     }
 
     public function actionManageGroupUsers()
@@ -202,14 +197,16 @@ class GroupController extends Controller
         $value = Yii::$app->request->post('value');
 
         if ($value === null) {
-            throw new HttpException(400,
+            throw new HttpException(
+                400,
                 Yii::t('AdminModule.user', 'No value found!')
             );
         }
 
         $groupUser = $group->getGroupUser(User::findOne(Yii::$app->request->post('userId')));
         if ($groupUser === null) {
-            throw new HttpException(404,
+            throw new HttpException(
+                404,
                 Yii::t('AdminModule.user', 'Group user not found!')
             );
         }
@@ -255,8 +252,10 @@ class GroupController extends Controller
             'query' => $query,
             'fillUser' => true,
             'fillUserQuery' => $group->getUsers(),
-            'disabledText' => Yii::t('AdminModule.user',
-                'User is already a member of this group.'),
+            'disabledText' => Yii::t(
+                'AdminModule.user',
+                'User is already a member of this group.'
+            ),
         ]);
 
         return $result;

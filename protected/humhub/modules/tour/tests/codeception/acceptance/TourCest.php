@@ -7,13 +7,14 @@
 
 namespace tour\acceptance;
 
+use Exception;
 use tour\AcceptanceTester;
 
 class TourCest
 {
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      * @skip This test fails in travis environment, needs to be fixed!
      */
     public function testTour(AcceptanceTester $I)
@@ -39,11 +40,11 @@ class TourCest
         $I->see('Dashboard', '.popover.tour');
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Notifications', null,  '.popover.tour');
+        $I->waitForText('Notifications', null, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 
-        $I->waitForText('Account Menu',  null,'.popover.tour');
+        $I->waitForText('Account Menu', null, '.popover.tour');
         $I->wait(1);
         $I->click('Next', '.popover.tour');
 

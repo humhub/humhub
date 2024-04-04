@@ -32,7 +32,6 @@ use yii\base\Widget;
  */
 class LanguageChooser extends Widget
 {
-
     /**
      * Displays / Run the Widget
      */

@@ -15,7 +15,7 @@ use yii\db\ActiveQuery;
 /**
  * Tags of content containers User|Space
  *
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $contentcontainer_class
  *

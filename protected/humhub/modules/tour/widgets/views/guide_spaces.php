@@ -1,10 +1,11 @@
 <?php
 
+use humhub\libs\Html;
 use yii\helpers\Url;
 
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {

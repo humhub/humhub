@@ -19,7 +19,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class ApprovalRequestDeclined extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -31,15 +30,15 @@ class ApprovalRequestDeclined extends BaseNotification
     public $viewName = 'approvalDeclined';
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function category()
     {
-        return new SpaceMemberNotificationCategory;
+        return new SpaceMemberNotificationCategory();
     }
 
     /**
-     *  @inheritdoc
+     * @inheritdoc
      */
     public function getMailSubject()
     {
@@ -53,7 +52,8 @@ class ApprovalRequestDeclined extends BaseNotification
     {
         return $this->getInfoText(
             Html::tag('strong', Html::encode($this->originator->displayName)),
-            Html::tag('strong', Html::encode($this->source->name)));
+            Html::tag('strong', Html::encode($this->source->name))
+        );
     }
 
     private function getInfoText($displayName, $spaceName)

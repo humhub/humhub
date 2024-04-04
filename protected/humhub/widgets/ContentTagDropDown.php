@@ -8,7 +8,6 @@
 
 namespace humhub\widgets;
 
-
 /**
  * Class ContentTagDropDown
  *

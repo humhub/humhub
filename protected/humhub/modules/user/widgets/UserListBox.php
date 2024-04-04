@@ -9,6 +9,9 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use yii\base\Widget;
+use yii\data\Pagination;
+use yii\db\ActiveQuery;
 
 /**
  * UserListBox returns the content of the user list modal
@@ -28,11 +31,10 @@ use Yii;
  *
  * @author luke
  */
-class UserListBox extends \yii\base\Widget
+class UserListBox extends Widget
 {
-
     /**
-     * @var \yii\db\ActiveQuery
+     * @var ActiveQuery
      */
     public $query;
 
@@ -66,7 +68,7 @@ class UserListBox extends \yii\base\Widget
     public function run()
     {
         $countQuery = clone $this->query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
         return $this->render("userListBox", [

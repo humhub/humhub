@@ -9,13 +9,13 @@
 
 namespace humhub\modules\user\helpers;
 
-
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
+use yii\base\Exception;
 use yii\web\HttpException;
 
 /**
@@ -26,11 +26,10 @@ use yii\web\HttpException;
  */
 class AuthHelper
 {
-
     /**
      * Checks if limited access is allowed for unauthenticated users.
      *
-     * @return boolean
+     * @return bool
      */
     public static function isGuestAccessEnabled()
     {
@@ -50,7 +49,7 @@ class AuthHelper
      *
      * @param $attributes
      * @return string
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public static function generateUsernameByAttributes($attributes): string
     {

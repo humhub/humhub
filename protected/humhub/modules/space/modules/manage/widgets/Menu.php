@@ -8,14 +8,15 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\modules\space\widgets\HeaderControlsMenu;
+
 /**
  * Menu compatibility
  *
- * @see \humhub\modules\space\widgets\HeaderControlsMenu
+ * @see HeaderControlsMenu
  * @deprecated since version 1.1
  * @author Luke
  */
-class Menu extends \humhub\modules\space\widgets\HeaderControlsMenu
+class Menu extends HeaderControlsMenu
 {
-    
 }

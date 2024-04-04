@@ -7,6 +7,7 @@
 
 namespace stream\acceptance;
 
+use Exception;
 use humhub\modules\content\models\Content;
 use stream\AcceptanceTester;
 
@@ -14,7 +15,7 @@ class TopicCest
 {
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDeletePost(AcceptanceTester $I)
     {

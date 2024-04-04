@@ -34,7 +34,7 @@ abstract class SettingActiveRecord extends ActiveRecord
      * @param string|array|null $condition
      * @param array $params
      *
-     * @return int
+     * @return int the number of rows deleted
      * @noinspection PhpMissingReturnTypeInspection
      */
     public static function deleteAll($condition = null, $params = [])

@@ -19,7 +19,6 @@ return [
     'User Filter' => 'Käyttäjän tiedostoija',
     'Username' => 'Käyttäjätunnus',
     'Username Attribute' => 'Käyttäjätunnuksen määrite',
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
     'Ignored LDAP entries' => '',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',

@@ -8,16 +8,18 @@
 
 namespace humhub\modules\activity\components;
 
-use humhub\modules\activity\Module;
-use Yii;
-use yii\base\Exception;
-use yii\base\Component;
-use yii\helpers\Url;
-use yii\db\Expression;
-use humhub\modules\dashboard\components\actions\DashboardStreamAction;
-use humhub\modules\content\models\ContentContainer;
-use humhub\modules\activity\models\MailSummaryForm;
 use humhub\modules\activity\models\Activity;
+use humhub\modules\activity\models\MailSummaryForm;
+use humhub\modules\activity\Module;
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\dashboard\components\actions\DashboardStreamAction;
+use humhub\modules\user\models\User;
+use Throwable;
+use Yii;
+use yii\base\Component;
+use yii\base\Exception;
+use yii\db\Expression;
+use yii\helpers\Url;
 
 /**
  * MailSummary is send to the user with a list of new activities
@@ -27,17 +29,17 @@ use humhub\modules\activity\models\Activity;
  */
 class MailSummary extends Component
 {
-
     /**
      * Intervals
      */
-    const INTERVAL_NONE = 0;
-    const INTERVAL_HOURLY = 1;
-    const INTERVAL_DAILY = 2;
-    const INTERVAL_WEEKLY = 3;
+    public const INTERVAL_NONE = 0;
+    public const INTERVAL_HOURLY = 1;
+    public const INTERVAL_DAILY = 2;
+    public const INTERVAL_WEEKLY = 3;
+    public const INTERVAL_MONTHLY = 4;
 
     /**
-     * @var \humhub\modules\user\models\User the user
+     * @var User the user
      */
     public $user;
 
@@ -91,7 +93,7 @@ class MailSummary extends Component
             $mail = Yii::$app->mailer->compose([
                 'html' => $this->layout,
                 'text' => $this->layoutPlaintext
-                    ], [
+            ], [
                 'activities' => $outputHtml,
                 'activitiesPlaintext' => $outputPlaintext,
             ]);
@@ -103,7 +105,7 @@ class MailSummary extends Component
                 Yii::$app->i18n->autosetLocale();
                 return true;
             }
-        } catch (\Throwable $ex) {
+        } catch (Throwable $ex) {
             Yii::error('Could not send mail to: ' . $this->user->email . ' - Error:  ' . $ex->getMessage());
         } finally {
             Yii::$app->i18n->autosetLocale();
@@ -119,18 +121,16 @@ class MailSummary extends Component
      */
     protected function getSubject()
     {
-        if ($this->interval === self::INTERVAL_DAILY) {
-            return Yii::t('ActivityModule.base', 'Your daily summary');
+        switch ($this->interval) {
+            case self::INTERVAL_HOURLY:
+                return Yii::t('ActivityModule.base', 'Latest news');
+            case self::INTERVAL_DAILY:
+                return Yii::t('ActivityModule.base', 'Your daily summary');
+            case self::INTERVAL_WEEKLY:
+                return Yii::t('ActivityModule.base', 'Your weekly summary');
+            case self::INTERVAL_MONTHLY:
+                return Yii::t('ActivityModule.base', 'Your monthly summary');
         }
-
-        if ($this->interval === self::INTERVAL_HOURLY) {
-            return Yii::t('ActivityModule.base', 'Latest news');
-        }
-
-        if ($this->interval === self::INTERVAL_WEEKLY) {
-            return Yii::t('ActivityModule.base', 'Your weekly summary');
-        }
-
         return '';
     }
 
@@ -141,7 +141,7 @@ class MailSummary extends Component
      */
     public function getActivities()
     {
-        $stream = new DashboardStreamAction('stream', Yii::$app->controller , [
+        $stream = new DashboardStreamAction('stream', Yii::$app->controller, [
             'activity' => true,
             'limit' => $this->maxActivityCount,
             'user' => $this->user,
@@ -197,7 +197,7 @@ class MailSummary extends Component
      */
     protected function getLastSummaryDate()
     {
-        $lastSent = (int) static::getModule()->settings->user($this->user)->get('mailSummaryLast');
+        $lastSent = (int)static::getModule()->settings->user($this->user)->get('mailSummaryLast');
         if (empty($lastSent)) {
             $lastSent = new Expression('NOW() - INTERVAL 24 HOUR');
         } else {
@@ -210,8 +210,8 @@ class MailSummary extends Component
     /**
      * Returns the mode (exclude, include) of given content containers
      *
-     * @see MailSummaryForm
      * @return int mode
+     * @see MailSummaryForm
      */
     protected function getLimitContentContainerMode()
     {

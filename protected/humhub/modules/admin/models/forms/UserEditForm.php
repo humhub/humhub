@@ -6,6 +6,7 @@ use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\AuthClientUserService;
 use Yii;
 
 /**
@@ -27,6 +28,8 @@ class UserEditForm extends User
      */
     public $currentGroups;
 
+    protected ?AuthClientUserService $authClientUserService = null;
+
     /**
      * @inheritdoc
      */
@@ -46,7 +49,7 @@ class UserEditForm extends User
     public function scenarios()
     {
         $scenarios = parent::scenarios();
-        $scenarios['editAdmin'][] = 'groupSelection';
+        $scenarios[self::SCENARIO_EDIT_ADMIN][] = 'groupSelection';
 
         return $scenarios;
     }
@@ -69,16 +72,14 @@ class UserEditForm extends User
 
     public function getGroupLabel()
     {
-        if(!Yii::$app->user->isAdmin() && $this->isSystemAdmin()) {
-            return Yii::t('AdminModule.base', 'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)');
-        }
-
-        return Yii::t('AdminModule.base', 'Groups');
+        return $this->canEditAdminFields()
+            ? Yii::t('AdminModule.base', 'Groups')
+            : Yii::t('AdminModule.base', 'Groups (Note: The Administrator group of this user can\'t be managed with your permissions)');
     }
 
     /**
      * Aligns the given group selection with the db
-     * @return boolean
+     * @return bool
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -88,7 +89,7 @@ class UserEditForm extends User
                 if (!$this->isInGroupSelection($userGroup)) {
                     /* @var $groupUser GroupUser */
                     $groupUser = $this->getGroupUsers()->where(['group_id' => $userGroup->id])->one();
-                    if(!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
+                    if (!$groupUser->group->is_admin_group || Yii::$app->user->isAdmin()) {
                         $groupUser->delete();
                     }
                 }
@@ -114,7 +115,7 @@ class UserEditForm extends User
     /**
      * Checks if the given group (id or model object) is contained in the form selection
      * @param int|Group $groupId groupId or Group model object
-     * @return boolean true if contained in selection else false
+     * @return bool true if contained in selection else false
      */
     private function isInGroupSelection($groupId)
     {
@@ -126,8 +127,8 @@ class UserEditForm extends User
 
     /**
      * Checks if the user is member of the given group (id or model object)
-     * @param integer $groupId $groupId groupId or Group model object
-     * @return boolean true if user is member else false
+     * @param int $groupId $groupId groupId or Group model object
+     * @return bool true if user is member else false
      */
     private function isCurrentlyMemberOf($groupId)
     {
@@ -148,8 +149,8 @@ class UserEditForm extends User
      */
     public static function getGroupItems($groups = null)
     {
-        if(!$groups) {
-            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() :  Group::findAll(['is_admin_group' => '0']) ;
+        if (!$groups) {
+            $groups = (Yii::$app->user->isAdmin()) ? Group::find()->all() : Group::findAll(['is_admin_group' => '0']);
         }
 
         $result = [];
@@ -158,5 +159,24 @@ class UserEditForm extends User
         }
 
         return $result;
+    }
+
+    public function getAuthClientUserService(): AuthClientUserService
+    {
+        if ($this->authClientUserService === null) {
+            $this->authClientUserService = new AuthClientUserService($this);
+        }
+
+        return $this->authClientUserService;
+    }
+
+    public function canEditAdminFields(): bool
+    {
+        return Yii::$app->user->isAdmin() || !$this->isSystemAdmin();
+    }
+
+    public function canEditPassword(): bool
+    {
+        return $this->canEditAdminFields() && $this->getAuthClientUserService()->canChangePassword();
     }
 }

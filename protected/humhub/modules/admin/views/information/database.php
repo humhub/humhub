@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -6,31 +7,67 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\ui\view\components\View;
+use humhub\services\MigrationService;
 
 /**
- * @var $this \humhub\modules\ui\view\components\View
+ * @var $this View
  * @var $databaseName string
- * @var $migrate string
- * @var $rebuildSearchRunning boolean
+ * @var $migrationStatus int
+ * @var $migrationOutput string
+ * @var $rebuildSearchRunning bool
  */
+
 ?>
 <div>
     <p>
         <?php if ($rebuildSearchRunning): ?>
-            <div class="alert alert-info"><?= Yii::t('AdminModule.information', 'Search index rebuild in progress.'); ?></div>
-        <?php else: ?>
-            <?= Html::a('Rebuild search index', ['/admin/information/database', 'rebuildSearch' => 1], ['class' => 'btn btn-primary pull-right', 'data-method' => 'post', 'data-ui-loader' => '']); ?>
-        <?php endif; ?>
+    <div class="alert alert-info"><?= Yii::t('AdminModule.information', 'Search index rebuild in progress.'); ?></div>
+    <?php else: ?>
+        <?= Html::a('Rebuild search index', ['/admin/information/database', 'rebuildSearch' => 1], ['class' => 'btn btn-primary pull-right', 'data-method' => 'post', 'data-ui-loader' => '']); ?>
+    <?php endif; ?>
 
-        <?= Yii::t('AdminModule.information', 'The current main HumHub database name is ') ?>
-        <i><b><?= Html::encode($databaseName) ?></b></i>
+    <?= Yii::t('AdminModule.information', 'The current main HumHub database name is ') ?>
+    <i><b><?= Html::encode($databaseName) ?></b></i>
     </p>
 </div>
 
-<p><?= Yii::t('AdminModule.information', 'Database migration results:'); ?></p>
-
-<div class="well">
+<div>
+    <?php if ($migrationStatus === MigrationService::DB_ACTION_PENDING): ?>
+        <p><?= Yii::t('AdminModule.information', 'Outstanding database migrations:'); ?></p>
+        <div class="well">
     <pre>
-        <?= $migrate; ?>
+        <?= $migrationOutput ?>
     </pre>
+        </div>
+        <p><br>
+            <?= Html::a(
+                Yii::t('AdminModule.information', 'Update Database'),
+                ['/admin/information/database', 'migrate' => 1],
+                [
+                    'id' => 'migrationRun',
+                    'class' => 'btn btn-primary pull-right',
+                ]
+            ); ?>
+        </p>
+    <?php elseif ($migrationStatus === MigrationService::DB_ACTION_RUN): ?>
+        <p><?= Yii::t('AdminModule.information', 'Database migration results:'); ?></p>
+        <div class="well">
+    <pre>
+        <?= $migrationOutput ?>
+    </pre>
+        </div>
+        <p><br>
+            <?= Html::a(
+                Yii::t('AdminModule.information', 'Refresh'),
+                ['/admin/information/database'],
+                [
+                    'id' => 'migrationRun',
+                    'class' => 'btn btn-primary pull-right',
+                ]
+            ); ?>
+        </p>
+    <?php else: ?>
+        <p><?= Yii::t('AdminModule.information', 'Your database is <b>up-to-date</b>.'); ?></p>
+    <?php endif; ?>
 </div>

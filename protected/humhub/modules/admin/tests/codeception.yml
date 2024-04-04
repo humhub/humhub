@@ -6,18 +6,18 @@ coverage:
     enabled: true
     remote: false
     include:
-    - ../commands/*
-    - ../components/*
-    - ../grid/*
-    - ../jobs/*
-    - ../libs/*
-    - ../models/*
-    - ../notifications/*
-    - ../permissions/*
-    - ../views/*
-    - ../widgets/*
-    - ../Events.php
-    - ../Module.php
+        - ../commands/*
+        - ../components/*
+        - ../grid/*
+        - ../jobs/*
+        - ../libs/*
+        - ../models/*
+        - ../notifications/*
+        - ../permissions/*
+        - ../views/*
+        - ../widgets/*
+        - ../Events.php
+        - ../Module.php
 settings:
     suite_class: \PHPUnit_Framework_TestSuite
     colors: true

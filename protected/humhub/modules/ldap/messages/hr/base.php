@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'TLS / SSL je snažno favoriziran u produkcijskom okruženju kako bi se spriječio prijenos lozinki u jasnom tekstu.',
     'Base DN' => 'Osnovni DN',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Određuje filtar koji se primjenjuje kod pokušajaj prijave. %s zamjenjuje korisničko ime u akciji za prijavu. Primjer: "(sAMAccountName=%s)" ili "(uid=%s)"',
     'E-Mail Address Attribute' => 'Atribut E-mail adrese',

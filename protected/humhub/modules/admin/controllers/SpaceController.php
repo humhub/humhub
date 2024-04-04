@@ -9,6 +9,8 @@
 namespace humhub\modules\admin\controllers;
 
 use humhub\modules\admin\models\SpaceSearch;
+use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
@@ -16,8 +18,6 @@ use humhub\modules\space\Module;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
 use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\admin\permissions\ManageSettings;
 use yii\web\HttpException;
 
 /**
@@ -27,7 +27,6 @@ use yii\web\HttpException;
  */
 class SpaceController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -41,13 +40,13 @@ class SpaceController extends Controller
         $this->subLayout = '@admin/views/layouts/space';
         $this->appendPageTitle(Yii::t('AdminModule.base', 'Spaces'));
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => [ManageSpaces::class, ManageSettings::class]],
@@ -67,8 +66,8 @@ class SpaceController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel
         ]);
     }
 
@@ -139,12 +138,12 @@ class SpaceController extends Controller
         }
 
         return $this->render('settings', [
-                'model' => $form,
-                'joinPolicyOptions' => $joinPolicyOptions,
-                'visibilityOptions' => $visibilityOptions,
-                'contentVisibilityOptions' => $contentVisibilityOptions,
-                'indexModuleSelection' => $indexModuleSelection
-            ]);
+            'model' => $form,
+            'joinPolicyOptions' => $joinPolicyOptions,
+            'visibilityOptions' => $visibilityOptions,
+            'contentVisibilityOptions' => $contentVisibilityOptions,
+            'indexModuleSelection' => $indexModuleSelection
+        ]);
     }
 
     /**
@@ -164,21 +163,12 @@ class SpaceController extends Controller
         }
 
         // Handle permission state change
-        if (Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = $defaultPermissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            $defaultPermissionManager->setGroupState($groupId, $permission, Yii::$app->request->post('state'));
-            return [];
-        }
+        $return = $defaultPermissionManager->handlePermissionStateChange($groupId);
 
-        return $this->render('permissions', [
+        return $return ?? $this->render('permissions', [
             'defaultPermissionManager' => $defaultPermissionManager,
             'groups' => $groups,
             'groupId' => $groupId,
         ]);
     }
-
 }

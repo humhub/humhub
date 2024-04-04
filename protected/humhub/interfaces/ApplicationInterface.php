@@ -19,4 +19,6 @@ interface ApplicationInterface
      * @event ActionEvent an event raised on init of application.
      */
     public const EVENT_ON_INIT = 'onInit';
+
+    public function getMailer(): MailerInterface;
 }

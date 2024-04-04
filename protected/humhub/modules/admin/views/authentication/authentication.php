@@ -5,6 +5,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 
 /* @var AuthenticationSettingsForm $model */
@@ -45,6 +46,7 @@ $userModule = Yii::$app->getModule('user');
     <p class="help-block"><?= Yii::t('AdminModule.user', 'Only applicable when limited access for non-authenticated users is enabled. Only affects new users.'); ?></p>
 
     <?php if (Yii::$app->getModule('user')->settings->get('auth.needApproval')): ?>
+        <?= $form->field($model, 'registrationSendMessageMailContent')->widget(RichTextField::class, ['exclude' => ['oembed', 'upload']]); ?>
         <?= $form->field($model, 'registrationApprovalMailContent')->widget(RichTextField::class, ['exclude' => ['oembed', 'upload']]); ?>
         <?= $form->field($model, 'registrationDenialMailContent')->widget(RichTextField::class, ['exclude' => ['oembed', 'upload']]); ?>
         <p class="help-block"><?= Yii::t('AdminModule.user', 'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.'); ?></p>
@@ -54,7 +56,7 @@ $userModule = Yii::$app->getModule('user');
 
     <?= Html::submitButton(Yii::t('AdminModule.user', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-    <?= \humhub\widgets\DataSaved::widget(); ?>
+    <?= DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
 </div>
 <?php $this->endContent(); ?>

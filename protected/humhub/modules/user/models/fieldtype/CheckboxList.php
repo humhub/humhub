@@ -36,7 +36,7 @@ class CheckboxList extends BaseType
 
     /**
      * Allow other selection
-     * @var boolean
+     * @var bool
      */
     public $allowOther;
 

@@ -8,12 +8,10 @@
 
 namespace humhub\modules\friendship\controllers;
 
-
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\friendship\models\SettingsForm;
 use humhub\modules\user\components\BaseAccountController;
 use yii\data\ActiveDataProvider;
-
 
 /**
  * Membership Manage Controller
@@ -22,7 +20,6 @@ use yii\data\ActiveDataProvider;
  */
 class ManageController extends BaseAccountController
 {
-
     public function actionIndex()
     {
         return $this->redirect(['list']);

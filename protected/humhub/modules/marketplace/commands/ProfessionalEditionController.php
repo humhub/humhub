@@ -11,14 +11,16 @@ namespace humhub\modules\marketplace\commands;
 use humhub\components\SettingsManager;
 use humhub\modules\marketplace\components\LicenceManager;
 use humhub\modules\marketplace\models\Licence;
+use humhub\modules\marketplace\Module;
 use Yii;
+use yii\base\Exception;
 use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
  * Professional Edition CLI
  *
- * @property \humhub\modules\marketplace\Module $module
+ * @property Module $module
  * @since 1.8
  */
 class ProfessionalEditionController extends Controller
@@ -35,7 +37,7 @@ class ProfessionalEditionController extends Controller
     /**
      * Displays the current registration details.
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionInfo()
     {
@@ -45,7 +47,7 @@ class ProfessionalEditionController extends Controller
             /** @var SettingsManager $settings */
             $settings = Yii::$app->getModule('marketplace')->settings;
 
-            $this->stdout(Yii::t('MarketplaceModule.base', "PROFESSIONAL EDITION")."\n\n", Console::FG_GREY, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', "PROFESSIONAL EDITION") . "\n\n", Console::FG_GREY, Console::BOLD);
             $this->stdout('Licenced to: ' . $l->licencedTo . "\n");
             $this->stdout('Maximum users: ' . $l->maxUsers . "\n");
             $this->stdout('Last update: ' . Yii::$app->formatter->asDatetime($settings->get(LicenceManager::SETTING_KEY_PE_LAST_FETCH)) . "\n");
@@ -59,7 +61,7 @@ class ProfessionalEditionController extends Controller
      * Registers a Professional Edition using a license key.
      *
      * @param string the licence key
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionRegister($licence)
     {
@@ -99,7 +101,7 @@ class ProfessionalEditionController extends Controller
     }
 
     /**
-     * @return \humhub\modules\marketplace\Module
+     * @return Module
      */
     private function getMarketplaceModule()
     {

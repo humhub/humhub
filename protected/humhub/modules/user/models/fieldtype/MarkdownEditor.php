@@ -13,7 +13,7 @@ use Yii;
 
 /**
  * Markdown Profile Field
- * 
+ *
  * @since 1.1
  */
 class MarkdownEditor extends BaseType
@@ -29,12 +29,12 @@ class MarkdownEditor extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Text area field options'),
-                        'elements' => [
-                        ]
-                    ]]);
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Text area field options'),
+                'elements' => [
+                ]
+            ]]);
     }
 
     /**

@@ -19,9 +19,8 @@ use humhub\modules\content\interfaces\ContentOwner;
  */
 class MailCommentEntry extends \yii\base\Widget
 {
-
     /**
-     * @var \humhub\modules\user\models\User content originator 
+     * @var \humhub\modules\user\models\User content originator
      */
     public $originator;
 
@@ -29,19 +28,19 @@ class MailCommentEntry extends \yii\base\Widget
      * @var \humhub\modules\user\models\User notification receiver
      */
     public $receiver;
-    
+
     /**
-     * @var string|Viewable|ContentOwner content to render 
+     * @var string|Viewable|ContentOwner content to render
      */
     public $comment;
-    
+
     /**
      * @var \humhub\modules\space\models\Space space of content (optional)
      */
     public $space;
-    
-    /** 
-     * @var string content date 
+
+    /**
+     * @var string content date
      */
     public $date;
 
@@ -61,5 +60,3 @@ class MailCommentEntry extends \yii\base\Widget
     }
 
 }
-
-?>

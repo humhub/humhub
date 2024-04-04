@@ -3,10 +3,8 @@
 
 use yii\db\Migration;
 
-
 class m150322_195619_allowedExt2Text extends Migration
 {
-
     public function up()
     {
         $allowedExtensions = Yii::$app->getModule('file')->settings->get('allowedExtensions');

@@ -18,7 +18,6 @@ use humhub\modules\ui\menu\widgets\SubTabMenu;
  */
 class AdvancedSettingMenu extends SubTabMenu
 {
-
     /**
      * @inheritdoc
      */
@@ -33,23 +32,23 @@ class AdvancedSettingMenu extends SubTabMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ]));
 
-         $this->addEntry(new MenuLink([
-             'label' => Yii::t('AdminModule.base', 'Files'),
-             'url' => Url::toRoute('/admin/setting/file'),
-             'icon' => 'file',
-             'sortOrder' => 200,
-             'isActive' =>  MenuLink::isActiveState('admin', 'setting', 'file'),
-             'isVisible' => Yii::$app->user->isAdmin(),
-         ]));
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Files'),
+            'url' => Url::toRoute('/admin/setting/file'),
+            'icon' => 'file',
+            'sortOrder' => 200,
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'file'),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ]));
 
-         $this->addEntry(new MenuLink([
-             'label' => Yii::t('AdminModule.settings', 'E-Mail'),
-             'url' => Url::toRoute(['/admin/setting/mailing-server']),
-             'icon' => 'envelope',
-             'sortOrder' => 250,
-             'isActive' => MenuLink::isActiveState('admin', 'setting', 'mailing-server'),
-             'isVisible' => Yii::$app->user->isAdmin(),
-         ]));
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.settings', 'E-Mail'),
+            'url' => Url::toRoute(['/admin/setting/mailing-server']),
+            'icon' => 'envelope',
+            'sortOrder' => 250,
+            'isActive' => MenuLink::isActiveState('admin', 'setting', 'mailing-server'),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Proxy'),

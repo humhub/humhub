@@ -18,7 +18,6 @@ use humhub\modules\content\models\Content;
  */
 class LegitimationChanged extends LiveEvent
 {
-
     /**
      * @var array the legitimation array
      */
@@ -35,7 +34,7 @@ class LegitimationChanged extends LiveEvent
     public function init()
     {
         parent::init();
-        
+
         $this->visibility = Content::VISIBILITY_OWNER;
     }
 

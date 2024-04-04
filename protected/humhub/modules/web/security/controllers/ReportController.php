@@ -17,7 +17,7 @@ class ReportController extends Controller
     {
         Yii::$app->response->statusCode = 204;
 
-        if(!SecuritySettings::isReportingEnabled()) {
+        if (!SecuritySettings::isReportingEnabled()) {
             return;
         }
 
