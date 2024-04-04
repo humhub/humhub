@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Sai mật khẩu!',
   'a new user {displayName} needs approval.' => 'Một người dùng mới {displayName} cần xét duyệt.',
   'back to home' => 'trở lại trang chủ',
-  'email' => 'email',
-  'password' => 'mật khẩu',
-  'username or email' => 'tên truy cập hoặc email',
+  'Password' => 'mật khẩu',
+  'Username or Email' => 'tên truy cập hoặc email',
 );

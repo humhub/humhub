@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'รหัสผ่านของคุณไม่ถูกต้อง!',
   'a new user {displayName} needs approval.' => 'ผู้ใช้ใหม่ {displayName} ต้องได้รับการอนุมัติ',
   'back to home' => 'กลับไปที่บ้าน',
-  'email' => 'อีเมล',
-  'password' => 'รหัสผ่าน',
-  'username or email' => 'ชื่อผู้ใช้หรืออีเมล',
+  'Password' => 'รหัสผ่าน',
+  'Username or Email' => 'ชื่อผู้ใช้หรืออีเมล',
 );

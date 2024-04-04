@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => '您輸入的密碼錯誤!',
   'a new user {displayName} needs approval.' => '有一個新用戶 {displayName} 需要核准。',
   'back to home' => '返回主頁',
-  'email' => 'E-mail',
-  'password' => '密碼',
-  'username or email' => '使用者名稱或E-mail',
+  'Password' => '密碼',
+  'Username or Email' => '使用者名稱或E-mail',
 );
