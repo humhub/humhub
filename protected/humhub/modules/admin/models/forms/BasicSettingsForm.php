@@ -21,7 +21,6 @@ class BasicSettingsForm extends Model
     public $defaultLanguage;
     public $tour;
     public $defaultTimeZone;
-    public $timeZone;
     public $dashboardShowProfilePostForm;
     public $enableFriendshipModule;
     public $maintenanceMode;
@@ -38,7 +37,6 @@ class BasicSettingsForm extends Model
         $this->baseUrl = Yii::$app->settings->get('baseUrl');
         $this->defaultLanguage = Yii::$app->settings->get('defaultLanguage');
         $this->defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
-        $this->timeZone = Yii::$app->settings->get('timeZone');
         $this->maintenanceMode = Yii::$app->settings->get('maintenanceMode');
         $this->maintenanceModeInfo = Yii::$app->settings->get('maintenanceModeInfo');
 
@@ -56,7 +54,7 @@ class BasicSettingsForm extends Model
             [['name', 'baseUrl'], 'required'],
             ['name', 'string', 'max' => 150],
             ['defaultLanguage', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages())],
-            [['defaultTimeZone', 'timeZone'], 'in', 'range' => DateTimeZone::listIdentifiers()],
+            [['defaultTimeZone'], 'in', 'range' => \DateTimeZone::listIdentifiers()],
             [['tour', 'dashboardShowProfilePostForm', 'enableFriendshipModule', 'maintenanceMode'], 'in', 'range' => [0, 1]],
             [['baseUrl'], 'url', 'pattern' => '/^{schemes}:\/\/([A-Z0-9][A-Z0-9_\-\.]*)+(?::\d{1,5})?(?:$|[?\/#])/i'],
             [['baseUrl'], 'trim'],
@@ -74,7 +72,6 @@ class BasicSettingsForm extends Model
             'baseUrl' => Yii::t('AdminModule.settings', 'Base URL'),
             'defaultLanguage' => Yii::t('AdminModule.settings', 'Default language'),
             'defaultTimeZone' => Yii::t('AdminModule.settings', 'Default Timezone'),
-            'timeZone' => Yii::t('AdminModule.settings', 'Server Timezone'),
             'tour' => Yii::t('AdminModule.settings', 'Show introduction tour for new users'),
             'dashboardShowProfilePostForm' => Yii::t('AdminModule.settings', 'Show user profile post form on dashboard'),
             'enableFriendshipModule' => Yii::t('AdminModule.settings', 'Enable user friendship system'),
@@ -91,13 +88,6 @@ class BasicSettingsForm extends Model
     {
         return [
             'defaultTimeZone' => Yii::t(
-                'AdminModule.settings',
-                'Reported database time: {dateTime}',
-                [
-                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
-                ]
-            ),
-            'timeZone' => Yii::t(
                 'AdminModule.settings',
                 'Reported database time: {dateTime}',
                 [
@@ -124,7 +114,6 @@ class BasicSettingsForm extends Model
         Yii::$app->settings->set('baseUrl', $this->baseUrl);
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);
-        Yii::$app->settings->set('timeZone', $this->timeZone);
         Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
         Yii::$app->settings->set('maintenanceModeInfo', $this->maintenanceModeInfo);
 
