@@ -1,8 +1,6 @@
 HumHub Changelog
 ================
 
-
-
 1.16.0 (Unreleased)
 -------------------
 - Fix #6770: Improve migration error messages
@@ -78,3 +76,4 @@ HumHub Changelog
 - Fix #6913: Fix API tests
 - Fix #6730: Invitation link for existing user
 - Enh #6147: New space service `MemberListService`
+- Fix #6768 MultiSelect when empty selection is given
