@@ -32,6 +32,7 @@ return array (
   'Log out' => '',
   'Login' => 'Σύνδεση',
   'New user needs approval' => '',
+  'Password' => 'Κωδικός',
   'Password recovery' => '',
   'Password reset' => '',
   'Please check your email and follow the instructions!' => '',
@@ -48,6 +49,7 @@ return array (
   'Sign in' => '',
   'To log in with your new account, click the button below.' => '',
   'User or Password incorrect.' => '',
+  'Username or Email' => '',
   'We’ve sent you an email containing a link that will allow you to reset your password.' => '',
   'Your email' => '',
   'Your password' => 'Ο κωδικός σου',
@@ -55,6 +57,4 @@ return array (
   'Your password is incorrect!' => 'Ο κωδικός σου είναι λάθος',
   'a new user {displayName} needs approval.' => '',
   'back to home' => '',
-  'Password' => '',
-  'Username or Email' => '',
 );

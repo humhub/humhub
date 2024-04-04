@@ -104,6 +104,7 @@ return [
     'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'LinkedIn URL' => '',
     'Markdown' => '',
+    'Mastodon URL' => '',
     'Must contain at least one character.' => '',
     'Other:' => '',
     'This profile is no longer available!' => '',

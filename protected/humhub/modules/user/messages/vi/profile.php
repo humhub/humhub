@@ -112,6 +112,7 @@ return [
     'Invalid!' => '',
     'Last login date of the user' => '',
     'Link Prefix (e.g. https://, mailto:, tel://)' => '',
+    'Mastodon URL' => '',
     'Other:' => '',
     'TikTok URL' => '',
     'Use as Directory filter' => '',

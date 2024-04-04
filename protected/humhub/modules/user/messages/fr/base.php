@@ -52,7 +52,6 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Apparemment, vous avez cliqué sur un lien de réinitialisation de mot de passe non valide. Veuillez ré-essayer.',
     'Language' => 'Langue',
     'Last Login' => 'Dernière connexion',
-    'Manager' => 'Manager',
     'Mentioning' => 'Mentionnant',
     'Missing E-Mail Attribute from AuthClient.' => 'Attribut d\'e-mail manquant depuis AuthClient.',
     'Missing ID AuthClient Attribute from AuthClient.' => 'ID AuthClient manquant depuis AuthClient.',
@@ -120,4 +119,6 @@ return [
     'invited you to join {space} on {name}.' => 'vous a invité à rejoindre {space} sur {name}.',
     'or' => 'ou',
     'Advanced Profile Search' => '',
+    'Group Manager(s)' => '',
+    'The Group Manager can approve pending registrations of this group.' => '',
 ];

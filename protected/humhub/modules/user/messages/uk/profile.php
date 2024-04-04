@@ -114,6 +114,7 @@ return [
     '{attribute} is required!' => '{attribute} потрібен!',
     'Diverse' => '',
     'Instagram URL' => '',
+    'Mastodon URL' => '',
     'TikTok URL' => '',
     'Website URL' => '',
 ];

@@ -113,6 +113,7 @@ return [
     'Diverse' => '',
     'Instagram URL' => '',
     'Link Prefix (e.g. https://, mailto:, tel://)' => '',
+    'Mastodon URL' => '',
     'TikTok URL' => '',
     'Use as Directory filter' => '',
     '{attribute} is required!' => '',

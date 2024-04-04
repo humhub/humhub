@@ -52,7 +52,6 @@ return [
     'It looks like you clicked on an invalid password reset link. Please try again.' => 'Atrodo, kad spustelėjote negaliojančią slaptažodžio atstatymo nuorodą. Bandykite dar kartą.',
     'Language' => 'Kalba',
     'Last Login' => 'Paskutinis prisijungimas',
-    'Manager' => 'Valdytojas',
     'Mentioning' => 'Paminėjimas',
     'Missing E-Mail Attribute from AuthClient.' => 'Trūksta el. pašto atributo AuthClient.',
     'Missing ID AuthClient Attribute from AuthClient.' => 'Trūksta atributo ID iš AuthClient.',
@@ -120,4 +119,6 @@ return [
     'invited you to join {space} on {name}.' => 'pakvietė jus prisijungti prie {space} dėl {name}.',
     'or' => 'arba',
     'Advanced Profile Search' => '',
+    'Group Manager(s)' => '',
+    'The Group Manager can approve pending registrations of this group.' => '',
 ];

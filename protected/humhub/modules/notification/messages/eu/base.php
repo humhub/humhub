@@ -23,7 +23,7 @@ return array (
   'The requested content is not valid or was removed!' => 'Eskatutako edukia ez da baliozkoa edo kendu egin da!',
   'There are no notifications yet.' => 'Oraindik ez dago jakinarazpenik.',
   'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => 'Ikuspegi honek jakinarazpen-ezarpenak konfiguratzeko aukera ematen dizu, jakinarazpen-kategorietarako nahi dituzun helburuak hautatuz.',
-  'Type' => '',
+  'Type' => 'Mota',
   'View online:' => 'Ikusi sarean:',
   '{displayName} and {displayName2}' => '{displayName} eta {displayName2}',
   '{displayName} and {number} others' => '{displayName} eta beste {number}',
