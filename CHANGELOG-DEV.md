@@ -73,6 +73,7 @@ HumHub Changelog
 - Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
 - Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
 - Enh #6904: Content Search: Add Tests regarding `state`
+- Enh #2758: Make sure we understand how to configure who receives notifications about new users to approve
 - Fix #6908: Fix default mentioning URL
 - Enh #6879: Better UX for the maintenance mode administration form
 - Enh #6901: Auto load pages on content search
