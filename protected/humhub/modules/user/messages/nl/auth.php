@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => 'Uw wachtwoord is onjuist!',
   'a new user {displayName} needs approval.' => 'De nieuwe gebruiker {displayName} heeft goedkeuring nodig.',
   'back to home' => 'Terug naar begin',
-  'email' => 'e-mail',
-  'password' => 'wachtwoord',
-  'username or email' => 'gebruikersnaam of e-mail',
+  'Password' => 'wachtwoord',
+  'Username or Email' => 'gebruikersnaam of e-mail',
 );
