@@ -105,8 +105,8 @@ class MentioningController extends Controller
         }
 
         // Find space members
-        $users = Membership::getSpaceMembersQuery($space)
-            ->available()
+        $users = $space->getMemberListService()
+            ->getAvailableQuery()
             ->search($keyword)
             ->limit($this->mentioningSearchBoxResultLimit)
             ->orderBy(['space_membership.last_visit' => SORT_DESC])

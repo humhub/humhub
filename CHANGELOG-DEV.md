@@ -77,3 +77,4 @@ HumHub Changelog
 - Enh #6901: Auto load pages on content search
 - Fix #6913: Fix API tests
 - Fix #6730: Invitation link for existing user
+- Enh #6147: New space service `MemberListService`

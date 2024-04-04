@@ -23,6 +23,7 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\space\services\MemberListService;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\Invite;
@@ -496,7 +497,7 @@ class Space extends ContentContainerActiveRecord
      * Be aware that this function will also include disabled users, in order to only include active and visible users use:
      *
      * ```
-     * Membership::getSpaceMembersQuery($this->space)->active()->visible()->count()
+     * $this->getMemberListService()->getQuery()
      * ```
      *
      * @return ActiveQuery
@@ -669,5 +670,14 @@ class Space extends ContentContainerActiveRecord
     public function isModuleEnabled($id)
     {
         return $this->moduleManager->isEnabled($id);
+    }
+
+    /**
+     * @return MemberListService
+     * @since 1.14
+     */
+    public function getMemberListService(): MemberListService
+    {
+        return new MemberListService($this);
     }
 }
