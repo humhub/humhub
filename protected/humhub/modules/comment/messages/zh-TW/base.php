@@ -24,7 +24,7 @@ return array (
   'Show next {count} comments' => '顯示後{count}則留言',
   'Show previous {count} comments' => '顯示前{count}則留言',
   'The comment must not be empty!' => '留言不能是空白的!',
-  'Whenever a new comment was written.' => '',
+  'Whenever a new comment was written.' => '每當撰寫一則新留言。',
   'Write a new comment...' => '公開留言...',
   'Write a new reply...' => '公開回覆....',
   'comment' => '留言',

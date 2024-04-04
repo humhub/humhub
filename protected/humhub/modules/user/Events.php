@@ -2,7 +2,10 @@
 
 namespace humhub\modules\user;
 
+use Exception;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\models\User;
@@ -22,19 +25,6 @@ use yii\base\BaseObject;
  */
 class Events extends BaseObject
 {
-
-    /**
-     * On rebuild of the search index, rebuild all user records
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onSearchRebuild($event)
-    {
-        foreach (User::find()->active()->each() as $user) {
-            Yii::$app->search->add($user);
-        }
-    }
-
     /**
      * On delete of a Content or ContentAddon
      *
@@ -42,8 +32,11 @@ class Events extends BaseObject
      */
     public static function onContentDelete($event)
     {
-        Mentioning::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
-        Follow::deleteAll(['object_model' => $event->sender->className(), 'object_id' => $event->sender->getPrimaryKey()]);
+        /* @var ContentActiveRecord $content */
+        $content = $event->sender;
+
+        Mentioning::deleteAll(['object_model' => PolymorphicRelation::getObjectModel($content), 'object_id' => $content->getPrimaryKey()]);
+        Follow::deleteAll(['object_model' => PolymorphicRelation::getObjectModel($content), 'object_id' => $content->getPrimaryKey()]);
     }
 
     /**
@@ -125,7 +118,7 @@ class Events extends BaseObject
                         $follow->delete();
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
                     $follow->delete();
                 }
@@ -178,7 +171,7 @@ class Events extends BaseObject
             'label' => Yii::t('UserModule.base', 'People'),
             'url' => ['/user/people'],
             'sortOrder' => 200,
-            'isActive' =>  MenuLink::isActiveState('user', 'people'),
+            'isActive' => MenuLink::isActiveState('user', 'people'),
         ]));
     }
 

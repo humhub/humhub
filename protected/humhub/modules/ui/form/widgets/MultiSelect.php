@@ -16,7 +16,6 @@ namespace humhub\modules\ui\form\widgets;
  */
 class MultiSelect extends BasePicker
 {
-
     /**
      * @inerhitdoc
      */

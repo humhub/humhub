@@ -2,11 +2,14 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\file\models\File;
+use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Html;
-use humhub\modules\file\models\File;
-use humhub\widgets\JsWidget;
+use yii\widgets\ActiveForm;
 
 /**
  * The file input will upload files either to the given $url or to the default
@@ -23,8 +26,7 @@ use humhub\widgets\JsWidget;
  */
 class UploadInput extends JsWidget
 {
-
-    const DEFAULT_FORM_NAME = 'fileList';
+    public const DEFAULT_FORM_NAME = 'fileList';
 
     /**
      * javascript widget implementation.
@@ -133,7 +135,7 @@ class UploadInput extends JsWidget
     public $visible = false;
 
     /**
-     * @var boolean defines if uploaded files should set the show_in_stream flag, this has only effect if the underlying action does support the showInStream request parameter
+     * @var bool defines if uploaded files should set the show_in_stream flag, this has only effect if the underlying action does support the showInStream request parameter
      */
     public $hideInStream = false;
 
@@ -141,7 +143,7 @@ class UploadInput extends JsWidget
     /**
      * This flag can be used in order to only allow a single guid to be submitted.
      * Note that already attached files have to be removed manually.
-     * @var boolean
+     * @var bool
      */
     public $single = false;
 
@@ -161,9 +163,9 @@ class UploadInput extends JsWidget
     {
         parent::init();
 
-        if(!$this->submitName) {
+        if (!$this->submitName) {
             $this->submitName = ($this->model && $this->attribute) ? $this->model->formName() . '[' . $this->attribute . ']' : self::DEFAULT_FORM_NAME;
-            if(!$this->single) {
+            if (!$this->single) {
                 $this->submitName .= '[]';
             }
         }
@@ -176,7 +178,7 @@ class UploadInput extends JsWidget
     {
         $result = Html::input('file', $this->name, null, $this->getOptions());
 
-        if($this->postState) {
+        if ($this->postState) {
             foreach (static::getSubmittedFiles($this->model, $this->attribute, $this->submitName) as $file) {
                 $result .= Html::hiddenInput($this->submitName, $file->guid);
             }
@@ -198,23 +200,23 @@ class UploadInput extends JsWidget
     public static function getSubmittedFiles($model, $attribute, $submitName)
     {
         $files = [];
-        if($model && $attribute) {
+        if ($model && $attribute) {
             $files = Html::getAttributeValue($model, $attribute);
-        } else if($submitName) {
+        } elseif ($submitName) {
             $postSubmit = $submitName;
 
-            if(static::endsWith('[]', $postSubmit)) {
+            if (static::endsWith('[]', $postSubmit)) {
                 $postSubmit = substr($postSubmit, 0, -2);
             }
 
             $files = Yii::$app->request->post($postSubmit);
         }
 
-        if(!$files) {
+        if (!$files) {
             return [];
         }
 
-        if(!is_array($files)) {
+        if (!is_array($files)) {
             $files = [$files];
         }
 
@@ -241,7 +243,7 @@ class UploadInput extends JsWidget
 
     public function getData()
     {
-        $formSelector = ($this->form instanceof \yii\widgets\ActiveForm) ? '#' + $this->form->getId() : $this->form;
+        $formSelector = ($this->form instanceof ActiveForm) ? '#' + $this->form->getId() : $this->form;
 
         $result = [
             'upload-url' => $this->url,
@@ -252,24 +254,24 @@ class UploadInput extends JsWidget
             'upload-submit-name' => $this->submitName,
         ];
 
-        if($this->hideInStream) {
+        if ($this->hideInStream) {
             $result['upload-hide-in-stream'] = 1;
         }
 
-        if($this->dropZone) {
+        if ($this->dropZone) {
             $result['upload-drop-zone'] = $this->dropZone;
         }
 
-        if($this->pasteZone) {
+        if ($this->pasteZone) {
             $result['upload-paste-zone'] = $this->pasteZone;
         }
 
-        if($this->hideInStream) {
+        if ($this->hideInStream) {
             $result['upload-hide-in-stream'] = '1';
         }
 
-        if ($this->model instanceof \yii\db\ActiveRecord && $this->attach) {
-            $result['upload-model'] = $this->model->className();
+        if ($this->model instanceof ActiveRecord && $this->attach) {
+            $result['upload-model'] = PolymorphicRelation::getObjectModel($this->model);
             $result['upload-model-id'] = $this->model->getPrimaryKey();
         }
 

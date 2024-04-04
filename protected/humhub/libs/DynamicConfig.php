@@ -20,7 +20,6 @@ use yii\helpers\ArrayHelper;
  */
 class DynamicConfig extends BaseObject
 {
-
     /**
      * Add an array to the dynamic configuration
      *
@@ -72,7 +71,7 @@ class DynamicConfig extends BaseObject
         file_put_contents($configFile, $content);
 
         if (function_exists('opcache_invalidate')) {
-            opcache_invalidate($configFile);
+            @opcache_invalidate($configFile);
         }
 
         if (function_exists('apc_compile_file')) {

@@ -9,7 +9,10 @@
 namespace humhub\modules\user\controllers;
 
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\web\Controller;
 use yii\web\HttpException;
 use humhub\components\behaviors\AccessControl;
@@ -26,7 +29,6 @@ use humhub\widgets\ModalClose;
  */
 class InviteController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -43,7 +45,7 @@ class InviteController extends Controller
      * Invite form and processing action
      *
      * @return string the action result
-     * @throws \yii\web\HttpException
+     * @throws HttpException
      */
     public function actionIndex($adminIsAlwaysAllowed = false)
     {
@@ -98,9 +100,9 @@ class InviteController extends Controller
     /**
      * @param $adminIsAlwaysAllowed
      * @return string
-     * @throws \Throwable
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function actionResetInviteLink($adminIsAlwaysAllowed = false)
     {

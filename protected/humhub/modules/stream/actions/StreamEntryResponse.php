@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\modules\stream\actions;
 
 use Yii;
@@ -39,12 +38,12 @@ class StreamEntryResponse extends Model
     public $output;
 
     /**
-     * @var boolean content pinned flag
+     * @var bool content pinned flag
      */
     public $pinned;
 
     /**
-     * @var boolean content archived flag
+     * @var bool content archived flag
      */
     public $archived;
 
@@ -84,8 +83,8 @@ class StreamEntryResponse extends Model
             'id' => $content->id,
             'guid' => $content->guid,
             'output' => Yii::$app->controller instanceof Controller ? Yii::$app->controller->renderAjaxPartial($streamEntry) : '',
-            'pinned' => (boolean) $content->pinned,
-            'archived' => (boolean) $content->archived,
+            'pinned' => (bool)$content->pinned,
+            'archived' => (bool)$content->archived,
         ]))->asArray();
     }
 
@@ -100,14 +99,14 @@ class StreamEntryResponse extends Model
             'id' => $this->id,
             'guid' => $this->guid,
             'output' => $this->output,
-            'pinned' => (boolean) $this->pinned,
-            'archived' => (boolean) $this->archived
+            'pinned' => (bool)$this->pinned,
+            'archived' => (bool)$this->archived
         ];
     }
 
     /**
      * Returns the stream action result as json response.
-     * @return \yii\web\Response
+     * @return Response
      * @throws Exception
      */
     public function asJson()

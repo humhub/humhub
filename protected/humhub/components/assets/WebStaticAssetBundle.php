@@ -1,6 +1,5 @@
 <?php
 
-
 namespace humhub\components\assets;
 
 /**

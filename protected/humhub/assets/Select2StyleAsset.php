@@ -17,7 +17,6 @@ use yii\web\AssetBundle;
  */
 class Select2StyleAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

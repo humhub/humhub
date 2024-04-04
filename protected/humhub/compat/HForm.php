@@ -11,13 +11,13 @@ namespace humhub\compat;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;
-use yii\widgets\ActiveForm;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -26,18 +26,18 @@ use yii\widgets\ActiveForm;
  */
 class HForm extends \yii\base\Component
 {
-    const EVENT_BEFORE_VALIDATE = 'beforeValidate';
-    const EVENT_AFTER_VALIDATE = 'afterValidate';
+    public const EVENT_BEFORE_VALIDATE = 'beforeValidate';
+    public const EVENT_AFTER_VALIDATE = 'afterValidate';
 
     /**
      * @since 1.2.6
      */
-    const EVENT_AFTER_INIT = 'afterInit';
+    public const EVENT_AFTER_INIT = 'afterInit';
 
     /**
      * @since 1.2.6
      */
-    const EVENT_BEFORE_RENDER = 'beforeRender';
+    public const EVENT_BEFORE_RENDER = 'beforeRender';
 
     public $showErrorSummary;
 
@@ -52,7 +52,7 @@ class HForm extends \yii\base\Component
     public $definition = [];
 
     /**
-     * @var boolean manually mark form as submitted
+     * @var bool manually mark form as submitted
      */
     public $markedAsSubmitted = false;
 
@@ -225,30 +225,10 @@ class HForm extends \yii\base\Component
         }
 
         if ($model) {
-            $options = [];
+            $options = $this->getOptionsFromDefinition($definition);
 
-            if (isset($definition['id'])) {
-                $options['id'] = $definition['id'];
-            }
-
-            if (isset($definition['readonly']) && $definition['readonly']) {
-                $options['readOnly'] = true;
-                $options['disabled'] = true;
-            }
-
-            if (isset($definition['value'])) {
-                $options['value'] = $definition['value'];
-            }
-
-            if (isset($definition['prompt']) && $definition['prompt']) {
-                $options['prompt'] = $definition['prompt'];
-            }
-            if (isset($definition['label']) && $definition['label']) {
-                $options['label'] = $definition['label'];
-            }
-
-            if (isset($definition['htmlOptions']) && is_array($definition['htmlOptions'])) {
-                $options = array_merge($options, $definition['htmlOptions']);
+            if (isset($model->$name, $options['value'])) {
+                unset($options['value']);
             }
 
             if (isset($definition['type'])) {
@@ -358,5 +338,34 @@ class HForm extends \yii\base\Component
         }
 
         return $output;
+    }
+
+    /**
+     * Translates definition array into options.
+     *
+     * @param array $definition Input field definition.
+     *
+     * @return array The associated array of options.
+     */
+    private function getOptionsFromDefinition($definition)
+    {
+        $options = [];
+
+        foreach (['id', 'value', 'prompt', 'label', 'rows', 'cols'] as $name) {
+            if (isset($definition[$name])) {
+                $options[$name] = $definition[$name];
+            }
+        }
+
+        if (isset($definition['readonly']) && $definition['readonly']) {
+            $options['readOnly'] = true;
+            $options['disabled'] = true;
+        }
+
+        if (isset($definition['htmlOptions']) && is_array($definition['htmlOptions'])) {
+            $options = array_merge($options, $definition['htmlOptions']);
+        }
+
+        return $options;
     }
 }

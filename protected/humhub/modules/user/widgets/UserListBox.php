@@ -9,30 +9,32 @@
 namespace humhub\modules\user\widgets;
 
 use Yii;
+use yii\base\Widget;
+use yii\data\Pagination;
+use yii\db\ActiveQuery;
 
 /**
  * UserListBox returns the content of the user list modal
- * 
+ *
  * Example Action:
- * 
+ *
  * ```php
  * public actionUserList() {
  *       $query = User::find();
  *       $query->where(...);
- *        
+ *
  *       $title = "Some Users";
- *  
+ *
  *       return $this->renderAjaxContent(UserListBox::widget(['query' => $query, 'title' => $title]));
  * }
  * ```
  *
  * @author luke
  */
-class UserListBox extends \yii\base\Widget
+class UserListBox extends Widget
 {
-
     /**
-     * @var \yii\db\ActiveQuery
+     * @var ActiveQuery
      */
     public $query;
 
@@ -45,6 +47,8 @@ class UserListBox extends \yii\base\Widget
      * @var int displayed users per page
      */
     public $pageSize = null;
+
+    public bool $hideOnlineStatus = false;
 
     /**
      * @inheritdoc
@@ -64,13 +68,14 @@ class UserListBox extends \yii\base\Widget
     public function run()
     {
         $countQuery = clone $this->query;
-        $pagination = new \yii\data\Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
+        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSize' => $this->pageSize]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
         return $this->render("userListBox", [
-                    'title' => $this->title,
-                    'users' => $this->query->all(),
-                    'pagination' => $pagination
+            'title' => $this->title,
+            'users' => $this->query->all(),
+            'pagination' => $pagination,
+            'hideOnlineStatus' => $this->hideOnlineStatus,
         ]);
     }
 

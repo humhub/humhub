@@ -9,9 +9,9 @@ use humhub\modules\ui\view\components\View;
 /* @var $bodyLayout $string */
 ?>
 
-<?= Html::beginTag($rootElement,  $options)?>
+<?= Html::beginTag($rootElement, $options) ?>
 
-    <?= $bodyLayout ?>
+<?= $bodyLayout ?>
 
 <?= Html::endTag($rootElement) ?>
 

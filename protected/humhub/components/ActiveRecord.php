@@ -8,10 +8,11 @@
 
 namespace humhub\components;
 
-use Yii;
-use humhub\modules\user\models\User;
 use humhub\modules\file\components\FileManager;
+use humhub\modules\user\models\User;
+use Yii;
 use yii\base\InvalidConfigException;
+use yii\db\ColumnSchema;
 use yii\db\Expression;
 use yii\validators\Validator;
 
@@ -25,7 +26,6 @@ use yii\validators\Validator;
  */
 class ActiveRecord extends \yii\db\ActiveRecord
 {
-
     /**
      * @var \humhub\modules\file\components\FileManager
      */
@@ -40,7 +40,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * @event Event is used to append rules what defined in [[rules()]].
      */
-    const EVENT_APPEND_RULES = 'appendRules';
+    public const EVENT_APPEND_RULES = 'appendRules';
 
     /**
      * @inheritdoc
@@ -49,7 +49,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         if ($insert) {
             if ($this->hasAttribute('created_at') && $this->created_at == "") {
-                $this->created_at = date('Y-m-d G:i:s');
+                $this->created_at = date('Y-m-d H:i:s');
             }
 
             if (isset(Yii::$app->user) && $this->hasAttribute('created_by') && $this->created_by == "") {
@@ -58,9 +58,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
 
         if ($this->hasAttribute('updated_at')) {
-            $this->updated_at = date('Y-m-d G:i:s');
+            $this->updated_at = date('Y-m-d H:i:s');
         }
-        if (isset(Yii::$app->user) && $this->hasAttribute('updated_by')) {
+        if (isset(Yii::$app->user->id) && $this->hasAttribute('updated_by')) {
             $this->updated_by = Yii::$app->user->id;
         }
 
@@ -73,11 +73,11 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($this->hasAttribute('created_at') && $this->created_at instanceof Expression) {
-            $this->created_at = date('Y-m-d G:i:s');
+            $this->created_at = date('Y-m-d H:i:s');
         }
 
-        if($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
-            $this->updated_at = date('Y-m-d G:i:s');
+        if ($this->hasAttribute('updated_at') && $this->updated_at instanceof Expression) {
+            $this->updated_at = date('Y-m-d H:i:s');
         }
 
         parent::afterSave($insert, $changedAttributes);
@@ -136,9 +136,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
     /**
      * Returns the errors as string for all attribute or a single attribute.
      *
-     * @since 1.2
      * @param string $attribute attribute name. Use null to retrieve errors for all attributes.
      * @return string the error message
+     * @since 1.2
      */
     public function getErrorMessage($attribute = null)
     {
@@ -179,7 +179,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function __unserialize($unserializedArr)
     {
         $this->init();
-        $this->setAttributes($unserializedArr['attributes'],false);
+        $this->setAttributes($unserializedArr['attributes'], false);
         $this->setOldAttributes($unserializedArr['oldAttributes']);
     }
 
@@ -215,5 +215,69 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
 
         return $validators;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setAttributes($values, $safeOnly = true)
+    {
+        if (is_array($values)) {
+            $schema = static::getTableSchema();
+
+            foreach ($values as $name => $value) {
+                // Make sure integers are stored with correct data type
+                $column = $schema->getColumn($name);
+                if ($this->columnValueCanBeNormalized($column, $value)) {
+                    $values[$name] = $column->phpTypecast($value);
+                }
+            }
+        }
+
+        parent::setAttributes($values, $safeOnly);
+    }
+
+    /**
+     * Check when the column value can be normalized to correct format,
+     * e.g. string formatted value '123' should be converted to integer value 123
+     *
+     * @param ColumnSchema|null $column
+     * @param mixed $value
+     * @return bool
+     */
+    private function columnValueCanBeNormalized(?ColumnSchema $column, $value): bool
+    {
+        if ($column === null) {
+            return false;
+        }
+
+        if ($column->phpType === 'integer') {
+            return is_string($value) && preg_match('/^\d+$/', $value);
+        }
+
+        return false;
+    }
+
+    /**
+     * Returns the class used in the polymorphic content relation.
+     * By default, this function will return the static class.
+     *
+     * Subclasses of existing content record classes may overwrite this function in order to remain the actual
+     * base type as follows:
+     *
+     * ```
+     * public static function getObjectModel(): string {
+     *     return BaseType::class
+     * }
+     * ```
+     *
+     * This will force the usage of the `BaseType` class when creating, deleting or querying the content relation.
+     * This is used in cases in which a subclass extends the a base record class without implementing a custom content type.
+     *
+     * @return string
+     */
+    public static function getObjectModel(): string
+    {
+        return static::class;
     }
 }

@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\authclient;
 
+use humhub\modules\user\services\AuthClientService;
+
 /**
  * Extended BaseClient with additional events
  *
@@ -16,18 +18,17 @@ namespace humhub\modules\user\authclient;
  */
 class BaseClient extends \yii\authclient\BaseClient
 {
-
     /**
      * @event Event an event raised on update user data.
-     * @see AuthClientHelpers::updateUser()
+     * @see AuthClientService::updateUser()
      */
-    const EVENT_UPDATE_USER = 'update';
+    public const EVENT_UPDATE_USER = 'update';
 
     /**
      * @event Event an event raised on create user.
-     * @see AuthClientHelpers::createUser()
+     * @see AuthClientService::createUser()
      */
-    const EVENT_CREATE_USER = 'create';
+    public const EVENT_CREATE_USER = 'create';
 
     /**
      * @inheritdoc

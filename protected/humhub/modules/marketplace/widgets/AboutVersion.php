@@ -14,7 +14,6 @@ use Yii;
 
 class AboutVersion extends Widget
 {
-
     /**
      * @inheritDoc
      */

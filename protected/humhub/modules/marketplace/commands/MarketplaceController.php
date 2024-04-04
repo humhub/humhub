@@ -12,9 +12,13 @@ use humhub\components\Module;
 use humhub\models\ModuleEnabled;
 use humhub\modules\admin\libs\HumHubAPI;
 use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
 use yii\base\InvalidArgumentException;
+use yii\base\InvalidConfigException;
 use yii\console\Controller;
 use yii\helpers\Console;
+use yii\web\HttpException;
 
 /**
  * HumHub Module Managament
@@ -24,7 +28,6 @@ use yii\helpers\Console;
  */
 class MarketplaceController extends Controller
 {
-
     /**
      * @inerhitdoc
      */
@@ -45,7 +48,7 @@ class MarketplaceController extends Controller
     /**
      * Lists all installed and enabled modules.
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function actionList()
     {
@@ -83,10 +86,10 @@ class MarketplaceController extends Controller
      * Installs a given module.
      *
      * @param string $moduleId
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\web\HttpException
+     * @throws ErrorException
+     * @throws Exception
+     * @throws InvalidConfigException
+     * @throws HttpException
      */
     public function actionInstall($moduleId)
     {
@@ -99,8 +102,8 @@ class MarketplaceController extends Controller
      * Uninstalls a given module.
      *
      * @param string $moduleId
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\Exception
+     * @throws ErrorException
+     * @throws Exception
      */
     public function actionRemove($moduleId)
     {
@@ -121,7 +124,7 @@ class MarketplaceController extends Controller
      * Updates a module
      *
      * @param string $moduleId
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @todo Handle no marketplace modules
      *
      */
@@ -235,7 +238,7 @@ class MarketplaceController extends Controller
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
         if ($module === null || !Yii::$app->hasModule($moduleId)) {
-            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found or activated!\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found or enabled!\n"), Console::FG_RED, Console::BOLD);
             return 1;
         }
 
@@ -249,10 +252,10 @@ class MarketplaceController extends Controller
      * Registers a given module.
      *
      * @param string $licenceKey
-     * @throws \yii\base\ErrorException
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\web\HttpException
+     * @throws ErrorException
+     * @throws Exception
+     * @throws InvalidConfigException
+     * @throws HttpException
      */
     public function actionRegister($licenceKey)
     {

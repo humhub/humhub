@@ -28,7 +28,6 @@ use yii\web\HttpException;
  */
 abstract class WallCreateContentForm extends Widget
 {
-
     /**
      * @var string form submit route/url (required)
      */
@@ -107,14 +106,14 @@ abstract class WallCreateContentForm extends Widget
     {
         Yii::$app->response->format = 'json';
 
-        $visibility = Yii::$app->request->post('visibility', Content::VISIBILITY_PRIVATE);
-        if ($visibility == Content::VISIBILITY_PUBLIC && !$contentContainer->can(CreatePublicContent::class)) {
+        $visibility = (int)Yii::$app->request->post('visibility', Content::VISIBILITY_PRIVATE);
+        if ($visibility === Content::VISIBILITY_PUBLIC && !$contentContainer->can(CreatePublicContent::class)) {
             $visibility = Content::VISIBILITY_PRIVATE;
         }
 
         $record->content->visibility = $visibility;
         $record->content->container = $contentContainer;
-        $record->content->setState(Yii::$app->request->post('state'), [
+        $record->content->getStateService()->set(Yii::$app->request->post('state'), [
             'scheduled_at' => Yii::$app->request->post('scheduledDate')
         ]);
 

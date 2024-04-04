@@ -8,7 +8,9 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -19,7 +21,6 @@ use Yii;
  */
 class SpaceDirectoryIcons extends Widget
 {
-
     /**
      * @var Space
      */
@@ -39,7 +40,7 @@ class SpaceDirectoryIcons extends Widget
 
         return $this->render('spaceDirectoryIcons', [
             'space' => $this->space,
-            'membersCount' => Yii::$app->formatter->asShortInteger($membersCount),
+            'membersCount' => Yii::$app->formatter->asShortInteger($count),
             'canViewMembers' => $membership && $membership->isPrivileged(),
         ]);
     }

@@ -8,20 +8,24 @@
 
 namespace humhub\modules\notification;
 
+use Exception;
+use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use Yii;
 use humhub\modules\notification\models\Notification;
+use yii\base\BaseObject;
+use yii\helpers\Console;
 
 /**
  * Events provides callbacks for all defined module events.
  *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * On User delete, also delete all posts
      *
@@ -91,7 +95,7 @@ class Events extends \yii\base\BaseObject
                         $notification->delete();
                     }
                 }
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 // Handles errors for getSourceObject() calls
                 if ($integrityChecker->showFix("Deleting notification id " . $notification->id . " source class set but seems to no longer exist!")) {
                     $notification->delete();
@@ -124,8 +128,6 @@ class Events extends \yii\base\BaseObject
                     $notification->delete();
                 }
             }
-
-
         }
     }
 
@@ -150,7 +152,7 @@ class Events extends \yii\base\BaseObject
         // Delete unseen notifications which are older than 3 months
         self::deleteNotifications(false, $module->deleteUnseenNotificationsMonths);
 
-        $controller->stdout('done.' . PHP_EOL, \yii\helpers\Console::FG_GREEN);
+        $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
     }
 
     /**
@@ -170,9 +172,12 @@ class Events extends \yii\base\BaseObject
 
     public static function onActiveRecordDelete($event)
     {
+        /* @var ActiveRecord $record */
+        $record = $event->sender;
+
         models\Notification::deleteAll([
-            'source_class' => $event->sender->className(),
-            'source_pk' => $event->sender->getPrimaryKey(),
+            'source_class' => PolymorphicRelation::getObjectModel($record),
+            'source_pk' => $record->getPrimaryKey(),
         ]);
     }
 
@@ -182,5 +187,4 @@ class Events extends \yii\base\BaseObject
             $event->sender->addWidget(widgets\UpdateNotificationCount::class);
         }
     }
-
 }

@@ -8,5 +8,5 @@ return array (
   'Scope' => '',
   'Sorting' => '',
   'Topic' => 'Тема',
-  'Visibility' => '',
+  'Visibility' => 'Видимість',
 );

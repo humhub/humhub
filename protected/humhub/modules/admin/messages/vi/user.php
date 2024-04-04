@@ -44,7 +44,6 @@ return array (
   'Create new group' => 'Tạo nhóm mới',
   'Create new profile category' => 'Tạo chuyên mục hồ sơ mới',
   'Create new profile field' => 'Tạo trường thông tin hồ sơ mới',
-  'Deactivate' => '',
   'Deactivate individual profile permissions?' => '',
   'Decline' => 'Từ chối',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Từ chối và xóa người dùng: <strong>{displayName}</strong>',
@@ -103,6 +102,7 @@ Kind Regards
 
 ' => '',
   'Here you can create or edit profile categories and fields.' => 'Ở đây bạn có thể tạo hoặc sửa các chuyên mục và trường thông tin của hồ sơ người dùng.',
+  'Hide online status of users' => '',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Nếu option này không được chọn, quyền sở hữu của các diễn đàn sẽ được chuyển nhượng sang cho bạn.',
   'Impersonate' => 'Mạo danh',

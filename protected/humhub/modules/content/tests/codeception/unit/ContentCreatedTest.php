@@ -3,6 +3,7 @@
 namespace tests\codeception\unit;
 
 use humhub\modules\content\models\Content;
+use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\post\models\Post;
 use Yii;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -12,7 +13,6 @@ use humhub\modules\user\models\User;
 
 class ContentCreatedTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     /**
@@ -167,7 +167,7 @@ class ContentCreatedTest extends HumHubDbTestCase
 
         $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Admin and User2 are member of Space1 -> Space1 is set to default notification space.
      * After User2 posts new content Admin user should automatically be notified.
@@ -185,7 +185,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Admin and User2 are member of Space1 -> Space1 is set to default notification space.
      * Admin explicitly removes the default notification space.
@@ -195,13 +195,13 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
 
         Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
-        
+
         // Setting empty spaceguids settings
-        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 1])]);
+        $settings = new NotificationSettings(['user' => User::findOne(['id' => 1])]);
         $settings->save();
-        
+
         $this->becomeUser('User2');
-        
+
         $post = new Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 1]));
         $post->content->visibility = Content::VISIBILITY_PRIVATE;
@@ -210,7 +210,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * After User2 posts new public post Admin all other users should be notified.
      */
@@ -227,7 +227,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(4, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Disable space as member and post public content.
      */
@@ -236,13 +236,13 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->becomeUser('Admin');
 
         Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
-        
+
         // Setting empty spaceguids settings
-        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 1])]);
+        $settings = new NotificationSettings(['user' => User::findOne(['id' => 1])]);
         $settings->save();
-        
+
         $this->becomeUser('User2');
-        
+
         $post = new Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 1]));
         $post->content->visibility = Content::VISIBILITY_PUBLIC;
@@ -251,7 +251,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(3, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Disable space as member and post public content.
      */
@@ -260,13 +260,13 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
-        
+
         // Setting empty spaceguids settings
-        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 2])]);
+        $settings = new NotificationSettings(['user' => User::findOne(['id' => 2])]);
         $settings->save();
-        
+
         $this->becomeUser('User2');
-        
+
         $post = new Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 1]));
         $post->content->visibility = Content::VISIBILITY_PUBLIC;
@@ -275,7 +275,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         // Note Admin is following Space2 so we expect one notification mail.
         $this->assertMailSent(3, 'ContentCreated Notification Mail sent');
     }
-    
+
     /**
      * Disable space as member and post public content.
      */
@@ -284,21 +284,21 @@ class ContentCreatedTest extends HumHubDbTestCase
         $this->becomeUser('User1');
 
         Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
-        
+
         // Setting empty spaceguids settings
-        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 2])]);
+        $settings = new NotificationSettings(['user' => User::findOne(['id' => 2])]);
         $settings->save();
-        
+
         $this->becomeUser('Admin');
 
         Yii::$app->notification->setSpaces(['5396d499-20d6-4233-800b-c6c86e5fa34a']);
-        
+
         // Setting empty spaceguids settings
-        $settings = new \humhub\modules\notification\models\forms\NotificationSettings(['user' => User::findOne(['id' => 1])]);
+        $settings = new NotificationSettings(['user' => User::findOne(['id' => 1])]);
         $settings->save();
-        
+
         $this->becomeUser('User2');
-        
+
         $post = new Post(['message' => 'MyTestContent']);
         $post->content->setContainer(Space::findOne(['id' => 1]));
         $post->content->visibility = Content::VISIBILITY_PUBLIC;

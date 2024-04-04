@@ -63,25 +63,25 @@ use yii\helpers\Html;
                         'attribute' => 'created_at',
                         'format' => 'raw',
                         'value' =>
-                        function ($data) {
-                            if ($data->created_at == '') {
-                                return Yii::t('SpaceModule.manage', '-');
-                            }
+                            function ($data) {
+                                if ($data->created_at == '') {
+                                    return Yii::t('SpaceModule.manage', '-');
+                                }
 
-                            return TimeAgo::widget(['timestamp' => $data->created_at]);
-                        }
+                                return TimeAgo::widget(['timestamp' => $data->created_at]);
+                            }
                     ],
                     [
                         'attribute' => 'last_visit',
                         'format' => 'raw',
                         'value' =>
-                        function ($data) use (&$groups) {
-                            if (empty($data->last_visit)) {
-                                return Yii::t('SpaceModule.manage', 'never');
-                            }
+                            function ($data) use (&$groups) {
+                                if (empty($data->last_visit)) {
+                                    return Yii::t('SpaceModule.manage', 'never');
+                                }
 
-                            return TimeAgo::widget(['timestamp' => $data->last_visit]);
-                        }
+                                return TimeAgo::widget(['timestamp' => $data->last_visit]);
+                            }
                     ],
                     [
                         'label' => Yii::t('SpaceModule.manage', 'Role'),
@@ -97,9 +97,9 @@ use yii\helpers\Html;
                         'filter' => $groups,
                         'dropDownOptions' => $groups,
                         'value' =>
-                        function ($data) use (&$groups, $space) {
-                            return $groups[$data->group_id];
-                        }
+                            function ($data) use (&$groups, $space) {
+                                return $groups[$data->group_id];
+                            }
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -111,10 +111,10 @@ use yii\helpers\Html;
                             'update' => function ($url, $model) {
                                 return false;
                             },
-                            'delete' => function ($url, $model) use($space) {
+                            'delete' => function ($url, $model) use ($space) {
                                 return Button::danger()->tooltip(Yii::t('SpaceModule.manage', 'Remove from space'))
                                     ->link(['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space])
-                                    ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.') ])
+                                    ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.')])
                                     ->icon('remove')->xs();
                             }
                         ],

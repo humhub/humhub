@@ -7,7 +7,6 @@
 
 namespace humhub\modules\user\widgets;
 
-
 use humhub\libs\Html;
 use humhub\modules\user\assets\PermissionGridModuleFilterAsset;
 use humhub\widgets\JsWidget;
@@ -48,7 +47,7 @@ class PermisionGridModuleFilter extends JsWidget
     {
         return [
             'class' => 'form-control pull-right visible-md visible-lg',
-            'style' => 'width:150px;margin-right:20px'
+            'style' => 'width:150px'
         ];
     }
 

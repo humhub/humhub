@@ -9,25 +9,28 @@
 namespace humhub\modules\like;
 
 use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
 use humhub\modules\like\models\Like;
+use Throwable;
 use Yii;
+use yii\base\BaseObject;
+use yii\db\StaleObjectException;
 
 /**
  * Events provides callbacks to handle events.
  *
  * @author luke
  */
-class Events extends \yii\base\BaseObject
+class Events extends BaseObject
 {
-
     /**
      * On User delete, also delete all comments
      *
      * @param Event $event
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public static function onUserDelete($event)
     {
@@ -44,15 +47,15 @@ class Events extends \yii\base\BaseObject
      *
      * @param $event
      * @return bool
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public static function onActiveRecordDelete($event)
     {
         /** @var ActiveRecord $record */
         $record = $event->sender;
         if ($record->hasAttribute('id')) {
-            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => $record->className()]) as $like) {
+            foreach (Like::findAll(['object_id' => $record->id, 'object_model' => PolymorphicRelation::getObjectModel($record)]) as $like) {
                 $like->delete();
             }
         }
@@ -92,7 +95,12 @@ class Events extends \yii\base\BaseObject
      */
     public static function onWallEntryLinksInit($event)
     {
-        $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
+        /** @var Module $module */
+        $module = Yii::$app->getModule('like');
+
+        if ($module->canLike($event->sender->object)) {
+            $event->sender->addWidget(widgets\LikeLink::class, ['object' => $event->sender->object], ['sortOrder' => 20]);
+        }
     }
 
 

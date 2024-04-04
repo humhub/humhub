@@ -73,7 +73,10 @@ class GroupTest extends HumHubDbTestCase
     public function testReturnAdminGroupId()
     {
         $group = Group::findOne(['name' => 'Administrator']);
-        static::assertEquals($group->id, Group::getAdminGroupId());
+        // check for the uncached value
+        static::assertSame($group->id, Group::getAdminGroupId());
+        // now check again for the cached value
+        static::assertSame($group->id, Group::getAdminGroupId());
     }
 
     public function testCheckIfGroupHasManager()
@@ -164,7 +167,7 @@ class GroupTest extends HumHubDbTestCase
         $user = User::findOne(['username' => 'User1']);
         $user2 = User::findOne(['username' => 'User2']);
         static::assertFalse($group->removeUser($user));
-        static::assertTrue((boolean) $group->removeUser($user2));
+        static::assertTrue((bool)$group->removeUser($user2));
     }
 
     public function testReturnSpaceRelationship()

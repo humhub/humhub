@@ -23,7 +23,6 @@ use humhub\modules\live\models\Live;
  */
 class Poll extends BaseDriver
 {
-
     /**
      * Defines the minimum polling interval in seconds if the default polling client is active.
      */

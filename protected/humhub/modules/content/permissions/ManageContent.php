@@ -8,17 +8,18 @@
 
 namespace humhub\modules\content\permissions;
 
+use humhub\libs\BasePermission;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use Yii;
 
 /**
  * Manage content permission for a content container
- * 
+ *
  * @since 1.1
  * @author Luke
  */
-class ManageContent extends \humhub\libs\BasePermission
+class ManageContent extends BasePermission
 {
     /**
      * @inheritdoc
@@ -53,7 +54,7 @@ class ManageContent extends \humhub\libs\BasePermission
      */
     public function getTitle()
     {
-        return  Yii::t('CommentModule.permissions', 'Manage content');
+        return Yii::t('CommentModule.permissions', 'Manage content');
     }
 
     /**

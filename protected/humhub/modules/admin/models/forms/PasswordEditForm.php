@@ -10,7 +10,7 @@ use humhub\modules\user\models\Password;
  */
 class PasswordEditForm extends Password
 {
-    const SCENARIO_EDIT_ADMIN = 'editAdmin';
+    public const SCENARIO_EDIT_ADMIN = 'editAdmin';
 
     /**
      * @inheritdoc
@@ -37,7 +37,7 @@ class PasswordEditForm extends Password
      */
     public function rules()
     {
-        return array_merge( parent::rules(), [
+        return array_merge(parent::rules(), [
             ['newPassword', 'compare', 'compareAttribute' => 'newPasswordConfirm', 'on' => self::SCENARIO_EDIT_ADMIN],
             ['newPasswordConfirm', 'compare', 'compareAttribute' => 'newPassword', 'on' => self::SCENARIO_EDIT_ADMIN],
         ]);

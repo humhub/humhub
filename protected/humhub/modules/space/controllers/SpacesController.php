@@ -22,7 +22,6 @@ use yii\helpers\Url;
  */
 class SpacesController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -67,7 +66,7 @@ class SpacesController extends Controller
         $spaceQuery = new SpaceDirectoryQuery();
 
         $spaceCards = '';
-        foreach ($spaceQuery->all() as $space) {
+        foreach ($spaceQuery->with('contentContainerRecord')->all() as $space) {
             $spaceCards .= SpaceDirectoryCard::widget(['space' => $space]);
         }
 

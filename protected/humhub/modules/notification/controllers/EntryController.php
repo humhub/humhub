@@ -9,6 +9,7 @@
 namespace humhub\modules\notification\controllers;
 
 use humhub\modules\content\models\Content;
+use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\console\Response;
@@ -26,11 +27,10 @@ use humhub\components\access\ControllerAccess;
  */
 class EntryController extends Controller
 {
-
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY]
@@ -45,17 +45,17 @@ class EntryController extends Controller
      * @throws Exception
      * @throws HttpException
      * @throws IntegrityException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionIndex($id, $cId = null)
     {
         $notificationModel = Notification::findOne(['id' => $id, 'user_id' => Yii::$app->user->id]);
 
-        if($notificationModel) {
+        if ($notificationModel) {
             $notification = $notificationModel->getBaseModel();
 
-            if(!$notification) {
-                throw new HttpException(404, Yii::t('NotificationModule.base','The requested content is not valid or was removed!'));
+            if (!$notification) {
+                throw new HttpException(404, Yii::t('NotificationModule.base', 'The requested content is not valid or was removed!'));
             }
 
             $url = $notification->getUrl();
@@ -67,8 +67,8 @@ class EntryController extends Controller
             $url = $this->getContentUrl($cId);
         }
 
-        if(!$url) {
-            throw new HttpException(404, Yii::t('NotificationModule.base','The requested content is not valid or was removed!'));
+        if (!$url) {
+            throw new HttpException(404, Yii::t('NotificationModule.base', 'The requested content is not valid or was removed!'));
         }
 
         return $this->redirect($url);
@@ -78,25 +78,25 @@ class EntryController extends Controller
      * @param null $cId
      * @return string|null
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      * @throws Exception
      */
-    private function getContentUrl($cId = null) {
-        if($cId === null) {
+    private function getContentUrl($cId = null)
+    {
+        if ($cId === null) {
             return null;
         }
 
         $content = Content::findOne(['id' => $cId]);
 
-        if(!$content) {
+        if (!$content) {
             return null;
         }
 
-        if(!$content->canView()) {
+        if (!$content->canView()) {
             throw new HttpException(403);
         }
 
         return $content->getUrl();
     }
-
 }

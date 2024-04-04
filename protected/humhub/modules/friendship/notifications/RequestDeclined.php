@@ -19,7 +19,6 @@ use humhub\modules\notification\components\BaseNotification;
  */
 class RequestDeclined extends BaseNotification
 {
-
     /**
      * @inheritdoc
      */
@@ -31,8 +30,8 @@ class RequestDeclined extends BaseNotification
     public $viewName = "friendshipDeclined";
 
     /**
-    * @inheritdoc
-    */
+     * @inheritdoc
+     */
     public $requireSource = false;
 
     /**
@@ -45,7 +44,7 @@ class RequestDeclined extends BaseNotification
      */
     public function category()
     {
-        return new FriendshipNotificationCategory;
+        return new FriendshipNotificationCategory();
     }
 
     /**
@@ -53,7 +52,7 @@ class RequestDeclined extends BaseNotification
      */
     public function getUrl()
     {
-        return $this->originator->getUrl();
+        return $this->originator->getUrl(true);
     }
 
     public function getMailSubject()
@@ -77,5 +76,3 @@ class RequestDeclined extends BaseNotification
     }
 
 }
-
-?>

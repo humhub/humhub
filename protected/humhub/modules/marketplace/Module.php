@@ -11,8 +11,8 @@ namespace humhub\modules\marketplace;
 use humhub\components\Module as BaseModule;
 use humhub\modules\marketplace\components\HumHubApiClient;
 use humhub\modules\marketplace\components\LicenceManager;
-use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\components\OnlineModuleManager;
+use humhub\modules\marketplace\models\Licence;
 use Yii;
 
 /**
@@ -62,6 +62,8 @@ class Module extends BaseModule
      * @var array A list of module ids that cannot be installed.
      */
     public $moduleBlacklist = [];
+    private $_onlineModuleManager = null;
+    private $_humhubApi = null;
 
     /**
      * @inheritdoc
@@ -70,10 +72,6 @@ class Module extends BaseModule
     {
         return Yii::t('MarketplaceModule.base', 'Marketplace');
     }
-
-    private $_onlineModuleManager = null;
-
-    private $_humhubApi = null;
 
     /**
      * @inheritDoc
@@ -89,6 +87,27 @@ class Module extends BaseModule
         if (!empty(Yii::$app->params['moduleMarketplacePath'])) {
             $this->modulesPath = Yii::$app->params['moduleMarketplacePath'];
         }
+    }
+
+    /**
+     * @return bool
+     * @deprecated since v1.16; use `static::isMarketplaceEnabled()` instead
+     * @see static::isMarketplaceEnabled()
+     */
+    public static function isEnabled(): bool
+    {
+        return static::isMarketplaceEnabled();
+    }
+
+    /**
+     * @return bool
+     */
+    public static function isMarketplaceEnabled(): bool
+    {
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+
+        return $marketplaceModule && $marketplaceModule->enabled;
     }
 
     /**
@@ -126,24 +145,5 @@ class Module extends BaseModule
         }
 
         return $this->_humhubApi;
-    }
-
-    /**
-     * Check if the modules list is filtered by single tag
-     *
-     * @param string $tag
-     * @return bool
-     */
-    public function isFilteredBySingleTag(string $tag): bool
-    {
-        $tags = Yii::$app->request->get('tags', null);
-
-        if (empty($tags)) {
-            return false;
-        }
-
-        $tags = explode(',', $tags);
-
-        return count($tags) === 1 && $tags[0] == $tag;
     }
 }

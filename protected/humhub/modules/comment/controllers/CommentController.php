@@ -10,7 +10,7 @@ namespace humhub\modules\comment\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\Helpers;
+use humhub\helpers\DataTypeHelper;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\models\forms\AdminDeleteCommentForm;
 use humhub\modules\comment\models\forms\CommentForm;
@@ -22,12 +22,15 @@ use humhub\modules\comment\widgets\Form;
 use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\handler\FileHandlerCollection;
+use Throwable;
 use Yii;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\BadRequestHttpException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
+use yii\web\Response;
 
 /**
  * CommentController provides all comment related actions.
@@ -39,9 +42,9 @@ use yii\web\NotFoundHttpException;
 class CommentController extends Controller
 {
     /**
-     * @return array
+     * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             [ControllerAccess::RULE_LOGGED_IN_ONLY => ['post', 'edit', 'delete']],
@@ -64,7 +67,8 @@ class CommentController extends Controller
             $modelClass = Yii::$app->request->get('objectModel', Yii::$app->request->post('objectModel'));
             $modelPk = (int)Yii::$app->request->get('objectId', Yii::$app->request->post('objectId'));
 
-            Helpers::CheckClassType($modelClass, [Comment::class, ContentActiveRecord::class]);
+            /** @var Comment|ContentActiveRecord $modelClass */
+            $modelClass = DataTypeHelper::matchClassType($modelClass, [Comment::class, ContentActiveRecord::class], true);
             $this->target = $modelClass::findOne(['id' => $modelPk]);
 
             if (!$this->target) {
@@ -87,9 +91,9 @@ class CommentController extends Controller
      */
     public function actionShow()
     {
-        $commentId = (int) Yii::$app->request->get('commentId');
+        $commentId = (int)Yii::$app->request->get('commentId');
         $type = Yii::$app->request->get('type', ShowMore::TYPE_PREVIOUS);
-        $pageSize = (int) Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
+        $pageSize = (int)Yii::$app->request->get('pageSize', $this->module->commentsBlockLoadSize);
         if ($pageSize > $this->module->commentsBlockLoadSize) {
             $pageSize = $this->module->commentsBlockLoadSize;
         }
@@ -112,7 +116,7 @@ class CommentController extends Controller
             $output .= ShowMore::widget([
                 'object' => $this->target,
                 'pageSize' => $pageSize,
-                'commentId' => $comments[count($comments)-1]->id,
+                'commentId' => $comments[count($comments) - 1]->id,
                 'type' => $type,
             ]);
         }
@@ -198,7 +202,7 @@ class CommentController extends Controller
     {
         $comment = $this->getComment($id);
 
-        if (!$comment->canRead()) {
+        if (!$comment->canView()) {
             throw new ForbiddenHttpException();
         }
 
@@ -210,12 +214,12 @@ class CommentController extends Controller
 
     /**
      * @param $id
-     * @return \yii\web\Response
+     * @return Response
      * @throws ForbiddenHttpException
      * @throws HttpException
      * @throws NotFoundHttpException
-     * @throws \Throwable
-     * @throws \yii\db\StaleObjectException
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function actionDelete($id)
     {

@@ -9,10 +9,12 @@
 namespace humhub\modules\stream\models\filters;
 
 
+use humhub\modules\activity\stream\ActivityStreamQuery;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\models\ContentContainerStreamQuery;
 use humhub\modules\stream\models\StreamQuery;
 use humhub\modules\ui\filter\models\QueryFilter;
+use humhub\modules\user\models\User;
 
 abstract class StreamQueryFilter extends QueryFilter
 {
@@ -56,4 +58,40 @@ abstract class StreamQueryFilter extends QueryFilter
     {
     }
 
+    /**
+     * @return bool
+     * @since v1.15
+     */
+    public function allowPinContent(): bool
+    {
+        if (empty($this->streamQuery->pinnedContentSupport)) {
+            return false;
+        }
+
+        return $this->streamQuery->isInitialQuery();
+    }
+
+    /**
+     * Check if a not published content can be visible
+     *
+     * @return bool
+     * @since v1.15
+     */
+    public function allowStateContent(): bool
+    {
+        if ($this->streamQuery instanceof ActivityStreamQuery && $this->streamQuery->activity) {
+            // Don't display for activity stream
+            return false;
+        }
+
+        if ($this->streamQuery instanceof ContentContainerStreamQuery &&
+            $this->streamQuery->container instanceof User &&
+            $this->streamQuery->user instanceof User &&
+            !$this->streamQuery->container->is($this->streamQuery->user)) {
+            // Don't display from another user
+            return false;
+        }
+
+        return true;
+    }
 }

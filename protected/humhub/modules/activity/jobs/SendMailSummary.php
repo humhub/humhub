@@ -8,13 +8,12 @@
 
 namespace humhub\modules\activity\jobs;
 
+use humhub\modules\activity\components\MailSummary;
+use humhub\modules\activity\components\MailSummaryProcessor;
 use humhub\modules\activity\Module;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
+use humhub\modules\queue\LongRunningActiveJob;
 use Yii;
-use humhub\modules\queue\ActiveJob;
-use humhub\modules\activity\components\MailSummaryProcessor;
-use humhub\modules\activity\components\MailSummary;
-use yii\queue\RetryableJobInterface;
 
 /**
  * SendMailSummary
@@ -22,19 +21,12 @@ use yii\queue\RetryableJobInterface;
  * @since 1.2
  * @author Luke
  */
-class SendMailSummary extends ActiveJob implements ExclusiveJobInterface, RetryableJobInterface
+class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterface
 {
-
     /**
      * @var int the interval
      */
     public $interval;
-
-
-    /**
-     * @var int maximum 1 hour
-     */
-    private $maxExecutionTime = 60 * 60 * 1;
 
     /**
      * @inhertidoc
@@ -55,28 +47,16 @@ class SendMailSummary extends ActiveJob implements ExclusiveJobInterface, Retrya
             return;
         }
 
-        if ($this->interval === MailSummary::INTERVAL_DAILY || $this->interval === MailSummary::INTERVAL_HOURLY || $this->interval === MailSummary::INTERVAL_WEEKLY) {
+        if (in_array($this->interval, [
+            MailSummary::INTERVAL_DAILY,
+            MailSummary::INTERVAL_HOURLY,
+            MailSummary::INTERVAL_WEEKLY,
+            MailSummary::INTERVAL_MONTHLY,
+        ], true)) {
             MailSummaryProcessor::process($this->interval);
         } else {
             Yii::error('Invalid summary interval given' . $this->interval, 'activity.job');
             return;
         }
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function getTtr()
-    {
-        return $this->maxExecutionTime;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function canRetry($attempt, $error)
-    {
-        return false;
-    }
-
 }

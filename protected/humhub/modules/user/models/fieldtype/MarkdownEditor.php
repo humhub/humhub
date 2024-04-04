@@ -9,12 +9,11 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\User;
 use Yii;
 
 /**
  * Markdown Profile Field
- * 
+ *
  * @since 1.1
  */
 class MarkdownEditor extends BaseType
@@ -30,12 +29,12 @@ class MarkdownEditor extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-                    get_class($this) => [
-                        'type' => 'form',
-                        'title' => Yii::t('UserModule.profile', 'Text area field options'),
-                        'elements' => [
-                        ]
-                    ]]);
+            get_class($this) => [
+                'type' => 'form',
+                'title' => Yii::t('UserModule.profile', 'Text area field options'),
+                'elements' => [
+                ]
+            ]]);
     }
 
     /**
@@ -61,15 +60,4 @@ class MarkdownEditor extends BaseType
         return parent::getFieldRules($rules);
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
-    {
-        return parent::getFieldFormDefinition($user, [
-            'rows' => '3'
-        ]);
-    }
-
 }
-?>

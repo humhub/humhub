@@ -8,11 +8,16 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\modules\content\models\ContentContainer;
+use humhub\modules\content\models\ContentContainerModuleState;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use ReflectionClass;
 use Yii;
-use humhub\modules\content\models\ContentContainerModuleState;
-use humhub\modules\content\models\ContentContainer;
+use yii\base\Component;
+use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\db\ActiveQuery;
 
 /**
  * ModuleManager handles modules of a content container.
@@ -20,10 +25,10 @@ use yii\base\InvalidConfigException;
  * @since 1.3
  * @author Luke
  */
-class ContentContainerModuleManager extends \yii\base\Component
+class ContentContainerModuleManager extends Component
 {
     /**
-     * @var \humhub\modules\content\components\ContentContainerActiveRecord
+     * @var ContentContainerActiveRecord
      */
     public $contentContainer;
 
@@ -41,8 +46,8 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Disables a module for the content container
      *
      * @param string $id the module id
-     * @return boolean
-     * @throws \yii\base\Exception
+     * @return bool
+     * @throws Exception
      */
     public function disable($id)
     {
@@ -63,8 +68,8 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Enables a module for this content container
      *
      * @param string $id the module id
-     * @return boolean
-     * @throws \yii\base\Exception
+     * @return bool
+     * @throws Exception
      */
     public function enable($id)
     {
@@ -85,7 +90,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Checks whether the module is activated or not
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      */
     public function isEnabled($id)
     {
@@ -101,8 +106,8 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Checks whether the module can be enabled or not
      *
      * @param string $id the module id
-     * @return boolean
-     * @throws \yii\base\Exception
+     * @return bool
+     * @throws Exception
      */
     public function canEnable($id)
     {
@@ -118,11 +123,11 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Checks whether the module can be disabled or not
      *
      * @param string $id the module id
-     * @return boolean
+     * @return bool
      */
     public function canDisable($id)
     {
-        if (!$this->isEnabled($id) || self::getDefaultState($this->contentContainer->className(), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
+        if (!$this->isEnabled($id) || self::getDefaultState(get_class($this->contentContainer), $id) === ContentContainerModuleState::STATE_FORCE_ENABLED) {
             return false;
         }
 
@@ -152,7 +157,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Returns an array of all available modules
      *
      * @return ContentContainerModule[] a list of modules
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getAvailable()
     {
@@ -162,9 +167,8 @@ class ContentContainerModuleManager extends \yii\base\Component
 
         $this->_available = [];
 
-        foreach (Yii::$app->moduleManager->getModules() as $id => $module) {
-            if ($module instanceof ContentContainerModule && $module->isActivated &&
-                $module->hasContentContainerType($this->contentContainer->className())) {
+        foreach (Yii::$app->moduleManager->getModules() as $module) {
+            if ($this->isAvailableModule($module)) {
                 $this->_available[$module->id] = $module;
             }
         }
@@ -172,12 +176,21 @@ class ContentContainerModuleManager extends \yii\base\Component
         return $this->_available;
     }
 
+    public function isAvailableModule($module): bool
+    {
+        return
+            $module instanceof ContentContainerModule
+            && $module->getIsEnabled()
+            && $module->hasContentContainerType(get_class($this->contentContainer))
+            && self::getDefaultState(get_class($this->contentContainer), $module->id) !== ContentContainerModuleState::STATE_NOT_AVAILABLE;
+    }
+
     /**
      * Returns a list of modules that can be installed by the ContentContainer.
      * Unlike `getAvailable()` it does not contain any modules which cannot be disabled or enabled.
      *
      * @return ContentContainerModule[] a list of modules
-     * @throws \yii\base\Exception
+     * @throws Exception
      * @since 1.6.5
      */
     public function getInstallable()
@@ -277,7 +290,7 @@ class ContentContainerModuleManager extends \yii\base\Component
     {
         $moduleState = ContentContainerModuleState::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
         if ($moduleState === null) {
-            $moduleState = new ContentContainerModuleState;
+            $moduleState = new ContentContainerModuleState();
             $moduleState->contentcontainer_id = $this->contentContainer->contentcontainer_id;
             $moduleState->module_id = $id;
         }
@@ -289,7 +302,7 @@ class ContentContainerModuleManager extends \yii\base\Component
      * Returns a query for \humhub\modules\content\models\ContentContainer where the given module is enabled.
      *
      * @param string $id the module mid
-     * @return \yii\db\ActiveQuery the list of content container
+     * @return ActiveQuery the list of content container
      */
     public static function getContentContainerQueryByModule($id)
     {
@@ -302,7 +315,7 @@ class ContentContainerModuleManager extends \yii\base\Component
         $moduleSettings = Yii::$app->getModule($id)->settings;
 
         // Add default enabled modules
-        $contentContainerClasses = [\humhub\modules\user\models\User::class, \humhub\modules\space\models\Space::class];
+        $contentContainerClasses = [User::class, Space::class];
         foreach ($contentContainerClasses as $class) {
             $reflect = new ReflectionClass($class);
             $defaultState = (int)$moduleSettings->get('moduleManager.defaultState.' . $reflect->getShortName());
@@ -317,25 +330,27 @@ class ContentContainerModuleManager extends \yii\base\Component
     /**
      * This method is called to determine classes of Content models which can be posted on wall.
      *
-     * @since 1.13
      * @param ContentContainerActiveRecord|null $contentContainer
      * @return ContentActiveRecord[]
+     * @since 1.13
      */
     public function getContentClasses(): array
     {
-        $contentClasses = [];
-        foreach ($this->getEnabled() as $moduleId) {
-            $module = Yii::$app->getModule($moduleId);
-            foreach ($module->getContentClasses($this->contentContainer) as $class) {
-                $content = new $class($this->contentContainer);
-                if (!($content instanceof ContentActiveRecord)) {
-                    throw new InvalidConfigException($class . ' must be instance of ContentActiveRecord!');
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->id, function () {
+            $contentClasses = [];
+            foreach ($this->getEnabled() as $moduleId) {
+                $module = Yii::$app->getModule($moduleId);
+                foreach ($module->getContentClasses($this->contentContainer) as $class) {
+                    $content = new $class($this->contentContainer);
+                    if (!($content instanceof ContentActiveRecord)) {
+                        throw new InvalidConfigException($class . ' must be instance of ContentActiveRecord!');
+                    }
+                    $contentClasses[] = $content;
                 }
-                $contentClasses[] = $content;
             }
-        }
 
-        return $contentClasses;
+            return $contentClasses;
+        });
     }
 
 }

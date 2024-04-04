@@ -8,24 +8,26 @@
 
 namespace humhub\modules\content\models;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\libs\UUIDValidator;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use yii\db\ActiveRecord;
+use yii\db\IntegrityException;
 
 /**
  * This is the model class for table "contentcontainer".
  *
- * @property integer $id
+ * @property int $id
  * @property string $guid
  * @property string $class
- * @property integer $pk
- * @property integer $owner_user_id
+ * @property int $pk
+ * @property int $owner_user_id
  * @property string $tags_cached readonly, a comma separted list of assigned tags
  * @mixin PolymorphicRelation
+ * @noinspection PropertiesInspection
  */
 class ContentContainer extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -41,10 +43,16 @@ class ContentContainer extends ActiveRecord
     {
         return [
             [['pk', 'owner_user_id'], 'integer'],
-            [['class', 'pk', 'guid'], 'required'],
-            [['guid', 'class'], 'string', 'max' => 255],
+            [['class', 'pk'], 'required'],
+            [['class'], 'string', 'max' => 255],
             [['class', 'pk'], 'unique', 'targetAttribute' => ['class', 'pk'], 'message' => 'The combination of Class and Pk has already been taken.'],
-            [['guid'], 'unique']
+            [['guid'],
+                UUIDValidator::class,
+                'autofillWith' => false,
+                'allowNull' => false,
+                'messageOnForbiddenNull' => 'Cannot not create standalone ContentContainer instance. Instance will be automatically created on ContentContainerActiveRecord::afterSave()'
+            ],
+            [['guid'], 'unique'],
         ];
     }
 
@@ -80,7 +88,7 @@ class ContentContainer extends ActiveRecord
     /**
      * @param $guid
      * @return ContentContainerActiveRecord|null
-     * @throws \yii\db\IntegrityException
+     * @throws IntegrityException
      * @since 1.4
      */
     public static function findRecord($guid)

@@ -19,7 +19,6 @@ use humhub\modules\space\models\Space;
  */
 class UrlRule extends ContentContainerUrlRule
 {
-
     /**
      * @inheritdoc
      */

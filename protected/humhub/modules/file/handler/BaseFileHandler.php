@@ -8,20 +8,22 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\file\models\File;
+use yii\base\Component;
+
 /**
  * BaseFileHandler
- * 
+ *
  * @since 1.2
  * @author Luke
  */
-abstract class BaseFileHandler extends \yii\base\Component
+abstract class BaseFileHandler extends Component
 {
-
     /**
      * Output list position
      */
-    const POSITION_TOP = '1';
-    const POSITION_STANDARD = '5';
+    public const POSITION_TOP = '1';
+    public const POSITION_STANDARD = '5';
 
     /**
      * @var int the position of the file handler
@@ -29,16 +31,16 @@ abstract class BaseFileHandler extends \yii\base\Component
     public $position = self::POSITION_STANDARD;
 
     /**
-     * @var \humhub\modules\file\models\File the file
+     * @var File the file
      */
     public $file;
 
     /**
      * The file handler link
-     * 
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
-     * @see \humhub\modules\file\widgets\FileHandlerButtonDropdown
+     *
      * @return array the HTML attributes of the button.
+     * @see \humhub\modules\file\widgets\FileHandlerButtonDropdown
+     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     abstract public function getLinkAttributes();
 }

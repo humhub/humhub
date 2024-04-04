@@ -8,7 +8,6 @@
 
 namespace humhub\components;
 
-
 /**
  * @inheritdoc
  * @deprecated since 1.3

@@ -1,10 +1,4 @@
 <?php
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- *
- */
 
 namespace humhub\modules\content\widgets\richtext;
 
@@ -46,11 +40,11 @@ use yii\helpers\Url;
  */
 class AbstractRichTextEditor extends JsInputWidget
 {
-    const LAYOUT_BLOCK = 'block';
+    public const LAYOUT_BLOCK = 'block';
 
-    const LAYOUT_INLINE = 'inline';
+    public const LAYOUT_INLINE = 'inline';
 
-    const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
+    public const BACKUP_COOKIE_KEY = 'RichTextEditor.backup';
 
     /**
      * @var string richtext feature preset e.g: 'markdown', 'normal', 'full'
@@ -83,7 +77,7 @@ class AbstractRichTextEditor extends JsInputWidget
      *
      * @var string
      */
-    protected $mentioningRoute = "/search/mentioning";
+    protected $mentioningRoute = '/user/mentioning';
 
     /**
      * Back up content each X seconds, 0 - to don't back up
@@ -127,13 +121,13 @@ class AbstractRichTextEditor extends JsInputWidget
     /**
      * If set to true the picker will be focused automatically.
      *
-     * @var boolean
+     * @var bool
      */
     public $focus = false;
 
     /**
      * Disables the input field.
-     * @var boolean
+     * @var bool
      */
     public $disabled = false;
 
@@ -155,7 +149,7 @@ class AbstractRichTextEditor extends JsInputWidget
     public $visible = true;
 
     /**
-     * @var boolean defines if the default label should be rendered.
+     * @var bool defines if the default label should be rendered.
      */
     public $label = false;
 
@@ -181,6 +175,7 @@ class AbstractRichTextEditor extends JsInputWidget
         $inputOptions = $this->getInputAttributes();
 
         if ($this->form != null) {
+            $this->fieldOptions['template'] = "{label}\n{input}";
             $input = $this->form->field($this->model, $this->attribute, $this->fieldOptions)->textarea($inputOptions)->label(false);
             $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
             $richText = $this->getLabel() . $richText;
@@ -206,7 +201,8 @@ class AbstractRichTextEditor extends JsInputWidget
      * This method can be overwritten in order to prepend content after the actual rich text content.
      * @return string
      */
-    public function prepend() {
+    public function prepend()
+    {
         return '';
     }
 
@@ -227,7 +223,7 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public function getLabel()
     {
-        if(!$this->label) {
+        if (!$this->label) {
             return "";
         }
 
@@ -259,7 +255,7 @@ class AbstractRichTextEditor extends JsInputWidget
 
         $config = ArrayHelper::merge(static::$renderer, $params);
         unset($config['class']);
-        return call_user_func(static::$renderer['class'].'::output', $content, $config);
+        return call_user_func(static::$renderer['class'] . '::output', $content, $config);
     }
 
     /**
@@ -277,11 +273,11 @@ class AbstractRichTextEditor extends JsInputWidget
             'focus' => $this->focus
         ];
 
-        if(!empty($this->preset)) {
+        if (!empty($this->preset)) {
             $result['preset'] = $this->preset;
         }
 
-        if(!empty($this->placeholder)) {
+        if (!empty($this->placeholder)) {
             $result['placeholder'] = $this->placeholder;
         }
 
@@ -298,6 +294,6 @@ class AbstractRichTextEditor extends JsInputWidget
      */
     public function getMentioningUrl()
     {
-        return ($this->mentioningUrl) ? $this->mentioningUrl : Url::to([$this->mentioningRoute]);
+        return $this->mentioningUrl ?: Url::to([$this->mentioningRoute]);
     }
 }

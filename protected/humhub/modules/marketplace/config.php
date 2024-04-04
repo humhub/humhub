@@ -8,11 +8,9 @@
 
 use humhub\commands\CronController;
 use humhub\components\ModuleManager;
-use humhub\modules\admin\widgets\ModuleControls;
-use humhub\modules\admin\widgets\ModuleFilters;
-use humhub\modules\admin\widgets\Modules;
 use humhub\modules\marketplace\Events;
 use humhub\modules\marketplace\Module;
+use humhub\modules\user\widgets\AccountTopMenu;
 
 /** @noinspection MissedFieldInspection */
 return [
@@ -25,10 +23,7 @@ return [
     ],
     'events' => [
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
-        [ModuleFilters::class, ModuleFilters::EVENT_INIT, [Events::class, 'onAdminModuleFiltersInit']],
-        [ModuleFilters::class, ModuleFilters::EVENT_AFTER_RUN, [Events::class, 'onAdminModuleFiltersAfterRun']],
-        [Modules::class, Modules::EVENT_INIT, [Events::class, 'onAdminModulesInit']],
-        [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onAdminModuleManagerAfterFilterModules']],
-        [ModuleControls::class, ModuleControls::EVENT_INIT, [Events::class, 'onAdminModuleControlsInit']],
+        [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onMarketplaceAfterFilterModules']],
+        [AccountTopMenu::class, AccountTopMenu::EVENT_INIT, [Events::class, 'onAccountTopMenuInit']],
     ]
 ];

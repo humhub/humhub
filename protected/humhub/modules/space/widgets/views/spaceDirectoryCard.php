@@ -19,7 +19,8 @@ use yii\web\View;
 ?>
 
 <div class="card-panel<?php if ($space->isArchived()) : ?> card-archived<?php endif; ?>">
-    <div class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
+    <div
+        class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'space' => $space,

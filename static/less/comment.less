@@ -31,29 +31,36 @@
             display: none;
             right: -3px;
         }
+
         &.comment-current {
-            background: fadeout(@warning, 75%);
+            background: @background-color-highlight;
             padding: 0 5px 5px 5px;
             margin: 0 -5px -5px -5px;
             border-radius: 3px;
+
             hr {
                 position: relative;
                 top: -6px;
             }
+
             &:first-of-type {
                 padding-top: 5px;
                 margin-top: -5px;
+
                 > .nav.preferences {
                     margin-top: 10px;
                 }
             }
+
             > .nav.preferences {
                 margin-right: 10px;
             }
+
             .nested-comments-root {
                 .comment-container {
                     margin-top: 5px;
                     padding-bottom: 10px;
+
                     .showMore {
                         margin-top: 0;
                         padding-top: 5px;
@@ -84,7 +91,7 @@
     }
 
     .post-file-list {
-        background-color: @background-color-page;
+        background-color: darken(@background-color-secondary, 2%);
     }
 }
 
@@ -101,55 +108,6 @@
     }
 }
 
-// fileupload button
-.comment_create,
-.content_edit {
-    .comment-create-input-group, .post-richtext-input-group {
-        display: flex;
-        align-items: flex-end;
-        .field-comment-message, .field-post-message {
-            flex-grow: 1;
-            flex-basis: min-content;
-            [data-ui-markdown] {
-                word-break: break-word !important;
-            }
-        }
-        .form-group, .help-block {
-            margin:0;
-        }
-    }
-    .comment-buttons {
-        white-space: nowrap;
-        padding-bottom: 6px;
-        .btn:not(.dropdown-toggle) {
-            margin-left: 6px;
-        }
-        .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
-            background-color: fade(@link, 60%);
-        }
-        .btn.dropdown-toggle {
-            margin-left: 0;
-        }
-    }
-    .has-error + .comment-buttons {
-        padding-bottom: 22px;
-    }
-    .fileinput-button:active {
-        box-shadow: none !important;
-    }
-    @media (max-width: 414px) {
-        .comment-create-input-group, .post-richtext-input-group {
-            flex-direction: column;
-            .field-comment-message, .field-post-message {
-                width: 100%;
-            }
-        }
-        .comment-buttons {
-            padding-bottom: 0 !important;
-            padding-top: 6px;
-        }
-    }
-}
 
 .comment-container .content_edit {
     margin-left: @commentLeftMargin;
@@ -175,8 +133,8 @@
     .text-break();
 }
 
-.comment-create-input-group.scrollActive {
-    .comment-buttons {
+.content-create-input-group.scrollActive {
+    .upload-buttons {
         right: 22px;
     }
 }

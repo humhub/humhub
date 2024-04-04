@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\permissions;
 
 use humhub\modules\admin\components\BaseAdminPermission;
+use Yii;
 
 /**
  * ManageUsersAdvanced Permission allows access to users/userstab section within the admin area.
@@ -26,8 +27,8 @@ class ManageGroups extends BaseAdminPermission
     {
         parent::__construct($config);
 
-        $this->title = \Yii::t('AdminModule.permissions', 'Manage Groups');
-        $this->description = \Yii::t('AdminModule.permissions', 'Can manage users and groups');
+        $this->title = Yii::t('AdminModule.permissions', 'Manage Groups');
+        $this->description = Yii::t('AdminModule.permissions', 'Can manage users and groups');
     }
 
 }

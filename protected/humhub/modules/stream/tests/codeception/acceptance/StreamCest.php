@@ -8,6 +8,7 @@
 namespace stream\acceptance;
 
 use DateTime;
+use Exception;
 use stream\AcceptanceTester;
 use Yii;
 
@@ -15,7 +16,7 @@ class StreamCest
 {
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDeletePost(AcceptanceTester $I)
     {
@@ -37,7 +38,7 @@ class StreamCest
         $I->click('Delete', '[data-content-key="15"]');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Confirm post deletion');
+        $I->see('Delete content?');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForElementNotVisible($newEntrySelector);
@@ -45,7 +46,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testArchivePost(AcceptanceTester $I)
     {
@@ -109,7 +110,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testPinPost(AcceptanceTester $I)
     {
@@ -150,7 +151,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testEditPost(AcceptanceTester $I)
     {
@@ -197,7 +198,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testEmptyStream(AcceptanceTester $I)
     {
@@ -222,7 +223,7 @@ class StreamCest
         $I->click('Delete');
 
         $I->waitForElementVisible('#globalModalConfirm', 5);
-        $I->see('Confirm post deletion');
+        $I->see('Delete content?');
         $I->click('Delete', '#globalModalConfirm');
 
         $I->waitForText('This space is still empty!');
@@ -231,7 +232,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testFilterInvolved(AcceptanceTester $I)
     {
@@ -286,7 +287,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testSortStream(AcceptanceTester $I)
     {
@@ -316,7 +317,7 @@ class StreamCest
         $I->click('Comment', $post4Selector);
         $I->wait(1);
         $I->fillField($post4Selector . ' [contenteditable]', 'My Comment!');
-        $I->click('[data-action-click=submit]', $post4Selector . ' .comment-buttons');
+        $I->click('[data-action-click=submit]', $post4Selector . ' .upload-buttons');
 
         $I->scrollTop();
 
@@ -335,7 +336,7 @@ class StreamCest
 
     /**
      * @param AcceptanceTester $I
-     * @throws \Exception
+     * @throws Exception
      */
     public function testDateFilter(AcceptanceTester $I)
     {

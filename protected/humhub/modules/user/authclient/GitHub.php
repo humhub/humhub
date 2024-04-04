@@ -9,11 +9,10 @@
 namespace humhub\modules\user\authclient;
 
 /**
- * 
+ * @deprecated 1.14
  */
 class GitHub extends \yii\authclient\clients\GitHub
 {
-
     /**
      * @inheritdoc
      */

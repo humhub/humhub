@@ -13,7 +13,6 @@ use yii\db\ActiveQuery;
  */
 class FilterForm extends Model
 {
-
     /**
      * Contains the current module filters
      * @var array
@@ -87,7 +86,7 @@ class FilterForm extends Model
         foreach ($this->getNotifications() as $notification) {
             $categoryId = $notification->getCategory()->id;
             if (!in_array($categoryId, $this->categoryFilter)) {
-                $result[] = $notification->className();
+                $result[] = get_class($notification);
             }
         }
         return $result;
@@ -116,7 +115,7 @@ class FilterForm extends Model
     public function getNotifications(): array
     {
         if ($this->notifications == null) {
-            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function($notification) {
+            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function ($notification) {
                 return $notification->getCategory() != null;
             });
         }
@@ -171,5 +170,4 @@ class FilterForm extends Model
 
         return $pagination;
     }
-
 }

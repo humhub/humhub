@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
-
 use humhub\components\Widget;
 use yii\helpers\Html;
 

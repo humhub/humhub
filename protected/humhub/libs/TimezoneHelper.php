@@ -20,7 +20,6 @@ use yii\db\Exception;
  */
 class TimezoneHelper
 {
-
     /**
      *
      * // Modified version of the timezone list function from http://stackoverflow.com/a/17355238/507629
@@ -58,7 +57,7 @@ class TimezoneHelper
         $timezone_offsets = [];
         foreach ($timezones as $timezone) {
             $tz = new DateTimeZone($timezone);
-            $timezone_offsets[$timezone] = $tz->getOffset(new DateTime);
+            $timezone_offsets[$timezone] = $tz->getOffset(new DateTime());
         }
 
         // sort timezone by timezone name
@@ -70,7 +69,7 @@ class TimezoneHelper
             if ($withOffset) {
                 $offset_prefix = $offset < 0 ? '-' : '+';
                 $offset_formatted = gmdate('H:i', abs($offset));
-                $pretty_offset = "UTC${offset_prefix}${offset_formatted}";
+                $pretty_offset = 'UTC' . $offset_prefix . $offset_formatted;
                 $timezone_list[$timezone] = $pretty_offset . ' - ' . $timezone;
             } else {
                 $timezone_list[$timezone] = $timezone;

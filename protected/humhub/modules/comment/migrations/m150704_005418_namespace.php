@@ -6,7 +6,6 @@ use humhub\modules\comment\models\Comment;
 
 class m150704_005418_namespace extends Migration
 {
-
     public function up()
     {
         $this->renameClass('Comment', Comment::class);

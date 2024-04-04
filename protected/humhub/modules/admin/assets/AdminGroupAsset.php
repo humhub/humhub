@@ -13,7 +13,6 @@ use yii\web\View;
 
 class AdminGroupAsset extends AssetBundle
 {
-
     /**
      * @inheritdoc
      */

@@ -1,8 +1,11 @@
 <?php
+
+use humhub\compat\HForm;
 use humhub\libs\Html;
+use yii\widgets\ActiveForm;
 
 /**
- * @var $hForm \humhub\compat\HForm
+ * @var $hForm HForm
  * @see \humhub\modules\installer\controllers\ConfigController::actionAdmin()
  */
 ?>
@@ -16,9 +19,9 @@ use humhub\libs\Html;
         <p><?php echo Yii::t('InstallerModule.base', "You're almost done. In this step you have to fill out the form to create an admin account. With this account you can manage the whole network."); ?></p>
         <hr/>
 
-        <?php $form = \yii\widgets\ActiveForm::begin(['enableClientValidation' => false]); ?>
+        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
         <?= $hForm->render($form); ?>
-        <?php \yii\widgets\ActiveForm::end(); ?>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>
 
@@ -30,12 +33,12 @@ use humhub\libs\Html;
     })
 
     // Shake panel after wrong validation
-<?php foreach ($hForm->models as $model) : ?>
+    <?php foreach ($hForm->models as $model) : ?>
     <?php if ($model->hasErrors()) : ?>
-            $('#create-admin-account-form').removeClass('fadeIn');
-            $('#create-admin-account-form').addClass('shake');
+    $('#create-admin-account-form').removeClass('fadeIn');
+    $('#create-admin-account-form').addClass('shake');
     <?php endif; ?>
-<?php endforeach; ?>
+    <?php endforeach; ?>
 
 </script>
 

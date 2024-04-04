@@ -109,70 +109,70 @@ class ControllerAccess extends BaseObject
     /**
      * Allows the action rule setting only by extra option ['myRule', 'actions' => ['action1', 'action2']]
      */
-    const ACTION_SETTING_TYPE_OPTION_ONLY = 0;
+    public const ACTION_SETTING_TYPE_OPTION_ONLY = 0;
 
     /**
      * Allows the action rule setting by extra option ['myRule', 'actions' => ['action1', 'action2']]
      * or immediate ['myRule' => ['action1', 'action2']]
      */
-    const ACTION_SETTING_TYPE_BOTH = 1;
+    public const ACTION_SETTING_TYPE_BOTH = 1;
 
     /**
      * Only admins have access to the given set of actions e.g.: ['admin' => ['action1']]
      */
-    const RULE_ADMIN_ONLY = 'admin';
+    public const RULE_ADMIN_ONLY = 'admin';
 
     /**
      * Validate against a given set of permissions e.g.:
      * ['permission' => [MyPermission::class], 'actions' => ['action1']]
      */
-    const RULE_PERMISSION = 'permission';
+    public const RULE_PERMISSION = 'permission';
 
     /**
      * Only logged in user have access  e.g.: ['login' => ['action1', 'action2']]
      */
-    const RULE_LOGGED_IN_ONLY = 'login';
+    public const RULE_LOGGED_IN_ONLY = 'login';
 
     /**
      * Check guest mode  e.g.: ['strict'] (mainly used as global)
      */
-    const RULE_STRICT = 'strict';
+    public const RULE_STRICT = 'strict';
 
     /**
      * Check guest if user is disabled
      */
-    const RULE_DISABLED_USER = 'disabledUser';
+    public const RULE_DISABLED_USER = 'disabledUser';
 
     /**
      * Check guest if user is unnapproved
      */
-    const RULE_UNAPPROVED_USER = 'unapprovedUser';
+    public const RULE_UNAPPROVED_USER = 'unapprovedUser';
 
     /**
      * Check guest if user must change password
      * @since 1.8
      */
-    const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
+    public const RULE_MUST_CHANGE_PASSWORD = 'mustChangePassword';
 
     /**
      * Maintenance mode is active
      */
-    const RULE_MAINTENANCE_MODE = 'maintenance';
+    public const RULE_MAINTENANCE_MODE = 'maintenance';
 
     /**
      * Check guest if request method is post
      */
-    const RULE_POST = 'post';
+    public const RULE_POST = 'post';
 
     /**
      * Make sure response type is json
      */
-    const RULE_JSON = 'json';
+    public const RULE_JSON = 'json';
 
     /**
      * Only AJAX request is allowed for the actions
      */
-    const RULE_AJAX_ONLY = 'ajax';
+    public const RULE_AJAX_ONLY = 'ajax';
 
     /**
      * @var array fixed rules will always be added to the current rule set

@@ -2,6 +2,10 @@
 
 namespace humhub\modules\file\widgets;
 
+use humhub\components\ActiveRecord;
+use humhub\components\behaviors\PolymorphicRelation;
+use yii\base\Widget;
+
 /**
  * FileUploadButtonWidget creates an upload button / system.
  *
@@ -15,9 +19,8 @@ namespace humhub\modules\file\widgets;
  * @since 0.5
  * @deprecated since version 1.2
  */
-class FileUploadButton extends \yii\base\Widget
+class FileUploadButton extends Widget
 {
-
     /**
      * @var String unique id of this uploader
      */
@@ -34,7 +37,7 @@ class FileUploadButton extends \yii\base\Widget
      * The HActiveRecord which the uploaded files belongs to.
      * Leave empty when object not exists yet.
      *
-     * @var HActiveRecord
+     * @var ActiveRecord
      */
     public $object = null;
 
@@ -43,21 +46,19 @@ class FileUploadButton extends \yii\base\Widget
      */
     public function run()
     {
-        $objectModel = "";
-        $objectId = "";
+        $objectModel = '';
+        $objectId = '';
         if ($this->object !== null) {
-            $objectModel = $this->object->className();
+            $objectModel = PolymorphicRelation::getObjectModel($this->object);
             $objectId = $this->object->getPrimaryKey();
         }
 
         return $this->render('fileUploadButton', [
-                    'fileListFieldName' => $this->fileListFieldName,
-                    'uploaderId' => $this->uploaderId,
-                    'objectModel' => $objectModel,
-                    'objectId' => $objectId
+            'fileListFieldName' => $this->fileListFieldName,
+            'uploaderId' => $this->uploaderId,
+            'objectModel' => $objectModel,
+            'objectId' => $objectId
         ]);
     }
 
 }
-
-?>

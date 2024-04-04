@@ -10,7 +10,6 @@ use humhub\modules\user\models\Follow;
 
 class SpaceFollowTest extends HumHubDbTestCase
 {
-
     use Specify;
 
     public function testSpaceFollow()

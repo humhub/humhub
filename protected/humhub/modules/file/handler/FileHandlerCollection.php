@@ -8,7 +8,10 @@
 
 namespace humhub\modules\file\handler;
 
+use humhub\modules\file\models\File;
+use humhub\modules\file\Module;
 use Yii;
+use yii\base\Component;
 
 /**
  * FileHandlerCollection
@@ -16,22 +19,21 @@ use Yii;
  * @since 1.2
  * @author Luke
  */
-class FileHandlerCollection extends \yii\base\Component
+class FileHandlerCollection extends Component
 {
-
     /**
      * @event the init event - use to register file handlers
      */
-    const EVENT_INIT = 'init';
+    public const EVENT_INIT = 'init';
 
     /**
      * Collection Types
      */
-    const TYPE_VIEW = 'view';
-    const TYPE_IMPORT = 'import';
-    const TYPE_EXPORT = 'export';
-    const TYPE_CREATE = 'create';
-    const TYPE_EDIT = 'edit';
+    public const TYPE_VIEW = 'view';
+    public const TYPE_IMPORT = 'import';
+    public const TYPE_EXPORT = 'export';
+    public const TYPE_CREATE = 'create';
+    public const TYPE_EDIT = 'edit';
 
     /**
      * @var string current collection type
@@ -39,7 +41,7 @@ class FileHandlerCollection extends \yii\base\Component
     public $type;
 
     /**
-     * @var \humhub\modules\file\models\File
+     * @var File
      */
     public $file = null;
 
@@ -56,6 +58,15 @@ class FileHandlerCollection extends \yii\base\Component
         parent::init();
 
         $this->trigger(self::EVENT_INIT);
+
+        // Register default handlers
+        if ($this->type === self::TYPE_CREATE) {
+            /** @var Module $module */
+            $module = Yii::$app->getModule('file');
+            foreach ($module->defaultFileHandlers as $handlerClass) {
+                $this->register(new $handlerClass());
+            }
+        }
 
         // Register Core Handler
         if ($this->type === self::TYPE_EXPORT) {
@@ -78,7 +89,7 @@ class FileHandlerCollection extends \yii\base\Component
      * Returns registered handlers by type
      *
      * @param string|array $type or multiple type array
-     * @param \humhub\modules\file\models\File $file the file (optional)
+     * @param File $file the file (optional)
      * @return BaseFileHandler[] the registered handlers
      */
     public static function getByType($types, $file = null)
@@ -91,10 +102,10 @@ class FileHandlerCollection extends \yii\base\Component
 
         foreach ($types as $type) {
             $handlers = array_merge($handlers, Yii::createObject([
-                        'class' => static::class,
-                        'file' => $file,
-                        'type' => $type
-                    ])->handlers);
+                'class' => static::class,
+                'file' => $file,
+                'type' => $type
+            ])->handlers);
         }
         return $handlers;
     }
@@ -104,7 +115,7 @@ class FileHandlerCollection extends \yii\base\Component
      */
     protected function sortHandler()
     {
-        usort($this->handlers, function(BaseFileHandler $a, BaseFileHandler $b) {
+        usort($this->handlers, function (BaseFileHandler $a, BaseFileHandler $b) {
             return strcmp($a->position, $b->position);
         });
     }

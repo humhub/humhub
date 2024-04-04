@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use humhub\components\assets\AssetBundle;
 use humhub\modules\ui\view\components\View;
 
 /**
@@ -17,8 +17,13 @@ use humhub\modules\ui\view\components\View;
  * @since 1.3
  * @author luke
  */
-class OpenSansAsset extends WebStaticAssetBundle
+class OpenSansAsset extends AssetBundle
 {
+    /**
+     * @inheritdoc
+     */
+    public $sourcePath = '@npm/fontsource--open-sans';
+
     /**
      * @inheritdoc
      */
@@ -33,13 +38,15 @@ class OpenSansAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $preload = [
-        'css/open-sans.css'
+        'latin.css',
+        'latin-italic.css'
     ];
 
     /**
      * @inheritdoc
      */
     public $css = [
-        'css/open-sans.css',
+        'latin.css',
+        'latin-italic.css'
     ];
 }

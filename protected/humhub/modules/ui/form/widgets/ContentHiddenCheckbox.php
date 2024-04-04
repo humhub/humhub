@@ -32,9 +32,9 @@ use yii\bootstrap\InputWidget;
  */
 class ContentHiddenCheckbox extends InputWidget
 {
-    const TYPE_CONTENT = 1;
-    const TYPE_CONTENTCONTAINER = 2;
-    const TYPE_GLOBAL = 3;
+    public const TYPE_CONTENT = 1;
+    public const TYPE_CONTENTCONTAINER = 2;
+    public const TYPE_GLOBAL = 3;
 
     /**
      * @var int
@@ -54,10 +54,10 @@ class ContentHiddenCheckbox extends InputWidget
             if (!isset($this->model->contentContainer)) {
                 $this->options['label'] = Yii::t('UiModule.form', 'Hide all stream entries of this module globally by default');
                 $this->hintOptions['hint'] = Yii::t('UiModule.form', 'Note: The default settings can be adjusted individually for each Space and each single stream entry. Hidden entries can be made visible using the stream filtering options.');
-            } else if ($this->model->contentContainer instanceof ContentContainerActiveRecord) {
+            } elseif ($this->model->contentContainer instanceof ContentContainerActiveRecord) {
                 if ($this->model->contentContainer instanceof Space) {
                     $this->options['label'] = Yii::t('UiModule.form', 'Hide all stream entries in this Space by default');
-                } else if ($this->model->contentContainer instanceof User) {
+                } elseif ($this->model->contentContainer instanceof User) {
                     $this->options['label'] = Yii::t('UiModule.form', 'Hide all stream entries in your Profile by default');
                 }
                 $this->hintOptions['hint'] = Yii::t('UiModule.form', 'Note: Hidden entries can be made visible using the stream filtering options. Single stream entries can be marked as visible on an individual level.');
@@ -70,7 +70,7 @@ class ContentHiddenCheckbox extends InputWidget
             '<div class="checkbox">' .
             Html::activeCheckbox($this->model, $this->attribute, $this->options) .
             Html::activeHint($this->model, $this->attribute, $this->hintOptions) .
-            '</div';
+            '</div>';
 
     }
 

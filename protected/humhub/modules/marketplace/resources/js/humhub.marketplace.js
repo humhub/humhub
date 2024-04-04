@@ -2,6 +2,7 @@ humhub.module('marketplace', function (module, require, $) {
     const client = require('client');
     const loader = require('ui.loader');
     const status = require('ui.status');
+    const modal = require('ui.modal');
 
     const update = function (evt) {
         startUpdate(evt);
@@ -13,7 +14,7 @@ humhub.module('marketplace', function (module, require, $) {
         });
     };
 
-    const startUpdate = function(evt) {
+    const startUpdate = function (evt) {
         const card = evt.$trigger.closest('.card');
         card.css({width: card.outerWidth(), height: card.outerHeight()});
         evt.$trigger.parent().hide();
@@ -39,7 +40,9 @@ humhub.module('marketplace', function (module, require, $) {
                 card.after('<div class="' + card.attr('class') + '"><div class="card-panel"></div></div>');
                 card.next()
                     .css({opacity: 0, minHeight: card.outerHeight()})
-                    .animate({width: 0}, 'slow', function () {$(this).remove()});
+                    .animate({width: 0}, 'slow', function () {
+                        $(this).remove()
+                    });
                 card.animate({opacity: 0}, 'slow', function () {
                     $(this).remove();
                     const availableUpdates = $('[data-action-click="marketplace.update"]').length;
@@ -59,7 +62,7 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
-    const endFailedUpdate = function(evt, response) {
+    const endFailedUpdate = function (evt, response) {
         module.log.error(response);
         status.error(response.message);
         evt.$trigger.attr('data-update-status', 'failed')
@@ -90,7 +93,7 @@ humhub.module('marketplace', function (module, require, $) {
         runNextUpdate();
     }
 
-    const runNextUpdate = function() {
+    const runNextUpdate = function () {
         const updateAllButton = $('[data-action-click="marketplace.updateAll"]');
         if (!updateAllButton.data('is-updating-all')) {
             return;
@@ -111,7 +114,7 @@ humhub.module('marketplace', function (module, require, $) {
             .attr('class', updateAllButton.data('orig-class'));
     }
 
-    const registerLicenceKey = function(evt) {
+    const registerLicenceKey = function (evt) {
         const form = evt.$trigger.closest('form');
         const licenceKey = form.find('input[name=licenceKey]').val();
 
@@ -119,6 +122,11 @@ humhub.module('marketplace', function (module, require, $) {
 
         client.post(form.attr('action'), {data: {licenceKey}}).then(function (response) {
             form.closest('.modal-dialog').after(response.html).remove();
+            if (typeof response.data.purchasedModules === 'object') {
+                Object.entries(response.data.purchasedModules).forEach(([moduleId, moduleCard]) => {
+                    $('.card-module[data-module=' + moduleId + ']').replaceWith(moduleCard);
+                });
+            }
         }).catch(function (err) {
             module.log.error(err);
             status.error(err.message);
@@ -126,9 +134,47 @@ humhub.module('marketplace', function (module, require, $) {
         });
     }
 
+    const install = function (evt) {
+        const installButton = evt.$trigger;
+        const moduleId = installButton.data('module-id');
+
+        modal.global.reset();
+        modal.global.setHeader(module.config.text.installing);
+        modal.global.$.removeClass('fade');
+        modal.global.$.find('button[data-modal-close]').hide();
+        modal.global.show();
+
+        modal.post(evt, {data: {moduleId}}).then(function () {
+            const enableButton = modal.global.$.find('[data-action-click="marketplace.enable"]').clone();
+            if (enableButton.length) {
+                installButton.after(enableButton.addClass('btn-sm'));
+            }
+            installButton.remove();
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
+    const enable = function (evt) {
+        const moduleId = evt.$trigger.data('module-id');
+        const moduleCard = $('button[data-module-id="' + moduleId + '"]').closest('.card');
+
+        modal.post(evt, {data: {moduleId}}).then(function () {
+            if (moduleCard.length) {
+                moduleCard.hide('slow', function () {
+                    $(this).remove()
+                });
+            }
+        }).catch(function (e) {
+            module.log.error(e, true);
+        });
+    }
+
     module.export({
         update,
         updateAll,
         registerLicenceKey,
+        install,
+        enable
     });
 });

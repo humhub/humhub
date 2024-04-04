@@ -18,7 +18,9 @@ use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\User as UserModel;
 use humhub\modules\user\Module;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 
 /**
@@ -31,12 +33,12 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     /**
      * @event Event an event that is triggered when only visible users are requested via [[visible()]].
      */
-    const EVENT_CHECK_VISIBILITY = 'checkVisibility';
+    public const EVENT_CHECK_VISIBILITY = 'checkVisibility';
 
     /**
      * @event Event an event that is triggered when only active users are requested via [[active()]].
      */
-    const EVENT_CHECK_ACTIVE = 'checkActive';
+    public const EVENT_CHECK_ACTIVE = 'checkActive';
 
     /**
      * Limit to active users
@@ -53,9 +55,9 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
      * Returns only users that should appear in user lists or in the search results.
      * Also only active (enabled) users are returned.
      *
+     * @return self
      * @since 1.2.3
      * @inheritdoc
-     * @return self
      */
     public function visible(?User $user = null): ActiveQuery
     {
@@ -66,7 +68,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
         if ($user === null && !Yii::$app->user->isGuest) {
             try {
                 $user = Yii::$app->user->getIdentity();
-            } catch (\Throwable $e) {
+            } catch (Throwable $e) {
                 Yii::error($e, 'user');
             }
         }
@@ -149,8 +151,8 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
      *
      * @param UserModel $user
      * @return ActiveQueryUser the query
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function administrableBy(UserModel $user)
     {
@@ -200,13 +202,13 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
     /**
      * Filter users which are available for the given $user or for the current User
      *
-     * @since 1.13
      * @param UserModel|null $user
      * @return ActiveQueryUser
+     * @since 1.13
      */
     public function available(?UserModel $user = null): ActiveQueryUser
     {
-        return $this->visible()->filterBlockedUsers($user);
+        return $this->visible($user)->filterBlockedUsers($user);
     }
 
 }

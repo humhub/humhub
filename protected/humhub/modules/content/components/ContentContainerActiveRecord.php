@@ -12,6 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\libs\BasePermission;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
+use humhub\libs\UUID;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\ContentContainerBlockedUsers;
@@ -19,6 +20,8 @@ use humhub\modules\content\models\ContentContainerTagRelation;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
+use yii\base\Component;
+use yii\db\ActiveQuery;
 use yii\helpers\Url;
 use yii\web\IdentityInterface;
 
@@ -28,21 +31,33 @@ use yii\web\IdentityInterface;
  * Required Methods:
  *      - getProfileImage()
  *
- * @property integer $id
- * @property integer $visibility
+ * @property int $id
+ * @property int $visibility
  * @property string $guid
- * @property integer $contentcontainer_id
+ * @property string $created_at
+ * @property int $created_by
+ * @property string $updated_at
+ * @property int $updated_by
+ * @property int $contentcontainer_id
+ * @property ContentContainer $contentContainerRecord
  * @property ContentContainerPermissionManager $permissionManager
  * @property ContentContainerSettingsManager $settings
+ * @property-read string[] $blockedUserGuids
+ * @property-read int[] $blockedUserIds
+ * @property-read int $defaultContentVisibility
+ * @property-read string $displayName
+ * @property-read string|mixed $displayNameSub
  * @property-read ContentContainerModuleManager $moduleManager
- * @property ContentContainer $contentContainerRecord
+ * @property-read ProfileBannerImage $profileBannerImage
+ * @property-read ProfileImage $profileImage
+ * @property-read string[] $tags
+ * @property-read string $wallOut
  *
  * @since 1.0
- * @author Luke
+ * @noinspection PropertiesInspection
  */
 abstract class ContentContainerActiveRecord extends ActiveRecord
 {
-
     /**
      * @var ContentContainerPermissionManager
      */
@@ -57,7 +72,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * The behavior which will be attached to the base controller.
      *
      * @since 1.3
-     * @see \humhub\modules\content\components\ContentContainerController
+     * @see ContentContainerController
      * @var string class name of additional the controller behavior
      */
     public $controllerBehavior = null;
@@ -93,7 +108,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return string
      * @since 0.11.0
      */
-    public abstract function getDisplayName();
+    abstract public function getDisplayName(): string;
 
     /**
      * Returns a descriptive sub title of this container used in the frontend.
@@ -101,7 +116,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return mixed
      * @since 1.4
      */
-    public abstract function getDisplayNameSub();
+    abstract public function getDisplayNameSub(): string;
 
     /**
      * Returns the Profile Image Object for this Content Base
@@ -138,7 +153,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      *
      * @param string $route
      * @param array $params
-     * @param boolean|string $scheme
+     * @param bool|string $scheme
      */
     public function createUrl($route = null, $params = [], $scheme = false)
     {
@@ -152,7 +167,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Checks if the user is allowed to access private content in this container
      *
      * @param User $user
-     * @return boolean can access private content
+     * @return bool can access private content
      */
     public function canAccessPrivateContent(User $user = null)
     {
@@ -208,10 +223,10 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     public function afterSave($insert, $changedAttributes)
     {
         if ($insert) {
-            $contentContainer = new ContentContainer;
+            $contentContainer = new ContentContainer();
             $contentContainer->guid = $this->guid;
-            $contentContainer->class = static::class;
-            $contentContainer->pk = $this->getPrimaryKey();
+            $contentContainer->setPolymorphicRelation($this);
+
             if ($this instanceof User) {
                 $contentContainer->owner_user_id = $this->id;
             } elseif ($this->hasAttribute('created_by')) {
@@ -219,6 +234,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
             }
 
             $contentContainer->save();
+            $this->populateRelation('contentContainerRecord', $contentContainer);
 
             $this->contentcontainer_id = $contentContainer->id;
             $this->update(false, ['contentcontainer_id']);
@@ -251,7 +267,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Returns the related ContentContainer model (e.g. Space or User)
      *
-     * @return ContentContainer
+     * @return ActiveQuery
      * @see ContentContainer
      */
     public function getContentContainerRecord()
@@ -261,7 +277,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->hasOne(ContentContainer::class, ['pk' => 'id'])
-            ->andOnCondition(['class' => $this->className()]);
+            ->andOnCondition(['class' => get_class($this)]);
     }
 
     /**
@@ -277,7 +293,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * Note: This method is used to verify ContentContainerPermissions and not GroupPermissions.
      *
      * @param string|string[]|BasePermission $permission
-     * @return boolean
+     * @return bool
      * @see PermissionManager::can()
      * @since 1.2
      */
@@ -349,7 +365,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
     /**
      * Returns weather or not the contentcontainer is archived. (Default false).
-     * @return boolean
+     * @return bool
      * @since 1.2
      */
     public function isArchived()
@@ -380,7 +396,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     /**
      * Checks if the Content Container has Tags
      *
-     * @return boolean has tags set
+     * @return bool has tags set
      */
     public function hasTags()
     {
@@ -461,4 +477,86 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         return $userModule->allowBlockUsers();
     }
 
+    /**
+     * Block this container for the given or current User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function blockForUser(?User $user = null): bool
+    {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            }
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if ($user->isBlockedForUser($this)) {
+            return true;
+        }
+
+        $newBlockedUserRelation = new ContentContainerBlockedUsers();
+        $newBlockedUserRelation->contentcontainer_id = $user->contentcontainer_id;
+        $newBlockedUserRelation->user_id = $this->id;
+        if (!$newBlockedUserRelation->save()) {
+            return false;
+        }
+
+        $blockedUserIds = $user->getBlockedUserIds();
+        $blockedUserIds[] = $this->id;
+
+        ContentContainerBlockedUsers::refreshCachedUserIds($user, $blockedUserIds);
+
+        return true;
+    }
+
+    /**
+     * Block the current container for the User
+     *
+     * @param User|null $user
+     * @return bool
+     */
+    public function unblockForUser(?User $user = null): bool
+    {
+        if (!$this->allowBlockUsers()) {
+            return false;
+        }
+
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            }
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        if (!$user->isBlockedForUser($this)) {
+            return true;
+        }
+
+        $blockedUserRelation = ContentContainerBlockedUsers::findOne([
+            'contentcontainer_id' => $user->contentcontainer_id,
+            'user_id' => $this->id
+        ]);
+
+        if (!$blockedUserRelation) {
+            return true;
+        }
+
+        if (!$blockedUserRelation->delete()) {
+            return false;
+        }
+
+        $blockedUserIds = $user->getBlockedUserIds();
+        if (($deletedIndex = array_search($this->id, $blockedUserIds)) !== false) {
+            unset($blockedUserIds[$deletedIndex]);
+            ContentContainerBlockedUsers::refreshCachedUserIds($user, $blockedUserIds);
+        }
+
+        return true;
+    }
 }

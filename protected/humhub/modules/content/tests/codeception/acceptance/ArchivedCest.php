@@ -1,4 +1,5 @@
 <?php
+
 namespace content\acceptance;
 
 use content\AcceptanceTester;

@@ -2,9 +2,8 @@
 
 namespace humhub\modules\tour;
 
+use humhub\modules\user\models\User;
 use Yii;
-use humhub\modules\tour\widgets\Dashboard;
-
 
 /**
  * This module shows an introduction tour for new users
@@ -20,22 +19,25 @@ class Module extends \humhub\components\Module
     public $acceptableNames = ['interface', 'administration', 'profile', 'spaces'];
 
     /**
-     * @inheridoc
+     * @inheritdoc
      */
     public $isCoreModule = true;
 
     /**
-     * Event Callback
+     * Check if the welcome tour window should be displayed automatically
+     *
+     * @param User|null $user
+     * @return bool
      */
-    public static function onDashboardSidebarInit($event)
+    public function showWelcomeWindow(?User $user = null): bool
     {
-        if (Yii::$app->user->isGuest)
-            return;
-
-        $settings = Yii::$app->getModule('tour')->settings;
-        if ($settings->get('enable') == 1 && $settings->user()->get("hideTourPanel") != 1) {
-            $event->sender->addWidget(Dashboard::class, [], ['sortOrder' => 100]);
+        if ($user === null && !Yii::$app->user->isGuest) {
+            $user = Yii::$app->user->identity;
         }
-    }
 
+        return $user instanceof User &&
+            $user->id === 1 &&
+            Yii::$app->getModule('installer')->settings->get('sampleData') != 1 &&
+            $this->settings->user($user)->get('welcome') != 1;
+    }
 }

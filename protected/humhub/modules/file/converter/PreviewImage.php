@@ -8,12 +8,14 @@
 
 namespace humhub\modules\file\converter;
 
+use Exception;
+use humhub\modules\admin\models\Log;
 use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
-use Yii;
 use humhub\modules\file\models\File;
 use humhub\libs\Html;
+use Yii;
 use yii\imagine\Image;
 
 /**
@@ -24,7 +26,6 @@ use yii\imagine\Image;
  */
 class PreviewImage extends BaseConverter
 {
-
     /**
      * @var ImageInterface
      */
@@ -87,7 +88,6 @@ class PreviewImage extends BaseConverter
     protected function convert($fileName)
     {
         try {
-
             if (!is_file($this->file->store->get($fileName))) {
                 $image = Image::getImagine()->open($this->file->store->get());
                 ImageHelper::fixJpegOrientation($image, $this->file);
@@ -107,8 +107,13 @@ class PreviewImage extends BaseConverter
 
                 $image->save($this->file->store->get($fileName), $options);
             }
-        } catch (\Exception $ex) {
-            Yii::warning('Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage());
+        } catch (Exception $ex) {
+            $message = 'Could not convert file with id ' . $this->file->id . '. Error: ' . $ex->getMessage();
+            $count = Log::find()->where(['message' => $message])->count();
+
+            if ($count == 0) {
+                Yii::warning($message);
+            }
         }
     }
 
@@ -175,5 +180,4 @@ class PreviewImage extends BaseConverter
     {
         return Html::a($this->render(), $this->file->getUrl(), array_merge($htmlOptions, ['data-ui-gallery' => 'gallery-' . $this->file->guid]));
     }
-
 }

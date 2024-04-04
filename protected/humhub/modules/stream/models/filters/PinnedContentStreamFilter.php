@@ -52,7 +52,7 @@ class PinnedContentStreamFilter extends StreamQueryFilter
             if (!empty($pinnedContentIds)) {
                 $this->query->andWhere((['NOT IN', 'content.id', $pinnedContentIds]));
             }
-        } else if (!$this->streamQuery->isSingleContentQuery()) {
+        } elseif (!$this->streamQuery->isSingleContentQuery()) {
             // All pinned entries of this container were loaded within the initial request, so don't include them here!
             $this->query->andWhere(['OR', ['content.pinned' => 0], ['<>', 'content.contentcontainer_id', $this->container->contentcontainer_id]]);
         }
@@ -73,9 +73,11 @@ class PinnedContentStreamFilter extends StreamQueryFilter
     private function fetchPinnedContent(): array
     {
         $pinnedQuery = clone $this->query;
-        $pinnedQuery->andWhere(['AND', [
-            'content.pinned' => 1],
-            ['content.contentcontainer_id' => $this->container->contentcontainer_id]]);
+        if (!empty($this->streamQuery->stateFilterCondition)) {
+            $pinnedQuery->andWhere($this->streamQuery->stateFilterCondition);
+        }
+        $pinnedQuery->andWhere(['content.pinned' => 1]);
+        $pinnedQuery->andWhere(['content.contentcontainer_id' => $this->container->contentcontainer_id]);
         $pinnedQuery->limit(1000);
         $this->pinnedContent = $pinnedQuery->all();
         return array_map(function ($content) {

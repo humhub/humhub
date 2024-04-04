@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\grid;
 
+use humhub\modules\space\models\Space;
 use yii\db\ActiveRecord;
 use yii\grid\DataColumn;
 
@@ -19,17 +20,16 @@ use yii\grid\DataColumn;
  */
 abstract class SpaceBaseColumn extends DataColumn
 {
-
     /**
      * @var string|null name of space model attribute
      */
     public $spaceAttribute = null;
 
     /**
-     * Returns the space record 
-     * 
+     * Returns the space record
+     *
      * @param ActiveRecord $record
-     * @return \humhub\modules\space\models\Space the space model
+     * @return Space the space model
      */
     public function getSpace(ActiveRecord $record)
     {

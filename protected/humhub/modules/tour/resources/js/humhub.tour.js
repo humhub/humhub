@@ -12,7 +12,7 @@ humhub.module('tour', function (module, requrie, $) {
             steps: options.steps,
             framework: "bootstrap3",
             name: options.name,
-            sanitizeWhitelist: {'a' : ['data-action-click']},
+            sanitizeWhitelist: {'a': ['data-action-click']},
             onShown: function () {
                 $('.tour button[data-role].disabled').remove();
             },
@@ -29,7 +29,7 @@ humhub.module('tour', function (module, requrie, $) {
      */
     function tourCompleted(next) {
         // load user spaces
-        client.post(module.config.completedUrl, {data: {section: tourOptions.name}}).then(function() {
+        client.post(module.config.completedUrl, {data: {section: tourOptions.name}}).then(function () {
             // cross out welcome tour entry
             $('#interface_entry').addClass('completed');
 
@@ -45,8 +45,14 @@ humhub.module('tour', function (module, requrie, $) {
         tourCompleted(true);
     };
 
+    var hidePanel = function (event) {
+        $(".panel-tour").slideToggle("slow");
+        client.post(event)
+    }
+
     module.export({
         start: start,
-        next: next
+        next: next,
+        hidePanel: hidePanel,
     });
 });

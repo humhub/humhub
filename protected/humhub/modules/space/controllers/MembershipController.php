@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\controllers;
 
+use Exception;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\components\ContentContainerControllerAccess;
 use humhub\modules\space\models\forms\InviteForm;
@@ -20,9 +21,13 @@ use humhub\modules\space\widgets\MembershipButton;
 use humhub\modules\user\models\UserPicker;
 use humhub\modules\user\widgets\UserListBox;
 use humhub\widgets\ModalClose;
+use Throwable;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\helpers\Json;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * SpaceController is the main controller for spaces.
@@ -36,7 +41,10 @@ use yii\web\HttpException;
  */
 class MembershipController extends ContentContainerController
 {
-    public function getAccessRules()
+    /**
+     * @inheritdoc
+     */
+    protected function getAccessRules()
     {
         return [
             ['permission' => [InviteUsers::class], 'actions' => ['invite']],
@@ -66,16 +74,20 @@ class MembershipController extends ContentContainerController
         if ($visibility === Space::VISIBILITY_NONE && !$space->isMember() ||
             ($visibility === Space::VISIBILITY_REGISTERED_ONLY && Yii::$app->user->isGuest)
         ) {
-            throw new HttpException(404, Yii::t('SpaceModule.base',
-                'This action is only available for workspace members!'));
+            throw new HttpException(404, Yii::t(
+                'SpaceModule.base',
+                'This action is only available for workspace members!'
+            ));
         }
 
         return UserPicker::filter([
             'query' => $space->getMembershipUser(),
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true,
-            'disabledText' => Yii::t('SpaceModule.base',
-                'This user is not a member of this space.'),
+            'disabledText' => Yii::t(
+                'SpaceModule.base',
+                'This user is not a member of this space.'
+            ),
         ]);
     }
 
@@ -88,8 +100,10 @@ class MembershipController extends ContentContainerController
         $space = $this->getSpace();
 
         if (!$space->canJoin(Yii::$app->user->id)) {
-            throw new HttpException(500,
-                Yii::t('SpaceModule.base', 'You are not allowed to join this space!'));
+            throw new HttpException(
+                500,
+                Yii::t('SpaceModule.base', 'You are not allowed to join this space!')
+            );
         }
 
         $space->addMember(Yii::$app->user->id);
@@ -108,8 +122,10 @@ class MembershipController extends ContentContainerController
 
         // Check if we have already some sort of membership
         if (Yii::$app->user->isGuest || $space->getMembership(Yii::$app->user->id) != null) {
-            throw new HttpException(500,
-                Yii::t('SpaceModule.base', 'Could not request membership!'));
+            throw new HttpException(
+                500,
+                Yii::t('SpaceModule.base', 'Could not request membership!')
+            );
         }
 
         $model = new RequestMembershipForm();
@@ -149,10 +165,10 @@ class MembershipController extends ContentContainerController
 
     /**
      * Revokes Membership for this workspace
-     * @return \yii\web\Response
+     * @return Response
      * @throws HttpException
-     * @throws \Throwable
-     * @throws \yii\base\InvalidConfigException
+     * @throws Throwable
+     * @throws InvalidConfigException
      */
     public function actionRevokeMembership()
     {
@@ -160,11 +176,15 @@ class MembershipController extends ContentContainerController
         $space = $this->getSpace();
 
         if ($space->isSpaceOwner()) {
-            throw new HttpException(500,
-                Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!'));
+            throw new HttpException(
+                500,
+                Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!')
+            );
         } elseif (!$space->canLeave()) {
-            throw new HttpException(500,
-                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this space!'));
+            throw new HttpException(
+                500,
+                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this space!')
+            );
         }
 
         $space->removeMember();
@@ -184,8 +204,10 @@ class MembershipController extends ContentContainerController
             'query' => $space->getNonMembershipUser(),
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true,
-            'disabledText' => Yii::t('SpaceModule.base',
-                'This user is already a member of this space.'),
+            'disabledText' => Yii::t(
+                'SpaceModule.base',
+                'This user is already a member of this space.'
+            ),
         ]));
     }
 
@@ -221,7 +243,7 @@ class MembershipController extends ContentContainerController
     /**
      * @return string
      * @throws \yii\base\Exception
-     * @throws \yii\web\ForbiddenHttpException
+     * @throws ForbiddenHttpException
      */
     public function actionResetInviteLink()
     {
@@ -300,12 +322,12 @@ class MembershipController extends ContentContainerController
      * Get result for the membership actions
      *
      * @param Space $space
-     * @return string|\yii\console\Response|\yii\web\Response
-     * @throws \Exception
+     * @return string|\yii\console\Response|Response
+     * @throws Exception
      */
     protected function getActionResult(Space $space)
     {
-        if ($this->request->isAjax) {
+        if ($this->request->isAjax && !Yii::$app->request->get('redirect', false)) {
             $options = $this->request->post('options', []);
 
             // Show/Hide the "Follow"/"Unfollow" buttons depending on updated membership state after AJAX action

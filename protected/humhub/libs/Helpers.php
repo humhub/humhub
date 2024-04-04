@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
@@ -8,9 +8,11 @@
 
 namespace humhub\libs;
 
+use humhub\exceptions\InvalidArgumentClassException;
+use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\exceptions\InvalidArgumentValueException;
+use humhub\helpers\DataTypeHelper;
 use Yii;
-use yii\base\InvalidArgumentException;
-use yii\base\Exception;
 
 /**
  * This class contains a lot of html helpers for the views
@@ -19,12 +21,68 @@ use yii\base\Exception;
  */
 class Helpers
 {
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_INVALID_CLASSNAME_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_VALUE_PARAMETER;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_INVALID_TYPE_PARAMETER = DataTypeHelper::TYPE_CHECK_INVALID_TYPE_PARAMETER;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_VALUE_IS_EMPTY = DataTypeHelper::TYPE_CHECK_VALUE_IS_EMPTY;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_INVALID_TYPE = DataTypeHelper::TYPE_CHECK_INVALID_TYPE;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_NON_EXISTING_CLASS = DataTypeHelper::TYPE_CHECK_NON_EXISTING_CLASS;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_TYPE_NOT_IN_LIST = DataTypeHelper::TYPE_CHECK_TYPE_NOT_IN_LIST;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_VALUE_IS_INSTANCE = DataTypeHelper::TYPE_CHECK_VALUE_IS_INSTANCE;
+
+    /**
+     * @var int
+     * @deprecated since 1.16; Use constant in DataTypeHelper class instead
+     * @see DataTypeHelper
+     * */
+    public const CLASS_CHECK_VALUE_IS_NULL = DataTypeHelper::TYPE_CHECK_VALUE_IS_NULL;
 
     /**
      * Shorten a text string
      *
      * @param string $text - Text string you will shorten
-     * @param integer $length - Count of characters to show
+     * @param int $length - Count of characters to show
+     *
      * @return string
      */
     public static function truncateText($text, $length): string
@@ -46,6 +104,7 @@ class Helpers
 
     /**
      * Compare two arrays values
+     *
      * @param array $a - First array to compare against..
      * @param array $b - Second array
      *
@@ -66,20 +125,27 @@ class Helpers
 
     /**
      * Temp Function to use UTF8 SubStr
+     *
      * @deprecated since 1.11 Use mb_substr() instead.
      *
      * @param string $str
-     * @param integer $from
-     * @param integer $len
+     * @param int $from
+     * @param int $len
+     *
      * @return string
      */
     public static function substru($str, $from, $len): string
     {
-        return preg_replace('#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s', '$1', $str);
+        return preg_replace(
+            '#^(?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $from . '}' . '((?:[\x00-\x7F]|[\xC0-\xFF][\x80-\xBF]+){0,' . $len . '}).*#s',
+            '$1',
+            $str
+        );
     }
 
     /**
      * Get a readable time format from seconds
+     *
      * @param string $sekunden - Seconds you will formatting
      * */
     public static function getFormattedTime($sekunden)
@@ -111,6 +177,7 @@ class Helpers
      * Source: http://php.net/manual/en/function.ini-get.php
      *
      * @param String $val
+     *
      * @return int bytes
      * @deprecated bug on PHP7 "A non well formed numeric value encountered"
      * @see \humhub\libs\Helpers::getBytesOfIniValue instead
@@ -122,8 +189,10 @@ class Helpers
         switch ($last) {
             case 'g':
                 $val *= 1024;
+                // no break
             case 'm':
                 $val *= 1024;
+                // no break
             case 'k':
                 $val *= 1024;
         }
@@ -138,8 +207,9 @@ class Helpers
      * Source: http://php.net/manual/en/function.ini-get.php#96996
      *
      * @param string $valueString
+     *
      * @return int bytes
-     * @throws InvalidParamException
+     * @throws InvalidArgumentValueException
      */
     public static function getBytesOfIniValue($valueString)
     {
@@ -148,7 +218,7 @@ class Helpers
         }
 
         if ($valueString === false) {
-            throw new InvalidArgumentException('Your configuration option of ini_get function does not exist.');
+            throw new InvalidArgumentValueException('Your configuration option of ini_get function does not exist.');
         }
 
         switch (substr($valueString, -1)) {
@@ -177,29 +247,25 @@ class Helpers
     }
 
     /**
-     * Checks if the class has this class as one of its parents
-     *
-     * @param string $className
-     * @param string $type
-     * @return boolean
+     * @deprecated since 1.16; use DataTypeHelper::checkClassType()
+     * @see DataTypeHelper::matchClassType
      */
-    public static function CheckClassType($className, $type = '')
+    public static function checkClassType($className, $type = '')
     {
-        $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
-
-        if (is_array($type)) {
-            foreach ($type as $t) {
-                if (class_exists($className) && is_a($className, $t, true)) {
-                    return true;
-                }
-            }
-        } else {
-            if (class_exists($className) && is_a($className, $type, true)) {
-                return true;
-            }
+        if (is_string($className)) {
+            $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
         }
 
-        throw new Exception("Invalid class type! (" . $className . ")");
+        return DataTypeHelper::matchClassType($className, $type, false, true);
+    }
+
+    /**
+     * @deprecated since 1.16; use DataTypeHelper::classUsesTraits()
+     * @see DataTypeHelper::classUsesTraits
+     */
+    public static function &classUsesTraits($class, bool $autoload = true): ?array
+    {
+        return DataTypeHelper::classUsesTraits($class, $autoload);
     }
 
     /**
@@ -220,6 +286,7 @@ class Helpers
      *
      * @param string $a First subject string to compare.
      * @param string $b Second subject string to compare.
+     *
      * @return bool true if the strings are the same, false if they are different or if
      * either is not a string.
      */
@@ -250,6 +317,7 @@ class Helpers
      * This is mainly required for grouped notifications.
      *
      * @param $event
+     *
      * @since 1.2.1
      */
     public static function SqlMode($event)
@@ -263,5 +331,4 @@ class Helpers
             }
         }
     }
-
 }

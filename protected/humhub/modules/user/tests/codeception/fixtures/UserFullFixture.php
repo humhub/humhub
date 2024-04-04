@@ -14,7 +14,6 @@ use yii\test\ActiveFixture;
 
 class UserFullFixture extends ActiveFixture
 {
-
     public $tableName = 'user_mentioning';
     public $depends = [
         UserFixture::class,

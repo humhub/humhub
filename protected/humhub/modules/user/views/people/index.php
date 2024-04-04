@@ -6,8 +6,9 @@ use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
+use yii\web\View;
 
-/* @var $this \yii\web\View */
+/* @var $this View */
 /* @var $people PeopleQuery */
 
 CardsAsset::register($this);
@@ -15,17 +16,12 @@ CardsAsset::register($this);
 <div class="panel panel-default">
 
     <div class="panel-heading">
-        <?php if ($people->isFilteredByGroup()) : ?>
-            <?= Yii::t('UserModule.base', '<strong>Group</strong> members - {group}', ['{group}' => Html::encode($people->filteredGroup->name)]); ?>
-        <?php else: ?>
-            <?= Yii::t('UserModule.base', '<strong>People</strong>'); ?>
-        <?php endif; ?>
-
+        <?= Yii::t('UserModule.base', '<strong>People</strong>') ?>
         <?= PeopleHeadingButtons::widget() ?>
     </div>
 
     <div class="panel-body">
-        <?= PeopleFilters::widget(); ?>
+        <?= PeopleFilters::widget(['query' => $people]) ?>
     </div>
 
 </div>

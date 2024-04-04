@@ -3,18 +3,24 @@ humhub.module('cards', function(module, require, $) {
     const loader = require('ui.loader');
 
     const applyFilters = function(evt) {
-        const form = $(evt.$trigger).closest('form');
-        form.find('select[data-select2-id] option[data-id]').each(function() {
-            $(this).val($(this).data('id'));
+        $(evt.$trigger).closest('form').submit();
+    }
+
+    const initFiltersForm = function () {
+        const form = $('form.form-search');
+        form.find('input[type=text]:first').focus();
+        form.on('submit', function () {
+            $(this).find('select[data-select2-id] option[data-id]').each(function() {
+                $(this).val($(this).data('id'));
+            });
         });
-        form.submit();
     }
 
     const selectTag = function (evt) {
         const filter = $(evt.$trigger).data('filter');
         const tag = $(evt.$trigger).data('tag');
-        const isMultiple = $(evt.$trigger).data('multiple');
         const input = $(evt.$trigger).closest('form').find('input[type=hidden][name=' + filter + ']');
+        const isMultiple = input.data('multiple');
 
         if (tag === '') {
             input.val('');
@@ -115,7 +121,7 @@ humhub.module('cards', function(module, require, $) {
 
     const init = function() {
         hideLastNotCompletedRow();
-        $('input.form-search-filter[name=keyword]').focus();
+        initFiltersForm();
         initScroll();
     }
 

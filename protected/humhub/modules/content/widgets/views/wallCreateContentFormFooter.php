@@ -22,7 +22,7 @@ use yii\helpers\Html;
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
 /* @var $fileHandlers BaseFileHandler[] */
-/* @var $canSwitchVisibility boolean */
+/* @var $canSwitchVisibility bool */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
@@ -100,11 +100,12 @@ use yii\helpers\Html;
                         <?php endif; ?>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
-                                    ->icon('edit')
-                                    ->options([
-                                        'data-state' => Content::STATE_DRAFT,
-                                        'data-state-title' => Yii::t('ContentModule.base', 'Draft')
-                                    ]) ?>
+                                ->icon('edit')
+                                ->options([
+                                    'data-state' => Content::STATE_DRAFT,
+                                    'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
+                                    'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
+                                ]) ?>
                         </li>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)

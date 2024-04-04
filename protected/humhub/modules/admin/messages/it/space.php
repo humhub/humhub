@@ -1,10 +1,16 @@
 <?php
 return array (
-  '<strong>Manage</strong> spaces' => '<strong>Gestisci</strong> spazi',
+  '<strong>Manage</strong> Spaces' => '<strong>Gestisci</strong> spazi',
   'Add new space' => 'Aggiungi nuovo spazio',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Utilizzando i ruoli utente, puoi creare diversi gruppi di autorizzazioni all\'interno di uno spazio. Questi possono anche essere personalizzati dagli utenti autorizzati per ogni singolo Spazio e sono rilevanti solo per quello specifico Spazio.',
   'Change owner' => 'Cambia proprietario',
+  'Default "Hide About Page"' => 'Predefinito "Nascondi la pagina informativa"',
+  'Default "Hide Activity Sidebar Widget"' => 'Predefinito "Nascondi il widget della barra laterale delle attività"',
+  'Default "Hide Followers"' => 'Predefinito "Nascondi seguaci"',
+  'Default "Hide Members"' => 'Predefinito "Nascondi membri"',
   'Default Content Visiblity' => 'Visibilità dei contenuti predefinita',
+  'Default Homepage' => 'Homepage predefinita',
+  'Default Homepage (Non-members)' => 'Homepage predefinita (non membri)',
   'Default Join Policy' => 'Criterio d\'iscrizione predefinito',
   'Default Space Permissions' => 'Permessi di spazio predefiniti',
   'Default Space(s)' => 'Spazio/i predefinito/i',

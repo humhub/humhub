@@ -8,18 +8,19 @@
 
 namespace humhub\modules\user\models;
 
-use Yii;
-use yii\base\ErrorException;
-use yii\db\ActiveRecord;
-use yii\base\Exception;
 use humhub\libs\UUID;
 use humhub\modules\user\components\CheckPasswordValidator;
+use Yii;
+use yii\base\ErrorException;
+use yii\base\Exception;
+use yii\db\ActiveQuery;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "user_password".
  *
- * @property integer $id
- * @property integer $user_id
+ * @property int $id
+ * @property int $user_id
  * @property string $algorithm
  * @property string $password
  * @property string $salt
@@ -29,7 +30,6 @@ use humhub\modules\user\components\CheckPasswordValidator;
  */
 class Password extends ActiveRecord
 {
-
     /**
      * Additional Fields for Scenarios
      */
@@ -43,21 +43,28 @@ class Password extends ActiveRecord
     {
         parent::init();
 
-        $this->defaultAlgorithm = 'sha1md5';
+        $this->defaultAlgorithm = $this->getDefaultAlgorithm();
+    }
+
+    protected function getDefaultAlgorithm(): string
+    {
+        if (function_exists('password_hash')) {
+            return 'bcrypt';
+        }
 
         if (function_exists('hash_algos')) {
             $algos = hash_algos();
-            if (in_array('sha512', $algos) && in_array('whirlpool', $algos)) {
-                $this->defaultAlgorithm = 'sha512whirlpool';
-            } elseif (in_array('sha512', $algos)) {
-                $this->defaultAlgorithm = 'sha512';
+            if (in_array('sha512', $algos)) {
+                return in_array('whirlpool', $algos) ? 'sha512whirlpool' : 'sha512';
             }
         }
+
+        return 'sha1md5';
     }
 
     public function beforeSave($insert)
     {
-        $this->created_at = date('Y-m-d G:i:s');
+        $this->created_at = date('Y-m-d H:i:s');
 
         return parent::beforeSave($insert);
     }
@@ -95,16 +102,18 @@ class Password extends ActiveRecord
     /**
      * The new password has to be unequal to the current password.
      *
-     * @param type $attribute
-     * @param type $params
+     * @param string $attribute
      */
-    public function unequalsCurrentPassword($attribute, $params)
+    public function unequalsCurrentPassword($attribute)
     {
         if ($this->newPassword === $this->currentPassword) {
             $this->addError($attribute, Yii::t('UserModule.base', 'Your new password must not be equal your current password!'));
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function scenarios()
     {
         $scenarios = parent::scenarios();
@@ -141,72 +150,73 @@ class Password extends ActiveRecord
     /**
      * Validates a given password against database record
      *
-     * @param string $password unhashed
-     * @return boolean Success
+     * @param string $password unhashed password
+     * @return bool
      */
-    public function validatePassword($password)
+    public function validatePassword(string $password): bool
     {
-
-        if (Yii::$app->security->compareString($this->password, $this->hashPassword($password))) {
-            return true;
+        if ($this->algorithm === 'bcrypt') {
+            return Yii::$app->security->validatePassword($password . $this->salt, $this->password);
         }
 
-        return false;
+        return Yii::$app->security->compareString($this->password, $this->hashPassword($password));
     }
 
     /**
      * Hashes a password
      *
-     * @param type $password
-     * @param type $algorithm
-     * @param type $salt
-     * @return Hashed password
+     * @param string $password
+     * @return string Hashed password
+     * @throws Exception
      */
-    private function hashPassword($password)
+    private function hashPassword(string $password): string
     {
         $password .= $this->salt;
 
-        if ($this->algorithm == 'sha1md5') {
-            return sha1(md5($password));
-        } elseif ($this->algorithm == 'sha512whirlpool') {
-            return hash('sha512', hash('whirlpool', $password));
-        } elseif ($this->algorithm == 'sha512') {
-            return hash('sha512', $password);
-        } else {
-            throw new Exception('Invalid Hashing Algorithm!');
+        switch ($this->algorithm) {
+            case 'bcrypt':
+                return password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
+            case 'sha512whirlpool':
+                return hash('sha512', hash('whirlpool', $password));
+            case 'sha1md5':
+                return sha1(md5($password));
+            case 'sha512':
+                return hash('sha512', $password);
         }
+
+        throw new Exception('Invalid Hashing Algorithm!');
     }
 
     /**
-     * Sets an password and hash it
+     * Sets a password and hash it
      *
-     * @param string $password
+     * @param string $newPassword
+     * @throws Exception
      */
-    public function setPassword($newPassword)
+    public function setPassword(string $newPassword)
     {
         $this->salt = UUID::v4();
         $this->algorithm = $this->defaultAlgorithm;
         $this->password = $this->hashPassword($newPassword);
-        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
     }
 
-    public function getUser()
+    public function getUser(): ActiveQuery
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
-    private function validateAdvancedPasswordRules($attribute, $params)
+    private function validateAdvancedPasswordRules(string $attribute)
     {
         $userModule = Yii::$app->getModule('user');
         $additionalRules = $userModule->getPasswordStrength();
-        if (is_array($additionalRules) && ! empty($additionalRules)) {
+        if (is_array($additionalRules) && !empty($additionalRules)) {
             foreach ($additionalRules as $pattern => $message) {
                 $errorMessage = $userModule->isCustomPasswordStrength() ?
                     Yii::t('UserModule.custom', $message) :
                     $message;
                 try {
                     preg_match($pattern, $this->$attribute, $matches);
-                    if (! count($matches)) {
+                    if (!count($matches)) {
                         $this->addError($attribute, $errorMessage);
                     }
                 } catch (\Exception $exception) {
@@ -216,15 +226,16 @@ class Password extends ActiveRecord
         }
     }
 
+    /**
+     * @inheritdoc
+     */
     public function afterSave($insert, $changedAttributes)
     {
         parent::afterSave($insert, $changedAttributes);
 
-        if ($this->user->isAttributeChanged('auth_key') &&
-            $this->user->save() &&
-            $this->user->isCurrentUser()) {
-            Yii::$app->user->switchIdentity($this->user);
-        }
+        $this->user->auth_key = Yii::$app->security->generateRandomString(32);
+        $this->user->save();
+        $this->user->isCurrentUser() && Yii::$app->user->switchIdentity($this->user);
     }
 
 }

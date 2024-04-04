@@ -10,31 +10,31 @@ namespace humhub\modules\space\widgets;
 
 use yii\base\Widget;
 use yii\data\Pagination;
+use yii\db\ActiveQuery;
 
 /**
  * ListBox returns the content of the space list modal
- * 
+ *
  * Example Action:
- * 
+ *
  * ```php
  * public actionSpaceList() {
  *       $query = Space::find();
  *       $query->where(...);
- *        
+ *
  *       $title = "Some Spaces";
- *  
+ *
  *       return $this->renderAjaxContent(ListBox::widget(['query' => $query, 'title' => $title]));
  * }
  * ```
- * 
+ *
  * @since 1.1
  * @author luke
  */
 class ListBox extends Widget
 {
-
     /**
-     * @var \yii\db\ActiveQuery
+     * @var ActiveQuery
      */
     public $query;
 
@@ -58,9 +58,9 @@ class ListBox extends Widget
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
         return $this->render('listBox', [
-                    'title' => $this->title,
-                    'spaces' => $this->query->all(),
-                    'pagination' => $pagination
+            'title' => $this->title,
+            'spaces' => $this->query->all(),
+            'pagination' => $pagination
         ]);
     }
 

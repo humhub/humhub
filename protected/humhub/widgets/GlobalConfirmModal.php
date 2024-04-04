@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use Yii;
+
 /**
  * GlobalConfirmModal used as template for humhub.ui.modal.confirm actions.
  *
@@ -17,7 +19,6 @@ namespace humhub\widgets;
  */
 class GlobalConfirmModal extends \yii\base\Widget
 {
-
     /**
      * @inheritdoc
      */
@@ -32,7 +33,7 @@ class GlobalConfirmModal extends \yii\base\Widget
             'keyboard' => false,
             'animation' => 'pulse',
             'initialLoader' => false,
-            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-default"></button><button data-modal-confirm data-modal-close class="btn btn-primary"></button>'
+            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-default">' . Yii::t('base', 'Cancel') . '</button><button data-modal-confirm data-modal-close class="btn btn-primary">' . Yii::t('base', 'Confirm') . '</button>'
         ]);
     }
 

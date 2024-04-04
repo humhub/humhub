@@ -30,7 +30,8 @@ class MemberController extends Controller
     /**
      * @inheritdoc
      */
-    protected function getAccessRules() {
+    protected function getAccessRules()
+    {
         return [
             ['login'],
             [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN], 'actions' => [
@@ -53,7 +54,7 @@ class MemberController extends Controller
         // User Group Change
         if (Yii::$app->request->post('dropDownColumnSubmit')) {
             Yii::$app->response->format = 'json';
-            $membership = Membership::findOne(['space_id' => $space->id, 'user_id' => Yii::$app->request->post('user_id')]);
+            $membership = Membership::findMembership($space->id, Yii::$app->request->post('user_id'));
             if ($membership === null) {
                 throw new HttpException(404, 'Could not find membership!');
             }
@@ -72,9 +73,9 @@ class MemberController extends Controller
         }
 
         return $this->render('index', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                    'space' => $space
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'space' => $space
         ]);
     }
 
@@ -90,9 +91,9 @@ class MemberController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('pending-invitations', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                    'space' => $space
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'space' => $space
         ]);
     }
 
@@ -108,9 +109,9 @@ class MemberController extends Controller
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('pending-approvals', [
-                    'dataProvider' => $dataProvider,
-                    'searchModel' => $searchModel,
-                    'space' => $space
+            'dataProvider' => $dataProvider,
+            'searchModel' => $searchModel,
+            'space' => $space
         ]);
     }
 
@@ -192,8 +193,8 @@ class MemberController extends Controller
         }
 
         return $this->render('change-owner', [
-                    'space' => $space,
-                    'model' => $model
+            'space' => $space,
+            'model' => $model
         ]);
     }
 

@@ -2,6 +2,7 @@
 
 namespace humhub\modules\web\security\models;
 
+use Exception;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -10,7 +11,6 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use humhub\modules\web\security\helpers\CSPBuilder;
 use humhub\modules\web\security\Module;
-
 
 /**
  * The SecuritySettings are used to load and parse a security config file.
@@ -35,22 +35,22 @@ use humhub\modules\web\security\Module;
  */
 class SecuritySettings extends Model
 {
-    const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
-    const HEADER_CONTENT_SECRUITY_POLICY_IE = 'X-Content-Security-Policy';
-    const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY = 'Content-Security-Policy-Report-Only';
-    const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE = 'X-Content-Security-Policy-Report-Only';
+    public const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
+    public const HEADER_CONTENT_SECRUITY_POLICY_IE = 'X-Content-Security-Policy';
+    public const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY = 'Content-Security-Policy-Report-Only';
+    public const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE = 'X-Content-Security-Policy-Report-Only';
 
-    const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
-    const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
-    const HEADER_STRICT_TRANSPORT_SECURITY = 'Strict-Transport-Security';
-    const HEADER_X_FRAME_OPTIONS = 'X-Frame-Options';
+    public const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
+    public const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
+    public const HEADER_STRICT_TRANSPORT_SECURITY = 'Strict-Transport-Security';
+    public const HEADER_X_FRAME_OPTIONS = 'X-Frame-Options';
 
-    const HEADER_REFERRER_POLICY = 'Referrer-Policy';
-    const HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES = 'X-Permitted-Cross-Domain-Policies';
+    public const HEADER_REFERRER_POLICY = 'Referrer-Policy';
+    public const HEADER_X_PERMITTED_CROSS_DOMAIN_POLICIES = 'X-Permitted-Cross-Domain-Policies';
 
-    const HEADER_PUBLIC_KEY_PINS = 'Public-Key-Pins';
+    public const HEADER_PUBLIC_KEY_PINS = 'Public-Key-Pins';
 
-    const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
+    public const CSP_SECTION_REPORT_ONLY = 'csp-report-only';
 
     /**
      * @var [] static config cache
@@ -94,7 +94,7 @@ class SecuritySettings extends Model
     /**
      * Initializes a static CSPBuilder instance by means of the given `csp` configuration definition.
      *
-     * @throws \Exception
+     * @throws Exception
      */
     private function initCSP()
     {
@@ -104,7 +104,7 @@ class SecuritySettings extends Model
 
         $this->csp = CSPBuilder::fromArray(static::$rules[$this->cspSection]);
 
-        if($this->isCspReportEnabled()) {
+        if ($this->isCspReportEnabled()) {
             $this->csp->setReportUri(Url::toRoute('/web/security-report'));
         }
     }
@@ -132,7 +132,7 @@ class SecuritySettings extends Model
      * > Note: If the `csp` configuration section is given, the Content-Security-Policy of the `header` section will be ignored.
      *
      * @return null|string
-     * @throws \Exception
+     * @throws Exception
      */
     public function getCSPHeader()
     {
@@ -148,7 +148,7 @@ class SecuritySettings extends Model
     public function getCSPHeaderKeys()
     {
         // If the `csp section is set to report-only`
-        if($this->isReportOnlyCSP()) {
+        if ($this->isReportOnlyCSP()) {
             return [static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE];
         }
 
@@ -162,7 +162,7 @@ class SecuritySettings extends Model
      */
     public function isReportOnlyCSP()
     {
-        if(!$this->hasSection($this->cspSection)) {
+        if (!$this->hasSection($this->cspSection)) {
             return false;
         }
 
@@ -187,16 +187,16 @@ class SecuritySettings extends Model
      *
      * @param $header
      * @return null|string
-     * @throws \Exception
+     * @throws Exception
      */
-    public function getHeader($header)
+    public function getHeader(string $header): ?string
     {
         if ($this->isCSPHeaderKey($header)) {
 
             // Make sure a nonce has been created and attached
-            if(!$this->isNonceSupportActive() && !$this->isReportOnlyCSP()) {
-                Security::setNonce(null);
-            } elseif (!$this->nonceAttached ) {
+            if (!$this->isNonceSupportActive() && !$this->isReportOnlyCSP()) {
+                Security::setNonce();
+            } elseif (!$this->nonceAttached) {
                 $this->csp->nonce('script-src', Security::getNonce(true));
                 $this->nonceAttached = true;
             }
@@ -207,11 +207,41 @@ class SecuritySettings extends Model
             }
         }
 
-        if (isset(static::$rules['headers'][$header])) {
-            return static::$rules['headers'][$header];
+        return $this->applyHeaderMasks($header);
+    }
+
+    /**
+     * Converts mask in header param like 'Content-Security-Policy' to proper value:
+     *  - {{ nonce }} is converted to 'nonce-xZnHrdklZksbCle1zhrmDj9g'
+     *                when config `web.csp.nonce` === `true`, otherwise
+     *
+     * @param string $header
+     * @return string|null
+     */
+    private function applyHeaderMasks(string $header): ?string
+    {
+        if (!isset(static::$rules['headers'][$header])) {
+            return null;
         }
 
-        return null;
+        $headerValue = static::$rules['headers'][$header];
+
+        if (is_string($headerValue)) {
+            $headerValue = $this->applyMaskNonce($headerValue);
+        }
+
+        return $headerValue;
+    }
+
+    private function applyMaskNonce(string $value): string
+    {
+        if (strpos($value, '{{ nonce }}') === false) {
+            return $value;
+        }
+
+        $nonce = $this->isNonceSupportActive() ? Security::getNonce(true) : null;
+
+        return str_replace('{{ nonce }}', $nonce ? '\'nonce-' . $nonce . '\'' : '', $value);
     }
 
     /**

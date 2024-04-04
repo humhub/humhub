@@ -1,4 +1,5 @@
 <?php
+
 namespace user\acceptance;
 
 use user\AcceptanceTester;
@@ -15,8 +16,8 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('User Account');
-        $I->click('Account Settings');
+        $I->waitForText('Your Account');
+        $I->click('General');
 
         $I->waitForText('Basic Settings');
 
@@ -58,8 +59,8 @@ class AccountCest
         $I->amOnProfile();
 
         $I->click('Edit account');
-        $I->waitForText('User Account');
-        $I->click('Account Settings');
+        $I->waitForText('Your Account');
+        $I->click('General');
         $I->waitForText('Basic Settings');
 
         $I->click('Notifications'); //Notification tab

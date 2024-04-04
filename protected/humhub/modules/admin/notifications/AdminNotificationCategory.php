@@ -12,7 +12,6 @@ use humhub\modules\notification\components\NotificationCategory;
  */
 class AdminNotificationCategory extends NotificationCategory
 {
-
     public $id = 'admin';
 
     public $sortOrder = 100;

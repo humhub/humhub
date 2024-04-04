@@ -8,30 +8,27 @@
 
 namespace humhub\modules\user\components;
 
-use humhub\modules\user\authclient\AuthClientHelpers;
-use humhub\modules\user\authclient\Password;
-use humhub\modules\user\authclient\interfaces\AutoSyncUsers;
+use humhub\libs\BasePermission;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
+use humhub\modules\user\services\AuthClientUserService;
+use Throwable;
 use Yii;
 use yii\authclient\ClientInterface;
+use yii\base\InvalidConfigException;
 
 /**
  * Description of User
+ *
  * @property UserModel|null $identity
+ * @method  UserModel|null getIdentity(bool $autoRenew = true)
  * @mixin Impersonator
  * @author luke
  */
 class User extends \yii\web\User
 {
-
-    const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
-
-    /**
-     * @var ClientInterface[] the users authclients
-     */
-    private $_authClients = null;
+    public const EVENT_BEFORE_SWITCH_IDENTITY = 'beforeSwitchIdentity';
 
     /**
      * @var PermissionManager
@@ -43,6 +40,8 @@ class User extends \yii\web\User
      * @since 1.8
      */
     public $mustChangePasswordRoute = '/user/must-change-password';
+
+    private ?AuthClientUserService $authClientUserService = null;
 
     /**
      * @inheritdoc
@@ -102,9 +101,10 @@ class User extends \yii\web\User
      * ```
      *
      * @param string|string[]|BasePermission $permission
-     * @return boolean
-     * @throws \yii\base\InvalidConfigException
-     * @throws \Throwable
+     *
+     * @return bool
+     * @throws InvalidConfigException
+     * @throws Throwable
      * @since 1.2
      * @see PermissionManager::can()
      */
@@ -115,7 +115,7 @@ class User extends \yii\web\User
 
     /**
      * @return PermissionManager instance with the related identity instance as permission subject.
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getPermissionManager()
     {
@@ -127,73 +127,6 @@ class User extends \yii\web\User
         return $this->permissionManager;
     }
 
-    /**
-     * Determines if this user is able to change the password.
-     * @return boolean
-     */
-    public function canChangePassword()
-    {
-        foreach ($this->getAuthClients() as $authClient) {
-            if ($authClient->className() == Password::class) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    /**
-     * Determines if this user is able to change the email address.
-     * @return boolean
-     * @throws \Throwable
-     */
-    public function canChangeEmail()
-    {
-        if (in_array('email', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determines if this user is able to change his username.
-     * @return boolean
-     * @throws \Throwable
-     */
-    public function canChangeUsername()
-    {
-        if (in_array('username', AuthClientHelpers::getSyncAttributesByUser($this->getIdentity()))) {
-            return false;
-        }
-
-        return true;
-    }
-
-    /**
-     * Determines if this user is able to delete his account.
-     * @return boolean
-     */
-    public function canDeleteAccount()
-    {
-        foreach ($this->getAuthClients() as $authClient) {
-            if ($authClient instanceof AutoSyncUsers) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public function getAuthClients()
-    {
-        if ($this->_authClients === null) {
-            $this->_authClients = AuthClientHelpers::getAuthClientsByUser($this->getIdentity());
-        }
-
-        return $this->_authClients;
-    }
-
     public function setCurrentAuthClient(ClientInterface $authClient)
     {
         Yii::$app->session->set('currentAuthClientId', $authClient->getId());
@@ -201,7 +134,7 @@ class User extends \yii\web\User
 
     public function getCurrentAuthClient()
     {
-        foreach ($this->getAuthClients() as $authClient) {
+        foreach ($this->getAuthClientUserService()->getClients() as $authClient) {
             if ($authClient->getId() == Yii::$app->session->get('currentAuthClientId')) {
                 return $authClient;
             }
@@ -223,7 +156,7 @@ class User extends \yii\web\User
     /**
      * Checks if the system configuration allows access for guests
      *
-     * @return boolean is guest access enabled and allowed
+     * @return bool is guest access enabled and allowed
      * @deprecated since 1.4
      */
     public static function isGuestAccessEnabled()
@@ -248,8 +181,17 @@ class User extends \yii\web\User
     }
 
     /**
-     * @since 1.8
+     * @return bool
+     * @deprecated since 1.14
+     */
+    public function canDeleteAccount()
+    {
+        return ($this->getAuthClientUserService())->canDeleteAccount();
+    }
+
+    /**
      * @return bool Check if current page is already URL to forcing user to change password
+     * @since 1.8
      */
     public function isMustChangePasswordUrl()
     {
@@ -258,8 +200,9 @@ class User extends \yii\web\User
 
     /**
      * Determines if this user must change the password.
+     *
+     * @return bool
      * @since 1.8
-     * @return boolean
      */
     public function mustChangePassword()
     {
@@ -279,5 +222,14 @@ class User extends \yii\web\User
         }
 
         return parent::loginRequired($checkAjax, $checkAcceptHeader);
+    }
+
+    public function getAuthClientUserService(): AuthClientUserService
+    {
+        if ($this->authClientUserService === null) {
+            $this->authClientUserService = new AuthClientUserService($this->identity);
+        }
+
+        return $this->authClientUserService;
     }
 }

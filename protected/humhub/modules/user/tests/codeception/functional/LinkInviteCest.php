@@ -1,5 +1,8 @@
 <?php
 
+use humhub\modules\space\models\forms\InviteForm;
+use humhub\modules\space\models\Space;
+use humhub\modules\user\services\LinkRegistrationService;
 use user\FunctionalTester;
 
 class LinkInviteCest
@@ -10,12 +13,12 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
 
-        $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
-        $inviteForm->space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm();
+        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
-        $I->seeResponseCodeIs(400);
+        $I->seeResponseCodeIs(404);
     }
 
     public function testInvalidToken(FunctionalTester $I)
@@ -25,7 +28,7 @@ class LinkInviteCest
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
         $I->amOnRoute('/user/registration/by-link', ['token' => 'abcd', 'spaceId' => 1]);
-        $I->seeResponseCodeIs(404);
+        $I->seeResponseCodeIs(400);
     }
 
     public function testValidTokenDifferentSpaceId(FunctionalTester $I)
@@ -34,17 +37,25 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
+
         // Generate Token
-        $space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
-        $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
+        $space = Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm();
         $inviteForm->space = $space;
         $inviteUrl = $inviteForm->getInviteLink();
 
-        $I->amOnRoute('/user/registration/by-link', ['token' => $space->settings->get('inviteToken'), 'spaceId' => $space->id]);
+        $linkRegistrationService = new LinkRegistrationService(null, $space);
+        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => $space->id]);
         $I->seeResponseCodeIs(200);
 
-        $I->amOnRoute('/user/registration/by-link', ['token' => $space->settings->get('inviteToken'), 'spaceId' => 1]);
+        $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => 1]);
+        $I->seeResponseCodeIs(400);
+
+
+        Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
+        $I->amOnRoute('/user/registration/by-link', ['token' => 'abc', 'spaceId' => 1]);
         $I->seeResponseCodeIs(404);
+
     }
 
 
@@ -54,8 +65,8 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
-        $inviteForm = new \humhub\modules\space\models\forms\InviteForm();
-        $inviteForm->space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm();
+        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
@@ -88,7 +99,7 @@ class LinkInviteCest
         $I->see('Dashboard');
 
         $userId = \humhub\modules\user\models\User::findOne(['username' => 'NewUser']);
-        $space = \humhub\modules\space\models\Space::findOne(['name' => 'Space 2']);
+        $space = Space::findOne(['name' => 'Space 2']);
 
         if (!$space->isMember($userId)) {
             $I->see('User is not member of invited Space!');

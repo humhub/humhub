@@ -9,7 +9,7 @@ return [
     '<strong>Space</strong> Modules' => 'Módulo de <strong>Espaço</strong>',
     '<strong>Space</strong> settings' => 'Configurações do <strong>Espaço</strong>',
     'Actions' => 'Ações',
-    'Activate' => 'Ativar',
+    'Enable' => 'Ativar',
     'Add <strong>Modules</strong>' => 'Adicionar <strong>Módulos</strong>',
     'Advanced access settings' => 'Configurações avançadas de acesso',
     'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'Todos os membros, exceto moderadores e administradores deste espaço, serão removidos. Todos os convites pendentes e solicitações de associação serão encerrados.',
@@ -55,4 +55,5 @@ return [
     'Unarchive' => 'Desarquivar',
     'e.g. example for {baseUrl}/s/example' => 'p. ex. exemplo para {baseUrl}/s/exemplo',
     'never' => 'nunca',
+    'Only global administrators can change this value' => '',
 ];

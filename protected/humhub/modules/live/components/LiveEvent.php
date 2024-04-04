@@ -8,15 +8,16 @@
 
 namespace humhub\modules\live\components;
 
+use yii\base\BaseObject;
+
 /**
  * LiveEvent implements a message which can be send via live communication
  *
  * @since 1.2
  * @author Luke
  */
-abstract class LiveEvent extends \yii\base\BaseObject
+abstract class LiveEvent extends BaseObject
 {
-
     /**
      * @see \humhub\modules\content\components\ContentContainerActiveRecord
      * @var int
@@ -31,7 +32,7 @@ abstract class LiveEvent extends \yii\base\BaseObject
 
     /**
      * Returns the data of this event as array
-     * 
+     *
      * @return array the live event data
      */
     public function getData()
@@ -41,7 +42,7 @@ abstract class LiveEvent extends \yii\base\BaseObject
         unset($data['contentContainerId']);
 
         return [
-            'type' => str_replace('\\', '.', $this->className()),
+            'type' => str_replace('\\', '.', get_class($this)),
             'contentContainerId' => $this->contentContainerId,
             'visibility' => $this->visibility,
             'data' => $data

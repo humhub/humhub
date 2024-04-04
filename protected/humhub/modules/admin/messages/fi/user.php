@@ -44,7 +44,6 @@ return array (
   'Create new group' => 'Luo uusi ryhmä',
   'Create new profile category' => 'Luo uusi profiililuokka',
   'Create new profile field' => 'Luo uusi profiilikenttä',
-  'Deactivate' => '',
   'Deactivate individual profile permissions?' => '',
   'Decline' => 'Hylkää',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Hylkää ja poista käyttäjä: <strong>{displayName}</strong>',
@@ -103,6 +102,7 @@ Kind Regards
 
 ' => '',
   'Here you can create or edit profile categories and fields.' => 'Täällä voit luoda tai muokata profiililuokkia ja kenttiä.',
+  'Hide online status of users' => '',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Jos tämä valinta ei ole valittu, sivujen omistajuus siirtyy sinulle.',
   'Impersonate' => 'Siirry käyttäjän tiliin',

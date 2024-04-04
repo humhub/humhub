@@ -8,6 +8,7 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\libs\Html;
+use humhub\modules\space\models\Space;
 use yii\helpers\Url;
 use humhub\components\Widget;
 
@@ -19,9 +20,8 @@ use humhub\components\Widget;
  */
 class SpaceDirectoryTagList extends Widget
 {
-
     /**
-     * @var \humhub\modules\space\models\Space
+     * @var Space
      */
     public $space;
 

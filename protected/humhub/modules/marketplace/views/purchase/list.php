@@ -3,6 +3,7 @@
 use humhub\components\Module;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\widgets\Button;
+use humhub\widgets\Link;
 use yii\base\View;
 use yii\helpers\Url;
 use yii\helpers\Html;
@@ -72,7 +73,9 @@ Assets::register($this);
 
                             <div class="module-controls">
                                 <?php if (!Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                                    <?= Html::a(Yii::t('MarketplaceModule.base', 'Install'), Url::to(['/marketplace/browse/install', 'moduleId' => $module['id']]), ['style' => 'font-weight:bold', 'data-loader' => "modal", 'data-message' => Yii::t('MarketplaceModule.base', 'Installing module...'), 'data-method' => 'POST']); ?>
+                                    <strong><?= Link::asLink(Yii::t('MarketplaceModule.base', 'Install'))
+                                            ->action('marketplace.install', ['/marketplace/browse/install'])
+                                            ->options(['data-module-id' => $module['id']]) ?></strong>
                                     &middot;
                                 <?php endif; ?>
                                 <?= Html::a(Yii::t('MarketplaceModule.base', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
@@ -84,7 +87,8 @@ Assets::register($this);
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <small class="pull-right"><br />Installation Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
+            <small class="pull-right"><br/>Installation
+                Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
             <div class="clearfix"></div>
 
         </div>

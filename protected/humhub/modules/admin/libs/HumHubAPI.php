@@ -8,10 +8,9 @@
 
 namespace humhub\modules\admin\libs;
 
+use Exception;
 use humhub\modules\marketplace\Module;
 use Yii;
-use yii\helpers\Json;
-use humhub\libs\CURLHelper;
 
 /**
  * HumHubAPI provides access to humhub.com for fetching available modules or latest version.
@@ -20,7 +19,6 @@ use humhub\libs\CURLHelper;
  */
 class HumHubAPI
 {
-
     /**
      * HumHub API
      *
@@ -40,7 +38,7 @@ class HumHubAPI
 
             $response = $marketplace->getHumHubApi()->get($action)->addData($params)->send();
             return $response->getData();
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error('Could not parse HumHub API response! ' . $ex->getMessage());
             return [];
         }

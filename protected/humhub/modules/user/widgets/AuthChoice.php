@@ -8,16 +8,17 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
+use yii\base\InvalidConfigException;
 use yii\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {
-
     /**
      * Used to retrieve the auth clients in a static way
-     * @var type
+     * @var string
      */
     private static $authclientCollection = 'authClientCollection';
 
@@ -27,9 +28,11 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
     public $maxShowClients = 2;
 
     /**
-     * @var boolean show auth button colors
+     * @var bool show auth button colors
      */
     public $showButtonColors = false;
+
+    public $showOrDivider = false;
 
     /**
      * @inheritdoc
@@ -63,7 +66,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
     /**
      * Returns default auth clients list.
-     * @return ClientInterface[] auth clients list.
+     * @return bool
+     * @throws InvalidConfigException
      */
     public static function hasClients()
     {
@@ -74,8 +78,8 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
 
     /**
      * Filters out clients which need login form
-     * @param type $clients
-     * @return \humhub\modules\user\authclient\BaseFormAuth
+     * @param $clients
+     * @return BaseFormAuth[]
      */
     private static function filterClients($clients)
     {
@@ -83,7 +87,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         foreach ($clients as $client) {
 
             // Don't show clients which need login form
-            if (!$client instanceof \humhub\modules\user\authclient\BaseFormAuth) {
+            if (!$client instanceof BaseFormAuth) {
                 $result[] = $client;
             }
         }
@@ -107,7 +111,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function init()
     {
-        if(count($this->getClients()) == 0) {
+        if (count($this->getClients()) == 0) {
             return;
         } else {
             return parent::init();
@@ -119,7 +123,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function run()
     {
-        if(count($this->getClients()) == 0) {
+        if (count($this->getClients()) == 0) {
             return;
         } else {
             return parent::run();
@@ -164,7 +168,10 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             echo Html::endTag('div');
         }
         echo Html::endTag('div');
-        echo Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
+
+        if ($this->showOrDivider) {
+            echo Html::tag('div', Html::tag('hr') . Html::tag('div', Yii::t('UserModule.base', 'or')), ['class' => 'or-container']);
+        }
     }
 
     /**

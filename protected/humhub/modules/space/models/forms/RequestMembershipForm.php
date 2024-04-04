@@ -12,7 +12,6 @@ use yii\base\Model;
  */
 class RequestMembershipForm extends Model
 {
-
     public $space_id;
     public $message;
     public $options;

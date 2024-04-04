@@ -16,13 +16,12 @@ use humhub\modules\notification\live\NewNotification;
 
 /**
  * Web Target
- * 
+ *
  * @since 1.2
  * @author buddha
  */
 class WebTarget extends BaseTarget
 {
-
     /**
      * @inheritdoc
      */
@@ -39,7 +38,7 @@ class WebTarget extends BaseTarget
     public function handle(BaseNotification $notification, User $user)
     {
         if (!$notification->record) {
-            throw new Exception('Notification record not found for BaseNotification "' . $notification->className() . '"');
+            throw new Exception('Notification record not found for BaseNotification "' . get_class($notification) . '"');
         }
 
         $notification->record->send_web_notifications = true;
@@ -47,7 +46,7 @@ class WebTarget extends BaseTarget
 
         Yii::$app->live->send(new NewNotification([
             'notificationId' => $notification->record->id,
-            'notificationGroup' => ($notification->getGroupKey()) ? (get_class($notification).':'.$notification->getGroupKey()) : null,
+            'notificationGroup' => ($notification->getGroupKey()) ? (get_class($notification) . ':' . $notification->getGroupKey()) : null,
             'contentContainerId' => $user->contentcontainer_id,
             'ts' => time(),
             'text' => $notification->text()
@@ -61,5 +60,4 @@ class WebTarget extends BaseTarget
     {
         return Yii::t('NotificationModule.targets', 'Web');
     }
-
 }

@@ -33,6 +33,7 @@ return array (
   'Paragraph' => 'Paragrafo',
   'People' => 'Persone',
   'Rows' => 'Righe',
+  'Switch editor mode' => 'Cambiare modalità di editor',
   'Symbols' => 'Simboli',
   'Title' => 'Titolo',
   'Toggle code font' => 'Font per codice',

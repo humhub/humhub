@@ -17,7 +17,6 @@ use humhub\modules\live\components\LiveEvent;
  */
 class NewContent extends LiveEvent
 {
-
     /**
      * @var int the id of the new content
      */
@@ -49,7 +48,7 @@ class NewContent extends LiveEvent
     public $sourceId;
 
     /**
-     * @var boolean if true it's meant to be a silent content creation
+     * @var bool if true it's meant to be a silent content creation
      */
     public $silent;
 

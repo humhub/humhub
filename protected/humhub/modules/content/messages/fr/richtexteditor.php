@@ -33,6 +33,7 @@ return array (
   'Paragraph' => 'Paragraphe',
   'People' => 'Utilisateur',
   'Rows' => 'Lignes',
+  'Switch editor mode' => 'Changer le mode de l’éditeur',
   'Symbols' => 'Symboles',
   'Title' => 'Titre',
   'Toggle code font' => 'Activer/désactiver la police de code',

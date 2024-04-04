@@ -24,7 +24,6 @@ use humhub\modules\content\models\ContentContainerPermission;
  */
 class ContentContainerModule extends Module
 {
-
     /**
      * @inheritdoc
      */
@@ -33,7 +32,7 @@ class ContentContainerModule extends Module
         // disable in content containers
         $contentContainerQuery = ContentContainerModuleManager::getContentContainerQueryByModule($this->id);
         foreach ($contentContainerQuery->all() as $contentContainer) {
-            /* @var $contentContainer \humhub\modules\content\models\ContentContainer */
+            /* @var $contentContainer ContentContainer */
             $this->disableContentContainer($contentContainer->getPolymorphicRelation());
         }
 
@@ -41,7 +40,7 @@ class ContentContainerModule extends Module
             $moduleState->delete();
         }
 
-        parent::disable();
+        return parent::disable();
     }
 
     /**
@@ -51,8 +50,8 @@ class ContentContainerModule extends Module
      * public function getContentContainerTypes()
      * {
      *      return [
-     *          User::className(),
-     *          Space::className()
+     *          User::class,
+     *          Space::class
      *      ];
      * }
      * ~~~
@@ -68,7 +67,7 @@ class ContentContainerModule extends Module
      * Checks whether the module is enabled the given content container class.
      *
      * @param string $class the class of content container
-     * @return boolean
+     * @return bool
      */
     public function hasContentContainerType($class)
     {

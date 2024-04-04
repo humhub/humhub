@@ -7,6 +7,8 @@
  */
 
 // comment out the following two lines when deployed to production
+use humhub\helpers\DatabaseHelper;
+
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
@@ -22,4 +24,10 @@ $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/protected/config/web.php')
 );
 
-(new humhub\components\Application($config))->run();
+try {
+    (new humhub\components\Application($config))->run();
+} catch (\Throwable $ex) {
+    if (null === DatabaseHelper::handleConnectionErrors($ex)) {
+        throw $ex;
+    }
+}

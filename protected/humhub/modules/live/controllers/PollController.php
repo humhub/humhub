@@ -8,13 +8,16 @@
 
 namespace humhub\modules\live\controllers;
 
-use Yii;
-use yii\db\Expression;
-use yii\base\Exception;
-use humhub\modules\content\models\Content;
 use humhub\components\Controller;
-use humhub\modules\live\models\Live;
+use humhub\modules\content\models\Content;
 use humhub\modules\live\components\LiveEvent;
+use humhub\modules\live\driver\Poll;
+use humhub\modules\live\models\Live;
+use humhub\modules\user\services\IsOnlineService;
+use Yii;
+use yii\base\Exception;
+use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * PollController is used by the live database driver to deliever events
@@ -62,7 +65,7 @@ class PollController extends Controller
         }
 
         if (parent::beforeAction($action)) {
-            if (!Yii::$app->live->driver instanceof \humhub\modules\live\driver\Poll) {
+            if (!Yii::$app->live->driver instanceof Poll) {
                 throw new Exception('Polling is only available when using the live database driver!');
             }
 
@@ -98,7 +101,10 @@ class PollController extends Controller
         }
 
         Yii::$app->session->set('live.poll.lastQueryTime', $results['queryTime']);
-        
+
+        // Update "is online" status
+        (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
+
         Yii::$app->response->format = 'json';
         return $results;
     }
@@ -130,7 +136,7 @@ class PollController extends Controller
      * Checks if the live event is visible for the current user.
      *
      * @param LiveEvent $liveEvent
-     * @return boolean is visible
+     * @return bool is visible
      */
     protected function checkVisibility(LiveEvent $liveEvent)
     {
@@ -141,7 +147,7 @@ class PollController extends Controller
      * Creates a query to lookup live events.
      *
      * @param int $lastQueryTime the last lookup
-     * @return \yii\db\ActiveQuery the query
+     * @return ActiveQuery the query
      */
     protected function buildLookupQuery($lastQueryTime)
     {
@@ -187,11 +193,11 @@ class PollController extends Controller
     {
         $currentTime = time();
 
-        $last = (int) Yii::$app->request->get('last', $currentTime);
+        $last = (int)Yii::$app->request->get('last', $currentTime);
         if (empty($last)) {
             $last = time();
         }
-        
+
         if ($last + $this->maxTimeDecay < $currentTime) {
             Yii::info('User requested too old live data! Requested: ' . $last . ' Now: ' . $currentTime, 'live');
             $last = $currentTime;

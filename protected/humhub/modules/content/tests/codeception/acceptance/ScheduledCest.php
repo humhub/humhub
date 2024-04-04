@@ -4,7 +4,7 @@ use content\AcceptanceTester;
 
 class ScheduledCest
 {
-    const DATE_FORMAT = 'short';
+    public const DATE_FORMAT = 'short';
 
     public function testCreateDraftPost(AcceptanceTester $I)
     {
@@ -18,15 +18,23 @@ class ScheduledCest
         $I->click('#contentFormBody ul.preferences');
         $datetime = (new Datetime('tomorrow'))->setTime(19, 15);
         $this->updateSchedulingOptions($I, $datetime);
+        $I->see('Save scheduling', '#post_submit_button');
         $I->click('#post_submit_button', '#contentFormBody');
 
         $I->wantTo('ensure the scheduled content has a proper badge.');
         $I->waitForText($postContent, null, '.wall-entry');
         $I->see($this->getLabelText($datetime), '//div[@class="wall-entry"][1]');
+        $I->wantTo('ensure author can see the scheduled content on dashboard.');
+        $I->amOnDashboard();
+        $I->waitForText($postContent, null, '[data-stream-entry="1"]');
+        $I->waitForText($this->getLabelText($datetime), null, '[data-stream-entry="1"]');
 
-        $I->wantTo('ensure draft is not visible for other users.');
+        $I->wantTo('ensure the scheduled content is not visible for other users.');
         $I->amUser2(true);
         $I->amOnSpace3();
+        $I->dontSee($postContent);
+        $I->amOnDashboard();
+        $I->waitForElementVisible('[data-stream-entry="1"]');
         $I->dontSee($postContent);
 
         $I->wantTo('update scheduled options of the existing content');
@@ -44,7 +52,7 @@ class ScheduledCest
     private function getLabelText(?Datetime $datetime = null): string
     {
         return $datetime instanceof DateTime
-            ? 'SCHEDULED AT ' . Yii::$app->formatter->asDatetime($datetime, self::DATE_FORMAT)
+            ? 'SCHEDULED FOR ' . Yii::$app->formatter->asDatetime($datetime, self::DATE_FORMAT)
             : 'DRAFT';
     }
 

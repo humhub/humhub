@@ -13,7 +13,6 @@ use Yii;
  */
 class BrowseMenu extends MenuWidget
 {
-
     public $template = 'application.widgets.views.leftNavigation';
 
     public function init()

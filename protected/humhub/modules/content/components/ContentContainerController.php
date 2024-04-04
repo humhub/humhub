@@ -10,7 +10,9 @@ namespace humhub\modules\content\components;
 
 use humhub\components\Controller;
 use humhub\modules\content\models\ContentContainer;
+use humhub\modules\space\behaviors\SpaceController;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\behaviors\ProfileController;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
@@ -34,17 +36,16 @@ use yii\web\HttpException;
  * The attached behavior will perform basic access checks, adds the container sublayout and perform other tasks
  * (e.g. the space behavior will update the last visit membership attribute).
  *
- * @mixin \humhub\modules\space\behaviors\SpaceController
- * @mixin \humhub\modules\user\behaviors\ProfileController
+ * @mixin SpaceController
+ * @mixin ProfileController
  */
 class ContentContainerController extends Controller
 {
-
     /**
      * Specifies if a contentContainer (e.g. Space or User) is required to run this controller.
      * Set this to false, if your controller should also act on global scope.
      *
-     * @var boolean require cguid container parameter
+     * @var bool require cguid container parameter
      */
     public $requireContainer = true;
 
@@ -74,7 +75,7 @@ class ContentContainerController extends Controller
 
 
         if ($this->validContentContainerClasses !== null) {
-            if ($this->contentContainer === null || !in_array($this->contentContainer->className(), $this->validContentContainerClasses)) {
+            if ($this->contentContainer === null || !in_array(get_class($this->contentContainer), $this->validContentContainerClasses)) {
                 throw new HttpException(400);
             }
         }

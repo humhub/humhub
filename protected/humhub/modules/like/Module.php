@@ -21,14 +21,13 @@ use humhub\modules\content\components\ContentActiveRecord;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
     public $isCoreModule = true;
 
     /**
-     * @var boolean automatic follow liked content
+     * @var bool automatic follow liked content
      * @since 1.2.5
      */
     public $autoFollowLikedContent = false;
@@ -44,7 +43,7 @@ class Module extends \humhub\components\Module
      */
     public function getPermissions($contentContainer = null)
     {
-        if(isset($contentContainer)) {
+        if (isset($contentContainer)) {
             return [
                 new permissions\CanLike()
             ];
@@ -79,11 +78,19 @@ class Module extends \humhub\components\Module
      * Checks if given content object can be liked
      *
      * @param Like|ContentActiveRecord $object
-     * @return boolean can like
+     * @return bool can like
      */
     public function canLike($object)
     {
         $content = $object->content;
+
+        if (!$this->isEnabled) {
+            return false;
+        }
+
+        if (!$content->getStateService()->isPublished()) {
+            return false;
+        }
 
         if (isset($content->container) && !$content->container->can(new permissions\CanLike())) {
             return false;

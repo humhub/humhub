@@ -3,14 +3,6 @@
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
- *
- */
-
-/**
- * Created by PhpStorm.
- * User: buddha
- * Date: 26.07.2017
- * Time: 16:13
  */
 
 namespace humhub\modules\content\tests\codeception\unit;
@@ -148,7 +140,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
 
         // Not related
         $accessCheck->rules = [
-                [ContentContainerControllerAccess::RULE_SPACE_ONLY => ['otherAction']]
+            [ContentContainerControllerAccess::RULE_SPACE_ONLY => ['otherAction']]
         ];
 
         $this->assertTrue($accessCheck->run());
@@ -357,7 +349,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
     {
         $space = Space::findOne(1);
         $this->becomeUser('DisabledUser');
-        $accessCheck = new ContentContainerControllerAccess(['contentContainer' => $space,'rules' => [], 'action' => 'testAction']);
+        $accessCheck = new ContentContainerControllerAccess(['contentContainer' => $space, 'rules' => [], 'action' => 'testAction']);
         $this->assertFalse($accessCheck->run());
 
         $this->becomeUser('UnapprovedUser');
@@ -376,7 +368,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
             'action' => 'testAction'
         ]);
 
-       # $this->assertFalse($accessCheck->run());
+        # $this->assertFalse($accessCheck->run());
 
         $this->setGroupPermission(2, ContentTestPermission1::class);
 
@@ -389,18 +381,18 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
             ],
             'action' => 'testAction'
         ]);
-       # $this->assertFalse($accessCheck->run());
+        # $this->assertFalse($accessCheck->run());
 
         $accessCheck->rules = [
             ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]]
         ];
-       # $this->assertTrue($accessCheck->run());
+        # $this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
             ['permission' => [ContentTestPermission2::class], 'actions' => 'otherPermission'],
             ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]]
         ];
-       # $this->assertTrue($accessCheck->run());
+        # $this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
             ['permission' => [ContentTestPermission2::class], 'actions' => 'otherPermission'],

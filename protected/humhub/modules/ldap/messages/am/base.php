@@ -16,7 +16,6 @@ return [
     'User Filter' => 'የተጠቃሚ ማስፈሪያ',
     'Username' => 'የመጠቃሚያ ስም',
     'Username Attribute' => 'የመጠቀሚያ ስም ባህሪ',
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => '',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => '',
     'Ignored LDAP entries' => '',
     'LDAP Attribute for E-Mail Address. Default: &quot;mail&quot;' => '',

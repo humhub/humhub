@@ -2,23 +2,23 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\modules\content\models\Content;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\BlockedUsersStreamFilter;
+use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
 use humhub\modules\stream\models\filters\DateStreamFilter;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\DraftContentStreamFilter;
+use humhub\modules\stream\models\filters\OriginatorStreamFilter;
 use humhub\modules\stream\models\filters\ScheduledContentStreamFilter;
 use humhub\modules\stream\models\filters\StreamQueryFilter;
+use humhub\modules\stream\models\filters\TopicStreamFilter;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
 use yii\helpers\ArrayHelper;
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
-use humhub\modules\stream\models\filters\OriginatorStreamFilter;
-use humhub\modules\stream\models\filters\TopicStreamFilter;
-use humhub\modules\content\models\Content;
-use humhub\modules\user\models\User;
 
 /**
  * Description of StreamQuery
@@ -31,23 +31,23 @@ class StreamQuery extends Model
     /**
      * @event Event triggered before filterHandlers are applied, this can be used to add custom stream filters.
      */
-    const EVENT_BEFORE_FILTER = 'beforeFilter';
+    public const EVENT_BEFORE_FILTER = 'beforeFilter';
 
     /**
      * @event Event triggered after filterHandlers are applied.
      */
-    const EVENT_AFTER_FILTER = 'afterFilter';
+    public const EVENT_AFTER_FILTER = 'afterFilter';
 
     /**
      * Default channels
      */
-    const CHANNEL_DEFAULT = 'default';
-    const CHANNEL_ACTIVITY = 'activity';
+    public const CHANNEL_DEFAULT = 'default';
+    public const CHANNEL_ACTIVITY = 'activity';
 
     /**
      * Maximum wall entries per request
      */
-    const MAX_LIMIT = 20;
+    public const MAX_LIMIT = 20;
 
     /**
      * Can be set to filter specific content types.
@@ -70,13 +70,13 @@ class StreamQuery extends Model
 
     /**
      * The user which requested the stream. By default the current user identity.
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $user;
 
     /**
      * Can be set to filter content of a specific user
-     * @var \humhub\modules\user\models\User
+     * @var User
      */
     public $originator;
 
@@ -140,8 +140,15 @@ class StreamQuery extends Model
         BlockedUsersStreamFilter::class,
         DateStreamFilter::class,
         DraftContentStreamFilter::class,
-        ScheduledContentStreamFilter::class
+        ScheduledContentStreamFilter::class,
     ];
+
+    /**
+     * @var array Excluded query filter handlers from adding
+     * @see [[removeFilterHandler(..., $exclude = true)]]
+     * @since 1.14.5
+     */
+    public $excludedFilterHandlers = [];
 
     /**
      * Per default only content with published state are returned.
@@ -159,7 +166,7 @@ class StreamQuery extends Model
     protected $_query;
 
     /**
-     * @var boolean query built
+     * @var bool query built
      */
     protected $_built = false;
 
@@ -422,7 +429,10 @@ class StreamQuery extends Model
                 Yii::warning('StreamQuery::postProcessAll - invalid FilterHandler: ' . var_export($filterHandler, true), 'content');
             }
         }
-        return $result;
+
+        // Remove duplicates, they may exist after fetch top sorted items by different way,
+        // e.g. when a Content is top sorted as Draft and as Unread News
+        return array_values(ArrayHelper::index($result, 'id'));
     }
 
     /**
@@ -498,7 +508,7 @@ class StreamQuery extends Model
     {
         if (empty($this->limit)) {
             $this->limit = self::MAX_LIMIT;
-        } else if (Yii::$app->request->isConsoleRequest) {
+        } elseif (Yii::$app->request->isConsoleRequest) {
             $this->limit = (int)$this->limit;
         } else {
             $this->limit = ($this->limit > self::MAX_LIMIT) ? self::MAX_LIMIT : (int)$this->limit;
@@ -510,10 +520,10 @@ class StreamQuery extends Model
      */
     protected function setupCriteria()
     {
-        $this->_query->joinWith('createdBy');
-        $this->_query->joinWith('contentContainer');
-
-        $this->_query->limit($this->limit);
+        $this->_query
+            ->joinWith('createdBy')
+            ->joinWith('contentContainer')
+            ->limit($this->limit);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
             $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);
@@ -527,6 +537,9 @@ class StreamQuery extends Model
         /**
          * Setup Sorting
          */
+        /**
+         * Setup Sorting
+         */
         if ($this->sort == Stream::SORT_UPDATED_AT) {
             $this->_query->orderBy('content.stream_sort_date DESC');
             if (!empty($this->from)) {
@@ -537,7 +550,9 @@ class StreamQuery extends Model
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
                             "content.id > :from"
                         ],
-                    ], [':from' => $this->from]);
+                    ],
+                    [':from' => $this->from]
+                );
             } elseif (!empty($this->to)) {
                 $this->_query->andWhere(
                     ['or',
@@ -546,22 +561,43 @@ class StreamQuery extends Model
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
                             "content.id < :to"
                         ],
-                    ], [':to' => $this->to]);
+                    ],
+                    [':to' => $this->to]
+                );
             }
         } else {
-            $this->_query->orderBy('content.id DESC');
+            $this->_query->orderBy('content.created_at DESC,content.id DESC');
             if (!empty($this->from)) {
-                $this->_query->andWhere("content.id < :from", [':from' => $this->from]);
+                $this->_query->andWhere(
+                    ['or',
+                        "content.created_at < (SELECT created_at FROM content wd WHERE wd.id=:from)",
+                        ['and',
+                            "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:from)",
+                            "content.id < :from"
+                        ],
+                    ],
+                    [':from' => $this->from]
+                );
             } elseif (!empty($this->to)) {
-                $this->_query->andWhere("content.id > :to", [':to' => $this->to]);
+                $this->_query->andWhere(
+                    ['or',
+                        "content.created_at > (SELECT created_at FROM content wd WHERE wd.id=:to)",
+                        ['and',
+                            "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:to)",
+                            "content.id > :to"
+                        ],
+                    ],
+                    [':to' => $this->to]
+                );
             }
         }
+
     }
 
     /**
      * Sets up and apply filters.
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      */
     protected function setupFilters()
     {
@@ -582,12 +618,15 @@ class StreamQuery extends Model
      * ```php
      * protected function beforeApplyFilters()
      * {
-     *   parent::beforeApplyFilters();
+     *   $this->removeFilterHandler(SomeStreamFilter::class);
      *   $this->addFilterHandler(MyStreamFilter::class);
+     *   // NOTE: Put the parent method here in the end of this method in order to have
+     *   //       all core applied filters when external event triggers will be called
+     *   parent::beforeApplyFilters();
      * }
      * ```
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.6
      */
     protected function beforeApplyFilters()
@@ -598,7 +637,7 @@ class StreamQuery extends Model
     /**
      * Is called right after applying query filters.
      *
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidConfigException
      * @since 1.6
      */
     protected function afterApplyFilters()
@@ -626,14 +665,18 @@ class StreamQuery extends Model
      *
      * @param string|StreamQueryFilter $handler
      * @param bool $overwrite whether or not to overwrite existing filters of the same class
-     * @return StreamQueryFilter initialized stream filter
+     * @return StreamQueryFilter|null initialized stream filter
      * @throws InvalidConfigException
      * @since 1.6
      */
     public function addFilterHandler($handler, $overwrite = true, $prepend = false)
     {
+        if ($this->isExcludedFilterHandler($handler)) {
+            return null;
+        }
+
         if ($overwrite) {
-            $this->removeFilterHandler($handler);
+            $this->removeFilterHandler($handler, false);
         }
 
         $handler = $this->prepareHandler($handler);
@@ -664,7 +707,10 @@ class StreamQuery extends Model
     {
         $result = [];
         foreach ($handlers as $handler) {
-            $result[] = $this->addFilterHandler($handler, $overwrite);
+            $handler = $this->addFilterHandler($handler, $overwrite);
+            if ($handler !== null) {
+                $result[] = $handler;
+            }
         }
 
         return $result;
@@ -673,12 +719,11 @@ class StreamQuery extends Model
     /**
      * Can be used to remove filters by filter class.
      *
-     * @param $handler
-     * @return StreamQueryFilter
-     * @throws InvalidConfigException
+     * @param string|StreamQueryFilter $handlerToRemove
+     * @param bool $exclude Exclude from further adding
      * @since 1.6
      */
-    public function removeFilterHandler($handlerToRemove)
+    public function removeFilterHandler($handlerToRemove, bool $exclude = true)
     {
         $result = [];
         $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
@@ -689,21 +734,37 @@ class StreamQuery extends Model
         }
 
         $this->filterHandlers = $result;
+
+        if ($exclude && !$this->isExcludedFilterHandler($handlerToRemoveClass)) {
+            $this->excludedFilterHandlers[] = $handlerToRemoveClass;
+        }
+    }
+
+    /**
+     * Check the filter handler is excluded
+     *
+     * @param string|StreamQueryFilter $handler
+     * @return bool
+     */
+    public function isExcludedFilterHandler($handler): bool
+    {
+        $handler = is_string($handler) ? $handler : get_class($handler);
+        return in_array($handler, $this->excludedFilterHandlers);
     }
 
     /**
      * Can be used to search for a filter handler by class.
      *
-     * @param $handler
-     * @return StreamQueryFilter
+     * @param string|StreamQueryFilter $class
+     * @return StreamQueryFilter|null
      * @throws InvalidConfigException
      * @since 1.6
      */
     public function getFilterHandler($class): ?StreamQueryFilter
     {
-        $handlerToRemoveClass = is_string($class) ? $class : get_class($class);
+        $handlerClass = is_string($class) ? $class : get_class($class);
         foreach ($this->filterHandlers as $handler) {
-            if (is_a($handler, $handlerToRemoveClass, true)) {
+            if (is_a($handler, $handlerClass, true)) {
                 return $this->prepareHandler($handler);
             }
         }
@@ -748,7 +809,7 @@ class StreamQuery extends Model
     /**
      * Is inital stream requests (show first stream content)
      *
-     * @return boolean Whether or not this query is considered as initial stream query.
+     * @return bool Whether or not this query is considered as initial stream query.
      */
     public function isInitialQuery()
     {

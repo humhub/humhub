@@ -31,14 +31,14 @@ class ContentContainerHelper
      */
     public static function getCurrent($type = null)
     {
-        if(!static::$container) {
+        if (!static::$container) {
             $controller = Yii::$app->controller;
-            if($controller instanceof ContentContainerController) {
-                static::$container =  $controller->contentContainer;
+            if ($controller instanceof ContentContainerController) {
+                static::$container = $controller->contentContainer;
             }
         }
 
-        if(static::$container && $type && !is_a(static::$container,  $type)) {
+        if (static::$container && $type && !is_a(static::$container, $type)) {
             return null;
         }
 

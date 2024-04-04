@@ -1,23 +1,11 @@
 <?php
 
-/**
- * @link https://www.humhub.org/
- * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
- * @license https://www.humhub.com/licences
- */
-
 namespace humhub\modules\content\widgets\richtext\converter;
 
-
-use cebe\markdown\GithubMarkdown;
-use cebe\markdown\inline\LinkTrait;
+use HTMLPurifier_Config;
 use humhub\libs\Html;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtensionMatch;
-use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
 use yii\helpers\HtmlPurifier;
-use yii\helpers\Url;
 
 /**
  * This parser can be used to convert HumHub richtext directly to html. Note, this parser will only output html supported
@@ -28,7 +16,6 @@ use yii\helpers\Url;
  * The output parser output will be purified and can safely be used.
  *
  * Available options:
- *
  *  - `exclude`: Exclude certain blocks or extensions from being rendered
  *  - `linkTarget`: Change link `target` (default `_blank`)
  *  - `prevLinkTarget`: Removes `target` and `rel` attribute from all links
@@ -41,7 +28,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     /**
      * @var string HtmlPurifier HTML.Doctype configuration
      */
-    public $doctype =  'HTML 4.01 Transitional';
+    public $doctype = 'HTML 4.01 Transitional';
 
     /**
      * @var string HtmlPurifier URI.AllowedSchemes configuration
@@ -56,7 +43,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     /**
      * @var string HtmlPurifier HTML.AllowedAttributes configuration
      */
-    public $htmlAllowedAttributes = 'img.src,img.alt,img.title,code.class,a.rel,a.target,a.href,a.title,th.align,td.align,ol.start';
+    public $htmlAllowedAttributes = 'img.src,img.alt,img.title,img.width,img.height,img.class,img.style,code.class,a.rel,a.target,a.href,a.title,th.align,td.align,ol.start';
 
     /**
      * @var bool whether the output should be purified
@@ -76,29 +63,31 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     /**
      * @inheritDoc
      */
-    protected function onAfterParse($text) : string
+    protected function onAfterParse($text): string
     {
         $text = parent::onAfterParse($text);
 
-        if(!$this->purify) {
+        if (!$this->purify) {
             return $text;
         }
 
         return HtmlPurifier::process($text, function ($config) {
+            /* @var HTMLPurifier_Config $config */
             // Make sure we use non xhtml tags, unfortunately HTML5 is not supported by html purifier
             $config->set('HTML.Doctype', $this->doctype);
 
-            if(!$this->getOption('prevLinkTarget', false)) {
+            if (!$this->getOption('prevLinkTarget', false)) {
                 $config->set('HTML.Nofollow', true);
             }
 
             $config->set('HTML.Allowed', $this->htmlAllowed);
             $config->set('HTML.AllowedAttributes', $this->htmlAllowedAttributes);
-            $config->set('URI.AllowedSchemes',$this->allowedSchemes);
+            $config->set('URI.AllowedSchemes', $this->allowedSchemes);
 
             $htmlDefinition = $config->getHTMLDefinition(true);
 
             $htmlDefinition->addAttribute('a', 'target', 'Text');
+            $htmlDefinition->addAttribute('img', 'style', 'Text');
         });
     }
 
@@ -111,7 +100,6 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
         // We currently do not support automatic url to link
         return $block[1];
     }
-
 
 
     /**
@@ -132,7 +120,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     protected function renderInlineHtml($block)
     {
         // We only support <br> tags
-        if($block[1] === '<br>' || $block[1] === '<br />') {
+        if ($block[1] === '<br>' || $block[1] === '<br />') {
             return '<br>';
         }
 
@@ -147,6 +135,6 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
     protected function renderHtml($block)
     {
         // We do not support direct html in richtext markdown
-        return '<p>'.nl2br(Html::encode($this->br2nl($block['content']))).'</p>';
+        return '<p>' . nl2br(Html::encode($this->br2nl($block['content']))) . '</p>';
     }
 }

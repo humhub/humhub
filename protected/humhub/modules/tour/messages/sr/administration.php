@@ -1,0 +1,9 @@
+<?php
+return array (
+  '<strong>Administration</strong>' => '<strong>Administracija</strong>',
+  '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Jee!</strong> To je sve zasada.',
+  '<strong>Modules</strong>' => '<strong>Moduli</strong>',
+  'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => 'Kao administrator, odavde možete upravljati celom platformom.<br><br>Osim modula, ovde nećemo detaljno otići u svaku tačku, jer svaka ima svoj kratki opis negde drugde.',
+  'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => 'Trenutno ste u meniju alata. Odavde možete pristupiti HumHub online prodavnici, gde možete jednostavno instalirati neki od sve većeg broja alata. <br> <br> Kao što je već spomenuto, alati povećavaju funkcionalnosti dostupne za vaš prostor.',
+  'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => 'Sada ste saznali o svim najvažnijim mogućnostima i postavkama i sve su postavljene za početak korištenja platforme. <br> <br> Nadamo se da ćete vi i svi budući korisnici uživati u korištenju ove web stranice. Radujemo se svim priedlozima ili podršci koju želite ponuditi za naš projekt. Slobodno nas kontaktirajte putem www.humhub.org. <br> <br> Ostanite na vezi. :-)',
+);

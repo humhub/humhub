@@ -8,41 +8,41 @@ humhub.module('content.container', function (module, require, $) {
     var client = require('client');
     var additions = require('ui.additions');
 
-    var follow = function(evt) {
+    var follow = function (evt) {
         var containerId = evt.$trigger.data('content-container-id');
-        client.post(evt).then(function(response) {
+        client.post(evt).then(function (response) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].unfollowButton'));
                 if (response.space) {
                     require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown')).appendItem(response.space);
                 }
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             module.log.error(e, true);
         });
     };
 
-    var unfollow = function(evt) {
+    var unfollow = function (evt) {
         var containerId = evt.$trigger.data('content-container-id');
-        client.post(evt).then(function(response) {
+        client.post(evt).then(function (response) {
             if (response.success) {
                 additions.switchButtons(evt.$trigger, $('[data-content-container-id="' + containerId + '"].followButton'));
                 if (response.space) {
                     require('space.chooser').SpaceChooser.instance($('#space-menu-dropdown')).removeItem(response.space);
                 }
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             module.log.error(e, true);
         });
     };
 
-    var relationship = function(evt) {
+    var relationship = function (evt) {
         var postOptions = {};
         var buttonOptions = evt.$trigger.data('button-options');
         if (buttonOptions) {
             postOptions.data = {options: buttonOptions};
         }
-        client.post(evt, postOptions).then(function(response) {
+        client.post(evt, postOptions).then(function (response) {
             var oldButton = evt.$trigger;
 
             // Replace previous button with new
@@ -60,7 +60,7 @@ humhub.module('content.container', function (module, require, $) {
             if (newButton.data('hide-buttons')) {
                 newButton.parent().find(newButton.data('hide-buttons')).hide();
             }
-        }).catch(function(e) {
+        }).catch(function (e) {
             module.log.error(e, true);
         });
     }
@@ -71,12 +71,12 @@ humhub.module('content.container', function (module, require, $) {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.disable'));
                 evt.$trigger.siblings('.moduleConfigure').fadeIn('fast');
             }
-            if(evt.$trigger.data('reload')) {
+            if (evt.$trigger.data('reload')) {
                 client.reload();
             }
-        }).catch(function(err) {
+        }).catch(function (err) {
             module.log.error(err, true);
-        }).finally(function() {
+        }).finally(function () {
             evt.finish();
         });
     };
@@ -87,13 +87,35 @@ humhub.module('content.container', function (module, require, $) {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.enable'));
                 evt.$trigger.siblings('.moduleConfigure').fadeOut('fast');
             }
-            if(evt.$trigger.data('reload')) {
+            if (evt.$trigger.data('reload')) {
                 client.reload();
             }
-        }).catch(function(err) {
+        }).catch(function (err) {
             module.log.error(err, true);
-        }).finally(function() {
+        }).finally(function () {
             evt.finish();
+        });
+    };
+
+    var turnOnNotifications = function (event) {
+        client.post(event).then(function (response) {
+            if (response.success) {
+                const contentId = event.$trigger.data('content-id');
+
+                $('#notification_on_' + contentId).hide();
+                $('#notification_off_' + contentId).show();
+            }
+        });
+    }
+
+    var turnOffNotifications = function (event) {
+        client.post(event).then(function (response) {
+            if (response.success) {
+                const contentId = event.$trigger.data('content-id');
+
+                $('#notification_off_' + contentId).hide();
+                $('#notification_on_' + contentId).show();
+            }
         });
     };
 
@@ -112,6 +134,8 @@ humhub.module('content.container', function (module, require, $) {
         unload: unload,
         guid: guid,
         enableModule: enableModule,
-        disableModule: disableModule
+        disableModule: disableModule,
+        turnOnNotifications: turnOnNotifications,
+        turnOffNotifications: turnOffNotifications,
     });
 });

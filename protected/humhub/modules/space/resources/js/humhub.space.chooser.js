@@ -28,7 +28,7 @@ humhub.module('space.chooser', function (module, require, $) {
         this.$remoteSearch = $('#space-menu-remote-search');
 
 
-        if(view.isLarge()) {
+        if (view.isLarge()) {
             // set niceScroll to SpaceChooser menu
             this.$chooser.niceScroll({
                 cursorwidth: "7",
@@ -46,19 +46,13 @@ humhub.module('space.chooser', function (module, require, $) {
 
         this.initEvents();
         this.initSpaceSearch();
+        this.initMessageCounters();
     };
 
     SpaceChooser.prototype.initEvents = function () {
         this.lazyLoad = module.config.lazyLoad && !this.hasItems();
 
         var that = this;
-
-        $('[data-space-guid]').find('[data-message-count]').each(function () {
-            var $this = $(this);
-            if ($this.data('message-count') > 0) {
-                $this.show();
-            }
-        });
 
         // Forward click events to actual link
         this.$.on('click', SELECTOR_ITEM, function (evt) {
@@ -100,12 +94,18 @@ humhub.module('space.chooser', function (module, require, $) {
         });
     };
 
+    SpaceChooser.prototype.initMessageCounters = function () {
+        $('[data-space-guid] [data-message-count]').each(function () {
+            $(this).toggle($(this).data('message-count') > 0);
+        });
+    }
+
     SpaceChooser.prototype.handleNewContent = function (liveEvents) {
         var that = this;
         var increments = {};
 
         liveEvents.forEach(function (event) {
-            if (event.data.uguid || event.data.originator === user.guid() ||  event.data.silent) {
+            if (event.data.uguid || event.data.originator === user.guid() || event.data.silent) {
                 return;
             }
 
@@ -176,13 +176,13 @@ humhub.module('space.chooser', function (module, require, $) {
                         SpaceChooser.selectItem(that.getFirstItem());
                     } else if ($selection.nextAll(SELECTOR_ITEM + ':visible').length) {
                         SpaceChooser.deselectItem($selection)
-                                .selectItem($selection.nextAll(SELECTOR_ITEM + ':visible').first());
+                            .selectItem($selection.nextAll(SELECTOR_ITEM + ':visible').first());
                     }
                     break;
                 case 38: // Up -> select previous
                     if ($selection.prevAll(SELECTOR_ITEM + ':visible').length) {
                         SpaceChooser.deselectItem($selection)
-                                .selectItem($selection.prevAll(SELECTOR_ITEM + ':visible').first());
+                            .selectItem($selection.prevAll(SELECTOR_ITEM + ':visible').first());
                     }
                     break;
                 case 13: // Enter
@@ -276,6 +276,7 @@ humhub.module('space.chooser', function (module, require, $) {
                 that.appendItem(space);
             });
 
+            that.initMessageCounters();
             that.highlight(input, SELECTOR_ITEM_REMOTE);
             that.onChange(input);
 
@@ -381,7 +382,7 @@ humhub.module('space.chooser', function (module, require, $) {
         this.trigger('changed', input);
     };
 
-    SpaceChooser.prototype.showMessage = function (input){
+    SpaceChooser.prototype.showMessage = function (input) {
         var emptyResult = !this.getFirstItem().length;
         var atLeastTwo = input && input.length > 1;
 

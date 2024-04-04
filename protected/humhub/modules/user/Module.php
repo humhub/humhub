@@ -20,19 +20,18 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\user\controllers';
 
     /**
-     * @var boolean option to translate all invite mails except self invites to the default language (true) or user language (false)
+     * @var bool option to translate all invite mails except self invites to the default language (true) or user language (false)
      */
     public $sendInviteMailsInGlobalLanguage = true;
 
     /**
-     * @var boolean default state of remember me checkbox on login page
+     * @var bool default state of remember me checkbox on login page
      */
     public $loginRememberMeDefault = true;
 
@@ -47,6 +46,12 @@ class Module extends \humhub\components\Module
     public $logoutUrl = null;
 
     /**
+     * @since 1.14
+     * @var string|array|null the route for password recovery
+     */
+    public $passwordRecoveryRoute = ['/user/password-recovery'];
+
+    /**
      * @var string the default route for user profiles
      */
     public $profileDefaultRoute = null;
@@ -58,7 +63,7 @@ class Module extends \humhub\components\Module
     public $userListPaginationSize = 8;
 
     /**
-     * @var boolean allow admin users to modify user profile image and banner
+     * @var bool allow admin users to modify user profile image and banner
      * @since 1.2
      * @see widgets\ProfileHeader
      */
@@ -95,13 +100,13 @@ class Module extends \humhub\components\Module
     public $displayNameSubCallback = null;
 
     /**
-     * @var boolean defines if the user following is disabled or not.
+     * @var bool defines if the user following is disabled or not.
      * @since 1.2
      */
     public $disableFollow = false;
 
     /**
-     * @var boolean defines mark user e-mail field as required
+     * @var bool defines mark user e-mail field as required
      * @since 1.2.2
      */
     public $emailRequired = true;
@@ -155,6 +160,40 @@ class Module extends \humhub\components\Module
     public $includeEmailInSearch = true;
 
     /**
+     * Reduce filters based on already active filters
+     * @var bool
+     * @since 1.16
+     */
+    public $peopleEnableNestedFilters = true;
+
+    /**
+     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     *
+     * @since 1.16
+     * @var bool
+     */
+    public $showLoginForm = true;
+
+    /**
+     * Should the login form be displayed. This can be deactivated, e.g. to display only SSO providers.
+     * With the parameter `?showLoginForm=1` the login form can still be displayed as a fallback.
+     *
+     * @since 1.16
+     * @var bool
+     */
+    public $showRegistrationForm = true;
+
+
+    /**
+     * Allow new user registrations from the following AuthClient IDs even if "User Registration" is deactivated.
+     *
+     * @since 1.16
+     * @var string[]
+     */
+    public $allowUserRegistrationFromAuthClientIds = [];
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
@@ -164,7 +203,7 @@ class Module extends \humhub\components\Module
                 new permissions\ViewAboutPage(),
             ];
 
-            if(Yii::$app->getModule('friendship')->getIsEnabled()) {
+            if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
                 $permissions[] = new permissions\CanMention();
             }
 
@@ -238,7 +277,7 @@ class Module extends \humhub\components\Module
 
     /**
      * Get default group id
-     * @return integer|null
+     * @return int|null
      */
     public function getDefaultGroupId()
     {
@@ -266,22 +305,22 @@ class Module extends \humhub\components\Module
      */
     public function allowBlockUsers(): bool
     {
-        return (bool) $this->settings->get('auth.blockUsers', true);
+        return (bool)$this->settings->get('auth.blockUsers', true);
     }
 
     /**
      * Checks if user can be mentioned
      *
      * @param ContentActiveRecord $object
-     * @return boolean can like
+     * @return bool can like
      */
     public function canMention($object)
     {
-//        $content = $object->content;
+        //        $content = $object->content;
 
-//        if(!isset($content->container)) {
-//            return false;
-//        }
+        //        if(!isset($content->container)) {
+        //            return false;
+        //        }
 
         if ($object->permissionManager->can(CanMention::class)) {
             return true;

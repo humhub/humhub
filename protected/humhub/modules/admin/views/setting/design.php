@@ -1,16 +1,18 @@
 <?php
 
 use humhub\libs\LogoImage;
+use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $model DesignSettingsForm */
 
-\humhub\modules\admin\assets\AdminAsset::register($this);
+AdminAsset::register($this);
 
 $this->registerJsConfig('admin', [
     'text' => [
@@ -51,7 +53,10 @@ $iconUrl = SiteIcon::getUrl(140);
 
     </div>
 
-    <?= $form->field($model, 'spaceOrder')->dropDownList(['0' => Yii::t('AdminModule.settings', 'Alphabetical'), '1' => Yii::t('AdminModule.settings', 'Last visit')]); ?>
+    <?= $form->field($model, 'spaceOrder')->dropDownList([
+        '0' => Yii::t('AdminModule.settings', 'Custom sort order (alphabetical if not defined)'),
+        '1' => Yii::t('AdminModule.settings', 'Last visit'),
+    ]); ?>
 
     <?= $form->field($model, 'defaultStreamSort')->dropDownList($model->getDefaultStreamSortOptions()); ?>
 
@@ -64,7 +69,6 @@ $iconUrl = SiteIcon::getUrl(140);
     <br>
     <br>
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
-    <?= $form->field($model, 'useDefaultSwipeOnMobile')->checkbox(); ?>
 
 
     <div class="well">
@@ -106,6 +110,6 @@ $iconUrl = SiteIcon::getUrl(140);
     <hr>
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-    <?= \humhub\widgets\DataSaved::widget(); ?>
+    <?= DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
 </div>

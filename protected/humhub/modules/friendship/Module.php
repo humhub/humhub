@@ -15,7 +15,6 @@ use Yii;
  */
 class Module extends \humhub\components\Module
 {
-
     /**
      * @inheritdoc
      */
@@ -24,9 +23,9 @@ class Module extends \humhub\components\Module
     /**
      * Returns if the friendship system is enabled
      *
-     * @return boolean is enabled
+     * @return bool is enabled
      */
-    public function getIsEnabled()
+    public function isFriendshipEnabled(): bool
     {
         if (Yii::$app->getModule('friendship')->settings->get('enable')) {
             return true;
@@ -45,10 +44,10 @@ class Module extends \humhub\components\Module
      */
     public function getNotifications()
     {
-       return [
-           'humhub\modules\friendship\notifications\Request',
-           'humhub\modules\friendship\notifications\RequestApproved',
-           'humhub\modules\friendship\notifications\RequestDeclined'
-       ];
+        return [
+            'humhub\modules\friendship\notifications\Request',
+            'humhub\modules\friendship\notifications\RequestApproved',
+            'humhub\modules\friendship\notifications\RequestDeclined'
+        ];
     }
 }

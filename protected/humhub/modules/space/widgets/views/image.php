@@ -1,4 +1,5 @@
 <?php
+
 use yii\bootstrap\Html;
 
 if ($link == true) :
@@ -11,4 +12,3 @@ echo Html::img($space->getProfileImage()->getUrl(), $imageHtmlOptions);
 if ($link == true) :
     echo Html::endTag('a');
 endif;
-?>

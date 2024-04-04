@@ -3,16 +3,16 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\ActiveRecord;
+use humhub\modules\content\controllers\SearchController;
+use humhub\modules\content\helpers\SearchHelper;
+use humhub\modules\file\converter\TextConverter;
+use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\models\File;
+use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
-use humhub\widgets\JsWidget;
-use humhub\modules\file\models\File;
-use humhub\modules\file\libs\FileHelper;
-use humhub\modules\search\libs\SearchHelper;
-use humhub\modules\search\controllers\SearchController;
-use humhub\modules\file\converter\TextConverter;
 
 /**
  *
@@ -21,7 +21,6 @@ use humhub\modules\file\converter\TextConverter;
  */
 class FilePreview extends JsWidget
 {
-
     /**
      * @inheritdoc
      */
@@ -94,7 +93,7 @@ class FilePreview extends JsWidget
             'prevent-popover' => $this->preventPopover,
             'popover-position' => $this->popoverPosition,
             'file-edit' => $this->edit,
-            'exclude-media-files-preview' => (int) $this->excludeMediaFilesPreview
+            'exclude-media-files-preview' => (int)$this->excludeMediaFilesPreview
         ];
     }
 
@@ -113,7 +112,7 @@ class FilePreview extends JsWidget
 
         foreach ($files as $file) {
             if ($file) {
-                if(is_string($file)) {
+                if (is_string($file)) {
                     $file = File::findOne(['guid' => $file]);
                 }
                 $result[] = ArrayHelper::merge(FileHelper::getFileInfos($file), ['highlight' => $this->isHighlighed($file)]);
@@ -133,11 +132,11 @@ class FilePreview extends JsWidget
             return $this->items;
         }
 
-        if(!($this->model instanceof ActiveRecord) && $this->attribute) {
+        if (!($this->model instanceof ActiveRecord) && $this->attribute) {
             return Html::getAttributeValue($this->model, $this->attribute);
         }
 
-        if(!($this->model instanceof ActiveRecord)) {
+        if (!($this->model instanceof ActiveRecord)) {
             return [];
         }
 
@@ -152,15 +151,20 @@ class FilePreview extends JsWidget
      * Checks whether the file should be highlighed in the results or not.
      *
      * @param File $file
-     * @return boolean is highlighed
+     * @return bool is highlighed
      */
     protected function isHighlighed(File $file)
     {
         if (Yii::$app->controller instanceof SearchController) {
-            if (SearchController::$keyword !== null) {
+            /** @var SearchController $searchController */
+            $searchController = Yii::$app->controller;
+
+            if (!empty($searchController->searchRequest->keyword)) {
                 $converter = new TextConverter();
-                if ($converter->applyFile($file) &&
-                        SearchHelper::matchQuery(SearchController::$keyword, $converter->getContentAsText())) {
+                if (
+                    $converter->applyFile($file) &&
+                    SearchHelper::matchQuery($searchController->searchRequest->keyword, $converter->getContentAsText())
+                ) {
                     return true;
                 }
             }
@@ -168,5 +172,4 @@ class FilePreview extends JsWidget
 
         return false;
     }
-
 }

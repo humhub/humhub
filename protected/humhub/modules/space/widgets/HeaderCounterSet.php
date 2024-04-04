@@ -11,11 +11,10 @@ use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
-use humhub\modules\ui\widgets\CounterSetItem;
 use humhub\modules\ui\widgets\CounterSet;
+use humhub\modules\ui\widgets\CounterSetItem;
 use Yii;
 use yii\helpers\Url;
-
 
 /**
  * Class HeaderCounterSet
@@ -36,7 +35,8 @@ class HeaderCounterSet extends CounterSet
     {
 
         $postQuery = Content::find()
-            ->where(['object_model' => Post::class, 'contentcontainer_id' => $this->space->contentContainerRecord->id]);
+            ->where(['object_model' => Post::class, 'contentcontainer_id' => $this->space->contentContainerRecord->id])
+            ->andWhere(['state' => Content::STATE_PUBLISHED]);
         $this->counters[] = new CounterSetItem([
             'label' => Yii::t('SpaceModule.base', 'Posts'),
             'value' => $postQuery->count()

@@ -12,7 +12,7 @@ class m180305_084435_membership_pk extends Migration
         try {
             $this->dropForeignKey('fk_space_membership-space_id', 'space_membership');
             $this->dropForeignKey('fk_space_membership-user_id', 'space_membership');
-        } catch (\Exception $ex) {
+        } catch (Exception $ex) {
             Yii::error($ex->getMessage());
         }
 
@@ -24,7 +24,8 @@ class m180305_084435_membership_pk extends Migration
             'space_id',
             'space',
             'id',
-            'CASCADE', 'CASCADE'
+            'CASCADE',
+            'CASCADE'
         );
 
         $this->addForeignKey(
@@ -33,7 +34,8 @@ class m180305_084435_membership_pk extends Migration
             'user_id',
             'user',
             'id',
-            'CASCADE', 'CASCADE'
+            'CASCADE',
+            'CASCADE'
         );
     }
 
@@ -53,7 +55,8 @@ class m180305_084435_membership_pk extends Migration
             'space_id',
             'space',
             'id',
-            'CASCADE', 'CASCADE'
+            'CASCADE',
+            'CASCADE'
         );
 
         $this->addForeignKey(
@@ -62,7 +65,8 @@ class m180305_084435_membership_pk extends Migration
             'user_id',
             'user',
             'id',
-            'CASCADE', 'CASCADE'
+            'CASCADE',
+            'CASCADE'
         );
     }
 }

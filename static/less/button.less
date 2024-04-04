@@ -24,8 +24,11 @@
     outline: none;
 }
 
-.btn-lg {
+.btn.btn-lg {
     padding: 16px 28px;
+    &:active, &.active {
+        padding: 15px 27px;
+    }
 }
 
 .btn-sm {
@@ -44,13 +47,13 @@
 
 .btn-default {
     background: @default;
-    color: @text-color-secondary !important;
+    color: @text-color-default !important;
 
     &:hover,
     &:focus {
         background: darken(@default, 2%);
+        color: @text-color-default;
         text-decoration: none;
-        color: @text-color-secondary;
     }
 
     &:active,

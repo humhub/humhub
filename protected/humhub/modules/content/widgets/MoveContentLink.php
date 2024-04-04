@@ -8,6 +8,7 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 
 /**
@@ -18,9 +19,8 @@ use Yii;
  */
 class MoveContentLink extends WallEntryControlLink
 {
-
     /**
-     * @var \humhub\modules\content\components\ContentActiveRecord
+     * @var ContentActiveRecord
      */
     public $model;
 
@@ -45,11 +45,12 @@ class MoveContentLink extends WallEntryControlLink
     /**
      * @inheritdocs
      */
-    public function getActionUrl() {
-        if(!$this->model->content->container) {
+    public function getActionUrl()
+    {
+        if (!$this->model->content->container) {
             return null;
         }
-        
+
         return $this->model->content->container->createUrl('/content/move/move', ['id' => $this->model->content->id]);
     }
 

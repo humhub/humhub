@@ -32,7 +32,7 @@ humhub.module('file', function (module, require, $) {
         this.initPreview();
         this.initFileUpload();
 
-        if(!this.canUploadMore()) {
+        if (!this.canUploadMore()) {
             this.disable(this.$.data('max-number-of-files-message'));
         }
 
@@ -57,7 +57,7 @@ humhub.module('file', function (module, require, $) {
             objectId: this.$.data('upload-model-id')
         };
 
-        if(this.$.data('upload-hide-in-stream')) {
+        if (this.$.data('upload-hide-in-stream')) {
             data['hideInStream'] = 1;
         }
 
@@ -72,7 +72,7 @@ humhub.module('file', function (module, require, $) {
             add: function (e, data) {
                 if (that.options.maxNumberOfFiles && (that.getFileCount() + data.files.length > that.options.maxNumberOfFiles)) {
                     that.handleMaxFileReached(that.options.maxNumberOfFilesMessage);
-                } else if(that.options.phpMaxFileUploads && data.files.length > that.options.phpMaxFileUploads) {
+                } else if (that.options.phpMaxFileUploads && data.files.length > that.options.phpMaxFileUploads) {
                     that.handleMaxFileReached(that.options.phpMaxFileUploadsMessage);
                 } else {
                     data.process().done(function () {
@@ -98,9 +98,9 @@ humhub.module('file', function (module, require, $) {
             $trigger.addClass('disabled');
             this.originalTriggerTitle = $trigger.data('original-title');
             message = message || 'disabled';
-            if(message && $trigger.data('bs.tooltip')) {
+            if (message && $trigger.data('bs.tooltip')) {
                 $trigger.attr('data-original-title', message)
-                        .tooltip('fixTitle');
+                    .tooltip('fixTitle');
             }
         }
 
@@ -113,9 +113,9 @@ humhub.module('file', function (module, require, $) {
             $trigger.removeClass('disabled');
         }
 
-        if($trigger.data('bs.tooltip')) {
+        if ($trigger.data('bs.tooltip')) {
             $trigger.attr('data-original-title', this.originalTriggerTitle)
-                        .tooltip('fixTitle');
+                .tooltip('fixTitle');
         }
 
         this.$.prop('disabled', false);
@@ -156,10 +156,10 @@ humhub.module('file', function (module, require, $) {
         if (this.$.data('upload-preview')) {
             $preview = $(this.$.data('upload-preview'));
         } else {
-            $preview = $('#'+this.$.attr('id')+'_preview');
+            $preview = $('#' + this.$.attr('id') + '_preview');
         }
 
-        if($preview.length) {
+        if ($preview.length) {
             this.preview = Preview.instance($preview);
             if (this.preview.setSource) {
                 this.preview.setSource(this);
@@ -168,14 +168,14 @@ humhub.module('file', function (module, require, $) {
             }
 
             // Get current file count form preview component.
-            if(object.isFunction(this.preview.getFileCount)) {
+            if (object.isFunction(this.preview.getFileCount)) {
                 this.fileCount = this.preview.getFileCount();
             }
         }
     };
 
     Upload.prototype.getFileCount = function () {
-        if(this.preview && object.isFunction(this.preview.getFileCount)) {
+        if (this.preview && object.isFunction(this.preview.getFileCount)) {
             return this.preview.getFileCount();
         }
         return this.fileCount;
@@ -184,10 +184,10 @@ humhub.module('file', function (module, require, $) {
     Upload.prototype.initProgress = function () {
         var $progress;
 
-        if(this.$.data('upload-progress')) {
+        if (this.$.data('upload-progress')) {
             $progress = $(this.$.data('upload-progress'));
         } else {
-            $progress = $('#'+this.$.attr('id')+'_progress');
+            $progress = $('#' + this.$.attr('id') + '_progress');
         }
 
         this.progress = Progress.instance($progress);
@@ -249,7 +249,7 @@ humhub.module('file', function (module, require, $) {
     Upload.prototype.done = function (e, response) {
         var that = this;
 
-        if(!response.result.files || !response.result.files.length) {
+        if (!response.result.files || !response.result.files.length) {
             module.log.error('error.unknown', true);
         }
 
@@ -274,15 +274,15 @@ humhub.module('file', function (module, require, $) {
         } else if (this.$form && this.$form.length) {
             var name = this.options.uploadSubmitName || 'fileList[]';
 
-            if(this.options.uploadSingle) {
-                this.$form.find('input[name="'+name+'"]').remove();
+            if (this.options.uploadSingle) {
+                this.$form.find('input[name="' + name + '"]').remove();
                 this.fileCount = 1;
             } else {
                 this.fileCount++;
             }
 
             this.$form.append('<input type="hidden" name="' + name + '" value="' + file.guid + '">');
-            if (this.preview) {
+            if (this.preview && (typeof humhub.prosemirrorFileHandler === 'undefined' || humhub.prosemirrorFileHandler === false)) {
                 this.preview.show();
                 this.preview.add(file);
             }
@@ -361,7 +361,7 @@ humhub.module('file', function (module, require, $) {
         });
 
         // Note we are not using :visible since the preview itself may not visible on init
-        if(!this.$.find('.file-preview-item:not(.hiddenFile)').length) {
+        if (!this.$.find('.file-preview-item:not(.hiddenFile)').length) {
             this.$.hide();
         }
     };
@@ -375,7 +375,7 @@ humhub.module('file', function (module, require, $) {
         file.galleryId = this.$.attr('id') + '_file_preview_gallery';
         var template = this.getTemplate(file);
 
-        if(file.highlight) {
+        if (file.highlight) {
             file.highlight = 'highlight';
         } else {
             file.highlight = '';
@@ -383,7 +383,7 @@ humhub.module('file', function (module, require, $) {
 
         var $file = $(string.template(template, file));
 
-        if(this.source && this.source.options.uploadSingle) {
+        if (this.source && this.source.options.uploadSingle) {
             this.$list.find('li').remove();
         }
 
@@ -392,7 +392,7 @@ humhub.module('file', function (module, require, $) {
         if (file.thumbnailUrl && !this.options.preventPopover) {
             // Preload image
             new Image().src = file.thumbnailUrl;
-            if(!view.isSmall()) {
+            if (!view.isSmall()) {
                 $file.find('.file-preview-content').popover({
                     html: true,
                     trigger: 'hover',
@@ -412,7 +412,7 @@ humhub.module('file', function (module, require, $) {
             that.delete(file);
         });
 
-        if(!(this.isMedia(file) && this.options.excludeMediaFilesPreview)) {
+        if (!(this.isMedia(file) && this.options.excludeMediaFilesPreview)) {
             $file.fadeIn();
         } else {
             $file.addClass('hiddenFile');
@@ -479,20 +479,41 @@ humhub.module('file', function (module, require, $) {
         });
     };
 
-    var getFileUrl = function(guid, download) {
-        var tmpl = download ? module.config.url.download : module.config.url.load;
-        return tmpl.replace('-guid-', guid);
+    var uploadByType = function (evt) {
+        const selectedType = evt.$trigger;
+        const type = evt.params.type;
+        const btnGroup = selectedType.closest('.btn-group');
+        const inputBtn = btnGroup.children('.fileinput-button');
+        const inputField = $(inputBtn.data('action-target'));
+
+        inputField.attr('accept', type);
+        inputBtn.click();
+        inputField.removeAttr('accept');
+    }
+
+    var getFileUrl = function (guid, mode) {
+        var url = module.config.url.load;
+
+        if (typeof mode !== 'undefined') {
+            if (mode === 'download' || mode === true || mode === 1) {
+                url = module.config.url.download
+            } else if (mode === 'view') {
+                url = module.config.url.view;
+            }
+        }
+
+        return url.replace('-guid-', guid);
     };
 
-    var filterFileUrl = function(url, download) {
+    var filterFileUrl = function (url, mode) {
         var result = {
             url: url,
             guid: null
         };
 
-        if(url.indexOf('file-guid:') === 0 || url.indexOf('file-guid-') === 0) {
+        if (url.indexOf('file-guid:') === 0 || url.indexOf('file-guid-') === 0) {
             result.guid = url.substr(10, url.length);
-            result.url = humhub.modules.file.getFileUrl(result.guid, download);
+            result.url = humhub.modules.file.getFileUrl(result.guid, mode);
         }
 
         return result;
@@ -533,6 +554,21 @@ humhub.module('file', function (module, require, $) {
 
             upload.finish();
         });
+
+        // Bootstrap 3 drop-down menu auto dropup according to screen position
+        // Must be removed when Humhub uses Bootstrap 4+
+        var dropdownButtonSelector = '.upload-buttons > .btn-group';
+        $(document).on("shown.bs.dropdown", dropdownButtonSelector, function () {
+            var $ul = $(this).children(".dropdown-menu");
+            var $button = $(this).children(".dropdown-toggle");
+            var ulOffset = $ul.offset();
+            var spaceUp = (ulOffset.top - $button.height() - $ul.height()) - $(window).scrollTop();
+            var spaceDown = $(window).scrollTop() + $(window).height() - (ulOffset.top + $ul.height());
+            if (spaceDown < 0 && (spaceUp >= 0 || spaceUp > spaceDown))
+                $(this).addClass("dropup");
+        }).on("hidden.bs.dropdown", dropdownButtonSelector, function () {
+            $(this).removeClass("dropup");
+        });
     };
 
     var upload = function (evt) {
@@ -543,6 +579,7 @@ humhub.module('file', function (module, require, $) {
         init: init,
         actionUpload: upload,
         Upload: Upload,
+        uploadByType: uploadByType,
         Preview: Preview,
         getFileUrl: getFileUrl,
         filterFileUrl: filterFileUrl

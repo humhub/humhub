@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\activities;
 
+use humhub\modules\content\models\Content;
 use Yii;
 use humhub\modules\activity\components\BaseActivity;
 use humhub\modules\activity\interfaces\ConfigurableActivityInterface;
@@ -34,7 +35,7 @@ class SpaceUnArchived extends BaseActivity implements ConfigurableActivityInterf
      */
     public function init()
     {
-        $this->visibility = \humhub\modules\content\models\Content::VISIBILITY_PRIVATE;
+        $this->visibility = Content::VISIBILITY_PRIVATE;
         parent::init();
     }
 

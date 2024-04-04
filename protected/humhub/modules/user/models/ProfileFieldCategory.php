@@ -10,27 +10,27 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * This is the model class for table "profile_field_category".
  *
- * @property integer $id
+ * @property int $id
  * @property string $title
  * @property string $description
- * @property integer $sort_order
- * @property integer $module_id
- * @property integer $visibility
+ * @property int $sort_order
+ * @property int $module_id
+ * @property int $visibility
  * @property string $created_at
- * @property integer $created_by
+ * @property int $created_by
  * @property string $updated_at
- * @property integer $updated_by
+ * @property int $updated_by
  * @property string $translation_category
- * @property integer $is_system
+ * @property int $is_system
  * @property-read  ProfileField[] $fields
  */
 class ProfileFieldCategory extends ActiveRecord
 {
-
     /**
      * @inheritdoc
      */
@@ -102,7 +102,7 @@ class ProfileFieldCategory extends ActiveRecord
     }
 
     /**
-     * @return \yii\db\ActiveQuery
+     * @return ActiveQuery
      */
     public function getFields()
     {

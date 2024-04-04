@@ -3,6 +3,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\modules\user\models\User;
+use yii\base\Widget;
 
 /**
  * UserFollowerWidget lists all followers of the user
@@ -11,9 +12,8 @@ use humhub\modules\user\models\User;
  * @since 0.5
  * @author Luke
  */
-class UserFollower extends \yii\base\Widget
+class UserFollower extends Widget
 {
-
     /**
      * @var User
      */
@@ -22,11 +22,19 @@ class UserFollower extends \yii\base\Widget
     public function run()
     {
         return $this->render('userFollower', [
-            'followers' => $this->user->getFollowersQuery()->limit(16)->all(),
-            'following' => $this->user->getFollowingQuery(User::find())->limit(16)->all(),
+            'followers' => $this
+                ->user
+                ->getFollowersQuery()
+                ->with('profile')
+                ->limit(16)
+                ->all(),
+            'following' => $this
+                ->user
+                ->getFollowingQuery(User::find())
+                ->with('profile')
+                ->limit(16)
+                ->all(),
         ]);
     }
 
 }
-
-?>

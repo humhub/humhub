@@ -199,13 +199,25 @@
     @import "print.less";
 }
 
-@prev-directory: false;
-& when not(@prev-directory) {
+@prev-cards: false;
+& when not(@prev-cards) {
     @import "cards.less";
+}
+
+@prev-modules: false;
+& when not(@prev-modules) {
     @import "modules.less";
 }
 
-@import "../css/select2Theme/build.less";
+@prev-search: false;
+& when not(@prev-search) {
+    @import "search.less";
+}
+
+@prev-select2: false;
+& when not(@prev-select2) {
+    @import "../css/select2Theme/build.less";
+}
 
 // LEGACY/DEPRECATED User- & Space picker
 ul.tag_input {

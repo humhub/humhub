@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use Yii;
@@ -63,11 +64,18 @@ class AdvancedSettings extends Model
     public $hideFollowers = false;
 
     /**
+     * @var int
+     */
+    public $sortOrder;
+
+    /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
+            [['sortOrder'], 'required'],
+            [['sortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl'], 'string'],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space]
@@ -107,15 +115,17 @@ class AdvancedSettings extends Model
         $module = Yii::$app->getModule('space');
 
         $settings = $this->space->getSettings();
+        $defaultSettings = $module->getDefaultSettings();
 
         $this->url = $this->space->url;
-        $this->indexUrl = $settings->get('indexUrl', null);
-        $this->indexGuestUrl = $settings->get('indexGuestUrl', null);
+        $this->indexUrl = $settings->get('indexUrl', $defaultSettings->defaultIndexRoute ? $this->space->createUrl($defaultSettings->defaultIndexRoute) : '');
+        $this->indexGuestUrl = $settings->get('indexGuestUrl', $defaultSettings->defaultIndexGuestRoute ? $this->space->createUrl($defaultSettings->defaultIndexGuestRoute) : '');
 
-        $this->hideMembers = $settings->get('hideMembers', $this->hideMembers);
-        $this->hideAbout = $settings->get('hideAbout', $module->hideAboutPage);
-        $this->hideActivities = $settings->get('hideActivities', $this->hideActivities);
-        $this->hideFollowers = $settings->get('hideFollowers', $this->hideFollowers);
+        $this->hideMembers = $settings->get('hideMembers', $defaultSettings->defaultHideMembers);
+        $this->hideAbout = $settings->get('hideAbout', $defaultSettings->defaultHideAbout);
+        $this->hideActivities = $settings->get('hideActivities', $defaultSettings->defaultHideActivities);
+        $this->hideFollowers = $settings->get('hideFollowers', $defaultSettings->defaultHideFollowers);
+        $this->sortOrder = $this->space->sort_order;
     }
 
     /**
@@ -130,6 +140,28 @@ class AdvancedSettings extends Model
         $settings = $this->space->getSettings();
 
         $this->space->url = $this->url;
+
+        if ($this->space->isAttributeChanged('url')) {
+            if ($this->indexUrl && $oldUrl = $this->space->getOldAttribute('url')) {
+                $this->indexUrl = str_replace(
+                    $oldUrl,
+                    $this->space->url,
+                    $this->indexUrl
+                );
+            }
+            if ($this->indexGuestUrl && $oldUrl = $this->space->getOldAttribute('url')) {
+                $this->indexGuestUrl = str_replace(
+                    $oldUrl,
+                    $this->space->url,
+                    $this->indexGuestUrl
+                );
+            }
+        }
+
+        if (Yii::$app->user->can(ManageSpaces::class)) {
+            $this->space->sort_order = $this->sortOrder;
+        }
+
         $this->space->save();
 
         if (!empty($this->indexUrl)) {

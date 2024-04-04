@@ -8,21 +8,21 @@
 
 namespace humhub\components;
 
+use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\user\models\User;
-use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\interfaces\ContentOwner;
 use Yii;
 use yii\base\BaseObject;
 use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
-use Exception;
 
 /**
  * This class represents a social Activity triggered within the network.
@@ -39,7 +39,6 @@ use Exception;
  */
 abstract class SocialActivity extends BaseObject implements rendering\Viewable
 {
-
     /**
      * User which performed the activity.
      *
@@ -56,7 +55,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     /**
      * The source instance which created this activity
      *
-     * @var \yii\db\ActiveRecord
+     * @var ActiveRecord
      */
     public $source;
 
@@ -76,7 +75,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * By defining the $recordClass an ActiveRecord will be created automatically within the
      * init function.
      *
-     * @var \yii\db\ActiveRecord The related record for this activitiy
+     * @var ActiveRecord The related record for this activitiy
      */
     public $record;
 
@@ -99,7 +98,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
         if ($this->recordClass) {
             $this->record = Yii::createObject($this->recordClass);
-            $this->record->class = $this->className();
+            $this->record->class = get_class($this);
             $this->record->module = $this->moduleId;
         }
     }
@@ -132,7 +131,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
     /**
      * Builder function for the source.
-     * @param \yii\db\ActiveRecord $source
+     * @param ActiveRecord $source
      * @return $this
      */
     public function about($source)
@@ -202,7 +201,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     }
 
     /**
-     * @return integer related space id in case the activity source is an related contentcontainer of type space, otherwise null
+     * @return int related space id in case the activity source is an related contentcontainer of type space, otherwise null
      * @throws \yii\base\Exception
      */
     public function getSpaceId()
@@ -216,7 +215,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * Determines if this activity is related to a content. This is the case if the activitiy source
      * is of type ContentOwner.
      *
-     * @return boolean true if this activity is related to a ContentOwner else false
+     * @return bool true if this activity is related to a ContentOwner else false
      */
     public function hasContent()
     {
@@ -244,6 +243,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     /**
      * Url of the origin of this notification
      * If source is a Content / ContentAddon / ContentContainer this will automatically generated.
+     * NOTE: Returned URL must be absolute with scheme
      *
      * @return string
      */
@@ -254,9 +254,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         if ($this->source instanceof Comment) {
             $url = $this->source->getUrl();
         } else if ($this->hasContent()) {
-            $url = $this->getContent()->getUrl();
+            $url = $this->getContent()->getUrl(true);
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
-            $url = $this->source->getUrl();
+            $url = $this->source->getUrl(true);
         }
 
         // Create absolute URL, for E-Mails
@@ -299,7 +299,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     public function asArray(User $user)
     {
         $result = [
-            'class' => $this->className(),
+            'class' => get_class($this),
             'text' => $this->text(),
             'html' => $this->html()
         ];
@@ -309,7 +309,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         }
 
         if ($this->source) {
-            $result['source_class'] = $this->source->className();
+            $result['source_class'] = PolymorphicRelation::getObjectModel($this->source);
             $result['source_pk'] = $this->source->getPrimaryKey();
             $result['space_id'] = $this->source->getSpaceId();
         }

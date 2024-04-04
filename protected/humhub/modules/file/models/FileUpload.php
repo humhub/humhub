@@ -21,7 +21,6 @@ use humhub\modules\file\validators\FileValidator;
  */
 class FileUpload extends File
 {
-
     /**
      * @var UploadedFile the uploaded file
      */
@@ -45,7 +44,7 @@ class FileUpload extends File
     public function afterSave($insert, $changedAttributes)
     {
         // Store file
-        if ($this->uploadedFile !== null && $this->uploadedFile instanceof UploadedFile) {
+        if (!empty($changedAttributes) && $this->uploadedFile instanceof UploadedFile) {
             $this->setStoredFile($this->uploadedFile);
         }
 

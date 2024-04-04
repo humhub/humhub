@@ -37,7 +37,7 @@ return [
     'Create new group' => 'Δημιουργία νέας ομάδας',
     'Create new profile category' => 'Δημιουργία νέας κατηγορίας προφίλ',
     'Create new profile field' => 'Δημιουργία νέου πεδίου προφίλ',
-    'Deactivate' => 'Απενεργοποίηση',
+    'Disable' => 'Απενεργοποίηση',
     'Deactivate individual profile permissions?' => 'Απενεργοποίηση προεπιλεγμένων δικαιωμάτων προφίλ;',
     'Decline' => 'Άρνηση',
     'Decline & delete user: <strong>{displayName}</strong>' => 'Απόρριψη &amp; διαγραφή χρήστη: <strong>{displayName}</strong>',
@@ -167,6 +167,7 @@ Kind Regards
 {AdminName}
 
 ' => '',
+    'Hide online status of users' => '',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
     'Information 1' => '',
     'Information 2' => '',

@@ -5,23 +5,23 @@ humhub.module('like', function (module, require, $) {
 
     var toggleLike = function (evt) {
         client.post(evt).then(function (response) {
-            if(response.currentUserLiked) {
+            if (response.currentUserLiked) {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.unlike'));
                 var component = Component.closest(evt.$trigger);
-                if(component) {
+                if (component) {
                     component.$.trigger('humhub:like:liked');
                 }
             } else {
                 additions.switchButtons(evt.$trigger, evt.$trigger.siblings('.like'));
             }
-            
+
             _updateCounter(evt.$trigger.parent(), response.likeCounter);
         }).catch(function (err) {
             module.log.error(err, true);
         });
     };
 
-    var _updateCounter = function($element, count) {
+    var _updateCounter = function ($element, count) {
         if (count) {
             $element.find(".likeCount").html('(' + count + ')').show();
         } else {

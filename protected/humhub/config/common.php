@@ -16,6 +16,8 @@ Yii::setAlias('@themes', '@webroot/themes');
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
+Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
+Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
 // Workaround: If OpenSSL extension is not available (#3852)
 if (!defined('PKCS7_DETACHED')) {
@@ -24,9 +26,9 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.14.0-beta.1',
-    'minRecommendedPhpVersion' => '7.4',
-    'minSupportedPhpVersion' => '7.4',
+    'version' => '1.16.0',
+    'minRecommendedPhpVersion' => '8.1',
+    'minSupportedPhpVersion' => '8.0',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',
@@ -54,27 +56,27 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                [
+                \yii\log\FileTarget::class => [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
                         'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
-                        'yii\web\HttpException:404', 'yii\web\HttpException:405', 'yii\web\User::getIdentityAndDurationFromCookie'
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
-                [
+                \yii\log\DbTarget::class => [
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
                         'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
-                        'yii\web\HttpException:404', 'yii\web\HttpException:405', 'yii\web\User::getIdentityAndDurationFromCookie'],
+                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                    ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
             ],
-        ],
-        'search' => [
-            'class' => \humhub\modules\search\engine\ZendLuceneSearch::class,
         ],
         'settings' => [
             'class' => \humhub\components\SettingsManager::class,
@@ -95,6 +97,11 @@ $config = [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
                 ],
+                'SearchModule.*' => [
+                    // Temporary: During conversion of the search module
+                    'class' => PhpMessageSource::class,
+                    'basePath' => '@humhub/messages'
+                ],
                 'custom' => [
                     'class' => PhpMessageSource::class,
                     'basePath' => '@humhub/messages'
@@ -106,6 +113,10 @@ $config = [
         ],
         'cache' => [
             'class' => \yii\caching\DummyCache::class,
+        ],
+        'runtimeCache' => [
+            'class' => \yii\caching\ArrayCache::class,
+            'serializer' => false,
         ],
         'mailer' => [
             'class' => \humhub\components\mail\Mailer::class,
@@ -166,7 +177,6 @@ $config = [
     ],
     'params' => [
         'installed' => false,
-        'databaseInstalled' => false,
         'databaseDefaultStorageEngine' => 'InnoDB',
         'dynamicConfigFile' => '@config/dynamic.php',
         'moduleAutoloadPaths' => ['@app/modules', '@humhub/modules'],
@@ -185,7 +195,7 @@ $config = [
             'th' => 'ไทย',
             'tr' => 'Türkçe',
             'ru' => 'Русский',
-            'uk' => 'українська',
+            'uk' => 'Українська',
             'el' => 'Ελληνικά',
             'ja' => '日本語',
             'hu' => 'Magyar',
@@ -196,27 +206,29 @@ $config = [
             'an' => 'Aragonés',
             'vi' => 'Tiếng Việt',
             'sv' => 'Svenska',
-            'cs' => 'čeština',
-            'da' => 'dansk',
+            'cs' => 'Čeština',
+            'da' => 'Dansk',
             'uz' => 'Ўзбек',
             'fa-IR' => 'فارسی',
-            'bg' => 'български',
-            'sk' => 'slovenčina',
-            'ro' => 'română',
+            'bg' => 'Български',
+            'sk' => 'Slovenčina',
+            'ro' => 'Română',
             'ar' => 'العربية/عربي‎‎',
             'ko' => '한국어',
             'id' => 'Bahasa Indonesia',
-            'lt' => 'lietuvių kalba',
+            'lt' => 'Lietuvių kalba',
             'ht' => 'Kreyòl ayisyen',
             'lv' => 'Latvijas',
             'sl' => 'Slovenščina',
             'hr' => 'Hrvatski',
             'am' => 'አማርኛ',
-            'fi' => 'suomalainen',
+            'fi' => 'Suomalainen',
             'he' => 'עברית',
             'sq' => 'Shqip',
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
+            'sr' => 'Сербисцх',
+            'eu' => 'Basque'
         ],
         'ldap' => [
             // LDAP date field formats
@@ -245,9 +257,6 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
-        ],
-        'search' => [
-            'zendLucenceDataDir' => '@runtime/searchdb',
         ],
         'curl' => [
             // Check SSL certificates on cURL requests

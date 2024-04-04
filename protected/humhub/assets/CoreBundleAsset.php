@@ -5,10 +5,8 @@ namespace humhub\assets;
 use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\activity\assets\ActivityAsset;
 use humhub\modules\comment\assets\CommentAsset;
-use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\assets\ProseMirrorRichTextAsset;
-use humhub\modules\file\assets\FileAsset;
 use humhub\modules\like\assets\LikeAsset;
 use humhub\modules\live\assets\LiveAsset;
 use humhub\modules\notification\assets\NotificationAsset;
@@ -31,15 +29,16 @@ use humhub\modules\user\assets\UserPickerAsset;
  */
 class CoreBundleAsset extends WebStaticAssetBundle
 {
-    const BUNDLE_NAME = 'defer';
+    public const BUNDLE_NAME = 'defer';
 
     public $defaultDepends = false;
 
-    const STATIC_DEPENDS = [
+    public const STATIC_DEPENDS = [
         AppAsset::class,
         JqueryHighlightAsset::class,
         JqueryAutosizeAsset::class,
         Select2Asset::class,
+        Select2SearchInputPlaceholderAsset::class,
         JqueryWidgetAsset::class,
         NProgressAsset::class,
         JqueryNiceScrollAsset::class,

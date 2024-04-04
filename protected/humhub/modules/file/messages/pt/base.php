@@ -2,6 +2,9 @@
 return array (
   '<strong>Open</strong> file' => '<strong>Abrir</strong> ficheiro',
   '<strong>Upload</strong> error' => 'Erro de <strong>carregamento</strong>',
+  'Attach a video' => 'Anexar um vídeo',
+  'Attach an audio message' => 'Anexar uma mensagem audio',
+  'Attach an image' => 'Anexar uma imagem',
   'Close' => 'Fechar',
   'Could not find requested file variant!' => 'Não foi possível encontrar a versão do ficheiro solicitada!',
   'Could not find requested file!' => 'Não foi possível encontrar o ficheiro solicitado!',

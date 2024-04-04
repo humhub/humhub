@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\controllers;
 
+use Collator;
+use Exception;
 use humhub\compat\HForm;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\helpers\MembershipHelper;
@@ -18,12 +20,14 @@ use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\forms\AccountChangeEmail;
 use humhub\modules\user\models\forms\AccountChangeUsername;
 use humhub\modules\user\models\forms\AccountDelete;
-use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\forms\AccountSettings;
+use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\ProfileSettingsAutocomplete;
-use humhub\modules\user\widgets\ProfileSettingsPicker;
+use humhub\modules\user\Module;
+use Throwable;
 use Yii;
 use yii\web\HttpException;
+use yii\web\Response;
 
 /**
  * AccountController provides all standard actions for the current logged in
@@ -34,7 +38,6 @@ use yii\web\HttpException;
  */
 class AccountController extends BaseAccountController
 {
-
     /**
      * @inheritdoc
      */
@@ -62,7 +65,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Redirect to current users profile
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionIndex()
     {
@@ -75,7 +78,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Edit Users Profile
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionEdit()
     {
@@ -96,7 +99,6 @@ class AccountController extends BaseAccountController
         $form = new HForm($definition, $user->profile);
         $form->showErrorSummary = true;
         if ($form->submitted('save') && $form->validate() && $form->save()) {
-
             // Trigger search refresh
             $user->save();
 
@@ -117,7 +119,7 @@ class AccountController extends BaseAccountController
         /** @var User $user */
         $user = Yii::$app->user->getIdentity();
 
-        $model = new \humhub\modules\user\models\forms\AccountSettings();
+        $model = new AccountSettings();
         $model->language = Yii::$app->i18n->getAllowedLanguage($user->language);
         $model->timeZone = $user->time_zone;
         if (empty($model->timeZone)) {
@@ -125,11 +127,15 @@ class AccountController extends BaseAccountController
         }
 
         $model->tags = $user->getTags();
+        $model->hideOnlineStatus = $user->settings->get('hideOnlineStatus');
+        $model->markdownEditorMode = $user->settings->get("markdownEditorMode");
         $model->show_introduction_tour = Yii::$app->getModule('tour')->settings->contentContainer($user)->get("hideTourPanel");
         $model->visibility = $user->visibility;
         $model->blockedUsers = $user->getBlockedUserGuids();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            $user->settings->set('hideOnlineStatus', $model->hideOnlineStatus);
+            $user->settings->set('markdownEditorMode', $model->markdownEditorMode);
             Yii::$app->getModule('tour')->settings->contentContainer($user)->set('hideTourPanel', $model->show_introduction_tour);
 
             $user->scenario = User::SCENARIO_EDIT_ACCOUNT_SETTINGS;
@@ -148,10 +154,18 @@ class AccountController extends BaseAccountController
 
         // Sort countries list based on user language
         $languages = Yii::$app->i18n->getAllowedLanguages();
-        $col = new \Collator(Yii::$app->language);
+        $col = new Collator(Yii::$app->language);
         $col->asort($languages);
 
-        return $this->render('editSettings', ['model' => $model, 'languages' => $languages]);
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $settingsManager = $module->settings;
+
+        return $this->render('editSettings', [
+            'model' => $model,
+            'languages' => $languages,
+            'isEnabledOnlineStatus' => !$settingsManager->get('auth.hideOnlineStatus'),
+        ]);
     }
 
     /**
@@ -167,7 +181,7 @@ class AccountController extends BaseAccountController
 
     /**
      * Change Account
-     * @throws \Exception
+     * @throws Exception
      * @todo Add Group
      */
     public function actionPermissions()
@@ -179,7 +193,7 @@ class AccountController extends BaseAccountController
         $groups = [];
         $groupAccessEnabled = AuthHelper::isGuestAccessEnabled();
 
-        if (Yii::$app->getModule('friendship')->getIsEnabled()) {
+        if (Yii::$app->getModule('friendship')->isFriendshipEnabled()) {
             $groups[User::USERGROUP_FRIEND] = Yii::t('UserModule.account', 'Your friends');
             $groups[User::USERGROUP_USER] = Yii::t('UserModule.account', 'Other users');
         } else {
@@ -196,25 +210,17 @@ class AccountController extends BaseAccountController
         }
 
         // Handle permission state change
-        if (Yii::$app->request->post('dropDownColumnSubmit')) {
-            Yii::$app->response->format = 'json';
-            $permission = $this->getUser()->permissionManager->getById(Yii::$app->request->post('permissionId'), Yii::$app->request->post('moduleId'));
-            if ($permission === null) {
-                throw new HttpException(500, 'Could not find permission!');
-            }
-            $this->getUser()->permissionManager->setGroupState($currentGroup, $permission, Yii::$app->request->post('state'));
-            return [];
-        }
+        $return = $this->getUser()->permissionManager->handlePermissionStateChange($currentGroup);
 
-        return $this->render('permissions', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
+        return $return ?? $this->render('permissions', ['user' => $this->getUser(), 'groups' => $groups, 'group' => $currentGroup, 'multipleGroups' => (count($groups) > 1)]);
     }
 
     public function actionConnectedAccounts()
     {
         if (Yii::$app->request->isPost && Yii::$app->request->get('disconnect')) {
-            foreach (Yii::$app->user->getAuthClients() as $authClient) {
+            foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
                 if ($authClient->getId() == Yii::$app->request->get('disconnect')) {
-                    \humhub\modules\user\authclient\AuthClientHelpers::removeAuthClientForUser($authClient, Yii::$app->user->getIdentity());
+                    Yii::$app->user->getAuthClientUserService()->remove($authClient);
                 }
             }
             return $this->redirect(['connected-accounts']);
@@ -232,7 +238,7 @@ class AccountController extends BaseAccountController
         }
 
         $activeAuthClientIds = [];
-        foreach (Yii::$app->user->getAuthClients() as $authClient) {
+        foreach (Yii::$app->user->getAuthClientUserService()->getClients() as $authClient) {
             $activeAuthClientIds[] = $authClient->getId();
         }
 
@@ -260,9 +266,9 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * @return array|AccountController|\yii\console\Response|\yii\web\Response
+     * @return array|AccountController|\yii\console\Response|Response
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionEnableModule()
     {
@@ -282,9 +288,9 @@ class AccountController extends BaseAccountController
     }
 
     /**
-     * @return array|AccountController|\yii\console\Response|\yii\web\Response
+     * @return array|AccountController|\yii\console\Response|Response
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function actionDisableModule()
     {
@@ -309,7 +315,7 @@ class AccountController extends BaseAccountController
      */
     public function actionDelete()
     {
-        if (!Yii::$app->user->canDeleteAccount()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canDeleteAccount()) {
             throw new HttpException(500, 'Account deletion not allowed!');
         }
 
@@ -333,11 +339,11 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeUsername()
     {
-        if (!Yii::$app->user->canChangeUsername()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeUsername()) {
             throw new HttpException(500, 'Change Username is not allowed');
         }
 
-        $model = new AccountChangeUsername;
+        $model = new AccountChangeUsername();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeUsername()) {
             return $this->render('changeUsername_success', ['model' => $model]);
@@ -352,11 +358,11 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmail()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
-        $model = new AccountChangeEmail;
+        $model = new AccountChangeEmail();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->sendChangeEmail()) {
             return $this->render('changeEmail_success', ['model' => $model]);
@@ -371,7 +377,7 @@ class AccountController extends BaseAccountController
      */
     public function actionChangeEmailValidate()
     {
-        if (!Yii::$app->user->canChangeEmail()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangeEmail()) {
             throw new HttpException(500, 'Change E-Mail is not allowed');
         }
 
@@ -386,7 +392,7 @@ class AccountController extends BaseAccountController
         }
 
         // Check if E-Mail is in use, e.g. by other user
-        $emailAvailablyCheck = \humhub\modules\user\models\User::findOne(['email' => $email]);
+        $emailAvailablyCheck = User::findOne(['email' => $email]);
         if ($emailAvailablyCheck != null) {
             throw new HttpException(404, Yii::t('UserModule.account', 'The entered e-mail address is already in use by another user.'));
         }
@@ -402,11 +408,11 @@ class AccountController extends BaseAccountController
      */
     public function actionChangePassword()
     {
-        if (!Yii::$app->user->canChangePassword()) {
+        if (!Yii::$app->user->getAuthClientUserService()->canChangePassword()) {
             throw new HttpException(500, 'Password change is not allowed');
         }
 
-        $userPassword = new \humhub\modules\user\models\Password();
+        $userPassword = new Password();
         $userPassword->scenario = 'changePassword';
 
         if ($userPassword->load(Yii::$app->request->post()) && $userPassword->validate()) {
@@ -483,7 +489,7 @@ class AccountController extends BaseAccountController
      *
      * @return User the user
      * @throws HttpException
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function getUser()
     {
@@ -497,7 +503,4 @@ class AccountController extends BaseAccountController
 
         return Yii::$app->user->getIdentity();
     }
-
 }
-
-?>

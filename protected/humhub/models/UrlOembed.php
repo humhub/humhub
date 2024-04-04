@@ -41,7 +41,7 @@ class UrlOembed extends ActiveRecord
      * @event
      * @since 1.4
      */
-    const EVENT_FETCH = 'fetch';
+    public const EVENT_FETCH = 'fetch';
 
     /**
      * @var int Maximum amount of remote fetch calls per request
@@ -115,14 +115,14 @@ class UrlOembed extends ActiveRecord
      *
      * @return string|null
      */
-    public function getProviderUrl()
+    public function getProviderUrl(): ?string
     {
-        foreach (static::getProviders() as $provider) {
-            if (isset($provider['pattern']) && preg_match($provider['pattern'], $this->url)) {
-                return str_replace("%url%", urlencode($this->url), $provider['endpoint']);
-            }
+        $provider = static::getProviderByUrl($this->url);
+        if ($provider === null) {
+            return null;
         }
-        return null;
+
+        return str_replace("%url%", urlencode($this->url), $provider['endpoint']);
     }
 
     /**
@@ -292,7 +292,7 @@ class UrlOembed extends ActiveRecord
                 'data' => [
                     'guid' => uniqid('oembed-', true),
                     'richtext-feature' => 1,
-                    'oembed-provider' => Html::encode(static::getProviderByUrl($url)),
+                    'oembed-provider' => Html::encode(static::getProviderOptionByUrl($url, 'endpoint')),
                     'url' => Html::encode($url)
                 ],
                 'class' => 'oembed_snippet',
@@ -348,26 +348,46 @@ class UrlOembed extends ActiveRecord
      * Checks if a given URL Supports OEmbed
      *
      * @param string $url
-     * @return boolean
+     * @return bool
      */
-    public static function hasOEmbedSupport($url)
+    public static function hasOEmbedSupport(string $url): bool
     {
-        return static::getProviderByUrl($url) != null;
+        return static::getProviderByUrl($url) !== null;
     }
 
     /**
-     * @param $url
-     * @return mixed|null
+     * Find provider by pattern with provided URL
+     *
+     * @param string $url
+     * @return array|null
      */
-    public static function getProviderByUrl($url)
+    public static function getProviderByUrl(string $url): ?array
     {
-        foreach (static::getProviders() as $provider) {
+        foreach (static::getProviders() as $name => $provider) {
             if (isset($provider['pattern']) && preg_match($provider['pattern'], $url)) {
-                return $provider['endpoint'];
+                $provider['name'] = $name;
+                return $provider;
             }
         }
 
         return null;
+    }
+
+    /**
+     * Get provider option by URL
+     *
+     * @param string $url
+     * @param string $option 'name', 'pattern', 'endpoint'
+     * @return array|null
+     */
+    public static function getProviderOptionByUrl(string $url, string $option = 'name'): ?string
+    {
+        $provider = static::getProviderByUrl($url);
+        if ($provider === null) {
+            return null;
+        }
+
+        return $provider[$option] ?? null;
     }
 
     /**
@@ -454,7 +474,7 @@ class UrlOembed extends ActiveRecord
             return true;
         }
 
-        if (preg_match('#^(https?:)?//#i',$url)) {
+        if (preg_match('#^(https?:)?//#i', $url)) {
             $url = parse_url($url);
             if (!isset($url['host'])) {
                 return false;

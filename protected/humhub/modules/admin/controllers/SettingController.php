@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\controllers;
 
+use Exception;
 use humhub\libs\LogoImage;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
@@ -28,7 +29,6 @@ use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\Log;
 use humhub\modules\notification\models\forms\NotificationSettings;
-use yii\base\BaseObject;
 
 /**
  * SettingController
@@ -37,7 +37,6 @@ use yii\base\BaseObject;
  */
 class SettingController extends Controller
 {
-
     /**
      * @inheritdoc
      */
@@ -65,13 +64,13 @@ class SettingController extends Controller
         ]);
         $this->subLayout = '@admin/views/layouts/setting';
 
-        return parent::init();
+        parent::init();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAccessRules()
+    protected function getAccessRules()
     {
         return [
             ['permissions' => ManageSettings::class]
@@ -126,11 +125,9 @@ class SettingController extends Controller
      */
     public function actionCaching()
     {
-        $form = new CacheSettingsForm;
+        $form = new CacheSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            Yii::$app->cache->flush();
-            Yii::$app->assetManager->clear();
-            Yii::$app->view->theme->variables->flushCache();
+            self::flushCache();
             $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
@@ -146,7 +143,7 @@ class SettingController extends Controller
      */
     public function actionStatistic()
     {
-        $form = new StatisticSettingsForm;
+        $form = new StatisticSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -179,7 +176,7 @@ class SettingController extends Controller
      */
     public function actionMailingServer()
     {
-        $form = new MailingSettingsForm;
+        $form = new MailingSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             return $this->redirect(['/admin/setting/mailing-server-test']);
         }
@@ -204,14 +201,16 @@ class SettingController extends Controller
 
             if ($mail->send()) {
                 $this->view->info(
-                    Yii::t('AdminModule.settings', 'Saved and sent test email to: {address}',
+                    Yii::t(
+                        'AdminModule.settings',
+                        'Saved and sent test email to: {address}',
                         ['address' => $user->email]
                     )
                 );
             } else {
                 $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.'));
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.') . ' ' . $e->getMessage());
         }
 
@@ -221,7 +220,7 @@ class SettingController extends Controller
 
     public function actionDesign()
     {
-        $form = new DesignSettingsForm;
+        $form = new DesignSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -239,7 +238,7 @@ class SettingController extends Controller
      */
     public function actionFile()
     {
-        $form = new FileSettingsForm;
+        $form = new FileSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
@@ -273,7 +272,7 @@ class SettingController extends Controller
      */
     public function actionProxy()
     {
-        $form = new ProxySettingsForm;
+        $form = new ProxySettingsForm();
 
 
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
@@ -299,9 +298,9 @@ class SettingController extends Controller
         }
 
         return $this->render('oembed', [
-                'providers' => $providers,
-                'settings' => $settings,
-            ]);
+            'providers' => $providers,
+            'settings' => $settings,
+        ]);
     }
 
     public function actionLogs()
@@ -314,12 +313,12 @@ class SettingController extends Controller
 
         // I wish..
         if ($dating) {
-            $dating = date('Y-m-d H:i:s', (int) $dating->log_time);
+            $dating = date('Y-m-d H:i:s', (int)$dating->log_time);
         } else {
             $dating = "the begining of time";
         }
 
-        $form = new LogsSettingsForm;
+        $form = new LogsSettingsForm();
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
 
@@ -344,7 +343,7 @@ class SettingController extends Controller
      */
     public function actionOembedEdit()
     {
-        $form = new OEmbedProviderForm;
+        $form = new OEmbedProviderForm();
 
         $name = Yii::$app->request->get('name');
         $providers = UrlOembed::getProviders();
@@ -369,9 +368,9 @@ class SettingController extends Controller
         }
 
         return $this->render('oembed_edit', [
-                'model' => $form,
-                'name' => $name
-            ]);
+            'model' => $form,
+            'name' => $name
+        ]);
     }
 
     /**
@@ -397,7 +396,25 @@ class SettingController extends Controller
         return $this->redirect(
             [
                 'caching'
-            ]);
+            ]
+        );
     }
 
+    /**
+     * @return string Activity output that can be used for logging
+     * @since 1.16
+     */
+    public static function flushCache(): string
+    {
+        $output = "Flushing cache ...";
+        Yii::$app->cache->flush();
+
+        $output .= "\nFlushing asset manager ...";
+        Yii::$app->assetManager->clear();
+
+        $output .= "\nFlushing theme cache ...";
+        Yii::$app->view->theme->activate();
+
+        return $output;
+    }
 }

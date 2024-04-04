@@ -12,9 +12,11 @@ use yii\authclient\OAuth2;
 use yii\web\HttpException;
 use Yii;
 
+/**
+ * @deprecated 1.14
+ */
 class LinkedIn extends \yii\authclient\clients\LinkedIn
 {
-
     /**
      * @inheritdoc
      */

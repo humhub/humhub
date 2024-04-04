@@ -32,7 +32,7 @@ use humhub\modules\content\components\ContentActiveRecord;
         <?php if ($currentCommentId && count($comments) > 1) : ?>
             <?= ShowMore::widget([
                 'object' => $object,
-                'commentId' => $comments[count($comments)-1]->id,
+                'commentId' => $comments[count($comments) - 1]->id,
                 'type' => ShowMore::TYPE_NEXT,
             ]); ?>
         <?php endif; ?>
@@ -42,11 +42,11 @@ use humhub\modules\content\components\ContentActiveRecord;
 </div>
 
 <script <?= Html::nonce() ?>>
-<?php if (count($comments) != 0): ?>
+    <?php if (count($comments) != 0): ?>
     // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
     $('#comment_<?= $id; ?>').show();
-<?php endif; ?>
-<?php if (!empty($currentCommentId)) : ?>
+    <?php endif; ?>
+    <?php if (!empty($currentCommentId)) : ?>
     $('#comment_<?= $currentCommentId ?>').get(0).scrollIntoView();
-<?php endif; ?>
+    <?php endif; ?>
 </script>

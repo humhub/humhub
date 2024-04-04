@@ -47,7 +47,7 @@ humhub.module('notification', function (module, require, $) {
         this.originalTitle = document.title;
         this.initDropdown();
         this.handleResult(update);
-        //this.sendDesktopNotifications(update);
+        // this.sendDesktopNotifications(update);
 
         var that = this;
         event.on('humhub:modules:notification:live:NewNotification', function (evt, events, update) {
@@ -62,7 +62,6 @@ humhub.module('notification', function (module, require, $) {
             var count = (that.$.data('notification-count')) ? parseInt(that.$.data('notification-count')) : 0;
             updateTitle(count);
         });
-
     };
 
     NotificationDropDown.prototype.filterEvents = function (events) {
@@ -282,16 +281,15 @@ humhub.module('notification', function (module, require, $) {
     };
 
     var updateTitle = function ($count) {
-
         // Workaround to include Mail Notification into Title
         // Mail Module triggers also `humhub:modules:notification:UpdateTitleNotificationCount` on New Messages
         if (humhub.modules.mail && humhub.modules.mail.notification && humhub.modules.mail.notification.getNewMessageCount) {
-            $count += humhub.modules.mail.notification.getNewMessageCount();
+            $count += humhub.modules.mail.notification.getNewMessageCount() * 1;
         }
 
         if ($count) {
             document.title = '(' + $count + ') ' + view.getState().title;
-        } else if ($count === false) {
+        } else if ($count === false || $count === 0) {
             document.title = view.getState().title;
         }
     };
@@ -311,6 +309,7 @@ humhub.module('notification', function (module, require, $) {
 
         updateTitle($('#notification_widget').data('notification-count'));
         initOverviewPage();
+
         if (!$pjax && view.isLarge()) {
             $("#dropdown-notifications ul.media-list").niceScroll({
                 cursorwidth: "7",

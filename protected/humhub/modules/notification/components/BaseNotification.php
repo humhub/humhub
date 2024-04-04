@@ -8,6 +8,7 @@
 
 namespace humhub\modules\notification\components;
 
+use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
@@ -28,7 +29,6 @@ use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\mail\MessageInterface;
 
-
 /**
  * A BaseNotification class describes the behaviour and the type of a Notification.
  * A BaseNotification is created and can be sent to one or multiple users over different targets.
@@ -44,9 +44,8 @@ use yii\mail\MessageInterface;
  */
 abstract class BaseNotification extends SocialActivity
 {
-
     /**
-     * @var boolean automatically mark notification as seen after click on it
+     * @var bool automatically mark notification as seen after click on it
      */
     public $markAsSeenOnClick = true;
 
@@ -58,7 +57,7 @@ abstract class BaseNotification extends SocialActivity
     /**
      * @since 1.2.3
      * @see NotificationManager
-     * @var boolean do not send this notification also to the originator
+     * @var bool do not send this notification also to the originator
      */
     public $suppressSendToOriginator = true;
 
@@ -68,7 +67,7 @@ abstract class BaseNotification extends SocialActivity
     protected $_groupKey = null;
 
     /**
-     * @var \humhub\modules\notification\components\NotificationCategory cached category instance
+     * @var NotificationCategory cached category instance
      */
     protected $_category = null;
 
@@ -104,7 +103,7 @@ abstract class BaseNotification extends SocialActivity
      *
      * If the Notification configuration should be configurable subclasses have to overwrite this method.
      *
-     * @return \humhub\modules\notification\components\NotificationCategory
+     * @return NotificationCategory
      */
     public function getCategory()
     {
@@ -122,11 +121,23 @@ abstract class BaseNotification extends SocialActivity
      * to the returned category. If no category instance is returned, the BaseNotification behavriour (targets) will not be
      * configurable.
      *
-     * @return \humhub\modules\notification\components\NotificationCategory
+     * @return NotificationCategory
      */
     protected function category()
     {
         return null;
+    }
+
+    /**
+     * Checks if notification is still valid before sending
+     *
+     * @return bool
+     *
+     * @since 1.15
+     */
+    public function isValid()
+    {
+        return true;
     }
 
     /**
@@ -143,11 +154,11 @@ abstract class BaseNotification extends SocialActivity
             $date = null;
         }
 
-        if(!empty($this->record->payload)) {
+        if (!empty($this->record->payload)) {
             $this->payload = Json::decode($this->record->payload);
         }
 
-        if($this->hasContent()) {
+        if ($this->hasContent()) {
             $url = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], true);
             $relativeUrl = Url::to(['/notification/entry', 'id' => $this->record->id, 'cId' => $this->getContent()->id], false);
         } else {
@@ -210,7 +221,7 @@ abstract class BaseNotification extends SocialActivity
             throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
         }
 
-        if ($this->isOriginator($user)) {
+        if ($this->suppressSendToOriginator && $this->isOriginator($user)) {
             return;
         }
 
@@ -228,8 +239,8 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Returns a non html encoded mail subject which will be used in the notification e-mail
      *
-     * @see \humhub\modules\notification\targets\MailTarget
      * @return string the subject
+     * @see \humhub\modules\notification\targets\MailTarget
      */
     public function getMailSubject()
     {
@@ -240,7 +251,7 @@ abstract class BaseNotification extends SocialActivity
      * Checks if the given $user is the originator of this notification.
      *
      * @param User $user
-     * @return boolean
+     * @return bool
      */
     public function isOriginator(User $user)
     {
@@ -251,7 +262,7 @@ abstract class BaseNotification extends SocialActivity
      * Checks if the originator blocked the given $user in order to avoid receive any notifications from the $user.
      *
      * @param User $user
-     * @return boolean
+     * @return bool
      * @since 1.10
      */
     public function isBlockedFromUser(User $user): bool
@@ -370,9 +381,9 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Set additional data
      *
-     * @since 1.11
      * @param $payload
      * @return $this
+     * @since 1.11
      */
     public function payload($payload)
     {
@@ -404,7 +415,7 @@ abstract class BaseNotification extends SocialActivity
 
         if ($this->source !== null) {
             $condition['source_pk'] = $this->source->getPrimaryKey();
-            $condition['source_class'] = $this->source->className();
+            $condition['source_class'] = PolymorphicRelation::getObjectModel($this->source);
         }
 
         Notification::deleteAll($condition);
@@ -570,13 +581,12 @@ abstract class BaseNotification extends SocialActivity
     /**
      * This method is invoked right before a mail will be send for this notificatoin
      *
+     * @param MessageInterface $message
+     * @return bool when true the mail will be send
      * @see \humhub\modules\notification\targets\MailTarget
-     * @param \yii\mail\MessageInterface $message
-     * @return boolean when true the mail will be send
      */
     public function beforeMailSend(MessageInterface $message)
     {
         return true;
     }
-
 }

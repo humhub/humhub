@@ -2,11 +2,12 @@
 
 use humhub\libs\Html;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\user\models\forms\AccountRecoverPassword;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
 
 /**
- * @var $model \humhub\modules\user\models\forms\AccountRecoverPassword
+ * @var $model AccountRecoverPassword
  */
 
 ?>
@@ -31,10 +32,12 @@ use yii\helpers\Url;
             </div>
 
             <div class="form-group">
-                <?= Captcha::widget([
-                    'model' => $model, 'attribute' => 'verifyCode', 'captchaAction' => '/user/auth/captcha',
+                <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
+                    'model' => $model,
+                    'attribute' => 'verifyCode',
+                    'captchaAction' => '/user/auth/captcha',
                     'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
-                ]); ?>
+                ])->label(false) ?>
             </div>
 
             <hr>

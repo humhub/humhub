@@ -7,9 +7,9 @@ use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
+use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
@@ -103,7 +103,7 @@ class InviteForm extends Model
      */
     public function save()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             return false;
         }
 
@@ -136,10 +136,7 @@ class InviteForm extends Model
         // Allow users to perform this action if this is allowed by config file
         // Pre-check if user is member of the space in question
         if (Yii::$app->getModule('space')->membersCanAddWithoutInvite === true) {
-            $membership = Membership::findOne([
-                'space_id' => $this->space->id,
-                'user_id' => Yii::$app->user->identity->id,
-            ]);
+            $membership = Membership::findMembership($this->space->id, Yii::$app->user->identity->id);
 
             if ($membership && $membership->status == Membership::STATUS_MEMBER) {
                 return true;
@@ -163,7 +160,7 @@ class InviteForm extends Model
     /**
      * Invites selected members immediately
      *
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function inviteMembers()
     {
@@ -216,13 +213,9 @@ class InviteForm extends Model
      */
     private function addUserToInviteList(User $user): bool
     {
-        $membership = Membership::findOne([
-            'space_id' => $this->space->id,
-            'user_id' => $user->id,
-            'status' => Membership::STATUS_MEMBER,
-        ]);
+        $membership = Membership::findMembership($this->space->id, $user->id);
 
-        if ($membership) {
+        if ($membership && (int)$membership->status === Membership::STATUS_MEMBER) {
             return false;
         }
 
@@ -293,8 +286,10 @@ class InviteForm extends Model
 
                 $validator = new EmailValidator();
                 if (!$validator->validate($email)) {
-                    $this->addError($attribute,
-                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]));
+                    $this->addError(
+                        $attribute,
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email])
+                    );
                     continue;
                 }
 
@@ -354,11 +349,13 @@ class InviteForm extends Model
      */
     public function getInviteLink($forceResetToken = false)
     {
-        $token = $this->space->settings->get('inviteToken');
+        $linkRegistrationService = new LinkRegistrationService(null, $this->space);
+
+        $token = $linkRegistrationService->getStoredToken();
         if ($forceResetToken || !$token) {
-            $token = Yii::$app->security->generateRandomString(Invite::LINK_TOKEN_LENGTH);
-            $this->space->settings->set('inviteToken', $token);
+            $token = $linkRegistrationService->setNewToken();
         }
+
         return Url::to(['/user/registration/by-link', 'token' => $token, 'spaceId' => $this->space->id], true);
     }
 }

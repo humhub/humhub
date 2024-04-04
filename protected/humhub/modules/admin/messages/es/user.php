@@ -44,7 +44,7 @@ return array (
   'Create new group' => 'Crear nuevo grupo',
   'Create new profile category' => 'Crear nueva categoría de perfil',
   'Create new profile field' => 'Crear nuevo campo de perfil',
-  'Deactivate' => 'Desactivar',
+  'Disable' => 'Desactivar',
   'Deactivate individual profile permissions?' => '¿Desactivar los permisos de perfil individual?',
   'Decline' => 'Declinar',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Declinar y borrar usuario: <strong>{displayName}</strong>',
@@ -103,6 +103,7 @@ Kind Regards
 
 ' => 'hola {displayName}, Tu petición de cuenta ha sido rechazada. Gracias {AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Aquí puedes crear o editar categorías y campos de perfil.',
+  'Hide online status of users' => 'Ocultar el estado online de los usuarios',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Si no se permiten permisos de perfil individual, la siguiente configuración no se puede cambiar para todos los usuarios. Si se permiten permisos de perfil individual, la configuración solo se establece como valores predeterminados que los usuarios pueden personalizar. Las siguientes entradas se muestran en el mismo formulario en la configuración del perfil de usuario:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Si no está seleccionada esta opción, la propiedad de los espacios será transferida a tu cuenta.',
   'Impersonate' => 'Asumir identidad',

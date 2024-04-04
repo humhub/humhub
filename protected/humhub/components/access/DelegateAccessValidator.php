@@ -5,7 +5,6 @@
  * @license https://www.humhub.com/licences
  */
 
-
 namespace humhub\components\access;
 
 class DelegateAccessValidator extends ActionAccessValidator
@@ -19,7 +18,7 @@ class DelegateAccessValidator extends ActionAccessValidator
      * @since 1.8
      */
     public $codeCallback;
-    
+
     /**
      * @inheritDoc
      */

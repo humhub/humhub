@@ -8,7 +8,6 @@ use user\AcceptanceTester;
 
 class LoginCest
 {
-
     public function testUserLogin(AcceptanceTester $I)
     {
         $I->wantTo('ensure that login works');
@@ -18,7 +17,7 @@ class LoginCest
         $I->amGoingTo('try to login with empty credentials');
         $loginPage->login('', '');
         $I->expectTo('see validations errors');
-        $I->waitForText('username or email cannot be blank.');
+        $I->waitForText('Username or Email cannot be blank.');
         $I->see('Password cannot be blank.');
 
         $I->amGoingTo('try to login with wrong credentials');
@@ -64,7 +63,6 @@ class LoginCest
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is not approved yet!');
     }
-
 
 
     public function testChangePassword(AcceptanceTester $I)

@@ -44,7 +44,6 @@ return array (
   'Create new group' => 'Kreiraj novu grupu',
   'Create new profile category' => 'Kreiraj novu kategoriju profila',
   'Create new profile field' => 'Kreiraj novo polje za profil',
-  'Deactivate' => '',
   'Deactivate individual profile permissions?' => '',
   'Decline' => 'Odbij',
   'Decline & delete user: <strong>{displayName}</strong>' => 'Odbij i obriši korisnika: <strong>{displayName}</strong>',
@@ -103,6 +102,7 @@ Kind Regards
 
 ' => '',
   'Here you can create or edit profile categories and fields.' => 'Ovdje možete kreirati ili urediti profile kategorija i polja.',
+  'Hide online status of users' => '',
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Ako ova opcija nije odabrana, vlasništvo nad prostorima bit će preneseno na vaš račun.',
   'Impersonate' => 'Predstavljati',

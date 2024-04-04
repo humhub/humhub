@@ -1,12 +1,10 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\stream;
 
 use Exception;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
 use humhub\modules\content\widgets\LockCommentsLink;
@@ -20,6 +18,7 @@ use humhub\modules\content\widgets\ScheduleLink;
 use humhub\modules\content\widgets\VisibilityLink;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\models\Space;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -91,17 +90,17 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     /**
      * Edit form is loaded to the wallentry itself.
      */
-    const EDIT_MODE_INLINE = 'inline';
+    public const EDIT_MODE_INLINE = 'inline';
 
     /**
      * Opens the edit page in a new window.
      */
-    const EDIT_MODE_NEW_WINDOW = 'new_window';
+    public const EDIT_MODE_NEW_WINDOW = 'new_window';
 
     /**
      * Edit form is loaded into a modal.
      */
-    const EDIT_MODE_MODAL = 'modal';
+    public const EDIT_MODE_MODAL = 'modal';
 
     /**
      * Route to create a content
@@ -164,7 +163,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     /**
      * @var int Sort order of create form and tab menu on wall stream
      */
-    public $createFormSortOrder;
+    public $createFormSortOrder = 1000000;
 
     /**
      * @var string Class name of the Form to create a Content from wall stream,
@@ -189,7 +188,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         }
 
         if (!$this->renderOptions) {
-            $this->renderOptions = (new WallStreamEntryOptions);
+            $this->renderOptions = (new WallStreamEntryOptions());
         }
 
         if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH) || $this->model->content->isArchived()) {
@@ -204,11 +203,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
                 ->disableControlsEntry(DropdownDivider::class);
         }
 
-        if($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
+        if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
             $this->renderOptions->disableControlsEntryDelete();
         }
 
-        if($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
+        if ($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
             $this->renderOptions->enableContainerInformationInTitle();
         }
     }
@@ -221,6 +220,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         return $this->render($this->layoutBody, [
             'model' => $this->model,
+            'topics' => Topic::findByContent($this->model->content)->all(),
             'renderOptions' => $this->renderOptions,
             'content' => $this->renderContent(),
             'header' => $this->renderHeader(),
@@ -327,11 +327,11 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
      */
     public function getControlsMenuEntries()
     {
-        if ($this->model->content->state === Content::STATE_DELETED) {
+        if ($this->model->content->getStateService()->isDeleted()) {
             return [];
         }
 
-        if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
+        if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
             return [
                 [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]
             ];
@@ -350,8 +350,8 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]
         ];
 
-        if($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT, WallStreamEntryOptions::VIEW_CONTEXT_DETAIL])) {
-            $result[] =  [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]];
+        if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT, WallStreamEntryOptions::VIEW_CONTEXT_DETAIL])) {
+            $result[] = [PinLink::class, ['content' => $this->model], ['sortOrder' => 600]];
         }
 
         if (!empty($this->getEditUrl())) {

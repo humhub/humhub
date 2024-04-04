@@ -8,23 +8,31 @@
 
 namespace humhub\modules\content\components;
 
+use humhub\components\ActiveRecord;
+use humhub\libs\BasePermission;
+use humhub\modules\activity\helpers\ActivityHelper;
+use humhub\modules\activity\models\Activity;
+use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\interfaces\SoftDeletable;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\models\Movable;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
+use humhub\modules\content\widgets\WallEntry;
+use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
+use humhub\widgets\Label;
+use Throwable;
 use Yii;
 use yii\base\Exception;
-use humhub\modules\content\widgets\WallEntry;
-use humhub\widgets\Label;
-use humhub\libs\BasePermission;
-use humhub\modules\content\permissions\ManageContent;
-use humhub\components\ActiveRecord;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\interfaces\ContentOwner;
 use yii\base\InvalidConfigException;
+use yii\base\ModelEvent;
+use yii\db\ActiveQuery;
+use yii\db\StaleObjectException;
 
 /**
  * ContentActiveRecord is the base ActiveRecord [[\yii\db\ActiveRecord]] for Content.
@@ -61,9 +69,10 @@ use yii\base\InvalidConfigException;
  * @mixin Followable
  * @property User $createdBy
  * @property User $owner
+ * @property-read File[] $files
  * @author Luke
  */
-class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
+class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable, SoftDeletable
 {
     /**
      * @see StreamEntryWidget
@@ -72,7 +81,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     public $wallEntryClass;
 
     /**
-     * @var boolean should the originator automatically follows this content when saved.
+     * @var bool should the originator automatically follows this content when saved.
      */
     public $autoFollow = true;
 
@@ -196,9 +205,10 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
             if (!$content) {
                 $content = new Content();
-                $content->setPolymorphicRelation($this);
                 $this->populateRelation('content', $content);
             }
+
+            $content->setPolymorphicRelation($this);
 
             return $content;
         }
@@ -213,7 +223,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function getContentName()
     {
-        return static::class;
+        return static::getObjectModel();
     }
 
     /**
@@ -239,7 +249,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      *
      * @param array $labels
      * @param bool $includeContentName
-     * @return Label[]|\string[] content labels used for example in wallentrywidget
+     * @return Label[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
     public function getLabels($labels = [], $includeContentName = true)
@@ -299,7 +309,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Determines whether or not the record has an additional createPermission set.
      *
-     * @return boolean
+     * @return bool
      * @since 1.13
      */
     public function hasCreatePermission()
@@ -358,7 +368,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Determines weather or not this records has an additional managePermission set.
      *
-     * @return boolean
+     * @return bool
      * @since 1.2.1
      */
     public function hasManagePermission()
@@ -377,7 +387,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     {
         if (is_subclass_of($this->wallEntryClass, StreamEntryWidget::class, true)) {
             $params['model'] = $this;
-        } else if (!empty($this->wallEntryClass)) {
+        } elseif (!empty($this->wallEntryClass)) {
             $params['contentObject'] = $this; // legacy WallEntry widget
         }
 
@@ -400,7 +410,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
 
         if (is_subclass_of($this->wallEntryClass, WallEntry::class)) {
             $class = $this->wallEntryClass;
-            $widget = new $class;
+            $widget = new $class();
             $widget->contentObject = $this;
             return $widget;
         }
@@ -446,33 +456,32 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
             $this->content->object_id = $this->getPrimaryKey();
         }
 
-        // Always save content
-        $this->content->save();
+        if (!$insert || $this->content->isNewRecord) {
+            // Save a Content only on each update of this Record or when the Content is creating first time.
+            // Don't update the Content twice during inserting of this Record
+            //   in order to don't touch the column `updated_at` when action is "creating" really.
+            $this->content->save();
+        }
 
         parent::afterSave($insert, $changedAttributes);
     }
 
     /**
-     * Returns the class used in the polymorphic content relation.
-     * By default this function will return the static class.
+     * This method is called after state of the Content of this Active Record has been changed
      *
-     * Subclasses of existing content record classes may overwrite this function in order to remain the actual
-     * base type as follows:
-     *
-     * ```
-     * public static function getObjectModel() {
-     *     return BaseType::class
-     * }
-     * ```
-     *
-     * This will force the usage of the `BaseType` class when creating, deleting or querying the content relation.
-     * This is used in cases in which a subclass extends the a base record class without implementing a custom content type.
-     *
-     * @return string
+     * @param int|null $newState
+     * @param int|null $previousState
      */
-    public static function getObjectModel()
+    public function afterStateChange(?int $newState, ?int $previousState): void
     {
-        return static::class;
+        // Activities should be updated to same state as parent Record
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($this);
+        if ($activitiesQuery instanceof ActiveQuery) {
+            foreach ($activitiesQuery->each() as $activity) {
+                /* @var Activity $activity */
+                $activity->content->getStateService()->update($newState);
+            }
+        }
     }
 
     /**
@@ -480,31 +489,68 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Use `hardDelete()` method to delete record immediately.
      *
      * @return bool|int
+     * @inheritdoc
      */
     public function delete()
     {
-        return $this->content->softDelete();
+        return $this->softDelete();
     }
 
     /**
-     * Deletes this content record immediately and permanently
-     *
-     * @return bool
-     * @since 1.14
+     * @inheritdoc
+     */
+    public function beforeSoftDelete(): bool
+    {
+        $event = new ModelEvent();
+        $this->trigger(self::EVENT_BEFORE_SOFT_DELETE, $event);
+
+        return $event->isValid;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function softDelete(): bool
+    {
+        if (!$this->beforeSoftDelete()) {
+            return false;
+        }
+
+        if (!$this->content->softDelete()) {
+            return false;
+        }
+
+        $this->afterSoftDelete();
+        return true;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function afterSoftDelete()
+    {
+        $this->trigger(self::EVENT_AFTER_SOFT_DELETE, new ModelEvent());
+    }
+
+    /**
+     * @inheritdoc
+     * @throws Throwable
+     * @throws StaleObjectException
      */
     public function hardDelete(): bool
     {
-        return (parent::delete() !== false);
+        return parent::delete() !== false;
     }
 
     /**
+     * This method is invoked after HARD deleting a record.
      * @inheritdoc
      */
     public function afterDelete()
     {
         $content = Content::findOne(['object_id' => $this->getPrimaryKey(), 'object_model' => static::getObjectModel()]);
         if ($content !== null) {
-            $content->delete();
+            $content->hardDelete();
         }
 
         parent::afterDelete();
@@ -522,7 +568,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      * Checks if the given user or the current logged in user if no user was given, is the owner of this content
      * @param null $user
      * @return bool
-     * @throws \Throwable
+     * @throws Throwable
      * @since 1.3
      */
     public function isOwner($user = null)
@@ -540,12 +586,19 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
     /**
      * Related Content model
      *
-     * @return \yii\db\ActiveQuery|ActiveQueryContent
+     * @return ActiveQuery|ActiveQueryContent
      */
     public function getContent()
     {
         return $this->hasOne(Content::class, ['object_id' => 'id'])
             ->andWhere(['content.object_model' => static::getObjectModel()]);
+    }
+
+    public function getFiles()
+    {
+        return $this
+            ->hasMany(File::class, ['object_id' => 'id'])
+            ->andOnCondition(['object_model' => static::getObjectModel()]);
     }
 
     /**
@@ -621,5 +674,16 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable
      */
     public function afterMove(ContentContainerActiveRecord $container = null)
     {
+    }
+
+    /**
+     * Returns a Key=>Value array with additional contents to be indexed.
+     * General information and addons like comments, authors, files and tags will be indexed automatically.
+     *
+     * @return array
+     */
+    public function getSearchAttributes()
+    {
+        return [];
     }
 }

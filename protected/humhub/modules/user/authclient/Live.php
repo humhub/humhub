@@ -9,11 +9,10 @@
 namespace humhub\modules\user\authclient;
 
 /**
- * @inheritdoc
+ * @deprecated 1.14
  */
 class Live extends \yii\authclient\clients\Live
 {
-
     /**
      * @inheritdoc
      */

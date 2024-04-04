@@ -17,7 +17,6 @@ use tests\codeception\_support\HumHubDbTestCase;
 
 class PermissionManagerTest extends HumHubDbTestCase
 {
-
     /**
      *  Tests user approval for 1 user without group assignment and one user with group assignment.
      */
@@ -27,13 +26,13 @@ class PermissionManagerTest extends HumHubDbTestCase
         $permissionManager = new PermissionManagerMock();
 
         $tests = [
-            [true, new ManageUsers],
+            [true, new ManageUsers()],
             [true, ManageUsers::class],
-            [false, new ManageSettings],
+            [false, new ManageSettings()],
             [false, ManageSettings::class],
-            [true, [new ManageSettings, new ManageUsers]],
-            [false, [new ManageSettings, new ManageUsers], ['all' => true]],
-            [true, [new ManageUsers, new ManageGroups], ['all' => true]],
+            [true, [new ManageSettings(), new ManageUsers()]],
+            [false, [new ManageSettings(), new ManageUsers()], ['all' => true]],
+            [true, [new ManageUsers(), new ManageGroups()], ['all' => true]],
             [false, [ManageSettings::class, ManageSpaces::class, SeeAdminInformation::class]],
             [false, [ManageSettings::class, ManageSpaces::class, SeeAdminInformation::class], ['all' => true]],
             [true, [ManageSettings::class, ManageUsers::class]],

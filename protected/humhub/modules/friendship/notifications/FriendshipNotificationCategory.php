@@ -23,10 +23,9 @@ use humhub\modules\notification\targets\MobileTarget;
  */
 class FriendshipNotificationCategory extends NotificationCategory
 {
-
     /**
      * Category Id
-     * @var string 
+     * @var string
      */
     public $id = 'friendship';
 
@@ -67,7 +66,7 @@ class FriendshipNotificationCategory extends NotificationCategory
      */
     public function isVisible(User $user = null)
     {
-        return Yii::$app->getModule('friendship')->getIsEnabled();
+        return Yii::$app->getModule('friendship')->isFriendshipEnabled();
     }
 
 }

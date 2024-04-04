@@ -22,7 +22,6 @@ use humhub\components\Controller;
  */
 class ErrorController extends Controller
 {
-
     /**
      * This is the action to handle external exceptions.
      */
@@ -53,6 +52,7 @@ class ErrorController extends Controller
          * Show special login required view for guests
          */
         if (Yii::$app->user->isGuest && $exception instanceof HttpException && $exception->statusCode == '401' && AuthHelper::isGuestAccessEnabled()) {
+            Yii::$app->user->setReturnUrl(Yii::$app->request->getAbsoluteUrl());
             return $this->render('@humhub/views/error/401_guests', ['message' => $message]);
         }
 

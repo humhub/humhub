@@ -1,17 +1,20 @@
 <?php
 
+use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\SpaceContent;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\FooterMenu;
 
 /**
- * @var \humhub\modules\ui\view\components\View $this
- * @var \humhub\modules\space\models\Space $space
+ * @var View $this
+ * @var Space $space
  * @var string $content
  */
 
-/** @var \humhub\modules\content\components\ContentContainerController $context */
+/** @var ContentContainerController $context */
 $context = $this->context;
 $space = $context->contentContainer;
 

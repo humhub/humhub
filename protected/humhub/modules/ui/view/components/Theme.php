@@ -8,9 +8,7 @@
 
 namespace humhub\modules\ui\view\components;
 
-use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
-use humhub\libs\BaseSettingsManager;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\Theme as BaseTheme;
@@ -51,7 +49,7 @@ class Theme extends BaseTheme
     private $_baseUrl = null;
 
     /**
-     * @var boolean indicates that resources should be published via assetManager
+     * @var bool indicates that resources should be published via assetManager
      */
     public $publishResources = false;
 
@@ -101,11 +99,12 @@ class Theme extends BaseTheme
 
     /**
      * Registers theme css and resources to the view
+     *
      * @param bool $includeParents also register parent themes
      */
     public function register($includeParents = true)
     {
-        if(Yii::$app->request->isAjax) {
+        if (Yii::$app->request->isAjax) {
             return;
         }
 
@@ -120,7 +119,6 @@ class Theme extends BaseTheme
             $mtime = filemtime($this->getBasePath() . '/css/theme.css');
             Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
         }
-
     }
 
 
@@ -138,7 +136,7 @@ class Theme extends BaseTheme
     /**
      * Checks whether the Theme is currently active.
      *
-     * @return boolean
+     * @return bool
      */
     public function isActive()
     {
@@ -185,7 +183,8 @@ class Theme extends BaseTheme
     /**
      * Publishs theme assets (e.g. images or css)
      *
-     * @param boolean|null $force
+     * @param bool|null $force
+     *
      * @return string url of published resources
      */
     public function publishResources($force = null)
@@ -195,7 +194,8 @@ class Theme extends BaseTheme
         }
 
         $published = Yii::$app->assetManager->publish(
-            $this->getBasePath(), ['forceCopy' => $force, 'except' => ['views/']]
+            $this->getBasePath(),
+            ['forceCopy' => $force, 'except' => ['views/']]
         );
 
         return $published[1];
@@ -204,9 +204,11 @@ class Theme extends BaseTheme
     /**
      * Returns the value of a given theme variable
      *
-     * @since 1.2
      * @param string $key the variable name
+     *
      * @return string the variable value
+     * @since 1.2
+     *
      */
     public function variable($key, $default = null)
     {
@@ -217,8 +219,8 @@ class Theme extends BaseTheme
      * Returns the base/parent themes of this theme.
      * The parent is specified in the LESS Variable file as variable "baseTheme".
      *
-     * @see ThemeVariables
      * @return Theme[] the theme parents
+     * @see ThemeVariables
      */
     public function getParents()
     {
@@ -226,7 +228,7 @@ class Theme extends BaseTheme
             return $this->parents;
         }
 
-        if ($this->isActive() && BaseSettingsManager::isDatabaseInstalled()) {
+        if ($this->isActive() && Yii::$app->isDatabaseInstalled()) {
             $this->parents = static::getActiveParents();
         }
 
@@ -241,11 +243,10 @@ class Theme extends BaseTheme
                     $parentPaths[] = $theme->getBasePath();
                 }
 
-                if (BaseSettingsManager::isDatabaseInstalled()) {
+                if (Yii::$app->isDatabaseInstalled()) {
                     Yii::$app->settings->setSerialized('themeParents', $parentPaths);
                 }
             }
-
         }
 
         return $this->parents;
@@ -277,5 +278,4 @@ class Theme extends BaseTheme
         }
         return $parents;
     }
-
 }

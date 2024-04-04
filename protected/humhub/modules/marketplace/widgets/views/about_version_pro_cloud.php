@@ -1,8 +1,9 @@
 <?php
 
+use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
-/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $this View */
 ?>
 <div style="padding:20px;min-height:164px" class="jumbotron">
     <div class="pull-left" style="padding-right:24px;">

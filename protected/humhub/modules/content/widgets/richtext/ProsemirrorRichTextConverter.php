@@ -1,8 +1,6 @@
 <?php
 
-
 namespace humhub\modules\content\widgets\richtext;
-
 
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToMarkdownConverter;
@@ -17,7 +15,6 @@ use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConvert
  */
 class ProsemirrorRichTextConverter extends AbstractRichTextConverter
 {
-
     /**
      * @inheritdoc
      */

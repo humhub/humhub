@@ -8,14 +8,11 @@
 
 namespace humhub\widgets;
 
-
-
 /**
  * @inheritdoc
  */
 class LinkPager extends \yii\widgets\LinkPager
 {
-
     /**
      * @inheritdoc
      */

@@ -8,6 +8,9 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\libs\Html;
+use yii\base\Widget;
+
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
  *
@@ -29,13 +32,13 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function widget($class, $config = [])
     {
-        /* @var $class \yii\base\Widget */
+        /* @var $class Widget */
         $config['model'] = $this->model;
         $config['attribute'] = $this->attribute;
         $config['view'] = $this->form->getView();
 
-        if(is_subclass_of($class, JsInputWidget::class)) {
-            if(isset($config['options'])) {
+        if (is_subclass_of($class, JsInputWidget::class)) {
+            if (isset($config['options'])) {
                 $this->adjustLabelFor($config['options']);
             }
 
@@ -50,7 +53,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function begin()
     {
-        if($this->preventRendering) {
+        if ($this->preventRendering) {
             return '';
         }
 
@@ -62,7 +65,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function render($content = null)
     {
-        if($this->preventRendering) {
+        if ($this->preventRendering) {
             return '';
         }
 
@@ -74,10 +77,22 @@ class ActiveField extends \yii\bootstrap\ActiveField
      */
     public function end()
     {
-        if($this->preventRendering) {
+        if ($this->preventRendering) {
             return '';
         }
 
         return parent::end();
+    }
+
+    /**
+     * Override drop-down list to enable plugin Select2 with
+     *     searchable feature if items >= $options['minimumResultsForSearch'],
+     *     -1 - to never display the search box,
+     *      0 - always display the search box.
+     * @inheritdoc
+     */
+    public function dropDownList($items, $options = [])
+    {
+        return parent::dropDownList($items, Html::getDropDownListOptions($options));
     }
 }

@@ -19,5 +19,8 @@ return [
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Tämä kenttä sallii vain {n,plural,=1{# file} other{# files}}.
 ',
     'Upload files' => 'Lisää tiedostoja',
+    'Attach a video' => '',
+    'Attach an audio message' => '',
+    'Attach an image' => '',
     'The uploaded image is not a squared.' => '',
 ];

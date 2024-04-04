@@ -1,7 +1,6 @@
 <?php
 
 return [
-    'A TLS/SSL is strongly favored in production environments to prevent passwords from be transmitted in clear text.' => 'En TLS / SSL er sterkt anbefalt produksjonsmiljøer for å forhindre at passord sendes i klar tekst.',
     'Base DN' => 'Bais DN',
     'Defines the filter to apply, when login is attempted. %s replaces the username in the login action. Example: &quot;(sAMAccountName=%s)&quot; or &quot;(uid=%s)&quot;' => 'Definerer filteret som skal brukes når pålogging er forsøkt. % s erstatter brukernavnet i påloggingen. Eksempel: "(sAMAccountName =% s)" eller "(uid =% s)"',
     'E-Mail Address Attribute' => 'E-post adresse egenskap',

@@ -10,9 +10,11 @@ namespace humhub\modules\user\authclient;
 
 use yii\authclient\OAuth2;
 
+/**
+ * @deprecated 1.14
+ */
 class Twitter extends OAuth2
 {
-
     /**
      * @inheritdoc
      */
@@ -70,6 +72,6 @@ class Twitter extends OAuth2
      */
     public function applyAccessTokenToRequest($request, $accessToken)
     {
-        $request->getHeaders()->set('Authorization', 'Bearer '. $accessToken->getToken());
+        $request->getHeaders()->set('Authorization', 'Bearer ' . $accessToken->getToken());
     }
 }

@@ -15,7 +15,7 @@ return array (
   'After activating your account by the administrator, you will receive a notification by email.' => '',
   'Back' => '돌아가기',
   'Change password' => '',
-  'Confirm' => '',
+  'Confirm' => '확인',
   'Create Account' => '',
   'Create account' => '',
   'Don\'t have an account? Join the network by entering your e-mail address.' => '',
@@ -55,7 +55,6 @@ return array (
   'Your password is incorrect!' => '',
   'a new user {displayName} needs approval.' => '',
   'back to home' => '',
-  'email' => '',
-  'password' => '',
-  'username or email' => '',
+  'Password' => '',
+  'Username or Email' => '',
 );

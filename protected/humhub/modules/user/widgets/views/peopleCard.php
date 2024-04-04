@@ -7,10 +7,9 @@
 
 use humhub\libs\Html;
 use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\Image;
+use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\PeopleDetails;
-use humhub\modules\user\widgets\PeopleIcons;
 use humhub\modules\user\widgets\PeopleTagList;
 use yii\web\View;
 
@@ -27,6 +26,7 @@ use yii\web\View;
             'htmlOptions' => ['class' => 'card-image-wrapper'],
             'linkOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id, 'class' => 'card-image-link'],
             'width' => 94,
+            'showSelfOnlineStatus' => true,
         ]); ?>
         <?php /*<div class="card-icons">
             <?= PeopleIcons::widget(['user' => $user]); ?>
