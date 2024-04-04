@@ -15,7 +15,8 @@ At least PHP 8.0 is required with this version.
 ### Behaviour change
 - New Meta Search API 
 - Controller route change: `/search/mentioning` -> `/user/mentioning`
-- `Yii::$app->search()` is not longer available. See Content/User/Spaces search for alternatives.
+- `Yii::$app->search()` component is not longer available.
+  - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
