@@ -43,3 +43,4 @@ favicon.ico
 /.php_cs.cache
 
 .DS_Store
+composer.lock
