@@ -86,8 +86,16 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
             loader.set(content);
             that.refreshAddressBar(params);
             setStreamUrl();
-            // No need to load data here, because it is called automatically
-            // by scroll down indicator, otherwise first page is loaded twice.
+            // Lock loading of data on scroll down indicator
+            that.state.scrollLock = true;
+
+            client.get(form.data('action-url'), {data: params}).then(function (response) {
+                that.handleResponseActionForm(response);
+            }).catch(function (err) {
+                module.log.error(err, true);
+            }).finally(function () {
+                that.state.scrollLock = false;
+            });
         });
 
         setStreamUrl();
