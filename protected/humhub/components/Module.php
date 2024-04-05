@@ -31,7 +31,7 @@ use yii\web\AssetBundle;
  * @property-read string $name
  * @property-read string $description
  * @property-read array $keywords
- * @property-read bool $isActivated
+ * @property-read bool $isEnabled
  * @property SettingsManager $settings
  * @author luke
  */
