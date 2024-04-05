@@ -86,12 +86,8 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
             loader.set(content);
             that.refreshAddressBar(params);
             setStreamUrl();
-
-            client.get(form.data('action-url'), {data: params}).then(function (response) {
-                that.handleResponseActionForm(response);
-            }).catch(function (err) {
-                module.log.error(err, true);
-            });
+            // No need to load data here, because it is called automatically
+            // by scroll down indicator, otherwise first page is loaded twice.
         });
 
         setStreamUrl();
