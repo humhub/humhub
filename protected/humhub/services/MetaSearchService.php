@@ -52,7 +52,11 @@ class MetaSearchService
             return;
         }
 
-        $cacheKey = get_class($this->provider) . Yii::$app->user->id . ':search:' . $this->provider->getKeyword();
+        $providerParams = $this->provider->getParams();
+        $cacheKey = get_class($this->provider) .
+            (empty($providerParams) ? '' : sha1(json_encode($providerParams))) .
+            ':' . Yii::$app->user->id .
+            ':' . $this->provider->getKeyword();
 
         $data = Yii::$app->cache->getOrSet($cacheKey, function () {
             return $this->provider->getResults($this->pageSize);
