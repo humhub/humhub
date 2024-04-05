@@ -24,7 +24,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
         $renderer = new DefaultViewPathRenderer([
             'defaultViewPath' => '@tests/codeception/unit/components/rendering/views',
             'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php'
-            ]);
+        ]);
         $this->assertEquals('<h1>ParentView2:TestTitle</h1>', $renderer->render($viewable));
     }
 
@@ -34,7 +34,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
         $renderer = new DefaultViewPathRenderer([
             'defaultViewPath' => '@tests/codeception/unit/components/rendering/views',
             'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php'
-            ]);
+        ]);
         $this->assertEquals('<div>TestTitle</div>', $renderer->render($viewable));
     }
 
@@ -46,7 +46,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
             'subPath' => 'mails',
             'defaultViewPath' => '@tests/codeception/unit/components/rendering/views',
             'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php'
-            ]);
+        ]);
         $this->assertEquals('<h1>MailView:TestTitle</h1>', $renderer->render($viewable));
     }
 }

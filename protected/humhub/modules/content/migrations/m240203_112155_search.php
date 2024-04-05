@@ -4,7 +4,6 @@ use humhub\components\Migration;
 use humhub\modules\content\jobs\SearchRebuildIndex;
 use humhub\modules\file\libs\FileHelper;
 
-
 /**
  * Class m240203_112155_search
  */

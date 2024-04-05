@@ -13,7 +13,7 @@ use humhub\components\ActiveRecord;
  * This is the model class for table 'content_fulltext'.
  *
  * The followings are the available columns in table 'content_fulltext':
- * @property integer $content_id
+ * @property int $content_id
  * @property string $contents
  * @property string $comments
  * @property string $files

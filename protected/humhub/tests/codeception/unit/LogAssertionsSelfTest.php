@@ -214,10 +214,10 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
 
         static::assertEquals(
             [
-            'Foo',
-            'Foo',
-            'Bar',
-            'Foo',
+                'Foo',
+                'Foo',
+                'Bar',
+                'Foo',
             ],
             static::logFilterMessageTexts()
         );
@@ -242,30 +242,30 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
 
         static::assertEquals(
             [
-            0 => [
-                0 => 'Foo',
-                1 => 1,
-                2 => 'LogAssertionsSelfTest_error',
-                4 => [],
-            ],
-            1 =>  [
-                0 => 'Foo',
-                1 => 2,
-                2 => 'LogAssertionsSelfTest_warning',
-                4 =>  [],
-            ],
-            2 =>  [
-                0 => 'Bar',
-                1 => 4,
-                2 => 'LogAssertionsSelfTest',
-                4 =>  [],
-            ],
-            3 =>  [
-                0 => 'Foo',
-                1 => 8,
-                2 => 'LogAssertionsSelfTest',
-                4 =>  [],
-            ]
+                0 => [
+                    0 => 'Foo',
+                    1 => 1,
+                    2 => 'LogAssertionsSelfTest_error',
+                    4 => [],
+                ],
+                1 =>  [
+                    0 => 'Foo',
+                    1 => 2,
+                    2 => 'LogAssertionsSelfTest_warning',
+                    4 =>  [],
+                ],
+                2 =>  [
+                    0 => 'Bar',
+                    1 => 4,
+                    2 => 'LogAssertionsSelfTest',
+                    4 =>  [],
+                ],
+                3 =>  [
+                    0 => 'Foo',
+                    1 => 8,
+                    2 => 'LogAssertionsSelfTest',
+                    4 =>  [],
+                ]
             ],
             $messages
         );

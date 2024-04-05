@@ -82,7 +82,7 @@ class AuthenticationSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Require group admin approval after registration'),
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'Post-registration approval required'),
             'internalAllowAnonymousRegistration' => Yii::t('AdminModule.user', 'New users can register'),
             'internalUsersCanInviteByEmail' => Yii::t('AdminModule.user', 'Members can invite external users by email'),
             'internalUsersCanInviteByLink' => Yii::t('AdminModule.user', 'Members can invite external users by link'),
@@ -96,6 +96,16 @@ class AuthenticationSettingsForm extends Model
             'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeHints()
+    {
+        return [
+            'internalRequireApprovalAfterRegistration' => Yii::t('AdminModule.user', 'If enabled, the Group Manager will need to approve registration.'),
         ];
     }
 

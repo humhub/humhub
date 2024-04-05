@@ -47,6 +47,8 @@ At least PHP 8.0 is required with this version.
 - `\humhub\modules\content\models\Content` on `canEdit()`, `canView()`
 - `\humhub\modules\file\models\File` on `canRead()`, `canDelete()`
 
+### Bugfix with potential side-effect
+- `\humhub\modules\ui\form\widgets\BasePicker` and `\humhub\modules\ui\form\widgets\MultiSelect` do now treat and empty array for the field `BasePicker::$selection` as a valid selection list and will not attempt to get the list from the model in that case.
 
 
 Version 1.15

@@ -127,7 +127,6 @@ class SettingController extends Controller
     {
         $form = new CacheSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            self::flushCache();
             $this->view->success(Yii::t('AdminModule.settings', 'Saved and flushed cache'));
             return $this->redirect(['/admin/setting/caching']);
         }
@@ -398,23 +397,5 @@ class SettingController extends Controller
                 'caching'
             ]
         );
-    }
-
-    /**
-     * @return string Activity output that can be used for logging
-     * @since 1.16
-     */
-    public static function flushCache(): string
-    {
-        $output = "Flushing cache ...";
-        Yii::$app->cache->flush();
-
-        $output .= "\nFlushing asset manager ...";
-        Yii::$app->assetManager->clear();
-
-        $output .= "\nFlushing theme cache ...";
-        Yii::$app->view->theme->activate();
-
-        return $output;
     }
 }

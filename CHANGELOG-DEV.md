@@ -1,8 +1,6 @@
 HumHub Changelog
 ================
 
-
-
 1.16.0 (Unreleased)
 -------------------
 - Fix #6770: Improve migration error messages
@@ -44,6 +42,7 @@ HumHub Changelog
 - Enh #6609: Monthly email summary
 - Fix #6721: Top menu entries for spaces are not highlighted when clicked
 - Fix #6725: Allow theme without second topbar menu
+- Enh #6760: Change default browser site icon
 - Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false
 - Enh #131: Online Indicator- People Cards, Members Snippet, My Profile
 - Enh #6335: Pending approvals: possibility to send a message
@@ -72,9 +71,15 @@ HumHub Changelog
 - Enh #25: Improve contrast of @default button color
 - Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
 - Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
+- Fix #6881: Fix layout styles after run migration
 - Enh #6904: Content Search: Add Tests regarding `state`
+- Enh #2758: Make sure we understand how to configure who receives notifications about new users to approve
 - Fix #6908: Fix default mentioning URL
+- Enh #6879: Better UX for the maintenance mode administration form
 - Enh #6901: Auto load pages on content search
 - Fix #6913: Fix API tests
 - Fix #6730: Invitation link for existing user
 - Enh #6147: New space service `MemberListService`
+- Enh #6487: Remove general setting "Server Timezone"
+- Enh #6552: Allow module initializing on each loading
+- Fix #6768 MultiSelect when empty selection is given

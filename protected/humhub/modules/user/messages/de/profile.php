@@ -57,6 +57,7 @@ return array (
   'LinkedIn URL' => 'LinkedIn-URL',
   'Male' => 'Männlich',
   'Markdown' => 'Markdown',
+  'Mastodon URL' => 'Mastodon URL',
   'Maximum length' => 'Maximallänge',
   'Maximum value' => 'Maximum',
   'Minimum length' => 'Minimallänge',

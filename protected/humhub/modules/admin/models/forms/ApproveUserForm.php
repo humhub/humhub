@@ -158,7 +158,8 @@ class ApproveUserForm extends Model
         }
 
         if ($this->send()) {
-            Yii::$app->settings->user($this->user)->set(self::USER_SETTINGS_NB_MSG_SENT,
+            Yii::$app->settings->user($this->user)->set(
+                self::USER_SETTINGS_NB_MSG_SENT,
                 static::getNumberMessageSent($this->user->id) + 1
             );
             return true;
@@ -290,7 +291,8 @@ class ApproveUserForm extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        $this->subject = Yii::t('AdminModule.user',
+        $this->subject = Yii::t(
+            'AdminModule.user',
             'About the account request for \'{displayName}\'.',
             ['{displayName}' => Html::encode($this->user->displayName)]
         );
@@ -302,7 +304,8 @@ class ApproveUserForm extends Model
             ]);
         } else {
             $this->message = static::getDefaultSendMessageMailContent(
-                Html::encode($this->user->displayName), Html::encode($this->admin->displayName)
+                Html::encode($this->user->displayName),
+                Html::encode($this->admin->displayName)
             );
         }
 
@@ -387,7 +390,9 @@ class ApproveUserForm extends Model
      */
     public static function getDefaultSendMessageMailContent($userDisplayName = '{displayName}', $adminDisplayName = '{AdminName}')
     {
-        return Yii::t('AdminModule.user', "Hello {displayName},\n\n" .
+        return Yii::t(
+            'AdminModule.user',
+            "Hello {displayName},\n\n" .
             "Your account creation is under review.\n" .
             "Could you tell us the motivation behind your registration?\n\n" .
             "Kind Regards\n" .
@@ -395,7 +400,8 @@ class ApproveUserForm extends Model
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
-            ]);
+            ]
+        );
     }
 
     /**

@@ -10,7 +10,6 @@ namespace humhub\tests\codeception\unit;
 use Codeception\Test\Unit;
 use humhub\libs\SearchQuery;
 
-
 class SearchQueryTest extends Unit
 {
     public function testTermsWithSigns()

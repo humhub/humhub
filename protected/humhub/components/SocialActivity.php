@@ -253,7 +253,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
         if ($this->source instanceof Comment) {
             $url = $this->source->getUrl();
-        } else if ($this->hasContent()) {
+        } elseif ($this->hasContent()) {
             $url = $this->getContent()->getUrl(true);
         } elseif ($this->source instanceof ContentContainerActiveRecord) {
             $url = $this->source->getUrl(true);

@@ -16,7 +16,7 @@ return array (
   'Delete account' => '',
   'Do you really want to delete your icon image?' => '',
   'Do you really want to delete your logo image?' => '',
-  'E-Mail' => '',
+  'E-Mail' => 'E-pota',
   'E-Mail change' => '',
   'Enter your password to continue' => '',
   'General' => 'Orokorra',

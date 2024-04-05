@@ -2,10 +2,9 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\user\models\User;
 use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -90,7 +89,7 @@ class UserPickerField extends BasePicker
             $result['placeholder-more'] = $this->placeholder;
         } else {
             $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore
-                : Yii::t('UserModule.chooser', 'Select user...');
+                : Yii::t('UserModule.chooser', 'Add user');
         }
 
         $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');

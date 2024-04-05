@@ -52,9 +52,9 @@ class MailButton extends \yii\base\Widget
         }
 
         return $this->render('mailButton', [
-                    'color' => $this->color,
-                    'url' => $this->url,
-                    'text' => $this->text
+            'color' => $this->color,
+            'url' => $this->url,
+            'text' => $this->text
         ]);
     }
 

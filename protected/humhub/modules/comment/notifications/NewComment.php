@@ -54,10 +54,10 @@ class NewComment extends BaseNotification
     {
         // Check if there is also a mention notification, so skip this notification
         if (Notification::find()->where([
-                'class' => Mentioned::class,
-                'user_id' => $user->id,
-                'source_class' => get_class($this->source),
-                'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
+            'class' => Mentioned::class,
+            'user_id' => $user->id,
+            'source_class' => get_class($this->source),
+            'source_pk' => $this->source->getPrimaryKey()])->count() > 0) {
             return;
         }
 

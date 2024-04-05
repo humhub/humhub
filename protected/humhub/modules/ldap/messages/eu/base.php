@@ -16,8 +16,8 @@ return array (
   'Login Filter' => '',
   'Not changeable LDAP attribute to unambiguously identify the user in the directory. If empty the user will be determined automatically by e-mail address or username. Examples: objectguid (ActiveDirectory) or uidNumber (OpenLDAP)' => '',
   'One DN per line which should not be imported automatically.' => '',
-  'Password' => '',
-  'Port' => '',
+  'Password' => 'Pasahitza',
+  'Port' => 'Portua',
   'Specify your LDAP-backend used to fetch user accounts.' => '',
   'Status: Error! (Message: {message})' => '',
   'Status: OK! ({userCount} Users)' => '',
@@ -26,6 +26,6 @@ return array (
   'The default credentials password (used only with username above).' => '',
   'The default credentials username. Some servers require that this be in DN form. This must be given in DN form if the LDAP server requires a DN to bind and binding should be possible with simple usernames.' => '',
   'User Filter' => '',
-  'Username' => '',
+  'Username' => 'Erabiltzaile izena',
   'Username Attribute' => '',
 );
