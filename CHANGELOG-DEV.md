@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.16.0-beta.2 (TBD)
 -----------------------------
-- Fix: Disabled users without "ignoredDN" settings
+- Fix #6928: Disabled users without "ignoredDN" settings
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------
