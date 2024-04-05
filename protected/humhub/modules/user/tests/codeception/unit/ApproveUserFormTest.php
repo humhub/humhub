@@ -49,7 +49,9 @@ Die Erstellung Ihres Kontos wird derzeit überprüft.
 Können Sie uns die Motivation hinter Ihrer Anmeldung nennen?
 
 Mit freundlichen Grüßen
-Admin Tester", $form->message);
+Admin Tester
+
+", $form->message);
     }
 
     public function testOverwrittenSendMessage()

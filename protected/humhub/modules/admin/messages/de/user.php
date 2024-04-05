@@ -95,7 +95,15 @@ Could you tell us the motivation behind your registration?
 Kind Regards
 {AdminName}
 
-' => '',
+' => 'Hallo {displayName},
+
+Die Erstellung Ihres Kontos wird derzeit überprüft.
+Können Sie uns die Motivation hinter Ihrer Anmeldung nennen?
+
+Mit freundlichen Grüßen
+{AdminName}
+
+',
   'Hello {displayName},
 
 Your account has been activated.
