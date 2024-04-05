@@ -36,20 +36,21 @@ class ApproveUserFormTest extends HumHubDbTestCase
 
     public function testSendMessageIsSentInUserLanguage()
     {
+        $testLanguage = 'de';
+        $currentLanguage = Yii::$app->language;
+        Yii::$app->setLanguage($testLanguage);
+        $admin = User::findOne(['username' => 'Admin']);
+        $emailMessage = ApproveUserForm::getDefaultSendMessageMailContent($this->unapprovedUser->displayName, $admin->displayName);
+        Yii::$app->setLanguage($currentLanguage);
+
         $this->becomeUser('Admin');
 
-        $this->unapprovedUser->setAttribute('language', 'de');
+        $this->unapprovedUser->setAttribute('language', $testLanguage);
 
         $form = new ApproveUserForm($this->unapprovedUser->id);
-        $form->user->setAttribute('language', 'de');
+        $form->user->setAttribute('language', $testLanguage);
         $form->setSendMessageDefaults();
-        $this->assertEquals("Hallo UnApproved User,
-
-Die Erstellung Ihres Kontos wird derzeit überprüft.
-Können Sie uns die Motivation hinter Ihrer Anmeldung nennen?
-
-Mit freundlichen Grüßen
-Admin Tester", $form->message);
+        $this->assertEquals($emailMessage, $form->message);
     }
 
     public function testOverwrittenSendMessage()
