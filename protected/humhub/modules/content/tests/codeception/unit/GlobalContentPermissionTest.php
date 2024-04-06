@@ -10,7 +10,7 @@ namespace tests\codeception\unit\modules\content;
 
 use Codeception\Specify;
 use humhub\modules\content\models\Content;
-use humhub\modules\post\models\Post;
+use humhub\modules\content\tests\codeception\unit\TestContent;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use tests\codeception\_support\HumHubDbTestCase;
@@ -30,23 +30,23 @@ class GlobalContentPermissionTest extends HumHubDbTestCase
      */
     use Specify;
 
-    public $privatePost;
-    public $publicPost;
+    public $privateTestContent;
+    public $publicTestContent;
 
     public function setUp(): void
     {
         parent::setUp();
         self::becomeUser('Admin');
 
-        $this->privatePost = new Post();
-        $this->privatePost->message = "Private Post";
-        $this->privatePost->content->visibility = Content::VISIBILITY_PRIVATE;
-        $this->privatePost->save();
+        $this->privateTestContent = new TestContent();
+        $this->privateTestContent->message = "Private TestContent";
+        $this->privateTestContent->content->visibility = Content::VISIBILITY_PRIVATE;
+        $this->privateTestContent->save();
 
-        $this->publicPost = new Post();
-        $this->publicPost->message = "Public Post";
-        $this->publicPost->content->visibility = Content::VISIBILITY_PUBLIC;
-        $this->publicPost->save();
+        $this->publicTestContent = new TestContent();
+        $this->publicTestContent->message = "Public TestContent";
+        $this->publicTestContent->content->visibility = Content::VISIBILITY_PUBLIC;
+        $this->publicTestContent->save();
     }
 
     /**
@@ -62,18 +62,18 @@ class GlobalContentPermissionTest extends HumHubDbTestCase
 
         // Test with guest access enabled
         $userModule->settings->set('auth.allowGuestAccess', true);
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->privatePost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
+        $this->assertTrue($this->privateTestContent->content->canView());
+        $this->assertTrue($this->privateTestContent->content->canEdit());
+        $this->assertTrue($this->privateTestContent->content->canView());
+        $this->assertTrue($this->publicTestContent->content->canEdit());
 
         // Test with guest access disabled should not have any effect
         $userModule->settings->set('auth.allowGuestAccess', false);
-        $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->privatePost->content->canEdit());
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canEdit());
+        $this->reloadTestContents();
+        $this->assertTrue($this->privateTestContent->content->canView());
+        $this->assertTrue($this->privateTestContent->content->canEdit());
+        $this->assertTrue($this->privateTestContent->content->canView());
+        $this->assertTrue($this->publicTestContent->content->canEdit());
     }
 
     /**
@@ -91,17 +91,17 @@ class GlobalContentPermissionTest extends HumHubDbTestCase
 
         // Test with guest access enabled
         $userModule->settings->set('auth.allowGuestAccess', true);
-        $this->assertTrue($this->privatePost->content->canView($user3));
-        $this->assertTrue($this->publicPost->content->canView($user3));
-        $this->assertFalse($this->publicPost->content->canEdit($user3));
-        $this->assertFalse($this->privatePost->content->canEdit($user3));
+        $this->assertTrue($this->privateTestContent->content->canView($user3));
+        $this->assertTrue($this->publicTestContent->content->canView($user3));
+        $this->assertFalse($this->publicTestContent->content->canEdit($user3));
+        $this->assertFalse($this->privateTestContent->content->canEdit($user3));
 
         // Test with guest access disabled should not have any effect
         $userModule->settings->set('auth.allowGuestAccess', false);
-        $this->assertTrue($this->privatePost->content->canView($user3));
-        $this->assertTrue($this->publicPost->content->canView($user3));
-        $this->assertFalse($this->publicPost->content->canEdit($user3));
-        $this->assertFalse($this->privatePost->content->canEdit($user3));
+        $this->assertTrue($this->privateTestContent->content->canView($user3));
+        $this->assertTrue($this->publicTestContent->content->canView($user3));
+        $this->assertFalse($this->publicTestContent->content->canEdit($user3));
+        $this->assertFalse($this->privateTestContent->content->canEdit($user3));
 
 
         // Test again with logged-in user
@@ -109,19 +109,19 @@ class GlobalContentPermissionTest extends HumHubDbTestCase
         // Test with guest access enabled
         $userModule->settings->set('auth.allowGuestAccess', true);
         self::becomeUser('User3');
-        $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->reloadTestContents();
+        $this->assertTrue($this->privateTestContent->content->canView());
+        $this->assertTrue($this->publicTestContent->content->canView());
+        $this->assertFalse($this->publicTestContent->content->canEdit());
+        $this->assertFalse($this->privateTestContent->content->canEdit());
 
         // Test with guest access disabled should not have any effect
         $userModule->settings->set('auth.allowGuestAccess', false);
-        $this->reloadPosts();
-        $this->assertTrue($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->reloadTestContents();
+        $this->assertTrue($this->privateTestContent->content->canView());
+        $this->assertTrue($this->publicTestContent->content->canView());
+        $this->assertFalse($this->publicTestContent->content->canEdit());
+        $this->assertFalse($this->privateTestContent->content->canEdit());
     }
 
     /**
@@ -140,27 +140,27 @@ class GlobalContentPermissionTest extends HumHubDbTestCase
 
         // Enable guest access
         $userModule->settings->set('auth.allowGuestAccess', true);
-        $this->reloadPosts();
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertTrue($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->reloadTestContents();
+        $this->assertFalse($this->privateTestContent->content->canView());
+        $this->assertTrue($this->publicTestContent->content->canView());
+        $this->assertFalse($this->publicTestContent->content->canEdit());
+        $this->assertFalse($this->privateTestContent->content->canEdit());
 
         // Disable guest access
         $userModule->settings->set('auth.allowGuestAccess', false);
-        $this->reloadPosts();
-        $this->assertFalse($this->privatePost->content->canView());
-        $this->assertFalse($this->publicPost->content->canView());
-        $this->assertFalse($this->publicPost->content->canEdit());
-        $this->assertFalse($this->privatePost->content->canEdit());
+        $this->reloadTestContents();
+        $this->assertFalse($this->privateTestContent->content->canView());
+        $this->assertFalse($this->publicTestContent->content->canView());
+        $this->assertFalse($this->publicTestContent->content->canEdit());
+        $this->assertFalse($this->privateTestContent->content->canEdit());
     }
 
     /**
      * Used for resetting the permissionmanager cache etc.
      */
-    protected function reloadPosts(): void
+    protected function reloadTestContents(): void
     {
-        $this->privatePost = Post::findOne(['id' => $this->privatePost->id]);
-        $this->publicPost = Post::findOne(['id' => $this->publicPost->id]);
+        $this->privateTestContent = TestContent::findOne(['id' => $this->privateTestContent->id]);
+        $this->publicTestContent = TestContent::findOne(['id' => $this->publicTestContent->id]);
     }
 }

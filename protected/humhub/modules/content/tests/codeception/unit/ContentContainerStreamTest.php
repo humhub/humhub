@@ -3,7 +3,7 @@
 namespace tests\codeception\unit\modules\content;
 
 use humhub\modules\content\models\Content;
-use humhub\modules\content\tests\codeception\unit\TestContent;
+use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\ContentContainerStream;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
@@ -27,8 +27,8 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $w1 = $this->createPublicTestContent();
-        $w2 = $this->createPrivateTestContent();
+        $w1 = $this->createPublicPost();
+        $w2 = $this->createPrivatePost();
 
         $ids = $this->getStreamActionIds($this->space, 2);
 
@@ -40,8 +40,8 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $w1 = $this->createPrivateTestContent();
-        $w2 = $this->createPublicTestContent();
+        $w1 = $this->createPrivatePost();
+        $w2 = $this->createPublicPost();
 
         $this->becomeUser('AdminNotMember');
         $ids = $this->getStreamActionIds($this->space, 2);
@@ -54,8 +54,8 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $w1 = $this->createPrivateTestContent();
-        $w2 = $this->createPublicTestContent();
+        $w1 = $this->createPrivatePost();
+        $w2 = $this->createPublicPost();
 
         Yii::$app->getModule('content')->adminCanViewAllContent = true;
         $this->becomeUser('AdminNotMember');
@@ -69,8 +69,8 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $w1 = $this->createPrivateTestContent();
-        $w2 = $this->createPublicTestContent();
+        $w1 = $this->createPrivatePost();
+        $w2 = $this->createPublicPost();
 
         $this->becomeUser('Admin');
         $ids = $this->getStreamActionIds($this->space, 2);
@@ -83,8 +83,8 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $w1 = $this->createPrivateTestContent();
-        $w2 = $this->createPublicTestContent();
+        $w1 = $this->createPrivatePost();
+        $w2 = $this->createPublicPost();
 
         Yii::$app->getModule('content')->adminCanViewAllContent = true;
         $this->becomeUser('Admin');
@@ -97,10 +97,10 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     public function testDraftContent()
     {
         $this->becomeUser('User2');
-        $draft1Id = $this->createTestContent('Some Draft', ['visibility' => Content::VISIBILITY_PRIVATE, 'state' => Content::STATE_DRAFT]);
-        $regular1Id = $this->createTestContent('Regular 1 by U2', ['visibility' => Content::VISIBILITY_PRIVATE]);
+        $draft1Id = $this->createPost('Some Draft', ['visibility' => Content::VISIBILITY_PRIVATE, 'state' => Content::STATE_DRAFT]);
+        $regular1Id = $this->createPost('Regular 1 by U2', ['visibility' => Content::VISIBILITY_PRIVATE]);
         $this->becomeUser('Admin');
-        $regular2Id = $this->createTestContent('Regular 2 by Admin', ['visibility' => Content::VISIBILITY_PRIVATE]);
+        $regular2Id = $this->createPost('Regular 2 by Admin', ['visibility' => Content::VISIBILITY_PRIVATE]);
 
         $this->becomeUser('User2');
         $ids = $this->getStreamActionIds($this->space, 2);
@@ -118,30 +118,30 @@ class ContentContainerStreamTest extends HumHubDbTestCase
     {
         $this->becomeUser('User2');
 
-        $hiddenTestContentId = $this->createTestContent('Hidden Test Content', ['hidden' => 1]);
-        $visibleTestContentId = $this->createTestContent('Regular Test Content');
+        $hiddenPostId = $this->createPost('Hidden Post', ['hidden' => 1]);
+        $visiblePostId = $this->createPost('Regular Post');
 
         // Not in Stream
         $ids = $this->getStreamActionIds($this->space, 2);
-        $this->assertTrue($ids[0] === $visibleTestContentId);
-        $this->assertFalse($ids[1] === $hiddenTestContentId);
+        $this->assertTrue($ids[0] === $visiblePostId);
+        $this->assertFalse($ids[1] === $hiddenPostId);
 
         // Single Stream Entry Request
-        $hiddenTestContentId2 = $this->createTestContent('Hidden Test Content 2', ['hidden' => 1]);
+        $hiddenPostId2 = $this->createPost('Hidden Post 2', ['hidden' => 1]);
         $ids = $this->getStreamActionIds($this->space, 1);
-        $this->assertTrue($ids[0] === $hiddenTestContentId2);
+        $this->assertTrue($ids[0] === $hiddenPostId2);
 
         // Show Hidden Only Filter
         $ids = $this->getStreamActionIds($this->space, 2, [DefaultStreamFilter::FILTER_HIDDEN]);
-        $this->assertTrue($ids[0] === $hiddenTestContentId2);
-        $this->assertTrue($ids[1] === $hiddenTestContentId);
+        $this->assertTrue($ids[0] === $hiddenPostId2);
+        $this->assertTrue($ids[1] === $hiddenPostId);
     }
 
 
     public function testDeletedContent()
     {
         $this->becomeUser('User2');
-        $deleteId = $this->createTestContent('Something to delete', ['visibility' => Content::VISIBILITY_PRIVATE]);
+        $deleteId = $this->createPost('Something to delete', ['visibility' => Content::VISIBILITY_PRIVATE]);
 
         $content = Content::findOne(['id' => $deleteId]);
         $content->softDelete();
@@ -169,17 +169,17 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         return $wallEntryIds;
     }
 
-    private function createPrivateTestContent()
+    private function createPrivatePost()
     {
-        return $this->createTestContent('Private Test Content', ['visibility' => Content::VISIBILITY_PRIVATE]);
+        return $this->createPost('Private Post', ['visibility' => Content::VISIBILITY_PRIVATE]);
     }
 
-    private function createPublicTestContent()
+    private function createPublicPost()
     {
-        return $this->createTestContent('Public Test Content', ['visibility' => Content::VISIBILITY_PUBLIC]);
+        return $this->createPost('Public Post', ['visibility' => Content::VISIBILITY_PUBLIC]);
     }
 
-    private function createTestContent($message, $content = [])
+    private function createPost($message, $content = [])
     {
         if (!isset($content['visibility'])) {
             $content['visibility'] = Content::VISIBILITY_PRIVATE;
@@ -188,11 +188,12 @@ class ContentContainerStreamTest extends HumHubDbTestCase
             $content['state'] = Content::STATE_PUBLISHED;
         }
 
-        $testContent = new TestContent();
-        $testContent->message = $message;
-        $testContent->content->setAttributes($content, false);
-        $testContent->save();
+        $post = new Post();
+        $post->message = $message;
+        $post->content->setContainer($this->space);
+        $post->content->setAttributes($content, false);
+        $post->save();
 
-        return $testContent->content->id;
+        return $post->content->id;
     }
 }
