@@ -4,6 +4,8 @@ HumHub Changelog
 1.16.0-beta.2 (TBD)
 -----------------------------
 - Fix #6928: Disabled users without "ignoredDN" settings
+- Fix #6931: Fix visibility of private spaces in the user notification settings
+- Enh #6757: Allow changing visibility of global content
 - Fix #5419: Lock search index while reindexing
 
 1.16.0-beta.1 (April 5, 2024)
