@@ -11,7 +11,10 @@ namespace humhub\components;
 use humhub\helpers\DatabaseHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\DynamicConfig;
+use humhub\libs\SelfTest;
 use Yii;
+use yii\helpers\ArrayHelper;
+use yii\helpers\UnsetArrayValue;
 use yii\helpers\Url;
 
 trait ApplicationTrait
@@ -32,12 +35,18 @@ trait ApplicationTrait
     public $minSupportedPhpVersion;
 
     /**
+     * @readonly
+     */
+    public array $loadedAppConfig;
+
+    /**
      * @inheritdoc
      */
     public function __construct($config = [])
     {
-        // Remove obsolete config params:
-        unset($config['components']['formatterApp']);
+        $this->loadedAppConfig = $config;
+
+        $config = $this->removeLegacyConfigSettings($config);
 
         parent::__construct($config);
     }
@@ -131,5 +140,11 @@ trait ApplicationTrait
         $config = DynamicConfig::load();
         $config['params']['databaseInstalled'] = true;
         DynamicConfig::save($config);
+    }
+
+
+    private function removeLegacyConfigSettings($applicationConfig)
+    {
+        return ArrayHelper::merge($applicationConfig, SelfTest::getLegencyConfigSettings());
     }
 }

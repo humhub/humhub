@@ -8,10 +8,14 @@
 
 namespace humhub\libs;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use RecursiveArrayIterator;
+use RecursiveIteratorIterator;
 use Yii;
+use yii\helpers\UnsetArrayValue;
 
 /**
  * SelfTest is a helper class which checks all dependencies of the application.
@@ -453,7 +457,7 @@ class SelfTest
             $sslPort = 443;
             $httpPort = 80;
             $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
-                isset($_SERVER['HTTPS'])
+            isset($_SERVER['HTTPS'])
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
                 : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
             );
@@ -832,8 +836,8 @@ class SelfTest
             if ($deprecatedModules !== []) {
                 $checks[] = [
                     'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
-                        'modules' => implode(', ', $deprecatedModules)
-                    ]),
+                            'modules' => implode(', ', $deprecatedModules)
+                        ]),
                     'state' => 'ERROR',
                     'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
                 ];
@@ -842,8 +846,8 @@ class SelfTest
             if ($customModules !== []) {
                 $checks[] = [
                     'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
-                        'modules' => implode(', ', $customModules)
-                    ]),
+                            'modules' => implode(', ', $customModules)
+                        ]),
                     'state' => 'WARNING',
                     'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
                 ];
@@ -867,8 +871,58 @@ class SelfTest
                     'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
                 ];
             }
+
+            $title = $titlePrefix . Yii::t('AdminModule.information', 'Configuration File');
+
+            $foundLegacyConfigKeys = [];
+            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegencyConfigSettings()));
+            foreach (array_keys(ArrayHelper::flatten(Yii::$app->loadedAppConfig)) as $config) {
+                foreach ($legacyConfigKeys as $legacyConfig) {
+                    if (str_starts_with($config, $legacyConfig)) {
+                        $foundLegacyConfigKeys[] = $config;
+                    }
+                }
+            }
+
+            if (empty($legacyConfigKeys)) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK'
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'ERROR',
+                    'hint' => Yii::t('AdminModule.information', 'The configuration file contains legacy settings. Invalid options: {options}', [
+                        'options' => implode(', ', $foundLegacyConfigKeys)
+                    ])
+                ];
+            }
         }
 
         return $checks;
     }
+
+    /**
+     * Returns an array with legacy HumHub configuration options.
+     *
+     * @since 1.16
+     * @return array
+     */
+    public static function getLegencyConfigSettings(): array
+    {
+        return [
+            'modules' => [
+                'search' => new UnsetArrayValue(),
+                'directory' => new UnsetArrayValue(),
+                'user' => [
+                    'test' => new UnsetArrayValue()
+                ]
+            ],
+            'components' => [
+                'formatterApp' => new UnsetArrayValue()
+            ]
+        ];
+    }
+
 }
