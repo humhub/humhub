@@ -12,7 +12,7 @@ use Yii;
 class SearchJobService
 {
     public const MUTEX_ID = 'SearchQueueJob';
-    public int $retryAttemptNum = 3;
+    public int $retryAttemptNum = 10;
     public int $retryDelayInSeconds = 5 * 60;
 
     public function run(callable $callable): bool
