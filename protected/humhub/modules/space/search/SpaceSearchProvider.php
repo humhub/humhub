@@ -45,7 +45,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
      */
     public function getRoute(): string
     {
-        return '/spaces';
+        return '/space/spaces';
     }
 
     /**

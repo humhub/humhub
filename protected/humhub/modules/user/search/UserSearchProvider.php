@@ -45,7 +45,7 @@ class UserSearchProvider implements MetaSearchProviderInterface
      */
     public function getRoute(): string
     {
-        return '/people';
+        return '/user/people';
     }
 
     /**
