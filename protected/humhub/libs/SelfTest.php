@@ -457,7 +457,7 @@ class SelfTest
             $sslPort = 443;
             $httpPort = 80;
             $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
-            isset($_SERVER['HTTPS'])
+                isset($_SERVER['HTTPS'])
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
                 : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
             );
@@ -836,8 +836,8 @@ class SelfTest
             if ($deprecatedModules !== []) {
                 $checks[] = [
                     'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
-                            'modules' => implode(', ', $deprecatedModules)
-                        ]),
+                        'modules' => implode(', ', $deprecatedModules)
+                    ]),
                     'state' => 'ERROR',
                     'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
                 ];
@@ -846,8 +846,8 @@ class SelfTest
             if ($customModules !== []) {
                 $checks[] = [
                     'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
-                            'modules' => implode(', ', $customModules)
-                        ]),
+                        'modules' => implode(', ', $customModules)
+                    ]),
                     'state' => 'WARNING',
                     'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
                 ];
@@ -915,9 +915,6 @@ class SelfTest
             'modules' => [
                 'search' => new UnsetArrayValue(),
                 'directory' => new UnsetArrayValue(),
-                'user' => [
-                    'test' => new UnsetArrayValue()
-                ]
             ],
             'components' => [
                 'formatterApp' => new UnsetArrayValue()
