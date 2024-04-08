@@ -5,6 +5,7 @@ HumHub Changelog
 -----------------------------
 - Fix #6928: Disabled users without "ignoredDN" settings
 - Fix #6931: Fix visibility of private spaces in the user notification settings
+- Enh #6757: Allow changing visibility of global content
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------
