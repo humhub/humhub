@@ -13,10 +13,11 @@ class SearchJobService
 {
     public const MUTEX_ID = 'SearchQueueJob';
     public int $retryAttemptNum = 3;
+    public int $retryDelayInSeconds = 5 * 60;
 
     public function run(callable $callable): bool
     {
-        if (!Yii::$app->mutex->acquire(self::MUTEX_ID)) {
+        if (!Yii::$app->mutex->acquire(self::MUTEX_ID, $this->retryDelayInSeconds)) {
             return false;
         }
 
