@@ -29,7 +29,7 @@ class GlobalContentStreamFilter extends StreamQueryFilter
         // Limit to global content
         $this->query->andWhere(['content.contentcontainer_id' => null]);
 
-        // Limit to public posts when guest
+        // Limit to public content when guest
         if (Yii::$app->user->isGuest) {
             if (AuthHelper::isGuestAccessEnabled()) {
                 $this->query->andWhere('content.visibility = :visibility', [':visibility' => Content::VISIBILITY_PUBLIC]);
