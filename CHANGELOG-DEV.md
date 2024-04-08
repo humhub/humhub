@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #5629: Better handling of legacy configuration file options
 - Fix #6931: Fix visibility of private spaces in the user notification settings
 - Enh #6757: Allow changing visibility of global content
+- Fix #5419: Lock search index while reindexing
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------

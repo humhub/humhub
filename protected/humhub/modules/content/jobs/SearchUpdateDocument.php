@@ -1,15 +1,19 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace humhub\modules\content\jobs;
 
 use humhub\modules\content\models\Content;
-use humhub\modules\content\Module;
 use humhub\modules\content\services\ContentSearchService;
-use humhub\modules\queue\ActiveJob;
+use humhub\modules\content\services\SearchJobService;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
-use Yii;
+use humhub\modules\queue\LongRunningActiveJob;
 
-class SearchUpdateDocument extends ActiveJob implements ExclusiveJobInterface
+class SearchUpdateDocument extends LongRunningActiveJob implements ExclusiveJobInterface
 {
     public $contentId;
 
@@ -26,10 +30,24 @@ class SearchUpdateDocument extends ActiveJob implements ExclusiveJobInterface
      */
     public function run()
     {
-        $content = Content::findOne(['id' => $this->contentId]);
-        if ($content) {
-            (new ContentSearchService($content))->update(false);
-        }
+        return $this->getService()->run(function () {
+            $content = Content::findOne(['id' => $this->contentId]);
+            if ($content) {
+                (new ContentSearchService($content))->update(false);
+            }
+        });
     }
 
+    /**
+     * @inheritdoc
+     */
+    public function canRetry($attempt, $error)
+    {
+        return $this->getService()->canRetry($attempt);
+    }
+
+    public function getService(): SearchJobService
+    {
+        return new SearchJobService();
+    }
 }
