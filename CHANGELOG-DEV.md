@@ -4,6 +4,7 @@ HumHub Changelog
 1.16.0-beta.2 (TBD)
 -----------------------------
 - Fix #6928: Disabled users without "ignoredDN" settings
+- Fix #5419: Lock search index while reindexing
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------
