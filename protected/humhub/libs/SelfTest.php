@@ -12,8 +12,6 @@ use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
-use RecursiveArrayIterator;
-use RecursiveIteratorIterator;
 use Yii;
 use yii\helpers\UnsetArrayValue;
 
