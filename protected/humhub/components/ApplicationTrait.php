@@ -145,6 +145,6 @@ trait ApplicationTrait
 
     private function removeLegacyConfigSettings($applicationConfig)
     {
-        return ArrayHelper::merge($applicationConfig, SelfTest::getLegencyConfigSettings());
+        return ArrayHelper::merge($applicationConfig, SelfTest::getLegancyConfigSettings());
     }
 }
