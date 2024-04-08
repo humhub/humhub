@@ -8,7 +8,7 @@
 
 namespace humhub\modules\stream\actions;
 
-use humhub\modules\stream\models\GlobalStreamQuery;
+use humhub\modules\stream\models\GlobalContentStreamQuery;
 
 /**
  * GlobalContentStream is used to stream global content.
@@ -20,5 +20,5 @@ class GlobalContentStream extends Stream
     /**
      * @inheritdoc
      */
-    public $streamQueryClass = GlobalStreamQuery::class;
+    public $streamQueryClass = GlobalContentStreamQuery::class;
 }

@@ -4,6 +4,7 @@ namespace tests\codeception\unit\modules\content;
 
 use humhub\modules\content\models\Content;
 use humhub\modules\content\tests\codeception\unit\TestContent;
+use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\GlobalContentStream;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\user\Module;
@@ -85,7 +86,7 @@ class GlobalContentStreamTest extends HumHubDbTestCase
     public function testDeletedContent(): void
     {
         self::becomeUser('User2');
-        $deleteId = $this->createTestContent('Something to delete', ['visibility' => Content::VISIBILITY_PRIVATE]);
+        $deleteId = $this->createPrivateTestContent();
 
         $content = Content::findOne(['id' => $deleteId]);
         $content->softDelete();
@@ -94,6 +95,18 @@ class GlobalContentStreamTest extends HumHubDbTestCase
 
         // Deleted Content should not appear in stream
         $this->assertNotContains($deleteId, $ids);
+    }
+
+    public function testLimitToGlobalContent(): void
+    {
+        self::becomeUser('User2');
+
+        $globalContentId = $this->createPublicTestContent();
+        $containerContentId = $this->createTestContent('Container TestContent', ['visibility' => Content::VISIBILITY_PUBLIC], Space::findOne(2));
+
+        $ids = $this->getStreamActionIds(2);
+        $this->assertContains($globalContentId, $ids);
+        $this->assertNotContains($containerContentId, $ids);
     }
 
     private function getStreamActionIds($limit = 4, $filters = []): array
@@ -120,7 +133,7 @@ class GlobalContentStreamTest extends HumHubDbTestCase
         return $this->createTestContent('Public TestContent', ['visibility' => Content::VISIBILITY_PUBLIC]);
     }
 
-    private function createTestContent($message, $content = []): int
+    private function createTestContent($message, $content = [], ?Space $space = null): int
     {
         if (!isset($content['visibility'])) {
             $content['visibility'] = Content::VISIBILITY_PRIVATE;
@@ -131,6 +144,9 @@ class GlobalContentStreamTest extends HumHubDbTestCase
 
         $testContent = new TestContent();
         $testContent->message = $message;
+        if ($space) {
+            $testContent->content->setContainer($space);
+        }
         $testContent->content->setAttributes($content, false);
         $testContent->save();
 

@@ -2,7 +2,7 @@
 
 namespace humhub\modules\stream\models;
 
-use humhub\modules\stream\models\filters\GlobalStreamFilter;
+use humhub\modules\stream\models\filters\GlobalContentStreamFilter;
 use yii\base\InvalidConfigException;
 
 /**
@@ -11,7 +11,7 @@ use yii\base\InvalidConfigException;
  * @package modules\stream\models
  * @since 1.16
  */
-class GlobalStreamQuery extends WallStreamQuery
+class GlobalContentStreamQuery extends WallStreamQuery
 {
     /**
      * @inheritdoc
@@ -20,7 +20,7 @@ class GlobalStreamQuery extends WallStreamQuery
     protected function beforeApplyFilters(): void
     {
         $this->addFilterHandler(
-            new GlobalStreamFilter(),
+            new GlobalContentStreamFilter(),
             true,
             true
         );

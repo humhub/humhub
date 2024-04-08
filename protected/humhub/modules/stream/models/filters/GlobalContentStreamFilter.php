@@ -19,7 +19,7 @@ use Yii;
  * @package humhub\modules\stream\models\filters
  * @since 1.16
  */
-class GlobalStreamFilter extends StreamQueryFilter
+class GlobalContentStreamFilter extends StreamQueryFilter
 {
     /**
      * @inheritDoc
