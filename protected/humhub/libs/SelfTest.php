@@ -8,10 +8,12 @@
 
 namespace humhub\libs;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
 use Yii;
+use yii\helpers\UnsetArrayValue;
 
 /**
  * SelfTest is a helper class which checks all dependencies of the application.
@@ -867,8 +869,55 @@ class SelfTest
                     'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
                 ];
             }
+
+            $title = $titlePrefix . Yii::t('AdminModule.information', 'Configuration File');
+
+            $foundLegacyConfigKeys = [];
+            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegancyConfigSettings()));
+            foreach (array_keys(ArrayHelper::flatten(Yii::$app->loadedAppConfig)) as $config) {
+                foreach ($legacyConfigKeys as $legacyConfig) {
+                    if (str_starts_with($config, $legacyConfig)) {
+                        $foundLegacyConfigKeys[] = $config;
+                    }
+                }
+            }
+
+            if (empty($legacyConfigKeys)) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK'
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'ERROR',
+                    'hint' => Yii::t('AdminModule.information', 'The configuration file contains legacy settings. Invalid options: {options}', [
+                        'options' => implode(', ', $foundLegacyConfigKeys)
+                    ])
+                ];
+            }
         }
 
         return $checks;
     }
+
+    /**
+     * Returns an array with legacy HumHub configuration options.
+     *
+     * @since 1.16
+     * @return array
+     */
+    public static function getLegancyConfigSettings(): array
+    {
+        return [
+            'modules' => [
+                'search' => new UnsetArrayValue(),
+                'directory' => new UnsetArrayValue(),
+            ],
+            'components' => [
+                'formatterApp' => new UnsetArrayValue()
+            ]
+        ];
+    }
+
 }
