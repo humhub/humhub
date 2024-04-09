@@ -882,7 +882,7 @@ class SelfTest
                 }
             }
 
-            if (empty($legacyConfigKeys)) {
+            if (empty($foundLegacyConfigKeys)) {
                 $checks[] = [
                     'title' => $title,
                     'state' => 'OK'

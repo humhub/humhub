@@ -1,6 +1,11 @@
 HumHub Changelog
 ================
 
+1.16.0-beta.3 (TBD)
+-----------------------------
+- Fix #5629: Legacy configuration self test not showing "OK"
+
+
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
 - Fix #6928: Disabled users without "ignoredDN" settings
