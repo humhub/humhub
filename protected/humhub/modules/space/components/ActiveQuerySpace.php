@@ -80,6 +80,14 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
     }
 
     /**
+     * @inerhitdoc
+     */
+    protected function getSearchableFieldTitles(): array
+    {
+        return [];
+    }
+
+    /**
      * Exclude blocked spaces for the given $user or for the current User
      *
      * @param User|null $user

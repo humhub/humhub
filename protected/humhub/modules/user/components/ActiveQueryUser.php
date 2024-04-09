@@ -12,6 +12,8 @@ use humhub\events\ActiveQueryEvent;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\AbstractActiveQueryContentContainer;
 use humhub\modules\user\models\fieldtype\BaseTypeVirtual;
+use humhub\modules\user\models\fieldtype\CountrySelect;
+use humhub\modules\user\models\fieldtype\Select;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\ProfileField;
@@ -124,6 +126,30 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
         foreach (ProfileField::findAll(['searchable' => 1]) as $profileField) {
             if (!($profileField->getFieldType() instanceof BaseTypeVirtual)) {
                 $fields[] = 'profile.' . $profileField->internal_name;
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @inerhitdoc
+     */
+    protected function getSearchableFieldTitles(): array
+    {
+        $this->joinWith('profile')->joinWith('contentContainerRecord');
+
+        $fields = [];
+
+        $profileFields = ProfileField::find()
+            ->where(['searchable' => 1])
+            ->andWhere(['IN', 'field_type_class', [CountrySelect::class, Select::class]]);
+
+        foreach ($profileFields->all() as $profileField) {
+            /* @var ProfileField $profileField */
+            $fieldType = $profileField->getFieldType();
+            if ($fieldType instanceof Select) {
+                $fields['profile.' . $profileField->internal_name] = $fieldType->getSelectItems();
             }
         }
 
