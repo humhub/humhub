@@ -5,6 +5,7 @@ HumHub Changelog
 -----------------------
 - Enh #6899: Fix a missed module config file
 - Fix #6913: Fix API tests
+- Fix #6919: Fix saving of user profile country field value and enable a searching by country title
 
 1.15.4 (March 20, 2024)
 -----------------------
