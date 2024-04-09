@@ -102,15 +102,31 @@ abstract class StreamEntryWidget extends JsWidget
             $options = [];
         }
 
+        // Ensure that $record->getWallEntryWidget() returns a valid object
+        $wallEntryWidget = $record->getWallEntryWidget();
+        if (!$wallEntryWidget || !$wallEntryWidget->renderOptions) {
+            // Handle the case where $wallEntryWidget or renderOptions is null
+            return;
+        }
+
+        // Ensure that $wallEntryWidget->renderOptions is properly initialized before accessing its properties
+        $jsWidget = null;
         if (isset($options['jsWidget'])) {
             $jsWidget = $options['jsWidget'];
             unset($options['jsWidget']);
         } else {
-            $jsWidget = $record->getWallEntryWidget()->jsWidget;
+            $jsWidget = $wallEntryWidget->renderOptions->jsWidget;
+        }
+
+        // Check if $record has getWallOut method
+        if (method_exists($record, 'getWallOut')) {
+            $content = $record->getWallOut($options);
+        } else {
+            $content = '';
         }
 
         $params = [
-            'content' => $record->getWallOut($options),
+            'content' => $content,
             'jsWidget' => $jsWidget,
             'entry' => $record->content
         ];
