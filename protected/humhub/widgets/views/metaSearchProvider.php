@@ -16,7 +16,7 @@ use humhub\widgets\Button;
     <div class="search-provider-title">
         <?= $provider->getName() ?>
         <?php if ($provider->getService()->isSearched()) : ?>
-            <?= Html::tag('span', '(' . $provider->getService()->getTotal() . ')') ?>
+            <?= Html::tag('span', '(' . $provider->getService()->getShortTotal() . ')') ?>
         <?php endif; ?>
     </div>
     <div class="search-provider-content">

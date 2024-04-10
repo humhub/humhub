@@ -73,7 +73,13 @@ class MetaSearchService
      */
     public function getUrl(): string
     {
-        $params = [$this->provider->getRoute()];
+        $route = $this->provider->getRoute();
+
+        if (strpos($route, '%keyword%')) {
+            return str_replace('%keyword%', $this->provider->getKeyword() ?? '', $route);
+        }
+
+        $params = [$route];
         if ($this->provider->getKeyword() !== null && $this->hasResults()) {
             $params['keyword'] = $this->provider->getKeyword();
         }
@@ -99,6 +105,16 @@ class MetaSearchService
     public function getTotal(): int
     {
         return isset($this->totalCount) ? (int) $this->totalCount : 0;
+    }
+
+    /**
+     * Get total number results as short integer number
+     *
+     * @return string
+     */
+    public function getShortTotal(): string
+    {
+        return Yii::$app->formatter->asShortInteger($this->getTotal());
     }
 
     /**
