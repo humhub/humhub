@@ -4,6 +4,7 @@ HumHub Changelog
 1.16.0-beta.3 (TBD)
 -----------------------------
 - Fix #5629: Legacy configuration self test not showing "OK"
+- Enh #6920: Enhancing of meta search for advanced search providers
 
 
 1.16.0-beta.2 (April 9, 2024)
