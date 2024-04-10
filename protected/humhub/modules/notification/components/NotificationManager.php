@@ -283,7 +283,11 @@ class NotificationManager
         $result = array_merge($memberSpaces, $followSpaces);
 
         if ($this->isUntouchedSettings($user)) {
-            $result = array_merge($result, Space::findAll(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')]));
+            $result = array_merge($result, Space::find()
+                ->where(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')])
+                ->visible($user)
+                ->filterBlockedSpaces($user)
+                ->all());
         }
 
         return $result;

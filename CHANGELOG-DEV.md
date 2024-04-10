@@ -1,9 +1,19 @@
 HumHub Changelog
 ================
 
-1.16.0-beta.2 (TBD)
+1.16.0-beta.3 (TBD)
+-----------------------------
+- Fix #5629: Legacy configuration self test not showing "OK"
+
+
+1.16.0-beta.2 (April 9, 2024)
 -----------------------------
 - Fix #6928: Disabled users without "ignoredDN" settings
+- Fix #5629: Better handling of legacy configuration file options
+- Fix #6931: Fix visibility of private spaces in the user notification settings
+- Enh #6757: Allow changing visibility of global content
+- Fix #5419: Lock search index while reindexing
+- Fix #5629: Better handling of legacy configuration file options for disabled non-core modules
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------
