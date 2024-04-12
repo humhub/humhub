@@ -53,14 +53,14 @@ class GroupUserTest extends HumHubDbTestCase
         $model = new GroupUser();
         $model->scenario = GroupUser::SCENARIO_REGISTRATION;
         $model->load([
-            'group_id' => 88
+            'group_id' => 88,
         ], '');
 
         $model->validate();
         $this->assertTrue($model->hasErrors());
 
         $model->load([
-            'group_id' => Group::findOne(['name' => 'Users'])->id
+            'group_id' => Group::findOne(['name' => 'Users'])->id,
         ], '');
 
         $this->assertTrue($model->validate());
@@ -71,7 +71,7 @@ class GroupUserTest extends HumHubDbTestCase
         $model = new GroupUser();
         $model->load([
             'user_id' => User::findOne(['username' => 'User3'])->id,
-            'group_id' => Group::findOne(['name' => 'Users'])->id
+            'group_id' => Group::findOne(['name' => 'Users'])->id,
         ], '');
         $this->assertTrue($model->validate());
         $this->assertFalse($model->hasErrors());

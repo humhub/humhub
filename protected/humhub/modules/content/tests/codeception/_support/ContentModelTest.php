@@ -31,7 +31,7 @@ class ContentModelTest extends HumHubDbTestCase
         $this->space = Space::findOne(['id' => 2]);
 
         $this->testModel = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($this->testModel->save());

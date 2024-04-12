@@ -40,7 +40,7 @@ class PasswordRecoveryServiceTest extends HumHubDbTestCase
         $password = new Password();
         $this->assertTrue($password->load(['Password' => [
             'newPassword' => '123QWE!@',
-            'newPasswordConfirm' => '123QWE!@'
+            'newPasswordConfirm' => '123QWE!@',
         ]]));
         $this->assertTrue($service->reset($password));
 

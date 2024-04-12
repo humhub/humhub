@@ -381,7 +381,7 @@ class PermissionManager extends Component
         return $this->getQuery()->andWhere([
             'group_id' => $groupId,
             'module_id' => $permission->getModuleId(),
-            'permission_id' => $permission->getId()
+            'permission_id' => $permission->getId(),
         ])->one();
     }
 
@@ -509,7 +509,7 @@ class PermissionManager extends Component
 
             $permission = $this->getById(
                 Yii::$app->request->post('permissionId'),
-                Yii::$app->request->post('moduleId')
+                Yii::$app->request->post('moduleId'),
             );
 
             if ($permission === null) {

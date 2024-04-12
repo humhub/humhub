@@ -69,7 +69,7 @@ class Post extends ContentActiveRecord
         return [
             [['message'], 'required', 'except' => self::SCENARIO_AJAX_VALIDATION],
             [['message'], 'string'],
-            [['url'], 'string', 'max' => 255]
+            [['url'], 'string', 'max' => 255],
         ];
     }
 

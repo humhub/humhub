@@ -74,7 +74,7 @@ class StorageManager extends Component implements StorageManagerInterface
             function (string $s): string {
                 return basename($s);
             },
-            FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)])
+            FileHelper::findFiles($this->getPath(), ['except' => ArrayHelper::merge(['file'], $except)]),
         );
     }
 

@@ -30,7 +30,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Edit',
-            (new WallStreamEntryOptions())->disableControlsEntryEdit()
+            (new WallStreamEntryOptions())->disableControlsEntryEdit(),
         );
     }
 
@@ -38,7 +38,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Delete',
-            (new WallStreamEntryOptions())->disableControlsEntryDelete()
+            (new WallStreamEntryOptions())->disableControlsEntryDelete(),
         );
     }
 
@@ -46,7 +46,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Topics',
-            (new WallStreamEntryOptions())->disableControlsEntryTopics()
+            (new WallStreamEntryOptions())->disableControlsEntryTopics(),
         );
     }
 
@@ -54,7 +54,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Permalink',
-            (new WallStreamEntryOptions())->disableControlsEntryPermalink()
+            (new WallStreamEntryOptions())->disableControlsEntryPermalink(),
         );
     }
 
@@ -62,7 +62,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Change to "Public"',
-            (new WallStreamEntryOptions())->disableControlsEntrySwitchVisibility()
+            (new WallStreamEntryOptions())->disableControlsEntrySwitchVisibility(),
         );
     }
 
@@ -70,7 +70,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Turn on notifications',
-            (new WallStreamEntryOptions())->disableControlsEntrySwitchNotification()
+            (new WallStreamEntryOptions())->disableControlsEntrySwitchNotification(),
         );
     }
 
@@ -78,7 +78,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Pin to top',
-            (new WallStreamEntryOptions())->disableControlsEntryPin()
+            (new WallStreamEntryOptions())->disableControlsEntryPin(),
         );
     }
 
@@ -86,7 +86,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Move content',
-            (new WallStreamEntryOptions())->disableControlsEntryMove()
+            (new WallStreamEntryOptions())->disableControlsEntryMove(),
         );
     }
 
@@ -94,7 +94,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
     {
         $this->testDisableControlsItem(
             'Move to archive',
-            (new WallStreamEntryOptions())->disableControlsEntryArchive()
+            (new WallStreamEntryOptions())->disableControlsEntryArchive(),
         );
     }
 
@@ -150,7 +150,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
         $this->assertStringNotContainsString($searchStr, WallEntryControls::widget([
             'object' => $model,
-            'wallEntryWidget' => $wallEntry
+            'wallEntryWidget' => $wallEntry,
         ]));
     }
 
@@ -194,7 +194,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
         $this->assertStringContainsString($searchStr, WallEntryControls::widget([
             'object' => $model,
-            'wallEntryWidget' => $wallEntry
+            'wallEntryWidget' => $wallEntry,
         ]));
     }
 
@@ -211,7 +211,7 @@ class WallEntryOptionsTest extends HumHubDbTestCase
 
         $this->assertStringNotContainsString($searchStr, WallEntryControls::widget([
             'object' => $model,
-            'wallEntryWidget' => $wallEntry
+            'wallEntryWidget' => $wallEntry,
         ]));
     }
 

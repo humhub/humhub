@@ -48,7 +48,7 @@ class FunctionalTester extends BaseTester
             'group_id' => $groupId,
             'module_id' => $permission->moduleId,
             'class' => get_class($permission),
-            'state' => $state
+            'state' => $state,
         ]))->save();
 
         \Yii::$app->user->getPermissionManager()->clear();

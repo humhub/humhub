@@ -61,7 +61,7 @@ class PendingRegistrationSearch extends Invite
             'attributes' => [
                 'email',
                 'created_at',
-            ]
+            ],
         ]);
 
         $this->load($params);

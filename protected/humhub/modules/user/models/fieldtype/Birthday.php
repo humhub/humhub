@@ -49,7 +49,7 @@ class Birthday extends BaseType
     public function rules()
     {
         return [
-            [['defaultHideAge'], 'in', 'range' => [self::DEFAULT_HIDE_AGE_NO, self::DEFAULT_HIDE_AGE_YES]]
+            [['defaultHideAge'], 'in', 'range' => [self::DEFAULT_HIDE_AGE_NO, self::DEFAULT_HIDE_AGE_YES]],
         ];
     }
 
@@ -68,8 +68,8 @@ class Birthday extends BaseType
                         'label' => Yii::t('UserModule.profile', 'Hide age per default'),
                         'class' => 'form-control',
                     ],
-                ]
-            ]
+                ],
+            ],
         ]);
     }
 
@@ -123,14 +123,14 @@ class Birthday extends BaseType
             'format' => 'medium',
             'convertToFormat' => 'Y-m-d',
             'max' => time(),
-            'tooBig' => Yii::t('base', 'The date has to be in the past.')
+            'tooBig' => Yii::t('base', 'The date has to be in the past.'),
         ];
 
         // Add validation for birthdate_hide_year
         $rules[] = [
             $this->profileField->internal_name . '_hide_year',
             'in',
-            'range' => [self::HIDE_AGE_NO, self::HIDE_AGE_YES]
+            'range' => [self::HIDE_AGE_NO, self::HIDE_AGE_YES],
         ];
 
         return parent::getFieldRules($rules);
@@ -145,13 +145,13 @@ class Birthday extends BaseType
             'format' => 'medium',
             'yearRange' => (date('Y') - 100) . ':' . date('Y'),
             'dateTimePickerOptions' => [
-                'pickTime' => false
-            ]
+                'pickTime' => false,
+            ],
         ], $options));
 
         $result[$this->profileField->internal_name . '_hide_year'] = [
             'type' => 'checkbox',
-            'readonly' => !$this->profileField->editable
+            'readonly' => !$this->profileField->editable,
         ];
 
         return $result;
@@ -165,11 +165,11 @@ class Birthday extends BaseType
         return [
             $this->profileField->internal_name => Yii::t(
                 $this->profileField->getTranslationCategory(),
-                $this->profileField->title
+                $this->profileField->title,
             ),
             $this->profileField->internal_name . '_hide_year' => Yii::t(
                 $this->profileField->getTranslationCategory(),
-                'Hide year in profile'
+                'Hide year in profile',
             ),
         ];
     }
@@ -183,7 +183,7 @@ class Birthday extends BaseType
         $birthdayDate = \DateTime::createFromFormat(
             'Y-m-d',
             $user->profile->$internalName ?? '',
-            new DateTimeZone(Yii::$app->formatter->timeZone)
+            new DateTimeZone(Yii::$app->formatter->timeZone),
         );
 
         $internalNameHideAge = $this->profileField->internal_name . '_hide_year';
@@ -228,7 +228,7 @@ class Birthday extends BaseType
         $ageInYears = Yii::t(
             'UserModule.profile',
             '%y Years',
-            ['%y' => $birthdayDate->diff(new \DateTime())->y]
+            ['%y' => $birthdayDate->diff(new \DateTime())->y],
         );
 
         return $longDate . ' (' . $ageInYears . ')';

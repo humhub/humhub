@@ -48,7 +48,7 @@ class HumHubTestConfiguration
             // User Overwrite Common Config
             require(Yii::getAlias('@tests/config/common.php')),
             // User Overwrite Suite Config
-            require(Yii::getAlias('@tests/config/' . $suite . '.php'))
+            require(Yii::getAlias('@tests/config/' . $suite . '.php')),
         );
     }
 
@@ -79,7 +79,7 @@ class HumHubTestConfiguration
                 $result = \yii\helpers\ArrayHelper::merge(
                     $result,
                     // Environment common config
-                    require($envCfgCommonFile)
+                    require($envCfgCommonFile),
                 );
             }
 
@@ -88,7 +88,7 @@ class HumHubTestConfiguration
                 $result = \yii\helpers\ArrayHelper::merge(
                     $result,
                     // Environment config
-                    require($envCfgFile)
+                    require($envCfgFile),
                 );
             }
         }

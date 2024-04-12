@@ -92,7 +92,7 @@ class MailSummary extends Component
             Yii::$app->view->params['unsubscribeUrl'] = Url::to(['/activity/user'], true);
             $mail = Yii::$app->mailer->compose([
                 'html' => $this->layout,
-                'text' => $this->layoutPlaintext
+                'text' => $this->layoutPlaintext,
             ], [
                 'activities' => $outputHtml,
                 'activitiesPlaintext' => $outputPlaintext,

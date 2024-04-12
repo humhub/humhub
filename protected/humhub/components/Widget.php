@@ -83,7 +83,7 @@ class Widget extends \yii\base\Widget
     public function getLayoutViewParams()
     {
         return [
-            'content' => $this->run()
+            'content' => $this->run(),
         ];
     }
 

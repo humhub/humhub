@@ -45,7 +45,7 @@ class SpaceController extends ContentContainerController
             'acl' => [
                 'class' => AccessControl::class,
                 'guestAllowedActions' => ['index', 'home', 'stream', 'about'],
-            ]
+            ],
         ];
     }
 
@@ -57,7 +57,7 @@ class SpaceController extends ContentContainerController
         return [
             'stream' => [
                 'class' => ContentContainerStream::class,
-                'contentContainer' => $this->contentContainer
+                'contentContainer' => $this->contentContainer,
             ],
         ];
     }

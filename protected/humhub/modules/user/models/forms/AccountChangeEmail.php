@@ -72,7 +72,7 @@ class AccountChangeEmail extends Model
 
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/ChangeEmail',
-            'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail'
+            'text' => '@humhub/modules/user/views/mails/plaintext/ChangeEmail',
         ], [
             'user' => $user,
             'newEmail' => $this->newEmail,

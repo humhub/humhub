@@ -54,7 +54,7 @@ class ActivityStreamQuery extends ContentContainerStreamQuery
             // Note: With the extra null check, the query performs much faster than directly against the status field.
             $this->query()->andWhere(
                 ['OR', 'user.id IS NULL',
-                    ['AND', ['!=', 'user.status', User::STATUS_NEED_APPROVAL], ['!=', 'user.visibility', User::VISIBILITY_HIDDEN]]]
+                    ['AND', ['!=', 'user.status', User::STATUS_NEED_APPROVAL], ['!=', 'user.visibility', User::VISIBILITY_HIDDEN]]],
             );
 
             // Exclude own activities

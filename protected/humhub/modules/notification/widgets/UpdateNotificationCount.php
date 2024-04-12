@@ -31,7 +31,7 @@ class UpdateNotificationCount extends Widget
         }
 
         return $this->render('updateNotificationCount', [
-            'count' => Notification::findUnseen()->count()
+            'count' => Notification::findUnseen()->count(),
         ]);
     }
 }

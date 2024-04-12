@@ -19,7 +19,7 @@ class m150703_130157_migrate extends Migration
         foreach ($activities as $activity) {
             $this->updateSilent('activity', [
                 'object_model' => Space::class,
-                'object_id' => $activity['space_id']
+                'object_id' => $activity['space_id'],
             ], ['id' => $activity['id']]);
         }
 
@@ -30,7 +30,7 @@ class m150703_130157_migrate extends Migration
         foreach ($activities as $activity) {
             $this->updateSilent('activity', [
                 'object_model' => Space::class,
-                'object_id' => $activity['space_id']
+                'object_id' => $activity['space_id'],
             ], ['id' => $activity['id']]);
         }
 
@@ -41,7 +41,7 @@ class m150703_130157_migrate extends Migration
         foreach ($activities as $activity) {
             $this->updateSilent('activity', [
                 'object_model' => Space::class,
-                'object_id' => $activity['space_id']
+                'object_id' => $activity['space_id'],
             ], ['id' => $activity['id']]);
         }
     }

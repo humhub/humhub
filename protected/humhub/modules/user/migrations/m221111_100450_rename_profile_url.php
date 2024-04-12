@@ -14,7 +14,7 @@ class m221111_100450_rename_profile_url extends Migration
     {
         $this->update('profile_field', ['title' => 'Website URL'], [
             'internal_name' => 'url',
-            'title' => 'Url'
+            'title' => 'Url',
         ]);
     }
 

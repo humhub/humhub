@@ -169,7 +169,7 @@ class CommentController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             return $this->renderAjaxContent(CommentWidget::widget([
                 'comment' => $form->comment,
-                'justEdited' => true
+                'justEdited' => true,
             ]));
         }
 
@@ -180,7 +180,7 @@ class CommentController extends Controller
         $submitUrl = Url::to(['/comment/comment/edit',
             'id' => $comment->id,
             'objectModel' => $comment->object_model,
-            'objectId' => $comment->object_id
+            'objectId' => $comment->object_id,
         ]);
 
         return $this->renderAjax('edit', [
@@ -246,7 +246,7 @@ class CommentController extends Controller
                 $commentDeleted->saveRecord($comment->createdBy);
 
                 $commentDeleted->record->updateAttributes([
-                    'send_web_notifications' => 1
+                    'send_web_notifications' => 1,
                 ]);
             }
         }
@@ -273,7 +273,7 @@ class CommentController extends Controller
         return [
             'header' => Yii::t('CommentModule.base', '<strong>Delete</strong> comment?'),
             'body' => AdminDeleteModal::widget([
-                'model' => new AdminDeleteCommentForm()
+                'model' => new AdminDeleteCommentForm(),
             ]),
             'confirmText' => Yii::t('CommentModule.base', 'Confirm'),
             'cancelText' => Yii::t('CommentModule.base', 'Cancel'),

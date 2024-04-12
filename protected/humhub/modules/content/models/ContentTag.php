@@ -143,7 +143,7 @@ class ContentTag extends ActiveRecord
             [['name', 'module_id', 'type'], 'string', 'max' => '100'],
             ['color', 'string', 'max' => '7'],
             [['parent_id', 'sort_order'], 'integer'],
-            [['name'], 'validateUnique']
+            [['name'], 'validateUnique'],
         ];
     }
 

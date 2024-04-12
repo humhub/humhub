@@ -16,7 +16,7 @@ class m201228_064513_default_group extends Migration
         $this->safeAddColumn(
             'group',
             'is_default_group',
-            $this->boolean()->notNull()->defaultValue(0)->after('is_admin_group')
+            $this->boolean()->notNull()->defaultValue(0)->after('is_admin_group'),
         );
 
         $defaultUserGroupId = Yii::$app->getModule('user')->settings->get('auth.defaultUserGroup');

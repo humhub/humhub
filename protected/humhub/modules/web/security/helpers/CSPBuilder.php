@@ -96,7 +96,7 @@ class CSPBuilder
         'manifest-src',
         'script-src',
         'style-src',
-        'worker-src'
+        'worker-src',
     ];
 
     /**
@@ -133,7 +133,7 @@ class CSPBuilder
                 }
                 $compiled [] = $this->compileSubgroup(
                     $dir,
-                    $this->policies[$dir]
+                    $this->policies[$dir],
                 );
             }
         }
@@ -374,7 +374,7 @@ class CSPBuilder
         foreach ($this->requireSRIFor as $directive) {
             $headers[] = [
                 'Content-Security-Policy',
-                'require-sri-for ' . $directive
+                'require-sri-for ' . $directive,
             ];
         }
         return $headers;
@@ -391,14 +391,14 @@ class CSPBuilder
     public function hash(
         $directive = 'script-src',
         $script = '',
-        $algorithm = 'sha384'
+        $algorithm = 'sha384',
     ) {
         $ruleKeys = array_keys($this->policies);
         if (in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] [] = [
                 $algorithm => base64_encode(
-                    hash($algorithm, $script, true)
-                )
+                    hash($algorithm, $script, true),
+                ),
             ];
         }
         return $this;
@@ -463,12 +463,12 @@ class CSPBuilder
     public function preHash(
         $directive = 'script-src',
         $hash = '',
-        $algorithm = 'sha384'
+        $algorithm = 'sha384',
     ) {
         $ruleKeys = array_keys($this->policies);
         if (in_array($directive, $ruleKeys)) {
             $this->policies[$directive]['hashes'] [] = [
-                $algorithm => $hash
+                $algorithm => $hash,
             ];
         }
         return $this;
@@ -496,7 +496,7 @@ class CSPBuilder
      */
     public function saveSnippet(
         $outputFile,
-        $format = self::FORMAT_NGINX
+        $format = self::FORMAT_NGINX,
     ) {
         if ($this->needsCompile) {
             $this->compile();
@@ -516,7 +516,7 @@ class CSPBuilder
                     ' "',
                     rtrim($this->compiled, ' '),
                     '" always;',
-                    "\n"
+                    "\n",
                 ]);
                 break;
             case self::FORMAT_APACHE:
@@ -526,7 +526,7 @@ class CSPBuilder
                     ' "',
                     rtrim($this->compiled, ' '),
                     '"',
-                    "\n"
+                    "\n",
                 ]);
                 break;
             default:
@@ -812,7 +812,7 @@ class CSPBuilder
                         preg_replace('/[^A-Za-z0-9]/', '', $algo),
                         '-',
                         preg_replace('/[^A-Za-z0-9\+\/=]/', '', $hashval),
-                        "' "
+                        "' ",
                     ]);
                 }
             }
@@ -823,7 +823,7 @@ class CSPBuilder
                 $ret .= implode('', [
                     "'nonce-",
                     preg_replace('/[^A-Za-z0-9\+\/=]/', '', $nonce),
-                    "' "
+                    "' ",
                 ]);
             }
         }
@@ -876,7 +876,7 @@ class CSPBuilder
         $return = [
             $this->reportOnly
                 ? 'Content-Security-Policy-Report-Only'
-                : 'Content-Security-Policy'
+                : 'Content-Security-Policy',
         ];
 
         // If we're supporting legacy devices, include these too:

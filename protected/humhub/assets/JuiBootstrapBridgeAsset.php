@@ -40,7 +40,7 @@ class JuiBootstrapBridgeAsset extends WebStaticAssetBundle
     public $js = ['js/jui.bootstrap.bridge.js'];
 
     public $depends = [
-        JuiAsset::class
+        JuiAsset::class,
     ];
 
 }

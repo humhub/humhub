@@ -33,7 +33,7 @@ class SearchRecord implements MetaSearchResultInterface
     {
         return Image::widget([
             'space' => $this->space,
-            'width' => 36
+            'width' => 36,
         ]);
     }
 

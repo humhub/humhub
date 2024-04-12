@@ -34,7 +34,7 @@ class AppDynamicAsset extends AssetBundle
      * @inheritdoc
      */
     public $depends = [
-        JqueryTimeAgoLocaleAsset::class
+        JqueryTimeAgoLocaleAsset::class,
     ];
 
 }

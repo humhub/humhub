@@ -19,7 +19,7 @@ class GroupSpaceFixture extends ActiveFixture
 
     public $depends = [
         UserFixture::class,
-        SpaceFixture::class
+        SpaceFixture::class,
     ];
 
 }

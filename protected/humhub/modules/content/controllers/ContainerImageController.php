@@ -86,9 +86,9 @@ abstract class ContainerImageController extends ContentContainerController
                         [
                             'name' => isset($files[0]) ? $files[0]->name : '',
                             'error' => true,
-                            'errors' => [$e->getMessage()]
-                        ]
-                    ]
+                            'errors' => [$e->getMessage()],
+                        ],
+                    ],
                 ]);
             }
 
@@ -99,7 +99,7 @@ abstract class ContainerImageController extends ContentContainerController
                         'type' => $type,
                         'container_id' => $this->contentContainer->contentcontainer_id,
                         'space_id' => $this->contentContainer->id, // Deprecated, only remained for legacy themes prior to 1.4
-                    ]
+                    ],
                 ]]);
         }
 
@@ -108,9 +108,9 @@ abstract class ContainerImageController extends ContentContainerController
                 [
                     'name' => isset($files[0]) ? $files[0]->name : '',
                     'error' => true,
-                    'errors' => $model->getErrorSummary(false)
-                ]
-            ]
+                    'errors' => $model->getErrorSummary(false),
+                ],
+            ],
         ]);
     }
 
@@ -128,7 +128,7 @@ abstract class ContainerImageController extends ContentContainerController
         return $this->renderAjax('@content/views/container-image/cropModal', [
             'model' => $model,
             'profileImage' => $profileImage,
-            'container' => $this->contentContainer
+            'container' => $this->contentContainer,
         ]);
     }
 

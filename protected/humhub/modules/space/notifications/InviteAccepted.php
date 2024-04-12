@@ -54,7 +54,7 @@ class InviteAccepted extends BaseNotification
     {
         return $this->getInfoText(
             Html::tag('strong', Html::encode($this->originator->displayName)),
-            Html::tag('strong', Html::encode($this->source->name))
+            Html::tag('strong', Html::encode($this->source->name)),
         );
     }
 
@@ -62,7 +62,7 @@ class InviteAccepted extends BaseNotification
     {
         return Yii::t('SpaceModule.notification', '{displayName} accepted your invite for the space {spaceName}', [
             '{displayName}' => $displayName,
-            '{spaceName}' => $spaceName
+            '{spaceName}' => $spaceName,
         ]);
 
     }

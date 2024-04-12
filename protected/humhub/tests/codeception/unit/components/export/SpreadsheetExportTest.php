@@ -69,7 +69,7 @@ class SpreadsheetExportTest extends Unit
                         'name' => 'second',
                     ],
                 ],
-            ])
+            ]),
         ]);
 
         $result = $exporter->export();

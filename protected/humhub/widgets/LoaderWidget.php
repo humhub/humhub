@@ -56,7 +56,7 @@ class LoaderWidget extends \yii\base\Widget
         return $this->render('loader', [
             'id' => $this->id,
             'cssClass' => $this->cssClass,
-            'show' => $this->show
+            'show' => $this->show,
         ]);
     }
 

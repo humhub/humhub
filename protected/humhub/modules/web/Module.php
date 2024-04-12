@@ -44,7 +44,7 @@ class Module extends \humhub\components\Module
         'pwa-manifest' => ManifestController::class,
         'pwa-offline' => OfflineController::class,
         'pwa-service-worker' => ServiceWorkerController::class,
-        'security-report' => ReportController::class
+        'security-report' => ReportController::class,
     ];
 
     /**

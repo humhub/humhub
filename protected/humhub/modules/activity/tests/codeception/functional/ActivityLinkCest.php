@@ -27,7 +27,7 @@ class ActivityLinkCest
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $activity = TestActivity::instance()->about(Post::findOne(1))->create();
@@ -45,7 +45,7 @@ class ActivityLinkCest
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $activity = TestActivity::instance()->about(Post::findOne(1))->create();

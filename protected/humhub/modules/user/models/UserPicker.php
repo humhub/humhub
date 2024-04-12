@@ -52,7 +52,7 @@ class UserPicker
             'fillQuery' => null,
             'disabledText' => null,
             'fillUser' => false,
-            'filter' => null
+            'filter' => null,
         ];
 
         $cfg = ($cfg == null) ? $defaultCfg : array_merge($defaultCfg, $cfg);
@@ -152,7 +152,7 @@ class UserPicker
             'text' => $user->displayName,
             'image' => $user->getProfileImage()->getUrl(),
             'priority' => ($priority == null) ? 0 : $priority,
-            'link' => $user->getUrl()
+            'link' => $user->getUrl(),
         ];
     }
 }

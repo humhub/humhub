@@ -40,7 +40,7 @@ class LoggingController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => SeeAdminInformation::class]
+            ['permissions' => SeeAdminInformation::class],
         ];
     }
 
@@ -63,7 +63,7 @@ class LoggingController extends Controller
         if (Yii::$app->request->isAjax && !Yii::$app->request->isPjax) {
             return $this->asJson([
                 'html' => $this->renderPartial('log_entries', $params),
-                'url' => $filter->getUrl()
+                'url' => $filter->getUrl(),
             ]);
         }
 

@@ -58,7 +58,7 @@ class Module extends \yii\base\Module
         // Set settings component
         $this->set('settings', [
             'class' => SettingsManager::class,
-            'moduleId' => $this->id
+            'moduleId' => $this->id,
         ]);
     }
 

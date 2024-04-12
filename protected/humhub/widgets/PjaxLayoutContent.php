@@ -47,7 +47,7 @@ class PjaxLayoutContent extends \humhub\components\Widget
 
         $view->registerJsConfig('client.pjax', [
             'active' => self::isActive(),
-            'options' => $this->clientOptions
+            'options' => $this->clientOptions,
         ]);
     }
 

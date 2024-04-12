@@ -407,7 +407,7 @@ class StreamQuery extends Model
     public function all()
     {
         return $this->postProcessAll(
-            $this->query(!$this->_built)->all()
+            $this->query(!$this->_built)->all(),
         );
     }
 
@@ -548,10 +548,10 @@ class StreamQuery extends Model
                         "content.stream_sort_date < (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
                         ['and',
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:from)",
-                            "content.id > :from"
+                            "content.id > :from",
                         ],
                     ],
-                    [':from' => $this->from]
+                    [':from' => $this->from],
                 );
             } elseif (!empty($this->to)) {
                 $this->_query->andWhere(
@@ -559,10 +559,10 @@ class StreamQuery extends Model
                         "content.stream_sort_date > (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
                         ['and',
                             "content.stream_sort_date = (SELECT stream_sort_date FROM content wd WHERE wd.id=:to)",
-                            "content.id < :to"
+                            "content.id < :to",
                         ],
                     ],
-                    [':to' => $this->to]
+                    [':to' => $this->to],
                 );
             }
         } else {
@@ -573,10 +573,10 @@ class StreamQuery extends Model
                         "content.created_at < (SELECT created_at FROM content wd WHERE wd.id=:from)",
                         ['and',
                             "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:from)",
-                            "content.id < :from"
+                            "content.id < :from",
                         ],
                     ],
-                    [':from' => $this->from]
+                    [':from' => $this->from],
                 );
             } elseif (!empty($this->to)) {
                 $this->_query->andWhere(
@@ -584,10 +584,10 @@ class StreamQuery extends Model
                         "content.created_at > (SELECT created_at FROM content wd WHERE wd.id=:to)",
                         ['and',
                             "content.created_at = (SELECT created_at FROM content wd WHERE wd.id=:to)",
-                            "content.id > :to"
+                            "content.id > :to",
                         ],
                     ],
-                    [':to' => $this->to]
+                    [':to' => $this->to],
                 );
             }
         }
@@ -785,7 +785,7 @@ class StreamQuery extends Model
                 'class' => $handler,
                 'streamQuery' => $this,
                 'query' => $this->_query,
-                'formName' => $this->formName()
+                'formName' => $this->formName(),
             ]);
         } elseif ($handler instanceof StreamQueryFilter) {
             $handler->streamQuery = $this;

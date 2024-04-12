@@ -25,7 +25,7 @@ class m180305_084435_membership_pk extends Migration
             'space',
             'id',
             'CASCADE',
-            'CASCADE'
+            'CASCADE',
         );
 
         $this->addForeignKey(
@@ -35,7 +35,7 @@ class m180305_084435_membership_pk extends Migration
             'user',
             'id',
             'CASCADE',
-            'CASCADE'
+            'CASCADE',
         );
     }
 
@@ -56,7 +56,7 @@ class m180305_084435_membership_pk extends Migration
             'space',
             'id',
             'CASCADE',
-            'CASCADE'
+            'CASCADE',
         );
 
         $this->addForeignKey(
@@ -66,7 +66,7 @@ class m180305_084435_membership_pk extends Migration
             'user',
             'id',
             'CASCADE',
-            'CASCADE'
+            'CASCADE',
         );
     }
 }

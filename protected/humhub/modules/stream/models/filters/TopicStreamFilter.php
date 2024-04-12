@@ -28,7 +28,7 @@ class TopicStreamFilter extends StreamQueryFilter
     public function rules()
     {
         return [
-            [['topics'], 'safe']
+            [['topics'], 'safe'],
         ];
     }
 

@@ -38,10 +38,10 @@ class CountrySelect extends Select
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Possible values'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.profile', 'Comma separated country codes, e.g. DE,EN,AU')
-                    ]
-                ]
-            ]
+                        'hint' => Yii::t('UserModule.profile', 'Comma separated country codes, e.g. DE,EN,AU'),
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -99,7 +99,7 @@ class CountrySelect extends Select
     public function getFieldFormDefinition(User $user = null, array $options = []): array
     {
         return parent::getFieldFormDefinition($user, array_merge([
-            'htmlOptions' => ['data-ui-select2' => true, 'style' => 'width:100%']
+            'htmlOptions' => ['data-ui-select2' => true, 'style' => 'width:100%'],
         ], $options));
     }
 

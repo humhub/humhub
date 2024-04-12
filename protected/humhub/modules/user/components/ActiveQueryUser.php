@@ -88,7 +88,7 @@ class ActiveQueryUser extends AbstractActiveQueryContentContainer
 
         return $this->andWhere(['OR',
             ['user.id' => $user->id], // User also can view own profile
-            ['IN', 'user.visibility', $allowedVisibilities]
+            ['IN', 'user.visibility', $allowedVisibilities],
         ]);
     }
 

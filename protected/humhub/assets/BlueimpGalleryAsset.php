@@ -35,8 +35,8 @@ class BlueimpGalleryAsset extends AssetBundle
     public $publishOptions = [
         'only' => [
             'blueimp-gallery.min.js',
-            'blueimp-gallery.min.js.map'
-        ]
+            'blueimp-gallery.min.js.map',
+        ],
     ];
 
     /**
@@ -44,6 +44,6 @@ class BlueimpGalleryAsset extends AssetBundle
      */
     public $depends = [
         JqueryWidgetAsset::class,
-        BlueimpGalleryStyleAsset::class
+        BlueimpGalleryStyleAsset::class,
     ];
 }

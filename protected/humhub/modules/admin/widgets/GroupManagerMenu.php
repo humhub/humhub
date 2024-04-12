@@ -32,14 +32,14 @@ class GroupManagerMenu extends SubTabMenu
             'label' => Yii::t('AdminModule.user', 'Settings'),
             'url' => ['/admin/group/edit', 'id' => $this->group->id],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('admin', 'group', 'edit')
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'edit'),
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.user', "Permissions"),
             'url' => ['/admin/group/manage-permissions', 'id' => $this->group->id],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('admin', 'group', 'manage-permissions')
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'manage-permissions'),
         ]));
 
 
@@ -47,7 +47,7 @@ class GroupManagerMenu extends SubTabMenu
             'label' => Yii::t('AdminModule.user', "Members"),
             'url' => ['/admin/group/manage-group-users', 'id' => $this->group->id],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('admin', 'group', 'manage-group-users')
+            'isActive' => MenuLink::isActiveState('admin', 'group', 'manage-group-users'),
         ]));
 
         parent::init();

@@ -13,7 +13,7 @@ class UrlOembedHttpClient implements UrlOembedClient
 
     public const ERROR_RESPONSES = [
         self::RESPONSE_NOT_FOUND,
-        self::RESPONSE_UNAUTHORIZED
+        self::RESPONSE_UNAUTHORIZED,
     ];
 
     /**

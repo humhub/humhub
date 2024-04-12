@@ -26,55 +26,55 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space,
             'rules' => [
-                ['guestAccess']
+                ['guestAccess'],
             ],
             'action' => 'testAction']);
         $this->assertTrue($accessCheck->isGuest());
 
         // GuestAccess given with not matching action setting
         $accessCheck->rules = [
-            ['guestAccess' => ['otherTestAction']]
+            ['guestAccess' => ['otherTestAction']],
         ];
         $this->assertFalse($accessCheck->run());
 
         // GuestAccess given with matching actoin setting
         $accessCheck->rules = [
-            ['guestAccess' => ['otherTestAction', 'testAction']]
+            ['guestAccess' => ['otherTestAction', 'testAction']],
         ];
         $this->assertTrue($accessCheck->run());
 
         // AdminOnly setting should overwrite the guestAccess
         $accessCheck->rules = [
             ['guestAccess' => ['otherTestAction', 'testAction']],
-            [ControllerAccess::RULE_ADMIN_ONLY]
+            [ControllerAccess::RULE_ADMIN_ONLY],
         ];
         $this->assertFalse($accessCheck->run());
 
         // AdminOnly setting should overwrite the guestAccess
         $accessCheck->rules = [
             ['guestAccess' => ['otherTestAction', 'testAction']],
-            [ControllerAccess::RULE_ADMIN_ONLY => ['testAction']]
+            [ControllerAccess::RULE_ADMIN_ONLY => ['testAction']],
         ];
         $this->assertFalse($accessCheck->run());
 
         // AdminOnly setting should overwrite the guestAccess
         $accessCheck->rules = [
             ['guestAccess' => ['otherTestAction', 'testAction']],
-            [ControllerAccess::RULE_ADMIN_ONLY => ['otherTestAction']]
+            [ControllerAccess::RULE_ADMIN_ONLY => ['otherTestAction']],
         ];
         $this->assertTrue($accessCheck->run());
 
         // LoggedInOnly setting should overwrite the guestAccess
         $accessCheck->rules = [
             [ControllerAccess::RULE_ADMIN_ONLY => ['otherTestAction']],
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
         ];
         $this->assertFalse($accessCheck->run());
 
         // LoggedInOnly setting should overwrite the guestAccess
         $accessCheck->rules = [
             [ControllerAccess::RULE_ADMIN_ONLY => ['otherTestAction']],
-            [ControllerAccess::RULE_LOGGED_IN_ONLY => 'otherTestAction']
+            [ControllerAccess::RULE_LOGGED_IN_ONLY => 'otherTestAction'],
         ];
         $this->assertTrue($accessCheck->run());
 
@@ -82,7 +82,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck->rules = [
             [ControllerAccess::RULE_ADMIN_ONLY => ['otherTestAction']],
             [ControllerAccess::RULE_LOGGED_IN_ONLY => 'testAction'],
-            ['guestAccess' => 'testAction']
+            ['guestAccess' => 'testAction'],
         ];
         $this->assertFalse($accessCheck->run());
 
@@ -92,19 +92,19 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
 
         // Global Permission setting
         $accessCheck->rules = [
-            ['permission' => ContentTestPermission1::class]
+            ['permission' => ContentTestPermission1::class],
         ];
         $this->assertFalse($accessCheck->run());
 
         // Action restricted permission setting
         $accessCheck->rules = [
-            ['permission' => ContentTestPermission1::class, 'actions' => ['otherTestAction']]
+            ['permission' => ContentTestPermission1::class, 'actions' => ['otherTestAction']],
         ];
         $this->assertTrue($accessCheck->run());
 
         // Matching action related permission setting
         $accessCheck->rules = [
-            ['permission' => ContentTestPermission1::class, 'actions' => ['otherTestAction', 'testAction']]
+            ['permission' => ContentTestPermission1::class, 'actions' => ['otherTestAction', 'testAction']],
         ];
         $this->assertFalse($accessCheck->run());
     }
@@ -140,13 +140,13 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
 
         // Not related
         $accessCheck->rules = [
-            [ContentContainerControllerAccess::RULE_SPACE_ONLY => ['otherAction']]
+            [ContentContainerControllerAccess::RULE_SPACE_ONLY => ['otherAction']],
         ];
 
         $this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
-            [ContentContainerControllerAccess::RULE_SPACE_ONLY => ['otherAction', 'testAction']]
+            [ContentContainerControllerAccess::RULE_SPACE_ONLY => ['otherAction', 'testAction']],
         ];
 
         $this->assertFalse($accessCheck->run());
@@ -170,13 +170,13 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
 
         // Not related
         $accessCheck->rules = [
-            [ContentContainerControllerAccess::RULE_PROFILE_ONLY => ['otherAction']]
+            [ContentContainerControllerAccess::RULE_PROFILE_ONLY => ['otherAction']],
         ];
 
         $this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
-            [ContentContainerControllerAccess::RULE_PROFILE_ONLY => ['otherAction', 'testAction']]
+            [ContentContainerControllerAccess::RULE_PROFILE_ONLY => ['otherAction', 'testAction']],
         ];
 
         $this->assertFalse($accessCheck->run());
@@ -192,8 +192,8 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
             'contentContainer' => $space,
             'action' => 'testAction',
             'rules' => [
-                ['userGroup' => [Space::USERGROUP_USER]]
-            ]
+                ['userGroup' => [Space::USERGROUP_USER]],
+            ],
         ]);
 
         $this->assertFalse($accessCheck->run());
@@ -285,7 +285,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space,
             'rules' => [
-                [ControllerAccess::RULE_LOGGED_IN_ONLY]
+                [ControllerAccess::RULE_LOGGED_IN_ONLY],
             ],
             'action' => 'testAction']);
         $this->assertFalse($accessCheck->run());
@@ -304,7 +304,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space4,
             'rules' => [[ControllerAccess::RULE_ADMIN_ONLY]],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         $this->assertFalse($accessCheck->run());
 
@@ -313,7 +313,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space4,
             'rules' => [[ControllerAccess::RULE_ADMIN_ONLY]],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         $this->assertFalse($accessCheck->run());
 
@@ -322,7 +322,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space4,
             'rules' => [[ControllerAccess::RULE_ADMIN_ONLY]],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         $this->assertTrue($accessCheck->run());
 
@@ -331,7 +331,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space4,
             'rules' => [[ControllerAccess::RULE_ADMIN_ONLY]],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         $this->assertTrue($accessCheck->run());
 
@@ -340,7 +340,7 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space4,
             'rules' => [[ControllerAccess::RULE_ADMIN_ONLY]],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         $this->assertTrue($accessCheck->run());
     }
@@ -363,9 +363,9 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space,
             'rules' => [
-                ['permission' => [ContentTestPermission1::class]]
+                ['permission' => [ContentTestPermission1::class]],
             ],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
 
         # $this->assertFalse($accessCheck->run());
@@ -377,33 +377,33 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space,
             'rules' => [
-                ['permission' => [ContentTestPermission2::class]]
+                ['permission' => [ContentTestPermission2::class]],
             ],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         # $this->assertFalse($accessCheck->run());
 
         $accessCheck->rules = [
-            ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]]
+            ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]],
         ];
         # $this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
             ['permission' => [ContentTestPermission2::class], 'actions' => 'otherPermission'],
-            ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]]
+            ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]],
         ];
         # $this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
             ['permission' => [ContentTestPermission2::class], 'actions' => 'otherPermission'],
-            ['permission' => ContentTestPermission1::class]
+            ['permission' => ContentTestPermission1::class],
         ];
         #$this->assertTrue($accessCheck->run());
 
         $accessCheck->rules = [
             [ControllerAccess::RULE_ADMIN_ONLY],
             ['permission' => [ContentTestPermission2::class], 'actions' => 'otherPermission'],
-            ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]]
+            ['permission' => [ContentTestPermission1::class, ContentTestPermission2::class]],
         ];
         #$this->assertFalse($accessCheck->run());
 
@@ -413,9 +413,9 @@ class ContentContainerAccessControllerTest extends HumHubDbTestCase
         $accessCheck = new ContentContainerControllerAccess([
             'contentContainer' => $space,
             'rules' => [
-                ['permission' => [ContentTestPermission2::class]]
+                ['permission' => [ContentTestPermission2::class]],
             ],
-            'action' => 'testAction'
+            'action' => 'testAction',
         ]);
         $this->assertTrue($accessCheck->run());
     }

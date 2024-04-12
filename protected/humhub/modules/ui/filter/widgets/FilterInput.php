@@ -114,7 +114,7 @@ class FilterInput extends Widget
         return [
             'options' => $this->options,
             'title' => $this->title,
-            'value' => $this->value
+            'value' => $this->value,
         ];
     }
 }

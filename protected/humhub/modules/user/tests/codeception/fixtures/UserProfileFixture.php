@@ -16,7 +16,7 @@ class UserProfileFixture extends ActiveFixture
     public $dataFile = '@modules/user/tests/codeception/fixtures/data/profile.php';
 
     public $depends = [
-        'humhub\modules\user\tests\codeception\fixtures\ProfileFieldFixture'
+        'humhub\modules\user\tests\codeception\fixtures\ProfileFieldFixture',
     ];
 
 }

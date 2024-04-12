@@ -162,7 +162,7 @@ class BaseFormAuth extends BaseClient
 
         if ($this->getFailedLoginAttemptsCount() > 0) {
             Yii::$app->getView()->warn(Yii::t('UserModule.base', 'Unsuccessful login attempts since last login: {failedLoginAttemptsCount}', [
-                '{failedLoginAttemptsCount}' => $this->getFailedLoginAttemptsCount()
+                '{failedLoginAttemptsCount}' => $this->getFailedLoginAttemptsCount(),
             ]));
         }
     }

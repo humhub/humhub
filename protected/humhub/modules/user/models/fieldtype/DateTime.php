@@ -43,7 +43,7 @@ class DateTime extends BaseType
     public function rules()
     {
         return [
-            [['showTimePicker'], 'in', 'range' => [0, 1]]
+            [['showTimePicker'], 'in', 'range' => [0, 1]],
         ];
     }
 
@@ -64,7 +64,7 @@ class DateTime extends BaseType
                         'label' => Yii::t('UserModule.profile', 'Show date/time picker'),
                         'class' => 'form-control',
                     ],
-                ]
+                ],
             ]]);
     }
 
@@ -102,8 +102,8 @@ class DateTime extends BaseType
         return parent::getFieldFormDefinition($user, array_merge([
             'format' => Yii::$app->formatter->dateInputFormat,
             'dateTimePickerOptions' => [
-                'pickTime' => ($this->showTimePicker)
-            ]
+                'pickTime' => ($this->showTimePicker),
+            ],
         ], $options));
     }
 
@@ -117,7 +117,7 @@ class DateTime extends BaseType
         $date = \DateTime::createFromFormat(
             'Y-m-d H:i:s',
             $user->profile->$internalName ?? '',
-            new DateTimeZone(Yii::$app->formatter->timeZone)
+            new DateTimeZone(Yii::$app->formatter->timeZone),
         );
 
         if ($date === false) {

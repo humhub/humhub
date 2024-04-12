@@ -380,7 +380,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         $this->assertCount(2, $results);
         $this->assertEquals([
             $allPublicPost->id,
-            $allPrivatePost->id
+            $allPrivatePost->id,
         ], $this->getObjectIds($results));
 
         // User - member of the Space 1 and Space 2
@@ -391,7 +391,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
             $allPublicPost->id,
             $allPrivatePost->id,
             $userPublicPost->id,
-            $userPrivatePost->id
+            $userPrivatePost->id,
         ], $this->getObjectIds($results));
 
         // User - member of all Spaces
@@ -404,7 +404,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
             $userPublicPost->id,
             $userPrivatePost->id,
             $memberPublicPost->id,
-            $memberPrivatePost->id
+            $memberPrivatePost->id,
         ], $this->getObjectIds($results));
     }
 

@@ -134,7 +134,7 @@ class DynamicFixtureHelper extends Module
             'notification' => [ 'class' => NotificationFixture::class],
             'activity' => [ 'class' => ActivityFixture::class],
             'friendship' => ['class' => FriendshipFixture::class],
-            'live' => ['class' => LiveFixture::class]
+            'live' => ['class' => LiveFixture::class],
         ];
     }
 }

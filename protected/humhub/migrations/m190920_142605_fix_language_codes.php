@@ -21,7 +21,7 @@ class m190920_142605_fix_language_codes extends Migration
             'nn_no' => 'nn-NO',
             'zh_cn' => 'zh-CN',
             'zh_tw' => 'zh-TW',
-            'fa_ir' => 'fa-IR'
+            'fa_ir' => 'fa-IR',
         ];
 
         foreach ($changedCodes as $old => $new) {

@@ -102,7 +102,7 @@ class AssetBundle extends BaseAssetBundle
      * core assets.
      */
     public $defaultDepends = [
-        CoreBundleAsset::class
+        CoreBundleAsset::class,
     ];
 
     /**

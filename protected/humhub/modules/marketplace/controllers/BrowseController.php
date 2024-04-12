@@ -29,7 +29,7 @@ class BrowseController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageModules::class]
+            ['permissions' => ManageModules::class],
         ];
     }
 
@@ -69,7 +69,7 @@ class BrowseController extends Controller
         $this->getModuleService()->install();
 
         return $this->renderAjax('installed', [
-            'moduleId' => Yii::$app->request->post('moduleId')
+            'moduleId' => Yii::$app->request->post('moduleId'),
         ]);
     }
 
@@ -101,7 +101,7 @@ class BrowseController extends Controller
         }
 
         return $this->renderAjax('enabled', [
-            'moduleConfigUrl' => $moduleService->module->getConfigUrl()
+            'moduleConfigUrl' => $moduleService->module->getConfigUrl(),
         ]);
     }
 

@@ -14,22 +14,22 @@ $testConfig = [
             'class' => \yii\web\CacheSession::class,
         ],
         'request' => [
-            'cookieValidationKey' => 'test'
+            'cookieValidationKey' => 'test',
         ],
         'user' => [
-            'enableSession' => false
+            'enableSession' => false,
         ],
         'assetManager' => [
-            'basePath' => '@root/assets/'
+            'basePath' => '@root/assets/',
         ],
     ],
     'params' => [
         'fixed-settings' => [
             'base' => [
-                'baseUrl' => 'http://localhost'
-            ]
-        ]
-    ]
+                'baseUrl' => 'http://localhost',
+            ],
+        ],
+    ],
 ];
 
 defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
@@ -41,5 +41,5 @@ return yii\helpers\ArrayHelper::merge(
     // Test Common Config
     require(__DIR__ . '/config.php'),
     // Unit Test Config
-    $testConfig
+    $testConfig,
 );

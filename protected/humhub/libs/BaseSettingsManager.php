@@ -75,7 +75,7 @@ abstract class BaseSettingsManager extends Component
     {
         if ($name === '') {
             throw new InvalidArgumentException(
-                sprintf('Argument #1 ($name) passed to %s may not be an empty string!', __METHOD__)
+                sprintf('Argument #1 ($name) passed to %s may not be an empty string!', __METHOD__),
             );
         }
 
@@ -289,7 +289,7 @@ abstract class BaseSettingsManager extends Component
                 throw new InvalidArgumentTypeException(
                     '$prefix',
                     ['string', 'int', 'null', \Stringable::class],
-                    $prefix
+                    $prefix,
                 );
             }
 

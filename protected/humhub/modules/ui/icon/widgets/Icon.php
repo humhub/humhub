@@ -637,7 +637,7 @@ class Icon extends Widget
         'yelp',
         'youtube',
         'youtube-play',
-        'youtube-square'
+        'youtube-square',
     ];
 
     /**
@@ -985,7 +985,7 @@ class Icon extends Widget
             'border' => $this->border,
             'htmlOptions' => $this->htmlOptions,
             'color' => $this->color,
-            'lib' => $this->lib
+            'lib' => $this->lib,
         ];
     }
 

@@ -21,15 +21,15 @@ class Assets extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.marketplace.js'
+        'js/humhub.marketplace.js',
     ];
 
     public static function register($view)
     {
         $view->registerJsConfig('marketplace', [
             'text' => [
-                'installing' => Yii::t('MarketplaceModule.base', 'Module is <strong>installing...</strong>')
-            ]
+                'installing' => Yii::t('MarketplaceModule.base', 'Module is <strong>installing...</strong>'),
+            ],
         ]);
 
         return parent::register($view);

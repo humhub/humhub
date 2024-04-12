@@ -33,13 +33,13 @@ class InstalledModuleActionButtons extends Widget
         if (!$this->module->getIsEnabled() && Yii::$app->user->can(ManageModules::class)) {
             return Button::asLink(
                 Yii::t('AdminModule.base', 'Enable'),
-                Url::to(['/admin/module/enable', 'moduleId' => $this->module->id])
+                Url::to(['/admin/module/enable', 'moduleId' => $this->module->id]),
             )
                 ->cssClass('btn btn-sm btn-info')
                 ->options([
                     'data-method' => 'POST',
                     'data-loader' => 'modal',
-                    'data-message' => Yii::t('AdminModule.base', 'Enable module...')
+                    'data-message' => Yii::t('AdminModule.base', 'Enable module...'),
                 ]);
         }
 

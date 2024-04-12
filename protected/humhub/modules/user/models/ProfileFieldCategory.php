@@ -48,7 +48,7 @@ class ProfileFieldCategory extends ActiveRecord
             [['title', 'sort_order'], 'required'],
             [['description'], 'string'],
             [['sort_order', 'module_id', 'visibility', 'is_system'], 'integer'],
-            [['title', 'translation_category'], 'string', 'max' => 255]
+            [['title', 'translation_category'], 'string', 'max' => 255],
         ];
     }
 

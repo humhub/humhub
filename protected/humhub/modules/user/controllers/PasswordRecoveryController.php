@@ -45,7 +45,7 @@ class PasswordRecoveryController extends Controller
         return [
             'captcha' => [
                 'class' => 'yii\captcha\CaptchaAction',
-            ]
+            ],
         ];
     }
 

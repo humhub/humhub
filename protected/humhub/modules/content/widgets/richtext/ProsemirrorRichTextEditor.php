@@ -27,7 +27,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     public $menuClass;
 
     public static $renderer = [
-        'class' => ProsemirrorRichText::class
+        'class' => ProsemirrorRichText::class,
     ];
 
     public function init()
@@ -48,7 +48,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     public function getAttributes()
     {
         return [
-            'class' => 'ProsemirrorEditor ' . $this->menuClass
+            'class' => 'ProsemirrorEditor ' . $this->menuClass,
         ];
     }
 
@@ -59,7 +59,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     {
         return UploadInput::widget([
             'id' => $this->getId(true) . '-file-upload',
-            'hideInStream' => true
+            'hideInStream' => true,
         ]);
     }
 }

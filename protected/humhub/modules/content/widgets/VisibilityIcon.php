@@ -102,7 +102,7 @@ class VisibilityIcon extends Icon
                     : Yii::t(
                         'ContentModule.base',
                         'Visible to friends of {displayName}',
-                        ['displayName' => Html::encode($model->content->container->getDisplayName())]
+                        ['displayName' => Html::encode($model->content->container->getDisplayName())],
                     );
             }
 
@@ -113,7 +113,7 @@ class VisibilityIcon extends Icon
                     : Yii::t(
                         'ContentModule.base',
                         'Visible to you and {displayName}',
-                        ['displayName' => Html::encode($model->content->createdBy->getDisplayName())]
+                        ['displayName' => Html::encode($model->content->createdBy->getDisplayName())],
                     ); // Someone posted private content on my profile
             }
 

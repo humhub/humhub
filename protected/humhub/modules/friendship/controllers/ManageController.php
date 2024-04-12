@@ -36,7 +36,7 @@ class ManageController extends BaseAccountController
 
         return $this->render('list', [
             'user' => $this->getUser(),
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -51,7 +51,7 @@ class ManageController extends BaseAccountController
 
         return $this->render('requests', [
             'user' => $this->getUser(),
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
     }
 
@@ -66,7 +66,7 @@ class ManageController extends BaseAccountController
 
         return $this->render('sent-requests', [
             'user' => $this->getUser(),
-            'dataProvider' => $dataProvider
+            'dataProvider' => $dataProvider,
         ]);
     }
 

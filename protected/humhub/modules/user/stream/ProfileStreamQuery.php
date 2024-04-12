@@ -30,7 +30,7 @@ class ProfileStreamQuery extends ContentContainerStreamQuery
             'container' => $this->container,
             'scope' => $this->includeContributions
                 ? IncludeAllContributionsFilter::SCOPE_ALL
-                : IncludeAllContributionsFilter::SCOPE_PROFILE
+                : IncludeAllContributionsFilter::SCOPE_PROFILE,
         ]));
 
         parent::beforeApplyFilters();

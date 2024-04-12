@@ -71,7 +71,7 @@ class ManifestController extends Controller
                 $this->manifest['icons'][] = [
                     'src' => $src,
                     'type' => 'image/png',
-                    'sizes' => $size . 'x' . $size
+                    'sizes' => $size . 'x' . $size,
                 ];
             }
         }

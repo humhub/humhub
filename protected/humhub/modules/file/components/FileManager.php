@@ -122,7 +122,7 @@ class FileManager extends Component
             return ArrayHelper::getValue(
                 ArrayHelper::index($this->record->files, null, 'show_in_stream'),
                 +$showInStream,
-                []
+                [],
             );
         } else {
             if ($showInStream) {

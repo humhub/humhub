@@ -67,7 +67,7 @@ class Number extends BaseType
                         'type' => 'text',
                         'class' => 'form-control',
                     ],
-                ]
+                ],
             ]]);
     }
 

@@ -56,7 +56,7 @@ class ModalDialog extends Modal
             'bodyClass' => $bodyClass,
             'footer' => $this->footer,
             'initialLoader' => $this->initialLoader,
-            'showClose' => $showClose
+            'showClose' => $showClose,
         ]);
     }
 
@@ -68,7 +68,7 @@ class ModalDialog extends Modal
         $dialogClass .= ' ' . $this->dialogClass;
 
         return [
-            'class' => $dialogClass
+            'class' => $dialogClass,
         ];
     }
     public function getData()

@@ -254,7 +254,7 @@ class NotificationManager
         if ($isDefault) {
             // Add all user with no notification setting
             $query->orWhere([
-                'and', 'user.status=1', ['not exists', $this->findNotExistingSettingSubQuery()]
+                'and', 'user.status=1', ['not exists', $this->findNotExistingSettingSubQuery()],
             ]);
         }
 
@@ -347,7 +347,7 @@ class NotificationManager
         Membership::updateAll(['send_notifications' => 0], [
             'and',
             ['user_id' => $user->id],
-            ['not in', 'space_id', $spaceIds]
+            ['not in', 'space_id', $spaceIds],
         ]);
 
         // Update non selected following spaces
@@ -355,7 +355,7 @@ class NotificationManager
             'and',
             ['user_id' => $user->id],
             ['object_model' => Space::class],
-            ['not in', 'object_id', $spaceIds]
+            ['not in', 'object_id', $spaceIds],
         ]);
     }
 

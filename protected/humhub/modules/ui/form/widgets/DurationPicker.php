@@ -36,7 +36,7 @@ class DurationPicker extends JsInputWidget
             'unlimitedHours' => true,
             'defaultTime' => '01:00',
             'timeSteps' => [1, 15],
-            'spinnerImage' => ''
+            'spinnerImage' => '',
         ];
 
         JqueryTimeEntryAsset::register($view);

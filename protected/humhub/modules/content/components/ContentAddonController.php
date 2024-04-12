@@ -89,7 +89,7 @@ class ContentAddonController extends Controller
         $modelClass = DataTypeHelper::matchClassType(
             $modelClass,
             [ContentAddonActiveRecord::class, ContentActiveRecord::class],
-            true
+            true,
         );
         $target = $modelClass::findOne(['id' => $pk]);
 

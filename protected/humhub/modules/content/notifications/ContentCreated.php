@@ -46,12 +46,12 @@ class ContentCreated extends BaseNotification
         if ($this->source->content->container instanceof User && $this->record->user->is($this->source->content->container)) {
             return Yii::t('ContentModule.notifications', '{displayName} posted on your profile {contentTitle}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->getContentInfo($this->source, false)
+                'contentTitle' => $this->getContentInfo($this->source, false),
             ]);
         } else {
             return Yii::t('ContentModule.notifications', '{displayName} created {contentTitle}.', [
                 'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-                'contentTitle' => $this->getContentInfo($this->source)
+                'contentTitle' => $this->getContentInfo($this->source),
             ]);
         }
 

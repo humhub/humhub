@@ -40,7 +40,7 @@ class ProfileFieldCategoryModelTest extends HumHubDbTestCase
 
         $validParams = [
             'title' => 'Hobbies',
-            'sort_order' => 500
+            'sort_order' => 500,
         ];
         $model = new ProfileFieldCategory();
         $model->load($validParams, '');

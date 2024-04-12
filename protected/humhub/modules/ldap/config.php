@@ -18,10 +18,10 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'consoleControllerMap' => [
-        'ldap' => 'humhub\modules\ldap\commands\LdapController'
+        'ldap' => 'humhub\modules\ldap\commands\LdapController',
     ],
     'events' => [
         [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenu']],
         [Collection::class, Collection::EVENT_BEFORE_CLIENTS_SET, [Events::class, 'onAuthClientCollectionSet']],
-    ]
+    ],
 ];

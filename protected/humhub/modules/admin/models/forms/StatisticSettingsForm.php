@@ -52,7 +52,7 @@ class StatisticSettingsForm extends Model
     {
         return [
             'trackingHtmlCode' => Yii::t('AdminModule.settings', 'Inserted script tags must contain a nonce. e.g. {code}', [
-                'code' => '<code>&lt;script nonce={{nonce}}&gt;</code>'
+                'code' => '<code>&lt;script nonce={{nonce}}&gt;</code>',
             ]),
         ];
     }

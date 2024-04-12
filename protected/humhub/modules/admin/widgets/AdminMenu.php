@@ -74,8 +74,8 @@ class AdminMenu extends LeftNavigation
             'isVisible' => Yii::$app->user->can([
                 ManageUsers::class,
                 ManageSettings::class,
-                ManageGroups::class
-            ])
+                ManageGroups::class,
+            ]),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -87,8 +87,8 @@ class AdminMenu extends LeftNavigation
             'isActive' => MenuLink::isActiveState('admin', 'space'),
             'isVisible' => Yii::$app->user->can([
                 ManageSpaces::class,
-                ManageSettings::class
-            ])
+                ManageSettings::class,
+            ]),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -99,7 +99,7 @@ class AdminMenu extends LeftNavigation
             'sortOrder' => 500,
             'htmlOptions' => ['class' => 'modules'],
             'isActive' => MenuLink::isActiveState('admin', 'module'),
-            'isVisible' => Yii::$app->user->can(ManageModules::class) || Yii::$app->user->can(ManageSettings::class)
+            'isVisible' => Yii::$app->user->can(ManageModules::class) || Yii::$app->user->can(ManageSettings::class),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -109,7 +109,7 @@ class AdminMenu extends LeftNavigation
             'icon' => 'gears',
             'sortOrder' => 600,
             'isActive' => MenuLink::isActiveState('admin', 'setting'),
-            'isVisible' => Yii::$app->user->can(ManageSettings::class)
+            'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -119,7 +119,7 @@ class AdminMenu extends LeftNavigation
             'icon' => 'info-circle',
             'sortOrder' => 1000,
             'isActive' => MenuLink::isActiveState('admin', 'information'),
-            'isVisible' => Yii::$app->user->can(SeeAdminInformation::class)
+            'isVisible' => Yii::$app->user->can(SeeAdminInformation::class),
         ]));
 
         parent::init();

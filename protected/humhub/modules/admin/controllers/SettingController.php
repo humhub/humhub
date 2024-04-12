@@ -73,7 +73,7 @@ class SettingController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageSettings::class]
+            ['permissions' => ManageSettings::class],
         ];
     }
 
@@ -94,7 +94,7 @@ class SettingController extends Controller
         }
 
         return $this->render('basic', [
-            'model' => $form
+            'model' => $form,
         ]);
     }
 
@@ -133,7 +133,7 @@ class SettingController extends Controller
 
         return $this->render('caching', [
             'model' => $form,
-            'cacheTypes' => $form->getTypes()
+            'cacheTypes' => $form->getTypes(),
         ]);
     }
 
@@ -146,12 +146,12 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
-                '/admin/setting/statistic'
+                '/admin/setting/statistic',
             ]);
         }
 
         return $this->render('statistic', [
-            'model' => $form
+            'model' => $form,
         ]);
     }
 
@@ -166,7 +166,7 @@ class SettingController extends Controller
         }
 
         return $this->render('notification', [
-            'model' => $form
+            'model' => $form,
         ]);
     }
 
@@ -182,7 +182,7 @@ class SettingController extends Controller
 
         return $this->render('mailing_server', [
             'model' => $form,
-            'settings' => Yii::$app->settings
+            'settings' => Yii::$app->settings,
         ]);
     }
 
@@ -193,7 +193,7 @@ class SettingController extends Controller
 
         try {
             $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
-                'message' => Yii::t('AdminModule.settings', 'Test message')
+                'message' => Yii::t('AdminModule.settings', 'Test message'),
             ]);
             $mail->setTo($user->email);
             $mail->setSubject(Yii::t('AdminModule.settings', 'Test message'));
@@ -203,8 +203,8 @@ class SettingController extends Controller
                     Yii::t(
                         'AdminModule.settings',
                         'Saved and sent test email to: {address}',
-                        ['address' => $user->email]
-                    )
+                        ['address' => $user->email],
+                    ),
                 );
             } else {
                 $this->view->error(Yii::t('AdminModule.settings', 'Could not send test email.'));
@@ -223,7 +223,7 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
-                '/admin/setting/design'
+                '/admin/setting/design',
             ]);
         }
 
@@ -241,7 +241,7 @@ class SettingController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
-                '/admin/setting/file'
+                '/admin/setting/file',
             ]);
         }
 
@@ -262,7 +262,7 @@ class SettingController extends Controller
                 'model' => $form,
                 'maxUploadSize' => $maxUploadSize,
                 'maxUploadSizeText' => $maxUploadSizeText,
-            ]
+            ],
         );
     }
 
@@ -325,7 +325,7 @@ class SettingController extends Controller
             Log::deleteAll(['<', 'log_time', $timeAgo]);
             Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.settings', 'Saved'));
             return $this->redirect([
-                '/admin/setting/logs'
+                '/admin/setting/logs',
             ]);
         }
 
@@ -333,7 +333,7 @@ class SettingController extends Controller
             'logsCount' => $logsCount,
             'model' => $form,
             'limitAgeOptions' => $limitAgeOptions,
-            'dating' => $dating
+            'dating' => $dating,
         ]);
     }
 
@@ -359,7 +359,7 @@ class SettingController extends Controller
             }
             $providers[$form->name] = [
                 'endpoint' => $form->endpoint,
-                'pattern' => $form->pattern
+                'pattern' => $form->pattern,
             ];
             UrlOembed::setProviders($providers);
 
@@ -368,7 +368,7 @@ class SettingController extends Controller
 
         return $this->render('oembed_edit', [
             'model' => $form,
-            'name' => $name
+            'name' => $name,
         ]);
     }
 
@@ -386,7 +386,7 @@ class SettingController extends Controller
             UrlOembed::setProviders($providers);
         }
         return $this->redirect([
-            '/admin/setting/oembed'
+            '/admin/setting/oembed',
         ]);
     }
 
@@ -394,8 +394,8 @@ class SettingController extends Controller
     {
         return $this->redirect(
             [
-                'caching'
-            ]
+                'caching',
+            ],
         );
     }
 }

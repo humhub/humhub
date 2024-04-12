@@ -270,7 +270,7 @@ class Iso3166Codes
         'EH' => 'Western Sahara',
         'YE' => 'Yemen',
         'ZM' => 'Zambia',
-        'ZW' => 'Zimbabwe'
+        'ZW' => 'Zimbabwe',
     ];
 
     public static $phoneCodes = [
@@ -518,7 +518,7 @@ class Iso3166Codes
         'EH' => '212',
         'YE' => '967',
         'ZM' => '260',
-        'ZW' => '263'
+        'ZW' => '263',
     ];
 
     public static function country($code, $translate = true)

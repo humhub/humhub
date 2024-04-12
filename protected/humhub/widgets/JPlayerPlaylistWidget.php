@@ -50,7 +50,7 @@ class JPlayerPlaylistWidget extends JsWidget
 
         return $this->render('jPlayerAudio', [
             'containerId' => $this->getContainerId(),
-            'options' => $options
+            'options' => $options,
         ]);
     }
 
@@ -60,7 +60,7 @@ class JPlayerPlaylistWidget extends JsWidget
         foreach($this->playlist as $track) {
             $result[] = [
                 'title' => Html::encode(Helpers::trimText($track->file_name, 50)),
-                FileHelper::getExtension($track->file_name) => $track->getUrl()
+                FileHelper::getExtension($track->file_name) => $track->getUrl(),
             ];
         }
         return $result;
@@ -69,14 +69,14 @@ class JPlayerPlaylistWidget extends JsWidget
     public function getData()
     {
         return [
-            'container-id' => '#' . $this->getContainerId()
+            'container-id' => '#' . $this->getContainerId(),
         ];
     }
 
     public function getAttributes()
     {
         return [
-            'class' => 'jp-jplayer'
+            'class' => 'jp-jplayer',
         ];
     }
 

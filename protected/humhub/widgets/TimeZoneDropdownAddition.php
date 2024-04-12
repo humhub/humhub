@@ -51,7 +51,7 @@ class TimeZoneDropdownAddition extends JsInputWidget
             'name' => $this->name,
             'currentTimeZoneLabel' => $this->getCurrentLabel(),
             'value' => $this->value,
-            'timeZoneItems' => $this->getTimeZoneItems()
+            'timeZoneItems' => $this->getTimeZoneItems(),
         ]);
     }
 

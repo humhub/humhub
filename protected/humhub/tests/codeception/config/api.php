@@ -23,5 +23,5 @@ return yii\helpers\ArrayHelper::merge(
     // Test Common Config
     require(__DIR__ . '/config.php'),
     // API Test Config
-    $testConfig
+    $testConfig,
 );

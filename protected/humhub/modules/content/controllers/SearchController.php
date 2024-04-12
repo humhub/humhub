@@ -53,7 +53,7 @@ class SearchController extends Controller
                 ? $results
                 : $this->renderAjax('results', ['results' => $results, 'totalCount' => $totalCount]),
             'page' => $page,
-            'isLast' => $results === '' || !$resultSet || $page === $resultSet->pagination->getPageCount()
+            'isLast' => $results === '' || !$resultSet || $page === $resultSet->pagination->getPageCount(),
         ]);
     }
 

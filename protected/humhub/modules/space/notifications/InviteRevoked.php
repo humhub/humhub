@@ -61,7 +61,7 @@ class InviteRevoked extends BaseNotification
     {
         return $this->getInfoText(
             Html::tag('strong', Html::encode($this->originator->displayName)),
-            Html::tag('strong', Html::encode($this->getSpace()->name))
+            Html::tag('strong', Html::encode($this->getSpace()->name)),
         );
     }
 
@@ -69,7 +69,7 @@ class InviteRevoked extends BaseNotification
     {
         return Yii::t('SpaceModule.notification', '{displayName} revoked your invitation for the space {spaceName}', [
             '{displayName}' => $displayName,
-            '{spaceName}' => $spaceName
+            '{spaceName}' => $spaceName,
         ]);
     }
 }

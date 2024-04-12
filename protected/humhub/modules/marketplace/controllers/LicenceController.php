@@ -27,7 +27,7 @@ class LicenceController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageModules::class]
+            ['permissions' => ManageModules::class],
         ];
     }
 

@@ -53,13 +53,13 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
         $this->query->leftJoin(
             'space_membership',
             'contentcontainer.pk=space_membership.space_id AND contentcontainer.class=:spaceClass AND space_membership.user_id=:userId',
-            [':userId' => $queryUser->id, ':spaceClass' => Space::class]
+            [':userId' => $queryUser->id, ':spaceClass' => Space::class],
         );
 
         $this->query->andWhere([
             'OR',
             ['content.created_by' => $this->container->id],
-            ['content.contentcontainer_id' => $this->container->contentcontainer_id]
+            ['content.contentcontainer_id' => $this->container->contentcontainer_id],
         ]);
 
         if ($queryUser->canViewAllContent(Space::class)) {

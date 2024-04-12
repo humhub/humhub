@@ -32,7 +32,7 @@ class TourController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['login']
+            ['login'],
         ];
     }
 
@@ -112,7 +112,7 @@ class TourController extends Controller
         }
 
         return $this->renderAjax('welcome', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 }

@@ -50,7 +50,7 @@ class PublishScheduledContentTest extends HumHubDbTestCase
         $post = new Post($space, ['message' => 'Post for test scheduling']);
         Yii::$app->request->setBodyParams([
             'state' => Content::STATE_SCHEDULED,
-            'scheduledDate' => $datetime
+            'scheduledDate' => $datetime,
         ]);
 
         $result = WallCreateContentForm::create($post, $space);

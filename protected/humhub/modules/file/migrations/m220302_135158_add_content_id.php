@@ -30,7 +30,7 @@ class m220302_135158_add_content_id extends Migration
                ON comment.object_model = content.object_model
               AND comment.object_id = content.object_id
               SET file.content_id = content.id', [
-            'commentModel' => Comment::class
+            'commentModel' => Comment::class,
         ]);
 
         // Sub comments
@@ -45,7 +45,7 @@ class m220302_135158_add_content_id extends Migration
                ON c2.object_model = content.object_model
               AND c2.object_id = content.object_id
               SET file.content_id = content.id', [
-            'commentModel' => Comment::class
+            'commentModel' => Comment::class,
         ]);
     }
 

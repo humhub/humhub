@@ -71,8 +71,8 @@ class Date extends BaseType
         return parent::getFieldFormDefinition($user, array_merge([
             'format' => Yii::$app->formatter->dateInputFormat,
             'dateTimePickerOptions' => [
-                'pickTime' => false
-            ]
+                'pickTime' => false,
+            ],
         ], $options));
     }
 
@@ -85,7 +85,7 @@ class Date extends BaseType
         $date = \DateTime::createFromFormat(
             'Y-m-d',
             $user->profile->$internalName ?? '',
-            new DateTimeZone(Yii::$app->formatter->timeZone)
+            new DateTimeZone(Yii::$app->formatter->timeZone),
         );
 
         if ($date === false) {

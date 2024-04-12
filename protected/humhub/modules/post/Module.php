@@ -44,7 +44,7 @@ class Module extends ContentContainerModule
     {
         if ($contentContainer !== null) {
             return [
-                new permissions\CreatePost()
+                new permissions\CreatePost(),
             ];
         }
 

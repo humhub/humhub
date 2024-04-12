@@ -32,7 +32,7 @@ class AuthenticationController extends Controller
         $this->setActionTitles([
             'basic' => Yii::t('AdminModule.base', 'Basic'),
             'authentication' => Yii::t('AdminModule.base', 'Authentication'),
-            'authentication-ldap' => Yii::t('AdminModule.base', 'Authentication')
+            'authentication-ldap' => Yii::t('AdminModule.base', 'Authentication'),
         ]);
 
         $this->subLayout = '@admin/views/layouts/user';
@@ -46,7 +46,7 @@ class AuthenticationController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageSettings::class]
+            ['permissions' => ManageSettings::class],
         ];
     }
 

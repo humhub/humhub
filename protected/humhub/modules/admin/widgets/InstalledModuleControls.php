@@ -113,7 +113,7 @@ class InstalledModuleControls extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'nav nav-pills preferences'
+            'class' => 'nav nav-pills preferences',
         ];
     }
 

@@ -19,11 +19,11 @@ class m170723_133337_content_tag extends Migration
             'contentcontainer_id' => $this->integer()->null(),
             'type' => $this->string(100)->null(),
             'parent_id' => $this->integer()->null(),
-            'color' => $this->string(7)->null()
+            'color' => $this->string(7)->null(),
         ]);
 
         $this->createIndex('idx-content-tag', 'content_tag', [
-            'module_id', 'contentcontainer_id', 'name'
+            'module_id', 'contentcontainer_id', 'name',
         ]);
 
         $this->addForeignKey('fk-content-tag-container-id', 'content_tag', 'contentcontainer_id', 'contentcontainer', 'id', 'CASCADE');

@@ -81,7 +81,7 @@ abstract class ItemDrop extends Model
     public function rules()
     {
         return [
-            [['id', 'index', 'targetId'], 'integer']
+            [['id', 'index', 'targetId'], 'integer'],
         ];
     }
 

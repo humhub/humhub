@@ -215,30 +215,30 @@ class ProfileField extends ActiveRecord
                         'type' => 'text',
                         'maxlength' => 255,
                         'class' => 'form-control',
-                        'isVisible' => (!$isVirtualField)
+                        'isVisible' => (!$isVirtualField),
                     ],
                     'required' => [
                         'type' => 'checkbox',
-                        'isVisible' => (!$isVirtualField)
+                        'isVisible' => (!$isVirtualField),
                     ],
                     'visible' => [
                         'type' => 'checkbox',
                     ],
                     'show_at_registration' => [
                         'type' => 'checkbox',
-                        'isVisible' => (!$isVirtualField)
+                        'isVisible' => (!$isVirtualField),
                     ],
                     'editable' => [
                         'type' => 'checkbox',
-                        'isVisible' => (!$isVirtualField)
+                        'isVisible' => (!$isVirtualField),
                     ],
                     'searchable' => [
                         'type' => 'checkbox',
-                        'isVisible' => (!$isVirtualField)
+                        'isVisible' => (!$isVirtualField),
                     ],
                     'directory_filter' => [
                         'type' => 'checkbox',
-                        'isVisible' => ($canBeDirectoryFilter)
+                        'isVisible' => ($canBeDirectoryFilter),
                     ],
                     'profile_field_category_id' => [
                         'type' => 'dropdownlist',
@@ -252,7 +252,7 @@ class ProfileField extends ActiveRecord
                         'class' => 'form-control',
                         'readonly' => !$this->isNewRecord, // Cannot be changed for existing record
                     ],
-                ]
+                ],
             ]];
     }
 

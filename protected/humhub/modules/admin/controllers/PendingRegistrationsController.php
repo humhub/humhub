@@ -48,8 +48,8 @@ class PendingRegistrationsController extends Controller
                 'permission' => [
                     ManageUsers::class,
                     ManageGroups::class,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -69,7 +69,7 @@ class PendingRegistrationsController extends Controller
                 PendingRegistrationSearch::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite by email'),
                 PendingRegistrationSearch::SOURCE_INVITE_BY_LINK => Yii::t('AdminModule.base', 'Invite by link'),
                 PendingRegistrationSearch::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
-            ]
+            ],
         ]);
     }
 
@@ -114,7 +114,7 @@ class PendingRegistrationsController extends Controller
             $invite->sendInviteMail();
             $this->view->success(Yii::t(
                 'AdminModule.user',
-                'Resend invitation email'
+                'Resend invitation email',
             ));
             return $this->redirect(['index']);
         }
@@ -137,7 +137,7 @@ class PendingRegistrationsController extends Controller
             $invite->delete();
             $this->view->success(Yii::t(
                 'AdminModule.user',
-                'Deleted invitation'
+                'Deleted invitation',
             ));
             return $this->redirect(['index']);
         }
@@ -159,7 +159,7 @@ class PendingRegistrationsController extends Controller
 
             $this->view->success(Yii::t(
                 'AdminModule.user',
-                'All open registration invitations were successfully deleted.'
+                'All open registration invitations were successfully deleted.',
             ));
         }
         return $this->redirect(['index']);
@@ -185,7 +185,7 @@ class PendingRegistrationsController extends Controller
                 }
                 $this->view->success(Yii::t(
                     'AdminModule.user',
-                    'The selected invitations have been successfully deleted!'
+                    'The selected invitations have been successfully deleted!',
                 ));
             }
         }
@@ -232,7 +232,7 @@ class PendingRegistrationsController extends Controller
         if ($invite === null) {
             throw new HttpException(404, Yii::t(
                 'AdminModule.user',
-                'Invite not found!'
+                'Invite not found!',
             ));
         }
         return $invite;

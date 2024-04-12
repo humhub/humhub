@@ -66,7 +66,7 @@ class ThemeVariables extends Component
 
         return $this->module->settings->get(
             $this->getSettingKey($key),
-            $default
+            $default,
         );
     }
 
@@ -128,7 +128,7 @@ class ThemeVariables extends Component
         foreach (ThemeHelper::getAllVariables($this->theme) as $key => $val) {
             $this->module->settings->set(
                 $this->getSettingKey($key),
-                $val
+                $val,
             );
         }
     }

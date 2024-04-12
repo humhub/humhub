@@ -44,7 +44,7 @@ class ZendLdap extends Ldap
         $sort = null,
         $collectionClass = null,
         $timelimit = 0,
-        $pageSize = 10000
+        $pageSize = 10000,
     ) {
         if (is_array($filter)) {
             $options = array_change_key_case($filter, CASE_LOWER);
@@ -94,7 +94,7 @@ class ZendLdap extends Ldap
                     $resource,
                     $basedn,
                     $filter,
-                    $attributes
+                    $attributes,
                 );
                 foreach (ldap_get_entries($resource, $result) as $item) {
                     if (!is_array($item)) {
@@ -131,7 +131,7 @@ class ZendLdap extends Ldap
                 0,
                 $timelimit,
                 null,
-                [['oid' => '1.2.840.113556.1.4.319', 'value' => ['size' => $sizelimit, 'cookie' => $cookie]]]
+                [['oid' => '1.2.840.113556.1.4.319', 'value' => ['size' => $sizelimit, 'cookie' => $cookie]]],
             );
 
             $errCode = $dn = $errMsg = $refs = null;

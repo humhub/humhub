@@ -32,7 +32,7 @@ class ModalClose extends \yii\base\Widget
             'warn' => $this->warn,
             'saved' => $this->saved,
             'script' => $this->script,
-            'reload' => $this->reload
+            'reload' => $this->reload,
         ]);
     }
 }

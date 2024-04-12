@@ -64,13 +64,13 @@ class NewLike extends BaseNotification
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes your {contentTitle}.", [
                 'displayNames' => $this->getGroupUserDisplayNames(false),
-                'contentTitle' => $contentInfo
+                'contentTitle' => $contentInfo,
             ]);
         }
 
         return Yii::t('LikeModule.notifications', "{displayName} likes your {contentTitle}.", [
             'displayName' => $this->originator->displayName,
-            'contentTitle' => $contentInfo
+            'contentTitle' => $contentInfo,
         ]);
     }
 
@@ -90,13 +90,13 @@ class NewLike extends BaseNotification
         if ($this->groupCount > 1) {
             return Yii::t('LikeModule.notifications', "{displayNames} likes {contentTitle}.", [
                 'displayNames' => $this->getGroupUserDisplayNames(),
-                'contentTitle' => $contentInfo
+                'contentTitle' => $contentInfo,
             ]);
         }
 
         return Yii::t('LikeModule.notifications', "{displayName} likes {contentTitle}.", [
             'displayName' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            'contentTitle' => $contentInfo
+            'contentTitle' => $contentInfo,
         ]);
     }
 

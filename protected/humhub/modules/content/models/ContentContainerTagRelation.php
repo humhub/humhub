@@ -96,7 +96,7 @@ class ContentContainerTagRelation extends ActiveRecord
         }
 
         $contentContainer->contentContainerRecord->updateAttributes([
-            'tags_cached' => implode(', ', ContentContainerTagRelation::getNamesByContainer($contentContainer))
+            'tags_cached' => implode(', ', ContentContainerTagRelation::getNamesByContainer($contentContainer)),
         ]);
     }
 
@@ -117,7 +117,7 @@ class ContentContainerTagRelation extends ActiveRecord
         }
 
         $contentContainer->contentContainerRecord->updateAttributes([
-            'tags_cached' => null
+            'tags_cached' => null,
         ]);
     }
 }

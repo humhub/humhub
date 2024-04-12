@@ -81,7 +81,7 @@ class WallCreateContentMenu extends Menu
                 'label' => $label = ucfirst($content->getContentName()),
                 'icon' => $content->getIcon(),
                 'url' => '#',
-                'sortOrder' => [$wallEntryWidget->createFormSortOrder, $label]
+                'sortOrder' => [$wallEntryWidget->createFormSortOrder, $label],
             ];
             $url = $this->contentContainer->createUrl($wallEntryWidget->createRoute);
 

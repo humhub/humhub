@@ -22,7 +22,7 @@ class MetaSearchController extends Controller
 
         return MetaSearchProviderWidget::widget([
             'provider' => Yii::$app->request->post('provider'),
-            'keyword' => Yii::$app->request->post('keyword')
+            'keyword' => Yii::$app->request->post('keyword'),
         ]);
     }
 }

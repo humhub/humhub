@@ -42,7 +42,7 @@ abstract class SettingActiveRecord extends ActiveRecord
         if (static::class === self::class) {
             throw new InvalidCallException(sprintf(
                 'Method %s may not be called from the abstract class, but MUST be called from the implementing class, as otherwise tablename() is not returning a correct table.',
-                __METHOD__
+                __METHOD__,
             ));
         }
 

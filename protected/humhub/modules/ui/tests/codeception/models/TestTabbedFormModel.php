@@ -84,7 +84,7 @@ class TestTabbedFormModel extends Model implements TabbedFormModel
                 'label' => 'Second tab',
                 'view' => 'tab-second',
                 'fields' => ['countryId', 'stateId', 'cityId'],
-            ]
+            ],
         ];
     }
 }

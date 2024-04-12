@@ -33,7 +33,7 @@ class ContentContainerStreamQuery extends WallStreamQuery
         $this->addFilterHandler(
             new ContentContainerStreamFilter(['container' => $this->container]),
             true,
-            true
+            true,
         );
 
         if ($this->pinnedContentSupport) {

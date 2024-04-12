@@ -13,7 +13,7 @@ class UrlOembedClientMock implements UrlOembedClient
         if (strpos($url, UrlOembedMock::TEST_PROVIDER_URL_PREFIX) !== false) {
             $result = [
                 'html' => UrlOembedMock::TEST_VIDEO_A_PREVIEW,
-                'type' => 'video'
+                'type' => 'video',
             ];
         }
 
