@@ -37,7 +37,7 @@ class AdminDeleteContentForm extends Model
                 return $model->notify;
             }],
             [['message'], 'string'],
-            [['notify'], 'boolean']
+            [['notify'], 'boolean'],
         ];
     }
 
@@ -45,7 +45,7 @@ class AdminDeleteContentForm extends Model
     {
         return [
             'message' => Yii::t('CommentModule.base', 'Reason'),
-            'notify' => Yii::t('CommentModule.base', 'Send a notification to author')
+            'notify' => Yii::t('CommentModule.base', 'Send a notification to author'),
         ];
     }
 
@@ -72,7 +72,7 @@ class AdminDeleteContentForm extends Model
             ->from(Yii::$app->user->getIdentity())
             ->payload([
                 'contentTitle' => (new ContentDeleted())->getContentPlainTextInfo($this->content),
-                'reason' => $this->message
+                'reason' => $this->message,
             ]);
         if (!$contentDeleted->saveRecord($this->content->createdBy)) {
             $this->addError('message', Yii::t('ContentModule.base', 'Cannot notify the author.'));
@@ -80,7 +80,7 @@ class AdminDeleteContentForm extends Model
         }
 
         $contentDeleted->record->updateAttributes([
-            'send_web_notifications' => 1
+            'send_web_notifications' => 1,
         ]);
 
         return true;

@@ -100,7 +100,7 @@ class Notification extends ActiveRecord
                 'integer',
             ],
             [['class', 'source_class'], 'string', 'max' => 100],
-            [['payload'], 'safe']
+            [['payload'], 'safe'],
         ];
     }
 

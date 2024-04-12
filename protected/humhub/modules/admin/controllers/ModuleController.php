@@ -49,7 +49,7 @@ class ModuleController extends Controller
     {
         return [
             ['permissions' => [ManageModules::class]],
-            ['permissions' => [ManageSettings::class], 'actions' => ['index', 'list']]
+            ['permissions' => [ManageSettings::class], 'actions' => ['index', 'list']],
         ];
     }
 

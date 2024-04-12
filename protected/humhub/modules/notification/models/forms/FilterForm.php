@@ -156,7 +156,7 @@ class FilterForm extends Model
         $countQuery = clone $this->createQuery();
         $pagination = new Pagination([
             'totalCount' => $countQuery->count(),
-            'pageSize' => $pageSize
+            'pageSize' => $pageSize,
         ]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 

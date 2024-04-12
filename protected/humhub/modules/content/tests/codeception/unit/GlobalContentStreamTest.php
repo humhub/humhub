@@ -113,7 +113,7 @@ class GlobalContentStreamTest extends HumHubDbTestCase
     {
         $action = new GlobalContentStream('stream', Yii::$app->controller, [
             'limit' => $limit,
-            'filters' => $filters
+            'filters' => $filters,
         ]);
 
         $wallEntries = $action->getStreamQuery()->all();

@@ -74,7 +74,7 @@ class PermissionGridEditor extends GridView
                             Html::tag('span', $module->getName(), ['class' => 'badge', 'data-module-id' => $data['moduleId']]) .
                             Html::tag('br') .
                             $data['description'];
-                    }
+                    },
                 ],
                 [
                     'label' => '',
@@ -84,7 +84,7 @@ class PermissionGridEditor extends GridView
                         return !($data['changeable']);
                     },
                     'submitAttributes' => ['permissionId', 'moduleId'],
-                    'dropDownOptions' => 'states'
+                    'dropDownOptions' => 'states',
                 ],
             ],
         ]);

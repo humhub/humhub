@@ -43,7 +43,7 @@ class CreatePublicContent extends BasePermission
         User::USERGROUP_SELF,
         User::USERGROUP_FRIEND,
         User::USERGROUP_USER,
-        User::USERGROUP_GUEST
+        User::USERGROUP_GUEST,
     ];
 
     /**

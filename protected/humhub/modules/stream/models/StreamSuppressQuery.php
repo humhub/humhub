@@ -62,7 +62,7 @@ class StreamSuppressQuery extends StreamQuery
     public function rules()
     {
         return array_merge(parent::rules(), [
-            ['suppressionsOnly', 'boolean', 'strict' => true, 'falseValue' => 'false', 'trueValue' => 'true']
+            ['suppressionsOnly', 'boolean', 'strict' => true, 'falseValue' => 'false', 'trueValue' => 'true'],
         ]);
     }
 
@@ -251,7 +251,7 @@ class StreamSuppressQuery extends StreamQuery
 
             $results[$parentContentId] = [
                 'contentName' => $contentInstance->getContentName(),
-                'message' => Yii::t('StreamModule.base', 'Show {i} more.', ['i' => count($infos['contentIds'])])
+                'message' => Yii::t('StreamModule.base', 'Show {i} more.', ['i' => count($infos['contentIds'])]),
             ];
         }
 

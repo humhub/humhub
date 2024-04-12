@@ -432,7 +432,7 @@ class ConfigController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
-                ]
+                ],
             ],
         ];
 

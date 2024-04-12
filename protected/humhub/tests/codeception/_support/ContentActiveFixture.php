@@ -47,7 +47,7 @@ abstract class ContentActiveFixture extends ActiveFixture
                 'created_by' => 1,
                 'updated_by' => 1,
                 'contentcontainer_id' => 1,
-                'stream_channel' => Content::STREAM_CHANNEL_DEFAULT
+                'stream_channel' => Content::STREAM_CHANNEL_DEFAULT,
             ];
             $this->db->schema->insert('content', array_merge($contentRowDefaults, $contentRow));
         }

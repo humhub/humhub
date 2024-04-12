@@ -169,7 +169,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
             'url' => $this->getUrl(),
             'viewable' => $this,
             'html' => $this->html(),
-            'text' => $this->text()
+            'text' => $this->text(),
         ];
 
         return \yii\helpers\ArrayHelper::merge($result, $params);
@@ -301,7 +301,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         $result = [
             'class' => get_class($this),
             'text' => $this->text(),
-            'html' => $this->html()
+            'html' => $this->html(),
         ];
 
         if ($this->originator) {
@@ -503,7 +503,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         return [
             'sourceClass' => $sourceClass,
             'sourcePk' => $sourcePk,
-            'originator_id' => $originatorId
+            'originator_id' => $originatorId,
         ];
     }
 

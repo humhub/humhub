@@ -3,6 +3,6 @@
 return [
     'fixtures' => [
         'default',
-        'humhub\modules\post\tests\codeception\fixtures\PostFixture'
-    ]
+        'humhub\modules\post\tests\codeception\fixtures\PostFixture',
+    ],
 ];

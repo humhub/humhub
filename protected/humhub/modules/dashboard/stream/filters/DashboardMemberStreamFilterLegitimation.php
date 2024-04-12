@@ -49,7 +49,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
             ['IN', 'content.contentcontainer_id', array_merge($ccIds[Content::VISIBILITY_PRIVATE], $ccIds[Content::VISIBILITY_OWNER])],
             ['AND',
                 'content.visibility = ' . Content::VISIBILITY_PUBLIC,
-                ['IN', 'content.contentcontainer_id', $x]
+                ['IN', 'content.contentcontainer_id', $x],
             ],
         ]);
 
@@ -63,7 +63,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
         $this->query->leftJoin(
             'space as spaceContainer',
             'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel',
-            [':spaceModel' => Space::class]
+            [':spaceModel' => Space::class],
         );
         $this->query->andWhere(['OR', 'spaceContainer.id IS NULL', ['spaceContainer.status' => Space::STATUS_ENABLED]]);
     }
@@ -73,7 +73,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
         $this->query->leftJoin(
             'space_membership',
             'space_membership.space_id = spaceContainer.id AND space_membership.user_id = :userId',
-            [':userId' => $this->user->id]
+            [':userId' => $this->user->id],
         );
         $this->query->andWhere(['OR', 'space_membership.id IS NULL', ['space_membership.show_at_dashboard' => 1]]);
     }
@@ -83,7 +83,7 @@ class DashboardMemberStreamFilterLegitimation extends StreamQueryFilter
         $this->query->leftJoin(
             'user AS userContainer',
             'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel',
-            [':userModel' => User::class]
+            [':userModel' => User::class],
         );
         $this->query->andWhere(['OR', 'userContainer.id IS NULL', ['userContainer.status' => User::STATUS_ENABLED]]);
     }

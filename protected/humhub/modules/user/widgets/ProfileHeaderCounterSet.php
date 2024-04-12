@@ -41,8 +41,8 @@ class ProfileHeaderCounterSet extends CounterSet
                 'url' => Yii::$app->user->isGuest ? null : '#',
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/friendship/list/popup', 'userId' => $this->user->id])
-                ]
+                    'data-action-url' => Url::to(['/friendship/list/popup', 'userId' => $this->user->id]),
+                ],
             ]);
         }
 
@@ -53,8 +53,8 @@ class ProfileHeaderCounterSet extends CounterSet
                 'url' => Yii::$app->user->isGuest ? null : '#',
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/user/profile/follower-list', 'container' => $this->user])
-                ]
+                    'data-action-url' => Url::to(['/user/profile/follower-list', 'container' => $this->user]),
+                ],
             ]);
 
             $this->counters[] = new CounterSetItem([
@@ -63,8 +63,8 @@ class ProfileHeaderCounterSet extends CounterSet
                 'url' => Yii::$app->user->isGuest ? null : '#',
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/user/profile/followed-users-list', 'container' => $this->user])
-                ]
+                    'data-action-url' => Url::to(['/user/profile/followed-users-list', 'container' => $this->user]),
+                ],
             ]);
         }
 
@@ -79,8 +79,8 @@ class ProfileHeaderCounterSet extends CounterSet
             'url' => Yii::$app->user->isGuest ? null : '#',
             'linkOptions' => Yii::$app->user->isGuest ? [] : [
                 'data-action-click' => 'ui.modal.load',
-                'data-action-url' => Url::to(['/user/profile/space-membership-list', 'container' => $this->user])
-            ]
+                'data-action-url' => Url::to(['/user/profile/space-membership-list', 'container' => $this->user]),
+            ],
         ]);
 
         parent::init();

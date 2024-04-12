@@ -58,7 +58,7 @@ class Module extends \yii\base\Module
         // Set settings component
         $this->set('settings', [
             'class' => SettingsManager::class,
-            'moduleId' => $this->id
+            'moduleId' => $this->id,
         ]);
     }
 
@@ -69,13 +69,7 @@ class Module extends \yii\base\Module
      */
     public function getName()
     {
-        $info = $this->getModuleInfo();
-
-        if ($info['name']) {
-            return $info['name'];
-        }
-
-        return $this->id;
+        return $this->getModuleInfo()['name'] ?? $this->id;
     }
 
     /**
@@ -85,13 +79,7 @@ class Module extends \yii\base\Module
      */
     public function getDescription()
     {
-        $info = $this->getModuleInfo();
-
-        if ($info['description']) {
-            return $info['description'];
-        }
-
-        return "";
+        return $this->getModuleInfo()['description'] ?? '';
     }
 
     /**
@@ -101,13 +89,7 @@ class Module extends \yii\base\Module
      */
     public function getVersion()
     {
-        $info = $this->getModuleInfo();
-
-        if ($info['version']) {
-            return $info['version'];
-        }
-
-        return "1.0";
+        return $this->getModuleInfo()['version'] ?? '1.0';
     }
 
     /**
@@ -134,13 +116,7 @@ class Module extends \yii\base\Module
      */
     public function getKeywords(): array
     {
-        $info = $this->getModuleInfo();
-
-        if ($info['keywords']) {
-            return (array)$info['keywords'];
-        }
-
-        return [];
+        return $this->getModuleInfo()['keywords'] ?? [];
     }
 
     /**
@@ -328,15 +304,16 @@ class Module extends \yii\base\Module
      *
      * @return array module.json content
      */
-    protected function getModuleInfo()
+    protected function getModuleInfo(): array
     {
-        if ($this->_moduleInfo !== null) {
-            return $this->_moduleInfo;
+        if ($this->_moduleInfo === null) {
+            $configPath = $this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json';
+            $this->_moduleInfo = file_exists($configPath)
+                ? Json::decode(file_get_contents($configPath))
+                : ['id' => $this->id];
         }
 
-        $moduleJson = file_get_contents($this->getBasePath() . DIRECTORY_SEPARATOR . 'module.json');
-
-        return $this->_moduleInfo = Json::decode($moduleJson);
+        return $this->_moduleInfo;
     }
 
     /**

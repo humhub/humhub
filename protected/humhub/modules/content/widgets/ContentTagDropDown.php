@@ -70,7 +70,7 @@ class ContentTagDropDown extends JsInputWidget
     {
         $result = [
             'class' => 'form-control',
-            'options' => $this->itemOptions
+            'options' => $this->itemOptions,
         ];
 
         if ($this->prompt) {
@@ -103,7 +103,7 @@ class ContentTagDropDown extends JsInputWidget
         foreach ($tags as $tag) {
             $result[$tag->id] = $tag->name;
             $this->itemOptions[$tag->id] = [
-                'data-type-color' => $tag->color
+                'data-type-color' => $tag->color,
             ];
         }
 

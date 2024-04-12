@@ -35,7 +35,7 @@ class MetaSearchWidget extends JsWidget
     protected array $providers = [
         ContentSearchProvider::class,
         UserSearchProvider::class,
-        SpaceSearchProvider::class
+        SpaceSearchProvider::class,
     ];
 
     /**
@@ -45,7 +45,7 @@ class MetaSearchWidget extends JsWidget
     {
         return $this->render('metaSearch', [
             'options' => $this->getOptions(),
-            'providers' => $this->getSortedProviders()
+            'providers' => $this->getSortedProviders(),
         ]);
     }
 

@@ -432,7 +432,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     {
         if (!$this->content->validate()) {
             throw new Exception(
-                'Could not validate associated Content record! (' . $this->content->getErrorMessage() . ')'
+                'Could not validate associated Content record! (' . $this->content->getErrorMessage() . ')',
             );
         }
 

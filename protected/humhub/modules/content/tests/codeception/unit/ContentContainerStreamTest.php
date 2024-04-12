@@ -157,7 +157,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $action = new ContentContainerStream('stream', Yii::$app->controller, [
             'contentContainer' => $container,
             'limit' => $limit,
-            'filters' => $filters
+            'filters' => $filters,
         ]);
 
         $wallEntries = $action->getStreamQuery()->all();

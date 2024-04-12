@@ -17,7 +17,7 @@ class GroupUserFixture extends ActiveFixture
 
     public $depends = [
         UserFixture::class,
-        GroupFixture::class
+        GroupFixture::class,
     ];
 
 }

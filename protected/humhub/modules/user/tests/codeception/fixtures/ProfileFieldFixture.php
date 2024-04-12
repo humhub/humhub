@@ -17,6 +17,6 @@ class ProfileFieldFixture extends ActiveFixture
     public $dataFile = '@modules/user/tests/codeception/fixtures/data/profile_field.php';
 
     public $depends = [
-        'humhub\modules\user\tests\codeception\fixtures\ProfileFieldCategoryFixture'
+        'humhub\modules\user\tests\codeception\fixtures\ProfileFieldCategoryFixture',
     ];
 }

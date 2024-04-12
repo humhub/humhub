@@ -81,7 +81,7 @@ class ChangedRolesMembership extends BaseNotification
                 '{displayName}' => $displayName,
                 '{roleName}' => $roleName,
                 '{spaceName}' => $spaceName,
-            ]
+            ],
         );
     }
 }

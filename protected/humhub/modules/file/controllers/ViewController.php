@@ -30,7 +30,7 @@ class ViewController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index']
+                'guestAllowedActions' => ['index'],
             ],
         ];
     }
@@ -59,7 +59,7 @@ class ViewController extends Controller
             'importHandler' => $importHandler,
             'exportHandler' => $exportHandler,
             'editHandler' => $editHandler,
-            'viewHandler' => $viewHandler
+            'viewHandler' => $viewHandler,
         ]);
     }
 

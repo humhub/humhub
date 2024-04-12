@@ -16,6 +16,6 @@ class TestNotificationFixture extends ActiveFixture
     public $dataFile = '@modules/notification/tests/codeception/fixtures/data/testnotification.php';
 
     public $depends = [
-        'humhub\modules\user\tests\codeception\fixtures\GroupUserFixture'
+        'humhub\modules\user\tests\codeception\fixtures\GroupUserFixture',
     ];
 }

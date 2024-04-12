@@ -48,7 +48,7 @@ class ContentContainerStreamFilter extends StreamQueryFilter
                 // Limit only if current User/Admin cannot view all content
                 $this->query->andWhere('content.visibility = :visibility OR content.created_by = :userId', [
                     ':visibility' => Content::VISIBILITY_PUBLIC,
-                    ':userId' => Yii::$app->user->id
+                    ':userId' => Yii::$app->user->id,
                 ]);
             }
         }

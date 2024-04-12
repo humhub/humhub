@@ -43,7 +43,7 @@ class HumHubApiClient extends HttpClient
     {
         $request->addData([
             'version' => Yii::$app->version,
-            'installId' => Yii::$app->getModule('admin')->settings->get('installationId')
+            'installId' => Yii::$app->getModule('admin')->settings->get('installationId'),
         ]);
         parent::beforeSend($request);
     }

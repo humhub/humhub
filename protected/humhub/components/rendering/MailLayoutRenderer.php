@@ -35,7 +35,7 @@ class MailLayoutRenderer extends LayoutRenderer
         $textRenderer = new LayoutRenderer([
             'subPath' => $this->subPath . '/plaintext',
             'parent' => $this->parent,
-            'layout' => $this->getTextLayout($viewable)
+            'layout' => $this->getTextLayout($viewable),
         ]);
 
         // exclude the view only embed the viewable text to the textlayout.

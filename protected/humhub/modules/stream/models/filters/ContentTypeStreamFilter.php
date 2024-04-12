@@ -33,7 +33,7 @@ class ContentTypeStreamFilter extends StreamQueryFilter
     public function rules()
     {
         return [
-            [['includes', 'excludes'], 'safe']
+            [['includes', 'excludes'], 'safe'],
         ];
     }
 

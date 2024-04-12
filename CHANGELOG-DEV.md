@@ -4,6 +4,7 @@ HumHub Changelog
 1.16.0-beta.3 (TBD)
 -----------------------------
 - Fix #5629: Legacy configuration self test not showing "OK"
+- Fix #6909: Fix the marketplace searching when a module config file has missed fields
 - Enh #6920: Enhancing of meta search for advanced search providers
 
 

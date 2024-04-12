@@ -16,7 +16,7 @@ class m201130_073908_disable_legacy_richtextparser extends Migration
             $this->insert('setting', [
                 'name' => 'richtextCompatMode',
                 'value' => 0,
-                'module_id' => 'content'
+                'module_id' => 'content',
             ]);
         }
     }

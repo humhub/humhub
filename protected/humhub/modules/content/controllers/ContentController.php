@@ -43,7 +43,7 @@ class ContentController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-            ]
+            ],
         ];
     }
 
@@ -83,7 +83,7 @@ class ContentController extends Controller
             'success' => true,
             'uniqueId' => $contentObj->getUniqueId(),
             'model' => $model,
-            'pk' => $id
+            'pk' => $id,
         ]);
     }
 
@@ -109,7 +109,7 @@ class ContentController extends Controller
         return [
             'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> content?'),
             'body' => AdminDeleteModal::widget([
-                'model' => new AdminDeleteContentForm()
+                'model' => new AdminDeleteContentForm(),
             ]),
             'confirmText' => Yii::t('ContentModule.base', 'Confirm'),
             'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
@@ -232,7 +232,7 @@ class ContentController extends Controller
 
         return $this->asJson([
             'success' => $content->save(),
-            'state' => $content->visibility
+            'state' => $content->visibility,
         ]);
     }
 
@@ -261,7 +261,7 @@ class ContentController extends Controller
         $content->locked_comments = $lockComments;
 
         return $this->asJson([
-            'success' => $content->save()
+            'success' => $content->save(),
         ]);
     }
 
@@ -417,7 +417,7 @@ class ContentController extends Controller
 
         return $this->renderAjax('scheduleOptions', [
             'scheduleOptions' => $scheduleOptions,
-            'disableInputs' => $disableInputs
+            'disableInputs' => $disableInputs,
         ]);
     }
 }

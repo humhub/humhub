@@ -117,7 +117,7 @@ class Modal extends JsWidget
             'animation' => $this->animation,
             'size' => $this->size,
             'centerText' => $this->centerText,
-            'initialLoader' => $this->initialLoader
+            'initialLoader' => $this->initialLoader,
         ]);
     }
 
@@ -127,7 +127,7 @@ class Modal extends JsWidget
             'class' => "modal",
             'tabindex' => "-1",
             'role' => "dialog",
-            'aria-hidden' => "true"
+            'aria-hidden' => "true",
         ];
     }
 

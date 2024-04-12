@@ -100,7 +100,7 @@ class StreamEntryResponse extends Model
             'guid' => $this->guid,
             'output' => $this->output,
             'pinned' => (bool)$this->pinned,
-            'archived' => (bool)$this->archived
+            'archived' => (bool)$this->archived,
         ];
     }
 

@@ -51,7 +51,7 @@ class ContainerImageSet extends BaseImage
             'hiddenItems' => $hiddenItems,
             'max' => $this->max,
             'options' => $this->getAvailableOptions(),
-            'hiddenItemsOptions' => $this->getOptionsForHiddenItems()
+            'hiddenItemsOptions' => $this->getOptionsForHiddenItems(),
         ]);
     }
 
@@ -67,7 +67,7 @@ class ContainerImageSet extends BaseImage
     {
         return [
             'width' => $this->hiddenImageWidth,
-            'height' => $this->hiddenImageHeight
+            'height' => $this->hiddenImageHeight,
         ];
     }
 }

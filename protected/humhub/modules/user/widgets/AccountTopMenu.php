@@ -50,7 +50,7 @@ class AccountTopMenu extends Menu
 
             $this->addEntry(new MenuLink([
                 'link' => ModalButton::primary($signUpText)->load(Url::toRoute('/user/auth/login'))->cssClass('btn-enter'),
-                'sortOrder' => 100
+                'sortOrder' => 100,
             ]));
 
             parent::init();
@@ -117,7 +117,7 @@ class AccountTopMenu extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'nav'
+            'class' => 'nav',
         ];
     }
 

@@ -32,7 +32,7 @@ class AccountSettingsMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Basic Settings'),
             'url' => ['/user/account/edit-settings'],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings')
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings'),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -40,7 +40,7 @@ class AccountSettingsMenu extends TabMenu
             'url' => ['/user/account/connected-accounts'],
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('user', 'account', 'connected-accounts'),
-            'isVisible' => count($this->getSecondaryAuthProviders()) !== 0
+            'isVisible' => count($this->getSecondaryAuthProviders()) !== 0,
         ]));
 
 

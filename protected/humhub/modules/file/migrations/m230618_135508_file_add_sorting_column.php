@@ -38,20 +38,20 @@ class m230618_135508_file_add_sorting_column extends Migration
             $this->integer(11)
                 ->notNull()
                 ->defaultValue(100)
-                ->after('object_id')
+                ->after('object_id'),
         );
 
         $command->update(
             $this->table,
             ['object_model' => null],
-            ['object_model' => '']
+            ['object_model' => ''],
         )
             ->execute();
 
         $command->update(
             $this->table,
             ['object_id' => null],
-            ['object_id' => '']
+            ['object_id' => ''],
         )
             ->execute();
 

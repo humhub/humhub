@@ -340,7 +340,7 @@ abstract class BaseNotification extends SocialActivity
             Yii::error(
                 'Could not save Notification Record for' .
                 static::class . ' ' .
-                print_r($notification->getErrors(), true)
+                print_r($notification->getErrors(), true),
             );
             return false;
         }
@@ -429,11 +429,11 @@ abstract class BaseNotification extends SocialActivity
         if ($this->record->group_key != '') {
             // Ensure to update all grouped notifications
             Notification::updateAll([
-                'seen' => 1
+                'seen' => 1,
             ], [
                 'class' => $this->record->class,
                 'user_id' => $this->record->user_id,
-                'group_key' => $this->record->group_key
+                'group_key' => $this->record->group_key,
             ]);
         } else {
             $this->record->seen = 1;
@@ -496,7 +496,7 @@ abstract class BaseNotification extends SocialActivity
             $displayName = $html ? Html::tag('strong', Html::encode($user->displayName)) : $user->displayName;
             return Yii::t('NotificationModule.base', '{displayName} and {number} others', [
                 'displayName' => $displayName,
-                'number' => $this->groupCount - 1
+                'number' => $this->groupCount - 1,
             ]);
         }
 
@@ -525,7 +525,7 @@ abstract class BaseNotification extends SocialActivity
             ->where([
                 'notification.user_id' => $this->record->user_id,
                 'notification.class' => $this->record->class,
-                'notification.group_key' => $this->record->group_key
+                'notification.group_key' => $this->record->group_key,
             ])
             ->joinWith(['originator', 'originator.profile'])
             ->orderBy(['notification.created_at' => SORT_DESC])

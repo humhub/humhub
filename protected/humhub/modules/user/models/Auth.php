@@ -33,7 +33,7 @@ class Auth extends ActiveRecord
         return [
             [['user_id', 'source', 'source_id'], 'required'],
             [['user_id'], 'integer'],
-            [['source', 'source_id'], 'string', 'max' => 255]
+            [['source', 'source_id'], 'string', 'max' => 255],
         ];
     }
 

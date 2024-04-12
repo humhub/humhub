@@ -380,7 +380,7 @@ abstract class BasePicker extends JsInputWidget
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',
-            'title' => $this->placeholder
+            'title' => $this->placeholder,
         ];
     }
 
@@ -421,7 +421,7 @@ abstract class BasePicker extends JsInputWidget
             'input-too-short' => Yii::t('UserModule.chooser', 'Please enter at least {n} character', ['n' => $this->minInput]),
             'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed characters ({n}).', ['n' => $this->maxInput]),
             'default-results' => $this->getDefaultResultData(),
-            'disabled' => $this->disabled
+            'disabled' => $this->disabled,
         ];
 
         if (!empty($this->disabledItems)) {

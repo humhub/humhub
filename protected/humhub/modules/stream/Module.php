@@ -34,7 +34,7 @@ class Module extends \humhub\components\Module
      */
     public $defaultStreamSuppressQueryIgnore = [
         Post::class,
-        Activity::class
+        Activity::class,
     ];
 
     /**

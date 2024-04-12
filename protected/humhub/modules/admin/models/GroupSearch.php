@@ -55,7 +55,7 @@ class GroupSearch extends Group
             'attributes' => [
                 'name',
                 'descriptions',
-            ]
+            ],
         ]);
 
         $this->load($params);

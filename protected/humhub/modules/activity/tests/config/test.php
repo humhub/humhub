@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'fixtures' => ['default']
+    'fixtures' => ['default'],
 ];

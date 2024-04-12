@@ -131,7 +131,7 @@ class HumHubDbTestCase extends Unit
             'file_history' => ['class' => FileHistoryFixture::class],
             'activity' => ['class' => ActivityFixture::class],
             'friendship' => ['class' => FriendshipFixture::class],
-            'live' => [ 'class' => LiveFixture::class]
+            'live' => [ 'class' => LiveFixture::class],
         ];
     }
 
@@ -188,7 +188,7 @@ class HumHubDbTestCase extends Unit
         $contentContainer,
         $groupId,
         $permission,
-        $state = BasePermission::STATE_ALLOW
+        $state = BasePermission::STATE_ALLOW,
     ) {
         $permissionManger = new ContentContainerPermissionManager(['contentContainer' => $contentContainer]);
         $permissionManger->setGroupState($groupId, $permission, $state);

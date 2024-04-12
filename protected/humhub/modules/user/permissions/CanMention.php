@@ -28,7 +28,7 @@ class CanMention extends BasePermission
     public $defaultAllowedGroups = [
         User::USERGROUP_SELF,
         User::USERGROUP_USER,
-        User::USERGROUP_FRIEND
+        User::USERGROUP_FRIEND,
     ];
 
     /**

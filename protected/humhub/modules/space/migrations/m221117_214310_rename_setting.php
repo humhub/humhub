@@ -13,7 +13,7 @@ class m221117_214310_rename_setting extends Migration
     public function safeUp()
     {
         $this->update('contentcontainer_setting', [
-            'name' => 'hideMembers'
+            'name' => 'hideMembers',
         ], ['name' => 'hideMembersSidebar', 'module_id' => 'space']);
     }
 

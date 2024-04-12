@@ -40,7 +40,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
 
         $this->addFilterBlock('scope', [
             'title' => Yii::t('StreamModule.filter', 'Scope'),
-            'sortOrder' => 90
+            'sortOrder' => 90,
         ], static::PANEL_COLUMN_2);
     }
 
@@ -74,7 +74,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
             'radioGroup' => 'scope',
             'force' => true,
             'sortOrder' => 500,
-            'checked' => $module->includeAllUserContentsOnProfile
+            'checked' => $module->includeAllUserContentsOnProfile,
         ], static::FILTER_BLOCK_SCOPE);
 
         $this->addFilter([
@@ -85,7 +85,7 @@ class ProfileStreamFilterNavigation extends WallStreamFilterNavigation
             'radioGroup' => 'scope',
             'force' => true,
             'sortOrder' => 510,
-            'checked' => !$module->includeAllUserContentsOnProfile
+            'checked' => !$module->includeAllUserContentsOnProfile,
         ], static::FILTER_BLOCK_SCOPE);
     }
 

@@ -30,7 +30,7 @@ class SettingsMenu extends TabMenu
             'url' => ['/admin/setting/index'],
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'setting', 'basic'),
-            'isVisible' => $canEditSettings
+            'isVisible' => $canEditSettings,
         ]));
 
         $this->addEntry(new MenuLink([
@@ -38,7 +38,7 @@ class SettingsMenu extends TabMenu
             'url' => ['/admin/setting/design'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('admin', 'setting', 'design'),
-            'isVisible' => $canEditSettings
+            'isVisible' => $canEditSettings,
         ]));
 
         $this->addEntry(new MenuLink([
@@ -46,14 +46,14 @@ class SettingsMenu extends TabMenu
             'url' => ['/notification/admin/defaults'],
             'sortOrder' => 400,
             'isActive' => MenuLink::isActiveState('notification', 'admin', 'defaults'),
-            'isVisible' => $canEditSettings
+            'isVisible' => $canEditSettings,
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Advanced'),
             'url' => ['/admin/setting/advanced'],
             'sortOrder' => 1000,
-            'isVisible' => $canEditSettings
+            'isVisible' => $canEditSettings,
         ]));
 
         parent::init();

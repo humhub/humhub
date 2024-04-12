@@ -29,7 +29,7 @@ class ViewAboutPage extends BasePermission
      * @inheritdoc
      */
     protected $fixedGroups = [
-        User::USERGROUP_SELF
+        User::USERGROUP_SELF,
     ];
 
     /**

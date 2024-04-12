@@ -22,13 +22,13 @@ class FilterAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.ui.filter.js'
+        'js/humhub.ui.filter.js',
     ];
 
     /**
      * @inheritdoc
      */
     public $depends = [
-        TopicAsset::class
+        TopicAsset::class,
     ];
 }

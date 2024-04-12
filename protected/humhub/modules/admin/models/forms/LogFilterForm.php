@@ -96,7 +96,7 @@ class LogFilterForm extends Model
         $this->pagination = new Pagination([
             'totalCount' => $countQuery->count(),
             'pageSize' => static::PAGE_SIZE,
-            'params' => $this->getUrlParams()
+            'params' => $this->getUrlParams(),
         ]);
 
         $this->query->offset($this->pagination->offset)->limit($this->pagination->limit);
@@ -112,7 +112,7 @@ class LogFilterForm extends Model
         $result = ArrayHelper::merge(Yii::$app->request->get(), [
             'category' => $this->category,
             'day' => $this->day,
-            'term' => $this->term
+            'term' => $this->term,
         ]);
 
         $result['levels'] = $this->levels;
@@ -140,7 +140,7 @@ class LogFilterForm extends Model
             ['or',
                 ['LIKE', 'message', $this->term],
                 ['LIKE', 'category', $this->term],
-            ]
+            ],
         );
     }
 

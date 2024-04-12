@@ -42,7 +42,7 @@ class UserController extends BaseAccountController
         }
 
         return $this->render('defaults', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 

@@ -208,7 +208,7 @@ class UUIDValidator extends StringValidator
                             $value,
                             $this->formatWithDash,
                             $this->formatToLowerCase,
-                            $this->formatWithCurlyBrackets
+                            $this->formatWithCurlyBrackets,
                         );
 
                         if ($value === null) {
@@ -219,7 +219,7 @@ class UUIDValidator extends StringValidator
                                 "The callback function (%s) used to auto-fill an empty %s value returned an invalid result (%s).",
                                 $callable,
                                 $attribute,
-                                StringHelper::toString($value, $type) ?? $type
+                                StringHelper::toString($value, $type) ?? $type,
                             ));
 
                             return [$this->messageOnInvalidCallbackResult, []];
@@ -260,7 +260,7 @@ class UUIDValidator extends StringValidator
             $value,
             $this->formatWithDash,
             $this->formatToLowerCase,
-            $this->formatWithCurlyBrackets
+            $this->formatWithCurlyBrackets,
         );
 
         $changed = $original !== $value;
@@ -300,7 +300,7 @@ class UUIDValidator extends StringValidator
                 $this->autofillWith,
                 $this->formatWithDash,
                 $this->formatToLowerCase,
-                $this->formatWithCurlyBrackets
+                $this->formatWithCurlyBrackets,
             )
             : $this->autofillWith;
     }
@@ -330,7 +330,7 @@ class UUIDValidator extends StringValidator
                 throw new InvalidArgumentTypeException(
                     '$autofillWith',
                     [null, 'bool', 'string', 'callable'],
-                    $autofillWith
+                    $autofillWith,
                 );
             }
         }

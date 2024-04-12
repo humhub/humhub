@@ -67,7 +67,7 @@ class SpaceController extends Controller
 
         return $this->render('index', [
             'dataProvider' => $dataProvider,
-            'searchModel' => $searchModel
+            'searchModel' => $searchModel,
         ]);
     }
 
@@ -118,12 +118,12 @@ class SpaceController extends Controller
         $joinPolicyOptions = [
             Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
             Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
-            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter')
+            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
         ];
 
         $contentVisibilityOptions = [
             Content::VISIBILITY_PRIVATE => Yii::t('SpaceModule.base', 'Private'),
-            Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public')
+            Content::VISIBILITY_PUBLIC => Yii::t('SpaceModule.base', 'Public'),
         ];
 
 
@@ -142,7 +142,7 @@ class SpaceController extends Controller
             'joinPolicyOptions' => $joinPolicyOptions,
             'visibilityOptions' => $visibilityOptions,
             'contentVisibilityOptions' => $contentVisibilityOptions,
-            'indexModuleSelection' => $indexModuleSelection
+            'indexModuleSelection' => $indexModuleSelection,
         ]);
     }
 

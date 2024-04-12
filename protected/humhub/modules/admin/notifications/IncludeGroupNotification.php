@@ -49,7 +49,7 @@ class IncludeGroupNotification extends BaseNotification
         return Yii::t(
             'AdminModule.notification',
             'Notify from {appName}. You were added to the group.',
-            ['appName' => Yii::$app->name]
+            ['appName' => Yii::$app->name],
         );
     }
 
@@ -64,7 +64,7 @@ class IncludeGroupNotification extends BaseNotification
             [
                 '{displayName}' => Html::tag('strong', Html::encode($this->originator->getDisplayName())),
                 '{groupName}' => Html::tag('strong', Html::encode($this->source->name)),
-            ]
+            ],
         );
     }
 }

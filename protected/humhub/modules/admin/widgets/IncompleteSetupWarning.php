@@ -49,7 +49,7 @@ class IncompleteSetupWarning extends Widget
         }
 
         return $this->render('incomplete-setup-warning', [
-            'problems' => $problems
+            'problems' => $problems,
         ]);
     }
 

@@ -50,7 +50,7 @@ class ContentContainer extends ActiveRecord
                 UUIDValidator::class,
                 'autofillWith' => false,
                 'allowNull' => false,
-                'messageOnForbiddenNull' => 'Cannot not create standalone ContentContainer instance. Instance will be automatically created on ContentContainerActiveRecord::afterSave()'
+                'messageOnForbiddenNull' => 'Cannot not create standalone ContentContainer instance. Instance will be automatically created on ContentContainerActiveRecord::afterSave()',
             ],
             [['guid'], 'unique'],
         ];
@@ -80,8 +80,8 @@ class ContentContainer extends ActiveRecord
                 'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [ContentContainerActiveRecord::class],
                 'classAttribute' => 'class',
-                'pkAttribute' => 'pk'
-            ]
+                'pkAttribute' => 'pk',
+            ],
         ];
     }
 

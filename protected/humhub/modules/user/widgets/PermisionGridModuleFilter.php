@@ -47,7 +47,7 @@ class PermisionGridModuleFilter extends JsWidget
     {
         return [
             'class' => 'form-control pull-right visible-md visible-lg',
-            'style' => 'width:150px'
+            'style' => 'width:150px',
         ];
     }
 

@@ -21,18 +21,18 @@ class m160220_013525_contentcontainer_id extends Migration
         $this->update(
             'content',
             [
-                'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:spaceModel AND pk=space_id)', [':spaceModel' => Space::class])
+                'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:spaceModel AND pk=space_id)', [':spaceModel' => Space::class]),
             ],
-            ['IS NOT', 'space_id', new Expression('NULL')]
+            ['IS NOT', 'space_id', new Expression('NULL')],
         );
 
         // Set content container for user content
         $this->update(
             'content',
             [
-                'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:userModel AND pk=user_id)', [':userModel' => \humhub\modules\user\models\User::class])
+                'contentcontainer_id' => new Expression('(SELECT id FROM contentcontainer WHERE class=:userModel AND pk=user_id)', [':userModel' => \humhub\modules\user\models\User::class]),
             ],
-            ['IS', 'space_id', new Expression('NULL')]
+            ['IS', 'space_id', new Expression('NULL')],
         );
 
         // Ensure created_by is set to user_id

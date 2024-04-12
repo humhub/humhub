@@ -22,7 +22,7 @@ class GlobalContentStreamQuery extends WallStreamQuery
         $this->addFilterHandler(
             new GlobalContentStreamFilter(),
             true,
-            true
+            true,
         );
 
         parent::beforeApplyFilters();

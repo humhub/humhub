@@ -59,7 +59,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
             "Fearful", "Confused", "Weary", "Scream", "Astonished", "Flushed",
             "Sleeping", "NoMouth", "Mask", "Worried", "Smile", "Muscle",
             "Facepunch", "ThumbsUp", "ThumbsDown", "Beers", "Cocktail", "Burger",
-            "PoultryLeg", "Party", "Cake", "Sun", "Fire", "Heart"
+            "PoultryLeg", "Party", "Cake", "Sun", "Fire", "Heart",
         ];
 
         $emojiMapping = [
@@ -88,7 +88,7 @@ class RichTextCompatibilityExtension extends Model implements RichTextExtension
             'Burger' => 'hamburger',
             'PoultryLeg' => 'poultry_leg',
             'Party' => 'beers',
-            'sun' => 'sun_with_face'
+            'sun' => 'sun_with_face',
         ];
 
         return preg_replace_callback('@;(\w*?);@', function ($hit) use (&$emojis, &$emojiMapping) {

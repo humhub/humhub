@@ -91,15 +91,15 @@ class BasicSettingsForm extends Model
                 'AdminModule.settings',
                 'Reported database time: {dateTime}',
                 [
-                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime())
-                ]
+                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime()),
+                ],
             ),
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
             'maintenanceMode' => Alert::widget([
                 'options' => ['class' => 'alert-danger'],
                 'body' =>
                     Icon::get('exclamation-triangle') . ' ' .
-                    Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.')
+                    Yii::t('AdminModule.settings', 'Maintenance mode restricts access to the platform and immediately logs out all users except Admins.'),
             ]),
         ];
     }

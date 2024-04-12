@@ -92,7 +92,7 @@ class AccountController extends BaseAccountController
             'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('UserModule.account', 'Save profile'),
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-primary',
             ],
         ];
 
@@ -245,7 +245,7 @@ class AccountController extends BaseAccountController
         return $this->render('connected-accounts', [
             'authClients' => $clients,
             'currentAuthProviderId' => $currentAuthProviderId,
-            'activeAuthClientIds' => $activeAuthClientIds
+            'activeAuthClientIds' => $activeAuthClientIds,
         ]);
     }
 

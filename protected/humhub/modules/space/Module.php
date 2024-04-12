@@ -131,7 +131,7 @@ class Module extends \humhub\components\Module
             'humhub\modules\space\notifications\ApprovalRequestDeclined',
             'humhub\modules\space\notifications\Invite',
             'humhub\modules\space\notifications\InviteAccepted',
-            'humhub\modules\space\notifications\InviteDeclined'
+            'humhub\modules\space\notifications\InviteDeclined',
         ];
     }
 

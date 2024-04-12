@@ -66,7 +66,7 @@ class ApprovalRequest extends BaseNotification
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
             '{displayName}' => $this->originator->displayName,
-            '{spaceName}' => $this->source->name
+            '{spaceName}' => $this->source->name,
         ]);
     }
 
@@ -97,7 +97,7 @@ class ApprovalRequest extends BaseNotification
     {
         return Yii::t('SpaceModule.notification', '{displayName} requests membership for the space {spaceName}', [
             '{displayName}' => Html::tag('strong', Html::encode($this->originator->displayName)),
-            '{spaceName}' => Html::tag('strong', Html::encode($this->source->name))
+            '{spaceName}' => Html::tag('strong', Html::encode($this->source->name)),
         ]);
     }
 

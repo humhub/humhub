@@ -31,6 +31,6 @@ class Select2Asset extends AssetBundle
      * @inheritdoc
      */
     public $depends = [
-        Select2StyleAsset::class
+        Select2StyleAsset::class,
     ];
 }

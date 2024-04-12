@@ -39,7 +39,7 @@ class OpenSansAsset extends AssetBundle
      */
     public $preload = [
         'latin.css',
-        'latin-italic.css'
+        'latin-italic.css',
     ];
 
     /**
@@ -47,6 +47,6 @@ class OpenSansAsset extends AssetBundle
      */
     public $css = [
         'latin.css',
-        'latin-italic.css'
+        'latin-italic.css',
     ];
 }

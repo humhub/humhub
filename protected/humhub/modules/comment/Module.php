@@ -47,7 +47,7 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer) {
             return [
-                new permissions\CreateComment()
+                new permissions\CreateComment(),
             ];
         }
 
@@ -68,7 +68,7 @@ class Module extends \humhub\components\Module
     public function getNotifications()
     {
         return [
-            NewComment::class
+            NewComment::class,
         ];
     }
 

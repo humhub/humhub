@@ -152,7 +152,7 @@ class BaseStack extends Widget
         $this->widgets[] = [
             $className,
             $params,
-            $options
+            $options,
         ];
     }
 

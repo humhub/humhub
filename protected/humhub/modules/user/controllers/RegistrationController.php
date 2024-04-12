@@ -112,7 +112,7 @@ class RegistrationController extends Controller
 
             return $this->render('success', [
                 'form' => $registration,
-                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL)
+                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL),
             ]);
         }
 

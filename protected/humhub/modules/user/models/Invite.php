@@ -177,9 +177,9 @@ class Invite extends ActiveRecord
         if ($this->source === self::SOURCE_SELF || $this->source === self::SOURCE_INVITE_BY_LINK) {
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSelf',
-                'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf'
+                'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSelf',
             ], [
-                'registrationUrl' => $registrationUrl
+                'registrationUrl' => $registrationUrl,
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));
@@ -191,12 +191,12 @@ class Invite extends ActiveRecord
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInviteSpace',
-                'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSpace'
+                'text' => '@humhub/modules/user/views/mails/plaintext/UserInviteSpace',
             ], [
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
                 'space' => $this->space,
-                'registrationUrl' => $registrationUrl
+                'registrationUrl' => $registrationUrl,
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.base', 'You\'ve been invited to join {space} on {appName}', ['space' => $this->space->name, 'appName' => Yii::$app->name]));
@@ -213,11 +213,11 @@ class Invite extends ActiveRecord
 
             $mail = Yii::$app->mailer->compose([
                 'html' => '@humhub/modules/user/views/mails/UserInvite',
-                'text' => '@humhub/modules/user/views/mails/plaintext/UserInvite'
+                'text' => '@humhub/modules/user/views/mails/plaintext/UserInvite',
             ], [
                 'originator' => $this->originator,
                 'originatorName' => $this->originator->displayName,
-                'registrationUrl' => $registrationUrl
+                'registrationUrl' => $registrationUrl,
             ]);
             $mail->setTo($this->email);
             $mail->setSubject(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name]));
@@ -250,9 +250,9 @@ class Invite extends ActiveRecord
     {
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/UserAlreadyRegistered',
-            'text' => '@humhub/modules/user/views/mails/plaintext/UserAlreadyRegistered'
+            'text' => '@humhub/modules/user/views/mails/plaintext/UserAlreadyRegistered',
         ], [
-            'passwordRecoveryUrl' => Url::to(['/user/password-recovery'], true)
+            'passwordRecoveryUrl' => Url::to(['/user/password-recovery'], true),
         ]);
         $mail->setTo($this->email);
         $mail->setSubject(Yii::t('UserModule.base', 'Welcome to %appName%', ['%appName%' => Yii::$app->name]));

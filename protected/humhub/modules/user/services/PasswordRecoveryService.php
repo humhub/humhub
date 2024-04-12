@@ -56,13 +56,13 @@ class PasswordRecoveryService
 
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/RecoverPassword',
-            'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword'
+            'text' => '@humhub/modules/user/views/mails/plaintext/RecoverPassword',
         ], [
             'user' => $this->user,
             'linkPasswordReset' => SafeBaseUrl::to(['/user/password-recovery/reset',
                 'token' => $token,
-                'guid' => $this->user->guid
-            ], true)
+                'guid' => $this->user->guid,
+            ], true),
         ]);
         $mail->setTo($this->user->email);
         $mail->setSubject(Yii::t('UserModule.account', 'Password Recovery'));
@@ -91,7 +91,7 @@ class PasswordRecoveryService
 
         return [
             'key' => $tokenData[0],
-            'time' => $tokenData[1]
+            'time' => $tokenData[1],
         ];
     }
 

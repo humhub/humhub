@@ -44,7 +44,7 @@ class AdminController extends Controller
         }
 
         return $this->render('defaults', [
-            'model' => $model
+            'model' => $model,
         ]);
     }
 

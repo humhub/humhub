@@ -66,7 +66,7 @@ class CheckboxFilterInput extends FilterInput
         return ArrayHelper::merge(parent::getWidgetOptions(), [
             'checked' => $this->checked,
             'iconActive' => $this->iconActive,
-            'iconInActive' => $this->iconInActive
+            'iconInActive' => $this->iconInActive,
         ]);
     }
 

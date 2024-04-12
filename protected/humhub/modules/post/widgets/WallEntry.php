@@ -53,7 +53,7 @@ class WallEntry extends WallStreamEntryWidget
             'justEdited' => $this->renderOptions->isJustEdited(), // compatibility for themed legacy views
             'renderOptions' => $this->renderOptions,
             'enableDynamicFontSize' => $module->enableDynamicFontSize,
-            'collapsedPostHeight' => $module->collapsedPostHeight
+            'collapsedPostHeight' => $module->collapsedPostHeight,
         ]);
     }
 }

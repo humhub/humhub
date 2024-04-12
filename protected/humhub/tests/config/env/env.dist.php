@@ -14,6 +14,6 @@ return [
         ],
     ],
     'params' => [
-        'moduleAutoloadPaths' => [/* Insert module autoloader path of your test environment e.g. 'D:\development\humhub\modules' */]
-    ]
+        'moduleAutoloadPaths' => [/* Insert module autoloader path of your test environment e.g. 'D:\development\humhub\modules' */],
+    ],
 ];

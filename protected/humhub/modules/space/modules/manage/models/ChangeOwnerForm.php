@@ -37,7 +37,7 @@ class ChangeOwnerForm extends Model
     {
         return [
             ['ownerId', 'required'],
-            ['ownerId', 'in', 'range' => array_keys($this->getNewOwnerArray())]
+            ['ownerId', 'in', 'range' => array_keys($this->getNewOwnerArray())],
         ];
     }
 

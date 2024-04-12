@@ -40,7 +40,7 @@ class Select2BootstrapAsset extends AssetBundle
     */
     public $depends = [
         Select2Asset::class,
-        Select2SearchInputPlaceholderAsset::class
+        Select2SearchInputPlaceholderAsset::class,
     ];
 
 }

@@ -86,7 +86,7 @@ class SecurityController extends Controller
         return $return ?? $this->render('permissions', [
             'space' => $space,
             'groups' => $groups,
-            'groupId' => $groupId
+            'groupId' => $groupId,
         ]);
     }
 }

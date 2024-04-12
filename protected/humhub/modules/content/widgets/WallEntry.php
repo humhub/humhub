@@ -310,7 +310,7 @@ class WallEntry extends Widget
             'addonOptions' => $addonOptions,
             'container' => $container,
             'createdAt' => $createdAt,
-            'updatedAt' => $updatedAt
+            'updatedAt' => $updatedAt,
         ];
     }
 

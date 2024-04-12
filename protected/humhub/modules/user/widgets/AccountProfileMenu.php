@@ -26,7 +26,7 @@ class AccountProfileMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Profile'),
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'edit')
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit'),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -34,7 +34,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/change-username'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('user', 'account', 'change-username'),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeUsername()
+            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeUsername(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -42,7 +42,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/change-email'],
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('user', 'account', ['change-email', 'change-email-validate']),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeEmail()
+            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeEmail(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -50,7 +50,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/change-password'],
             'sortOrder' => 400,
             'isActive' => MenuLink::isActiveState('user', 'account', 'change-password'),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangePassword()
+            'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangePassword(),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -58,7 +58,7 @@ class AccountProfileMenu extends TabMenu
             'url' => ['/user/account/delete'],
             'sortOrder' => 500,
             'isActive' => MenuLink::isActiveState('user', 'account', 'delete'),
-            'isVisible' => Yii::$app->user->getAuthClientUserService()->canDeleteAccount()
+            'isVisible' => Yii::$app->user->getAuthClientUserService()->canDeleteAccount(),
         ]));
 
         parent::init();

@@ -87,7 +87,7 @@ class Image extends BaseImage
             'link' => $this->link,
             'linkOptions' => $this->linkOptions,
             'acronymHtmlOptions' => $acronymHtmlOptions,
-            'imageHtmlOptions' => $imageHtmlOptions
+            'imageHtmlOptions' => $imageHtmlOptions,
         ]);
     }
 

@@ -48,11 +48,11 @@ class DataTypeHelperTest extends Unit
         $tests = [
             'boolean' => [
                 true,
-                'bool'
+                'bool',
             ],
             'integer' => [
                 1,
-                'int'
+                'int',
             ],
             'string' => [
                 '',
@@ -74,7 +74,7 @@ class DataTypeHelperTest extends Unit
             ],
             'float' => [
                 1.2,
-                'double'
+                'double',
             ],
         ];
 
@@ -114,7 +114,7 @@ class DataTypeHelperTest extends Unit
         static::assertEquals('object', DataTypeHelperMock::matchTypeHelper('object', $value, 'object'));
         static::assertEquals(
             Stringable::class,
-            DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object')
+            DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object'),
         );
 
         $value = new class () {
@@ -126,37 +126,37 @@ class DataTypeHelperTest extends Unit
 
         static::assertEquals(
             'object',
-            DataTypeHelperMock::matchTypeHelper('object', $value, gettype($value))
+            DataTypeHelperMock::matchTypeHelper('object', $value, gettype($value)),
         );
         static::assertEquals(
             Stringable::class,
-            DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object')
+            DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object'),
         );
 
         $value = new static();
 
         static::assertEquals(
             'object',
-            DataTypeHelperMock::matchTypeHelper('object', $value, gettype($value))
+            DataTypeHelperMock::matchTypeHelper('object', $value, gettype($value)),
         );
 
         // test class
         static::assertEquals(
             static::class,
-            DataTypeHelperMock::matchTypeHelper(static::class, $value, gettype($value))
+            DataTypeHelperMock::matchTypeHelper(static::class, $value, gettype($value)),
         );
 
         // test interface
         static::assertEquals(
             TestInterface::class,
-            DataTypeHelperMock::matchTypeHelper(TestInterface::class, $value, gettype($value))
+            DataTypeHelperMock::matchTypeHelper(TestInterface::class, $value, gettype($value)),
         );
 
         // test trait
         $traits = DataTypeHelper::classUsesTraits($value);
         static::assertEquals(
             Stub::class,
-            DataTypeHelperMock::matchTypeHelper(Stub::class, $value, gettype($value), $traits)
+            DataTypeHelperMock::matchTypeHelper(Stub::class, $value, gettype($value), $traits),
         );
     }
 
@@ -258,25 +258,25 @@ class DataTypeHelperTest extends Unit
                 {
                     return '';
                 }
-            }
+            },
         ];
 
         foreach ($values as $value) {
             static::assertEquals('object', DataTypeHelper::matchType($value, ['object']));
             static::assertEquals(
                 Stringable::class,
-                DataTypeHelper::matchType($value, [Stringable::class])
+                DataTypeHelper::matchType($value, [Stringable::class]),
             );
             static::assertEquals('is_object', DataTypeHelper::matchType($value, ['is_object']));
 
             // type order is of significance, if multiple types match
             static::assertEquals(
                 'object',
-                DataTypeHelper::matchType($value, ['object', Stringable::class])
+                DataTypeHelper::matchType($value, ['object', Stringable::class]),
             );
             static::assertEquals(
                 Stringable::class,
-                DataTypeHelper::matchType($value, [Stringable::class, 'object'])
+                DataTypeHelper::matchType($value, [Stringable::class, 'object']),
             );
         }
     }
@@ -492,11 +492,11 @@ class DataTypeHelperTest extends Unit
     public function testClassTypeCheckCaseNull()
     {
         static::assertNull(
-            DataTypeHelper::matchClassType(null, BaseObject::class)
+            DataTypeHelper::matchClassType(null, BaseObject::class),
         );
 
         static::assertNull(
-            DataTypeHelper::matchClassType(null, [BaseObject::class, null])
+            DataTypeHelper::matchClassType(null, [BaseObject::class, null]),
         );
 
         $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - NULL given.';
@@ -511,7 +511,7 @@ class DataTypeHelperTest extends Unit
     public function testClassTypeCheckCaseEmptyString()
     {
         static::assertNull(
-            DataTypeHelper::matchClassType('', BaseObject::class)
+            DataTypeHelper::matchClassType('', BaseObject::class),
         );
 
         $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - empty string given.';
@@ -527,7 +527,7 @@ class DataTypeHelperTest extends Unit
     {
         /** @noinspection PhpUndefinedClassInspection */
         static::assertNull(
-            DataTypeHelper::matchClassType(NonExistingClassName::class, BaseObject::class, false)
+            DataTypeHelper::matchClassType(NonExistingClassName::class, BaseObject::class, false),
         );
 
         $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be a valid class name or an object instance - humhub\tests\codeception\unit\helpers\NonExistingClassName given.';
@@ -543,7 +543,7 @@ class DataTypeHelperTest extends Unit
     public function testClassTypeCheckCaseWrongClass()
     {
         static::assertNull(
-            DataTypeHelper::matchClassType(Exception::class, BaseObject::class)
+            DataTypeHelper::matchClassType(Exception::class, BaseObject::class),
         );
 
         $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - PHPUnit\Framework\Exception given.';
@@ -558,7 +558,7 @@ class DataTypeHelperTest extends Unit
     public function testClassTypeCheckCaseWrongInstance()
     {
         static::assertNull(
-            DataTypeHelper::matchClassType(new Exception('hello'), BaseObject::class)
+            DataTypeHelper::matchClassType(new Exception('hello'), BaseObject::class),
         );
 
         $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be of type yii\base\BaseObject - PHPUnit\Framework\Exception given.';
@@ -574,26 +574,26 @@ class DataTypeHelperTest extends Unit
     {
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::matchClassType(Exception::class, Exception::class)
+            DataTypeHelper::matchClassType(Exception::class, Exception::class),
         );
 
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::matchClassType(Exception::class, [new \Exception()])
+            DataTypeHelper::matchClassType(Exception::class, [new \Exception()]),
         );
 
         static::assertEquals(
             BaseObject::class,
-            DataTypeHelper::matchClassType(BaseObject::class, Configurable::class)
+            DataTypeHelper::matchClassType(BaseObject::class, Configurable::class),
         );
 
         static::assertEquals(
             Model::class,
-            DataTypeHelper::matchClassType(Model::class, ArrayableTrait::class)
+            DataTypeHelper::matchClassType(Model::class, ArrayableTrait::class),
         );
 
         static::assertNull(
-            DataTypeHelper::matchClassType('#%' . Exception::class, Exception::class)
+            DataTypeHelper::matchClassType('#%' . Exception::class, Exception::class),
         );
 
         $message = 'Argument $value passed to humhub\helpers\DataTypeHelper::matchClassType must be a valid class name or an object instance - #%PHPUnit\Framework\Exception given.';
@@ -609,22 +609,22 @@ class DataTypeHelperTest extends Unit
     {
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::matchClassType(new Exception('hello'), Exception::class)
+            DataTypeHelper::matchClassType(new Exception('hello'), Exception::class),
         );
 
         static::assertEquals(
             Exception::class,
-            DataTypeHelper::matchClassType(new Exception('hello'), [new \Exception()])
+            DataTypeHelper::matchClassType(new Exception('hello'), [new \Exception()]),
         );
 
         static::assertEquals(
             BaseObject::class,
-            DataTypeHelper::matchClassType(new BaseObject(), Configurable::class)
+            DataTypeHelper::matchClassType(new BaseObject(), Configurable::class),
         );
 
         static::assertEquals(
             Model::class,
-            DataTypeHelper::matchClassType(new Model(), ArrayableTrait::class)
+            DataTypeHelper::matchClassType(new Model(), ArrayableTrait::class),
         );
     }
 }

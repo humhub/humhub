@@ -39,19 +39,19 @@ $config = [
     ],
     'components' => [
         'moduleManager' => [
-            'class' => \humhub\components\ModuleManager::class
+            'class' => \humhub\components\ModuleManager::class,
         ],
         'notification' => [
             'class' => \humhub\modules\notification\components\NotificationManager::class,
             'targets' => [
                 \humhub\modules\notification\targets\WebTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class]
+                    'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class],
                 ],
                 \humhub\modules\notification\targets\MailTarget::class => [
-                    'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class]
+                    'renderer' => ['class' => \humhub\modules\notification\renderer\MailRenderer::class],
                 ],
-                \humhub\modules\notification\targets\MobileTarget::class => []
-            ]
+                \humhub\modules\notification\targets\MobileTarget::class => [],
+            ],
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -62,7 +62,7 @@ $config = [
                     'except' => [
                         'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
                         'yii\web\HttpException:404', 'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus',
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
@@ -72,7 +72,7 @@ $config = [
                     'except' => [
                         'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
                         'yii\web\HttpException:404', 'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus'
+                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus',
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
@@ -87,24 +87,24 @@ $config = [
             'translations' => [
                 'base' => [
                     'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
+                    'basePath' => '@humhub/messages',
                 ],
                 'error' => [
                     'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
+                    'basePath' => '@humhub/messages',
                 ],
                 'humhub.yii' => [
                     'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
+                    'basePath' => '@humhub/messages',
                 ],
                 'SearchModule.*' => [
                     // Temporary: During conversion of the search module
                     'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
+                    'basePath' => '@humhub/messages',
                 ],
                 'custom' => [
                     'class' => PhpMessageSource::class,
-                    'basePath' => '@humhub/messages'
+                    'basePath' => '@humhub/messages',
                 ],
             ],
         ],
@@ -125,7 +125,7 @@ $config = [
                 'class' => \yii\web\View::class,
                 'theme' => [
                     'class' => \humhub\modules\ui\view\components\Theme::class,
-                    'name' => 'HumHub'
+                    'name' => 'HumHub',
                 ],
             ],
         ],
@@ -146,7 +146,7 @@ $config = [
             // Fix for MySQL 8.0.21+: https://github.com/yiisoft/yii2/issues/18207
             'schemaMap' => [
                 'mysqli' => 'humhub\components\db\MysqlSchema',
-                'mysql' => 'humhub\components\db\MysqlSchema'
+                'mysql' => 'humhub\components\db\MysqlSchema',
             ],
             'dsn' => 'mysql:host=localhost;dbname=humhub',
             'username' => '',
@@ -172,7 +172,7 @@ $config = [
             ],
         ],
         'mutex' => [
-            'class' => \yii\mutex\MysqlMutex::class
+            'class' => \yii\mutex\MysqlMutex::class,
         ],
     ],
     'params' => [
@@ -228,7 +228,7 @@ $config = [
             'cy' => 'Cymraeg',
             'sw' => 'Kiswahili',
             'sr' => 'Сербисцх',
-            'eu' => 'Basque'
+            'eu' => 'Basque',
         ],
         'ldap' => [
             // LDAP date field formats
@@ -270,7 +270,7 @@ $config = [
         ],
         'twemoji' => [
             'path' => '@web-static/img/twemoji/',
-            'size' => '72x72'
+            'size' => '72x72',
         ],
         'enablePjax' => true,
         'dailyCronExecutionTime' => '18:00',

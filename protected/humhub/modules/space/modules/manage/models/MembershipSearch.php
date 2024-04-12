@@ -52,7 +52,7 @@ class MembershipSearch extends Membership
     {
         return [
             [['user_id', 'status'], 'integer'],
-            [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id', 'freeText'], 'safe']
+            [['user.profile.firstname', 'user.profile.lastname', 'user.username', 'group_id', 'freeText'], 'safe'],
         ];
     }
 
@@ -80,12 +80,12 @@ class MembershipSearch extends Membership
             'user.profile',
             'originator' => function ($q) {
                 $q->from('user originator');
-            }
+            },
         ]);
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination' => ['pageSize' => 50]
+            'pagination' => ['pageSize' => 50],
         ]);
 
 
@@ -111,7 +111,7 @@ class MembershipSearch extends Membership
                 ],
                 'created_at',
                 'group_id',
-            ]
+            ],
         ]);
 
         $this->load($params);

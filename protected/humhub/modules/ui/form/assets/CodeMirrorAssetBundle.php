@@ -38,7 +38,7 @@ class CodeMirrorAssetBundle extends AssetBundle
 
     public $css = [
         'lib/codemirror.css',
-        'addon/hint/show-hint.css'
+        'addon/hint/show-hint.css',
     ];
 
 }

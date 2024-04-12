@@ -29,7 +29,7 @@ class PeopleIcons extends Widget
     public function run()
     {
         return $this->render('peopleIcons', [
-            'user' => $this->user
+            'user' => $this->user,
         ]);
     }
 

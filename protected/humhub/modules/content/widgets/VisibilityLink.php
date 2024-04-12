@@ -61,7 +61,7 @@ class VisibilityLink extends Widget
 
         return $this->render('visibilityLink', [
             'content' => $content,
-            'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id])
+            'toggleLink' => Url::to(['/content/content/toggle-visibility', 'id' => $content->id]),
         ]);
     }
 }

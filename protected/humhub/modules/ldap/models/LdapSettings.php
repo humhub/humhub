@@ -262,7 +262,7 @@ class LdapSettings extends Model
             'emailAttribute' => $this->emailAttribute,
             'usernameAttribute' => $this->usernameAttribute,
             'idAttribute' => $this->idAttribute,
-            'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs))
+            'ignoredDNs' => explode("\n", strtolower($this->ignoredDNs)),
         ];
     }
 

@@ -141,7 +141,7 @@ class ModuleAutoLoader implements BootstrapInterface
 
         return FileHelper::findDirectories(
             Yii::getAlias($path, true),
-            ['filter' => $hasConfigurationFile, 'recursive' => false]
+            ['filter' => $hasConfigurationFile, 'recursive' => false],
         );
     }
 }

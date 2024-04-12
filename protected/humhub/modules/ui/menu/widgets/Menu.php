@@ -104,7 +104,7 @@ abstract class Menu extends JsWidget
             'options' => $this->getOptions(),
             // Deprecated
             'items' => $this->getItems(),
-            'numItems' => count($this->getItems())
+            'numItems' => count($this->getItems()),
         ];
     }
 
@@ -124,7 +124,7 @@ abstract class Menu extends JsWidget
     public function getData()
     {
         return [
-            'menu-id' => $this->id
+            'menu-id' => $this->id,
         ];
     }
 
@@ -232,7 +232,7 @@ abstract class Menu extends JsWidget
     public function getItemGroups()
     {
         return [
-            ['id' => 'default', 'label' => '', 'icon' => '', 'sortOrder' => 1000]
+            ['id' => 'default', 'label' => '', 'icon' => '', 'sortOrder' => 1000],
         ];
     }
 

@@ -224,7 +224,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             'renderOptions' => $this->renderOptions,
             'content' => $this->renderContent(),
             'header' => $this->renderHeader(),
-            'footer' => $this->renderFooter()
+            'footer' => $this->renderFooter(),
         ]);
     }
 
@@ -239,7 +239,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             'renderOptions' => $this->renderOptions,
             'headImage' => $this->renderHeadImage(),
             'title' => $this->renderTitle(),
-            'permaLink' => $this->getPermaLink()
+            'permaLink' => $this->getPermaLink(),
         ]);
     }
 
@@ -279,7 +279,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return UserImage::widget([
             'user' => $this->model->content->createdBy,
             'width' => 40,
-            'htmlOptions' => ['class' => 'pull-left']
+            'htmlOptions' => ['class' => 'pull-left'],
         ]);
     }
 
@@ -291,7 +291,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         return $this->render($this->layoutFooter, [
             'model' => $this->model,
-            'renderOptions' => $this->renderOptions
+            'renderOptions' => $this->renderOptions,
         ]);
     }
 
@@ -333,7 +333,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
 
         if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
             return [
-                [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]]
+                [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
             ];
         }
 
@@ -347,7 +347,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             [LockCommentsLink::class, ['contentRecord' => $this->model], ['sortOrder' => 450]],
             [NotificationSwitchLink::class, ['content' => $this->model], ['sortOrder' => 500]],
             [MoveContentLink::class, ['model' => $this->model], ['sortOrder' => 700]],
-            [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]]
+            [ArchiveLink::class, ['content' => $this->model], ['sortOrder' => 800]],
         ];
 
         if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT, WallStreamEntryOptions::VIEW_CONTEXT_DETAIL])) {
@@ -392,7 +392,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     public function getAttributes()
     {
         return [
-            'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry'
+            'class' => $this->renderOptions->isPinned($this->model) ? 'wall-entry pinned-entry' : 'wall-entry',
         ];
     }
 

@@ -19,7 +19,7 @@ class PeopleFiltersTest extends HumHubDbTestCase
             '' => 'Any',
             1 => 'Administrator',
             2 => 'Users',
-            3 => 'Moderators'
+            3 => 'Moderators',
         ], $this->getFilterOptions('groupId', $peopleFilters));
     }
 

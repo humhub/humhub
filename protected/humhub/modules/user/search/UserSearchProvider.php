@@ -73,7 +73,7 @@ class UserSearchProvider implements MetaSearchProviderInterface
     {
         $peopleQuery = new PeopleQuery([
             'defaultFilters' => ['keyword' => $this->getKeyword()],
-            'pageSize' => $maxResults
+            'pageSize' => $maxResults,
         ]);
 
         $results = [];
@@ -83,7 +83,7 @@ class UserSearchProvider implements MetaSearchProviderInterface
 
         return [
             'totalCount' => $peopleQuery->pagination->totalCount,
-            'results' => $results
+            'results' => $results,
         ];
     }
 

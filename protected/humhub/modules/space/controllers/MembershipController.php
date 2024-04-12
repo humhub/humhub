@@ -54,8 +54,8 @@ class MembershipController extends ContentContainerController
                     'revoke-notifications',
                     'receive-notifications',
                     'search-invite',
-                    'switch-dashboard-display'
-                ]
+                    'switch-dashboard-display',
+                ],
             ],
             [ContentContainerControllerAccess::RULE_AJAX_ONLY => ['members-list']],
         ];
@@ -76,7 +76,7 @@ class MembershipController extends ContentContainerController
         ) {
             throw new HttpException(404, Yii::t(
                 'SpaceModule.base',
-                'This action is only available for workspace members!'
+                'This action is only available for workspace members!',
             ));
         }
 
@@ -86,7 +86,7 @@ class MembershipController extends ContentContainerController
             'fillUser' => true,
             'disabledText' => Yii::t(
                 'SpaceModule.base',
-                'This user is not a member of this space.'
+                'This user is not a member of this space.',
             ),
         ]);
     }
@@ -102,7 +102,7 @@ class MembershipController extends ContentContainerController
         if (!$space->canJoin(Yii::$app->user->id)) {
             throw new HttpException(
                 500,
-                Yii::t('SpaceModule.base', 'You are not allowed to join this space!')
+                Yii::t('SpaceModule.base', 'You are not allowed to join this space!'),
             );
         }
 
@@ -124,7 +124,7 @@ class MembershipController extends ContentContainerController
         if (Yii::$app->user->isGuest || $space->getMembership(Yii::$app->user->id) != null) {
             throw new HttpException(
                 500,
-                Yii::t('SpaceModule.base', 'Could not request membership!')
+                Yii::t('SpaceModule.base', 'Could not request membership!'),
             );
         }
 
@@ -137,7 +137,7 @@ class MembershipController extends ContentContainerController
                 'spaceId' => $space->id,
                 'newMembershipButton' => MembershipButton::widget([
                     'space' => $space,
-                    'options' => empty($model->options) ? [] : Json::decode($model->options)
+                    'options' => empty($model->options) ? [] : Json::decode($model->options),
                 ]),
             ]);
         }
@@ -178,12 +178,12 @@ class MembershipController extends ContentContainerController
         if ($space->isSpaceOwner()) {
             throw new HttpException(
                 500,
-                Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!')
+                Yii::t('SpaceModule.base', 'As owner you cannot revoke your membership!'),
             );
         } elseif (!$space->canLeave()) {
             throw new HttpException(
                 500,
-                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this space!')
+                Yii::t('SpaceModule.base', 'Sorry, you are not allowed to leave this space!'),
             );
         }
 
@@ -206,7 +206,7 @@ class MembershipController extends ContentContainerController
             'fillUser' => true,
             'disabledText' => Yii::t(
                 'SpaceModule.base',
-                'This user is already a member of this space.'
+                'This user is already a member of this space.',
             ),
         ]));
     }
@@ -229,7 +229,7 @@ class MembershipController extends ContentContainerController
             }
 
             return ModalClose::widget([
-                'success' => $success
+                'success' => $success,
             ]);
         }
 

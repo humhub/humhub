@@ -52,7 +52,7 @@ class Request extends \yii\web\Request
             defined('YII_ENV_TEST') && YII_ENV_TEST && $_SERVER['SCRIPT_FILENAME'] === 'index-test.php' && in_array(
                 $_SERVER['SCRIPT_NAME'],
                 ['/sw.js', '/offline.pwa.html', '/manifest.json'],
-                true
+                true,
             )
         ) {
             $this->setScriptUrl('/index.php');

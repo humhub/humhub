@@ -60,7 +60,7 @@ SQL;
             foreach ($constraints as $name => $constraint) {
                 $table->foreignKeys[$name] = array_merge(
                     [$constraint['referenced_table_name']],
-                    $constraint['columns']
+                    $constraint['columns'],
                 );
             }
         } catch (\Exception $e) {

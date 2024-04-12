@@ -30,7 +30,7 @@ class AdminDeleteCommentForm extends yii\base\Model
                 return $model->notify;
             }],
             [['message'], 'string'],
-            [['notify'], 'boolean']
+            [['notify'], 'boolean'],
         ];
     }
 
@@ -38,7 +38,7 @@ class AdminDeleteCommentForm extends yii\base\Model
     {
         return [
             'message' => Yii::t('CommentModule.base', 'Reason'),
-            'notify' => Yii::t('CommentModule.base', 'Send a notification to author')
+            'notify' => Yii::t('CommentModule.base', 'Send a notification to author'),
         ];
     }
 }

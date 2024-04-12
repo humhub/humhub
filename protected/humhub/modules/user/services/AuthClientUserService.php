@@ -68,7 +68,7 @@ class AuthClientUserService
         } else {
             Yii::error(
                 'Could not store auth client without given ID attribute. User: ' . $this->user->displayName . ' (' . $this->user->id . ')',
-                'user'
+                'user',
             );
         }
     }
@@ -77,7 +77,7 @@ class AuthClientUserService
     {
         Auth::deleteAll([
             'user_id' => $this->user->id,
-            'source' => (string)$authClient->getId()
+            'source' => (string)$authClient->getId(),
         ]);
     }
 

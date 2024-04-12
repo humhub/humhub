@@ -66,7 +66,7 @@ class RichTextToEmailHtmlConverterCest
             'file_name' => 'text.jpg',
             'title' => 'Test Image',
             'mime_type' => 'image/jpeg',
-            'size' => 302176
+            'size' => 302176,
         ]);
         $file->save();
 
@@ -83,7 +83,7 @@ class RichTextToEmailHtmlConverterCest
             'Comment' => ['message' =>
                 'Test comment with image ![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '") ' .
                 'and with link [' . $link['text'] . '](' . $link['url'] . ')' .
-                'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')'
+                'and with linked image [![' . $file->file_name . '](file-guid:' . $file->guid . ' "' . $file->title . '")](' . $link['url'] . ')',
             ],
             'fileList' => [$file->guid],
         ]);

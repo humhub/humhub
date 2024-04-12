@@ -34,7 +34,7 @@ return [
             'default' => null,
             'regexp' => null,
             'regexpErrorMessage' => null,
-            'fieldTypes' => []
+            'fieldTypes' => [],
         ]),
         'internal_name' => 'firstname',
         'title' => 'First name',
@@ -51,7 +51,7 @@ return [
         'ldap_attribute' => 'givenName',
         'translation_category' => null,
         'is_system' => 1,
-        'searchable' => 1
+        'searchable' => 1,
     ],
     [
         'id' => 2,
@@ -65,7 +65,7 @@ return [
             'default' => null,
             'regexp' => null,
             'regexpErrorMessage' => null,
-            'fieldTypes' => []
+            'fieldTypes' => [],
         ]),
         'internal_name' => 'lastname',
         'title' => 'Last name',
@@ -82,7 +82,7 @@ return [
         'ldap_attribute' => 'sn',
         'translation_category' => null,
         'is_system' => 1,
-        'searchable' => 1
+        'searchable' => 1,
     ],
     [
         'id' => 3,
@@ -96,7 +96,7 @@ return [
             'default' => null,
             'regexp' => null,
             'regexpErrorMessage' => null,
-            'fieldTypes' => []
+            'fieldTypes' => [],
         ]),
         'internal_name' => 'mobile',
         'title' => 'Mobile',
@@ -113,7 +113,7 @@ return [
         'ldap_attribute' => null,
         'translation_category' => null,
         'is_system' => 1,
-        'searchable' => 1
+        'searchable' => 1,
     ],
     [
         'id' => 4,
@@ -127,7 +127,7 @@ return [
             'default' => null,
             'regexp' => null,
             'regexpErrorMessage' => null,
-            'fieldTypes' => []
+            'fieldTypes' => [],
         ]),
         'internal_name' => 'url',
         'title' => 'Website URL',
@@ -144,7 +144,7 @@ return [
         'ldap_attribute' => null,
         'translation_category' => null,
         'is_system' => 1,
-        'searchable' => 1
+        'searchable' => 1,
     ],
     [
         'id' => 5,
@@ -166,6 +166,6 @@ return [
         'ldap_attribute' => null,
         'translation_category' => null,
         'is_system' => 1,
-        'searchable' => 1
+        'searchable' => 1,
     ],
 ];

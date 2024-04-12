@@ -33,6 +33,6 @@ class ContentFormAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.content.form.js'
+        'js/humhub.content.form.js',
     ];
 }

@@ -33,7 +33,7 @@ class Log extends ActiveRecord
             [['level'], 'integer'],
             [['log_time'], 'number'],
             [['prefix', 'message'], 'string'],
-            [['category'], 'string', 'max' => 255]
+            [['category'], 'string', 'max' => 255],
         ];
     }
 

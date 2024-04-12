@@ -48,7 +48,7 @@ class NotificationSettingsForm extends Widget
             'form' => $this->form,
             'model' => $this->model,
             'showSpaces' => $this->showSpaces,
-            'defaultSpaces' => $this->defaultSpaces
+            'defaultSpaces' => $this->defaultSpaces,
         ]);
     }
 }

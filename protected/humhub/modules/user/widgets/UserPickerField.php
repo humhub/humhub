@@ -82,7 +82,7 @@ class UserPickerField extends BasePicker
             : Yii::t(
                 'UserModule.chooser',
                 'Select {n,plural,=1{user} other{users}}',
-                ['n' => ($allowMultiple) ? 2 : 1]
+                ['n' => ($allowMultiple) ? 2 : 1],
             );
 
         if ($this->placeholder && !$this->placeholderMore) {
@@ -98,7 +98,7 @@ class UserPickerField extends BasePicker
             $result['maximum-selected'] = Yii::t(
                 'UserModule.chooser',
                 'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.',
-                ['n' => $this->maxSelection]
+                ['n' => $this->maxSelection],
             );
         }
         return $result;

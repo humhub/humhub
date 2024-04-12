@@ -21,7 +21,7 @@ class StreamController extends ContentContainerController
         return [
             'stream' => [
                 'class' => ActivityStreamAction::class,
-                'contentContainer' => $this->contentContainer
+                'contentContainer' => $this->contentContainer,
             ],
         ];
     }

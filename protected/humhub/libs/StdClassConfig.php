@@ -283,7 +283,7 @@ class StdClassConfig extends StdClass
             throw new RuntimeException(sprintf(
                 'Method %s can only be called from a %s instance itself',
                 __METHOD__,
-                StdClassConfigurable::class
+                StdClassConfigurable::class,
             ));
         }
 

@@ -31,7 +31,7 @@ class ListController extends Controller
     protected function getAccessRules()
     {
         return [
-            [ControllerAccess::RULE_LOGGED_IN_ONLY]
+            [ControllerAccess::RULE_LOGGED_IN_ONLY],
         ];
     }
 
@@ -69,7 +69,7 @@ class ListController extends Controller
             'newNotifications' => Notification::findUnseen()->count(),
             'lastEntryId' => $lastEntryId,
             'output' => $output,
-            'counter' => count($notifications)
+            'counter' => count($notifications),
         ]);
     }
 
@@ -85,7 +85,7 @@ class ListController extends Controller
 
         return $this->asJson([
             'success' => true,
-            'count' => $count
+            'count' => $count,
         ]);
     }
 

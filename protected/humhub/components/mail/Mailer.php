@@ -79,7 +79,7 @@ class Mailer extends \yii\symfonymailer\Mailer implements MailerInterface
                     $this->signingPrivateKeyPath,
                     $this->signingPrivateKeyPassphrase,
                     $this->signingExtraCertsPath,
-                    $this->signingOptions
+                    $this->signingOptions,
                 );
             }
             $this->withSigner($this->signer);

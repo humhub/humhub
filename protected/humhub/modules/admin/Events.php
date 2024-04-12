@@ -38,7 +38,7 @@ class Events extends BaseObject
         if (Yii::$app->getModule('user')->settings->get('auth.needApproval')) {
             if (Yii::$app->user->getIdentity()->canApproveUsers()) {
                 $event->sender->addWidget(widgets\DashboardApproval::class, [], [
-                    'sortOrder' => 99
+                    'sortOrder' => 99,
                 ]);
             }
         }

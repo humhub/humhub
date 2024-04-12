@@ -21,7 +21,7 @@ class m211022_152413_file_history extends Migration
                 'hash_sha1' => $this->string(40)->notNull(),
                 'created_at' => $this->dateTime(),
                 'created_by' => $this->integer(),
-            ]
+            ],
         );
 
         $this->addForeignKey('fk_file_history', 'file_history', 'file_id', 'file', 'id', 'CASCADE', 'CASCADE');

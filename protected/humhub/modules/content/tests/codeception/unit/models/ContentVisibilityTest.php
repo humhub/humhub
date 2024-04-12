@@ -25,7 +25,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->visibility = Space::VISIBILITY_NONE;
 
         $newModel = new TestContent($this->space, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -37,7 +37,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->visibility = Space::VISIBILITY_REGISTERED_ONLY;
 
         $newModel = new TestContent($this->space, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -49,7 +49,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->visibility = Space::VISIBILITY_ALL;
 
         $newModel = new TestContent($this->space, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -61,7 +61,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->visibility = Space::VISIBILITY_ALL;
 
         $newModel = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -74,7 +74,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->visibility = Space::VISIBILITY_REGISTERED_ONLY;
 
         $newModel = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -87,7 +87,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->default_content_visibility = Content::VISIBILITY_PUBLIC;
 
         $newModel = new TestContent($this->space, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -100,7 +100,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->default_content_visibility = Content::VISIBILITY_PRIVATE;
 
         $newModel = new TestContent($this->space, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());
@@ -120,7 +120,7 @@ class ContentVisibilityTest extends ContentModelTest
         $this->space->visibility = Space::VISIBILITY_NONE;
 
         $newModel = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $this->assertTrue($newModel->save());

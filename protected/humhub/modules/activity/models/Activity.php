@@ -63,8 +63,8 @@ class Activity extends ContentActiveRecord
                 'strict' => true,
                 'mustBeInstanceOf' => [
                     ActiveRecord::class,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -84,7 +84,7 @@ class Activity extends ContentActiveRecord
         return [
             [['object_id'], 'integer'],
             [['class'], 'string', 'max' => 100],
-            [['module', 'object_model'], 'string', 'max' => 100]
+            [['module', 'object_model'], 'string', 'max' => 100],
         ];
     }
 

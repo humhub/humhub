@@ -432,12 +432,12 @@ class Group extends ActiveRecord
             $html = Yii::t(
                 'UserModule.auth',
                 'Hello {displayName},',
-                ['displayName' => $manager->displayName]
+                ['displayName' => $manager->displayName],
             ) . "<br><br>\n\n" .
                 Yii::t(
                     'UserModule.auth',
                     'a new user {displayName} needs approval.',
-                    ['displayName' => $user->displayName]
+                    ['displayName' => $user->displayName],
                 ) . "<br><br>\n\n" .
                 Yii::t('UserModule.auth', 'Please click on the link below to view request:') .
                 "<br>\n\n" .

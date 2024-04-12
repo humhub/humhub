@@ -60,7 +60,7 @@ class ScheduleOptionsForm extends Model
         return [
             ['enabled', 'boolean'],
             ['date', DbDateValidator::class, 'timeAttribute' => 'time'],
-            ['time', 'date', 'type' => 'time', 'format' => Yii::$app->formatter->isShowMeridiem() ? 'h:mm a' : 'php:H:i']
+            ['time', 'date', 'type' => 'time', 'format' => Yii::$app->formatter->isShowMeridiem() ? 'h:mm a' : 'php:H:i'],
         ];
     }
 
@@ -70,7 +70,7 @@ class ScheduleOptionsForm extends Model
     public function attributeLabels()
     {
         return [
-            'enabled' => Yii::t('ContentModule.base', 'Activate scheduling')
+            'enabled' => Yii::t('ContentModule.base', 'Activate scheduling'),
         ];
     }
 
@@ -107,7 +107,7 @@ class ScheduleOptionsForm extends Model
     public function getStateTitle(): string
     {
         return Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
-            'dateTime' => Yii::$app->formatter->asDatetime($this->date, 'short')
+            'dateTime' => Yii::$app->formatter->asDatetime($this->date, 'short'),
         ]);
     }
 

@@ -16,7 +16,7 @@ class SpaceNameColorInput extends Widget
     {
         return $this->render('spaceNameColorInput', [
             'model' => $this->model,
-            'form' => $this->form
+            'form' => $this->form,
         ]);
     }
 }

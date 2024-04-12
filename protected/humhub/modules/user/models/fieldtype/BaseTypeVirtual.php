@@ -48,7 +48,7 @@ abstract class BaseTypeVirtual extends BaseType
             get_class($this) => [
                 'type' => 'form',
                 'title' => '',
-                'elements' => []
+                'elements' => [],
             ]]);
     }
 

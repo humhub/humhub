@@ -33,7 +33,7 @@ class Settings extends Menu
             'url' => ['/marketplace/browse/module-settings'],
             'icon' => 'cog',
             'htmlOptions' => ['data-target' => '#globalModal'],
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ]));
 
         $this->addEntry(new MenuLink([

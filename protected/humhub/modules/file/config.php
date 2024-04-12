@@ -13,7 +13,7 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'consoleControllerMap' => [
-        'file' => 'humhub\modules\file\commands\FileController'
+        'file' => 'humhub\modules\file\commands\FileController',
     ],
     'events' => [
         ['class' => WallEntryAddons::class, 'event' => WallEntryAddons::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryAddonInit']],

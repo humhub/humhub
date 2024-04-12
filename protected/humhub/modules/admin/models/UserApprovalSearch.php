@@ -70,7 +70,7 @@ class UserApprovalSearch extends User
                 'profile.firstname',
                 'profile.lastname',
                 'created_at',
-            ]
+            ],
         ]);
 
         $this->load($params);

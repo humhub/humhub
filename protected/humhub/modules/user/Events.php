@@ -106,20 +106,20 @@ class Events extends BaseObject
 
         $integrityController->showTestHeadline('User Module - Follow (' . Follow::find()->count() . ' entries)');
         foreach (Follow::find()->joinWith(['user'])->each() as $follow) {
-            if ($follow->user == null) {
-                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non existing user!')) {
+            if ($follow->user === null) {
+                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non existing user #' . $follow->user_id . '!')) {
                     $follow->delete();
                 }
             }
 
             try {
-                if ($follow->getTarget() == null) {
-                    if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
+                if ($follow->getTarget() === null) {
+                    if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model. ' #' . $follow->object_id . '!')) {
                         $follow->delete();
                     }
                 }
             } catch (Exception $e) {
-                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target!')) {
+                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model. ' #' . $follow->object_id . '!')) {
                     $follow->delete();
                 }
             }

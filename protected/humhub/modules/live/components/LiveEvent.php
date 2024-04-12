@@ -45,7 +45,7 @@ abstract class LiveEvent extends BaseObject
             'type' => str_replace('\\', '.', get_class($this)),
             'contentContainerId' => $this->contentContainerId,
             'visibility' => $this->visibility,
-            'data' => $data
+            'data' => $data,
         ];
     }
 

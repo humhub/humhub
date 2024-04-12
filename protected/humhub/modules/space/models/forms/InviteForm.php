@@ -258,8 +258,8 @@ class InviteForm extends Model
                         Yii::t(
                             'SpaceModule.base',
                             "User '{username}' is already a member of this space!",
-                            ['username' => $user->getDisplayName()]
-                        )
+                            ['username' => $user->getDisplayName()],
+                        ),
                     );
                 }
             }
@@ -288,7 +288,7 @@ class InviteForm extends Model
                 if (!$validator->validate($email)) {
                     $this->addError(
                         $attribute,
-                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email])
+                        Yii::t('SpaceModule.base', "{email} is not valid!", ["{email}" => $email]),
                     );
                     continue;
                 }

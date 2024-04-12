@@ -106,7 +106,7 @@ class DataTypeHelper
                 '$value',
                 $validTypes,
                 $value,
-                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_VALUE_IS_NULL
+                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_VALUE_IS_NULL,
             );
         }
 
@@ -133,7 +133,7 @@ class DataTypeHelper
             '$value',
             $allowedTypes,
             $value,
-            $code
+            $code,
         );
     }
 
@@ -297,7 +297,7 @@ class DataTypeHelper
         $input = is_array($value) ? !empty($value) : filter_var(
             $value,
             FILTER_VALIDATE_BOOLEAN,
-            FILTER_NULL_ON_FAILURE
+            FILTER_NULL_ON_FAILURE,
         );
 
         return self::filterType($input, [self::BOOLEAN, null], $throwException);
@@ -352,7 +352,7 @@ class DataTypeHelper
                 '$value',
                 $allowedTypes,
                 $value,
-                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_VALUE_IS_NULL
+                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_VALUE_IS_NULL,
             );
         }
 
@@ -368,13 +368,13 @@ class DataTypeHelper
                     '$value',
                     $allowedTypes,
                     $value,
-                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_TYPE_NOT_IN_LIST
+                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE + self::TYPE_CHECK_TYPE_NOT_IN_LIST,
                 )
                 : new InvalidArgumentTypeException(
                     '$value',
                     $allowedTypes,
                     $value,
-                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE
+                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY + self::TYPE_CHECK_INVALID_TYPE,
                 );
         }
 
@@ -394,7 +394,7 @@ class DataTypeHelper
                     '$value',
                     'a valid class name or an object instance',
                     $value,
-                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_NON_EXISTING_CLASS
+                    self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_NON_EXISTING_CLASS,
                 );
             }
 
@@ -408,7 +408,7 @@ class DataTypeHelper
                 '$value',
                 $allowedTypes,
                 $value,
-                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE
+                self::TYPE_CHECK_INVALID_VALUE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE,
             );
         }
 
@@ -436,7 +436,7 @@ class DataTypeHelper
             '$value',
             $allowedTypes,
             $value,
-            $code
+            $code,
         );
     }
 
@@ -606,7 +606,7 @@ class DataTypeHelper
                     '$allowedTypes',
                     [self::STRING, 'string[]', 'object[]'],
                     $allowedTypes,
-                    self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY
+                    self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY,
                 );
             }
 
@@ -618,7 +618,7 @@ class DataTypeHelper
                 '$allowedTypes',
                 [self::STRING, 'string[]', 'object[]', null],
                 $allowedTypes,
-                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE
+                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE,
             );
         }
 
@@ -627,7 +627,7 @@ class DataTypeHelper
                 '$allowedTypes',
                 [self::STRING, 'string[]', 'object[]'],
                 $allowedTypes,
-                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY
+                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_VALUE_IS_EMPTY,
             );
         }
 
@@ -656,7 +656,7 @@ class DataTypeHelper
                     sprintf('$allowedTypes[%s]', $index),
                     ['class', self::OBJECT],
                     $item,
-                    self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE
+                    self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_INVALID_TYPE,
                 );
             }
 
@@ -702,7 +702,7 @@ class DataTypeHelper
                 sprintf('$allowedTypes[%s]', $index),
                 'a valid class/interface/trait name or an object instance',
                 $item,
-                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_NON_EXISTING_CLASS
+                self::TYPE_CHECK_INVALID_TYPE_PARAMETER + self::TYPE_CHECK_NON_EXISTING_CLASS,
             );
         }
 

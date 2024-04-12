@@ -248,7 +248,7 @@ class LinkParserBlock extends Model
     {
         $attrs = [
             'src' => $this->getUrl(),
-            'alt' => $this->getText()
+            'alt' => $this->getText(),
         ];
         if ($this->hasOption(static::BLOCK_KEY_TITLE)) {
             $attrs['title'] = $this->getTitle();

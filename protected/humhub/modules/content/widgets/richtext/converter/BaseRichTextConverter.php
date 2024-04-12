@@ -368,7 +368,7 @@ REGEXP;
                     empty($refMatches[5]) ? null : $refMatches[5], // title
                     $offset + strlen($refMatches[0]), // offset
                     null, // reference key
-                    empty($refMatches[7]) ? null : $refMatches[7] // extension metadata
+                    empty($refMatches[7]) ? null : $refMatches[7], // extension metadata
                 ];
             } elseif (preg_match('/^([ \n]?\[(.*?)\])?/s', $markdown, $refMatches)) {
                 // reference style link
@@ -403,7 +403,7 @@ REGEXP;
     {
         return $this->renderLinkOrImage(new LinkParserBlock([
             'block' => $block,
-            'parsedText' => is_string($block['text']) ? $block['text'] : $this->renderAbsy($block['text'])
+            'parsedText' => is_string($block['text']) ? $block['text'] : $this->renderAbsy($block['text']),
         ]));
     }
 
@@ -461,7 +461,7 @@ REGEXP;
         return $this->renderLinkOrImage(new LinkParserBlock([
             'block' => $block,
             'isImage' => true,
-            'parsedText' => is_string($block['text']) ? $block['text'] : $this->renderAbsy($block['text'])
+            'parsedText' => is_string($block['text']) ? $block['text'] : $this->renderAbsy($block['text']),
         ]));
     }
 

@@ -54,7 +54,7 @@ class ModuleAutoLoaderTest extends Unit
     {
         $modules = array_column(
             ModuleAutoLoader::locateModules(),
-            'id'
+            'id',
         );
 
         /* assert that every core module is found by module loader. expected result of array_diff is an empty array. */
@@ -87,7 +87,7 @@ class ModuleAutoLoaderTest extends Unit
         return [
             ['@humhub/modules', count(self::EXPECTED_CORE_MODULES)],
             ['@humhub/invalid', 0],
-            ['@invalid/folder', 0]
+            ['@invalid/folder', 0],
         ];
     }
 }

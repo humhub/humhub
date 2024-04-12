@@ -28,6 +28,6 @@ class JplayerModuleAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $depends = [
-        JplayerAsset::class
+        JplayerAsset::class,
     ];
 }

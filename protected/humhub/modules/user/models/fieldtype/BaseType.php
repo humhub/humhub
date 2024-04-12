@@ -202,8 +202,8 @@ class BaseType extends Model
             $this->profileField->internal_name => array_merge([
                 'type' => $this->type,
                 'class' => 'form-control',
-                'readonly' => !$this->profileField->editable
-            ], $options)
+                'readonly' => !$this->profileField->editable,
+            ], $options),
         ];
     }
 
@@ -372,8 +372,8 @@ class BaseType extends Model
         return [
             $this->profileField->internal_name => Yii::t(
                 $this->profileField->getTranslationCategory(),
-                $this->profileField->title
-            )
+                $this->profileField->title,
+            ),
         ];
     }
 

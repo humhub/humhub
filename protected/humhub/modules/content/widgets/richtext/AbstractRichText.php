@@ -176,7 +176,7 @@ abstract class AbstractRichText extends JsWidget
             'include' => $this->include,
             'plugin-options' => $this->pluginOptions,
             'edit' => $this->edit,
-            'ui-richtext' => true
+            'ui-richtext' => true,
         ];
 
         if (!empty($this->preset)) {

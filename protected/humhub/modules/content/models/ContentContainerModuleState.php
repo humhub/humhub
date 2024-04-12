@@ -53,7 +53,7 @@ class ContentContainerModuleState extends ActiveRecord
             self::STATE_NOT_AVAILABLE => Yii::t('AdminModule.modules', 'Not available'),
             self::STATE_DISABLED => Yii::t('AdminModule.modules', 'Deactivated'),
             self::STATE_ENABLED => Yii::t('AdminModule.modules', 'Enabled'),
-            self::STATE_FORCE_ENABLED => Yii::t('AdminModule.modules', 'Always activated')
+            self::STATE_FORCE_ENABLED => Yii::t('AdminModule.modules', 'Always activated'),
         ];
 
         return $labels ? $states : array_keys($states);

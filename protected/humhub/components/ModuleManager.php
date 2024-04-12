@@ -320,9 +320,9 @@ class ModuleManager extends Component
                     sprintf(
                         "class '%s' does not have a method called '%s",
                         is_object($eventHandler[0]) ? get_class($eventHandler[0]) : $eventHandler[0],
-                        $eventHandler[1]
+                        $eventHandler[1],
                     ),
-                    $strict
+                    $strict,
                 );
                 continue;
             }

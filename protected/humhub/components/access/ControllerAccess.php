@@ -239,22 +239,22 @@ class ControllerAccess extends BaseObject
         $this->registerValidator([
             self::RULE_STRICT => 'validateStrictMode',
             'reason' => Yii::t('error', 'Guest mode not active, please login first.'),
-            'code' => 401
+            'code' => 401,
         ]);
         $this->registerValidator([
             self::RULE_UNAPPROVED_USER => 'validateUnapprovedUser',
             'reason' => Yii::t('error', 'Your user account has not been approved yet, please try again later or contact a network administrator.'),
-            'code' => 401
+            'code' => 401,
         ]);
         $this->registerValidator([
             self::RULE_DISABLED_USER => 'validateDisabledUser',
             'reason' => Yii::t('error', 'Your user account is inactive, please login with an active account or contact a network administrator.'),
-            'code' => 401
+            'code' => 401,
         ]);
         $this->registerValidator([
             self::RULE_LOGGED_IN_ONLY => 'validateLoggedInOnly',
             'reason' => Yii::t('error', 'Login required for this section.'),
-            'code' => 401
+            'code' => 401,
         ]);
         $this->registerValidator([
             self::RULE_MAINTENANCE_MODE => 'validateMaintenanceMode',
@@ -273,20 +273,20 @@ class ControllerAccess extends BaseObject
         $this->registerValidator(GuestAccessValidator::class);
         $this->registerValidator([
             self::RULE_ADMIN_ONLY => 'validateAdminOnly',
-            'reason' => Yii::t('error', 'You need admin permissions to access this section.')
+            'reason' => Yii::t('error', 'You need admin permissions to access this section.'),
         ]);
         $this->registerValidator(PermissionAccessValidator::class);
         $this->registerValidator(DeprecatedPermissionAccessValidator::class);
         $this->registerValidator([
             self::RULE_POST => 'validatePostRequest',
             'reason' => Yii::t('base', 'Invalid request method!'),
-            'code' => 405
+            'code' => 405,
         ]);
         $this->registerValidator([self::RULE_JSON => 'validateJsonResponse']);
         $this->registerValidator([
             self::RULE_AJAX_ONLY => 'validateAjaxOnlyRequest',
             'reason' => Yii::t('error', 'The specified URL cannot be called directly.'),
-            'code' => 405
+            'code' => 405,
         ]);
     }
 
@@ -399,14 +399,14 @@ class ControllerAccess extends BaseObject
                 'access' => $this,
                 'owner' => $this->owner,
                 'handler' => $ruleName,
-                'name' => $ruleName
+                'name' => $ruleName,
             ]);
         }
 
         if (class_exists($ruleName)) {
             return Yii::createObject([
                 'class' => $ruleName,
-                'access' => $this
+                'access' => $this,
             ]);
         }
 

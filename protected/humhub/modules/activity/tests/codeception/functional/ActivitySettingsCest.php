@@ -28,7 +28,7 @@ class ActivitySettingsCest
             'MailSummaryForm[limitSpacesMode]' => '1',
             'MailSummaryForm[limitSpaces][]' => Space::findOne(1)->guid,
             'MailSummaryForm[activities]' => '',
-            'MailSummaryForm[activities][]' => ContentCreated::class
+            'MailSummaryForm[activities][]' => ContentCreated::class,
         ]);
 
         $I->amOnRoute('/activity/user');
@@ -44,7 +44,7 @@ class ActivitySettingsCest
             'MailSummaryForm[limitSpacesMode]' => '',
             'MailSummaryForm[limitSpaces][]' => '',
             'MailSummaryForm[activities]' => '',
-            'MailSummaryForm[activities][]' => NewComment::class
+            'MailSummaryForm[activities][]' => NewComment::class,
         ]);
 
         $I->seeInField('#mailsummaryform-interval', '2');

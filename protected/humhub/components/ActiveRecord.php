@@ -101,7 +101,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function getCreatedBy()
     {
         return $this->hasOne(User::class, [
-            'id' => 'created_by'
+            'id' => 'created_by',
         ]);
     }
 
@@ -113,7 +113,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, [
-            'id' => 'updated_by'
+            'id' => 'updated_by',
         ]);
     }
 
@@ -126,7 +126,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         if ($this->_fileManager === null) {
             $this->_fileManager = new FileManager([
-                'record' => $this
+                'record' => $this,
             ]);
         }
 
@@ -164,7 +164,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         return [
             'attributes' => $this->getAttributes(),
-            'oldAttributes' => $this->getOldAttributes()
+            'oldAttributes' => $this->getOldAttributes(),
         ];
     }
 

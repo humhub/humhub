@@ -18,11 +18,11 @@ return [
     ],
     'modules' => [
         'manage' => [
-            'class' => 'humhub\modules\space\modules\manage\Module'
+            'class' => 'humhub\modules\space\modules\manage\Module',
         ],
     ],
     'consoleControllerMap' => [
-        'space' => 'humhub\modules\space\commands\SpaceController'
+        'space' => 'humhub\modules\space\commands\SpaceController',
     ],
     'events' => [
         [User::class, User::EVENT_BEFORE_SOFT_DELETE, [Events::class, 'onUserSoftDelete']],

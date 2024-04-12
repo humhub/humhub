@@ -60,7 +60,7 @@ class PendingRegistrations extends JsWidget
                 'searchModel' => $this->searchModel,
                 'types' => $this->types,
                 'options' => $this->getOptions(),
-            ]
+            ],
         );
     }
 
@@ -70,7 +70,7 @@ class PendingRegistrations extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => 'PendingRegistrations'
+            'class' => 'PendingRegistrations',
         ];
     }
 

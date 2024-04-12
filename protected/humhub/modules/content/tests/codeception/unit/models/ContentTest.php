@@ -39,7 +39,7 @@ class ContentTest extends ContentModelTest
     public function testInvalidPolymorphicRelation1()
     {
         $testContent = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $testContent->content->object_model = null;
@@ -55,7 +55,7 @@ class ContentTest extends ContentModelTest
     public function testInvalidPolymorphicRelation2()
     {
         $testContent = new TestContent($this->space, Content::VISIBILITY_PUBLIC, [
-            'message' => 'Test'
+            'message' => 'Test',
         ]);
 
         $testContent->content->object_id = null;

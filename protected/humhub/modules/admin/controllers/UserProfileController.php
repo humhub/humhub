@@ -47,7 +47,7 @@ class UserProfileController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageUsers::class]
+            ['permissions' => ManageUsers::class],
         ];
     }
 
@@ -129,7 +129,7 @@ class UserProfileController extends Controller
             'save' => [
                 'type' => 'submit',
                 'label' => Yii::t('AdminModule.user', 'Save'),
-                'class' => 'btn btn-primary'
+                'class' => 'btn btn-primary',
             ],
         ];
 

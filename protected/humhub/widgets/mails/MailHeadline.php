@@ -45,7 +45,7 @@ class MailHeadline extends \yii\base\Widget
         return $this->render('mailHeadline', [
             'text' => $this->text,
             'level' => $this->level,
-            'style' => $this->style
+            'style' => $this->style,
         ]);
     }
 

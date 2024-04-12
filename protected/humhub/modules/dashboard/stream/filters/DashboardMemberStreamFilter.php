@@ -40,7 +40,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             ':spaceModel' => Space::class,
             ':visibilityPrivate' => Content::VISIBILITY_PRIVATE,
             ':visibilityPublic' => Content::VISIBILITY_PUBLIC,
-            ':userContentContainerId' => $this->user->contentcontainer_id
+            ':userContentContainerId' => $this->user->contentcontainer_id,
         ]);
     }
 
@@ -52,31 +52,31 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         // Join with enabled space containers
         $this->query->leftJoin(
             'space as spaceContainer',
-            'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel AND spaceContainer.status = :spaceEnabledStatus'
+            'spaceContainer.id = contentcontainer.pk AND contentcontainer.class = :spaceModel AND spaceContainer.status = :spaceEnabledStatus',
         );
 
         // Join with enabled user containers
         $this->query->leftJoin(
             'user AS userContainer',
-            'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel AND userContainer.status = :userEnabledStatus'
+            'userContainer.id = contentcontainer.pk AND contentcontainer.class = :userModel AND userContainer.status = :userEnabledStatus',
         );
 
         $this->query->leftJoin(
             'space_membership',
-            'space_membership.space_id = spaceContainer.id AND space_membership.user_id = :userId AND space_membership.show_at_dashboard = 1 AND space_membership.status = :spaceMembershipStatus'
+            'space_membership.space_id = spaceContainer.id AND space_membership.user_id = :userId AND space_membership.show_at_dashboard = 1 AND space_membership.status = :spaceMembershipStatus',
         );
 
         if ($this->isFollowAllProfilesActive()) {
             // In order to prevent duplicates we only join with space follows in this case
             $this->query->leftJoin(
                 'user_follow',
-                'user_follow.object_id = spaceContainer.id AND user_follow.object_model = :spaceModel AND user_follow.user_id = :userId'
+                'user_follow.object_id = spaceContainer.id AND user_follow.object_model = :spaceModel AND user_follow.user_id = :userId',
             );
         } else {
             // Otherwise join with all container follows
             $this->query->leftJoin(
                 'user_follow',
-                'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model AND user_follow.user_id = :userId'
+                'contentcontainer.pk = user_follow.object_id AND contentcontainer.class = user_follow.object_model AND user_follow.user_id = :userId',
             );
         }
     }
@@ -93,7 +93,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         $containerFilterOrContidion = ['OR',
             'content.contentcontainer_id IS NULL', // Global content
             'space_membership.user_id IS NOT NULL',
-            'user_follow.id IS NOT NULL' // In case of "include follow all profiles", this will only include space follows
+            'user_follow.id IS NOT NULL', // In case of "include follow all profiles", this will only include space follows
         ];
 
         if ($this->isFollowAllProfilesActive()) {
@@ -122,7 +122,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
         $privateVisibilityOrCondition = ['OR',
             'content.created_by = :userId',
             'content.contentcontainer_id = :userContentContainerId',
-            'space_membership.user_id IS NOT NULL'
+            'space_membership.user_id IS NOT NULL',
         ];
 
         if ($this->isFriendShipEnabled()) {
@@ -131,7 +131,7 @@ class DashboardMemberStreamFilter extends StreamQueryFilter
             $privateVisibilityOrCondition[] = ['AND',
                 'user_follow.id IS NOT NULL',
                 'user_friendship.id IS NOT NULL',
-                'EXISTS (SELECT id from user_friendship uf where uf.friend_user_id = user_friendship.user_id AND uf.user_id = user_friendship.friend_user_id)'
+                'EXISTS (SELECT id from user_friendship uf where uf.friend_user_id = user_friendship.user_id AND uf.user_id = user_friendship.friend_user_id)',
             ];
         }
 

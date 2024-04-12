@@ -16,7 +16,7 @@ class LessHelperTest extends HumHubDbTestCase
         // Get less variables from two sample files:
         $variables = ArrayHelper::merge(
             LessHelper::parseLessVariables(__dir__ . DIRECTORY_SEPARATOR . 'first.less'),
-            LessHelper::parseLessVariables(__dir__ . DIRECTORY_SEPARATOR . 'second.less')
+            LessHelper::parseLessVariables(__dir__ . DIRECTORY_SEPARATOR . 'second.less'),
         );
         // Update variables linked between two different files:
         $variables = LessHelper::updateLinkedLessVariables($variables);

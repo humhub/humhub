@@ -15,7 +15,7 @@ class m230127_195245_content_state extends Migration
         $this->addColumn(
             'content',
             'state',
-            $this->tinyInteger()->defaultValue(1)->notNull()->after('visibility')
+            $this->tinyInteger()->defaultValue(1)->notNull()->after('visibility'),
         );
     }
 

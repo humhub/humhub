@@ -78,7 +78,7 @@ class AdvancedSettings extends Model
             [['sortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl'], 'string'],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
-            ['url', UrlValidator::class, 'space' => $this->space]
+            ['url', UrlValidator::class, 'space' => $this->space],
         ];
     }
 
@@ -146,14 +146,14 @@ class AdvancedSettings extends Model
                 $this->indexUrl = str_replace(
                     $oldUrl,
                     $this->space->url,
-                    $this->indexUrl
+                    $this->indexUrl,
                 );
             }
             if ($this->indexGuestUrl && $oldUrl = $this->space->getOldAttribute('url')) {
                 $this->indexGuestUrl = str_replace(
                     $oldUrl,
                     $this->space->url,
-                    $this->indexGuestUrl
+                    $this->indexGuestUrl,
                 );
             }
         }

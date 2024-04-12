@@ -77,7 +77,7 @@ class CommentControls extends Menu
 
             $htmlOptions = [
                 'data-action-click' => $isAdmin ? 'adminDelete' : 'delete',
-                'data-content-delete-url' => $deleteUrl
+                'data-content-delete-url' => $deleteUrl,
             ];
 
             if ($isAdmin) {
@@ -101,7 +101,7 @@ class CommentControls extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'nav nav-pills preferences'
+            'class' => 'nav nav-pills preferences',
         ];
     }
 

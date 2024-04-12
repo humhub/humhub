@@ -52,7 +52,7 @@ class UserAddedNotification extends BaseNotification
     private function getInfoText($spaceName)
     {
         return Yii::t('SpaceModule.notification', 'You were added to Space {spaceName}', [
-            '{spaceName}' => $spaceName
+            '{spaceName}' => $spaceName,
         ]);
     }
 

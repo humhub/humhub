@@ -152,7 +152,7 @@ abstract class FilterNavigation extends JsWidget
         return $this->render($this->view, [
             'panels' => $this->filterOutEmptyPanels(),
             'options' => $this->getOptions(),
-            'isCollapsed' => $this->isCollapsed()
+            'isCollapsed' => $this->isCollapsed(),
         ]);
     }
 
@@ -160,7 +160,7 @@ abstract class FilterNavigation extends JsWidget
     {
         if ($this->componentId) {
             return [
-                'filter-component-id' => $this->componentId
+                'filter-component-id' => $this->componentId,
             ];
         }
 
