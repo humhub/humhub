@@ -108,16 +108,6 @@ class MetaSearchService
     }
 
     /**
-     * Get total number results as short integer number
-     *
-     * @return string
-     */
-    public function getShortTotal(): string
-    {
-        return Yii::$app->formatter->asShortInteger($this->getTotal());
-    }
-
-    /**
      * Has at least one searched result
      *
      * @return bool

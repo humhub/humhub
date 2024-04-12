@@ -70,7 +70,7 @@ class MetaSearchWidget extends JsWidget
     /**
      * @return MetaSearchProviderInterface[]
      */
-    protected function getSortedProviders(): array
+    private function getSortedProviders(): array
     {
         $providers = $this->providers;
 
