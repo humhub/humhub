@@ -10,6 +10,7 @@ namespace humhub\modules\notification\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
+use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\notification\widgets\OverviewWidget;
@@ -103,7 +104,7 @@ class OverviewController extends Controller
             try {
                 $baseModel = $notificationRecord->getBaseModel();
 
-                if ($baseModel->validate()) {
+                if ($baseModel instanceof BaseNotification && $baseModel->validate()) {
                     $result[] = $baseModel;
                 } else {
                     throw new IntegrityException('Invalid base model (' . $notificationRecord->class . ') found for notification');

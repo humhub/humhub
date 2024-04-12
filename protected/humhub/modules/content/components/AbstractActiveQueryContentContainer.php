@@ -44,6 +44,15 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
      */
     abstract protected function getSearchableFields(): array;
 
+    /**
+     * Returns a list of fields with its associative array of values and titles.
+     * Only values of the fields are stored in DB, so we need to do a searching
+     * in titles which may be translatable, e.g. counties list.
+     * If additional tables are needed, they must be added via `joinWith`.
+     *
+     * @return array
+     */
+    abstract protected function getSearchableFieldTitles(): array;
 
     /**
      * Performs a container text search
@@ -96,6 +105,19 @@ abstract class AbstractActiveQueryContentContainer extends ActiveQuery
             }
 
             $conditions[] = array_merge(['OR'], $subConditions);
+        }
+
+        $fieldTitles = $this->getSearchableFieldTitles();
+        foreach ($fieldTitles as $field => $titles) {
+            $valueKeys = [];
+            foreach ($titles as $key => $title) {
+                if (stripos($title, $keyword) === 0) {
+                    $valueKeys[] = $key;
+                }
+            }
+            if ($valueKeys !== []) {
+                $conditions[] = ['IN', $field, $valueKeys];
+            }
         }
 
         return $this->andWhere(array_merge(['OR'], $conditions));

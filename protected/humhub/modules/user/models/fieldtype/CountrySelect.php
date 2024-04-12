@@ -59,7 +59,7 @@ class CountrySelect extends Select
             $isoCodes = Iso3166Codes::$countries;
 
             foreach ($isoCodes as $code => $value) {
-                $items[Iso3166Codes::country($code)] = Iso3166Codes::country($code);
+                $items[$code] = Iso3166Codes::country($code);
             }
         } else {
             foreach (explode(",", $this->options) as $code) {

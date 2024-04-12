@@ -1,12 +1,20 @@
 HumHub Changelog
 ================
 
-1.15.4 (Unreleased)
--------------------
+1.15.5 (Unreleased)
+-----------------------
+- Enh #6899: Fix a missed module config file
+- Fix #6913: Fix API tests
+- Fix #6919: Fix saving of user profile country field value and enable a searching by country title
+
+1.15.4 (March 20, 2024)
+-----------------------
 - Enh #6888: Better support for custom caches
 - Fix #6851: Update HumHub Prosemirror (fixes legacy emoji support)
 - Fix #6859: Hide scheduled and draft content on other user profile pages
 - Fix #6871: Cache is not deleted after deleting a value in the settings
+- Fix #6894: Fix obsolete notifications
+- Fix #6897: Fix clearing of "Follow" records on space deletion
 
 1.15.3 (February 8, 2024)
 -------------------------
