@@ -37,7 +37,7 @@ class InviteController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-            ]
+            ],
         ];
     }
 
@@ -63,7 +63,7 @@ class InviteController extends Controller
             }
 
             return ModalClose::widget([
-                'success' => Yii::t('UserModule.base', 'User has been invited.')
+                'success' => Yii::t('UserModule.base', 'User has been invited.'),
             ]);
         }
 

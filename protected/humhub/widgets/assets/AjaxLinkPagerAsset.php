@@ -15,6 +15,6 @@ class AjaxLinkPagerAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.ajaxLinkPager.js'
+        'js/humhub.ajaxLinkPager.js',
     ];
 }

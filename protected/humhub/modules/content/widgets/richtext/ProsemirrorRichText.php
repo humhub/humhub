@@ -111,7 +111,7 @@ class ProsemirrorRichText extends AbstractRichText
         MentioningExtension::class,
         FileExtension::class,
         OembedExtension::class,
-        RichTextEmojiExtension::class
+        RichTextEmojiExtension::class,
     ];
 
     /**

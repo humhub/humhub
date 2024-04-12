@@ -51,7 +51,7 @@ class ShowFiles extends Widget
             'files' => $this->object->fileManager->findStreamFiles(),
             'object' => $this->object,
             'excludeMediaFilesPreview' => $excludeMediaFilesPreview,
-            'showPreview' => $this->preview
+            'showPreview' => $this->preview,
         ]);
     }
 }

@@ -37,7 +37,7 @@ class PermaLink extends Widget
 
         return $this->render('permaLink', [
             'permaLink' => $permaLink,
-            'id' => $this->content->content->id
+            'id' => $this->content->content->id,
         ]);
     }
 

@@ -24,7 +24,7 @@ class LivePushAsset extends AssetBundle
      */
     public $depends = [
         LiveAsset::class,
-        SocketIoAsset::class
+        SocketIoAsset::class,
     ];
 
 }

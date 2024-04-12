@@ -145,7 +145,7 @@ class FileHelper extends \yii\helpers\FileHelper
             'url' => $file->getUrl(),
             'relUrl' => $file->getUrl(null, false),
             'openLink' => FileHelper::createLink($file),
-            'thumbnailUrl' => $thumbnailUrl
+            'thumbnailUrl' => $thumbnailUrl,
         ];
     }
 

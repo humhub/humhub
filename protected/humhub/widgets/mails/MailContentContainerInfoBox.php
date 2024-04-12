@@ -32,14 +32,14 @@ class MailContentContainerInfoBox extends \yii\base\Widget
             return $this->render('mailContentContainerInfoBox', [
                 'container' => $this->container,
                 'url' => $this->container->createUrl('/space/space', [], true),
-                'description' => Helpers::trimText($this->container->description, 60)
+                'description' => Helpers::trimText($this->container->description, 60),
 
             ]);
         } elseif ($this->container instanceof \humhub\modules\user\models\User) {
             return $this->render('mailContentContainerInfoBox', [
                 'container' => $this->container,
                 'url' => $this->container->createUrl('/user/profile', [], true),
-                'description' => Helpers::trimText($this->container->displayNameSub, 60)
+                'description' => Helpers::trimText($this->container->displayNameSub, 60),
 
             ]);
         }

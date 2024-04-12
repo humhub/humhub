@@ -46,7 +46,7 @@ class SettingTest extends SettingActiveRecordTest
         $this->assertEquals(
             ['allowGuestAccess', 'user'],
             Setting::fixModuleIdAndName('allowGuestAccess', 'authentication_internal'),
-            "Translation messed things up!"
+            "Translation messed things up!",
         );
     }
 

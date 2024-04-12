@@ -37,7 +37,7 @@ class Module extends \humhub\components\Module
         'remove' => 'times',
         'controls' => 'cog',
         'about' => 'info-circle',
-        'stream' => 'bars'
+        'stream' => 'bars',
     ];
 
     /**

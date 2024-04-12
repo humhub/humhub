@@ -62,7 +62,7 @@ class HeaderControlsMenu extends DropdownMenu
                 'label' => Yii::t('SpaceModule.base', 'Settings'),
                 'url' => $this->space->createUrl('/space/manage'),
                 'icon' => 'cogs',
-                'sortOrder' => 100
+                'sortOrder' => 100,
             ]));
 
             $this->addEntry(new MenuLink([
@@ -76,7 +76,7 @@ class HeaderControlsMenu extends DropdownMenu
                 'label' => Yii::t('SpaceModule.manage', 'Members'),
                 'url' => $this->space->createUrl('/space/manage/member'),
                 'icon' => 'group',
-                'sortOrder' => 300
+                'sortOrder' => 300,
             ]));
 
             $this->addEntry(new MenuLink([
@@ -98,7 +98,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),
                     'icon' => 'bell',
                     'sortOrder' => 600,
-                    'htmlOptions' => ['data-method' => 'POST']
+                    'htmlOptions' => ['data-method' => 'POST'],
                 ]));
             } else {
                 $this->addEntry(new MenuLink([
@@ -106,7 +106,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'url' => $this->space->createUrl('/space/membership/revoke-notifications'),
                     'icon' => 'bell-o',
                     'sortOrder' => 600,
-                    'htmlOptions' => ['data-method' => 'POST']
+                    'htmlOptions' => ['data-method' => 'POST'],
                 ]));
             }
 
@@ -121,7 +121,7 @@ class HeaderControlsMenu extends DropdownMenu
                         'data-action-confirm-header' => Yii::t('SpaceModule.base', '<strong>Leave</strong> Space'),
                         'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to end your membership in Space {spaceName}?', ['{spaceName}' => '<strong>' . Html::encode($this->space->getDisplayName()) . '</strong>']),
                         'data-action-confirm-text' => Yii::t('SpaceModule.base', 'Leave'),
-                    ]
+                    ],
                 ]));
             }
 
@@ -136,8 +136,8 @@ class HeaderControlsMenu extends DropdownMenu
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard')
-                    ]
+                        'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard'),
+                    ],
                 ]));
             } else {
                 $this->addEntry(new MenuLink([
@@ -149,8 +149,8 @@ class HeaderControlsMenu extends DropdownMenu
                         'class' => 'tt',
                         'data-toggle' => 'tooltip',
                         'data-placement' => 'left',
-                        'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard')
-                    ]
+                        'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard'),
+                    ],
                 ]));
             }
         }

@@ -47,7 +47,7 @@ class UserPermissionsController extends Controller
     {
         return [
             ['permissions' => [ManageUsers::class]],
-            ['permissions' => [ManageSettings::class], 'actions' => ['index']]
+            ['permissions' => [ManageSettings::class], 'actions' => ['index']],
         ];
     }
 

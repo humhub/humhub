@@ -46,7 +46,7 @@ trait InvalidArgumentExceptionTrait
                     ['string'],
                     $parameterOrMessage,
                     0,
-                    $this
+                    $this,
                 );
             }
 
@@ -56,7 +56,7 @@ trait InvalidArgumentExceptionTrait
                     'non-empty string',
                     $parameterOrMessage,
                     0,
-                    $this
+                    $this,
                 );
             }
 
@@ -76,7 +76,7 @@ trait InvalidArgumentExceptionTrait
                     $trace = end($trace);
                     $this->methodName = ltrim(
                         ($trace['class'] ?? '') . '::' . ($trace['function'] ?? 'unknown method'),
-                        ':'
+                        ':',
                     );
 
                     $this->parameter = $parameterOrMessage;

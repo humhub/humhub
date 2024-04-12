@@ -27,12 +27,12 @@ class MyMembership extends Widget
         $membership = Membership::find()->where([
             'space_id' => $this->space->id,
             'user_id' => Yii::$app->user->id,
-            'status' => Membership::STATUS_MEMBER
+            'status' => Membership::STATUS_MEMBER,
         ])->one();
 
         return $this->render('myMembership', [
             'role' => $this->space->getUserGroup(),
-            'memberSince' => empty($membership) || empty($membership->created_at) ? null : TimeAgo::widget(['timestamp' => $membership->created_at])
+            'memberSince' => empty($membership) || empty($membership->created_at) ? null : TimeAgo::widget(['timestamp' => $membership->created_at]),
         ]);
     }
 }

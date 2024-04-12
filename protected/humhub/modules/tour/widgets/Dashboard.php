@@ -42,7 +42,7 @@ class Dashboard extends Widget
             'spaces' => $settingsManager->get("spaces"),
             'profile' => $settingsManager->get("profile"),
             'administration' => $settingsManager->get("administration"),
-            'showWelcome' => $module->showWelcomeWindow()
+            'showWelcome' => $module->showWelcomeWindow(),
         ]);
     }
 

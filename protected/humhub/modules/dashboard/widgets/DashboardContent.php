@@ -35,7 +35,7 @@ class DashboardContent extends Widget
         echo StreamViewer::widget([
             'streamAction' => '//dashboard/dashboard/stream',
             'showFilters' => (bool)Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm'),
-            'messageStreamEmpty' => $messageStreamEmpty
+            'messageStreamEmpty' => $messageStreamEmpty,
         ]);
     }
 }

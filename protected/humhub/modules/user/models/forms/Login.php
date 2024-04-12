@@ -107,7 +107,7 @@ class Login extends Model
                 'humhub.require("user.login").delayLoginAction('
                 . $authClientDelayed->getDelayedLoginTime() . ',
                 "' . Yii::t('UserModule.auth', 'Please wait') . '",
-                "#login-button")'
+                "#login-button")',
             );
         }
 

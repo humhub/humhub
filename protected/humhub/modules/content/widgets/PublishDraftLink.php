@@ -34,8 +34,8 @@ class PublishDraftLink extends Widget
                 '<i class="fa fa-mail-reply-all"></i> '
                 . Yii::t('ContentModule.base', 'Publish draft'),
                 '#',
-                ['data-action-click' => 'publishDraft', 'data-action-url' => $publishUrl]
-            )
+                ['data-action-click' => 'publishDraft', 'data-action-url' => $publishUrl],
+            ),
         );
     }
 

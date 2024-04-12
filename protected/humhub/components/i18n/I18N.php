@@ -163,7 +163,7 @@ class I18N extends BaseI18N
             if (substr($category, 0, strlen($moduleCategory)) === $moduleCategory) {
                 $this->translations[$moduleCategory . '*'] = [
                     'class' => 'humhub\components\i18n\ModuleMessageSource',
-                    'moduleId' => $moduleId
+                    'moduleId' => $moduleId,
                 ];
             }
         }

@@ -54,8 +54,8 @@ class Members extends Widget
             'totalMemberCount' => $this->space->getMemberListService()->getCount(),
             'showListOptions' => [
                 'data-action-click' => 'ui.modal.load',
-                'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
-            ]
+                'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space]),
+            ],
         ]);
     }
 

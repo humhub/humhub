@@ -115,7 +115,7 @@ class UUID
             !preg_match(
                 '/^(\{)?([0-9a-f]{8})(-?)([0-9a-f]{4})\g3([0-9a-f]{4})\g3([0-9a-f]{4})\g3([0-9a-f]{12})(?(1)}|)$/i',
                 $uuid,
-                $match
+                $match,
             )
         ) {
             return null;

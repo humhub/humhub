@@ -82,7 +82,7 @@ class NotificationSettings extends Model
     {
         return [
             ['desktopNotifications', 'integer'],
-            [['settings', 'spaceGuids'], 'safe']
+            [['settings', 'spaceGuids'], 'safe'],
         ];
     }
 
@@ -98,7 +98,7 @@ class NotificationSettings extends Model
         }
         return [
             'spaceGuids' => Yii::t('NotificationModule.base', 'Receive \'New Content\' Notifications for the following spaces'),
-            'desktopNotifications' => $desktopNotificationLabel
+            'desktopNotifications' => $desktopNotificationLabel,
         ];
     }
 

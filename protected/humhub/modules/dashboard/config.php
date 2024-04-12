@@ -11,6 +11,6 @@ return [
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => ['\humhub\modules\dashboard\Events', 'onTopMenuInit']],
     ],
     'urlManagerRules' => [
-        'dashboard' => 'dashboard/dashboard'
-    ]
+        'dashboard' => 'dashboard/dashboard',
+    ],
 ];

@@ -72,15 +72,15 @@ class CheckboxList extends BaseType
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Possible values'),
                         'class' => 'form-control autosize',
-                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)'),
                     ],
                     'allowOther' => [
                         'type' => 'checkbox',
                         'label' => Yii::t('UserModule.profile', 'Allow other selection'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.profile', 'This will add an additional input element for custom values')
-                    ]
-                ]
+                        'hint' => Yii::t('UserModule.profile', 'This will add an additional input element for custom values'),
+                    ],
+                ],
             ]]);
     }
 

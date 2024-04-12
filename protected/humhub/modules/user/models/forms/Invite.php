@@ -40,7 +40,7 @@ class Invite extends Model
     {
         return [
             [['emails'], 'required'],
-            ['emails', 'checkEmails']
+            ['emails', 'checkEmails'],
         ];
     }
 

@@ -69,7 +69,7 @@ class UserModelTest extends HumHubDbTestCase
         $user = new User();
         $user->scenario = 'registration';
         $user->load([
-            'username' => 'uniquename'
+            'username' => 'uniquename',
         ], '');
         $this->assertTrue($user->validate());
         $this->assertTrue($user->save());
@@ -134,7 +134,7 @@ class UserModelTest extends HumHubDbTestCase
             'email' => $uniqueEmail,
             'source' => Invite::SOURCE_INVITE,
             'user_originator_id' => $admin->id,
-            'space_invite_id' => $space1->id
+            'space_invite_id' => $space1->id,
         ], '');
         $this->assertTrue($model->save());
 
@@ -142,7 +142,7 @@ class UserModelTest extends HumHubDbTestCase
         $user->scenario = 'registration_email';
         $user->load([
             'username' => 'uniquename',
-            'email' => $uniqueEmail
+            'email' => $uniqueEmail,
         ], '');
         $this->assertTrue($user->validate());
         $this->assertTrue($user->save());

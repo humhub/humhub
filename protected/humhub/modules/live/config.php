@@ -17,6 +17,6 @@ return [
         [Friendship::class, Friendship::EVENT_FRIENDSHIP_REMOVED, [Events::class, 'onFriendshipEvent']],
         [Follow::class, Follow::EVENT_FOLLOWING_CREATED, [Events::class, 'onFollowEvent']],
         [Follow::class, Follow::EVENT_FOLLOWING_REMOVED, [Events::class, 'onFollowEvent']],
-        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCronRun']]
+        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCronRun']],
     ],
 ];

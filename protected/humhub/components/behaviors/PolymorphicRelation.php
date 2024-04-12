@@ -73,7 +73,7 @@ class PolymorphicRelation extends Behavior
             throw new IntegrityException(
                 'Call to an inconsistent polymorphic relation detected on '
                 . ($this->owner === null ? 'NULL' : get_class($this->owner))
-                . ' (' . $className . ':' . $primaryKey . ')'
+                . ' (' . $className . ':' . $primaryKey . ')',
             );
         }
 

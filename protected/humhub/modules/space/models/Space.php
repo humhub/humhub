@@ -561,7 +561,7 @@ class Space extends ContentContainerActiveRecord
             self::USERGROUP_ADMIN => Yii::t('SpaceModule.base', 'Administrators'),
             self::USERGROUP_MODERATOR => Yii::t('SpaceModule.base', 'Moderators'),
             self::USERGROUP_MEMBER => Yii::t('SpaceModule.base', 'Members'),
-            self::USERGROUP_USER => Yii::t('SpaceModule.base', 'Users')
+            self::USERGROUP_USER => Yii::t('SpaceModule.base', 'Users'),
         ];
 
         // Add guest groups if enabled

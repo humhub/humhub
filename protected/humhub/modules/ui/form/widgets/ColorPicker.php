@@ -64,7 +64,7 @@ class ColorPicker extends JsInputWidget
             'model' => $this->model,
             'field' => $this->attribute,
             'container' => $this->container,
-            'inputId' => $this->getId(true)
+            'inputId' => $this->getId(true),
         ]);
     }
 

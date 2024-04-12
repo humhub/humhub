@@ -293,7 +293,7 @@ class UrlOembed extends ActiveRecord
                     'guid' => uniqid('oembed-', true),
                     'richtext-feature' => 1,
                     'oembed-provider' => Html::encode(static::getProviderOptionByUrl($url, 'endpoint')),
-                    'url' => Html::encode($url)
+                    'url' => Html::encode($url),
                 ],
                 'class' => 'oembed_snippet',
             ]);

@@ -93,14 +93,14 @@ class FilePreview extends JsWidget
             'prevent-popover' => $this->preventPopover,
             'popover-position' => $this->popoverPosition,
             'file-edit' => $this->edit,
-            'exclude-media-files-preview' => (int)$this->excludeMediaFilesPreview
+            'exclude-media-files-preview' => (int)$this->excludeMediaFilesPreview,
         ];
     }
 
     public function getAttributes()
     {
         return [
-            'class' => 'well post-file-list'
+            'class' => 'well post-file-list',
         ];
     }
 

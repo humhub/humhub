@@ -24,7 +24,7 @@ class TopicController extends ContentContainerController
     protected function getAccessRules()
     {
         return [
-            ['json']
+            ['json'],
         ];
     }
 

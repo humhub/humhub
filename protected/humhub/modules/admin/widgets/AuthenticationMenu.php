@@ -38,7 +38,7 @@ class AuthenticationMenu extends SubTabMenu
             'url' => ['/admin/user-permissions'],
             'sortOrder' => 600,
             'isActive' => MenuLink::isActiveState('admin', 'user-permissions'),
-            'isVisible' => Yii::$app->user->can(ManageGroups::class)
+            'isVisible' => Yii::$app->user->can(ManageGroups::class),
         ]));
 
         parent::init();

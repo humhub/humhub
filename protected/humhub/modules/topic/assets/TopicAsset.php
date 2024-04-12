@@ -22,6 +22,6 @@ class TopicAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.topic.js'
+        'js/humhub.topic.js',
     ];
 }

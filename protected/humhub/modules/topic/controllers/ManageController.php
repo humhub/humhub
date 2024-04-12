@@ -27,7 +27,7 @@ class ManageController extends ContentContainerController
         return [
             ['login'],
             ['permission' => ManageTopics::class],
-            ['json' => ['delete']]
+            ['json' => ['delete']],
         ];
     }
 
@@ -60,7 +60,7 @@ class ManageController extends ContentContainerController
             'contentContainer' => $this->contentContainer,
             'dataProvider' => $this->getTopicProvider(),
             'addModel' => new Topic(),
-            'title' => $title
+            'title' => $title,
         ]);
     }
 
@@ -98,7 +98,7 @@ class ManageController extends ContentContainerController
         if ($topic->load(Yii::$app->request->post()) && $topic->save()) {
             return ModalClose::widget([
                 'saved' => true,
-                'reload' => true
+                'reload' => true,
             ]);
         }
 

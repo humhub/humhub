@@ -21,7 +21,7 @@ class CommentTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'User2 comment!',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]);
 
         $comment->save();
@@ -42,7 +42,7 @@ class CommentTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'User2 comment!',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]);
 
         $comment->save();
@@ -60,7 +60,7 @@ class CommentTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'User2 comment!',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]);
 
         $comment->save();
@@ -78,19 +78,19 @@ class CommentTest extends HumHubDbTestCase
         (new Comment([
             'message' => 'Test comment1',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment2',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment3',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]))->save();
 
         $comments = Comment::GetCommentsLimited(Post::class, 11, 2);
@@ -112,19 +112,19 @@ class CommentTest extends HumHubDbTestCase
         (new Comment([
             'message' => 'Test comment1',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment2',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]))->save();
 
         (new Comment([
             'message' => 'Test comment3',
             'object_model' => Post::class,
-            'object_id' => 11
+            'object_id' => 11,
         ]))->save();
 
         $count = Comment::GetCommentCount(Post::class, 11);

@@ -64,7 +64,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
     {
         $spaceDirectoryQuery = new SpaceDirectoryQuery([
             'defaultFilters' => ['keyword' => $this->getKeyword()],
-            'pageSize' => $maxResults
+            'pageSize' => $maxResults,
         ]);
 
         $results = [];
@@ -74,7 +74,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
 
         return [
             'totalCount' => $spaceDirectoryQuery->pagination->totalCount,
-            'results' => $results
+            'results' => $results,
         ];
     }
 

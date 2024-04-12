@@ -17,7 +17,7 @@ class m210203_122333_profilePermissions extends Migration
             $this->insert('setting', [
                 'name' => 'enableProfilePermissions',
                 'value' => '1',
-                'module_id' => 'user'
+                'module_id' => 'user',
             ]);
         }
     }

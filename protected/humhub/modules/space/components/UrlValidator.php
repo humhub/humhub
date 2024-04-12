@@ -39,7 +39,7 @@ class UrlValidator extends Validator
 
         $stringValidator = new yii\validators\StringValidator([
             'max' => $module->maximumSpaceUrlLength,
-            'min' => $module->minimumSpaceUrlLength
+            'min' => $module->minimumSpaceUrlLength,
         ]);
         if (!$stringValidator->validate($value, $error)) {
             $this->addError($model, $attribute, $error);

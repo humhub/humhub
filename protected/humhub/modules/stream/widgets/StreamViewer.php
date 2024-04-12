@@ -123,7 +123,7 @@ class StreamViewer extends JsWidget
             'stream-empty-message' => $this->messageStreamEmpty,
             'stream-empty-class' => $this->messageStreamEmptyCss,
             'stream-empty-filter-message' => $this->messageStreamEmptyWithFilters,
-            'stream-empty-filter-class' => $this->messageStreamEmptyWithFiltersCss
+            'stream-empty-filter-class' => $this->messageStreamEmptyWithFiltersCss,
         ];
 
         $contentId = (int)Yii::$app->request->getQueryParam('contentId');
@@ -176,7 +176,7 @@ class StreamViewer extends JsWidget
         $filterNav = ($this->showFilters && !empty($this->streamFilterNavigation))
             ? call_user_func($this->streamFilterNavigation . '::widget', [
                 'definition' => $this->filters,
-                'componentId' => $this->getId(true)
+                'componentId' => $this->getId(true),
             ])
             : '';
 

@@ -30,7 +30,7 @@ class MembershipTest extends HumHubDbTestCase
             ApprovalRequest::class,
             $space,
             Yii::$app->user->id,
-            'Approval Request Notification'
+            'Approval Request Notification',
         );
 
         // check cached version
@@ -51,7 +51,7 @@ class MembershipTest extends HumHubDbTestCase
             ApprovalRequestAccepted::class,
             $space,
             1,
-            'Approval Accepted Notification'
+            'Approval Accepted Notification',
         );
 
         $memberships = Membership::findByUser($user1)->all();
@@ -80,7 +80,7 @@ class MembershipTest extends HumHubDbTestCase
             ApprovalRequest::class,
             $space,
             Yii::$app->user->id,
-            'Approval Request Notification'
+            'Approval Request Notification',
         );
 
         // check cached version
@@ -101,7 +101,7 @@ class MembershipTest extends HumHubDbTestCase
             ApprovalRequestDeclined::class,
             $space,
             1,
-            'Approval Accepted Notification'
+            'Approval Accepted Notification',
         );
     }
 

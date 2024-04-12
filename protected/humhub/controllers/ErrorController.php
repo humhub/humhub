@@ -44,7 +44,7 @@ class ErrorController extends Controller
             Yii::$app->response->format = 'json';
             return [
                 'error' => true,
-                'message' => $message
+                'message' => $message,
             ];
         }
 
@@ -57,7 +57,7 @@ class ErrorController extends Controller
         }
 
         return $this->render('@humhub/views/error/index', [
-            'message' => $message
+            'message' => $message,
         ]);
     }
 }

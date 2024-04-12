@@ -38,7 +38,7 @@ class m230618_135509_file_add_category_column extends Migration
                 ->unsigned()
                 ->notNull()
                 ->defaultValue(0)
-                ->after($after)
+                ->after($after),
         );
 
         $this->safeCreateIndex("ix-$this->table-category", $this->table, ['category', 'object_model', 'object_id']);

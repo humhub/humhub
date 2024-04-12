@@ -36,7 +36,7 @@ class SearchRecord implements MetaSearchResultInterface
             'user' => $this->user,
             'width' => 36,
             'link' => false,
-            'hideOnlineStatus' => true
+            'hideOnlineStatus' => true,
         ]);
     }
 

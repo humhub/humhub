@@ -34,7 +34,7 @@ class MarketplaceService
         $result = [
             'licenceKey' => $licenceKey,
             'hasError' => false,
-            'message' => ''
+            'message' => '',
         ];
 
         if (empty($licenceKey)) {

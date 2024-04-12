@@ -24,12 +24,12 @@ class RichTextPostProcessTest extends HumHubDbTestCase
     {
         (new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
-            'preview' => 'yt1'
+            'preview' => 'yt1',
         ]))->save();
 
         (new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
-            'preview' => 'yt2'
+            'preview' => 'yt2',
         ]))->save();
     }
 
@@ -126,7 +126,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
             'mime_type' => 'text/plain',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {
@@ -160,7 +160,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
             'mime_type' => 'text/plain',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         $guid2 = UUID::v4();
@@ -170,7 +170,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test File2',
             'mime_type' => 'text/plain',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {

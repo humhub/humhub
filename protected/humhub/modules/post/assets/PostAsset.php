@@ -21,6 +21,6 @@ class PostAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.post.js'
+        'js/humhub.post.js',
     ];
 }

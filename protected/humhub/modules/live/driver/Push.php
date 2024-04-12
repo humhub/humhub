@@ -90,7 +90,7 @@ class Push extends BaseDriver
             'options' => [
                 'url' => $this->pushServiceUrl,
                 'jwt' => $this->generateJwtAuthorization(),
-            ]
+            ],
         ];
     }
 
@@ -111,7 +111,7 @@ class Push extends BaseDriver
         $token = [
             'iss' => Url::to(['/'], true),
             'sub' => Yii::$app->user->id,
-            'legitmation' => Yii::$app->getModule('live')->getLegitimateContentContainerIds($user)
+            'legitmation' => Yii::$app->getModule('live')->getLegitimateContentContainerIds($user),
         ];
         return JWT::encode($token, $this->jwtKey, 'HS256');
     }

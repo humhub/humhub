@@ -79,7 +79,7 @@ class AdminController extends Controller
             'model' => $settings,
             'enabled' => $enabled,
             'userCount' => $userCount,
-            'errorMessage' => $errorMessage
+            'errorMessage' => $errorMessage,
         ]);
     }
 }

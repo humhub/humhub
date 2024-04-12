@@ -39,7 +39,7 @@ class AddGroupMemberForm extends Model
     public function rules()
     {
         return [
-            [['userGuids', 'groupId'], 'required']
+            [['userGuids', 'groupId'], 'required'],
         ];
     }
 
@@ -49,7 +49,7 @@ class AddGroupMemberForm extends Model
     public function attributeLabels()
     {
         return [
-            'userGuids' => 'Add Members'
+            'userGuids' => 'Add Members',
         ];
     }
 

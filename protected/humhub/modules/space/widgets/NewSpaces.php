@@ -40,7 +40,7 @@ class NewSpaces extends Widget
 
         return $this->render('newSpaces', [
             'newSpaces' => $query->all(),
-            'showMoreButton' => $this->showMoreButton
+            'showMoreButton' => $this->showMoreButton,
         ]);
     }
 

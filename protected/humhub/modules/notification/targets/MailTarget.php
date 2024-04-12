@@ -36,7 +36,7 @@ class MailTarget extends BaseTarget
      */
     public $view = [
         'html' => '@notification/views/mails/wrapper',
-        'text' => '@notification/views/mails/plaintext/wrapper'
+        'text' => '@notification/views/mails/plaintext/wrapper',
     ];
 
     /**
@@ -65,7 +65,7 @@ class MailTarget extends BaseTarget
             'notification' => $notification,
             'space' => $notification->getSpace(),
             'content' => $renderer->render($notification),
-            'content_plaintext' => $renderer->renderText($notification)
+            'content_plaintext' => $renderer->renderText($notification),
         ], $notification->getViewParams());
 
         $mail = Yii::$app->mailer->compose($this->view, $viewParams)

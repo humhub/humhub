@@ -57,7 +57,7 @@ class FileUploadButton extends Widget
             'fileListFieldName' => $this->fileListFieldName,
             'uploaderId' => $this->uploaderId,
             'objectModel' => $objectModel,
-            'objectId' => $objectId
+            'objectId' => $objectId,
         ]);
     }
 

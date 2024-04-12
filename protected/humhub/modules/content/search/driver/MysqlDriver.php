@@ -41,7 +41,7 @@ class MysqlDriver extends AbstractDriver
             ', ',
             array_map(function (ContentTag $tag) {
                 return $tag->name;
-            }, $content->tags)
+            }, $content->tags),
         ) . " \n";
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
@@ -69,7 +69,7 @@ class MysqlDriver extends AbstractDriver
         $query->andWhere('content_fulltext.content_id IS NOT NULL');
 
         $fullTextQuery = $this->createMysqlFullTextQuery($request->getSearchQuery(), [
-            'content_fulltext.contents', 'content_fulltext.comments', 'content_fulltext.files'
+            'content_fulltext.contents', 'content_fulltext.comments', 'content_fulltext.files',
         ]);
 
         $query->addSelect(['content.*', $fullTextQuery . ' as score']);
@@ -141,7 +141,7 @@ class MysqlDriver extends AbstractDriver
         return sprintf(
             'MATCH(%s) AGAINST (%s IN BOOLEAN MODE)',
             implode(', ', $matchFields),
-            Yii::$app->db->quoteValue(trim($againstQuery))
+            Yii::$app->db->quoteValue(trim($againstQuery)),
         );
     }
 

@@ -33,7 +33,7 @@ class SearchController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-            ]
+            ],
         ];
     }
 
@@ -53,7 +53,7 @@ class SearchController extends Controller
         return UserPicker::filter([
             'keyword' => Yii::$app->request->get('keyword'),
             'fillUser' => true,
-            'disableFillUser' => false
+            'disableFillUser' => false,
         ]);
     }
 
@@ -78,7 +78,7 @@ class SearchController extends Controller
                     'type' => 'u',
                     'name' => $container->getDisplayName(),
                     'image' => Image::widget(['user' => $container, 'width' => 20]),
-                    'link' => $container->getUrl()
+                    'link' => $container->getUrl(),
                 ];
             }
         }

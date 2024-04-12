@@ -60,7 +60,7 @@ class MailSummaryProcessor
                     $mailSummary = Yii::createObject([
                         'class' => MailSummary::class,
                         'user' => $user,
-                        'interval' => $interval
+                        'interval' => $interval,
                     ]);
                     if ($mailSummary->send()) {
                         $mailsSent++;

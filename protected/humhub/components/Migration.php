@@ -453,7 +453,7 @@ class Migration extends \yii\db\Migration
             'user',
             'id',
             'CASCADE',
-            'CASCADE'
+            'CASCADE',
         );
     }
 
@@ -564,7 +564,7 @@ class Migration extends \yii\db\Migration
 
         Yii::$app->db->createCommand($updateSql, [
             ':likeModelClass' => Like::class,
-            ':likedActivityClass' => Liked::class
+            ':likedActivityClass' => Liked::class,
         ])->execute();
     }
 
@@ -717,8 +717,8 @@ class Migration extends \yii\db\Migration
                 'method' => $method,
                 'message' => $e->getMessage(),
                 'file' => $e->getFile(),
-                'line' => $e->getLine()
-            ]
+                'line' => $e->getLine(),
+            ],
         );
 
         $this->logDebug($e->getTraceAsString());

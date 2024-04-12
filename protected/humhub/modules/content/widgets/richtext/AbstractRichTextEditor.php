@@ -214,7 +214,7 @@ class AbstractRichTextEditor extends JsInputWidget
         return [
             'id' => $this->getId(true) . '_input',
             'style' => 'display:none;',
-            'title' => $this->placeholder
+            'title' => $this->placeholder,
         ];
     }
 
@@ -270,7 +270,7 @@ class AbstractRichTextEditor extends JsInputWidget
             'backup-interval' => $this->backupInterval,
             'backup-cookie-key' => self::BACKUP_COOKIE_KEY,
             'plugin-options' => $this->pluginOptions,
-            'focus' => $this->focus
+            'focus' => $this->focus,
         ];
 
         if (!empty($this->preset)) {

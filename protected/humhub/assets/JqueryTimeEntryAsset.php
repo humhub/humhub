@@ -19,7 +19,7 @@ use yii\web\AssetBundle;
 class JqueryTimeEntryAsset extends AssetBundle
 {
     public $publishOptions = [
-        'forceCopy' => false
+        'forceCopy' => false,
     ];
 
     /**

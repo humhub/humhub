@@ -27,7 +27,7 @@ class CreatePost extends BasePermission
         Space::USERGROUP_MODERATOR,
         Space::USERGROUP_MEMBER,
         User::USERGROUP_SELF,
-        User::USERGROUP_FRIEND
+        User::USERGROUP_FRIEND,
     ];
 
     /**
@@ -37,7 +37,7 @@ class CreatePost extends BasePermission
         Space::USERGROUP_USER,
         Space::USERGROUP_GUEST,
         User::USERGROUP_SELF,
-        User::USERGROUP_GUEST
+        User::USERGROUP_GUEST,
     ];
 
     /**

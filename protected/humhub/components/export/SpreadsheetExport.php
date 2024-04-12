@@ -132,7 +132,7 @@ class SpreadsheetExport extends Component
 
         if ($this->dataProvider === null && $this->query !== null) {
             $this->dataProvider = new ActiveDataProvider([
-                'query' => $this->query
+                'query' => $this->query,
             ]);
         }
 
@@ -217,7 +217,7 @@ class SpreadsheetExport extends Component
         if (!preg_match('/^([^:]+)(:(\w*))?(:(.*))?$/', $text, $matches)) {
             throw new InvalidConfigException(
                 'The column must be specified in the format of "attribute", '
-                . '"attribute:format" or "attribute:format:label"'
+                . '"attribute:format" or "attribute:format:label"',
             );
         }
 
@@ -289,7 +289,7 @@ class SpreadsheetExport extends Component
             $worksheet->setCellValueByColumnAndRow(
                 $columnIndex + 1,
                 $row,
-                $column->renderHeaderCellContent()
+                $column->renderHeaderCellContent(),
             );
         }
     }
@@ -308,7 +308,7 @@ class SpreadsheetExport extends Component
             $worksheet->setCellValueByColumnAndRow(
                 $columnIndex + 1,
                 $row,
-                $column->renderFooterCellContent()
+                $column->renderFooterCellContent(),
             );
         }
     }

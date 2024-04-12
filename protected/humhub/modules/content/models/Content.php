@@ -275,7 +275,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             $this->trigger(self::EVENT_STATE_CHANGED, new ContentStateEvent([
                 'content' => $this,
                 'newState' => $this->state,
-                'previousState' => $previousState
+                'previousState' => $previousState,
             ]));
 
             if ($model instanceof ContentActiveRecord) {
@@ -335,7 +335,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
                 'silent' => $this->isMuted(),
                 'streamChannel' => $this->stream_channel,
                 'contentId' => $this->id,
-                'insert' => true
+                'insert' => true,
             ]));
         }
     }
@@ -363,7 +363,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             $userQuery->union(
                 User::find()->active()->where(['IN', 'user.id', array_map(function (User $user) {
                     return $user->id;
-                }, $this->notifyUsersOfNewContent)])
+                }, $this->notifyUsersOfNewContent)]),
             );
         }
 

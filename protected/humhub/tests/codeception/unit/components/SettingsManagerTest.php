@@ -88,7 +88,7 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertInstanceOf(
             ContentContainerSettingsManager::class,
             $smSpace,
-            "No Space Settings Manager was returned"
+            "No Space Settings Manager was returned",
         );
         $this->assertEquals($module, $smSpace->moduleId);
         $this->assertEquals($space, $smSpace->contentContainer);
@@ -108,7 +108,7 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertInstanceOf(
             ContentContainerSettingsManager::class,
             $smUser,
-            "No User Settings Manager was returned"
+            "No User Settings Manager was returned",
         );
         $this->assertEquals($module, $smUser->moduleId);
         $this->assertEquals($user, $smUser->contentContainer);
@@ -120,7 +120,7 @@ class SettingsManagerTest extends HumHubDbTestCase
         $this->assertInstanceOf(
             ContentContainerSettingsManager::class,
             $smUser,
-            "No User Settings Manager was returned"
+            "No User Settings Manager was returned",
         );
         $this->assertEquals($module, $smUser->moduleId);
         $this->assertEquals($user, $smUser->contentContainer);

@@ -55,7 +55,7 @@ class SearchQuery
             '/(?|((?i)AND )?((?i)OR )?((?i)NOT )?[\+\-]?"([^"]+)"|(((?i)AND )?((?i)OR )?((?i)NOT )?\S+))/',
             $query,
             $result,
-            PREG_PATTERN_ORDER
+            PREG_PATTERN_ORDER,
         );
 
         if (!empty($result[0]) && is_array($result[0])) {

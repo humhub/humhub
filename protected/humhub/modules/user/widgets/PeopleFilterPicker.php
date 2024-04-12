@@ -95,7 +95,7 @@ class PeopleFilterPicker extends BasePicker
 
             $result[$this->itemKey] = [
                 'data-id' => $item,
-                'data-text' => isset($this->defaultResults[$item]) ? $this->defaultResults[$item] : $item
+                'data-text' => isset($this->defaultResults[$item]) ? $this->defaultResults[$item] : $item,
             ];
         }
         return $result;
@@ -113,7 +113,7 @@ class PeopleFilterPicker extends BasePicker
             'size' => '1',
             'class' => 'form-control',
             'style' => 'width:100%',
-            'title' => $this->placeholder
+            'title' => $this->placeholder,
         ];
     }
 
@@ -196,7 +196,7 @@ class PeopleFilterPicker extends BasePicker
 
             $result[] = [
                 'data-id' => $itemKey,
-                'data-text' => $itemText
+                'data-text' => $itemText,
             ];
         }
 

@@ -60,7 +60,7 @@ class ListBox extends Widget
         return $this->render('listBox', [
             'title' => $this->title,
             'spaces' => $this->query->all(),
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
     }
 

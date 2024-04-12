@@ -93,7 +93,7 @@ class ZendLucenceDriver extends AbstractDriver
             'container_visibility' => $container ? $container->visibility : '',
             'container_class' => $container ? get_class($container) : '',
             'comments' => (new ContentSearchService($content))->getCommentsAsText(),
-            'files' => (new ContentSearchService($content))->getFileContentAsText()
+            'files' => (new ContentSearchService($content))->getFileContentAsText(),
         ];
     }
 
@@ -132,7 +132,7 @@ class ZendLucenceDriver extends AbstractDriver
         $hits = new \LimitIterator(
             $hits->getIterator(),
             $resultSet->pagination->page * $resultSet->pagination->pageSize,
-            $resultSet->pagination->pageSize
+            $resultSet->pagination->pageSize,
         );
 
 

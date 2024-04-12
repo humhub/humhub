@@ -125,7 +125,7 @@ class ModuleService
             'message' => Yii::t('MarketplaceModule.base', 'Module "{moduleName}" has been updated to version {newVersion} successfully.', [
                 'moduleName' => $moduleInfo['latestCompatibleVersion']['name'],
                 'newVersion' => $moduleInfo['latestCompatibleVersion']['version'],
-            ])
+            ]),
         ];
     }
 }

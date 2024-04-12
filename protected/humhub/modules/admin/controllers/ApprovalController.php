@@ -101,7 +101,7 @@ class ApprovalController extends Controller
             ->joinWith('category')
             ->orderBy([
                 'profile_field_category.sort_order' => SORT_ASC,
-                'profile_field.sort_order' => SORT_ASC
+                'profile_field.sort_order' => SORT_ASC,
             ])
             ->where(['profile_field.show_at_registration' => true])
             ->andWhere(['not', ['profile_field.internal_name' => ['firstname', 'lastname']]])
@@ -150,7 +150,7 @@ class ApprovalController extends Controller
 
         return $this->render('send-message', [
             'model' => $model->user,
-            'approveFormModel' => $model
+            'approveFormModel' => $model,
         ]);
     }
 
@@ -174,7 +174,7 @@ class ApprovalController extends Controller
 
         return $this->render('approve', [
             'model' => $model->user,
-            'approveFormModel' => $model
+            'approveFormModel' => $model,
         ]);
     }
 
@@ -199,7 +199,7 @@ class ApprovalController extends Controller
 
         return $this->render('decline', [
             'model' => $model->user,
-            'approveFormModel' => $model
+            'approveFormModel' => $model,
         ]);
     }
 

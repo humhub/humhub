@@ -93,7 +93,7 @@ Klicke hier um dich einzuloggen:
 
 Mit freundlichen Grüßen
 {AdminName}',
-            ApproveUserForm::getDefaultApprovalMessage()
+            ApproveUserForm::getDefaultApprovalMessage(),
         );
 
         $this->setApprovalMessage(ApproveUserForm::getDefaultApprovalMessage());

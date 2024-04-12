@@ -51,7 +51,7 @@ class EditLink extends Widget
         if ($this->model->content->canEdit()) {
             return $this->render('editLink', [
                 'editUrl' => $this->url,
-                'mode' => $this->mode
+                'mode' => $this->mode,
             ]);
         }
     }

@@ -160,14 +160,14 @@ trait LegacyStreamTrait
             return Yii::$app->controller->renderPartial('@humhub/modules/content/views/layouts/wallEntry', [
                 'content' => $record->getWallOut($options),
                 'jsWidget' => $jsWidget,
-                'entry' => $record->content
+                'entry' => $record->content,
             ]);
         }
 
         return Yii::$app->controller->renderAjax('@humhub/modules/content/views/layouts/wallEntry', [
             'content' => $record->getWallOut($options),
             'jsWidget' => $jsWidget,
-            'entry' => $record->content
+            'entry' => $record->content,
         ]);
     }
 

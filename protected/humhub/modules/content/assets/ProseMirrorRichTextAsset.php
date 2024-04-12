@@ -29,14 +29,14 @@ class ProseMirrorRichTextAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.ui.richtext.prosemirror.js'
+        'js/humhub.ui.richtext.prosemirror.js',
     ];
 
     /**
      * @inheritdoc
      */
     public $depends = [
-        ProsemirrorEditorAsset::class
+        ProsemirrorEditorAsset::class,
     ];
 
 }

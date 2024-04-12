@@ -34,7 +34,7 @@ class ModuleEnabled extends \yii\db\ActiveRecord
     {
         return [
             [['module_id'], 'required'],
-            [['module_id'], 'string', 'max' => 100]
+            [['module_id'], 'string', 'max' => 100],
         ];
     }
 

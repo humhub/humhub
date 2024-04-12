@@ -37,7 +37,7 @@ class Events
             'url' => ['/dashboard/dashboard'],
             'icon' => 'dashboard',
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('dashboard')
+            'isActive' => MenuLink::isActiveState('dashboard'),
         ]));
     }
 }

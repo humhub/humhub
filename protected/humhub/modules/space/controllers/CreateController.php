@@ -43,7 +43,7 @@ class CreateController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-            ]
+            ],
         ];
     }
 
@@ -102,7 +102,7 @@ class CreateController extends Controller
         $joinPolicyOptions = [
             Space::JOIN_POLICY_NONE => Yii::t('SpaceModule.base', 'Only by invite'),
             Space::JOIN_POLICY_APPLICATION => Yii::t('SpaceModule.base', 'Invite and request'),
-            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter')
+            Space::JOIN_POLICY_FREE => Yii::t('SpaceModule.base', 'Everyone can enter'),
         ];
 
         return $this->renderAjax('create', ['model' => $model, 'visibilityOptions' => $visibilityOptions, 'joinPolicyOptions' => $joinPolicyOptions]);
@@ -169,7 +169,7 @@ class CreateController extends Controller
 
         return $this->renderAjax('invite', [
             'model' => $model,
-            'space' => $space
+            'space' => $space,
         ]);
     }
 

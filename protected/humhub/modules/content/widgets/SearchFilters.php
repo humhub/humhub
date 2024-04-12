@@ -77,7 +77,7 @@ class SearchFilters extends DirectoryFilters
             'type' => 'widget',
             'widget' => TopicPicker::class,
             'widgetOptions' => [
-                'selection' => $this->getTopicsFromRequest()
+                'selection' => $this->getTopicsFromRequest(),
             ],
             'sortOrder' => 430,
         ]);
@@ -88,7 +88,7 @@ class SearchFilters extends DirectoryFilters
             'widget' => UserPickerField::class,
             'widgetOptions' => [
                 'selection' => $this->getAuthorsFromRequest(),
-                'defaultResults' => $this->getCurrentUserAuthor()
+                'defaultResults' => $this->getCurrentUserAuthor(),
             ],
             'sortOrder' => 500,
         ]);
@@ -109,7 +109,7 @@ class SearchFilters extends DirectoryFilters
             'type' => 'widget',
             'widget' => SpacePickerField::class,
             'widgetOptions' => [
-                'selection' => $this->getSpacesFromRequest()
+                'selection' => $this->getSpacesFromRequest(),
             ],
             'sortOrder' => 600,
         ]);

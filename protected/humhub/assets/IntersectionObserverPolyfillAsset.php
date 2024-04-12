@@ -48,8 +48,8 @@ class IntersectionObserverPolyfillAsset extends AssetBundle
      */
     public $publishOptions = [
         'only' => [
-            'intersection-observer.js'
-        ]
+            'intersection-observer.js',
+        ],
     ];
 
 }

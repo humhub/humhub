@@ -9,10 +9,10 @@ class UiImageSetAsset extends AssetBundle
     public $sourcePath = '@ui/content/resources';
 
     public $js = [
-        'js/humhub.ui.imageset.js'
+        'js/humhub.ui.imageset.js',
     ];
 
     public $css = [
-        'css/humhub.ui.imageset.css'
+        'css/humhub.ui.imageset.css',
     ];
 }

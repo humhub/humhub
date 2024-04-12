@@ -32,7 +32,7 @@ class ResultSet
     {
         return [
             'results' => array_map(function (Content $result) {return $result->id;}, $this->results),
-            'pagination' => $this->pagination
+            'pagination' => $this->pagination,
         ];
     }
 

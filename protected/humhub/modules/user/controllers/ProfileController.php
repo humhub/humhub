@@ -40,8 +40,8 @@ class ProfileController extends ContentContainerController
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index', 'stream', 'about', 'home']
-            ]
+                'guestAllowedActions' => ['index', 'stream', 'about', 'home'],
+            ],
         ];
     }
 
@@ -53,7 +53,7 @@ class ProfileController extends ContentContainerController
         return [
             'stream' => [
                 'class' => ProfileStreamAction::class,
-                'contentContainer' => $this->contentContainer
+                'contentContainer' => $this->contentContainer,
             ],
         ];
     }

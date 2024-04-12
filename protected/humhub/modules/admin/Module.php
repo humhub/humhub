@@ -58,7 +58,7 @@ class Module extends \humhub\components\Module
      * @var array list of script urls which should not be cached on the client side
      */
     public $defaultReloadableScripts = [
-        'https://platform.twitter.com/widgets.js'
+        'https://platform.twitter.com/widgets.js',
     ];
 
     /**
@@ -102,7 +102,7 @@ class Module extends \humhub\components\Module
     {
         if (Yii::$app->user->isAdmin()) {
             return [
-                'humhub\modules\admin\notifications\NewVersionAvailable'
+                'humhub\modules\admin\notifications\NewVersionAvailable',
             ];
         }
 

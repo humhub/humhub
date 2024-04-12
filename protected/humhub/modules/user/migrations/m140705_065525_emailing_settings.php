@@ -55,12 +55,12 @@ class m140705_065525_emailing_settings extends Migration
             $this->insert('setting', [
                 'name' => 'receive_email_activities',
                 'value' => '1',
-                'name' => 'mailing'
+                'name' => 'mailing',
             ]);
             $this->insert('setting', [
                 'name' => 'receive_email_notifications',
                 'value' => '2',
-                'name' => 'mailing'
+                'name' => 'mailing',
             ]);
         }
     }

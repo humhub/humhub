@@ -55,7 +55,7 @@ class MentioningController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['login']
+            ['login'],
         ];
     }
 

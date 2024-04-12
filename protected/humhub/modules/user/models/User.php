@@ -524,7 +524,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             'email' => new Expression('NULL'),
             'username' => 'deleted-' . $this->id,
             'status' => User::STATUS_SOFT_DELETED,
-            'authclient_id' => new Expression('NULL')
+            'authclient_id' => new Expression('NULL'),
         ]);
 
         return true;

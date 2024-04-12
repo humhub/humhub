@@ -23,7 +23,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
         $viewable = new TestViewable(['viewName' => 'parent2']);
         $renderer = new DefaultViewPathRenderer([
             'defaultViewPath' => '@tests/codeception/unit/components/rendering/views',
-            'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php'
+            'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php',
         ]);
         $this->assertEquals('<h1>ParentView2:TestTitle</h1>', $renderer->render($viewable));
     }
@@ -33,7 +33,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
         $viewable = new TestViewable(['viewName' => 'testView']);
         $renderer = new DefaultViewPathRenderer([
             'defaultViewPath' => '@tests/codeception/unit/components/rendering/views',
-            'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php'
+            'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php',
         ]);
         $this->assertEquals('<div>TestTitle</div>', $renderer->render($viewable));
     }
@@ -45,7 +45,7 @@ class DefaultViewPathRendererTest extends HumHubDbTestCase
             'parent' => true,
             'subPath' => 'mails',
             'defaultViewPath' => '@tests/codeception/unit/components/rendering/views',
-            'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php'
+            'defaultView' => '@tests/codeception/unit/components/rendering/views/parent.php',
         ]);
         $this->assertEquals('<h1>MailView:TestTitle</h1>', $renderer->render($viewable));
     }

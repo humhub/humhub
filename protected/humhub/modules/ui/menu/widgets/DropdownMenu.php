@@ -33,7 +33,7 @@ abstract class DropdownMenu extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'btn-group dropdown-navigation'
+            'class' => 'btn-group dropdown-navigation',
         ];
     }
 

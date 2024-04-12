@@ -38,6 +38,6 @@ class FileAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.file.js'
+        'js/humhub.file.js',
     ];
 }

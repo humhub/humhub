@@ -134,7 +134,7 @@ class Chooser extends Widget
         // render membership items
         foreach ($this->getMemberships() as $membership) {
             $result = SpaceChooserItem::widget([
-                'space' => $membership->space, 'updateCount' => $membership->countNewItems(), 'isMember' => true
+                'space' => $membership->space, 'updateCount' => $membership->countNewItems(), 'isMember' => true,
             ]);
 
             $output = $this->attachItem($output, $result);

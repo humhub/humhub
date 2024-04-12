@@ -113,14 +113,14 @@ class ContainerProfileHeader extends JsWidget
             'coverUploadUrl' => $this->coverUploadUrl,
             'imageUploadName' => $this->imageUploadName,
             'coverUploadName' => $this->coverUploadName,
-            'headerControlView' => $this->headerControlView
+            'headerControlView' => $this->headerControlView,
         ]);
     }
 
     public function getAttributes()
     {
         return [
-            'class' => 'panel panel-default panel-profile'
+            'class' => 'panel panel-default panel-profile',
         ];
     }
 }

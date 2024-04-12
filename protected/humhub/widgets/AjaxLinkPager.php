@@ -41,9 +41,9 @@ class AjaxLinkPager extends \humhub\widgets\LinkPager
                     'page' => $page,
                     'action-click' => 'ajaxLinkPager.setPage',
                     'action-url' => $this->pagination->createUrl($page),
-                ]
+                ],
             ], $this->linkOptions)),
-            $options
+            $options,
         );
     }
 }

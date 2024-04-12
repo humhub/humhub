@@ -34,7 +34,7 @@ class BlueimpFileUploadAsset extends AssetBundle
      * @inheritdoc
      */
     public $depends = [
-        JqueryWidgetAsset::class
+        JqueryWidgetAsset::class,
     ];
 
     /**
@@ -44,7 +44,7 @@ class BlueimpFileUploadAsset extends AssetBundle
         'only' => [
             'jquery.fileupload.js',
             'jquery.iframe-transport.js',
-        ]
+        ],
     ];
 
 }

@@ -42,7 +42,7 @@ class UserPeopleController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => [ManageSettings::class]]
+            ['permissions' => [ManageSettings::class]],
         ];
     }
 

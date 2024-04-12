@@ -55,7 +55,7 @@ class MailCommentEntry extends \yii\base\Widget
             'receiver' => $this->receiver,
             'comment' => $this->comment,
             'space' => $this->space,
-            'date' => $this->date
+            'date' => $this->date,
         ]);
     }
 

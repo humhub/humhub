@@ -45,7 +45,7 @@ class Module extends \humhub\components\Module
     {
         if (isset($contentContainer)) {
             return [
-                new permissions\CanLike()
+                new permissions\CanLike(),
             ];
         }
 
@@ -70,7 +70,7 @@ class Module extends \humhub\components\Module
         }
 
         return [
-            'humhub\modules\like\notifications\NewLike'
+            'humhub\modules\like\notifications\NewLike',
         ];
     }
 

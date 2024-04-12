@@ -63,8 +63,8 @@ class UploadButton extends UploadInput
             'data' => [
                 'placement' => $this->tooltipPosition,
                 'action-click' => "file.upload",
-                'action-target' => '#' . $this->getId(true)
-            ]
+                'action-target' => '#' . $this->getId(true),
+            ],
         ];
 
         $options = ArrayHelper::merge($defaultButtonOptions, $this->buttonOptions);
@@ -72,7 +72,7 @@ class UploadButton extends UploadInput
         return $this->render('uploadButton', [
             'input' => parent::run(),
             'options' => $options,
-            'label' => $this->label
+            'label' => $this->label,
         ]);
     }
 }

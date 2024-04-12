@@ -11,7 +11,7 @@ class m160221_222312_public_permission_change extends Migration
         $this->update('contentcontainer_permission', [
             'permission_id' => CreatePublicContent::class,
             'class' => CreatePublicContent::class,
-            'module_id' => 'content'
+            'module_id' => 'content',
         ], [
             'permission_id' => 'humhub\modules\space\permissions\CreatePublicContent',
             'class' => 'humhub\modules\space\permissions\CreatePublicContent',

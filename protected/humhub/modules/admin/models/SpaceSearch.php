@@ -51,7 +51,7 @@ class SpaceSearch extends Space
     public function attributeLabels()
     {
         return array_merge(parent::attributeLabels(), [
-            'memberCount' => 'Members'
+            'memberCount' => 'Members',
         ]);
     }
 
@@ -82,7 +82,7 @@ class SpaceSearch extends Space
                 'visibility',
                 'join_policy',
                 'memberCount',
-            ]
+            ],
         ]);
 
         $dataProvider->sort->defaultOrder = ['sort_order' => SORT_ASC, 'name' => SORT_ASC];
@@ -112,7 +112,7 @@ class SpaceSearch extends Space
                 ['like', 'user.username', $this->freeText],
                 ['like', 'user.email', $this->freeText],
                 ['like', 'profile.firstname', $this->freeText],
-                ['like', 'profile.lastname', $this->freeText]
+                ['like', 'profile.lastname', $this->freeText],
             ]);
         }
 
@@ -122,7 +122,7 @@ class SpaceSearch extends Space
             $query->andWhere([
                 'OR',
                 ['space.visibility' => Space::VISIBILITY_REGISTERED_ONLY],
-                ['space.visibility' => Space::VISIBILITY_ALL]
+                ['space.visibility' => Space::VISIBILITY_ALL],
             ]);
         }
 

@@ -22,14 +22,14 @@ class LogAsset extends AssetBundle
      * @inheritdoc
      */
     public $jsOptions = [
-        'position' => View::POS_END
+        'position' => View::POS_END,
     ];
 
     /**
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.admin.log.js'
+        'js/humhub.admin.log.js',
     ];
 
 }

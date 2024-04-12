@@ -126,17 +126,17 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertEquals(
             [],
             $this->moduleManager->myModules(),
-            __FUNCTION__ . '.' . 'myModules()'
+            __FUNCTION__ . '.' . 'myModules()',
         );
         static::assertEquals(
             [],
             $this->moduleManager->myCoreModules(),
-            __FUNCTION__ . '.' . 'myCoreModules()'
+            __FUNCTION__ . '.' . 'myCoreModules()',
         );
         static::assertEquals(
             static::$moduleEnabledList,
             $this->moduleManager->myEnabledModules(),
-            __FUNCTION__ . '.' . 'myEnabledModules()'
+            __FUNCTION__ . '.' . 'myEnabledModules()',
         );
     }
 
@@ -152,7 +152,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(
-            'Could not find/load requested module: ' . $this->moduleId
+            'Could not find/load requested module: ' . $this->moduleId,
         );
 
         $this->moduleManager->getModule($this->moduleId);
@@ -164,7 +164,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->expectException(InvalidConfigException::class);
         $this->expectExceptionMessage(
-            'Module configuration requires an id and class attribute: ' . $basePath
+            'Module configuration requires an id and class attribute: ' . $basePath,
         );
 
         $this->moduleManager->register($basePath);
@@ -176,7 +176,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->expectException(InvalidConfigException::class);
         $this->expectExceptionMessage(
-            'Module configuration requires an id and class attribute: ' . $basePath
+            'Module configuration requires an id and class attribute: ' . $basePath,
         );
 
         $this->moduleManager->register($basePath, ['foo' => 'bar']);
@@ -188,7 +188,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->expectException(InvalidConfigException::class);
         $this->expectExceptionMessage(
-            'Module configuration requires an id and class attribute: ' . $basePath
+            'Module configuration requires an id and class attribute: ' . $basePath,
         );
 
         $this->moduleManager->register($basePath);
@@ -200,7 +200,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->expectException(InvalidConfigException::class);
         $this->expectExceptionMessage(
-            'Module configuration requires an id and class attribute: ' . $basePath
+            'Module configuration requires an id and class attribute: ' . $basePath,
         );
 
         $this->moduleManager->register($basePath, ['foo' => 'bar']);
@@ -223,7 +223,7 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'enabled' => true,
                 'returnClass' => true,
             ]),
-            __FUNCTION__ . '.' . 'getModules()'
+            __FUNCTION__ . '.' . 'getModules()',
         );
     }
 
@@ -400,7 +400,7 @@ class ModuleManagerTest extends HumHubDbTestCase
                     'callback' => [__CLASS__, 'someMethod'],
                 ],
             ],
-            "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod"
+            "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod",
         );
     }
 
@@ -438,13 +438,13 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $locallyEnabledModules = array_intersect_key(static::$moduleDirList, array_flip(array_column(
             static::dbSelect('module_enabled', 'module_id'),
-            'module_id'
+            'module_id',
         )));
 
         $expected = array_merge(
             [],
             array_flip(ModuleAutoLoaderTest::EXPECTED_CORE_MODULES),
-            $locallyEnabledModules
+            $locallyEnabledModules,
         );
 
         static::assertEquals($expected, $modules);
@@ -562,7 +562,7 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'data' => null,
                 'handled' => false,
                 'module' => ['module1' => Module1::class],
-            ]
+            ],
         ]);
 
         $this->moduleManager->disable($module);
@@ -588,7 +588,7 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'data' => null,
                 'handled' => false,
                 'module' => ['module1' => Module1::class],
-            ]
+            ],
         ]);
     }
 
@@ -629,23 +629,23 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertNotLog(
             'Module has not been enabled due to beforeEnable() returning false',
             Logger::LEVEL_WARNING,
-            [$module->id]
+            [$module->id],
         );
         static::assertLog(
             'Module has no migrations directory.',
             Logger::LEVEL_TRACE,
-            [$module->id]
+            [$module->id],
         );
 
         static::assertNotLog(
             'Module has not been enabled due to beforeEnable() returning false',
             Logger::LEVEL_WARNING,
-            ['module2']
+            ['module2'],
         );
         static::assertLogRegex(
             '@No new migrations found\. Your system is up-to-date\.@',
             Logger::LEVEL_INFO,
-            ['module2']
+            ['module2'],
         );
 
         static::logReset();
@@ -667,12 +667,12 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'data' => null,
                 'handled' => false,
                 'module' => ['module2' => Module2::class],
-            ]
+            ],
         ]);
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessage(
-            'Could not find/load requested module: ' . static::$testModuleRoot . '/non-existing-module'
+            'Could not find/load requested module: ' . static::$testModuleRoot . '/non-existing-module',
         );
 
         $this->moduleManager->enableModules([static::$testModuleRoot . '/non-existing-module']);
@@ -762,20 +762,20 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         $this->moduleManager->enableModules([
             static::$testModuleRoot . '/module1',
-            static::$testModuleRoot . '/module2'
+            static::$testModuleRoot . '/module2',
         ]);
 
         static::assertEquals(
             ['module1' => Module1::class, 'module2' => Module2::class],
-            $this->moduleManager->myModules()
+            $this->moduleManager->myModules(),
         );
         static::assertEquals(
             [],
-            $this->moduleManager->myCoreModules()
+            $this->moduleManager->myCoreModules(),
         );
         static::assertEquals(
             [...static::$moduleEnabledList, 'module1', 'module2'],
-            $this->moduleManager->myEnabledModules()
+            $this->moduleManager->myEnabledModules(),
         );
 
         $module1 = $this->moduleManager->getModule('module1');
@@ -786,50 +786,50 @@ class ModuleManagerTest extends HumHubDbTestCase
         // match keyword
         static::assertEquals(
             ['module1' => $module1],
-            $this->moduleManager->filterModulesByKeyword(null, 'one')
+            $this->moduleManager->filterModulesByKeyword(null, 'one'),
         );
         static::assertEquals(
             ['module2' => $module2],
-            $this->moduleManager->filterModulesByKeyword(null, 'two')
+            $this->moduleManager->filterModulesByKeyword(null, 'two'),
         );
         static::assertEquals(
             ['module1' => $module1, 'module2' => $module2],
-            $this->moduleManager->filterModulesByKeyword(null, 'cool')
+            $this->moduleManager->filterModulesByKeyword(null, 'cool'),
         );
 
         // match name
         static::assertEquals(
             ['module1' => $module1],
-            $this->moduleManager->filterModulesByKeyword(null, 'Module 1')
+            $this->moduleManager->filterModulesByKeyword(null, 'Module 1'),
         );
         static::assertEquals(
             ['module2' => $module2],
-            $this->moduleManager->filterModulesByKeyword(null, 'Module 2')
+            $this->moduleManager->filterModulesByKeyword(null, 'Module 2'),
         );
         static::assertEquals(
             ['module1' => $module1, 'module2' => $module2],
-            $this->moduleManager->filterModulesByKeyword(null, 'Example')
+            $this->moduleManager->filterModulesByKeyword(null, 'Example'),
         );
 
         // match description
         static::assertEquals(
             ['module1' => $module1],
-            $this->moduleManager->filterModulesByKeyword(null, 'module 1.')
+            $this->moduleManager->filterModulesByKeyword(null, 'module 1.'),
         );
         static::assertEquals(
             ['module2' => $module2],
-            $this->moduleManager->filterModulesByKeyword(null, 'module 2.')
+            $this->moduleManager->filterModulesByKeyword(null, 'module 2.'),
         );
         static::assertEquals(
             ['module1' => $module1, 'module2' => $module2],
-            $this->moduleManager->filterModulesByKeyword(null, 'testing')
+            $this->moduleManager->filterModulesByKeyword(null, 'testing'),
         );
 
         $this->moduleManager->on(ModuleManager::EVENT_AFTER_FILTER_MODULES, [$this, 'handleEvent']);
 
         static::assertEquals(
             ['module1' => $module1, 'module2' => $module2],
-            $this->moduleManager->filterModules(null, ['foo'])
+            $this->moduleManager->filterModules(null, ['foo']),
         );
 
         /** @noinspection MissedFieldInspection */
@@ -855,12 +855,12 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'data' => null,
                 'handled' => false,
                 'modules' => [],
-            ]
+            ],
         ]);
 
         static::assertEquals(
             ['module2' => $module2],
-            $this->moduleManager->filterModules(null, ['keyword' => 'Example Module 2'])
+            $this->moduleManager->filterModules(null, ['keyword' => 'Example Module 2']),
         );
 
         /** @noinspection MissedFieldInspection */
@@ -872,12 +872,12 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'data' => null,
                 'handled' => false,
                 'modules' => ['module2' => 'My Example Module 2'],
-            ]
+            ],
         ]);
 
         $this->expectException(InvalidArgumentTypeException::class);
         $this->expectExceptionMessage(
-            'Argument $filters passed to humhub\components\ModuleManager::filterModules must be one of the following types: array, ArrayAccess - string given.'
+            'Argument $filters passed to humhub\components\ModuleManager::filterModules must be one of the following types: array, ArrayAccess - string given.',
         );
         static::assertEquals([], $this->moduleManager->filterModules(null, 'foo'));
     }
@@ -954,13 +954,13 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertEquals(
             [$this->moduleId => $this->moduleClass],
             $this->moduleManager->myModules(),
-            __FUNCTION__ . '.' . 'myModules()'
+            __FUNCTION__ . '.' . 'myModules()',
         );
 
         static::assertEquals(
             $isCore ? [$this->moduleClass] : [],
             $this->moduleManager->myCoreModules(),
-            __FUNCTION__ . '.' . 'myCoreModules()'
+            __FUNCTION__ . '.' . 'myCoreModules()',
         );
 
         $expected = static::$moduleEnabledList;
@@ -970,7 +970,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         static::assertEquals(
             $expected,
             $this->moduleManager->myEnabledModules(),
-            __FUNCTION__ . '.' . 'myEnabledModules()'
+            __FUNCTION__ . '.' . 'myEnabledModules()',
         );
 
         static::assertTrue($this->moduleManager->hasModule($this->moduleId));
@@ -1021,7 +1021,7 @@ class ModuleManagerTest extends HumHubDbTestCase
             if (
                 $isEnabled && $eventClass && $eventName && is_array($eventHandler) && method_exists(
                     $eventHandler[0],
-                    $eventHandler[1]
+                    $eventHandler[1],
                 )
             ) {
                 static::assertTrue(Event::off($eventClass, $eventName, $eventHandler));
@@ -1140,13 +1140,13 @@ class ModuleManagerTest extends HumHubDbTestCase
                 'installerModule',
                 'invalidModule1',
                 'invalidModule2',
-            ]
+            ],
         ]);
 
         if (Yii::$app->isDatabaseInstalled()) {
             static::$moduleEnabledList ??= array_column(
                 static::dbSelect('module_enabled', 'module_id'),
-                'module_id'
+                'module_id',
             );
         } else {
             static::$moduleEnabledList ??= [];

@@ -35,7 +35,7 @@ class Application extends \yii\web\Application implements ApplicationInterface
             throw new Exception(sprintf(
                 'Installed PHP Version is too old! Required minimum version is PHP %s (Installed: %s)',
                 $this->minSupportedPhpVersion,
-                phpversion()
+                phpversion(),
             ));
         }
 

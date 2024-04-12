@@ -69,9 +69,9 @@ class Select extends BaseType
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Possible values'),
                         'class' => 'form-control',
-                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)')
+                        'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)'),
                     ],
-                ]
+                ],
             ]], $definition));
     }
 

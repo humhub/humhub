@@ -47,7 +47,7 @@ class Module extends \humhub\components\Module
         return [
             'humhub\modules\friendship\notifications\Request',
             'humhub\modules\friendship\notifications\RequestApproved',
-            'humhub\modules\friendship\notifications\RequestDeclined'
+            'humhub\modules\friendship\notifications\RequestDeclined',
         ];
     }
 }

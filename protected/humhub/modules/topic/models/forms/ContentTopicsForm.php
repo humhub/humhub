@@ -25,7 +25,7 @@ class ContentTopicsForm extends Model
     public function rules()
     {
         return [
-            ['topics', 'safe']
+            ['topics', 'safe'],
         ];
     }
 

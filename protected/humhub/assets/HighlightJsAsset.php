@@ -22,6 +22,6 @@ class HighlightJsAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $depends = [
-        HighlightJsStyleAsset::class
+        HighlightJsStyleAsset::class,
     ];
 }

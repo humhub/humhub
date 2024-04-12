@@ -72,7 +72,7 @@ class CommentLink extends Widget
             'commentCount' => CommentModel::GetCommentCount(get_class($this->object), $this->object->getPrimaryKey()),
             'isNestedComment' => ($this->object instanceof CommentModel),
             'comment' => $this->object,
-            'module' => $module
+            'module' => $module,
         ]);
     }
 }

@@ -129,44 +129,44 @@ class WallStreamFilterNavigation extends FilterNavigation
     {
         $this->addFilterBlock(static::FILTER_BLOCK_BASIC, [
             'title' => Yii::t('StreamModule.filter', 'Content'),
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ], static::PANEL_COLUMN_1);
 
         $this->addFilterBlock(static::FILTER_BLOCK_VISIBILITY, [
             'title' => Yii::t('StreamModule.filter', 'Visibility'),
-            'sortOrder' => 200
+            'sortOrder' => 200,
         ], static::PANEL_COLUMN_1);
 
         $this->addFilterBlock(static::FILTER_BLOCK_SORTING, [
             'title' => Yii::t('StreamModule.filter', 'Sorting'),
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ], static::PANEL_COLUMN_2);
 
         $this->addFilterBlock(static::FILTER_BLOCK_CONTENT_TYPE, [
             'title' => Yii::t('StreamModule.filter', 'Content Type'),
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ], static::PANEL_COLUMN_3);
 
         $this->addFilterBlock(static::FILTER_BLOCK_ORIGINATORS, [
             'title' => Yii::t('StreamModule.filter', 'Author'),
-            'sortOrder' => 200
+            'sortOrder' => 200,
         ], static::PANEL_COLUMN_3);
 
         $this->addFilterBlock(static::FILTER_BLOCK_DATE_FROM, [
             'title' => Yii::t('StreamModule.filter', 'Date from'),
-            'sortOrder' => 500
+            'sortOrder' => 500,
         ], static::PANEL_COLUMN_2);
 
         $this->addFilterBlock(static::FILTER_BLOCK_DATE_TO, [
             'title' => Yii::t('StreamModule.filter', 'Date to'),
-            'sortOrder' => 600
+            'sortOrder' => 600,
         ], static::PANEL_COLUMN_2);
 
 
         if (TopicPicker::showTopicPicker(ContentContainerHelper::getCurrent())) {
             $this->addFilterBlock(static::FILTER_BLOCK_TOPIC, [
                 'title' => Yii::t('StreamModule.filter', 'Topic'),
-                'sortOrder' => 300
+                'sortOrder' => 300,
             ], static::PANEL_COLUMN_3);
         }
     }
@@ -191,32 +191,32 @@ class WallStreamFilterNavigation extends FilterNavigation
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_INVOLVED,
             'title' => Yii::t('ContentModule.base', 'I\'m involved'),
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_MINE,
             'title' => Yii::t('ContentModule.base', 'Created by me'),
-            'sortOrder' => 200
+            'sortOrder' => 200,
         ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => DefaultStreamFilter::FILTER_FILES,
             'title' => Yii::t('ContentModule.base', 'With attachments'),
-            'sortOrder' => 300
+            'sortOrder' => 300,
         ], static::FILTER_BLOCK_BASIC);
 
         $this->addFilter([
             'id' => static::FILTER_ARCHIVED,
             'title' => Yii::t('ContentModule.base', 'Archived'),
-            'sortOrder' => 200
+            'sortOrder' => 200,
         ], static::FILTER_BLOCK_BASIC);
 
 
         $this->addFilter([
             'id' => static::FILTER_HIDDEN,
             'title' => Yii::t('ContentModule.base', 'Hidden'),
-            'sortOrder' => 200
+            'sortOrder' => 200,
         ], static::FILTER_BLOCK_BASIC);
     }
 
@@ -235,7 +235,7 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'radioGroup' => 'visibility',
                 'multiple' => true,
                 'title' => Yii::t('ContentModule.base', 'Public'),
-                'sortOrder' => 100
+                'sortOrder' => 100,
             ], static::FILTER_BLOCK_VISIBILITY);
 
             $this->addFilter([
@@ -244,7 +244,7 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'radioGroup' => 'visibility',
                 'multiple' => true,
                 'title' => Yii::t('ContentModule.base', 'Private'),
-                'sortOrder' => 200
+                'sortOrder' => 200,
             ], static::FILTER_BLOCK_VISIBILITY);
         }
     }
@@ -262,7 +262,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'title' => Yii::t('ContentModule.base', 'Creation time'),
             'checked' => $defaultSorting === Stream::SORT_CREATED_AT,
             'value' => Stream::SORT_CREATED_AT,
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ], static::FILTER_BLOCK_SORTING);
 
         $this->addFilter([
@@ -274,7 +274,7 @@ class WallStreamFilterNavigation extends FilterNavigation
             'force' => true,
             'checked' => $defaultSorting === Stream::SORT_UPDATED_AT,
             'value' => Stream::SORT_UPDATED_AT,
-            'sortOrder' => 200
+            'sortOrder' => 200,
         ], static::FILTER_BLOCK_SORTING);
     }
 
@@ -289,8 +289,8 @@ class WallStreamFilterNavigation extends FilterNavigation
                 'pickerOptions' => [
                     'id' => 'stream-topic-picker',
                     'name' => 'stream-topic-picker',
-                    'addOptions' => false
-                ]
+                    'addOptions' => false,
+                ],
             ], static::FILTER_BLOCK_TOPIC);
         }
     }
@@ -304,8 +304,8 @@ class WallStreamFilterNavigation extends FilterNavigation
             'category' => ContentTypeStreamFilter::CATEGORY_INCLUDES,
             'pickerOptions' => [
                 'id' => 'stream_filter_content_type',
-                'name' => 'filter_content_type'
-            ]
+                'name' => 'filter_content_type',
+            ],
         ], static::FILTER_BLOCK_CONTENT_TYPE);
     }
 
@@ -319,8 +319,8 @@ class WallStreamFilterNavigation extends FilterNavigation
             'pickerOptions' => [
                 'id' => 'stream-user-picker',
                 'itemKey' => 'guid',
-                'name' => 'stream-user-picker'
-            ]
+                'name' => 'stream-user-picker',
+            ],
         ], static::FILTER_BLOCK_ORIGINATORS);
     }
 
@@ -342,7 +342,7 @@ class WallStreamFilterNavigation extends FilterNavigation
     public function getAttributes()
     {
         return [
-            'class' => 'wallFilterPanel'
+            'class' => 'wallFilterPanel',
         ];
     }
 

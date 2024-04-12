@@ -27,7 +27,7 @@ class ContentContainerAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.content.container.js'
+        'js/humhub.content.container.js',
     ];
 
 }

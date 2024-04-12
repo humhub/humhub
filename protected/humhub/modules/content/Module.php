@@ -141,7 +141,7 @@ class Module extends \humhub\components\Module
             return [
                 // Note: we do not return CreatePrivateContent Permission since its not writable at the moment
                 new permissions\ManageContent(),
-                new permissions\CreatePublicContent()
+                new permissions\CreatePublicContent(),
             ];
         }
 
@@ -154,7 +154,7 @@ class Module extends \humhub\components\Module
     public function getNotifications()
     {
         return [
-            'humhub\modules\content\notifications\ContentCreated'
+            'humhub\modules\content\notifications\ContentCreated',
         ];
     }
 

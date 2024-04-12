@@ -4,5 +4,5 @@ use humhub\modules\notification\tests\codeception\fixtures\TestNotificationFixtu
 
 return [
     'fixtures' => ['default',
-        'notification' => TestNotificationFixture::class]
+        'notification' => TestNotificationFixture::class],
 ];

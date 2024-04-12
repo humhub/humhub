@@ -369,7 +369,7 @@ if ($requestedC3Report) {
                     flock($file, LOCK_UN);
                     fclose($file);
                 }
-            }
+            },
         );
     }
 }

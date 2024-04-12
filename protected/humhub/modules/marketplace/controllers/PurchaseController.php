@@ -34,7 +34,7 @@ class PurchaseController extends Controller
     protected function getAccessRules()
     {
         return [
-            ['permissions' => ManageModules::class]
+            ['permissions' => ManageModules::class],
         ];
     }
 
@@ -51,7 +51,7 @@ class PurchaseController extends Controller
         $purchasedModules = $this->module->onlineModuleManager->getPurchasedModules(false);
 
         $html = $this->renderAjax('list', [
-            'modules' => $purchasedModules
+            'modules' => $purchasedModules,
         ] + $addKeyResult);
 
         if (Yii::$app->request->isGet) {
@@ -65,7 +65,7 @@ class PurchaseController extends Controller
 
         return $this->asJson([
             'purchasedModules' => $purchasedModuleCards,
-            'html' => $html
+            'html' => $html,
         ]);
     }
 

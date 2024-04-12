@@ -17,7 +17,7 @@ class AdminPendingRegistrationsAsset extends AssetBundle
      * @inheritdoc
      */
     public $jsOptions = [
-        'position' => View::POS_END
+        'position' => View::POS_END,
     ];
 
     /**
@@ -29,7 +29,7 @@ class AdminPendingRegistrationsAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.admin.PendingRegistrations.js'
+        'js/humhub.admin.PendingRegistrations.js',
     ];
 
 }

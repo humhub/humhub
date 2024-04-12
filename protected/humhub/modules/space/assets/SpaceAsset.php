@@ -21,6 +21,6 @@ class SpaceAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.space.js'
+        'js/humhub.space.js',
     ];
 }

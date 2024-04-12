@@ -18,7 +18,7 @@ class OriginatorStreamFilter extends StreamQueryFilter
     public function rules()
     {
         return [
-            [['originators'], 'safe']
+            [['originators'], 'safe'],
         ];
     }
 

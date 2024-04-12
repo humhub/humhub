@@ -66,7 +66,7 @@ class Activity extends StreamEntryWidget
     public function getAttributes()
     {
         return [
-            'class' => 'activity-entry'
+            'class' => 'activity-entry',
         ];
     }
 }

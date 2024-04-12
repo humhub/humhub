@@ -33,7 +33,7 @@ class MarkdownEditor extends BaseType
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Text area field options'),
                 'elements' => [
-                ]
+                ],
             ]]);
     }
 

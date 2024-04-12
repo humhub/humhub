@@ -39,8 +39,8 @@ class SpaceFollowers extends Widget
             'totalFollowerCount' => $totalFollowerCount,
             'showListOptions' => [
                 'data-action-click' => 'ui.modal.load',
-                'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space])
-            ]
+                'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space]),
+            ],
         ]);
     }
 

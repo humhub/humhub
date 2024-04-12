@@ -16,11 +16,11 @@ class ActivityAsset extends AssetBundle
     public $sourcePath = '@activity/resources';
 
     public $js = [
-        'js/humhub.activity.js'
+        'js/humhub.activity.js',
     ];
 
     public $depends = [
-        StreamAsset::class
+        StreamAsset::class,
     ];
 
 }

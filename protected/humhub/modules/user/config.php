@@ -19,7 +19,7 @@ return [
         '<userContainer>/about' => 'user/profile/about',
     ],
     'consoleControllerMap' => [
-        'user' => 'humhub\modules\user\commands\UserController'
+        'user' => 'humhub\modules\user\commands\UserController',
     ],
     'events' => [
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onContentDelete']],
@@ -27,5 +27,5 @@ return [
         ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_HOURLY_RUN, 'callback' => [Events::class, 'onHourlyCron']],
         ['class' => TopMenu::class, 'event' => TopMenu::EVENT_INIT, 'callback' => [Events::class, 'onTopMenuInit']],
-    ]
+    ],
 ];

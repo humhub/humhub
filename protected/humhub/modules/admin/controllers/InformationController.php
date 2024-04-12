@@ -107,7 +107,7 @@ class InformationController extends Controller
                 'databaseName' => $databaseInfo->getDatabaseName(),
                 'migrationOutput' => $migrationService->getLastMigrationOutput(),
                 'migrationStatus' => $migrate,
-            ]
+            ],
         );
     }
 
@@ -128,7 +128,7 @@ class InformationController extends Controller
                 $queue->clear();
                 $this->view->setStatusMessage(
                     'success',
-                    Yii::t('AdminModule.information', 'Queue successfully cleared.')
+                    Yii::t('AdminModule.information', 'Queue successfully cleared.'),
                 );
             }
         }
@@ -162,7 +162,7 @@ class InformationController extends Controller
             'doneJobs' => $doneJobs,
             'reservedJobs' => $reservedJobs,
             'driverName' => $driverName,
-            'canClearQueue' => $canClearQueue
+            'canClearQueue' => $canClearQueue,
         ]);
     }
 }

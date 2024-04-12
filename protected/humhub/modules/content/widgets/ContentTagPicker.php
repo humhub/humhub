@@ -90,7 +90,7 @@ class ContentTagPicker extends BasePicker
         foreach ($tags as $tag) {
             $result[] = [
                 'id' => $tag->id,
-                'text' => $tag->name
+                'text' => $tag->name,
             ];
         }
 

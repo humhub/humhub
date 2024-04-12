@@ -36,12 +36,12 @@ class RichTextOembedTest extends HumHubDbTestCase
     {
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
-            'preview' => 'yt1'
+            'preview' => 'yt1',
         ]))->save());
 
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
-            'preview' => 'yt2'
+            'preview' => 'yt2',
         ]))->save());
 
         $result = OembedExtension::scanLinkExtension('[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)');
@@ -57,12 +57,12 @@ class RichTextOembedTest extends HumHubDbTestCase
     {
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
-            'preview' => 'yt1'
+            'preview' => 'yt1',
         ]))->save());
 
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
-            'preview' => 'yt2'
+            'preview' => 'yt2',
         ]))->save());
 
         $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)";
@@ -78,12 +78,12 @@ class RichTextOembedTest extends HumHubDbTestCase
     {
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
-            'preview' => 'yt1'
+            'preview' => 'yt1',
         ]))->save());
 
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
-            'preview' => 'yt2'
+            'preview' => 'yt2',
         ]))->save());
 
         $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)";
@@ -100,12 +100,12 @@ class RichTextOembedTest extends HumHubDbTestCase
     {
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
-            'preview' => 'yt1'
+            'preview' => 'yt1',
         ]))->save());
 
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
-            'preview' => 'yt2'
+            'preview' => 'yt2',
         ]))->save());
 
         $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)";
@@ -121,12 +121,12 @@ class RichTextOembedTest extends HumHubDbTestCase
     {
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt1',
-            'preview' => 'yt1'
+            'preview' => 'yt1',
         ]))->save());
 
         static::assertTrue((new UrlOembed([
             'url' => 'https://www.youtube.com/watch?v=yt2',
-            'preview' => 'yt2'
+            'preview' => 'yt2',
         ]))->save());
 
         $text = "[https://www.youtube.com/watch?v=yt1](oembed:https://www.youtube.com/watch?v=yt1)\n\n[https://www.youtube.com/watch?v=yt2](oembed:https://www.youtube.com/watch?v=yt2)";

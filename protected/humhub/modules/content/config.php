@@ -24,7 +24,7 @@ return [
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']],
     ],
     'consoleControllerMap' => [
-        'content-search' => '\humhub\modules\content\commands\SearchController'
+        'content-search' => '\humhub\modules\content\commands\SearchController',
     ],
 
 ];

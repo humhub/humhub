@@ -34,7 +34,7 @@ class GroupTest extends HumHubDbTestCase
         $model->load([
             'name' => 'Test',
             'description' => 'Test Group',
-            'space_id' => Space::findOne(['name' => 'Space 1'])->id
+            'space_id' => Space::findOne(['name' => 'Space 1'])->id,
         ], '');
 
         static::assertTrue($model->validate());

@@ -55,7 +55,7 @@ class DropdownFilterInput extends FilterInput
     {
         return array_merge(parent::getWidgetOptions(), [
             'selection' => $this->selection,
-            'items' => $this->items
+            'items' => $this->items,
         ]);
     }
 }

@@ -16,7 +16,7 @@ class GroupFixture extends ActiveFixture
     public $dataFile = '@modules/user/tests/codeception/fixtures/data/group.php';
 
     public $depends = [
-        'humhub\modules\user\tests\codeception\fixtures\GroupUserFixture'
+        'humhub\modules\user\tests\codeception\fixtures\GroupUserFixture',
     ];
 
 }

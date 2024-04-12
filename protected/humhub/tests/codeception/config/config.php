@@ -31,17 +31,17 @@ $default = [
         'definitions' => [
             \Codeception\Lib\Connector\Yii2\TestMailer::class => [
                 'class' => \tests\codeception\_support\TestMailer::class,
-            ]
-        ]
+            ],
+        ],
     ],
     'modules' => [
         'user' => [
             'passwordStrength' => [
                 '/^(.*?[A-Z]){2,}.*$/' => 'Password has to contain two uppercase letters.',
                 '/^.{8,}$/' => 'Password needs to be at least 8 characters long.',
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];
 
 $envCfg = dirname(__DIR__) . '/../config/env/env.php';
@@ -52,5 +52,5 @@ return yii\helpers\ArrayHelper::merge(
     $default,
     // User Overwrite
     require(dirname(__DIR__) . '/../config/common.php'),
-    $env
+    $env,
 );
