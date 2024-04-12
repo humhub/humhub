@@ -22,7 +22,7 @@ class UserSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
-    public ?array $params = null;
+    public string|array|null $route = '/user/people';
 
     /**
      * @inheritdoc
@@ -43,9 +43,9 @@ class UserSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
-    public function getRoute(): string
+    public function getRoute(): string|array
     {
-        return '/user/people';
+        return $this->route;
     }
 
     /**
@@ -105,13 +105,5 @@ class UserSearchProvider implements MetaSearchProviderInterface
     public function getKeyword(): ?string
     {
         return $this->keyword;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getParams(): ?array
-    {
-        return null;
     }
 }

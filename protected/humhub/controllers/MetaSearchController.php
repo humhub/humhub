@@ -20,11 +20,9 @@ class MetaSearchController extends Controller
     {
         $this->forcePostRequest();
 
-        $params = Yii::$app->request->post('params');
-
         return MetaSearchProviderWidget::widget([
             'provider' => Yii::$app->request->post('provider'),
-            'params' => is_array($params) ? $params : [],
+            'route' => Yii::$app->request->post('route'),
             'keyword' => Yii::$app->request->post('keyword'),
         ]);
     }

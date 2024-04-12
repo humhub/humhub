@@ -22,7 +22,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
-    public ?array $params = null;
+    public string|array|null $route = '/content/search';
 
     /**
      * @inheritdoc
@@ -43,9 +43,9 @@ class ContentSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
-    public function getRoute(): string
+    public function getRoute(): string|array
     {
-        return '/content/search';
+        return $this->route;
     }
 
     /**
@@ -108,13 +108,5 @@ class ContentSearchProvider implements MetaSearchProviderInterface
     public function getKeyword(): ?string
     {
         return $this->keyword;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getParams(): ?array
-    {
-        return null;
     }
 }

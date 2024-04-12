@@ -39,9 +39,9 @@ interface MetaSearchProviderInterface
     /**
      * Get a route to provider page
      *
-     * @return string
+     * @return string|array
      */
-    public function getRoute(): string;
+    public function getRoute(): string|array;
 
     /**
      * Run search process to get results
@@ -70,11 +70,4 @@ interface MetaSearchProviderInterface
      * @return string|null
      */
     public function getKeyword(): ?string;
-
-    /**
-     * Get additional params which may be used to initialize the provider
-     *
-     * @return array|null
-     */
-    public function getParams(): ?array;
 }

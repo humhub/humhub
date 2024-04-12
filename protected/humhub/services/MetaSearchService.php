@@ -52,11 +52,9 @@ class MetaSearchService
             return;
         }
 
-        $providerParams = $this->provider->getParams();
         $cacheKey = get_class($this->provider) .
-            (empty($providerParams) ? '' : sha1(json_encode($providerParams))) .
-            ':' . Yii::$app->user->id .
-            ':' . $this->provider->getKeyword();
+            Yii::$app->user->id .
+            sha1($this->provider->getKeyword() . json_encode($this->provider->getRoute()));
 
         $data = Yii::$app->cache->getOrSet($cacheKey, function () {
             return $this->provider->getResults($this->pageSize);
@@ -75,11 +73,7 @@ class MetaSearchService
     {
         $route = $this->provider->getRoute();
 
-        if (strpos($route, '%keyword%')) {
-            return str_replace('%keyword%', $this->provider->getKeyword() ?? '', $route);
-        }
-
-        $params = [$route];
+        $params = is_string($route) ? [$route] : $route;
         if ($this->provider->getKeyword() !== null && $this->hasResults()) {
             $params['keyword'] = $this->provider->getKeyword();
         }

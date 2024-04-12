@@ -23,6 +23,7 @@ class MetaSearchProviderWidget extends Widget
     public $provider;
 
     public ?array $params = null;
+    public string|array|null $route = null;
 
     public ?string $keyword = null;
 
@@ -44,7 +45,7 @@ class MetaSearchProviderWidget extends Widget
         if (is_string($this->provider)) {
             $this->provider = Yii::createObject([
                 'class' => $this->provider,
-                'params' => $this->params,
+                'route' => $this->route,
                 'keyword' => $this->keyword,
             ]);
 
@@ -75,12 +76,10 @@ class MetaSearchProviderWidget extends Widget
 
     protected function getOptions(): array
     {
-        $params = $this->provider->getParams();
-
         return [
             'class' => 'search-provider' . ($this->provider->getService()->isSearched() ? ' provider-searched' : ''),
             'data-provider' => get_class($this->provider),
-            'data-provider-params' => empty($params) || !is_array($params) ? '' : json_encode($params),
+            'data-provider-route' => $this->provider->getRoute(),
             'data-hide-on-empty' => $this->provider->getIsHiddenWhenEmpty(),
         ];
     }
