@@ -22,6 +22,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
+    public string|array|null $route = '/content/search';
 
     /**
      * @inheritdoc
@@ -34,9 +35,17 @@ class ContentSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
-    public function getRoute(): string
+    public function getSortOrder(): int
     {
-        return '/content/search';
+        return 100;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoute(): string|array
+    {
+        return $this->route;
     }
 
     /**

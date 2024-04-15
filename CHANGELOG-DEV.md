@@ -5,6 +5,7 @@ HumHub Changelog
 -----------------------------
 - Fix #5629: Legacy configuration self test not showing "OK"
 - Fix #6909: Fix the marketplace searching when a module config file has missed fields
+- Enh #6920: Enhancing of meta search for advanced search providers
 
 
 1.16.0-beta.2 (April 9, 2024)

@@ -11,6 +11,7 @@ use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\modules\content\search\ContentSearchProvider;
 use humhub\modules\space\search\SpaceSearchProvider;
 use humhub\modules\user\search\UserSearchProvider;
+use Yii;
 
 /**
  * Meta Search Widget for TopMenuRightStack
@@ -44,7 +45,7 @@ class MetaSearchWidget extends JsWidget
     {
         return $this->render('metaSearch', [
             'options' => $this->getOptions(),
-            'providers' => $this->providers,
+            'providers' => $this->getSortedProviders(),
         ]);
     }
 
@@ -64,5 +65,31 @@ class MetaSearchWidget extends JsWidget
     public function addProvider($provider)
     {
         $this->providers[] = $provider;
+    }
+
+    /**
+     * @return MetaSearchProviderInterface[]
+     */
+    private function getSortedProviders(): array
+    {
+        $providers = $this->providers;
+
+        foreach ($providers as $p => $provider) {
+            if (is_string($provider)) {
+                $providers[$p] = Yii::createObject(['class' => $provider]);
+            }
+        }
+
+        usort($providers, function (MetaSearchProviderInterface $a, MetaSearchProviderInterface $b) {
+            if ($a->getSortOrder() == $b->getSortOrder()) {
+                return 0;
+            } elseif ($a->getSortOrder() < $b->getSortOrder()) {
+                return -1;
+            } else {
+                return 1;
+            }
+        });
+
+        return $providers;
     }
 }

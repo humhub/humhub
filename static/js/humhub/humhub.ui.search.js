@@ -287,6 +287,7 @@ humhub.module('ui.search', function(module, require, $) {
             }
 
             data.provider = provider.data('provider');
+            data.route = provider.data('provider-route');
             client.post(module.config.url, {data}).then(function (response) {
                 if (data.keyword !== that.getInput().val().trim()) {
                     // Skip this request because other with new keyword was sent

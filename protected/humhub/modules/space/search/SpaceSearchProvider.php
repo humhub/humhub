@@ -22,6 +22,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
+    public string|array|null $route = '/space/spaces';
 
     /**
      * @inheritdoc
@@ -34,9 +35,17 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
-    public function getRoute(): string
+    public function getSortOrder(): int
     {
-        return '/space/spaces';
+        return 300;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoute(): string|array
+    {
+        return $this->route;
     }
 
     /**
