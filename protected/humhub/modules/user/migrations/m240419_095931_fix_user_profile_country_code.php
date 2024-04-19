@@ -2,6 +2,7 @@
 
 use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\ProfileField;
 use yii\db\Expression;
 use yii\db\Migration;
 
@@ -19,6 +20,10 @@ class m240419_095931_fix_user_profile_country_code extends Migration
      */
     public function safeUp(): void
     {
+        if (!ProfileField::find()->where(['internal_name' => 'country'])->exists()) {
+            return; // don't run the migration
+        }
+
         $profiles = Profile::find()
             ->select('country')
             ->distinct('country')
