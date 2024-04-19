@@ -2,12 +2,13 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\modules\user\controllers\ImageController;
-use Yii;
+use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\space\models\Space;
 use humhub\modules\content\controllers\ContainerImageController;
+use humhub\modules\user\controllers\ImageController;
+use humhub\modules\space\models\Space;
 use humhub\widgets\JsWidget;
+use Yii;
 
 class ContainerProfileHeader extends JsWidget
 {
@@ -51,8 +52,8 @@ class ContainerProfileHeader extends JsWidget
     {
         parent::init();
 
-        $this->title = $this->container->getDisplayName();
-        $this->subTitle = $this->container->getDisplayNameSub();
+        $this->title = Html::encode($this->container->getDisplayName());
+        $this->subTitle = Html::encode($this->container->getDisplayNameSub());
 
         if ($this->container instanceof Space) {
             $this->initSpaceData();

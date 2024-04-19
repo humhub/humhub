@@ -52,8 +52,8 @@ $profileImageHeight = $container->getProfileImage()->height();
         <!-- show user name and title -->
 
         <div class="img-profile-data">
-            <h1 class="<?= $classPrefix ?>"><?= Button::asLink(Html::encode($title))->link($container->getUrl()) ?></h1>
-            <h2 class="<?= $classPrefix ?>"><?= Html::encode($subTitle) ?></h2>
+            <h1 class="<?= $classPrefix ?>"><?= Button::asLink($title)->link($container->getUrl()) ?></h1>
+            <h2 class="<?= $classPrefix ?>"><?= $subTitle ?></h2>
         </div>
 
 
@@ -70,7 +70,7 @@ $profileImageHeight = $container->getProfileImage()->height();
                 'cropUrl' => $coverCropUrl,
                 'deleteUrl' => $coverDeleteUrl,
                 'dropZone' => '.profile-banner-image-container',
-                'confirmBody' => Yii::t('SpaceModule.base', 'Do you really want to delete your title image?')
+                'confirmBody' => Yii::t('SpaceModule.base', 'Do you really want to delete your title image?'),
             ]) ?>
         <?php endif; ?>
     </div>
@@ -97,7 +97,7 @@ $profileImageHeight = $container->getProfileImage()->height();
                 'deleteUrl' => $imageDeleteUrl,
                 'cropUrl' => $imageCropUrl,
                 'dropZone' => '.profile-user-photo-container',
-                'confirmBody' => Yii::t('SpaceModule.base', 'Do you really want to delete your profile image?')
+                'confirmBody' => Yii::t('SpaceModule.base', 'Do you really want to delete your profile image?'),
             ]) ?>
         <?php endif; ?>
 
@@ -105,7 +105,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 </div>
 
 <?= $this->render($headerControlView, [
-    'container' => $container
+    'container' => $container,
 ]) ?>
 
 <?= Html::endTag('div') ?>
