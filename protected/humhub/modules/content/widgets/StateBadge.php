@@ -37,22 +37,22 @@ class StateBadge extends Widget
                 return Html::tag(
                     'span',
                     Yii::t('ContentModule.base', 'Draft'),
-                    ['class' => 'label label-danger label-state-draft']
+                    ['class' => 'label label-danger label-state-draft'],
                 );
             case Content::STATE_SCHEDULED:
                 $scheduledDateTime = new DateTime($this->model->content->scheduled_at, new DateTimeZone('UTC'));
                 return Html::tag(
                     'span',
                     Yii::t('ContentModule.base', 'Scheduled for {dateTime}', [
-                        'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short')
+                        'dateTime' => Yii::$app->formatter->asDatetime($scheduledDateTime, 'short'),
                     ]),
-                    ['class' => 'label label-warning label-state-scheduled']
+                    ['class' => 'label label-warning label-state-scheduled'],
                 );
             case Content::STATE_DELETED:
                 return Html::tag(
                     'span',
                     Yii::t('ContentModule.base', 'Deleted'),
-                    ['class' => 'label label-danger label-state-deleted']
+                    ['class' => 'label label-danger label-state-deleted'],
                 );
         }
 

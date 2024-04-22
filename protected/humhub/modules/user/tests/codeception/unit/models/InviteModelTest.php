@@ -64,7 +64,7 @@ class InviteModelTest extends HumHubDbTestCase
             'email' => $uniqueEmail,
             'source' => Invite::SOURCE_INVITE,
             'space_invite_id' => Space::findOne(['name' => 'Space 1'])->id,
-            'user_originator_id' => $user->id
+            'user_originator_id' => $user->id,
         ], '');
         $this->assertTrue($model->save());
 
@@ -85,7 +85,7 @@ class InviteModelTest extends HumHubDbTestCase
         $model->load([
             'email' => $uniqueEmail,
             'source' => Invite::SOURCE_INVITE,
-            'user_originator_id' => $user->id
+            'user_originator_id' => $user->id,
         ], '');
         $this->assertTrue($model->save());
 

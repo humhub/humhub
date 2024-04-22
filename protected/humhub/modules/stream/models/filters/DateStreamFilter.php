@@ -44,7 +44,7 @@ class DateStreamFilter extends StreamQueryFilter
     {
         return [
             [['date_filter_from', 'date_filter_to'], 'safe'],
-            ['date_filter_from', 'validateDateFrom']
+            ['date_filter_from', 'validateDateFrom'],
         ];
     }
 

@@ -36,11 +36,11 @@ class TourAsset extends AssetBundle
      */
     public $js = [
         'js/bootstrap-tourist.min.js',
-        'js/humhub.tour.js'
+        'js/humhub.tour.js',
     ];
 
     public $css = [
-        'css/bootstrap-tourist.min.css'
+        'css/bootstrap-tourist.min.css',
     ];
 
     /**
@@ -52,7 +52,7 @@ class TourAsset extends AssetBundle
         $view->registerJsConfig('tour', [
             'dashboardUrl' => Url::to(['/dashboard/dashboard']),
             'completedUrl' => Url::to(['/tour/tour/tour-completed']),
-            'template' => '<div class="popover tour" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">' . Yii::t('TourModule.base', '« Prev') . '</button> <button class="btn btn-sm btn-default" data-role="next">' . Yii::t('TourModule.base', 'Next »') . '</button> <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="Pause" data-resume-text="Resume">Pause</button> </div> <button class="btn btn-sm btn-default" data-role="end">' . Yii::t('TourModule.base', 'End guide') . '</button> </div> </div>'
+            'template' => '<div class="popover tour" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">' . Yii::t('TourModule.base', '« Prev') . '</button> <button class="btn btn-sm btn-default" data-role="next">' . Yii::t('TourModule.base', 'Next »') . '</button> <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="Pause" data-resume-text="Resume">Pause</button> </div> <button class="btn btn-sm btn-default" data-role="end">' . Yii::t('TourModule.base', 'End guide') . '</button> </div> </div>',
         ]);
 
         return parent::register($view);

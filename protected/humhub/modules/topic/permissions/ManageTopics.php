@@ -27,7 +27,7 @@ class ManageTopics extends BasePermission
         Space::USERGROUP_OWNER,
         Space::USERGROUP_ADMIN,
         Space::USERGROUP_MODERATOR,
-        User::USERGROUP_SELF
+        User::USERGROUP_SELF,
     ];
 
     /**
@@ -39,7 +39,7 @@ class ManageTopics extends BasePermission
         User::USERGROUP_SELF,
         User::USERGROUP_FRIEND,
         User::USERGROUP_USER,
-        User::USERGROUP_GUEST
+        User::USERGROUP_GUEST,
     ];
 
     /**

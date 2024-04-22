@@ -34,7 +34,7 @@ class Header extends Widget
             'space' => $this->space,
             // Deprecated variables below (will removed in future versions)
             'followingEnabled' => !Yii::$app->getModule('space')->disableFollow,
-            'postCount' => -1
+            'postCount' => -1,
         ]);
     }
 

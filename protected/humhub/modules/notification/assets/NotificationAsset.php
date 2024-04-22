@@ -21,6 +21,6 @@ class NotificationAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.notification.js'
+        'js/humhub.notification.js',
     ];
 }

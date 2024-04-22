@@ -21,6 +21,6 @@ class CommentAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.comment.js'
+        'js/humhub.comment.js',
     ];
 }

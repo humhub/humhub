@@ -22,24 +22,24 @@ return [
             'event' => User::EVENT_BEFORE_SWITCH_IDENTITY,
             'callback' => [
                 Events::class,
-                'onSwitchUser'
-            ]
+                'onSwitchUser',
+            ],
         ],
         [
             'class' => Sidebar::class,
             'event' => Sidebar::EVENT_INIT,
             'callback' => [
                 Events::class,
-                'onDashboardSidebarInit'
-            ]
+                'onDashboardSidebarInit',
+            ],
         ],
         [
             'class' => CronController::class,
             'event' => CronController::EVENT_ON_DAILY_RUN,
             'callback' => [
                 Events::class,
-                'onCronDailyRun'
-            ]
-        ]
+                'onCronDailyRun',
+            ],
+        ],
     ],
 ];

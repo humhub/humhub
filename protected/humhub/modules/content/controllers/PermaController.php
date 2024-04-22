@@ -32,8 +32,8 @@ class PermaController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['index', 'wall-entry']
-            ]
+                'guestAllowedActions' => ['index', 'wall-entry'],
+            ],
         ];
     }
 

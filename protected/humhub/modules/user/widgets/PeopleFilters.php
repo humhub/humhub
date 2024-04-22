@@ -132,7 +132,7 @@ class PeopleFilters extends DirectoryFilters
                 $filterData['inputOptions'] = ['data-dropdown-auto-width' => 'true'];
                 $filterData['widgetOptions'] = [
                     'itemKey' => $profileField->internal_name,
-                    'query' => $this->query
+                    'query' => $this->query,
                 ];
                 break;
 

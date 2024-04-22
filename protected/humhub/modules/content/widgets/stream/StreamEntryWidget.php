@@ -112,7 +112,7 @@ abstract class StreamEntryWidget extends JsWidget
         $params = [
             'content' => $record->getWallOut($options),
             'jsWidget' => $jsWidget,
-            'entry' => $record->content
+            'entry' => $record->content,
         ];
 
         return Yii::$app->controller->renderPartial('@humhub/modules/content/views/layouts/wallEntry', $params);
@@ -127,7 +127,7 @@ abstract class StreamEntryWidget extends JsWidget
             'model' => $this->model,
             'rootElement' => $this->rootElement,
             'bodyLayout' => $this->renderBody(),
-            'options' => $this->getOptions()
+            'options' => $this->getOptions(),
         ]);
     }
 
@@ -142,7 +142,7 @@ abstract class StreamEntryWidget extends JsWidget
             'content-container-id' => $content->contentcontainer_id,
             'stream-entry' => 1,
             'stream-pinned' => (int)$this->renderOptions->isPinned($this->model),
-            'content-key' => $content->id
+            'content-key' => $content->id,
         ];
 
         if ($this->renderOptions->isInjected()) {

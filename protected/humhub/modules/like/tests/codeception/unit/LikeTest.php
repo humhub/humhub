@@ -21,7 +21,7 @@ class LikeTest extends HumHubDbTestCase
 
         $like = new Like([
             'object_model' => Post::class,
-            'object_id' => 1
+            'object_id' => 1,
         ]);
 
         Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 1]))->set('notification.like_email', 1);

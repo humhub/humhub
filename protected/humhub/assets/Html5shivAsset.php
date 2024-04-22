@@ -28,14 +28,14 @@ class Html5shivAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'dist/html5shiv.min.js'
+        'dist/html5shiv.min.js',
     ];
 
     /**
      * @inheritdoc
      */
     public $jsOptions = [
-        'condition' => 'lt IE 9'
+        'condition' => 'lt IE 9',
     ];
 
 }

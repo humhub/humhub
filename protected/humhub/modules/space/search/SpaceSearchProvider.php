@@ -22,6 +22,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
+    public string|array|null $route = '/space/spaces';
 
     /**
      * @inheritdoc
@@ -34,9 +35,17 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
-    public function getRoute(): string
+    public function getSortOrder(): int
     {
-        return '/spaces';
+        return 300;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoute(): string|array
+    {
+        return $this->route;
     }
 
     /**
@@ -64,7 +73,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
     {
         $spaceDirectoryQuery = new SpaceDirectoryQuery([
             'defaultFilters' => ['keyword' => $this->getKeyword()],
-            'pageSize' => $maxResults
+            'pageSize' => $maxResults,
         ]);
 
         $results = [];
@@ -74,7 +83,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
 
         return [
             'totalCount' => $spaceDirectoryQuery->pagination->totalCount,
-            'results' => $results
+            'results' => $results,
         ];
     }
 

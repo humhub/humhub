@@ -53,7 +53,7 @@ class GeneralModuleSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'includeBetaUpdates' => Yii::t('MarketplaceModule.base', 'Allow module versions in beta status')
+            'includeBetaUpdates' => Yii::t('MarketplaceModule.base', 'Allow module versions in beta status'),
         ];
     }
 

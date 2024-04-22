@@ -168,6 +168,18 @@ class ModuleManager extends Component
         $isCoreModule = (isset($config['isCoreModule']) && $config['isCoreModule']);
         $isInstallerModule = (isset($config['isInstallerModule']) && $config['isInstallerModule']);
 
+        if (
+            !$isCoreModule
+            && !$isInstallerModule
+            && !empty(Yii::$app->loadedAppConfig['modules'][$config['id']])
+            && !in_array($config['id'], $this->enabledModules, true)
+        ) {
+            $errorMessage = Yii::t('error', 'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.', ['moduleId' => '“' . $config['id'] . '”']);
+            Yii::error($errorMessage);
+            Yii::$app->view?->error($errorMessage);
+            return null;
+        }
+
         $this->modules[$config['id']] = $config['class'];
 
         if (isset($config['namespace'])) {
@@ -308,9 +320,9 @@ class ModuleManager extends Component
                     sprintf(
                         "class '%s' does not have a method called '%s",
                         is_object($eventHandler[0]) ? get_class($eventHandler[0]) : $eventHandler[0],
-                        $eventHandler[1]
+                        $eventHandler[1],
                     ),
-                    $strict
+                    $strict,
                 );
                 continue;
             }

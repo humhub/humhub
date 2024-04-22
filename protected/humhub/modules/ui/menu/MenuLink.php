@@ -257,7 +257,7 @@ class MenuLink extends MenuEntry
             'url' => $this->getUrl(),
             'sortOrder' => $this->sortOrder,
             'isActive' => $this->isActive,
-            'htmlOptions' => $this->getHtmlOptions()
+            'htmlOptions' => $this->getHtmlOptions(),
         ];
     }
 

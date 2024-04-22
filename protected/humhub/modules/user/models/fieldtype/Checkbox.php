@@ -40,7 +40,7 @@ class Checkbox extends BaseType
     public function rules()
     {
         return [
-            [['default'], 'in', 'range' => [0, 1]]
+            [['default'], 'in', 'range' => [0, 1]],
         ];
     }
 
@@ -62,11 +62,11 @@ class Checkbox extends BaseType
                         'type' => 'dropdownlist',
                         'items' => [
                             0 => 'Unchecked',
-                            1 => 'Checked'
-                        ]
-                    ]
-                ]
-            ]
+                            1 => 'Checked',
+                        ],
+                    ],
+                ],
+            ],
         ]);
     }
 

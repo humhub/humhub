@@ -7,10 +7,10 @@ use humhub\components\assets\WebStaticAssetBundle;
 class GridViewAsset extends WebStaticAssetBundle
 {
     public $js = [
-        'js/grid-view.js'
+        'js/grid-view.js',
     ];
 
     public $css = [
-        'css/grid-view.css'
+        'css/grid-view.css',
     ];
 }

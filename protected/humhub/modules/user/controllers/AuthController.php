@@ -128,7 +128,7 @@ class AuthController extends Controller
             'canRegister' => $invite->allowSelfInvite(),
             'passwordRecoveryRoute' => $this->module->passwordRecoveryRoute,
             'showLoginForm' => $this->module->showLoginForm || Yii::$app->request->get('showLoginForm', false),
-            'showRegistrationForm' => $this->module->showRegistrationForm
+            'showRegistrationForm' => $this->module->showRegistrationForm,
         ];
 
         if (Yii::$app->settings->get('maintenanceMode')) {

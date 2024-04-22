@@ -1,8 +1,27 @@
 HumHub Changelog
 ================
 
-1.16.0 (Unreleased)
--------------------
+1.16.0-beta.3 (TBD)
+-----------------------------
+- Fix #5629: Legacy configuration self test not showing "OK"
+- Fix #6909: Fix the marketplace searching when a module config file has missed fields
+- Enh #6920: Enhancing of meta search for advanced search providers
+- Enh #6952: Improve container title encoding in header
+- Fix #6954: Search out of viewport on mobile 
+
+
+1.16.0-beta.2 (April 9, 2024)
+-----------------------------
+- Fix #6928: Disabled users without "ignoredDN" settings
+- Fix #5629: Better handling of legacy configuration file options
+- Fix #6931: Fix visibility of private spaces in the user notification settings
+- Enh #6757: Allow changing visibility of global content
+- Fix #5419: Lock search index while reindexing
+- Fix #5629: Better handling of legacy configuration file options for disabled non-core modules
+
+1.16.0-beta.1 (April 5, 2024)
+-----------------------------
+
 - Fix #6770: Improve migration error messages
 - Enh #6750: Code de-duplication by introducing `PermissionManager::handlePermissionStateChange()`
 - Fix #6772: Polymorphic relation lookup (Regression #6587)

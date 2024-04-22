@@ -21,8 +21,8 @@ class DateTimeColumn extends DataColumn
      */
     public $styles = [
         'numberFormat' => [
-            'formatCode' => NumberFormat::FORMAT_DATE_DATETIME
-        ]
+            'formatCode' => NumberFormat::FORMAT_DATE_DATETIME,
+        ],
     ];
 
     /**

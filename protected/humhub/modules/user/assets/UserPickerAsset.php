@@ -23,7 +23,7 @@ class UserPickerAsset extends AssetBundle
      * @inheritdoc
      */
     public $js = [
-        'js/humhub.user.picker.js'
+        'js/humhub.user.picker.js',
     ];
 
     /**
@@ -31,6 +31,6 @@ class UserPickerAsset extends AssetBundle
      */
     public $depends = [
         Select2Asset::class,
-        Select2SearchInputPlaceholderAsset::class
+        Select2SearchInputPlaceholderAsset::class,
     ];
 }

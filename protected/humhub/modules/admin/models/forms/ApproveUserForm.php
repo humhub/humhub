@@ -160,7 +160,7 @@ class ApproveUserForm extends Model
         if ($this->send()) {
             Yii::$app->settings->user($this->user)->set(
                 self::USER_SETTINGS_NB_MSG_SENT,
-                static::getNumberMessageSent($this->user->id) + 1
+                static::getNumberMessageSent($this->user->id) + 1,
             );
             return true;
         }
@@ -273,7 +273,7 @@ class ApproveUserForm extends Model
     public function send(): bool
     {
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], [
-            'message' => RichTextToEmailHtmlConverter::process($this->message)
+            'message' => RichTextToEmailHtmlConverter::process($this->message),
         ]);
         $mail->setTo($this->user->email);
         $mail->setSubject($this->subject);
@@ -294,7 +294,7 @@ class ApproveUserForm extends Model
         $this->subject = Yii::t(
             'AdminModule.user',
             'About the account request for \'{displayName}\'.',
-            ['{displayName}' => Html::encode($this->user->displayName)]
+            ['{displayName}' => Html::encode($this->user->displayName)],
         );
 
         if (!empty($module->settings->get('auth.registrationSendMessageMailContent'))) {
@@ -305,7 +305,7 @@ class ApproveUserForm extends Model
         } else {
             $this->message = static::getDefaultSendMessageMailContent(
                 Html::encode($this->user->displayName),
-                Html::encode($this->admin->displayName)
+                Html::encode($this->admin->displayName),
             );
         }
 
@@ -326,7 +326,7 @@ class ApproveUserForm extends Model
         $this->subject = Yii::t(
             'AdminModule.user',
             "Account Request for '{displayName}' has been approved.",
-            ['{displayName}' => Html::encode($this->user->displayName)]
+            ['{displayName}' => Html::encode($this->user->displayName)],
         );
 
         $loginURL = Url::to(['/user/auth/login'], true);
@@ -363,7 +363,7 @@ class ApproveUserForm extends Model
         $this->subject = Yii::t(
             'AdminModule.user',
             'Account Request for \'{displayName}\' has been declined.',
-            ['{displayName}' => Html::encode($this->user->displayName)]
+            ['{displayName}' => Html::encode($this->user->displayName)],
         );
 
         if (!empty($module->settings->get('auth.registrationDenialMailContent'))) {
@@ -374,7 +374,7 @@ class ApproveUserForm extends Model
         } else {
             $this->message = static::getDefaultDeclineMessage(
                 Html::encode($this->user->displayName),
-                Html::encode($this->admin->displayName)
+                Html::encode($this->admin->displayName),
             );
         }
 
@@ -400,7 +400,7 @@ class ApproveUserForm extends Model
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
-            ]
+            ],
         );
     }
 
@@ -425,7 +425,7 @@ class ApproveUserForm extends Model
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
                 '{loginUrl}' => $loginUrl,
-            ]
+            ],
         );
     }
 
@@ -447,7 +447,7 @@ class ApproveUserForm extends Model
             [
                 '{displayName}' => $userDisplayName,
                 '{AdminName}' => $adminDisplayName,
-            ]
+            ],
         );
     }
 

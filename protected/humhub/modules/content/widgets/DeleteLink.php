@@ -40,7 +40,7 @@ class DeleteLink extends Widget
             return $this->render('deleteLink', [
                 'model' => $this->content->content->object_model,
                 'id' => $this->content->content->object_id,
-                'isAdmin' => $isAdmin
+                'isAdmin' => $isAdmin,
             ]);
         }
 

@@ -38,7 +38,7 @@ class NotificationSwitchLink extends Widget
 
         return $this->render('notificationSwitchLink', [
             'content' => $this->content->content,
-            'state' => $this->content->isFollowedByUser(Yii::$app->user->id, true)
+            'state' => $this->content->isFollowedByUser(Yii::$app->user->id, true),
         ]);
     }
 

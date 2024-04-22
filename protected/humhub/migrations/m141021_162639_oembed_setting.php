@@ -16,7 +16,7 @@ class m141021_162639_oembed_setting extends Migration
                 'youtu.be'       => 'https://www.youtube.com/oembed?scheme=https&url=%url%&format=json&maxwidth=450',
                 'soundcloud.com' => 'https://soundcloud.com/oembed?url=%url%&format=json&maxwidth=450',
                 'slideshare.net' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450',
-            ])
+            ]),
         ]);
     }
 

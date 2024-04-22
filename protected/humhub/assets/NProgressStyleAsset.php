@@ -36,7 +36,7 @@ class NProgressStyleAsset extends AssetBundle
     public $publishOptions = [
         'only' => [
             '/nprogress.css',
-            '/nprogress.js'
+            '/nprogress.js',
         ],
     ];
 }

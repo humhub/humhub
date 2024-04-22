@@ -195,7 +195,7 @@ class ViewMeta extends BaseObject
         if (!empty($this->description)) {
             $this->view->registerMetaTag([
                 'name' => 'description',
-                'content' => str_replace("\n", '', StringHelper::truncate($this->description, 255))
+                'content' => str_replace("\n", '', StringHelper::truncate($this->description, 255)),
             ]);
         }
     }

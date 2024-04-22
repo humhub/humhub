@@ -56,8 +56,8 @@ class Like extends ContentAddonActiveRecord
                 'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
                     ActiveRecord::class,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -83,12 +83,12 @@ class Like extends ContentAddonActiveRecord
                 return Like::find()
                     ->where([
                         'object_model' => $objectModel,
-                        'object_id' => $objectId
+                        'object_id' => $objectId,
                     ])
                     ->with('user')
                     ->all();
             },
-            Yii::$app->settings->get('cache.expireTime')
+            Yii::$app->settings->get('cache.expireTime'),
         );
     }
 

@@ -21,7 +21,7 @@ class UserModuleTest extends HumHubDbTestCase
 
         $this->assertEquals([
             'humhub\modules\user\notifications\Followed',
-            'humhub\modules\user\notifications\Mentioned'
+            'humhub\modules\user\notifications\Mentioned',
         ], $module->getNotifications());
 
         $this->assertEquals([
@@ -29,13 +29,13 @@ class UserModuleTest extends HumHubDbTestCase
         ], $module->getPasswordStrength());
 
         $module->passwordStrength = [
-            '/^$/' => 'test'
+            '/^$/' => 'test',
         ];
 
         $this->assertTrue($module->isCustomPasswordStrength());
 
         $this->assertEquals([
-            '/^$/' => 'test'
+            '/^$/' => 'test',
         ], $module->getPasswordStrength());
     }
 }

@@ -237,7 +237,7 @@ class UploadInput extends JsWidget
     {
         return [
             'multiple' => ($this->multiple) ? 'multiple' : null,
-            'title' => Yii::t('base', 'Upload file')
+            'title' => Yii::t('base', 'Upload file'),
         ];
     }
 

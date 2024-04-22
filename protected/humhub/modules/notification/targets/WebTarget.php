@@ -49,7 +49,7 @@ class WebTarget extends BaseTarget
             'notificationGroup' => ($notification->getGroupKey()) ? (get_class($notification) . ':' . $notification->getGroupKey()) : null,
             'contentContainerId' => $user->contentcontainer_id,
             'ts' => time(),
-            'text' => $notification->text()
+            'text' => $notification->text(),
         ]));
     }
 

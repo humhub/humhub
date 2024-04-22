@@ -17,40 +17,40 @@ class m220121_193617_oembed_setting_update extends Migration
         $oembedProviders = [
             'Facebook Video' => [
                 'pattern' => '/facebook\.com\/(.*)(video)/',
-                'endpoint' => 'https://graph.facebook.com/v12.0/oembed_video?url=%url%&access_token='
+                'endpoint' => 'https://graph.facebook.com/v12.0/oembed_video?url=%url%&access_token=',
             ],
             'Facebook Post' => [
                 'pattern' => '/facebook\.com\/(.*)(post|activity|photo|permalink|media|question|note)/',
-                'endpoint' => 'https://graph.facebook.com/v12.0/oembed_post?url=%url%&access_token='
+                'endpoint' => 'https://graph.facebook.com/v12.0/oembed_post?url=%url%&access_token=',
             ],
             'Facebook Page' => [
                 'pattern' => '/^(https\:\/\/)*(www\.)*facebook\.com\/((?!video|post|activity|photo|permalink|media|question|note).)*$/',
-                'endpoint' => 'https://graph.facebook.com/v12.0/oembed_post?url=%url%&access_token='
+                'endpoint' => 'https://graph.facebook.com/v12.0/oembed_post?url=%url%&access_token=',
             ],
             'Instagram' => [
                 'pattern' => '/instagram\.com/',
-                'endpoint' => 'https://graph.facebook.com/v12.0/instagram_oembed?url=%url%&access_token='
+                'endpoint' => 'https://graph.facebook.com/v12.0/instagram_oembed?url=%url%&access_token=',
             ],
             'Twitter' => [
                 'pattern' => '/twitter\.com/',
-                'endpoint' => 'https://publish.twitter.com/oembed?url=%url%&maxwidth=450'
+                'endpoint' => 'https://publish.twitter.com/oembed?url=%url%&maxwidth=450',
             ],
             'YouTube' => [
                 'pattern' => '/youtube\.com|youtu.be/',
-                'endpoint' => 'https://www.youtube.com/oembed?scheme=https&url=%url%&format=json&maxwidth=450'
+                'endpoint' => 'https://www.youtube.com/oembed?scheme=https&url=%url%&format=json&maxwidth=450',
             ],
             'Soundcloud' => [
                 'pattern' => '/soundcloud\.com/',
-                'endpoint' => 'https://soundcloud.com/oembed?url=%url%&format=json&maxwidth=450'
+                'endpoint' => 'https://soundcloud.com/oembed?url=%url%&format=json&maxwidth=450',
             ],
             'Vimeo' => [
                 'pattern' => '/vimeo\.com/',
-                'endpoint' => 'https://vimeo.com/api/oembed.json?scheme=https&url=%url%&format=json&maxwidth=450'
+                'endpoint' => 'https://vimeo.com/api/oembed.json?scheme=https&url=%url%&format=json&maxwidth=450',
             ],
             'SlideShare' => [
                 'pattern' => '/slideshare\.net/',
-                'endpoint' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450'
-            ]
+                'endpoint' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450',
+            ],
         ];
 
         foreach (UrlOembed::getProviders() as $providerUrl => $providerEndpoint) {
@@ -65,7 +65,7 @@ class m220121_193617_oembed_setting_update extends Migration
             if (!$providerExists) {
                 $oembedProviders[$providerUrl] = [
                     'pattern' => '/' . preg_quote($providerUrl, '/') . '/',
-                    'endpoint' => $providerEndpoint
+                    'endpoint' => $providerEndpoint,
                 ];
             }
         }

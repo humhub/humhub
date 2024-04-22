@@ -100,7 +100,7 @@ class GroupController extends Controller
 
                     $this->view->info(Yii::t(
                         'AdminModule.user',
-                        'The Space memberships of all group members will be updated. This may take up to several minutes.'
+                        'The Space memberships of all group members will be updated. This may take up to several minutes.',
                     ));
                 }
             }
@@ -199,7 +199,7 @@ class GroupController extends Controller
         if ($value === null) {
             throw new HttpException(
                 400,
-                Yii::t('AdminModule.user', 'No value found!')
+                Yii::t('AdminModule.user', 'No value found!'),
             );
         }
 
@@ -207,7 +207,7 @@ class GroupController extends Controller
         if ($groupUser === null) {
             throw new HttpException(
                 404,
-                Yii::t('AdminModule.user', 'Group user not found!')
+                Yii::t('AdminModule.user', 'Group user not found!'),
             );
         }
 
@@ -254,7 +254,7 @@ class GroupController extends Controller
             'fillUserQuery' => $group->getUsers(),
             'disabledText' => Yii::t(
                 'AdminModule.user',
-                'User is already a member of this group.'
+                'User is already a member of this group.',
             ),
         ]);
 

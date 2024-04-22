@@ -78,7 +78,7 @@ class AccountChangeUsername extends Model
 
         $mail = Yii::$app->mailer->compose([
             'html' => '@humhub/modules/user/views/mails/ChangeUsername',
-            'text' => '@humhub/modules/user/views/mails/plaintext/ChangeUsername'
+            'text' => '@humhub/modules/user/views/mails/plaintext/ChangeUsername',
         ], [
             'user' => $user,
             'newUsername' => $this->newUsername,

@@ -264,7 +264,7 @@ class Upload extends Widget
             'name' => $this->name,
             'submitName' => $this->submitName,
             'postState' => $this->postState && !$this->reset,
-            'url' => $this->url
+            'url' => $this->url,
         ], $cfg);
 
         return UploadButton::widget($cfg);
@@ -288,7 +288,7 @@ class Upload extends Widget
             'attribute' => $this->attribute,
             'name' => $this->name,
             'submitName' => $this->submitName,
-            'postState' => $this->postState && !$this->reset
+            'postState' => $this->postState && !$this->reset,
         ], $cfg);
 
         return UploadInput::widget($cfg);
@@ -337,7 +337,7 @@ class Upload extends Widget
             'items' => $this->getPreviewFiles(isset($cfg['showInStream']) ? $cfg['showInStream'] : null),
             'model' => $this->model,
             'attribute' => $this->attribute,
-            'edit' => true
+            'edit' => true,
         ], $cfg);
 
         return FilePreview::widget($cfg);

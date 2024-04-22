@@ -13,10 +13,10 @@ At least PHP 8.0 is required with this version.
   into the 'content', 'user' and 'space' modules.
 
 ### Behaviour change
-- New Meta Search API 
+- New Meta Search API
 - Controller route change: `/search/mentioning` -> `/user/mentioning`
 - `Yii::$app->search()` component is not longer available.
-  - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
+    - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
@@ -35,6 +35,11 @@ At least PHP 8.0 is required with this version.
 - `\humhub\modules\marketplace\Module::isEnabled()` use `isMarketplaceEnabled()` instead
 - `\humhub\modules\marketplace\services\ModuleService::activate()` use `enable()` instead
 
+### New
+- `humhub\modules\stream\actions\GlobalContentStream`
+- `humhub\modules\stream\models\GlobalContentStreamQuery`
+- `humhub\modules\stream\models\filters\GlobalContentStreamFilter`
+
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
 - `\humhub\components\behaviors\PolymorphicRelation` enforces types on fields, method parameters, & return types
@@ -49,7 +54,6 @@ At least PHP 8.0 is required with this version.
 
 ### Bugfix with potential side-effect
 - `\humhub\modules\ui\form\widgets\BasePicker` and `\humhub\modules\ui\form\widgets\MultiSelect` do now treat and empty array for the field `BasePicker::$selection` as a valid selection list and will not attempt to get the list from the model in that case.
-
 
 Version 1.15
 -------------------------
@@ -71,15 +75,16 @@ Version 1.15
 ### Type restrictions
 - `\humhub\libs\BaseSettingsManager` and its child classes on fields, method parameters, & return types
 - `\humhub\libs\Helpers::checkClassType()` (see [#6548](https://github.com/humhub/humhub/pull/6548))
-  - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`
-    with different Exception Codes as documented in the function's documentation:
-      - `\humhub\exceptions\InvalidArgumentClassException`
-      - `\humhub\exceptions\InvalidArgumentTypeException`
-      - `\humhub\exceptions\InvalidArgumentValueException`
-  - the return type has changed from `false` to `string|null`
-  - the second parameter `$type` is now mandatory
+    - rather than throwing a `\yii\base\Exception`, it now throws some variations of `yii\base\InvalidArgumentException`
+      with different Exception Codes as documented in the function's documentation:
+        - `\humhub\exceptions\InvalidArgumentClassException`
+        - `\humhub\exceptions\InvalidArgumentTypeException`
+        - `\humhub\exceptions\InvalidArgumentValueException`
+    - the return type has changed from `false` to `string|null`
+    - the second parameter `$type` is now mandatory
 
 ### Deprecations
+
 #### New
 - `Content::addTags()` and `Content::addTag()`. Use `ContentTagService`
 - `humhub\libs\UUID::is_valid()`. Use `UUID::validate()`
@@ -100,4 +105,3 @@ Version 1.15
 - `humhub\widgets\MarkdownField`
 - `humhub\widgets\MarkdownFieldModals`
 - `humhub\widgets\ModalConfirm`
-

@@ -232,7 +232,7 @@ class Module extends \humhub\components\Module
     {
         return [
             'humhub\modules\user\notifications\Followed',
-            'humhub\modules\user\notifications\Mentioned'
+            'humhub\modules\user\notifications\Mentioned',
         ];
     }
 

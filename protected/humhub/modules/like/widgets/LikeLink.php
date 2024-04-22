@@ -67,7 +67,7 @@ class LikeLink extends Widget
             'likeUrl' => Url::to(['/like/like/like', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
             'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
             'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->getPrimaryKey()]),
-            'title' => $this->generateLikeTitleText($currentUserLiked, $likes)
+            'title' => $this->generateLikeTitleText($currentUserLiked, $likes),
         ]);
     }
 

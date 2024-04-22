@@ -20,13 +20,13 @@ class m211124_180441_admin_group_label extends Migration
         $this->update(
             'group',
             ['name' => 'Administrators', 'description' => 'Default group for administrators of this HumHub Installation'],
-            ['is_admin_group' => 1, 'name' => 'Administrator']
+            ['is_admin_group' => 1, 'name' => 'Administrator'],
         );
 
         $this->update(
             'group',
             ['description' => 'Default group for all newly registered users of the network'],
-            ['description' => 'Example Group by Installer']
+            ['description' => 'Example Group by Installer'],
         );
     }
 

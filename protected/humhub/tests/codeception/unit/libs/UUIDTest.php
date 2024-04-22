@@ -144,7 +144,7 @@ class UUIDTest extends HumHubDbTestCase
             foreach ($UUIDs as $i => $UUID) {
                 static::assertNotNull(
                     UUID::validate($UUID),
-                    sprintf("Invalid UUID for row %s, column '%s' in '%s'", $i, $column, $file)
+                    sprintf("Invalid UUID for row %s, column '%s' in '%s'", $i, $column, $file),
                 );
             }
         }

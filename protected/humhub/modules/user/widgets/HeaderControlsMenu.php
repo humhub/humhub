@@ -59,7 +59,7 @@ class HeaderControlsMenu extends DropdownMenu
             'label' => Yii::t('UserModule.base', 'Edit'),
             'url' => Url::to(['/admin/user/edit', 'id' => $this->user->id]),
             'icon' => 'pencil',
-            'sortOrder' => 100
+            'sortOrder' => 100,
         ]));
     }
 
@@ -83,7 +83,7 @@ class HeaderControlsMenu extends DropdownMenu
                 'url' => $this->user->createUrl('/user/profile/unblock'),
                 'icon' => 'check',
                 'htmlOptions' => ['data-method' => 'post'],
-                'sortOrder' => 200
+                'sortOrder' => 200,
             ]));
         } else {
             $this->addEntry(new MenuLink([
@@ -91,7 +91,7 @@ class HeaderControlsMenu extends DropdownMenu
                 'url' => $this->user->createUrl('/user/profile/block'),
                 'icon' => 'ban',
                 'htmlOptions' => ['data-method' => 'post'],
-                'sortOrder' => 200
+                'sortOrder' => 200,
             ]));
         }
     }
@@ -114,10 +114,10 @@ class HeaderControlsMenu extends DropdownMenu
                 'htmlOptions' => [
                     'data-method' => 'post',
                     'data-action-confirm' => Yii::t('SpaceModule.base', 'Would you like to unfollow {userName}?', [
-                        '{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>'
-                    ])
+                        '{userName}' => '<strong>' . Html::encode($this->user->getDisplayName()) . '</strong>',
+                    ]),
                 ],
-                'sortOrder' => 300
+                'sortOrder' => 300,
             ]));
         } else {
             $this->addEntry(new MenuLink([
@@ -125,7 +125,7 @@ class HeaderControlsMenu extends DropdownMenu
                 'url' => $this->user->createUrl('/user/profile/follow'),
                 'icon' => 'paper-plane',
                 'htmlOptions' => ['data-method' => 'post'],
-                'sortOrder' => 300
+                'sortOrder' => 300,
             ]));
         }
     }

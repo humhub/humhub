@@ -43,7 +43,7 @@ class ContentController extends Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-            ]
+            ],
         ];
     }
 
@@ -83,7 +83,7 @@ class ContentController extends Controller
             'success' => true,
             'uniqueId' => $contentObj->getUniqueId(),
             'model' => $model,
-            'pk' => $id
+            'pk' => $id,
         ]);
     }
 
@@ -109,7 +109,7 @@ class ContentController extends Controller
         return [
             'header' => Yii::t('ContentModule.base', '<strong>Delete</strong> content?'),
             'body' => AdminDeleteModal::widget([
-                'model' => new AdminDeleteContentForm()
+                'model' => new AdminDeleteContentForm(),
             ]),
             'confirmText' => Yii::t('ContentModule.base', 'Confirm'),
             'cancelText' => Yii::t('ContentModule.base', 'Cancel'),
@@ -208,21 +208,31 @@ class ContentController extends Controller
 
         if (!$content) {
             throw new NotFoundHttpException(Yii::t('ContentModule.base', 'Invalid content id given!'));
-        } elseif (!$content->canEdit() || (!$content->visibility && !$content->container->visibility)) {
-            throw new ForbiddenHttpException();
-        } elseif ($content->isPrivate() && !$content->container->permissionManager->can(new CreatePublicContent())) {
+        }
+
+        if (!$content->canEdit()) {
             throw new ForbiddenHttpException();
         }
 
-        if ($content->isPrivate()) {
-            $content->visibility = Content::VISIBILITY_PUBLIC;
-        } else {
-            $content->visibility = Content::VISIBILITY_PRIVATE;
+        // Prevent Change to "Public" in private spaces
+        if (
+            $content->container
+            && $content->isPrivate()
+            && (
+                !$content->container->visibility
+                || !$content->container->permissionManager->can(new CreatePublicContent())
+            )
+        ) {
+            throw new ForbiddenHttpException();
         }
+
+        $content->visibility = $content->isPrivate() ?
+            Content::VISIBILITY_PUBLIC :
+            Content::VISIBILITY_PRIVATE;
 
         return $this->asJson([
             'success' => $content->save(),
-            'state' => $content->visibility
+            'state' => $content->visibility,
         ]);
     }
 
@@ -251,7 +261,7 @@ class ContentController extends Controller
         $content->locked_comments = $lockComments;
 
         return $this->asJson([
-            'success' => $content->save()
+            'success' => $content->save(),
         ]);
     }
 
@@ -407,7 +417,7 @@ class ContentController extends Controller
 
         return $this->renderAjax('scheduleOptions', [
             'scheduleOptions' => $scheduleOptions,
-            'disableInputs' => $disableInputs
+            'disableInputs' => $disableInputs,
         ]);
     }
 }

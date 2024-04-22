@@ -1,0 +1,9 @@
+{
+    "id": "ldap",
+    "name": "ldap",
+    "description": "Ldap Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

@@ -73,8 +73,8 @@ class Comment extends ContentAddonActiveRecord
                 'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
                     ActiveRecord::class,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -159,7 +159,7 @@ class Comment extends ContentAddonActiveRecord
                     'contentContainerId' => $this->content->container->id,
                     'visibility' => $this->content->visibility,
                     'contentId' => $this->content->id,
-                    'commentId' => $this->id
+                    'commentId' => $this->id,
                 ]));
             }
         }

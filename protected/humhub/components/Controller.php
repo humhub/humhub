@@ -102,8 +102,8 @@ class Controller extends \yii\web\Controller
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'rules' => $this->getAccessRules()
-            ]
+                'rules' => $this->getAccessRules(),
+            ],
         ];
     }
 
@@ -180,7 +180,7 @@ class Controller extends \yii\web\Controller
     public function htmlRedirect($url = "")
     {
         return $this->renderPartial('@humhub/views/htmlRedirect.php', [
-            'url' => Url::to($url)
+            'url' => Url::to($url),
         ]);
     }
 

@@ -234,7 +234,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             throw new InvalidArgumentTypeException(
                 '$serialized',
                 ["string"],
-                $serialized
+                $serialized,
             );
         }
 
@@ -260,7 +260,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
                 throw new InvalidArgumentValueException(
                     '$serialized',
                     sprintf("string starting with '%s'", implode(' or ', $allowedClasses)),
-                    $serialized
+                    $serialized,
                 );
             }
 
@@ -357,7 +357,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             } else {
                 throw new InvalidArgumentTypeException('...$args', [
                     'array',
-                    Traversable::class
+                    Traversable::class,
                 ], $args);
             }
         }
@@ -498,7 +498,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
     public function offsetGet($offset)
     {
         return $this->__get(
-            $this->validatePropertyName($offset, __METHOD__, '$offset')
+            $this->validatePropertyName($offset, __METHOD__, '$offset'),
         );
     }
 
@@ -506,14 +506,14 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
     {
         return $this->__set(
             $this->validatePropertyName($offset, __METHOD__, '$offset'),
-            $value
+            $value,
         );
     }
 
     public function offsetUnset($offset)
     {
         return $this->__unset(
-            $this->validatePropertyName($offset, __METHOD__, '$offset')
+            $this->validatePropertyName($offset, __METHOD__, '$offset'),
         );
     }
 
@@ -541,7 +541,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             !is_int($int = $position) && null === $int = filter_var(
                 $position,
                 FILTER_VALIDATE_BOOLEAN,
-                FILTER_NULL_ON_FAILURE
+                FILTER_NULL_ON_FAILURE,
             )
         ) {
             throw new InvalidArgumentTypeException('$position', 'int', $position);
@@ -601,7 +601,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
 
         throw InvalidArgumentTypeException::newInstance(
             $parameter,
-            ['string', 'int', 'bool', Stringable::class]
+            ['string', 'int', 'bool', Stringable::class],
         )->setMethodName($method);
     }
 
@@ -630,7 +630,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             throw new InvalidArgumentTypeException(
                 '$serialized',
                 ['array', \stdClass::class],
-                $serialized
+                $serialized,
             );
         } else {
             $isObject = true;
@@ -697,7 +697,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
                 }
 
                 throw new InvalidArgumentValueException(
-                    sprintf('Required field %s not found in serialized data for %s', $field, static::class)
+                    sprintf('Required field %s not found in serialized data for %s', $field, static::class),
                 );
             }
 
@@ -707,7 +707,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
                 }
 
                 throw new InvalidArgumentTypeException(
-                    sprintf('Invalid classes found in serialized data: %s', implode(', ', array_filter($found)))
+                    sprintf('Invalid classes found in serialized data: %s', implode(', ', array_filter($found))),
                 );
             }
 
@@ -735,7 +735,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             throw new InvalidConfigTypeException(sprintf(
                 "Invalid class property type for %s: %s",
                 static::class,
-                get_debug_type($class)
+                get_debug_type($class),
             ), 1);
         }
 
@@ -747,7 +747,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             throw new InvalidConfigTypeException(sprintf(
                 "Invalid class name or non-existing class for %s: %s",
                 static::class,
-                get_debug_type($class)
+                get_debug_type($class),
             ), 2);
         }
 
@@ -761,7 +761,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
             throw new InvalidConfigTypeException(sprintf(
                 "Class %s is not a subclass of %s",
                 get_debug_type($class),
-                $parentClass
+                $parentClass,
             ), 3);
         }
 
@@ -827,9 +827,9 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
                                 Yii::warning(
                                     sprintf(
                                         "Reflection Exception occurred while validating metadata! %s",
-                                        serialize($item)
+                                        serialize($item),
                                     ),
-                                    'File'
+                                    'File',
                                 );
 
                                 continue 2;
@@ -841,7 +841,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
 
                         Yii::warning(
                             sprintf("Invalid metadata found and removed! %s", serialize($item)),
-                            'File'
+                            'File',
                         );
 
                         $item = null;

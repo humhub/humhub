@@ -219,7 +219,7 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
                 'Bar',
                 'Foo',
             ],
-            static::logFilterMessageTexts()
+            static::logFilterMessageTexts(),
         );
 
         $messages = static::logFilterMessages();
@@ -265,9 +265,9 @@ class LogAssertionsSelfTest extends HumHubDbTestCase
                     1 => 8,
                     2 => 'LogAssertionsSelfTest',
                     4 =>  [],
-                ]
+                ],
             ],
-            $messages
+            $messages,
         );
 
         static::logFlush();

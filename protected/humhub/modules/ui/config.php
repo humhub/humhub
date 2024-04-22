@@ -8,7 +8,7 @@ return [
     'id' => 'ui',
     'class' => Module::class,
     'consoleControllerMap' => [
-        'theme' => '\humhub\modules\ui\commands\ThemeController'
+        'theme' => '\humhub\modules\ui\commands\ThemeController',
     ],
-    'isCoreModule' => true
+    'isCoreModule' => true,
 ];

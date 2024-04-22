@@ -58,8 +58,8 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
                 ['IN', 'space.visibility', [Space::VISIBILITY_ALL, Space::VISIBILITY_REGISTERED_ONLY]],
                 ['AND',
                     ['=', 'space.visibility', Space::VISIBILITY_NONE],
-                    ['IN', 'space.id', Membership::find()->select('space_id')->where(['user_id' => $user->id])]
-                ]
+                    ['IN', 'space.id', Membership::find()->select('space_id')->where(['user_id' => $user->id])],
+                ],
             ]);
         } else {
             $this->andWhere(['!=', 'space.visibility', Space::VISIBILITY_NONE]);
@@ -76,6 +76,14 @@ class ActiveQuerySpace extends AbstractActiveQueryContentContainer
         $this->joinWith('contentContainerRecord');
 
         return ['space.name', 'space.description', 'contentcontainer.tags_cached'];
+    }
+
+    /**
+     * @inerhitdoc
+     */
+    protected function getSearchableFieldTitles(): array
+    {
+        return [];
     }
 
     /**

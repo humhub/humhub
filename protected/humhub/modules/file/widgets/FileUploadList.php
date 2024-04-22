@@ -47,7 +47,7 @@ class FileUploadList extends Widget
         }
         return $this->render('fileUploadList', [
             'uploaderId' => $this->uploaderId,
-            'files' => $files
+            'files' => $files,
         ]);
     }
 

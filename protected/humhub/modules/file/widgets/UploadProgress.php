@@ -20,7 +20,7 @@ class UploadProgress extends JsWidget
     public function getAttributes()
     {
         return [
-            'style' => 'margin:10px 0px'
+            'style' => 'margin:10px 0px',
         ];
     }
 

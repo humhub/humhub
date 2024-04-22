@@ -258,7 +258,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
     {
         ContentContainer::deleteAll([
             'pk' => $this->getPrimaryKey(),
-            'class' => static::class
+            'class' => static::class,
         ]);
 
         parent::afterDelete();
@@ -314,7 +314,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         if ($user && !$user->is(Yii::$app->user->getIdentity())) {
             return new ContentContainerPermissionManager([
                 'contentContainer' => $this,
-                'subject' => $user
+                'subject' => $user,
             ]);
         }
 
@@ -323,7 +323,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->permissionManager = new ContentContainerPermissionManager([
-            'contentContainer' => $this
+            'contentContainer' => $this,
         ]);
     }
 
@@ -340,7 +340,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
         }
 
         return $this->_moduleManager = new ContentContainerModuleManager([
-            'contentContainer' => $this
+            'contentContainer' => $this,
         ]);
     }
 
@@ -540,7 +540,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
 
         $blockedUserRelation = ContentContainerBlockedUsers::findOne([
             'contentcontainer_id' => $user->contentcontainer_id,
-            'user_id' => $this->id
+            'user_id' => $this->id,
         ]);
 
         if (!$blockedUserRelation) {

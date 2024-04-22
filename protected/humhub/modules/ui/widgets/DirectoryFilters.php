@@ -73,7 +73,7 @@ abstract class DirectoryFilters extends Widget
     {
         return $this->render('@humhub/modules/ui/widgets/views/directoryFilters', [
             'directoryFilters' => $this,
-            'options' => $this->getOptions()
+            'options' => $this->getOptions(),
         ]);
     }
 
@@ -98,7 +98,7 @@ abstract class DirectoryFilters extends Widget
             if ($filterInput !== $data['beforeInput'] . $data['afterInput']) {
                 $filtersHtml .= $this->render('@humhub/modules/ui/widgets/views/directoryFilter', [
                     'data' => $data,
-                    'filterInput' => $filterInput
+                    'filterInput' => $filterInput,
                 ]);
             }
         }
@@ -176,7 +176,7 @@ abstract class DirectoryFilters extends Widget
                 $inputHtml = DatePicker::widget([
                     'name' => $filter,
                     'value' => empty($value) ? '' : Yii::$app->formatter->asDate($value, $format),
-                    'dateFormat' => $format
+                    'dateFormat' => $format,
                 ]);
                 break;
 

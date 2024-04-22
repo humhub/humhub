@@ -38,7 +38,7 @@ class Setting extends SettingActiveRecord
     {
         return [
             [['name', 'module_id'], 'required'],
-            ['value', 'safe']
+            ['value', 'safe'],
         ];
     }
 
@@ -156,8 +156,8 @@ class Setting extends SettingActiveRecord
                 'port' => ['proxy.port', 'base'],
                 'user' => ['proxy.user', 'base'],
                 'pass' => ['proxy.password', 'base'],
-                'noproxy' => ['proxy.noproxy', 'base']
-            ]
+                'noproxy' => ['proxy.noproxy', 'base'],
+            ],
         ];
 
         return $translation[$moduleId][$name] ?? [$name, $moduleId];

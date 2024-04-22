@@ -32,8 +32,8 @@ class Overview extends JsWidget
             'loadEntriesUrl' => Url::to(['/notification/list']),
             'sendDesktopNotifications' => boolval(Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity())),
             'text' => [
-                'placeholder' => Yii::t('NotificationModule.base', 'There are no notifications yet.')
-            ]
+                'placeholder' => Yii::t('NotificationModule.base', 'There are no notifications yet.'),
+            ],
         ]);
 
         parent::init();
@@ -49,7 +49,7 @@ class Overview extends JsWidget
         }
 
         return $this->render('overview', [
-            'options' => $this->getOptions()
+            'options' => $this->getOptions(),
         ]);
     }
 
@@ -57,7 +57,7 @@ class Overview extends JsWidget
     {
         return [
             'id' => 'notification_widget',
-            'class' => "btn-group"
+            'class' => "btn-group",
         ];
     }
 

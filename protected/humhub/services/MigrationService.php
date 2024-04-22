@@ -176,9 +176,9 @@ class MigrationService extends Component
             Controller::EVENT_AFTER_ACTION,
             [
                 $this,
-                'onMigrationControllerAfterAction'
+                'onMigrationControllerAfterAction',
             ],
-            $result
+            $result,
         );
 
         // Disable max execution time to avoid timeouts during migrations
@@ -206,8 +206,8 @@ class MigrationService extends Component
             Controller::EVENT_AFTER_ACTION,
             [
                 $this,
-                'onMigrationControllerAfterAction'
-            ]
+                'onMigrationControllerAfterAction',
+            ],
         );
 
         return $this->checkMigrationStatus($result, $controller->getLastMigration());
@@ -279,7 +279,7 @@ class MigrationService extends Component
                 preg_match(
                     '@^Exception:\s+(?<message>.*?$)\s+(?<trace>.*?\{main\})$@ms',
                     $result->output ?? '',
-                    $matches
+                    $matches,
                 )
             ) {
                 $errorMessage .= "\n" . $matches['message'] . "\nSee application log for full trace.";

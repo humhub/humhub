@@ -231,7 +231,7 @@ trait HumHubHelperTrait
             static::assertContains(
                 $logMessage,
                 $messages,
-                $errorMessage ?? print_r(static::logFilterMessageTexts(), true)
+                $errorMessage ?? print_r(static::logFilterMessageTexts(), true),
             );
         }
     }
@@ -275,7 +275,7 @@ trait HumHubHelperTrait
             static::assertNotContains(
                 $logMessage,
                 $messages,
-                $errorMessage ?? print_r(static::logFilterMessageTexts(), true)
+                $errorMessage ?? print_r(static::logFilterMessageTexts(), true),
             );
         }
     }
@@ -335,7 +335,7 @@ trait HumHubHelperTrait
         static::assertNotContainsRegex(
             $regex,
             $messages,
-            $errorMessage ?? print_r(static::logFilterMessageTexts(), true)
+            $errorMessage ?? print_r(static::logFilterMessageTexts(), true),
         );
     }
 
@@ -444,7 +444,7 @@ trait HumHubHelperTrait
         $notificationQuery = Notification::find()->where([
             'class' => $class,
             'source_class' => PolymorphicRelation::getObjectModel($source),
-            'source_pk' => $source->getPrimaryKey()
+            'source_pk' => $source->getPrimaryKey(),
         ]);
 
         if ($originator_id != null) {
@@ -585,8 +585,8 @@ trait HumHubHelperTrait
                 $argumentNumber,
                 $argumentName,
                 $expectedType,
-                $givenTye
-            )
+                $givenTye,
+            ),
         );
     }
 
@@ -699,7 +699,7 @@ trait HumHubHelperTrait
          */
         Yii::$app->set(
             'log',
-            Yii::createObject(['class' => Dispatcher::class, 'targets' => [static::class => self::$logTarget]])
+            Yii::createObject(['class' => Dispatcher::class, 'targets' => [static::class => self::$logTarget]]),
         );
     }
 
@@ -866,7 +866,7 @@ trait HumHubHelperTrait
     {
         return static::dbCommandExecute(
             static::dbCommand()->upsert($table, $insertColumns, $updateColumns, $params),
-            $execute
+            $execute,
         );
     }
 

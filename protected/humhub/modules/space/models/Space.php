@@ -306,7 +306,7 @@ class Space extends ContentContainerActiveRecord
         $this->getProfileImage()->delete();
         $this->getProfileBannerImage()->delete();
 
-        Follow::deleteAll(['object_id' => $this->id, 'object_model' => 'Space']);
+        Follow::deleteAll(['object_id' => $this->id, 'object_model' => static::class]);
 
         foreach (Membership::findAll(['space_id' => $this->id]) as $spaceMembership) {
             $spaceMembership->delete();
@@ -561,7 +561,7 @@ class Space extends ContentContainerActiveRecord
             self::USERGROUP_ADMIN => Yii::t('SpaceModule.base', 'Administrators'),
             self::USERGROUP_MODERATOR => Yii::t('SpaceModule.base', 'Moderators'),
             self::USERGROUP_MEMBER => Yii::t('SpaceModule.base', 'Members'),
-            self::USERGROUP_USER => Yii::t('SpaceModule.base', 'Users')
+            self::USERGROUP_USER => Yii::t('SpaceModule.base', 'Users'),
         ];
 
         // Add guest groups if enabled

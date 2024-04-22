@@ -15,7 +15,7 @@ class m231024_062218_content_was_published extends Migration
         $this->safeAddColumn(
             'content',
             'was_published',
-            $this->boolean()->defaultValue(false)->notNull()->after('state')
+            $this->boolean()->defaultValue(false)->notNull()->after('state'),
         );
     }
 

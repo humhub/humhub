@@ -43,7 +43,7 @@ abstract class TabMenu extends Menu
     public function getAttributes()
     {
         return [
-            'class' => 'tab-menu'
+            'class' => 'tab-menu',
         ];
     }
 

@@ -33,7 +33,7 @@ class SpaceMenu extends TabMenu
             'url' => Url::toRoute(['/admin/space/index']),
             'sortOrder' => 100,
             'isActive' => MenuLink::isActiveState('admin', 'space', 'index'),
-            'isVisible' => Yii::$app->user->can(ManageSpaces::class)
+            'isVisible' => Yii::$app->user->can(ManageSpaces::class),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -41,7 +41,7 @@ class SpaceMenu extends TabMenu
             'url' => Url::toRoute(['/admin/space/settings']),
             'sortOrder' => 200,
             'isActive' => MenuLink::isActiveState('admin', 'space', 'settings'),
-            'isVisible' => Yii::$app->user->can(ManageSettings::class)
+            'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -49,7 +49,7 @@ class SpaceMenu extends TabMenu
             'url' => Url::toRoute(['/admin/space/permissions']),
             'sortOrder' => 300,
             'isActive' => MenuLink::isActiveState('admin', 'space', 'permissions'),
-            'isVisible' => Yii::$app->user->can(ManageSettings::class)
+            'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
         parent::init();

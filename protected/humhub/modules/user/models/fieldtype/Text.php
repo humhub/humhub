@@ -147,7 +147,7 @@ class Text extends BaseType
                         'class' => 'form-control',
                         'type' => 'text',
                     ],
-                ]
+                ],
             ]]);
     }
 

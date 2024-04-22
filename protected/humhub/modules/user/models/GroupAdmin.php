@@ -33,7 +33,7 @@ class GroupAdmin extends ActiveRecord
         return [
             [['user_id', 'group_id'], 'required'],
             [['user_id', 'group_id'], 'integer'],
-            [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.']
+            [['user_id', 'group_id'], 'unique', 'targetAttribute' => ['user_id', 'group_id'], 'message' => 'The combination of User ID and Group ID has already been taken.'],
         ];
     }
 

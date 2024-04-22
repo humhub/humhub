@@ -90,7 +90,7 @@ class Events extends BaseObject
                 'icon' => 'envelope',
                 'url' => ['/activity/user'],
                 'sortOrder' => 105,
-                'isActive' => MenuLink::isActiveState('activity')
+                'isActive' => MenuLink::isActiveState('activity'),
             ]));
         }
     }
@@ -107,7 +107,7 @@ class Events extends BaseObject
                 'url' => ['/activity/admin/defaults'],
                 'sortOrder' => 300,
                 'isActive' => MenuLink::isActiveState('activity', 'admin', 'defaults'),
-                'isVisible' => Yii::$app->user->can(ManageSettings::class)
+                'isVisible' => Yii::$app->user->can(ManageSettings::class),
             ]));
         }
     }

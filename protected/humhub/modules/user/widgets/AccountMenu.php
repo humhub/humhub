@@ -36,7 +36,7 @@ class AccountMenu extends LeftNavigation
             'icon' => 'user',
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('user', 'account', ['edit', 'change-username', 'change-email', 'change-password', 'delete'])
+            'isActive' => MenuLink::isActiveState('user', 'account', ['edit', 'change-username', 'change-email', 'change-password', 'delete']),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -45,7 +45,7 @@ class AccountMenu extends LeftNavigation
             'icon' => 'bell',
             'url' => ['/notification/user'],
             'sortOrder' => 106,
-            'isActive' => MenuLink::isActiveState('notification')
+            'isActive' => MenuLink::isActiveState('notification'),
         ]));
 
         $this->addEntry(new MenuLink([
@@ -54,7 +54,7 @@ class AccountMenu extends LeftNavigation
             'icon' => 'wrench',
             'url' => ['/user/account/edit-settings'],
             'sortOrder' => 110,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings')
+            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings'),
         ]));
 
         /** @var Module $module */
@@ -66,7 +66,7 @@ class AccountMenu extends LeftNavigation
                 'icon' => 'lock',
                 'url' => ['/user/account/permissions'],
                 'sortOrder' => 115,
-                'isActive' => MenuLink::isActiveState('user', 'account', 'permissions')
+                'isActive' => MenuLink::isActiveState('user', 'account', 'permissions'),
             ]));
         }
 
@@ -79,7 +79,7 @@ class AccountMenu extends LeftNavigation
             'url' => ['/user/account/edit-modules'],
             'sortOrder' => 120,
             'isActive' => MenuLink::isActiveState('user', 'account', 'edit-modules'),
-            'isVisible' => (count($user->moduleManager->getAvailable()) !== 0)
+            'isVisible' => (count($user->moduleManager->getAvailable()) !== 0),
         ]));
 
         parent::init();

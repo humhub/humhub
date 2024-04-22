@@ -47,14 +47,14 @@ class MoveContentForm extends Model
     {
         return [
             [['target'], 'validateTarget'],
-            [['target'], 'required']
+            [['target'], 'required'],
         ];
     }
 
     public function attributeLabels()
     {
         return [
-            'target' => Yii::t('ContentModule.base', 'Target Space')
+            'target' => Yii::t('ContentModule.base', 'Target Space'),
         ];
     }
 

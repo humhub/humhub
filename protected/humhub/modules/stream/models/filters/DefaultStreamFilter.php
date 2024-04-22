@@ -46,7 +46,7 @@ class DefaultStreamFilter extends StreamQueryFilter
     public function rules()
     {
         return [
-            [['filters'], 'safe']
+            [['filters'], 'safe'],
         ];
     }
 
@@ -121,7 +121,7 @@ class DefaultStreamFilter extends StreamQueryFilter
         if (!empty($this->streamQuery->container->contentcontainer_id)) {
             $this->query->andWhere(
                 '(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL OR spaceArchived.contentcontainer_id = :containerId)',
-                [':statusArchived' => Space::STATUS_ARCHIVED, ':containerId' => $this->streamQuery->container->contentcontainer_id]
+                [':statusArchived' => Space::STATUS_ARCHIVED, ':containerId' => $this->streamQuery->container->contentcontainer_id],
             );
         } else {
             $this->query->andWhere('(spaceArchived.status != :statusArchived OR spaceArchived.status IS NULL)', [':statusArchived' => Space::STATUS_ARCHIVED]);

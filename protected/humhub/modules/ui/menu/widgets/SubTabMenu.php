@@ -32,7 +32,7 @@ abstract class SubTabMenu extends TabMenu
     public function getAttributes()
     {
         return [
-            'class' => 'nav nav-tabs tab-sub-menu'
+            'class' => 'nav nav-tabs tab-sub-menu',
         ];
     }
 

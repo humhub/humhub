@@ -12,7 +12,7 @@ $testConfig = [
         'request' => [
             // it's not recommended to run functional tests with CSRF validation enabled
             'enableCsrfValidation' => false,
-            'cookieValidationKey' => 'test'
+            'cookieValidationKey' => 'test',
             // but if you absolutely need it set cookie domain to localhost
             /*
           'csrfCookie' => [
@@ -21,7 +21,7 @@ $testConfig = [
          */
         ],
         'user' => [
-            'enableAutoLogin' => true
+            'enableAutoLogin' => true,
         ],
         // Default ErrorAction results in 'Unable to resolve the request "error/index" exception
         'errorHandler' => [
@@ -41,5 +41,5 @@ return yii\helpers\ArrayHelper::merge(
     // Test Common Config
     require(__DIR__ . '/config.php'),
     // Functional Test Config
-    $testConfig
+    $testConfig,
 );

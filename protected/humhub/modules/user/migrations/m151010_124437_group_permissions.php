@@ -26,7 +26,7 @@ class m151010_124437_group_permissions extends Migration
                     'group_id' => $group['id'],
                     'module_id' => 'space',
                     'class' => 'humhub\modules\space\permissions\CreatePublicSpace',
-                    'state' => '0'
+                    'state' => '0',
                 ]);
             }
             if ($group['can_create_private_spaces'] != 1) {
@@ -35,7 +35,7 @@ class m151010_124437_group_permissions extends Migration
                     'group_id' => $group['id'],
                     'module_id' => 'space',
                     'class' => 'humhub\modules\space\permissions\CreatePrivateSpace',
-                    'state' => '0'
+                    'state' => '0',
                 ]);
             }
         }

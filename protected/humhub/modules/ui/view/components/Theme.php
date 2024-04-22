@@ -195,7 +195,7 @@ class Theme extends BaseTheme
 
         $published = Yii::$app->assetManager->publish(
             $this->getBasePath(),
-            ['forceCopy' => $force, 'except' => ['views/']]
+            ['forceCopy' => $force, 'except' => ['views/']],
         );
 
         return $published[1];

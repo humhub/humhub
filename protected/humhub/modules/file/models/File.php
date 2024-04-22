@@ -139,7 +139,7 @@ class File extends FileCompat implements ViewableInterface
                 'match',
                 'not' => true,
                 'pattern' => '/[^a-zA-Z0-9\.ä\/\-\+]/',
-                'message' => Yii::t('FileModule.base', 'Invalid Mime-Type')
+                'message' => Yii::t('FileModule.base', 'Invalid Mime-Type'),
             ],
             [['category', 'size', 'state', 'sort_order'], 'integer'],
             [['file_name', 'title'], 'string', 'max' => 255],

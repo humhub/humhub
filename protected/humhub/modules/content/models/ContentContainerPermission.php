@@ -38,7 +38,7 @@ class ContentContainerPermission extends ActiveRecord
         return [
             [['permission_id', 'contentcontainer_id', 'group_id', 'module_id'], 'required'],
             [['contentcontainer_id', 'state'], 'integer'],
-            [['permission_id', 'group_id', 'module_id', 'class'], 'string', 'max' => 255]
+            [['permission_id', 'group_id', 'module_id', 'class'], 'string', 'max' => 255],
         ];
     }
 

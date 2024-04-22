@@ -2,14 +2,13 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use humhub\modules\stream\models\filters\DefaultStreamFilter;
-use Yii;
-use tests\codeception\_support\HumHubDbTestCase;
-use humhub\modules\post\models\Post;
-
-use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
+use humhub\modules\post\models\Post;
+use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\ContentContainerStream;
+use humhub\modules\stream\models\filters\DefaultStreamFilter;
+use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class ContentContainerStreamTest extends HumHubDbTestCase
 {
@@ -158,7 +157,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $action = new ContentContainerStream('stream', Yii::$app->controller, [
             'contentContainer' => $container,
             'limit' => $limit,
-            'filters' => $filters
+            'filters' => $filters,
         ]);
 
         $wallEntries = $action->getStreamQuery()->all();

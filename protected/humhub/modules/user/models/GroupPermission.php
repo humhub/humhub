@@ -38,7 +38,7 @@ class GroupPermission extends ActiveRecord
         return [
             [['permission_id', 'group_id', 'module_id'], 'required'],
             [['group_id', 'state'], 'integer'],
-            [['permission_id', 'module_id', 'class'], 'string', 'max' => 255]
+            [['permission_id', 'module_id', 'class'], 'string', 'max' => 255],
         ];
     }
 

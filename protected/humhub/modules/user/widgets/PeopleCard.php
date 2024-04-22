@@ -35,7 +35,7 @@ class PeopleCard extends Widget
     public function run()
     {
         $card = $this->render('peopleCard', [
-            'user' => $this->user
+            'user' => $this->user,
         ]);
 
         return str_replace('{card}', $card, $this->template);

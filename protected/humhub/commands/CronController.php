@@ -116,7 +116,7 @@ class CronController extends Controller
             $lastTime = new DateTime('@' . $lastRun);
             $todayTime = DateTime::createFromFormat(
                 'Y-m-d H:i',
-                date('Y-m-d') . ' ' . Yii::$app->params['dailyCronExecutionTime']
+                date('Y-m-d') . ' ' . Yii::$app->params['dailyCronExecutionTime'],
             );
             $nowTime = new DateTime();
 

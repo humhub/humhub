@@ -16,7 +16,7 @@ use humhub\widgets\Button;
     <div class="search-provider-title">
         <?= $provider->getName() ?>
         <?php if ($provider->getService()->isSearched()) : ?>
-            <?= Html::tag('span', '(' . $provider->getService()->getTotal() . ')') ?>
+            <?= Html::tag('span', '(' . Yii::$app->formatter->asShortInteger($provider->getService()->getTotal()) . ')') ?>
         <?php endif; ?>
     </div>
     <div class="search-provider-content">

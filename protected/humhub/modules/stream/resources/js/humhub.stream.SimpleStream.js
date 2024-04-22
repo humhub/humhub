@@ -86,11 +86,15 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
             loader.set(content);
             that.refreshAddressBar(params);
             setStreamUrl();
+            // Lock loading of data on scroll down indicator
+            that.state.scrollLock = true;
 
             client.get(form.data('action-url'), {data: params}).then(function (response) {
                 that.handleResponseActionForm(response);
             }).catch(function (err) {
                 module.log.error(err, true);
+            }).finally(function () {
+                that.state.scrollLock = false;
             });
         });
 

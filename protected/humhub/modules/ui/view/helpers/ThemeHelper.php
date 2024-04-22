@@ -56,8 +56,8 @@ class ThemeHelper
                     $themes,
                     self::getThemesByPath(
                         $moduleThemePath,
-                        ['publishResources' => true]
-                    )
+                        ['publishResources' => true],
+                    ),
                 );
             }
         }
@@ -105,7 +105,7 @@ class ThemeHelper
                 'class' => 'humhub\modules\ui\view\components\Theme',
                 'basePath' => $path,
                 'name' => basename($path),
-                'publishResources' => (dirname($path) !== Yii::getAlias('@themes'))
+                'publishResources' => (dirname($path) !== Yii::getAlias('@themes')),
             ], $options));
         } catch (InvalidConfigException $e) {
             Yii::error('Could not get theme by path "' . $path . '" - Error: ' . $e->getMessage());
@@ -194,7 +194,7 @@ class ThemeHelper
         $themes = static::getThemes();
 
         $variables = LessHelper::parseLessVariables(
-            LessHelper::getVariableFile($theme)
+            LessHelper::getVariableFile($theme),
         );
 
         if (isset($variables['baseTheme']) && isset($themes[$variables['baseTheme']]) && $variables['baseTheme'] !== $theme->name) {

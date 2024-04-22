@@ -75,7 +75,7 @@ class OnlineModuleManager extends Component
             $this->throwError(
                 $moduleId,
                 'Could not unzip ' . $downloadTargetFileName . ' to ' . $modulesPath,
-                Yii::t('MarketplaceModule.base', 'Could not extract module!')
+                Yii::t('MarketplaceModule.base', 'Could not extract module!'),
             );
         }
 
@@ -89,7 +89,7 @@ class OnlineModuleManager extends Component
         if (is_dir($path)) {
             $files = new RecursiveIteratorIterator(
                 new RecursiveDirectoryIterator($path, RecursiveDirectoryIterator::SKIP_DOTS),
-                RecursiveIteratorIterator::CHILD_FIRST
+                RecursiveIteratorIterator::CHILD_FIRST,
             );
 
             foreach ($files as $fileinfo) {
@@ -252,7 +252,7 @@ class OnlineModuleManager extends Component
         $this->_modules = Yii::$app->cache->get('onlineModuleManager_modules');
         if ($this->_modules === null || !is_array($this->_modules)) {
             $this->_modules = HumHubAPI::request('v1/modules/list', [
-                'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates')
+                'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates'),
             ]);
 
             foreach ($module->moduleBlacklist as $blacklistedModuleId) {
@@ -350,7 +350,7 @@ class OnlineModuleManager extends Component
         }
 
         return HumHubAPI::request('v1/modules/info', [
-            'id' => $moduleId, 'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates')
+            'id' => $moduleId, 'includeBetaVersions' => (bool)$module->settings->get('includeBetaUpdates'),
         ]);
     }
 

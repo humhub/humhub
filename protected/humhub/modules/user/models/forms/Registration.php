@@ -200,8 +200,8 @@ class Registration extends HForm
                     'class' => 'form-control',
                     'items' => ArrayHelper::map($groupModels, 'id', 'name'),
                     'value' => Yii::$app->getModule('user')->getDefaultGroupId(),
-                ]
-            ]
+                ],
+            ],
         ];
     }
 

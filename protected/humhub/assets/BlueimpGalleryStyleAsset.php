@@ -35,7 +35,7 @@ class BlueimpGalleryStyleAsset extends AssetBundle
     public $publishOptions = [
         'only' => [
             'css/*',
-            'img/*'
-        ]
+            'img/*',
+        ],
     ];
 }

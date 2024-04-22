@@ -39,7 +39,7 @@ class HeaderCounterSet extends CounterSet
             ->andWhere(['state' => Content::STATE_PUBLISHED]);
         $this->counters[] = new CounterSetItem([
             'label' => Yii::t('SpaceModule.base', 'Posts'),
-            'value' => $postQuery->count()
+            'value' => $postQuery->count(),
         ]);
 
         if (!$this->space->getAdvancedSettings()->hideMembers) {
@@ -49,8 +49,8 @@ class HeaderCounterSet extends CounterSet
                 'url' => Yii::$app->user->isGuest ? null : '#',
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space])
-                ]
+                    'data-action-url' => Url::to(['/space/membership/members-list', 'container' => $this->space]),
+                ],
             ]);
         }
 
@@ -63,8 +63,8 @@ class HeaderCounterSet extends CounterSet
                 'url' => Yii::$app->user->isGuest ? null : '#',
                 'linkOptions' => Yii::$app->user->isGuest ? [] : [
                     'data-action-click' => 'ui.modal.load',
-                    'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space])
-                ]
+                    'data-action-url' => Url::to(['/space/space/follower-list', 'container' => $this->space]),
+                ],
             ]);
         }
 

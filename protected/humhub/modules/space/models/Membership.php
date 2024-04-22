@@ -81,7 +81,7 @@ class Membership extends ActiveRecord
             [['space_id', 'user_id'], 'required'],
             [['space_id', 'user_id', 'originator_user_id', 'status', 'created_by', 'updated_by'], 'integer'],
             [['request_message'], 'string'],
-            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe']
+            [['last_visit', 'created_at', 'group_id', 'updated_at'], 'safe'],
         ];
     }
 
@@ -101,7 +101,7 @@ class Membership extends ActiveRecord
             'created_by' => Yii::t('SpaceModule.base', 'Created By'),
             'updated_at' => Yii::t('SpaceModule.base', 'Updated At'),
             'updated_by' => Yii::t('SpaceModule.base', 'Updated By'),
-            'can_leave' => 'Can Leave'
+            'can_leave' => 'Can Leave',
         ];
     }
 
@@ -126,7 +126,7 @@ class Membership extends ActiveRecord
             in_array($this->group_id, [
                 Space::USERGROUP_OWNER,
                 Space::USERGROUP_ADMIN,
-                Space::USERGROUP_MODERATOR
+                Space::USERGROUP_MODERATOR,
             ]));
     }
 
@@ -276,7 +276,7 @@ class Membership extends ActiveRecord
         $query->leftJoin(
             'space_membership',
             'space_membership.space_id=space.id and space_membership.user_id=:userId',
-            [':userId' => $user->id]
+            [':userId' => $user->id],
         );
 
         if ($memberOnly) {
@@ -310,7 +310,7 @@ class Membership extends ActiveRecord
     public static function findByUser(
         User $user = null,
         $membershipStatus = self::STATUS_MEMBER,
-        $spaceStatus = Space::STATUS_ENABLED
+        $spaceStatus = Space::STATUS_ENABLED,
     ) {
         if (!$user) {
             $user = Yii::$app->user->getIdentity();

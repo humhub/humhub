@@ -35,7 +35,7 @@ class DraftContentStreamFilter extends StreamQueryFilter
     {
         return ['AND',
             ['content.state' => Content::STATE_DRAFT],
-            ['content.created_by' => Yii::$app->user->id]
+            ['content.created_by' => Yii::$app->user->id],
         ];
     }
 

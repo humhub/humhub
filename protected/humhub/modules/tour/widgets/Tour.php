@@ -29,7 +29,7 @@ class Tour extends Widget
             'dashboard' => ['view' => 'guide_interface', 'controller' => DashboardController::class],
             'space' => ['view' => 'guide_spaces', 'controller' => SpaceController::class],
             'user' => ['view' => 'guide_profile', 'controller' => ProfileController::class],
-            'admin' => ['view' => 'guide_administration', 'controller' => ModuleController::class]
+            'admin' => ['view' => 'guide_administration', 'controller' => ModuleController::class],
         ];
     }
 

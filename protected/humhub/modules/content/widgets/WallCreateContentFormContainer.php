@@ -69,7 +69,7 @@ class WallCreateContentFormContainer extends Widget
 
             $forms[] = [
                 'class' => $wallEntryWidget->createFormClass,
-                'sortOrder' => [$wallEntryWidget->createFormSortOrder, ucfirst($content->getContentName())]
+                'sortOrder' => [$wallEntryWidget->createFormSortOrder, ucfirst($content->getContentName())],
             ];
         }
 

@@ -165,7 +165,7 @@ class UploadAction extends Action
             'error' => true,
             'errors' => $errorMessage,
             'name' => Html::encode($file->file_name),
-            'size' => Html::encode($file->size)
+            'size' => Html::encode($file->size),
         ];
     }
 

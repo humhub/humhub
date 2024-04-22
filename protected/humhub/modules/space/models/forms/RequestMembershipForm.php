@@ -35,7 +35,7 @@ class RequestMembershipForm extends Model
     public function attributeLabels()
     {
         return [
-            'message' => Yii::t('SpaceModule.base', 'Your Message')
+            'message' => Yii::t('SpaceModule.base', 'Your Message'),
         ];
     }
 

@@ -20,7 +20,7 @@ class DatabaseHelper
         Throwable $ex,
         bool $print = true,
         bool $die = true,
-        bool $forcePlainText = false
+        bool $forcePlainText = false,
     ): ?string {
         static $last = false;
 
@@ -65,7 +65,7 @@ class DatabaseHelper
         $dsn = preg_replace(
             '@((?<=:|;)(?:user|uid|User ID|pwd|password)=)(.*?)(?=;(?:$|\w+=)|$)@i',
             '$1****',
-            Yii::$app->db->dsn
+            Yii::$app->db->dsn,
         );
 
         try {

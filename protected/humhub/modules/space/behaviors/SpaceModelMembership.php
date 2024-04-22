@@ -284,7 +284,7 @@ class SpaceModelMembership extends Behavior
             'user_id' => $user->id,
             'status' => Membership::STATUS_APPLICANT,
             'group_id' => Space::USERGROUP_MEMBER,
-            'request_message' => $message
+            'request_message' => $message,
         ]);
 
         $membership->save();
@@ -349,7 +349,7 @@ class SpaceModelMembership extends Behavior
                 'space_id' => $this->owner->id,
                 'user_id' => $userId,
                 'status' => Membership::STATUS_INVITED,
-                'group_id' => Space::USERGROUP_MEMBER
+                'group_id' => Space::USERGROUP_MEMBER,
             ]);
         }
 
@@ -375,7 +375,7 @@ class SpaceModelMembership extends Behavior
     {
         $notification = new InviteNotification([
             'source' => $this->owner,
-            'originator' => User::findOne(['id' => $originatorId])
+            'originator' => User::findOne(['id' => $originatorId]),
         ]);
 
         $notification->send(User::findOne(['id' => $userId]));
@@ -401,7 +401,7 @@ class SpaceModelMembership extends Behavior
         int    $canLeave = 1,
         bool   $silent = false,
         string $groupId = Space::USERGROUP_MEMBER,
-        bool   $showAtDashboard = true
+        bool   $showAtDashboard = true,
     ): bool {
         $user = User::findOne(['id' => $userId]);
         if (!$user) {
@@ -418,7 +418,7 @@ class SpaceModelMembership extends Behavior
                 'status' => Membership::STATUS_MEMBER,
                 'group_id' => $groupId,
                 'show_at_dashboard' => $showAtDashboard,
-                'can_cancel_membership' => $canLeave
+                'can_cancel_membership' => $canLeave,
             ]);
 
             $userInvite = Invite::findOne(['email' => $user->email]);
@@ -459,7 +459,7 @@ class SpaceModelMembership extends Behavior
         }
 
         MemberEvent::trigger(Membership::class, Membership::EVENT_MEMBER_ADDED, new MemberEvent([
-            'space' => $this->owner, 'user' => $user
+            'space' => $this->owner, 'user' => $user,
         ]));
 
         if (!$silent && !$this->owner->settings->get('hideMembers')) {
@@ -555,7 +555,7 @@ class SpaceModelMembership extends Behavior
         MemberEvent::trigger(
             Membership::class,
             Membership::EVENT_MEMBER_REMOVED,
-            new MemberEvent(['space' => $this->owner, 'user' => $user])
+            new MemberEvent(['space' => $this->owner, 'user' => $user]),
         );
     }
 

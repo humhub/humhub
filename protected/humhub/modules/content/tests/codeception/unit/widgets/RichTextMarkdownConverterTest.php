@@ -29,7 +29,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de)',
-            "Test [Link](https://www.humhub.com/de)"
+            "Test [Link](https://www.humhub.com/de)",
         );
     }
 
@@ -37,7 +37,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](https://www.humhub.com/de "Link Title")',
-            'Test [Link](https://www.humhub.com/de "Link Title")'
+            'Test [Link](https://www.humhub.com/de "Link Title")',
         );
     }
 
@@ -45,7 +45,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](https://www.humhub.com/de)',
-            "Test [Link &< Link](https://www.humhub.com/de)"
+            "Test [Link &< Link](https://www.humhub.com/de)",
         );
     }
 
@@ -53,7 +53,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link](/p/site)',
-            "Test [Link](http://localhost/p/site)"
+            "Test [Link](http://localhost/p/site)",
         );
     }
 
@@ -61,7 +61,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Link &< Link](/p/site)',
-            "Test [Link &< Link](http://localhost/p/site)"
+            "Test [Link &< Link](http://localhost/p/site)",
         );
     }
 
@@ -69,7 +69,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [](/p/site)',
-            "Test [](http://localhost/p/site)"
+            "Test [](http://localhost/p/site)",
         );
     }
 
@@ -77,7 +77,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [**Bold** Url](http://localhost/p/site)',
-            "Test [**Bold** Url](http://localhost/p/site)"
+            "Test [**Bold** Url](http://localhost/p/site)",
         );
     }
 
@@ -85,7 +85,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test http://localhost/p/site',
-            "Test http://localhost/p/site"
+            "Test http://localhost/p/site",
         );
     }
 
@@ -93,7 +93,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test [Test Mail](mailto:test@test.com)',
-            'Test [Test Mail](mailto:test@test.com)'
+            'Test [Test Mail](mailto:test@test.com)',
         );
     }
 
@@ -105,7 +105,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](https://www.humhub.com/static/img/logo.png)',
-            "Test ![Alt Text](https://www.humhub.com/static/img/logo.png)"
+            "Test ![Alt Text](https://www.humhub.com/static/img/logo.png)",
         );
     }
 
@@ -113,7 +113,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](https://www.humhub.com/static/img/logo.png)',
-            "Test ![Alt & < Text](https://www.humhub.com/static/img/logo.png)"
+            "Test ![Alt & < Text](https://www.humhub.com/static/img/logo.png)",
         );
     }
 
@@ -121,7 +121,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt Text](/static/img/logo.png)',
-            "Test ![Alt Text](http://localhost/static/img/logo.png)"
+            "Test ![Alt Text](http://localhost/static/img/logo.png)",
         );
     }
 
@@ -129,7 +129,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Alt & < Text](/static/img/logo.png)',
-            "Test ![Alt & < Text](http://localhost/static/img/logo.png)"
+            "Test ![Alt & < Text](http://localhost/static/img/logo.png)",
         );
     }
 
@@ -137,7 +137,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Image Label](http://localhost/static/img/logo.png "Image Title")',
-            "Test ![Image Label](http://localhost/static/img/logo.png \"Image Title\")"
+            "Test ![Image Label](http://localhost/static/img/logo.png \"Image Title\")",
         );
     }
 
@@ -145,7 +145,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg" =150x)',
-            'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg")'
+            'Test ![Scaled Image](http://localhost/static/img/logo.png "img6.jpg")',
         );
     }
 
@@ -153,7 +153,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)",
         );
     }
 
@@ -161,7 +161,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image>](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)",
         );
     }
 
@@ -169,7 +169,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image<](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)",
         );
     }
 
@@ -177,7 +177,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test ![Scaled Image><](http://localhost/static/img/logo.png =150x)',
-            "Test ![Scaled Image](http://localhost/static/img/logo.png)"
+            "Test ![Scaled Image](http://localhost/static/img/logo.png)",
         );
     }
 
@@ -189,7 +189,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Paragraph1\n\nParagraph2",
-            "Paragraph1\n\nParagraph2"
+            "Paragraph1\n\nParagraph2",
         );
     }
 
@@ -201,7 +201,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test emoji :smile:",
-            "Test emoji " . EmojiMap::MAP['smile']
+            "Test emoji " . EmojiMap::MAP['smile'],
         );
     }
 
@@ -214,7 +214,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            "Test mention [@" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")"
+            "Test mention [@" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")",
         );
     }
 
@@ -222,7 +222,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test non existing mention [Non Existing](mention:xyz "...")',
-            "Test non existing mention @Non Existing"
+            "Test non existing mention @Non Existing",
         );
     }
 
@@ -233,7 +233,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention ' . MentioningExtension::buildMentioning($user),
-            "Test mention @" . $user->getDisplayName()
+            "Test mention @" . $user->getDisplayName(),
         );
     }
 
@@ -243,7 +243,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test mention [](mention:' . $user->guid . ')',
-            "Test mention [@" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")"
+            "Test mention [@" . $user->getDisplayName() . "](" . $user->createUrl(null, [], true) . ")",
         );
     }
 
@@ -261,7 +261,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test File',
             'mime_type' => 'text/plain',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {
@@ -272,7 +272,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             'Test file [Test File](file-guid:' . $guid . ')',
-            "Test file [Test File](" . $file->getUrl(null, true) . ")"
+            "Test file [Test File](" . $file->getUrl(null, true) . ")",
         );
     }
 
@@ -280,7 +280,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test file [Test File](file-guid:doesNotExist)',
-            "Test file Test File"
+            "Test file Test File",
         );
     }
 
@@ -295,7 +295,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test Image',
             'mime_type' => 'image/jpeg',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {
@@ -305,7 +305,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File](file-guid:' . $guid . ')',
-            "Test file ![Test File](" . $file->getUrl(null, true) . ")"
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")",
         );
     }
 
@@ -320,7 +320,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test Image',
             'mime_type' => 'image/jpeg',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {
@@ -330,7 +330,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File>](file-guid:' . $guid . ')',
-            "Test file ![Test File](" . $file->getUrl(null, true) . ")"
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")",
         );
     }
 
@@ -345,7 +345,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test Image',
             'mime_type' => 'image/jpeg',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {
@@ -355,7 +355,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File<](file-guid:' . $guid . ')',
-            "Test file ![Test File](" . $file->getUrl(null, true) . ")"
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")",
         );
     }
 
@@ -370,7 +370,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
             'hash_sha1' => 'xxx',
             'title' => 'Test Image',
             'mime_type' => 'image/jpeg',
-            'size' => 302176
+            'size' => 302176,
         ]);
 
         try {
@@ -380,7 +380,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         }
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:' . $guid . ')',
-            "Test file ![Test File](" . $file->getUrl(null, true) . ")"
+            "Test file ![Test File](" . $file->getUrl(null, true) . ")",
         );
     }
 
@@ -388,7 +388,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'Test file ![Test File><](file-guid:doesNotExist)',
-            "Test file Test File"
+            "Test file Test File",
         );
     }
 
@@ -400,7 +400,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             '[https://www.youtube.com/watch?v=xxxy](oembed:https://www.youtube.com/watch?v=xxxy)',
-            '[https://www.youtube.com/watch?v=xxxy](https://www.youtube.com/watch?v=xxxy)'
+            '[https://www.youtube.com/watch?v=xxxy](https://www.youtube.com/watch?v=xxxy)',
         );
     }
 
@@ -411,7 +411,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is **bold**',
-            "This is **bold**"
+            "This is **bold**",
         );
     }
 
@@ -419,7 +419,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is __bold__',
-            "This is **bold**"
+            "This is **bold**",
         );
     }
 
@@ -427,7 +427,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is _italic_',
-            "This is _italic_"
+            "This is _italic_",
         );
     }
 
@@ -435,7 +435,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is *italic*',
-            "This is _italic_"
+            "This is _italic_",
         );
     }
 
@@ -443,7 +443,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is `inline code`',
-            "This is `inline code`"
+            "This is `inline code`",
         );
     }
 
@@ -451,7 +451,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             'This is ~~strikethrough text~~',
-            "This is ~~strikethrough text~~"
+            "This is ~~strikethrough text~~",
         );
     }
 
@@ -462,7 +462,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n1. First Element\n2. Second Element",
-            "This is a list\n\n1. First Element\n2. Second Element"
+            "This is a list\n\n1. First Element\n2. Second Element",
         );
     }
 
@@ -470,7 +470,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n1 First Element\n   1 First Sub Element\n2 Second Element",
-            "This is a list\n\n1 First Element\n   1 First Sub Element\n2 Second Element"
+            "This is a list\n\n1 First Element\n   1 First Sub Element\n2 Second Element",
         );
     }
 
@@ -478,7 +478,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n1 First Element\n   1 First Sub Element\n   2 Second Sub Element\n2 Second Element",
-            "This is a list\n\n1 First Element\n   1 First Sub Element\n   2 Second Sub Element\n2 Second Element"
+            "This is a list\n\n1 First Element\n   1 First Sub Element\n   2 Second Sub Element\n2 Second Element",
         );
     }
 
@@ -486,7 +486,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n- Second Element",
-            "This is a list\n\n- First Element\n- Second Element"
+            "This is a list\n\n- First Element\n- Second Element",
         );
     }
 
@@ -494,7 +494,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n- Second Element"
+            "This is a list\n\n- First Element\n   - First Sub Element\n- Second Element",
         );
     }
 
@@ -502,7 +502,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n   - Second Sub Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n   - Second Sub Element\n- Second Element"
+            "This is a list\n\n- First Element\n   - First Sub Element\n   - Second Sub Element\n- Second Element",
         );
     }
 
@@ -510,7 +510,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "This is a list\n\n- First Element\n   - First Sub Element\n      - Second **Level Sub** Element\n- Second Element",
-            "This is a list\n\n- First Element\n   - First Sub Element\n      - Second **Level Sub** Element\n- Second Element"
+            "This is a list\n\n- First Element\n   - First Sub Element\n      - Second **Level Sub** Element\n- Second Element",
         );
     }
 
@@ -520,7 +520,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     public function testConvertTable()
     {
         $this->assertConversionResult(
-            "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |"
+            "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | right-aligned | $1600 |",
         );
     }
 
@@ -528,7 +528,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | **right**-aligned | $1600 |",
-            "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | **right**-aligned | $1600 |"
+            "| Tables        | Are           | Cool  |\n| ------------- |:-------------:| -----:|\n| col 3 is      | **right**-aligned | $1600 |",
         );
     }
 
@@ -541,7 +541,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test special chars like & or <test>>",
-            "Test special chars like & or <test>>"
+            "Test special chars like & or <test>>",
         );
     }
 
@@ -553,7 +553,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "> This is a quote",
-            "> This is a quote"
+            "> This is a quote",
         );
     }
 
@@ -561,7 +561,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "> This is a quote \n>\n> > within a quote",
-            "> This is a quote \n>\n> > within a quote"
+            "> This is a quote \n>\n> > within a quote",
         );
     }
 
@@ -572,7 +572,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "```\n<b>This is a code block</b>\n```",
-            "```\n<b>This is a code block</b>\n```"
+            "```\n<b>This is a code block</b>\n```",
         );
     }
 
@@ -580,7 +580,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "```html\n<b>This is a code block</b>\n```",
-            "```html\n<b>This is a code block</b>\n```"
+            "```html\n<b>This is a code block</b>\n```",
         );
     }
 
@@ -592,7 +592,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "# First order headline",
-            "# First order headline"
+            "# First order headline",
         );
     }
 
@@ -600,7 +600,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "## First order headline",
-            "## First order headline"
+            "## First order headline",
         );
     }
 
@@ -612,7 +612,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "<div>This is html</div>",
-            "<div>This is html</div>"
+            "<div>This is html</div>",
         );
     }
 
@@ -621,7 +621,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "This is <em>bold text</em>",
-            "This is <em>bold text</em>"
+            "This is <em>bold text</em>",
         );
     }
 
@@ -633,7 +633,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test\\\nBreak",
-            "Test\\\nBreak"
+            "Test\\\nBreak",
         );
     }
 
@@ -643,7 +643,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "This is <br> was a hard line break",
-            "This is \n was a hard line break"
+            "This is \n was a hard line break",
         );
     }
 
@@ -652,7 +652,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             'This is <br> was a hard <br /> line break',
-            "This is \n was a hard \n line break"
+            "This is \n was a hard \n line break",
         );
     }
 
@@ -661,7 +661,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "<div>This is <br> html</div>",
-            "<div>This is \n html</div>"
+            "<div>This is \n html</div>",
         );
     }
 
@@ -673,7 +673,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "Paragraph1\n\nParagraph2\n\nParagraph3 with\nnew line",
-            "Paragraph1\n\nParagraph2\n\nParagraph3 with\nnew line"
+            "Paragraph1\n\nParagraph2\n\nParagraph3 with\nnew line",
         );
     }
 
@@ -682,7 +682,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "Paragraph1\n\n```\ncode block\n```",
-            "Paragraph1\n\n```\ncode block\n```"
+            "Paragraph1\n\n```\ncode block\n```",
         );
     }
 
@@ -691,7 +691,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
         // Tags are not stripped since the richtext does not support html and interprets html as normal text
         $this->assertConversionResult(
             "```\ncode block\n```\n\nParagraph1",
-            "```\ncode block\n```\n\nParagraph1"
+            "```\ncode block\n```\n\nParagraph1",
         );
     }
 
@@ -703,7 +703,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "---",
-            "----------------------------------------"
+            "----------------------------------------",
         );
     }
 

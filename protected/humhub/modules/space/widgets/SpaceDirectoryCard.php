@@ -34,7 +34,7 @@ class SpaceDirectoryCard extends Widget
     public function run()
     {
         $card = $this->render('spaceDirectoryCard', [
-            'space' => $this->space
+            'space' => $this->space,
         ]);
 
         return str_replace('{card}', $card, $this->template);

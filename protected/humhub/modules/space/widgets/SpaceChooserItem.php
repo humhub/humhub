@@ -50,7 +50,7 @@ class SpaceChooserItem extends Widget
             'updateCount' => $this->updateCount,
             'visible' => $this->visible,
             'badge' => $badge,
-            'data' => $data
+            'data' => $data,
         ]);
     }
 

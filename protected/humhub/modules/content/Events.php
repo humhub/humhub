@@ -104,7 +104,7 @@ class Events extends BaseObject
             [
                 'object' => $event->sender->object,
             ],
-            ['sortOrder' => 10]
+            ['sortOrder' => 10],
         );
     }
 

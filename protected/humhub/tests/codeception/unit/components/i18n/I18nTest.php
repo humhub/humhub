@@ -14,7 +14,7 @@ use tests\codeception\_support\HumHubDbTestCase;
 class I18nTest extends HumHubDbTestCase
 {
     public $fixtureConfig = [
-        'default'
+        'default',
     ];
 
     public function testShowMeridian()

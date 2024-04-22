@@ -22,6 +22,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
+    public string|array|null $route = '/content/search';
 
     /**
      * @inheritdoc
@@ -34,9 +35,17 @@ class ContentSearchProvider implements MetaSearchProviderInterface
     /**
      * @inheritdoc
      */
-    public function getRoute(): string
+    public function getSortOrder(): int
     {
-        return '/content/search';
+        return 100;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRoute(): string|array
+    {
+        return $this->route;
     }
 
     /**
@@ -67,7 +76,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
 
         $resultSet = $module->getSearchDriver()->search(new SearchRequest([
             'keyword' => $this->getKeyword(),
-            'pageSize' => $maxResults
+            'pageSize' => $maxResults,
         ]));
 
         $results = [];
@@ -77,7 +86,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
 
         return [
             'totalCount' => $resultSet->pagination->totalCount,
-            'results' => $results
+            'results' => $results,
         ];
     }
 

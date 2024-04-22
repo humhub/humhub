@@ -6,7 +6,7 @@
 $testConfig = [
     'components' => [
         'request' => [
-            'cookieValidationKey' => 'test'
+            'cookieValidationKey' => 'test',
         ],
         'urlManager' => [
             'showScriptName' => false,
@@ -20,9 +20,9 @@ $testConfig = [
             'core' => [
                 'name' => 'HumHub Test',
                 'baseUrl' => 'http://localhost:8080',
-            ]
+            ],
         ],
-        'enablePjax' => true
+        'enablePjax' => true,
     ],
 
 ];
@@ -37,5 +37,5 @@ return yii\helpers\ArrayHelper::merge(
     // Test Common Config
     require(__DIR__ . '/config.php'),
     // Acceptance Test Config
-    $testConfig
+    $testConfig,
 );

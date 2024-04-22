@@ -426,7 +426,7 @@ abstract class BootstrapComponent extends Widget
             'encode' => $this->encode,
             '_icon' => $this->_icon,
             '_iconRight' => $this->_iconRight,
-            'render' => $this->_visible
+            'render' => $this->_visible,
         ];
     }
 }

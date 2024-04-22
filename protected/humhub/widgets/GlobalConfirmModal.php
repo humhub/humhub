@@ -33,7 +33,7 @@ class GlobalConfirmModal extends \yii\base\Widget
             'keyboard' => false,
             'animation' => 'pulse',
             'initialLoader' => false,
-            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-default">' . Yii::t('base', 'Cancel') . '</button><button data-modal-confirm data-modal-close class="btn btn-primary">' . Yii::t('base', 'Confirm') . '</button>'
+            'footer' => '<button data-modal-cancel data-modal-close class="btn btn-default">' . Yii::t('base', 'Cancel') . '</button><button data-modal-confirm data-modal-close class="btn btn-primary">' . Yii::t('base', 'Confirm') . '</button>',
         ]);
     }
 

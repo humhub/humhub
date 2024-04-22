@@ -34,14 +34,14 @@ class DefaultMenu extends TabMenu
             'label' => Yii::t('AdminModule.base', 'Basic'),
             'url' => $this->space->createUrl('/space/manage/default/index'),
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState(null, 'default', 'index')
+            'isActive' => MenuLink::isActiveState(null, 'default', 'index'),
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Advanced'),
             'url' => $this->space->createUrl('/space/manage/default/advanced'),
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState(null, 'default', 'advanced')
+            'isActive' => MenuLink::isActiveState(null, 'default', 'advanced'),
         ]));
 
         parent::init();

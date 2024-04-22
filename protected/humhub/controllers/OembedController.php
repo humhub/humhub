@@ -70,7 +70,7 @@ class OembedController extends Controller
 
         return $this->asJson([
             'success' => true,
-            'content' => $urlOembed ? $urlOembed->preview : UrlOembed::loadUrl($url)
+            'content' => $urlOembed ? $urlOembed->preview : UrlOembed::loadUrl($url),
         ]);
     }
 }

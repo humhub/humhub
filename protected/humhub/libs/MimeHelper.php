@@ -80,7 +80,7 @@ class MimeHelper
         // Adobe Photoshop
         'psd' => self::ICON_PHOTOSHOP,
         // Adobe Illustrator
-        'ai' => self::ICON_ILLUSTRATOR
+        'ai' => self::ICON_ILLUSTRATOR,
     ];
 
     /**

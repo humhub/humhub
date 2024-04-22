@@ -72,8 +72,8 @@ class Follow extends ActiveRecord
                 'class' => PolymorphicRelation::class,
                 'mustBeInstanceOf' => [
                     ActiveRecord::class,
-                ]
-            ]
+                ],
+            ],
         ];
     }
 
@@ -86,7 +86,7 @@ class Follow extends ActiveRecord
             [['object_model', 'object_id', 'user_id'], 'required'],
             [['object_id', 'user_id'], 'integer'],
             [['send_notifications'], 'boolean'],
-            [['object_model'], 'string', 'max' => 100]
+            [['object_model'], 'string', 'max' => 100],
         ];
     }
 

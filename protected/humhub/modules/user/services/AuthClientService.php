@@ -175,7 +175,7 @@ class AuthClientService
 
         if ($this->authClient instanceof PrimaryClient) {
             $query->where([
-                'auth_mode' => $this->authClient->getId()
+                'auth_mode' => $this->authClient->getId(),
             ]);
         } else {
             $query->where(['user_auth.source' => $this->authClient->getId()]);

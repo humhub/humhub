@@ -61,7 +61,7 @@ class UserController extends Controller
     {
         return [
             ['permissions' => [ManageUsers::class, ManageGroups::class]],
-            ['permissions' => [ManageSettings::class], 'actions' => ['index']]
+            ['permissions' => [ManageSettings::class], 'actions' => ['index']],
         ];
     }
 
@@ -89,7 +89,7 @@ class UserController extends Controller
         return $this->render('list', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            'showPendingRegistrations' => $showPendingRegistrations
+            'showPendingRegistrations' => $showPendingRegistrations,
         ]);
     }
 
@@ -146,7 +146,7 @@ class UserController extends Controller
                     'type' => 'text',
                     'class' => 'form-control',
                     'maxlength' => 100,
-                    'readonly' => !$user->getAuthClientUserService()->canChangeEmail()
+                    'readonly' => !$user->getAuthClientUserService()->canChangeEmail(),
                 ],
                 'groupSelection' => [
                     'id' => 'user_edit_groups',
@@ -155,10 +155,10 @@ class UserController extends Controller
                     'options' => [
                         'data-placeholder' => Yii::t('AdminModule.user', 'Select Groups'),
                         'data-placeholder-more' => Yii::t('AdminModule.user', 'Add Groups...'),
-                        'data-tags' => 'false'
+                        'data-tags' => 'false',
                     ],
                     'maxSelection' => 250,
-                    'isVisible' => Yii::$app->user->can(new ManageGroups())
+                    'isVisible' => Yii::$app->user->can(new ManageGroups()),
                 ],
             ],
         ];
@@ -249,7 +249,7 @@ class UserController extends Controller
 
         return $this->render('edit', [
             'hForm' => $form,
-            'user' => $user
+            'user' => $user,
         ]);
     }
 

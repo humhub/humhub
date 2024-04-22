@@ -178,7 +178,7 @@ class UserPicker extends Widget
             'keyword' => null,
             'permission' => null,
             'fillQuery' => null,
-            'fillUser' => false
+            'fillUser' => false,
         ];
 
         $cfg = ($cfg == null) ? $defaultCfg : array_merge($defaultCfg, $cfg);

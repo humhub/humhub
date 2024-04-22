@@ -56,7 +56,7 @@ class SpaceController extends Behavior
     public function events()
     {
         return [
-            Controller::EVENT_BEFORE_ACTION => 'beforeAction'
+            Controller::EVENT_BEFORE_ACTION => 'beforeAction',
         ];
     }
 

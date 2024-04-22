@@ -23,7 +23,7 @@ class Controller extends ContentContainerController
     {
         return [
             ['login'],
-            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]]
+            [ContentContainerControllerAccess::RULE_USER_GROUP_ONLY => [Space::USERGROUP_ADMIN]],
         ];
     }
 }

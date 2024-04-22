@@ -287,6 +287,7 @@ humhub.module('ui.search', function(module, require, $) {
             }
 
             data.provider = provider.data('provider');
+            data.route = provider.data('provider-route');
             client.post(module.config.url, {data}).then(function (response) {
                 if (data.keyword !== that.getInput().val().trim()) {
                     // Skip this request because other with new keyword was sent
@@ -344,8 +345,8 @@ humhub.module('ui.search', function(module, require, $) {
         // Centralize panel if it is over window
         const menuTogglerLeft = this.getMenuToggler().offset().left;
         const currentTogglerLeft = this.getCurrentToggler().offset().left;
-        const windowWidth = $(window).width();
-        const panelWidth = this.getPanel().width();
+        const windowWidth = Math.round($(window).width());
+        const panelWidth = Math.round(this.getPanel().width());
         let isPanelShifted = false;
         if (menuTogglerLeft === currentTogglerLeft) {
             this.getPanel().css('left', '');

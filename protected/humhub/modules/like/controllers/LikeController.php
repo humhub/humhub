@@ -49,8 +49,8 @@ class LikeController extends ContentAddonController
         return [
             'acl' => [
                 'class' => AccessControl::class,
-                'guestAllowedActions' => ['show-likes']
-            ]
+                'guestAllowedActions' => ['show-likes'],
+            ],
         ];
     }
 
@@ -71,7 +71,7 @@ class LikeController extends ContentAddonController
             // Create Like Object
             $like = new Like([
                 'object_model' => $this->contentModel,
-                'object_id' => $this->contentId
+                'object_id' => $this->contentId,
             ]);
             $like->save();
         }
@@ -116,7 +116,7 @@ class LikeController extends ContentAddonController
 
         return [
             'currentUserLiked' => $currentUserLiked,
-            'likeCounter' => count($likes)
+            'likeCounter' => count($likes),
         ];
     }
 

@@ -17,14 +17,14 @@ return [
             'identityClass' => \humhub\modules\user\models\User::class,
             'enableAutoLogin' => false,
             'enableSession' => false,
-            'loginUrl' => ['/user/auth/login']
+            'loginUrl' => ['/user/auth/login'],
         ],
         'urlManager' => [
             'class' => \humhub\components\console\UrlManager::class,
             'scriptUrl' => '/index.php',
         ],
         'runtimeCache' => [
-            'class' => \yii\caching\DummyCache::class
+            'class' => \yii\caching\DummyCache::class,
         ],
     ],
 ];

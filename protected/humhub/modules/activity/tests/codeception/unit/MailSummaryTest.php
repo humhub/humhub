@@ -34,7 +34,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_HOURLY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -60,7 +60,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -86,7 +86,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_WEEKLY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -112,7 +112,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_MONTHLY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Monthly Summary Test']);
@@ -138,7 +138,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_NONE,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -156,7 +156,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -177,7 +177,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -203,7 +203,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         $post = new Post(Space::findOne(['id' => 4]), ['message' => 'Daily Summary Test']);
@@ -227,7 +227,7 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'user' => User::findOne(['id' => 2]),
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => [ContentCreated::class]
+            'activities' => [ContentCreated::class],
         ]))->save();
 
         MailSummaryProcessor::process(MailSummary::INTERVAL_DAILY);
@@ -253,7 +253,7 @@ class MailSummaryTest extends HumHubDbTestCase
             'interval' => MailSummary::INTERVAL_DAILY,
             'activities' => [],
             'limitSpaces' => [Space::findOne(['id' => 3])->guid],
-            'limitSpacesMode' => MailSummaryForm::LIMIT_MODE_INCLUDE
+            'limitSpacesMode' => MailSummaryForm::LIMIT_MODE_INCLUDE,
         ]);
         $form->save();
 
@@ -286,7 +286,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'Summary test comment!',
             'object_model' => Post::class,
-            'object_id' => $post->id
+            'object_id' => $post->id,
         ]);
         $this->assertTrue($comment->save());
 
@@ -307,10 +307,10 @@ class MailSummaryTest extends HumHubDbTestCase
             'activities' => [
                 ContentCreated::class,
                 NewComment::class,
-                MemberAdded::class
+                MemberAdded::class,
             ],
             'limitSpaces' => [Space::findOne(['id' => 3])->guid],
-            'limitSpacesMode' => MailSummaryForm::LIMIT_MODE_INCLUDE
+            'limitSpacesMode' => MailSummaryForm::LIMIT_MODE_INCLUDE,
         ]))->save();
 
         $user2Activities = $summaryUser2->getActivities();
@@ -325,10 +325,10 @@ class MailSummaryTest extends HumHubDbTestCase
             'activities' => [
                 ContentCreated::class,
                 NewComment::class,
-                MemberAdded::class
+                MemberAdded::class,
             ],
             'limitSpaces' => [Space::findOne(['id' => 3])->guid],
-            'limitSpacesMode' => MailSummaryForm::LIMIT_MODE_EXCLUDE
+            'limitSpacesMode' => MailSummaryForm::LIMIT_MODE_EXCLUDE,
         ]))->save();
 
         $user2Activities = $summaryUser2->getActivities();
@@ -347,14 +347,14 @@ class MailSummaryTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'Summary test comment!',
             'object_model' => Post::class,
-            'object_id' => $post->id
+            'object_id' => $post->id,
         ]);
         $this->assertTrue($comment->save());
 
         // Set no activities by default
         (new MailSummaryForm([
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => []
+            'activities' => [],
         ]))->save();
 
         // Overwrite activity filter for User2
@@ -362,8 +362,8 @@ class MailSummaryTest extends HumHubDbTestCase
             'interval' => MailSummary::INTERVAL_DAILY,
             'user' => User::findOne(['id' => 3]), // User2
             'activities' => [
-                NewComment::class
-            ]
+                NewComment::class,
+            ],
         ]))->save();
 
         $summaryUser2 = $this->createSummary(User::findOne(['id' => 3]), MailSummary::INTERVAL_DAILY);
@@ -382,7 +382,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'Summary test comment!',
             'object_model' => Post::class,
-            'object_id' => $post->id
+            'object_id' => $post->id,
         ]);
         $this->assertTrue($comment->save());
 
@@ -395,8 +395,8 @@ class MailSummaryTest extends HumHubDbTestCase
         (new MailSummaryForm([
             'interval' => MailSummary::INTERVAL_DAILY,
             'activities' => [
-                ContentCreated::class
-            ]
+                ContentCreated::class,
+            ],
         ]))->save();
 
         $user2Activities = $summaryUser2->getActivities();
@@ -405,7 +405,7 @@ class MailSummaryTest extends HumHubDbTestCase
 
         (new MailSummaryForm([
             'interval' => MailSummary::INTERVAL_DAILY,
-            'activities' => []
+            'activities' => [],
         ]))->save();
 
         $user2Activities = $summaryUser2->getActivities();
@@ -429,7 +429,7 @@ class MailSummaryTest extends HumHubDbTestCase
         $comment = new Comment([
             'message' => 'Summary test comment!',
             'object_model' => Post::class,
-            'object_id' => $post->id
+            'object_id' => $post->id,
         ]);
         $this->assertTrue($comment->save());
 
@@ -477,7 +477,7 @@ class MailSummaryTest extends HumHubDbTestCase
         return Yii::createObject([
             'class' => MailSummary::class,
             'user' => $user,
-            'interval' => $interval
+            'interval' => $interval,
         ]);
     }
 

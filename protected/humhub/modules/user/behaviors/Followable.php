@@ -48,7 +48,7 @@ class Followable extends Behavior
                 ->where([
                     'object_model' => get_class($this->owner),
                     'object_id' => $this->owner->getPrimaryKey(),
-                    'user_id' => $userId
+                    'user_id' => $userId,
                 ])->one();
         });
     }
@@ -193,7 +193,7 @@ class Followable extends Behavior
         $query->leftJoin(
             'user_follow',
             'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-            ['object_model' => get_class($this->owner)]
+            ['object_model' => get_class($this->owner)],
         );
         $query->andWhere(['user_follow.user_id' => $this->owner->id]);
         return $query;

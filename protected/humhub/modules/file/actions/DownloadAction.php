@@ -108,7 +108,7 @@ class DownloadAction extends Action
 
         $options = [
             'inline' => (!$this->download && in_array($mimeType, $this->getModule()->inlineMimeTypes, true)),
-            'mimeType' => $mimeType
+            'mimeType' => $mimeType,
         ];
 
         if ($this->useXSendFile()) {
@@ -275,7 +275,7 @@ class DownloadAction extends Action
         $token = [
             'iss' => 'dld-token-v1',
             'sub' => $user->id,
-            'aud' => $file->id
+            'aud' => $file->id,
         ];
         return JWT::encode($token, static::getDownloadTokenKey(), 'HS256');
     }

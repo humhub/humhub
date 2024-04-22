@@ -22,5 +22,5 @@ return [
                 'handleEvent',
             ],
         ],
-    ]
+    ],
 ];

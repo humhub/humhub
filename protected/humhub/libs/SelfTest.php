@@ -8,10 +8,12 @@
 
 namespace humhub\libs;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
 use Yii;
+use yii\helpers\UnsetArrayValue;
 
 /**
  * SelfTest is a helper class which checks all dependencies of the application.
@@ -46,19 +48,19 @@ class SelfTest
         if (version_compare(PHP_VERSION, Yii::$app->minRecommendedPhpVersion, '>=')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } elseif (version_compare(PHP_VERSION, Yii::$app->minSupportedPhpVersion, '>=')) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion])
+                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion]),
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion])
+                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion]),
             ];
         }
 
@@ -67,13 +69,13 @@ class SelfTest
         if (function_exists('gd_info')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'GD'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'GD']),
             ];
         }
 
@@ -83,14 +85,14 @@ class SelfTest
         if (function_exists('imageCreateFromJpeg')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
                 'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'GD'])
-                    . ' - ' . Yii::t('AdminModule.information', '{imageExtension} Support', ['imageExtension' => 'JPEG'])
+                    . ' - ' . Yii::t('AdminModule.information', '{imageExtension} Support', ['imageExtension' => 'JPEG']),
             ];
         }
 
@@ -100,14 +102,14 @@ class SelfTest
         if (function_exists('imageCreateFromPng')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
                 'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'GD'])
-                    . ' - ' . Yii::t('AdminModule.information', '{imageExtension} Support', ['imageExtension' => 'PNG'])
+                    . ' - ' . Yii::t('AdminModule.information', '{imageExtension} Support', ['imageExtension' => 'PNG']),
             ];
         }
 
@@ -116,13 +118,13 @@ class SelfTest
         if (function_exists('collator_create')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'INTL'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'INTL']),
             ];
         }
 
@@ -134,13 +136,13 @@ class SelfTest
         if (version_compare($icuVersion, $icuMinVersion, '>=')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'ICU {icuMinVersion} or higher is required', ['icuMinVersion' => $icuMinVersion])
+                'hint' => Yii::t('AdminModule.information', 'ICU {icuMinVersion} or higher is required', ['icuMinVersion' => $icuMinVersion]),
             ];
         }
 
@@ -152,13 +154,13 @@ class SelfTest
         if (version_compare($icuDataVersion, $icuMinDataVersion, '>=')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'ICU Data {icuMinVersion} or higher is required', ['icuMinDataVersion' => $icuMinDataVersion])
+                'hint' => Yii::t('AdminModule.information', 'ICU Data {icuMinVersion} or higher is required', ['icuMinDataVersion' => $icuMinDataVersion]),
             ];
         }
 
@@ -167,13 +169,13 @@ class SelfTest
         if (function_exists('exif_read_data')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'EXIF'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'EXIF']),
             ];
         }
 
@@ -182,13 +184,13 @@ class SelfTest
         if (function_exists('libxml_get_errors')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'XML'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'XML']),
             ];
         }
 
@@ -197,13 +199,13 @@ class SelfTest
         if (extension_loaded('fileinfo')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'FileInfo'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'FileInfo']),
             ];
         }
 
@@ -212,13 +214,13 @@ class SelfTest
         if (function_exists('mb_substr')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP Multibyte'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP Multibyte']),
             ];
         }
 
@@ -227,13 +229,13 @@ class SelfTest
         if (function_exists('iconv_strlen')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP iconv'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP iconv']),
             ];
         }
 
@@ -242,13 +244,13 @@ class SelfTest
         if (extension_loaded('json')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP json'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP json']),
             ];
         }
 
@@ -257,13 +259,13 @@ class SelfTest
         if (function_exists('curl_version')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'Curl'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'Curl']),
             ];
         }
         // Checks ZIP Extension
@@ -271,13 +273,13 @@ class SelfTest
         if (class_exists('ZipArchive')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP ZIP'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP ZIP']),
             ];
         }
 
@@ -286,14 +288,14 @@ class SelfTest
         if (function_exists('openssl_encrypt')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
                 'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
-                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for e-mail S/MIME support.', ['phpExtension' => 'OpenSSL'])
+                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for e-mail S/MIME support.', ['phpExtension' => 'OpenSSL']),
             ];
         }
 
@@ -302,13 +304,13 @@ class SelfTest
         if (class_exists('Imagick', false)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Optional')
+                'hint' => Yii::t('AdminModule.information', 'Optional'),
             ];
         }
 
@@ -330,13 +332,13 @@ class SelfTest
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
-                'hint' => $currentLimitHint
+                'hint' => $currentLimitHint,
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Increase memory limit in {fileName}', ['fileName' => 'php.ini']) . ' - ' . $currentLimitHint
+                'hint' => Yii::t('AdminModule.information', 'Increase memory limit in {fileName}', ['fileName' => 'php.ini']) . ' - ' . $currentLimitHint,
             ];
         }
 
@@ -345,14 +347,14 @@ class SelfTest
         if (LdapHelper::isLdapAvailable()) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
                 'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
-                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP LDAP'])
+                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PHP LDAP']),
             ];
         }
 
@@ -362,14 +364,14 @@ class SelfTest
         if (function_exists('apc_add') || function_exists('apcu_add')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
                 'hint' => Yii::t('AdminModule.information', 'Optional') . ' - '
-                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for APC Caching', ['phpExtension' => 'APCu'])
+                    . Yii::t('AdminModule.information', 'Install {phpExtension} Extension for APC Caching', ['phpExtension' => 'APCu']),
             ];
         }
 
@@ -378,13 +380,13 @@ class SelfTest
         if (extension_loaded('pdo_mysql')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PDO MySQL'])
+                'hint' => Yii::t('AdminModule.information', 'Install {phpExtension} Extension', ['phpExtension' => 'PDO MySQL']),
             ];
         }
 
@@ -393,13 +395,13 @@ class SelfTest
         if (function_exists('proc_open')) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Make sure that the `proc_open` function is not disabled.')
+                'hint' => Yii::t('AdminModule.information', 'Make sure that the `proc_open` function is not disabled.'),
             ];
         }
 
@@ -416,7 +418,7 @@ class SelfTest
             if ($timeDiff < $timeDiffMargin) {
                 $checks[] = [
                     'title' => $title,
-                    'state' => 'OK'
+                    'state' => 'OK',
                 ];
             } else {
                 $checks[] = [
@@ -428,7 +430,7 @@ class SelfTest
                         [
                             'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
                             'time' => Yii::$app->formatter->asTime(time(), 'short'),
-                        ]
+                        ],
                     ),
                 ];
             }
@@ -438,7 +440,7 @@ class SelfTest
                 if (Yii::$app->urlManager->enablePrettyUrl) {
                     $checks[] = [
                         'title' => $title,
-                        'state' => 'OK'
+                        'state' => 'OK',
                     ];
                 } else {
                     $checks[] = [
@@ -464,7 +466,7 @@ class SelfTest
             if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
                 $checks[] = [
                     'title' => $title,
-                    'state' => 'OK'
+                    'state' => 'OK',
                 ];
             } else {
                 $checks[] = [
@@ -473,7 +475,7 @@ class SelfTest
                     'hint' => Yii::t(
                         'AdminModule.information',
                         'Detected URL: {currentBaseUrl}',
-                        ['currentBaseUrl' => $currentBaseUrl]
+                        ['currentBaseUrl' => $currentBaseUrl],
                     ),
                 ];
             }
@@ -485,13 +487,13 @@ class SelfTest
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
 
@@ -501,13 +503,13 @@ class SelfTest
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
 
@@ -517,13 +519,13 @@ class SelfTest
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
 
@@ -533,13 +535,13 @@ class SelfTest
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
 
@@ -551,13 +553,13 @@ class SelfTest
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
         // Check Dynamic Config is Writable
@@ -570,13 +572,13 @@ class SelfTest
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path])
+                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
 
@@ -611,7 +613,7 @@ class SelfTest
         if ($driver['isSupportedDriver']) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $allowedDriverTitles = [];
@@ -633,13 +635,13 @@ class SelfTest
         if ($driver['isAllowedVersion']) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => $driver['minVersion']])
+                'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => $driver['minVersion']]),
             ];
         }
 
@@ -650,7 +652,7 @@ class SelfTest
         if (stripos($dbCharset, $recommendedCollation) === 0) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
@@ -687,7 +689,7 @@ class SelfTest
         if (empty($tablesWithNotRecommendedCollations)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             $checks[] = [
@@ -696,7 +698,7 @@ class SelfTest
                 'hint' => Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
                     'collation' => $recommendedCollation,
                     'tables' => implode(', ', $tablesWithNotRecommendedCollations),
-                ])
+                ]),
             ];
         }
 
@@ -706,7 +708,7 @@ class SelfTest
         if (empty($tablesWithNotRecommendedEngines)) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         } else {
             if (count($tableEngines) > 1) {
@@ -718,7 +720,7 @@ class SelfTest
                 'hint' => Yii::t('AdminModule.information', 'Recommended engine is {engine} for the tables: {tables}', [
                     'engine' => $recommendedEngine,
                     'tables' => implode(', ', $tablesWithNotRecommendedEngines),
-                ])
+                ]),
             ];
         }
 
@@ -804,12 +806,12 @@ class SelfTest
         if (empty(HumHubAPI::getLatestHumHubVersion(false))) {
             $checks[] = [
                 'title' => $title,
-                'state' => 'WARNING'
+                'state' => 'WARNING',
             ];
         } else {
             $checks[] = [
                 'title' => $title,
-                'state' => 'OK'
+                'state' => 'OK',
             ];
         }
 
@@ -832,20 +834,20 @@ class SelfTest
             if ($deprecatedModules !== []) {
                 $checks[] = [
                     'title' => $titlePrefix . Yii::t('AdminModule.information', 'Deprecated Modules ({modules})', [
-                        'modules' => implode(', ', $deprecatedModules)
+                        'modules' => implode(', ', $deprecatedModules),
                     ]),
                     'state' => 'ERROR',
-                    'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.')
+                    'hint' => Yii::t('AdminModule.information', 'The module(s) are no longer maintained and should be uninstalled.'),
                 ];
             }
 
             if ($customModules !== []) {
                 $checks[] = [
                     'title' => $titlePrefix . Yii::t('AdminModule.information', 'Custom Modules ({modules})', [
-                        'modules' => implode(', ', $customModules)
+                        'modules' => implode(', ', $customModules),
                     ]),
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.')
+                    'hint' => Yii::t('AdminModule.information', 'Must be updated manually. Check compatibility with newer HumHub versions before updating.'),
                 ];
             }
 
@@ -858,17 +860,64 @@ class SelfTest
                 $pushModule->getGoService()->isConfigured()) {
                 $checks[] = [
                     'title' => $title,
-                    'state' => 'OK'
+                    'state' => 'OK',
                 ];
             } else {
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
-                    'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required')
+                    'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required'),
+                ];
+            }
+
+            $title = $titlePrefix . Yii::t('AdminModule.information', 'Configuration File');
+
+            $foundLegacyConfigKeys = [];
+            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegancyConfigSettings()));
+            foreach (array_keys(ArrayHelper::flatten(Yii::$app->loadedAppConfig)) as $config) {
+                foreach ($legacyConfigKeys as $legacyConfig) {
+                    if (str_starts_with($config, $legacyConfig)) {
+                        $foundLegacyConfigKeys[] = $config;
+                    }
+                }
+            }
+
+            if (empty($foundLegacyConfigKeys)) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK',
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'ERROR',
+                    'hint' => Yii::t('AdminModule.information', 'The configuration file contains legacy settings. Invalid options: {options}', [
+                        'options' => implode(', ', $foundLegacyConfigKeys),
+                    ]),
                 ];
             }
         }
 
         return $checks;
     }
+
+    /**
+     * Returns an array with legacy HumHub configuration options.
+     *
+     * @since 1.16
+     * @return array
+     */
+    public static function getLegancyConfigSettings(): array
+    {
+        return [
+            'modules' => [
+                'search' => new UnsetArrayValue(),
+                'directory' => new UnsetArrayValue(),
+            ],
+            'components' => [
+                'formatterApp' => new UnsetArrayValue(),
+            ],
+        ];
+    }
+
 }

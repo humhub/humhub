@@ -16,7 +16,7 @@ class m150910_223305_fix_user_follow extends Migration
             if ($activity['follow_id'] != "") {
                 $this->updateSilent('activity', [
                     'object_model' => humhub\modules\user\models\Follow::class,
-                    'object_id' => $activity['follow_id']
+                    'object_id' => $activity['follow_id'],
                 ], ['id' => $activity['id']]);
             }
         }

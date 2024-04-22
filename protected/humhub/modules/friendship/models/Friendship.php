@@ -65,7 +65,7 @@ class Friendship extends ActiveRecord
         return [
             [['user_id', 'friend_user_id'], 'required'],
             [['user_id', 'friend_user_id'], 'integer'],
-            [['user_id', 'friend_user_id'], 'unique', 'targetAttribute' => ['user_id', 'friend_user_id'], 'message' => 'The combination of User ID and Friend User ID has already been taken.']
+            [['user_id', 'friend_user_id'], 'unique', 'targetAttribute' => ['user_id', 'friend_user_id'], 'message' => 'The combination of User ID and Friend User ID has already been taken.'],
         ];
     }
 
@@ -277,7 +277,7 @@ class Friendship extends ActiveRecord
         if ($myFriendship !== null && $friendsFriendship !== null) {
             // Trigger event is friendship was mutual
             FriendshipEvent::trigger(Friendship::class, Friendship::EVENT_FRIENDSHIP_REMOVED, new FriendshipEvent([
-                'user1' => $user, 'user2' => $friend
+                'user1' => $user, 'user2' => $friend,
             ]));
         }
     }

@@ -67,7 +67,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
             'field_type_class' => Text::class,
             'internal_name' => 'uniquename',
             'title' => 'Unique Title',
-            'sort_order' => 900
+            'sort_order' => 900,
         ];
         $model = new ProfileField();
         $notValidParams = array_merge($validParams, ['internal_name' => 'firstname']);
@@ -115,7 +115,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
             'field_type_class' => Text::class,
             'internal_name' => 'uniquename',
             'title' => 'Unique Title',
-            'sort_order' => 900
+            'sort_order' => 900,
         ];
         $model = new ProfileField();
         $model->load(array_merge($validParams, ['field_type_class' => 'UnknownClassName']), '');
@@ -134,7 +134,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
             'field_type_class' => Text::class,
             'internal_name' => 'firstname',
             'title' => 'Unique Title',
-            'sort_order' => 900
+            'sort_order' => 900,
         ];
 
         $model = ProfileField::findOne(['internal_name' => 'firstname']);
@@ -176,7 +176,7 @@ class ProfileFieldModelTest extends HumHubDbTestCase
             'field_type_class' => Text::class,
             'internal_name' => 'uniquename',
             'title' => 'Unique Title',
-            'sort_order' => 900
+            'sort_order' => 900,
         ];
         $model = new ProfileField();
         $model->load($validParams, '');

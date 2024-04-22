@@ -43,7 +43,7 @@ class Module extends \humhub\components\Module
         'application/x-pdf',
         'image/gif',
         'image/png',
-        'image/jpeg'
+        'image/jpeg',
     ];
 
     /**
