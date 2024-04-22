@@ -270,7 +270,7 @@ humhub.module('ui.picker', function (module, require, $) {
      */
     Picker.prototype.templateResult = function (item) {
         // If no item id is given the function was called for the search term.
-        if (!item.id) {
+        if (typeof(item.id) === 'undefined') {
             return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
         }
 
