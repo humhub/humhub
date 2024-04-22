@@ -345,8 +345,8 @@ humhub.module('ui.search', function(module, require, $) {
         // Centralize panel if it is over window
         const menuTogglerLeft = this.getMenuToggler().offset().left;
         const currentTogglerLeft = this.getCurrentToggler().offset().left;
-        const windowWidth = $(window).width();
-        const panelWidth = this.getPanel().width();
+        const windowWidth = Math.round($(window).width());
+        const panelWidth = Math.round(this.getPanel().width());
         let isPanelShifted = false;
         if (menuTogglerLeft === currentTogglerLeft) {
             this.getPanel().css('left', '');

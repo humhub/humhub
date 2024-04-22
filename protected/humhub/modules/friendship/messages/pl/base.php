@@ -14,7 +14,7 @@ return array (
   'Unfriend' => 'Usuń ze znajomych',
   'Would you like to accept the friendship request?' => 'Czy chcesz zaakceptować znajomość?',
   'Would you like to end your friendship with {userName}?' => 'Czy chcesz zakończyć znajomość z {userName}?',
-  'Would you like to send a friendship request to {userName}?' => '',
-  'Would you like to withdraw the friendship request?' => '',
-  'Would you like to withdraw your friendship request?' => '',
+  'Would you like to send a friendship request to {userName}?' => 'Czy chcesz wysłać prośbę o dodanie do znajomych do {userName}?',
+  'Would you like to withdraw the friendship request?' => 'Czy chcesz wycofać prośbę o dodanie do znajomych?',
+  'Would you like to withdraw your friendship request?' => 'Czy chcesz wycofać swoją prośbę o dodanie do znajomych?',
 );
