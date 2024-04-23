@@ -154,14 +154,13 @@ class CheckboxList extends BaseType
     {
         $items = [];
 
-        foreach (explode("\n", $this->options) as $option) {
-            if (strpos($option, "=>") !== false) {
-                list($key, $value) = explode("=>", $option);
+        foreach (preg_split('/[\r\n]+/', $this->options) as $option) {
+            if (strpos($option, '=>') !== false) {
+                list($key, $value) = explode('=>', $option, 2);
                 $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
             } else {
                 $items[trim($option)] = Yii::t($this->profileField->getTranslationCategory(), trim($option));
             }
-
         }
 
         if ($this->allowOther) {

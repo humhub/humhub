@@ -49,8 +49,27 @@ class Select extends BaseType
     public function rules()
     {
         return [
-            [['options'], 'safe'],
+            [['options'], 'validateOptions'],
         ];
+    }
+
+    /**
+     * Validate options which must be as associative array with format Key=>Value
+     *
+     * @param string $attribute
+     */
+    public function validateOptions($attribute)
+    {
+        if (!is_string($this->$attribute) || $this->$attribute === '') {
+            return;
+        }
+
+        foreach (preg_split('/[\r\n]+/', $this->$attribute) as $option) {
+            if (strpos($option, '=>') === false) {
+                $this->addError($attribute, Yii::t('UserModule.profile', 'Each line must be formatted as Key=>Value!'));
+                return;
+            }
+        }
     }
 
     /**
@@ -123,7 +142,7 @@ class Select extends BaseType
 
         foreach (preg_split('/[\r\n]+/', $this->options) as $option) {
             if (strpos($option, '=>') !== false) {
-                list($key, $value) = explode('=>', $option);
+                list($key, $value) = explode('=>', $option, 2);
                 $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
             } else {
                 $items[] = Yii::t($this->profileField->getTranslationCategory(), trim($option));
