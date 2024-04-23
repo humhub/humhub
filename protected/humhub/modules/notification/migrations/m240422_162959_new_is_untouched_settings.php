@@ -1,9 +1,9 @@
 <?php
 
-use humhub\modules\notification\components\NotificationManager;
-use humhub\modules\notification\Module;
-use humhub\modules\user\models\User;
+use humhub\modules\content\models\ContentContainerSetting;
+use yii\db\Expression;
 use yii\db\Migration;
+use yii\db\Query;
 
 /**
  * Class m240422_162959_new_is_untouched_settings
@@ -11,21 +11,36 @@ use yii\db\Migration;
 class m240422_162959_new_is_untouched_settings extends Migration
 {
     /**
+     * Inserts new rows into the `content_container_setting` table to add the "is_touched_settings"
+     * setting for the "notification" module where the "name" is "notification.like_email" which was
+     * previously used to know if the setting was modified by the user or not
+     *
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        foreach (User::find()->each() as $user) {
-            /** @var Module $module */
-            $module = Yii::$app->getModule('notification');
-            try {
-                $settingsManager = $module->settings->user($user);
-                if ($settingsManager && $settingsManager->get('notification.like_email') !== null) {
-                    $settingsManager->set(NotificationManager::IS_TOUCHED_SETTINGS, true);
-                }
-            } catch (\Throwable $e) {
-            }
-        }
+        $rows = (new Query())
+            ->select([
+                "module_id",
+                "contentcontainer_id",
+                new Expression("'is_touched_settings' as name"),
+                new Expression("'1' as value"),
+            ])
+            ->from(ContentContainerSetting::tableName())
+            ->where([
+                'name' => 'notification.like_email',
+                'module_id' => 'notification',
+            ])
+            ->all();
+
+        $query = Yii::$app->db->createCommand()
+            ->batchInsert(
+                ContentContainerSetting::tableName(),
+                ['module_id', 'contentcontainer_id', 'name', 'value'],
+                $rows,
+            );
+
+        $query->execute();
     }
 
     /**
