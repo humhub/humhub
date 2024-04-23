@@ -9,6 +9,8 @@ HumHub Changelog
 - Enh #6952: Improve container title encoding in header
 - Fix #6954: Search out of viewport on mobile
 - Enh #6950: Ability to reset some notification settings to all users without resetting "Like" notifications by email
+- Fix #6954: Search out of viewport on mobile 
+- Fix #6962: People filter - Hide follower options if Following is disabled in the User module
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
