@@ -49,7 +49,7 @@ use yii\bootstrap\ActiveForm;
                 <?php $form = ActiveForm::begin(); ?>
                 <?= $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')); ?>
                 <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
-                   data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
+                   data-action-url="<?= Url::to(['/user/invite', 'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed]) ?>" data-ui-loader>
                     <?= Yii::t('UserModule.invite', 'Send invite') ?>
                 </a>
                 <?php ActiveForm::end(); ?>
