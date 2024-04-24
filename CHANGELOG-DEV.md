@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #6950: Ability to reset some notification settings to all users without resetting "Like" notifications by email
 - Fix #6954: Search out of viewport on mobile 
 - Fix #6962: People filter - Hide follower options if Following is disabled in the User module
+- Fix #6961: Fix people dropdown filter without defined keys
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
