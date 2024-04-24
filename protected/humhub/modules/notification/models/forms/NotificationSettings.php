@@ -8,15 +8,17 @@
 
 namespace humhub\modules\notification\models\forms;
 
+use humhub\components\Module;
+use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\models\ContentContainerSetting;
 use humhub\modules\notification\components\NotificationCategory;
+use humhub\modules\notification\components\NotificationManager;
+use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
 use yii\web\HttpException;
-use humhub\modules\notification\targets\BaseTarget;
-use humhub\modules\admin\permissions\ManageSettings;
 
 /**
  * Description of NotificationSettings
@@ -104,13 +106,12 @@ class NotificationSettings extends Model
 
     /**
      * Checks if this form has already been saved before.
-     * @return bool
+     * @throws \Throwable
      */
-    public function isUserSettingLoaded()
+    public function isTouchedSettings(): bool
     {
         if ($this->user) {
-            return $this->getSettings()->get('enable_html5_desktop_notifications') !== null ||
-                $this->getSettings()->get('notification.like_email') !== null;
+            return NotificationManager::isTouchedSettings($this->user);
         }
 
         return false;
@@ -170,6 +171,10 @@ class NotificationSettings extends Model
 
         $settings = $this->getSettings();
 
+        if ($this->user) {
+            $settings->set(NotificationManager::IS_TOUCHED_SETTINGS, true);
+        }
+
         // Save all active settings
         foreach ($this->settings as $settingKey => $value) {
             $settings->set($settingKey, $value);
@@ -221,6 +226,7 @@ class NotificationSettings extends Model
 
     public function getSettings()
     {
+        /** @var Module $module */
         $module = Yii::$app->getModule('notification');
 
         return ($this->user) ? $module->settings->user($this->user) : $module->settings;
@@ -244,7 +250,8 @@ class NotificationSettings extends Model
         }
 
         $settings = $this->getSettings();
-        $settings->delete('enable_html5_desktop_notifications');
+        $settings?->delete(NotificationManager::IS_TOUCHED_SETTINGS);
+        $settings?->delete('enable_html5_desktop_notifications');
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $settings->delete($target->getSettingKey($category));
@@ -265,10 +272,11 @@ class NotificationSettings extends Model
 
     /**
      * Resets all settings stored for all current user
+     * @throws \Throwable
      */
     public function resetAllUserSettings()
     {
-        $notificationSettings = ['enable_html5_desktop_notifications'];
+        $notificationSettings = [NotificationManager::IS_TOUCHED_SETTINGS, 'enable_html5_desktop_notifications'];
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $notificationSettings[] = $target->getSettingKey($category);
@@ -282,7 +290,9 @@ class NotificationSettings extends Model
 
         Yii::$app->notification->resetSpaces();
 
-        $settingsManager = Yii::$app->getModule('notification')->settings->user();
-        $settingsManager->reload();
+        /** @var Module $module */
+        $module = Yii::$app->getModule('notification');
+        $settingsManager = $module->settings->user();
+        $settingsManager?->reload();
     }
 }

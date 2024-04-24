@@ -39,6 +39,11 @@ class NotificationManager
     public const EVENT_SEARCH_MODULE_NOTIFICATIONS = 'searchModuleNotifications';
 
     /**
+     * User setting name to know if the user has modified default notification settings
+     */
+    public const IS_TOUCHED_SETTINGS = 'is_touched_settings';
+
+    /**
      *
      * @var array Target configuration.
      */
@@ -266,7 +271,7 @@ class NotificationManager
         return ContentContainerSetting::find()
             ->where('contentcontainer_setting.contentcontainer_id=user.contentcontainer_id')
             ->andWhere(['contentcontainer_setting.module_id' => 'notification'])
-            ->andWhere(['contentcontainer_setting.name' => 'notification.like_email']);
+            ->andWhere(['contentcontainer_setting.name' => self::IS_TOUCHED_SETTINGS]);
     }
 
     /**
@@ -282,7 +287,7 @@ class NotificationManager
 
         $result = array_merge($memberSpaces, $followSpaces);
 
-        if ($this->isUntouchedSettings($user)) {
+        if (!static::isTouchedSettings($user)) {
             $result = array_merge($result, Space::find()
                 ->where(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')])
                 ->visible($user)
@@ -293,9 +298,14 @@ class NotificationManager
         return $result;
     }
 
-    private function isUntouchedSettings(User $user)
+    /**
+     * @throws \Throwable
+     */
+    public static function isTouchedSettings(User $user): bool
     {
-        return Yii::$app->getModule('notification')->settings->user($user)->get('notification.like_email') === null;
+        /** @var Module $module */
+        $module = Yii::$app->getModule('notification');
+        return (bool)$module->settings->user($user)?->get(self::IS_TOUCHED_SETTINGS);
     }
 
     /**
@@ -379,6 +389,7 @@ class NotificationManager
      */
     public function setDesktopNoficationSettings($value = 0, User $user = null)
     {
+        /** @var Module $module */
         $module = Yii::$app->getModule('notification');
         $settingManager = ($user) ? $module->settings->user($user) : $module->settings;
         $settingManager->set('enable_html5_desktop_notifications', $value);
