@@ -20,6 +20,7 @@ use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\forms\Invite as InviteForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
@@ -262,11 +263,14 @@ class UserController extends Controller
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
+        $adminIsAlwaysAllowed = Yii::$app->user->isAdmin();
+        $invite = new InviteForm();
+
         return $this->render('add', [
             'hForm' => $registration,
-            'canInviteByEmail' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByEmail'),
-            'canInviteByLink' => Yii::$app->getModule('user')->settings->get('auth.internalUsersCanInviteByLink'),
-            'adminIsAlwaysAllowed' => false,
+            'canInviteByEmail' => $invite->canInviteByEmail($adminIsAlwaysAllowed),
+            'canInviteByLink' => $invite->canInviteByLink($adminIsAlwaysAllowed),
+            'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed,
         ]);
     }
 
