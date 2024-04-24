@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
- * ProfileFieldTypeSelect handles numeric profile fields.
+ * Select handles profile select list fields.
  *
  * @package humhub.modules_core.user.models
  * @since 0.5
@@ -49,27 +49,8 @@ class Select extends BaseType
     public function rules()
     {
         return [
-            [['options'], 'validateOptions'],
+            [['options'], 'validateListOptions'],
         ];
-    }
-
-    /**
-     * Validate options which must be as associative array with format Key=>Value
-     *
-     * @param string $attribute
-     */
-    public function validateOptions($attribute)
-    {
-        if (!is_string($this->$attribute) || $this->$attribute === '') {
-            return;
-        }
-
-        foreach (preg_split('/[\r\n]+/', $this->$attribute) as $option) {
-            if (strpos($option, '=>') === false) {
-                $this->addError($attribute, Yii::t('UserModule.profile', 'Each line must be formatted as Key=>Value!'));
-                return;
-            }
-        }
     }
 
     /**
@@ -87,7 +68,7 @@ class Select extends BaseType
                     'options' => [
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Possible values'),
-                        'class' => 'form-control',
+                        'class' => 'form-control autosize',
                         'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)'),
                     ],
                 ],
@@ -129,27 +110,6 @@ class Select extends BaseType
             'items' => $this->getSelectItems(),
             'prompt' => Yii::t('UserModule.profile', 'Please select:'),
         ], $options));
-    }
-
-    /**
-     * Returns a list of possible options
-     *
-     * @return array
-     */
-    public function getSelectItems()
-    {
-        $items = [];
-
-        foreach (preg_split('/[\r\n]+/', $this->options) as $option) {
-            if (strpos($option, '=>') !== false) {
-                list($key, $value) = explode('=>', $option, 2);
-                $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
-            } else {
-                $items[] = Yii::t($this->profileField->getTranslationCategory(), trim($option));
-            }
-        }
-
-        return $items;
     }
 
     /**
