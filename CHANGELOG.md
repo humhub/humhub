@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #6919: Fix saving of user profile country field value and enable a searching by country title
 - Fix #6919: Migration to revert user profile country names to Iso 3166 codes
 - Fix #6966: Make "Invite new people" always possible for Admins
+- Fix #6969: Create unique index for the table `like`
 
 1.15.4 (March 20, 2024)
 -----------------------
