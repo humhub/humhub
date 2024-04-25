@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #6954: Search out of viewport on mobile 
 - Fix #6962: People filter - Hide follower options if Following is disabled in the User module
 - Fix #6961: Fix people dropdown filter without defined keys
+- Fix #6967: Use same order for meta searching that is used for content page searching by default
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------

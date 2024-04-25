@@ -77,6 +77,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
         $resultSet = $module->getSearchDriver()->search(new SearchRequest([
             'keyword' => $this->getKeyword(),
             'pageSize' => $maxResults,
+            'orderBy' => SearchRequest::ORDER_BY_SCORE,
         ]));
 
         $results = [];
