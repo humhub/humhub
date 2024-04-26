@@ -22,7 +22,6 @@ use Yii;
  */
 class CountrySelect extends Select
 {
-
     /**
      * @inheritdoc
      */

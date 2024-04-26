@@ -33,7 +33,8 @@ class m240419_095931_fix_user_profile_country_code extends Migration
         foreach ($profiles->column() as $wrongCountryCode) {
             Profile::updateAll(
                 ['country' => $this->getCodeByCountry($wrongCountryCode)],
-                ['country' => $wrongCountryCode]);
+                ['country' => $wrongCountryCode],
+            );
         }
     }
 
