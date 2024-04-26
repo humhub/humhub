@@ -7,8 +7,13 @@ HumHub Changelog
 - Fix #6909: Fix the marketplace searching when a module config file has missed fields
 - Enh #6920: Enhancing of meta search for advanced search providers
 - Enh #6952: Improve container title encoding in header
+- Fix #6954: Search out of viewport on mobile
+- Enh #6950: Ability to reset some notification settings to all users without resetting "Like" notifications by email
 - Fix #6954: Search out of viewport on mobile 
-
+- Fix #6962: People filter - Hide follower options if Following is disabled in the User module
+- Fix #6961: Fix people dropdown filter without defined keys
+- Fix #6967: Use same order for meta searching that is used for content page searching by default
+- Enh #6968: Meta search: open external links in new window
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------

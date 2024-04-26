@@ -22,6 +22,17 @@ use Yii;
  */
 class CountrySelect extends Select
 {
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['options'], 'safe'],
+        ];
+    }
+
     /**
      * Returns Form Definition for edit/create this field.
      *
@@ -46,11 +57,9 @@ class CountrySelect extends Select
     }
 
     /**
-     * Returns a list of possible options
-     *
-     * @return array
+     * @inheritdoc
      */
-    public function getSelectItems()
+    public function getSelectItems(): array
     {
         $items = [];
 

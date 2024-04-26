@@ -42,7 +42,7 @@ class SearchRequest extends Model
 
     public $contentContainer = [];
 
-    public $orderBy = 'content.created_at';
+    public $orderBy = self::ORDER_BY_CREATION_DATE;
 
     public ?SearchQuery $searchQuery = null;
 

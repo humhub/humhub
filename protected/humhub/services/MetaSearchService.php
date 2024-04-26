@@ -82,6 +82,31 @@ class MetaSearchService
     }
 
     /**
+     * Get a link target depending on URL,
+     * external URLs should be opened in a new window
+     *
+     * @param string|null $url
+     * @return string|null
+     */
+    public function getLinkTarget(?string $url = null): ?string
+    {
+        if ($url === null) {
+            $url = $this->getUrl();
+        }
+
+        if (!is_string($url) || Url::isRelative($url)) {
+            return null;
+        }
+
+        $url = parse_url($url);
+        if (!isset($url['host']) || $url['host'] !== Yii::$app->request->hostName) {
+            return '_blank';
+        }
+
+        return null;
+    }
+
+    /**
      * Check if a searching has been done
      *
      * @return bool
