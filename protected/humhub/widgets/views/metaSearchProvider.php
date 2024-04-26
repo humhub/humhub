@@ -23,13 +23,17 @@ use humhub\widgets\Button;
         <?php if ($provider->getService()->isSearched()) : ?>
             <?php if ($provider->getService()->hasResults()) : ?>
                 <?php foreach ($provider->getService()->getResults() as $record) : ?>
-                    <a href="<?= $record->getUrl() ?>" class="search-provider-record">
+                    <?= Html::beginTag('a', [
+                        'href' => $record->getUrl(),
+                        'class' => 'search-provider-record',
+                        'target' => $provider->getService()->getLinkTarget($record->getUrl()),
+                    ]) ?>
                         <span class="search-provider-record-image"><?= $record->getImage() ?></span>
                         <span class="search-provider-record-text">
                             <span><?= $record->getTitle() ?></span>
                             <span><?= $record->getDescription() ?></span>
                         </span>
-                    </a>
+                    <?= Html::endTag('a') ?>
                 <?php endforeach; ?>
             <?php else : ?>
                 <div class="search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
@@ -38,6 +42,7 @@ use humhub\widgets\Button;
                 <?= Button::defaultType($provider->getAllResultsText())
                     ->link($provider->getService()->getUrl())
                     ->cssClass('search-provider-show-all')
+                    ->options(['target' => $provider->getService()->getLinkTarget()])
                     ->loader(false) ?>
             </div>
         <?php endif; ?>
