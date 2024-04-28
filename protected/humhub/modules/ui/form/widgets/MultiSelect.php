@@ -8,8 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use yii\helpers\ArrayHelper;
-
 /**
  * Multiselect
  *
@@ -67,7 +65,7 @@ class MultiSelect extends BasePicker
                 continue;
             }
 
-            $result[$key] = $this->buildItemOption([$key => $value], ArrayHelper::keyExists($key, $this->selection));
+            $result[$key] = $this->buildItemOption([$key => $value], in_array($key, $this->selection, true));
         }
         return $result;
     }

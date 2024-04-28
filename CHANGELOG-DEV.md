@@ -9,11 +9,12 @@ HumHub Changelog
 - Enh #6952: Improve container title encoding in header
 - Fix #6954: Search out of viewport on mobile
 - Enh #6950: Ability to reset some notification settings to all users without resetting "Like" notifications by email
-- Fix #6954: Search out of viewport on mobile 
+- Fix #6954: Search out of viewport on mobile
 - Fix #6962: People filter - Hide follower options if Following is disabled in the User module
 - Fix #6961: Fix people dropdown filter without defined keys
 - Fix #6967: Use same order for meta searching that is used for content page searching by default
 - Enh #6968: Meta search: open external links in new window
+- Fix: MultiSelect loads wrong options (since #6768 in 1.16.0-beta.1)
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
@@ -106,4 +107,4 @@ HumHub Changelog
 - Enh #6147: New space service `MemberListService`
 - Enh #6487: Remove general setting "Server Timezone"
 - Enh #6552: Allow module initializing on each loading
-- Fix #6768 MultiSelect when empty selection is given
+- Fix #6768: MultiSelect when empty selection is given
