@@ -82,7 +82,7 @@ class ContentSearchProvider implements MetaSearchProviderInterface
 
         $results = [];
         foreach ($resultSet->results as $content) {
-            $results[] = new SearchRecord($content);
+            $results[] = new SearchRecord($content, $this->getKeyword());
         }
 
         return [

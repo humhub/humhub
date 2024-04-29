@@ -19,6 +19,7 @@ use Yii;
 use yii\base\BaseObject;
 use yii\console\Controller;
 use yii\helpers\Console;
+use yii\web\View;
 
 /**
  * Events provides callbacks to handle events.
@@ -141,6 +142,27 @@ class Events extends BaseObject
             self::publishScheduledContent();
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
+    }
+
+    public static function onViewEndBody($event)
+    {
+        $highlight = Yii::$app->session->get('contentHighlight');
+        if ($highlight === null || $highlight === '') {
+            return;
+        }
+        Yii::$app->session->remove('contentHighlight');
+
+        /* @var View $view */
+        $view = $event->sender;
+
+        $index = time();
+        $view->registerJs('function contentHighlight' . $index . '() {
+            "' . str_replace('"', '\"', $highlight) . '".split(" ")
+                .forEach((keyword) => $(".layout-content-container").highlight(keyword))
+        }
+        $(document).ready(() => contentHighlight' . $index . '());
+        const wallStream = humhub.require("ui.widget").Widget.instance("[data-ui-widget=\'stream.wall.WallStream\']");
+        wallStream && wallStream.on("humhub:stream:afterAddEntries", () => contentHighlight' . $index . '());');
     }
 
 
