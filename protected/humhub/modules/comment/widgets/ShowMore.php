@@ -4,6 +4,7 @@ namespace humhub\modules\comment\widgets;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\content\controllers\SearchController;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -65,6 +66,7 @@ class ShowMore extends Widget
                 'type' => $this->type,
             ]),
             'type' => $this->type,
+            'linkStyleClass' => $this->getLinkStyleClass(),
         ]);
     }
 
@@ -82,6 +84,14 @@ class ShowMore extends Widget
         }
 
         return $this->_count;
+    }
+
+    protected function getLinkStyleClass(): ?string
+    {
+        // Highlight it on Content Search page
+        return Yii::$app->controller instanceof SearchController && Yii::$app->controller->action->id === 'results'
+            ? 'highlight'
+            : null;
     }
 
 }
