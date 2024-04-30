@@ -11,15 +11,14 @@ namespace humhub\modules\content;
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\Event;
+use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
-use yii\console\Controller;
 use yii\helpers\Console;
-use yii\web\View;
 
 /**
  * Events provides callbacks to handle events.
@@ -144,25 +143,9 @@ class Events extends BaseObject
         }
     }
 
-    public static function onViewEndBody($event)
+    public static function onViewBeginBody($event)
     {
-        $highlight = Yii::$app->session->get('contentHighlight');
-        if ($highlight === null || $highlight === '') {
-            return;
-        }
-        Yii::$app->session->remove('contentHighlight');
-
-        /* @var View $view */
-        $view = $event->sender;
-
-        $index = time();
-        $view->registerJs('function contentHighlight' . $index . '() {
-            "' . str_replace('"', '\"', $highlight) . '".split(" ")
-                .forEach((keyword) => $(".layout-content-container").highlight(keyword))
-        }
-        $(document).ready(() => contentHighlight' . $index . '());
-        const wallStream = humhub.require("ui.widget").Widget.instance("[data-ui-widget=\'stream.wall.WallStream\']");
-        wallStream && wallStream.on("humhub:stream:afterAddEntries", () => contentHighlight' . $index . '());');
+        ContentHighlightAsset::register($event->sender);
     }
 
 
