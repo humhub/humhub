@@ -251,6 +251,12 @@ humhub.module('comment', function (module, require, $) {
                 : $container.append($html);
             evt.$trigger.closest('.showMore').remove();
             additions.applyTo($html);
+
+            // Highlight currently searching keywords in the loaded comments
+            const contentSearchKeyword = $('.container-contents .form-search input[name=keyword]');
+            if (contentSearchKeyword.length && contentSearchKeyword.val().length) {
+                contentSearchKeyword.val().split(' ').forEach((keyword) => $html.highlight(keyword))
+            }
         }).catch(function (err) {
             module.log.error(err, true);
             loader.unset(evt.$trigger);

@@ -50,7 +50,7 @@ class IconPicker extends Select2
      */
     public function run()
     {
-        $this->value = (strpos($this->value, 'fa-') === 0)
+        $this->value = (strpos((string)$this->value, 'fa-') === 0)
             ? substr($this->value, 3, strlen($this->value))
             : $this->value;
 
