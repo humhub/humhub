@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #6968: Meta search: open external links in new window
 - Fix #6970: MultiSelect loads wrong options (since #6768 in 1.16.0-beta.1)
 - Enh #6974: Highlight a content searching keyword on show more comments
+- Fix #6977: Index sub comments for searching
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
