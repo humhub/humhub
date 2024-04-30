@@ -129,10 +129,10 @@ class MysqlDriver extends AbstractDriver
         $againstQuery = '';
 
         foreach ($query->andTerms as $keyword) {
-            $againstQuery .= '+' . rtrim($keyword, '*') . '* ';
+            $againstQuery .= '+' . $keyword . ' ';
         }
         foreach ($query->orTerms as $keyword) {
-            $againstQuery .= rtrim($keyword, '*') . '* ';
+            $againstQuery .= $keyword . ' ';
         }
         foreach ($query->notTerms as $keyword) {
             $againstQuery .= '-' . $keyword . ' ';

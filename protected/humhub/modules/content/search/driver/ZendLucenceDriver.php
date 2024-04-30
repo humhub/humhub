@@ -163,11 +163,11 @@ class ZendLucenceDriver extends AbstractDriver
 
         $keywordQuery = new Boolean();
         foreach ($request->getSearchQuery()->orTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), null);
+            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), null);
         }
 
         foreach ($request->getSearchQuery()->andTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), true);
+            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), true);
         }
 
         foreach ($request->getSearchQuery()->notTerms as $term) {

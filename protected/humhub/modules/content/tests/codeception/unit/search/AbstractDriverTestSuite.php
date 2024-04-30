@@ -33,7 +33,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         // Link it to object from Module because it is used in other methods as global,
         // it fixes issue on deleting item from indexing after unpublish a Content
         $this->searchDriver = $module->getSearchDriver();
-        $this->searchDriver->purge();
+//        $this->searchDriver->purge();
 
         parent::_before();
     }
@@ -48,11 +48,17 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         // Test Multiple AND Keywords
         #$this->assertCount(1, $this->getSearchResultByKeyword('Marabru')->results);
 
-        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav Abcd')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru" Tes')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('"Marabr" Test')->results);
+
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav OR Abcd')->results);
+        $this->assertCount(2, $this->getSearchResultByKeyword('OR Marabru OR Something')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('Marabru Leav +Abcd')->results);
 
         $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marabru')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marab')->results);
 
         // Wildcards
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabr*')->results);

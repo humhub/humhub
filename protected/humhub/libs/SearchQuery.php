@@ -60,11 +60,20 @@ class SearchQuery
 
         if (!empty($result[0]) && is_array($result[0])) {
             foreach ($result[0] as $i => $term) {
+                if (!preg_match('/^".+"$/', $term)) {
+                    // A not quoted term should be searched with mask by default
+                    $term = rtrim($term, '*') . '*';
+                }
 
                 // Remove quotation marks
                 $term = str_replace('"', '', $term);
 
-                if (str_starts_with($term, '+') || str_starts_with($term, 'AND ')) {
+                if (str_starts_with($term, 'OR ')) {
+                    $orTerms[] = preg_replace('/^((?i)OR )?/', '', $term);
+                } elseif (str_starts_with($term, '-') || str_starts_with($term, 'NOT ')) {
+                    $notTerms[] = preg_replace('/^\-?((?i)NOT )?/', '', $term);
+                } else {
+                    // Use AND operator by default
 
                     /**
                      * Special Case: In search queries like "Apple AND Banana", Apple should
@@ -76,10 +85,6 @@ class SearchQuery
                     }
 
                     $andTerms[] = preg_replace('/^\+?((?i)AND )?/', '', $term);
-                } elseif (str_starts_with($term, '-') || str_starts_with($term, 'NOT ')) {
-                    $notTerms[] = preg_replace('/^\-?((?i)NOT )?/', '', $term);
-                } else {
-                    $orTerms[] = preg_replace('/^((?i)OR )?/', '', $term);
                 }
             }
         }
