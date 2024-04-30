@@ -57,11 +57,13 @@ class ActiveRecord extends \yii\db\ActiveRecord
             }
         }
 
-        if ($this->hasAttribute('updated_at')) {
-            $this->updated_at = date('Y-m-d H:i:s');
-        }
-        if (isset(Yii::$app->user->id) && $this->hasAttribute('updated_by')) {
-            $this->updated_by = Yii::$app->user->id;
+        if (isset(Yii::$app->user->id)) {
+            if ($this->hasAttribute('updated_at')) {
+                $this->updated_at = date('Y-m-d H:i:s');
+            }
+            if ($this->hasAttribute('updated_by')) {
+                $this->updated_by = Yii::$app->user->id;
+            }
         }
 
         return parent::beforeSave($insert);
