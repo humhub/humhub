@@ -60,7 +60,7 @@ class SearchQuery
 
         if (!empty($result[0]) && is_array($result[0])) {
             foreach ($result[0] as $i => $term) {
-                if (!preg_match('/^".+"$/', $term)) {
+                if (!preg_match('/^(\+|\-|AND |NOT )?".+"$/', $term)) {
                     // A not quoted term should be searched with mask by default
                     $term = rtrim($term, '*') . '*';
                 }
@@ -89,10 +89,13 @@ class SearchQuery
             }
         }
 
-        $this->notTerms = array_filter($notTerms);
-        $this->orTerms = array_filter($orTerms);
-        $this->andTerms = array_filter($andTerms);
+        $this->notTerms = array_filter($notTerms, [$this, 'filterEmptyTerms']);
+        $this->orTerms = array_filter($orTerms, [$this, 'filterEmptyTerms']);
+        $this->andTerms = array_filter($andTerms, [$this, 'filterEmptyTerms']);
     }
 
-
+    private function filterEmptyTerms($term): bool
+    {
+        return !empty($term) && $term !== '*';
+    }
 }
