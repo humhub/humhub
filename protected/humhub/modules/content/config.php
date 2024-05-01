@@ -8,6 +8,7 @@ use humhub\modules\content\widgets\WallEntryAddons;
 use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use humhub\modules\content\components\ContentActiveRecord;
+use yii\web\View;
 
 return [
     'id' => 'content',
@@ -22,6 +23,7 @@ return [
         ['class' => ContentActiveRecord::class, 'event' => ContentActiveRecord::EVENT_AFTER_DELETE, 'callback' => [Events::class, 'onContentActiveRecordDelete']],
         ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
         ['class' => CronController::class, 'event' => CronController::EVENT_BEFORE_ACTION, 'callback' => [Events::class, 'onCronBeforeAction']],
+        ['class' => View::class, 'event' => View::EVENT_BEGIN_BODY, 'callback' => [Events::class, 'onViewBeginBody']],
     ],
     'consoleControllerMap' => [
         'content-search' => '\humhub\modules\content\commands\SearchController',
