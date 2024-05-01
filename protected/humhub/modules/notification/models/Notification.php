@@ -5,6 +5,7 @@ namespace humhub\modules\notification\models;
 use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Module;
+use humhub\modules\content\models\Content;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
@@ -251,18 +252,24 @@ class Notification extends ActiveRecord
         $query = self::find();
         $query->addSelect([
             'notification.*',
-            new Expression('count(distinct(originator_user_id)) as group_user_count'),
+            new Expression('count(distinct(notification.originator_user_id)) as group_user_count'),
             new Expression('count(*) as group_count'),
-            new Expression('max(created_at) as group_created_at'),
-            new Expression('min(seen) as group_seen'),
+            new Expression('max(notification.created_at) as group_created_at'),
+            new Expression('min(notification.seen) as group_seen'),
         ]);
 
         $query->andWhere(['user_id' => $user->id]);
 
-        $query->andWhere(['send_web_notifications' => $sendWebNotifications]);
+        // Exclude all not published contents
+        $query->leftJoin('content', 'content.object_model = notification.source_class AND content.object_id = notification.source_pk')
+            ->andWhere(['OR',
+                ['content.state' => Content::STATE_PUBLISHED],
+                ['IS', 'content.id', new Expression('NULL')]]);
+
+        $query->andWhere(['notification.send_web_notifications' => $sendWebNotifications]);
         $query->addGroupBy([
-            'COALESCE(group_key, id)',
-            'class',
+            'COALESCE(notification.group_key, notification.id)',
+            'notification.class',
         ]);
         $query->orderBy(['group_seen' => SORT_ASC, 'group_created_at' => SORT_DESC]);
 
