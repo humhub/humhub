@@ -19,7 +19,8 @@ div.required.has-error > label:after {
 
 .radio label,
 .checkbox label {
-    padding-left: 10px;
+    font-weight: bold;
+    padding-left: 0;
 }
 
 .form-control {
@@ -72,19 +73,11 @@ select.form-control:not([multiple]) {
     overflow: hidden;
 }
 
-label {
-    font-weight: normal;
-}
-
 div.PendingRegistrations {
     thead > tr > th > label, tbody > tr > td > label {
         margin-bottom: 0;
         height: 17px;
     }
-}
-
-label.control-label {
-    font-weight: bold;
 }
 
 // Placeholder text
@@ -118,6 +111,7 @@ textarea.placeholder {
     color: @text-color-soft;
     font-size: 13px;
 }
+
 .panel-body > .help-block {
     padding-right: 20px;
     margin-bottom: 20px;
@@ -234,7 +228,7 @@ input[type=radio] {
 div.form-group {
     div.checkbox {
         .help-block {
-            margin-left: 33px;
+            margin-left: 23px;
         }
 
         // avoid spacing between checkbox and hint
@@ -396,6 +390,7 @@ div.form-group {
                 background: #dedede !important;
                 border-color: #dedede;
             }
+
             &:active, &.active {
                 background: #cacaca !important;
                 border-color: #cacaca;
