@@ -29,6 +29,7 @@ HumHub Changelog
 - Enh #6757: Allow changing visibility of global content
 - Fix #5419: Lock search index while reindexing
 - Fix #5629: Better handling of legacy configuration file options for disabled non-core modules
+- Enh #6976: Migrate to PhpSpreadsheet 2.0
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------
