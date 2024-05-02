@@ -1,0 +1,31 @@
+humhub.module('content.highlight', function (module, require, $) {
+    const Widget = require('ui.widget').Widget;
+    const event = require('event');
+
+    const layout = $('.layout-content-container');
+
+    const init = function () {
+        event.on('humhub:modules:content:highlight:afterInit', () => highlight());
+        layout.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]')
+            .on('afterRender', (obj) => highlight($(obj.target)));
+
+        const wallStream = Widget.instance('[data-ui-widget="stream.wall.WallStream"]');
+        if (wallStream) {
+            wallStream.on('humhub:stream:afterAddEntries', () => highlight());
+        }
+    }
+
+    function highlight(object) {
+        if (typeof module.config.keyword === 'string') {
+            if (typeof object === 'undefined') {
+                object = layout;
+            }
+            module.config.keyword.split(' ').forEach((keyword) => object.highlight(keyword));
+        }
+    }
+
+    module.export({
+        init,
+        initOnPjaxLoad: true,
+    })
+})

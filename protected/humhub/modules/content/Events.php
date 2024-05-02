@@ -11,13 +11,13 @@ namespace humhub\modules\content;
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\Event;
+use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
-use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
@@ -141,6 +141,11 @@ class Events extends BaseObject
             self::publishScheduledContent();
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
+    }
+
+    public static function onViewBeginBody($event)
+    {
+        ContentHighlightAsset::register($event->sender);
     }
 
 

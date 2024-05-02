@@ -16,7 +16,9 @@ HumHub Changelog
 - Enh #6968: Meta search: open external links in new window
 - Fix #6970: MultiSelect loads wrong options (since #6768 in 1.16.0-beta.1)
 - Enh #6974: Highlight a content searching keyword on show more comments
+- Enh #6971: Meta search: Highlight keyword in single content view
 - Fix #6977: Index sub comments for searching
+- Fix #6978: Fix module enabling from marketplace
 - Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
 
 1.16.0-beta.2 (April 9, 2024)

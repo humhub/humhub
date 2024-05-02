@@ -14,6 +14,7 @@ use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\helpers\Url;
 
 /**
  * Search Record for Content
@@ -24,10 +25,12 @@ use Yii;
 class SearchRecord implements MetaSearchResultInterface
 {
     public ?Content $content = null;
+    public ?string $keyword = null;
 
-    public function __construct(Content $content)
+    public function __construct(Content $content, ?string $keyword = null)
     {
         $this->content = $content;
+        $this->keyword = $keyword;
     }
 
     /**
@@ -75,6 +78,6 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getUrl(): string
     {
-        return $this->content->getUrl();
+        return Url::to(['/content/perma', 'id' => $this->content->id, 'highlight' => $this->keyword]);
     }
 }

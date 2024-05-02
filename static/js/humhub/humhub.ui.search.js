@@ -305,7 +305,8 @@ humhub.module('ui.search', function(module, require, $) {
                 provider.replaceWith(newProviderContent);
                 const records = newProviderContent.find(that.selectors.providerRecord);
                 if (records.length) {
-                    records.find(that.selectors.providerRecordText).highlight(data.keyword);
+                    const highlightedText = records.find(that.selectors.providerRecordText);
+                    data.keyword.split(' ').forEach((keyword) => highlightedText.highlight(keyword));
                 } else if (newProviderContent.data('hide-on-empty') !== undefined) {
                     newProviderContent.hide();
                 }

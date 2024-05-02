@@ -90,7 +90,7 @@ class ModuleService
 
     public function enable(): bool
     {
-        return $this->module instanceof CoreModule && $this->module->enable();
+        return $this->module instanceof CoreModule && $this->module->enable() !== false;
     }
 
     public function update(): array
