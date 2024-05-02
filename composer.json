@@ -56,7 +56,7 @@
         "npm-asset/socket.io-client": "^2.0",
         "npm-asset/swiped-events": "^1.0.9",
         "npm-asset/timeago": "^1.6.3",
-        "phpoffice/phpspreadsheet": "^1.0",
+        "phpoffice/phpspreadsheet": "^2.0",
         "raoul2000/yii2-jcrop-widget": "^1.0",
         "symfony/amazon-mailer": "^5.4",
         "symfony/google-mailer": "^5.4",

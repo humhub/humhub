@@ -19,6 +19,8 @@ HumHub Changelog
 - Enh #6971: Meta search: Highlight keyword in single content view
 - Fix #6977: Index sub comments for searching
 - Fix #6978: Fix module enabling from marketplace
+- Enh #6984: In forms, change checkbox style to match other input types
+- Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
 - Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
 
 1.16.0-beta.2 (April 9, 2024)
@@ -29,6 +31,7 @@ HumHub Changelog
 - Enh #6757: Allow changing visibility of global content
 - Fix #5419: Lock search index while reindexing
 - Fix #5629: Better handling of legacy configuration file options for disabled non-core modules
+- Enh #6976: Migrate to PhpSpreadsheet 2.0
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------

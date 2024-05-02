@@ -17,6 +17,8 @@ At least PHP 8.0 is required with this version.
 - Controller route change: `/search/mentioning` -> `/user/mentioning`
 - `Yii::$app->search()` component is not longer available.
     - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
+- The method `setCellValueByColumnAndRow()` has been replaced with `setCellValue()` and `setValueExplicit()`.
+- When rendering xlsx generated data cells, use the `setCellValue()` method with the appropriate coordinate obtained using `getColumnLetter()`.
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
@@ -39,6 +41,7 @@ At least PHP 8.0 is required with this version.
 - `humhub\modules\stream\actions\GlobalContentStream`
 - `humhub\modules\stream\models\GlobalContentStreamQuery`
 - `humhub\modules\stream\models\filters\GlobalContentStreamFilter`
+- A new protected function `SpreadsheetExport::getColumnLetter()` has been introduced to get the column letter based on the column index.
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
