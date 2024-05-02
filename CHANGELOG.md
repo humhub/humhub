@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #6919: Migration to revert user profile country names to Iso 3166 codes
 - Fix #6966: Make "Invite new people" always possible for Admins
 - Fix #6969: Create unique index for the table `like` - Avoid counter manipulation (Thanks to @viliald)
+- Fix #6973: Fix wide dropdown on small screens
 - Fix #6869: Display notifications only of published contents
 
 1.15.4 (March 20, 2024)
