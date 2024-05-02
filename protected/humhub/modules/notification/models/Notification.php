@@ -228,7 +228,7 @@ class Notification extends ActiveRecord
         $query = Notification::findGrouped();
 
         if ($from != 0) {
-            $query->andWhere(['<', 'id', $from]);
+            $query->andWhere(['<', 'notification.id', $from]);
         }
 
         $query->limit($limit);
@@ -258,7 +258,7 @@ class Notification extends ActiveRecord
             new Expression('min(notification.seen) as group_seen'),
         ]);
 
-        $query->andWhere(['user_id' => $user->id]);
+        $query->andWhere(['notification.user_id' => $user->id]);
 
         // Exclude all not published contents
         $query->leftJoin('content', 'content.object_model = notification.source_class AND content.object_id = notification.source_pk')
@@ -288,8 +288,8 @@ class Notification extends ActiveRecord
     public static function findUnseen(User $user = null)
     {
         return Notification::findGrouped($user)
-            ->andWhere(['seen' => 0])
-            ->orWhere(['IS', 'seen', new Expression('NULL')]);
+            ->andWhere(['notification.seen' => 0])
+            ->orWhere(['IS', 'notification.seen', new Expression('NULL')]);
     }
 
     /**
@@ -302,7 +302,7 @@ class Notification extends ActiveRecord
      */
     public static function findUnnotifiedInFrontend(User $user = null)
     {
-        return self::findUnseen($user)->andWhere(['desktop_notified' => 0]);
+        return self::findUnseen($user)->andWhere(['notification.desktop_notified' => 0]);
     }
 
 }

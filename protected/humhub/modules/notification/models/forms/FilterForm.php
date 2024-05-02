@@ -146,7 +146,7 @@ class FilterForm extends Model
 
         $this->query = Notification::findGrouped();
         if ($this->hasFilter()) {
-            $this->query->andFilterWhere(['not in', 'class', $this->getExcludeClassFilter()]);
+            $this->query->andFilterWhere(['not in', 'notification.class', $this->getExcludeClassFilter()]);
         }
 
         return $this->query;
