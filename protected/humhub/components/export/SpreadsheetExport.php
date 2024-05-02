@@ -276,22 +276,39 @@ class SpreadsheetExport extends Component
     }
 
     /**
-     * Composes header row contents.
-     * @param Spreadsheet $spreadsheet
-     * @throws \PhpOffice\PhpSpreadsheet\Exception
-     */
+    * Composes header row contents.
+    * @param Spreadsheet $spreadsheet
+    * @throws \PhpOffice\PhpSpreadsheet\Exception
+    */
     protected function composeHeaderRow($spreadsheet)
     {
         $worksheet = $spreadsheet->getActiveSheet();
         $row = $this->nextRow();
 
         foreach ($this->columns as $columnIndex => $column) {
-            $worksheet->setCellValueByColumnAndRow(
-                $columnIndex + 1,
-                $row,
-                $column->renderHeaderCellContent(),
+            $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
+            $worksheet->setCellValue(
+                $coordinate,
+                $column->renderHeaderCellContent()
             );
         }
+    }
+
+    /**
+     * Get the column letter based on column index.
+     * @param int $columnIndex
+     * @return string
+     */
+    protected function getColumnLetter($columnIndex)
+    {
+        $letters = range('A', 'Z');
+        $letter = '';
+        while ($columnIndex > 0) {
+            $remainder = ($columnIndex - 1) % 26;
+            $letter = $letters[$remainder] . $letter;
+            $columnIndex = floor(($columnIndex - $remainder) / 26);
+        }
+        return $letter;
     }
 
     /**
@@ -327,17 +344,17 @@ class SpreadsheetExport extends Component
         $row = $this->nextRow();
 
         foreach ($this->columns as $columnIndex => $column) {
-            $cell = $worksheet->getCellByColumnAndRow($columnIndex + 1, $row);
+            $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
             $value = $column->renderDataCellContent($model, $key, $index);
 
             if ($column->dataType !== null) {
-                $cell->setValueExplicit($value, $column->dataType);
+                $worksheet->getCell($coordinate)->setValueExplicit($value, $column->dataType);
             } else {
-                $cell->setValue($value);
+                $worksheet->setCellValue($coordinate, $value);
             }
 
             if ($column->styles !== []) {
-                $cell->getStyle()->applyFromArray($column->styles);
+                $worksheet->getStyle($coordinate)->applyFromArray($column->styles);
             }
         }
     }
