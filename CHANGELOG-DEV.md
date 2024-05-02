@@ -19,7 +19,7 @@ HumHub Changelog
 - Enh #6971: Meta search: Highlight keyword in single content view
 - Fix #6977: Index sub comments for searching
 - Fix #6978: Fix module enabling from marketplace
-
+- Enh #6984: In forms, change checkbox style to match other input types
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
