@@ -24,6 +24,15 @@ use yii\db\Expression;
 
 class MysqlDriver extends AbstractDriver
 {
+    /**
+     * Minimum word length for "And Terms",
+     * Words with less length are handled as "Or Terms"
+     * NOTE: Using of the config value mysql.ft_min_word_len doesn't work properly.
+     *
+     * @var int $minAndTermLength
+     */
+    public int $minAndTermLength = 3;
+
     public function purge(): void
     {
         ContentFulltext::deleteAll();
@@ -128,15 +137,11 @@ class MysqlDriver extends AbstractDriver
     {
         $againstQuery = '';
 
-        if (!empty($query->andTerms)) {
-            $minWordLength = (int) Yii::$app->db->createCommand('SELECT @@ft_min_word_len')->queryScalar();
-            foreach ($query->andTerms as $keyword) {
-                if (strlen(rtrim($keyword, '*')) < $minWordLength) {
-                    // Search a short keyword with OR operator
-                    $againstQuery .= $this->prepareKeyword($keyword) . ' ';
-                } else {
-                    $againstQuery .= '+' . $this->prepareKeyword($keyword) . ' ';
-                }
+        foreach ($query->andTerms as $keyword) {
+            if (strlen(rtrim($keyword, '*')) < $this->minAndTermLength) {
+                $againstQuery .= $this->prepareKeyword($keyword) . ' ';
+            } else {
+                $againstQuery .= '+' . $this->prepareKeyword($keyword) . ' ';
             }
         }
         foreach ($query->orTerms as $keyword) {
