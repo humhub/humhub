@@ -128,14 +128,22 @@ class MysqlDriver extends AbstractDriver
     {
         $againstQuery = '';
 
-        foreach ($query->andTerms as $keyword) {
-            $againstQuery .= '+' . $keyword . ' ';
+        if (!empty($query->andTerms)) {
+            $minWordLength = (int) Yii::$app->db->createCommand('SELECT @@ft_min_word_len')->queryScalar();
+            foreach ($query->andTerms as $keyword) {
+                if (strlen(rtrim($keyword, '*')) < $minWordLength) {
+                    // Search a short keyword with OR operator
+                    $againstQuery .= $this->prepareKeyword($keyword) . ' ';
+                } else {
+                    $againstQuery .= '+' . $this->prepareKeyword($keyword) . ' ';
+                }
+            }
         }
         foreach ($query->orTerms as $keyword) {
-            $againstQuery .= $keyword . ' ';
+            $againstQuery .= $this->prepareKeyword($keyword) . ' ';
         }
         foreach ($query->notTerms as $keyword) {
-            $againstQuery .= '-' . $keyword . ' ';
+            $againstQuery .= '-' . $this->prepareKeyword($keyword) . ' ';
         }
 
         return sprintf(
@@ -143,6 +151,11 @@ class MysqlDriver extends AbstractDriver
             implode(', ', $matchFields),
             Yii::$app->db->quoteValue(trim($againstQuery)),
         );
+    }
+
+    protected function prepareKeyword(string $keyword): string
+    {
+        return str_contains($keyword, ' ') ? '"' . $keyword . '"' : $keyword;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery
