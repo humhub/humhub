@@ -62,7 +62,7 @@ class SearchQuery
             foreach ($result[0] as $i => $term) {
                 if (!preg_match('/^(\+|\-|AND |NOT )?".+"$/', $term)) {
                     // A not quoted term should be searched with mask by default
-                    $term = rtrim($term, '*') . '*';
+                    $term = rtrim($term, '*"') . '*';
                 }
 
                 // Remove quotation marks

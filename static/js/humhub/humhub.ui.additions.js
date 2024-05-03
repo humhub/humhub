@@ -297,6 +297,22 @@ humhub.module('ui.additions', function (module, require, $) {
         });
     };
 
+    var highlightWords = function (node, words) {
+        var $node = node instanceof $ ? node : $(node);
+        if (!$node.length || typeof($node.highlight) !== 'function') {
+            return;
+        }
+
+        if (typeof words === 'string' && words !== '') {
+            words = words.split(' ');
+        }
+        if (!Array.isArray(words)) {
+            return;
+        }
+
+        words.forEach((word) => $node.highlight(word.replace(/^([^a-z\d]*)(.+?)([^a-z\d]*)$/i, '$2')));
+    };
+
     var observe = function (node, options) {
         if (object.isBoolean(options)) {
             options = {applyOnInit: options};
@@ -338,7 +354,8 @@ humhub.module('ui.additions', function (module, require, $) {
         extend: extend,
         register: register,
         switchButtons: switchButtons,
-        highlight: highlight
+        highlight: highlight,
+        highlightWords: highlightWords,
     });
 });
 
