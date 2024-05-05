@@ -45,8 +45,8 @@ use humhub\widgets\ModalDialog;
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal() ?>
     <?= ModalButton::cancel() ?>
+    <?= ModalButton::submitModal() ?>
 </div>
 
 <?php ActiveForm::end() ?>
