@@ -20,6 +20,7 @@ HumHub Changelog
 - Fix #6977: Index sub comments for searching
 - Fix #6978: Fix module enabling from marketplace
 - Enh #6984: In forms, change checkbox style to match other input types
+- Enh #6990: Unifying positions of button on modals for consistency and better UX
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
