@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => '',
   'This Module was developed by a third-party.' => '',
   'Try other keywords or remove filters.' => '다른 키워드를 사용하거나 필터를 초기화하세요',
-  'Uninstalled' => '',
+  'Not Installed' => '',
   'Update' => '',
   'Update all' => '',
   'Update successful' => '',

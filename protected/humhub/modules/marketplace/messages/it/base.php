@@ -121,7 +121,7 @@ The license was successfully removed!
     'Third-party disclaimer' => 'Liberatoria terze parti',
     'This Module was developed by a third-party.' => 'Questo modulo è stato sviluppato da una terza parte.',
     'Try other keywords or remove filters.' => 'Prova altre parole chiave o rimuovi i filtri.',
-    'Uninstalled' => 'Disinstallato',
+    'Not Installed' => '',
     'Update' => 'Aggiorna',
     'Update all' => 'Aggiorna tutto',
     'Update successful' => 'Aggiornamento completato',

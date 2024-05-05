@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => '',
   'This Module was developed by a third-party.' => '',
   'Try other keywords or remove filters.' => 'Išbandykite kitus raktažodžius arba pašalinkite filtrus.',
-  'Uninstalled' => '',
+  'Not Installed' => '',
   'Update' => 'Atnaujinimai',
   'Update all' => '',
   'Update successful' => '',

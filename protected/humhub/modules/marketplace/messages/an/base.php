@@ -125,7 +125,7 @@ The license was successfully removed!
     'Third-party disclaimer' => '',
     'This Module was developed by a third-party.' => '',
     'Try other keywords or remove filters.' => '',
-    'Uninstalled' => '',
+    'Not Installed' => '',
     'Update' => '',
     'Update all' => '',
     'Update successful' => '',
