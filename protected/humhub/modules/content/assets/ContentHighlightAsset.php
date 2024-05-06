@@ -29,10 +29,12 @@ class ContentHighlightAsset extends AssetBundle
      */
     public static function register($view)
     {
-        $highlight = Yii::$app->session->get('contentHighlight');
-        if ($highlight !== null && $highlight !== '') {
-            Yii::$app->session->remove('contentHighlight');
-            $view->registerJsConfig('content.highlight', ['keyword' => $highlight]);
+        if (!Yii::$app->request->isConsoleRequest) {
+            $highlight = Yii::$app->session->get('contentHighlight');
+            if ($highlight !== null && $highlight !== '') {
+                Yii::$app->session->remove('contentHighlight');
+                $view->registerJsConfig('content.highlight', ['keyword' => $highlight]);
+            }
         }
 
         return parent::register($view);
