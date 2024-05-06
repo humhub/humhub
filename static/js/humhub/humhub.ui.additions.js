@@ -304,7 +304,7 @@ humhub.module('ui.additions', function (module, require, $) {
         }
 
         if (typeof words === 'string' && words !== '') {
-            words = words.split(' ');
+            words = words.split(/[^a-z\d\-]+/i);
         }
         if (!Array.isArray(words)) {
             return;
