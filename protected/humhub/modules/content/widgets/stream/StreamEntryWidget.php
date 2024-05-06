@@ -116,7 +116,7 @@ abstract class StreamEntryWidget extends JsWidget
         }
 
         $params = [
-            'content' => $record instanceof ContentActiveRecord ? $record->getWallOut($options) : '',
+            'content' => $record->getWallOut($options),
             'jsWidget' => $jsWidget,
             'entry' => $record->content,
         ];
