@@ -128,7 +128,7 @@ The license was successfully removed!
     'Third-party Modules are not covered by Professional Edition agreements.' => '',
     'This Module was developed by a third-party.' => '',
     'Try other keywords or remove filters.' => '',
-    'Uninstalled' => '',
+    'Not Installed' => '',
     'Update all' => '',
     'Upgrade to Professional Edition' => '',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',

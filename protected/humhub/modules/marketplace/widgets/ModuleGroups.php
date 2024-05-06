@@ -70,7 +70,7 @@ class ModuleGroups extends Widget
         if (count($notInstalledModules) > 0) {
             $notInstalledModules = Yii::$app->moduleManager->filterModules($notInstalledModules);
             $this->addGroup('notInstalled', [
-                'title' => Yii::t('MarketplaceModule.base', 'Uninstalled'),
+                'title' => Yii::t('MarketplaceModule.base', 'Not Installed'),
                 'modules' => $notInstalledModules,
                 'count' => count($notInstalledModules),
                 'view' => 'module-uninstalled-card',

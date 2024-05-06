@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Derde partij disclamer',
   'This Module was developed by a third-party.' => 'Deze module is ontwikkeld door een derde partij.',
   'Try other keywords or remove filters.' => 'Probeer andere zoekwoorden of verwijder filters.',
-  'Uninstalled' => 'Installeerbaar',
+  'Not Installed' => '',
   'Update' => 'Bijwerken',
   'Update all' => 'Werk alles bij',
   'Update successful' => 'De nieuwe versie is succesvol geïnstalleerd.',

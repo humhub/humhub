@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Harmadik féltől származó felelősségnyilatkozat',
   'This Module was developed by a third-party.' => 'Ezt a modult egy harmadik fél fejlesztette ki.',
   'Try other keywords or remove filters.' => 'Próbálj ki más kulcsszavakat, vagy távolítsd el a szűrőket.',
-  'Uninstalled' => 'Eltávolítva',
+  'Not Installed' => '',
   'Update' => 'Frissítés',
   'Update all' => 'Összes frissítése',
   'Update successful' => 'A frissítés sikeresen befejeződött',
