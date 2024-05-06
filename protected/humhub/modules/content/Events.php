@@ -145,7 +145,9 @@ class Events extends BaseObject
 
     public static function onViewBeginBody($event)
     {
-        ContentHighlightAsset::register($event->sender);
+        if (Yii::$app->isInstalled()) {
+            ContentHighlightAsset::register($event->sender);
+        }
     }
 
 
