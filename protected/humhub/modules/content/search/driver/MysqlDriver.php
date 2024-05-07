@@ -160,7 +160,7 @@ class MysqlDriver extends AbstractDriver
 
     protected function prepareKeyword(string $keyword): string
     {
-        return preg_match('/[\s@<>~%\(\)\$]/', $keyword) ? '"' . $keyword . '"' : $keyword;
+        return preg_match('/[\s@<>~%\(\)\$\\/]/', $keyword) ? '"' . $keyword . '"' : $keyword;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery
