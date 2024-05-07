@@ -310,7 +310,12 @@ humhub.module('ui.additions', function (module, require, $) {
             return;
         }
 
-        words.forEach((word) => $node.highlight(word.replace(/^([^a-z\d]*)(.+?)([^a-z\d]*)$/i, '$2')));
+        words.forEach(function (word) {
+            word = word.replace(/^([^a-z\d]*)(.+?)([^a-z\d]*)$/i, '$2');
+            $node.highlight(word);
+            word.indexOf("'") > -1 && $node.highlight(word.replace("'", '’'));
+            word.indexOf("’") > -1 && $node.highlight(word.replace('’', "'"));
+        });
     };
 
     var observe = function (node, options) {
