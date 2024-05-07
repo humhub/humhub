@@ -71,7 +71,7 @@ class SearchQuery
                 if (str_starts_with($term, 'OR ')) {
                     $orTerms[] = preg_replace('/^((?i)OR )?/', '', $term);
                 } elseif (str_starts_with($term, '-') || str_starts_with($term, 'NOT ')) {
-                    $notTerms[] = preg_replace('/^\-?((?i)NOT )?/', '', $term);
+                    $notTerms[] = preg_replace('/^\-*((?i)NOT )?/', '', $term);
                 } else {
                     // Use AND operator by default
 
@@ -84,7 +84,7 @@ class SearchQuery
                         $orTerms = [];
                     }
 
-                    $andTerms[] = preg_replace('/^\+?((?i)AND )?/', '', $term);
+                    $andTerms[] = preg_replace('/^\+*((?i)AND )?/', '', $term);
                 }
             }
         }

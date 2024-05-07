@@ -34,6 +34,12 @@ class SearchQueryTest extends Unit
         $query = new SearchQuery('Apple +Banana');
         $this->assertContains('Apple*', $query->andTerms);
         $this->assertContains('Banana*', $query->andTerms);
+
+        $query = new SearchQuery('----Apple +++++Banana "---Orange" "++++Peach"');
+        $this->assertContains('Apple*', $query->notTerms);
+        $this->assertContains('Banana*', $query->andTerms);
+        $this->assertContains('Orange', $query->notTerms);
+        $this->assertContains('Peach', $query->andTerms);
     }
 
     public function testTermsWithWords()
@@ -106,6 +112,5 @@ class SearchQueryTest extends Unit
 
         $query = new SearchQuery('"Quote 2024"');
         $this->assertContains('Quote 2024', $query->andTerms);
-
     }
 }
