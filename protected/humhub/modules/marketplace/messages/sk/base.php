@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Vylúčenie zodpovednosti tretej strany',
   'This Module was developed by a third-party.' => 'Tento modul bol vyvinutý treťou stranou.',
   'Try other keywords or remove filters.' => 'Skúste iné kľúčové slová alebo odstráňte filtre.',
-  'Uninstalled' => 'Odinštalované',
+  'Not Installed' => '',
   'Update' => 'Aktualizovať',
   'Update all' => 'ktualizovať všetko',
   'Update successful' => 'Aktualizácia úspešná',

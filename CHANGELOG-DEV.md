@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #6978: Fix module enabling from marketplace
 - Enh #6984: In forms, change checkbox style to match other input types
 - Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
+- Enh #6992: Improve handle database connection errors
 - Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
 
 1.16.0-beta.2 (April 9, 2024)

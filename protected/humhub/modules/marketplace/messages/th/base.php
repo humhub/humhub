@@ -129,7 +129,7 @@ The license was successfully removed!
     'Partner' => '',
     'Professional Edition' => '',
     'Stop updating' => '',
-    'Uninstalled' => '',
+    'Not Installed' => '',
     'Update all' => '',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
