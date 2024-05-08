@@ -98,6 +98,14 @@
 
     .ProseMirror-menu-dropdown, .ProseMirror-menu-dropdown-menu {
         white-space: nowrap;
+        @media (max-width: 400px) {
+            white-space: normal !important;
+        }
+        @media (max-width: 768px) {
+            small {
+                white-space: normal;
+            }
+        }
     }
 
     .ProseMirror-menu-dropdown {
