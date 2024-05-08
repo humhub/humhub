@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.5 (Unreleased)
------------------------
+1.15.5 (May 8, 2024)
+--------------------
 - Enh #6899: Fix a missed module config file
 - Fix #6913: Fix API tests
 - Fix #6919: Fix saving of user profile country field value and enable a searching by country title
