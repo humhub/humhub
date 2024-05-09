@@ -160,6 +160,7 @@ class MysqlDriver extends AbstractDriver
 
     protected function prepareKeyword(string $keyword): string
     {
+        // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
         return preg_match('#[\s@<>~%\(\)\$/’\']#', $keyword) ? '"' . $keyword . '"' : $keyword;
     }
 

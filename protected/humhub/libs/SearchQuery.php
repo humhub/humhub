@@ -25,18 +25,43 @@ namespace humhub\libs;
 class SearchQuery
 {
     /**
-     * @var string[] All terms without operator
+     * Keyword samples how they are stored here:
+     *   'OR Apple' => ['Apple*']
+     *   'OR "Apple"' => ['Apple']
+     *   'OR "Apple Banana"' => ['Apple Banana']
+     *   'OR Apple OR Banana' => ['Apple*', 'Banana*']
+     *   'OR "Apple pie" OR Banana' => ['Apple pie', 'Banana*']
+     * @var string[] All terms which are excluded, with OR operator
      * @readonly
      */
     public array $orTerms;
 
     /**
-     * @var string[] All terms which are required, with AND or + operator
+     * This is DEFAULT term (for all keyword without operator)
+     *
+     * Keyword samples how they are stored here:
+     *   'Apple' => ['Apple*']
+     *   'AND Apple' => ['Apple*']
+     *   '+Apple' => ['Apple*']
+     *   '"Apple"' => ['Apple']
+     *   '+"Apple"' => ['Apple']
+     *   '+"Apple Banana"' => ['Apple Banana']
+     *   'Apple pie Banana' => ['Apple*', 'pie*', 'Banana*']
+     *   '"Apple pie" Banana' => ['Apple pie', 'Banana*']
+     * @var string[] All terms which are required, without operator or with AND or + operator
      * @readonly
      */
     public array $andTerms;
 
     /**
+     * Keyword samples how they are stored here:
+     *   'NOT Apple' => ['Apple*']
+     *   '-Apple' => ['Apple*']
+     *   'NOT "Apple"' => ['Apple']
+     *   '-"Apple"' => ['Apple']
+     *   '-"Apple Banana"' => ['Apple Banana']
+     *   '-Apple -pie NOT Banana' => ['Apple*', 'pie*', 'Banana*']
+     *   '-"Apple pie" -Banana' => ['Apple pie', 'Banana*']
      * @var string[] All terms which should excluded, with NOT or - operator
      * @readonly
      */
