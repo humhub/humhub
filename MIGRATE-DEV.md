@@ -19,6 +19,7 @@ At least PHP 8.0 is required with this version.
     - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
 - The method `setCellValueByColumnAndRow()` has been replaced with `setCellValue()` and `setValueExplicit()`.
 - When rendering xlsx generated data cells, use the `setCellValue()` method with the appropriate coordinate obtained using `getColumnLetter()`.
+- Switch `Module::$resourcesPath` to `resources`
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
