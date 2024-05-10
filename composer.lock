@@ -3817,10 +3817,10 @@
         },
         {
             "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "2.1.0",
+            "version": "2.1.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.1.0.tgz"
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.1.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -13618,5 +13618,5 @@
     "platform-overrides": {
         "php": "8.0"
     },
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
