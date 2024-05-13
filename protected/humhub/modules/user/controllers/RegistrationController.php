@@ -91,29 +91,42 @@ class RegistrationController extends Controller
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
             $this->handleAuthClientRegistration($authClient, $registration);
-        } else {
-            Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
-            Yii::$app->session->setFlash('error', 'Registration failed.');
-            return $this->redirect(['/user/auth/login']);
         }
 
-        if ($registration->submitted('save') && $registration->validate() && $registration->register($authClient)) {
-            Yii::$app->session->remove('authClient');
+        if ($registration->submitted('save') && $registration->validate()) {
+            $existingUser = User::findByEmail($registration->getUser()->email);
 
-            // Autologin when user is enabled (no approval required)
-            if ($registration->getUser()->status === User::STATUS_ENABLED) {
-                $registration->getUser()->refresh(); // https://github.com/humhub/humhub/issues/6273
-                Yii::$app->user->login($registration->getUser());
+            if ($existingUser) {
+                // Log in the existing user
+                Yii::$app->user->login($existingUser);
+
                 if (Yii::$app->request->getIsAjax()) {
                     return $this->htmlRedirect(Yii::$app->user->returnUrl);
                 }
                 return $this->redirect(Yii::$app->user->returnUrl);
             }
 
-            return $this->render('success', [
-                'form' => $registration,
-                'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL),
-            ]);
+            // Proceed with the registration process
+            if ($registration->register($authClient)) {
+                Yii::$app->session->remove('authClient');
+
+                // Autologin when user is enabled (no approval required)
+                if ($registration->getUser()->status === User::STATUS_ENABLED) {
+                    // Log in the user
+                    Yii::$app->user->login($registration->getUser());
+
+                    if (Yii::$app->request->getIsAjax()) {
+                        return $this->htmlRedirect(Yii::$app->user->returnUrl);
+                    }
+                    return $this->redirect(Yii::$app->user->returnUrl);
+                }
+
+                // If user requires approval, render success page
+                return $this->render('success', [
+                    'form' => $registration,
+                    'needApproval' => ($registration->getUser()->status === User::STATUS_NEED_APPROVAL),
+                ]);
+            }
         }
 
         return $this->render('index', [
@@ -122,7 +135,6 @@ class RegistrationController extends Controller
             'hasAuthClient' => $authClient !== null,
         ]);
     }
-
 
     /**
      * Invitation by link
@@ -165,18 +177,24 @@ class RegistrationController extends Controller
     }
 
     /**
-     * Already all registration data gathered
+     * Handles registration using attributes from the authentication client.
      *
-     * @param BaseClient $authClient
-     * @param Registration $registration
-     * @throws Exception
+     * @param ClientInterface $authClient The authentication client.
+     * @param Registration $registration The registration data.
+     * @throws \InvalidArgumentException If no user ID is provided by the auth client.
+     * @throws \Exception If token or auth client is not found.
      */
     protected function handleAuthClientRegistration(ClientInterface $authClient, Registration $registration)
     {
+        // Check if the necessary token or auth client is present
+        if (!$this->isTokenAndAuthClientAvailable()) {
+            throw new \Exception("Registration failed: No token (query) or authclient (session) found!");
+        }
+
         $attributes = $authClient->getUserAttributes();
 
         if (!isset($attributes['id'])) {
-            throw new Exception("No user id given by authclient!");
+            throw new \InvalidArgumentException("No user ID provided by auth client.");
         }
 
         $registration->enablePasswordForm = false;
@@ -184,10 +202,36 @@ class RegistrationController extends Controller
             $registration->enableUserApproval = false;
         }
 
-        // do not store id attribute
+        // Do not store the 'id' attribute in the user or profile model.
         unset($attributes['id']);
 
-        $registration->getUser()->setAttributes($attributes, false);
-        $registration->getProfile()->setAttributes($attributes, false);
+        // Attempt to find the user by email
+        $user = User::findOne(['email' => $attributes['email']]);
+
+        if ($user) {
+            // Existing user found, log in the user
+            Yii::$app->user->login($user);
+        } else {
+            // User not found, proceed with registration
+            $registration->getUser()->setAttributes($attributes, false);
+            $registration->getProfile()->setAttributes($attributes, false);
+        }
+    }
+
+    /**
+     * Checks if the necessary token or auth client is available.
+     *
+     * @return bool True if token or auth client is available, false otherwise.
+     */
+    private function isTokenAndAuthClientAvailable(): bool
+    {
+        // Check if the necessary token is present in the query parameters
+        $token = isset($_GET['token']) ? $_GET['token'] : null;
+
+        // Check if the necessary auth client is present in the session variables
+        $authClient = isset($_SESSION['authClient']) ? $_SESSION['authClient'] : null;
+
+        // Return true if both token and auth client are available, false otherwise
+        return !empty($token) && !empty($authClient);
     }
 }
