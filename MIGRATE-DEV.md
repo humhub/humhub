@@ -42,6 +42,7 @@ At least PHP 8.0 is required with this version.
 - `humhub\modules\stream\models\GlobalContentStreamQuery`
 - `humhub\modules\stream\models\filters\GlobalContentStreamFilter`
 - A new protected function `SpreadsheetExport::getColumnLetter()` has been introduced to get the column letter based on the column index.
+- `LikeNotificationInterface` interface for `humhub\components\ActiveRecord` classes which can be "Liked"
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types

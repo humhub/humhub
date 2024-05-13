@@ -8,15 +8,23 @@
 
 namespace humhub\modules\like\controllers;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\AccessControl;
+use humhub\components\Controller;
+use humhub\helpers\DataTypeHelper;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\models\Content;
+use humhub\modules\like\models\Like;
 use humhub\modules\like\Module;
 use humhub\modules\user\models\User;
-use Yii;
-use humhub\modules\like\models\Like;
 use humhub\modules\user\widgets\UserListBox;
-use humhub\modules\content\components\ContentAddonController;
+use Yii;
+use yii\db\Exception;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
+use yii\web\ServerErrorHttpException;
 
 /**
  * Like Controller
@@ -26,8 +34,12 @@ use yii\web\HttpException;
  * @property Module $module
  * @since 0.5
  */
-class LikeController extends ContentAddonController
+class LikeController extends Controller
 {
+    protected ?string $objectModel = null;
+    protected ?int $objectId = null;
+    protected ContentAddonActiveRecord|ContentActiveRecord|ActiveRecord|null $object = null;
+
     /**
      * @param $action
      * @return bool
@@ -36,8 +48,35 @@ class LikeController extends ContentAddonController
     public function beforeAction($action)
     {
         if (!$this->module->isEnabled) {
-            throw new HttpException(404, 'The like module not enabled!');
+            throw new NotFoundHttpException('The like module not enabled!');
         }
+
+        $this->objectModel = Yii::$app->request->get('objectModel');
+        $this->objectId = (int)Yii::$app->request->get('objectId');
+
+        if (!$this->objectModel || !$this->objectId) {
+            throw new ServerErrorHttpException('Model & ID parameter required!');
+        }
+
+        $this->objectModel = DataTypeHelper::matchClassType(
+            $this->objectModel,
+            [ContentAddonActiveRecord::class, ContentActiveRecord::class, ActiveRecord::class],
+            true,
+        );
+
+        $this->object = $this->objectModel::findOne(['id' => $this->objectId]);
+        if ($this->object === null) {
+            throw new NotFoundHttpException('Could not find underlying object record!');
+        }
+
+        $content = $this->object->content ?? null;
+        if (
+            $content instanceof Content
+            && !$content->canView()
+        ) {
+            throw new ForbiddenHttpException('Access denied!');
+        }
+
         return parent::beforeAction($action);
     }
 
@@ -56,22 +95,24 @@ class LikeController extends ContentAddonController
 
     /**
      * Creates a new like
+     * @throws HttpException
+     * @throws Exception
      */
     public function actionLike()
     {
-        if (!$this->module->canLike($this->parentContent)) {
+        if (!$this->module->canLike($this->object)) {
             throw new ForbiddenHttpException();
         }
 
         $this->forcePostRequest();
 
-        $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
+        $like = Like::findOne(['object_model' => $this->objectModel, 'object_id' => $this->objectId, 'created_by' => Yii::$app->user->id]);
         if ($like === null) {
 
             // Create Like Object
             $like = new Like([
-                'object_model' => $this->contentModel,
-                'object_id' => $this->contentId,
+                'object_model' => $this->objectModel,
+                'object_id' => $this->objectId,
             ]);
             $like->save();
         }
@@ -87,7 +128,7 @@ class LikeController extends ContentAddonController
         $this->forcePostRequest();
 
         if (!Yii::$app->user->isGuest) {
-            $like = Like::findOne(['object_model' => $this->contentModel, 'object_id' => $this->contentId, 'created_by' => Yii::$app->user->id]);
+            $like = Like::findOne(['object_model' => $this->objectModel, 'object_id' => $this->objectId, 'created_by' => Yii::$app->user->id]);
             if ($like !== null) {
                 $like->delete();
             }
@@ -106,7 +147,7 @@ class LikeController extends ContentAddonController
         // Some Meta Infos
         $currentUserLiked = false;
 
-        $likes = Like::GetLikes($this->contentModel, $this->contentId);
+        $likes = Like::GetLikes($this->objectModel, $this->objectId);
 
         foreach ($likes as $like) {
             if ($like->user->id == Yii::$app->user->id) {
@@ -129,8 +170,8 @@ class LikeController extends ContentAddonController
         $query = User::find();
         $query->leftJoin('like', 'like.created_by=user.id');
         $query->where([
-            'like.object_id' => $this->contentId,
-            'like.object_model' => $this->contentModel,
+            'like.object_id' => $this->objectId,
+            'like.object_model' => $this->objectModel,
         ]);
         $query->orderBy('like.created_at DESC');
 

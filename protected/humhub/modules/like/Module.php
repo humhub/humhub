@@ -8,10 +8,11 @@
 
 namespace humhub\modules\like;
 
-use Yii;
-use humhub\modules\like\models\Like;
-use humhub\modules\space\models\Space;
+use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
+use humhub\modules\content\models\Content;
+use Yii;
 
 /**
  * This module provides like support for Content and Content Addons
@@ -77,15 +78,18 @@ class Module extends \humhub\components\Module
     /**
      * Checks if given content object can be liked
      *
-     * @param Like|ContentActiveRecord $object
+     * @param ContentAddonActiveRecord|ContentActiveRecord|ActiveRecord $object
      * @return bool can like
      */
     public function canLike($object)
     {
-        $content = $object->content;
-
         if (!$this->isEnabled) {
             return false;
+        }
+
+        $content = $object->content ?? null;
+        if (!$content instanceof Content) {
+            return true;
         }
 
         if (!$content->getStateService()->isPublished()) {

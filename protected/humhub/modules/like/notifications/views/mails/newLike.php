@@ -17,6 +17,7 @@
 /* @var $record Notification */
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\like\interfaces\LikeNotificationInterface;
 use humhub\modules\notification\models\Notification;
 use humhub\widgets\mails\MailButtonList;
 
@@ -27,14 +28,13 @@ $likedRecord = $viewable->getLikedRecord();
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
             <td>
-                <?=
-                humhub\widgets\mails\MailContentEntry::widget([
+                <?= humhub\widgets\mails\MailContentEntry::widget([
                     'receiver' => $record->user,
-                    'content' => $likedRecord,
+                    'content' => $likedRecord instanceof LikeNotificationInterface ? $likedRecord->getLikeNotificationHtmlPreview() : $likedRecord,
                     'date' => $date,
-                    'space' => $space
-                ])
-                ?>
+                    'space' => $space,
+                    'originator' => $originator,
+                ]) ?>
             </td>
         </tr>
         <tr>
