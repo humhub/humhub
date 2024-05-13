@@ -46,7 +46,7 @@ class Module extends \yii\base\Module
      * @var string The path for module resources (images, javascripts)
      * Also module related assets like README.md and module_image.png should be placed here.
      */
-    public $resourcesPath = 'assets';
+    public $resourcesPath = 'resources';
 
     /**
      * @inheritdoc
