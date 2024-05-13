@@ -50,6 +50,7 @@ class MigrationService extends Component
     public const DB_ACTION_SESSION = 3;
     private const SESSION_LAST_MIGRATION_OUTPUT = 'DBLastMigrationOutput';
     private const MUTEX_ID = 'HumHubMigrationService';
+    private const MUTEX_TIMEOUT = 600;
 
     /**
      * @param Module|ApplicationInterface|Application|null $module
@@ -171,7 +172,7 @@ class MigrationService extends Component
             return null;
         }
 
-        if (!Yii::$app->mutex->acquire(self::MUTEX_ID)) {
+        if (!Yii::$app->mutex->acquire(self::MUTEX_ID, self::MUTEX_TIMEOUT)) {
             $this->lastMigrationOutput .= "\n" . 'Migration skipped - already running!' . "\n";
             return null;
         }
