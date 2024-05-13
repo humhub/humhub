@@ -216,7 +216,7 @@ class MigrationService extends Component
             ],
         );
 
-        Yii::$app->mutex->release(static::MUTEX_ID);
+        Yii::$app->mutex->release(self::MUTEX_ID);
 
         return $this->checkMigrationStatus($result, $controller->getLastMigration());
     }
