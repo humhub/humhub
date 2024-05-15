@@ -49,8 +49,6 @@ class MigrationService extends Component
     public const DB_ACTION_PENDING = 2;
     public const DB_ACTION_SESSION = 3;
     private const SESSION_LAST_MIGRATION_OUTPUT = 'DBLastMigrationOutput';
-    private const MUTEX_ID = 'HumHubMigrationService';
-    private const MUTEX_TIMEOUT = 600;
 
     /**
      * @param Module|ApplicationInterface|Application|null $module
@@ -172,11 +170,6 @@ class MigrationService extends Component
             return null;
         }
 
-        if (!Yii::$app->mutex->acquire(self::MUTEX_ID, self::MUTEX_TIMEOUT)) {
-            $this->lastMigrationOutput .= "\n" . 'Migration skipped - already running!' . "\n";
-            return null;
-        }
-
         // this event is collecting the migration's result status and storing it in our event
         Event::on(
             MigrateController::class,
@@ -216,8 +209,6 @@ class MigrationService extends Component
                 'onMigrationControllerAfterAction',
             ],
         );
-
-        Yii::$app->mutex->release(self::MUTEX_ID);
 
         return $this->checkMigrationStatus($result, $controller->getLastMigration());
     }
