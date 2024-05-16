@@ -70,7 +70,6 @@ class AppAsset extends WebStaticAssetBundle
         NProgressStyleAsset::class,
         Select2StyleAsset::class,
         BlueimpGalleryStyleAsset::class,
-        ContentHighlightAsset::class,
 
 
         /**
@@ -85,6 +84,7 @@ class AppAsset extends WebStaticAssetBundle
          */
         CoreApiAsset::class,
         ContentAsset::class,
+        ContentHighlightAsset::class,
         FileAsset::class,
     ];
 
