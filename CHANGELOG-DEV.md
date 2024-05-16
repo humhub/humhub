@@ -23,6 +23,7 @@ HumHub Changelog
 - Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
 - Enh #6992: Improve handle database connection errors
 - Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
+- Fix #7004: Fix people filter by group
 - Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
 
 1.16.0-beta.2 (April 9, 2024)

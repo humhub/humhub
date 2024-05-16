@@ -97,7 +97,7 @@ class Like extends ContentAddonActiveRecord
      */
     public function afterSave($insert, $changedAttributes)
     {
-        Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
+        $this->flushCache();
 
         if ($insert) {
             Liked::instance()->about($this)->save();
@@ -120,8 +120,13 @@ class Like extends ContentAddonActiveRecord
      */
     public function beforeDelete()
     {
-        Yii::$app->cache->delete('likes_' . $this->object_model . "_" . $this->object_id);
+        $this->flushCache();
         return parent::beforeDelete();
+    }
+
+    public function flushCache()
+    {
+        Yii::$app->cache->delete('likes_' . $this->object_model . '_' . $this->object_id);
     }
 
 }
