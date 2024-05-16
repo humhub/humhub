@@ -40,11 +40,4 @@ class ContentAsset extends AssetBundle
     public $js = [
         'js/humhub.content.js',
     ];
-
-    /**
-     * @inheritdoc
-     */
-    public $depends = [
-        ContentHighlightAsset::class,
-    ];
 }

@@ -9,6 +9,7 @@ namespace humhub\modules\content\assets;
 
 use humhub\components\assets\AssetBundle;
 use Yii;
+use yii\web\Application;
 
 class ContentHighlightAsset extends AssetBundle
 {
@@ -31,7 +32,7 @@ class ContentHighlightAsset extends AssetBundle
     {
         parent::init();
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app instanceof Application && Yii::$app->isInstalled()) {
             $highlight = Yii::$app->session->get('contentHighlight');
             if ($highlight !== null && $highlight !== '') {
                 Yii::$app->session->remove('contentHighlight');
