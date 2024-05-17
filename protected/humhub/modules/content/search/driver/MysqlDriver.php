@@ -137,11 +137,11 @@ class MysqlDriver extends AbstractDriver
     {
         $againstQuery = '';
 
-        foreach ($query->terms as $keyword) {
-            $againstQuery .= '+' . $this->prepareKeyword($keyword) . ' ';
+        foreach ($query->terms as $term) {
+            $againstQuery .= '+' . $this->prepareTerm($term) . ' ';
         }
-        foreach ($query->notTerms as $keyword) {
-            $againstQuery .= '-' . $this->prepareKeyword($keyword) . ' ';
+        foreach ($query->notTerms as $term) {
+            $againstQuery .= '-' . $this->prepareTerm($term) . ' ';
         }
 
         return sprintf(
@@ -151,10 +151,10 @@ class MysqlDriver extends AbstractDriver
         );
     }
 
-    protected function prepareKeyword(string $keyword): string
+    protected function prepareTerm(string $term): string
     {
         // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
-        return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $keyword) ? '"' . $keyword . '"' : $keyword;
+        return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $term) ? '"' . $term . '"' : $term;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery

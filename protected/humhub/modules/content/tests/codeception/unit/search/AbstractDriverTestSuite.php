@@ -48,18 +48,14 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru" Tes')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('"Marabr" Test')->results);
-        if ($this->searchDriver instanceof MysqlDriver) {
-            $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru Leav" "Leav Test"')->results);
-            $this->assertCount(1, $this->getSearchResultByKeyword('"Something Other"')->results);
-        }
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru Leav" "Leav Test"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Something Other"')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('Some Test')->results);
         $this->assertCount(1, $this->getSearchResultByKeyword('Some -Test')->results);
 
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav')->results);
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav NOT Abcd')->results);
-        if ($this->searchDriver instanceof MysqlDriver) {
-            $this->assertCount(0, $this->getSearchResultByKeyword('Marabru -Leav')->results);
-        }
+        $this->assertCount(0, $this->getSearchResultByKeyword('Marabru -Leav')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('Marabru Leav +Abcd')->results);
 
