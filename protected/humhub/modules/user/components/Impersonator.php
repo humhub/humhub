@@ -18,6 +18,7 @@ use yii\base\Behavior;
  * @since 1.10
  * @property-read UserModel|null $impersonator Admin user who impersonate the current User
  * @property-read bool $isImpersonated Whether this user is impersonated by admin currently. This property is read-only.
+ * @property-write bool $isImpersonatedViaRest Sets Whether user is impersonated via REST api. This property is write-only.
  * @author luke
  */
 class Impersonator extends Behavior
@@ -26,6 +27,8 @@ class Impersonator extends Behavior
      * @var User
      */
     public $owner;
+
+    protected bool $_isImpersonatedViaRest = false;
 
     /**
      * Determines if the current user can impersonate the given user.
@@ -47,7 +50,12 @@ class Impersonator extends Behavior
      */
     public function getIsImpersonated(): bool
     {
-        return $this->getImpersonator() !== null;
+        return $this->_isImpersonatedViaRest || $this->getImpersonator() !== null;
+    }
+
+    public function setIsImpersonatedViaRest($isImpersonatedViaRest = true)
+    {
+        $this->_isImpersonatedViaRest = $isImpersonatedViaRest;
     }
 
     /**
