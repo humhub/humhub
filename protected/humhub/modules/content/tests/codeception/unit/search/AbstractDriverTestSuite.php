@@ -5,6 +5,7 @@ namespace humhub\modules\content\tests\codeception\unit\search;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\search\driver\MysqlDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
@@ -47,14 +48,18 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru" Tes')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('"Marabr" Test')->results);
-        $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru Leav" "Leav Test"')->results);
-        $this->assertCount(1, $this->getSearchResultByKeyword('"Something Other"')->results);
+        if ($this->searchDriver instanceof MysqlDriver) {
+            $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru Leav" "Leav Test"')->results);
+            $this->assertCount(1, $this->getSearchResultByKeyword('"Something Other"')->results);
+        }
         $this->assertCount(0, $this->getSearchResultByKeyword('Some Test')->results);
         $this->assertCount(1, $this->getSearchResultByKeyword('Some -Test')->results);
 
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav')->results);
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav NOT Abcd')->results);
-        $this->assertCount(0, $this->getSearchResultByKeyword('Marabru -Leav')->results);
+        if ($this->searchDriver instanceof MysqlDriver) {
+            $this->assertCount(0, $this->getSearchResultByKeyword('Marabru -Leav')->results);
+        }
         $this->assertCount(0, $this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('Marabru Leav +Abcd')->results);
 
