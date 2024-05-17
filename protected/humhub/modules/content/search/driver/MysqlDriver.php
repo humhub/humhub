@@ -137,15 +137,8 @@ class MysqlDriver extends AbstractDriver
     {
         $againstQuery = '';
 
-        foreach ($query->andTerms as $keyword) {
-            if (strlen(rtrim($keyword, '*')) < $this->minAndTermLength) {
-                $againstQuery .= $this->prepareKeyword($keyword) . ' ';
-            } else {
-                $againstQuery .= '+' . $this->prepareKeyword($keyword) . ' ';
-            }
-        }
-        foreach ($query->orTerms as $keyword) {
-            $againstQuery .= $this->prepareKeyword($keyword) . ' ';
+        foreach ($query->terms as $keyword) {
+            $againstQuery .= '+' . $this->prepareKeyword($keyword) . ' ';
         }
         foreach ($query->notTerms as $keyword) {
             $againstQuery .= '-' . $this->prepareKeyword($keyword) . ' ';
@@ -161,7 +154,7 @@ class MysqlDriver extends AbstractDriver
     protected function prepareKeyword(string $keyword): string
     {
         // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
-        return preg_match('#[\s@<>~%\(\)\$/’\']#', $keyword) ? '"' . $keyword . '"' : $keyword;
+        return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $keyword) ? '"' . $keyword . '"' : $keyword;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery

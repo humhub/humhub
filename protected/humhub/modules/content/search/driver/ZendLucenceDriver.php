@@ -162,11 +162,8 @@ class ZendLucenceDriver extends AbstractDriver
         Wildcard::setMinPrefixLength(0);
 
         $keywordQuery = new Boolean();
-        foreach ($request->getSearchQuery()->orTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), null);
-        }
 
-        foreach ($request->getSearchQuery()->andTerms as $term) {
+        foreach ($request->getSearchQuery()->terms as $term) {
             $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term))), true);
         }
 

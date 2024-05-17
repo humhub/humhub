@@ -45,22 +45,23 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Something Other']))->save();
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
-        // Test Multiple AND Keywords
-        #$this->assertCount(1, $this->getSearchResultByKeyword('Marabru')->results);
-
         $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru" Tes')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('"Marabr" Test')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru Leav" "Leav Test"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Something Other"')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('Some Test')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Some -Test')->results);
 
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav')->results);
-        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav OR Abcd')->results);
-        $this->assertCount(2, $this->getSearchResultByKeyword('OR Marabru OR Something')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav NOT Abcd')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('Marabru -Leav')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('Marabru Leav +Abcd')->results);
 
         $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marabru')->results);
         $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marab')->results);
 
-        // Wildcards
+        // Wildcards (it is applied automatically even if the char `*` is not typed)
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabr*')->results);
     }
 
