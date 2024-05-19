@@ -17,8 +17,7 @@ use yii\base\Behavior;
  *
  * @since 1.10
  * @property-read UserModel|null $impersonator Admin user who impersonate the current User
- * @property-read bool $isImpersonated Whether this user is impersonated by admin currently. This property is read-only.
- * @property-write bool $isImpersonatedViaRest Sets Whether user is impersonated via REST api. This property is write-only.
+ * @property bool $isImpersonated Whether this user is impersonated by admin currently.
  * @author luke
  */
 class Impersonator extends Behavior
@@ -28,7 +27,7 @@ class Impersonator extends Behavior
      */
     public $owner;
 
-    protected bool $_isImpersonatedViaRest = false;
+    protected bool $impersonated = false;
 
     /**
      * Determines if the current user can impersonate the given user.
@@ -50,12 +49,12 @@ class Impersonator extends Behavior
      */
     public function getIsImpersonated(): bool
     {
-        return $this->_isImpersonatedViaRest || $this->getImpersonator() !== null;
+        return $this->impersonated || $this->getImpersonator() !== null;
     }
 
-    public function setIsImpersonatedViaRest($isImpersonatedViaRest = true)
+    public function setIsImpersonated($impersonated)
     {
-        $this->_isImpersonatedViaRest = $isImpersonatedViaRest;
+        $this->impersonated = $impersonated;
     }
 
     /**
@@ -95,6 +94,7 @@ class Impersonator extends Behavior
         }
 
         Yii::$app->session->set('impersonator', $this->owner->getIdentity());
+        $this->impersonated = true;
         $this->owner->switchIdentity($user);
 
         return true;
@@ -112,6 +112,7 @@ class Impersonator extends Behavior
         }
 
         Yii::$app->session->remove('impersonator');
+        $this->impersonated = false;
         $this->owner->switchIdentity($impersonator);
 
         return true;
