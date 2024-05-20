@@ -24,6 +24,7 @@ HumHub Changelog
 - Enh #6992: Improve handle database connection errors
 - Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
 - Fix #7004: Fix people filter by group
+- Enh #7010: Rich text tables: Vertical align top instead of middle
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
