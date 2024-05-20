@@ -492,4 +492,30 @@ class NotificationManager
         return $result;
     }
 
+    /**
+     * Check if notifications are sent from the given Space to the given or current user
+     *
+     * @param Space $space
+     * @param User|null $user
+     * @return bool
+     * @since 1.15.6
+     */
+    public function hasSpace(Space $space, User $user = null): bool
+    {
+        if ($user === null) {
+            if (Yii::$app->user->isGuest) {
+                return false;
+            }
+            $user = Yii::$app->user->getIdentity();
+        }
+
+        foreach (self::getSpaces($user) as $notificationSpace) {
+            if ($space->is($notificationSpace)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
 }

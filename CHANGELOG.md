@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.6 (Unreleased)
+--------------------
+- Fix #7005: Fix flag of new content notification space
+
 1.15.5 (May 8, 2024)
 --------------------
 - Enh #6899: Fix a missed module config file
