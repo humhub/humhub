@@ -94,7 +94,7 @@ class RegistrationController extends Controller
         }
 
         if ($registration->submitted('save') && $registration->validate()) {
-            $existingUser = User::findIdentity($registration->getUser()->email);
+            $existingUser = User::findOne(['email' => $registration->getUser()->email]);
 
             if ($existingUser) {
                 // Log in the existing user
