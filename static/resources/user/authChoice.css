@@ -25,12 +25,12 @@
     background-color: #FFF;
 }
 
-.authChoiceMore {
+.auth-choice-more-buttons {
     display:none;
     padding-top:6px;
 }
 
-.authChoiceMore a {
+.auth-choice-more-buttons a {
     margin-top:6px !important;
 } 
 
@@ -38,7 +38,7 @@
     padding-right:7px;
 }
 
-#btnAuthChoiceMore i {
+.btn-auth-choice-more i {
     padding-right:0px;
 }
 

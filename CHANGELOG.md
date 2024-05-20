@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.15.6 (TBA)
+------------
+- Fix #7013: Opening more auth clients 
+
 1.15.5 (May 8, 2024)
 --------------------
 - Enh #6899: Fix a missed module config file
