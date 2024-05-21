@@ -25,6 +25,7 @@ HumHub Changelog
 - Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
 - Fix #7006: Disable `mustChangePassword` check for impersonated access tokens
 - Fix #7004: Fix people filter by group
+- Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
 - Fix #7011: Fixed performance issue in `Members::getPrivilegedUserIds`
 - Enh #7010: Rich text tables: Vertical align top instead of middle
 - Enh #5310: Mobile - Zooming into pictures
