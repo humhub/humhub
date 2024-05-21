@@ -16,14 +16,17 @@ use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
 use humhub\widgets\LayoutAddons;
-use yii\helpers\ArrayHelper;
 use Yii;
+use yii\helpers\ArrayHelper;
 
 /**
  * Class View
  *
  * @property Theme $theme the Theme component
  * @property ViewMeta $meta The View Meta Service
+ * @property-write mixed $viewContext
+ * @property-read string $sidebar
+ * @property-read string $pageTitle
  *
  * @inheritdoc
  */
