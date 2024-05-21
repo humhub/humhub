@@ -11,6 +11,7 @@ At least PHP 8.0 is required with this version.
 #### Removed
 - `\humhub\modules\search\*` The existing search module was removed and the related features merged
   into the 'content', 'user' and 'space' modules.
+- `\humhub\modules\user\models\User::getSearchAttributes()` and `\humhub\modules\space\models\Space::getSearchAttributes()`
 
 ### Behaviour change
 - New Meta Search API
