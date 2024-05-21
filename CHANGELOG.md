@@ -4,6 +4,7 @@ HumHub Changelog
 1.15.6 (Unreleased)
 --------------------
 - Fix #7005: Fix flag of new content notification space
+- Fix #7013: Opening more auth clients 
 
 1.15.5 (May 8, 2024)
 --------------------
