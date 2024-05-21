@@ -28,6 +28,7 @@ HumHub Changelog
 - Fix #7011: Fixed performance issue in `Members::getPrivilegedUserIds`
 - Enh #7010: Rich text tables: Vertical align top instead of middle
 - Enh #5310: Mobile - Zooming into pictures
+- Fix #7017: Fix content search order after restoring from cache
 - Fix: No token (query) or authclient (session) found
 
 1.16.0-beta.2 (April 9, 2024)
