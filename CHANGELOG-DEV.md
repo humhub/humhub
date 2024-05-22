@@ -31,6 +31,7 @@ HumHub Changelog
 - Enh #5310: Mobile - Zooming into pictures
 - Fix #7017: Fix content search order after restoring from cache
 - Fix #7021: Image cropping: prevent vertical images from being displayed higher than the browser window
+- Fix #7007: Allow resetting of people filters
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
