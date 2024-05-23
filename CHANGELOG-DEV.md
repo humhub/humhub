@@ -30,7 +30,11 @@ HumHub Changelog
 - Enh #7010: Rich text tables: Vertical align top instead of middle
 - Enh #5310: Mobile - Zooming into pictures
 - Fix #7017: Fix content search order after restoring from cache
-- Enh #7019: Use LESS variables instead of hard-coded colors in search.less
+- Enh #7019: Use LESS variables instead of hard-coded colors in LESS files
+- Fix #7021: Image cropping: prevent vertical images from being displayed higher than the browser window
+- Fix #7007: Allow resetting of people filters
+- Fix #7023: Fix `Unsupported configuration type: object` Exception when running `php yii` on fresh installation
+- Fix #7025: Fix empty password
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
