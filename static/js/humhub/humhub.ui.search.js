@@ -2,6 +2,7 @@ humhub.module('ui.search', function(module, require, $) {
     const client = require('client');
     const loader = require('ui.loader');
     const Widget = require('ui.widget').Widget;
+    const highlightWords = require('ui.additions').highlightWords;
 
     const Search = Widget.extend();
 
@@ -305,7 +306,7 @@ humhub.module('ui.search', function(module, require, $) {
                 provider.replaceWith(newProviderContent);
                 const records = newProviderContent.find(that.selectors.providerRecord);
                 if (records.length) {
-                    records.find(that.selectors.providerRecordText).highlight(data.keyword);
+                    highlightWords(records.find(that.selectors.providerRecordText), data.keyword);
                 } else if (newProviderContent.data('hide-on-empty') !== undefined) {
                     newProviderContent.hide();
                 }

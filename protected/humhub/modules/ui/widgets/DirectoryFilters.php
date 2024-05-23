@@ -129,6 +129,11 @@ abstract class DirectoryFilters extends Widget
             case 'dropdownlist':
                 $inputOptions['data-action-change'] = 'cards.applyFilters';
                 $inputOptions['options'] = ['separator' => ['disabled' => '']];
+                if (isset($data['options'][''])) {
+                    // Enable the reset feature if this filter has an empty value option
+                    $inputOptions['data-allow-clear'] = 'true';
+                    $inputOptions['data-placeholder'] = '';
+                }
                 $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
                 break;
 

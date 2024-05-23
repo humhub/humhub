@@ -89,7 +89,7 @@ class PeopleFilterPicker extends BasePicker
 
         $result = [];
         foreach ($this->selection as $item) {
-            if (!$item) {
+            if ($item === '' || $item === null) {
                 continue;
             }
 

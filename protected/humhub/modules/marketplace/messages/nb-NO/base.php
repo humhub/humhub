@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Tredjeparts ansvarsfraskrivelse',
   'This Module was developed by a third-party.' => '',
   'Try other keywords or remove filters.' => '',
-  'Uninstalled' => '',
+  'Not Installed' => '',
   'Update' => 'Oppdater',
   'Update all' => '',
   'Update successful' => 'Oppdatering vellykket',

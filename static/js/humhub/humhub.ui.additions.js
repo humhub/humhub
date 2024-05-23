@@ -297,6 +297,27 @@ humhub.module('ui.additions', function (module, require, $) {
         });
     };
 
+    var highlightWords = function (node, words) {
+        var $node = node instanceof $ ? node : $(node);
+        if (!$node.length || typeof($node.highlight) !== 'function') {
+            return;
+        }
+
+        if (typeof words === 'string' && words !== '') {
+            words = words.split(/[^\p{Script=Latin}\d\-’']+/u)
+        }
+        if (!Array.isArray(words)) {
+            return;
+        }
+
+        words.forEach(function (word) {
+            word = word.replace(/^([^a-z\d]*)(.+?)([^a-z\d]*)$/i, '$2');
+            $node.highlight(word);
+            word.indexOf("'") > -1 && $node.highlight(word.replace("'", '’'));
+            word.indexOf("’") > -1 && $node.highlight(word.replace('’', "'"));
+        });
+    };
+
     var observe = function (node, options) {
         if (object.isBoolean(options)) {
             options = {applyOnInit: options};
@@ -338,7 +359,8 @@ humhub.module('ui.additions', function (module, require, $) {
         extend: extend,
         register: register,
         switchButtons: switchButtons,
-        highlight: highlight
+        highlight: highlight,
+        highlightWords: highlightWords,
     });
 });
 

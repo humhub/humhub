@@ -6,12 +6,11 @@ use humhub\models\forms\CropProfileImage;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\ActiveForm;
-
 use humhub\modules\ui\view\components\View;
+use humhub\modules\ui\widgets\CropImage;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Html;
-use raoul2000\jcrop\JCropWidget;
 use yii\helpers\Json;
 
 /* @var $this View */
@@ -65,12 +64,17 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
         #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
             opacity: 0
         }
+
+        #cropimage > .jcrop-holder {
+            left: 50%;
+            transform: translateX(-50%);
+        }
     </style>
 
     <div id="cropimage" style="overflow:hidden;">
         <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
-        <?= JCropWidget::widget([
+        <?= CropImage::widget([
             'selector' => '#crop-profile-image',
             'pluginOptions' => $model->getPluginOptions(),
         ]); ?>

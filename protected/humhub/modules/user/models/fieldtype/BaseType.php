@@ -410,4 +410,49 @@ class BaseType extends Model
     public function loadDefaults(Profile $profile)
     {
     }
+
+    /**
+     * Validate options which must be as associative array with format Key=>Value
+     *
+     * @param string $attribute
+     * @return void
+     */
+    public function validateListOptions(string $attribute): void
+    {
+        if (!is_string($this->$attribute) || $this->$attribute === '') {
+            return;
+        }
+
+        foreach (preg_split('/[\r\n]+/', $this->$attribute) as $option) {
+            if (strpos($option, '=>') === false) {
+                $this->addError($attribute, Yii::t('UserModule.profile', 'Each line must be formatted as Key=>Value!'));
+                return;
+            }
+        }
+    }
+
+    /**
+     * Returns a list of possible options
+     *
+     * @return array
+     */
+    public function getSelectItems(): array
+    {
+        $items = [];
+
+        if (!isset($this->options) || !is_string($this->options)) {
+            return $items;
+        }
+
+        foreach (preg_split('/[\r\n]+/', $this->options) as $option) {
+            if (strpos($option, '=>') !== false) {
+                list($key, $value) = explode('=>', $option, 2);
+                $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
+            } else {
+                $items[trim($option)] = Yii::t($this->profileField->getTranslationCategory(), trim($option));
+            }
+        }
+
+        return $items;
+    }
 }

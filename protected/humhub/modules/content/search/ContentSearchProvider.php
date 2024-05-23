@@ -77,11 +77,12 @@ class ContentSearchProvider implements MetaSearchProviderInterface
         $resultSet = $module->getSearchDriver()->search(new SearchRequest([
             'keyword' => $this->getKeyword(),
             'pageSize' => $maxResults,
+            'orderBy' => SearchRequest::ORDER_BY_SCORE,
         ]));
 
         $results = [];
         foreach ($resultSet->results as $content) {
-            $results[] = new SearchRecord($content);
+            $results[] = new SearchRecord($content, $this->getKeyword());
         }
 
         return [

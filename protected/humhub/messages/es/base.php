@@ -15,7 +15,7 @@ return array (
   'An unexpected error occurred. If this keeps happening, please contact a site administrator.' => 'Ocurrió un error inesperado. Si esto sigue sucediendo, póngase en contacto con un administrador del sitio.',
   'An unexpected error occurred. Please check whether your file exceeds the allowed upload limit of {maxUploadSize}.' => 'Se ha producido un error inesperado. Por favor compruebe si su fichero excede el límite de {maxUploadSize}.',
   'An unexpected server error occurred. If this keeps happening, please contact a site administrator.' => 'Se ha producido un error inesperado en el servidor. Si esto sigue sucediendo, póngase en contacto con un administrador del sitio.',
-  'Back' => 'Atrás',
+  'Back' => 'Volver',
   'Back to dashboard' => 'Volver al Panel de Control',
   'Cancel' => 'Cancelar',
   'Choose language:' => 'Escoja idioma:',

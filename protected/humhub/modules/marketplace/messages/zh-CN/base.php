@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => '第三方申明',
   'This Module was developed by a third-party.' => '',
   'Try other keywords or remove filters.' => '',
-  'Uninstalled' => '',
+  'Not Installed' => '',
   'Update' => '更新',
   'Update all' => '',
   'Update successful' => '',

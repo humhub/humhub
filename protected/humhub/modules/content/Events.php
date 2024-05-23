@@ -17,7 +17,6 @@ use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\user\events\UserEvent;
 use Yii;
 use yii\base\BaseObject;
-use yii\console\Controller;
 use yii\helpers\Console;
 
 /**
@@ -142,7 +141,6 @@ class Events extends BaseObject
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
     }
-
 
     private static function canPublishScheduledContent(): bool
     {

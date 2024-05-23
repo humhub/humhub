@@ -114,12 +114,12 @@ class Events extends BaseObject
 
             try {
                 if ($follow->getTarget() === null) {
-                    if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model. ' #' . $follow->object_id . '!')) {
+                    if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model . ' #' . $follow->object_id . '!')) {
                         $follow->delete();
                     }
                 }
             } catch (Exception $e) {
-                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model. ' #' . $follow->object_id . '!')) {
+                if ($integrityController->showFix('Deleting follow ' . $follow->id . ' of non target ' . $follow->object_model . ' #' . $follow->object_id . '!')) {
                     $follow->delete();
                 }
             }

@@ -7,8 +7,32 @@ HumHub Changelog
 - Fix #6909: Fix the marketplace searching when a module config file has missed fields
 - Enh #6920: Enhancing of meta search for advanced search providers
 - Enh #6952: Improve container title encoding in header
-- Fix #6954: Search out of viewport on mobile 
-
+- Fix #6954: Search out of viewport on mobile
+- Enh #6950: Ability to reset some notification settings to all users without resetting "Like" notifications by email
+- Fix #6954: Search out of viewport on mobile
+- Fix #6962: People filter - Hide follower options if Following is disabled in the User module
+- Fix #6961: Fix people dropdown filter without defined keys
+- Fix #6967: Use same order for meta searching that is used for content page searching by default
+- Enh #6968: Meta search: open external links in new window
+- Fix #6970: MultiSelect loads wrong options (since #6768 in 1.16.0-beta.1)
+- Enh #6974: Highlight a content searching keyword on show more comments
+- Enh #6971: Meta search: Highlight keyword in single content view
+- Fix #6977: Index sub comments for searching
+- Fix #6978: Fix module enabling from marketplace
+- Enh #6984: In forms, change checkbox style to match other input types
+- Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
+- Enh #6992: Improve handle database connection errors
+- Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
+- Fix #7006: Disable `mustChangePassword` check for impersonated access tokens
+- Fix #7004: Fix people filter by group
+- Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
+- Fix #7011: Fixed performance issue in `Members::getPrivilegedUserIds`
+- Enh #7010: Rich text tables: Vertical align top instead of middle
+- Enh #5310: Mobile - Zooming into pictures
+- Fix #7017: Fix content search order after restoring from cache
+- Fix #7021: Image cropping: prevent vertical images from being displayed higher than the browser window
+- Fix #7007: Allow resetting of people filters
+- Fix #7023: Fix `Unsupported configuration type: object` Exception when running `php yii` on fresh installation
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
@@ -18,6 +42,7 @@ HumHub Changelog
 - Enh #6757: Allow changing visibility of global content
 - Fix #5419: Lock search index while reindexing
 - Fix #5629: Better handling of legacy configuration file options for disabled non-core modules
+- Enh #6976: Migrate to PhpSpreadsheet 2.0
 
 1.16.0-beta.1 (April 5, 2024)
 -----------------------------
@@ -101,4 +126,4 @@ HumHub Changelog
 - Enh #6147: New space service `MemberListService`
 - Enh #6487: Remove general setting "Server Timezone"
 - Enh #6552: Allow module initializing on each loading
-- Fix #6768 MultiSelect when empty selection is given
+- Fix #6768: MultiSelect when empty selection is given

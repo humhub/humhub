@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'سلب مسئولیت در قبال توسعه‌دهندگان دیگر',
   'This Module was developed by a third-party.' => '',
   'Try other keywords or remove filters.' => '',
-  'Uninstalled' => '',
+  'Not Installed' => '',
   'Update' => 'به‌روزرسانی',
   'Update all' => '',
   'Update successful' => '',

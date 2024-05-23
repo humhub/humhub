@@ -630,7 +630,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         if ($move === true) {
             static::getDb()->transaction(function ($db) use ($container) {
                 $this->setContainer($container);
-                if ($this->save()) {
+                if ($this->updateAttributes(['contentcontainer_id', 'visibility'])) {
                     ContentTag::deleteContentRelations($this, false);
                     $model = $this->getModel();
                     $model->populateRelation('content', $this);

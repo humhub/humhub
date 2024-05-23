@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Odricanje treće strane',
   'This Module was developed by a third-party.' => 'Ovaj je modul razvila treća strana.',
   'Try other keywords or remove filters.' => 'Probaj ostale ključne reči ili ukloni filtere',
-  'Uninstalled' => 'Deinstalirano',
+  'Not Installed' => '',
   'Update' => 'Ažuriranje',
   'Update all' => 'Osveži sve',
   'Update successful' => 'Ažuriranje uspješno',

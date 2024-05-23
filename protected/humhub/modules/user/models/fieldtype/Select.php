@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 
 /**
- * ProfileFieldTypeSelect handles numeric profile fields.
+ * Select handles profile select list fields.
  *
  * @package humhub.modules_core.user.models
  * @since 0.5
@@ -49,7 +49,7 @@ class Select extends BaseType
     public function rules()
     {
         return [
-            [['options'], 'safe'],
+            [['options'], 'validateListOptions'],
         ];
     }
 
@@ -68,7 +68,7 @@ class Select extends BaseType
                     'options' => [
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Possible values'),
-                        'class' => 'form-control',
+                        'class' => 'form-control autosize',
                         'hint' => Yii::t('UserModule.profile', 'One option per line. Key=>Value Format (e.g. yes=>Yes)'),
                     ],
                 ],
@@ -110,28 +110,6 @@ class Select extends BaseType
             'items' => $this->getSelectItems(),
             'prompt' => Yii::t('UserModule.profile', 'Please select:'),
         ], $options));
-    }
-
-    /**
-     * Returns a list of possible options
-     *
-     * @return array
-     */
-    public function getSelectItems()
-    {
-        $items = [];
-
-        foreach (explode("\n", $this->options) as $option) {
-
-            if (strpos($option, "=>") !== false) {
-                list($key, $value) = explode("=>", $option);
-                $items[trim($key)] = Yii::t($this->profileField->getTranslationCategory(), trim($value));
-            } else {
-                $items[] = $option;
-            }
-        }
-
-        return $items;
     }
 
     /**

@@ -131,7 +131,7 @@ The license was successfully removed!
     'Stop updating' => '',
     'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => '',
     'Third-party Modules are not covered by Professional Edition agreements.' => '',
-    'Uninstalled' => '',
+    'Not Installed' => '',
     'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => '',
     'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?' => '',
     'Well done! You have successfully installed and enabled the module!' => '',

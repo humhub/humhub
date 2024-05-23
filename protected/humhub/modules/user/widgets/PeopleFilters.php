@@ -82,19 +82,23 @@ class PeopleFilters extends DirectoryFilters
         // Connection
         $connectionOptions = [
             '' => Yii::t('UserModule.base', 'All'),
-            'followers' => Yii::t('UserModule.base', 'Followers'),
-            'following' => Yii::t('UserModule.base', 'Following'),
         ];
+        if (!Yii::$app->getModule('user')->disableFollow) {
+            $connectionOptions['followers'] = Yii::t('UserModule.base', 'Followers');
+            $connectionOptions['following'] = Yii::t('UserModule.base', 'Following');
+        }
         if (Yii::$app->getModule('friendship')->settings->get('enable')) {
             $connectionOptions['friends'] = Yii::t('UserModule.base', 'Friends');
             $connectionOptions['pending_friends'] = Yii::t('UserModule.base', 'Pending Requests');
         }
-        $this->addFilter('connection', [
-            'title' => Yii::t('SpaceModule.base', 'Status'),
-            'type' => 'dropdown',
-            'options' => $connectionOptions,
-            'sortOrder' => 400,
-        ]);
+        if (count($connectionOptions) > 1) {
+            $this->addFilter('connection', [
+                'title' => Yii::t('SpaceModule.base', 'Status'),
+                'type' => 'dropdown',
+                'options' => $connectionOptions,
+                'sortOrder' => 400,
+            ]);
+        }
 
         // Profile fields
         $profileFields = ProfileField::find()
@@ -169,6 +173,7 @@ class PeopleFilters extends DirectoryFilters
                 ->leftJoin('group_user AS fgu', 'fgu.user_id = user.id')
                 ->leftJoin('group', 'fgu.group_id = group.id')
                 ->select(['group.id', 'group.name'])
+                ->andWhere(['show_at_directory' => 1])
                 ->andWhere(['IS NOT', 'group.id', new Expression('NULL')])
                 ->offset(null)
                 ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])

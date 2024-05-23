@@ -17,6 +17,7 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
     var content = require('content');
     var Url = require('ui.filter').Url;
     var Widget = require('ui.widget').Widget;
+    var highlightWords = require('ui.additions').highlightWords;
 
     /**
      * Simple stream component can be used for static streams without load logic (only reload single content).
@@ -58,7 +59,7 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
                 widgets.on('afterInit', function() {
                     if (!$(this).data('isHighlighted')) {
                         $(this).data('isHighlighted', true);
-                        that.highlightInput.val().split(' ').forEach((keyword) => $(this).highlight(keyword));
+                        highlightWords(this, that.highlightInput.val());
                     }
                 });
             }

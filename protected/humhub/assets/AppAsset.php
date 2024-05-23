@@ -10,6 +10,7 @@ namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\content\assets\ContentAsset;
+use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\file\assets\FileAsset;
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap\BootstrapPluginAsset;
@@ -83,6 +84,7 @@ class AppAsset extends WebStaticAssetBundle
          */
         CoreApiAsset::class,
         ContentAsset::class,
+        ContentHighlightAsset::class,
         FileAsset::class,
     ];
 
