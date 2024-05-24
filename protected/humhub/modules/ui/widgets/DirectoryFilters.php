@@ -132,7 +132,7 @@ abstract class DirectoryFilters extends Widget
                 if (isset($data['options'][''])) {
                     // Enable the reset feature if this filter has an empty value option
                     $inputOptions['data-allow-clear'] = 'true';
-                    $inputOptions['data-placeholder'] = '';
+                    $inputOptions['data-placeholder'] = Yii::t('UiModule.base', 'Select');
                 }
                 $inputHtml = Html::dropDownList($filter, self::getValue($filter), $data['options'], $inputOptions);
                 break;
