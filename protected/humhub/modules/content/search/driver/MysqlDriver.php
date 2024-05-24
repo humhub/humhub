@@ -25,13 +25,13 @@ use yii\db\Expression;
 class MysqlDriver extends AbstractDriver
 {
     /**
-     * Minimum word length for "And Terms",
-     * Words with less length are handled as "Or Terms"
+     * Minimum term length,
+     * Skip terms with less length because it ignores records even if contains other long term
      * NOTE: Using of the config value mysql.ft_min_word_len doesn't work properly.
      *
-     * @var int $minAndTermLength
+     * @var int $minTermLength
      */
-    public int $minAndTermLength = 3;
+    public int $minTermLength = 3;
 
     public function purge(): void
     {
@@ -138,10 +138,14 @@ class MysqlDriver extends AbstractDriver
         $againstQuery = '';
 
         foreach ($query->terms as $term) {
-            $againstQuery .= '+' . $this->prepareTerm($term) . ' ';
+            if (strlen($term) >= $this->minTermLength) {
+                $againstQuery .= '+' . $this->prepareTerm($term) . ' ';
+            }
         }
         foreach ($query->notTerms as $term) {
-            $againstQuery .= '-' . $this->prepareTerm($term) . ' ';
+            if (strlen($term) >= $this->minTermLength) {
+                $againstQuery .= '-' . $this->prepareTerm($term) . ' ';
+            }
         }
 
         return sprintf(
