@@ -20,6 +20,7 @@ HumHub Changelog
 - Fix #6977: Index sub comments for searching
 - Fix #6978: Fix module enabling from marketplace
 - Enh #6984: In forms, change checkbox style to match other input types
+- Enh #6990: Unifying positions of button on modals for consistency and better UX
 - Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
 - Enh #6992: Improve handle database connection errors
 - Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
