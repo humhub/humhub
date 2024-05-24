@@ -24,7 +24,7 @@ class m240203_112155_search extends Migration
         $this->safeAddForeignKey('fk_content_fulltext', 'content_fulltext', 'content_id', 'content', 'id', 'CASCADE', 'CASCADE');
 
         try {
-            $this->execute("ALTER TABLE content_fulltext ADD FULLTEXT INDEX ftx (contents ASC, comments ASC, files ASC)");
+            $this->execute('ALTER TABLE content_fulltext ADD FULLTEXT INDEX ftx (contents, comments, files)');
 
             Yii::$app->queue->push(new SearchRebuildIndex());
 

@@ -9,6 +9,7 @@ namespace humhub\modules\content\assets;
 
 use humhub\components\assets\AssetBundle;
 use Yii;
+use yii\web\Application;
 
 class ContentHighlightAsset extends AssetBundle
 {
@@ -27,14 +28,16 @@ class ContentHighlightAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public static function register($view)
+    public function init()
     {
-        $highlight = Yii::$app->session->get('contentHighlight');
-        if ($highlight !== null && $highlight !== '') {
-            Yii::$app->session->remove('contentHighlight');
-            $view->registerJsConfig('content.highlight', ['keyword' => $highlight]);
-        }
+        parent::init();
 
-        return parent::register($view);
+        if (Yii::$app instanceof Application && Yii::$app->isInstalled()) {
+            $highlight = Yii::$app->session->get('contentHighlight');
+            if ($highlight !== null && $highlight !== '') {
+                Yii::$app->session->remove('contentHighlight');
+                Yii::$app->view->registerJsConfig('content.highlight', ['keyword' => $highlight]);
+            }
+        }
     }
 }

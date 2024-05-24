@@ -175,7 +175,8 @@ var humhub = humhub || (function ($) {
                         if (typeof initOnAjaxUrls === 'object') {
                             var ajaxUrl = new URL('https://domain.tld' + ajaxOptions.url);
                             // Remove all params except `r` param (in case pretty URLs are disabled)
-                            ajaxUrl.searchParams.forEach(function (value, name) {
+                            var searchParamNames = Array.from(ajaxUrl.searchParams.keys());
+                            searchParamNames.forEach(function (name) {
                                 if (name !== 'r') {
                                     ajaxUrl.searchParams.delete(name);
                                 }

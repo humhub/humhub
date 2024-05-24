@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'サードパーティ免責条項',
   'This Module was developed by a third-party.' => 'このモジュールはサードパーティによって開発されました。',
   'Try other keywords or remove filters.' => '他のキーワードを試すかフィルターを削除してください。',
-  'Uninstalled' => 'アンインストール済み',
+  'Not Installed' => '',
   'Update' => 'アップデート',
   'Update all' => 'すべて更新',
   'Update successful' => 'アップデート成功',

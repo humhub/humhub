@@ -1,13 +1,14 @@
 humhub.module('content.highlight', function (module, require, $) {
     const Widget = require('ui.widget').Widget;
     const event = require('event');
+    const highlightWords = require('ui.additions').highlightWords;
 
     const layout = $('.layout-content-container');
 
     const init = function () {
         event.on('humhub:modules:content:highlight:afterInit', () => highlight());
         layout.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]')
-            .on('afterRender', (obj) => highlight($(obj.target)));
+            .on('afterRender', (obj) => highlight(obj.target));
 
         const wallStream = Widget.instance('[data-ui-widget="stream.wall.WallStream"]');
         if (wallStream) {
@@ -20,7 +21,7 @@ humhub.module('content.highlight', function (module, require, $) {
             if (typeof object === 'undefined') {
                 object = layout;
             }
-            module.config.keyword.split(' ').forEach((keyword) => object.highlight(keyword));
+            highlightWords(object, module.config.keyword);
         }
     }
 

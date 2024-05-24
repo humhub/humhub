@@ -1,12 +1,21 @@
 HumHub Changelog
 ================
 
-1.15.5 (Unreleased)
------------------------
+1.15.6 (TBA)
+------------
+- Fix #7013: Opening more auth clients
+- Fix #7024: Automatic mapping of existing AuthClient users failed 
+
+1.15.5 (May 8, 2024)
+--------------------
 - Enh #6899: Fix a missed module config file
 - Fix #6913: Fix API tests
 - Fix #6919: Fix saving of user profile country field value and enable a searching by country title
 - Fix #6919: Migration to revert user profile country names to Iso 3166 codes
+- Fix #6966: Make "Invite new people" always possible for Admins
+- Fix #6969: Create unique index for the table `like` - Avoid counter manipulation (Thanks to @viliald)
+- Fix #6973: Fix wide dropdown on small screens
+- Fix #6869: Display notifications only of published contents
 
 1.15.4 (March 20, 2024)
 -----------------------

@@ -65,7 +65,7 @@ class ModuleFilters extends DirectoryFilters
             'multiple' => true,
             'tags' => [
                 '' => Yii::t('MarketplaceModule.base', 'All'),
-                'uninstalled' => Yii::t('MarketplaceModule.base', 'Uninstalled'),
+                'uninstalled' => Yii::t('MarketplaceModule.base', 'Not Installed'),
                 'professional' => Yii::t('MarketplaceModule.base', 'Professional Edition'),
                 'featured' => Yii::t('MarketplaceModule.base', 'Featured'),
                 'official' => Yii::t('MarketplaceModule.base', 'Official'),

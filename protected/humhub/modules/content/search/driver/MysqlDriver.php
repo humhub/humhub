@@ -24,6 +24,15 @@ use yii\db\Expression;
 
 class MysqlDriver extends AbstractDriver
 {
+    /**
+     * Minimum word length for "And Terms",
+     * Words with less length are handled as "Or Terms"
+     * NOTE: Using of the config value mysql.ft_min_word_len doesn't work properly.
+     *
+     * @var int $minAndTermLength
+     */
+    public int $minAndTermLength = 3;
+
     public function purge(): void
     {
         ContentFulltext::deleteAll();
@@ -128,14 +137,11 @@ class MysqlDriver extends AbstractDriver
     {
         $againstQuery = '';
 
-        foreach ($query->andTerms as $keyword) {
-            $againstQuery .= '+' . rtrim($keyword, '*') . '* ';
+        foreach ($query->terms as $term) {
+            $againstQuery .= '+' . $this->prepareTerm($term) . ' ';
         }
-        foreach ($query->orTerms as $keyword) {
-            $againstQuery .= rtrim($keyword, '*') . '* ';
-        }
-        foreach ($query->notTerms as $keyword) {
-            $againstQuery .= '-' . $keyword . ' ';
+        foreach ($query->notTerms as $term) {
+            $againstQuery .= '-' . $this->prepareTerm($term) . ' ';
         }
 
         return sprintf(
@@ -143,6 +149,12 @@ class MysqlDriver extends AbstractDriver
             implode(', ', $matchFields),
             Yii::$app->db->quoteValue(trim($againstQuery)),
         );
+    }
+
+    protected function prepareTerm(string $term): string
+    {
+        // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
+        return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $term) ? '"' . $term . '"' : $term;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery

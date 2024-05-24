@@ -124,7 +124,7 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Отказ от ответственности за продукты сторонних разработчиков',
   'This Module was developed by a third-party.' => 'Этот модуль был разработан третьей стороной.',
   'Try other keywords or remove filters.' => 'Попробуйте другие ключевые слова или удалите фильтры.',
-  'Uninstalled' => 'Удалено',
+  'Not Installed' => '',
   'Update' => 'Обновить',
   'Update all' => 'Обновить все',
   'Update successful' => 'Обновление успешно выполнено',

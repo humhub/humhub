@@ -24,8 +24,10 @@ use ZendSearch\Lucene\Exception\RuntimeException;
 use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
+use ZendSearch\Lucene\Search\Query\AbstractQuery;
 use ZendSearch\Lucene\Search\Query\Boolean;
 use ZendSearch\Lucene\Search\Query\MultiTerm;
+use ZendSearch\Lucene\Search\Query\Phrase;
 use ZendSearch\Lucene\Search\Query\Range;
 use ZendSearch\Lucene\Search\Query\Term as TermQuery;
 use ZendSearch\Lucene\Search\Query\Wildcard;
@@ -155,6 +157,21 @@ class ZendLucenceDriver extends AbstractDriver
         return $resultSet;
     }
 
+    protected function prepareTerm(string $term): AbstractQuery
+    {
+        $term = mb_strtolower($term);
+
+        if (str_contains($term, ' ')) {
+            return new Phrase(explode(' ', $term));
+        }
+
+        if (str_ends_with($term, '*')) {
+            return new Wildcard(new Term($term));
+        }
+
+        return new TermQuery(new Term($term));
+    }
+
     protected function buildSearchQuery(SearchRequest $request): Boolean
     {
         $query = new Boolean();
@@ -162,16 +179,13 @@ class ZendLucenceDriver extends AbstractDriver
         Wildcard::setMinPrefixLength(0);
 
         $keywordQuery = new Boolean();
-        foreach ($request->getSearchQuery()->orTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), null);
-        }
 
-        foreach ($request->getSearchQuery()->andTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), true);
+        foreach ($request->getSearchQuery()->terms as $term) {
+            $keywordQuery->addSubquery($this->prepareTerm($term), true);
         }
 
         foreach ($request->getSearchQuery()->notTerms as $term) {
-            $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), false);
+            $keywordQuery->addSubquery($this->prepareTerm($term), false);
         }
 
         if (count($keywordQuery->getSubqueries())) {

@@ -69,7 +69,15 @@ class DatabaseHelper
         );
 
         try {
-            $additionalInfo = json_encode([get_class($ex), ...$ex->errorInfo], JSON_THROW_ON_ERROR);
+            $additionalInfo = [get_class($ex)];
+            if (isset($ex->errorInfo)) {
+                if (is_array($ex->errorInfo)) {
+                    $additionalInfo = array_merge($additionalInfo, $ex->errorInfo);
+                } elseif (is_scalar($ex->errorInfo)) {
+                    $additionalInfo[] = $ex->errorInfo;
+                }
+            }
+            $additionalInfo = json_encode($additionalInfo, JSON_THROW_ON_ERROR);
         } catch (\JsonException $e) {
             $additionalInfo = 'N/A';
         }
