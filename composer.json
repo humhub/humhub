@@ -77,7 +77,7 @@
         "xj/yii2-jplayer-widget": "^2.7",
         "yiisoft/yii2": "dev-master",
         "yiisoft/yii2-authclient": "^2.2.0",
-        "yiisoft/yii2-bootstrap": "^2.0.0",
+        "yiisoft/yii2-bootstrap5": "^2.0",
         "yiisoft/yii2-httpclient": "^2.0.0",
         "yiisoft/yii2-imagine": "^2.3.0",
         "yiisoft/yii2-jui": "^2.0.0",

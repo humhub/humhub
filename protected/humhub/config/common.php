@@ -19,6 +19,10 @@ Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
 Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
 Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
+// Bootstrap 5 Migration
+Yii::$classMap['yii\bootstrap\Html'] = '@humhub/compat/bootstrap/Html.php';
+
+
 // Workaround: If OpenSSL extension is not available (#3852)
 if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);
