@@ -35,6 +35,7 @@ HumHub Changelog
 - Fix #7007: Allow resetting of people filters
 - Fix #7023: Fix `Unsupported configuration type: object` Exception when running `php yii` on fresh installation
 - Fix #7025: Fix empty password
+- Enh: Add search tests
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
