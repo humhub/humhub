@@ -138,7 +138,10 @@ class MysqlDriver extends AbstractDriver
         $againstQuery = '';
 
         foreach ($query->terms as $term) {
-            $againstQuery .= '+' . $this->prepareTerm($term) . ' ';
+            if (strlen($term) >= $this->minAndTermLength) {
+                $againstQuery .= '+';// Search with "AND" condition
+            }
+            $againstQuery .= $this->prepareTerm($term) . ' ';
         }
         foreach ($query->notTerms as $term) {
             $againstQuery .= '-' . $this->prepareTerm($term) . ' ';
