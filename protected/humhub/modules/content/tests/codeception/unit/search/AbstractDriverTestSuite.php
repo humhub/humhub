@@ -5,7 +5,6 @@ namespace humhub\modules\content\tests\codeception\unit\search;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
-use humhub\modules\content\search\driver\MysqlDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
@@ -91,7 +90,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         return new SearchRequest();
     }
 
-    private function getSearchResultByKeyword(string $keyword): ResultSet
+    protected function getSearchResultByKeyword(string $keyword): ResultSet
     {
         $request = $this->getSearchRequest();
         $request->keyword = $keyword;
