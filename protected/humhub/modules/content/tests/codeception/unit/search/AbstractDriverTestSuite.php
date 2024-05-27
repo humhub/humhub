@@ -5,6 +5,7 @@ namespace humhub\modules\content\tests\codeception\unit\search;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
@@ -63,6 +64,12 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         // Wildcards (it is applied automatically even if the char `*` is not typed)
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabr*')->results);
+
+        if (!$this->searchDriver instanceof ZendLucenceDriver) {
+            (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://site.com/category/subcat/page/index.html']))->save();
+            $this->assertCount(1, $this->getSearchResultByKeyword('"https://site.com/category/subcat/page/index.html"')->results);
+            $this->assertCount(1, $this->getSearchResultByKeyword('https://site.com/category/subcat/page/index.html')->results);
+        }
     }
 
     public function testShortKeywords()
