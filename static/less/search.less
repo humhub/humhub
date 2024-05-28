@@ -7,13 +7,13 @@
     padding: 0;
     border: none;
     border-radius: 8px;
-    box-shadow: 0 0 8px #CCC;
+    box-shadow: 0 0 8px @background4;
     top: 115%;
 
     .dropdown-header {
         font-size: 20px;
         font-weight: 600;
-        color: #000;
+        color: @text-color-highlight;
         padding: 24px 24px 16px;
         margin: 0;
         flex: 0 0 auto;
@@ -28,7 +28,7 @@
             right: 10px;
             margin-left: -18px;
             border-top-width: 0;
-            border-bottom-color: #CCC;
+            border-bottom-color: @background4;
             top: -8px;
             z-index: 1035;
             &:after {
@@ -40,7 +40,7 @@
                 top: 1px;
                 margin-left: -8px;
                 border-top-width: 0;
-                border-bottom-color: #FFF;
+                border-bottom-color: @background-color-main;
                 z-index: 1035;
             }
         }
@@ -56,8 +56,8 @@
         padding: 0 16px 16px;
         flex: 0 1 auto;
         .dropdown-search-keyword {
-            background: #f8f8f8;
-            border-color: #f3f3f3;
+            background: @background-color-secondary;
+            border-color: @background-color-secondary;
             border-radius: 6px;
             padding-left: 32px;
             font-weight: 500;
@@ -65,8 +65,8 @@
             &:-webkit-autofill:hover,
             &:-webkit-autofill:focus,
             &:-webkit-autofill:active {
-                -webkit-text-fill-color: #777 !important;
-                -webkit-box-shadow: 0 0 0 30px #f8f8f8 inset !important;
+                -webkit-text-fill-color: @text-color-secondary !important;
+                -webkit-box-shadow: 0 0 0 30px @background-color-secondary inset !important;
             }
         }
         .dropdown-search-button {
@@ -76,7 +76,7 @@
             border: 0;
             font-size: 16px;
             font-weight: 600;
-            color: #7A7A7A !important;
+            color: @text-color-secondary !important;
             &:active {
                 box-shadow: none;
             }
@@ -101,7 +101,7 @@
             padding: 8px;
             font-weight: 600;
             font-size: 18px;
-            color: #000;
+            color: @text-color-highlight;
             > span {
                 font-size: 14px;
             }
@@ -126,7 +126,7 @@
                 align-items: center;
                 padding: 8px;
                 &:hover, &:focus {
-                    background: #f8f8f8;
+                    background: @background-color-secondary;
                     border-radius: 3px;
                     outline: none;
                 }
@@ -136,7 +136,7 @@
                     > i.fa {
                         font-size: 25px;
                         color: @info;
-                        background: #F9F9F9;
+                        background: @background-color-secondary;
                         border-radius: 4px;
                         display: flex;
                         align-items: center;
@@ -162,7 +162,7 @@
                         &:last-child { // Description
                             font-size: 12px;
                             font-weight: 400;
-                            color: #555;
+                            color: @text-color-soft;
                         }
                     }
                 }
@@ -176,12 +176,12 @@
             .btn {
                 width: 100%;
                 font-size: 12px;
-                color: #555 !important;
-                background: #F3F3F3;
+                color: @text-color-soft !important;
+                background: @background-color-secondary;
                 border-radius: 4px;
 
                 &:hover, &:active, &:focus {
-                    background: #d7d7d7;
+                    background: @background3;
                     box-shadow: none;
                 }
             }
@@ -196,10 +196,10 @@
 
 .dropdown.search-menu {
     .dropdown-backdrop {
-        background: rgba(0, 0, 0, 0.15);
+        background: fade(@text-color-highlight, 15%);
     }
     &.open #search-menu {
-        background: #FFF;
+        background: @background-color-main;
         border-bottom: 3px solid @info;
         z-index: 1000;
         position: relative;
@@ -221,10 +221,10 @@
 
 // Search results page list:
 .search-results-header {
-    color: #000;
+    color: @text-color-highlight;
     font-size: 12px;
     line-height: 1.5;
     padding: 10px 0 15px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: 1px solid @background3;
 }
