@@ -34,7 +34,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         // Link it to object from Module because it is used in other methods as global,
         // it fixes issue on deleting item from indexing after unpublish a Content
         $this->searchDriver = $module->getSearchDriver();
-        $this->searchDriver->purge();
+//        $this->searchDriver->purge();
 
         parent::_before();
     }
@@ -64,12 +64,6 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         // Wildcards (it is applied automatically even if the char `*` is not typed)
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabr*')->results);
-
-        if (!$this->searchDriver instanceof ZendLucenceDriver) {
-            (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://site.com/category/subcat/page/index.html']))->save();
-            $this->assertCount(1, $this->getSearchResultByKeyword('"https://site.com/category/subcat/page/index.html"')->results);
-            $this->assertCount(1, $this->getSearchResultByKeyword('https://site.com/category/subcat/page/index.html')->results);
-        }
     }
 
     public function testShortKeywords()
@@ -85,6 +79,24 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         // Most search indexes do not index individual letters.
 
+    }
+
+    public function testUrlKeywords()
+    {
+        $space = Space::findOne(['id' => 1]);
+        $this->becomeUser('Admin');
+
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://site.com/home.html']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://site.com/category/subcat/page/index.html']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://web.net/index.php?page=2&from=string']))->save();
+
+        $this->assertCount(1, $this->getSearchResultByKeyword('"https://site.com/category/subcat/page/index.html"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('https://site.com/category/subcat/page/index.html')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('/site.com/category/subcat/')->results);
+        $this->assertCount(2, $this->getSearchResultByKeyword('site.com')->results);
+        $this->assertCount(2, $this->getSearchResultByKeyword('"site.com"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('https://web.net/index.php?page=2&from=string')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"https://web.net/index.php?page=2&from=string"')->results);
     }
 
     private function getSearchRequest(): SearchRequest
