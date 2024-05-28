@@ -34,7 +34,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         // Link it to object from Module because it is used in other methods as global,
         // it fixes issue on deleting item from indexing after unpublish a Content
         $this->searchDriver = $module->getSearchDriver();
-//        $this->searchDriver->purge();
+        $this->searchDriver->purge();
 
         parent::_before();
     }
