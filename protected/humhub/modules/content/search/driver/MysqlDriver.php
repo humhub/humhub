@@ -14,6 +14,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
@@ -53,8 +54,8 @@ class MysqlDriver extends AbstractDriver
             }, $content->tags),
         ) . " \n";
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
-            $record->contents .= $attributeValue . " \n";
+        foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
+            $record->contents .= RichTextToPlainTextConverter::process($attributeValue) . " \n";
         }
 
         $record->comments .= (new ContentSearchService($content))->getCommentsAsText() . " \n";
@@ -138,7 +139,7 @@ class MysqlDriver extends AbstractDriver
         $againstQuery = '';
 
         foreach ($query->terms as $term) {
-            if (strlen($term) >= $this->minAndTermLength) {
+            if (strlen(rtrim($term, '*')) >= $this->minAndTermLength) {
                 $againstQuery .= '+';// Search with "AND" condition
             }
             $againstQuery .= $this->prepareTerm($term) . ' ';

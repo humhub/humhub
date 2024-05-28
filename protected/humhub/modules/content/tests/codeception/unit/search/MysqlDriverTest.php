@@ -58,6 +58,9 @@ class MysqlDriverTest extends AbstractDriverTestSuite
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'a ab abc abcd']))->save();
         $this->assertCount(1, $this->getSearchResultByKeyword('a ab abc abcd')->results);
         $this->assertCount(1, $this->getSearchResultByKeyword('"a ab abc abcd"')->results);
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => '444 55 444']))->save();
+        $this->assertCount(1, $this->getSearchResultByKeyword('444 55 444')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"444 55 444"')->results);
 
         // Special chars
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => '¿fff? ¡ggg! "hhh" \'iiii\' <jjj> : kkk ; lll , mmm . nnn \nnn/ = ooo * ppp + qqq – rrr - (sss) ttt° @ uuu%']))->save();

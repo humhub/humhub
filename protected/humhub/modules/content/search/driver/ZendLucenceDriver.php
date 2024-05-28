@@ -8,6 +8,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
@@ -66,7 +67,7 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
-            $document->addField(Field::unStored($attributeName, $attributeValue));
+            $document->addField(Field::unStored($attributeName, RichTextToPlainTextConverter::process($attributeValue)));
         }
 
         try {
