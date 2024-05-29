@@ -23,4 +23,6 @@ class NotificationAsset extends AssetBundle
     public $js = [
         'js/humhub.notification.js',
     ];
+
+    public $forceCopy = true;
 }

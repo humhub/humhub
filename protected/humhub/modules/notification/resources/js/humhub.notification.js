@@ -329,15 +329,27 @@ humhub.module('notification', function (module, require, $) {
     };
 
     var handleFilterChanges = function () {
-        var filterForm = $('#notification_overview_filter');
+        const filterForm = $('#notification_overview_filter');
         filterForm.on('click', 'label', function (evt) {
             if (evt.target.isSameNode(this)) {
                 evt.preventDefault();
                 var checkbox = $(this).children().first();
                 checkbox.prop('checked', !checkbox.prop('checked'));
             }
+            refreshSelectAllButtons();
+            event.trigger('humhub:notification:filterApplied', filterForm);
+        }).on('click', '[data-notification-filter-select]', function () {
+            filterForm.find('input[type=checkbox]').prop('checked', $(this).data('notification-filter-select') === 'all');
+            refreshSelectAllButtons();
             event.trigger('humhub:notification:filterApplied', filterForm);
         });
+
+        const refreshSelectAllButtons = function () {
+            const allSelected = filterForm.find('input[type=checkbox]:not(:checked)').length === 0;
+            const allUnselected = filterForm.find('input[type=checkbox]:checked').length === 0;
+            filterForm.find('[data-notification-filter-select=all]').toggle(allUnselected || !allSelected);
+            filterForm.find('[data-notification-filter-select=none]').toggle(allSelected || !allUnselected);
+        }
     };
 
     var initOverviewPage = function () {
@@ -359,4 +371,3 @@ humhub.module('notification', function (module, require, $) {
         OverviewWidget: OverviewWidget
     });
 });
-
