@@ -342,6 +342,11 @@ humhub.module('notification', function (module, require, $) {
             filterForm.find('input[type=checkbox]').prop('checked', $(this).data('notification-filter-select') === 'all');
             refreshSelectAllButtons();
             event.trigger('humhub:notification:filterApplied', filterForm);
+        }).on('click', '[data-notification-filter-seen]', function () {
+            filterForm.find('[data-notification-filter-seen]').removeClass('active');
+            $(this).addClass('active');
+            filterForm.find('input[name="FilterForm[seenFilter]"]').val($(this).data('notification-filter-seen'));
+            event.trigger('humhub:notification:filterApplied', filterForm);
         });
 
         const refreshSelectAllButtons = function () {

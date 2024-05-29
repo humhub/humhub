@@ -20,13 +20,18 @@ class FilterForm extends Model
     public $categoryFilter;
 
     /**
+     * @var string Contains the seen filter: 'all', 'seen', 'unseen'
+     */
+    public $seenFilter;
+
+    /**
      * Contains all available module filter
      * @var array
      */
     public $categoryFilterSelection;
 
     /**
-     * Contains all notifications by modulenames
+     * Contains all notifications by module names
      * @var array
      */
     public $notifications;
@@ -43,6 +48,7 @@ class FilterForm extends Model
     {
         return [
             [['categoryFilter'], 'safe'],
+            [['seenFilter'], 'string'],
         ];
     }
 
@@ -129,7 +135,7 @@ class FilterForm extends Model
      */
     public function hasFilter(): bool
     {
-        return $this->categoryFilter != null;
+        return !empty($this->categoryFilter);
     }
 
     /**
@@ -146,6 +152,9 @@ class FilterForm extends Model
         $this->query = Notification::findGrouped();
         if ($this->hasFilter()) {
             $this->query->andFilterWhere(['not in', 'notification.class', $this->getExcludeClassFilter()]);
+        }
+        if (!empty($this->seenFilter)) {
+            $this->query->andFilterWhere(['notification.seen' => $this->seenFilter === 'seen' ? 1 : 0]);
         }
 
         return $this->query;
@@ -166,6 +175,9 @@ class FilterForm extends Model
         // Append the not default filter selection to the pagination urls
         if ($this->categoryFilter !== $this->getDefaultFilters()) {
             $pagination->params['FilterForm']['categoryFilter'] = $this->categoryFilter;
+        }
+        if (!empty($this->seenFilter)) {
+            $pagination->params['FilterForm']['seenFilter'] = $this->seenFilter;
         }
 
         return $pagination;

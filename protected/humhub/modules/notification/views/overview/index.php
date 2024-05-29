@@ -48,6 +48,28 @@ use yii\helpers\Url;
                     <div style="padding:5px 0 0 5px">
                         <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false) ?>
                     </div>
+
+                    <?= $form->field($filterForm, 'seenFilter')->hiddenInput()->label(false) ?>
+                    <div class="btn-group">
+                        <?= Button::info('All')
+                            ->icon('list')
+                            ->options(['data-notification-filter-seen' => ''])
+                            ->cssClass(empty($filterForm->seenFilter) ? 'active' : '')
+                            ->xs()
+                            ->loader(false) ?>
+                        <?= Button::info('Unseen')
+                            ->options(['data-notification-filter-seen' => 'unseen'])
+                            ->cssClass($filterForm->seenFilter === 'unseen' ? 'active' : '')
+                            ->icon('eye-slash')
+                            ->xs()
+                            ->loader(false) ?>
+                        <?= Button::info('Seen')
+                            ->options(['data-notification-filter-seen' => 'seen'])
+                            ->cssClass($filterForm->seenFilter === 'seen' ? 'active' : '')
+                            ->icon('eye')
+                            ->xs()
+                            ->loader(false) ?>
+                        </div>
                     <?php ActiveForm::end() ?>
                 </div>
             </div>

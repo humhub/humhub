@@ -37,7 +37,7 @@ HumHub Changelog
 - Fix #7025: Fix empty password
 - Enh #7033: Add search tests
 - Enh #7035: Use LESS variables in search.less
-- Enh #7037: Optimize notification overview
+- Enh #7038: Optimize notification overview
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
