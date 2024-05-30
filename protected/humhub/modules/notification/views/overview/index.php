@@ -36,11 +36,17 @@ use yii\helpers\Url;
                     <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']) ?>
                     <?= Button::info('Select all')
                         ->icon('check-square-o')
-                        ->options(['data-notification-filter-select' => 'all', 'style' => 'display:none'])
+                        ->options([
+                            'data-notification-filter-select' => 'all',
+                            'style' => count($filterForm->categoryFilter) === count($filterForm->getCategoryFilterSelection()) ? 'display:none' : '',
+                        ])
                         ->xs()
                         ->loader(false) ?>
                     <?= Button::info('Unselect all')
-                        ->options(['data-notification-filter-select' => 'none'])
+                        ->options([
+                            'data-notification-filter-select' => 'none',
+                            'style' => empty($filterForm->categoryFilter) ? 'display:none' : '',
+                        ])
                         ->icon('square-o')
                         ->xs()
                         ->loader(false) ?>
