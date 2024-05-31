@@ -2,44 +2,37 @@
 
 namespace humhub\modules\notification\models\forms;
 
+use humhub\modules\notification\components\NotificationCategory;
 use humhub\modules\notification\models\Notification;
 use Yii;
 use yii\base\Model;
 use yii\data\Pagination;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 
 /**
  * Class FilterForm for filter notification list
  */
 class FilterForm extends Model
 {
-    /**
-     * Contains the current module filters
-     * @var array
-     */
-    public $categoryFilter;
+    private const NO_CATEGORY_ID = 'others-no-category';
 
     /**
-     * @var string Contains the seen filter: 'all', 'seen', 'unseen'
+     * @var array|string|null Contains the current module filters
      */
-    public $seenFilter;
+    public array|string|null $categoryFilter = null;
 
     /**
-     * Contains all available module filter
-     * @var array
+     * @var string|null Contains the seen filter: 'all'|null, 'seen', 'unseen'
      */
-    public $categoryFilterSelection;
+    public string|null $seenFilter = null;
 
     /**
-     * Contains all notifications by module names
-     * @var array
+     * @var array|null Contains all available module filter
      */
-    public $notifications;
+    public ?array $categoryFilterSelection = null;
 
-    /**
-     * @var ActiveQuery|null
-     */
-    public $query;
+    private ?ActiveQuery $query = null;
 
     /**
      * @inheritdoc
@@ -53,17 +46,8 @@ class FilterForm extends Model
     }
 
     /**
-     * @inheritdoc
-     */
-    public function attributeLabels()
-    {
-        return [
-            'categoryFilter' => Yii::t('NotificationModule.base', 'Module Filter'),
-        ];
-    }
-
-    /**
      * Preselects all possible module filter
+     * @inheritdoc
      */
     public function init()
     {
@@ -81,20 +65,27 @@ class FilterForm extends Model
     }
 
     /**
-     * Returns all Notifications classes of modules not selected in the filter
+     * Returns all Notifications classes of modules selected in the filter
      *
      * @return array
      */
-    public function getExcludeClassFilter()
+    protected function getNotificationClasses(): array
     {
         $result = [];
 
-        foreach ($this->getNotifications() as $notification) {
-            $categoryId = $notification->getCategory()->id;
-            if (!in_array($categoryId, $this->categoryFilter)) {
+        if (empty($this->categoryFilter)) {
+            return $result;
+        }
+
+        foreach (Yii::$app->notification->getNotifications() as $notification) {
+            $categoryId = $notification->getCategory() instanceof NotificationCategory
+                ? $notification->getCategory()->id
+                : self::NO_CATEGORY_ID;
+            if (in_array($categoryId, $this->categoryFilter)) {
                 $result[] = get_class($notification);
             }
         }
+
         return $result;
     }
 
@@ -104,29 +95,17 @@ class FilterForm extends Model
      */
     public function getCategoryFilterSelection(): array
     {
-        if ($this->categoryFilterSelection == null) {
+        if ($this->categoryFilterSelection === null) {
             $this->categoryFilterSelection = [];
 
             foreach (Yii::$app->notification->getNotificationCategories(Yii::$app->user->getIdentity()) as $category) {
                 $this->categoryFilterSelection[$category->id] = $category->getTitle();
             }
+
+            $this->categoryFilterSelection[self::NO_CATEGORY_ID] = Yii::t('NotificationModule.base', 'Others');
         }
+
         return $this->categoryFilterSelection;
-    }
-
-    /**
-     * Returns all available BaseNotification classes with a NotificationCategory.
-     * @return array
-     */
-    public function getNotifications(): array
-    {
-        if ($this->notifications == null) {
-            $this->notifications = array_filter(Yii::$app->notification->getNotifications(), function ($notification) {
-                return $notification->getCategory() != null;
-            });
-        }
-
-        return $this->notifications;
     }
 
     /**
@@ -135,7 +114,7 @@ class FilterForm extends Model
      */
     public function hasFilter(): bool
     {
-        return !empty($this->categoryFilter);
+        return $this->categoryFilter !== null;
     }
 
     /**
@@ -145,13 +124,18 @@ class FilterForm extends Model
      */
     public function createQuery(): ActiveQuery
     {
-        if (isset($this->query)) {
+        if ($this->query !== null) {
             return $this->query;
         }
 
         $this->query = Notification::findGrouped();
         if ($this->hasFilter()) {
-            $this->query->andFilterWhere(['not in', 'notification.class', $this->getExcludeClassFilter()]);
+            $notificationClasses = $this->getNotificationClasses();
+            if (empty($notificationClasses)) {
+                $this->query->andWhere(new Expression('FALSE'));
+            } else {
+                $this->query->andFilterWhere(['IN', 'notification.class', $notificationClasses]);
+            }
         }
         if (!empty($this->seenFilter)) {
             $this->query->andFilterWhere(['notification.seen' => $this->seenFilter === 'seen' ? 1 : 0]);
@@ -169,7 +153,7 @@ class FilterForm extends Model
         ]);
         $this->query->offset($pagination->offset)->limit($pagination->limit);
 
-        // Don't display thу help param in pagination url
+        // Don't display the help param in the pagination url
         $pagination->params['reload'] = null;
 
         // Append the not default filter selection to the pagination urls

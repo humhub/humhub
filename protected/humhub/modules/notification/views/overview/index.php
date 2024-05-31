@@ -1,8 +1,12 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use humhub\modules\notification\models\forms\FilterForm;
-use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use humhub\modules\notification\widgets\NotificationFilterForm;
 use yii\helpers\Url;
 
 /* @var string $overview */
@@ -29,54 +33,10 @@ use yii\helpers\Url;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong><?= Yii::t('NotificationModule.base', 'Filter') ?></strong>
-                    <hr style="margin-bottom:0px"/>
+                    <hr style="margin-bottom:0">
                 </div>
-
                 <div class="panel-body">
-                    <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']) ?>
-                    <?= Button::info('Select all')
-                        ->icon('check-square-o')
-                        ->options([
-                            'data-notification-filter-select' => 'all',
-                            'style' => count($filterForm->categoryFilter) === count($filterForm->getCategoryFilterSelection()) ? 'display:none' : '',
-                        ])
-                        ->xs()
-                        ->loader(false) ?>
-                    <?= Button::info('Unselect all')
-                        ->options([
-                            'data-notification-filter-select' => 'none',
-                            'style' => empty($filterForm->categoryFilter) ? 'display:none' : '',
-                        ])
-                        ->icon('square-o')
-                        ->xs()
-                        ->loader(false) ?>
-
-                    <div style="padding:5px 0 0 5px">
-                        <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false) ?>
-                    </div>
-
-                    <?= $form->field($filterForm, 'seenFilter')->hiddenInput()->label(false) ?>
-                    <div class="btn-group">
-                        <?= Button::info('All')
-                            ->icon('list')
-                            ->options(['data-notification-filter-seen' => ''])
-                            ->cssClass(empty($filterForm->seenFilter) ? 'active' : '')
-                            ->xs()
-                            ->loader(false) ?>
-                        <?= Button::info('Unseen')
-                            ->options(['data-notification-filter-seen' => 'unseen'])
-                            ->cssClass($filterForm->seenFilter === 'unseen' ? 'active' : '')
-                            ->icon('eye-slash')
-                            ->xs()
-                            ->loader(false) ?>
-                        <?= Button::info('Seen')
-                            ->options(['data-notification-filter-seen' => 'seen'])
-                            ->cssClass($filterForm->seenFilter === 'seen' ? 'active' : '')
-                            ->icon('eye')
-                            ->xs()
-                            ->loader(false) ?>
-                        </div>
-                    <?php ActiveForm::end() ?>
+                    <?= NotificationFilterForm::widget(['filterForm' => $filterForm]) ?>
                 </div>
             </div>
         </div>
