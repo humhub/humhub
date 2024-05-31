@@ -2,6 +2,21 @@
     display: block;
 }
 
+.notification-filter-buttons {
+    display: flex;
+    border: 1px solid @default;
+    border-radius: 4px;
+    .btn {
+        flex: 1;
+        border-radius: 3px;
+        background: #FFF;
+        box-shadow: none;
+        &:hover, &:active, &.active {
+            background: @default;
+        }
+    }
+}
+
 #notification_overview_list {
     .img-space {
         position: absolute;

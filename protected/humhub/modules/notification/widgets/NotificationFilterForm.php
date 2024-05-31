@@ -53,7 +53,7 @@ class NotificationFilterForm extends Widget
         return [
             '' => [
                 'title' => Yii::t('NotificationModule.base', 'All'),
-                'icon' => 'list',
+                'icon' => 'bars',
                 'active' => empty($this->filterForm->seenFilter),
             ],
             'unseen' => [
