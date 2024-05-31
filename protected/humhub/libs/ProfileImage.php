@@ -95,7 +95,7 @@ class ProfileImage
      * @param bool $scheme URL Scheme
      * @return String Url of the profile image
      * @throws \yii\base\InvalidConfigException
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function getUrl($prefix = '', $scheme = false)
     {
@@ -116,7 +116,7 @@ class ProfileImage
      * Indicates there is a custom profile image
      *
      * @return Boolean is there a profile image
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function hasImage()
     {
@@ -128,18 +128,20 @@ class ProfileImage
      *
      * @param String $prefix for the profile image
      * @return String Path to the profile image
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
-    public function getPath($prefix = '')
+    public function getPath(string $prefix = ''): string
+    {
+        return $this->getDirectoryPath() . $this->guid . $prefix . '.jpg';
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function getDirectoryPath(): string
     {
         $path = Yii::getAlias('@webroot/uploads/' . $this->folder_images . '/');
-
         FileHelper::createDirectory($path);
-
-        $path .= $this->guid;
-        $path .= $prefix;
-        $path .= '.jpg';
-
         return $path;
     }
 
@@ -151,7 +153,7 @@ class ProfileImage
      * @param Int $h
      * @param Int $w
      * @return bool indicates the success
-     * @throws \yii\base\Exception
+     * @throws Exception
      */
     public function cropOriginal($x, $y, $h, $w)
     {

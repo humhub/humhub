@@ -125,4 +125,14 @@ class ProfileBannerImage extends ProfileImage
             FileHelper::unlink($this->getPath(self::THUMB_PREFIX));
         }
     }
+
+    public function thumbWidth(): int
+    {
+        return $this->width;
+    }
+
+    public function thumbHeight(): int
+    {
+        return $this->height;
+    }
 }
