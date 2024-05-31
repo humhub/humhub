@@ -28,6 +28,11 @@ class FilterForm extends Model
     public string|null $seenFilter = null;
 
     /**
+     * @var bool It is used only to select and unselect all filters on client side by JS
+     */
+    public bool $allFilter = true;
+
+    /**
      * @var array|null Contains all available module filter
      */
     public ?array $categoryFilterSelection = null;
@@ -45,6 +50,13 @@ class FilterForm extends Model
         ];
     }
 
+    public function attributeLabels()
+    {
+        return [
+            'allFilter' => Yii::t('NotificationModule.base', 'All'),
+        ];
+    }
+
     /**
      * Preselects all possible module filter
      * @inheritdoc
@@ -52,6 +64,18 @@ class FilterForm extends Model
     public function init()
     {
         $this->categoryFilter = $this->getDefaultFilters();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function load($data, $formName = null)
+    {
+        $result = parent::load($data, $formName);
+
+        $this->allFilter = is_array($this->categoryFilter) && count($this->categoryFilter) === count($this->getCategoryFilterSelection());
+
+        return $result;
     }
 
     /**

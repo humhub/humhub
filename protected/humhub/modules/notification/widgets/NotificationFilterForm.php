@@ -27,25 +27,8 @@ class NotificationFilterForm extends Widget
     {
         return $this->render('notificationFilterForm', [
             'filterForm' => $this->filterForm,
-            'selectFilters' => $this->getSelectFilters(),
             'seenFilters' => $this->getSeenFilters(),
         ]);
-    }
-
-    private function getSelectFilters(): array
-    {
-        return [
-            'all' => [
-                'title' => Yii::t('NotificationModule.base', 'Select all'),
-                'icon' => 'check-square-o',
-                'hidden' => count($this->filterForm->categoryFilter) === count($this->filterForm->getCategoryFilterSelection()),
-            ],
-            'none' => [
-                'title' => Yii::t('NotificationModule.base', 'Unselect all'),
-                'icon' => 'square-o',
-                'hidden' => empty($this->filterForm->categoryFilter),
-            ],
-        ];
     }
 
     private function getSeenFilters(): array

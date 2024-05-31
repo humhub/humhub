@@ -209,11 +209,11 @@ humhub.module('notification', function (module, require, $) {
         }
 
         if (response.text) { // Single Notification
-            module.sendDesktopNotifiaction(response.text);
+            module.sendDesktopNotification(response.text);
         } else if (response.notifications) { // Multiple Notifications
             var $notifications = response.notifications;
             for (var i = 0; i < $notifications.length; i++) {
-                module.sendDesktopNotifiaction($notifications[i]);
+                module.sendDesktopNotification($notifications[i]);
             }
         } else if (object.isArray(response)) { // Live events
             $.each(response, function (i, liveEvent) {
@@ -222,7 +222,7 @@ humhub.module('notification', function (module, require, $) {
                 }
 
                 if (liveEvent.data && liveEvent.data.text) {
-                    module.sendDesktopNotifiaction(liveEvent.data.text);
+                    module.sendDesktopNotification(liveEvent.data.text);
                 }
             });
         }
@@ -234,7 +234,7 @@ humhub.module('notification', function (module, require, $) {
         return widget.$.data('notification-count');
     };
 
-    var sendDesktopNotifiaction = function (body, icon) {
+    var sendDesktopNotification = function (body, icon) {
         icon = icon || module.config.icon;
         if (body && body.length) {
             notify.createNotification("Notification", {body: body, icon: icon});
@@ -330,17 +330,18 @@ humhub.module('notification', function (module, require, $) {
 
     var handleFilterChanges = function () {
         const filterForm = $('#notification_overview_filter');
-        filterForm.on('click', 'label', function (evt) {
+        filterForm.on('click', '.field-filterform-categoryfilter label', function (evt) {
             if (evt.target.isSameNode(this)) {
                 evt.preventDefault();
-                var checkbox = $(this).children().first();
+                const checkbox = $(this).children().first();
                 checkbox.prop('checked', !checkbox.prop('checked'));
             }
-            refreshSelectAllButtons();
+            const allSelected = filterForm.find('.field-filterform-categoryfilter input[type=checkbox]:not(:checked)').length === 0;
+            filterForm.find('.field-filterform-allfilter input').prop('checked', allSelected);
             event.trigger('humhub:notification:filterApplied', filterForm);
-        }).on('click', '[data-notification-filter-select]', function () {
-            filterForm.find('input[type=checkbox]').prop('checked', $(this).data('notification-filter-select') === 'all');
-            refreshSelectAllButtons();
+        }).on('click', '.field-filterform-allfilter label', function () {
+            const selectAll = $(this).find('input[type=checkbox]').prop('checked');
+            filterForm.find('#filterform-categoryfilter input[type=checkbox]').prop('checked', selectAll);
             event.trigger('humhub:notification:filterApplied', filterForm);
         }).on('click', '[data-notification-filter-seen]', function () {
             filterForm.find('[data-notification-filter-seen]').removeClass('active');
@@ -348,13 +349,6 @@ humhub.module('notification', function (module, require, $) {
             filterForm.find('input[name="FilterForm[seenFilter]"]').val($(this).data('notification-filter-seen'));
             event.trigger('humhub:notification:filterApplied', filterForm);
         });
-
-        const refreshSelectAllButtons = function () {
-            const allSelected = filterForm.find('input[type=checkbox]:not(:checked)').length === 0;
-            const allUnselected = filterForm.find('input[type=checkbox]:checked').length === 0;
-            filterForm.find('[data-notification-filter-select=all]').toggle(allUnselected || !allSelected);
-            filterForm.find('[data-notification-filter-select=none]').toggle(allSelected || !allUnselected);
-        }
     };
 
     var initOverviewPage = function () {
@@ -370,7 +364,7 @@ humhub.module('notification', function (module, require, $) {
     module.export({
         init: init,
         markAsSeen: markAsSeen,
-        sendDesktopNotifiaction: sendDesktopNotifiaction,
+        sendDesktopNotification: sendDesktopNotification,
         getNotificationCount: getNotificationCount,
         NotificationDropDown: NotificationDropDown,
         OverviewWidget: OverviewWidget
