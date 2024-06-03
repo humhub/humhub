@@ -12,7 +12,11 @@ use yii\bootstrap\ActiveForm;
 /* @var FilterForm $filterForm */
 /* @var array $seenFilters */
 ?>
-<?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']) ?>
+<?php $form = ActiveForm::begin([
+    'id' => 'notification_overview_filter',
+    'method' => 'GET',
+    'options' => ['class' => 'form-checkboxes-normal'],
+]) ?>
 
     <div class="notification-filter-buttons">
         <?php foreach ($seenFilters as $value => $data) : ?>
