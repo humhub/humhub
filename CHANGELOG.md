@@ -5,6 +5,7 @@ HumHub Changelog
 ------------
 - Fix #7013: Opening more auth clients
 - Fix #7024: Automatic mapping of existing AuthClient users failed 
+- Fix #7044: Don't cache markdown profile field in session
 
 1.15.5 (May 8, 2024)
 --------------------
