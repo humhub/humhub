@@ -15,7 +15,7 @@ use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\widgets\SettingsMenu;
-use humhub\modules\content\events\ContentEvent;
+use humhub\modules\content\models\Content;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use Yii;
@@ -24,6 +24,7 @@ use yii\base\BaseObject;
 use yii\base\Event;
 use yii\base\InvalidArgumentException;
 use yii\db\ActiveQuery;
+use yii\db\AfterSaveEvent;
 use yii\db\IntegrityException;
 
 /**
@@ -150,11 +151,16 @@ class Events extends BaseObject
     }
 
     /**
-     * @param ContentEvent $event
+     * @param AfterSaveEvent $event
      */
-    public static function onContentVisibilityChanged($event)
+    public static function onContentAfterUpdate($event)
     {
-        $content = $event->content;
+        if (!array_key_exists('visibility', $event->changedAttributes)) {
+            return;
+        }
+
+        /* @var Content $content */
+        $content = $event->sender;
 
         if ($content->object_model === Activity::class) {
             return;
