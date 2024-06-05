@@ -137,6 +137,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
     const EVENT_STATE_CHANGED = 'changedState';
 
     /**
+     * @event Event is used when a Content visibility is changed.
+     */
+    const EVENT_VISIBILITY_CHANGED = 'changedVisibility';
+
+    /**
      * @inheritdoc
      */
     public function behaviors()
@@ -271,6 +276,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, SoftDeletab
             if (!$this->getStateService()->wasPublished() && (int)$previousState === self::STATE_PUBLISHED) {
                 $this->updateAttributes(['was_published' => 1]);
             }
+        }
+
+        if (array_key_exists('visibility', $changedAttributes)) {
+            $this->trigger(self::EVENT_VISIBILITY_CHANGED, new ContentEvent(['content' => $this]));
         }
 
         if ($this->getStateService()->isPublished()) {

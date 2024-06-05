@@ -15,6 +15,7 @@ use humhub\modules\activity\jobs\SendMailSummary;
 use humhub\modules\activity\models\Activity;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\widgets\SettingsMenu;
+use humhub\modules\content\events\ContentEvent;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountMenu;
 use Yii;
@@ -22,6 +23,7 @@ use yii\base\ActionEvent;
 use yii\base\BaseObject;
 use yii\base\Event;
 use yii\base\InvalidArgumentException;
+use yii\db\ActiveQuery;
 use yii\db\IntegrityException;
 
 /**
@@ -147,6 +149,27 @@ class Events extends BaseObject
         }
     }
 
+    /**
+     * @param ContentEvent $event
+     */
+    public static function onContentVisibilityChanged($event)
+    {
+        $content = $event->content;
+
+        if ($content->object_model === Activity::class) {
+            return;
+        }
+
+        // Activities should be updated to same visibility as parent Record
+        $activitiesQuery = ActivityHelper::getActivitiesQuery($content->getModel());
+        if ($activitiesQuery instanceof ActiveQuery) {
+            foreach ($activitiesQuery->each() as $activity) {
+                /* @var Activity $activity */
+                $activity->content->visibility = $content->visibility;
+                $activity->content->save();
+            }
+        }
+    }
 
     /**
      * @return Module
