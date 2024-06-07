@@ -46,8 +46,9 @@ class MysqlDriver extends AbstractDriver
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
+        $record->contents = $content->id;
 
-        $record->contents = implode(
+        $record->contents .= implode(
             ', ',
             array_map(function (ContentTag $tag) {
                 return $tag->name;

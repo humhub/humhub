@@ -39,6 +39,7 @@ HumHub Changelog
 - Enh #7035: Use LESS variables in search.less
 - Enh #7041: Marketplace meta search provider
 - Enh #6947: Improve meta search record calling for handling from config
+- Enh #7053: Search content by ID (mysql driver)
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
