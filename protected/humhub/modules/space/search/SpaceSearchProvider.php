@@ -78,7 +78,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
 
         $results = [];
         foreach ($spaceDirectoryQuery->all() as $space) {
-            $results[] = new SearchRecord($space);
+            $results[] = Yii::createObject(SearchRecord::class, [$space]);
         }
 
         return [
