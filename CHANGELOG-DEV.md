@@ -38,6 +38,7 @@ HumHub Changelog
 - Enh #7033: Add search tests
 - Enh #7035: Use LESS variables in search.less
 - Enh #7041: Marketplace meta search provider
+- Enh #7053: Search content by ID (mysql driver)
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
