@@ -88,7 +88,7 @@ class AuthenticationSettingsForm extends \yii\base\Model
             'hideOnlineStatus' => Yii::t('AdminModule.user', 'Hide online status of users'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
-            'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
+            // 'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.user', 'Default user profile visibility'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),

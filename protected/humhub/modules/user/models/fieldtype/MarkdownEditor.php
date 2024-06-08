@@ -9,7 +9,6 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\modules\user\models\Profile;
-use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -36,16 +35,6 @@ class MarkdownEditor extends BaseType
                         'elements' => [
                         ]
                     ]]);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
-    {
-        return parent::getFieldFormDefinition($user, array_merge([
-            'htmlOptions' => ['backupInterval' => 0],
-        ], $options));
     }
 
     /**

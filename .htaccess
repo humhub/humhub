@@ -1,0 +1,44 @@
+# check if RewriteModule is availbale
+<IfModule mod_rewrite.c>
+    Options +FollowSymLinks
+    
+    RewriteEngine on
+
+    # uncomment if you've installed HumHub into a subdirectory relative to your webroot & adjust RewriteBase to match the install point
+    #RewriteBase /humhub
+
+    # uncomment to force https requests
+    #RewriteCond %{HTTPS} !=on
+    #RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/[0-9a-zA-Z_-]+$ [NC]
+    #RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+    # prevent httpd from serving dotfiles (.htaccess, .svn, .git, etc.) - except well-known paths
+    RedirectMatch 403 ^/?\.(?!well-known/.+$)
+
+    # ensure permalink when url rewriting was enabled (index.php?r=content/perma&id=6 => /content/perma/?id=6
+    RewriteCond %{QUERY_STRING} ^r=content(/|%2)perma&id=([0-9]*)$
+    RewriteRule ^index\.php$ %{REQUEST_URI}/content/perma/?id=%2 [R=302,L]
+
+    RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+    RewriteRule ^(.*) - [E=BASE:%1]
+
+    # Sets the HTTP_AUTHORIZATION header removed by apache
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule .? - [L]
+
+    RewriteRule .? %{ENV:BASE}/index.php [L]
+</IfModule>
+
+# Config files from vendor should not be readable via browser
+<FilesMatch "^(\.(?!well-known)|composer\.(json|lock|phar)$)">
+    <IfModule authz_core_module>
+        Require all denied
+    </IfModule>
+    <IfModule !authz_core_module>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</FilesMatch>

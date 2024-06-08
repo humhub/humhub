@@ -19,6 +19,7 @@ $config = [
                 ],
             ],
         ],
+       
         'request' => [
             'class' => \humhub\components\Request::class,
             'csrfCookie' => [
@@ -50,6 +51,7 @@ $config = [
             ],
         ],
     ],
+  
     'modules' => [
         'web' => [
             'security' => [
