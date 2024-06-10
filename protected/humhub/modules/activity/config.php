@@ -13,6 +13,7 @@ use humhub\commands\IntegrityController;
 use humhub\modules\activity\Module;
 use humhub\modules\admin\widgets\SettingsMenu;
 use humhub\modules\user\widgets\AccountMenu;
+use humhub\modules\content\models\Content;
 
 /** @noinspection MissedFieldInspection */
 return [
