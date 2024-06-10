@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.15.6 (TBA)
-------------
+1.15.6 (June 10, 2024)
+----------------------
 - Fix #7013: Opening more auth clients
 - Fix #7024: Automatic mapping of existing AuthClient users failed
 - Fix #7030: Fix list style near aligned image
