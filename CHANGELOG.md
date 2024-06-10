@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #7044: Don't cache markdown profile field in session
 - Fix #7047: Update visibility of activities according to the parent object
 - Fix #7050: Fix container setting for broken records
+- Fix #7005: Fix flag of new content notification space
 
 1.15.5 (May 8, 2024)
 --------------------
