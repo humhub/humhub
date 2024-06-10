@@ -56,7 +56,7 @@ return array (
   'Open' => '開く',
   'Please type at least 3 characters' => '3文字以上入力してください。',
   'Please type at least {count} characters' => '少なくとも {count} 文字が必要です。',
-  'Powered by {name}' => 'パワード・バイ{name}',
+  'Powered by {name}' => 'Powered by {name}',
   'Profile dropdown' => 'ドロップダウンプロフィール',
   'Profile picture of {displayName}' => '{displayName} さんのプロフィール写真',
   'Save' => '保存',
