@@ -299,7 +299,7 @@ class AcceptanceTester extends BaseTester
     {
         $this->click('.notifications .fa-bell');
         $this->waitForText('Notifications', 5, '.notifications');
-        $this->waitForText($text, 5, '.notifications');
+        $this->waitForText($text, null, '.notifications');
 
         if($click) {
             $this->click($text, '.notifications');

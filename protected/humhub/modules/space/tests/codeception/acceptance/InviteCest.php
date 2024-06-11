@@ -73,7 +73,7 @@ class InviteCest
      */
     public function testSpaceUserInviteRevoke(AcceptanceTester $I)
     {
-        $I->wantTo('ensure that declining an user invitation to a space works.');
+        $I->wantTo('ensure that revoking an user invitation to a space works.');
 
         $I->amUser1();
         $I->amOnSpace2();
