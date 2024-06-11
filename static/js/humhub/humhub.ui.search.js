@@ -347,27 +347,21 @@ humhub.module('ui.search', function(module, require, $) {
         const menuTogglerLeft = this.getMenuToggler().offset().left;
         const currentTogglerLeft = this.getCurrentToggler().offset().left;
         const windowWidth = Math.round($(window).width());
-        const panelWidth = Math.round(this.getPanel().width());
-        let isPanelShifted = false;
-        if (menuTogglerLeft === currentTogglerLeft) {
-            this.getPanel().css('left', '');
-        } else {
-            this.getPanel().css('left', currentTogglerLeft - menuTogglerLeft);
-            isPanelShifted = true;
+        let panelWidth = Math.round(this.getPanel().width());
+        if (panelWidth > windowWidth) {
+            panelWidth = windowWidth;
+            this.getPanel().width(panelWidth);
         }
+        this.getPanel().css('left', menuTogglerLeft === currentTogglerLeft ? '' : currentTogglerLeft - menuTogglerLeft);
         if (this.getPanel().offset().left < 0 || this.getPanel().offset().left + panelWidth > windowWidth) {
             this.getPanel().css('left', -(menuTogglerLeft - (windowWidth - panelWidth) / 2));
-            isPanelShifted = true;
+        }
+        if (this.getPanel().offset().left < 0) {
+            this.getPanel().css('left', (windowWidth - panelWidth) / 2);
         }
 
         // Set arrow pointer position to current toggler
-        if (!isPanelShifted) {
-            this.getArrow().css('right', '');
-        } else if (currentTogglerLeft === this.getPanel().offset().left) {
-            this.getArrow().css('right', panelWidth - 30);
-        } else {
-            this.getArrow().css('right', panelWidth - currentTogglerLeft - this.getPanel().offset().left + 12);
-        }
+        this.getArrow().css('right', panelWidth - (currentTogglerLeft - this.getPanel().offset().left) - 30);
     }
 
     Search.prototype.switchFocus = function (tag, key) {

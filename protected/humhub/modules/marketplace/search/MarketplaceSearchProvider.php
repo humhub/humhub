@@ -79,7 +79,7 @@ class MarketplaceSearchProvider implements MetaSearchProviderInterface
 
         $results = [];
         foreach ($filteredModules as $module) {
-            $results[] = new SearchRecord($module);
+            $results[] = Yii::createObject(SearchRecord::class, [$module]);
             if (count($results) === $maxResults) {
                 break;
             }

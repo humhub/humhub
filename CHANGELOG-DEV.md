@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.16.0-beta.3 (TBD)
+1.16.0-beta.3 (June 10, 2024)
 -----------------------------
 - Fix #5629: Legacy configuration self test not showing "OK"
 - Fix #6909: Fix the marketplace searching when a module config file has missed fields
@@ -38,6 +38,8 @@ HumHub Changelog
 - Enh #7033: Add search tests
 - Enh #7035: Use LESS variables in search.less
 - Enh #7041: Marketplace meta search provider
+- Enh #6947: Improve meta search record calling for handling from config
+- Enh #7053: Search content by ID (mysql driver)
 - Enh #7038: Optimize notification overview
 
 1.16.0-beta.2 (April 9, 2024)
