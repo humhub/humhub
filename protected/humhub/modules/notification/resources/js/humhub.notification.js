@@ -209,11 +209,11 @@ humhub.module('notification', function (module, require, $) {
         }
 
         if (response.text) { // Single Notification
-            module.sendDesktopNotifiaction(response.text);
+            module.sendDesktopNotification(response.text);
         } else if (response.notifications) { // Multiple Notifications
             var $notifications = response.notifications;
             for (var i = 0; i < $notifications.length; i++) {
-                module.sendDesktopNotifiaction($notifications[i]);
+                module.sendDesktopNotification($notifications[i]);
             }
         } else if (object.isArray(response)) { // Live events
             $.each(response, function (i, liveEvent) {
@@ -222,7 +222,7 @@ humhub.module('notification', function (module, require, $) {
                 }
 
                 if (liveEvent.data && liveEvent.data.text) {
-                    module.sendDesktopNotifiaction(liveEvent.data.text);
+                    module.sendDesktopNotification(liveEvent.data.text);
                 }
             });
         }
@@ -234,7 +234,7 @@ humhub.module('notification', function (module, require, $) {
         return widget.$.data('notification-count');
     };
 
-    var sendDesktopNotifiaction = function (body, icon) {
+    var sendDesktopNotification = function (body, icon) {
         icon = icon || module.config.icon;
         if (body && body.length) {
             notify.createNotification("Notification", {body: body, icon: icon});
@@ -329,13 +329,21 @@ humhub.module('notification', function (module, require, $) {
     };
 
     var handleFilterChanges = function () {
-        var filterForm = $('#notification_overview_filter');
-        filterForm.on('click', 'label', function (evt) {
+        const filterForm = $('#notification_overview_filter');
+        filterForm.on('click', '.field-filterform-categoryfilter label', function (evt) {
             if (evt.target.isSameNode(this)) {
                 evt.preventDefault();
-                var checkbox = $(this).children().first();
+                const checkbox = $(this).children().first();
                 checkbox.prop('checked', !checkbox.prop('checked'));
             }
+            const allSelected = filterForm.find('.field-filterform-categoryfilter input[type=checkbox]:not(:checked)').length === 0;
+            filterForm.find('.field-filterform-allfilter input').prop('checked', allSelected);
+            event.trigger('humhub:notification:filterApplied', filterForm);
+        }).on('click', '.field-filterform-allfilter label', function () {
+            const selectAll = $(this).find('input[type=checkbox]').prop('checked');
+            filterForm.find('#filterform-categoryfilter input[type=checkbox]').prop('checked', selectAll);
+            event.trigger('humhub:notification:filterApplied', filterForm);
+        }).on('change', 'input[name="FilterForm[seenFilter]"]', function () {
             event.trigger('humhub:notification:filterApplied', filterForm);
         });
     };
@@ -353,10 +361,9 @@ humhub.module('notification', function (module, require, $) {
     module.export({
         init: init,
         markAsSeen: markAsSeen,
-        sendDesktopNotifiaction: sendDesktopNotifiaction,
+        sendDesktopNotification: sendDesktopNotification,
         getNotificationCount: getNotificationCount,
         NotificationDropDown: NotificationDropDown,
         OverviewWidget: OverviewWidget
     });
 });
-
