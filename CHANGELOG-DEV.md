@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+Unreleased
+-----------------------------
+- Enh #7037: Space creation notification to users allowed to manage spaces
+
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
 - Fix #5629: Legacy configuration self test not showing "OK"
