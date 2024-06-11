@@ -56,7 +56,7 @@ class SpaceCreated extends BaseNotification
 
     private function getInfoText($displayName, $spaceName)
     {
-        return Yii::t('SpaceModule.notification', '{displayName} created a the new space {spaceName}', [
+        return Yii::t('SpaceModule.notification', '{displayName} created a the new Space {spaceName}', [
             '{displayName}' => $displayName,
             '{spaceName}' => $spaceName,
         ]);

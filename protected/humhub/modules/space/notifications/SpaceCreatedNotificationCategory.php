@@ -30,7 +30,7 @@ class SpaceCreatedNotificationCategory extends NotificationCategory
      */
     public function getDescription(): string
     {
-        return Yii::t('SpaceModule.notification', 'Receive Notifications when a new space is created by a non-space manager.');
+        return Yii::t('SpaceModule.notification', 'Receive Notifications when a new Space is created by a non-space manager.');
     }
 
     /**
