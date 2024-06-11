@@ -298,7 +298,7 @@ class AcceptanceTester extends BaseTester
     public function seeInNotifications($text, $click = false)
     {
         $this->click('.notifications .fa-bell');
-        $this->waitForText('Notifications', 5, '.notifications');
+        $this->waitForText('Notifications', null, '.notifications');
         $this->waitForText($text, null, '.notifications');
 
         if($click) {
