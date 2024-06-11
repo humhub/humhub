@@ -44,6 +44,7 @@ HumHub Changelog
 - Enh #7041: Marketplace meta search provider
 - Enh #6947: Improve meta search record calling for handling from config
 - Enh #7053: Search content by ID (mysql driver)
+- Enh #7060: Implement new field template radio pills
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------
