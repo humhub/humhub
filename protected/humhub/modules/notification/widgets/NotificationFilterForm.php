@@ -34,21 +34,9 @@ class NotificationFilterForm extends Widget
     private function getSeenFilters(): array
     {
         return [
-            '' => [
-                'title' => Yii::t('NotificationModule.base', 'All'),
-                'icon' => 'bars',
-                'active' => empty($this->filterForm->seenFilter),
-            ],
-            'unseen' => [
-                'title' => Yii::t('NotificationModule.base', 'Unseen'),
-                'icon' => 'eye-slash',
-                'active' => $this->filterForm->seenFilter === 'unseen',
-            ],
-            'seen' => [
-                'title' => Yii::t('NotificationModule.base', 'Seen'),
-                'icon' => 'eye',
-                'active' => $this->filterForm->seenFilter === 'seen',
-            ],
+            '' => ['bars', Yii::t('NotificationModule.base', 'All')],
+            'unseen' => ['eye-slash', Yii::t('NotificationModule.base', 'Unseen')],
+            'seen' => ['eye', Yii::t('NotificationModule.base', 'Seen')],
         ];
     }
 }

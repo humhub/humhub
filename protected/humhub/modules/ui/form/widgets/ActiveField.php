@@ -9,7 +9,9 @@
 namespace humhub\modules\ui\form\widgets;
 
 use humhub\libs\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\base\Widget;
+use yii\helpers\ArrayHelper;
 
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
@@ -94,5 +96,62 @@ class ActiveField extends \yii\bootstrap\ActiveField
     public function dropDownList($items, $options = [])
     {
         return parent::dropDownList($items, Html::getDropDownListOptions($options));
+    }
+
+    /**
+     * Use option 'template' = 'pills' to stylize radio inputs to pills
+     * Other options for the template:
+     *  - 'wide' = true to make it wide to full width
+     *  - 'activeIcon' - Icon for an active radio item (only if the item has no icon)
+     *
+     * @inheritdoc
+     */
+    public function radioList($items, $options = [])
+    {
+        if (isset($options['template']) && $options['template'] === 'pills') {
+            unset($options['template']);
+            $this->label(false);
+            Html::addCssClass($options, 'radio-pills');
+            if (isset($options['wide'])) {
+                if ($options['wide']) {
+                    Html::addCssClass($options, 'radio-pills-wide');
+                }
+                unset($options['wide']);
+            }
+
+            $itemOptions = $options['itemOptions'] ?? [];
+            $encode = ArrayHelper::getValue($options, 'encode', true);
+            if (isset($options['activeIcon'])) {
+                $activeIcon = $options['activeIcon'];
+                unset($options['activeIcon']);
+            } else {
+                $activeIcon = 'check-circle';
+            }
+
+            $options['item'] = function ($index, $label, $name, $checked, $value) use ($itemOptions, $encode, $activeIcon) {
+                if (!$checked && empty($value) && empty($this->model->{$this->attribute})) {
+                    $checked = true;
+                }
+
+                $icon = null;
+                if (is_array($label)) {
+                    $icon = $label['icon'] ?? $label[0] ?? null;
+                    $label = $label['label'] ?? $label[1] ?? '';
+                }
+                if (empty($icon)) {
+                    $icon = Icon::get($activeIcon)->class('radio-pill-active-icon');
+                }
+
+                $options = array_merge([
+                    'label' => ($icon ? Icon::get($icon) : '') . ($encode ? Html::encode($label) : $label),
+                    'value' => $value,
+                ], $itemOptions);
+                return '<div class="radio' . ($checked ? ' active' : '') . '">'
+                        . Html::radio($name, $checked, $options)
+                    . '</div>';
+            };
+        }
+
+        return parent::radioList($items, $options);
     }
 }

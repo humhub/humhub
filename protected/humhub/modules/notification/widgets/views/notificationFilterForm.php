@@ -6,8 +6,7 @@
  */
 
 use humhub\modules\notification\models\forms\FilterForm;
-use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 
 /* @var FilterForm $filterForm */
 /* @var array $seenFilters */
@@ -18,17 +17,7 @@ use yii\bootstrap\ActiveForm;
     'options' => ['class' => 'form-checkboxes-normal'],
 ]) ?>
 
-    <div class="notification-filter-buttons">
-        <?php foreach ($seenFilters as $value => $data) : ?>
-            <?= Button::defaultType($data['title'])
-                ->icon($data['icon'])
-                ->options(['data-notification-filter-seen' => $value])
-                ->cssClass($data['active'] ? 'active' : '')
-                ->xs()
-                ->loader(false) ?>
-        <?php endforeach; ?>
-    </div>
-    <?= $form->field($filterForm, 'seenFilter')->hiddenInput()->label(false) ?>
+    <?= $form->field($filterForm, 'seenFilter')->radioList($seenFilters, ['template' => 'pills', 'wide' => true]) ?>
 
     <div style="padding-left:5px">
         <?= $form->field($filterForm, 'allFilter')->checkbox() ?>
