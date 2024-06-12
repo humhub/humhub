@@ -4,6 +4,7 @@ HumHub Changelog
 1.16.0-beta.4 (TBD)
 -----------------------------
 - Fix #7059: Saving of empty password by admin 
+- Enh #7037: Space creation notification to users allowed to manage spaces
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
