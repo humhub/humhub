@@ -13,6 +13,7 @@ use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
+use yii\db\ActiveQuery;
 
 /**
  * Description of GroupSearch
@@ -65,6 +66,11 @@ class MembershipSearch extends Membership
         return Model::scenarios();
     }
 
+    public function joinWithOriginator(ActiveQuery $query)
+    {
+        $query->from('user originator');
+    }
+
     /**
      * Creates data provider instance with search query applied
      *
@@ -78,9 +84,7 @@ class MembershipSearch extends Membership
         $query->joinWith([
             'user',
             'user.profile',
-            'originator' => function ($q) {
-                $q->from('user originator');
-            },
+            'originator' => [$this, 'joinWithOriginator'],
         ]);
 
         $dataProvider = new ActiveDataProvider([
