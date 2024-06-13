@@ -91,11 +91,6 @@ class Invite extends ActiveRecord
         $scenarios[self::SCENARIO_INVITE] = ['email'];
         $scenarios[self::SCENARIO_INVITE_BY_LINK_FORM] = ['email'];
 
-        if ($this->showCaptureInRegisterForm()) {
-            $scenarios[self::SCENARIO_INVITE][] = 'captcha';
-            $scenarios[self::SCENARIO_INVITE_BY_LINK_FORM][] = 'captcha';
-        }
-
         return $scenarios;
     }
 
@@ -304,13 +299,5 @@ class Invite extends ActiveRecord
         return (!Yii::$app->settings->get('maintenanceMode') && Yii::$app->getModule('user')->settings->get('auth.anonymousRegistration'));
     }
 
-    /**
-     * @return bool
-     */
-    public function showCaptureInRegisterForm()
-    {
-        return
-            !$this->skipCaptchaValidation
-            && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
-    }
+
 }

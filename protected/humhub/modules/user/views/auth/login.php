@@ -106,15 +106,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
-                <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
-
-                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
-                    </div>
-                <?php endif; ?>
                 <hr>
                 <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
@@ -148,11 +139,5 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     $('#login-form').removeClass('bounceIn');
     $('#app-title').removeClass('fadeIn');
     <?php } ?>
-
-    <?php if ($invite->showCaptureInRegisterForm()) { ?>
-    $('#register-email').on('focus', function () {
-        $('#registration-form-captcha').fadeIn(500);
-    });
-    <?php } ?>
-
+    
 </script>

@@ -123,12 +123,6 @@ use yii\widgets\ActiveForm;
                         <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]); ?>
-                        <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                            <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
-                            <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                                'captchaAction' => '/user/auth/captcha',
-                            ])->label(false); ?>
-                        <?php endif; ?>
                         <hr>
 
                         <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit"
