@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1999d0a4f117ac2c69cf9743553d7b08",
+    "content-hash": "54bec7841b0d448a8ad955ef8ff41b07",
     "packages": [
         {
             "name": "async-aws/core",
@@ -4114,6 +4114,18 @@
                 "url": "https://registry.npmjs.org/to-array/-/to-array-0.1.4.tgz"
             },
             "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/unicode-emoji-json",
+            "version": "0.5.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/unicode-emoji-json/-/unicode-emoji-json-0.5.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "npm-asset/ws",

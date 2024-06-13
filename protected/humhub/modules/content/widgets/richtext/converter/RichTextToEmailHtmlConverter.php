@@ -3,6 +3,7 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 use humhub\libs\Html;
+use humhub\modules\content\helpers\EmojiHelper;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\file\actions\DownloadAction;
 use humhub\modules\file\models\File;
@@ -122,5 +123,21 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     protected function renderParagraph($block)
     {
         return '<p>' . nl2br($this->renderAbsy($block['content'])) . "</p>\n";
+    }
+
+    /**
+     * @marker :
+     */
+    protected function parseEmoji($markdown)
+    {
+        return (preg_match('/^:(.+?):/', $markdown, $matches))
+            ? [['emoji', [['text', $matches[1]]]], strlen($matches[0])]
+            : [['text', ':'], 1];
+    }
+
+    protected function renderEmoji($element)
+    {
+        $emojiName = $this->renderAbsy($element[1]);
+        return EmojiHelper::get($emojiName) ?? ':' . $emojiName . ':';
     }
 }
