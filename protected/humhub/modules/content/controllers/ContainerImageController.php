@@ -3,14 +3,15 @@
 namespace humhub\modules\content\controllers;
 
 use Exception;
-use Yii;
-use yii\web\HttpException;
-use yii\web\Response;
-use yii\web\UploadedFile;
+use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\models\forms\CropProfileImage;
 use humhub\models\forms\UploadProfileImage;
 use humhub\modules\content\components\ContentContainerController;
+use Yii;
+use yii\web\HttpException;
+use yii\web\Response;
+use yii\web\UploadedFile;
 
 /**
  * Contains profile image and profile banner image upload actions.
@@ -153,7 +154,7 @@ abstract class ContainerImageController extends ContentContainerController
 
     /**
      * @param $type
-     * @return ProfileImage
+     * @return ProfileImage|ProfileBannerImage
      */
     protected function getImageByType($type)
     {

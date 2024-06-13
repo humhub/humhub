@@ -41,6 +41,7 @@ HumHub Changelog
 - Fix #7025: Fix empty password
 - Enh #7033: Add search tests
 - Enh #7035: Use LESS variables in search.less
+- Enh #7039: Reduce space banner image weight in space directory
 - Enh #7041: Marketplace meta search provider
 - Enh #6947: Improve meta search record calling for handling from config
 - Enh #7053: Search content by ID (mysql driver)

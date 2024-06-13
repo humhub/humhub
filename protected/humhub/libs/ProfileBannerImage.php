@@ -11,6 +11,8 @@ namespace humhub\libs;
 use humhub\modules\file\libs\ImageHelper;
 use Imagine\Image\Box;
 use Imagine\Image\ManipulatorInterface;
+use yii\base\Exception;
+use yii\helpers\FileHelper;
 use yii\imagine\Image;
 use yii\web\UploadedFile;
 
@@ -38,11 +40,21 @@ class ProfileBannerImage extends ProfileImage
      * @var Integer height of the Image
      */
     protected $height = 192;
+    /**
+     * @var Integer width of the thumb Image
+     */
+    protected $thumbWidth = 400;
+    /**
+     * @var Integer height of the thumb Image
+     */
+    protected $thumbHeight = 130;
 
     /**
      * @var String folder name inside the uploads directory
      */
     protected $folder_images = 'profile_image/banner';
+
+    public const THUMB_PREFIX = '_thumb';
 
 
     /**
@@ -72,7 +84,7 @@ class ProfileBannerImage extends ProfileImage
 
         $this->delete();
 
-        // Make sure original file is max. 800 width
+        // Make sure original file is max. 2000 width
         $image = Image::getImagine()->open($file);
         ImageHelper::fixJpegOrientation($image, $file);
         if ($image->getSize()->getWidth() > 2000) {
@@ -83,6 +95,10 @@ class ProfileBannerImage extends ProfileImage
         // Create version
         $image->thumbnail(new Box($this->width, $this->height), ManipulatorInterface::THUMBNAIL_OUTBOUND)
             ->save($this->getPath(''));
+
+        // Create thumb version
+        $image->thumbnail(new Box($this->thumbWidth, $this->thumbHeight), ManipulatorInterface::THUMBNAIL_OUTBOUND)
+            ->save($this->getPath(self::THUMB_PREFIX), ['quality' => 60]);
     }
 
     /**
@@ -90,11 +106,33 @@ class ProfileBannerImage extends ProfileImage
      */
     public function render($width = 32, $cfg = [])
     {
-        if(is_int($width)) {
+        if (is_int($width)) {
             $width .= 'px';
         }
 
         Html::addCssStyle($cfg, ['width' => $width]);
         return Html::img($this->getUrl(), $cfg);
+    }
+
+    /**
+     * @inerhitdoc
+     * @throws Exception
+     */
+    public function delete(): void
+    {
+        parent::delete();
+        if (file_exists(($this->getPath(self::THUMB_PREFIX)))) {
+            FileHelper::unlink($this->getPath(self::THUMB_PREFIX));
+        }
+    }
+
+    public function thumbWidth(): int
+    {
+        return $this->width;
+    }
+
+    public function thumbHeight(): int
+    {
+        return $this->height;
     }
 }

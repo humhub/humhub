@@ -6,6 +6,7 @@
  */
 
 use humhub\libs\Html;
+use humhub\libs\ProfileBannerImage;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\space\widgets\SpaceDirectoryActionButtons;
@@ -20,7 +21,7 @@ use yii\web\View;
 
 <div class="card-panel<?php if ($space->isArchived()) : ?> card-archived<?php endif; ?>">
     <div
-        class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
+        class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl(ProfileBannerImage::THUMB_PREFIX) ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'space' => $space,

@@ -6,6 +6,7 @@
  */
 
 use humhub\libs\Html;
+use humhub\libs\ProfileBannerImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
 use humhub\modules\user\widgets\PeopleActionButtons;
@@ -19,7 +20,7 @@ use yii\web\View;
 
 <div class="card-panel">
     <div
-        class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
+        class="card-bg-image"<?php if ($user->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $user->getProfileBannerImage()->getUrl(ProfileBannerImage::THUMB_PREFIX) ?>')"<?php endif; ?>></div>
     <div class="card-header">
         <?= Image::widget([
             'user' => $user,
