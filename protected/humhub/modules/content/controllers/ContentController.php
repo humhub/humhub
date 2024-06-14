@@ -16,6 +16,7 @@ use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\content\widgets\AdminDeleteModal;
+use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Throwable;
 use Yii;
@@ -188,7 +189,12 @@ class ContentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        return StreamEntryResponse::getAsJson($content);
+        $viewContext = Yii::$app->request->get('viewContext');
+        $options = empty($viewContext)
+            ? null
+            : (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH);
+
+        return StreamEntryResponse::getAsJson($content, $options);
     }
 
     /**

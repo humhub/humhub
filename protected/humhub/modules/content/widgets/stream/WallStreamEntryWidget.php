@@ -194,9 +194,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH) || $this->model->content->isArchived()) {
             // Disable all except permalink
             $this->renderOptions
-                ->disableControlsEntryEdit()
                 ->disableControlsEntryPin()
-                ->disableControlsEntryTopics()
                 ->disableControlsEntrySwitchVisibility()
                 ->disableControlsEntrySwitchNotification()
                 ->disableControlsEntryMove()
@@ -329,12 +327,6 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         if ($this->model->content->getStateService()->isDeleted()) {
             return [];
-        }
-
-        if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
-            return [
-                [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
-            ];
         }
 
         $result = [
