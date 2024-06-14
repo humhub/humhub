@@ -21,9 +21,9 @@ use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
+use humhub\modules\space\services\MemberListService;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\helpers\AuthHelper;
-use humhub\modules\space\services\MemberListService;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\Invite;
@@ -331,25 +331,25 @@ class Space extends ContentContainerActiveRecord
     /**
      * Indicates that this user can join this workspace
      *
-     * @param $userId User Id of User
+     * @param $userId int|string|null User Id of User
      */
-    public function canJoin($userId = '')
+    public function canJoin($userId = null): bool
     {
-        if (Yii::$app->user->isGuest) {
-            return false;
-        }
-
         // Take current userId if none is given
-        if ($userId == '') {
+        if (!$userId) {
             $userId = Yii::$app->user->id;
         }
 
-        // Checks if User is already member
+        if (!$userId) {
+            return false;
+        }
+
+        // Checks if User is already a member
         if ($this->isMember($userId)) {
             return false;
         }
 
-        if ($this->join_policy == self::JOIN_POLICY_NONE) {
+        if ($this->join_policy === self::JOIN_POLICY_NONE) {
             return false;
         }
 
