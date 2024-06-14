@@ -189,12 +189,7 @@ class ContentController extends Controller
             throw new ForbiddenHttpException();
         }
 
-        $viewContext = Yii::$app->request->get('viewContext');
-        $options = empty($viewContext)
-            ? null
-            : (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH);
-
-        return StreamEntryResponse::getAsJson($content, $options);
+        return StreamEntryResponse::getAsJson($content, WallStreamEntryOptions::getInstanceFromRequest());
     }
 
     /**
