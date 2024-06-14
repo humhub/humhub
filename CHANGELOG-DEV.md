@@ -4,6 +4,7 @@ HumHub Changelog
 1.16.0-beta.4 (TBD)
 -----------------------------
 - Fix #7059: Saving of empty password by admin 
+- Enh #7067: Display more context menu options on search results
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
