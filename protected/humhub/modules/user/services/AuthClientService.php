@@ -137,7 +137,7 @@ class AuthClientService
             $attributes['guid'],
             $attributes['contentcontainer_id'],
             $attributes['auth_mode'],
-            $attributes['status']
+            $attributes['status'],
         );
 
         $attributes['username'] = AuthHelper::generateUsernameByAttributes($attributes);
