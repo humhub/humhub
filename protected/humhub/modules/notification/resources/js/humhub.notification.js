@@ -174,20 +174,17 @@ humhub.module('notification', function (module, require, $) {
             return;
         }
 
-        $('#badge-notifications').hide();
-
         event.trigger('humhub:notification:updateCount', [$count]);
 
         if (!$count) {
             updateTitle(false);
             $('#badge-notifications').html('0');
-            $('#mark-seen-link').hide();
+            $('#badge-notifications, #mark-seen-link').hide();
             $('#icon-notifications .fa').removeClass("animated swing");
         } else {
             updateTitle($count);
             $('#badge-notifications').html($count);
-            $('#mark-seen-link').show();
-            $('#badge-notifications').fadeIn('fast');
+            $('#badge-notifications, #mark-seen-link').fadeIn('fast');
 
             // Clone icon to retrigger animation
             var $icon = $('#icon-notifications .fa');
@@ -359,4 +356,3 @@ humhub.module('notification', function (module, require, $) {
         OverviewWidget: OverviewWidget
     });
 });
-

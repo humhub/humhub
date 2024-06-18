@@ -4,6 +4,7 @@ HumHub Changelog
 1.16.0-beta.4 (TBD)
 -----------------------------
 - Fix #7059: Saving of empty password by admin 
+- Enh #7073: Add a link to notification settings on top dropdown list
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
