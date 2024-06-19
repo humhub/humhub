@@ -117,7 +117,7 @@ abstract class MenuEntry extends BaseObject
         return $this;
     }
 
-    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [])
+    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [], $queryParams = [])
     {
         if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
             return false;
@@ -142,6 +142,11 @@ abstract class MenuEntry extends BaseObject
         if (!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
             return false;
         }
+
+        if (!empty($queryParams)) {
+            return !empty(array_intersect_assoc(Yii::$app->request->queryParams, $queryParams));
+        }
+
 
         return true;
     }
