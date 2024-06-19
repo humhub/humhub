@@ -17,6 +17,7 @@ use yii\captcha\CaptchaValidator;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
 
+
 /**
  * This is the model class for table "user_invite".
  *
@@ -53,7 +54,7 @@ class Invite extends ActiveRecord
     /**
      * @var bool
      */
-    public $skipCaptchaValidation = false;
+    public $skipCaptchaValidation;
 
     /**
      * @inheritdoc
@@ -309,6 +310,6 @@ class Invite extends ActiveRecord
      */
     public function showCaptureInRegisterForm()
     {
-        return !$this->skipCaptchaValidation;
+        return !$this->skipCaptchaValidation = Yii::$app->params['skipCaptchaValidation'];
     }
 }

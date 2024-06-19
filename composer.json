@@ -98,6 +98,7 @@
         "codeception/verify": "~0.5.0 || ^1.1.0",
         "friendsofphp/php-cs-fixer": "^3.49",
         "phpcompatibility/php-compatibility": "^9.0",
+        "phpunit/phpunit": "^9.6",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": ">=2.7 <=4.2.4",
         "yiisoft/yii2-debug": "^2.1.0",
