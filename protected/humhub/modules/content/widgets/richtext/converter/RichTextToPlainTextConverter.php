@@ -194,8 +194,8 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
      */
     protected function parseEmoji($markdown)
     {
-        return (preg_match('/^:(.+?):/', $markdown, $matches))
-            ? [['emoji', [['text', $matches[1]]]], strlen($matches[0])]
+        return ($emoji = EmojiHelper::findEmoji($markdown))
+            ? [['emoji', [['text', $emoji]]], strlen($emoji) + 2]
             : [['text', ':'], 1];
     }
 

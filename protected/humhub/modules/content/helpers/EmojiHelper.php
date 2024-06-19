@@ -40,4 +40,11 @@ class EmojiHelper
     {
         return self::getData()[$name] ?? null;
     }
+
+    public static function findEmoji(string $content): ?string
+    {
+        return preg_match('/:([a-z\d\-\+][a-z\d\-\+\s_]*):/i', $content, $matches)
+            ? $matches[1]
+            : null;
+    }
 }
