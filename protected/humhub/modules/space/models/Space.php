@@ -336,7 +336,7 @@ class Space extends ContentContainerActiveRecord
     public function canJoin($userId = null): bool
     {
         // Take current userId if none is given
-        if (!$userId) {
+        $userId ??= Yii::$app->user->id;
             $userId = Yii::$app->user->id;
         }
 
