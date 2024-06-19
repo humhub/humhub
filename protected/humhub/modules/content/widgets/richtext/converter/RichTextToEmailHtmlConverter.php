@@ -138,6 +138,6 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     protected function renderEmoji($element)
     {
         $emojiName = $this->renderAbsy($element[1]);
-        return EmojiHelper::get($emojiName) ?? ':' . $emojiName . ':';
+        return EmojiHelper::getUnicode($emojiName) ?? ':' . $emojiName . ':';
     }
 }

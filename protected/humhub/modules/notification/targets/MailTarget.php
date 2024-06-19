@@ -8,9 +8,10 @@
 
 namespace humhub\modules\notification\targets;
 
-use Yii;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
+use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -70,7 +71,7 @@ class MailTarget extends BaseTarget
 
         $mail = Yii::$app->mailer->compose($this->view, $viewParams)
             ->setTo($recipient->email)
-            ->setSubject(str_replace("\n", " ", trim($notification->getMailSubject())));
+            ->setSubject(RichTextToPlainTextConverter::process($notification->getMailSubject()));
         if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
             $mail->setReplyTo($replyTo);
         }

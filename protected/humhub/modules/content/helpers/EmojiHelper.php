@@ -18,24 +18,25 @@ class EmojiHelper
 
     public static function getData(): array
     {
-        $dataPath = Yii::getAlias(self::DATA_PATH);
+        return Yii::$app->runtimeCache->getOrSet('emoji-helper-data', function () {
+            $dataPath = Yii::getAlias(self::DATA_PATH);
 
-        if (!is_file($dataPath)) {
-            return [];
-        }
+            if (!is_file($dataPath)) {
+                return [];
+            }
 
-        $data = (array) json_decode(file_get_contents($dataPath));
+            $data = (array) json_decode(file_get_contents($dataPath));
 
-        $emojis = [];
-        foreach ($data as $e => $emoji) {
-            $emojis[$emoji->name] = $e;
-        }
+            $emojis = [];
+            foreach ($data as $e => $emoji) {
+                $emojis[$emoji->name] = $e;
+            }
 
-        // TODO: store the data array in a separate php file or cache
-        return $emojis;
+            return $emojis;
+        });
     }
 
-    public static function get(string $name): ?string
+    public static function getUnicode(string $name): ?string
     {
         return self::getData()[$name] ?? null;
     }
