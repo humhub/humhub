@@ -53,7 +53,7 @@ class Invite extends ActiveRecord
     /**
      * @var bool
      */
-    public $skipCaptchaValidation = flase;
+    public $skipCaptchaValidation = false;
 
     /**
      * @inheritdoc
