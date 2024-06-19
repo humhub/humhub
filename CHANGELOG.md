@@ -1,6 +1,159 @@
 HumHub Changelog
 ================
 
+
+1.17.0 (TBA)
+------------
+-
+
+
+1.16.0 (June 19, 2024)
+----------------------
+See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_16) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+- Fix #7059: Saving of empty password by admin
+- Cgh #7074: Text in lists is smaller than in paragraphs
+- Fix #7059: Saving of empty password by admin
+- Enh #7067: Display more context menu options on search results
+- Fix #7059: Saving of empty password by admin
+- Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
+- Enh #7062: Render emojis also in email content
+
+
+1.16.0-beta.3 (June 10, 2024)
+-----------------------------
+- Fix #5629: Legacy configuration self test not showing "OK"
+- Fix #6909: Fix the marketplace searching when a module config file has missed fields
+- Enh #6920: Enhancing of meta search for advanced search providers
+- Enh #6952: Improve container title encoding in header
+- Fix #6954: Search out of viewport on mobile
+- Enh #6950: Ability to reset some notification settings to all users without resetting "Like" notifications by email
+- Fix #6954: Search out of viewport on mobile
+- Fix #6962: People filter - Hide follower options if Following is disabled in the User module
+- Fix #6961: Fix people dropdown filter without defined keys
+- Fix #6967: Use same order for meta searching that is used for content page searching by default
+- Enh #6968: Meta search: open external links in new window
+- Fix #6970: MultiSelect loads wrong options (since #6768 in 1.16.0-beta.1)
+- Enh #6974: Highlight a content searching keyword on show more comments
+- Enh #6971: Meta search: Highlight keyword in single content view
+- Fix #6977: Index sub comments for searching
+- Fix #6978: Fix module enabling from marketplace
+- Enh #6984: In forms, change checkbox style to match other input types
+- Enh #6990: Unifying positions of button on modals for consistency and better UX
+- Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
+- Enh #6992: Improve handle database connection errors
+- Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
+- Fix #7006: Disable `mustChangePassword` check for impersonated access tokens
+- Fix #7004: Fix people filter by group
+- Enh #6979: Content Search: use AND operator by default and don't apply mask for phrases
+- Fix #7011: Fixed performance issue in `Members::getPrivilegedUserIds`
+- Enh #7010: Rich text tables: Vertical align top instead of middle
+- Enh #5310: Mobile - Zooming into pictures
+- Fix #7017: Fix content search order after restoring from cache
+- Fix #7021: Image cropping: prevent vertical images from being displayed higher than the browser window
+- Fix #7007: Allow resetting of people filters
+- Fix #7023: Fix `Unsupported configuration type: object` Exception when running `php yii` on fresh installation
+- Fix #7025: Fix empty password
+- Enh #7033: Add search tests
+- Enh #7035: Use LESS variables in search.less
+- Enh #7041: Marketplace meta search provider
+- Enh #6947: Improve meta search record calling for handling from config
+- Enh #7053: Search content by ID (mysql driver)
+- Enh #7060: Implement new field template radio pills
+
+1.16.0-beta.2 (April 9, 2024)
+-----------------------------
+- Fix #6928: Disabled users without "ignoredDN" settings
+- Fix #5629: Better handling of legacy configuration file options
+- Fix #6931: Fix visibility of private spaces in the user notification settings
+- Enh #6757: Allow changing visibility of global content
+- Fix #5419: Lock search index while reindexing
+- Fix #5629: Better handling of legacy configuration file options for disabled non-core modules
+- Enh #6976: Migrate to PhpSpreadsheet 2.0
+
+1.16.0-beta.1 (April 5, 2024)
+-----------------------------
+- Fix #6770: Improve migration error messages
+- Enh #6750: Code de-duplication by introducing `PermissionManager::handlePermissionStateChange()`
+- Fix #6772: Polymorphic relation lookup (Regression #6587)
+- Enh #6745: Harmonise term `enabled/disabled` vs `active/inactive` for modules
+- Fix #6754: Regression due to return type (#6550)
+- Enh #6550: Improve module migrations
+- Fix #6237: Migration errors during module activation are ignored
+- Enh #6711: run migrations manually
+- Enh #6720: Consolidate `isInstalled()`, `setInstalled()`, and `setDatabaseInstalled`
+- Fix #6693: `MigrateController::$migrationPathMap` stored rolling sum of migrations
+- Enh #6697: Make state badge customizable
+- Fix #6636: Module Manager test
+- Enh #6587: Apply UUID validator
+- Enh #6530: Small performance improvements
+- Fix #6511: Only test compatible modules in `onMarketplaceAfterFilterModules()`
+- Enh #6511: Backup folder path is now return from `removeModule()`
+- Fix #6511: `canRemoveModule` no longer throws an Exception
+- Enh #6511: Allow an empty filter list to filter all registered modules
+- Enh #6511: Allow module paths for `enableModules()`
+- Enh #6511: Verify module's event definition
+- Enh #6511: Make module's module.json keywords accessible and searchable
+- Enh #6511: Add Event tracking capabilities to HumHubDbTestCase
+- Enh #6511: Add test for ModuleManager
+- Fix #6519: Ensure e-mails would always have a sender address set
+- Enh #6512: Show error messages when DB connection configuration is invalid
+- Enh #5315: Default stream sort by `created_at` instead of `id`
+- Fix #6337: Update `created_at` after first publishing of content record
+- Fix #6631: Fix visibility of the method `Controller::getAccessRules()`
+- Enh #6650: Add assets GZIP compression with Apache
+- Fix #6662: Change the start_url of the PWA from home to base URL
+- Enh #6667: Allow view file when owner object provides this
+- Enh #6671: Remove interface `ReadableInterface`
+- Enh #5751: Allow user blocking from profile page
+- Enh #6486: Add module "Not available" option in spaces or for users
+- Enh #6616: Added `data-has-auth-client` in Registration page allowing to know if returning from the SSO provider
+- Enh #6686: Make the container header clickable to return to the container's home
+- Enh #6609: Monthly email summary
+- Fix #6721: Top menu entries for spaces are not highlighted when clicked
+- Fix #6725: Allow theme without second topbar menu
+- Enh #6760: Change default browser site icon
+- Fix #6752: Allow sending a notification to originator when sending to a single user and suppressSendToOriginator is false
+- Enh #131: Online Indicator- People Cards, Members Snippet, My Profile
+- Enh #6335: Pending approvals: possibility to send a message
+- Fix #6774: When enableMailSummaries is false in the configuration file, prevent accessing the "E-Mail Summaries" page in the account settings
+- Fix #6777: Allow access to pending registrations to non-system admins
+- Enh #6783: Lowercase user email before save
+- Enh #6786: Improve password hashing
+- Enh #6788: Allow to disable login/registration form via configuration file
+- Enh #6788: Allow new user registration of specified SSO providers via configuration file
+- Fix #6790: Fix marketplace searching
+- Fix #6811: `SpaceModelMembership::removeMember()` should always return a boolean value (returns void if success)
+- Fix #6808: On small screens, in the "Spaces" page, for spaces not having an image, the acronym text is not vertically centered
+- Enh #6812: Reduce people filter options depending on what filtered users have
+- Fix #6810: Top menu on small screens: the previous page remains active when the new page is in the drop-down submenu
+- Fix #6830: Wrong view filename after module enabling
+- Enh #6838: Fix LDAP encryption labels and allow ignore also part of DNs
+- Enh #6490: Update button style on force password form
+- Enh #6847: Use prosemirror file handler flag
+- Fix #6839: The getObjectModel() method should work for all ActiveRecord classes
+- Fix #6849: In the "Module Administration" page, remove "Show in Marketplace" for modules not in the `@app/modules` directory
+- Fix #6863: If a top menu entry opens a modal box, don't mark it as active when clicked
+- Enh #6873: Change people header with selected group
+- Fix #6875: On Group::addUser(), if the current user is not logged in (console command or user registration), the method returns false even if the user was added to the group
+- Enh #6874: Update open-sans font from composer
+- Enh #6707: Uninstalling modules should be done in a background job
+- Enh #25: Improve contrast of @default button color
+- Fix #6889: Issue with modal boxes when positioning an element at the bottom of the screen
+- Enh #6892: Implement new method `getCommentUrl` for comment permanent URL
+- Fix #6881: Fix layout styles after run migration
+- Enh #6904: Content Search: Add Tests regarding `state`
+- Enh #2758: Make sure we understand how to configure who receives notifications about new users to approve
+- Fix #6908: Fix default mentioning URL
+- Enh #6879: Better UX for the maintenance mode administration form
+- Enh #6901: Auto load pages on content search
+- Fix #6913: Fix API tests
+- Fix #6730: Invitation link for existing user
+- Enh #6147: New space service `MemberListService`
+- Enh #6487: Remove general setting "Server Timezone"
+- Enh #6552: Allow module initializing on each loading
+- Fix #6768: MultiSelect when empty selection is given
+
 1.15.6 (June 10, 2024)
 ----------------------
 - Fix #7013: Opening more auth clients

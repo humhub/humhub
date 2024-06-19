@@ -26,7 +26,7 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.17.0',
+    'version' => '1.18.0',
     'minRecommendedPhpVersion' => '8.2',
     'minSupportedPhpVersion' => '8.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
