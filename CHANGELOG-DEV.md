@@ -3,7 +3,8 @@ HumHub Changelog
 
 1.16.0-beta.4 (TBD)
 -----------------------------
-- Fix #7059: Saving of empty password by admin 
+- Fix #7059: Saving of empty password by admin
+- Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
