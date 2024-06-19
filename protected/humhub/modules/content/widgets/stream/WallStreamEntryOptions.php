@@ -18,6 +18,7 @@ use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\space\models\Space;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use humhub\modules\ui\menu\MenuEntry;
+use Yii;
 use yii\base\Model;
 
 /**
@@ -80,6 +81,20 @@ class WallStreamEntryOptions extends StreamEntryOptions
      * @var bool whether or not the container information should be rendered in the main title
      */
     public $enableContainerInformationInTitle = false;
+
+    public static function getInstanceFromRequest(): ?self
+    {
+        $viewContext = Yii::$app->request->get('viewContext');
+        if (empty($viewContext)) {
+            $viewContext = Yii::$app->request->post('viewContext');
+        }
+
+        if (empty($viewContext)) {
+            return null;
+        }
+
+        return (new self())->viewContext($viewContext);
+    }
 
     /**
      * Defines if the sub headline author information should be enabled
