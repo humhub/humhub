@@ -3,7 +3,12 @@ HumHub Changelog
 
 1.16.0-beta.4 (TBD)
 -----------------------------
+- Fix #7059: Saving of empty password by admin
+- Cgh #7074: Text in lists is smaller than in paragraphs
 - Fix #7059: Saving of empty password by admin 
+- Enh #7067: Display more context menu options on search results
+- Fix #7059: Saving of empty password by admin
+- Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
