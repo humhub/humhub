@@ -119,9 +119,12 @@ humhub.module('stream.SimpleStream', function (module, require, $) {
             entry = Component.instance(this.$.find('[data-stream-entry]:first'));
         }
 
+        const data = {
+            id: entry.getKey(),
+            viewContext: entry.data('view-context'),
+        };
         entry.loader();
-        var contentId = entry.getKey();
-        return client.get(content.config.reloadUrl, {data: {id: contentId}}).then(function (response) {
+        return client.get(content.config.reloadUrl, {data}).then(function (response) {
             if (response.output) {
                 entry.replace(response.output);
             }

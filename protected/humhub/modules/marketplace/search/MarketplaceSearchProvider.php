@@ -5,31 +5,31 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\space\search;
+namespace humhub\modules\marketplace\search;
 
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\modules\space\components\SpaceDirectoryQuery;
+use humhub\modules\marketplace\Module;
 use humhub\services\MetaSearchService;
 use Yii;
 
 /**
- * Space Meta Search Provider
+ * Marketplace Modules Meta Search Provider
  *
  * @author luke
  * @since 1.16
  */
-class SpaceSearchProvider implements MetaSearchProviderInterface
+class MarketplaceSearchProvider implements MetaSearchProviderInterface
 {
     private ?MetaSearchService $service = null;
     public ?string $keyword = null;
-    public string|array|null $route = '/space/spaces';
+    public string|array|null $route = '/marketplace/browse';
 
     /**
      * @inheritdoc
      */
     public function getName(): string
     {
-        return Yii::t('SpaceModule.base', 'Spaces');
+        return Yii::t('MarketplaceModule.base', 'Marketplace');
     }
 
     /**
@@ -37,7 +37,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
      */
     public function getSortOrder(): int
     {
-        return 300;
+        return 500;
     }
 
     /**
@@ -55,7 +55,7 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
     {
         return $this->getService()->hasResults()
             ? Yii::t('base', 'Show all results')
-            : Yii::t('SpaceModule.base', 'Advanced Spaces Search');
+            : Yii::t('MarketplaceModule.base', 'Advanced Module Search');
     }
 
     /**
@@ -71,18 +71,22 @@ class SpaceSearchProvider implements MetaSearchProviderInterface
      */
     public function getResults(int $maxResults): array
     {
-        $spaceDirectoryQuery = new SpaceDirectoryQuery([
-            'defaultFilters' => ['keyword' => $this->getKeyword()],
-            'pageSize' => $maxResults,
-        ]);
+        /* @var Module $marketplaceModule */
+        $marketplaceModule = Yii::$app->getModule('marketplace');
+        $notInstalledModules = $marketplaceModule->onlineModuleManager->getNotInstalledModules();
+
+        $filteredModules = Yii::$app->moduleManager->filterModules($notInstalledModules, ['keyword' => $this->getKeyword()]);
 
         $results = [];
-        foreach ($spaceDirectoryQuery->all() as $space) {
-            $results[] = Yii::createObject(SearchRecord::class, [$space]);
+        foreach ($filteredModules as $module) {
+            $results[] = Yii::createObject(SearchRecord::class, [$module]);
+            if (count($results) === $maxResults) {
+                break;
+            }
         }
 
         return [
-            'totalCount' => $spaceDirectoryQuery->pagination->totalCount,
+            'totalCount' => count($filteredModules),
             'results' => $results,
         ];
     }

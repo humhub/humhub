@@ -235,6 +235,9 @@ class UserController extends Controller
             if ($user->canEditPassword()) {
                 if (!empty($password->newPassword)) {
                     $password->setPassword($password->newPassword);
+                } elseif ($user->canEditAdminFields()) {
+                    // Allow admin to save user without password
+                    unset($form->models['Password']);
                 }
                 $user->setMustChangePassword($password->mustChangePassword);
             }

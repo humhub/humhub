@@ -1,7 +1,16 @@
 HumHub Changelog
 ================
 
-1.16.0-beta.3 (TBD)
+1.16.0-beta.4 (TBD)
+-----------------------------
+- Fix #7059: Saving of empty password by admin
+- Cgh #7074: Text in lists is smaller than in paragraphs
+- Fix #7059: Saving of empty password by admin 
+- Enh #7067: Display more context menu options on search results
+- Fix #7059: Saving of empty password by admin
+- Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
+
+1.16.0-beta.3 (June 10, 2024)
 -----------------------------
 - Fix #5629: Legacy configuration self test not showing "OK"
 - Fix #6909: Fix the marketplace searching when a module config file has missed fields
@@ -20,6 +29,7 @@ HumHub Changelog
 - Fix #6977: Index sub comments for searching
 - Fix #6978: Fix module enabling from marketplace
 - Enh #6984: In forms, change checkbox style to match other input types
+- Enh #6990: Unifying positions of button on modals for consistency and better UX
 - Enh #6986: When moving a content from a container to another, prevent updating the content dates to keep the stream sort as it was
 - Enh #6992: Improve handle database connection errors
 - Fix #6552: When a JS file has `module.initOnAjaxLoad = true;`, if the `initOnAjaxUrls` contains multiple params in the URL, the `init` function is not triggered
@@ -33,6 +43,13 @@ HumHub Changelog
 - Fix #7021: Image cropping: prevent vertical images from being displayed higher than the browser window
 - Fix #7007: Allow resetting of people filters
 - Fix #7023: Fix `Unsupported configuration type: object` Exception when running `php yii` on fresh installation
+- Fix #7025: Fix empty password
+- Enh #7033: Add search tests
+- Enh #7035: Use LESS variables in search.less
+- Enh #7041: Marketplace meta search provider
+- Enh #6947: Improve meta search record calling for handling from config
+- Enh #7053: Search content by ID (mysql driver)
+- Enh #7060: Implement new field template radio pills
 
 1.16.0-beta.2 (April 9, 2024)
 -----------------------------

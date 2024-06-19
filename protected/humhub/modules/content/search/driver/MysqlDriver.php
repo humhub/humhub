@@ -14,6 +14,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
@@ -45,16 +46,17 @@ class MysqlDriver extends AbstractDriver
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
+        $record->contents = $content->id;
 
-        $record->contents = implode(
+        $record->contents .= implode(
             ', ',
             array_map(function (ContentTag $tag) {
                 return $tag->name;
             }, $content->tags),
         ) . " \n";
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
-            $record->contents .= $attributeValue . " \n";
+        foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
+            $record->contents .= RichTextToPlainTextConverter::process($attributeValue) . " \n";
         }
 
         $record->comments .= (new ContentSearchService($content))->getCommentsAsText() . " \n";
@@ -138,7 +140,10 @@ class MysqlDriver extends AbstractDriver
         $againstQuery = '';
 
         foreach ($query->terms as $term) {
-            $againstQuery .= '+' . $this->prepareTerm($term) . ' ';
+            if (strlen(rtrim($term, '*')) >= $this->minAndTermLength) {
+                $againstQuery .= '+';// Search with "AND" condition
+            }
+            $againstQuery .= $this->prepareTerm($term) . ' ';
         }
         foreach ($query->notTerms as $term) {
             $againstQuery .= '-' . $this->prepareTerm($term) . ' ';

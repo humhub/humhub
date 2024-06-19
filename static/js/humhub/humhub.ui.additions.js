@@ -304,14 +304,15 @@ humhub.module('ui.additions', function (module, require, $) {
         }
 
         if (typeof words === 'string' && words !== '') {
-            words = words.split(/[^\p{Script=Latin}\d\-’']+/u)
+            words = words.match(/[^\s]+\/[^\s]+|"[^"]+"|[\p{L}\d]+(?:['’`]\p{L}+)?/gu)
+                .map(item => item.replace(/"/g, ''));
+            words = [...new Set(words)].sort((a, b) => b.length - a.length);
         }
         if (!Array.isArray(words)) {
             return;
         }
 
         words.forEach(function (word) {
-            word = word.replace(/^([^a-z\d]*)(.+?)([^a-z\d]*)$/i, '$2');
             $node.highlight(word);
             word.indexOf("'") > -1 && $node.highlight(word.replace("'", '’'));
             word.indexOf("’") > -1 && $node.highlight(word.replace('’', "'"));
