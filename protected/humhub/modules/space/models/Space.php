@@ -337,8 +337,6 @@ class Space extends ContentContainerActiveRecord
     {
         // Take current userId if none is given
         $userId ??= Yii::$app->user->id;
-            $userId = Yii::$app->user->id;
-        }
 
         if (!$userId) {
             return false;
