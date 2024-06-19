@@ -5,9 +5,7 @@
  * @see https://docs.humhub.org/docs/admin/advanced-configuration
  */
 return [
-    'params' => [
-        'skipCaptchaValidation' => true, // Define your parameter here
-    ],
+  
 
     'components' => [	
         'urlManager' => [
