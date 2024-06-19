@@ -1,6 +1,12 @@
 HumHub Changelog
 ================
 
+
+1.17.0 (TBA)
+------------
+-
+
+
 1.16.0 (June 19, 2024)
 ----------------------
 See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_16) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
