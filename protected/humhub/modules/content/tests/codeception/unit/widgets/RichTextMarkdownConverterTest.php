@@ -201,7 +201,7 @@ class RichTextMarkdownConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             "Test emoji :smile:",
-            "Test emoji " . EmojiMap::MAP['smile'],
+            "Test emoji " . EmojiMap::getUnicode('smile'),
         );
     }
 
