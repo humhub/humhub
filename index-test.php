@@ -65,4 +65,4 @@ if (indexTextResponseCode::$response) {
     }
     file_put_contents("php://stdout", sprintf("[%s] \e[%dm%s:%d [%03d]: %s %s\033[0m\n", date('D M d H:i:s Y'), $color, $_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT'], $code, $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']));
 }
-
+  
