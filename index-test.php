@@ -23,7 +23,6 @@ file_put_contents("php://stdout", sprintf("[%s] \e[34m%s:%d [---]: %s %s\033[0m\
 defined('YII_ENV') or define('YII_ENV', 'test');
 defined('YII_ENV_TEST') or define('YII_ENV_TEST', true);
 
-
 require(__DIR__ . '/protected/vendor/autoload.php');
 require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
@@ -61,7 +60,8 @@ if (indexTextResponseCode::$response) {
             break;
 
         default:
-            $color = 31;
+            $color = 31; 
     }
     file_put_contents("php://stdout", sprintf("[%s] \e[%dm%s:%d [%03d]: %s %s\033[0m\n", date('D M d H:i:s Y'), $color, $_SERVER['REMOTE_ADDR'], $_SERVER['REMOTE_PORT'], $code, $_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']));
 }
+
