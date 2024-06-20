@@ -24,7 +24,7 @@ $userModule = Yii::$app->getModule('user');
     <?= $form->field($model, 'allowGuestAccess')->checkbox(); ?>
 
     <?= $form->field($model, 'internalAllowAnonymousRegistration')->checkbox(); ?>
-
+ 
     <?= $form->field($model, 'internalUsersCanInviteByEmail')->checkbox(); ?>
 
     <?= $form->field($model, 'internalUsersCanInviteByLink')->checkbox(); ?>
