@@ -2498,3 +2498,25 @@ Important note for Git/Composer installations: http://www.yiiframework.com/news/
 - Enh: Added new profile field type: checkbox (luke-)
 - Enh: Refactored mail summaries activity module (luke-)
 - Enh: Moved all static files (js, fonts, css) into own static folder @web-static (luke-)
+
+
+<!-- /ultimocoder  chnages -->
+humhub\protected\humhub\modules\admin\views\authentication\authentication.php
+
+this page remove captcha checkbox label
+
+humhub\protected\humhub\modules\admin\models\forms\AuthenticationSettingsForm.php
+  $this->showCaptureInRegisterForm = 0;
+this page change attributeLabels function remove label  & save function remove $this->showCaptureInRegisterForm sections
+
+C:\xampp\htdocs\new\humhub\protected\config\common.php
+
+add this params 
+
+ 'params' => [
+        'skipCaptchaValidation' => true,
+     ]
+C:\xampp\htdocs\new\humhub\protected\humhub\modules\user\models\Invite.php
+some change  params variable invite.php page.
+
+

@@ -144,3 +144,27 @@ HumHub Changelog
 - Enh #6487: Remove general setting "Server Timezone"
 - Enh #6552: Allow module initializing on each loading
 - Fix #6768: MultiSelect when empty selection is given
+
+
+
+
+<!-- /ultimocoder  chnages -->
+humhub\protected\humhub\modules\admin\views\authentication\authentication.php
+
+this page remove captcha checkbox label
+
+humhub\protected\humhub\modules\admin\models\forms\AuthenticationSettingsForm.php
+  $this->showCaptureInRegisterForm = 0;
+this page change attributeLabels function remove label  & save function remove $this->showCaptureInRegisterForm sections
+
+C:\xampp\htdocs\new\humhub\protected\config\common.php
+
+add this params 
+
+ 'params' => [
+        'skipCaptchaValidation' => true,
+     ]
+C:\xampp\htdocs\new\humhub\protected\humhub\modules\user\models\Invite.php
+some change  params variable invite.php page.
+
+
