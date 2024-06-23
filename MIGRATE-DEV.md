@@ -4,6 +4,25 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
+Version 1.17 
+-------------------------
+#### Removed 
+- Checkbox `Include captcha in registration form` removed from `AuthenticationSettingsForm`
+
+### Behaviour change
+- Captcha in registration form can be now enabled or disabled from config `common.php`
+
+```
+return [    
+     'modules' => [
+        'user' => [
+        
+        'enableRegistrationFormCaptcha' => false
+    ]
+    ]    
+];
+```
+
 Version 1.16 (April 2024)
 -------------------------
 At least PHP 8.0 is required with this version.

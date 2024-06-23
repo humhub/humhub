@@ -194,6 +194,12 @@ class Module extends \humhub\components\Module
     public $allowUserRegistrationFromAuthClientIds = [];
 
     /**
+     * @var bool Enable or disable registration form captcha
+     * @since 1.17
+     */
+    public $enableRegistrationFormCaptcha = true;
+
+    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
