@@ -916,6 +916,7 @@ class SelfTest
             ],
             'components' => [
                 'formatterApp' => new UnsetArrayValue(),
+                'search' => new UnsetArrayValue(),
             ],
         ];
     }
