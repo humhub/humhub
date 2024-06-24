@@ -9,7 +9,6 @@
 namespace humhub\modules\user;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\like\models\Like;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\permissions\CanMention;
@@ -192,6 +191,12 @@ class Module extends \humhub\components\Module
      * @var string[]
      */
     public $allowUserRegistrationFromAuthClientIds = [];
+
+    /**
+     * @var bool Include captcha in registration form
+     * @since 1.17
+     */
+    public $enableRegistrationFormCaptcha = true;
 
     /**
      * @inheritdoc

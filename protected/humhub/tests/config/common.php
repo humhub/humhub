@@ -31,6 +31,7 @@ return [
     'modules' => [
         'user' => [
             'loginRememberMeDefault' => false,
+            'enableRegistrationFormCaptcha' => false,
         ],
         'web' => [
             'security' =>  [

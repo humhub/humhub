@@ -4,7 +4,7 @@ HumHub Changelog
 
 1.17.0 (TBA)
 ------------
--
+- Fix #173 : Remove UISetting "Include Captcha in Registration"
 
 
 1.16.0 (June 19, 2024)
