@@ -4,30 +4,20 @@ Module Migration Guide
 See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
 for full version.
 
-Version 1.17 
+Version 1.17
 -------------------------
-#### Removed 
-- Checkbox `Include captcha in registration form` removed from `AuthenticationSettingsForm`
 
-### Behaviour change
-- Captcha in registration form can be now enabled or disabled from config `common.php`
+### Removed
+- `Include captcha in registration form` checkbox removed from "Administration" -> "Users" -> "Settings"
 
-```
-return [    
-     'modules' => [
-        'user' => [
-        
-        'enableRegistrationFormCaptcha' => false
-    ]
-    ]    
-];
-```
+### New
+- `\humhub\modules\user\Module::enableRegistrationFormCaptcha` which is true by default (can be disabled via [file configuration](https://docs.humhub.org/docs/admin/advanced-configuration#module-configurations))
 
 Version 1.16 (April 2024)
 -------------------------
 At least PHP 8.0 is required with this version.
 
-#### Removed
+### Removed
 - `\humhub\modules\search\*` The existing search module was removed and the related features merged
   into the 'content', 'user' and 'space' modules.
 - `\humhub\modules\user\models\User::getSearchAttributes()` and `\humhub\modules\space\models\Space::getSearchAttributes()`
