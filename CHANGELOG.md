@@ -18,6 +18,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
+- Enh #7079: Improve `MenuEntry::isActiveState` to support query params check
 
 
 1.16.0-beta.3 (June 10, 2024)
