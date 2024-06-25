@@ -3,7 +3,6 @@
 namespace humhub\modules\content\widgets\richtext\converter;
 
 use humhub\libs\Helpers;
-use humhub\modules\content\helpers\EmojiHelper;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
@@ -187,21 +186,5 @@ class RichTextToPlainTextConverter extends RichTextToMarkdownConverter
         }
 
         return $result;
-    }
-
-    /**
-     * @marker :
-     */
-    protected function parseEmoji($markdown)
-    {
-        return ($emoji = EmojiHelper::findEmoji($markdown))
-            ? [['emoji', [['text', $emoji]]], strlen($emoji) + 2]
-            : [['text', ':'], 1];
-    }
-
-    protected function renderEmoji($element)
-    {
-        $emojiName = $this->renderAbsy($element[1]);
-        return EmojiHelper::getUnicode($emojiName) ?? ':' . $emojiName . ':';
     }
 }
