@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------
 - Fix #7084: Fix compatibility for PHP 8.0+
 - Fix #7088: Improve handling of legacy configuration for "search" component
+- Fix #7089: Fix markdown sub list style
 
 1.16.0 (June 19, 2024)
 ----------------------
