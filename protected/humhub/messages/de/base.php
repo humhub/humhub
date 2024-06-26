@@ -68,7 +68,7 @@ return array (
   'Show all results' => 'Zeige alle Ergebnisse',
   'Show less' => 'Weniger anzeigen',
   'Show more' => 'Mehr anzeigen',
-  'Some files could not be uploaded:' => 'Einige Dateien konten nicht hochgeladen werden:',
+  'Some files could not be uploaded:' => 'Einige Dateien konnten nicht hochgeladen werden:',
   'Stop impersonation' => 'Benutzerübernahme beenden',
   'Text could not be copied to clipboard' => 'Text konnte nicht in die Zwischenablage kopiert werden',
   'Text has been copied to clipboard' => 'Text wurde in die Zwischenablage kopiert',
