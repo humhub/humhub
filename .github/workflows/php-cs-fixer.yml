@@ -6,6 +6,13 @@ jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
     steps:
+      - name: Check the commit message for skipping PHP-CS-Fixer
+        run: |
+          if git log -1 --pretty=%B | grep -q '[SKIP-PHPCS]'; then
+            echo "Skip PHP-CS-Fixer because the commit message contains [SKIP-PHPCS]."
+            exit 0
+          fi
+
       - uses: actions/checkout@v3
       - uses: actions/cache@v3
         with:
@@ -14,18 +21,12 @@ jobs:
           restore-keys: |
             ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-
 
-      - name: Check commit message for skip
-        id: check_skip
-        run: echo "SKIP-PHP-CS-FIXER=$(git log -1 --pretty=%B | grep -c '[SKIP-PHPCS]')" >> $GITHUB_ENV
-
       - name: Run PHP-CS-Fixer
-        if: env.SKIP-PHP-CS-FIXER != '1'
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --config=.php-cs-fixer.php
 
       - name: Auto commit changes
-        if: env.SKIP-PHP-CS-FIXER != '1'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Autocommit PHP CS Fixer
