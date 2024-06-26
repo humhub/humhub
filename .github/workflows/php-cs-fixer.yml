@@ -13,10 +13,19 @@ jobs:
           key: ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-${{ github.sha }}
           restore-keys: |
             ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-
-      - name: PHP-CS-Fixer
+
+      - name: Check commit message for skip
+        id: check_skip
+        run: echo "SKIP-PHP-CS-FIXER=$(git log -1 --pretty=%B | grep -c '[SKIP-PHPCS]')" >> $GITHUB_ENV
+
+      - name: Run PHP-CS-Fixer
+        if: env.SKIP-PHP-CS-FIXER != '1'
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --config=.php-cs-fixer.php
-      - uses: stefanzweifel/git-auto-commit-action@v5
+
+      - name: Auto commit changes
+        if: env.SKIP-PHP-CS-FIXER != '1'
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Autocommit PHP CS Fixer
