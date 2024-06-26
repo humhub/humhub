@@ -12,10 +12,10 @@ jobs:
         id: check_phpcs_skip
         run: |
           if git log -1 --pretty=%B | grep -q '[SKIP-PHPCS]'; then
-            echo "::set-output name=skip::true"
+            echo "skip=true" >> $GITHUB_OUTPUT
             echo "Skip PHP-CS-Fixer because the commit message contains [SKIP-PHPCS]."
           else
-            echo "::set-output name=skip::false"
+            echo "skip=false" >> $GITHUB_OUTPUT
             echo "Proceeding with PHP-CS-Fixer steps."
           fi
 
