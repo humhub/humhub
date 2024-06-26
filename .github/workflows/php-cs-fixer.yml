@@ -17,6 +17,7 @@ jobs:
           else
             echo "::set-output name=skip::false"
             echo "Proceeding with PHP-CS-Fixer steps."
+          fi
 
       - uses: actions/cache@v3
         if: steps.check_phpcs_skip.outputs.skip == 'false'
