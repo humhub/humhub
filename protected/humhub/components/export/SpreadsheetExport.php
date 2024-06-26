@@ -289,7 +289,7 @@ class SpreadsheetExport extends Component
             $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
             $worksheet->setCellValue(
                 $coordinate,
-                $column->renderHeaderCellContent(),
+                $column->renderHeaderCellContent()
             );
         }
     }
