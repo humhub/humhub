@@ -9,13 +9,17 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Check the commit message for skipping PHP-CS-Fixer
+        id: check_phpcs_skip
         run: |
           if git log -1 --pretty=%B | grep -q '[SKIP-PHPCS]'; then
+            echo "::set-output name=skip::true"
             echo "Skip PHP-CS-Fixer because the commit message contains [SKIP-PHPCS]."
-            exit 1
-          fi
+          else
+            echo "::set-output name=skip::false"
+            echo "Proceeding with PHP-CS-Fixer steps."
 
       - uses: actions/cache@v3
+        if: steps.check_phpcs_skip.outputs.skip == 'false'
         with:
           path: .php-cs-fixer.cache
           key: ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-${{ github.sha }}
@@ -23,11 +27,13 @@ jobs:
             ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-
 
       - name: Run PHP-CS-Fixer
+        if: steps.check_phpcs_skip.outputs.skip == 'false'
         uses: docker://oskarstark/php-cs-fixer-ga
         with:
           args: --config=.php-cs-fixer.php
 
       - name: Auto commit changes
+        if: steps.check_phpcs_skip.outputs.skip == 'false'
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Autocommit PHP CS Fixer
