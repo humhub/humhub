@@ -12,7 +12,7 @@ jobs:
         run: |
           if git log -1 --pretty=%B | grep -q '[SKIP-PHPCS]'; then
             echo "Skip PHP-CS-Fixer because the commit message contains [SKIP-PHPCS]."
-            exit 0
+            exit 1
           fi
 
       - uses: actions/cache@v3
