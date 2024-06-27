@@ -122,14 +122,18 @@
 
     ul, ol {
         margin-top: 0;
-        padding-left: 30px;
-        display: inline-block;
+        padding-left: 0;
+        display: table;
+        list-style-position: inside;
         ul, ol {
-            display: block;
+            padding-left: 30px;
         }
         li p {
             // otherwise single list items p hides the marker
             overflow: visible !important;
+        }
+        li > p:first-child {
+            display: inline;
         }
     }
 
