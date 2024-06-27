@@ -83,10 +83,23 @@
             #COMMON STYLES
     \*------------------------------------*/
 
+    .picker-color {
+        display: inline-block;
+        width:16px;
+        height:16px;
+        border-radius: 4px;
+        position: relative;
+        top: 3px;
+    }
+
     .select2-selection {
         .humhub-input-defaults;
         outline: 0;
         min-height: 35px;
+        .picker-color {
+            top: 4px;
+            margin-left: 3px;
+        }
     }
 
     /**
