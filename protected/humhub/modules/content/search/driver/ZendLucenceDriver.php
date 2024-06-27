@@ -3,6 +3,7 @@
 namespace humhub\modules\content\search\driver;
 
 use ArrayObject;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
@@ -55,6 +56,11 @@ class ZendLucenceDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
+        $model = $content->getModel();
+        if (!$model instanceof ContentActiveRecord) {
+            return;
+        }
+
         $document = new Document();
 
         $unStoredFields = ['comments', 'files'];
@@ -66,7 +72,7 @@ class ZendLucenceDriver extends AbstractDriver
             }
         }
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
+        foreach ($model->getSearchAttributes() as $attributeName => $attributeValue) {
             $document->addField(Field::unStored($attributeName, RichTextToPlainTextConverter::process($attributeValue)));
         }
 
