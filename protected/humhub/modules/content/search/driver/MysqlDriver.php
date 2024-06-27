@@ -8,6 +8,7 @@
 namespace humhub\modules\content\search\driver;
 
 use humhub\libs\SearchQuery;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentFulltext;
 use humhub\modules\content\models\ContentTag;
@@ -41,8 +42,12 @@ class MysqlDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
-
         $this->delete($content);
+
+        $model = $content->getModel();
+        if (!$model instanceof ContentActiveRecord) {
+            return;
+        }
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
@@ -55,7 +60,7 @@ class MysqlDriver extends AbstractDriver
             }, $content->tags),
         ) . " \n";
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
+        foreach ($model->getSearchAttributes() as $attributeValue) {
             $record->contents .= RichTextToPlainTextConverter::process($attributeValue) . " \n";
         }
 
