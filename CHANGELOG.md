@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #7084: Fix compatibility for PHP 8.0+
 - Fix #7088: Improve handling of legacy configuration for "search" component
 - Fix #7089: Fix markdown sub list style
+- Enh #7094: Allow color boxes in select2 picker
 
 1.16.0 (June 19, 2024)
 ----------------------
