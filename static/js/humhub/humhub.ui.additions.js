@@ -185,6 +185,13 @@ humhub.module('ui.additions', function (module, require, $) {
         });
 
         module.register('select2', '[data-ui-select2]', function ($match) {
+            const templateItem = function (item) {
+                const element = $(item.element);
+                return element.data('type-color')
+                    ? $('<span><span class="picker-color" style="background:' + element.data('type-color') + '"></span> ' + item.text + '</span>')
+                    : item.text;
+            };
+
             $match.select2({
                 theme: 'humhub',
                 tags: typeof $match.data('ui-select2-allow-new') !== 'undefined',
@@ -193,7 +200,9 @@ humhub.module('ui.additions', function (module, require, $) {
                         tag.text += ' ' + $match.data('ui-select2-new-sign');
                     }
                     data.unshift(tag);
-                }
+                },
+                templateResult: templateItem,
+                templateSelection: templateItem,
             });
         });
 
