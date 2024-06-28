@@ -4,7 +4,7 @@ HumHub Changelog
 
 1.17.0 (TBA)
 ------------
--
+- Enh #7070: Add GitHub action for PHP CS Fixer
 
 
 1.16.0 (June 19, 2024)
