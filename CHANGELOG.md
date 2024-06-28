@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #7084: Fix compatibility for PHP 8.0+
 - Fix #7088: Improve handling of legacy configuration for "search" component
 - Fix #7089: Fix markdown sub list style
+- Fix #7092: Missing closing `div` HTML tag in the registration by link view
 - Enh #7094: Allow color boxes in select2 picker
 
 1.16.0 (June 19, 2024)
@@ -19,7 +20,6 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
-
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
@@ -160,7 +160,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7013: Opening more auth clients
 - Fix #7024: Automatic mapping of existing AuthClient users failed
 - Fix #7030: Fix list style near aligned image
-- Fix #7024: Automatic mapping of existing AuthClient users failed 
+- Fix #7024: Automatic mapping of existing AuthClient users failed
 - Fix #7044: Don't cache markdown profile field in session
 - Fix #7047: Update visibility of activities according to the parent object
 - Fix #7050: Fix container setting for broken records
@@ -647,9 +647,7 @@ See also: HumHub 1.12 - [Release Notes](https://docs.humhub.org/docs/about/relea
 
 1.11.4 (July 6, 2022)
 ---------------------
-This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-p7h3-73v7-959c) issue.
-HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces.
-An update is STRONGLY recommended.
+This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-p7h3-73v7-959c) issue. HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces. An update is STRONGLY recommended.
 
 - Fix #5776: Hide beta modules on disabled filter
 - Fix #5799: Incorrect selection when multiple custom filters are in place
@@ -2197,8 +2195,7 @@ Please read the [Update Guide](http://docs.humhub.org/beta/admin-updating-130.ht
 1.2.6  (May 14, 2018)
 -----------------------
 
-When you are using a custom theme, you may need to add the newly introduced footer navigation to your overwritten view files.
-You can find a full list of the view changes here: https://github.com/humhub/humhub/commit/a1815fb61d83619ce9ca40166800b8c5dcb9d539
+When you are using a custom theme, you may need to add the newly introduced footer navigation to your overwritten view files. You can find a full list of the view changes here: https://github.com/humhub/humhub/commit/a1815fb61d83619ce9ca40166800b8c5dcb9d539
 
 - Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
 - Fix: Memory leak in activity mail summary processor cron
@@ -2210,8 +2207,7 @@ You can find a full list of the view changes here: https://github.com/humhub/hum
 1.2.5  (April 11, 2018)
 -----------------------
 
-When you customized or used the createCVS method of PendingRegistrationsController please
-migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
+When you customized or used the createCVS method of PendingRegistrationsController please migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 
 - Enh: Added BaseURL setting protocol scheme validation
 - Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
@@ -2267,8 +2263,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 1.2.3  (October 23, 2017)
 -------------------------
 
-Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
-Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
+Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users. Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
 
 - Fix: Readonly markdown field issue.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.
