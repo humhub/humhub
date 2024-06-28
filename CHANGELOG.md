@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #7088: Improve handling of legacy configuration for "search" component
 - Fix #7089: Fix markdown sub list style
 - Fix #7092: Missing closing `div` HTML tag in the registration by link view
+- Enh #7094: Allow color boxes in select2 picker
 
 1.16.0 (June 19, 2024)
 ----------------------
