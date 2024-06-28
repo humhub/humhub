@@ -187,8 +187,8 @@ humhub.module('ui.additions', function (module, require, $) {
         module.register('select2', '[data-ui-select2]', function ($match) {
             const templateItem = function (item) {
                 const element = $(item.element);
-                return element.data('type-color')
-                    ? $('<span><span class="picker-color" style="background:' + element.data('type-color') + '"></span> ' + item.text + '</span>')
+                return element.data('color')
+                    ? $('<span><span class="picker-color" style="background:' + element.data('color') + '"></span> ' + item.text + '</span>')
                     : item.text;
             };
 
