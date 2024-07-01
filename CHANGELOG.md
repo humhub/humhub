@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.16.2 (Unreleased)
+---------------------
+- Fix #7100: Enable all file handlers on RichText editor toolbar
+
 1.16.1 (July 1, 2024)
 ---------------------
 - Fix #7084: Fix compatibility for PHP 8.0+
