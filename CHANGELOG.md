@@ -5,6 +5,7 @@ HumHub Changelog
 1.17.0 (TBA)
 ------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
+- Enh #7073: Add a link to notification settings on top dropdown list
 
 
 1.16.0 (June 19, 2024)
