@@ -15,7 +15,6 @@ use yii\helpers\Html;
 /** @var string $content */
 /** @var string $url */
 /** @var string $relativeUrl */
-
 ?>
 <li <?php if ($isNew): ?>class="new"<?php endif; ?>
     data-notification-id="<?= $record->id ?>"
@@ -43,13 +42,12 @@ use yii\helpers\Html;
             <?php endif; ?>
             </div>
             <div class="media-body">
-                <div class="pull-right text-right">
-                    <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
-                    <?php if ($isNew) : ?>
-                        <br><span class="badge-new"></span>
-                    <?php endif; ?>
-                </div>
                 <?= $content ?>
+                <br>
+                <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
+                <?php if ($isNew) : ?>
+                    <span class="badge-new"></span>
+                <?php endif; ?>
             </div>
         </div>
     </a>
