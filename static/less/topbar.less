@@ -185,12 +185,22 @@
 
             li .media {
                 position: relative;
+                display: flex;
             }
 
             li .media .img-space {
                 position: absolute;
                 top: 14px;
                 left: 14px;
+            }
+
+            .badge-new {
+                display: inline-block;
+                width: 16px;
+                height: 16px;
+                border-radius: 50%;
+                background: @info;
+                margin-top: 5px;
             }
         }
     }
@@ -250,6 +260,16 @@
             border: none;
             &.new {
                 border: none;
+                background: none;
+                &:hover {
+                    background-color: @background-color-secondary;
+                }
+                time {
+                    color: @info;
+                }
+            }
+            time {
+                font-size: 10px;
             }
 
             i.accepted {
