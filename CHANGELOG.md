@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.16.2 (Unreleased)
 ---------------------
-- Fix #7084: Fix content search with word ending with hyphen
+- Fix #7102: Fix content search with word ending with hyphen
 
 1.16.1 (July 1, 2024)
 ---------------------
