@@ -1,14 +1,14 @@
 HumHub Changelog
 ================
 
-
 1.17.0 (TBA)
 ------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
 - Enh #7073: Add a link to notification settings on top dropdown list
+- Fix #7100: Enable all file handlers on RichText editor toolbar
 
-1.16.1 (Unreleased)
-----------------------
+1.16.1 (July 1, 2024)
+---------------------
 - Fix #7084: Fix compatibility for PHP 8.0+
 - Fix #7088: Improve handling of legacy configuration for "search" component
 - Fix #7089: Fix markdown sub list style
