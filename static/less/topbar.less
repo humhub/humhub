@@ -160,7 +160,7 @@
             margin-left: -173px;
 
             ul.media-list {
-                max-height: 400px;
+                max-height: 440px;
                 overflow: auto;
             }
 
@@ -181,48 +181,32 @@
                 i.declined {
                     color: #d9534f;
                 }
-            }
 
-            li .media {
-                position: relative;
-                display: flex;
-            }
+                .media {
+                    position: relative;
+                    display: flex;
+                    .img-space {
+                        position: absolute;
+                        top: 14px;
+                        left: 14px;
+                    }
+                }
 
-            li .media .img-space {
-                position: absolute;
-                top: 14px;
-                left: 14px;
-            }
-
-            .badge-new {
-                display: inline-block;
-                width: 16px;
-                height: 16px;
-                border-radius: 50%;
-                background: @info;
-                margin-left: 5px;
-                vertical-align: middle;
+                &:not(.new) {
+                    > a .media-body {
+                        *&, strong {
+                            color: @text-color-secondary;
+                        }
+                    }
+                }
             }
         }
     }
 
     .dropdown-footer {
-        margin: 10px 20px 15px;
-
-        .btn.btn-default {
-            border: 1px solid @default;
-            box-shadow: none;
+        margin: 24px 16px 19px;
+        .btn {
             width: 100%;
-
-            &:hover {
-                border-color: @background3;
-                background: @background3;
-            }
-
-            &:active {
-                border-color: @text-color-secondary;
-                background: white;
-            }
         }
     }
 
@@ -254,7 +238,7 @@
         }
 
         li {
-            padding: 4px;
+            padding: 8px;
             margin: 0 16px 5px;
             color: @text-color-highlight;
             border-radius: 4px;
@@ -290,6 +274,13 @@
             .label {
                 padding: 0.1em 0.5em;
             }
+        }
+
+        .media-left {
+            margin-right: 16px;
+        }
+        .media-right {
+            padding-left: 8px;
         }
     }
 
