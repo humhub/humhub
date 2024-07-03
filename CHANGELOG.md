@@ -4,7 +4,7 @@ HumHub Changelog
 1.16.2 (Unreleased)
 ---------------------
 - Fix #7102: Fix content search with word ending with hyphen
-- Fix: Missing `--text-color-default` CSS variable
+- Fix #7104: Missing `--text-color-default` CSS variable
 
 1.16.1 (July 1, 2024)
 ---------------------
