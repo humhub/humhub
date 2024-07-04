@@ -46,11 +46,11 @@ use yii\helpers\Html;
                 <br>
                 <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
             </div>
-            <?php if ($isNew) : ?>
             <div class="media-right align-center">
+            <?php if ($isNew) : ?>
                 <span class="badge-new"></span>
-            </div>
             <?php endif; ?>
+            </div>
         </div>
     </a>
 </li>
