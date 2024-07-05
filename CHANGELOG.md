@@ -1,10 +1,12 @@
 HumHub Changelog
 ================
 
+
 1.17.0 (TBA)
 ------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
 - Enh #7073: Add a link to notification settings on top dropdown list
+- Fix #7100: Enable all file handlers on RichText editor toolbar
 
 1.16.2 (Unreleased)
 ---------------------

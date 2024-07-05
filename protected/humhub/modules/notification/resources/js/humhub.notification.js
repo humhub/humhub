@@ -341,8 +341,8 @@ humhub.module('notification', function (module, require, $) {
         handleFilterChanges();
         if ($('#notification_overview_list').length) {
             OverviewWidget.instance('#notification_overview_list');
-            if (!$('#notification_overview_list li.new').length) {
-                $('#notification_overview_markseen').hide();
+            if ($('#notification_overview_list li.new').length) {
+                $('#notification_overview_markseen').show();
             }
         }
     };
