@@ -158,6 +158,9 @@ class MysqlDriver extends AbstractDriver
 
     protected function prepareTerm(string $term): string
     {
+        // Remove chars `-` to avoid mysql error
+        $term = preg_replace('/-+(\*?)$/', '$1', $term);
+
         // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
         return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $term) ? '"' . $term . '"' : $term;
     }

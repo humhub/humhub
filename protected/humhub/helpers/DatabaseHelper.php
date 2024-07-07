@@ -34,7 +34,7 @@ class DatabaseHelper
 
         $last = true;
 
-        $trace = debug_backtrace(0);
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
         $trace = end($trace);
         if ($trace && $trace['function'] === 'handleException' && $trace['args'][0] instanceof \yii\db\Exception) {
             return null;

@@ -3,7 +3,6 @@
 use humhub\components\Migration;
 use humhub\modules\like\models\Like;
 
-
 /**
  * Class m240425_144905_unique_index
  */

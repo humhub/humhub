@@ -56,6 +56,7 @@
         "npm-asset/socket.io-client": "^2.0",
         "npm-asset/swiped-events": "^1.0.9",
         "npm-asset/timeago": "^1.6.3",
+        "npm-asset/unicode-emoji-json": "^0.5.0",
         "phpoffice/phpspreadsheet": "^2.0",
         "raoul2000/yii2-jcrop-widget": "^1.0",
         "symfony/amazon-mailer": "^5.4",
