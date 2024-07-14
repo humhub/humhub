@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #7102: Fix content search with word ending with hyphen
 - Fix #7104: Missing `--text-color-default` CSS variable
 - Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
+- Fix: Fix rebuilding the search index with Grunt (since 1.16.0)
 
 1.16.1 (July 1, 2024)
 ---------------------
