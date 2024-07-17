@@ -24,6 +24,8 @@ use yii\helpers\UnsetArrayValue;
  */
 class SelfTest
 {
+    public const PHP_INFO_CACHE_KEY = 'cron_php_info';
+
     /**
      * Get Results of the Application SelfTest.
      *
@@ -62,6 +64,44 @@ class SelfTest
                 'state' => 'ERROR',
                 'hint' => Yii::t('AdminModule.information', 'Minimum Version {minVersion}', ['minVersion' => Yii::$app->minSupportedPhpVersion]),
             ];
+        }
+
+        if (Yii::$app->cache->exists(self::PHP_INFO_CACHE_KEY)) {
+            $cronPhpInfo = Yii::$app->cache->get(self::PHP_INFO_CACHE_KEY);
+
+            if ($cronPhpVersion = ArrayHelper::getValue($cronPhpInfo, 'version')) {
+                $title = Yii::t('AdminModule.information', 'Web Application and Cron uses the same PHP version');
+
+                if ($cronPhpVersion == phpversion()) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Yii::t('AdminModule.information', 'Web Application PHP version: `{webPhpVersion}`, Cron PHP Version: `{cronPhpVersion}`', ['webPhpVersion' => phpversion(), 'cronPhpVersion' => $cronPhpVersion]),
+                    ];
+                }
+            }
+
+            if ($cronPhpUser = ArrayHelper::getValue($cronPhpInfo, 'user')) {
+                $title = Yii::t('AdminModule.information', 'Web Application and Cron uses the same user');
+
+                if ($cronPhpUser == get_current_user()) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Yii::t('AdminModule.information', 'Web Application user: `{webUser}`, Cron user: `{cronUser}`', ['webUser' => get_current_user(), 'cronUser' => $cronPhpUser]),
+                    ];
+                }
+            }
         }
 
         // Checks GD Extension
