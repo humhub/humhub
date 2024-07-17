@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #7070: Add GitHub action for PHP CS Fixer
 - Enh #7073: Add a link to notification settings on top dropdown list
 - Fix #7100: Enable all file handlers on RichText editor toolbar
+- Enh #7125: Add self test for new migrations
 
 1.16.2 (Unreleased)
 ---------------------

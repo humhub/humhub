@@ -12,6 +12,7 @@ use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\MigrationService;
 use Yii;
 use yii\helpers\UnsetArrayValue;
 
@@ -722,6 +723,24 @@ class SelfTest
                     'tables' => implode(', ', $tablesWithNotRecommendedEngines),
                 ]),
             ];
+        }
+
+        if (Yii::$app->isInstalled()) {
+            $title = Yii::t('AdminModule.information', 'Database') . ' - ';
+            $migrations = MigrationService::create()->getPendingMigrations();
+            if ($migrations === []) {
+                $checks[] = [
+                    'title' => $title . Yii::t('AdminModule.information', 'No open migrations'),
+                    'state' => 'OK',
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title . Yii::t('AdminModule.information', 'New migrations should be applied: {migrations}', [
+                        'migrations' => implode(', ', $migrations),
+                    ]),
+                    'state' => 'ERROR',
+                ];
+            }
         }
 
         return $checks;
