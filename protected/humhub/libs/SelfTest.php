@@ -670,7 +670,7 @@ class SelfTest
         $tablesWithNotRecommendedEngines = [];
         foreach ($dbTables as $dbTable) {
             if (!in_array($dbTable['Collation'], $tableCollations)) {
-                $tableCollations[] = $dbTable['Collation'];
+                $tableCollations[ArrayHelper::getValue($dbTable, 'Name')] = ArrayHelper::getValue($dbTable, 'Collation');
             }
             if (!is_string($dbTable['Collation']) || stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
                 $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
@@ -686,19 +686,31 @@ class SelfTest
         // Checks Table Collations
         $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table collations') . ' - ' . implode(', ', $tableCollations);
 
-        if (empty($tablesWithNotRecommendedCollations)) {
+        if (empty($tablesWithNotRecommendedCollations) && count($tableCollations) == 1) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
             ];
         } else {
+            $hint = [];
+
+            if (count($tableCollations) > 1) {
+                $hint[] = Yii::t('AdminModule.information', 'Different table collations in the tables: {tables}', [
+                    'tables' => http_build_query($tableCollations, '', ', '),
+                ]);
+            }
+
+            if (!empty($tablesWithNotRecommendedCollations)) {
+                $hint[] = Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
+                    'collation' => $recommendedCollation,
+                    'tables' => implode(', ', $tablesWithNotRecommendedCollations),
+                ]);
+            }
+
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
-                    'collation' => $recommendedCollation,
-                    'tables' => implode(', ', $tablesWithNotRecommendedCollations),
-                ]),
+                'hint' => implode('. ', $hint),
             ];
         }
 
