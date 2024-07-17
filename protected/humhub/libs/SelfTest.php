@@ -66,44 +66,6 @@ class SelfTest
             ];
         }
 
-        if (Yii::$app->cache->exists(self::PHP_INFO_CACHE_KEY)) {
-            $cronPhpInfo = Yii::$app->cache->get(self::PHP_INFO_CACHE_KEY);
-
-            if ($cronPhpVersion = ArrayHelper::getValue($cronPhpInfo, 'version')) {
-                $title = Yii::t('AdminModule.information', 'Web Application and Cron uses the same PHP version');
-
-                if ($cronPhpVersion == phpversion()) {
-                    $checks[] = [
-                        'title' => $title,
-                        'state' => 'OK',
-                    ];
-                } else {
-                    $checks[] = [
-                        'title' => $title,
-                        'state' => 'WARNING',
-                        'hint' => Yii::t('AdminModule.information', 'Web Application PHP version: `{webPhpVersion}`, Cron PHP Version: `{cronPhpVersion}`', ['webPhpVersion' => phpversion(), 'cronPhpVersion' => $cronPhpVersion]),
-                    ];
-                }
-            }
-
-            if ($cronPhpUser = ArrayHelper::getValue($cronPhpInfo, 'user')) {
-                $title = Yii::t('AdminModule.information', 'Web Application and Cron uses the same user');
-
-                if ($cronPhpUser == get_current_user()) {
-                    $checks[] = [
-                        'title' => $title,
-                        'state' => 'OK',
-                    ];
-                } else {
-                    $checks[] = [
-                        'title' => $title,
-                        'state' => 'WARNING',
-                        'hint' => Yii::t('AdminModule.information', 'Web Application user: `{webUser}`, Cron user: `{cronUser}`', ['webUser' => get_current_user(), 'cronUser' => $cronPhpUser]),
-                    ];
-                }
-            }
-        }
-
         // Checks GD Extension
         $title = 'PHP - ' . Yii::t('AdminModule.information', '{phpExtension} Extension', ['phpExtension' => 'GD']);
         if (function_exists('gd_info')) {
@@ -518,6 +480,45 @@ class SelfTest
                         ['currentBaseUrl' => $currentBaseUrl],
                     ),
                 ];
+            }
+        }
+
+        // Checks that WebApp and ConsoleApp uses the same php version and same user
+        if (Yii::$app->cache->exists(self::PHP_INFO_CACHE_KEY)) {
+            $cronPhpInfo = Yii::$app->cache->get(self::PHP_INFO_CACHE_KEY);
+
+            if ($cronPhpVersion = ArrayHelper::getValue($cronPhpInfo, 'version')) {
+                $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Web Application and Cron uses the same PHP version');
+
+                if ($cronPhpVersion == phpversion()) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Yii::t('AdminModule.information', 'Web Application PHP version: `{webPhpVersion}`, Cron PHP Version: `{cronPhpVersion}`', ['webPhpVersion' => phpversion(), 'cronPhpVersion' => $cronPhpVersion]),
+                    ];
+                }
+            }
+
+            if ($cronPhpUser = ArrayHelper::getValue($cronPhpInfo, 'user')) {
+                $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Web Application and Cron uses the same user');
+
+                if ($cronPhpUser == get_current_user()) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Yii::t('AdminModule.information', 'Web Application user: `{webUser}`, Cron user: `{cronUser}`', ['webUser' => get_current_user(), 'cronUser' => $cronPhpUser]),
+                    ];
+                }
             }
         }
 
