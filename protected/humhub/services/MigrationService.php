@@ -140,6 +140,14 @@ class MigrationService extends Component
         return !str_contains($migrationOutput, 'No new migrations found.');
     }
 
+    public function getPendingMigrations(): array
+    {
+        return $this->runAction() === self::DB_ACTION_PENDING &&
+        preg_match_all('/(^|[\s\t]+)(m\d+.+)(\n|$)/', $this->getLastMigrationOutput(), $matches)
+            ? $matches[2]
+            : [];
+    }
+
     /**
      * Run migrations.
      */
