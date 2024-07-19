@@ -8,7 +8,7 @@ Version 1.16 (Unreleased)
 -------------------------
 
 ### New
-- CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131))
+- CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variable.css` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
 
 Version 1.16 (April 2024)
 -------------------------
