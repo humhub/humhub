@@ -730,7 +730,7 @@ class SelfTest
             $migrations = MigrationService::create()->getPendingMigrations();
             if ($migrations === []) {
                 $checks[] = [
-                    'title' => $title . Yii::t('AdminModule.information', 'No open migrations'),
+                    'title' => $title . Yii::t('AdminModule.information', 'No pending migrations'),
                     'state' => 'OK',
                 ];
             } else {
