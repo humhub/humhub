@@ -9,6 +9,7 @@ HumHub Changelog
 - Fix #7100: Enable all file handlers on RichText editor toolbar
 - Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
 - Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7131: Introduce new CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height`
 
 1.16.2 (Unreleased)
 ---------------------
