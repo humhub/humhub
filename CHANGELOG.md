@@ -7,7 +7,9 @@ HumHub Changelog
 - Enh #7070: Add GitHub action for PHP CS Fixer
 - Enh #7073: Add a link to notification settings on top dropdown list
 - Fix #7100: Enable all file handlers on RichText editor toolbar
-- Enh #7125: Add self test for new migrations
+- Enh #7125: Prerequisites - Check test for pending migrations
+- Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
+- Enh #7128: Prerequisites - Check for mixed table collations
 
 1.16.2 (Unreleased)
 ---------------------
