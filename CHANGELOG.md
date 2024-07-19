@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
 - Fix #7116: Fix rebuilding the search index with Grunt (since 1.16.0)
 - Fix #7120: Error after failed migration of content fulltext index
+- Fix #7126: Fix member count on a space directory
 - Enh #6794: Improve log wrong parsing of OEmbed URL
 
 1.16.1 (July 1, 2024)
