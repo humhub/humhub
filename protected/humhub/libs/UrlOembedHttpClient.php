@@ -62,7 +62,8 @@ class UrlOembedHttpClient implements UrlOembedClient
                 return Json::decode($json);
             }
         } catch (\Exception $ex) {
-            Yii::warning($ex);
+            Yii::warning("Error decoding JSON from OEmbed URL:\n" . $json .
+                "\n\n" . $ex->getTraceAsString());
         }
 
         return null;
