@@ -9,6 +9,7 @@
 namespace humhub\commands;
 
 use DateTime;
+use humhub\libs\SelfTest;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;
@@ -36,6 +37,16 @@ class CronController extends Controller
      * @var string mutex to acquire
      */
     public const MUTEX_ID = 'cron-mutex';
+
+    public function beforeAction($action)
+    {
+        Yii::$app->cache->set(SelfTest::PHP_INFO_CACHE_KEY, [
+            'version' => phpversion(),
+            'user' => get_current_user(),
+        ]);
+
+        return parent::beforeAction($action);
+    }
 
 
     /**
