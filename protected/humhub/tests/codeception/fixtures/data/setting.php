@@ -70,6 +70,10 @@ return [
             'pattern' => '/slideshare\.net/',
             'endpoint' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450',
         ],
+        'Reddit' => [
+            'pattern' => '/reddit\.com/',
+            'endpoint' => 'https://www.reddit.com/oembed?format=json&url=%url%',
+        ],
     ]), 'module_id' => 'base'],
     ['name' => 'defaultLanguage', 'value' => 'en-US', 'module_id' => 'base'],
     ['name' => 'maintenanceMode', 'value' => '0', 'module_id' => 'base'],
