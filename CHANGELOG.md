@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
 - Fix #7116: Fix rebuilding the search index with Grunt (since 1.16.0)
 - Fix #7120: Error after failed migration of content fulltext index 
+– Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft` 
 
 1.16.1 (July 1, 2024)
 ---------------------
