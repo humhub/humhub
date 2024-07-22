@@ -1,6 +1,16 @@
 HumHub Changelog
 ================
 
+
+1.17.0 (TBA)
+------------
+- Enh #7070: Add GitHub action for PHP CS Fixer
+- Enh #7073: Add a link to notification settings on top dropdown list
+- Fix #7100: Enable all file handlers on RichText editor toolbar
+- Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
+- Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft` 
+
 1.16.2 (Unreleased)
 ---------------------
 - Fix #7102: Fix content search with word ending with hyphen
@@ -8,7 +18,9 @@ HumHub Changelog
 - Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
 - Fix #7116: Fix rebuilding the search index with Grunt (since 1.16.0)
 - Fix #7120: Error after failed migration of content fulltext index
-- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft` 
+- Fix #7126: Fix member count on a space directory
+- Enh #6794: Improve log wrong parsing of OEmbed URL
+- Fix #6794: Add `User-Agent` to oEmbed CURL request (fix for Reddit)
 
 1.16.1 (July 1, 2024)
 ---------------------
