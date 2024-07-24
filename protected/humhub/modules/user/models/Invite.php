@@ -313,4 +313,14 @@ class Invite extends ActiveRecord
             !$this->skipCaptchaValidation
             && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
     }
+
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
 }
