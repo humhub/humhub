@@ -35,8 +35,10 @@ use yii\helpers\Url;
  * @property string $lastname
  * @property string $captcha
  *
- * @property Space $space
- * @property User|null $originator
+ * @property-read Space $space
+ * @property-read User|null $originator
+ * @property-read User|null $createdBy
+ * @property-read User|null $updatedBy
  */
 class Invite extends ActiveRecord
 {
