@@ -1,7 +1,6 @@
 HumHub Changelog
 ================
 
-
 1.17.0 (TBA)
 ------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
@@ -9,7 +8,8 @@ HumHub Changelog
 - Fix #7100: Enable all file handlers on RichText editor toolbar
 - Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
 - Enh #7128: Prerequisites - check for mixed table collations
-- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft` 
+- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
+- Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
 
 1.16.2 (Unreleased)
 ---------------------
