@@ -10,6 +10,7 @@ HumHub Changelog
 - Enh #7128: Prerequisites - check for mixed table collations
 - Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
 - Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
+- Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
 
 1.16.2 (Unreleased)
 ---------------------
@@ -21,7 +22,6 @@ HumHub Changelog
 - Fix #7126: Fix member count on a space directory
 - Enh #6794: Improve log wrong parsing of OEmbed URL
 - Fix #6794: Add `User-Agent` to oEmbed CURL request (fix for Reddit)
-- Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
 
 1.16.1 (July 1, 2024)
 ---------------------
