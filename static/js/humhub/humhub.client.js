@@ -494,6 +494,7 @@ humhub.module('client', function (module, require, $) {
         onBeforeLoad: onBeforeLoad,
         offBeforeLoad: offBeforeLoad,
         unloadForm: unloadForm,
+        confirmUnload: confirmUnload,
         redirect: redirect
     });
 });

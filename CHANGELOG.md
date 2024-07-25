@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #7126: Fix member count on a space directory
 - Enh #6794: Improve log wrong parsing of OEmbed URL
 - Fix #6794: Add `User-Agent` to oEmbed CURL request (fix for Reddit)
+- Enh # : Export `unloadForm` function from `humhub.client.js`
 
 1.16.1 (July 1, 2024)
 ---------------------
