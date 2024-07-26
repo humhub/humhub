@@ -10,6 +10,7 @@ HumHub Changelog
 - Enh #7128: Prerequisites - check for mixed table collations
 - Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
 - Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
+- Enh #7138: Added missing DB relations to UserInvite model
 - Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
 
 1.16.2 (Unreleased)
