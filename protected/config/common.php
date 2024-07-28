@@ -1,6 +1,6 @@
 <?php
 
-defined('DEBUG') or define('DEBUG', false);
+defined('DEBUG') or define('DEBUG', true);
 
 /**
  * This file provides to overwrite the default HumHub / Yii configuration by your local common (Console and Web) environments
