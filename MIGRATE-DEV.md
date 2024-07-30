@@ -10,6 +10,12 @@ Version 1.17 (Unreleased)
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 
+Version 1.17 (Unreleased)
+-------------------------
+
+### New
+- CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
+
 Version 1.16 (April 2024)
 -------------------------
 At least PHP 8.0 is required with this version.

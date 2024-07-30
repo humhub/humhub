@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7100: Enable all file handlers on RichText editor toolbar
 - Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
 - Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7131: Introduce new CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height`
 - Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
 - Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
 - Enh #7138: Added missing DB relations to UserInvite model
