@@ -1,8 +1,14 @@
 Module Migration Guide
 ======================
 
-See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
-for full version.
+See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md) for full version.
+
+Version 1.17 (Unreleased)
+-------------------------
+
+### Behaviour change
+
+- Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 
 Version 1.17 (Unreleased)
 -------------------------

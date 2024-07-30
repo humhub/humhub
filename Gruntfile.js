@@ -32,7 +32,7 @@ module.exports = function (grunt) {
             buildSearch: {
                 command: function () {
                     let sep = cmdSep();
-                    return `cd protected ${sep} php yii search/rebuild`;
+                    return `cd protected ${sep} php yii content-search/rebuild`;
                 }
             },
             testServer: {
