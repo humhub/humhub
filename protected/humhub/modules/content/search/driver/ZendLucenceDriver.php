@@ -217,14 +217,18 @@ class ZendLucenceDriver extends AbstractDriver
             $query->addSubquery(new MultiTerm($authors, $signs), true);
         }
 
-        if ($request->space) {
-            $spaces = [];
+        if (!empty($request->contentContainerClass)) {
+            $query->addSubquery(new TermQuery(new Term($request->contentContainerClass, 'container_class')), true);
+        }
+
+        if ($request->contentContainer) {
+            $containers = [];
             $signs = [];
-            foreach ($request->space as $space) {
-                $spaces[] = new Term($space, 'container_guid');
+            foreach ($request->contentContainer as $contentContainerGuid) {
+                $containers[] = new Term($contentContainerGuid, 'container_guid');
                 $signs[] = null;
             }
-            $query->addSubquery(new MultiTerm($spaces, $signs), true);
+            $query->addSubquery(new MultiTerm($containers, $signs), true);
         }
 
         if (!empty($request->contentType)) {
