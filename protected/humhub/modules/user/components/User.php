@@ -9,6 +9,7 @@
 namespace humhub\modules\user\components;
 
 use humhub\libs\BasePermission;
+use humhub\modules\ui\helpers\DeviceDetectorHelper;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;
@@ -215,7 +216,7 @@ class User extends \yii\web\User
     public function loginRequired($checkAjax = true, $checkAcceptHeader = true)
     {
         // Fix 4700: Handle Microsoft Office Probe Requests
-        if (strpos(Yii::$app->request->getUserAgent() ?? '', 'Microsoft Office') !== false) {
+        if (DeviceDetectorHelper::isMicrosoftOffice()) {
             Yii::$app->response->setStatusCode(200);
             Yii::$app->response->data = Yii::$app->controller->htmlRedirect(Yii::$app->request->getAbsoluteUrl());
             return Yii::$app->getResponse();
