@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\components;
 
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\libs\BasePermission;
-use humhub\modules\ui\helpers\DeviceDetectorHelper;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User as UserModel;

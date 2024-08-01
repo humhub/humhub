@@ -6,7 +6,7 @@
  *
  */
 
-namespace humhub\modules\ui\helpers;
+namespace humhub\helpers;
 
 use Yii;
 
