@@ -13,6 +13,7 @@ HumHub Changelog
 - Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
 - Enh #7138: Added missing DB relations to UserInvite model
 - Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
+- Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
 - Fix #7149: Fixed dropdown issue on mobile
 
 1.16.2 (Unreleased)
