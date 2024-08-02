@@ -14,6 +14,7 @@ HumHub Changelog
 - Enh #7138: Added missing DB relations to UserInvite model
 - Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
 - Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
+- Fix #7151: Disable new post's required validation for `message` when post has attached files
 
 1.16.2 (Unreleased)
 ---------------------
