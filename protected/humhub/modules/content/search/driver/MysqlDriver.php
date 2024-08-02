@@ -103,8 +103,8 @@ class MysqlDriver extends AbstractDriver
         }
 
         if (!empty($request->author)) {
-            $query->leftJoin('user', 'user.id = content.created_by')
-                ->andWhere(['IN', 'user.guid', $request->author]);
+            $query->leftJoin('user author_user', 'author_user.id = content.created_by')
+                ->andWhere(['IN', 'author_user.guid', $request->author]);
         }
 
         if (!empty($request->contentContainerClass)) {

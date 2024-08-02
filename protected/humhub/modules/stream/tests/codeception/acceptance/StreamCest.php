@@ -9,6 +9,7 @@ namespace stream\acceptance;
 
 use DateTime;
 use Exception;
+use humhub\modules\user\models\User;
 use stream\AcceptanceTester;
 use Yii;
 
@@ -375,6 +376,25 @@ class StreamCest
         $I->waitForElement('.s2_streamContent > .stream-end', 10);
         $I->dontSee($postTitle, '.s2_streamContent');
         */
+    }
+
+    public function testDisabledUserPost(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that content of disabled users is not visible');
+
+        $I->amAdmin();
+
+        $I->amOnSpace2();
+        $I->waitForText('Admin Space 2 Post Public');
+        $I->see('User 2 Space 2 Post Public');
+
+        $user2 = User::findOne(['id' => 2]);
+        $user2->status = User::STATUS_DISABLED;
+        $user2->save();
+
+        $I->amOnSpace2();
+        $I->waitForText('Admin Space 2 Post Public');
+        $I->dontSee('User 2 Space 2 Post Public');
     }
 
     // Filtering
