@@ -18,6 +18,7 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\ActiveQuery;
+use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -524,6 +525,12 @@ class StreamQuery extends Model
             ->joinWith('createdBy')
             ->joinWith('contentContainer')
             ->limit($this->limit);
+
+        // Filter out content created by not enabled users
+        $this->_query->andWhere(['OR',
+            ['IS', 'user.id', new Expression('NULL')],
+            ['user.status' => User::STATUS_ENABLED],
+        ]);
 
         if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
             $this->_query->andWhere(['user.status' => User::STATUS_ENABLED]);
