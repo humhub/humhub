@@ -40,11 +40,18 @@ trait ApplicationTrait
     public array $loadedAppConfig;
 
     /**
+     * @var bool
+     */
+    public $debug = false;
+
+    /**
      * @inheritdoc
      */
     public function __construct($config = [])
     {
         $this->loadedAppConfig = $config;
+
+        $this->handleDebugMode();
 
         $config = $this->removeLegacyConfigSettings($config);
 
@@ -101,18 +108,6 @@ trait ApplicationTrait
         $config = DynamicConfig::load();
         $config['params']['installed'] = true;
         DynamicConfig::save($config);
-        $this->disableDebugMode();
-    }
-
-    /**
-     * Disables debug mode
-     * @since 1.17
-     * @return void
-     */
-    public function disableDebugMode(): void
-    {
-        $file = Yii::getAlias('@app/config/common.php');
-        file_put_contents($file, str_replace("define('DEBUG', true)", "define('DEBUG', false)", file_get_contents($file)));
     }
 
     /**
@@ -164,5 +159,28 @@ trait ApplicationTrait
             $applicationConfig,
             SelfTest::getLegancyConfigSettings(),
         );
+    }
+
+
+    private function handleDebugMode()
+    {
+
+        /**
+         * Automatically enable debug mode, when:
+         *  - Config contains not the `installed` flag
+         *  - App level config contains `debug=true` flag
+         */
+        if (empty($this->loadedAppConfig['params']['installed']) ||
+            !empty($this->loadedAppConfig['debug'])
+            /* More condition e.g. via ENV Vars (HUMHUB_DEBUG) in future */
+        ) {
+            defined('YII_DEBUG') or define('YII_DEBUG', true);
+            defined('YII_ENV') or define('YII_ENV', 'dev');
+
+            var_dump(YII_DEBUG);
+            die();
+
+            $this->debug = true;
+        }
     }
 }
