@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
 - Fix #7149: Fixed dropdown issue on mobile
 - Fix #7151: Disable new post's required validation for `message` when post has attached files
+- Enh #7106: Enable option for non-member users of a space to create posts
 
 1.16.2 (Unreleased)
 ---------------------
