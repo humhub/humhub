@@ -1,6 +1,8 @@
 <?php
 
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\notification\widgets\NotificationSettingsForm;
+use humhub\modules\notification\widgets\NotificationSettingsInfo;
 use humhub\modules\notification\widgets\UserInfoWidget;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
@@ -19,12 +21,12 @@ use yii\helpers\Url;
         <br/>
         <?= Yii::t('NotificationModule.base', 'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.'); ?>
     </div>
-
+    <?= NotificationSettingsInfo::widget() ?>
     <?= UserInfoWidget::widget() ?>
 
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-    <?= humhub\modules\notification\widgets\NotificationSettingsForm::widget([
+    <?= NotificationSettingsForm::widget([
         'model' => $model,
         'form' => $form
     ]) ?>
