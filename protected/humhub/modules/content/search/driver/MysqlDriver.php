@@ -107,9 +107,12 @@ class MysqlDriver extends AbstractDriver
                 ->andWhere(['IN', 'user.guid', $request->author]);
         }
 
-        if (!empty($request->space)) {
-            $query->andWhere(['contentcontainer.class' => Space::class])
-                ->andWhere(['IN', 'contentcontainer.guid', $request->space]);
+        if (!empty($request->contentContainerClass)) {
+            $query->andWhere(['contentcontainer.class' => $request->contentContainerClass]);
+        }
+
+        if (!empty($request->contentContainer)) {
+            $query->andWhere(['IN', 'contentcontainer.guid', $request->contentContainer]);
         }
 
         $this->addQueryFilterVisibility($query);

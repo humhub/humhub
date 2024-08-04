@@ -28,6 +28,9 @@ HumHub Changelog
 - Fix #7126: Fix member count on a space directory
 - Enh #6794: Improve log wrong parsing of OEmbed URL
 - Fix #6794: Add `User-Agent` to oEmbed CURL request (fix for Reddit)
+- Fix #7146: Fix search request by container guid
+- Fix #7141: Fix meta searching twice for the same keyword
+- Fix #7150: Remove js statement `with` to avoid error on build assets by grunt uglify
 
 1.16.1 (July 1, 2024)
 ---------------------
