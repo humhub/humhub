@@ -258,6 +258,11 @@ humhub.module('ui.search', function(module, require, $) {
         }
 
         if (that.previousKeyword === data.keyword) {
+            this.getProviders().each(function () {
+                const provider = $(this);
+                provider.removeClass('provider-searching');
+                loader.reset(provider.find(that.selectors.providerContent));
+            });
             that.refreshPositionSize();
             return;
         }

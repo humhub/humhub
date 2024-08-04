@@ -6,11 +6,11 @@ module.exports = function (grunt) {
     var cssMinAssetcfg = {};
     cssMinAssetcfg[grunt.option('to')] = [grunt.option('from')];
 
-    var isWin = function() {
+    var isWin = function () {
         return (process.platform === "win32");
     };
 
-    var cmdSep = function() {
+    var cmdSep = function () {
         return isWin() ? '&' : ';';
     };
 
@@ -19,7 +19,7 @@ module.exports = function (grunt) {
         clean: ["assets/*"],
         shell: {
             buildAssets: {
-                command: function() {
+                command: function () {
                     let rm = isWin() ? 'del' : 'rm';
                     let sep = cmdSep();
                     let delAssets = isWin() ? '(For /D %i in (static\\assets\\*.*) do (rmdir %i /S /Q))' : `${rm} -rf static/assets/*/`;
@@ -30,18 +30,18 @@ module.exports = function (grunt) {
                 }
             },
             buildSearch: {
-                command: function() {
+                command: function () {
                     let sep = cmdSep();
-                    return `cd protected ${sep} php yii search/rebuild`;
+                    return `cd protected ${sep} php yii content-search/rebuild`;
                 }
             },
             testServer: {
                 command: "php -S localhost:8080 index-test.php"
             },
             testRun: {
-                command: function() {
+                command: function () {
                     let sep = cmdSep();
-                    let moduleName = grunt.option('module') || grunt.option('m') ||  null;
+                    let moduleName = grunt.option('module') || grunt.option('m') || null;
                     let doBuild = grunt.option('build') || false;
                     let base = process.cwd();
 
@@ -49,7 +49,7 @@ module.exports = function (grunt) {
                     let rootTestPath = `${base}/protected/humhub/tests`;
 
                     let testPath = rootTestPath;
-                    if(moduleName) {
+                    if (moduleName) {
                         testPath = `${base}/protected/humhub/modules/${moduleName}/tests`;
                     }
 
@@ -57,10 +57,10 @@ module.exports = function (grunt) {
                     let path = grunt.option('path') || null;
                     let executionPath = '';
 
-                    if(suite) {
+                    if (suite) {
                         executionPath = suite;
-                    } else if(path) {
-                        if(path.indexOf('codeception') !== 0) {
+                    } else if (path) {
+                        if (path.indexOf('codeception') !== 0) {
                             path = 'codeception' + ((path.indexOf('/') !== 0) ? '/' : '') + path;
                         }
                         executionPath = path;
@@ -69,10 +69,10 @@ module.exports = function (grunt) {
                     let options = grunt.option('options') || '';
                     options += grunt.option('raw') ? ' --no-ansi' : '';
                     options += grunt.option('debug') ? ' -d' : '';
-                    options += grunt.option('env') ? ' --env '+ grunt.option('env') : '';
+                    options += grunt.option('env') ? ' --env ' + grunt.option('env') : '';
 
 
-                    let build =  `cd ${rootTestPath} ${sep} php ${codeceptPath} build`;
+                    let build = `cd ${rootTestPath} ${sep} php ${codeceptPath} build`;
 
                     let run = `cd ${testPath} ${sep} php ${codeceptPath} run ${executionPath} ${options}`;
 
@@ -80,21 +80,21 @@ module.exports = function (grunt) {
                 }
             },
             buildTheme: {
-                command: function(name) {
+                command: function (name) {
                     let theme = name || grunt.option('name') || "HumHub";
                     let sep = cmdSep();
-                    return `cd themes/${theme}/less ${sep} lessc -x build.less ../css/theme.css`;
+                    return `cd themes/${theme}/less ${sep} lessc --clean-css build.less ../css/theme.css`;
                 }
             },
             migrateCreate: {
-                command: function(name) {
+                command: function (name) {
                     let migrationName = name || grunt.option('name');
                     let sep = cmdSep();
                     return `cd protected ${sep} php yii migrate/create ${migrationName}`;
                 }
             },
             migrateUp: {
-                command: function(modules) {
+                command: function (modules) {
                     let includeModuleMigrations = modules || grunt.option('modules') || "1";
                     let sep = cmdSep();
                     return `cd protected ${sep} php yii migrate/up --includeModuleMigrations=${includeModuleMigrations}`;

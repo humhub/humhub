@@ -252,23 +252,24 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         $this->assertCount(6, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space1->guid];
+        $request->contentContainerClass = Space::class;
+        $request->contentContainer = [$space1->guid];
         $this->assertCount(1, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space2->guid];
+        $request->contentContainer = [$space2->guid];
         $this->assertCount(2, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space3->guid];
+        $request->contentContainer = [$space3->guid];
         $this->assertCount(3, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space1->guid, $space3->guid];
+        $request->contentContainer = [$space1->guid, $space3->guid];
         $this->assertCount(4, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space2->guid, $space3->guid];
+        $request->contentContainer = [$space2->guid, $space3->guid];
         $result = $this->searchDriver->search($request);
         $this->assertCount(5, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space1->guid, $space2->guid, $space3->guid];
+        $request->contentContainer = [$space1->guid, $space2->guid, $space3->guid];
         $this->assertCount(6, $this->searchDriver->search($request)->results);
     }
 

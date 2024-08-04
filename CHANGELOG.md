@@ -1,17 +1,36 @@
 HumHub Changelog
 ================
 
-
 1.17.0 (TBA)
 ------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
 - Enh #7073: Add a link to notification settings on top dropdown list
 - Fix #7100: Enable all file handlers on RichText editor toolbar
+- Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
+- Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7131: Introduce new CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height`
+- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
+- Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
+- Enh #7138: Added missing DB relations to UserInvite model
+- Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
+- Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
+- Fix #7149: Fixed dropdown issue on mobile
+- Fix #7151: Disable new post's required validation for `message` when post has attached files
+- Enh #7106: Enable option for non-member users of a space to create posts
 
 1.16.2 (Unreleased)
 ---------------------
 - Fix #7102: Fix content search with word ending with hyphen
 - Fix #7104: Missing `--text-color-default` CSS variable
+- Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
+- Fix #7116: Fix rebuilding the search index with Grunt (since 1.16.0)
+- Fix #7120: Error after failed migration of content fulltext index
+- Fix #7126: Fix member count on a space directory
+- Enh #6794: Improve log wrong parsing of OEmbed URL
+- Fix #6794: Add `User-Agent` to oEmbed CURL request (fix for Reddit)
+- Fix #7146: Fix search request by container guid
+- Fix #7141: Fix meta searching twice for the same keyword
+- Fix #7150: Remove js statement `with` to avoid error on build assets by grunt uglify
 
 1.16.1 (July 1, 2024)
 ---------------------
