@@ -96,13 +96,24 @@ trait ApplicationTrait
      *
      * @since 1.16
      */
-    public function setInstalled()
+    public function setInstalled(): void
     {
         $config = DynamicConfig::load();
         $config['params']['installed'] = true;
         DynamicConfig::save($config);
+        $this->disableDebugMode();
     }
 
+    /**
+     * Disables debug mode
+     * @since 1.17
+     * @return void
+     */
+    public function disableDebugMode(): void
+    {
+        $file = Yii::getAlias('@app/config/common.php');
+        file_put_contents($file, str_replace("define('DEBUG', true)", "define('DEBUG', false)", file_get_contents($file)));
+    }
 
     /**
      * Checks if settings table exists or application is not installed yet
