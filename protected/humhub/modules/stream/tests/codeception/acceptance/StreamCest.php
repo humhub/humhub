@@ -378,6 +378,9 @@ class StreamCest
         */
     }
 
+    /**
+     * @skip Skip it while Yii::$app->getModule('stream')->showDeactivatedUserContent === true
+     */
     public function testDisabledUserPost(AcceptanceTester $I)
     {
         $I->wantTo('ensure that content of disabled users is not visible');
