@@ -176,12 +176,6 @@ class MysqlDriver extends AbstractDriver
         $query->leftJoin('space', 'contentcontainer . pk = space . id and contentcontainer .class=:spaceClass', [':spaceClass' => Space::class]);
         $query->leftJoin('user cuser', 'contentcontainer . pk = cuser . id and contentcontainer .class=:userClass', [':userClass' => User::class]);
 
-        // Filter out content created by not enabled users
-        $query->andWhere(['OR',
-            ['IS', 'user.id', new Expression('NULL')],
-            ['user.status' => User::STATUS_ENABLED],
-        ]);
-
         if (!Yii::$app->user->isGuest) {
             $user = Yii::$app->user->getIdentity();
 

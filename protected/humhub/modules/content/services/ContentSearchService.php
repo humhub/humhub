@@ -10,6 +10,7 @@ use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\models\File;
+use humhub\modules\user\models\User;
 use Yii;
 
 class ContentSearchService
@@ -80,7 +81,16 @@ class ContentSearchService
 
     public function isIndexable(): bool
     {
-        return $this->content->stream_channel === Content::STREAM_CHANNEL_DEFAULT;
+        if ($this->content->stream_channel !== Content::STREAM_CHANNEL_DEFAULT) {
+            return false;
+        }
+
+        if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
+            $author = $this->content->createdBy;
+            return $author && $author->status === User::STATUS_ENABLED;
+        }
+
+        return true;
     }
 
     private function getSearchDriver(): AbstractDriver
