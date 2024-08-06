@@ -16,6 +16,7 @@ use humhub\modules\user\models\Follow;
 use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\db\Expression;
 use yii\db\Query;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -176,7 +177,15 @@ class Chooser extends Widget
     protected function getFollowSpaces()
     {
         if (!Yii::$app->user->isGuest) {
-            return Follow::getFollowedSpacesQuery(Yii::$app->user->getIdentity())->all();
+            return Follow::getFollowedSpacesQuery(Yii::$app->user->getIdentity())
+                // Exclude spaces where user is a member to avoid duplications in the space chooser
+                ->leftJoin(
+                    'space_membership',
+                    'space.id = space_membership.space_id AND space_membership.user_id = :userId AND space_membership.status = :membershipStatus',
+                    [':userId' => Yii::$app->user->id, ':membershipStatus' => Membership::STATUS_MEMBER],
+                )
+                ->andWhere(['IS', 'space_membership.space_id', new Expression('NULL')])
+                ->all();
         }
 
         return [];
