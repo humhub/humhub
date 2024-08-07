@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #7141: Fix meta searching twice for the same keyword
 - Fix #7150: Remove js statement `with` to avoid error on build assets by grunt uglify
 - Fix #7156: Fix duplicated following spaces in the chooser widget
+- Enh #7157: Highlight content after open a page from search results
 
 1.16.1 (July 1, 2024)
 ---------------------
