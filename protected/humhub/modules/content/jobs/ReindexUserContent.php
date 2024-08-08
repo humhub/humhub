@@ -44,7 +44,7 @@ class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInt
                 if ($user->status === User::STATUS_ENABLED) {
                     (new ContentSearchService($content))->update(false);
                 } else {
-                    (new ContentSearchService($content))->delete(false, true);
+                    (new ContentSearchService($content))->delete(false);
                 }
             }
         });

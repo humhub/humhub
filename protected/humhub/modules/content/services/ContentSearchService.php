@@ -39,12 +39,8 @@ class ContentSearchService
         }
     }
 
-    public function delete(bool $asActiveJob = true, bool $forceDelete = false): void
+    public function delete(bool $asActiveJob = true): void
     {
-        if (!$forceDelete && !$this->isIndexable()) {
-            return;
-        }
-
         if ($asActiveJob) {
             Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->content->id]));
         } else {
