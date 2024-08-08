@@ -230,7 +230,7 @@ class Module extends Model
         $marketplaceModule = Yii::$app->getModule('marketplace');
         $licence = $marketplaceModule->getLicence();
 
-        return $licence->type !== Licence::LICENCE_TYPE_PRO;
+        return $licence->type === Licence::LICENCE_TYPE_PRO;
     }
 
     public function getCheckoutUrl(): string
