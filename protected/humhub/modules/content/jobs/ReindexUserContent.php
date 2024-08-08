@@ -8,13 +8,11 @@
 namespace humhub\modules\content\jobs;
 
 use humhub\modules\content\models\Content;
-use humhub\modules\content\Module;
-use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\content\services\SearchJobService;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\user\models\User;
-use Yii;
 
 class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInterface
 {
@@ -44,9 +42,9 @@ class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInt
 
             foreach ($contents->each() as $content) {
                 if ($user->status === User::STATUS_ENABLED) {
-                    $this->getSearchDriver()->update($content);
+                    (new ContentSearchService($content))->update(false);
                 } else {
-                    $this->getSearchDriver()->delete($content);
+                    (new ContentSearchService($content))->delete(false, true);
                 }
             }
         });
@@ -63,12 +61,5 @@ class ReindexUserContent extends LongRunningActiveJob implements ExclusiveJobInt
     public function getService(): SearchJobService
     {
         return new SearchJobService();
-    }
-
-    private function getSearchDriver(): AbstractDriver
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('content');
-        return $module->getSearchDriver();
     }
 }

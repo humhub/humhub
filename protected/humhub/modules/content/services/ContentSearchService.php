@@ -22,7 +22,7 @@ class ContentSearchService
         $this->content = $content;
     }
 
-    public function update($asActiveJob = true): void
+    public function update(bool $asActiveJob = true): void
     {
         if (!$this->isIndexable()) {
             return;
@@ -39,9 +39,9 @@ class ContentSearchService
         }
     }
 
-    public function delete($asActiveJob = true): void
+    public function delete(bool $asActiveJob = true, bool $forceDelete = false): void
     {
-        if (!$this->isIndexable()) {
+        if (!$forceDelete && !$this->isIndexable()) {
             return;
         }
 
