@@ -21,7 +21,9 @@ class m240807_230603_add_permissions_to_existing_user_groups extends Migration
             /** @var Group $group */
             foreach ($groups->each() as $group) {
                 $alreadySet = Yii::$app->user->permissionManager->getGroupState(
-                    $group->id, Yii::createObject(CreatePrivateSpace::class) , false
+                    $group->id,
+                    Yii::createObject(CreatePrivateSpace::class),
+                    false,
                 );
                 if ($alreadySet == '') {
                     Yii::$app->user->permissionManager->setGroupState(
@@ -32,7 +34,9 @@ class m240807_230603_add_permissions_to_existing_user_groups extends Migration
                 }
 
                 $alreadySet = Yii::$app->user->permissionManager->getGroupState(
-                    $group->id, Yii::createObject(CreatePublicSpace::class) , false
+                    $group->id,
+                    Yii::createObject(CreatePublicSpace::class),
+                    false,
                 );
                 if ($alreadySet == '') {
                     Yii::$app->user->permissionManager->setGroupState(
