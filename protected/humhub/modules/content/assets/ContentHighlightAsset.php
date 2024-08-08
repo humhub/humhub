@@ -55,11 +55,10 @@ class ContentHighlightAsset extends AssetBundle
             return $keyword;
         }
 
-        if (isset(Yii::$app->request->referrer)) {
-            $url = parse_url(Yii::$app->request->referrer);
-            if (isset($url['query']) && preg_match('/(^|&|\?)keyword=(.+?)(&|$)/i', $url['query'], $m)) {
-                return urldecode($m[2]);
-            }
+        if (isset(Yii::$app->request->referrer) &&
+            preg_match('/search.*?(&|\?)keyword=(.*?)(&|$)/i', Yii::$app->request->referrer, $m) &&
+            $m[2] !== '') {
+            return urldecode($m[2]);
         }
 
         return null;
