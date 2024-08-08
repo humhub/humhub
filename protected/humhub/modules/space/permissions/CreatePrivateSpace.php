@@ -36,11 +36,6 @@ class CreatePrivateSpace extends BasePermission
      */
     protected $moduleId = 'space';
 
-    /**
-     * @inheritdoc
-     */
-    protected $defaultState = self::STATE_ALLOW;
-
     public function __construct($config = [])
     {
         parent::__construct($config);

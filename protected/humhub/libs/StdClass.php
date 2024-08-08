@@ -896,7 +896,7 @@ class StdClass extends \stdClass implements ArrayAccess, Stringable, SeekableIte
     protected static function validatedObject(): \stdClass
     {
         if (self::$validatedObject === null) {
-            self::$validatedObject = new class () extends \stdClass {
+            self::$validatedObject = new class extends \stdClass {
             };
         }
 

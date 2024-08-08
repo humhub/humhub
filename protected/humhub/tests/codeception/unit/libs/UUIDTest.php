@@ -46,7 +46,7 @@ class UUIDTest extends HumHubDbTestCase
     {
         parent::setUpBeforeClass();
 
-        static::$toString = new class () {
+        static::$toString = new class {
             public string $uuid = '';
 
             public function __toString()
@@ -57,7 +57,7 @@ class UUIDTest extends HumHubDbTestCase
 
         class_alias(get_class(static::$toString), __NAMESPACE__ . '\ToString');
 
-        static::$stringable = new class () extends ToString implements Stringable {
+        static::$stringable = new class extends ToString implements Stringable {
         };
     }
 
@@ -270,7 +270,7 @@ class UUIDTest extends HumHubDbTestCase
 
         $validator = new UUIDValidator();
 
-        $model = new class () extends Model {
+        $model = new class extends Model {
             /**
              * @var mixed
              */

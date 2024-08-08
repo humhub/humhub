@@ -104,7 +104,7 @@ class DataTypeHelperTest extends Unit
 
     public function testClassTypeHelperCase3()
     {
-        $value = new class () implements Stringable {
+        $value = new class implements Stringable {
             public function __toString(): string
             {
                 return '';
@@ -117,7 +117,7 @@ class DataTypeHelperTest extends Unit
             DataTypeHelperMock::matchTypeHelper(Stringable::class, $value, 'object'),
         );
 
-        $value = new class () {
+        $value = new class {
             public function __toString(): string
             {
                 return '';
@@ -247,13 +247,13 @@ class DataTypeHelperTest extends Unit
         static::assertEquals('string', DataTypeHelper::matchType('', ['string', 'NULL']));
 
         $values = [
-            new class () implements Stringable {
+            new class implements Stringable {
                 public function __toString(): string
                 {
                     return '';
                 }
             },
-            new class () {
+            new class {
                 public function __toString(): string
                 {
                     return '';
@@ -400,7 +400,7 @@ class DataTypeHelperTest extends Unit
         static::assertEquals('1.1', DataTypeHelper::filterString('1.1'));
         static::assertEquals('1.1', DataTypeHelper::filterString(1.1));
 
-        $value = new class () implements Stringable {
+        $value = new class implements Stringable {
             public function __toString(): string
             {
                 return 'foo';
@@ -408,7 +408,7 @@ class DataTypeHelperTest extends Unit
         };
         static::assertEquals('foo', DataTypeHelper::filterString($value));
 
-        $value = new class () {
+        $value = new class {
             public function __toString(): string
             {
                 return 'bar';
