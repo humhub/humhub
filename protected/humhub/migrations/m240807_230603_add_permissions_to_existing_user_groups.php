@@ -41,7 +41,7 @@ class m240807_230603_add_permissions_to_existing_user_groups extends Migration
                                     'module_id' => $permission->getModuleId(),
                                     'class' => $permission::class,
                                     'state' => $permission::STATE_ALLOW,
-                                ]
+                                ],
                             )->execute();
                         }
                     }
