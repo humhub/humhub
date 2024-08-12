@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #7156: Fix duplicated following spaces in the chooser widget
 - Enh #7157: Highlight content after open a page from search results
 - Fix #7153: Fix content visibility of disabled users
+- Fix #324: Focus on active and selected nav page after reload on mobile
 - Fix #7158: Fix marketplace module label "Professional Edition"
 
 1.16.1 (July 1, 2024)
