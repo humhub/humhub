@@ -75,7 +75,7 @@ class IncompleteSetupWarning extends Widget
             $problems[] = static::PROBLEM_CRON_JOBS;
         }
 
-        if (!DeviceDetectorHelper::isAppRequest() && !SelfTest::isPushModuleAvailable()) {
+        if (DeviceDetectorHelper::isAppRequest() && !SelfTest::isPushModuleAvailable()) {
             $problems[] = static::PROBLEM_MOBILE_APP_PUSH_SERVICE;
         }
 
