@@ -8,7 +8,10 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\DeviceDetectorHelper;
+use humhub\libs\SelfTest;
 use humhub\modules\admin\Module;
+use humhub\widgets\Button;
 use Yii;
 use yii\db\Query;
 use yii\queue\db\Queue;
@@ -23,6 +26,7 @@ class IncompleteSetupWarning extends Widget
 {
     public const PROBLEM_QUEUE_RUNNER = 'queue-runner';
     public const PROBLEM_CRON_JOBS = 'cron-jobs';
+    public const PROBLEM_MOBILE_APP_PUSH_SERVICE = 'mobile-app-push-service';
 
 
     /**
@@ -71,6 +75,10 @@ class IncompleteSetupWarning extends Widget
             $problems[] = static::PROBLEM_CRON_JOBS;
         }
 
+        if (!DeviceDetectorHelper::isAppRequest() && !SelfTest::isPushModuleAvailable()) {
+            $problems[] = static::PROBLEM_MOBILE_APP_PUSH_SERVICE;
+        }
+
         return $problems;
     }
 
@@ -116,4 +124,16 @@ class IncompleteSetupWarning extends Widget
         return true;
     }
 
+    public static function docBtn(string $url): string
+    {
+        if (!Yii::$app->user->isAdmin()) {
+            return '';
+        }
+        return Button::info(Yii::t('AdminModule.base', 'documentation'))
+            ->icon('external-link')
+            ->link($url)
+            ->loader(false)
+            ->options(['target' => '_blank'])
+            ->sm();
+    }
 }
