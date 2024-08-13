@@ -1,0 +1,152 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import 'src/styles/variables';
+
+@mixin buttonVariant($bgColor, $textColor) {
+  background: $bgColor;
+  border: 1px solid $bgColor;
+  color: $textColor;
+
+  &:hover {
+    background: transparent;
+    color: $bgColor;
+  }
+}
+
+.root {
+  height: 44px;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  padding: 0 46px;
+  font-family: 'Google Sans';
+  font-size: 14px;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  transition: $fadeDuration ease;
+
+  @media screen and (min-width: $medium) {
+    height: 50px;
+    padding: 0 56px;
+  }
+
+  &.uppercase {
+    text-transform: uppercase;
+  }
+
+  // add disabled style
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &.reduced {
+    height: 40px;
+    padding: 0 18px;
+    letter-spacing: 0;
+  }
+
+  &.disabled.disabled {
+    background: $mid_grey;
+    border: 1px solid $mid_grey;
+    color: $dark;
+
+    &:hover {
+      background: $mid_grey;
+      color: $dark;
+    }
+  }
+
+  $themes: (
+    'dark': (
+      $dark,
+      $white
+    ),
+    'dark_grey': (
+      $dark_grey,
+      $white
+    ),
+    'light_grey': (
+      $light_grey,
+      $dark
+    ),
+    'tennis': (
+      $dark,
+      $tennis
+    ),
+    'white': (
+      $white,
+      $dark
+    ),
+    'tomato': (
+      $tomato,
+      #fff
+    ),
+    'lavender': (
+      $dark,
+      $lavender
+    ),
+    'mint': (
+      $dark,
+      $mint
+    ),
+    'cardboard': (
+      $dark,
+      $cardboard
+    ),
+    'coral': (
+      $dark,
+      $coral
+    ),
+    'sky': (
+      $dark,
+      $sky
+    ),
+    'barbie': (
+      $dark,
+      $barbie
+    ),
+    'marigold': (
+      $dark,
+      $marigold
+    ),
+    'berry': (
+      $dark,
+      $berry
+    ),
+    'water': (
+      $dark,
+      $water
+    )
+  );
+
+  @each $theme, $colors in $themes {
+    &.#{$theme} {
+      @include buttonVariant(nth($colors, 1), nth($colors, 2));
+    }
+  }
+
+  &.transparent {
+    color: $white;
+    border: 1px solid $white;
+
+    &:hover {
+      background: lighten($color: $dark, $amount: 10%);
+    }
+  }
+}

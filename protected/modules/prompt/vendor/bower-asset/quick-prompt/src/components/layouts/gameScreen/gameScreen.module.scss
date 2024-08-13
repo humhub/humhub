@@ -1,0 +1,216 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import '../../../styles/variables';
+
+.gameScreen {
+  width: 100%;
+  height: 100%;
+  padding-bottom: 24px;
+
+  position: relative;
+  z-index: 1;
+
+  // wide but short screens
+  @media screen and (min-width: $desktop) and (max-height: $height_l) {
+    overflow: auto;
+  }
+
+  @media screen and (min-width: $desktop) {
+    padding-top: 16px;
+    padding-bottom: 40px;
+  }
+
+  .dialogue {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    // wide but short screens
+    @media screen and (min-width: $desktop) and (max-height: $height_l) {
+      margin-bottom: 100px;
+    }
+
+    & > * {
+      order: 2;
+
+      @media screen and (min-width: $desktop) {
+        order: 1;
+      }
+    }
+
+    .card {
+      order: 1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .childWrapper {
+      position: relative;
+      margin-bottom: 20px;
+      display: flex;
+      overflow: hidden;
+      flex: 1;
+
+      @media screen and (min-width: $desktop) {
+        flex: inherit;
+        margin-bottom: 48px;
+        height: 40%;
+        min-height: 200px;
+      }
+
+      @media screen and (min-width: $desktop) and (min-height: $height_xl) {
+        min-height: 300px;
+        max-height: 425px;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0%;
+        right: 0.15%;
+        top: 0%;
+        bottom: 0%;
+        background: linear-gradient(
+          180deg,
+          $white 0%,
+          rgba(255, 255, 255, 0) 62.5%
+        );
+        pointer-events: none;
+        z-index: 1;
+      }
+    }
+
+    .dialogueChildren {
+      position: relative;
+      overflow-x: hidden;
+      overflow-y: scroll;
+      width: 100%;
+      max-height: 100%;
+      scroll-behavior: smooth;
+      display: flex;
+      justify-content: center;
+
+      @media screen and (max-width: $desktop) {
+        margin-top: auto;
+      }
+
+      ul {
+        display: flex;
+        margin: 0 auto;
+        flex-flow: column;
+        margin-top: auto;
+        flex: 1;
+        width: 100%;
+
+        &:global.forbiddenWord {
+          li:last-of-type {
+            :global .forbidden {
+              text-decoration: none;
+            }
+          }
+        }
+
+        li {
+          position: relative;
+          list-style: none;
+          font-size: 18px;
+          line-height: 27px;
+          letter-spacing: -0.05em;
+          text-align: right;
+          color: $gray;
+          margin-bottom: 24px;
+          margin-left: auto;
+          hyphens: auto;
+
+          :global .forbidden {
+            text-decoration: line-through;
+          }
+
+          &:last-of-type {
+            margin-bottom: 0;
+            position: relative;
+            z-index: 1;
+          }
+
+          &.isModel {
+            text-align: left;
+            opacity: 1;
+            margin-left: initial;
+            font-size: 20px;
+            line-height: 30px;
+            letter-spacing: -0.05em;
+            font-weight: 500;
+            color: $black;
+            hyphens: none;
+
+            @media screen and (min-width: $desktop) {
+              font-size: 24px;
+              line-height: 44px;
+            }
+
+            @media screen and (min-width: $desktop) and (min-height: $height_xl) {
+              font-size: 40px;
+              line-height: 62px;
+            }
+          }
+
+          @media screen and (min-width: $desktop) {
+            font-size: 36px;
+            line-height: 54px;
+            margin-bottom: 48px;
+          }
+        }
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    flex-shrink: 0;
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    @media screen and (min-width: $desktop) {
+      margin-bottom: 16px;
+    }
+
+    div {
+      flex-shrink: 0;
+      &:first-of-type {
+        flex: 1;
+      }
+    }
+  }
+  .card {
+    flex-shrink: 0;
+    @media screen and (min-width: $desktop) {
+      margin-top: auto;
+    }
+  }
+}
+
+.skipButton {
+  &:hover button {
+    opacity: 1;
+  }
+
+  button {
+    opacity: 0.5;
+  }
+}

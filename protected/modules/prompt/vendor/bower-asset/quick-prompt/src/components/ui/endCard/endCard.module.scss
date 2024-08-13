@@ -1,0 +1,91 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import '../../../styles/variables';
+
+.endCard {
+  background: $light_orange;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid $highlight_guess;
+
+  @media screen and (min-width: $desktop) {
+    border-radius: 12px;
+  }
+
+  .content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding: 24px 24px 32px 24px;
+
+    @media screen and (min-width: $desktop) {
+      padding: 36px 36px 50px 36px;
+    }
+
+    h1,
+    h2 {
+      text-align: center;
+    }
+
+    h1 {
+      font-weight: 700;
+      font-size: 64px;
+      letter-spacing: -0.06em;
+      color: $dark_orange;
+      margin: 24px 0;
+      @media screen and (min-width: $desktop) {
+        font-size: 96px;
+        letter-spacing: -0.06em;
+        margin: 36px 0;
+      }
+    }
+
+    h2 {
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 130%;
+      color: $orange;
+
+      @media screen and (min-width: $desktop) {
+        font-size: 24px;
+      }
+
+      b {
+        font-weight: 700;
+      }
+    }
+  }
+
+  .sheet {
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 130%;
+    color: $dark_orange;
+    padding: 8px 0;
+    text-align: center;
+    background: $drop_shadow;
+
+    @media screen and (min-width: $desktop) {
+      font-size: 18px;
+      padding: 12px 0;
+    }
+
+    b {
+      font-weight: 700;
+    }
+  }
+}

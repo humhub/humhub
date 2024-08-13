@@ -1,0 +1,142 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import '~/styles/variables';
+
+.settings {
+  display: flex;
+  position: relative;
+
+  & > button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 24px;
+
+    &:nth-child(1),
+    &:nth-child(2) {
+      @media screen and (max-width: $desktop) {
+        display: none;
+      }
+    }
+
+    @media screen and (min-width: $desktop) {
+      &::after {
+        content: '';
+        border-radius: 100%;
+        z-index: -1;
+        position: absolute;
+        display: block;
+        top: 50%;
+        left: 50%;
+        width: 40px;
+        height: 40px;
+        transform: translate(-50%, -50%);
+        background-color: $orange;
+        opacity: 0;
+        transition: opacity 0.15s ease-in-out;
+      }
+
+      &:hover::after {
+        opacity: 0.2;
+      }
+    }
+  }
+
+  :global .material-symbols-outlined {
+    color: $black;
+    font-size: 24px;
+    font-weight: 400;
+  }
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .touchArea {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9;
+  }
+
+  .popup {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 221px;
+    background-color: $white;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    padding-top: 22px;
+    border: 1px solid $medium_grey;
+    border-radius: 8px;
+    box-shadow: 0px 4px 16px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    transition: 300ms ease;
+    opacity: 0;
+    transform: scale(0.9);
+    transform-origin: top right;
+    pointer-events: none;
+
+    &.show {
+      transform: scale(1);
+      opacity: 1;
+      pointer-events: initial;
+    }
+
+    button {
+      font-size: 14px;
+      line-height: 24px;
+      display: flex;
+      align-items: center;
+      width: calc(100% - 32px);
+      position: relative;
+      color: $gray;
+      margin-bottom: 24px;
+
+      &.disabled {
+        pointer-events: none;
+        opacity: 0.5;
+      }
+
+      span {
+        color: $gray;
+        font-size: 20px;
+        line-height: 24px;
+        margin-right: 8px;
+      }
+
+      :global .toggle {
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+
+      @media screen and (min-width: $desktop) {
+        &.sound,
+        &.about {
+          display: none;
+        }
+      }
+    }
+  }
+}

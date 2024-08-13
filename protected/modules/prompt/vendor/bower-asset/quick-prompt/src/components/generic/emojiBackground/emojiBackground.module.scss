@@ -1,0 +1,283 @@
+/**
+ * Copyright 2023 Google LLC
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import '~/styles/variables';
+
+.emojiBackground {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  font-family: 'Noto Color Emoji';
+
+  div {
+    font-size: 87px;
+    position: absolute;
+    opacity: 0.2;
+
+    &:nth-child(1) {
+      font-size: 52px;
+      top: 12.4332%;
+      left: 21.38889%;
+    }
+
+    &:nth-child(2) {
+      font-size: 71px;
+      top: 1.738%;
+      left: 0%;
+    }
+
+    &:nth-child(3) {
+      font-size: 32px;
+      top: 14.9733%;
+      left: 61.3889%;
+    }
+
+    &:nth-child(4) {
+      font-size: 52px;
+      top: 14.9733%;
+      left: 86.9444%;
+    }
+
+    &:nth-child(5) {
+      font-size: 26px;
+      top: 0;
+      left: 80.5556%;
+    }
+
+    &:nth-child(6) {
+      font-size: 41px;
+      top: 4.2781%;
+      left: 46.1111%;
+    }
+
+    &:nth-child(7) {
+      font-size: 37px;
+      top: 84.6257%;
+      left: 54.1667%;
+    }
+
+    &:nth-child(8) {
+      font-size: 32px;
+      top: 82.2193%;
+      left: 18.3333%;
+    }
+
+    &:nth-child(9) {
+      font-size: 71px;
+      top: 58.155%;
+      left: 0;
+    }
+
+    &:nth-child(10) {
+      opacity: 0;
+    }
+
+    &:nth-child(11) {
+      font-size: 23px;
+      top: 75.8021%;
+      left: 60.5556%;
+    }
+
+    &:nth-child(12) {
+      font-size: 66px;
+      top: 62.5668%;
+      left: 82.7778%;
+    }
+
+    &:nth-child(13) {
+      font-size: 48px;
+      top: 72.5936%;
+      left: 1.944%;
+    }
+
+    &:nth-child(14) {
+      opacity: 0;
+    }
+
+    &:nth-child(15) {
+      font-size: 52px;
+      top: 72.5936%;
+      left: 30%;
+    }
+
+    &:nth-child(16) {
+      opacity: 0;
+    }
+
+    &:nth-child(17) {
+      font-size: 65px;
+      top: 76.3369%;
+      left: 80.5556%;
+    }
+
+    &:nth-child(18) {
+      opacity: 0;
+    }
+  }
+
+  @media screen and (min-width: $desktop) {
+    min-width: 1000px;
+    max-width: 2000px;
+    min-height: 600px;
+    max-height: 1200px;
+
+    div {
+      font-size: 87px;
+      position: absolute;
+      opacity: 0.2;
+
+      &:nth-child(1) {
+        font-size: 87px;
+        top: 07.618025751%;
+        left: 3.9583%;
+      }
+
+      &:nth-child(2) {
+        font-size: 119px;
+        top: 0;
+        left: 27.6389%;
+      }
+
+      &:nth-child(3) {
+        font-size: 54px;
+        top: 8.01716738%;
+        left: 46.6806%;
+      }
+
+      &:nth-child(4) {
+        font-size: 86px;
+        top: 02.360515021%;
+        left: 62.2917%;
+      }
+
+      &:nth-child(5) {
+        font-size: 43px;
+        top: 2.3605%;
+        left: 90.625%;
+      }
+
+      &:nth-child(6) {
+        font-size: 69px;
+        top: 5.5794%;
+        left: 77.8472%;
+      }
+
+      &:nth-child(7) {
+        font-size: 62px;
+        top: 25.7511%;
+        left: 13.6806%;
+      }
+
+      &:nth-child(8) {
+        font-size: 54px;
+        top: 29.0772%;
+        left: 79.7222%;
+      }
+
+      &:nth-child(9) {
+        font-size: 119px;
+        top: 42.48927%;
+        left: 2.7778%;
+      }
+
+      &:nth-child(10) {
+        font-size: 64px;
+        top: 46.5665%;
+        left: 90.8333%;
+        opacity: 0.2;
+      }
+
+      &:nth-child(11) {
+        font-size: 39px;
+        top: 58.0858%;
+        left: 16.6667%;
+      }
+
+      &:nth-child(12) {
+        font-size: 110px;
+        top: 58.90558%;
+        left: 78.125%;
+      }
+
+      &:nth-child(13) {
+        font-size: 80px;
+        top: 80.3562%;
+        left: 7.2222%;
+      }
+
+      &:nth-child(14) {
+        font-size: 119px;
+        top: 76.9614%;
+        left: 23.3333%;
+        opacity: 0.2;
+      }
+
+      &:nth-child(15) {
+        font-size: 87px;
+        top: 75%;
+        left: 38.5972%;
+      }
+
+      &:nth-child(16) {
+        font-size: 43px;
+        top: 71.6738%;
+        left: 52.5694%;
+        opacity: 0.2;
+      }
+
+      &:nth-child(17) {
+        font-size: 110px;
+        top: 76.9313%;
+        left: 64.5138%;
+      }
+
+      &:nth-child(18) {
+        font-size: 43px;
+        top: 84.9785%;
+        left: 86.8055%;
+        opacity: 0.2;
+      }
+    }
+  }
+
+  $total: 15;
+  $time: 30;
+
+  @for $i from 1 through 18 {
+    $rotation: random(45) - random(45);
+
+    div:nth-child(#{$i}) {
+      transform: rotate($rotation + deg);
+      animation: anim#{$i} ($time + random($time)) + s infinite ease-in-out;
+      animation-direction: alternate;
+    }
+
+    @keyframes anim#{$i} {
+      @for $j from 1 through 10 {
+        $x: percentage(calc(random(75) / 100));
+        $y: percentage(calc(random(75) / 100));
+        $rotation: random(20) - random(20);
+        #{$j * 10%} {
+          transform: translate3d($x, $y, 1px) rotate($rotation + deg);
+        }
+      }
+    }
+  }
+}

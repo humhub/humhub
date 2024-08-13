@@ -1,0 +1,41 @@
+{
+  "name": "quickprompt",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "author": "Aaron Wade <aaronwade@google.com>",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "npm run dev",
+    "lint": "eslint \"src/**/*.{js,jsx,json}\"",
+    "lint:fix": "eslint . --fix",
+    "check-env": "node -e 'console.log(process.env)' | grep npm"
+  },
+  "dependencies": {
+    "@react-spring/web": "^9.6.1",
+    "@use-gesture/react": "^10.2.24",
+    "classnames": "^2.3.2",
+    "firebase": "^10.12.5",
+    "lodash.shuffle": "^4.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0",
+    "zustand": "^4.3.2"
+  },
+  "devDependencies": {
+    "@types/react": "^18.0.26",
+    "@types/react-dom": "^18.0.9",
+    "@vitejs/plugin-react": "^3.0.0",
+    "eslint": "^8.35.0",
+    "eslint-config-prettier": "^8.6.0",
+    "eslint-plugin-jsx-a11y": "^6.7.1",
+    "eslint-plugin-prettier": "^4.2.1",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.8.4",
+    "sass": "^1.57.1",
+    "vite": "^4.5.2"
+  }
+}
