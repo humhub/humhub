@@ -18,6 +18,7 @@ HumHub Changelog
 - Enh #7157: Highlight content after open a page from search results
 - Fix #7153: Fix content visibility of disabled users
 - Fix #324: Focus on active and selected nav page after reload on mobile
+- Fix #7170: Fix rendering of new line on email messages
 
 1.16.1 (July 1, 2024)
 ---------------------
