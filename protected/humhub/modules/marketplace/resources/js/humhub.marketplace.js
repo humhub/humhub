@@ -144,14 +144,17 @@ humhub.module('marketplace', function (module, require, $) {
         modal.global.$.find('button[data-modal-close]').hide();
         modal.global.show();
 
-        modal.post(evt, {data: {moduleId}}).then(function () {
+        client.post(evt, {data: {moduleId}}).then(function (response) {
             const enableButton = modal.global.$.find('[data-action-click="marketplace.enable"]').clone();
             if (enableButton.length) {
                 installButton.after(enableButton.addClass('btn-sm'));
             }
             installButton.remove();
+            modal.global.setDialog(response);
         }).catch(function (e) {
             module.log.error(e, true);
+            status.error(e.message);
+            modal.global.close(true);
         });
     }
 

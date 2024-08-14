@@ -132,6 +132,21 @@ class OnlineModuleManager extends Component
     {
         $moduleInfo = $this->getModuleInfo($moduleId);
 
+        if (!isset($moduleInfo['latestCompatibleVersion'])) {
+            $this->throwError($moduleId, 'No latest compatible version!');
+        }
+
+        $version = $moduleInfo['latestCompatibleVersion'];
+
+        if (!empty($version['maxHumhubVersion']) &&
+            version_compare(Yii::$app->version, $version['maxHumhubVersion'], '>')) {
+            $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Could not install version {moduleVersion} of the module "{module}" because max supported HumHub version is {maxHumhubVersion}', [
+                'module' => $version['name'],
+                'moduleVersion' => $version['version'],
+                'maxHumhubVersion' => $version['maxHumhubVersion'],
+            ]));
+        }
+
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
 
@@ -139,12 +154,11 @@ class OnlineModuleManager extends Component
         $moduleDownloadFolder = Yii::getAlias($marketplaceModule->modulesDownloadPath);
         FileHelper::createDirectory($moduleDownloadFolder);
 
-
         // Download
-        $downloadUrl = $moduleInfo['latestCompatibleVersion']['downloadUrl'];
+        $downloadUrl = $version['downloadUrl'];
         $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
         try {
-            $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
+            $hashSha256 = $version['downloadFileSha256'];
             $this->downloadFile($moduleId, $downloadTargetFileName, $downloadUrl, $hashSha256);
         } catch (\Exception $ex) {
             $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Module download failed! (%error%)', ['%error%' => $ex->getMessage()]));
