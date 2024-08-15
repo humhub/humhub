@@ -129,12 +129,11 @@ class IncompleteSetupWarning extends Widget
         if (!Yii::$app->user->isAdmin()) {
             return '';
         }
-        return Button::asLink(Yii::t('AdminModule.base', 'help'))
-            ->icon('link')
+        return Button::asLink(Yii::t('AdminModule.base', 'Open documentation'))
+            ->icon('external-link')
             ->link($url)
             ->loader(false)
             ->options(['target' => '_blank'])
-            ->right()
             ->sm();
     }
 }
