@@ -20,20 +20,20 @@ use humhub\modules\ui\view\components\View;
         <ul>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_QUEUE_RUNNER, $problems)): ?>
                 <li>
-                    <?= Yii::t('AdminModule.base', 'The cron job for the background jobs (queue) does not seem to work properly.') ?>
                     <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/cron-jobs') ?>
+                    <?= Yii::t('AdminModule.base', 'The cron job for the background jobs (queue) does not seem to work properly.') ?>
                 </li>
             <?php endif; ?>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_CRON_JOBS, $problems)): ?>
                 <li>
-                    <?= Yii::t('AdminModule.base', 'The cron job for the regular tasks (cron) does not seem to work properly.') ?>
                     <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/cron-jobs') ?>
+                    <?= Yii::t('AdminModule.base', 'The cron job for the regular tasks (cron) does not seem to work properly.') ?>
                 </li>
             <?php endif; ?>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_MOBILE_APP_PUSH_SERVICE, $problems)): ?>
                 <li>
-                    <?= Yii::t('AdminModule.base', 'The mobile app push service is not available. Please install and configure the "Push Notifications" module.') ?>
                     <?= IncompleteSetupWarning::docBtn('https://marketplace.humhub.com/module/fcm-push/installation') ?>
+                    <?= Yii::t('AdminModule.base', 'The mobile app push service is not available. Please install and configure the "Push Notifications" module.') ?>
                 </li>
             <?php endif; ?>
         </ul>
