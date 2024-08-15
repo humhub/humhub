@@ -52,7 +52,7 @@ class ModuleStatus extends Widget
             return $this->_status;
         }
 
-        if ($this->module->isProOnly()) {
+        if ($this->module->isProFeature()) {
             $this->_status = 'professional';
         } elseif ($this->module->featured) {
             $this->_status = 'featured';
