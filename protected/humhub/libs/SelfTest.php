@@ -906,11 +906,7 @@ class SelfTest
 
             // Check Mobile App - Push Service
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
-            /* @var \humhub\modules\fcmPush\Module|null $pushModule */
-            $pushModule = $modules['fcm-push'] ?? null;
-            if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
-                $pushModule->getIsEnabled() &&
-                $pushModule->getGoService()->isConfigured()) {
+            if (static::isPushModuleAvailable()) {
                 $checks[] = [
                     'title' => $title,
                     'state' => 'OK',
@@ -954,11 +950,21 @@ class SelfTest
         return $checks;
     }
 
+    public static function isPushModuleAvailable(): bool
+    {
+        /* @var \humhub\modules\fcmPush\Module|null $pushModule */
+        $pushModule = $modules['fcm-push'] ?? null;
+        return
+            $pushModule instanceof \humhub\modules\fcmPush\Module &&
+            $pushModule->getIsEnabled() &&
+            $pushModule->getGoService()->isConfigured();
+    }
+
     /**
      * Returns an array with legacy HumHub configuration options.
      *
-     * @since 1.16
      * @return array
+     * @since 1.16
      */
     public static function getLegancyConfigSettings(): array
     {
