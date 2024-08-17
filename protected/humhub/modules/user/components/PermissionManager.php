@@ -132,6 +132,10 @@ class PermissionManager extends Component
     {
         $subject = $this->getSubject();
         if ($subject) {
+            if ($subject->isSystemAdmin()) {
+                return true;
+            }
+
             return $this->getGroupState($subject->groups, $permission) == BasePermission::STATE_ALLOW;
         }
 
