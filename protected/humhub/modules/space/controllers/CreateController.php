@@ -60,7 +60,7 @@ class CreateController extends Controller
     public function actionCreate($visibility = null, $skip = 0)
     {
         // User cannot create spaces (public or private)
-        if (!Yii::$app->user->isAdmin() && !Yii::$app->user->permissionmanager->can(new CreatePublicSpace()) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
+        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace()) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
 
