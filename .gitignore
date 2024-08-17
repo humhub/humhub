@@ -2,6 +2,7 @@ assets/*
 !assets/.gitignore
 
 protected/runtime/*
+protected/config/.env
 !protected/runtime/.gitignore
 
 node_modules

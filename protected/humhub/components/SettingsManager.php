@@ -8,14 +8,14 @@
 
 namespace humhub\components;
 
+use humhub\libs\BaseSettingsManager;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
-use humhub\libs\BaseSettingsManager;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\ContentContainerSettingsManager;
 
 /**
  * SettingsManager application component
@@ -134,6 +134,10 @@ class SettingsManager extends BaseSettingsManager
      */
     public function getFixed(string $name)
     {
+        if ($value = $_ENV["{$this->moduleId}_{$name}"] ?? null) {
+            return $value;
+        }
+
         if (!isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name])) {
             return null;
         }

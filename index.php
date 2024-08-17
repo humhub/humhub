@@ -6,17 +6,18 @@
  * @license https://www.humhub.com/licences
  */
 
-// comment out the following line to enable debug mode
-//defined('DEBUG') or define('DEBUG', true);
+require(__DIR__ . '/protected/vendor/autoload.php');
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/protected/config');
+$dotenv->safeLoad();
 
 $dynamicConfig = (is_readable(__DIR__ . '/protected/config/dynamic.php')) ? require(__DIR__ . '/protected/config/dynamic.php') : [];
-$debug = (defined('DEBUG') && DEBUG) || !$dynamicConfig['params']['installed'];
+$debug = !!($_ENV['DEBUG'] ?? false) || !$dynamicConfig['params']['installed'];
 
 defined('YII_DEBUG') or define('YII_DEBUG', $debug);
 defined('YII_ENV') or define('YII_ENV', $debug ? 'dev' : 'prod');
 
-require(__DIR__ . '/protected/vendor/autoload.php');
+
 require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
 $config = yii\helpers\ArrayHelper::merge(
