@@ -4,6 +4,7 @@ namespace humhub\modules\space\widgets;
 
 use Exception;
 use humhub\components\Widget;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
@@ -203,7 +204,7 @@ class Chooser extends Widget
     {
         /** @var PermissionManager $manager */
         $manager = Yii::$app->user->permissionmanager;
-        return $manager->can(new CreatePublicSpace()) || $manager->can(new CreatePrivateSpace());
+        return $manager->can(new ManageSpaces()) || $manager->can(new CreatePublicSpace()) || $manager->can(new CreatePrivateSpace());
     }
 
     /**

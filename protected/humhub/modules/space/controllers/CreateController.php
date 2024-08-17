@@ -9,8 +9,8 @@
 namespace humhub\modules\space\controllers;
 
 use Colors\RandomColor;
-use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
+use humhub\components\Controller;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
@@ -60,7 +60,7 @@ class CreateController extends Controller
     public function actionCreate($visibility = null, $skip = 0)
     {
         // User cannot create spaces (public or private)
-        if (!Yii::$app->user->permissionmanager->can(new CreatePublicSpace()) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
+        if (!Yii::$app->user->isAdmin() && !Yii::$app->user->permissionmanager->can(new CreatePublicSpace()) && !Yii::$app->user->permissionmanager->can(new CreatePrivateSpace())) {
             throw new HttpException(400, 'You are not allowed to create spaces!');
         }
 
