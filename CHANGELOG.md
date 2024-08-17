@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix #7151: Disable new post's required validation for `message` when post has attached files
 - Enh #7106: Enable option for non-member users of a space to create posts
 - Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Fix #7173: Fix marketplace module label "Professional Edition"
 
 1.16.2 (Unreleased)
 ---------------------
