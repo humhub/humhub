@@ -8,13 +8,13 @@
 
 namespace humhub\modules\space\permissions;
 
-use humhub\libs\BasePermission;
+use humhub\modules\admin\components\BaseAdminPermission;
 use Yii;
 
 /**
  * CreatePublicSpace Permission
  */
-class CreatePublicSpace extends BasePermission
+class CreatePublicSpace extends BaseAdminPermission
 {
     /**
      * @inheritdoc
