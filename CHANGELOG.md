@@ -19,6 +19,8 @@ HumHub Changelog
 - Enh #7106: Enable option for non-member users of a space to create posts
 - Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7173: Fix marketplace module label "Professional Edition"
+- Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
 
 1.16.2 (Unreleased)
 ---------------------

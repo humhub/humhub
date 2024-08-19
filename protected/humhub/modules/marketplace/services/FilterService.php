@@ -103,7 +103,7 @@ class FilterService
         foreach ($this->tags as $tag) {
             switch ($tag) {
                 case 'professional':
-                    if ($this->module->isProOnly()) {
+                    if ($this->module->isProFeature()) {
                         return true;
                     }
                     break;
