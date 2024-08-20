@@ -134,10 +134,6 @@ class SettingsManager extends BaseSettingsManager
      */
     public function getFixed(string $name)
     {
-        if ($value = $_ENV["{$this->moduleId}_{$name}"] ?? null) {
-            return $value;
-        }
-
         if (!isset(Yii::$app->params['fixed-settings'][$this->moduleId][$name])) {
             return null;
         }
