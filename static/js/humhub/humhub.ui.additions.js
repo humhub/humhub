@@ -306,7 +306,7 @@ humhub.module('ui.additions', function (module, require, $) {
         });
     };
 
-    var highlightWords = function (node, words) {
+    var highlightWords = function (node, words, minWordLength) {
         var $node = node instanceof $ ? node : $(node);
         if (!$node.length || typeof($node.highlight) !== 'function') {
             return;
@@ -321,7 +321,14 @@ humhub.module('ui.additions', function (module, require, $) {
             return;
         }
 
+        if (typeof minWordLength !== 'number') {
+            minWordLength = 3;
+        }
+
         words.forEach(function (word) {
+            if (word.length < minWordLength) {
+                return;
+            }
             $node.highlight(word);
             word.indexOf("'") > -1 && $node.highlight(word.replace("'", '’'));
             word.indexOf("’") > -1 && $node.highlight(word.replace('’', "'"));
