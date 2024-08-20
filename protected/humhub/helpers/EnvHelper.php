@@ -21,22 +21,27 @@ class EnvHelper
         foreach ($_ENV as $key => $value) {
             try {
                 $value = Json::decode($value);
-            } catch (InvalidArgumentException) {}
+            } catch (InvalidArgumentException) {
+            }
 
             if (StringHelper::startsWith($key, self::FIXED_SETTING_PREFIX)) {
                 ArrayHelper::setValue(
-                    $config,  [
-                    self::PARAMS_PATH, self::FIXED_SETTINGS_PATH,
-                    ...self::keyToPath(str_replace(self::FIXED_SETTING_PREFIX, '', $key))
-                ], $value
+                    $config,
+                    [
+                        self::PARAMS_PATH, self::FIXED_SETTINGS_PATH,
+                        ...self::keyToPath(str_replace(self::FIXED_SETTING_PREFIX, '', $key)),
+                    ],
+                    $value,
                 );
             }
             if (StringHelper::startsWith($key, self::PARAM_PREFIX)) {
                 ArrayHelper::setValue(
-                    $config,  [
-                    self::PARAMS_PATH,
-                    ...self::keyToPath(str_replace(self::PARAM_PREFIX, '', $key))
-                ], $value
+                    $config,
+                    [
+                        self::PARAMS_PATH,
+                        ...self::keyToPath(str_replace(self::PARAM_PREFIX, '', $key)),
+                    ],
+                    $value,
                 );
             }
         }
@@ -48,9 +53,9 @@ class EnvHelper
     {
         return ArrayHelper::getColumn(
             explode('.', $key),
-            function($path) {
+            function ($path) {
                 return Inflector::variablize(strtolower($path));
-            }
+            },
         );
     }
 }
