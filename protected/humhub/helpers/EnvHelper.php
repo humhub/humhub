@@ -18,7 +18,7 @@ class EnvHelper
     {
         $config = [];
 
-        foreach ($_ENV as $key => $value) {
+        foreach ($env as $key => $value) {
             try {
                 $value = Json::decode($value);
             } catch (InvalidArgumentException) {
