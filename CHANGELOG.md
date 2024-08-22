@@ -20,6 +20,7 @@ HumHub Changelog
 - Fix #324: Focus on active and selected nav page after reload on mobile
 - Fix #7170: Fix rendering of new line on email messages
 - Fix #7178: Highlight only words with 3 or more characters
+- Fix #7180: Fix active form on user edit form for correct working of widget inputs
 
 1.16.1 (July 1, 2024)
 ---------------------
