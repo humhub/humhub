@@ -20,6 +20,7 @@ HumHub Changelog
 - Fix #324: Focus on active and selected nav page after reload on mobile
 - Fix #7170: Fix rendering of new line on email messages
 - Fix #7178: Highlight only words with 3 or more characters
+- Fix #7180: Fix active form on user edit form for correct working of widget inputs
 - Fix #7181: Fix duplicated label of checkbox profile field
 - Fix #7182: Fix initialization of several select2 inputs on the same page
 
