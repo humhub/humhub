@@ -192,17 +192,19 @@ humhub.module('ui.additions', function (module, require, $) {
                     : item.text;
             };
 
-            $match.select2({
-                theme: 'humhub',
-                tags: typeof $match.data('ui-select2-allow-new') !== 'undefined',
-                insertTag: function (data, tag) {
-                    if (typeof $match.data('ui-select2-new-sign') !== 'undefined') {
-                        tag.text += ' ' + $match.data('ui-select2-new-sign');
-                    }
-                    data.unshift(tag);
-                },
-                templateResult: templateItem,
-                templateSelection: templateItem,
+            $match.each(function () {
+                $(this).select2({
+                    theme: 'humhub',
+                    tags: typeof $(this).data('ui-select2-allow-new') !== 'undefined',
+                    insertTag: function (data, tag) {
+                        if (typeof $(this).data('ui-select2-new-sign') !== 'undefined') {
+                            tag.text += ' ' + $(this).data('ui-select2-new-sign');
+                        }
+                        data.unshift(tag);
+                    },
+                    templateResult: templateItem,
+                    templateSelection: templateItem,
+                });
             });
         });
 
