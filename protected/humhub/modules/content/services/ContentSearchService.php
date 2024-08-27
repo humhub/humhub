@@ -15,11 +15,21 @@ use Yii;
 
 class ContentSearchService
 {
-    public Content $content;
+    public ?Content $content;
+    public ?int $contentId;
 
-    public function __construct(Content $content)
+    /**
+     * @param Content|int $content
+     */
+    public function __construct($content)
     {
-        $this->content = $content;
+        if ($content instanceof Content) {
+            $this->content = $content;
+            $this->contentId = $content->id ?? null;
+        } elseif (is_int($content)) {
+            $this->content = Content::findOne(['id' => $content]);
+            $this->contentId = $content;
+        }
     }
 
     public function update(bool $asActiveJob = true): void
@@ -42,9 +52,9 @@ class ContentSearchService
     public function delete(bool $asActiveJob = true): void
     {
         if ($asActiveJob) {
-            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->content->id]));
+            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->contentId]));
         } else {
-            $this->getSearchDriver()->delete($this->content);
+            $this->getSearchDriver()->delete($this->contentId);
         }
     }
 
@@ -77,6 +87,10 @@ class ContentSearchService
 
     public function isIndexable(): bool
     {
+        if (!($this->content instanceof Content) || empty($this->content->id)) {
+            return false;
+        }
+
         if ($this->content->stream_channel !== Content::STREAM_CHANNEL_DEFAULT) {
             return false;
         }
