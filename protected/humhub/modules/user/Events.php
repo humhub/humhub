@@ -5,6 +5,7 @@ namespace humhub\modules\user;
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
@@ -171,7 +172,7 @@ class Events extends BaseObject
             'label' => Yii::t('UserModule.base', 'People'),
             'url' => ['/user/people'],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('user', 'people'),
+            'isActive' => ControllerHelper::isActivePath('user', 'people'),
         ]));
     }
 

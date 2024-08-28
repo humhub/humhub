@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\Module;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
 use Yii;
@@ -60,7 +60,7 @@ class Menu extends LeftNavigation
             'url' => $this->space->createUrl('/space/space/home'),
             'icon' => 'stream',
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('space', 'space', ['index', 'home']),
+            'isActive' => ControllerHelper::isActivePath('space', 'space', ['index', 'home']),
         ]));
 
         if (!$this->space->getAdvancedSettings()->hideAbout) {
@@ -75,7 +75,7 @@ class Menu extends LeftNavigation
             'url' => $this->space->createUrl('/space/space/about'),
             'icon' => 'about',
             'sortOrder' => 10000,
-            'isActive' => MenuLink::isActiveState('space', 'space', ['about']),
+            'isActive' => ControllerHelper::isActivePath('space', 'space', ['about']),
         ]));
 
     }
