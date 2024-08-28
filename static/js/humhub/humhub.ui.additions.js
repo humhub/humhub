@@ -192,17 +192,19 @@ humhub.module('ui.additions', function (module, require, $) {
                     : item.text;
             };
 
-            $match.select2({
-                theme: 'humhub',
-                tags: typeof $match.data('ui-select2-allow-new') !== 'undefined',
-                insertTag: function (data, tag) {
-                    if (typeof $match.data('ui-select2-new-sign') !== 'undefined') {
-                        tag.text += ' ' + $match.data('ui-select2-new-sign');
-                    }
-                    data.unshift(tag);
-                },
-                templateResult: templateItem,
-                templateSelection: templateItem,
+            $match.each(function () {
+                $(this).select2({
+                    theme: 'humhub',
+                    tags: typeof $(this).data('ui-select2-allow-new') !== 'undefined',
+                    insertTag: function (data, tag) {
+                        if (typeof $(this).data('ui-select2-new-sign') !== 'undefined') {
+                            tag.text += ' ' + $(this).data('ui-select2-new-sign');
+                        }
+                        data.unshift(tag);
+                    },
+                    templateResult: templateItem,
+                    templateSelection: templateItem,
+                });
             });
         });
 
@@ -306,22 +308,31 @@ humhub.module('ui.additions', function (module, require, $) {
         });
     };
 
-    var highlightWords = function (node, words) {
+    var highlightWords = function (node, words, minWordLength) {
         var $node = node instanceof $ ? node : $(node);
         if (!$node.length || typeof($node.highlight) !== 'function') {
             return;
         }
 
         if (typeof words === 'string' && words !== '') {
-            words = words.match(/[^\s]+\/[^\s]+|"[^"]+"|[\p{L}\d]+(?:['’`]\p{L}+)?/gu)
-                .map(item => item.replace(/"/g, ''));
-            words = [...new Set(words)].sort((a, b) => b.length - a.length);
+            words = words.match(/[^\s]+\/[^\s]+|"[^"]+"|[\p{L}\d]+(?:['’`]\p{L}+)?/gu);
+            if (Array.isArray(words)) {
+                words = words.map(item => item.replace(/"/g, ''));
+                words = [...new Set(words)].sort((a, b) => b.length - a.length);
+            }
         }
         if (!Array.isArray(words)) {
             return;
         }
 
+        if (typeof minWordLength !== 'number') {
+            minWordLength = 3;
+        }
+
         words.forEach(function (word) {
+            if (word.length < minWordLength) {
+                return;
+            }
             $node.highlight(word);
             word.indexOf("'") > -1 && $node.highlight(word.replace("'", '’'));
             word.indexOf("’") > -1 && $node.highlight(word.replace('’', "'"));

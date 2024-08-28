@@ -17,6 +17,10 @@ HumHub Changelog
 - Fix #7149: Fixed dropdown issue on mobile
 - Fix #7151: Disable new post's required validation for `message` when post has attached files
 - Enh #7106: Enable option for non-member users of a space to create posts
+- Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7173: Fix marketplace module label "Professional Edition"
+- Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
 
 1.16.2 (Unreleased)
 ---------------------
@@ -31,6 +35,17 @@ HumHub Changelog
 - Fix #7146: Fix search request by container guid
 - Fix #7141: Fix meta searching twice for the same keyword
 - Fix #7150: Remove js statement `with` to avoid error on build assets by grunt uglify
+- Fix #7156: Fix duplicated following spaces in the chooser widget
+- Enh #7157: Highlight content after open a page from search results
+- Fix #7153: Fix content visibility of disabled users
+- Fix #324: Focus on active and selected nav page after reload on mobile
+- Fix #7170: Fix rendering of new line on email messages
+- Fix #7178: Highlight only words with 3 or more characters
+- Fix #7180: Fix active form on user edit form for correct working of widget inputs
+- Fix #7181: Fix duplicated label of checkbox profile field
+- Fix #7182: Fix initialization of several select2 inputs on the same page
+- Fix #7187: Fix search reindexing after content deletion
+- Fix #7152: Fix search starting with special characters
 
 1.16.1 (July 1, 2024)
 ---------------------

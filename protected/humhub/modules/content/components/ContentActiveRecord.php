@@ -681,6 +681,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * General information and addons like comments, authors, files and tags will be indexed automatically.
      *
      * @return array
+     * @since 1.16
      */
     public function getSearchAttributes()
     {

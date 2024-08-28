@@ -8,14 +8,14 @@
 
 namespace humhub\modules\user\behaviors;
 
+use humhub\components\Controller;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Behavior;
 use yii\base\InvalidValueException;
 use yii\web\HttpException;
-use humhub\modules\user\models\User;
-use humhub\components\Controller;
 
 /**
  * ProfileController Behavior
@@ -72,6 +72,10 @@ class ProfileController extends Behavior
      */
     public function beforeAction($action)
     {
+        if ($this->user->status == User::STATUS_DISABLED) {
+            throw new HttpException(404, Yii::t('UserModule.profile', 'This profile is disabled!'));
+        }
+
         if ($this->user->status == User::STATUS_NEED_APPROVAL) {
             throw new HttpException(404, Yii::t('UserModule.profile', 'This user account is not approved yet!'));
         }
