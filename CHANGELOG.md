@@ -23,6 +23,7 @@ HumHub Changelog
 - Fix #7180: Fix active form on user edit form for correct working of widget inputs
 - Fix #7181: Fix duplicated label of checkbox profile field
 - Fix #7182: Fix initialization of several select2 inputs on the same page
+- Fix #7152: Fix search starting with special characters
 
 1.16.1 (July 1, 2024)
 ---------------------
