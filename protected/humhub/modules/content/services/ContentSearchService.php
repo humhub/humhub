@@ -15,21 +15,11 @@ use Yii;
 
 class ContentSearchService
 {
-    public ?Content $content;
-    public ?int $contentId;
+    public Content $content;
 
-    /**
-     * @param Content|int $content
-     */
-    public function __construct($content)
+    public function __construct(Content $content)
     {
-        if ($content instanceof Content) {
-            $this->content = $content;
-            $this->contentId = $content->id ?? null;
-        } elseif (is_int($content)) {
-            $this->content = Content::findOne(['id' => $content]);
-            $this->contentId = $content;
-        }
+        $this->content = $content;
     }
 
     public function update(bool $asActiveJob = true): void
@@ -42,7 +32,7 @@ class ContentSearchService
             if ($asActiveJob) {
                 Yii::$app->queue->push(new SearchUpdateDocument(['contentId' => $this->content->id]));
             } else {
-                $this->getSearchDriver()->update($this->content);
+                self::getDriver()->update($this->content);
             }
         } else {
             $this->delete($asActiveJob);
@@ -51,10 +41,15 @@ class ContentSearchService
 
     public function delete(bool $asActiveJob = true): void
     {
+        self::deleteContentById($this->content->id, $asActiveJob);
+    }
+
+    public static function deleteContentById(int $id, bool $asActiveJob = true): void
+    {
         if ($asActiveJob) {
-            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->contentId]));
+            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $id]));
         } else {
-            $this->getSearchDriver()->delete($this->contentId);
+            self::getDriver()->delete($id);
         }
     }
 
@@ -87,10 +82,6 @@ class ContentSearchService
 
     public function isIndexable(): bool
     {
-        if (!($this->content instanceof Content) || empty($this->content->id)) {
-            return false;
-        }
-
         if ($this->content->stream_channel !== Content::STREAM_CHANNEL_DEFAULT) {
             return false;
         }
@@ -103,9 +94,9 @@ class ContentSearchService
         return true;
     }
 
-    private function getSearchDriver(): AbstractDriver
+    public static function getDriver(): AbstractDriver
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('content');
         return $module->getSearchDriver();
     }

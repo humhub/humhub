@@ -30,7 +30,7 @@ class SearchDeleteDocument extends LongRunningActiveJob implements ExclusiveJobI
     public function run()
     {
         return $this->getService()->run(function () {
-            (new ContentSearchService($this->contentId))->delete(false);
+            ContentSearchService::deleteContentById($this->contentId, false);
         });
     }
 
