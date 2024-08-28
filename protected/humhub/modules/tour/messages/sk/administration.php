@@ -1,9 +1,9 @@
 <?php
 return array (
-  '<strong>Administration</strong>' => '',
-  '<strong>Hurray!</strong> That\'s all for now.' => '',
-  '<strong>Modules</strong>' => '',
-  'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => '',
-  'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => '',
-  'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => '',
+  '<strong>Administration</strong>' => '<strong>Správa</strong>',
+  '<strong>Hurray!</strong> That\'s all for now.' => '<strong>Hurá!</strong> To je zatiaľ všetko.',
+  '<strong>Modules</strong>' => '<strong>Moduly</strong>',
+  'As an admin, you can manage the whole platform from here.<br><br>Apart from the modules, we are not going to go into each point in detail here, as each has its own short description elsewhere.' => 'Ako správca môžete odtiaľto spravovať celú platformu.<br><br>Okrem modulov sa tu nebudeme podrobne venovať každému bodu, pretože každý má svoj vlastný krátky popis inde.',
+  'You are currently in the tools menu. From here you can access the HumHub online marketplace, where you can install an ever increasing number of tools on-the-fly.<br><br>As already mentioned, the tools increase the features available for your space.' => 'Momentálne sa nachádzate v ponuke nástrojov. Odtiaľto máte prístup na online trhovisko HumHub, kde si môžete inštalovať stále väčší počet nástrojov za chodu.<br><br>Ako už bolo spomenuté, nástroje rozširujú funkcie dostupné pre váš priestor.',
+  'You have now learned about all the most important features and settings and are all set to start using the platform.<br><br>We hope you and all future users will enjoy using this site. We are looking forward to any suggestions or support you wish to offer for our project. Feel free to contact us via www.humhub.org.<br><br>Stay tuned. :-)' => 'Teraz ste sa dozvedeli o všetkých najdôležitejších funkciách a nastaveniach a ste pripravení začať používať platformu.<br><br>Dúfame, že sa vám a všetkým budúcim používateľom bude používanie tejto stránky páčiť. Tešíme sa na akékoľvek návrhy alebo podporu, ktorú chcete nášmu projektu ponúknuť. Neváhajte nás kontaktovať prostredníctvom www.humhub.org.<br><br>Zostaňte naladení. :-)',
 );
