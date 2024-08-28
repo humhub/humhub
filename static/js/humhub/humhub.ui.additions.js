@@ -315,9 +315,11 @@ humhub.module('ui.additions', function (module, require, $) {
         }
 
         if (typeof words === 'string' && words !== '') {
-            words = words.match(/[^\s]+\/[^\s]+|"[^"]+"|[\p{L}\d]+(?:['’`]\p{L}+)?/gu)
-                .map(item => item.replace(/"/g, ''));
-            words = [...new Set(words)].sort((a, b) => b.length - a.length);
+            words = words.match(/[^\s]+\/[^\s]+|"[^"]+"|[\p{L}\d]+(?:['’`]\p{L}+)?/gu);
+            if (Array.isArray(words)) {
+                words = words.map(item => item.replace(/"/g, ''));
+                words = [...new Set(words)].sort((a, b) => b.length - a.length);
+            }
         }
         if (!Array.isArray(words)) {
             return;
