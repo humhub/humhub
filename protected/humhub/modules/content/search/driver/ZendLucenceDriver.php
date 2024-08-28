@@ -149,6 +149,7 @@ class ZendLucenceDriver extends AbstractDriver
             if ($content !== null) {
                 $resultSet->results[] = $content;
             } else {
+                Yii::warning("Deleted non-existing content from search index. Content ID: ". $contentId, 'content');
                 $this->delete($contentId);
             }
         }
