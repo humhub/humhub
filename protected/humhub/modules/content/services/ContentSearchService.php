@@ -32,7 +32,7 @@ class ContentSearchService
             if ($asActiveJob) {
                 Yii::$app->queue->push(new SearchUpdateDocument(['contentId' => $this->content->id]));
             } else {
-                $this->getSearchDriver()->update($this->content);
+                self::getDriver()->update($this->content);
             }
         } else {
             $this->delete($asActiveJob);
@@ -41,10 +41,15 @@ class ContentSearchService
 
     public function delete(bool $asActiveJob = true): void
     {
+        self::deleteContentById($this->content->id, $asActiveJob);
+    }
+
+    public static function deleteContentById(int $id, bool $asActiveJob = true): void
+    {
         if ($asActiveJob) {
-            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->content->id]));
+            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $id]));
         } else {
-            $this->getSearchDriver()->delete($this->content);
+            self::getDriver()->delete($id);
         }
     }
 
@@ -89,9 +94,9 @@ class ContentSearchService
         return true;
     }
 
-    private function getSearchDriver(): AbstractDriver
+    public static function getDriver(): AbstractDriver
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('content');
         return $module->getSearchDriver();
     }

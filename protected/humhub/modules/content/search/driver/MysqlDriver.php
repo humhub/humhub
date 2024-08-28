@@ -41,8 +41,7 @@ class MysqlDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
-
-        $this->delete($content);
+        $this->delete($content->id);
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
@@ -65,9 +64,9 @@ class MysqlDriver extends AbstractDriver
         $record->save();
     }
 
-    public function delete(Content $content): void
+    public function delete(int $contentId): void
     {
-        ContentFulltext::deleteAll(['content_id' => $content->id]);
+        ContentFulltext::deleteAll(['content_id' => $contentId]);
     }
 
     /**
