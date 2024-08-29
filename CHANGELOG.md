@@ -25,6 +25,7 @@ HumHub Changelog
 - Fix #7182: Fix initialization of several select2 inputs on the same page
 - Fix #7187: Fix search reindexing after content deletion
 - Fix #7152: Fix search starting with special characters
+- Enh #7148: Improve rendering of meta search content
 
 1.16.1 (July 1, 2024)
 ---------------------
