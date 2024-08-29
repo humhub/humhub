@@ -8,13 +8,14 @@
 
 namespace humhub\modules\admin\widgets;
 
-use Yii;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\models\UserApprovalSearch;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use Yii;
 
 /**
  * User Administration Menu
@@ -32,7 +33,7 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Overview'),
             'url' => ['/admin/user/index'],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('admin', ['user', 'pending-registrations']),
+            'isActive' => ControllerHelper::isActivePath('admin', ['user', 'pending-registrations']),
             'isVisible' => Yii::$app->user->can([
                 ManageUsers::class,
                 ManageGroups::class,
@@ -43,8 +44,8 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Settings'),
             'url' => ['/admin/authentication'],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('admin', ['authentication', 'user-permissions']) ||
-                MenuLink::isActiveState('ldap', 'admin'),
+            'isActive' => ControllerHelper::isActivePath('admin', ['authentication', 'user-permissions']) ||
+                ControllerHelper::isActivePath('ldap', 'admin'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
@@ -55,7 +56,7 @@ class UserMenu extends TabMenu
                 'label' => Yii::t('AdminModule.user', 'Pending approvals') . ' <span class="label label-danger">' . $approvalCount . '</span>',
                 'url' => ['/admin/approval'],
                 'sortOrder' => 300,
-                'isActive' => MenuLink::isActiveState('admin', 'approval'),
+                'isActive' => ControllerHelper::isActivePath('admin', 'approval'),
                 'isVisible' => Yii::$app->user->can([
                     ManageUsers::class,
                     ManageGroups::class,
@@ -67,7 +68,7 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Profiles'),
             'url' => ['/admin/user-profile'],
             'sortOrder' => 400,
-            'isActive' => MenuLink::isActiveState('admin', 'user-profile'),
+            'isActive' => ControllerHelper::isActivePath('admin', 'user-profile'),
             'isVisible' => Yii::$app->user->can(ManageUsers::class),
         ]));
 
@@ -75,7 +76,7 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'Groups'),
             'url' => ['/admin/group'],
             'sortOrder' => 500,
-            'isActive' => MenuLink::isActiveState('admin', 'group'),
+            'isActive' => ControllerHelper::isActivePath('admin', 'group'),
             'isVisible' => Yii::$app->user->can(ManageGroups::class),
         ]));
 
@@ -83,7 +84,7 @@ class UserMenu extends TabMenu
             'label' => Yii::t('AdminModule.user', 'People'),
             'url' => ['/admin/user-people'],
             'sortOrder' => 600,
-            'isActive' => MenuLink::isActiveState('admin', 'user-people'),
+            'isActive' => ControllerHelper::isActivePath('admin', 'user-people'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 

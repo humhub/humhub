@@ -8,12 +8,13 @@
 
 namespace humhub\modules\admin\widgets;
 
-use Yii;
-use yii\helpers\Url;
-use humhub\modules\ui\menu\MenuLink;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageSpaces;
+use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * Space Administration Menu
@@ -32,7 +33,7 @@ class SpaceMenu extends TabMenu
             'label' => Yii::t('AdminModule.space', 'Overview'),
             'url' => Url::toRoute(['/admin/space/index']),
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('admin', 'space', 'index'),
+            'isActive' => ControllerHelper::isActivePath('admin', 'space', 'index'),
             'isVisible' => Yii::$app->user->can(ManageSpaces::class),
         ]));
 
@@ -40,7 +41,7 @@ class SpaceMenu extends TabMenu
             'label' => Yii::t('AdminModule.space', 'Settings'),
             'url' => Url::toRoute(['/admin/space/settings']),
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('admin', 'space', 'settings'),
+            'isActive' => ControllerHelper::isActivePath('admin', 'space', 'settings'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 
@@ -48,7 +49,7 @@ class SpaceMenu extends TabMenu
             'label' => Yii::t('AdminModule.space', 'Permissions'),
             'url' => Url::toRoute(['/admin/space/permissions']),
             'sortOrder' => 300,
-            'isActive' => MenuLink::isActiveState('admin', 'space', 'permissions'),
+            'isActive' => ControllerHelper::isActivePath('admin', 'space', 'permissions'),
             'isVisible' => Yii::$app->user->can(ManageSettings::class),
         ]));
 

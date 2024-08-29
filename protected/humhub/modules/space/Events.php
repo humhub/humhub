@@ -8,16 +8,17 @@
 
 namespace humhub\modules\space;
 
+use humhub\components\Event;
+use humhub\helpers\ControllerHelper;
+use humhub\modules\space\helpers\MembershipHelper;
+use humhub\modules\space\models\Space;
+use humhub\modules\space\models\Membership;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\events\UserEvent;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\models\Membership;
-use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\user\models\Follow;
 use Yii;
 use yii\base\BaseObject;
-use humhub\components\Event;
 
 /**
  * Events provides callbacks for all defined module events.
@@ -124,7 +125,7 @@ class Events extends BaseObject
             'label' => Yii::t('SpaceModule.base', 'Spaces'),
             'url' => ['/space/spaces'],
             'sortOrder' => 250,
-            'isActive' => MenuLink::isActiveState('space', 'spaces'),
+            'isActive' => ControllerHelper::isActivePath('space', 'spaces'),
         ]));
     }
 

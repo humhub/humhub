@@ -8,12 +8,13 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\user\Module;
-use Yii;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
+use humhub\modules\user\Module;
 use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\ViewAboutPage;
+use Yii;
 
 /**
  * ProfileMenuWidget shows the (usually left) navigation on user profiles.
@@ -52,7 +53,7 @@ class ProfileMenu extends LeftNavigation
                 'icon' => 'stream',
                 'url' => $this->user->createUrl('//user/profile/home'),
                 'sortOrder' => 200,
-                'isActive' => MenuLink::isActiveState('user', 'profile', ['index', 'home']),
+                'isActive' => ControllerHelper::isActivePath('user', 'profile', ['index', 'home']),
             ]));
         }
 
@@ -61,7 +62,7 @@ class ProfileMenu extends LeftNavigation
             'icon' => 'about',
             'url' => $this->user->createUrl('/user/profile/about'),
             'sortOrder' => 300,
-            'isActive' => MenuLink::isActiveState('user', 'profile', 'about'),
+            'isActive' => ControllerHelper::isActivePath('user', 'profile', 'about'),
             'isVisible' => $this->user->permissionManager->can(ViewAboutPage::class),
         ]));
 

@@ -8,11 +8,12 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\ControllerHelper;
+use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\TabMenu;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\authclient\interfaces\PrimaryClient;
 use Yii;
-use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\TabMenu;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
 
@@ -32,14 +33,14 @@ class AccountSettingsMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Basic Settings'),
             'url' => ['/user/account/edit-settings'],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'edit-settings'),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit-settings'),
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.base', 'Connected Accounts'),
             'url' => ['/user/account/connected-accounts'],
             'sortOrder' => 300,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'connected-accounts'),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'connected-accounts'),
             'isVisible' => count($this->getSecondaryAuthProviders()) !== 0,
         ]));
 

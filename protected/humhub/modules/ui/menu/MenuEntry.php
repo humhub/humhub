@@ -117,6 +117,9 @@ abstract class MenuEntry extends BaseObject
         return $this;
     }
 
+    /**
+     * @deprecated since 1.17, use humhub\helpers\ControllerHelper::isActivePath()
+     */
     public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [])
     {
         if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {

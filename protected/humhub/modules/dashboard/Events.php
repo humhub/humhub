@@ -8,6 +8,7 @@
 
 namespace humhub\modules\dashboard;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\TopMenu;
 use Yii;
@@ -37,7 +38,7 @@ class Events
             'url' => ['/dashboard/dashboard'],
             'icon' => 'dashboard',
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('dashboard'),
+            'isActive' => ControllerHelper::isActivePath('dashboard'),
         ]));
     }
 }
