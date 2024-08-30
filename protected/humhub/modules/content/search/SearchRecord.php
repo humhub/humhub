@@ -62,7 +62,8 @@ class SearchRecord implements MetaSearchResultInterface
     {
         $index = stripos($string, $this->keyword);
 
-        if ($index < 2) {
+        if ($index < 40) {
+            // Don't cut if the keyword is almost at the beginning
             return $string;
         }
 
