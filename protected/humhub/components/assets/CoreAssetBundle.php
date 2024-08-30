@@ -1,6 +1,7 @@
 <?php
 
 namespace humhub\components\assets;
+
 use humhub\modules\ui\view\components\View;
 
 /**

@@ -2,7 +2,6 @@
 
 namespace humhub\modules\ui\content\assets;
 
-
 use humhub\components\assets\CoreAssetBundle;
 
 class UiImageSetAsset extends CoreAssetBundle
