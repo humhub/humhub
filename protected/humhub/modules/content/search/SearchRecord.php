@@ -10,7 +10,7 @@ namespace humhub\modules\content\search;
 use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
@@ -46,7 +46,20 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getTitle(): string
     {
-        return RichText::output($this->content->getContentDescription(), ['record' => $this->content->getModel()]);
+        $title = RichTextToHtmlConverter::process($this->content->getContentDescription());
+        $title = str_replace(["\r", "\n"], ' ', strip_tags($title));
+
+        // Cut text to first word contained the searched keyword
+        $keywordIndex = strpos($title, $this->keyword);
+        if ($keywordIndex) {
+            do {
+                $keywordIndex--;
+                $titlePart = substr($title, $keywordIndex);
+            } while ($keywordIndex && $titlePart[0] !== ' ');
+            $title = '...' . trim($titlePart);
+        }
+
+        return $title;
     }
 
     /**
