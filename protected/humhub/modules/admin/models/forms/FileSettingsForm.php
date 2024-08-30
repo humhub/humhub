@@ -88,10 +88,12 @@ class FileSettingsForm extends Model
             $fileSizeKey = 'post_max_size';
         }
 
+        $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
+
         return [
             $fileSizeKey,
             floor($maxUploadSize / 1024 / 1024),
-            64
+            min($maxUploadSize, 64),
         ];
     }
 
