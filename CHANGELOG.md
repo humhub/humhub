@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
 - Fix #7173: Fix marketplace module label "Professional Edition"
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Fix #7197: Fix security issue related to `PHPOffice/PHPSpreadsheet`
 
 1.16.2 (Unreleased)
 ---------------------
