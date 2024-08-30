@@ -10,6 +10,7 @@ use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\models\File;
+use humhub\modules\user\models\User;
 use Yii;
 
 class ContentSearchService
@@ -21,7 +22,7 @@ class ContentSearchService
         $this->content = $content;
     }
 
-    public function update($asActiveJob = true): void
+    public function update(bool $asActiveJob = true): void
     {
         if (!$this->isIndexable()) {
             return;
@@ -31,23 +32,24 @@ class ContentSearchService
             if ($asActiveJob) {
                 Yii::$app->queue->push(new SearchUpdateDocument(['contentId' => $this->content->id]));
             } else {
-                $this->getSearchDriver()->update($this->content);
+                self::getDriver()->update($this->content);
             }
         } else {
             $this->delete($asActiveJob);
         }
     }
 
-    public function delete($asActiveJob = true): void
+    public function delete(bool $asActiveJob = true): void
     {
-        if (!$this->isIndexable()) {
-            return;
-        }
+        self::deleteContentById($this->content->id, $asActiveJob);
+    }
 
+    public static function deleteContentById(int $id, bool $asActiveJob = true): void
+    {
         if ($asActiveJob) {
-            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $this->content->id]));
+            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $id]));
         } else {
-            $this->getSearchDriver()->delete($this->content);
+            self::getDriver()->delete($id);
         }
     }
 
@@ -80,12 +82,21 @@ class ContentSearchService
 
     public function isIndexable(): bool
     {
-        return $this->content->stream_channel === Content::STREAM_CHANNEL_DEFAULT;
+        if ($this->content->stream_channel !== Content::STREAM_CHANNEL_DEFAULT) {
+            return false;
+        }
+
+        if (!Yii::$app->getModule('stream')->showDeactivatedUserContent) {
+            $author = $this->content->createdBy;
+            return $author && $author->status === User::STATUS_ENABLED;
+        }
+
+        return true;
     }
 
-    private function getSearchDriver(): AbstractDriver
+    public static function getDriver(): AbstractDriver
     {
-        /** @var Module $module */
+        /* @var Module $module */
         $module = Yii::$app->getModule('content');
         return $module->getSearchDriver();
     }

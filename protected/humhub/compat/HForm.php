@@ -321,7 +321,7 @@ class HForm extends \yii\base\Component
                         return "Field Type " . $definition['type'] . " not supported by Compat HForm";
                 }
 
-                if (isset($definition['label'])) {
+                if (isset($definition['label']) && $definition['type'] !== 'checkbox') {
                     $field->label($definition['label']);
                 }
 

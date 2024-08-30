@@ -32,12 +32,35 @@ class ContentHighlightAsset extends AssetBundle
     {
         parent::init();
 
-        if (Yii::$app instanceof Application && Yii::$app->isInstalled()) {
-            $highlight = Yii::$app->session->get('contentHighlight');
-            if ($highlight !== null && $highlight !== '') {
-                Yii::$app->session->remove('contentHighlight');
-                Yii::$app->view->registerJsConfig('content.highlight', ['keyword' => $highlight]);
-            }
+        $keyword = $this->getKeyword();
+        if ($keyword !== null) {
+            Yii::$app->view->registerJsConfig('content.highlight', ['keyword' => $keyword]);
         }
+    }
+
+    private function getKeyword(): ?string
+    {
+        if (!(Yii::$app instanceof Application && Yii::$app->isInstalled())) {
+            return null;
+        }
+
+        $keyword = Yii::$app->session->get('contentHighlight');
+        if ($keyword !== null && $keyword !== '') {
+            Yii::$app->session->remove('contentHighlight');
+            return $keyword;
+        }
+
+        $keyword = Yii::$app->request->get('highlight');
+        if ($keyword !== null && $keyword !== '') {
+            return $keyword;
+        }
+
+        if (isset(Yii::$app->request->referrer) &&
+            preg_match('/search.*?(&|\?)keyword=(.*?)(&|$)/i', Yii::$app->request->referrer, $m) &&
+            $m[2] !== '') {
+            return urldecode($m[2]);
+        }
+
+        return null;
     }
 }

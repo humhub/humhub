@@ -17,6 +17,7 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
+use humhub\modules\content\jobs\ReindexUserContent;
 use humhub\modules\content\models\Content;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\helpers\MembershipHelper;
@@ -581,6 +582,12 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
                 Group::notifyAdminsForUserApproval($this);
             }
             $this->profile->user_id = $this->id;
+        }
+
+        // Reindex user content when status is changed to/from Enabled
+        if (!$insert && isset($changedAttributes['status']) &&
+            ($this->status === User::STATUS_ENABLED || $changedAttributes['status'] === User::STATUS_ENABLED)) {
+            Yii::$app->queue->push(new ReindexUserContent(['userId' => $this->id]));
         }
 
         // Don't move this line under setUpApproved() because ContentContainer record should be created firstly
