@@ -10,9 +10,9 @@ namespace humhub\modules\user\assets;
 
 use humhub\assets\Select2Asset;
 use humhub\assets\Select2SearchInputPlaceholderAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class UserPickerAsset extends AssetBundle
+class UserPickerAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

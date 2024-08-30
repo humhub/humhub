@@ -8,8 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
-use humhub\modules\ui\view\components\View;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * OpenSans Font
@@ -17,7 +16,7 @@ use humhub\modules\ui\view\components\View;
  * @since 1.3
  * @author luke
  */
-class OpenSansAsset extends AssetBundle
+class OpenSansAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc
@@ -28,11 +27,6 @@ class OpenSansAsset extends AssetBundle
      * @inheritdoc
      */
     public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

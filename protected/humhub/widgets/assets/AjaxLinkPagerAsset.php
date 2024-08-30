@@ -2,9 +2,9 @@
 
 namespace humhub\widgets\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class AjaxLinkPagerAsset extends AssetBundle
+class AjaxLinkPagerAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

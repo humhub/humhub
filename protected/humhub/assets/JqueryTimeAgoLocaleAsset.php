@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use Yii;
 
 /**
@@ -17,7 +17,7 @@ use Yii;
  * @since 1.2
  * @author luke
  */
-class JqueryTimeAgoLocaleAsset extends AssetBundle
+class JqueryTimeAgoLocaleAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

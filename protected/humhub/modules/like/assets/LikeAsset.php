@@ -8,7 +8,7 @@
 
 namespace humhub\modules\like\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Assets for like related resources.
@@ -16,7 +16,7 @@ use humhub\components\assets\AssetBundle;
  * @since 1.2
  * @author buddha
  */
-class LikeAsset extends AssetBundle
+class LikeAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

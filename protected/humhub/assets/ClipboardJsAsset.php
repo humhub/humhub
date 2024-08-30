@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Clipboard JS
  *
  * @author luke
  */
-class ClipboardJsAsset extends AssetBundle
+class ClipboardJsAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

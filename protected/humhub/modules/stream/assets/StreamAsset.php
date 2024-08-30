@@ -9,7 +9,7 @@
 namespace humhub\modules\stream\assets;
 
 use humhub\assets\CoreExtensionAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\ui\filter\assets\FilterAsset;
@@ -21,7 +21,7 @@ use humhub\modules\user\assets\UserAsset;
  * @since 1.2
  * @author buddha
  */
-class StreamAsset extends AssetBundle
+class StreamAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

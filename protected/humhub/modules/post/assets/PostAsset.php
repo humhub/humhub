@@ -8,9 +8,9 @@
 
 namespace humhub\modules\post\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class PostAsset extends AssetBundle
+class PostAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

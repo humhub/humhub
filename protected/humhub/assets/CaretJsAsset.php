@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * jquery-caretjs.js
  *
  * @author buddha
  */
-class CaretjsAsset extends AssetBundle
+class CaretjsAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

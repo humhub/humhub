@@ -8,10 +8,10 @@
 
 namespace humhub\modules\space\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use humhub\modules\user\assets\UserAsset;
 
-class SpaceChooserAsset extends AssetBundle
+class SpaceChooserAsset extends CoreAssetBundle
 {
     public $sourcePath = '@space/resources';
 

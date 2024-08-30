@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Fontawesome
  *
  * @author luke
  */
-class FontAwesomeAsset extends AssetBundle
+class FontAwesomeAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

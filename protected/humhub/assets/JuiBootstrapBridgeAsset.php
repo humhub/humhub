@@ -9,7 +9,6 @@
 namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
-use humhub\modules\ui\view\components\View;
 use yii\jui\JuiAsset;
 
 /**
@@ -28,11 +27,6 @@ class JuiBootstrapBridgeAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

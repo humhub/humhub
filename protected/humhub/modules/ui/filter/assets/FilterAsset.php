@@ -8,10 +8,10 @@
 
 namespace humhub\modules\ui\filter\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use humhub\modules\topic\assets\TopicAsset;
 
-class FilterAsset extends AssetBundle
+class FilterAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

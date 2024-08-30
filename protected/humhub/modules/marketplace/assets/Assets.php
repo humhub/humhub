@@ -7,10 +7,10 @@
 
 namespace humhub\modules\marketplace\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use Yii;
 
-class Assets extends AssetBundle
+class Assets extends CoreAssetBundle
 {
     /**
      * @inheritdoc

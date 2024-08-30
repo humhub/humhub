@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * NProgress assets
@@ -16,7 +16,7 @@ use humhub\components\assets\AssetBundle;
  * @since 1.2
  * @author luke
  */
-class NProgressStyleAsset extends AssetBundle
+class NProgressStyleAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

@@ -7,11 +7,11 @@
 
 namespace humhub\modules\content\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use Yii;
 use yii\web\Application;
 
-class ContentHighlightAsset extends AssetBundle
+class ContentHighlightAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

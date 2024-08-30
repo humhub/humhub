@@ -8,10 +8,10 @@
 
 namespace humhub\modules\ui\form\assets;
 
-use yii\web\AssetBundle;
-use yii\web\View;
+use humhub\components\assets\CoreAssetBundle;
+use humhub\modules\ui\view\components\View;
 
-class CodeMirrorAssetBundle extends AssetBundle
+class CodeMirrorAssetBundle extends CoreAssetBundle
 {
     /**
      * v1.5 compatibility defer script loading
@@ -22,7 +22,7 @@ class CodeMirrorAssetBundle extends AssetBundle
      */
     public $defer = true;
 
-    public $jsOptions = ['position' => View::POS_HEAD];
+    public $jsOptions = ['position' => View::POS_HEAD_BEGIN];
     public $sourcePath = '@vendor/npm-asset/codemirror';
 
     public $js = [

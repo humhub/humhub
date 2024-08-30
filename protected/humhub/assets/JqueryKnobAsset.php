@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use yii\web\View;
 
 /**
@@ -16,7 +16,7 @@ use yii\web\View;
  *
  * @author luke
  */
-class JqueryKnobAsset extends AssetBundle
+class JqueryKnobAsset extends CoreAssetBundle
 {
     public $jsOptions = ['position' => View::POS_BEGIN];
 

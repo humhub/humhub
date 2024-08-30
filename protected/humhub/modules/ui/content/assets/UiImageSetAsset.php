@@ -2,9 +2,10 @@
 
 namespace humhub\modules\ui\content\assets;
 
-use yii\web\AssetBundle;
 
-class UiImageSetAsset extends AssetBundle
+use humhub\components\assets\CoreAssetBundle;
+
+class UiImageSetAsset extends CoreAssetBundle
 {
     public $sourcePath = '@ui/content/resources';
 

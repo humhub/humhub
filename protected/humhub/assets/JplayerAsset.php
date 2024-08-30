@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * jquery-At.js
  *
  * @author buddha
  */
-class JplayerAsset extends AssetBundle
+class JplayerAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

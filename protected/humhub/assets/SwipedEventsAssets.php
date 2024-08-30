@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * animate.css
  *
  * @author buddha
  */
-class SwipedEventsAssets extends AssetBundle
+class SwipedEventsAssets extends CoreAssetBundle
 {
     /**
      * @inheritdoc

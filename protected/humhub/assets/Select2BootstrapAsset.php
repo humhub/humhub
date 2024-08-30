@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * select2 bootstrap asset
@@ -16,7 +16,7 @@ use yii\web\AssetBundle;
  * @author buddha
  * @deprecated since 1.5
  */
-class Select2BootstrapAsset extends AssetBundle
+class Select2BootstrapAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

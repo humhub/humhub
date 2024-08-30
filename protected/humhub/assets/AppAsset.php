@@ -17,7 +17,6 @@ use yii\bootstrap\BootstrapPluginAsset;
 use yii\jui\JuiAsset;
 use yii\validators\ValidationAsset;
 use yii\web\JqueryAsset;
-use yii\web\View;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveFormAsset;
 
@@ -39,11 +38,6 @@ class AppAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $defaultDepends = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     public const BUNDLE_NAME = 'app';
 

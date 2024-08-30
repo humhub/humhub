@@ -9,7 +9,6 @@
 namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
-use yii\web\View;
 
 /**
  * select2
@@ -27,11 +26,6 @@ class PjaxAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $defer = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

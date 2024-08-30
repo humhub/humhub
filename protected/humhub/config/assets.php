@@ -58,7 +58,7 @@ return [
         CoreBundleAsset::BUNDLE_NAME => [
             'class' => WebStaticAssetBundle::class,
             'defer' => true,
-            'jsPosition' => View::POS_HEAD,
+            'jsPosition' => View::POS_HEAD_BEGIN,
             'defaultDepends' => false,
             'basePath' => '@webroot-static',
             'baseUrl' => '@web-static',

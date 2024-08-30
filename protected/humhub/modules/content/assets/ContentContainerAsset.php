@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Content container asset for shared user/space js functionality.
@@ -16,7 +16,7 @@ use humhub\components\assets\AssetBundle;
  * @since 1.2
  * @author buddha
  */
-class ContentContainerAsset extends AssetBundle
+class ContentContainerAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

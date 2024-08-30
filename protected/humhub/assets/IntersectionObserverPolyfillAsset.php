@@ -8,15 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
-use yii\web\View;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * animate.css
  *
  * @author buddha
  */
-class IntersectionObserverPolyfillAsset extends AssetBundle
+class IntersectionObserverPolyfillAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc
@@ -27,11 +26,6 @@ class IntersectionObserverPolyfillAsset extends AssetBundle
      * @inheritdoc
      */
     public $defer = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

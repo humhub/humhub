@@ -8,9 +8,9 @@
 
 namespace humhub\modules\live\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class LiveAsset extends AssetBundle
+class LiveAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

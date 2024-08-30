@@ -9,9 +9,9 @@
 
 namespace humhub\modules\topic\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class TopicAsset extends AssetBundle
+class TopicAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc
