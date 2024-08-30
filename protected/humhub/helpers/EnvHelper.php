@@ -9,10 +9,9 @@ use yii\helpers\StringHelper;
 
 class EnvHelper
 {
-    private const FIXED_SETTING_PREFIX = 'HUMHUB_SETTINGS.';
-    private const PARAM_PREFIX = 'HUMHUB_PARAMS.';
-    private const PARAMS_PATH = 'params';
-    private const FIXED_SETTINGS_PATH = 'fixed-settings';
+    private const FIXED_SETTING_PREFIX = 'HUMHUB_FIXED_SETTINGS.';
+    private const MAIN_PREFIX = 'HUMHUB_CONFIG.';
+    private const FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
 
     public static function toConfig(?array $env = []): array
     {
@@ -28,18 +27,17 @@ class EnvHelper
                 ArrayHelper::setValue(
                     $config,
                     [
-                        self::PARAMS_PATH, self::FIXED_SETTINGS_PATH,
+                        ...self::FIXED_SETTINGS_PATH,
                         ...self::keyToPath(str_replace(self::FIXED_SETTING_PREFIX, '', $key)),
                     ],
                     $value,
                 );
             }
-            if (StringHelper::startsWith($key, self::PARAM_PREFIX)) {
+            if (StringHelper::startsWith($key, self::MAIN_PREFIX)) {
                 ArrayHelper::setValue(
                     $config,
                     [
-                        self::PARAMS_PATH,
-                        ...self::keyToPath(str_replace(self::PARAM_PREFIX, '', $key)),
+                        ...self::keyToPath(str_replace(self::MAIN_PREFIX, '', $key)),
                     ],
                     $value,
                 );
