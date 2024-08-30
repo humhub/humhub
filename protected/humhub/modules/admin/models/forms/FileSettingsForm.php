@@ -73,7 +73,7 @@ class FileSettingsForm extends Model
 
         return [
             'maxFileSize' => Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', [
-                '{maxUploadSize}' => "(" . $fileSizeKey . "): " . $maxUploadSize
+                '{maxUploadSize}' => "(" . $fileSizeKey . "): " . $maxUploadSize,
             ]),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'),
         ];
@@ -91,7 +91,7 @@ class FileSettingsForm extends Model
         return [
             $fileSizeKey,
             floor($maxUploadSize / 1024 / 1024),
-            64
+            64,
         ];
     }
 
