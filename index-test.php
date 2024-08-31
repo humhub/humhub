@@ -27,10 +27,14 @@ defined('YII_ENV_TEST') or define('YII_ENV_TEST', true);
 require(__DIR__ . '/protected/vendor/autoload.php');
 require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__, '.env');
+$dotenv->safeLoad();
+
 $config = yii\helpers\ArrayHelper::merge(
     // add more configurations here
     (is_readable(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php')) ? require(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php') : [],
-    require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php')
+    require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php'),
+    humhub\helpers\EnvHelper::toConfig($_ENV),
 );
 
 require_once './protected/vendor/codeception/codeception/autoload.php';
