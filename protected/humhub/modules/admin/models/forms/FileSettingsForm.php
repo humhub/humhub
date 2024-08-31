@@ -44,7 +44,7 @@ class FileSettingsForm extends Model
      */
     public function rules(): array
     {
-        [,$maxUploadSize, $defaultValue] = $this->getPHPMaxUploadSize();
+        [$a,$maxUploadSize, $defaultValue] = $this->getPHPMaxUploadSize();
 
         return [
             [['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'],
@@ -87,8 +87,6 @@ class FileSettingsForm extends Model
             $maxUploadSize = Helpers::getBytesOfIniValue(ini_get('post_max_size'));
             $fileSizeKey = 'post_max_size';
         }
-
-        $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
 
         return [
             $fileSizeKey,
