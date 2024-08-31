@@ -114,33 +114,33 @@ class AssetBundle extends BaseAssetBundle
 
         $useProdAssets = static::useProductionAssets();
 
-        if($this->isAsync()) {
+        if ($this->isAsync()) {
             $this->defer = false;
         }
 
-        if($this->jsProd !== null && $useProdAssets) {
+        if ($this->jsProd !== null && $useProdAssets) {
             $this->js = $this->jsProd;
         }
 
-        if($this->cssProd !== null && $useProdAssets) {
+        if ($this->cssProd !== null && $useProdAssets) {
             $this->css = $this->cssProd;
         }
 
-        if(!$this->isAsync() && $this->isDefer()) {
+        if (!$this->isAsync() && $this->isDefer()) {
             $this->jsOptions['defer'] = 'defer';
-        } elseif($this->isAsync()) {
+        } elseif ($this->isAsync()) {
             $this->jsOptions['async'] = 'async';
         }
 
         $this->jsOptions['position'] = $this->getJsPosition();
 
-        if(!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
+        if (!$useProdAssets && $this->forceCopy && !isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = true;
-        } elseif(!isset($this->publishOptions['forceCopy'])) {
+        } elseif (!isset($this->publishOptions['forceCopy'])) {
             $this->publishOptions['forceCopy'] = false;
         }
 
-        if((!(Yii::$app instanceof Application) || !Yii::$app->request->isAjax) && !empty($this->dependsDefault)) {
+        if ((!(Yii::$app instanceof Application) || !Yii::$app->request->isAjax) && !empty($this->dependsDefault)) {
             $this->depends[] = ArrayHelper::merge($this->depends, $this->defaultDepends);
         }
     }
@@ -152,15 +152,15 @@ class AssetBundle extends BaseAssetBundle
      */
     protected function getJsPosition()
     {
-        if(isset($this->publishOptions['position'])) {
+        if (isset($this->publishOptions['position'])) {
             return $this->publishOptions['position'];
         }
 
-        if($this->jsPosition !== null) {
+        if ($this->jsPosition !== null) {
             return $this->jsPosition;
         }
 
-        if($this->isAsync() || $this->isDefer()) {
+        if ($this->isAsync() || $this->isDefer()) {
             return View::POS_HEAD;
         }
 

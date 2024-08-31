@@ -28,7 +28,7 @@ class CodeHelper extends Module
 
         $result = false;
         foreach ($model->errors as $errorMessages) {
-            if(in_array($message, $errorMessages)) {
+            if (in_array($message, $errorMessages)) {
                 $result = true;
                 break;
             }
@@ -40,7 +40,7 @@ class CodeHelper extends Module
     {
         $result = false;
         foreach ($model->errors as $errorMessages) {
-            if(in_array($message, $errorMessages)) {
+            if (in_array($message, $errorMessages)) {
                 $result = true;
                 break;
             }
