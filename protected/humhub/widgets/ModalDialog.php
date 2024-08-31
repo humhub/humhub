@@ -25,7 +25,7 @@ class ModalDialog extends Modal
     public function init()
     {
         parent::init();
-        if(!$this->body && !$this->footer) {
+        if (!$this->body && !$this->footer) {
             ob_start();
             ob_implicit_flush(false);
         }
@@ -36,7 +36,7 @@ class ModalDialog extends Modal
      */
     public function run()
     {
-        if(!$this->body && !$this->footer) {
+        if (!$this->body && !$this->footer) {
             $this->dialogContent = ob_get_clean();
         }
 

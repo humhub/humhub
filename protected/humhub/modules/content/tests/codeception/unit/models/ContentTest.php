@@ -11,7 +11,6 @@ namespace tests\codeception\unit\modules\content;
 use Exception;
 use humhub\modules\content\tests\codeception\unit\TestContent;
 use modules\content\tests\codeception\_support\ContentModelTest;
-
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use Yii;
