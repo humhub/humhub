@@ -36,7 +36,7 @@ class WebHelper extends Module
     protected function initModules()
     {
         $cfg = \Codeception\Configuration::config();
-        if(!empty($cfg['humhub_modules'])) {
+        if (!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
         }
     }
