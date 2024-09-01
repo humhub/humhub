@@ -29,11 +29,11 @@ class FileSettingsForm extends Model
     {
         parent::init();
 
-        [,,$defaultValue] = $this->getPHPMaxUploadSize();
+        [,,$defaultValue] = self::getPHPMaxUploadSize();
 
         $settingsManager = Yii::$app->getModule('file')->settings;
 
-        $this->maxFileSize = ($settingsManager->get('maxFileSize11') / 1024 / 1024) ?: $defaultValue;
+        $this->maxFileSize = ($settingsManager->get('maxFileSize') / 1024 / 1024) ?: $defaultValue;
         $this->excludeMediaFilesPreview = $settingsManager->get('excludeMediaFilesPreview');
         $this->useXSendfile = $settingsManager->get('useXSendfile');
         $this->allowedExtensions = $settingsManager->get('allowedExtensions');
@@ -44,7 +44,7 @@ class FileSettingsForm extends Model
      */
     public function rules(): array
     {
-        [$a,$maxUploadSize, $defaultValue] = $this->getPHPMaxUploadSize();
+        [$a,$maxUploadSize, $defaultValue] = self::getPHPMaxUploadSize();
 
         return [
             [['allowedExtensions'], 'match', 'pattern' => '/^[A-Za-z0-9_,]+$/u'],
@@ -69,7 +69,7 @@ class FileSettingsForm extends Model
 
     public function attributeHints(): array
     {
-        [$fileSizeKey, $maxUploadSize] = $this->getPHPMaxUploadSize();
+        [$fileSizeKey, $maxUploadSize] = self::getPHPMaxUploadSize();
 
         return [
             'maxFileSize' => Yii::t('AdminModule.settings', 'PHP reported a maximum of {maxUploadSize} MB', [
@@ -79,7 +79,7 @@ class FileSettingsForm extends Model
         ];
     }
 
-    private function getPHPMaxUploadSize(): array
+    public static function getPHPMaxUploadSize(): array
     {
         $maxUploadSize = Helpers::getBytesOfIniValue(ini_get('upload_max_filesize'));
         $fileSizeKey = 'upload_max_filesize';
