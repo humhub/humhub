@@ -36,7 +36,7 @@ class DateHelper
             ? Yii::$app->timeZone
             : Yii::$app->user->getTimeZone();
 
-        if(!$tz) {
+        if (!$tz) {
             $tz = Yii::$app->timeZone;
         }
 
@@ -96,7 +96,7 @@ class DateHelper
     {
         $ts = self::parseDateTimeToTimestamp($value, $timeValue);
 
-        if($ts === false) {
+        if ($ts === false) {
             return false;
         }
 
