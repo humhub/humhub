@@ -32,19 +32,19 @@ class ConfigTest extends HumHubDbTestCase
                             'dsn' => 'smtp://...',
                             'transportType' => 'php',
                             'systemEmailAddress' => 'noreply@humhub.com',
-                        ]
-                    ]
-                ]
-            ]
+                        ],
+                    ],
+                ],
+            ],
         ];
 
-        $this->assertEquals($config,EnvHelper::toConfig($ENV));
+        $this->assertEquals($config, EnvHelper::toConfig($ENV));
     }
 
     public function testArrayConfig()
     {
         $ENV = [
-            'HUMHUB_CONFIG.PARAMS.MODULE_AUTOLOAD_PATHS' => ["/app/modules/humhub","/app/modules/humhub-contrib"]
+            'HUMHUB_CONFIG.PARAMS.MODULE_AUTOLOAD_PATHS' => ["/app/modules/humhub","/app/modules/humhub-contrib"],
         ];
 
         $config = [
@@ -52,8 +52,8 @@ class ConfigTest extends HumHubDbTestCase
                 'moduleAutoloadPaths' => [
                     '/app/modules/humhub',
                     '/app/modules/humhub-contrib',
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertEquals($config, EnvHelper::toConfig($ENV));
@@ -62,15 +62,15 @@ class ConfigTest extends HumHubDbTestCase
     public function testJsonConfig()
     {
         $ENV = [
-            'HUMHUB_CONFIG.COMPONENTS.DB' => '{"on afterOpen":["humhub\\\libs\\\Helpers","SqlMode"]}'
+            'HUMHUB_CONFIG.COMPONENTS.DB' => '{"on afterOpen":["humhub\\\libs\\\Helpers","SqlMode"]}',
         ];
 
         $config = [
             'components' => [
                 'db' => [
                     'on afterOpen' => ['humhub\libs\Helpers', 'SqlMode'],
-                ]
-            ]
+                ],
+            ],
         ];
 
         $this->assertEquals($config, EnvHelper::toConfig($ENV));
