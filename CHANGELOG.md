@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #7173: Fix marketplace module label "Professional Edition"
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
 - Enh #7198: Increase default Uplaod Max File Size to 64mb
+- Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
 
 1.16.2 (Unreleased)
 ---------------------
