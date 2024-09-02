@@ -12,12 +12,12 @@ use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\file\assets\FileAsset;
+use humhub\modules\ui\view\components\View;
 use yii\bootstrap\BootstrapAsset;
 use yii\bootstrap\BootstrapPluginAsset;
 use yii\jui\JuiAsset;
 use yii\validators\ValidationAsset;
 use yii\web\JqueryAsset;
-use yii\web\View;
 use yii\web\YiiAsset;
 use yii\widgets\ActiveFormAsset;
 
@@ -43,7 +43,7 @@ class AppAsset extends WebStaticAssetBundle
     /**
      * @inheritdoc
      */
-    public $jsPosition = View::POS_HEAD;
+    public $jsPosition = View::POS_HEAD_BEGIN;
 
     public const BUNDLE_NAME = 'app';
 
