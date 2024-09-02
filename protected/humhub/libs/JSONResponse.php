@@ -58,7 +58,7 @@ class JSONResponse extends BaseObject
     {
         $this->result[static::RESULT_KEY_OUTPUT] = $dom;
 
-        if($success !== null) {
+        if ($success !== null) {
             $this->success($success);
         }
 
