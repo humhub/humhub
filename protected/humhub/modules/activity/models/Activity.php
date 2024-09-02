@@ -9,7 +9,6 @@
 namespace humhub\modules\activity\models;
 
 use humhub\modules\activity\components\BaseActivity;
-
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;

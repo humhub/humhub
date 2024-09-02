@@ -10,7 +10,6 @@ namespace humhub\widgets;
 
 use Yii;
 use yii\helpers\Html;
-
 use yii\web\JsExpression;
 
 /**

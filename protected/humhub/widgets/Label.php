@@ -62,7 +62,7 @@ class Label extends BootstrapComponent
 
     public function withLink($link)
     {
-        if($link instanceof Link) {
+        if ($link instanceof Link) {
             $this->_link = $link;
         }
 
@@ -75,7 +75,7 @@ class Label extends BootstrapComponent
     public function renderComponent()
     {
         $result = Html::tag('span', $this->getText(), $this->htmlOptions);
-        if($this->_link) {
+        if ($this->_link) {
             $result = (string) $this->_link->setText($result);
         }
         return $result;
