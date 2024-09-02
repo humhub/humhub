@@ -47,19 +47,36 @@ class SearchRecord implements MetaSearchResultInterface
     public function getTitle(): string
     {
         $title = RichTextToHtmlConverter::process($this->content->getContentDescription());
-        $title = str_replace(["\r", "\n"], ' ', strip_tags($title));
+        $title = preg_replace('/[\r\n\s]+/', ' ', strip_tags($title));
+        return $this->cutStringToKeyword($title);
+    }
 
-        // Cut text to first word contained the searched keyword
-        $keywordIndex = strpos($title, $this->keyword);
-        if ($keywordIndex) {
-            do {
-                $keywordIndex--;
-                $titlePart = substr($title, $keywordIndex);
-            } while ($keywordIndex && $titlePart[0] !== ' ');
-            $title = '...' . trim($titlePart);
+    /**
+     * Cut string to a word before first word contained the searched keyword
+     *
+     * @param string $string
+     * @param int $maxWordNumberBeforeKeyword
+     * @return string
+     */
+    private function cutStringToKeyword(string $string, int $maxWordNumberBeforeKeyword = 1): string
+    {
+        $index = stripos($string, $this->keyword);
+
+        if ($index === false || $index < 40) {
+            // Don't cut if the keyword is almost at the beginning
+            return $string;
         }
 
-        return $title;
+        $wordNumber = 0;
+        do {
+            $index--;
+            $subString = substr($string, $index);
+            if ($subString[0] === ' ') {
+                $wordNumber++;
+            }
+        } while ($index > 0 && $wordNumber <= $maxWordNumberBeforeKeyword);
+
+        return ($index > 0 ? '...' : '') . trim($subString);
     }
 
     /**
