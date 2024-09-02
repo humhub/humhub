@@ -58,11 +58,11 @@ class SearchRecord implements MetaSearchResultInterface
      * @param int $maxWordNumberBeforeKeyword
      * @return string
      */
-    protected function cutStringToKeyword(string $string, int $maxWordNumberBeforeKeyword = 1): string
+    private function cutStringToKeyword(string $string, int $maxWordNumberBeforeKeyword = 1): string
     {
         $index = stripos($string, $this->keyword);
 
-        if ($index < 40) {
+        if ($index === false || $index < 40) {
             // Don't cut if the keyword is almost at the beginning
             return $string;
         }
