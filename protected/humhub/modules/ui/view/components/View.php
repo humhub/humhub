@@ -259,7 +259,7 @@ class View extends \yii\web\View
      */
     public function registerAssetBundle($name, $position = null)
     {
-        $bundle = parent::registerAssetBundle($name, $position);
+        $bundle = parent::registerAssetBundle($name, $position ?? self::POS_HEAD);
 
         if ($bundle instanceof AssetBundle && !empty($bundle->preload)) {
             static::$preload = ArrayHelper::merge(static::$preload, $bundle->preload);
