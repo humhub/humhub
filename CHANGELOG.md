@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #7173: Fix marketplace module label "Professional Edition"
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
 - Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
+- Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 
 1.16.2 (Unreleased)
 ---------------------
