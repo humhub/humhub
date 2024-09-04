@@ -28,6 +28,7 @@ HumHub Changelog
 - Enh #7148: Improve rendering of meta search content
 - Fix #7192: Deny deleting user from single group
 - Fix #7200: Fix module description for space and user
+- Enh #7204: Make "Invite new people" always possible for user with permission "Manage Users"
 
 1.16.1 (July 1, 2024)
 ---------------------
