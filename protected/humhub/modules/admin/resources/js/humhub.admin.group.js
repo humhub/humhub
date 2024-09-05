@@ -1,6 +1,7 @@
 humhub.module('admin.group', function (module, require, $) {
     var client = require('client');
     var loader = require('ui.loader');
+    var status = require('ui.status');
 
     var setManagerRole = function (evt) {
         var options = {
@@ -36,6 +37,8 @@ humhub.module('admin.group', function (module, require, $) {
                 $controls.closest('tr').fadeOut('slow', function () {
                     $(this).remove();
                 });
+            } else if (response.error) {
+                status.error(response.error);
             } else {
                 module.log.error(response, true);
             }

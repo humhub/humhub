@@ -10,6 +10,8 @@ namespace humhub\modules\admin\controllers;
 
 use Exception;
 use humhub\libs\LogoImage;
+use humhub\models\UrlOembed;
+use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
@@ -20,15 +22,12 @@ use humhub\modules\admin\models\forms\OEmbedProviderForm;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
+use humhub\modules\admin\models\Log;
 use humhub\modules\admin\permissions\ManageSettings;
+use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;
-use humhub\libs\Helpers;
-use humhub\models\UrlOembed;
-use humhub\modules\admin\components\Controller;
-use humhub\modules\admin\models\Log;
-use humhub\modules\notification\models\forms\NotificationSettings;
 
 /**
  * SettingController
@@ -240,30 +239,9 @@ class SettingController extends Controller
         $form = new FileSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
             $this->view->saved();
-            return $this->redirect([
-                '/admin/setting/file',
-            ]);
         }
 
-        // Determine PHP Upload Max FileSize
-        $maxUploadSize = Helpers::getBytesOfIniValue(ini_get('upload_max_filesize'));
-        $fileSizeKey = 'upload_max_filesize';
-        if ($maxUploadSize > Helpers::getBytesOfIniValue(ini_get('post_max_size'))) {
-            $maxUploadSize = Helpers::getBytesOfIniValue(ini_get('post_max_size'));
-            $fileSizeKey = 'post_max_size';
-        }
-
-        $maxUploadSize = floor($maxUploadSize / 1024 / 1024);
-        $maxUploadSizeText = "(" . $fileSizeKey . "): " . $maxUploadSize;
-
-        return $this->render(
-            'file',
-            [
-                'model' => $form,
-                'maxUploadSize' => $maxUploadSize,
-                'maxUploadSizeText' => $maxUploadSizeText,
-            ],
-        );
+        return $this->render('file', ['model' => $form]);
     }
 
     /**

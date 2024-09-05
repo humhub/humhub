@@ -152,6 +152,29 @@ class PendingRegistrationsController extends Controller
      * @throws HttpException
      * @throws Throwable
      */
+    public function actionResendAll()
+    {
+        if (Yii::$app->request->isPost) {
+            foreach (Invite::find()->each() as $invite) {
+                $invite->sendInviteMail();
+            }
+
+            $this->view->success(Yii::t(
+                'AdminModule.user',
+                'All open registration invitations were successfully re-sent.',
+            ));
+        }
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Delete all invitations
+     *
+     * @param int $id
+     * @return string
+     * @throws HttpException
+     * @throws Throwable
+     */
     public function actionDeleteAll()
     {
         if (Yii::$app->request->isPost) {
@@ -173,15 +196,39 @@ class PendingRegistrationsController extends Controller
      * @throws HttpException
      * @throws Throwable
      */
-    public function actionDeleteAllSelected()
+    public function actionResendAllSelected()
     {
         if (Yii::$app->request->isPost) {
 
             $ids = Yii::$app->request->post('id');
             if (!empty($ids)) {
-                foreach ($ids as $id) {
-                    $invitation = Invite::findOne(['id' => $id]);
-                    $invitation->delete();
+                foreach (Invite::findAll(['id' => $ids]) as $invite) {
+                    $invite->sendInviteMail();
+                }
+                $this->view->success(Yii::t(
+                    'AdminModule.user',
+                    'The selected invitations have been successfully re-sent!',
+                ));
+            }
+        }
+        return $this->redirect(['index']);
+    }
+
+    /**
+     * Delete all or selected invitation
+     *
+     * @param int $id
+     * @return string
+     * @throws HttpException
+     * @throws Throwable
+     */
+    public function actionDeleteAllSelected()
+    {
+        if (Yii::$app->request->isPost) {
+            $ids = Yii::$app->request->post('id');
+            if (!empty($ids)) {
+                foreach (Invite::findAll(['id' => $ids]) as $invite) {
+                    $invite->delete();
                 }
                 $this->view->success(Yii::t(
                     'AdminModule.user',

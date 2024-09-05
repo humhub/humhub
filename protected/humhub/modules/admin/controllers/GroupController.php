@@ -151,11 +151,29 @@ class GroupController extends Controller
         $group = Group::findOne(['id' => $request->get('id')]);
         $this->checkGroupAccess($group);
 
-        $group->removeUser($request->get('userId'));
+        $userGroupsCount = GroupUser::find()
+            ->where(['user_id' => $request->get('userId')])
+            ->count();
+
+        $error = '';
+        if ($userGroupsCount > 1) {
+            if (!$group->removeUser($request->get('userId'))) {
+                $error = Yii::t('AdminModule.user', 'The user cannot be removed from this Group!');
+            }
+        } else {
+            $error = Yii::t('AdminModule.user', 'The user cannot be removed from this Group, as users are required to be assigned to at least one Group.');
+        }
 
         if ($request->isAjax) {
             Yii::$app->response->format = 'json';
-            return ['success' => true];
+            return [
+                'success' => $error === '',
+                'error' => $error,
+            ];
+        }
+
+        if ($error) {
+            $this->view->error($error);
         }
 
         return $this->redirect([
