@@ -12,6 +12,8 @@ HumHub Changelog
 - Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
 - Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
 - Enh #7138: Added missing DB relations to UserInvite model
+- Enh #7139: Export `confirmUnload` function from `humhub.client.js`
+- Enh #7068: Bulk re-send email invites
 - Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
 - Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
 - Fix #7149: Fixed dropdown issue on mobile
@@ -21,8 +23,10 @@ HumHub Changelog
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
 - Fix #7173: Fix marketplace module label "Professional Edition"
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Enh #7198: Increase default Uplaod Max File Size to 64mb
 - Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
+- Enh #7202: Increased minimum PHP version to 8.1
 
 1.16.2 (Unreleased)
 ---------------------
