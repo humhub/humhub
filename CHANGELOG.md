@@ -28,8 +28,8 @@ HumHub Changelog
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
 
-1.16.2 (Unreleased)
----------------------
+1.16.2 (September 5, 2024)
+--------------------------
 - Fix #7102: Fix content search with word ending with hyphen
 - Fix #7104: Missing `--text-color-default` CSS variable
 - Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
@@ -47,11 +47,15 @@ HumHub Changelog
 - Fix #324: Focus on active and selected nav page after reload on mobile
 - Fix #7170: Fix rendering of new line on email messages
 - Fix #7178: Highlight only words with 3 or more characters
-- Fix #7180: Fix active form on user edit form for correct working of widget inputs
+- Fix #7180: Fix active form on registration and user edit forms for correct working of widget inputs
 - Fix #7181: Fix duplicated label of checkbox profile field
 - Fix #7182: Fix initialization of several select2 inputs on the same page
 - Fix #7187: Fix search reindexing after content deletion
 - Fix #7152: Fix search starting with special characters
+- Enh #7148: Improve rendering of meta search content
+- Fix #7192: Deny deleting user from single group
+- Fix #7200: Fix module description for space and user
+- Enh #7204: Make "Invite new people" always possible for user with permission "Manage Users"
 
 1.16.1 (July 1, 2024)
 ---------------------
