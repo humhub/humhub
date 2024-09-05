@@ -25,6 +25,7 @@ HumHub Changelog
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
 - Enh #7198: Increase default Uplaod Max File Size to 64mb
 - Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
+- Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
 
 1.16.2 (Unreleased)
