@@ -75,4 +75,41 @@ class ConfigTest extends HumHubDbTestCase
 
         $this->assertEquals($config, EnvHelper::toConfig($ENV));
     }
+
+    public function testBooleanConfig()
+    {
+        $ENV = [
+            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.SHOW_SCRIPT_NAME' => 'false',
+            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.ENABLE_PRETTY_URL' => 'true',
+        ];
+
+        $config = [
+            'components' => [
+                'urlManager' => [
+                    'showScriptName' => false,
+                    'enablePrettyUrl' => true,
+                ],
+            ],
+        ];
+
+        $this->assertEquals($config, EnvHelper::toConfig($ENV));
+    }
+
+    public function testEmptyConfig()
+    {
+        $ENV = [
+            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.SHOW_SCRIPT_NAME' => 'false',
+            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.ENABLE_PRETTY_URL' => null,
+        ];
+
+        $config = [
+            'components' => [
+                'urlManager' => [
+                    'showScriptName' => false,
+                ],
+            ],
+        ];
+
+        $this->assertEquals($config, EnvHelper::toConfig($ENV));
+    }
 }
