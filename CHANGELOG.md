@@ -27,6 +27,7 @@ HumHub Changelog
 - Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
+- Enh #7211: Remove obsolete property `AbstractRichText::$record`
 
 1.16.2 (September 5, 2024)
 --------------------------
