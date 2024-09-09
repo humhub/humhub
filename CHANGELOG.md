@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.16.3 (Unreleased)
+--------------------------
+- Fix #7212: Fix horizontal scroll bar on space stream on small screen
+
 1.16.2 (September 5, 2024)
 --------------------------
 - Fix #7102: Fix content search with word ending with hyphen
