@@ -28,7 +28,7 @@ HumHub Changelog
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
 - Enh #7211: Remove obsolete property `AbstractRichText::$record`
-- Enh #221: By default, enabled "Mobile" notification types for those enabled for "Web"
+- Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
 
 1.16.2 (September 5, 2024)
 --------------------------
