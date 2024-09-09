@@ -65,11 +65,10 @@ abstract class NotificationCategory extends BaseObject
      */
     public function getDefaultSetting(BaseTarget $target)
     {
-        if (in_array($target->id, [MailTarget::getId(), WebTarget::getId(), MobileTarget::getId()], true)) {
-            return true;
-        }
-
-        return $target->defaultSetting;
+        return match ($target->id) {
+            MailTarget::getId(), WebTarget::getId(), MobileTarget::getId() => true,
+            default => $target->defaultSetting,
+        };
     }
 
     /**
