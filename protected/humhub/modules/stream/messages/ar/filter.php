@@ -1,13 +1,12 @@
 <?php
-
-return [
-    'Author' => 'مؤلف',
-    'Content' => 'المحتوى',
-    'Content Type' => 'نوع المحتوى',
-    'Sorting' => 'الترتيب',
-    'Topic' => 'موضوع',
-    'Visibility' => 'الرؤية',
-    'Date from' => '',
-    'Date to' => '',
-    'Scope' => '',
-];
+return array (
+  'Author' => 'المؤلف',
+  'Content' => 'المحتوى',
+  'Content Type' => 'نوع المحتوى',
+  'Date from' => 'التاريخ من',
+  'Date to' => 'التاريخ إلى',
+  'Scope' => 'النطاق',
+  'Sorting' => 'الفرز',
+  'Topic' => 'الموضوع',
+  'Visibility' => 'الرؤية',
+);

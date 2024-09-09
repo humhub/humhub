@@ -14,15 +14,32 @@
     }
 }
 
-a.list-group-item:hover,
-a.list-group-item.active,
-a.list-group-item.active:hover,
-a.list-group-item.active:focus {
-    z-index: 2;
-    color: @text-color-highlight;
-    background-color: @background-color-secondary;
-    border-left: 3px solid @info !important;
+a.list-group-item {
+
+    .listGroupItemActiveOrFocus {
+        z-index: 2;
+        color: @text-color-highlight;
+        background-color: @background-color-secondary;
+        border-left: 3px solid @info !important;
+    }
+
+    &.active {
+        .listGroupItemActiveOrFocus();
+    }
+
+    // Hover effect only on desktop
+    &:hover, &.active:hover, &.active:focus {
+        background: inherit;
+        color: inherit;
+        border-left: none !important;
+    }
+    @media (hover: hover) and (pointer: fine) {
+        &:hover, &.active:hover, &.active:focus {
+            .listGroupItemActiveOrFocus();
+        }
+    }
 }
+
 
 @media (max-width: 991px) {
     .list-group {
@@ -41,9 +58,22 @@ a.list-group-item.active:focus {
 
     }
 
-    a.list-group-item:hover, a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
-        border: none !important;
-        background: @primary !important;
-        color: #fff !important;
+    a.list-group-item {
+        .mobileListGroupItemActiveOrFocus {
+            border: none !important;
+            background: @primary !important;
+            color: #fff !important;
+        }
+
+        &.active {
+            .mobileListGroupItemActiveOrFocus();
+        }
+
+        // Hover effect only on desktop
+        @media (hover: hover) and (pointer: fine) {
+            &:hover, &.active:hover, &.active:focus {
+                .mobileListGroupItemActiveOrFocus();
+            }
+        }
     }
 }

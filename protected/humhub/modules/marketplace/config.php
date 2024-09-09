@@ -11,6 +11,7 @@ use humhub\components\ModuleManager;
 use humhub\modules\marketplace\Events;
 use humhub\modules\marketplace\Module;
 use humhub\modules\user\widgets\AccountTopMenu;
+use humhub\widgets\MetaSearchWidget;
 
 /** @noinspection MissedFieldInspection */
 return [
@@ -25,5 +26,6 @@ return [
         [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
         [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onMarketplaceAfterFilterModules']],
         [AccountTopMenu::class, AccountTopMenu::EVENT_INIT, [Events::class, 'onAccountTopMenuInit']],
+        [MetaSearchWidget::class, MetaSearchWidget::EVENT_INIT, [Events::class, 'onMetaSearchInit']],
     ],
 ];

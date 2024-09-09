@@ -235,6 +235,9 @@ class UserController extends Controller
             if ($user->canEditPassword()) {
                 if (!empty($password->newPassword)) {
                     $password->setPassword($password->newPassword);
+                } elseif ($user->canEditAdminFields()) {
+                    // Allow admin to save user without password
+                    unset($form->models['Password']);
                 }
                 $user->setMustChangePassword($password->mustChangePassword);
             }
@@ -265,14 +268,12 @@ class UserController extends Controller
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
-        $adminIsAlwaysAllowed = Yii::$app->user->isAdmin();
         $invite = new InviteForm();
 
         return $this->render('add', [
             'hForm' => $registration,
-            'canInviteByEmail' => $invite->canInviteByEmail($adminIsAlwaysAllowed),
-            'canInviteByLink' => $invite->canInviteByLink($adminIsAlwaysAllowed),
-            'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed,
+            'canInviteByEmail' => $invite->canInviteByEmail(),
+            'canInviteByLink' => $invite->canInviteByLink(),
         ]);
     }
 

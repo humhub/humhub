@@ -1,6 +1,5 @@
 <?php
-
-return [
-    'Add Topics' => '',
-    'Manage Topics' => '',
-];
+return array (
+  'Add Topics' => 'Gehitu gaiak',
+  'Manage Topics' => 'Gaiak kudeatzea',
+);

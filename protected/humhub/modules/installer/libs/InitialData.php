@@ -9,17 +9,18 @@
 namespace humhub\modules\installer\libs;
 
 use humhub\modules\activity\components\MailSummary;
+use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\user\models\fieldtype\Birthday;
 use humhub\modules\user\models\fieldtype\CountrySelect;
 use humhub\modules\user\models\fieldtype\Select;
 use humhub\modules\user\models\fieldtype\Text;
 use humhub\modules\user\models\fieldtype\TextArea;
 use humhub\modules\user\models\fieldtype\UserEmail;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\ProfileFieldCategory;
 use Yii;
 use yii\base\Exception;
-use humhub\modules\user\models\ProfileFieldCategory;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\Group;
 use yii\helpers\BaseUrl;
 
 /**
@@ -58,7 +59,8 @@ class InitialData
         Yii::$app->getModule('activity')->settings->set('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
 
         // File
-        Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
+        [,,$defaultMaxUploadSize] = FileSettingsForm::getPHPMaxUploadSize();
+        Yii::$app->getModule('file')->settings->set('maxFileSize', $defaultMaxUploadSize);
         Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
 
         // Caching

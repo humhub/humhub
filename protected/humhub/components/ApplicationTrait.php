@@ -145,10 +145,13 @@ trait ApplicationTrait
 
     private function removeLegacyConfigSettings($applicationConfig)
     {
-        return ArrayHelper::merge([
+        return ArrayHelper::merge(
+            [
                 'modules' => [],
                 'components' => [],
-            ], $applicationConfig, SelfTest::getLegancyConfigSettings()
+            ],
+            $applicationConfig,
+            SelfTest::getLegancyConfigSettings(),
         );
     }
 }

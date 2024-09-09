@@ -238,6 +238,61 @@ div.form-group {
     }
 }
 
+// Radio pills
+.radio-pills {
+    display: flex;
+    flex-wrap: wrap;
+    border: 1px solid @default;
+    border-radius: 4px;
+    width: fit-content;
+    div.radio {
+        flex: 1;
+        text-align: center;
+        font-size: 12px;
+        border-radius: 3px;
+        background: #FFF;
+        box-shadow: none;
+        margin: 0 !important;
+        white-space: nowrap;
+        &:hover, &.active {
+            background: @default;
+        }
+        .fa {
+            margin-right: 5px;
+            &.radio-pill-active-icon {
+                display: none;
+            }
+        }
+        &.active .fa.radio-pill-active-icon {
+            display: inline;
+        }
+        label {
+            font-weight: 600;
+            padding: 2px 12px;
+            line-height: 21px;
+        }
+        &::after {
+            content: ' ';
+            border-right: 1px solid @default;
+            position: absolute;
+            top: 20%;
+            height: 60%;
+            left: 0;
+            z-index: 1;
+        }
+        &:first-child, &:hover + div.radio, &.active, &.active + div.radio {
+            &::after {
+                display: none;
+            }
+        }
+    }
+    input[type=radio] {
+        display: none;
+    }
+}
+.radio-pills-wide {
+    width: auto;
+}
 
 //
 // Errror handling

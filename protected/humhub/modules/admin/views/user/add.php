@@ -9,7 +9,6 @@ use humhub\modules\ui\form\widgets\ActiveForm;
  * @var $hForm HForm
  * @var $canInviteByEmail bool
  * @var $canInviteByLink bool
- * @var $adminIsAlwaysAllowed bool
  */
 ?>
 
@@ -21,7 +20,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
             <?php if ($canInviteByEmail || $canInviteByLink): ?>
                 <?= ModalButton::success(Yii::t('AdminModule.user', 'Invite new people'))
-                    ->load(['/user/invite', 'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed])->icon('invite')->sm() ?>
+                    ->load(['/user/invite'])->icon('invite')->sm() ?>
             <?php endif; ?>
         </div>
 

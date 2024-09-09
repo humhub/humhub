@@ -121,6 +121,6 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
      */
     protected function renderParagraph($block)
     {
-        return '<p>' . nl2br($this->renderAbsy($block['content'])) . "</p>\n";
+        return '<p>' . $this->renderAbsy($block['content']) . "</p>\n";
     }
 }

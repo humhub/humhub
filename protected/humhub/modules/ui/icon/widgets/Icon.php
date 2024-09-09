@@ -948,6 +948,17 @@ class Icon extends Widget
     }
 
     /**
+     * @param string $class
+     * @return $this
+     * @since 1.16
+     */
+    public function class(string $class): self
+    {
+        Html::addCssClass($this->htmlOptions, $class);
+        return $this;
+    }
+
+    /**
      * @param string $color
      * @return $this
      */

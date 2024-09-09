@@ -49,6 +49,13 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
             });
         });
+
+        additions.register('radio-pills', '.radio-pills [type=radio]', function ($match) {
+            $match.on('change', function () {
+                $(this).closest('.radio-pills').find('.radio.active').removeClass('active');
+                $(this).closest('.radio').addClass('active');
+            });
+        });
     };
 
     var toggleTimeZoneInput = function(evt) {

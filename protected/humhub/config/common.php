@@ -30,9 +30,9 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.16.0-beta.2',
+    'version' => '1.17.0-dev',
     'minRecommendedPhpVersion' => '8.1',
-    'minSupportedPhpVersion' => '8.0',
+    'minSupportedPhpVersion' => '8.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
     'sourceLanguage' => 'en',

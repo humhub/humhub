@@ -55,10 +55,10 @@ class ContentContainerModuleManager extends Component
             Yii::$app->moduleManager->getModule($id)->disableContentContainer($this->contentContainer);
 
             $moduleState = $this->getModuleStateRecord($id);
-            $moduleState->module_state = ContentContainerModuleState::STATE_DISABLED;
-            $moduleState->save();
-
-            return true;
+            if ($moduleState instanceof ContentContainerModuleState) {
+                $moduleState->module_state = ContentContainerModuleState::STATE_DISABLED;
+                return $moduleState->save();
+            }
         }
 
         return false;
@@ -77,10 +77,10 @@ class ContentContainerModuleManager extends Component
             Yii::$app->moduleManager->getModule($id)->enableContentContainer($this->contentContainer);
 
             $moduleState = $this->getModuleStateRecord($id);
-            $moduleState->module_state = ContentContainerModuleState::STATE_ENABLED;
-            $moduleState->save();
-
-            return true;
+            if ($moduleState instanceof ContentContainerModuleState) {
+                $moduleState->module_state = ContentContainerModuleState::STATE_ENABLED;
+                return $moduleState->save();
+            }
         }
 
         return false;
@@ -283,12 +283,20 @@ class ContentContainerModuleManager extends Component
      * Returns an Module record instance for the given module id
      *
      * @param string $id the module id
-     * @return ContentContainerModuleState
+     * @return ContentContainerModuleState|null
      * @see Module
      */
     protected function getModuleStateRecord($id)
     {
-        $moduleState = ContentContainerModuleState::findOne(['module_id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
+        if (!$this->contentContainer->contentContainerRecord instanceof ContentContainer) {
+            return null;
+        }
+
+        $moduleState = ContentContainerModuleState::findOne([
+            'module_id' => $id,
+            'contentcontainer_id' => $this->contentContainer->contentcontainer_id,
+        ]);
+
         if ($moduleState === null) {
             $moduleState = new ContentContainerModuleState();
             $moduleState->contentcontainer_id = $this->contentContainer->contentcontainer_id;

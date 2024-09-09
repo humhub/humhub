@@ -10,7 +10,6 @@ namespace tests\codeception\unit\modules\content;
 
 use tests\codeception\_support\HumHubDbTestCase;
 use humhub\modules\post\models\Post;
-
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 
