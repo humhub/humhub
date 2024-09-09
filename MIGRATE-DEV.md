@@ -10,6 +10,12 @@ Version 1.17 (Unreleased)
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 
+
+#### Removed
+
+- Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
+
+
 Version 1.17 (Unreleased)
 -------------------------
 
