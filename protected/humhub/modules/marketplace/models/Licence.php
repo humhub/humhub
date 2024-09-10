@@ -20,17 +20,17 @@ class Licence extends Model
     public const LICENCE_TYPE_PRO = 'pro';
 
     /**
-     * @var string the licence type
+     * @var string the license type
      */
     public $type;
 
     /**
-     * @var string the licence key
+     * @var string the license key
      */
     public $licenceKey;
 
     /**
-     * @var string name of the licensee
+     * @var string name of the license
      */
     public $licencedTo;
 
@@ -65,13 +65,13 @@ class Licence extends Model
     public function attributeLabels()
     {
         return [
-            'licenceKey' => Yii::t('MarketplaceModule.base', 'Licence key'),
+            'licenceKey' => Yii::t('MarketplaceModule.base', 'License key'),
         ];
     }
 
 
     /**
-     * Registers the licence
+     * Registers the license
      *
      * @return bool
      */
@@ -80,7 +80,7 @@ class Licence extends Model
         $result = LicenceManager::request('v1/pro/register', ['licenceKey' => $this->licenceKey]);
 
         if (empty($result) || !is_array($result) || !isset($result['status'])) {
-            $this->addError('licenceKey', Yii::t('MarketplaceModule.base', 'Could not connect to licence server!'));
+            $this->addError('licenceKey', Yii::t('MarketplaceModule.base', 'Could not connect to license server!'));
             return false;
         }
 
@@ -89,7 +89,7 @@ class Licence extends Model
         }
 
         LicenceManager::remove();
-        $this->addError('licenceKey', Yii::t('MarketplaceModule.base', 'Could not update licence. Error: ') . $result['message']);
+        $this->addError('licenceKey', Yii::t('MarketplaceModule.base', 'Could not update license. Error: ') . $result['message']);
         return false;
     }
 

@@ -48,7 +48,7 @@ class ProfessionalEditionController extends Controller
             $settings = Yii::$app->getModule('marketplace')->settings;
 
             $this->stdout(Yii::t('MarketplaceModule.base', "PROFESSIONAL EDITION") . "\n\n", Console::FG_GREY, Console::BOLD);
-            $this->stdout('Licenced to: ' . $l->licencedTo . "\n");
+            $this->stdout('Licensed to: ' . $l->licencedTo . "\n");
             $this->stdout('Maximum users: ' . $l->maxUsers . "\n");
             $this->stdout('Last update: ' . Yii::$app->formatter->asDatetime($settings->get(LicenceManager::SETTING_KEY_PE_LAST_FETCH)) . "\n");
         } else {
@@ -60,7 +60,7 @@ class ProfessionalEditionController extends Controller
     /**
      * Registers a Professional Edition using a license key.
      *
-     * @param string the licence key
+     * @param string the license key
      * @throws Exception
      */
     public function actionRegister($licence)
