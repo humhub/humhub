@@ -40,7 +40,7 @@ use yii\helpers\Html;
                                             <table border="0" align="center" cellpadding="0" cellspacing="0">
                                                 <tr>
                                                     <td width="auto" align="center" valign="middle" height="28"
-                                                        style=" background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center; color:#a3a2a2; font-weight: 300; padding: 0 18px">
+                                                        style=" background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>; background-clip: padding-box; font-size:26px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; text-align:center; color:<?= $this->theme->variable('text-color-soft2', '#aeaeae') ?>; font-weight: 300; padding: 0 18px">
 
                                                         <span style="color: <?= $this->theme->variable('text-color-main', '#555') ?>; font-weight: 300">
                                                             <?= Yii::t('UserModule.base', 'You got an invite') ?>
