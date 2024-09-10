@@ -29,6 +29,7 @@ HumHub Changelog
 - Enh #7202: Increased minimum PHP version to 8.1
 - Enh #7211: Remove obsolete property `AbstractRichText::$record`
 - Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
+- Fix #7215: Wording: replace British "licence" with American "license"
 
 1.16.2 (September 5, 2024)
 --------------------------
