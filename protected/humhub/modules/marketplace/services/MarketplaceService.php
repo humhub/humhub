@@ -51,12 +51,12 @@ class MarketplaceService
 
         if ($response['status'] !== 'ok' && $response['status'] !== 'created') {
             $result['hasError'] = true;
-            $result['message'] = Yii::t('MarketplaceModule.base', 'Invalid module licence key!');
+            $result['message'] = Yii::t('MarketplaceModule.base', 'Invalid module license key!');
             return $result;
         }
 
         $result['licenceKey'] = '';
-        $result['message'] = Yii::t('MarketplaceModule.base', 'Module licence added!');
+        $result['message'] = Yii::t('MarketplaceModule.base', 'Module license added!');
         return $result;
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'Add purchased module by licence key' => 'Pievieno nopirkto moduli ar licences atslēgu',
+    'Add purchased module by license key' => 'Pievieno nopirkto moduli ar licences atslēgu',
     'Could not extract module!' => 'Neizdevās atarhivēt moduli!',
     'Could not find requested module!' => 'Nevarēja atrast pieprasīto moduli!',
     'Download of module failed!' => 'Moduļa lejupielāde neizdevās!',
@@ -50,7 +50,7 @@ The license was successfully removed!
     '<strong>Activate</strong> your Professional Edition' => '',
     '<strong>General</strong> Settings' => '',
     'A new update is available (HumHub %version%)!' => '',
-    'Add Licence Key' => '',
+    'Add License Key' => '',
     'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => '',
     'All' => '',
     'All modules' => '',
@@ -66,12 +66,12 @@ The license was successfully removed!
     'Could not connect to HumHub API!' => '',
     'Could not connect to HumHub API!
 ' => '',
-    'Could not connect to licence server!' => '',
+    'Could not connect to license server!' => '',
     'Could not find the requested module!' => '',
     'Could not remove old module path!' => '',
-    'Could not update licence. Error: ' => '',
+    'Could not update license. Error: ' => '',
     'Deprecated' => '',
-    'Edit licence' => '',
+    'Edit license' => '',
     'Enable' => '',
     'Enable now' => '',
     'Featured' => '',
@@ -80,15 +80,15 @@ The license was successfully removed!
     'If this Module is additionally marked as <strong>"Community"</strong> it is neither tested nor monitored by the HumHub project team.' => '',
     'Information' => '',
     'Install' => '',
-    'Invalid module licence key!' => '',
-    'Invalid module licence key!
+    'Invalid module license key!' => '',
+    'Invalid module license key!
 ' => '',
     'Latest version:' => '',
     'Learn more' => '',
-    'Licence Key:' => '',
-    'Licence key' => '',
-    'Licenced for max. {number} users.' => '',
-    'Licenced to:' => '',
+    'License Key:' => '',
+    'License key' => '',
+    'Licensed for max. {number} users.' => '',
+    'Licensed to:' => '',
     'License not found or expired. Please contact the module publisher.' => '',
     'Marketplace' => '',
     'Marketplace is disabled.' => '',
@@ -99,10 +99,10 @@ The license was successfully removed!
     'Module Administration' => '',
     'Module configuration' => '',
     'Module is <strong>installing...</strong>' => '',
-    'Module licence added!' => '',
-    'Module licence added!
+    'Module license added!' => '',
+    'Module license added!
 ' => '',
-    'Module licence key cannot be empty!
+    'Module license key cannot be empty!
 ' => '',
     'Module not found or enabled!
 ' => '',
@@ -117,7 +117,7 @@ The license was successfully removed!
     'Partner' => '',
     'Professional Edition' => '',
     'Professional Edition is activated!' => '',
-    'Remove licence key' => '',
+    'Remove license key' => '',
     'Save and update' => '',
     'Search...' => '',
     'Stop updating' => '',
