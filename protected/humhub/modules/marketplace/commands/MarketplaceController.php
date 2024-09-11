@@ -260,7 +260,7 @@ class MarketplaceController extends Controller
     public function actionRegister($licenceKey)
     {
         if (empty($licenceKey)) {
-            $this->stdout(Yii::t('MarketplaceModule.base', 'Module licence key cannot be empty!' . "\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', 'Module license key cannot be empty!' . "\n"), Console::FG_RED, Console::BOLD);
             return 1;
         }
 
@@ -272,11 +272,11 @@ class MarketplaceController extends Controller
         }
 
         if ($result['status'] != 'ok' && $result['status'] != 'created') {
-            $this->stdout(Yii::t('MarketplaceModule.base', 'Invalid module licence key!' . "\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(Yii::t('MarketplaceModule.base', 'Invalid module license key!' . "\n"), Console::FG_RED, Console::BOLD);
             return 1;
         }
 
-        $this->stdout(Yii::t('MarketplaceModule.base', 'Module licence added!' . "\n"), Console::FG_GREEN, Console::BOLD);
+        $this->stdout(Yii::t('MarketplaceModule.base', 'Module license added!' . "\n"), Console::FG_GREEN, Console::BOLD);
         return 0;
     }
 

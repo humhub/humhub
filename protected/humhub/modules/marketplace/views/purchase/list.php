@@ -5,8 +5,8 @@ use humhub\modules\marketplace\assets\Assets;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
 use yii\base\View;
-use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var Module[] $modules */
 /* @var string $licenceKey */
@@ -21,7 +21,7 @@ Assets::register($this);
         <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
-                <?= Yii::t('MarketplaceModule.base', 'Add Licence Key'); ?>
+                <?= Yii::t('MarketplaceModule.base', 'Add License Key'); ?>
             </h4>
         </div>
         <div class="modal-body">
@@ -31,7 +31,7 @@ Assets::register($this);
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group form-group-search">
-                        <?= Html::textInput('licenceKey', $licenceKey, ['class' => 'form-control form-search', 'placeholder' => Yii::t('MarketplaceModule.base', 'Add purchased module by licence key')]); ?>
+                        <?= Html::textInput('licenceKey', $licenceKey, ['class' => 'form-control form-search', 'placeholder' => Yii::t('MarketplaceModule.base', 'Add purchased module by license key')]); ?>
                         <?= Button::defaultType(Yii::t('MarketplaceModule.base', 'Register'))
                             ->submit()
                             ->action('marketplace.registerLicenceKey')
@@ -80,7 +80,7 @@ Assets::register($this);
                                 <?php endif; ?>
                                 <?= Html::a(Yii::t('MarketplaceModule.base', 'More info'), $module['marketplaceUrl'], ['target' => '_blank']); ?>
                                 &middot; <?= Yii::t('MarketplaceModule.base', 'Latest version:'); ?> <?= $module['latestVersion']; ?>
-                                &middot; <?= Yii::t('MarketplaceModule.base', 'Licence Key:'); ?> <?= $module['licence_key']; ?>
+                                &middot; <?= Yii::t('MarketplaceModule.base', 'License Key:'); ?> <?= $module['licence_key']; ?>
                             </div>
                         </div>
                     </div>
