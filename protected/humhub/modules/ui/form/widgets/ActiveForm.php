@@ -17,7 +17,7 @@ use humhub\modules\ui\icon\widgets\Icon;
  * @since 1.1
  * @author Luke
  */
-class ActiveForm extends \yii\bootstrap\ActiveForm
+class ActiveForm extends \yii\bootstrap5\ActiveForm
 {
     /**
      * @inheritdoc
@@ -88,14 +88,4 @@ class ActiveForm extends \yii\bootstrap\ActiveForm
         return Html::endTag('fieldset') .
             Html::endTag('div');
     }
-
-    /**
-     * @inheritdoc
-     * @return ActiveField the created ActiveField object
-     */
-    public function field($model, $attribute, $options = [])
-    {
-        return parent::field($model, $attribute, $options);
-    }
-
 }

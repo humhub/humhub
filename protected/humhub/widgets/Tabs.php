@@ -38,7 +38,7 @@ use Yii;
  * @see \yii\bootstrap\Tabs
  * @package humhub\widgets
  */
-class Tabs extends \yii\bootstrap\Tabs
+class Tabs extends \yii\bootstrap5\Tabs
 {
     /**
      * @var string contains the viewPath

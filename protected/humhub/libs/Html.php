@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
  * @since 1.2
  * @author Luke
  */
-class Html extends \yii\bootstrap\Html
+class Html extends \yii\bootstrap5\Html
 {
     /**
      * @param string $content

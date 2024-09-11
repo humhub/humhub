@@ -19,7 +19,7 @@ use yii\helpers\ArrayHelper;
  * @since 1.2
  * @author Luke
  */
-class ActiveField extends \yii\bootstrap\ActiveField
+class ActiveField extends \yii\bootstrap5\ActiveField
 {
     /**
      * @var bool Can be set to true in order to prevent this field from being rendered. This may be used by InputWidgets
@@ -65,7 +65,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
     /**
      * @inheritdoc
      */
-    public function render($content = null)
+    public function render($content = null): string
     {
         if ($this->preventRendering) {
             return '';
