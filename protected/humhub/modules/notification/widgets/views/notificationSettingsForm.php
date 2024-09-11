@@ -8,7 +8,7 @@
 
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\space\models\Space;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 ?>
 
@@ -57,4 +57,3 @@ use yii\bootstrap\Html;
         </tbody>
     </table>
 </div>
-

@@ -6,7 +6,7 @@ use humhub\components\Widget;
 use humhub\modules\ui\Module;
 use Throwable;
 use Yii;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\icon\components\IconProvider;
 use humhub\modules\ui\icon\components\IconFactory;
 use yii\base\InvalidConfigException;

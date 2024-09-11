@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\friendship\widgets\ManageMenu;
-use yii\bootstrap\Html;
 use humhub\widgets\GridView;
+use yii\bootstrap5\Html;
 
 ?>
 <div class="panel-heading">
@@ -38,6 +38,3 @@ use humhub\widgets\GridView;
     ?>
 
 </div>
-
-
-

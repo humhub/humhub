@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Tabs;
 use humhub\modules\user\models\ProfileFieldCategory;
+use humhub\widgets\bootstrap\Tabs;
 use yii\helpers\Url;
 
 $categoryItems = [];

@@ -9,7 +9,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\file\handler\BaseFileHandler;
 use yii\helpers\ArrayHelper;
 

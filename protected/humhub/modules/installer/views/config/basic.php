@@ -1,8 +1,8 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\installer\forms\ConfigBasicForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /**
  * @var $model ConfigBasicForm
@@ -45,5 +45,3 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?php endif; ?>
 
 </script>
-
-

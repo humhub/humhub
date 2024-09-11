@@ -1,11 +1,11 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\Button;
 use yii\helpers\Url;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $category ProfileFieldCategory */
 ?>

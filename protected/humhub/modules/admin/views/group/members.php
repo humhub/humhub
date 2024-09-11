@@ -7,7 +7,7 @@ use humhub\modules\user\models\Group;
 use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;

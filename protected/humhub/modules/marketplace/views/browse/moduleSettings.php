@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 

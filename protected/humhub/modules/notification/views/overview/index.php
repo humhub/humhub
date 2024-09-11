@@ -2,7 +2,7 @@
 
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $overview string */
 /* @var $filterForm FilterForm */

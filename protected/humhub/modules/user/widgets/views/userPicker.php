@@ -34,7 +34,7 @@ foreach (explode(",", $currentValue) as $guid) {
 }
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
     $(document).ready(function () {
         $('#<?php echo $inputId; ?>').userpicker({
             inputId: '#<?php echo $inputId; ?>',

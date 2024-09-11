@@ -11,7 +11,7 @@ namespace humhub\compat;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\form\widgets\SortOrderField;

@@ -3,7 +3,7 @@
 use humhub\modules\space\models\Space;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\ModalDialog;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $spaces Space[] */
 ?>
@@ -55,6 +55,3 @@ use humhub\libs\Html;
 
 </script>
 <?php ModalDialog::end() ?>
-
-
-

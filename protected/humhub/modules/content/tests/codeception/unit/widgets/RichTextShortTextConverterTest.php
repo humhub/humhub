@@ -9,7 +9,7 @@
 namespace tests\codeception\unit\modules\content\widgets;
 
 use humhub\libs\EmojiMap;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;

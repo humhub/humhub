@@ -14,7 +14,7 @@ use humhub\modules\file\libs\ImageHelper;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
 use humhub\modules\file\models\File;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use Yii;
 use yii\imagine\Image;
 

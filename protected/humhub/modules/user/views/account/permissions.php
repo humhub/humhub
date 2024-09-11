@@ -1,9 +1,9 @@
 <?php
 
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
-use yii\bootstrap\Html;
-use yii\helpers\Url;
 use humhub\modules\user\widgets\PermissionGridEditor;
+use yii\bootstrap5\Html;
+use yii\helpers\Url;
 
 /** @var $multipleGroups bool * */
 /** @var $group string * */

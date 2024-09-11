@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
     $(document).ready(function() {
         //The original form input element will be hidden
         var $formInput = $('#<?php echo $id; ?>').hide();

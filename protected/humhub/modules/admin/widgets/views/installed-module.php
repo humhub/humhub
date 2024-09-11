@@ -6,7 +6,7 @@
  */
 
 use humhub\components\Module;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\widgets\InstalledModuleActionButtons;
 use humhub\modules\admin\widgets\InstalledModuleControls;
 

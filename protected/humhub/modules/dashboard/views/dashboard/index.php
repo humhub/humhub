@@ -9,7 +9,7 @@ use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\widgets\FooterMenu;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 

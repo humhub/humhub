@@ -11,7 +11,7 @@ namespace humhub\modules\file\libs;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\libs\MimeHelper;
 use humhub\modules\file\models\File;
 use humhub\modules\file\handler\FileHandlerCollection;

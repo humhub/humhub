@@ -1,8 +1,8 @@
-<?php 
+<?php
 
 /**
  * This is a javascript widget view containing the javascript, that adds the sort by drag an drop logic to the defined elements.
- * 
+ *
  * @uses $containerClassName;
  * @uses $sortableItemClassName;
  * @uses $url;
@@ -11,7 +11,7 @@
  */
 ?>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
 $(function() {
 	$( ".<?php echo $containerClassName; ?>" ).sortable({
 		stop: function(event, ui) {
@@ -20,7 +20,7 @@ $(function() {
 			var items = sortable.find('.<?php echo $sortableItemClassName; ?>');
 			<?php foreach($additionalAjaxParams as $name => $value) {
 			if($name != null && $name != '' && $value != null && $value != '') { ?>
-			data.<?php echo $name ?> = '<?php echo $value ?>';	
+			data.<?php echo $name ?> = '<?php echo $value ?>';
 			<?php } } ?>
 			data.items = [];
 			items.each(function(new_index) {

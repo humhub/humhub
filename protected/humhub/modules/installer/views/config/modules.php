@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /* @var array $modules */
 ?>
@@ -37,5 +37,3 @@ use yii\bootstrap\Html;
 
     </div>
 </div>
-
-

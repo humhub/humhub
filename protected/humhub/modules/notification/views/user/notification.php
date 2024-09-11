@@ -2,7 +2,7 @@
 
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\notification\widgets\UserInfoWidget;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 

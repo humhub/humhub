@@ -9,7 +9,6 @@
 namespace humhub\modules\ui\form\widgets;
 
 use Colors\RandomColor;
-use humhub\modules\ui\form\widgets\JsInputWidget;
 
 /**
  * Adds a color picker form field for the given model.

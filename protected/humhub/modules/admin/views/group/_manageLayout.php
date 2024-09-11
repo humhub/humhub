@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\widgets\GroupManagerMenu;
 use humhub\modules\user\models\Group;
 use humhub\widgets\Button;

@@ -3,7 +3,7 @@
 namespace humhub\modules\content\widgets\stream;
 
 use Exception;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;

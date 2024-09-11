@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;

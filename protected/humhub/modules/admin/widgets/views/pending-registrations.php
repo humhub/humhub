@@ -16,7 +16,7 @@ AdminPendingRegistrationsAsset::register($this);
 ?>
 <?= Html::beginTag('div', $options); ?>
     <h4>
-        <?= humhub\libs\Html::backButton(
+        <?= humhub\widgets\bootstrap\Html::backButton(
             ['/admin/user/index'],
             [
                 'label' => Yii::t('AdminModule.base', 'Back to user overview'),

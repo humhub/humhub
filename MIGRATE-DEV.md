@@ -10,17 +10,24 @@ Version 1.17 (Unreleased)
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 
-
 #### Removed
 
 - Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
-
-
-Version 1.17 (Unreleased)
--------------------------
+- `humhub\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
 
 ### New
 - CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
+
+### Deprecations
+
+- `humhub\modules\ui\form\widgets\ActiveField` use `humhub\widgets\bootstrap\ActiveField` instead
+- `humhub\modules\ui\form\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
+- `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\bootstrap\ContentHiddenCheckbox` instead
+- `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\bootstrap\ContentVisibilitySelect` instead
+- `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
+- `humhub\modules\ui\form\widgets\SortOrderField` use `humhub\widgets\bootstrap\SortOrderField` instead
+- `humhub\libs\Html` use `humhub\widgets\bootstrap\Html` instead
+- `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 
 Version 1.16 (April 2024)
 -------------------------

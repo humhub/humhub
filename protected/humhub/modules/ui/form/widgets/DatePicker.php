@@ -13,7 +13,7 @@ use Yii;
 use yii\helpers\FormatConverter;
 use yii\helpers\Json;
 use yii\jui\DatePicker as BaseDatePicker;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\jui\DatePickerLanguageAsset;
 use yii\jui\JuiAsset;
 

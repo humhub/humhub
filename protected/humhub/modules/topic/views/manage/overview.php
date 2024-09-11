@@ -11,12 +11,12 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\view\components\View;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
-use yii\bootstrap\ActiveForm;
-use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\AccountSettingsMenu;
+use yii\bootstrap5\ActiveForm;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 

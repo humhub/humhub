@@ -1,11 +1,11 @@
 <?php
 
-use humhub\libs\Html;
 use humhub\modules\admin\models\forms\UserDeleteForm;
-use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
+use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $model UserDeleteForm */
 ?>

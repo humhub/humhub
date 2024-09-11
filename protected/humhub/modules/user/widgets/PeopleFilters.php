@@ -7,7 +7,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\modules\ui\widgets\DirectoryFilters;
 use humhub\modules\user\components\PeopleQuery;

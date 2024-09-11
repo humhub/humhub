@@ -9,7 +9,7 @@
 namespace humhub\modules\content\widgets;
 
 use Yii;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\ui\form\widgets\JsInputWidget;
 

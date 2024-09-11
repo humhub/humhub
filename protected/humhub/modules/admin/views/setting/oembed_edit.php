@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\Button;
 use yii\helpers\Url;
 use yii\web\View;

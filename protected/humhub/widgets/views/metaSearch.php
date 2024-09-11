@@ -7,7 +7,7 @@
 
 use humhub\assets\SearchAsset;
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
 use humhub\widgets\Link;

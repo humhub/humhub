@@ -1,11 +1,11 @@
 <?php
 
-use humhub\libs\Html;
 use humhub\modules\user\models\Password;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Button;
-use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
 use humhub\widgets\SiteLogo;
+use yii\bootstrap5\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $model Password */
 

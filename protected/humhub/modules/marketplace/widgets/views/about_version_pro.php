@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;

@@ -1,8 +1,8 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $model AdminDeleteContentForm */
 

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\space\widgets\SpacePickerField;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\widgets\UserPickerField;

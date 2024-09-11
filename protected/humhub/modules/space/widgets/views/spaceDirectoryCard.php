@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\space\widgets\SpaceDirectoryActionButtons;

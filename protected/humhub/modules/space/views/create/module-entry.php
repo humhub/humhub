@@ -6,7 +6,7 @@
  */
 
 use humhub\components\Module;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\models\Space;
 use humhub\widgets\Button;
 

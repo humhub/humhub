@@ -8,11 +8,11 @@
 
 /* @var $model humhub\modules\activity\models\MailSummaryForm */
 
-/* @var $form humhub\widgets\ActiveForm */
+/* @var $form ActiveForm */
 
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\widgets\SpacePickerField;
+use humhub\widgets\bootstrap\ActiveForm;
 
 ?>
 

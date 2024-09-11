@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\controllers\ApprovalController;
 use humhub\modules\admin\grid\ApprovalActionColumn;
 use humhub\modules\admin\models\forms\ApproveUserForm;

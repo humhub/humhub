@@ -12,7 +12,7 @@ use Exception;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\space\models\Membership;
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * @property Membership $source

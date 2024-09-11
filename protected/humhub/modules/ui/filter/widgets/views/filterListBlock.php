@@ -6,7 +6,7 @@
  *
  */
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\view\components\View;
 
 /* @var $this View */

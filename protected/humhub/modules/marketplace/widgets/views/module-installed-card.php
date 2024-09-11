@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleControls;
 use humhub\modules\marketplace\widgets\ModuleInstalledActionButtons;

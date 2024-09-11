@@ -2,7 +2,7 @@
 
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\widgets\Button;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $cacheTypes [] */
 /* @var $model CacheSettingsForm */

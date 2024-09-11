@@ -8,7 +8,7 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;

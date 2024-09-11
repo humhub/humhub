@@ -5,7 +5,7 @@ use humhub\libs\ProfileImage;
 use humhub\models\forms\CropProfileImage;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\ui\widgets\CropImage;
 use humhub\widgets\ModalButton;

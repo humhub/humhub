@@ -2,7 +2,7 @@
 
 use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\content\widgets\richtext\RichTextField;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\widgets\DataSaved;

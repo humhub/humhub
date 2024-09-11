@@ -14,7 +14,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\data\ArrayDataProvider;
 use humhub\widgets\GridView;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\data\DataProviderInterface;
 use humhub\libs\DropDownGridColumn;
 

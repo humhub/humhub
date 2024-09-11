@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\installer\forms\SampleDataForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\bootstrap\Html;
+use humhub\widgets\bootstrap\ActiveForm;
+use yii\bootstrap5\Html;
 
 /* @var SampleDataForm $model */
 ?>
@@ -27,5 +27,3 @@ use yii\bootstrap\Html;
         <?php ActiveForm::end(); ?>
     </div>
 </div>
-
-

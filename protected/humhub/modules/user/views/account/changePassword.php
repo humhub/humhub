@@ -1,8 +1,8 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\DataSaved;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php'); ?>

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
 ?>
@@ -22,7 +22,3 @@ use yii\helpers\Html;
 
 <?php ActiveForm::end(); ?>
 <?php $this->endContent(); ?>
-
-
-
-

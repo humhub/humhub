@@ -5,7 +5,7 @@ namespace humhub\modules\content\widgets\richtext;
 use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\widgets\richtext\extensions\RichTextExtension;
 use humhub\widgets\JsWidget;
 use Yii;

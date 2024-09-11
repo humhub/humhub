@@ -5,7 +5,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\space\widgets\SpaceNameColorInput;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;

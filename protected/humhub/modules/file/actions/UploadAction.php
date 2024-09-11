@@ -9,7 +9,7 @@
 namespace humhub\modules\file\actions;
 
 use humhub\helpers\DataTypeHelper;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\file\libs\FileHelper;

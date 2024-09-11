@@ -5,7 +5,7 @@ namespace humhub\modules\content\widgets\richtext\converter;
 use cebe\markdown\GithubMarkdown;
 use humhub\components\ActiveRecord;
 use humhub\components\Event;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;

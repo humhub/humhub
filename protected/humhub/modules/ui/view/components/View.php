@@ -11,7 +11,7 @@ namespace humhub\modules\ui\view\components;
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;

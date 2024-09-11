@@ -2,7 +2,7 @@
 
 use humhub\libs\TimezoneHelper;
 use humhub\modules\content\widgets\ContainerTagPicker;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\user\models\forms\AccountSettings;
 use humhub\modules\user\widgets\UserPickerField;
 

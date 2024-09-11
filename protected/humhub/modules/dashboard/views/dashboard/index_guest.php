@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\modules\space\widgets\NewSpaces;

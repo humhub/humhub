@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\admin\models\forms\LogFilterForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 

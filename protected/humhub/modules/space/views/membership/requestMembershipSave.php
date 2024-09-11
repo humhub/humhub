@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $spaceId int */
 /* @var $newMembershipButton string */

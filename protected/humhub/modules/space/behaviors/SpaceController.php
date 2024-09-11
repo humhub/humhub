@@ -15,7 +15,7 @@ use yii\base\Behavior;
 use yii\base\InvalidValueException;
 use yii\helpers\Json;
 use yii\web\HttpException;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\space\models\Space;
 use humhub\components\Controller;

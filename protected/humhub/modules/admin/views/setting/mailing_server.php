@@ -1,9 +1,9 @@
 <?php
 
 use humhub\components\SettingsManager;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\Button;
 use yii\web\View;
 

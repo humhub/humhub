@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentControls;
 use humhub\modules\content\widgets\UpdatedIcon;

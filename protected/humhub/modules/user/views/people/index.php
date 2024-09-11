@@ -1,7 +1,7 @@
 <?php
 
 use humhub\assets\CardsAsset;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\components\PeopleQuery;
 use humhub\modules\user\widgets\PeopleCard;
 use humhub\modules\user\widgets\PeopleFilters;

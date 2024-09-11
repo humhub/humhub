@@ -22,7 +22,7 @@ use yii\helpers\Url;
 
         </div>
     </div>
-    <script <?= \humhub\libs\Html::nonce() ?>>
+    <script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
         function toggleUp() {
             $('.pups').slideUp("fast", function () {
                 // Animation complete.

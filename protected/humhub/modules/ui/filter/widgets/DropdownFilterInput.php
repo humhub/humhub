@@ -8,7 +8,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\modules\ui\filter\widgets\FilterInput;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Dropdown stream filter input type.

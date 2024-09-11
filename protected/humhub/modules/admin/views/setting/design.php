@@ -3,7 +3,7 @@
 use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
 use humhub\widgets\DataSaved;

@@ -7,7 +7,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpacePickerField;

@@ -7,7 +7,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\assets\PermissionGridModuleFilterAsset;
 use humhub\widgets\JsWidget;
 use Yii;

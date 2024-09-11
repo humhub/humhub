@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\ModalDialog;
@@ -32,5 +32,3 @@ use humhub\modules\comment\widgets\Form;
     $('#comment_<?= $id ?>').find('.comment_create hr').hide();
     <?php endif; ?>
 </script>
-
-

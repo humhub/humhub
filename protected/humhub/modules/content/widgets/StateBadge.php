@@ -11,7 +11,7 @@ use DateTime;
 use DateTimeZone;
 use Exception;
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;

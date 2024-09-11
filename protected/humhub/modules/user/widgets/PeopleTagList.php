@@ -7,7 +7,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\models\User;
 use yii\helpers\Url;
 use humhub\components\Widget;

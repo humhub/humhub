@@ -16,7 +16,7 @@
 
 use humhub\modules\ldap\models\LdapSettings;
 use yii\helpers\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use yii\web\View;
 
 ?>

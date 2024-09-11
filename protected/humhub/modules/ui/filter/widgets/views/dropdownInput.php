@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\ui\view\components\View;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /* @var $this View */
 /* @var $options [] */

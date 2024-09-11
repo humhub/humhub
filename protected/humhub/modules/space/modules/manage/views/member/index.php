@@ -1,16 +1,16 @@
 <?php
 
+use humhub\modules\space\models\Space;
+use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
+use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
-use yii\bootstrap\ActiveForm;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\modules\manage\widgets\MemberMenu;
-use humhub\modules\user\grid\ImageColumn;
-use humhub\modules\user\grid\DisplayNameColumn;
-use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\widgets\TimeAgo;
+use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $space Space */

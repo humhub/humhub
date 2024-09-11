@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\link;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\base\Model;
 use yii\helpers\Url;
 

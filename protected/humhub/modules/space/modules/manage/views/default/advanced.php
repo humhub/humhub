@@ -4,7 +4,7 @@ use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\models\AdvancedSettings;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\widgets\Button;
 use yii\helpers\Url;

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\assets\TopNavigationAsset;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $menu \humhub\widgets\TopMenu */

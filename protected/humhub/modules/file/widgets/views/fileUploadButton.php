@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 $this->registerJsVar('fileuploader_error_modal_title', Yii::t('FileModule.base', '<strong>Upload</strong> error'));

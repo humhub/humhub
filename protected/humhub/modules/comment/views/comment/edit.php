@@ -6,7 +6,7 @@ use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\Button;
 use yii\helpers\Html;

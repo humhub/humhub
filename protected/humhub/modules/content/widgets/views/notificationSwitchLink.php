@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;

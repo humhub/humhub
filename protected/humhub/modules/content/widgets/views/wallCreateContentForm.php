@@ -3,7 +3,7 @@
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\space\models\Space;
 

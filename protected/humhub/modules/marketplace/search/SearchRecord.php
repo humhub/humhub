@@ -8,7 +8,7 @@
 namespace humhub\modules\marketplace\search;
 
 use humhub\interfaces\MetaSearchResultInterface;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\marketplace\models\Module as ModelModule;
 
 /**

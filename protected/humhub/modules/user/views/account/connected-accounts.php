@@ -1,6 +1,6 @@
 <?php
 
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
 ?>

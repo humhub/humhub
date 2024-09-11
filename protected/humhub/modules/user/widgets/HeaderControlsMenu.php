@@ -9,14 +9,12 @@ namespace humhub\modules\user\widgets;
 
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\friendship\widgets\FriendshipButton;
-use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 use yii\helpers\Url;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use humhub\libs\MimeHelper;
 use humhub\modules\file\libs\FileHelper;

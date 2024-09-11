@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $hForm HForm */
 ?>
@@ -14,4 +14,3 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?= $hForm->render($form) ?>
 <?php ActiveForm::end(); ?>
 <?php $this->endContent(); ?>
-

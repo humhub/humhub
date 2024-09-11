@@ -1,10 +1,10 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\LoaderWidget;
 use yii\web\View;
 

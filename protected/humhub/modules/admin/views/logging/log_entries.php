@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\ui\view\components\View;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\models\Log;
 use humhub\widgets\Link;
 use humhub\widgets\LinkPager;

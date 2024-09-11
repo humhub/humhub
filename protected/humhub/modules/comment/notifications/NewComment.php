@@ -15,7 +15,7 @@ use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
 use humhub\modules\user\notifications\Mentioned;
 use Yii;
-use yii\bootstrap\Html;
+use yii\bootstrap5\Html;
 
 /**
  * Notification for new comments

@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\file\actions\DownloadAction;
 use humhub\modules\file\models\File;

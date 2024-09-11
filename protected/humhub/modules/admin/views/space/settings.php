@@ -1,9 +1,9 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\widgets\Button;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $model SpaceSettingsForm */
 /* @var $joinPolicyOptions array */

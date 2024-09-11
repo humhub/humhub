@@ -10,7 +10,7 @@ use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\ModalButton;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

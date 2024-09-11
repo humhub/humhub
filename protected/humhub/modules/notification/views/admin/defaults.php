@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\notification\models\forms\NotificationSettings;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $model NotificationSettings */
 ?>
@@ -34,4 +34,3 @@ use humhub\libs\Html;
 
     <?php ActiveForm::end(); ?>
 </div>
-

@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\user\controllers\ImageController;

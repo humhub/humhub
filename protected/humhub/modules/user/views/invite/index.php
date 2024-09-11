@@ -1,15 +1,15 @@
 <?php
 
-use humhub\libs\Html;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\forms\Invite;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
+use yii\bootstrap5\ActiveForm;
 use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
 
 /**
  * @var $this View

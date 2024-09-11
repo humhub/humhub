@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\widgets\BaseImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\IsOnlineService;

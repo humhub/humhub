@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\models\Content;
 use humhub\modules\activity\models\Activity;
@@ -39,4 +39,3 @@ $isActivity = $entry->object_model === Activity::class;
 <?php if (!$isActivity) : ?>
     <?= Html::endTag('div') ?>
 <?php endif; ?>
-

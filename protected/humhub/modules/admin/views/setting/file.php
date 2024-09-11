@@ -6,7 +6,7 @@
 
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\file\Module;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use yii\helpers\Html;
 

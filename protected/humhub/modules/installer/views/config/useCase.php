@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\installer\controllers\ConfigController;
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Html;
+use yii\bootstrap5\ActiveForm;
+use yii\bootstrap5\Html;
 
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">

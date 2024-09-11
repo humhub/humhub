@@ -2,11 +2,11 @@
 
 use humhub\modules\user\models\forms\AccountRecoverPassword;
 use humhub\widgets\Button;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
 use humhub\widgets\SiteLogo;
+use yii\bootstrap5\ActiveForm;
 use yii\captcha\Captcha;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
@@ -52,7 +52,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     </div>
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field

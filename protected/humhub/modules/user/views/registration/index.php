@@ -1,7 +1,7 @@
 <?php
 
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\SiteLogo;

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /**
  * @var $languages array

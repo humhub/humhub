@@ -11,7 +11,7 @@ use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\bootstrap\ActiveForm;
+use yii\bootstrap5\ActiveForm;
 
 /* @var $this View */
 /* @var $model ContentTopicsForm */

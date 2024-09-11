@@ -1,8 +1,8 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $hForm HForm */
 /* @var $user \humhub\modules\user\models\User */

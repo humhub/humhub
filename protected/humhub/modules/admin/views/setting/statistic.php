@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;

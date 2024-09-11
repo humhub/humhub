@@ -7,7 +7,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\form\assets\CodeMirrorAssetBundle;
 
 /**

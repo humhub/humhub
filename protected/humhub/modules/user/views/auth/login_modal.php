@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;

@@ -7,8 +7,8 @@
 
 namespace tests\codeception\unit;
 
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\form\widgets\FormTabs;
+use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\FormTabs;
 use tests\codeception\_support\HumHubDbTestCase;
 use tests\codeception\models\TestTabbedFormModel;
 

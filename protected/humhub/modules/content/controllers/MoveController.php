@@ -9,7 +9,7 @@
 namespace humhub\modules\content\controllers;
 
 use HttpException;
-use humhub\libs\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\MoveContentForm;
