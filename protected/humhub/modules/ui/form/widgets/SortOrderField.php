@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-
 /**
  * SortOrderField is a uniform form field for setting a numeric sort order for model classes.
  *
