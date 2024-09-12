@@ -6,6 +6,7 @@ HumHub Changelog
 - Fix #7212: Fix horizontal scroll bar on space stream on small screen
 - Fix #7210: Small style fix for top account menu (temp fix for Mac Safari browser)
 - Fix #7218: Fix visibility of wall stream content creating form
+- Fix #7219: Renamed deprecated meta tag
 
 1.16.2 (September 5, 2024)
 --------------------------
