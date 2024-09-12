@@ -15,8 +15,9 @@ use humhub\widgets\PoweredBy;
 /* @var View $this */
 /* @var string $content */
 
-$defaultBackground =  $this->theme->variable('background-color-main', '#fff');
-$colorPrimary =  $this->theme->variable('primary', '#708fa0');
+$defaultBackground = $this->theme->variable('background-color-main', '#fff');
+$colorPrimary = $this->theme->variable('primary', '#708fa0');
+$soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -688,7 +689,6 @@ $colorPrimary =  $this->theme->variable('primary', '#708fa0');
 
                                                 <tr>
                                                     <td valign="middle">
-                                                        <?php $soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae')?>
                                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
