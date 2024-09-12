@@ -30,6 +30,7 @@ HumHub Changelog
 - Enh #7211: Remove obsolete property `AbstractRichText::$record`
 - Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
 - Fix #7215: Wording: replace British "licence" with American "license"
+- Enh #7214: Replace theme variables with CSS variables
 
 1.16.3 (Unreleased)
 --------------------------
