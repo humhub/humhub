@@ -8,7 +8,6 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-
 /**
  * ContentHiddenCheckbox is the form field to set the Content Hidden flag.
  * Both default values and the actual content value are supported by this field.
