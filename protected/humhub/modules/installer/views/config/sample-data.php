@@ -2,7 +2,7 @@
 
 use humhub\modules\installer\forms\SampleDataForm;
 use humhub\widgets\bootstrap\ActiveForm;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var SampleDataForm $model */
 ?>

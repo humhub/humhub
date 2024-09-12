@@ -11,7 +11,7 @@ namespace humhub\modules\space\notifications;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\space\models\Membership;
 use Yii;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 
 /**

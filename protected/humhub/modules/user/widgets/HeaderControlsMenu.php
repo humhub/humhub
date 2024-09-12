@@ -14,7 +14,7 @@ use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /**

@@ -9,7 +9,7 @@
 namespace humhub\modules\ui\menu;
 
 use humhub\modules\ui\menu\widgets\Menu;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Class DropdownDivider

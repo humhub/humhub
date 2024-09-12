@@ -12,7 +12,7 @@ use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {

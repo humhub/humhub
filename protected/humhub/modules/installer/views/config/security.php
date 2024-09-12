@@ -2,7 +2,7 @@
 
 use humhub\modules\installer\forms\SecurityForm;
 use humhub\widgets\bootstrap\ActiveForm;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var SecurityForm $model */
 ?>

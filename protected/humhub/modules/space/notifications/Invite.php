@@ -10,7 +10,7 @@ namespace humhub\modules\space\notifications;
 
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * If an user was invited to a workspace, this notification is fired.

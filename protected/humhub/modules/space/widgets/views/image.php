@@ -1,6 +1,6 @@
 <?php
 
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 if ($link == true) :
     echo Html::beginTag('a', $linkOptions);

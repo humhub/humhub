@@ -7,10 +7,10 @@ use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\TimeAgo;
-use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 
 /* @var $space Space */

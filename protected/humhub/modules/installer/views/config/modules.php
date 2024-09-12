@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var array $modules */
 ?>

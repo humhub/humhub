@@ -2,7 +2,7 @@
 
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /** @var $multipleGroups bool * */

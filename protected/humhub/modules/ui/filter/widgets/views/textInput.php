@@ -7,7 +7,7 @@
  */
 
 use humhub\modules\ui\view\components\View;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 ?>

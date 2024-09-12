@@ -12,7 +12,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Notifies a user about likes of his objects (posts, comments, tasks & co)

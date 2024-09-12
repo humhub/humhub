@@ -13,10 +13,10 @@
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Button;
 use humhub\widgets\ModalDialog;
-use yii\bootstrap5\ActiveForm;
 
 $modal = ModalDialog::begin([
     'header' => Yii::t('SpaceModule.base', '<strong>Invite</strong> members'),

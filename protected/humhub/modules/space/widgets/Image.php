@@ -10,7 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\BaseImage;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Return space image or acronym

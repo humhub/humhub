@@ -2,10 +2,10 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceNameColorInput;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use yii\bootstrap5\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $model Space */

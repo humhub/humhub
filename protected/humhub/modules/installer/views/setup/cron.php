@@ -1,6 +1,6 @@
 <?php
 
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 <div id="cron" class="panel panel-default animated fadeIn">

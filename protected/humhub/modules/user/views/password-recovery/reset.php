@@ -1,7 +1,7 @@
 <?php
 
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\SiteLogo;
-use yii\bootstrap5\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

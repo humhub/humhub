@@ -2,7 +2,7 @@
 
 use humhub\modules\friendship\widgets\ManageMenu;
 use humhub\widgets\GridView;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 <div class="panel-heading">

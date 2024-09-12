@@ -2,9 +2,9 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\DataSaved;
-use yii\bootstrap5\ActiveForm;
 
 /* @var $model Space */
 /* @var $visibilities array */

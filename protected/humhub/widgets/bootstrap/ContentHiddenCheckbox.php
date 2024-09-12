@@ -12,7 +12,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\bootstrap5\Html;
 use yii\bootstrap5\InputWidget;
 
 /**

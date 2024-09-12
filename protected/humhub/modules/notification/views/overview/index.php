@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\notification\models\forms\FilterForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\Button;
-use yii\bootstrap5\ActiveForm;
 
 /* @var $overview string */
 /* @var $filterForm FilterForm */

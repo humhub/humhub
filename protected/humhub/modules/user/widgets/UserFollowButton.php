@@ -11,7 +11,7 @@ namespace humhub\modules\user\widgets;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
-use yii\bootstrap5\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * UserFollowButton

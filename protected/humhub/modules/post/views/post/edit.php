@@ -7,9 +7,9 @@ use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\post\models\forms\PostEditForm;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Button;
-use yii\bootstrap5\ActiveForm;
 
 /* @var $model PostEditForm */
 /* @var $submitUrl string */

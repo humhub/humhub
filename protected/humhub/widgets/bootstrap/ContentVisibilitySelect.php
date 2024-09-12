@@ -15,7 +15,6 @@ use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
-use yii\bootstrap5\Html;
 use yii\bootstrap5\InputWidget;
 
 /**
