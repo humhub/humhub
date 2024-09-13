@@ -1,16 +1,16 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentControls;
-use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\comment\widgets\CommentEntryLinks;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\TimeAgo;
-use humhub\modules\content\widgets\richtext\RichText;
-use humhub\modules\user\widgets\Image as UserImage;
-use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\comment\widgets\Comments;
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\UpdatedIcon;
+use humhub\modules\file\widgets\ShowFiles;
+use humhub\modules\ui\view\components\View;
+use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\TimeAgo;
 
 /* @var $this View */
 /* @var $comment \humhub\modules\comment\models\Comment */
@@ -34,9 +34,9 @@ $module = Yii::$app->getModule('comment');
 
     <?= CommentControls::widget(['comment' => $comment]) ?>
 
-    <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
+    <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
     <div>
-        <div class="media-body">
+        <div class="flex-grow-1">
             <h4 class="media-heading">
                 <?= Html::containerLink($user) ?>
                 <small>&middot <?= TimeAgo::widget(['timestamp' => $createdAt]) ?>

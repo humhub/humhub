@@ -423,7 +423,7 @@ humhub.module('space.chooser', function (module, require, $) {
      * @returns {undefined}
      */
     SpaceChooser.prototype.setNoSpace = function () {
-        if (!this.$menu.find('.no-space').length) {
+        if (!this.$menu.find('.m-0 p-0').length) {
             this._changeMenuButton(module.config.noSpace);
         }
     };

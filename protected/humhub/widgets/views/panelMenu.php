@@ -13,7 +13,7 @@ use humhub\modules\ui\icon\widgets\Icon;
            aria-label="<?= Yii::t('base', 'Toggle panel menu'); ?>" aria-haspopup="true">
             <?= Icon::get('dropdownToggle') ?>
         </a>
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu float-end">
             <li>
                 <?= Link::instance()->action('toggle')->cssClass('panel-collapse')?>
             </li>

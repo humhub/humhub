@@ -20,7 +20,7 @@ use humhub\modules\ui\menu\MenuEntry;
         <?= Icon::get('dropdownToggle') ?>
     </a>
 
-    <ul class="dropdown-menu pull-right">
+    <ul class="dropdown-menu float-end">
         <?php foreach ($entries as $entry) : ?>
             <li>
                 <?= $entry->render() ?>

@@ -9,7 +9,7 @@ humhub\modules\like\assets\LikeAsset::register($this);
 
     <?php if (Yii::$app->user->isGuest): ?>
 
-        <?= Html::a(Yii::t('LikeModule.base', 'Like'), Yii::$app->user->loginUrl, ['data-target' => '#globalModal']); ?>
+        <?= Html::a(Yii::t('LikeModule.base', 'Like'), Yii::$app->user->loginUrl, ['data-bs-target' => '#globalModal']); ?>
     <?php else: ?>
         <a href="#" data-action-click="like.toggleLike" data-action-url="<?= $likeUrl ?>"
            class="like likeAnchor<?= !$canLike ? ' disabled' : '' ?>"
@@ -24,7 +24,7 @@ humhub\modules\like\assets\LikeAsset::register($this);
     <?php endif; ?>
 
         <!-- Create link to show all users, who liked this -->
-    <a href="<?= $userListUrl; ?>" data-target="#globalModal">
+    <a href="<?= $userListUrl; ?>" data-bs-target="#globalModal">
         <?php if (count($likes)) : ?>
             <span class="likeCount tt" data-placement="top" data-bs-toggle="tooltip"
                   title="<?= $title ?>">(<?= count($likes) ?>)</span>

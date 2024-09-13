@@ -32,7 +32,7 @@ use yii\helpers\Url;
     <br/>
     <button type="submit" class="btn btn-primary" data-ui-loader><?= Yii::t('base', 'Save'); ?></button>
     <?php if ($model->isTouchedSettings()): ?>
-        <a href="#" class="btn btn-default pull-right" data-action-click="post"
+        <a href="#" class="btn btn-default float-end" data-action-click="post"
            data-action-url="<?= Url::to(['reset']) ?>"
            data-ui-loader><?= Yii::t('ActivityModule.base', 'Reset to defaults') ?></a>
     <?php endif; ?>

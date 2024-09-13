@@ -2,9 +2,9 @@
 
 namespace humhub\modules\activity\tests\codeception\unit;
 
+use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\activity\tests\codeception\activities\TestActivityDefaultLayout;
 use humhub\modules\activity\tests\codeception\activities\TestViewActivity;
-use humhub\modules\activity\tests\codeception\activities\TestActivity;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\post\models\Post;
 use humhub\modules\user\models\User;
@@ -42,6 +42,6 @@ class ActivityViewTest extends HumHubDbTestCase
         $this->assertNotNull($activity->record);
         $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
         $this->assertStringContainsString('Content of default layout activity', $wallout);
-        $this->assertStringContainsString('media-object img-rounded', $wallout);
+        $this->assertStringContainsString('media-object rounded', $wallout);
     }
 }

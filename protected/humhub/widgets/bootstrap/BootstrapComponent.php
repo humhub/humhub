@@ -167,10 +167,10 @@ abstract class BootstrapComponent extends Widget
     public function right($right = true)
     {
         if ($right) {
-            Html::removeCssClass($this->htmlOptions, 'pull-left');
-            Html::addCssClass($this->htmlOptions, 'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'float-start');
+            Html::addCssClass($this->htmlOptions, 'float-end');
         } else {
-            Html::removeCssClass($this->htmlOptions, 'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'float-end');
         }
 
         return $this;
@@ -183,10 +183,10 @@ abstract class BootstrapComponent extends Widget
     public function left($left = true)
     {
         if ($left) {
-            Html::removeCssClass($this->htmlOptions, 'pull-right');
-            Html::addCssClass($this->htmlOptions, 'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'float-end');
+            Html::addCssClass($this->htmlOptions, 'float-start');
         } else {
-            Html::removeCssClass($this->htmlOptions, 'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'float-start');
         }
 
         return $this;
@@ -217,7 +217,7 @@ abstract class BootstrapComponent extends Widget
      */
     public function xs()
     {
-        Html::addCssClass($this->htmlOptions, 'btn-xs');
+        Html::addCssClass($this->htmlOptions, 'btn-sm');
 
         return $this;
     }

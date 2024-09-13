@@ -1,8 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\ArchivedIcon;
 use humhub\modules\content\widgets\HiddenIcon;
 use humhub\modules\content\widgets\LockCommentsIcon;
@@ -14,6 +12,7 @@ use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\view\components\View;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\TimeAgo;
 
 /* @var $this View */
@@ -49,7 +48,7 @@ $container = $model->content->container;
     <?= $headImage ?>
 </div>
 
-<div class="wall-entry-header-info media-body">
+<div class="wall-entry-header-info flex-grow-1">
 
     <div class="media-heading">
         <?= $title ?>

@@ -13,7 +13,7 @@ use humhub\modules\ui\menu\MenuEntry;
 /* @var array $options */
 ?>
 
-<div class="comment-entry-loader pull-right"></div>
+<div class="comment-entry-loader float-end"></div>
 <?= Html::beginTag('ul', $options) ?>
 <li class="dropdown ">
     <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
@@ -21,7 +21,7 @@ use humhub\modules\ui\menu\MenuEntry;
         <?= Icon::get('dropdownToggle') ?>
     </a>
 
-    <ul class="dropdown-menu pull-right">
+    <ul class="dropdown-menu float-end">
         <?php foreach ($entries as $entry) : ?>
             <li>
                 <?= $entry->render() ?>

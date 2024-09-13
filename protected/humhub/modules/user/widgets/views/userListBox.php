@@ -24,15 +24,15 @@ use yii\helpers\Html;
         <?php foreach ($users as $user) : ?>
             <li>
                 <a href="<?= $user->getUrl(); ?>" data-modal-close="1">
-                    <div class="media">
+                    <div class="d-flex">
                         <?= Image::widget([
                             'user' => $user,
                             'link' => false,
-                            'htmlOptions' => ['class' => 'media-object pull-left'],
+                            'htmlOptions' => ['class' => 'media-object float-start'],
                             'hideOnlineStatus' => $hideOnlineStatus,
                         ]) ?>
 
-                        <div class="media-body">
+                        <div class="flex-grow-1">
                             <h4 class="media-heading"><?= Html::encode($user->displayName); ?></h4>
                             <h5><?= Html::encode($user->displayNameSub); ?></h5>
                         </div>

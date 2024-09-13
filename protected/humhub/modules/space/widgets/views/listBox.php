@@ -2,8 +2,8 @@
 
 use humhub\modules\space\models\Space;
 use humhub\widgets\AjaxLinkPager;
-use humhub\widgets\ModalDialog;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\ModalDialog;
 
 /* @var $spaces Space[] */
 ?>
@@ -25,12 +25,12 @@ use humhub\widgets\bootstrap\Html;
             <li>
                 <a href="<?= $space->getUrl(); ?>" data-modal-close="1">
 
-                    <div class="media">
-                        <img class="media-object img-rounded pull-left"
+                    <div class="d-flex">
+                        <img class="media-object rounded float-start"
                              src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
                              height="50" style="width: 50px; height: 50px;">
 
-                        <div class="media-body">
+                        <div class="flex-grow-1">
                             <h4 class="media-heading"><?= Html::encode($space->name); ?></h4>
                             <h5><?= Html::encode($space->description); ?></h5>
                         </div>

@@ -36,7 +36,7 @@ $userModel = Yii::$app->user->identity;
            aria-label="<?= Yii::t('base', 'Profile dropdown') ?>">
 
             <?php if ($this->context->showUserName): ?>
-                <div class="user-title pull-left hidden-xs">
+                <div class="user-title float-start d-none d-sm-block">
                     <strong><?= Html::encode($userModel->displayName); ?></strong><br/><span
                         class="truncate"><?= Html::encode($userModel->displayNameSub); ?></span>
                 </div>
@@ -52,7 +52,7 @@ $userModel = Yii::$app->user->identity;
 
             <b class="caret"></b>
         </a>
-        <ul class="dropdown-menu pull-right">
+        <ul class="dropdown-menu float-end">
             <?php foreach ($entries as $entry): ?>
                 <?php if (!($entry instanceof DropdownDivider)) : ?><li><?php endif; ?>
                 <?= $entry->render() ?>

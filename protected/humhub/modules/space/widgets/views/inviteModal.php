@@ -130,7 +130,7 @@ $form = ActiveForm::begin([
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
-                        <a href="#" class="pull-right"
+                        <a href="#" class="float-end"
                            data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"

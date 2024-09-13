@@ -17,7 +17,7 @@ use humhub\modules\ui\view\components\View;
     <span class="caret"></span>
 </button>
 
-<ul class="dropdown-menu pull-right">
+<ul class="dropdown-menu float-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
             <?= $entry->render() ?>

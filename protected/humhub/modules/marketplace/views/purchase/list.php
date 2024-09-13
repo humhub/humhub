@@ -19,7 +19,7 @@ Assets::register($this);
 <div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('MarketplaceModule.base', 'Add License Key'); ?>
             </h4>
@@ -56,12 +56,12 @@ Assets::register($this);
 
                 <?php foreach ($modules as $module): ?>
                     <hr>
-                    <div class="media">
-                        <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
+                    <div class="d-flex">
+                        <img class="media-object rounded float-start" data-src="holder.js/64x64" alt="64x64"
                              style="width: 64px; height: 64px;"
                              src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']; ?>">
 
-                        <div class="media-body">
+                        <div class="flex-grow-1">
                             <h4 class="media-heading"><?= $module['name']; ?>
                                 <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                     <small><span
@@ -87,7 +87,7 @@ Assets::register($this);
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <small class="pull-right"><br/>Installation
+            <small class="float-end"><br/>Installation
                 Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
             <div class="clearfix"></div>
 

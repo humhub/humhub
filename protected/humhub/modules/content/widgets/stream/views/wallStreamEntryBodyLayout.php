@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\ui\view\components\View;
@@ -17,7 +16,7 @@ use humhub\modules\ui\view\components\View;
 
 <div class="panel panel-default wall_<?= $model->getUniqueId() ?>">
     <div class="panel-body">
-        <div class="media wall-entry-header">
+        <div class="d-flex wall-entry-header">
             <?= $header ?>
         </div>
 

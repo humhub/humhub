@@ -6,16 +6,16 @@
  */
 
 use humhub\components\Module;
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\widgets\InstalledModuleActionButtons;
 use humhub\modules\admin\widgets\InstalledModuleControls;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $module Module */
 ?>
 <div class="module-row row">
     <div class="col-xs-2 col-sm-1 module-icon">
         <?= Html::img($module->getImage(), [
-            'class' => 'media-object img-rounded',
+            'class' => 'media-object rounded',
             'data-src' => 'holder.js/34x34',
             'alt' => '34x34',
             'style' => 'width:34px;height:34px',

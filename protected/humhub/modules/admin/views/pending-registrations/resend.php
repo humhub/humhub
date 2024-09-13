@@ -38,6 +38,6 @@ use yii\widgets\DetailView;
     <?= Html::a(
         Yii::t('AdminModule.user', 'Cancel'),
         Url::to(['/admin/pending-registrations']),
-        ['class' => 'btn btn-primary pull-right']
+        ['class' => 'btn btn-primary float-end']
     ); ?>
 </div>

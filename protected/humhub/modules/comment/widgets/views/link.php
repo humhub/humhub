@@ -1,12 +1,12 @@
 <?php
 
+use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\comment\models\Comment;
 
 /* @var $this View */
 /* @var $objectModel string */
@@ -37,7 +37,7 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     <?= Html::a(
         $label . $commentCountSpan,
         Yii::$app->user->loginUrl,
-        ['data-target' => '#globalModal']
+        ['data-bs-target' => '#globalModal']
     ) ?>
 <?php else : ?>
     <?= Button::asLink($label . $commentCountSpan)

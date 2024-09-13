@@ -27,7 +27,7 @@ use yii\helpers\Html;
     <div class="panel-body">
         <?php foreach ($followers as $follower): ?>
             <?= $follower->getProfileImage()->render(32, [
-                'class' => 'img-rounded tt img_margin',
+                'class' => 'rounded tt img_margin',
                 'showTooltip' => true,
             ]) ?>
         <?php endforeach; ?>

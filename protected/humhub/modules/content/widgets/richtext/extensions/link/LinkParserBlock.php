@@ -69,10 +69,10 @@ class LinkParserBlock extends Model
                 $this->setClass('center-block');
                 $this->setText(substr($text, 0, -2));
             } elseif (substr($text, -1) === '<') {
-                $this->setClass('pull-left');
+                $this->setClass('float-start');
                 $this->setText(substr($text, 0, -1));
             } elseif (substr($text, -1) === '>') {
-                $this->setClass('pull-right');
+                $this->setClass('float-end');
                 $this->setText(substr($text, 0, -1));
             }
         }

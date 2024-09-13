@@ -27,8 +27,8 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
      * It is required for some email clients which ignore styles from head <style>
      */
     public const CLASS_STYLES = [
-        'pull-left' => ['float' => 'left'],
-        'pull-right' => ['float' => 'right'],
+        'float-start' => ['float' => 'left'],
+        'float-end' => ['float' => 'right'],
         'center-block' => ['display' => 'block', 'margin' => 'auto'],
     ];
 

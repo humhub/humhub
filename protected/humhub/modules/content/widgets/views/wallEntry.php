@@ -1,6 +1,5 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\WallEntryAddons;
@@ -9,6 +8,7 @@ use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 
@@ -24,7 +24,7 @@ use yii\helpers\Url;
 <div class="panel panel-default wall_<?= $object->getUniqueId(); ?>">
     <div class="panel-body">
 
-        <div class="media">
+        <div class="d-flex">
             <!-- since v1.2 -->
             <div class="stream-entry-loader"></div>
 
@@ -38,7 +38,7 @@ use yii\helpers\Url;
             UserImage::widget([
                 'user' => $user,
                 'width' => 40,
-                'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id]
+                'htmlOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $user->contentcontainer_id]
             ]);
             ?>
 
@@ -49,12 +49,12 @@ use yii\helpers\Url;
                     'width' => 20,
                     'htmlOptions' => ['class' => 'img-space'],
                     'link' => 'true',
-                    'linkOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
+                    'linkOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $container->contentcontainer_id],
                 ]);
                 ?>
             <?php endif; ?>
 
-            <div class="media-body">
+            <div class="flex-grow-1">
                 <div class="media-heading">
                     <?= Html::containerLink($user); ?>
                     <?php if ($container && $showContentContainer): ?>
@@ -64,7 +64,7 @@ use yii\helpers\Url;
                         </span>
                     <?php endif; ?>
 
-                    <div class="pull-right <?= ($renderControls) ? 'labels' : '' ?>">
+                    <div class="float-end <?= ($renderControls) ? 'labels' : '' ?>">
                         <?= WallEntryLabels::widget(['object' => $object]); ?>
                     </div>
                 </div>

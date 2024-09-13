@@ -42,11 +42,11 @@ class ModuleUpdateActionButtons extends Widget
         }
 
         $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Update'), ['/marketplace/update/install', 'moduleId' => $this->module->id])
-            ->cssClass('btn btn-xs btn-info active')
+            ->cssClass('btn btn-sm btn-info active')
             ->options(['data-action-click' => 'marketplace.update']);
 
         $html .= Button::asLink(Yii::t('MarketplaceModule.base', 'Changelog'), $this->module->marketplaceUrl . '/changelog')
-            ->cssClass('btn btn-xs btn-info')
+            ->cssClass('btn btn-sm btn-info')
             ->options(['target' => '_blank']);
 
         return str_replace('{buttons}', $html, $this->template);

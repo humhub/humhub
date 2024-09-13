@@ -31,12 +31,12 @@ use humhub\widgets\bootstrap\ActiveForm;
 <?php if ($model->canResetAllUsers()): ?>
     <?= Html::a(Yii::t('NotificationModule.base', 'Reset for all users'), ['reset-all-users'], [
         'data-confirm' => Yii::t('NotificationModule.base', 'Do you want to reset the settings concerning email summaries for all users?'),
-        'class' => 'btn btn-danger pull-right',
+        'class' => 'btn btn-danger float-end',
         'data-method' => 'POST',
     ]) ?>
 <?php endif; ?>
 <?php if ($model->userSettingsLoaded): ?>
-    <?= Html::a(Yii::t('NotificationModule.base', 'Reset to defaults'), ['reset'], ['class' => 'btn btn-default pull-right', 'data-ui-loader' => '', 'data-method' => 'POST']) ?>
+    <?= Html::a(Yii::t('NotificationModule.base', 'Reset to defaults'), ['reset'], ['class' => 'btn btn-default float-end', 'data-ui-loader' => '', 'data-method' => 'POST']) ?>
 <?php endif; ?>
 
 <?php ActiveForm::end(); ?>

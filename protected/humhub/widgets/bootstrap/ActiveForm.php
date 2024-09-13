@@ -68,7 +68,7 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
                     'div',
                     Icon::get('plus', ['htmlOptions' => ['class' => 'iconOpen']]) .
                     Icon::get('minus', ['htmlOptions' => ['class' => 'iconClose']]) . '&nbsp;&nbsp;',
-                    ['class' => 'pull-left'],
+                    ['class' => 'float-start'],
                 ) .
                 Html::label($title, null, ['class' => 'control-label']),
                 ['class' => 'form-collapsible-fields-label', 'data-action-click' => 'clickCollab', 'data-bs-toggle' => 'tab'],

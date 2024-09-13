@@ -1,9 +1,9 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\SiteLogo;
 use yii\captcha\Captcha;
 use yii\widgets\ActiveForm;
@@ -61,7 +61,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                         <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                     </div>
                     <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-md-8 text-right">
+                        <div class="col-md-8 text-end">
                             <small>
                                 <?= Html::a(
                                     Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),

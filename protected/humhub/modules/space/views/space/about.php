@@ -1,8 +1,8 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\AboutPageSidebar;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image;
 
 /**
@@ -29,10 +29,10 @@ use humhub\modules\user\widgets\Image;
 
             <div class="col-md-4">
                 <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
-                    <div class="media">
+                    <div class="d-flex">
                         <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
                             </p></div>
-                        <div class="media-body">
+                        <div class="flex-grow-1">
                             <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) {
                                 echo Image::widget([
                                     'showTooltip' => true,
@@ -51,10 +51,10 @@ use humhub\modules\user\widgets\Image;
 
             <div class="col-md-8">
                 <?php if (!empty($userGroups[Space::USERGROUP_ADMIN])): ?>
-                    <div class="media">
+                    <div class="d-flex">
                         <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p>
                         </div>
-                        <div class="media-body">
+                        <div class="flex-grow-1">
                             <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) {
                                 echo Image::widget([
                                     'showTooltip' => true,
@@ -72,9 +72,9 @@ use humhub\modules\user\widgets\Image;
         </div>
 
         <?php if (!empty($userGroups[Space::USERGROUP_MODERATOR])): ?>
-            <div class="media">
+            <div class="d-flex">
                 <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Moderator'); ?></strong></p></div>
-                <div class="media-body">
+                <div class="flex-grow-1">
                     <?php foreach ($userGroups[Space::USERGROUP_MODERATOR] as $user) {
                         echo Image::widget([
                             'showTooltip' => true,

@@ -3,8 +3,8 @@
 use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\DataSaved;
 use yii\helpers\Html;
@@ -75,7 +75,7 @@ $iconUrl = SiteIcon::getUrl(140);
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
-            <img class="img-rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
+            <img class="rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
                  data-src="holder.js/140x140"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
                  style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
@@ -93,7 +93,7 @@ $iconUrl = SiteIcon::getUrl(140);
     <div class="well">
         <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'style' => 'display: none', 'name' => 'icon[]']); ?>
         <div class="image-upload-container" id="icon-upload">
-            <img class="img-rounded" id="icon-image" src="<?= $iconUrl ?>"
+            <img class="rounded" id="icon-image" src="<?= $iconUrl ?>"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no icon at the moment. Upload your logo now."); ?>"
                  style="max-height: 40px;">
 

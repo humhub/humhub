@@ -13,7 +13,7 @@ use humhub\widgets\bootstrap\Button;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
-                    <div class="pull-right">
+                    <div class="float-end">
                         <?= Button::defaultType()
                             ->icon('check')
                             ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])

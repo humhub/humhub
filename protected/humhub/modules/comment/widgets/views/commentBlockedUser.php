@@ -15,12 +15,12 @@ use humhub\widgets\bootstrap\Button;
 /* @var $loadBlockedCommentUrl string */
 ?>
 
-<div class="media comment-blocked-user" id="comment_<?= $comment->id; ?>"
+<div class="d-flex comment-blocked-user" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment">
 
     <hr class="comment-separator">
 
-    <?= UserImage::widget(['user' => $comment->user, 'width' => 25, 'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $comment->user->contentcontainer_id]]); ?>
+    <?= UserImage::widget(['user' => $comment->user, 'width' => 25, 'htmlOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $comment->user->contentcontainer_id]]); ?>
     <?= Yii::t('CommentModule.base', 'Comment of blocked user.') ?>
     <?= Button::asLink(Yii::t('CommentModule.base', 'Show'))->action('showBlocked', $loadBlockedCommentUrl)->xs()->cssClass('text-primary') ?>
 </div>

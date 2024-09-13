@@ -54,7 +54,7 @@ class ActionColumn extends Column
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
         $html .= Button::defaultType('<span class="caret"></span>')->cssClass('dropdown-toggle')
             ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
-        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
+        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {
                 $html .= '<li class="divider"></li>';

@@ -42,7 +42,7 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'class' => 'btn btn-info',
                     'data-space-request-membership' => $this->space->id,
-                    'data-target' => '#globalModal',
+                    'data-bs-target' => '#globalModal',
                 ],
             ],
             'becomeMember' => [

@@ -22,8 +22,8 @@ use yii\helpers\Html;
         ? Html::encode(get_class($record->baseModel) . ':' . $record->baseModel->getGroupKey())
         : '' ?>">
     <a href="<?= $relativeUrl ?? $url ?>">
-        <div class="media">
-            <div class="media-left">
+        <div class="d-flex">
+            <div class="flex-shrink-0">
             <?php if ($originator) : ?>
                 <?= UserImage::widget([
                     'user' => $originator,
@@ -41,12 +41,12 @@ use yii\helpers\Html;
                 ]) ?>
             <?php endif; ?>
             </div>
-            <div class="media-body">
+            <div class="flex-grow-1">
                 <?= $content ?>
                 <br>
                 <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
             </div>
-            <div class="media-right align-center">
+            <div class="flex-shrink-0 order-last align-center">
             <?php if ($isNew) : ?>
                 <span class="badge-new"></span>
             <?php endif; ?>

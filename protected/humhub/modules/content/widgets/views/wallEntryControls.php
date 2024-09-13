@@ -20,7 +20,7 @@ use humhub\modules\ui\view\components\View;
         <?= Icon::get('dropdownToggle') ?>
     </a>
 
-    <ul class="dropdown-menu pull-right">
+    <ul class="dropdown-menu float-end">
         <?php foreach ($entries as $entry) : ?>
             <?php if ($entry instanceof LegacyWallEntryControlLink) : ?>
                 <?= $entry->render() ?>

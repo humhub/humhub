@@ -85,12 +85,12 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             '![alt>](http://local/image.jpg "desc")',
-            '<p><img class="pull-right" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: right;"></p>',
+            '<p><img class="float-end" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: right;"></p>',
         );
 
         $this->assertConversionResult(
             '![alt<](http://local/image.jpg "desc")',
-            '<p><img class="pull-left" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: left;"></p>',
+            '<p><img class="float-start" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: left;"></p>',
         );
 
         $this->assertConversionResult(

@@ -17,7 +17,7 @@ use humhub\modules\ui\icon\widgets\Icon;
         <?= Icon::get($icon, ['htmlOptions' => ['class' => 'filter-footer-icon']]) ?>
         <strong><?= $info ?></strong>
     </div>
-    <div class="col-md-4 col-xs-12 text-right">
+    <div class="col-md-4 col-xs-12 text-end">
         <?= $link ?>
     </div>
 </div>

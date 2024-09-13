@@ -27,7 +27,7 @@ use humhub\widgets\bootstrap\Html;
     <?php if ($model->canResetAllUsers()): ?>
         <?= Html::a(Yii::t('NotificationModule.base', 'Reset for all users'), ['reset-all-users'], [
             'data-confirm' => Yii::t('NotificationModule.base', 'Do you want to reset the settings concerning notifications for all users?'),
-            'class' => 'btn btn-danger pull-right',
+            'class' => 'btn btn-danger float-end',
             'data-method' => 'POST',
         ]) ?>
     <?php endif; ?>

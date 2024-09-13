@@ -6,9 +6,9 @@
  */
 
 use humhub\components\Module;
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\models\Space;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $module Module */
 /* @var $space Space */
@@ -16,7 +16,7 @@ use humhub\widgets\bootstrap\Button;
 <div class="module-row row">
     <div class="col-xs-2 col-sm-1 module-icon">
         <?= Html::img($module->getImage(), [
-            'class' => 'media-object img-rounded',
+            'class' => 'media-object rounded',
             'data-src' => 'holder.js/34x34',
             'alt' => '34x34',
             'style' => 'width:34px;height:34px',

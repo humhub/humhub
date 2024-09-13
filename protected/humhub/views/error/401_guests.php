@@ -20,7 +20,7 @@ use yii\helpers\Url;
                     data-action-url="<?= Url::to(Yii::$app->user->loginUrl) ?>" data-ui-loader>
                 <?= Yii::t('base', 'Login') ?>
             </button>
-            <button data-action-click="client.back" class="btn btn-primary pull-right" data-ui-loader>
+            <button data-action-click="client.back" class="btn btn-primary float-end" data-ui-loader>
                 <?= Yii::t('base', 'Back'); ?>
             </button>
         </div>

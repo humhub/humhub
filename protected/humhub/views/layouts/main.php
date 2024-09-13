@@ -31,15 +31,15 @@ AppAsset::register($this);
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar">
             <div class="container">
-                <div class="topbar-brand hidden-xs">
+                <div class="topbar-brand d-none d-sm-block">
                     <?= SiteLogo::widget() ?>
                 </div>
 
-                <div class="topbar-actions pull-right">
+                <div class="topbar-actions float-end">
                     <?= AccountTopMenu::widget() ?>
                 </div>
 
-                <div class="notifications pull-right">
+                <div class="notifications float-end">
                     <?= NotificationArea::widget() ?>
                 </div>
             </div>
@@ -57,7 +57,7 @@ AppAsset::register($this);
                     <?= TopMenu::widget() ?>
                 </ul>
 
-                <ul class="nav pull-right" id="search-menu-nav">
+                <ul class="nav float-end" id="search-menu-nav">
                     <?= TopMenuRightStack::widget() ?>
                 </ul>
             </div>

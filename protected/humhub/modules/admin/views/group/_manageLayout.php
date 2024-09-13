@@ -9,7 +9,7 @@ use humhub\widgets\bootstrap\Button;
 
 ?>
 <div class="panel-body">
-    <div class="pull-right">
+    <div class="float-end">
         <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview')) ?>
     </div>
 
@@ -26,7 +26,7 @@ use humhub\widgets\bootstrap\Button;
 
 <?php if (!$group->isNewRecord) : ?>
     <?php if ($group->is_admin_group) : ?>
-        <div class="pull-right"><span
+        <div class="float-end"><span
                 class="label label-danger"><?= Yii::t('AdminModule.base', 'Administrative group'); ?></span>&nbsp;&nbsp;
         </div>
     <?php endif; ?>

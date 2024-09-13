@@ -12,7 +12,7 @@ use yii\helpers\Url;
 /* @var $searchModel GroupSearch */
 ?>
 <div class="panel-body">
-    <div class="pull-right">
+    <div class="float-end">
         <?= Link::success(Yii::t('AdminModule.user', 'Create new group'))->href(Url::to(['edit']))->sm()->icon('add') ?>
     </div>
 

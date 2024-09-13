@@ -72,7 +72,7 @@ use yii\helpers\Html;
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
-        <div class="pull-right">
+        <div class="float-end">
             <span class="label-container">
                 <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
             </span>
@@ -83,7 +83,7 @@ use yii\helpers\Html;
                        aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
-                    <ul class="dropdown-menu pull-right">
+                    <ul class="dropdown-menu float-end">
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
                         </li>

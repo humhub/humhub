@@ -67,7 +67,7 @@ $columns[] = [
 
 <div class="panel-body">
 
-    <div class="dropdown pull-right">
+    <div class="dropdown float-end">
         <?php if (!empty($availableProfileFields)): ?>
             <?= Button::defaultType()
                 ->icon('cog')

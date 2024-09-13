@@ -15,7 +15,7 @@ use humhub\widgets\bootstrap\Button;
     ->options(['data-bs-toggle' => 'dropdown'])
     ->sm()
     ->loader(false) ?>
-<ul class="dropdown-menu pull-right">
+<ul class="dropdown-menu float-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
             <?= $entry->render() ?>

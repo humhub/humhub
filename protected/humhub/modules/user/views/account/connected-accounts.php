@@ -16,14 +16,14 @@ use yii\helpers\Url;
                 <?php $viewOptions = $client->getViewOptions(); ?>
                 <?php $iconClass = (isset($viewOptions['cssIcon'])) ? $viewOptions['cssIcon'] : ''; ?>
 
-                <div class='<?= $iconClass; ?> pull-left' style='font-size:200%'></div>
+                <div class='<?= $iconClass; ?> float-start' style='font-size:200%'></div>
             </td>
 
             <td style='vertical-align: middle;'>
                 <strong><?php echo $client->getTitle(); ?></strong>
             </td>
 
-            <td class="text-right">
+            <td class="text-end">
                 <?php if ($client->getId() == $currentAuthProviderId): ?>
                     <?php echo Html::a(Yii::t('UserModule.base', 'Currently in use'), '#', ['class' => 'btn btn-default btn-sm', 'data-method' => 'POST', 'disabled' => 'disabled']); ?>
                 <?php elseif (in_array($client->getId(), $activeAuthClientIds)) : ?>

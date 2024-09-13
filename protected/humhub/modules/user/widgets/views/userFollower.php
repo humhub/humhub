@@ -1,8 +1,8 @@
 <?php
 
+use humhub\modules\user\models\User;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Html;
-use humhub\modules\user\models\User;
 
 /* @var User[] $followers */
 /* @var User[] $following */
@@ -18,7 +18,7 @@ use humhub\modules\user\models\User;
         <div class="panel-body">
             <?php foreach ($followers as $follower): ?>
                 <a href="<?php echo $follower->getUrl(); ?>">
-                    <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
+                    <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-bs-toggle="tooltip" data-placement="top" title=""
@@ -43,7 +43,7 @@ use humhub\modules\user\models\User;
             <?php foreach ($following as $followingUser): ?>
                 <a href="<?php echo $followingUser->getUrl(); ?>">
                     <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>"
-                         class="img-rounded tt img_margin"
+                         class="rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-bs-toggle="tooltip" data-placement="top" title=""

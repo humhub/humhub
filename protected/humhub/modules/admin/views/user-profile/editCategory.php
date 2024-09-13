@@ -10,8 +10,8 @@ use humhub\widgets\bootstrap\Html;
 /* @var $category ProfileFieldCategory */
 ?>
 <div class="panel-body">
-    <div class="pull-right">
-        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'pull-right']); ?>
+    <div class="float-end">
+        <?= Html::backButton(['index'], ['label' => Yii::t('AdminModule.base', 'Back to overview'), 'class' => 'float-end']); ?>
     </div>
 
     <?php if (!$category->isNewRecord): ?>

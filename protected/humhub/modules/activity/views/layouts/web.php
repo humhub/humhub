@@ -24,10 +24,10 @@ use yii\helpers\Url;
 <a href="<?= Url::to(['/activity/link', 'id' => $record->id]) ?>">
     <?php endif; ?>
 
-    <div class="media">
+    <div class="d-flex">
         <?php if ($originator !== null) : ?>
             <!-- Show user image -->
-            <?= $originator->getProfileImage()->render(32, ['class' => 'media-object', 'link' => false, 'htmlOptions' => ['class' => 'pull-left']]) ?>
+            <?= $originator->getProfileImage()->render(32, ['class' => 'media-object', 'link' => false, 'htmlOptions' => ['class' => 'float-start']]) ?>
         <?php endif; ?>
 
         <!-- Show space image, if you are outside from a space -->
@@ -38,7 +38,7 @@ use yii\helpers\Url;
                     'space' => $record->content->container,
                     'width' => 20,
                     'htmlOptions' => [
-                        'class' => 'img-space pull-left',
+                        'class' => 'img-space float-start',
                     ]
                 ])
                 ?>
@@ -46,7 +46,7 @@ use yii\helpers\Url;
 
         <?php endif; ?>
 
-        <div class="media-body text-break">
+        <div class="flex-grow-1 text-break">
 
             <!-- Show content -->
             <?= $content ?>

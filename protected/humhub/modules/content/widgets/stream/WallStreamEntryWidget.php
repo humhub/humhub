@@ -279,7 +279,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return UserImage::widget([
             'user' => $this->model->content->createdBy,
             'width' => 40,
-            'htmlOptions' => ['class' => 'pull-left'],
+            'htmlOptions' => ['class' => 'float-start'],
         ]);
     }
 

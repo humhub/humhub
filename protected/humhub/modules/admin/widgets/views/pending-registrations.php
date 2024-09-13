@@ -20,7 +20,7 @@ AdminPendingRegistrationsAsset::register($this);
             ['/admin/user/index'],
             [
                 'label' => Yii::t('AdminModule.base', 'Back to user overview'),
-                'class' => 'btn-sm pull-right',
+                'class' => 'btn-sm float-end',
             ],
         ) ?>
         <?= Yii::t('AdminModule.base', 'Pending user registrations') ?>
@@ -30,7 +30,7 @@ AdminPendingRegistrationsAsset::register($this);
         <?= Yii::t('AdminModule.user', 'The following list contains all pending sign-ups and invites.') ?>
     </div>
 
-    <div class="pull-right">
+    <div class="float-end">
         <?php if ($dataProvider->totalCount > 0): ?>
             <?= Button::primary(Yii::t('AdminModule.user', 'Re-send to all'))
                 ->icon('paper-plane')

@@ -1,7 +1,7 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\space\widgets\Image;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
@@ -10,11 +10,11 @@ use humhub\modules\space\widgets\Image;
 <?= Yii::t('UserModule.account', 'You are currently the owner of following spaces:'); ?><br/>
 
 <?php foreach ($ownSpaces as $space): ?>
-    <div class="media">
-        <div class="media-left" style="padding-right:6px">
+    <div class="d-flex">
+        <div class="flex-shrink-0" style="padding-right:6px">
             <?= Image::widget(['space' => $space, 'width' => 38, 'link' => true]); ?>
         </div>
-        <div class="media-body">
+        <div class="flex-grow-1">
             <h4 class="media-heading"><?= Html::containerLink($space); ?></h4>
             <?= Yii::t('SpaceModule.base', '{count} members', ['count' => $space->getMemberships()->count()]); ?>
         </div>

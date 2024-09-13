@@ -49,11 +49,11 @@ class ModuleGroups extends Widget
             $updateAllButton = Button::primary(Yii::t('MarketplaceModule.base', 'Update all'))
                 ->options([
                     'data-stop-title' => Icon::get('pause') . ' &nbsp; ' . Yii::t('MarketplaceModule.base', 'Stop updating'),
-                    'data-stop-class' => 'btn btn-warning pull-right',
+                    'data-stop-class' => 'btn btn-warning float-end',
                 ])
                 ->action('marketplace.updateAll')
                 ->loader(false)
-                ->cssClass('active pull-right');
+                ->cssClass('active float-end');
 
             $this->addGroup('availableUpdates', [
                 'title' => Yii::t('MarketplaceModule.base', 'Available Updates'),

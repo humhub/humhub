@@ -60,7 +60,7 @@ use yii\widgets\ActiveForm;
         <?php ActiveForm::end(); ?>
 
         <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
-            <a href="<?= Url::to(['/marketplace/licence/remove']); ?>" class="pull-right">
+            <a href="<?= Url::to(['/marketplace/licence/remove']); ?>" class="float-end">
                 <small><?= Yii::t('MarketplaceModule.base', 'Remove license key'); ?></small>
             </a>
         <?php endif; ?>

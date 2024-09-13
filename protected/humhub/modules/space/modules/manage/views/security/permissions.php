@@ -19,7 +19,7 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
         <p class="help-block"><?= Yii::t('SpaceModule.manage', 'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.'); ?></p>
     </div>
 
-    <div class="pull-right" style="margin-right:20px">
+    <div class="float-end" style="margin-right:20px">
         <?= PermisionGridModuleFilter::widget() ?>
     </div>
     <div class="clearfix"></div>

@@ -8,10 +8,10 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\widgets\BaseImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\IsOnlineService;
+use humhub\widgets\bootstrap\Html;
 use Yii;
 
 /**
@@ -45,7 +45,7 @@ class Image extends BaseImage
             $this->link = false;
         }
 
-        Html::addCssClass($this->imageOptions, 'img-rounded');
+        Html::addCssClass($this->imageOptions, 'rounded');
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
 
         if ($this->tooltipText || $this->showTooltip) {

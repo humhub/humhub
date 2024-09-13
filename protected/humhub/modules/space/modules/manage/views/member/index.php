@@ -37,7 +37,7 @@ use yii\helpers\Html;
                 <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
             </div>
             <div class="col-md-2">
-                <div class="pull-right">
+                <div class="float-end">
                     <?= MemberHeaderControlsMenu::widget([
                         'space' => $space,
                         'label' => Icon::get('cog'),

@@ -59,7 +59,7 @@ class Image extends BaseImage
         $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
-        $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
+        $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " rounded profile-user-photo";
         $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 

@@ -39,7 +39,7 @@ use humhub\widgets\bootstrap\Button;
 
         <?= Button::save()->submit() ?>
 
-        <div class="pull-right">
+        <div class="float-end">
             <?= Button::warning(Yii::t('SpaceModule.manage', 'Archive'))
                 ->action('space.archive', $model->createUrl('/space/manage/default/archive'))
                 ->cssClass('archive')->style(($model->status == Space::STATUS_ENABLED) ? 'display:inline' : 'display:none') ?>

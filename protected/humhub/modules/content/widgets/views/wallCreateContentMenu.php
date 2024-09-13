@@ -24,7 +24,7 @@ use humhub\modules\ui\menu\MenuEntry;
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
             <li class="content-create-menu-more">
                 <?= Icon::get('caret-down', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']]) ?>
-                <ul class="dropdown-menu pull-right">
+                <ul class="dropdown-menu float-end">
                     <?php foreach ($entries as $e => $entry) : ?>
                         <?php if ($e < $menu->visibleEntriesNum) {
                             continue;
