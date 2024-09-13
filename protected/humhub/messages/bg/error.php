@@ -13,5 +13,6 @@ return [
     'You need admin permissions to access this section.' => 'За достъп до този раздел се нуждаете от администраторско разрешение.',
     'Your user account has not been approved yet, please try again later or contact a network administrator.' => 'Вашият потребителски профил все още не е одобрен, моля, опитайте отново по-късно или се свържете с мрежов администратор.',
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'Вашият потребителски акаунт е неактивен, моля, влезте с активен профил или се свържете с администратор.',
+    'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
     'The specified URL cannot be called directly.' => '',
 ];

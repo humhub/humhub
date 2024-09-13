@@ -113,8 +113,10 @@ return [
     'Zip' => 'Zip',
     '{attribute} is required!' => 'ต้องระบุ {attribute}!',
     'Diverse' => '',
+    'Each line must be formatted as Key=>Value!' => '',
     'Instagram URL' => '',
     'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Mastodon URL' => '',
+    'This profile is disabled!' => '',
     'TikTok URL' => '',
 ];

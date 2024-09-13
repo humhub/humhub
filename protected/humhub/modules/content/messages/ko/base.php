@@ -108,6 +108,7 @@ return [
     'You do not have the permission to move this content to the given space.' => '이 콘텐츠를 지정된 방으로 이동할 수 있는 권한이 없습니다.',
     'You do not have the permission to move this content.' => '이 콘텐츠를 이동할 수 있는 권한이 없습니다.',
     'Your last edit state has been saved!' => '마지막 편집 상태가 저장되었습니다!',
+    '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
     'in' => '',
 ];

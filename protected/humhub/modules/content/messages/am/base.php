@@ -66,6 +66,7 @@ return [
     'Your last edit state has been saved!' => 'ለመጨረሻ ጊዜ አርትዖት ያደረጉት ነገር ተቀምጧል!',
     'in' => 'ውስጥ',
     '(Also visible to non-members of this space)' => '',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',

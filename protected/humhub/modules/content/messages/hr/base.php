@@ -81,6 +81,7 @@ return [
     'You do not have the permission to move this content.' => 'Nemate dozvolu za premještanje ovog sadržaja.',
     'Your last edit state has been saved!' => 'Vaše zadnje uređeno stanje je spremljeno!',
     'in' => 'u',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',

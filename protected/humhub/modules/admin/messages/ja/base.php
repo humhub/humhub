@@ -76,4 +76,6 @@ return [
     'Visit Marketplace' => 'マーケットプレイスにアクセス',
     'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'モジュールを構成する権限がありません。詳細については管理者にお問い合わせください。',
     'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'モジュールを管理する権限がありません。詳細については管理者にお問い合わせください。',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
 ];

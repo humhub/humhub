@@ -68,6 +68,7 @@ return [
     'Unarchive' => 'arsipkan',
     'Updated' => 'Perbarui',
     'in' => 'pada',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',

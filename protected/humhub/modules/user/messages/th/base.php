@@ -105,6 +105,7 @@ return [
     'Allow users to mention you' => '',
     'Block user' => '',
     'Did you forget your password?' => '',
+    'Empty password cannot be saved!' => '',
     'Following (User)' => '',
     'Group Manager(s)' => '',
     'If this wasn\'t you, you can disregard this message.' => '',
