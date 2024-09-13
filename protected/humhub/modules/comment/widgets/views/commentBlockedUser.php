@@ -8,7 +8,7 @@
 use humhub\modules\comment\models\Comment;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */
 /* @var $comment Comment */

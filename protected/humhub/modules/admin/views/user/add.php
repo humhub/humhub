@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\bootstrap\ActiveForm;
 

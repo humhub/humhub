@@ -3,7 +3,7 @@
 use humhub\modules\user\models\Password;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 

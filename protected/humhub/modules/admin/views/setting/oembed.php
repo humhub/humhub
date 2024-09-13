@@ -2,7 +2,7 @@
 
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;
@@ -11,7 +11,7 @@ use yii\web\View;
 /* @var OEmbedSettingsForm $settings */
 
 $this->registerJs(<<<JS
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-bs-toggle="tooltip"]').tooltip();
 JS, View::POS_READY);
 
 ?>
@@ -37,7 +37,7 @@ JS, View::POS_READY);
                         <?php parse_str($provider['endpoint'], $query); ?>
                         <?php if (isset($query['access_token']) && empty($query['access_token'])): ?>
                             <span class="label label-danger label-error"
-                                  data-toggle="tooltip" data-placement="right"
+                                  data-bs-toggle="tooltip" data-placement="right"
                                   title="<?= Yii::t('AdminModule.settings', 'Access token is not provided yet.') ?>">
                                 <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
                             </span>

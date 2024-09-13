@@ -11,7 +11,7 @@ use humhub\components\Module;
 use humhub\components\Widget;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\Url;
 

@@ -8,7 +8,7 @@
 use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $model PeopleSettingsForm */
 ?>

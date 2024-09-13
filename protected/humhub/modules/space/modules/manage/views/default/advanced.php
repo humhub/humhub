@@ -6,7 +6,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Url;
 
 /* @var $model AdvancedSettings */

@@ -3,7 +3,7 @@
 use humhub\modules\admin\assets\AdminPendingRegistrationsAsset;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\helpers\Html;
 use yii\helpers\Url;

@@ -8,7 +8,7 @@ use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 /* @var $this View */

@@ -4,7 +4,7 @@ use humhub\modules\admin\assets\AdminGroupAsset;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\user\models\Group;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\bootstrap\ActiveForm;

@@ -27,7 +27,7 @@ use yii\helpers\Html;
                     'link' => 'true',
                     'linkOptions' => [
                         'class' => 'tt',
-                        'data-toggle' => 'tooltip',
+                        'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'top',
                         'title' => $space->name,
                     ]

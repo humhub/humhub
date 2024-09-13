@@ -2,7 +2,7 @@
 
 use humhub\modules\notification\models\forms\FilterForm;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $overview string */
 /* @var $filterForm FilterForm */

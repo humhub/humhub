@@ -11,7 +11,7 @@ namespace humhub\modules\ui\menu;
 use Exception;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /**
  * Class MenuLink
@@ -56,13 +56,15 @@ class MenuLink extends MenuEntry
      */
     public function renderEntry($extraHtmlOptions = [])
     {
-        // Set default html options and merge with extraoptions
+        // Set default HTML options and merge with extra options
         $this->getHtmlOptions($extraHtmlOptions);
         return $this->getLink()->asString();
     }
 
     public function getHtmlOptions($extraOptions = [])
     {
+        $this->getLink()->cssClass('dropdown-item');
+
         if ($this->isActive) {
             $this->getLink()->cssClass('active');
         }

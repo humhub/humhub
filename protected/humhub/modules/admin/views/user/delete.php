@@ -5,7 +5,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $model UserDeleteForm */
 ?>

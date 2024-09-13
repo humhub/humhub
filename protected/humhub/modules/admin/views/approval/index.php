@@ -9,7 +9,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 
@@ -72,7 +72,7 @@ $columns[] = [
             <?= Button::defaultType()
                 ->icon('cog')
                 ->loader(false)
-                ->options(['data-toggle' => 'dropdown']) ?>
+                ->options(['data-bs-toggle' => 'dropdown']) ?>
         <?php endif; ?>
 
         <?= Html::beginForm('#', 'post', [

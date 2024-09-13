@@ -9,7 +9,7 @@
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
 use humhub\modules\ui\filter\widgets\FilterPanel;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 /* @var $this View */

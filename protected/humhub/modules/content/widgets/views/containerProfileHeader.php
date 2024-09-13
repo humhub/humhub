@@ -26,7 +26,7 @@ use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 ContainerHeaderAsset::register($this);

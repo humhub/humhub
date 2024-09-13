@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>

@@ -9,7 +9,7 @@ use humhub\assets\SearchAsset;
 use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\Link;
 use humhub\widgets\MetaSearchProviderWidget;
 use yii\web\View;
@@ -25,7 +25,7 @@ SearchAsset::register($this);
         ->icon('search')
         ->id('search-menu')
         ->action('menu')
-        ->options(['data-toggle' => 'dropdown'])
+        ->options(['data-bs-toggle' => 'dropdown'])
         ->cssClass('dropdown-toggle') ?>
     <div id="dropdown-search" class="dropdown-menu">
         <div class="dropdown-header">

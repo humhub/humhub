@@ -16,7 +16,7 @@ use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\UploadProgress;
 use humhub\widgets\Link;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 
 /* @var $submitUrl string */
@@ -79,7 +79,7 @@ use yii\helpers\Html;
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#"
+                    <a class="dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
                        aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>

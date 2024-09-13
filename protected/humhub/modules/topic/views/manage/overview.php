@@ -14,7 +14,7 @@ use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
 use yii\data\ActiveDataProvider;

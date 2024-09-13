@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\grid\Column;
 use yii\helpers\Url;
 use humhub\widgets\bootstrap\Html;
@@ -53,7 +53,7 @@ class ActionColumn extends Column
 
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
         $html .= Button::defaultType('<span class="caret"></span>')->cssClass('dropdown-toggle')
-            ->options(['data-toggle' => 'dropdown'])->icon('controls')->loader(false);
+            ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {

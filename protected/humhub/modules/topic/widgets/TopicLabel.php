@@ -9,11 +9,9 @@
 
 namespace humhub\modules\topic\widgets;
 
-use humhub\modules\content\models\ContentTag;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\Label;
 use humhub\widgets\Link;
-use yii\helpers\Html;
 
 class TopicLabel extends Label
 {

@@ -9,7 +9,7 @@ namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\marketplace\models\Module;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**

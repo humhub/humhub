@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\Link;
 use humhub\widgets\LoaderWidget;
 use yii\helpers\Url;
@@ -11,7 +11,7 @@ use yii\helpers\Html;
 ?>
 <?= Html::beginTag('div', $options) ?>
 <a href="#" id="icon-notifications" data-action-click='toggle'
-   aria-label="<?= Yii::t('NotificationModule.base', 'Open the notification dropdown menu') ?>" data-toggle="dropdown">
+   aria-label="<?= Yii::t('NotificationModule.base', 'Open the notification dropdown menu') ?>" data-bs-toggle="dropdown">
     <i class="fa fa-bell"></i>
 </a>
 

@@ -7,7 +7,7 @@
 
 use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var array $options */
 /* @var MetaSearchProviderInterface $provider */

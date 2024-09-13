@@ -20,7 +20,7 @@ $categories = $user->profile->getProfileFieldCategories();
             <?php foreach ($categories as $category): ?>
                 <li class="<?= $firstClass ?>">
                     <a href="#profile-category-<?= $category->id; ?>"
-                       data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                       data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                 </li>
                 <?php
                 $firstClass = "";

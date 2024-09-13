@@ -22,7 +22,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
     <?= $form->field($model, 'description'); ?>
 
-    <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
+    <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
         <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.manage', 'Advanced access settings'); ?>
     </a>
 

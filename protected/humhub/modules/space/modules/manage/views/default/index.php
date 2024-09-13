@@ -8,7 +8,7 @@ use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View
  * @var $model Space

@@ -3,7 +3,7 @@
 use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\widgets\GroupManagerMenu;
 use humhub\modules\user\models\Group;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $group Group */
 

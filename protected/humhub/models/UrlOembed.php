@@ -11,7 +11,7 @@ namespace humhub\models;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\events\OembedFetchEvent;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;

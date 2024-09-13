@@ -7,7 +7,7 @@
 
 use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\menu\MenuEntry;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */
 /* @var array $options */
@@ -18,7 +18,7 @@ use humhub\widgets\Button;
     ->icon('cog')
     ->cssClass('dropdown-toggle')
     ->tooltip(Yii::t('MarketplaceModule.base', 'Settings'))
-    ->options(['data-toggle' => 'dropdown']) ?>
+    ->options(['data-bs-toggle' => 'dropdown']) ?>
 
 <ul class="dropdown-menu pull-right">
     <?php foreach ($entries as $entry) : ?>

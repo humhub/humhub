@@ -18,7 +18,7 @@ use yii\helpers\Html;
                     <img src="<?php echo $friend->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
-                         data-toggle="tooltip" data-placement="top" title=""
+                         data-bs-toggle="tooltip" data-placement="top" title=""
                          data-original-title="<?php echo Html::encode($friend->displayName); ?>">
                 </a>
             <?php endforeach; ?>

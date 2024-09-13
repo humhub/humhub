@@ -9,7 +9,7 @@ namespace humhub\modules\marketplace\widgets;
 
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\marketplace\Module;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 class MarketplaceLink extends Button

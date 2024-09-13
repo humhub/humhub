@@ -34,11 +34,11 @@ use yii\widgets\ActiveForm;
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                         <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
                                 href="#login"
-                                data-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login'); ?></a>
+                                data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login'); ?></a>
                         </li>
                         <li class="<?= (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
                                 href="#register"
-                                data-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
+                                data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
                         </li>
                     </ul>
                 </div>

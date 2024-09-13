@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\admin\models\forms\CacheSettingsForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $cacheTypes [] */

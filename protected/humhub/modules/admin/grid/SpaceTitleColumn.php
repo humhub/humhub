@@ -10,9 +10,9 @@ namespace humhub\modules\admin\grid;
 
 use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Label;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * TitleColumn

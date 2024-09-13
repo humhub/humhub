@@ -2,7 +2,7 @@
 
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use humhub\modules\admin\grid\CheckboxColumn;
 use yii\data\ArrayDataProvider;

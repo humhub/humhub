@@ -5,7 +5,7 @@ use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use yii\helpers\Url;

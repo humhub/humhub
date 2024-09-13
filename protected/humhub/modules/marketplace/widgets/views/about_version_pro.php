@@ -3,7 +3,7 @@
 use humhub\widgets\bootstrap\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */
 /* @var $licence Licence */

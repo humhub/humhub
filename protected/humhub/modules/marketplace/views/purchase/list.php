@@ -2,7 +2,7 @@
 
 use humhub\components\Module;
 use humhub\modules\marketplace\assets\Assets;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\Link;
 use yii\base\View;
 use yii\helpers\Html;

@@ -4,7 +4,7 @@ use humhub\modules\space\modules\manage\models\DeleteForm;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View
  * @var $model DeleteForm

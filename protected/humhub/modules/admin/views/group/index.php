@@ -4,10 +4,10 @@ use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\Group;
+use humhub\widgets\GridView;
 use humhub\widgets\Label;
 use humhub\widgets\Link;
 use yii\helpers\Url;
-use humhub\widgets\GridView;
 
 /* @var $searchModel GroupSearch */
 ?>

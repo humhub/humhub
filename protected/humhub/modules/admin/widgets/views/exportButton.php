@@ -5,14 +5,14 @@
  * @var string $xlsx
  */
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 ?>
 <div class="btn-group">
     <button type="button" class="btn btn-sm btn-info">
         <i class="fa fa-download"></i> <?= Yii::t('base', 'Export') ?>
     </button>
-    <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-toggle="dropdown">
+    <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-bs-toggle="dropdown">
         <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
     </button>

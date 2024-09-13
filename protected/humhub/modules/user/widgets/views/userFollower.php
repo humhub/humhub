@@ -21,7 +21,7 @@ use humhub\modules\user\models\User;
                     <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
-                         data-toggle="tooltip" data-placement="top" title=""
+                         data-bs-toggle="tooltip" data-placement="top" title=""
                          data-original-title="<?php echo Html::encode($follower->displayName); ?>">
                 </a>
             <?php endforeach; ?>
@@ -46,7 +46,7 @@ use humhub\modules\user\models\User;
                          class="img-rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
-                         data-toggle="tooltip" data-placement="top" title=""
+                         data-bs-toggle="tooltip" data-placement="top" title=""
                          data-original-title="<?php echo Html::encode($followingUser->displayName); ?>">
                 </a>
             <?php endforeach; ?>

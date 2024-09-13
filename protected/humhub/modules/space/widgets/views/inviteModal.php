@@ -15,7 +15,7 @@ use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\ModalDialog;
 
 $modal = ModalDialog::begin([
@@ -42,20 +42,20 @@ $form = ActiveForm::begin([
         <div class="text-center">
             <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                 <li class="<?= $isInviteTabActiveClass ?> tab-user-picker">
-                    <a href="#user-picker" data-toggle="tab">
+                    <a href="#user-picker" data-bs-toggle="tab">
                         <?= Yii::t('SpaceModule.base', 'Pick users'); ?>
                     </a>
                 </li>
                 <?php if ($canInviteByEmail) : ?>
                     <li class="<?= $isInviteByEmailTabActiveClass ?> tab-invite-by-email">
-                        <a href="#invite-by-email" data-toggle="tab">
+                        <a href="#invite-by-email" data-bs-toggle="tab">
                             <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if ($canInviteByLink) : ?>
                     <li class="tab-invite-by-link">
-                        <a href="#invite-by-link" data-toggle="tab">
+                        <a href="#invite-by-link" data-bs-toggle="tab">
                             <?= Yii::t('SpaceModule.base', 'Invite by link'); ?>
                         </a>
                     </li>

@@ -2,7 +2,7 @@
 
 use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\ActiveForm;
 
 /* @var $model SpaceSettingsForm */

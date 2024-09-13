@@ -8,7 +8,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Html;

@@ -5,7 +5,7 @@ use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;

@@ -3,7 +3,7 @@
 use humhub\modules\content\models\forms\MoveContentForm;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 

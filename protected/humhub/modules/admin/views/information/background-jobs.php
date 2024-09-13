@@ -11,7 +11,7 @@
  * @var bool $canClearQueue
  */
 
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 if (empty($lastRunHourly)) {
     $lastRunHourly = "<span style='color:red'>" . Yii::t('AdminModule.information', 'Never') . "</span>";
@@ -79,4 +79,3 @@ if (empty($lastRunDaily)) {
 
 
 <p><?= Yii::t('AdminModule.information', 'Please refer to the documentation to setup the cronjobs and queue workers.'); ?></p>
-

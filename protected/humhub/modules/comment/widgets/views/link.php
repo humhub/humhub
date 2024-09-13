@@ -3,7 +3,7 @@
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use humhub\modules\comment\models\Comment;
@@ -43,4 +43,3 @@ $label = ($isNestedComment) ? Yii::t('CommentModule.base', "Reply") : Yii::t('Co
     <?= Button::asLink($label . $commentCountSpan)
         ->action('comment.toggleComment', null, '#comment_' . $id) ?>
 <?php endif; ?>
-

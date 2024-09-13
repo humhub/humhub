@@ -16,7 +16,7 @@ use humhub\modules\ui\menu\MenuEntry;
 <div class="comment-entry-loader pull-right"></div>
 <?= Html::beginTag('ul', $options) ?>
 <li class="dropdown ">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
        aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
         <?= Icon::get('dropdownToggle') ?>
     </a>

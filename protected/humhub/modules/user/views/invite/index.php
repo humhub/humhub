@@ -6,7 +6,7 @@ use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\forms\Invite;
 use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Url;
@@ -28,11 +28,11 @@ use yii\helpers\Url;
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
             <li class="nav-item active">
-                <a class="nav-link" data-toggle="tab"
+                <a class="nav-link" data-bs-toggle="tab"
                    href="#invite-by-email"><?= Yii::t('UserModule.base', 'Invite by email') ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab"
+                <a class="nav-link" data-bs-toggle="tab"
                    href="#invite-by-link"><?= Yii::t('UserModule.base', 'Invite by link') ?></a>
             </li>
         </ul>
