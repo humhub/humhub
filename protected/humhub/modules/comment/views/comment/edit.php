@@ -49,12 +49,12 @@ $contentModule = Yii::$app->getModule('content');
                 'preview' => '#comment_upload_preview_' . $comment->id,
                 'progress' => '#comment_upload_progress_' . $comment->id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-default',
+                'cssButtonClass' => 'btn-sm btn-secondary',
             ]);
             echo FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-default btn-sm',
+                'cssButtonClass' => 'btn-secondary btn-sm',
                 'pullRight' => true,
             ]);
             echo Button::info()

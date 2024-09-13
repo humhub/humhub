@@ -47,7 +47,7 @@ use yii\helpers\Url;
                 <?= Yii::t('UserModule.auth', 'Reset password') ?>
             </a>
             &nbsp;
-            <a href="#" class="btn btn-default" data-action-click="ui.modal.load"
+            <a href="#" class="btn btn-secondary" data-action-click="ui.modal.load"
                data-action-url="<?= Url::to(['/user/auth/login']) ?>" data-ui-loader>
                 <?= Yii::t('UserModule.auth', 'Back') ?>
             </a>

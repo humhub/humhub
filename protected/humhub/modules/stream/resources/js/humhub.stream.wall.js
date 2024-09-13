@@ -418,7 +418,7 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.template = {
-        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="removeContentTypeFilter" data-type-id="{id}"><span class="label label-default animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
+        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="removeContentTypeFilter" data-type-id="{id}"><span class="label label-secondary animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
     };
 
     module.export({

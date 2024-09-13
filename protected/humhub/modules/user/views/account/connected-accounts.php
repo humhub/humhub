@@ -25,7 +25,7 @@ use yii\helpers\Url;
 
             <td class="text-end">
                 <?php if ($client->getId() == $currentAuthProviderId): ?>
-                    <?php echo Html::a(Yii::t('UserModule.base', 'Currently in use'), '#', ['class' => 'btn btn-default btn-sm', 'data-method' => 'POST', 'disabled' => 'disabled']); ?>
+                    <?php echo Html::a(Yii::t('UserModule.base', 'Currently in use'), '#', ['class' => 'btn btn-secondary btn-sm', 'data-method' => 'POST', 'disabled' => 'disabled']); ?>
                 <?php elseif (in_array($client->getId(), $activeAuthClientIds)) : ?>
                     <?php echo Html::a(Yii::t('UserModule.base', 'Disconnect account'), ['connected-accounts', 'disconnect' => $client->getId()], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']); ?>
                 <?php else: ?>

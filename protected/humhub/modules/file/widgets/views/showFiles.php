@@ -2,8 +2,8 @@
 
 use humhub\components\ActiveRecord;
 use humhub\modules\file\converter\PreviewImage;
-use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\libs\FileHelper;
+use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\JPlayerPlaylistWidget;
 use yii\helpers\Html;
@@ -29,9 +29,9 @@ foreach ($files as $file) {
     }
 }
 
-$fullWidthColumnClass = 'col-media col-xs-12 col-sm-12 col-md-12';
-$nonFluidColumnClass = 'col-media col-xs-3 col-sm-3 col-md-4';
-$fluidColumnClass = 'col-media col-xs-3 col-sm-3 col-md-2';
+$fullWidthColumnClass = 'col-media col-12 col-sm-12 col-md-12';
+$nonFluidColumnClass = 'col-media col-3 col-sm-3 col-md-4';
+$fluidColumnClass = 'col-media col-3 col-sm-3 col-md-2';
 
 $galleryColumnClass = ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidColumnClass;
 ?>

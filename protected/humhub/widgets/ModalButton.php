@@ -7,11 +7,7 @@
 
 namespace humhub\widgets;
 
-use humhub\components\Widget;
-use humhub\widgets\bootstrap\Html;
 use Yii;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
 
 /**
  * Helper class for creating buttons.
@@ -65,7 +61,7 @@ class ModalButton extends Button
             $text = Yii::t('base', 'Cancel');
         }
 
-        return static::defaultType($text)->close()->loader(false);
+        return static::secondary($text)->close()->loader(false);
     }
 
     /**

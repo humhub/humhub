@@ -11,7 +11,7 @@ use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */
 ?>
-<?= Button::defaultType(Icon::get('cog') . Icon::get('dropdownToggle'))
+<?= Button::secondary(Icon::get('cog') . Icon::get('dropdownToggle'))
     ->options(['data-bs-toggle' => 'dropdown'])
     ->sm()
     ->loader(false) ?>

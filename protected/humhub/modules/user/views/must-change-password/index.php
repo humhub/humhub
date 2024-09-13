@@ -2,8 +2,8 @@
 
 use humhub\modules\user\models\Password;
 use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\SiteLogo;
 use yii\helpers\Url;
 
@@ -39,7 +39,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 
                 <?php ActiveForm::end(); ?>
 
-                <?= Button::defaultType(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
+                <?= Button::secondary(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
 
             </div>
         </div>

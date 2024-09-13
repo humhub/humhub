@@ -32,10 +32,10 @@ class UploadButton extends UploadInput
     public $tooltipPosition = 'bottom';
 
     /**
-     * Defines the button color class like btn-default, btn-primary
+     * Defines the button color class like btn-secondary, btn-primary
      * @var type
      */
-    public $cssButtonClass = 'btn-default';
+    public $cssButtonClass = 'btn-secondary';
 
     /**
      * Either defines a label string or true to use the default label.

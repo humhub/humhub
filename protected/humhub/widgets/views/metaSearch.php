@@ -7,9 +7,9 @@
 
 use humhub\assets\SearchAsset;
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
 use humhub\widgets\MetaSearchProviderWidget;
 use yii\web\View;
@@ -34,7 +34,7 @@ SearchAsset::register($this);
             <?= Icon::get('close', ['id' => 'dropdown-search-close']) ?>
         </div>
         <div class="dropdown-search-form">
-            <?= Button::defaultType()
+            <?= Button::secondary()
                 ->icon('search')
                 ->action('search')
                 ->cssClass('dropdown-search-button')

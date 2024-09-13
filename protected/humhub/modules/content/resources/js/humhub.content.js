@@ -197,7 +197,7 @@ humhub.module('content', function (module, require, $) {
 
     var templates = {
         permalinkBody: '<div class="clearfix"><textarea rows="3" class="form-control permalink-txt" spellcheck="false" readonly>{permalink}</textarea><p class="help-block float-end"><a href="#" data-action-click="copyToClipboard" data-action-target=".permalink-txt"><i class="fa fa-clipboard" aria-hidden="true"></i> {info}</a></p></div>',
-        permalinkFooter: '<button data-modal-close class="btn btn-default">{buttonClose}</button><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
+        permalinkFooter: '<button data-modal-close class="btn btn-secondary">{buttonClose}</button><a href="{permalink}" class="btn btn-primary" data-ui-loader>{buttonOpen}</a>'
     };
 
     module.export({

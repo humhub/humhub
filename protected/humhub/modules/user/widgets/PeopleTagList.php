@@ -7,10 +7,10 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\widgets\bootstrap\Html;
-use humhub\modules\user\models\User;
-use yii\helpers\Url;
 use humhub\components\Widget;
+use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Html;
+use yii\helpers\Url;
 
 /**
  * PeopleTagList displays the user tags on the directory people page
@@ -60,7 +60,7 @@ class PeopleTagList extends Widget
 
         foreach ($tags as $tag) {
             if (trim($tag) !== '') {
-                $html .= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . '&nbsp';
+                $html .= Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => trim($tag)]), ['class' => 'label label-secondary']) . '&nbsp';
             }
         }
 

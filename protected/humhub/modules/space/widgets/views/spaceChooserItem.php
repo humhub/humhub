@@ -33,7 +33,7 @@ use yii\helpers\Html;
                 <?php if ($space->hasTags()) : ?>
                     <div class="space-tags" style="display:none">
                         <div
-                            class="label label-default"><?= implode('</div> <div class="label label-default">', $space->getTags()); ?></div>
+                            class="label label-secondary"><?= implode('</div> <div class="label label-secondary">', $space->getTags()); ?></div>
                     </div>
                 <?php endif; ?>
             </div>

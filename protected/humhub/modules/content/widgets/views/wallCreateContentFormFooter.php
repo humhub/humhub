@@ -63,7 +63,7 @@ use yii\helpers\Html;
             'dropZone' => '#contentFormBody',
             'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ]); ?>
-        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
+        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-secondary']); ?>
 
         <!-- public checkbox -->
         <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>

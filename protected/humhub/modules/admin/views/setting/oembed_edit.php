@@ -29,7 +29,7 @@ $this->registerJs(<<<JS
                     }).replace(/([A-Z])/, " $1");
                 var inputId = 'oembedproviderform-' + key;
 
-                formGroup = '<div class="form-group col-xs-12 col-sm-6">' +
+                formGroup = '<div class="form-group col-12 col-sm-6">' +
                     '<label for="' + inputId + '" class="control-label" type="text">' + label + '</label>' +
                     '<input id="' + inputId + '" value="' + (!value.match(/\%\w+\%/) ? value : "") + '" type="text" class="form-control endpoint-param" data-param-name="' + key + '">' +
                     '</div>';

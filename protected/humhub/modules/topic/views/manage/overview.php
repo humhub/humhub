@@ -45,7 +45,7 @@ use yii\helpers\Html;
             <div class="input-group">
                 <?= Html::activeTextInput($addModel, 'name', ['style' => 'height:36px', 'class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
                 <span class="input-group-btn">
-                    <?= Button::defaultType()->icon('add')->loader()->submit() ?>
+                    <?= Button::secondary()->icon('add')->loader()->submit() ?>
                 </span>
             </div>
         </div>

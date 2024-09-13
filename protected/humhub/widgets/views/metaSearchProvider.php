@@ -6,8 +6,8 @@
  */
 
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 
 /* @var array $options */
 /* @var MetaSearchProviderInterface $provider */
@@ -39,7 +39,7 @@ use humhub\widgets\bootstrap\Button;
                 <div class="search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
             <?php endif; ?>
             <div class="search-provider-actions">
-                <?= Button::defaultType($provider->getAllResultsText())
+                <?= Button::secondary($provider->getAllResultsText())
                     ->link($provider->getService()->getUrl())
                     ->cssClass('search-provider-show-all')
                     ->options(['target' => $provider->getService()->getLinkTarget()])

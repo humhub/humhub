@@ -1,6 +1,5 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\controllers\ApprovalController;
 use humhub\modules\admin\grid\ApprovalActionColumn;
 use humhub\modules\admin\models\forms\ApproveUserForm;
@@ -10,6 +9,7 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 
@@ -45,7 +45,7 @@ $columns[] = [
     'options' => ['style' => 'width:160px;'],
     'buttons' => [
         'view' => function ($url, $model) {
-            return Button::defaultType()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
+            return Button::secondary()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
         },
         'sendMessage' => function ($url, $model) {
             $nbMsgSent = ApproveUserForm::getNumberMessageSent($model->id);
@@ -69,7 +69,7 @@ $columns[] = [
 
     <div class="dropdown float-end">
         <?php if (!empty($availableProfileFields)): ?>
-            <?= Button::defaultType()
+            <?= Button::secondary()
                 ->icon('cog')
                 ->loader(false)
                 ->options(['data-bs-toggle' => 'dropdown']) ?>

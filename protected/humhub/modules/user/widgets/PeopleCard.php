@@ -27,7 +27,7 @@ class PeopleCard extends Widget
     /**
      * @var string HTML wrapper around card
      */
-    public $template = '<div class="card card-people col-lg-3 col-md-4 col-sm-6 col-xs-12">{card}</div>';
+    public $template = '<div class="card card-people col-lg-3 col-md-4 col-sm-6 col-12">{card}</div>';
 
     /**
      * @inheritdoc

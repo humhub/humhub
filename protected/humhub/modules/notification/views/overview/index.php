@@ -14,14 +14,14 @@ use humhub\widgets\bootstrap\Button;
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
                     <div class="float-end">
-                        <?= Button::defaultType()
+                        <?= Button::secondary()
                             ->icon('check')
                             ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])
                             ->id('notification_overview_markseen')
                             ->style('display:none')
                             ->sm()
                             ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
-                        <?= Button::defaultType()
+                        <?= Button::secondary()
                             ->icon('cog')
                             ->link(['/notification/user'])
                             ->sm()

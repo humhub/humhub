@@ -38,7 +38,7 @@ use yii\helpers\Html;
             <?php if ($showMoreLink): ?>
                 <br>
                 <br>
-                <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'float-end btn btn-sm btn-default', 'data-bs-target' => '#globalModal']); ?>
+                <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'float-end btn btn-sm btn-secondary', 'data-bs-target' => '#globalModal']); ?>
             <?php endif; ?>
         </div>
     </div>

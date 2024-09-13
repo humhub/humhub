@@ -130,7 +130,7 @@ class Html extends \yii\bootstrap5\Html
             $options['class'] = '';
         }
 
-        $options['class'] .= ' btn btn-default';
+        $options['class'] .= ' btn btn-secondary';
 
         return parent::a($label, $url, $options);
     }

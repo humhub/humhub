@@ -59,7 +59,7 @@ class Button extends BootstrapComponent
             $text = Yii::t('base', 'Back');
         }
 
-        return self::defaultType($text)->link($url)->icon('back')->right()->loader(true)->sm();
+        return self::secondary($text)->link($url)->icon('back')->right()->loader(true)->sm();
     }
 
     public static function userPickerSelfSelect($selector, $text = null)

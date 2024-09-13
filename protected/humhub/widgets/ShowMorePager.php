@@ -72,7 +72,7 @@ class ShowMorePager extends \humhub\widgets\LinkPager
         }
 
         if (!isset($this->ajaxButtonOptions['htmlOptions']['class'])) {
-            $this->ajaxButtonOptions['htmlOptions']['class'] = 'btn btn-default';
+            $this->ajaxButtonOptions['htmlOptions']['class'] = 'btn btn-secondary';
             $this->ajaxButtonOptions['htmlOptions']['data-ui-loader'] = '1';
         }
     }

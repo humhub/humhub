@@ -22,7 +22,7 @@ use yii\helpers\ArrayHelper;
  *
  *  - none
  *  - primary
- *  - defaultType
+ *  - secondary
  *  - info
  *  - warn
  *  - danger
@@ -44,7 +44,11 @@ use yii\helpers\ArrayHelper;
 abstract class BootstrapComponent extends Widget
 {
     public const TYPE_PRIMARY = 'primary';
-    public const TYPE_DEFAULT = 'default';
+    /**
+     * @deprecated since 1.17
+     */
+    public const TYPE_DEFAULT = self::TYPE_SECONDARY;
+    public const TYPE_SECONDARY = 'secondary';
     public const TYPE_INFO = 'info';
     public const TYPE_WARNING = 'warning';
     public const TYPE_DANGER = 'danger';
@@ -88,12 +92,22 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * @deprecated since 1.17
      * @param string $text Button text
      * @return static
      */
     public static function defaultType($text = null)
     {
-        return new static(['type' => self::TYPE_DEFAULT, 'text' => $text]);
+        return self::secondary($text);
+    }
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function secondary($text = null)
+    {
+        return new static(['type' => self::TYPE_SECONDARY, 'text' => $text]);
     }
 
     /**

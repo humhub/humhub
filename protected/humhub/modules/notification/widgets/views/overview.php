@@ -1,10 +1,9 @@
 <?php
 
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\Link;
 use humhub\widgets\LoaderWidget;
-use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $options [] */
 
@@ -23,14 +22,14 @@ use yii\helpers\Html;
         <div class="arrow"></div>
         <?= Yii::t('NotificationModule.base', 'Notifications') ?>
         <div class="dropdown-header-actions">
-            <?= Button::defaultType()
+            <?= Button::secondary()
                 ->icon('check')
                 ->action('markAsSeen', ['/notification/list/mark-as-seen'])
                 ->id('mark-seen-link')
                 ->style('display:none')
                 ->sm()
                 ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
-            <?= Button::defaultType()
+            <?= Button::secondary()
                 ->icon('cog')
                 ->link(['/notification/user'])
                 ->sm()
@@ -45,7 +44,7 @@ use yii\helpers\Html;
     </li>
     <li>
         <div class="dropdown-footer">
-            <a class="btn btn-default col-md-12" href="<?= Url::to(['/notification/overview']) ?>">
+            <a class="btn btn-secondary col-md-12" href="<?= Url::to(['/notification/overview']) ?>">
                 <?= Yii::t('NotificationModule.base', 'Show all notifications') ?>
             </a>
         </div>

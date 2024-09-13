@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\TimePicker;
+use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
@@ -28,17 +28,17 @@ use humhub\widgets\ModalDialog;
 <div class="modal-body">
     <?= $form->field($scheduleOptions, 'enabled')->checkbox() ?>
     <div class="row">
-        <div class="col-sm-3 col-xs-6">
+        <div class="col-sm-3 col-6">
             <?= $form->field($scheduleOptions, 'date')
                 ->widget(DatePicker::class, ['options' => ['disabled' => $disableInputs]])
                 ->label(false) ?>
         </div>
-        <div class="col-sm-3 col-xs-6" style="padding-left:0">
+        <div class="col-sm-3 col-6" style="padding-left:0">
             <?= $form->field($scheduleOptions, 'time')
                 ->widget(TimePicker::class, ['disabled' => $disableInputs])
                 ->label(false) ?>
         </div>
-        <div class="col-xs-12">
+        <div class="col-12">
             <p class="help-block"><?= Yii::t('ContentModule.base', 'Note: Due to technical reasons there may be a delay of a few minutes.') ?></p>
         </div>
     </div>

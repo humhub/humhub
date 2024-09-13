@@ -29,7 +29,7 @@ use yii\helpers\Html;
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
                     <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
+                        <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
                     </span>
                 </div>
             </div>
