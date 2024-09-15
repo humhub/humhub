@@ -9,6 +9,7 @@ return [
     'Activate scheduling' => 'スケジューリングを有効にする',
     'Add a member to notify' => '通知するメンバーを追加',
     'Add tag...' => 'タグを追加...',
+    'Advanced Content Search' => '高度なコンテンツ検索',
     'Archived' => 'アーカイブ',
     'Attach Files' => 'ファイルの添付',
     'Back to stream' => 'ストリームに戻る',
@@ -109,5 +110,5 @@ return [
     'You do not have the permission to move this content.' => 'このコンテンツを移動する権限がありません',
     'Your last edit state has been saved!' => '前回の編集状態が保存されました',
     'in' => 'in',
-    'Advanced Content Search' => '',
+    '(Also visible to people who are not logged in)' => '',
 ];

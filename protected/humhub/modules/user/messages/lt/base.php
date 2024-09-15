@@ -119,6 +119,7 @@ return [
     'invited you to join {space} on {name}.' => 'pakvietė jus prisijungti prie {space} dėl {name}.',
     'or' => 'arba',
     'Advanced Profile Search' => '',
+    'Empty password cannot be saved!' => '',
     'Group Manager(s)' => '',
     'The Group Manager can approve pending registrations of this group.' => '',
 ];

@@ -94,6 +94,7 @@ return [
     'You do not have the permission to move this content.' => 'Você não tem permissão para mover este conteúdo.',
     'Your last edit state has been saved!' => 'Seu último estado de alteração foi salvo!',
     'in' => 'em',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',

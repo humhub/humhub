@@ -58,6 +58,7 @@ return [
     'LinkedIn URL' => 'LinkedIn URL',
     'Male' => '男性',
     'Markdown' => 'マークダウン',
+    'Mastodon URL' => 'Mastodon URL',
     'Maximum length' => '最大の文字数',
     'Maximum value' => '最大値',
     'Minimum length' => '最小の文字数',
@@ -116,5 +117,6 @@ return [
     'YouTube URL' => 'YouTube URL',
     'Zip' => '郵便番号',
     '{attribute} is required!' => '{attribute}が必要です!',
-    'Mastodon URL' => '',
+    'Each line must be formatted as Key=>Value!' => '',
+    'This profile is disabled!' => '',
 ];
