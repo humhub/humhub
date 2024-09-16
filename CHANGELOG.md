@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #7210: Small style fix for top account menu (temp fix for Mac Safari browser)
 - Fix #7218: Fix visibility of wall stream content creating form
 - Fix #7219: Renamed deprecated meta tag
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
 
 1.16.2 (September 5, 2024)
 --------------------------
