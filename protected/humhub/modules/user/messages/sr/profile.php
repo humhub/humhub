@@ -116,5 +116,7 @@ return [
     'YouTube URL' => 'YouTube URL',
     'Zip' => 'Zip',
     '{attribute} is required!' => '{attribute} je obavezan!',
+    'Each line must be formatted as Key=>Value!' => '',
     'Mastodon URL' => '',
+    'This profile is disabled!' => '',
 ];

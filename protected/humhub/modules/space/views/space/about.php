@@ -33,15 +33,14 @@ use humhub\modules\user\widgets\Image;
                         <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
                             </p></div>
                         <div class="flex-grow-1">
-                            <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) {
-                                echo Image::widget([
+                            <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) : ?>
+                                <?= Image::widget([
                                     'showTooltip' => true,
                                     'user' => $user, 'width' => 40,
                                     'htmlOptions' => ['style' => 'padding: 3px'],
-                                    'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
-                                ]);
-                            }
-                            ?>
+                                    'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                                ]) ?>
+                            <?php endforeach; ?>
                         </div>
                     </div>
 
@@ -55,15 +54,14 @@ use humhub\modules\user\widgets\Image;
                         <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p>
                         </div>
                         <div class="flex-grow-1">
-                            <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) {
-                                echo Image::widget([
+                            <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) : ?>
+                                <?= Image::widget([
                                     'showTooltip' => true,
                                     'user' => $user, 'width' => 40,
                                     'htmlOptions' => ['style' => 'padding: 3px'],
-                                    'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
-                                ]);
-                            }
-                            ?>
+                                    'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                                ]) ?>
+                            <?php endforeach; ?>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -75,15 +73,14 @@ use humhub\modules\user\widgets\Image;
             <div class="d-flex">
                 <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Moderator'); ?></strong></p></div>
                 <div class="flex-grow-1">
-                    <?php foreach ($userGroups[Space::USERGROUP_MODERATOR] as $user) {
-                        echo Image::widget([
+                    <?php foreach ($userGroups[Space::USERGROUP_MODERATOR] as $user) : ?>
+                        <?= Image::widget([
                             'showTooltip' => true,
                             'user' => $user, 'width' => 40,
                             'htmlOptions' => ['style' => 'padding: 3px'],
-                            'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
-                        ]);
-                    }
-                    ?>
+                            'imageOptions' => ['style' => 'border:1px solid var(--success)'],
+                        ]) ?>
+                    <?php endforeach; ?>
                 </div>
             </div>
             <br/>

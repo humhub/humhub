@@ -76,4 +76,6 @@ return [
     'Visit Marketplace' => 'Navštivte Marketplace',
     'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Nemáte oprávnění ke konfiguraci modulů. Další informace vám poskytne správce.',
     'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Nemáte oprávnění spravovat moduly. Další informace vám poskytne správce.',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
 ];

@@ -1,13 +1,24 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
 use yii\helpers\Html;
 use humhub\widgets\PoweredBy;
 
-?>
+/* @var View $this */
+/* @var string $content */
 
+$defaultBackground = $this->theme->variable('background-color-main', '#fff');
+$colorPrimary = $this->theme->variable('primary', '#708fa0');
+$soft2Color = $this->theme->variable('text-color-soft2', '#aeaeae');
+?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -17,12 +28,8 @@ use humhub\widgets\PoweredBy;
         <meta name="viewport" content="initial-scale=1.0"/>
         <meta name="format-detection" content="telephone=no"/>
 
-        <title><?php echo Html::encode(Yii::$app->name); ?></title>
+        <title><?= Html::encode(Yii::$app->name) ?></title>
             <style type="text/css">
-
-                <?php $defaultBackground =  Yii::$app->view->theme->variable('background-color-main', '#fff') ?>
-                <?php $colorPrimary =  Yii::$app->view->theme->variable('primary', '#708fa0') ?>
-
                 .ReadMsgBody {
                     width: 100%;
                     background-color: <?= $defaultBackground ?>;
@@ -69,7 +76,7 @@ use humhub\widgets\PoweredBy;
                 }
 
                 html, body {
-                    background-color: #ededed;
+                    background-color: <?= $this->theme->variable('background-color-page', '#ededed') ?>;
                     margin: 0;
                     padding: 0;
                 }
@@ -92,15 +99,15 @@ use humhub\widgets\PoweredBy;
                 }
 
                 h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
-                    color: <?= Yii::$app->view->theme->variable('info', '#6fdbe8') ?> !important;
+                    color: <?= $this->theme->variable('info', '#6fdbe8') ?> !important;
                 }
 
                 h1 a:active, h2 a:active, h3 a:active, h4 a:active, h5 a:active, h6 a:active {
-                    color: <?= Yii::$app->view->theme->variable('info', '#6fdbe8') ?> !important;
+                    color: <?= $this->theme->variable('info', '#6fdbe8') ?> !important;
                 }
 
                 h1 a:visited, h2 a:visited, h3 a:visited, h4 a:visited, h5 a:visited, h6 a:visited {
-                    color: <?= Yii::$app->view->theme->variable('info', '#6fdbe8') ?> !important;
+                    color: <?= $this->theme->variable('info', '#6fdbe8') ?> !important;
                 }
 
                 table td, table tr {
@@ -115,7 +122,7 @@ use humhub\widgets\PoweredBy;
                 }
 
                 code {
-                    white-space: 300;
+                    white-space: normal;
                     word-break: break-all;
                 }
 
@@ -133,8 +140,8 @@ use humhub\widgets\PoweredBy;
 
                 .nav-ul {
                     margin-left: -23px !important;
-                    margin-top: 0px !important;
-                    margin-bottom: 0px !important;
+                    margin-top: 0 !important;
+                    margin-bottom: 0 !important;
                 }
 
                 img {
@@ -427,19 +434,19 @@ use humhub\widgets\PoweredBy;
                     table[id="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;
+                        border-bottom: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>;
                     }
 
                     td[id="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;
+                        border-bottom: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>;
                     }
 
                     td[class="col-underline"] {
                         float: none !important;
                         width: 100% !important;
-                        border-bottom: 1px solid <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;
+                        border-bottom: 1px solid <?= $this->theme->variable('background-color-page', '#ededed') ?>;
                     }
 
                     td[class="text-center"] {
@@ -480,13 +487,13 @@ use humhub\widgets\PoweredBy;
                     }
 
                     table[class="fix-box"] {
-                        padding-left: 0px !important;
-                        padding-right: 0px !important;
+                        padding-left: 0 !important;
+                        padding-right: 0 !important;
                     }
 
                     td[class="fix-box"] {
-                        padding-left: 0px !important;
-                        padding-right: 0px !important;
+                        padding-left: 0 !important;
+                        padding-right: 0 !important;
                     }
 
                     td[class="font-resize"] {
@@ -521,23 +528,23 @@ use humhub\widgets\PoweredBy;
             <?php $this->head() ?>
     </head>
 
-    <body style="font-size:12px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; background-color: <?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
+    <body style="font-size:12px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; background-color: <?= $this->theme->variable('background-color-page', '#ededed') ?>">
         <?php $this->beginBody() ?>
 
         <!--start 100% wrapper (white background) -->
-        <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:<?= Yii::$app->view->theme->variable('background-color-page', '#ededed') ?>;">
+        <table width="100%" id="mainStructure" border="0" cellspacing="0" cellpadding="0" style="background-color:<?= $this->theme->variable('background-color-page', '#ededed') ?>">
 
 
             <!-- START VIEW HEADER -->
             <tr>
-                <td align="center" valign="top" style="background-color: <?= $colorPrimary ?>; ">
+                <td align="center" valign="top" style="background-color: <?= $colorPrimary ?>">
 
                     <!-- start container 600 -->
-                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>;">
+                    <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" style="background-color: <?= $colorPrimary ?>">
                         <tr>
                             <td valign="top">
 
-                                <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color: <?= $colorPrimary ?>; ">
+                                <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width" style="background-color: <?= $colorPrimary ?>">
                                     <tr>
                                         <td valign="top" height="10"></td>
                                     </tr>
@@ -559,10 +566,10 @@ use humhub\widgets\PoweredBy;
                                                                     <table align="center" border="0" cellspacing="0" cellpadding="0">
                                                                         <tr>
                                                                             <td style="text-align:center;">
-                                                                                <span style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>;">
-                                                                                    <a href="<?php echo Url::to(['/'], true); ?>"
-                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= Yii::$app->view->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
-                                                                                            <?php echo Html::encode(Yii::$app->name); ?>
+                                                                                <span style="text-decoration: none; color:<?= $this->theme->variable('text-color-contrast', '#ffffff') ?>">
+                                                                                    <a href="<?= Url::to(['/'], true) ?>"
+                                                                                        style="text-decoration: none; font-size: 18px; line-height: 27px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color: <?= $this->theme->variable('text-color-contrast', '#ffffff') ?>; font-weight: 700; text-align: left;">
+                                                                                            <?= Html::encode(Yii::$app->name) ?>
                                                                                     </a>
                                                                                 </span>
                                                                             </td>
@@ -682,23 +689,21 @@ use humhub\widgets\PoweredBy;
 
                                                 <tr>
                                                     <td valign="middle">
-                                                        <?php $soft2Color = Yii::$app->view->theme->variable('text-color-soft2', '#aeaeae')?>
                                                         <table align="center" border="0" cellspacing="0" cellpadding="0" class="container2">
 
                                                             <tr>
-                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>;">
+                                                                <td align="center" valign="top" style="font-size: 11px; line-height: 18px; font-weight:300; text-align: center; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>">
 
                                                                     <?php if (isset(Yii::$app->view->params['showUnsubscribe']) && Yii::$app->view->params['showUnsubscribe'] === true) : ?>
-                                                                        <?php $url = (isset(Yii::$app->view->params['unsubscribeUrl'])) ? Yii::$app->view->params['unsubscribeUrl'] : \yii\helpers\Url::to(['/notification/user'], true) ?>
-                                                                        <span style="text-decoration: none; color: <?= $soft2Color ?>;">
-                                                                            <a href="<?= $url ?>" style="text-decoration: none; color: <?= $soft2Color ?>;"><?= Yii::t('base', 'Unsubscribe') ?></a>
+                                                                        <span style="text-decoration: none; color: <?= $soft2Color ?>">
+                                                                            <a href="<?= Yii::$app->view->params['unsubscribeUrl'] ?? Url::to(['/notification/user'], true) ?>" style="text-decoration: none; color: <?= $soft2Color ?>"><?= Yii::t('base', 'Unsubscribe') ?></a>
                                                                             •
                                                                         </span>
                                                                     <?php endif; ?>
 
-                                                                    <span style="text-decoration: none; color:<?= $soft2Color ?>;">
-                                                                        <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_EMAIL]); ?>
-                                                                        <?= PoweredBy::widget(['linkOptions' => ['style' => 'text-decoration:none;color:'.$soft2Color]]); ?>
+                                                                    <span style="text-decoration: none; color:<?= $soft2Color ?>">
+                                                                        <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_EMAIL]) ?>
+                                                                        <?= PoweredBy::widget(['linkOptions' => ['style' => 'text-decoration:none;color:' . $soft2Color]]) ?>
                                                                     </span>
 
                                                                 </td>

@@ -199,6 +199,7 @@ $config = [
             'pt' => 'Português',
             'pt-BR' => 'Português do Brasil',
             'es' => 'Español',
+            'es-419' => 'Español (latinoamericano)',
             'ca' => 'Català',
             'it' => 'Italiano',
             'th' => 'ไทย',

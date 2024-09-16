@@ -1,7 +1,14 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use humhub\widgets\bootstrap\Html;
+use humhub\modules\ui\view\components\View;
 
+/* @var View $this */
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,14 +19,14 @@ use humhub\widgets\bootstrap\Html;
     <title><?= Yii::t('WebModule.pwa', 'Unable to connect to {site}', ['{site}' => Html::encode(Yii::$app->name)]); ?></title>
     <style type="text/css">
         body {
-            background: <?= Yii::$app->view->theme->variable('primary') ?>;
-            color: #ffffff;
+            background: <?= $this->theme->variable('primary') ?>;
+            color: <?= $this->theme->variable('text-color-contrast', '#fff') ?>;
             font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
             font-weight: 300;
         }
 
         body a {
-            color: #ffffff;
+            color: <?= $this->theme->variable('text-color-contrast', '#fff') ?>;
         }
 
         #content {

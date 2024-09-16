@@ -59,6 +59,8 @@ return [
     'People' => '',
     'Permissions' => '',
     'Proxy' => '',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
     'Self test' => '',
     'Set as default' => '',
     'Show in Marketplace' => '',

@@ -113,8 +113,10 @@ return [
     'Zip' => 'Архів',
     '{attribute} is required!' => '{attribute} потрібен!',
     'Diverse' => '',
+    'Each line must be formatted as Key=>Value!' => '',
     'Instagram URL' => '',
     'Mastodon URL' => '',
+    'This profile is disabled!' => '',
     'TikTok URL' => '',
     'Website URL' => '',
 ];
