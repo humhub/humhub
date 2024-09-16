@@ -76,7 +76,7 @@ class Invite extends ActiveRecord
             [['firstname', 'lastname'], 'string', 'max' => 255],
             [['source', 'token'], 'string', 'max' => 254],
             [['email'], 'string', 'max' => 150],
-            [['language'], 'string', 'max' => 10],
+            [['language'], 'string', 'max' => 20],
             [['email'], 'required'],
             [['email'], 'unique', 'except' => self::SCENARIO_INVITE_BY_LINK_FORM],
             [['email'], 'email'],
