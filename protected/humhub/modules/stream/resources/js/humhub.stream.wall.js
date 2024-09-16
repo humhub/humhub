@@ -237,7 +237,7 @@ humhub.module('stream.wall', function (module, require, $) {
 
     WallStream.template = {
         loadSuppressedButton: '<div class="load-suppressed" style="display:none;"><a href="#" data-action-click="loadSuppressed" data-entry-key="{key}" data-action-block="manual" data-ui-loader><i class="fa fa-chevron-down"></i>&nbsp;&nbsp;{message}&nbsp;&nbsp;<span class="badge">{contentName}</span></a></div>',
-        updateBadge: '<div id="streamUpdateBadge" class="animated bounceIn"><span class="label label-info" style="cursor:pointer"><i class="fa fa-arrow-circle-up"></i> {text}</span></div>'
+        updateBadge: '<div id="streamUpdateBadge" class="animated bounceIn"><span class="badge text-bg-info" style="cursor:pointer"><i class="fa fa-arrow-circle-up"></i> {text}</span></div>'
     };
 
     WallStream.prototype.loadSuppressed = function (evt) {
@@ -418,7 +418,7 @@ humhub.module('stream.wall', function (module, require, $) {
     };
 
     WallStreamFilter.template = {
-        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="removeContentTypeFilter" data-type-id="{id}"><span class="label label-secondary animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
+        removeContentTypeLabel: '<a href="#" class="content-type-remove-label" data-action-click="removeContentTypeFilter" data-type-id="{id}"><span class="badge text-bg-secondary animated bounceIn"><i class="fa {image}"></i> {text}</span></a>'
     };
 
     module.export({

@@ -1,15 +1,15 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $licence Licence */
 
 ?>
-<div style="padding:20px" class="jumbotron">
+<div style="padding:20px">
     <div class="float-start" style="padding-right:24px">
         <?= Html::img(Yii::getAlias('@web-static/img/humhub_pro.jpg'), ['style' => 'height:124px']) ?>
     </div>

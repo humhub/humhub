@@ -10,8 +10,8 @@ namespace humhub\modules\admin\grid;
 
 use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Label;
 use Yii;
 
 /**
@@ -48,14 +48,14 @@ class SpaceTitleColumn extends SpaceBaseColumn
         $space = $this->getSpace($model);
 
         $badge = '';
-        if ($space->status == Space::STATUS_ARCHIVED) {
-            $badge = '&nbsp;<span class="badge">' . Yii::t('SpaceModule.base', 'Archived') . '</span>';
+        if ($space->status === Space::STATUS_ARCHIVED) {
+            $badge = '&nbsp;' . Badge::none(Yii::t('SpaceModule.base', 'Archived'));
         }
 
         return Html::tag(
             'div',
             Html::encode($space->name) . $badge .
-            ($space->sort_order === 100 ? '' : ' ' . Label::secondary($space->sort_order)) .
+            ($space->sort_order === 100 ? '' : ' ' . Badge::secondary($space->sort_order)) .
             '<br> ' . '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small>',
         );
     }

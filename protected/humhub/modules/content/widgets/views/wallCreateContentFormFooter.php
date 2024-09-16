@@ -8,15 +8,16 @@
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
+use humhub\modules\file\widgets\UploadButton;
+use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\file\widgets\FileHandlerButtonDropdown;
-use humhub\modules\file\widgets\UploadProgress;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\Link;
 use yii\helpers\Html;
 
 /* @var $submitUrl string */
@@ -74,7 +75,8 @@ use yii\helpers\Html;
         <!-- content sharing -->
         <div class="float-end">
             <span class="label-container">
-                <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+                <?= Badge::info(Yii::t('ContentModule.base', 'Public'))
+                    ->cssClass(['badge-public', 'hidden']) ?>
             </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">

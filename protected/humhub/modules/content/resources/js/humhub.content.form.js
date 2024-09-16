@@ -164,13 +164,13 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.setPublicVisibility = function () {
         $('#contentForm_visibility').prop("checked", true);
         $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
-        $('.label-public').removeClass('hidden');
+        $('.badge-public').removeClass('hidden');
     };
 
     CreateForm.prototype.setPrivateVisibility = function () {
         $('#contentForm_visibility').prop("checked", false);
         $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
-        $('.label-public').addClass('hidden');
+        $('.badge-public').addClass('hidden');
     };
 
     CreateForm.prototype.notifyUser = function () {
@@ -193,7 +193,7 @@ humhub.module('content.form', function (module, require, $) {
         const button = this.$.find('#post_submit_button');
 
         if (!stateLabel.length) {
-            stateLabel = $('<span>').addClass('label label-warning label-content-state');
+            stateLabel = $('<span>').addClass('badge text-bg-warning label-content-state');
             this.$.find('.label-container').append(stateLabel);
         }
 

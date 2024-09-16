@@ -219,6 +219,12 @@
     @import "../css/select2Theme/build.less";
 }
 
+// TODO: Remove this when Bootstrap 3 is no longer supported
+@prev-bootstrap3: false;
+& when not(@prev-bootstrap3) {
+    @import "bootstrap3.less";
+}
+
 // LEGACY/DEPRECATED User- & Space picker
 ul.tag_input {
     list-style: none;

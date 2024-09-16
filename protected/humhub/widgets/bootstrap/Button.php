@@ -12,167 +12,120 @@ use Yii;
 use yii\helpers\Url;
 
 /**
- * Helper class for creating buttons.
- *
- *  e.g:
- *
- * `<?= Button::primary('Some Text')->actionClick('myHandler', [/some/url])->sm() ?>`
- *
- * @package humhub\widgets
+ * Provides an extension of the yii\bootstrap5\Button class with additional features.
  */
-class Button extends BootstrapComponent
+class Button extends \yii\bootstrap5\Button
 {
-    public $_loader = true;
-    public $_link = false;
+    use BootstrapVariationsTrait;
 
-    /**
-     * @param string $text Button text
-     * @return static
-     */
-    public static function save($text = null)
+    public ?string $link = null;
+
+    public bool $loader = true;
+
+    public static function save($label = null): static
     {
-        if (!$text) {
-            $text = Yii::t('base', 'Save');
-        }
+        return static::primary($label ?? Yii::t('base', 'Save'));
+    }
 
-        return self::primary($text);
+    public static function asLink(string $label = null, string $href = '#'): static
+    {
+        return self::instance($label, 'link')
+            ->loader(false)
+            ->link($href);
     }
 
     /**
-     * @param string $text Button text
-     * @param string $href
-     * @return static
+     * @since 1.17
      */
-    public static function asLink($text = null, $href = '#')
+    public static function asBadge(string $label = null, ?string $color = null): static
     {
-        return self::none($text)->link($href);
+        return self::none($label)
+            ->cssClass(['badge', 'text-bg-' . $color]);
     }
 
-    /**
-     * @param string $text Button text
-     * @return static
-     * @throws \Exception
-     */
-    public static function back($url, $text = null)
+    public static function back($url, $label = null): static
     {
-        if (!$text) {
-            $text = Yii::t('base', 'Back');
-        }
-
-        return self::secondary($text)->link($url)->icon('back')->right()->loader(true)->sm();
+        return self::secondary($label ?? Yii::t('base', 'Back'))
+            ->link($url)
+            ->icon('back')
+            ->right()
+            ->loader(true)
+            ->sm();
     }
 
-    public static function userPickerSelfSelect($selector, $text = null)
+    public static function userPickerSelfSelect($selector, $label = null): static
     {
-        if (!$text) {
-            $text = Yii::t('base', 'Select Me');
-        }
-
-        return self::asLink($text)->action('selectSelf', null, $selector)->icon('fa-check-circle-o')->right()->cssClass('input-field-addon');
+        return self::asLink($label ?? Yii::t('base', 'Select Me'))
+            ->action('selectSelf', null, $selector)
+            ->icon('fa-check-circle-o')
+            ->right()
+            ->cssClass('input-field-addon');
     }
 
-    /**
-     * @param bool $active
-     * @return $this
-     */
-    public function loader($active = true)
+    public function loader($active = true): static
     {
-        $this->_loader = $active;
+        $this->loader = $active;
         return $this;
     }
 
-    /**
-     * @param null $url
-     * @return $this
-     */
-    public function link($url = null, $pjax = true)
+    public function link($url = null, $pjax = true): static
     {
-        $this->_link = true;
-
-        if (!$this->type || $this->type == self::TYPE_NONE) {
-            $this->loader(false);
-        }
-
-        $this->htmlOptions['href'] = Url::to($url);
-
+        $this->link = true;
+        $this->options['href'] = Url::to($url);
         $this->pjax($pjax);
 
         return $this;
     }
 
-    /**
-     * @param null $url
-     * @param bool $pjax
-     * @return |null
-     */
-    public function getHref()
+    public function getHref(): ?string
     {
-        return isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
+        return $this->options['href'] ?? null;
     }
 
     /**
      * If set to false the [data-pjax-prevent] flag is attached to the link.
-     * @param bool $pjax
-     * @return $this
      */
-    public function pjax($pjax = true)
+    public function pjax(bool $pjax = true): static
     {
         if (!$pjax) {
-            Html::addPjaxPrevention($this->htmlOptions);
+            Html::addPjaxPrevention($this->options);
         }
 
         return $this;
     }
 
-    /**
-     * @return bool
-     * @since 1.4
-     */
-    public function isPjaxEnabled()
+    public function isPjaxEnabled(): bool
     {
-        return Html::isPjaxEnabled($this->htmlOptions);
+        return Html::isPjaxEnabled($this->options);
     }
 
-    /**
-     * @return $this
-     */
-    public function submit()
+    public function submit(): static
     {
-        $this->htmlOptions['type'] = 'submit';
+        $this->options['type'] = 'submit';
         return $this;
     }
 
     /**
      * Adds a data-action-click handler to the button.
-     * @param $handler
-     * @param null $url
-     * @param null $target
-     * @return static
      */
-    public function action($handler, $url = null, $target = null)
+    public function action(string $handler, $url = null, ?string $target = null): static
     {
         return $this->onAction('click', $handler, $url, $target);
     }
 
     /**
      * Adds a data-action-* handler to the button.
-     *
-     * @param $event
-     * @param $handler
-     * @param null $url
-     * @param null $target
-     * @return $this
      */
-    public function onAction($event, $handler, $url = null, $target = null)
+    public function onAction(string $event, string $handler, $url = null, ?string $target = null): static
     {
-        $this->htmlOptions['data-action-' . $event] = $handler;
+        $this->options['data-action-' . $event] = $handler;
 
         if ($url) {
-            $this->htmlOptions['data-action-' . $event . '-url'] = Url::to($url);
+            $this->options['data-action-' . $event . '-url'] = Url::to($url);
         }
 
         if ($target) {
-            $this->htmlOptions['data-action-' . $event . '-target'] = $target;
+            $this->options['data-action-' . $event . '-target'] = $target;
         }
 
         return $this;
@@ -180,86 +133,69 @@ class Button extends BootstrapComponent
 
     /**
      * Adds a confirmation behaviour to the button.
-     *
-     * @param null $title
-     * @param null $body
-     * @param null $confirmButtonText
-     * @param null $cancelButtonText
-     * @return $this
      */
-    public function confirm($title = null, $body = null, $confirmButtonText = null, $cancelButtonText = null)
+    public function confirm(?string $title = null, ?string $body = null, ?string $confirmButtonText = null, ?string $cancelButtonText = null): static
     {
         if ($title) {
-            $this->htmlOptions['data-action-confirm-header'] = $title;
+            $this->options['data-action-confirm-header'] = $title;
         }
 
         if ($body) {
-            $this->htmlOptions['data-action-confirm'] = $body;
+            $this->options['data-action-confirm'] = $body;
         } else {
-            $this->htmlOptions['data-action-confirm'] = '';
+            $this->options['data-action-confirm'] = '';
         }
 
         if ($confirmButtonText) {
-            $this->htmlOptions['data-action-confirm-text'] = $confirmButtonText;
+            $this->options['data-action-confirm-text'] = $confirmButtonText;
         }
 
         if ($cancelButtonText) {
-            $this->htmlOptions['data-action-cancel-text'] = $cancelButtonText;
+            $this->options['data-action-cancel-text'] = $cancelButtonText;
         }
 
         return $this;
     }
 
     /**
-     * @return string renders and returns the actual html element by means of the current settings
+     * @inerhitdoc
      */
-    public function renderComponent()
+    public function run(): string
     {
-        if ($this->_loader) {
-            $this->htmlOptions['data-ui-loader'] = '';
+        $this->options = array_merge($this->options, $this->htmlOptions); // For compatibility with old bootstrap buttons
+
+        if ($this->loader) {
+            $this->options['data-ui-loader'] = '';
         }
 
         // Workaround since data-method handler prevents confirm or other action handlers from being executed.
-        if (isset($this->htmlOptions['data-action-confirm']) && isset($this->htmlOptions['data-method'])) {
-            $method = $this->htmlOptions['data-method'];
-            $this->htmlOptions['data-method'] = null;
-            $this->htmlOptions['data-action-method'] = $method;
+        if (isset($this->options['data-action-confirm'], $this->options['data-method'])) {
+            $method = $this->options['data-method'];
+            $this->options['data-method'] = null;
+            $this->options['data-action-method'] = $method;
         }
 
-        if ($this->text === null && $this->_icon !== null) {
-            $this->htmlOptions['class'] .= ' btn-icon-only';
+        if ($this->label === null && $this->icon !== null) {
+            $this->cssClass('btn-icon-only');
         }
 
-        if ($this->_link) {
-            $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
-            return Html::a($this->getText(), $href, $this->htmlOptions);
-        } else {
-            return Html::button($this->getText(), $this->htmlOptions);
+        $text =
+            ($this->icon ? $this->icon . ' ' : '') .
+            ($this->encodeLabel ? Html::encode($this->label) : $this->label);
+
+        if ($this->link) {
+            $href = $this->options['href'] ?? null;
+            return Html::a($text, $href, $this->options);
         }
+
+        return Html::button($text, $this->options);
     }
 
-    public function getWidgetOptions()
+    public static function instance(string $label = null, ?string $color = null): static
     {
-        $options = parent::getWidgetOptions();
-        $options['_link'] = $this->_link;
-        $options['_loader'] = $this->_loader;
-
-        return $options;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getComponentBaseClass()
-    {
-        return 'btn';
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function getTypedClass($type)
-    {
-        return 'btn-' . $type;
+        return new static([
+            'label' => $label,
+            'options' => $color ? ['class' => ['btn-' . $color]] : [],
+        ]);
     }
 }

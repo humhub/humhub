@@ -2,6 +2,7 @@
 
 use humhub\components\Module;
 use humhub\modules\marketplace\assets\Assets;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\Link;
 use yii\base\View;
@@ -64,9 +65,7 @@ Assets::register($this);
                         <div class="flex-grow-1">
                             <h4 class="media-heading"><?= $module['name']; ?>
                                 <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                                    <small><span
-                                            class="label label-info"><?= Yii::t('MarketplaceModule.base', 'Installed'); ?>
-                                    </span></small>
+                                    <small><?= Badge::info(Yii::t('MarketplaceModule.base', 'Installed')) ?></small>
                                 <?php endif; ?>
                             </h4>
                             <p><?= $module['description']; ?></p>

@@ -4,8 +4,8 @@ use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\Group;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\GridView;
-use humhub\widgets\Label;
 use humhub\widgets\Link;
 use yii\helpers\Url;
 
@@ -38,8 +38,8 @@ use yii\helpers\Url;
                 'value' => function (Group $group) {
                     // Yii::t is available for default texts
                     return Yii::t('AdminModule.base', $group->name) .
-                        ($group->is_default_group ? ' ' . Label::secondary(Yii::t('AdminModule.user', 'Default')) : '') .
-                        ($group->is_protected ? ' ' . Label::secondary(Yii::t('AdminModule.user', 'Protected')) : '');
+                        ($group->is_default_group ? ' ' . Badge::secondary(Yii::t('AdminModule.user', 'Default')) : '') .
+                        ($group->is_protected ? ' ' . Badge::secondary(Yii::t('AdminModule.user', 'Protected')) : '');
                 }
             ],
             [

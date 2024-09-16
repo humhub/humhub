@@ -15,7 +15,7 @@ use humhub\modules\marketplace\search\MarketplaceSearchProvider;
 use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\user\widgets\AccountTopMenu;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\MetaSearchWidget;
 use Yii;
 use yii\base\BaseObject;
@@ -75,7 +75,7 @@ class Events extends BaseObject
         $menu = $event->sender;
 
         $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
-        $updatesCountInfo = $updatesCount > 0 ? ' ' . Label::secondary($updatesCount) : '';
+        $updatesCountInfo = $updatesCount > 0 ? ' ' . Badge::secondary($updatesCount) : '';
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'Marketplace') . $updatesCountInfo,

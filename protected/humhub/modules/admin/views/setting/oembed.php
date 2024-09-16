@@ -2,6 +2,7 @@
 
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -36,11 +37,10 @@ JS, View::POS_READY);
                         </span>
                         <?php parse_str($provider['endpoint'], $query); ?>
                         <?php if (isset($query['access_token']) && empty($query['access_token'])): ?>
-                            <span class="label label-danger label-error"
-                                  data-bs-toggle="tooltip" data-placement="right"
-                                  title="<?= Yii::t('AdminModule.settings', 'Access token is not provided yet.') ?>">
-                                <i class="fa fa-exclamation-circle" aria-hidden="true"></i>
-                            </span>
+                            <?= Badge::danger()
+                                ->icon('fa-exclamation-circle')
+                                ->right()
+                                ->tooltip(Yii::t('AdminModule.settings', 'Access token is not provided yet.')) ?>
                         <?php endif; ?>
                     </div>
 

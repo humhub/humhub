@@ -5,6 +5,7 @@
 use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
+use humhub\widgets\bootstrap\Badge;
 use yii\helpers\Html;
 
 ?>
@@ -32,8 +33,9 @@ use yii\helpers\Html;
                 <p><?= Html::encode(Helpers::truncateText($space->description, 60)); ?></p>
                 <?php if ($space->hasTags()) : ?>
                     <div class="space-tags" style="display:none">
-                        <div
-                            class="label label-secondary"><?= implode('</div> <div class="label label-secondary">', $space->getTags()); ?></div>
+                        <?php foreach ($space->getTags() as $tag) : ?>
+                            <?= Badge::secondary($tag) . ' ' ?>
+                        <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </div>

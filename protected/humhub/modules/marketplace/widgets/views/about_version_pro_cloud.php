@@ -4,7 +4,7 @@ use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 ?>
-<div style="padding:20px;min-height:164px" class="jumbotron">
+<div style="padding:20px;min-height:164px">
     <div class="float-start" style="padding-right:24px;">
         <img src="<?= Yii::getAlias('@web-static/img/humhub_pro.jpg'); ?>" style="height:124px;">
     </div>

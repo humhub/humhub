@@ -93,7 +93,7 @@ class MenuLink extends MenuEntry
      */
     public function setLabel($label)
     {
-        $this->getLink()->setText($label);
+        $this->getLink()->setLabel($label);
         return $this;
     }
 
@@ -112,7 +112,7 @@ class MenuLink extends MenuEntry
      */
     public function getLabel()
     {
-        return $this->getLink()->text;
+        return $this->getLink()->label;
     }
 
     /**
@@ -120,7 +120,7 @@ class MenuLink extends MenuEntry
      */
     public function getIcon()
     {
-        return $this->getLink()->_icon;
+        return $this->getLink()->icon;
     }
 
     /**

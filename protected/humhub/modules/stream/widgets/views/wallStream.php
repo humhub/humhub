@@ -3,9 +3,9 @@
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\assets\StreamAsset;
 use humhub\modules\ui\view\components\View;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 /* @var $this View */
 /* @var $filterNav string */
@@ -16,9 +16,9 @@ StreamAsset::register($this);
 ?>
 
 <?php if ($contentContainer && $contentContainer->isArchived()) : ?>
-    <span class="label label-warning float-end" style="margin-top:10px;">
-        <?= Yii::t('ContentModule.base', 'Archived'); ?>
-    </span>
+    <?= Badge::warning(Yii::t('ContentModule.base', 'Archived'))
+        ->left()
+        ->style('margin-top:10px;') ?>
 <?php endif; ?>
 
 <!-- Stream filter section -->

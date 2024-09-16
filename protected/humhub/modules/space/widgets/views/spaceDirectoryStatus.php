@@ -6,7 +6,9 @@
  */
 
 /* @var $text string */
-/* @var $class string */
+
+use humhub\widgets\bootstrap\Badge;
+
 ?>
 
-<span class="card-status <?= $class ?>"><?= $text ?></span>
+<?= Badge::primary($text)->cssClass('card-status') ?>

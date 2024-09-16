@@ -2,6 +2,7 @@
 
 use humhub\modules\admin\models\Log;
 use humhub\modules\ui\view\components\View;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
 use humhub\widgets\LinkPager;
@@ -31,25 +32,23 @@ use yii\log\Logger;
             <li class="d-flex">
                 <div class="flex-grow-1" style="word-break: break-word">
 
-                    <?php
-                    switch ($entry->level) {
+                    <?php switch ($entry->level) {
                         case Logger::LEVEL_INFO:
-                            $labelClass = 'label-info';
+                            $bsColor = 'info';
                             $levelName = Yii::t('AdminModule.information', 'Info');
                             break;
                         case Logger::LEVEL_WARNING:
-                            $labelClass = 'label-warning';
+                            $bsColor = 'warning';
                             $levelName = Yii::t('AdminModule.information', 'Warning');
                             break;
                         case Logger::LEVEL_ERROR:
                         default:
-                            $labelClass = 'label-danger';
+                            $bsColor = 'danger';
                             $levelName = Yii::t('AdminModule.information', 'Error');
-                    }
-                    ?>
+                    } ?>
 
                     <h4 class="media-heading">
-                        <span class="label <?= $labelClass; ?>"><?= Html::encode($levelName) ?></span>&nbsp;
+                        <?= Badge::instance($levelName, $bsColor) ?>&nbsp;
                         <?= date('r', (int)$entry->log_time) ?>&nbsp;
                         <span class="float-end"><?= Html::encode($entry->category) ?></span>
                     </h4>

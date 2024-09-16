@@ -1,5 +1,6 @@
 <?php
 
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\LoaderWidget;
 use yii\helpers\Html;
@@ -14,7 +15,10 @@ use yii\helpers\Url;
     <i class="fa fa-bell"></i>
 </a>
 
-<span id="badge-notifications" style="display:none;" class="label label-danger label-notifications"></span>
+<?= Badge::danger()
+    ->id('badge-notifications')
+    ->cssClass('label-notifications')
+    ->style('display:none;') ?>
 
 <!-- container for ajax response -->
 <ul id="dropdown-notifications" class="dropdown-menu">

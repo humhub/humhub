@@ -42,7 +42,7 @@ class ScheduledCest
         $I->waitForText($postContent);
         $I->jsClick('.wall-entry:first .dropdown-toggle');
         $datetime = (new Datetime('today'))->setTime(7, 45);
-        $this->updateSchedulingOptions($I, $datetime, '.label-state-scheduled');
+        $this->updateSchedulingOptions($I, $datetime, '.badge-state-scheduled');
 
         $I->wantTo('ensure the scheduled content can be modified to draft');
         $I->jsClick('.wall-entry:first .dropdown-toggle');
@@ -75,6 +75,6 @@ class ScheduledCest
 
     private function disableSchedulingOptions(AcceptanceTester $I)
     {
-        $this->updateSchedulingOptions($I, null, '.label-state-draft');
+        $this->updateSchedulingOptions($I, null, '.badge-state-draft');
     }
 }

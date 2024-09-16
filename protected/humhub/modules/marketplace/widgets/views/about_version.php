@@ -3,7 +3,7 @@
 use yii\helpers\Url;
 
 ?>
-<div style="padding:20px" class="jumbotron">
+<div style="padding:20px">
 
     <div class="float-start" style="padding-right:12px">
         <img src="<?= Yii::getAlias('@web-static/img/humhub.png'); ?>" style="height:96px;">

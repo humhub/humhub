@@ -1,9 +1,10 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\widgets\GroupManagerMenu;
 use humhub\modules\user\models\Group;
+use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $group Group */
 
@@ -26,8 +27,8 @@ use humhub\widgets\bootstrap\Button;
 
 <?php if (!$group->isNewRecord) : ?>
     <?php if ($group->is_admin_group) : ?>
-        <div class="float-end"><span
-                class="label label-danger"><?= Yii::t('AdminModule.base', 'Administrative group'); ?></span>&nbsp;&nbsp;
+        <div class="float-end">
+            <?= Badge::danger(Yii::t('AdminModule.base', 'Administrative group')) ?>&nbsp;&nbsp;
         </div>
     <?php endif; ?>
     <?= GroupManagerMenu::widget(['group' => $group]); ?>
