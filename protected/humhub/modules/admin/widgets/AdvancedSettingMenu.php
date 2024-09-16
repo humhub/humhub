@@ -9,9 +9,9 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\menu\widgets\SubTabMenu;
 use Yii;
 use yii\helpers\Url;
-use humhub\modules\ui\menu\widgets\SubTabMenu;
 
 /**
  * Authentication Settings Menu
@@ -83,6 +83,15 @@ class AdvancedSettingMenu extends SubTabMenu
             'icon' => 'terminal',
             'sortOrder' => 600,
             'isActive' => MenuLink::isActiveState('admin', 'setting', ['logs', 'logs-edit']),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ]));
+
+        $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Topics'),
+            'url' => Url::toRoute('/admin/setting/topics'),
+            'icon' => 'tags',
+            'sortOrder' => 700,
+            'isActive' => MenuLink::isActiveState('admin', 'setting', ['topics', 'topic-edit']),
             'isVisible' => Yii::$app->user->isAdmin(),
         ]));
 

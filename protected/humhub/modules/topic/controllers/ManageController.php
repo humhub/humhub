@@ -8,14 +8,14 @@
 
 namespace humhub\modules\topic\controllers;
 
-use humhub\modules\user\models\User;
-use humhub\widgets\ModalClose;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\permissions\ManageTopics;
+use humhub\modules\user\models\User;
+use humhub\widgets\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
-use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 class ManageController extends ContentContainerController
 {
@@ -78,21 +78,27 @@ class ManageController extends ContentContainerController
     {
         $this->forcePostRequest();
 
-        $topic = Topic::findOne(['id' => $id]);
-        if ($topic) {
-            $topic->delete();
-            return ['success' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
+        $topic = Topic::find()
+            ->where(['id' => $id, 'contentcontainer_id' => $this->contentContainer->id])
+            ->one();
+
+        if (!$topic) {
+            throw new NotFoundHttpException();
         }
 
-        return ['success' => false];
+        $topic->delete();
+        
+        return ['success' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
     }
 
     public function actionEdit($id)
     {
-        $topic = Topic::findOne(['id' => $id]);
+        $topic = Topic::find()
+            ->where(['id' => $id, 'contentcontainer_id' => $this->contentContainer->id])
+            ->one();
 
         if (!$topic) {
-            throw new HttpException(404);
+            throw new NotFoundHttpException();
         }
 
         if ($topic->load(Yii::$app->request->post()) && $topic->save()) {

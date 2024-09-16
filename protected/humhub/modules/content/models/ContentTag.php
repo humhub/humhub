@@ -7,10 +7,10 @@
 
 namespace humhub\modules\content\models;
 
-use Yii;
-use yii\db\ActiveQuery;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use Yii;
+use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\db\IntegrityException;
 
@@ -140,6 +140,7 @@ class ContentTag extends ActiveRecord
     {
         return [
             [['name', 'module_id'], 'required'],
+            [['name'], 'trim'],
             [['name', 'module_id', 'type'], 'string', 'max' => '100'],
             ['color', 'string', 'max' => '7'],
             [['parent_id', 'sort_order'], 'integer'],
