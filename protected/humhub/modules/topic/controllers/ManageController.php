@@ -87,7 +87,7 @@ class ManageController extends ContentContainerController
         }
 
         $topic->delete();
-        
+
         return ['success' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
     }
 

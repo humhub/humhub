@@ -16,8 +16,8 @@ class ConvertTopicsToGlobalJob extends ActiveJob implements ExclusiveJobInterfac
 
     public function run()
     {
-//        sleep(20);
-//        return;
+        //        sleep(20);
+        //        return;
         $topics = Topic::find()->where(['IS NOT', 'contentcontainer_id', null])->all();
 
         foreach ($topics as $topic) {

@@ -24,7 +24,7 @@ class GlobalTopicSettingForm extends Model
 
     public function validateRestrictAdditionalTopics($attribute)
     {
-        if ($this->{$attribute} && QueueHelper::isQueued(new ConvertTopicsToGlobalJob)) {
+        if ($this->{$attribute} && QueueHelper::isQueued(new ConvertTopicsToGlobalJob())) {
             $this->{$attribute} = false;
             $this->addError($attribute, Yii::t('AdminModule.settings', 'Topics conversion has not been completed yet. Please retry in a few minutes.'));
         }
