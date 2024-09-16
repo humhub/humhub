@@ -18,9 +18,11 @@ class EnvHelper
         $config = [];
 
         foreach ($env as $key => $value) {
-            try {
-                $value = Json::decode($value);
-            } catch (InvalidArgumentException) {
+            $value = self::normalizeValue($value);
+
+            // Skip null values
+            if (is_null($value)) {
+                continue;
             }
 
             if (StringHelper::startsWith($key, self::FIXED_SETTING_PREFIX)) {
@@ -45,6 +47,23 @@ class EnvHelper
         }
 
         return $config;
+    }
+
+    private static function normalizeValue(mixed $value): mixed
+    {
+        try {
+            // Try to decode JSON
+            $value = Json::decode($value);
+        } catch (InvalidArgumentException) {
+            // Do nothing
+        }
+
+        // Normalize boolean values
+        if (in_array($value, ['true', 'false'], true)) {
+            return filter_var($value, FILTER_VALIDATE_BOOLEAN);
+        }
+
+        return $value;
     }
 
     private static function keyToPath(string $key): array
