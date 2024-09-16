@@ -28,6 +28,15 @@ Version 1.17 (Unreleased)
 - `humhub\modules\ui\form\widgets\SortOrderField` use `humhub\widgets\bootstrap\SortOrderField` instead
 - `humhub\libs\Html` use `humhub\widgets\bootstrap\Html` instead
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
+- `humhub\widgets\BootstrapComponent` use `humhub\widgets\bootstrap\BootstrapComponent` instead
+- `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
+- `humhub\widgets\Label` use `humhub\widgets\bootstrap\Label` instead
+- `BootstrapComponent::defaultType()` use `BootstrapComponent::secondary()` instead
+- `Button::defaultType()` use `Button::secondary()` instead
+- `Label::defaultType()` use `Label::secondary()` instead
+- `BootstrapComponent::TYPE_DEFAULT` use `BootstrapComponent::TYPE_SECONDARY` instead
+- `Button::TYPE_DEFAULT` use `Button::TYPE_SECONDARY` instead
+- `Label::TYPE_DEFAULT` use `Label::TYPE_SECONDARY` instead
 
 Version 1.16 (April 2024)
 -------------------------
