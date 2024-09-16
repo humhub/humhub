@@ -33,6 +33,7 @@ HumHub Changelog
 - Fix #7215: Wording: replace British "licence" with American "license"
 - Fix #6987: Added LatAm Spanish
 - Enh #7214: Replace theme variables with CSS variables
+- Enh #7221: Increase language column size for new language codes
 
 1.16.3 (Unreleased)
 --------------------------
