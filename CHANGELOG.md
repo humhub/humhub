@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7218: Fix visibility of wall stream content creating form
 - Fix #7219: Renamed deprecated meta tag
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7222: Fix rendering of checkbox on MacOS and iOS
 
 1.16.2 (September 5, 2024)
 --------------------------
