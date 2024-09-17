@@ -8,32 +8,25 @@
         top: 25px;
         left: 25px;
     }
-    .media {
-        display: flex;
-        .media-left {
-            margin-right: 16px;
-        }
-        .media-right {
-            min-width: 24px;
-        }
-    }
-    li {
+
+    .d-flex {
         border-left: none;
         background: none;
+
         &:hover {
             border-left: none;
             background-color: @background-color-secondary;
         }
+
         &.new {
             time {
                 color: @info;
             }
         }
+
         &:not(.new) {
-            .media-body {
-                *&, strong {
-                    color: @text-color-secondary;
-                }
+            *&, strong {
+                color: @text-color-secondary;
             }
         }
     }

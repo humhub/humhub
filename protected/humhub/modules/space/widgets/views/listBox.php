@@ -19,39 +19,35 @@ use humhub\widgets\ModalDialog;
 
 <div id="spacelist-content">
 
-    <ul class="media-list">
+    <div class="media-list">
         <!-- BEGIN: Results -->
         <?php foreach ($spaces as $space) : ?>
-            <li>
-                <a href="<?= $space->getUrl(); ?>" data-modal-close="1">
+            <a href="<?= $space->getUrl() ?>" data-modal-close="1" class="d-flex">
+                <div class="flex-shrink-0">
+                    <img class="rounded"
+                     src="<?= $space->getProfileImage()->getUrl() ?>" width="50"
+                     height="50" style="width: 50px; height: 50px;">
+                </div>
 
-                    <div class="d-flex">
-                        <img class="media-object rounded float-start"
-                             src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
-                             height="50" style="width: 50px; height: 50px;">
-
-                        <div class="flex-grow-1">
-                            <h4 class="media-heading"><?= Html::encode($space->name); ?></h4>
-                            <h5><?= Html::encode($space->description); ?></h5>
-                        </div>
-                    </div>
-                </a>
-            </li>
+                <div class="flex-grow-1">
+                    <h4 class="mt-0"><?= Html::encode($space->name) ?></h4>
+                    <h5><?= Html::encode($space->description) ?></h5>
+                </div>
+            </a>
 
         <?php endforeach; ?>
         <!-- END: Results -->
-
-    </ul>
+    </div>
 
     <div class="pagination-container">
         <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
     </div>
 
 </div>
-<script <?= Html::nonce() ?>>
 
+<script <?= Html::nonce() ?>>
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);
-
 </script>
+
 <?php ModalDialog::end() ?>

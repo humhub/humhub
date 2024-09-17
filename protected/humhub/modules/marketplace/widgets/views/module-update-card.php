@@ -19,7 +19,7 @@ Assets::register($this);
 <div class="card-panel">
     <div class="card-header">
         <?= Html::img($module->image, [
-            'class' => 'media-object rounded',
+            'class' => 'rounded',
             'data-src' => 'holder.js/60x60',
             'alt' => '60x60',
             'style' => 'width:60px;height:60px',

@@ -27,25 +27,27 @@ $module = Yii::$app->getModule('comment');
 
 ?>
 
-<div class="<?= $class; ?>" id="comment_<?= $comment->id; ?>"
+<div class="<?= $class ?>" id="comment_<?= $comment->id; ?>"
      data-action-component="comment.Comment">
 
     <hr class="comment-separator">
 
     <?= CommentControls::widget(['comment' => $comment]) ?>
 
-    <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $user->contentcontainer_id]]); ?>
-    <div>
-        <div class="flex-grow-1">
-            <h4 class="media-heading">
-                <?= Html::containerLink($user) ?>
-                <small>&middot <?= TimeAgo::widget(['timestamp' => $createdAt]) ?>
-                    <?php if ($comment->isUpdated()): ?>
-                        &middot <?= UpdatedIcon::getByDated($comment->updated_at) ?>
-                    <?php endif; ?>
-                </small>
-            </h4>
-        </div>
+    <div class="flex-shrink-0">
+        <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id]]) ?>
+    </div>
+
+    <div class="flex-grow-1">
+        <h4 class="comment-heading">
+            <?= Html::containerLink($user) ?>
+            <small>&middot <?= TimeAgo::widget(['timestamp' => $createdAt]) ?>
+                <?php if ($comment->isUpdated()): ?>
+                    &middot <?= UpdatedIcon::getByDated($comment->updated_at) ?>
+                <?php endif; ?>
+            </small>
+        </h4>
+
         <!-- class comment_edit_content required since v1.2 -->
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
             <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more

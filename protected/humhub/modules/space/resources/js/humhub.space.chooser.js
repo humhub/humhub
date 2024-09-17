@@ -320,7 +320,7 @@ humhub.module('space.chooser', function (module, require, $) {
                 }
             };
 
-            ui.loader.set(that.$remoteSearch, {'wrapper': '<li>', 'css': {padding: '5px'}});
+            ui.loader.set(that.$remoteSearch, {'wrapper': '<div class="d-flex">', 'css': {padding: '5px'}});
 
             client.get(url, options).then(function (response) {
                 that.currentXhr = undefined;

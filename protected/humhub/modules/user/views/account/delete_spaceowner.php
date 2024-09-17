@@ -15,7 +15,7 @@ use humhub\widgets\bootstrap\Html;
             <?= Image::widget(['space' => $space, 'width' => 38, 'link' => true]); ?>
         </div>
         <div class="flex-grow-1">
-            <h4 class="media-heading"><?= Html::containerLink($space); ?></h4>
+            <h4 class="mt-0"><?= Html::containerLink($space); ?></h4>
             <?= Yii::t('SpaceModule.base', '{count} members', ['count' => $space->getMemberships()->count()]); ?>
         </div>
     </div>

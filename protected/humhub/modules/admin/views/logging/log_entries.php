@@ -26,10 +26,10 @@ use yii\log\Logger;
         <hr>
     <?php endif; ?>
 
-    <ul class="media-list">
+    <div class="media-list">
         <?php foreach ($logEntries as $entry) : ?>
 
-            <li class="d-flex">
+            <div class="d-flex">
                 <div class="flex-grow-1" style="word-break: break-word">
 
                     <?php switch ($entry->level) {
@@ -47,7 +47,7 @@ use yii\log\Logger;
                             $levelName = Yii::t('AdminModule.information', 'Error');
                     } ?>
 
-                    <h4 class="media-heading">
+                    <h4 class="mt-0">
                         <?= Badge::instance($levelName, $bsColor) ?>&nbsp;
                         <?= date('r', (int)$entry->log_time) ?>&nbsp;
                         <span class="float-end"><?= Html::encode($entry->category) ?></span>
@@ -56,10 +56,10 @@ use yii\log\Logger;
                         <?= nl2br(Html::encode($entry->message)) ?>
                     </div>
                 </div>
-            </li>
+            </div>
 
         <?php endforeach; ?>
-    </ul>
+    </div>
 
     <?php if ($pagination->totalCount): ?>
         <div

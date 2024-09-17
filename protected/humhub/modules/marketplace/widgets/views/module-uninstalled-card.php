@@ -18,7 +18,7 @@ use humhub\widgets\bootstrap\Html;
     <?= ModuleStatus::widget(['module' => $module]) ?>
     <div class="card-header">
         <?= $module->marketplaceLink(Html::img($module->image, [
-            'class' => 'media-object rounded',
+            'class' => 'rounded',
             'data-src' => 'holder.js/94x94',
             'alt' => '94x94',
             'style' => 'width:94px;height:94px',

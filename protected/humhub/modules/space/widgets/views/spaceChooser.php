@@ -54,12 +54,12 @@ use yii\helpers\Url;
 
         <li class="divider"></li>
         <li>
-            <ul class="media-list notLoaded" id="space-menu-spaces">
+            <div class="media-list notLoaded" id="space-menu-spaces">
                 <?= $renderedItems ?>
-            </ul>
+            </div>
         </li>
         <li class="remoteSearch">
-            <ul id="space-menu-remote-search" class="media-list notLoaded"></ul>
+            <div id="space-menu-remote-search" class="media-list notLoaded"></div>
         </li>
 
         <?php if ($canCreateSpace) : ?>

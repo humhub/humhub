@@ -191,10 +191,10 @@ class Button extends \yii\bootstrap5\Button
         return Html::button($text, $this->options);
     }
 
-    public static function instance(string $label = null, ?string $color = null): static
+    public static function instance(?string $text = null, ?string $color = null): static
     {
         return new static([
-            'label' => $label,
+            'label' => $text,
             'options' => $color ? ['class' => ['btn-' . $color]] : [],
         ]);
     }

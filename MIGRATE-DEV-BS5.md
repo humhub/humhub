@@ -16,6 +16,7 @@ But you shouldn't use Bootstrap widgets directly from the external library. Use 
 ### New
 
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
+- `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
 - `humhub\widgets\bootstrap\Button::secondary()`
 - `humhub\widgets\bootstrap\Button::asBadge()`
 - `humhub\widgets\bootstrap\Button::light()`
@@ -40,14 +41,16 @@ But you shouldn't use Bootstrap widgets directly from the external library. Use 
 
 ## Replacements in HTML attributes
 
-These replacements must also be done in CSS and JS files.
+These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
+- `img-responsive` -> `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
+- `alert-default` -> `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
+- `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
+- `btn-default` -> `btn-secondary`
 - `pull-left` -> `float-start`
 - `pull-right` -> `float-end`
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
-- `img-responsive` -> `img-fluid` (buttons should be created by the `BaseImage` widget)
-- `btn-xs` -> `btn-sm` (buttons should be created by the `Button` widget)
 - `btn-group-xs` -> `btn-group-sm`
 - `hidden-xs` -> `d-none d-sm-block`
 - `img-rounded` -> `rounded`
@@ -58,21 +61,43 @@ These replacements must also be done in CSS and JS files.
 - `dropdown-menu-left` -> `dropdown-menu-start`
 - `dropdown-menu-right` -> `dropdown-menu-end`
 - `no-space` -> `m-0 p-0`
-- `media` (in the HTML class attribute only) -> `d-flex`
-- `media-body` -> `flex-grow-1`
-- `media-left` -> `flex-shrink-0`
-- `media-right` -> `flex-shrink-0 order-last`
-- `btn-default` -> `btn-secondary`
-- `alert-default` -> `alert-secondary`
+- `col-xs-` -> `col- `
+- Remove `jumbotron` class
+
+#### Label & Badge
+
+Labels are deprecated, as they have been removed from Bootstrap 5.
+
+Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
+
+Doc: https://getbootstrap.com/docs/5.3/components/badge/
+
+For existing badges, also use the `humhub\widgets\bootstrap\Badge` widget when possible.
+
+Replacements:
 - `badge-default` -> `text-bg-secondary`
 - `badge-primary` -> `text-bg-primary`
 - `badge-danger` -> `text-bg-danger`
 - `badge-warning` -> `text-bg-warning`
 - `badge-info` -> `text-bg-info`
 - `badge-success` -> `text-bg-success`
-- `col-xs-` -> `col- `
-- Remove `jumbotron` class
-- Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
+
+#### Media
+
+Medias are deprecated, as they have been removed from Bootstrap 5.
+
+- Search for `media-list` and replace `ul` tag with `div`. E.g. `<ul class="media-list">` -> `<div class="media-list">`
+- Inside, replace `li` tags with `div` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
+- Search for `media` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?media(?:\s[^"']*)?["'][^>]*>`) and replace with `d-flex`
+- `media-heading` -> `mt-0` (removes the top margin, keeping it close to the top of the content area) ; the related HTML tag can be replaced with `h5` or `h4`
+- `media-body` -> `flex-grow-1`
+- `media-left` -> `flex-shrink-0`
+- `media-right` -> `flex-shrink-0 order-last`
+- `media-object` -> `flex-shrink-0` (if on an image, encapsulate the image in a `div` tag with `flex-shrink-0` class)
+- Remove `float-start` (or `pull-left`) class for images inside a `<div class="flex-shrink-0">`
+
+Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
+
 
 ### Drop down menus
 

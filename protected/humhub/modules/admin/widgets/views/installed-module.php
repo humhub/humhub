@@ -15,7 +15,7 @@ use humhub\widgets\bootstrap\Html;
 <div class="module-row row">
     <div class="col-2 col-sm-1 module-icon">
         <?= Html::img($module->getImage(), [
-            'class' => 'media-object rounded',
+            'class' => 'rounded',
             'data-src' => 'holder.js/34x34',
             'alt' => '34x34',
             'style' => 'width:34px;height:34px',

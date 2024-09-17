@@ -44,13 +44,13 @@ $container = $model->content->container;
 <!-- end: show wall entry options -->
 
 
-<div class="wall-entry-header-image">
+<div class="wall-entry-header-image flex-shrink-0">
     <?= $headImage ?>
 </div>
 
 <div class="wall-entry-header-info flex-grow-1">
 
-    <div class="media-heading">
+    <h4 class="mt-0">
         <?= $title ?>
 
         <?php if ($renderOptions->isShowContainerInformationInTitle($model)) : ?>
@@ -59,9 +59,9 @@ $container = $model->content->container;
                 <?= Html::containerLink($model->content->container) ?>
             </span>
         <?php endif; ?>
-    </div>
+    </h4>
 
-    <div class="media-subheading">
+    <h5>
         <?php if ($renderOptions->isShowAuthorInformationInSubHeadLine($model)) : ?>
             <?= Html::containerLink($model->content->createdBy, ['class' => 'wall-entry-container-link']) ?>
         <?php endif ?>
@@ -93,5 +93,5 @@ $container = $model->content->container;
             <?= HiddenIcon::getByModel($model) ?>
             <?= LockCommentsIcon::getByModel($model) ?>
         </div>
-    </div>
+    </h5>
 </div>

@@ -3,12 +3,11 @@
 namespace humhub\modules\content\widgets\stream;
 
 use Exception;
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
-use humhub\modules\content\widgets\LockCommentsLink;
 use humhub\modules\content\widgets\EditLink;
+use humhub\modules\content\widgets\LockCommentsLink;
 use humhub\modules\content\widgets\MoveContentLink;
 use humhub\modules\content\widgets\NotificationSwitchLink;
 use humhub\modules\content\widgets\PermaLink;
@@ -22,6 +21,7 @@ use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\bootstrap\Html;
 use Yii;
 use yii\helpers\Url;
 
@@ -279,7 +279,6 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         return UserImage::widget([
             'user' => $this->model->content->createdBy,
             'width' => 40,
-            'htmlOptions' => ['class' => 'float-start'],
         ]);
     }
 

@@ -23,7 +23,7 @@
 }
 
 .comment {
-    .media {
+    .d-flex {
         position: relative !important;
         margin-top: 0;
 
@@ -77,8 +77,7 @@
     }
 
     /*-- Since v1.2 overflow: visible */
-
-    .media-body {
+    .flex-grow-1 {
         overflow: visible;
     }
 
@@ -96,7 +95,7 @@
 }
 
 .comment.guest-mode {
-    .media:last-child {
+    .d-flex:last-child {
         .wall-entry-controls {
             margin-bottom: 0;
             margin-left: @commentLeftMargin;
@@ -114,7 +113,7 @@
 }
 
 .comment-container {
-    .media {
+    .d-flex {
         overflow: visible;
     }
 
@@ -139,7 +138,7 @@
     }
 }
 
-.comment .media .media-body h4.media-heading a {
+.comment h4.comment-heading a {
     font-size: 13px;
     color: @text-color-highlight;
     margin-bottom: 3px;
@@ -147,7 +146,7 @@
 }
 
 // Hide seperator of last comment. Seperator is included in optional comment form
-div.comment > div.media:first-of-type {
+div.comment > div.d-flex:first-of-type {
     hr.comment-separator {
         display: none;
     }
@@ -174,7 +173,7 @@ div.nested-comments-root {
     }
 
     div.comment {
-        .media {
+        .d-flex {
             position: relative !important;
             margin-top: 0;
 

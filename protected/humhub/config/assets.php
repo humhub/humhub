@@ -82,7 +82,7 @@ return [
                 'sourcePath' => '@npm/jquery-ui/dist',
             ],
             BootstrapPluginAsset::class => [
-                'js' => ['js/bootstrap.min.js'],
+                'js' => ['dist/js/bootstrap.min.js'],
                 'depends' => [
                     JqueryAsset::class,
                     BootstrapAsset::class,

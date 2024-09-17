@@ -125,12 +125,13 @@ class MenuLink extends MenuEntry
 
     /**
      * @param $icon Icon|string the icon instance or icon name
-     * * @return static
+     * @param bool $right
+     * @return static
      * @throws Exception
      */
-    public function setIcon($icon, $right = false, $raw = false)
+    public function setIcon($icon, $right = false)
     {
-        $this->getLink()->icon($icon, $right, $raw);
+        $this->getLink()->icon($icon, $right);
         return $this;
     }
 
@@ -204,7 +205,7 @@ class MenuLink extends MenuEntry
         }
 
         if (isset($item['icon'])) {
-            $entry->setIcon($item['icon'], false, true);
+            $entry->setIcon($item['icon']);
         }
 
         if (isset($item['url'])) {

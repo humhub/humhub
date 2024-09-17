@@ -34,28 +34,28 @@ use yii\helpers\Url;
             <?php endif; ?>
             <!-- end: show wall entry options -->
 
-            <?=
-            UserImage::widget([
-                'user' => $user,
-                'width' => 40,
-                'htmlOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $user->contentcontainer_id]
-            ]);
-            ?>
+            <div class="flex-shrink-0">
+                <?= UserImage::widget([
+                    'user' => $user,
+                    'width' => 40,
+                    'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
+                ]) ?>
+            </div>
 
             <?php if ($showContentContainer && $container instanceof Space): ?>
-                <?=
-                SpaceImage::widget([
-                    'space' => $container,
-                    'width' => 20,
-                    'htmlOptions' => ['class' => 'img-space'],
-                    'link' => 'true',
-                    'linkOptions' => ['class' => 'float-start', 'data-contentcontainer-id' => $container->contentcontainer_id],
-                ]);
-                ?>
+                <div class="flex-shrink-0">
+                    <?= SpaceImage::widget([
+                        'space' => $container,
+                        'width' => 20,
+                        'htmlOptions' => ['class' => 'img-space'],
+                        'link' => 'true',
+                        'linkOptions' => ['data-contentcontainer-id' => $container->contentcontainer_id],
+                    ]) ?>
+                </div>
             <?php endif; ?>
 
             <div class="flex-grow-1">
-                <div class="media-heading">
+                <h4 class="mt-0">
                     <?= Html::containerLink($user); ?>
                     <?php if ($container && $showContentContainer): ?>
                         <span class="viaLink">
@@ -67,8 +67,9 @@ use yii\helpers\Url;
                     <div class="float-end <?= ($renderControls) ? 'labels' : '' ?>">
                         <?= WallEntryLabels::widget(['object' => $object]); ?>
                     </div>
-                </div>
-                <div class="media-subheading">
+                </h4>
+
+                <h5>
                     <a href="<?= Url::to(['/content/perma', 'id' => $object->content->id], true) ?>">
                         <?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
                     </a>
@@ -77,7 +78,7 @@ use yii\helpers\Url;
                         <span class="tt"
                               title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
                     <?php endif; ?>
-                </div>
+                </h5>
             </div>
             <hr/>
 

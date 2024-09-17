@@ -58,12 +58,14 @@ Assets::register($this);
                 <?php foreach ($modules as $module): ?>
                     <hr>
                     <div class="d-flex">
-                        <img class="media-object rounded float-start" data-src="holder.js/64x64" alt="64x64"
-                             style="width: 64px; height: 64px;"
-                             src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']; ?>">
+                        <div class="flex-shrink-0">
+                            <img class="rounded" data-src="holder.js/64x64" alt="64x64"
+                                 style="width: 64px; height: 64px;"
+                                 src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']; ?>">
+                        </div>
 
                         <div class="flex-grow-1">
-                            <h4 class="media-heading"><?= $module['name']; ?>
+                            <h4 class="mt-0"><?= $module['name']; ?>
                                 <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
                                     <small><?= Badge::info(Yii::t('MarketplaceModule.base', 'Installed')) ?></small>
                                 <?php endif; ?>

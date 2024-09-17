@@ -20,31 +20,29 @@ use yii\helpers\Html;
 
 <div id="userlist-content">
 
-    <ul class="media-list">
+    <div class="media-list">
         <?php foreach ($users as $user) : ?>
-            <li>
-                <a href="<?= $user->getUrl(); ?>" data-modal-close="1">
-                    <div class="d-flex">
-                        <?= Image::widget([
-                            'user' => $user,
-                            'link' => false,
-                            'htmlOptions' => ['class' => 'media-object float-start'],
-                            'hideOnlineStatus' => $hideOnlineStatus,
-                        ]) ?>
+        <a href="<?= $user->getUrl(); ?>" data-modal-close="1" class="d-flex">
+            <div class="flex-shrink-0">
+                <?= Image::widget([
+                    'user' => $user,
+                    'link' => false,
+                    'hideOnlineStatus' => $hideOnlineStatus,
+                ]) ?>
+            </div>
 
-                        <div class="flex-grow-1">
-                            <h4 class="media-heading"><?= Html::encode($user->displayName); ?></h4>
-                            <h5><?= Html::encode($user->displayNameSub); ?></h5>
-                        </div>
-                    </div>
-                </a>
-            </li>
-        <?php endforeach; ?>
-    </ul>
-
-    <div class="pagination-container">
-        <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+            <div class="flex-grow-1">
+                <h4 class="mt-0"><?= Html::encode($user->displayName); ?></h4>
+                <h5><?= Html::encode($user->displayNameSub); ?></h5>
+            </div>
+        </a>
     </div>
+    <?php endforeach; ?>
+</div>
+
+<div class="pagination-container">
+    <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+</div>
 </div>
 
 <div class="modal-footer">

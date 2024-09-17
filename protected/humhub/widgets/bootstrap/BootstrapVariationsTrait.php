@@ -32,15 +32,12 @@ trait BootstrapVariationsTrait
      */
     public array $htmlOptions = [];
 
-    /**
-     * @throws \Throwable
-     */
     public function __toString(): string
     {
-        return $this::widget(get_object_vars($this));
+        return $this->run();
     }
 
-    abstract public static function instance(string $label = null, ?string $color = null): static;
+    abstract public static function instance(?string $text = null, ?string $color = null): static;
 
     public static function primary(string $label = null): static
     {
@@ -87,9 +84,12 @@ trait BootstrapVariationsTrait
         return static::instance($label);
     }
 
-    public function icon($icon, $options = []): static
+    public function icon($icon, bool $right = false, $options = []): static
     {
-        $this->icon = Icon::get($icon, $options);
+        $this->icon = ($icon instanceof Icon) ? $icon : Icon::get($icon, $options);
+        if ($right) {
+            $this->icon->right();
+        }
 
         return $this;
     }

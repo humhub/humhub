@@ -14,7 +14,7 @@ use yii\bootstrap5\Widget;
 /**
  * Badge renders a bootstrap badge component.
  *
- * For example, `Badge::primary('New')` or `Badge::danger('New')->icon('user')->right()`.
+ * Usage example: `Badge::danger('New')->icon('user')->right()`.
  *
  * @since 1.17
  * @see https://getbootstrap.com/docs/5.3/components/badge/
@@ -81,10 +81,10 @@ class Badge extends Widget
      * @inerhitdoc
      * @throws \Throwable
      */
-    public static function instance(string $label = null, ?string $color = null): static
+    public static function instance(?string $text = null, ?string $color = null): static
     {
         return new static([
-            'label' => $label,
+            'label' => $text,
             'options' => $color ? ['class' => ['text-bg-' . $color]] : [],
         ]);
     }

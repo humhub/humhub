@@ -16,41 +16,40 @@ use yii\helpers\Html;
 /** @var string $url */
 /** @var string $relativeUrl */
 ?>
-<li <?php if ($isNew): ?>class="new"<?php endif; ?>
+
+<a
+    class="d-flex<?= $isNew ? ' new' : '' ?>"
+    href="<?= $relativeUrl ?? $url ?>"
     data-notification-id="<?= $record->id ?>"
     data-notification-group="<?= !empty($record->baseModel->getGroupkey())
         ? Html::encode(get_class($record->baseModel) . ':' . $record->baseModel->getGroupKey())
         : '' ?>">
-    <a href="<?= $relativeUrl ?? $url ?>">
-        <div class="d-flex">
-            <div class="flex-shrink-0">
-            <?php if ($originator) : ?>
-                <?= UserImage::widget([
-                    'user' => $originator,
-                    'width' => 32,
-                    'link' => false,
-                    'hideOnlineStatus' => true,
-                ]) ?>
-            <?php endif; ?>
-            <?php if ($space instanceof Space) : ?>
-                <?= SpaceImage::widget([
-                    'space' => $space,
-                    'width' => 20,
-                    'link' => false,
-                    'htmlOptions' => ['class' => 'img-space'],
-                ]) ?>
-            <?php endif; ?>
-            </div>
-            <div class="flex-grow-1">
-                <?= $content ?>
-                <br>
-                <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
-            </div>
-            <div class="flex-shrink-0 order-last align-center">
-            <?php if ($isNew) : ?>
-                <span class="badge-new"></span>
-            <?php endif; ?>
-            </div>
-        </div>
-    </a>
-</li>
+    <div class="flex-shrink-0">
+        <?php if ($originator) : ?>
+            <?= UserImage::widget([
+                'user' => $originator,
+                'width' => 32,
+                'link' => false,
+                'hideOnlineStatus' => true,
+            ]) ?>
+        <?php endif; ?>
+        <?php if ($space instanceof Space) : ?>
+            <?= SpaceImage::widget([
+                'space' => $space,
+                'width' => 20,
+                'link' => false,
+                'htmlOptions' => ['class' => 'img-space'],
+            ]) ?>
+        <?php endif; ?>
+    </div>
+    <div class="flex-grow-1">
+        <?= $content ?>
+        <br>
+        <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
+    </div>
+    <div class="flex-shrink-0 order-last align-center">
+        <?php if ($isNew) : ?>
+            <span class="badge-new"></span>
+        <?php endif; ?>
+    </div>
+</a>

@@ -42,6 +42,6 @@ class ActivityViewTest extends HumHubDbTestCase
         $this->assertNotNull($activity->record);
         $wallout = StreamEntryWidget::renderStreamEntry($activity->record);
         $this->assertStringContainsString('Content of default layout activity', $wallout);
-        $this->assertStringContainsString('media-object rounded', $wallout);
+        $this->assertStringContainsString('rounded', $wallout);
     }
 }

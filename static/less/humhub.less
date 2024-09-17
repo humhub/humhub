@@ -220,6 +220,7 @@
 }
 
 // TODO: Remove this when Bootstrap 3 is no longer supported
+// TODO: When converted to SCSS, move it to `mixins/deprecate` and wrap it in `@include deprecate("The `old-mixin()` mixin") { ... }`
 @prev-bootstrap3: false;
 & when not(@prev-bootstrap3) {
     @import "bootstrap3.less";

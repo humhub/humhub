@@ -32,7 +32,7 @@ class SearchRecord implements MetaSearchResultInterface
     public function getImage(): string
     {
         return Html::img($this->module->image, [
-            'class' => 'media-object rounded',
+            'class' => 'rounded',
             'data-src' => 'holder.js/36x36',
             'alt' => '36x36',
             'style' => 'width:36px;height:36px',

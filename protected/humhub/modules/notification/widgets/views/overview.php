@@ -41,7 +41,7 @@ use yii\helpers\Url;
         </div>
     </li>
     <li>
-        <ul class="media-list"></ul>
+        <div class="media-list"></div>
     </li>
     <li id="loader_notifications">
         <?= LoaderWidget::widget() ?>
