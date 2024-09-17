@@ -110,7 +110,7 @@ humhub.module('ui.loader', function (module, require, $) {
             if (cfg.position === 'left') {
                 $result.find('.sk-spinner').css('margin', '0');
             } else if (cfg.position === 'right') {
-                $result.find('.sk-spinner').css('margin', '0').addClass('pull-right');
+                $result.find('.sk-spinner').css('margin', '0').addClass('float-end');
                 $result.addClass('clearfix');
             }
         }

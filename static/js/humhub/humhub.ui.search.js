@@ -10,7 +10,7 @@ humhub.module('ui.search', function(module, require, $) {
         const that = this;
 
         that.selectors = {
-            toggler: '#search-menu[data-toggle=dropdown]',
+            toggler: '#search-menu[data-bs-toggle=dropdown]',
             panel: '#dropdown-search',
             close: '#dropdown-search-close',
             list: '.dropdown-search-list',
@@ -26,7 +26,7 @@ humhub.module('ui.search', function(module, require, $) {
             providerShowAll: '.search-provider-show-all',
             backdrop: '.dropdown-backdrop',
             additionalToggler: {
-                form: 'form[data-toggle="humhub.ui.search"]',
+                form: 'form[data-bs-toggle="humhub.ui.search"]',
                 input: 'input[type=text]:first',
                 submit: '[type=submit]'
             }

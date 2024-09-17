@@ -626,10 +626,10 @@ humhub.module('ui.modal', function (module, require, $) {
     var _setGlobalModalTargetHandler = function () {
 
         // unbind all previously-attached events
-        $("a[data-target='#globalModal']").off('.humhub:globalModal');
+        $("a[data-bs-target='#globalModal']").off('.humhub:globalModal');
 
         // deprecated use action handler instead @see get action
-        $(document).off('click.humhub:globalModal').on('click.humhub:globalModal', "a[data-target='#globalModal']", function (evt) {
+        $(document).off('click.humhub:globalModal').on('click.humhub:globalModal', "a[data-bs-target='#globalModal']", function (evt) {
             evt.preventDefault();
 
             var options = {

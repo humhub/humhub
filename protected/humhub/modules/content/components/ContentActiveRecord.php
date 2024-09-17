@@ -26,7 +26,6 @@ use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\Label;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -250,7 +249,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      *
      * @param array $labels
      * @param bool $includeContentName
-     * @return Label[]|string[] content labels used for example in wallentrywidget
+     * @return Badge[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
     public function getLabels($labels = [], $includeContentName = true)
