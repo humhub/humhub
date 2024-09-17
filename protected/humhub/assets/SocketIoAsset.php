@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Socket.IO client files
@@ -16,7 +16,7 @@ use yii\web\AssetBundle;
  * @since 1.3
  * @author luke
  */
-class SocketIoAsset extends AssetBundle
+class SocketIoAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

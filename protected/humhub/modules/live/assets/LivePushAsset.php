@@ -3,9 +3,9 @@
 namespace humhub\modules\live\assets;
 
 use humhub\assets\SocketIoAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class LivePushAsset extends AssetBundle
+class LivePushAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

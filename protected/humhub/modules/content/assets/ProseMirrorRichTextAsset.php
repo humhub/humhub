@@ -10,7 +10,7 @@
 namespace humhub\modules\content\assets;
 
 use humhub\assets\ProsemirrorEditorAsset;
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Asset for core content resources.
@@ -18,7 +18,7 @@ use humhub\components\assets\AssetBundle;
  * @since 1.3
  * @author buddha
  */
-class ProseMirrorRichTextAsset extends AssetBundle
+class ProseMirrorRichTextAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

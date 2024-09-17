@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class SpaceAsset extends AssetBundle
+class SpaceAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

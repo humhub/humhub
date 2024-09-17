@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * masonry asset class
  *
  * @author buddha
  */
-class ImagesLoadedAsset extends AssetBundle
+class ImagesLoadedAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

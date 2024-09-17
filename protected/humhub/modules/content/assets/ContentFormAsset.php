@@ -8,7 +8,7 @@
 
 namespace humhub\modules\content\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use yii\web\View;
 
 /**
@@ -17,7 +17,7 @@ use yii\web\View;
  * @since 1.2
  * @author buddha
  */
-class ContentFormAsset extends AssetBundle
+class ContentFormAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

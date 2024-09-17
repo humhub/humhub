@@ -8,8 +8,8 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
-use yii\web\View;
+use humhub\components\assets\CoreAssetBundle;
+use humhub\modules\ui\view\components\View;
 
 /**
  * AppDynamicAsset provides assets which are included in the core layout.
@@ -18,7 +18,7 @@ use yii\web\View;
  *
  * @since 1.2
  */
-class AppDynamicAsset extends AssetBundle
+class AppDynamicAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc
@@ -28,7 +28,7 @@ class AppDynamicAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $jsOptions = ['position' => View::POS_HEAD];
+    public $jsOptions = ['position' => View::POS_HEAD_BEGIN];
 
     /**
      * @inheritdoc

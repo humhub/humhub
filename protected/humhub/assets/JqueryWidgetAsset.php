@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * jquery-ui-widget
  *
  * @author luke
  */
-class JqueryWidgetAsset extends AssetBundle
+class JqueryWidgetAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

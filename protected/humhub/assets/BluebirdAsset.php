@@ -8,15 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
-use humhub\modules\ui\view\components\View;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * bluebird promis library
  *
  * @author luke
  */
-class BluebirdAsset extends AssetBundle
+class BluebirdAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc
@@ -27,11 +26,6 @@ class BluebirdAsset extends AssetBundle
      * @inheritdoc
      */
     public $defer = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

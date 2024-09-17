@@ -8,10 +8,10 @@
 
 namespace humhub\modules\activity\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use humhub\modules\stream\assets\StreamAsset;
 
-class ActivityAsset extends AssetBundle
+class ActivityAsset extends CoreAssetBundle
 {
     public $sourcePath = '@activity/resources';
 

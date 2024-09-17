@@ -8,9 +8,9 @@
 
 namespace humhub\modules\comment\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class CommentAsset extends AssetBundle
+class CommentAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

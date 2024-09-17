@@ -7,9 +7,9 @@
 
 namespace humhub\modules\user\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class PermissionGridModuleFilterAsset extends AssetBundle
+class PermissionGridModuleFilterAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

@@ -38,6 +38,13 @@ class View extends \yii\web\View
     public const BLOCK_SIDEBAR = 'sidebar';
 
     /**
+     * The location of registered JavaScript code block or files.
+     * This means the location is at the beginning of the head section, before any other positions.
+     * Used for core assets.
+     */
+    public const POS_HEAD_BEGIN = 0;
+
+    /**
      * @var string page title
      * @see View::setPageTitle
      */
@@ -344,11 +351,18 @@ class View extends \yii\web\View
 
         $lines = [];
 
+        if (!empty($this->jsFiles[self::POS_HEAD_BEGIN])) {
+            $lines[] = implode("\n", $this->jsFiles[self::POS_HEAD_BEGIN]);
+        }
         if (!empty($this->js[self::POS_HEAD])) {
             $lines[] = Html::script(implode("\n", $this->js[self::POS_HEAD]));
         }
+        if (!empty($this->jsFiles[self::POS_HEAD])) {
+            $lines[] = implode("\n", $this->jsFiles[self::POS_HEAD]);
+        }
 
         $this->js[self::POS_HEAD] = null;
+        $this->jsFiles[self::POS_HEAD] = null;
 
         return parent::renderHeadHtml() . (empty($lines) ? '' : implode("\n", $lines));
     }
@@ -521,7 +535,7 @@ class View extends \yii\web\View
     protected function flushJsConfig($key = null)
     {
         if (!empty($this->jsConfig)) {
-            $this->registerJs("humhub.config.set(" . json_encode($this->jsConfig) . ");", View::POS_BEGIN, $key);
+            $this->registerJs("humhub.config.set(" . json_encode($this->jsConfig) . ");", View::POS_HEAD, $key);
             $this->jsConfig = [];
         }
     }

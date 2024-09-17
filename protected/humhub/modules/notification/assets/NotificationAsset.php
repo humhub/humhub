@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class NotificationAsset extends AssetBundle
+class NotificationAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

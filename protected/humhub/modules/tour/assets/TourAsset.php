@@ -8,10 +8,10 @@
 
 namespace humhub\modules\tour\assets;
 
+use humhub\components\assets\CoreAssetBundle;
+use humhub\modules\ui\view\components\View;
 use Yii;
 use yii\helpers\Url;
-use yii\web\AssetBundle;
-use humhub\modules\ui\view\components\View;
 
 /**
  * Stream related assets.
@@ -19,7 +19,7 @@ use humhub\modules\ui\view\components\View;
  * @since 1.2
  * @author buddha
  */
-class TourAsset extends AssetBundle
+class TourAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

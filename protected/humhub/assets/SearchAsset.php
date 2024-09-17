@@ -7,14 +7,14 @@
 
 namespace humhub\assets;
 
+use humhub\components\assets\CoreAssetBundle;
 use yii\helpers\Url;
-use yii\web\AssetBundle;
 use yii\web\View;
 
 /**
  * @since 1.16
  */
-class SearchAsset extends AssetBundle
+class SearchAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

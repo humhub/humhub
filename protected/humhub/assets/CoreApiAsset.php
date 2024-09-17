@@ -9,7 +9,6 @@
 namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
-use yii\web\View;
 
 /**
  * HumHub Core Api Asset
@@ -20,11 +19,6 @@ class CoreApiAsset extends WebStaticAssetBundle
      * @inheritdoc
      */
     public $defer = false;
-
-    /**
-     * @inheritdoc
-     */
-    public $jsPosition = View::POS_HEAD;
 
     /**
      * @inheritdoc

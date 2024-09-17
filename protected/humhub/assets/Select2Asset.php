@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * select2
  *
  * @author buddha
  */
-class Select2Asset extends AssetBundle
+class Select2Asset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

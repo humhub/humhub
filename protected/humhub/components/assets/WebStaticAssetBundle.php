@@ -7,7 +7,7 @@ namespace humhub\components\assets;
  *
  * @package humhub\components\assets
  */
-class WebStaticAssetBundle extends AssetBundle
+class WebStaticAssetBundle extends CoreAssetBundle
 {
     /**
      * @inheritdoc

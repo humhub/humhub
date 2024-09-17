@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * Fixes https://github.com/humhub/humhub/issues/4638 by aligning jui and icu month short names
@@ -16,7 +16,7 @@ use humhub\components\assets\AssetBundle;
  * @author buddha
  * @since 1.7.1
  */
-class DatePickerRussianLanguageAsset extends AssetBundle
+class DatePickerRussianLanguageAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

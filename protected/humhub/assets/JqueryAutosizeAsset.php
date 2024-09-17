@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * jquery-autosize
  *
  * @author buddha
  */
-class JqueryAutosizeAsset extends AssetBundle
+class JqueryAutosizeAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

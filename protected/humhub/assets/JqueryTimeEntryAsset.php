@@ -8,15 +8,14 @@
 
 namespace humhub\assets;
 
-use Yii;
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * TimeAgo Asset Bundle
  *
  * @author luke
  */
-class JqueryTimeEntryAsset extends AssetBundle
+class JqueryTimeEntryAsset extends CoreAssetBundle
 {
     public $publishOptions = [
         'forceCopy' => false,

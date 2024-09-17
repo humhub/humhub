@@ -8,7 +8,7 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * IE9FixesAsset provides CSS/JS fixes for Internet Explorer 9 versions
@@ -17,7 +17,7 @@ use yii\web\AssetBundle;
  * @since 1.2
  * @author Luke
  */
-class Html5shivAsset extends AssetBundle
+class Html5shivAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

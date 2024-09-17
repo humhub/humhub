@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * jQery Blueimp File Upload
  *
  * @author luke
  */
-class BlueimpGalleryAsset extends AssetBundle
+class BlueimpGalleryAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

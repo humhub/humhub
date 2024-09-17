@@ -2,9 +2,9 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class TopNavigationAsset extends AssetBundle
+class TopNavigationAsset extends CoreAssetBundle
 {
     public $jsOptions = ['position' => \yii\web\View::POS_END];
 

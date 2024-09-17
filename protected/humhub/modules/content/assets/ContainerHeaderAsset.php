@@ -2,9 +2,9 @@
 
 namespace humhub\modules\content\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class ContainerHeaderAsset extends AssetBundle
+class ContainerHeaderAsset extends CoreAssetBundle
 {
     public $sourcePath = '@content/resources';
 

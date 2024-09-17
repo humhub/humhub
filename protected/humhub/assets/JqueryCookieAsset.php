@@ -8,14 +8,14 @@
 
 namespace humhub\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
 /**
  * jquery-cookie
  *
  * @author buddha
  */
-class JqueryCookieAsset extends AssetBundle
+class JqueryCookieAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

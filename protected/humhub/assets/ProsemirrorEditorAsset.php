@@ -8,9 +8,9 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 
-class ProsemirrorEditorAsset extends AssetBundle
+class ProsemirrorEditorAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc

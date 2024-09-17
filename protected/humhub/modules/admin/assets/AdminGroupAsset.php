@@ -8,10 +8,10 @@
 
 namespace humhub\modules\admin\assets;
 
-use yii\web\AssetBundle;
+use humhub\components\assets\CoreAssetBundle;
 use yii\web\View;
 
-class AdminGroupAsset extends AssetBundle
+class AdminGroupAsset extends CoreAssetBundle
 {
     /**
      * @inheritdoc
