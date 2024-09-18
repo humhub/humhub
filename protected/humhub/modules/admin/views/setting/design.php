@@ -30,6 +30,15 @@ $iconUrl = SiteIcon::getUrl(140);
 ?>
 
 <div class="panel-body">
+    <?php $form = ActiveForm::begin(); ?>
+    <?= Html::input('hidden', 'rebuild-theme-css', '1') ?>
+    <?= Button::primary(Yii::t('AdminModule.settings', '(Re)build theme CSS'))
+        ->tooltip(Yii::t('AdminModule.settings', 'Rebuild the CSS of the current theme'))
+        ->submit()
+//        ->confirm()
+        ->right() ?>
+    <?php ActiveForm::end(); ?>
+
     <h4><?= Yii::t('AdminModule.settings', 'Appearance Settings'); ?></h4>
     <div class="help-block">
         <?= Yii::t('AdminModule.settings', 'These settings refer to the appearance of your social network.'); ?>

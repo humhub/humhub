@@ -1,19 +1,40 @@
-Module Migration Guide to Bootstrap 5
+Module and Theme Migration Guide to Bootstrap 5
 =====================================
 
-## Changes to apply to modules
+## LESS is replaced with SCSS
 
-### Bootstrap widgets
+LESS format is not supported anymore.
+Use SCSS instead. See https://getbootstrap.com/docs/5.3/customize/sass/
+
+### Convert LESS to SCSS
+
+Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
+Prefix all SCSS files with `_` except the `build.scss` file.
+E.g.: `less/variables.less` -> `scss/_variables.scss`
+
+Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
+However, you need to check the output manually.
+
+### Variables
+
+- `$default` is deprecated. Use `$light` or `$secondary` instead.
+- New variables: `$secondary`, `$light` and `$dark`
+
+In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
+E.g.: `color: $primary` -> `color: var(--primary)`
+
+
+## Bootstrap widgets
 
 Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
 
 But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead. E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`. If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
 
-### Removed
+## Removed
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
 
-### New
+## New
 
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
 - `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
@@ -22,7 +43,7 @@ But you shouldn't use Bootstrap widgets directly from the external library. Use 
 - `humhub\widgets\bootstrap\Button::light()`
 - `humhub\widgets\bootstrap\Button::dark()`
 
-### Deprecations
+## Deprecations
 
 - `humhub\modules\ui\form\widgets\ActiveField` use `humhub\widgets\bootstrap\ActiveField` instead
 - `humhub\modules\ui\form\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
@@ -98,10 +119,10 @@ Medias are deprecated, as they have been removed from Bootstrap 5.
 
 Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
 
-
 ### Drop down menus
 
 Search for `dropdown-menu` in the code and add `dropdown-item` class to all link items ([see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
+
 
 ## Documentation
 

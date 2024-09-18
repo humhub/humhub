@@ -1,0 +1,137 @@
+//
+// Theme color classes
+// (Add this classes to the html elements from your
+// modules to adopt the colors from currently
+// activated theme)
+// --------------------------------------------------
+
+/* Default */
+@mixin colorDefault {
+    color: $default;
+}
+
+@mixin backgroundDefault {
+    background: $default;
+}
+
+@mixin borderDefault {
+    border-color: $default;
+}
+
+/* Primary */
+@mixin colorPrimary {
+    color: $primary !important;
+}
+
+@mixin backgroundPrimary {
+    background: $primary !important;
+}
+
+@mixin borderPrimary {
+    border-color: $primary !important;
+}
+
+/* Info */
+@mixin colorInfo {
+    color: $info !important;
+}
+
+@mixin backgroundInfo {
+    background: $info !important;
+}
+
+@mixin borderInfo {
+    border-color: $info !important;
+}
+
+/* Info */
+@mixin colorLink {
+    color: $link !important;
+}
+
+/* Success */
+@mixin colorSuccess {
+    color: $success !important;
+}
+
+@mixin backgroundSuccess {
+    background: $success !important;
+}
+
+@mixin borderSuccess {
+    border-color: $success !important;
+}
+
+/* Warning */
+@mixin colorWarning {
+    color: $warning !important;
+}
+
+@mixin backgroundWarning {
+    background: $warning !important;
+}
+
+@mixin borderWarning {
+    border-color: $warning !important;
+}
+
+/* Danger */
+@mixin colorDanger {
+    color: $danger !important;
+}
+
+@mixin backgroundDanger {
+    background: $danger !important;
+}
+
+@mixin borderDanger {
+    border-color: $danger !important;
+}
+
+/* Fonts */
+@mixin colorFont1 {
+    color: $text-color-soft3 !important;
+}
+
+@mixin colorFont2 {
+    color: $text-color-secondary !important;
+}
+
+@mixin colorFont3 {
+    color: $text-color-highlight !important;
+}
+
+@mixin colorFont4 {
+    color: $text-color-soft !important;
+}
+
+@mixin colorFont5 {
+    color: $text-color-soft2 !important;
+}
+
+@mixin heading {
+    font-size: 16px;
+    font-weight: 300;
+    color: $text-color-highlight;
+    background-color: white;
+    border: none;
+    padding: 10px;
+}
+
+@mixin text-center {
+    text-align: center !important;
+}
+
+@mixin text-break {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+}
+
+//
+// Thumbnails
+// --------------------------------------------------
+@mixin rounded {
+    border-radius: 3px;
+}
