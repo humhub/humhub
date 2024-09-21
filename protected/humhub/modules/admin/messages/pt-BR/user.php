@@ -59,7 +59,7 @@ return array (
   'Default content of the registration approval email' => 'Conteúdo padrão do e-mail de aprovação de registro',
   'Default content of the registration denial email' => 'Conteúdo padrão do e-mail de negação de registro',
   'Default group can not be deleted!' => 'O grupo padrão não pode ser excluído!',
-  'Default user idle timeout, auto-logout (in seconds, optional)' => 'Tempo padrão de ócio para logout (em segundos, opcional)',
+  'Default user idle timeout, auto-logout (in seconds, optional)' => 'Tempo limite de inatividade do usuário padrão, logout automático (em segundos, opcional)',
   'Default user profile visibility' => 'Visibilidade padrão do perfil do usuário',
   'Delete' => 'Apagar',
   'Delete All' => 'Apagar tudo',
