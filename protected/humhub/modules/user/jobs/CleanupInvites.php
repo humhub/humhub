@@ -8,7 +8,6 @@ use humhub\modules\user\Module;
 use Yii;
 use yii\db\Expression;
 
-
 class CleanupInvites extends ActiveJob
 {
     public function run()
@@ -18,7 +17,7 @@ class CleanupInvites extends ActiveJob
 
         Invite::deleteAll([
             '<', 'created_at',
-            new Expression("NOW() - INTERVAL :days DAY", [':days' => $module->invitesTimeToLiveInDays])
+            new Expression("NOW() - INTERVAL :days DAY", [':days' => $module->invitesTimeToLiveInDays]),
         ]);
     }
 }
