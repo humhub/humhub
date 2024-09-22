@@ -8,12 +8,13 @@
 
 namespace humhub\modules\topic\models;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\stream\helpers\StreamHelper;
-use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
-use humhub\modules\content\models\ContentTag;
 use Yii;
 
 /**
@@ -56,9 +57,9 @@ class Topic extends ContentTag
     /**
      * @return string link to topic filter stream page
      */
-    public function getUrl()
+    public function getUrl(?ContentContainerActiveRecord $contentContainer = null)
     {
-        return StreamHelper::createUrl($this->container, ['topicId' => $this->id]);
+        return StreamHelper::createUrl($contentContainer ?: $this->container, ['topicId' => $this->id]);
     }
 
     /**

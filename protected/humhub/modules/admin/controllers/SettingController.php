@@ -325,7 +325,7 @@ class SettingController extends Controller
     {
         $model = new Topic();
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
             $this->view->saved();
             $model->name = '';
         }
