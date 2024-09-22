@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #6987: Added LatAm Spanish
 - Enh #7214: Replace theme variables with CSS variables
 - Enh #7221: Increase language column size for new language codes
+- Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
 
 1.16.3 (Unreleased)
 --------------------------
