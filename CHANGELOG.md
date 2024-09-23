@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #6987: Added LatAm Spanish
 - Enh #7214: Replace theme variables with CSS variables
 - Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
 
 1.16.3 (Unreleased)
 --------------------------
