@@ -35,6 +35,7 @@ use yii\helpers\Url;
         <?= $form->field($model, 'hideFollowers')->checkbox(); ?>
         <?= $form->field($model, 'indexUrl')->dropDownList($indexModuleSelection) ?>
         <?= $form->field($model, 'indexGuestUrl')->dropDownList($indexModuleSelection) ?>
+        <?= $form->field($model, 'defaultStreamSort')->dropDownList($model::defaultStreamSortOptions()) ?>
         <?php if (Yii::$app->user->can(ManageSpaces::class)) : ?>
             <?= $form->field($model, 'sortOrder')->widget(SortOrderField::class) ?>
         <?php else: ?>

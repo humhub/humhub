@@ -11,6 +11,7 @@ namespace humhub\modules\space\models;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
+use humhub\modules\stream\actions\Stream;
 use Yii;
 use yii\base\Model;
 
@@ -42,6 +43,11 @@ class AdvancedSettings extends Model
      * @var string|null
      */
     public $indexGuestUrl = null;
+
+    /**
+     * @var string|null
+     */
+    public $defaultStreamSort = null;
 
     /**
      * @var bool
@@ -76,7 +82,8 @@ class AdvancedSettings extends Model
         return [
             [['sortOrder'], 'required'],
             [['sortOrder'], 'integer'],
-            [['indexUrl', 'indexGuestUrl'], 'string'],
+            [['indexUrl', 'indexGuestUrl', 'defaultStreamSort'], 'string'],
+            ['defaultStreamSort', 'in', 'range' => array_keys(self::defaultStreamSortOptions())],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space],
         ];
@@ -91,6 +98,7 @@ class AdvancedSettings extends Model
             'url' => 'URL',
             'indexUrl' => Yii::t('SpaceModule.base', 'Homepage'),
             'indexGuestUrl' => Yii::t('SpaceModule.base', 'Homepage (Non-members)'),
+            'defaultStreamSort' => Yii::t('SpaceModule.base', 'Stream Sort'),
             'hideMembers' => Yii::t('SpaceModule.base', 'Hide Members'),
             'hideActivities' => Yii::t('SpaceModule.base', 'Hide Activity Sidebar Widget'),
             'hideAbout' => Yii::t('SpaceModule.base', 'Hide About Page'),
@@ -106,6 +114,7 @@ class AdvancedSettings extends Model
         return [
             'indexUrl' => Yii::t('SpaceModule.base', 'The default homepage for members of this Space'),
             'indexGuestUrl' => Yii::t('SpaceModule.base', 'The default homepage for non-members and guests visiting this Space'),
+            'defaultStreamSort' => Yii::t('SpaceModule.base', 'Default Stream Sort'),
         ];
     }
 
@@ -120,6 +129,7 @@ class AdvancedSettings extends Model
         $this->url = $this->space->url;
         $this->indexUrl = $settings->get('indexUrl', $defaultSettings->defaultIndexRoute ? $this->space->createUrl($defaultSettings->defaultIndexRoute) : '');
         $this->indexGuestUrl = $settings->get('indexGuestUrl', $defaultSettings->defaultIndexGuestRoute ? $this->space->createUrl($defaultSettings->defaultIndexGuestRoute) : '');
+        $this->defaultStreamSort = $settings->get('defaultStreamSort', $defaultSettings->defaultStreamSort);
 
         $this->hideMembers = $settings->get('hideMembers', $defaultSettings->defaultHideMembers);
         $this->hideAbout = $settings->get('hideAbout', $defaultSettings->defaultHideAbout);
@@ -176,6 +186,7 @@ class AdvancedSettings extends Model
             $settings->delete('indexGuestUrl');
         }
 
+        $settings->set('defaultStreamSort', $this->defaultStreamSort);
         $settings->set('hideMembers', (bool)$this->hideMembers);
         $settings->set('hideAbout', (bool)$this->hideAbout);
         $settings->set('hideActivities', (bool)$this->hideActivities);
@@ -184,4 +195,11 @@ class AdvancedSettings extends Model
         return true;
     }
 
+    public static function defaultStreamSortOptions(): array
+    {
+        return [
+            Stream::SORT_CREATED_AT => Yii::t('AdminModule.space', 'Creation time'),
+            Stream::SORT_UPDATED_AT => Yii::t('AdminModule.space', 'Last update'),
+        ];
+    }
 }
