@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $hForm HForm */
 ?>

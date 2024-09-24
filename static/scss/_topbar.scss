@@ -85,6 +85,7 @@
         }
 
         .dropdown-toggle {
+            display: block;
             padding: 10px 5px 8px;
             line-height: 1.1em;
             text-align: left;
@@ -97,16 +98,6 @@
                 margin-bottom: 0;
             }
         }
-    }
-
-    .topbar-brand {
-        position: relative;
-        z-index: 2;
-    }
-
-    .topbar-actions {
-        position: relative;
-        z-index: 3;
     }
 
     .dropdown-menu {
@@ -133,11 +124,7 @@
     }
 
     .notifications {
-        position: absolute;
-        left: 0;
-        right: 0;
         text-align: center;
-        z-index: 1;
 
         .btn-group {
             position: relative;
@@ -347,6 +334,7 @@
     }
 
     .nav > li > a {
+        display: block;
         padding: 7px 13px 0;
         text-decoration: none;
         text-shadow: none;
@@ -393,6 +381,10 @@
     .nav > li > a#space-menu {
         padding-right: 13px;
         border-right: 1px solid #ededed;
+
+        .no-space {
+            display: inline;
+        }
     }
 
     .nav > li > a#search-menu {

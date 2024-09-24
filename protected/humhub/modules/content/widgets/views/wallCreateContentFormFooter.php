@@ -67,7 +67,7 @@ use yii\helpers\Html;
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-secondary']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm d-none', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
@@ -76,7 +76,7 @@ use yii\helpers\Html;
         <div class="float-end">
             <span class="label-container">
                 <?= Badge::info(Yii::t('ContentModule.base', 'Public'))
-                    ->cssClass(['badge-public', 'hidden']) ?>
+                    ->cssClass(['badge-public', 'd-none']) ?>
             </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">

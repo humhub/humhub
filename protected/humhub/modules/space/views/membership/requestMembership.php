@@ -3,8 +3,8 @@
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
 /**

@@ -24,7 +24,6 @@ use yii\helpers\Url;
         <!-- start: Show space image and name if chosen -->
         <?php if ($currentSpace) : ?>
             <?= Image::widget(['space' => $currentSpace, 'width' => 32, 'htmlOptions' => ['class' => 'current-space-image']]); ?>
-            <b class="caret"></b>
         <?php endif; ?>
 
         <?php if (!$currentSpace) : ?>

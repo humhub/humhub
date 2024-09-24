@@ -15,6 +15,6 @@ namespace humhub\modules\ui\form\widgets;
  * @since 1.2
  * @author Luke
  */
-class ActiveField extends \humhub\widgets\bootstrap\ActiveField
+class ActiveField extends \humhub\widgets\form\ActiveField
 {
 }

@@ -13,7 +13,6 @@ use humhub\widgets\bootstrap\Button;
         <i class="fa fa-download"></i> <?= Yii::t('base', 'Export') ?>
     </button>
     <button type="button" class="btn btn-sm btn-info dropdown-toggle" data-bs-toggle="dropdown">
-        <span class="caret"></span>
         <span class="sr-only">Toggle Dropdown</span>
     </button>
     <ul class="dropdown-menu">

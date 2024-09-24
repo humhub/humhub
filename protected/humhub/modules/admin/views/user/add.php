@@ -2,8 +2,8 @@
 
 use humhub\compat\HForm;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalButton;
-use humhub\widgets\bootstrap\ActiveForm;
 
 /**
  * @var $hForm HForm

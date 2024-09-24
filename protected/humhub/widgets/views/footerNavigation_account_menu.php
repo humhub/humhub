@@ -21,10 +21,10 @@ use humhub\widgets\bootstrap\Html;
 ?>
 
 <?php if (!empty($entries)): ?>
-    <li class="dropdown-divider visible-sm visible-xs"></li>
+    <li class="dropdown-divider d-none d-sm-block d-md-none"></li>
     <?php foreach ($entries as $k => $entry): ?>
         <?php if ($entry instanceof MenuLink): ?>
-            <li class="visible-sm visible-xs footer-nav-entry">
+            <li class="d-none d-sm-block d-md-none footer-nav-entry">
                 <?= Html::a($entry->getIcon() . ' ' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
             </li>
         <?php endif; ?>

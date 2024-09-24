@@ -49,8 +49,6 @@ $userModel = Yii::$app->user->identity;
                 'htmlOptions' => ['id' => 'user-account-image'],
                 'showSelfOnlineStatus' => true,
             ]) ?>
-
-            <b class="caret"></b>
         </a>
         <ul class="dropdown-menu float-end">
             <?php foreach ($entries as $entry): ?>

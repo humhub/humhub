@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\installer\controllers\ConfigController;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 
 ?>
 <div id="name-form" class="panel panel-default animated fadeIn">

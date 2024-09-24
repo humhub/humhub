@@ -9,7 +9,7 @@
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 

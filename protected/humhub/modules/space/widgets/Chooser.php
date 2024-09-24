@@ -116,8 +116,8 @@ class Chooser extends Widget
      */
     protected function getNoSpaceHtml()
     {
-        $html = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'My spaces') . '<b class="caret"></b>';
-        return Html::tag('div', $html, ['class' => 'm-0 p-0']);
+        $html = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'My spaces');
+        return Html::tag('div', $html, ['class' => 'no-space']);
     }
 
     /**

@@ -2,7 +2,7 @@
 
 use humhub\compat\HForm;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $hForm HForm */
 /* @var $user \humhub\modules\user\models\User */

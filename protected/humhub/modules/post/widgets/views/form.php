@@ -3,7 +3,7 @@
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\content\widgets\WallCreateContentFormFooter;
 use humhub\modules\post\models\Post;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var string $mentioningUrl */
 /* @var ActiveForm $form */

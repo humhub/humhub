@@ -2,12 +2,12 @@
 
 use humhub\libs\DateHelper;
 use humhub\modules\admin\assets\LogAsset;
+use humhub\modules\admin\models\forms\LogFilterForm;
 use humhub\modules\admin\models\Log;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\view\components\View;
-use humhub\modules\admin\models\forms\LogFilterForm;
+use humhub\widgets\form\ActiveForm;
 use yii\data\Pagination;
 use yii\helpers\Html;
 use yii\helpers\Url;

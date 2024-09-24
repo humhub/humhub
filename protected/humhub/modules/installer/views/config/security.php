@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\installer\forms\SecurityForm;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var SecurityForm $model */
 ?>

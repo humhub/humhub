@@ -8,16 +8,16 @@
 
 namespace humhub\modules\content\widgets;
 
+use humhub\components\Widget;
+use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use humhub\modules\topic\models\Topic;
-use humhub\widgets\bootstrap\ActiveForm;
-use humhub\components\Widget;
 use humhub\modules\user\models\User;
-use humhub\modules\space\models\Space;
-use humhub\modules\content\models\Content;
-use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\content\components\ContentActiveRecord;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\web\HttpException;
 

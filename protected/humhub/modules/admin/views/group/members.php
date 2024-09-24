@@ -3,15 +3,15 @@
 use humhub\modules\admin\assets\AdminGroupAsset;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\UserSearch;
-use humhub\modules\user\models\Group;
-use humhub\widgets\bootstrap\Button;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\GridView;
-use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\widgets\UserPickerField;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 /* @var $group Group */
 /* @var $addGroupMemberForm AddGroupMemberForm */

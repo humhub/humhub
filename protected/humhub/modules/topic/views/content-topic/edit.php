@@ -9,7 +9,7 @@
 use humhub\modules\topic\models\forms\ContentTopicsForm;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 

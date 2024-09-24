@@ -1,9 +1,9 @@
 <?php
 
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\View;

@@ -505,6 +505,8 @@
         padding: 0 !important;
         pointer-events: none;
         height: 0;
+        display: block;
+        min-height: 0;
     }
 
     .ProseMirror:focus .placeholder {

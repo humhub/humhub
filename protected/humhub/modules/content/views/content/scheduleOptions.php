@@ -9,8 +9,8 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\TimePicker;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 

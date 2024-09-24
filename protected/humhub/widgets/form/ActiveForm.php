@@ -6,9 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\widgets\bootstrap;
+namespace humhub\widgets\form;
 
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * A HumHub enhanced version of native bootstrap ActiveForm

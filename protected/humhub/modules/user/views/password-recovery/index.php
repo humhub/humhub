@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\user\models\forms\AccountRecoverPassword;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
 use yii\captcha\Captcha;
 use yii\helpers\Html;

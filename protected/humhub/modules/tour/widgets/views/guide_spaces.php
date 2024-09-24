@@ -1,7 +1,6 @@
 <?php
 
 use humhub\widgets\bootstrap\Html;
-use yii\helpers\Url;
 
 ?>
 
@@ -25,7 +24,7 @@ use yii\helpers\Url;
                         placement: "right"
                     },
                     {
-                        element: ".dropdown-navigation",
+                        element: ".dropdown",
                         title: <?= json_encode(Yii::t('TourModule.spaces', '<strong>Space</strong> preferences')); ?>,
                         content: <?= json_encode(Yii::t('TourModule.spaces', 'This menu is only visible for space admins. Here you can manage your space settings, add/block members and activate/deactivate tools for this space.')); ?>,
                         placement: "bottom"

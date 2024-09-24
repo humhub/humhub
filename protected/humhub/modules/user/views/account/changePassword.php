@@ -1,8 +1,8 @@
 <?php
 
-use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\DataSaved;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\DataSaved;
+use humhub\widgets\form\ActiveForm;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php'); ?>

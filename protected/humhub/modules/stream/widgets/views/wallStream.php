@@ -38,7 +38,7 @@ StreamAsset::register($this);
 <?= Html::endTag('div') ?>
 
 <!-- show "Load More" button on mobile devices -->
-<div class="col-md-12 text-center visible-xs visible-sm">
+<div class="col-md-12 text-center d-none d-sm-block d-md-none">
     <?= Button::primary(Yii::t('ContentModule.base', 'Load more'))
         ->id('btn-load-more')
         ->action('loadMore', null, '#wallStream')

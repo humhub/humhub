@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\widgets\bootstrap;
+namespace humhub\widgets\form;
 
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -14,6 +14,7 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
+use humhub\widgets\bootstrap\Html;
 use Yii;
 use yii\bootstrap5\InputWidget;
 

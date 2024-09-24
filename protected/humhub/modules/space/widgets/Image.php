@@ -76,9 +76,9 @@ class Image extends BaseImage
         $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
 
         if (!$defaultImage) {
-            $acronymHtmlOptions['class'] .= " hidden";
+            $acronymHtmlOptions['class'] .= " d-none";
         } else {
-            $imageHtmlOptions['class'] .= " hidden";
+            $imageHtmlOptions['class'] .= " d-none";
         }
 
         return $this->render('@space/widgets/views/image', [

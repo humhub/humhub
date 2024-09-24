@@ -2,8 +2,8 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceNameColorInput;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Url;

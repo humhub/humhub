@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\widgets\bootstrap;
+namespace humhub\widgets\form;
 
 use Yii;
 use yii\bootstrap5\InputWidget;

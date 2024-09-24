@@ -14,7 +14,7 @@ use humhub\modules\file\components\FileManager;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\form\widgets\SortOrderField;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\helpers\Html;
 use yii\widgets\ActiveField;

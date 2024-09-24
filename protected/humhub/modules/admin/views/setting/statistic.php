@@ -1,11 +1,10 @@
 <?php
 
-use humhub\widgets\bootstrap\ActiveForm;
-use humhub\widgets\DataSaved;
-use yii\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
-use yii\web\View;
+use humhub\widgets\DataSaved;
+use humhub\widgets\form\ActiveForm;
+use yii\helpers\Html;
 
 /* @var $model StatisticSettingsForm */
 

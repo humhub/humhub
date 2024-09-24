@@ -4,9 +4,9 @@ use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\DataSaved;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

@@ -2,7 +2,7 @@
 
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 
 /* @var BasicSettingsForm $model */

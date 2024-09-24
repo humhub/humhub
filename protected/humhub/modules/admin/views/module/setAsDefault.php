@@ -5,8 +5,8 @@ use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
 

@@ -1,7 +1,7 @@
 <?php
 
-use yii\helpers\Html;
 use humhub\modules\friendship\models\Friendship;
+use yii\helpers\Html;
 
 /* @var $user \humhub\modules\user\models\User */
 /* @var $friendshipState string */
@@ -16,7 +16,6 @@ use humhub\modules\friendship\models\Friendship;
         <?= Html::a($options['acceptFriendRequest']['title'], '#', $options['acceptFriendRequest']['attrs']); ?>
         <button type="button" class="<?= $options['acceptFriendRequest']['togglerClass'] ?> dropdown-toggle"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">

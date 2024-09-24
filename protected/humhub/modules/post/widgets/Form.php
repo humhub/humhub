@@ -11,7 +11,7 @@ namespace humhub\modules\post\widgets;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 /**

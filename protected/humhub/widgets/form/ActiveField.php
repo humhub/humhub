@@ -6,9 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\widgets\bootstrap;
+namespace humhub\widgets\form;
 
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\bootstrap\Html;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 

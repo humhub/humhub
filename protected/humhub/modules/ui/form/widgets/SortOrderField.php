@@ -28,6 +28,6 @@ namespace humhub\modules\ui\form\widgets;
  * @since 1.6
  * @package humhub\modules\ui\form\widgets
  */
-class SortOrderField extends \humhub\widgets\bootstrap\SortOrderField
+class SortOrderField extends \humhub\widgets\form\SortOrderField
 {
 }

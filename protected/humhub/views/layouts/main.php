@@ -30,17 +30,17 @@ AppAsset::register($this);
 
         <!-- start: first top navigation bar -->
         <div id="topbar-first" class="topbar">
-            <div class="container">
+            <div class="container d-flex justify-content-between">
                 <div class="topbar-brand d-none d-sm-block">
                     <?= SiteLogo::widget() ?>
                 </div>
 
-                <div class="topbar-actions float-end">
-                    <?= AccountTopMenu::widget() ?>
+                <div class="notifications">
+                    <?= NotificationArea::widget() ?>
                 </div>
 
-                <div class="notifications float-end">
-                    <?= NotificationArea::widget() ?>
+                <div class="topbar-actions">
+                    <?= AccountTopMenu::widget() ?>
                 </div>
             </div>
         </div>

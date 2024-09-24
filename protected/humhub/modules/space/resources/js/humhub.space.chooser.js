@@ -423,7 +423,7 @@ humhub.module('space.chooser', function (module, require, $) {
      * @returns {undefined}
      */
     SpaceChooser.prototype.setNoSpace = function () {
-        if (!this.$menu.find('.m-0 p-0').length) {
+        if (!this.$menu.find('.no-space').length) {
             this._changeMenuButton(module.config.noSpace);
         }
     };
@@ -436,7 +436,7 @@ humhub.module('space.chooser', function (module, require, $) {
      */
     SpaceChooser.prototype.setSpace = function (space) {
         this.setSpaceMessageCount(space, 0);
-        this._changeMenuButton(space.image + ' <b class="caret"></b>');
+        this._changeMenuButton(space.image);
     };
 
     SpaceChooser.prototype.setSpaceMessageCount = function (space, count) {

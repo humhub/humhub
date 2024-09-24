@@ -21,7 +21,6 @@ TopNavigationAsset::register($this);
     <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-bs-toggle="dropdown">
         <i class="fa fa-align-justify"></i><br>
         <?= Yii::t('base', 'Menu'); ?>
-        <b class="caret"></b>
     </a>
     <ul id="top-menu-sub-dropdown" class="dropdown-menu dropdown-menu-end">
 

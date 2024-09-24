@@ -164,13 +164,13 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.setPublicVisibility = function () {
         $('#contentForm_visibility').prop("checked", true);
         $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
-        $('.badge-public').removeClass('hidden');
+        $('.badge-public').removeClass('d-none');
     };
 
     CreateForm.prototype.setPrivateVisibility = function () {
         $('#contentForm_visibility').prop("checked", false);
         $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
-        $('.badge-public').addClass('hidden');
+        $('.badge-public').addClass('d-none');
     };
 
     CreateForm.prototype.notifyUser = function () {

@@ -1,9 +1,9 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
 
 /**

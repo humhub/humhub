@@ -1,7 +1,7 @@
 <?php
 
-use humhub\modules\space\models\Space;
 use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use yii\helpers\Html;
 
 /* @var $membership Membership */
@@ -23,7 +23,6 @@ if ($membership === null) {
         <?= Html::a($options['acceptInvite']['title'], $options['acceptInvite']['url'], $options['acceptInvite']['attrs']); ?>
         <button type="button" class="<?= $options['acceptInvite']['togglerClass'] ?> dropdown-toggle"
                 data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">

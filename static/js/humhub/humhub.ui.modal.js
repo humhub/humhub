@@ -583,9 +583,9 @@ humhub.module('ui.modal', function (module, require, $) {
             var $modal = $(this);
             modalZIndex++;
             $modal.css('zIndex', modalZIndex);
-            $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+            $modal.next('.modal-backdrop.in').addClass('d-none').css('zIndex', modalZIndex - 1);
         });
-        $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+        $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('d-none');
     };
 
     /**

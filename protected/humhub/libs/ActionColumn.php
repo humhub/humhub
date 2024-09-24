@@ -51,8 +51,8 @@ class ActionColumn extends Column
             return '';
         }
 
-        $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
-        $html .= Button::secondary('<span class="caret"></span>')->cssClass('dropdown-toggle')
+        $html = Html::beginTag('div', ['class' => 'btn-group dropdown']);
+        $html .= Button::secondary()->cssClass('dropdown-toggle')
             ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
         foreach ($actions as $title => $url) {

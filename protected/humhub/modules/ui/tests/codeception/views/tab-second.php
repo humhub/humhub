@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use tests\codeception\models\TestTabbedFormModel;
 
 /* @var $form ActiveForm */

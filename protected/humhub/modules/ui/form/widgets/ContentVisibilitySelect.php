@@ -30,6 +30,6 @@ namespace humhub\modules\ui\form\widgets;
  * @since 1.6
  * @package humhub\modules\ui\form\widgets
  */
-class ContentVisibilitySelect extends \humhub\widgets\bootstrap\ContentVisibilitySelect
+class ContentVisibilitySelect extends \humhub\widgets\form\ContentVisibilitySelect
 {
 }

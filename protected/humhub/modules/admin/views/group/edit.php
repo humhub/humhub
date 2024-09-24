@@ -4,8 +4,8 @@ use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\user\models\forms\EditGroupForm;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\widgets\bootstrap\ActiveForm;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Html;
 use yii\helpers\Url;
 

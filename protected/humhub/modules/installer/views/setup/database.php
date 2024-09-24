@@ -1,8 +1,8 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\installer\forms\DatabaseForm;
-use humhub\widgets\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var DatabaseForm $model */
 /* @var string $errorMessage */

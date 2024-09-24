@@ -16,12 +16,12 @@ Module and Theme Migration Guide to Bootstrap 5
 
 ## Deprecations
 
-- `humhub\modules\ui\form\widgets\ActiveField` use `humhub\widgets\bootstrap\ActiveField` instead
-- `humhub\modules\ui\form\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
-- `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\bootstrap\ContentHiddenCheckbox` instead
-- `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\bootstrap\ContentVisibilitySelect` instead
+- `humhub\modules\ui\form\widgets\ActiveField` use `humhub\widgets\form\ActiveField` instead
+- `humhub\modules\ui\form\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
+- `humhub\modules\ui\form\widgets\SortOrderField` use `humhub\widgets\form\SortOrderField` instead
+- `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\form\ContentHiddenCheckbox` instead
+- `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\form\ContentVisibilitySelect` instead
 - `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
-- `humhub\modules\ui\form\widgets\SortOrderField` use `humhub\widgets\bootstrap\SortOrderField` instead
 - `humhub\libs\Html` use `humhub\widgets\bootstrap\Html` instead
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
@@ -65,6 +65,8 @@ But you shouldn't use Bootstrap widgets directly from the external library. Use 
 
 These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
+### General replacements
+
 - `img-responsive` -> `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
 - `alert-default` -> `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
 - `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
@@ -74,20 +76,39 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
 - `btn-group-xs` -> `btn-group-sm`
-- `hidden-xs` -> `d-none d-sm-block`
+- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
 - `img-rounded` -> `rounded`
 - `media-object img-rounded` -> `rounded`
 - `data-toggle` -> `data-bs-toggle`
 - `data-target` -> `data-bs-target`
 - `data-dismiss` -> `data-bs-dismiss`
-- `dropdown-menu-left` -> `dropdown-menu-start`
-- `dropdown-menu-right` -> `dropdown-menu-end`
 - `no-space` -> `m-0 p-0`
 - `col-xs-` -> `col- `
 - Remove `jumbotron` class
+
+### Hidden classes
+
+In the following replacements, you replace `block` with `inline` or `flex` (depending on the desired display mode).
+E.g., you can use `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
+
+- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
+- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
+- `hidden-md` → `d-md-none d-lg-block`
+- `hidden-lg` → `d-lg-none d-xl-block`
+- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")` and `Class' => 'hidden'`) -> `d-none`
+- `visible-xs` → `d-block d-sm-none`
+- `visible-sm` → `d-none d-sm-block d-md-none`
+- `visible-md` → `d-none d-md-block d-lg-none`
+- `visible-lg` → `d-none d-lg-block d-xl-none`
+- `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
+
+### Dropdown
+
 - Search for `dropdown-menu` in the code and add `dropdown-item` class to all link items ([see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
 - Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`) and replace with `dropdown-divider`
-
+- `dropdown-menu-left` -> `dropdown-menu-start`
+- `dropdown-menu-right` -> `dropdown-menu-end`
+- Remove `<span class="caret"></span>` and `<b class="caret"></b>` in dropdown buttons (as there are already added by Bootstrap 5 via the `:after` pseudo-element)
 
 ## Deprecated Bootstrap 3 components
 
