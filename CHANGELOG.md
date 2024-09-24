@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
+- Fix #7227: Fix search reindexing after create new content
 
 1.16.2 (September 5, 2024)
 --------------------------
