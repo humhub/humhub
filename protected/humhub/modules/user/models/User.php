@@ -173,7 +173,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             [['guid'], 'unique'],
             [['time_zone'], 'validateTimeZone'],
             [['auth_mode'], 'string', 'max' => 10],
-            [['language'], 'string', 'max' => 5],
+            [['language'], 'string', 'max' => 20],
             ['language', 'in', 'range' => array_keys(Yii::$app->i18n->getAllowedLanguages()), 'except' => self::SCENARIO_APPROVE],
             [['email'], 'unique'],
             [['email'], 'email'],

@@ -27,6 +27,18 @@ HumHub Changelog
 - Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
+- Enh #7208: Improvements in dotenv parsing
+- Enh #7211: Remove obsolete property `AbstractRichText::$record`
+- Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
+- Fix #7215: Wording: replace British "licence" with American "license"
+- Fix #6987: Added LatAm Spanish
+- Enh #7214: Replace theme variables with CSS variables
+- Enh #7221: Increase language column size for new language codes
+- Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
+
+1.16.3 (Unreleased)
+--------------------------
+- Fix #7212: Fix horizontal scroll bar on space stream on small screen
 
 1.16.2 (September 5, 2024)
 --------------------------

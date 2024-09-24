@@ -76,4 +76,6 @@ return [
     'Visit Marketplace' => 'Посетите торговую площадку',
     'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'У вас нет разрешения на настройку модулей. Пожалуйста, свяжитесь с администратором для получения дополнительной информации.',
     'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'У вас нет разрешения на управление модулями. Пожалуйста, свяжитесь с администратором для получения дополнительной информации.',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
 ];

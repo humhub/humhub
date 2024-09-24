@@ -75,5 +75,7 @@ return [
     'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Não tem permissão para configurar módulos. Por favor, contacte um administrador para mais informações.',
     'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Não tem permissão para gerir módulos. Por favor, contacte um administrador para mais informações.',
     'Keep your system up-to-date and benefit from the latest improvements.' => '',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
     'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
 ];

@@ -109,5 +109,6 @@ return [
     'You do not have the permission to move this content.' => 'Nemate dozvolu za premeštanje ovog sadržaja.',
     'Your last edit state has been saved!' => 'Vaše zadnje uređeno stanje je sačuvano!',
     'in' => 'u',
+    '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
 ];
