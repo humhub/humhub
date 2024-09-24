@@ -44,8 +44,12 @@ class ContentSearchService
         self::deleteContentById($this->content->id, $asActiveJob);
     }
 
-    public static function deleteContentById(int $id, bool $asActiveJob = true): void
+    public static function deleteContentById(?int $id, bool $asActiveJob = true): void
     {
+        if (empty($id)) {
+            return;
+        }
+
         if ($asActiveJob) {
             Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $id]));
         } else {
