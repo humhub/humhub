@@ -29,14 +29,9 @@ class ConvertTopicsToGlobalJob extends ActiveJob implements ExclusiveJobInterfac
                 if ($existingGlobalTopic) {
                     $globalTopic = $existingGlobalTopic;
                 } else {
-                    $globalTopic = new Topic([
-                        'name' => $topic->name,
-                        'module_id' => $topic->module_id,
-                        'type' => $topic->type,
-                        'color' => $topic->color,
-                        'sort_order' => $topic->sort_order,
-                        'contentcontainer_id' => null,
-                    ]);
+                    $globalTopic = clone $topic;
+                    $globalTopic->isNewRecord = true;
+                    $globalTopic->contentcontainer_id = null;
                     $globalTopic->save();
                 }
                 ContentTagRelation::updateAll(['tag_id' => $globalTopic->id], ['tag_id' => $topic->id]);
