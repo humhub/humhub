@@ -20,19 +20,27 @@ class ConvertTopicsToGlobalJobTest extends Unit
 
     public function testConvertTopicsToGlobal()
     {
+        $topic1Name = 'Test Topic ' . Yii::$app->security->generateRandomString(5);
+        $topic2Name = 'Test Topic ' . Yii::$app->security->generateRandomString(5);
+
         $topic1 = new Topic([
-            'name' => 'Test Topic 1',
+            'name' => $topic1Name,
             'module_id' => (new Topic())->moduleId,
             'type' => Topic::class,
             'contentcontainer_id' => 1,
         ]);
         $topic2 = new Topic([
-            'name' => 'Test Topic 2',
+            'name' => $topic2Name,
             'module_id' => (new Topic())->moduleId,
             'type' => Topic::class,
-            'contentcontainer_id' => 1,
+            'contentcontainer_id' => 2,
         ]);
-        $topic3 = clone $topic2;
+        $topic3 = new Topic([
+            'name' => $topic2Name,
+            'module_id' => (new Topic())->moduleId,
+            'type' => Topic::class,
+            'contentcontainer_id' => 3,
+        ]);
 
         $topic1->save();
         $topic2->save();
@@ -70,8 +78,8 @@ class ConvertTopicsToGlobalJobTest extends Unit
         $this->assertFalse($topic2->refresh());
         $this->assertFalse($topic3->refresh());
 
-        $globalTopic1 = Topic::findOne(['name' => 'Test Topic 1', 'contentcontainer_id' => null]);
-        $globalTopic2 = Topic::findOne(['name' => 'Test Topic 2', 'contentcontainer_id' => null]);
+        $globalTopic1 = Topic::findOne(['name' => $topic1Name, 'contentcontainer_id' => null]);
+        $globalTopic2 = Topic::findOne(['name' => $topic2Name, 'contentcontainer_id' => null]);
 
         // Check if 2 global topics are created
         $this->assertNotEmpty($globalTopic1);
@@ -83,7 +91,6 @@ class ConvertTopicsToGlobalJobTest extends Unit
         // Check if relations are created to global topics and the correct content_id are assigned
         $this->assertEquals(1, count($globalTopic1Relations));
         $this->assertEquals(2, count($globalTopic2Relations));
-
         $this->assertContains(1, $globalTopic1Relations);
         $this->assertContains(2, $globalTopic2Relations);
         $this->assertContains(3, $globalTopic2Relations);
