@@ -21,6 +21,10 @@ class Button extends \yii\bootstrap5\Button
     public ?string $link = null;
 
     public bool $loader = true;
+    /**
+     * @inerhitdoc
+     */
+    public $encodeLabel = false;
 
     public static function save($label = null): static
     {

@@ -31,7 +31,7 @@ class Badge extends Widget
     /**
      * @var bool whether to encode the label.
      */
-    public bool $encodeLabel = true;
+    public bool $encodeLabel = false;
 
     public int $sortOrder = 1000;
     public $link;

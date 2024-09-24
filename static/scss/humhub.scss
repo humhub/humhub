@@ -27,11 +27,6 @@ $prev-media: false;
     @import "media";
 }
 
-$prev-panel: false;
-@if not $prev-panel {
-    @import "panel";
-}
-
 $prev-installer: false;
 @if not $prev-installer {
     @import "installer";
@@ -40,11 +35,6 @@ $prev-installer: false;
 $prev-pagination: false;
 @if not $prev-pagination {
     @import "pagination";
-}
-
-$prev-well: false;
-@if not $prev-well {
-    @import "well";
 }
 
 $prev-nav: false;
