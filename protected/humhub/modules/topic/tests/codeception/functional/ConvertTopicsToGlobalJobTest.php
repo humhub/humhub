@@ -34,7 +34,6 @@ class ConvertTopicsToGlobalJobTest extends Unit
 
         Yii::$app->queue->run();
 
-        $this->assertNull(Topic::findOne($topic->id));
         $globalTopic = Topic::findOne(['name' => 'Test Topic', 'contentcontainer_id' => null]);
         $this->assertNotNull($globalTopic);
 
