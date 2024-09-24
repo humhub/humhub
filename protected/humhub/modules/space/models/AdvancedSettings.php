@@ -8,10 +8,10 @@
 
 namespace humhub\modules\space\models;
 
+use humhub\modules\admin\models\forms\SpaceSettingsForm;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
-use humhub\modules\stream\actions\Stream;
 use Yii;
 use yii\base\Model;
 
@@ -83,7 +83,7 @@ class AdvancedSettings extends Model
             [['sortOrder'], 'required'],
             [['sortOrder'], 'integer'],
             [['indexUrl', 'indexGuestUrl', 'defaultStreamSort'], 'string'],
-            ['defaultStreamSort', 'in', 'range' => array_keys(self::defaultStreamSortOptions())],
+            ['defaultStreamSort', 'in', 'range' => array_keys(SpaceSettingsForm::defaultStreamSortOptions())],
             [['hideMembers', 'hideActivities', 'hideAbout', 'hideFollowers'], 'boolean'],
             ['url', UrlValidator::class, 'space' => $this->space],
         ];
@@ -193,13 +193,5 @@ class AdvancedSettings extends Model
         $settings->set('hideFollowers', (bool)$this->hideFollowers);
 
         return true;
-    }
-
-    public static function defaultStreamSortOptions(): array
-    {
-        return [
-            Stream::SORT_CREATED_AT => Yii::t('AdminModule.space', 'Creation time'),
-            Stream::SORT_UPDATED_AT => Yii::t('AdminModule.space', 'Last update'),
-        ];
     }
 }
