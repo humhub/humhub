@@ -11,7 +11,7 @@ namespace humhub\modules\ui\form\widgets;
 /**
  * A HumHub enhanced version of [[\yii\bootstrap\ActiveField]].
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  * @since 1.2
  * @author Luke
  */

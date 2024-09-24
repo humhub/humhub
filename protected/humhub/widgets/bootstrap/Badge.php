@@ -16,7 +16,7 @@ use yii\bootstrap5\Widget;
  *
  * Usage example: `Badge::danger('New')->icon('user')->right()`.
  *
- * @since 1.17
+ * @since 1.18
  * @see https://getbootstrap.com/docs/5.3/components/badge/
  */
 class Badge extends Widget

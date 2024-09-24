@@ -21,7 +21,7 @@ namespace humhub\modules\ui\form\widgets;
  *  ]); ?>
  *  ```
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  * @since 1.14
  */
 class ContentHiddenCheckbox extends \humhub\widgets\bootstrap\ContentHiddenCheckbox

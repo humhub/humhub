@@ -15,7 +15,7 @@ use yii\helpers\ArrayHelper;
  * Provides methods for generating bootstrap variation components, such as badges or buttons,
  * with additional configurations for icons, sizes, alignment, and HTML attributes.
  *
- * @since 1.17
+ * @since 1.18
  */
 trait BootstrapVariationsTrait
 {
@@ -28,7 +28,7 @@ trait BootstrapVariationsTrait
 
     /**
      * @var array the HTML attributes for the widget container tag.
-     * @deprecated since 1.17
+     * @deprecated since 1.18
      */
     public array $htmlOptions = [];
 

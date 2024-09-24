@@ -14,7 +14,7 @@ use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\Link;
 
 /**
- * @since 1.17
+ * @since 1.18
  */
 class TopicBadge extends Badge
 {

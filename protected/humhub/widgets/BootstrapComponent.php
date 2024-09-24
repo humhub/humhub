@@ -38,7 +38,7 @@ use yii\helpers\ArrayHelper;
  * BootstrapComponent::primary('My Label');
  * ```
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  *
  * @package humhub\widgets
  */
@@ -46,7 +46,7 @@ abstract class BootstrapComponent extends Widget
 {
     public const TYPE_PRIMARY = 'primary';
     /**
-     * @deprecated since 1.17
+     * @deprecated since 1.18
      */
     public const TYPE_DEFAULT = self::TYPE_SECONDARY;
     public const TYPE_SECONDARY = 'secondary';
@@ -93,7 +93,7 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
-     * @deprecated since 1.17
+     * @deprecated since 1.18
      * @param string $text Button text
      * @return static
      */
@@ -228,7 +228,7 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
-     * @deprecated since 1.17
+     * @deprecated since 1.18
      * @return $this
      */
     public function xs()

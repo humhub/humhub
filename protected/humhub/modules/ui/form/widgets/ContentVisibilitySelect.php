@@ -26,7 +26,7 @@ namespace humhub\modules\ui\form\widgets;
  *
  * The specified model can either be a ContentActiveRecord or directly a Content record.
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  * @since 1.6
  * @package humhub\modules\ui\form\widgets
  */

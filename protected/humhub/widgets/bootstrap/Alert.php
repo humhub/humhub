@@ -23,7 +23,7 @@ namespace humhub\widgets\bootstrap;
  * <?php Alert::end() ?>
  * ```
  *
- * @since 1.17
+ * @since 1.18
  * @see https://getbootstrap.com/docs/5.3/components/badge/
  */
 class Alert extends \yii\bootstrap5\Alert

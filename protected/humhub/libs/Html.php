@@ -11,7 +11,7 @@ namespace humhub\libs;
 /**
  * HTML Helpers
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  * @since 1.2
  * @author Luke
  */

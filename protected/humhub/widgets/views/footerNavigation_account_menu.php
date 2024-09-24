@@ -5,8 +5,8 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $entries MenuLink[] */
@@ -21,7 +21,7 @@ use humhub\modules\ui\menu\MenuLink;
 ?>
 
 <?php if (!empty($entries)): ?>
-    <li class="divider visible-sm visible-xs"></li>
+    <li class="dropdown-divider visible-sm visible-xs"></li>
     <?php foreach ($entries as $k => $entry): ?>
         <?php if ($entry instanceof MenuLink): ?>
             <li class="visible-sm visible-xs footer-nav-entry">

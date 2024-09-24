@@ -105,7 +105,7 @@ ul.tab-menu-settings {
         background-color: $primary;
         border: none;
 
-        li.divider {
+        li.dropdown-divider {
             background-color: darken($primary, 5%);
             border-bottom: none;
             margin: 9px 1px !important;
@@ -137,7 +137,7 @@ ul.tab-menu-settings {
             }
         }
 
-        li:hover:not(.divider),
+        li:hover:not(.dropdown-divider),
         li.selected {
             border-left: 3px solid $info;
             color: $text-color-contrast !important;
@@ -166,7 +166,7 @@ ul.tab-menu-settings {
         }
     }
 
-    li.divider:last-of-type {
+    li.dropdown-divider:last-of-type {
         display: none;
     }
 }

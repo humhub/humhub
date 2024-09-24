@@ -24,7 +24,7 @@ namespace humhub\modules\ui\form\widgets;
  * ]) ?>
  * ```
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  * @since 1.6
  * @package humhub\modules\ui\form\widgets
  */

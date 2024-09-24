@@ -10,7 +10,7 @@ namespace humhub\modules\ui\form\widgets;
 /**
  * Class TabsForm
  *
- * @deprecated since 1.17
+ * @deprecated since 1.18
  * @since 1.11.0
  */
 class FormTabs extends \humhub\widgets\bootstrap\FormTabs

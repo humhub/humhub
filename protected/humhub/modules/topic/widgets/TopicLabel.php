@@ -10,7 +10,7 @@
 namespace humhub\modules\topic\widgets;
 
 /**
- * @deprecated since 1.17
+ * @deprecated since 1.18
  */
 class TopicLabel extends TopicBadge
 {

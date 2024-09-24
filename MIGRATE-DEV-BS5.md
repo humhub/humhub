@@ -1,35 +1,6 @@
 Module and Theme Migration Guide to Bootstrap 5
 =====================================
 
-## LESS is replaced with SCSS
-
-LESS format is not supported anymore.
-Use SCSS instead. See https://getbootstrap.com/docs/5.3/customize/sass/
-
-### Convert LESS to SCSS
-
-Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
-Prefix all SCSS files with `_` except the `build.scss` file.
-E.g.: `less/variables.less` -> `scss/_variables.scss`
-
-Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
-However, you need to check the output manually.
-
-### Variables
-
-- `$default` is deprecated. Use `$light` or `$secondary` instead.
-- New variables: `$secondary`, `$light` and `$dark`
-
-In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
-E.g.: `color: $primary` -> `color: var(--primary)`
-
-
-## Bootstrap widgets
-
-Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
-
-But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead. E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`. If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
-
 ## Removed
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
@@ -60,6 +31,36 @@ But you shouldn't use Bootstrap widgets directly from the external library. Use 
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
 
 
+## LESS is replaced with SCSS
+
+LESS format is not supported anymore.
+Use SCSS instead. See https://getbootstrap.com/docs/5.3/customize/sass/
+
+### Convert LESS to SCSS
+
+Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
+Prefix all SCSS files with `_` except the `build.scss` file.
+E.g.: `less/variables.less` -> `scss/_variables.scss`
+
+Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
+However, you need to check the output manually.
+
+### Variables
+
+- `$default` is deprecated. Use `$light` or `$secondary` instead.
+- New variables: `$secondary`, `$light` and `$dark`
+
+In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
+E.g.: `color: $primary` -> `color: var(--primary)`
+
+
+## Bootstrap widgets
+
+Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
+
+But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead. E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`. If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
+
+
 ## Replacements in HTML attributes
 
 These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
@@ -84,10 +85,29 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `no-space` -> `m-0 p-0`
 - `col-xs-` -> `col- `
 - Remove `jumbotron` class
+- Search for `dropdown-menu` in the code and add `dropdown-item` class to all link items ([see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
+- Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`) and replace with `dropdown-divider`
 
-#### Label & Badge
 
-Labels are deprecated, as they have been removed from Bootstrap 5.
+## Deprecated Bootstrap 3 components
+
+They have been removed from Bootstrap 5, but will still be supported in HumHub for a while.
+
+See `static/scss/_bootstrap3.scss` for the full list of deprecations.
+
+### Panel
+
+Should be replaced with cards.
+
+TODO in core and to document here
+
+### Well
+
+Should be replaced with cards.
+
+TODO in core and to document here
+
+### Label & Badge
 
 Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
 
@@ -103,9 +123,7 @@ Replacements:
 - `badge-info` -> `text-bg-info`
 - `badge-success` -> `text-bg-success`
 
-#### Media
-
-Medias are deprecated, as they have been removed from Bootstrap 5.
+### Media
 
 - Search for `media-list` and replace `ul` tag with `div`. E.g. `<ul class="media-list">` -> `<div class="media-list">`
 - Inside, replace `li` tags with `div` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
@@ -118,10 +136,6 @@ Medias are deprecated, as they have been removed from Bootstrap 5.
 - Remove `float-start` (or `pull-left`) class for images inside a `<div class="flex-shrink-0">`
 
 Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
-
-### Drop down menus
-
-Search for `dropdown-menu` in the code and add `dropdown-item` class to all link items ([see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
 
 
 ## Documentation

@@ -39,7 +39,7 @@ class Button extends \yii\bootstrap5\Button
     }
 
     /**
-     * @since 1.17
+     * @since 1.18
      */
     public static function asBadge(string $label = null, ?string $color = null): static
     {

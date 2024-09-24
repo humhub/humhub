@@ -13,7 +13,7 @@ use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 
 /**
- * @since 1.17
+ * @since 1.18
  */
 class ScssHelper
 {
