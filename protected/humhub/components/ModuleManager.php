@@ -485,11 +485,13 @@ class ModuleManager extends Component
      */
     public function hasModule($id)
     {
-        return (array_key_exists($id, $this->modules));
+        return array_key_exists($id, $this->modules) ||
+            // Fallback to old module ID
+            array_key_exists(str_replace('-', '_', $id), $this->modules);
     }
 
     /**
-     * Returns weather or not the given module id belongs to an core module.
+     * Returns weather or not the given module id belongs to a core module.
      *
      * @return bool
      * @throws Exception
@@ -523,6 +525,14 @@ class ModuleManager extends Component
         // Enabled Module
         if (Yii::$app->hasModule($id)) {
             return Yii::$app->getModule($id, true);
+        }
+
+        if (!isset($this->modules[$id])) {
+            // Fallback to old module ID
+            $oldId = str_replace('-', '_', $id);
+            if (isset($this->modules[$oldId])) {
+                $id = $oldId;
+            }
         }
 
         // Disabled Module
