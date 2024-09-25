@@ -11,12 +11,12 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\view\components\View;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
 use yii\bootstrap\ActiveForm;
-use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\AccountSettingsMenu;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
@@ -39,6 +39,7 @@ use yii\helpers\Html;
 
     <div class="panel-body">
 
+        <?php if (!Yii::$app->settings->get('restrictAdditionalTopics', false)) { ?>
         <?php $form = ActiveForm::begin(); ?>
         <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
         <div class="form-group">
@@ -50,6 +51,7 @@ use yii\helpers\Html;
             </div>
         </div>
         <?php ActiveForm::end(); ?>
+        <?php } ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
