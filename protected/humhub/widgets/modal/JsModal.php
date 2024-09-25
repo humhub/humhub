@@ -22,7 +22,6 @@ use humhub\widgets\JsWidget;
  */
 class JsModal extends JsWidget
 {
-
     /**
      * @inheritdoc
      */
