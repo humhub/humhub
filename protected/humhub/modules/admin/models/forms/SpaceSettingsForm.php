@@ -208,8 +208,8 @@ class SpaceSettingsForm extends Model
     public static function defaultStreamSortOptions(): array
     {
         return [
-            Stream::SORT_CREATED_AT => Yii::t('AdminModule.space', 'Creation time'),
-            Stream::SORT_UPDATED_AT => Yii::t('AdminModule.space', 'Last update'),
+            Stream::SORT_CREATED_AT => Yii::t('ContentModule.base', 'Creation time'),
+            Stream::SORT_UPDATED_AT => Yii::t('ContentModule.base', 'Last update'),
         ];
     }
 
