@@ -342,7 +342,8 @@ class SettingController extends Controller
             'dataProvider' => new ActiveDataProvider([
                 'query' => Topic::find()
                     ->orderBy('sort_order, name')
-                    ->where(['is', 'contentcontainer_id', new Expression('NULL')]),
+                    ->where(['is', 'contentcontainer_id', new Expression('NULL')])
+                    ->andWhere(['module_id' => (new Topic())->moduleId, 'type' => Topic::class]),
                 'pagination' => [
                     'pageSize' => 20,
                 ],
