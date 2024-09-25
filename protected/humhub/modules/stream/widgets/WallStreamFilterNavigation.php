@@ -255,7 +255,7 @@ class WallStreamFilterNavigation extends FilterNavigation
         if ($contentContainer instanceof Space) {
             $contentContainerDefaultSort = $contentContainer->settings->get(
                 'defaultStreamSort',
-                Yii::$app->getModule('space')->settings->get('defaultStreamSort', Stream::SORT_CREATED_AT)
+                Yii::$app->getModule('space')->settings->get('defaultStreamSort', Stream::SORT_CREATED_AT),
             );
         } else {
             $contentContainerDefaultSort = null;
