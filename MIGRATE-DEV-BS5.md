@@ -4,6 +4,7 @@ Module and Theme Migration Guide to Bootstrap 5
 ## Mandatory changes for modules to work with Bootstrap 5
 
 - Classes extending `\humhub\modules\content\widgets\WallCreateContentForm` must replace the required class for the `$form` param: `\humhub\modules\ui\form\widgets\ActiveForm` -> `\humhub\widgets\form\ActiveForm`
+- "Dropdown" replacements in HTML attributes (see bellow)
 
 ## Removed
 

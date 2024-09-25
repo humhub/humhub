@@ -31,10 +31,11 @@ trait BootstrapVariationsTrait
      * @deprecated since 1.18 use [[options]] instead
      */
     public array $htmlOptions = [];
+    public bool $_visible = true;
 
     public function __toString(): string
     {
-        return $this->run();
+        return $this->_visible ? $this->run() : '';
     }
 
     abstract public static function instance(?string $text = null, ?string $color = null): static;
@@ -215,5 +216,11 @@ trait BootstrapVariationsTrait
     public function setLabel(string $label): void
     {
         $this->label = $label;
+    }
+
+    public function visible($isVisible = true): static
+    {
+        $this->_visible = $isVisible;
+        return $this;
     }
 }
