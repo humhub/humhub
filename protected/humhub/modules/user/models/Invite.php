@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
+use humhub\libs\ParameterEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
@@ -40,6 +41,7 @@ use yii\helpers\Url;
  */
 class Invite extends ActiveRecord
 {
+    public const EVENT_AFTER_SEND = 'afterSend';
     public const SOURCE_SELF = 'self';
     public const SOURCE_INVITE = 'invite';
     public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
@@ -227,7 +229,10 @@ class Invite extends ActiveRecord
             Yii::$app->setLanguage(Yii::$app->user->language);
         }
 
-        return $result;
+        $event = new ParameterEvent(['result' => $result]);
+        $this->trigger(self::EVENT_AFTER_SEND, $event);
+
+        return $event->parameters['result'];
     }
 
     /**

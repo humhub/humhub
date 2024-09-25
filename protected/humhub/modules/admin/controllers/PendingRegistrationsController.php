@@ -111,11 +111,11 @@ class PendingRegistrationsController extends Controller
         $this->forcePostRequest();
         $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
-            $invite->sendInviteMail();
-            $this->view->success(Yii::t(
-                'AdminModule.user',
-                'Resend invitation email',
-            ));
+            if ($invite->sendInviteMail()) {
+                $this->view->success(Yii::t('AdminModule.user', 'Resend invitation email'));
+            } else {
+                $this->view->error(Yii::t('AdminModule.user', 'Cannot resend invitation email!'));
+            }
             return $this->redirect(['index']);
         }
         return $this->render('resend', ['model' => $invite]);
