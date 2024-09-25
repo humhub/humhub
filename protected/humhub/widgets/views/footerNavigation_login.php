@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\PoweredBy;
 use humhub\modules\ui\menu\MenuLink;
 

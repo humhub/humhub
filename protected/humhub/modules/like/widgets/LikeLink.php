@@ -8,7 +8,7 @@ use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\like\Module;
 use Yii;
 use yii\base\Widget;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /**

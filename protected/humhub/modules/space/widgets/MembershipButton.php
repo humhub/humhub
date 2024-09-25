@@ -12,7 +12,7 @@ use humhub\components\Widget;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Json;
 
 /**

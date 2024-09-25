@@ -2,7 +2,7 @@
  * Module for creating an manipulating modal dialoges.
  * Normal layout of a dialog:
  *
- * <div class="modal">
+ * <div class="modal fade">
  *     <div class="modal-dialog">
  *         <div class="modal-content">
  *             <div class="modal-header"></div>
@@ -27,7 +27,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var modals = {};
 
     var ERROR_DEFAULT_TITLE = 'Error';
-    var ERROR_DEFAULT_MESSAGE = 'An unknown error occured!';
+    var ERROR_DEFAULT_MESSAGE = 'An unknown error occurred!';
 
     /**
      * The Modal class can be used to create new modals or manipulate existing modals.
@@ -53,11 +53,11 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     /**
-     * Template for the modal splitted into different parts. Those can be overwritten my changing or overwriting module.template.
+     * Template for the modal splitted into different parts. Those can be overwritten by changing or overwriting module.template.
      */
     Modal.template = {
-        container: '<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
-        header: '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
+        container: '<div class="modal fade" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
+        header: '<div class="modal-header"><h5 class="modal-title"></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>',
         body: '<div class="modal-body"></div>',
         footer: '<div class="modal-footer"></div>',
     };
@@ -307,11 +307,10 @@ humhub.module('ui.modal', function (module, require, $) {
      */
     Modal.prototype.show = function () {
         if (!this.$.is(':visible')) {
-            if (!this.$.data('bs.modal')) {
-                this.$.modal(this.options);
-            } else {
-                this.set(this.options);
-                this.$.modal('show');
+            const modalInstance = bootstrap.Modal.getInstance(this.$[0]);
+            if (modalInstance) {
+                Object.assign(modalInstance._config, this.options);
+                modalInstance.show();
             }
             this.focus();
         }
@@ -406,14 +405,15 @@ humhub.module('ui.modal', function (module, require, $) {
         }
 
         if (this.options.size) {
-            this.getDialog().addClass('modal-dialog-' + this.options.size);
+            this.getDialog().removeClass(['modal-sm', 'modal-lg', 'modal-xl']).addClass('modal-' + this.options.size);
         }
 
         this.options.backdrop = object.defaultValue(options.backdrop, 'static');
         this.options.keyboard = object.defaultValue(options.keyboard, false);
 
-        if (this.$.data('bs.modal')) {
-            this.$.data('bs.modal').options = this.options;
+        const modalInstance = bootstrap.Modal.getInstance(this.$[0]);
+        if (modalInstance) {
+            Object.assign(modalInstance._config, this.options);
         }
 
         return this;
@@ -563,7 +563,7 @@ humhub.module('ui.modal', function (module, require, $) {
             $(this).attr('aria-hidden', 'false');
         });
 
-        $(document).on('shown.bs.modal', '.modal.in', function (event) {
+        $(document).on('shown.bs.modal', '.modal.show', function (event) {
             _setModalsAndBackdropsOrder();
         });
 
@@ -579,18 +579,18 @@ humhub.module('ui.modal', function (module, require, $) {
 
     var _setModalsAndBackdropsOrder = function () {
         var modalZIndex = 1040;
-        $('.modal.in').each(function (index) {
+        $('.modal.show').each(function (index) {
             var $modal = $(this);
             modalZIndex++;
             $modal.css('zIndex', modalZIndex);
-            $modal.next('.modal-backdrop.in').addClass('d-none').css('zIndex', modalZIndex - 1);
+            $modal.next('.modal-backdrop.show').addClass('d-none').css('zIndex', modalZIndex - 1);
         });
-        $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('d-none');
+        $('.modal.show:visible:last').focus().next('.modal-backdrop.show').removeClass('d-none');
     };
 
     /**
      * To allow other frameworks to overlay focusable nodes over an active modal we have
-     * to explicitly allow ith within this overwritten function.
+     * to explicitly allow it within this overwritten function.
      *
      */
     var _setModalEnforceFocus = function () {
@@ -624,7 +624,6 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     var _setGlobalModalTargetHandler = function () {
-
         // unbind all previously-attached events
         $("a[data-bs-target='#globalModal']").off('.humhub:globalModal');
 
@@ -638,18 +637,19 @@ humhub.module('ui.modal', function (module, require, $) {
                 'keyboard': $(this).data('keyboard')
             };
 
-            $("#globalModal").modal(options);
+            var globalModalElement = document.getElementById('globalModal');
+            var globalModal = bootstrap.Modal.getInstance(globalModalElement) || new bootstrap.Modal(globalModalElement, options);
 
             var target = $(this).attr("href");
 
             client.html(target).then(function (response) {
                 module.global.setDialog(response);
                 if (!module.global.$.is(':visible')) {
-                    module.global.show();
+                    globalModal.show();
                 }
             }).catch(function (error) {
                 module.log.error(error, true);
-                module.global.close();
+                globalModal.hide();
             });
         });
     };

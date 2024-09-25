@@ -10,7 +10,7 @@ namespace humhub\widgets;
 
 use humhub\assets\JplayerAsset;
 use humhub\assets\JplayerModuleAsset;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\libs\Helpers;
 use humhub\modules\file\libs\FileHelper;
 

@@ -5,7 +5,7 @@ namespace humhub\modules\user\widgets;
 use humhub\libs\BasePermission;
 use Yii;
 use yii\base\Widget;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use humhub\modules\user\models\UserFilter;
 

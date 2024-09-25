@@ -14,7 +14,7 @@ use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * The Admin Navigation for spaces

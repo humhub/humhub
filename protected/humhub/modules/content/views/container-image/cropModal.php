@@ -7,10 +7,10 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\ui\widgets\CropImage;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
-use yii\helpers\Html;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Json;
 
 /* @var $this View */
@@ -41,11 +41,10 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 
 ?>
 
-<?php ModalDialog::begin([
+<?php Modal::beginDialog([
     'id' => 'profile-image-crop-modal',
     'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
-    'animation' => 'fadeIn',
-    'size' => 'small']) ?>
+    'size' => Modal::SIZE_SMALL]) ?>
 
 <?php $form = ActiveForm::begin(['id' => 'profile-image-crop-modal-form']); ?>
 <?= $form->errorSummary($model); ?>
@@ -88,4 +87,4 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 
 <?php ActiveForm::end(); ?>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

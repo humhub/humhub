@@ -5,7 +5,7 @@ use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\widgets\TimeAgo;

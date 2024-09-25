@@ -4,8 +4,8 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
 
 /* @var $model Space */
@@ -15,7 +15,7 @@ use yii\helpers\Url;
 $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'), 'size' => 'small']) ?>
+<?php Modal::beginDialog(['header' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'), 'size' => 'small']) ?>
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 <div class="modal-body">
 
@@ -43,7 +43,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.manage', 'Next')); ?>
 </div>
 <?php ActiveForm::end(); ?>
-<?php ModalDialog::end(); ?>
+<?php Modal::endDialog(); ?>
 
 <script <?= Html::nonce() ?>>
 

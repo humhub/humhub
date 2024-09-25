@@ -5,7 +5,7 @@ namespace humhub\modules\user\models;
 use humhub\libs\BasePermission;
 use Throwable;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\models\UserFilter;
 
 /**

@@ -1,6 +1,10 @@
 Module and Theme Migration Guide to Bootstrap 5
 =====================================
 
+## Mandatory changes for modules to work with Bootstrap 5
+
+- Classes extending `\humhub\modules\content\widgets\WallCreateContentForm` must replace the required class for the `$form` param: `\humhub\modules\ui\form\widgets\ActiveForm` -> `\humhub\widgets\form\ActiveForm`
+
 ## Removed
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
@@ -25,10 +29,29 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\libs\Html` use `humhub\widgets\bootstrap\Html` instead
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
+- `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
 - `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead
+- `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
+- `humhub\widgets\bootstrap\Badge::xs()` use `humhub\widgets\bootstrap\Badge::sm()` instead
+- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::secondary()` instead
+- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::secondary()` instead
+- `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
+- `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
 - `humhub\widgets\BootstrapComponent`
 - `Button::defaultType()` use `Button::secondary()` instead
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
+- `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
+- `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
+- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead
+- `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
+- `humhub\widgets\modal\JsModal::header` & `humhub\widgets\modal\Modal::header`: use `title` instead
+- `humhub\widgets\modal\JsModal::animation` & `humhub\widgets\modal\Modal::animation` (all modal boxes are opened with the fade animation)
+- `humhub\widgets\modal\JsModal::centerText` & `humhub\widgets\modal\Modal::centerText`
+- `humhub\widgets\modal\JsModal::size` & `humhub\widgets\modal\Modal::size` values: use `Modal::SIZE_DEFAULT`, `Modal::SIZE_SMALL`, `Modal::SIZE_LARGE`, `Modal::SIZE_EXTRA_LARGE` instead of (`normal`, `extra-small`, `small`, `medium`, and `large`)
+- `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
+- `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
+- `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
+- `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
 
 
 ## LESS is replaced with SCSS

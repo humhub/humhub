@@ -7,12 +7,12 @@
 
 use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var GeneralModuleSettingsForm $settings */
 ?>
-<?php ModalDialog::begin(['header' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings')]) ?>
+<?php Modal::beginDialog(['header' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings')]) ?>
 
 <?php $form = ActiveForm::begin() ?>
 
@@ -27,4 +27,4 @@ use humhub\widgets\ModalDialog;
 
 <?php ActiveForm::end() ?>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

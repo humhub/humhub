@@ -3,13 +3,13 @@
 use humhub\modules\space\models\Space;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\bootstrap\Html;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
 
 /* @var $spaces Space[] */
 ?>
 
 
-<?php ModalDialog::begin(['header' => $title]) ?>
+<?php Modal::beginDialog(['header' => $title]) ?>
 
 <?php if (count($spaces) === 0) : ?>
     <div class="modal-body">
@@ -50,4 +50,4 @@ use humhub\widgets\ModalDialog;
     $(".modal-body").animate({scrollTop: 0}, 200);
 </script>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

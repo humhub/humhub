@@ -1,11 +1,11 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
-use humhub\modules\file\handler\BaseFileHandler;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
 use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $file \humhub\modules\file\models\File */
 /* @var $viewHandler BaseFileHandler[] */
@@ -14,7 +14,7 @@ use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 /* @var $importHandler BaseFileHandler[] */
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('FileModule.base', '<strong>Open</strong> file', ['fileName' => Html::encode($file->file_name)])]) ?>
+<?php Modal::beginDialog(['header' => Yii::t('FileModule.base', '<strong>Open</strong> file', ['fileName' => Html::encode($file->file_name)])]) ?>
 <div class="modal-body">
 
     <?php
@@ -56,4 +56,4 @@ use humhub\modules\file\widgets\FileHandlerButtonDropdown;
     <?= ModalButton::cancel(Yii::t('base', 'Close'))->right() ?>
 </div>
 
-<?php ModalDialog::end(); ?>
+<?php Modal::endDialog(); ?>

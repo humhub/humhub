@@ -4,8 +4,8 @@ use humhub\modules\admin\assets\AdminPendingRegistrationsAsset;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /** @var $searchModel PendingRegistrationSearch */
@@ -16,7 +16,7 @@ AdminPendingRegistrationsAsset::register($this);
 ?>
 <?= Html::beginTag('div', $options); ?>
     <h4>
-        <?= humhub\widgets\bootstrap\Html::backButton(
+        <?= Html::backButton(
             ['/admin/user/index'],
             [
                 'label' => Yii::t('AdminModule.base', 'Back to user overview'),
@@ -89,7 +89,7 @@ AdminPendingRegistrationsAsset::register($this);
                         ->action('client.post', Url::to(['resend', 'id' => $model->id]))
                         ->icon('paper-plane')
                         ->confirm(Yii::t('AdminModule.user', 'Resend invitation?'))
-                        ->xs();
+                        ->sm();
                 },
                 'delete' => function ($url, $model, $key) {
                     return
@@ -97,7 +97,7 @@ AdminPendingRegistrationsAsset::register($this);
                             ->action('client.post', Url::to(['delete', 'id' => $model->id]))
                             ->icon('trash')
                             ->confirm(Yii::t('AdminModule.user', 'Delete pending registrations?'))
-                            ->xs();
+                            ->sm();
                 },
             ],
         ],

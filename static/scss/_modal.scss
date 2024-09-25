@@ -33,30 +33,6 @@ body.modal-open {
     overflow-y: visible;
 }
 
-.modal.in {
-    padding-right: 0 !important;
-}
-
-.modal-dialog-extra-small {
-    width: 400px;
-}
-
-.modal-dialog-small {
-    width: 500px;
-}
-
-.modal-dialog-normal {
-    width: 600px;
-}
-
-.modal-dialog-medium {
-    width: 768px;
-}
-
-.modal-dialog-large {
-    width: 900px;
-}
-
 @media screen and (max-width: 991px) {
     .modal-dialog-large {
         width: auto !important;

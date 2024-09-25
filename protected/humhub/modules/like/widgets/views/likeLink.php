@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 humhub\modules\like\assets\LikeAsset::register($this);
 ?>

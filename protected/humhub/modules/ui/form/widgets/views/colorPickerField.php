@@ -1,7 +1,7 @@
 <?php
 
 use yii\base\Model;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 humhub\assets\HumHubColorPickerAsset::register($this);
 

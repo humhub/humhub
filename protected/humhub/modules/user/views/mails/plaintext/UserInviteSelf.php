@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $registrationUrl string */
 

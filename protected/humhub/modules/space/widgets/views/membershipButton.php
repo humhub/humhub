@@ -2,7 +2,7 @@
 
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $membership Membership */
 /* @var $space Space */

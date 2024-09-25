@@ -7,7 +7,7 @@
 
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\ui\view\components\View;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var View $this */
 /* @var string $passwordRecoveryUrl */

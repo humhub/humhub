@@ -1,17 +1,17 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\modules\comment\widgets\Form;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\ModalDialog;
-use humhub\modules\comment\widgets\Form;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\modal\Modal;
 
 /* @var $this View */
 /* @var $object ContentActiveRecord */
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>
+<?php Modal::beginDialog(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>
 <div class="modal-body comment-container comment-modal-body" style="margin-top:0">
     <div id="userlist-content">
         <div class="well well-small" id="comment_<?= $id ?>">
@@ -22,7 +22,7 @@ use humhub\modules\comment\widgets\Form;
         </div>
     </div>
 </div>
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
     // scroll to top of list

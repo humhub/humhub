@@ -10,6 +10,8 @@ namespace humhub\widgets;
 
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
+use humhub\widgets\modal\GlobalConfirmModal;
+use humhub\widgets\modal\GlobalModal;
 use Yii;
 
 /**

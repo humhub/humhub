@@ -2,7 +2,7 @@
 
 use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 

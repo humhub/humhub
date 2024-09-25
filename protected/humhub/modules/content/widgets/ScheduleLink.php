@@ -7,10 +7,10 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
 use Yii;
 use yii\base\Widget;

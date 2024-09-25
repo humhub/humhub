@@ -6,9 +6,9 @@
  */
 
 use humhub\modules\user\models\User;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 
 /* @var User[] $followers */
 /* @var int $totalFollowerCount */

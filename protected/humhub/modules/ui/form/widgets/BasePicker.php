@@ -5,7 +5,7 @@ namespace humhub\modules\ui\form\widgets;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /**

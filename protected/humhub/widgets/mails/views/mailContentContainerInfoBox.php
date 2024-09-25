@@ -9,7 +9,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\mails\MailContentContainerImage;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $container ContentContainerActiveRecord */

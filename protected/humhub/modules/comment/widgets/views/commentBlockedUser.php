@@ -26,6 +26,6 @@ use humhub\widgets\bootstrap\Button;
 
     <div class="flex-grow-1">
         <?= Yii::t('CommentModule.base', 'Comment of blocked user.') ?>
-        <?= Button::asLink(Yii::t('CommentModule.base', 'Show'))->action('showBlocked', $loadBlockedCommentUrl)->xs()->cssClass('text-primary') ?>
+        <?= Button::asLink(Yii::t('CommentModule.base', 'Show'))->action('showBlocked', $loadBlockedCommentUrl)->sm()->cssClass('text-primary') ?>
     </div>
 </div>

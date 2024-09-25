@@ -16,7 +16,7 @@ use humhub\modules\file\models\File;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Base upload utility component which combines upload input/button, preview and progress components.

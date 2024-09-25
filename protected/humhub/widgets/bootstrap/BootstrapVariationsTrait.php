@@ -28,7 +28,7 @@ trait BootstrapVariationsTrait
 
     /**
      * @var array the HTML attributes for the widget container tag.
-     * @deprecated since 1.18
+     * @deprecated since 1.18 use [[options]] instead
      */
     public array $htmlOptions = [];
 
@@ -38,6 +38,14 @@ trait BootstrapVariationsTrait
     }
 
     abstract public static function instance(?string $text = null, ?string $color = null): static;
+
+    /**
+     * @deprecated since 1.18 use [[secondary]] instead
+     */
+    public static function defaultType($text = null)
+    {
+        return self::secondary($text);
+    }
 
     public static function primary(string $label = null): static
     {
@@ -92,6 +100,14 @@ trait BootstrapVariationsTrait
         }
 
         return $this;
+    }
+
+    /**
+     * @deprecated since 1.18 use [[sm]] instead
+     */
+    public function xs(): static
+    {
+        return $this->sm();
     }
 
     public function sm(): static
@@ -164,7 +180,7 @@ trait BootstrapVariationsTrait
         return $this;
     }
 
-    public function style(string $style): static
+    public function style(string|array $style): static
     {
         Html::addCssStyle($this->options, $style);
 

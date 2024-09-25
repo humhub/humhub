@@ -2,7 +2,7 @@
 
 use humhub\modules\space\models\Space;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $space Space */

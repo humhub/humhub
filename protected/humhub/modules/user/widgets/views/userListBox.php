@@ -2,15 +2,15 @@
 
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $users \humhub\modules\user\models\User[] */
 /* @var bool $hideOnlineStatus */
 ?>
 
-<?php ModalDialog::begin(['header' => $title]) ?>
+<?php Modal::beginDialog(['header' => $title]) ?>
 
 <?php if (count($users) === 0): ?>
     <div class="modal-body">
@@ -56,4 +56,4 @@ use yii\helpers\Html;
 
 </script>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

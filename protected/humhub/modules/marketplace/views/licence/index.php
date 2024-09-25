@@ -3,7 +3,7 @@
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 

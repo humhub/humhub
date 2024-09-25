@@ -5,7 +5,7 @@ use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $this View */

@@ -7,7 +7,7 @@
 
 use humhub\modules\activity\assets\ActivityAsset;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this humhub\modules\ui\view\components\View */
 /* @var $streamUrl string */

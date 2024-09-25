@@ -6,8 +6,8 @@
  */
 
 use humhub\modules\space\models\Space;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
-use yii\helpers\Html;
 
 /* @var $space Space */
 /* @var $membersCount int */

@@ -5,7 +5,7 @@ use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\ui\content\assets\UiImageSetAsset;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 UiImageSetAsset::register($this);
 ?>

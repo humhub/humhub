@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\FooterMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 ?>

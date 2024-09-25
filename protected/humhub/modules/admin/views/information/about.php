@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\marketplace\widgets\AboutVersion;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 

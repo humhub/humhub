@@ -11,7 +11,7 @@ namespace humhub\modules\ui\form\widgets;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\widgets\InputWidget;
 
 /**

@@ -9,7 +9,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\components\Widget;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Widget for rendering stream filter blocks.

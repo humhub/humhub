@@ -12,7 +12,7 @@ use humhub\libs\MimeHelper;
 use humhub\modules\file\models\File;
 use humhub\widgets\bootstrap\Button;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 class FileDownload extends Button

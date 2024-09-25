@@ -10,7 +10,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * This extension is used to support legacy richtext format (HumHub <1.3).

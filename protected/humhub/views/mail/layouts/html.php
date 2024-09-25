@@ -9,7 +9,7 @@ use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\FooterMenu;
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\PoweredBy;
 
 /* @var View $this */

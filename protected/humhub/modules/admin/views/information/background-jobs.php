@@ -46,7 +46,7 @@ if (empty($lastRunDaily)) {
                     <?= Button::danger('Clear queue')
                         ->link(['background-jobs', 'clearQueue' => 1])
                         ->options(['data-method' => 'POST'])
-                        ->xs()->right();
+                        ->sm()->right();
                     ?>
                 <?php endif; ?>
                 <?= Yii::t('AdminModule.information', '<strong>Queue</strong> Status'); ?>

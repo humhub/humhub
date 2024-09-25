@@ -5,7 +5,7 @@ namespace humhub\modules\space\widgets;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Mutliselect input field for selecting space guids.

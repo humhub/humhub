@@ -4,9 +4,9 @@ use humhub\components\Module;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
 use yii\base\View;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var Module[] $modules */

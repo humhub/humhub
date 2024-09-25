@@ -542,3 +542,32 @@ $responsive: "only screen and (max-width: 768px)";
         font-size: 11px;
     }
 }
+
+
+//
+// Modals
+// --------------------------------------------------
+
+.modal.in {
+    padding-right: 0 !important;
+}
+
+.modal-dialog-extra-small {
+    width: 400px;
+}
+
+.modal-dialog-small {
+    width: 500px;
+}
+
+.modal-dialog-normal {
+    width: 600px;
+}
+
+.modal-dialog-medium {
+    width: 768px;
+}
+
+.modal-dialog-large {
+    width: 900px;
+}

@@ -21,8 +21,8 @@
 
         function buildModal(message) {
 
-            var _modal = '<div class="modal" id="loaderModal">' +
-                '<div class="modal-dialog modal-dialog-extra-small" style="">' +
+            var _modal = '<div class="modal fade" id="loaderModal">' +
+                '<div class="modal-dialog" style="">' +
                 '<div class="modal-content">' +
                 '<div class="modal-header">' +
                 '<h4 class="modal-title" id="myModalLabel">' + message + '</h4>' +

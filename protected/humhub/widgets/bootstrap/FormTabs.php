@@ -11,8 +11,6 @@ use humhub\modules\ui\form\interfaces\TabbedFormModel;
 use yii\base\Model;
 
 /**
- * Class TabsForm
- *
  * @since 1.11.0
  */
 class FormTabs extends Tabs

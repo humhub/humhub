@@ -13,7 +13,7 @@ use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 

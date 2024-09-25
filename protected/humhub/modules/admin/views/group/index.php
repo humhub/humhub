@@ -5,8 +5,8 @@ use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\Group;
 use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\GridView;
-use humhub\widgets\Link;
 use yii\helpers\Url;
 
 /* @var $searchModel GroupSearch */

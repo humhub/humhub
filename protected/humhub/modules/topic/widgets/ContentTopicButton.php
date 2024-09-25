@@ -10,7 +10,7 @@
 namespace humhub\modules\topic\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\content\widgets\WallEntryControlLink;
 use Yii;

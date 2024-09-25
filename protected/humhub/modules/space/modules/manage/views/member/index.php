@@ -11,7 +11,7 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\TimeAgo;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $space Space */
 ?>
@@ -115,7 +115,7 @@ use yii\helpers\Html;
                                 return Button::danger()->tooltip(Yii::t('SpaceModule.manage', 'Remove from space'))
                                     ->link(['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space])
                                     ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.')])
-                                    ->icon('remove')->xs();
+                                    ->icon('remove')->sm();
                             }
                         ],
                     ],

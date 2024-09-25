@@ -2,7 +2,7 @@
 
 use humhub\assets\AppAsset;
 use humhub\widgets\FooterMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\web\View;
 
 /* @var $this View */

@@ -1,6 +1,8 @@
 <?php
+
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
+
 ?>
 <?= Link::withAction($currentTimeZoneLabel, 'ui.form.elements.toggleTimeZoneInput')->cssClass($toggleClass)->cssClass('timeZoneToggle') ?>
 <div class="timeZoneInputContainer" style="display:none">

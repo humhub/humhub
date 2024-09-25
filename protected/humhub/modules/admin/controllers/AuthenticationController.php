@@ -12,7 +12,7 @@ use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\user\models\Group;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * ApprovalController handels new user approvals

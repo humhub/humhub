@@ -11,7 +11,7 @@ use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailContentContainerImage;
 use humhub\widgets\TimeAgo;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $space Space */

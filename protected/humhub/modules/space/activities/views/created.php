@@ -2,7 +2,7 @@
 
 use humhub\libs\Helpers;
 use humhub\modules\content\components\ContentContainerController;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 if (!Yii::$app->controller instanceof ContentContainerController) {
     echo Yii::t('ActivityModule.base', '{displayName} created the new space {spaceName}', [

@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 ?>

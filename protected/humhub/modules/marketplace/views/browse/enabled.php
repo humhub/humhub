@@ -6,12 +6,12 @@
  */
 
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var string $moduleConfigUrl */
 ?>
-<?php ModalDialog::begin([
+<?php Modal::beginDialog([
     'header' => Yii::t('MarketplaceModule.base', 'Module <strong>enabled</strong>')
 ]) ?>
 
@@ -36,4 +36,4 @@ use humhub\widgets\ModalDialog;
     <?php endif; ?>
 </div>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

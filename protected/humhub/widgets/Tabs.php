@@ -32,7 +32,7 @@ namespace humhub\widgets;
  * ]);
  * ?>
  *
- * @deprecated since 1.18
+ * @deprecated since 1.18 use [[humhub\widgets\bootstrap\Tabs]] instead
  * @since 1.2.2
  * @see \yii\bootstrap\Tabs
  * @package humhub\widgets

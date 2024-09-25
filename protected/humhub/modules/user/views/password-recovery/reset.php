@@ -2,7 +2,7 @@
 
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');

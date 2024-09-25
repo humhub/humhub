@@ -8,7 +8,7 @@
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\user\models\User;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var User $originator */
 /* @var Space $space */

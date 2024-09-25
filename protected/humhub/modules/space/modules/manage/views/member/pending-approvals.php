@@ -7,7 +7,7 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\GridView;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $dataProvider ActiveDataProvider */
 /* @var $searchModel MembershipSearch */

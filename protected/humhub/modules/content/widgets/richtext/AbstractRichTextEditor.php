@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets\richtext;
 
 use humhub\modules\ui\form\widgets\JsInputWidget;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /**

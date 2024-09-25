@@ -19,7 +19,7 @@ use yii\helpers\Url;
  *
  * `<?= Button::primary('Some Text')->actionClick('myHandler', [/some/url])->sm() ?>`
  *
- * @deprecated since 1.18, use \humhub\widgets\bootstrap\Button instead
+ * @deprecated since 1.18, use [[\humhub\widgets\bootstrap\Button]] instead
  *
  * @package humhub\widgets
  */

@@ -3,7 +3,7 @@
 use humhub\modules\admin\models\forms\LogFilterForm;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $logsCount int */

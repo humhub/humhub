@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Generic WallEntryControlLink.

@@ -7,7 +7,7 @@ use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\components\ActiveRecord;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * This LinkExtension is used to represent mentionings in the richtext as:

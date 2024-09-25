@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 
 ?>
 

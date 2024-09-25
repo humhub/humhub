@@ -9,7 +9,7 @@
 namespace humhub\widgets;
 
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\web\JsExpression;
 
 /**

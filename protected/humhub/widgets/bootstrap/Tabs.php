@@ -16,24 +16,24 @@ use Yii;
  *
  * View-based tabs usage:
  *
- * <?=
- * Tabs::widget([
- *  'viewPath' => '@myModule/views/common',
- *  'params' => $_params_,
- *  'items' => [
- *    [
- *      'label' => 'One',
- *      'view' => 'example',
- *      'active' => true
- *    ],
- *    [
- *      'label' => 'Two',
- *      'view' => '@myModule/views/example',
- *      'params' => ['model' => new SomeModel()]
- *    ],
- *  ]
- * ]);
- * ?>
+ * ```
+ * <?= Tabs::widget([
+ *   'viewPath' => '@myModule/views/common',
+ *   'params' => $_params_,
+ *   'items' => [
+ *     [
+ *       'label' => 'One',
+ *       'view' => 'example',
+ *       'active' => true
+ *     ],
+ *     [
+ *       'label' => 'Two',
+ *       'view' => '@myModule/views/example',
+ *       'params' => ['model' => new SomeModel()]
+ *     ],
+ *   ],
+ * ]); ?>
+ * ```
  *
  * @since 1.2.2
  */

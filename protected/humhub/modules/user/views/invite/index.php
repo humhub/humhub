@@ -7,8 +7,8 @@ use humhub\modules\user\models\forms\Invite;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
 
 /**
@@ -19,7 +19,7 @@ use yii\helpers\Url;
  */
 ?>
 
-<?php ModalDialog::begin([
+<?php Modal::beginDialog([
     'header' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
 ]) ?>
 <div class="modal-body">
@@ -97,7 +97,7 @@ use yii\helpers\Url;
 <div class="modal-footer">
     <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
 </div>
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
     $(function () {

@@ -1,8 +1,8 @@
 /**
  * Module for creating an manipulating modal dialoges.
  * Normal layout of a dialog:
- * 
- * <div class="modal">
+ *
+ * <div class="modal fade">
  *     <div class="modal-dialog">
  *         <div class="modal-content">
  *             <div class="modal-header"></div>
@@ -11,7 +11,7 @@
  *         </div>
  *     </div>
  * </div>
- *  
+ *
  * @param {type} param1
  * @param {type} param2
  */
@@ -29,7 +29,7 @@ humhub.module('ui.colorpicker', function (module, require, $) {
             component: '.input-group-addon',
             input: input
         });
-        
+
         // Add hex input field to color picker
         $container.on('create', function () {
             var picker = $(this).data('colorpicker');
@@ -38,7 +38,7 @@ humhub.module('ui.colorpicker', function (module, require, $) {
 
                 var $colorPickerHexInput = $('<input type="text" class="hexInput" style="border:0px;outline: none;width:120px;" value="' + picker.color.toHex() + '"></input>');
                 picker.picker.append($colorPickerHexInput);
-                
+
                 $colorPickerHexInput.on('change', function () {
                     picker.color.setColor($(this).val());
                     picker.update();

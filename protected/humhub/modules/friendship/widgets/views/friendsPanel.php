@@ -1,7 +1,7 @@
 <?php
 
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 <?php if (count($friends) > 0) { ?>

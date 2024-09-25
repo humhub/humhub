@@ -11,13 +11,13 @@ use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\TimePicker;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var ScheduleOptionsForm $scheduleOptions */
 /* @var bool $disableInputs */
 ?>
-<?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options')]) ?>
+<?php Modal::beginDialog(['header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options')]) ?>
 
 <?php $form = ActiveForm::begin() ?>
 <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
@@ -51,7 +51,7 @@ use humhub\widgets\ModalDialog;
 
 <?php ActiveForm::end() ?>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
     $('#scheduleoptionsform-enabled').click(function () {

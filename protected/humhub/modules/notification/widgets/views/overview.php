@@ -3,7 +3,7 @@
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\LoaderWidget;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $options [] */

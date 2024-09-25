@@ -13,6 +13,12 @@ use yii\helpers\Url;
 
 /**
  * Provides an extension of the yii\bootstrap5\Button class with additional features.
+ *
+ * Usage examples:
+ *
+ * ```
+ * Button::primary()->link(['/index'])->icon('info')
+ * ```
  */
 class Button extends \yii\bootstrap5\Button
 {

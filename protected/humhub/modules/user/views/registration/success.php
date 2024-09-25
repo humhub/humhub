@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
@@ -31,6 +31,3 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
         </div>
     </div>
 </div>
-
-
-

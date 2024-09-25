@@ -9,7 +9,7 @@ use humhub\modules\ui\form\widgets\MultiSelect;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\ActiveForm;
 use yii\data\Pagination;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\log\Logger;
 

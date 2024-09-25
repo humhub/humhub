@@ -20,7 +20,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\base\BaseObject;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 

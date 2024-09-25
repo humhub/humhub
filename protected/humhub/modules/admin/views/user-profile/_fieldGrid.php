@@ -8,7 +8,7 @@ use humhub\modules\admin\grid\CheckboxColumn;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\helpers\Url;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $category ProfileFieldCategory */
 

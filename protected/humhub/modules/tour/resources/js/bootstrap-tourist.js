@@ -444,7 +444,7 @@
 			To use Tour to highlight an entire dialog, set the step element to the dialog div. Tour will automatically realize this is a dialog, and
 			shift the element to use the modal-content div inside the dialog. This makes life friendly, because you can do this:
 
-			<div class="modal" id="myModal" role="dialog">
+			<div class="modal fade" id="myModal" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					...blah...
@@ -1214,7 +1214,7 @@
                 }
             }
 
-            // will be set to element <div class="modal"> if modal in use
+            // will be set to element <div class="modal fade"> if modal in use
             $modalObject = null;
 
             // is element a modal?

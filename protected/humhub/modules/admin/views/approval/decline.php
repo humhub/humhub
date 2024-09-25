@@ -5,7 +5,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $model User */

@@ -2,7 +2,7 @@
 
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 <?php if (count($spaces) > 0) { ?>

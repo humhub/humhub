@@ -7,7 +7,7 @@
 
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\user\models\User;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var string $registrationUrl */
 /* @var User $originator */

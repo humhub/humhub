@@ -12,7 +12,7 @@ use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  *

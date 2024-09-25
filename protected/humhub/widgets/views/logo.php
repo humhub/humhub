@@ -1,7 +1,7 @@
 <?php
 
 use humhub\libs\LogoImage;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $place string */
 ?>

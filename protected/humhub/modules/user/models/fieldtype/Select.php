@@ -12,7 +12,7 @@ use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Select handles profile select list fields.

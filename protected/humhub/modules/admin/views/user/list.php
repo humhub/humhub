@@ -8,7 +8,7 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 

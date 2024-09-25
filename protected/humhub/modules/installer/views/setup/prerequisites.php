@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\modules\admin\widgets\PrerequisitesList;
 
 ?>

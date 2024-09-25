@@ -10,7 +10,7 @@ use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $group Group */
@@ -100,13 +100,13 @@ AdminGroupAsset::register($this);
                                         ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
                                         ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
                                         ->icon('remove')
-                                        ->xs()
+                                        ->sm()
                                         ->confirm()
                                     : Button::danger()
                                         ->tooltip(Yii::t('AdminModule.user', 'The user cannot be removed from this Group, as users are required to be assigned to at least one Group.'))
                                         ->icon('remove')
                                         ->options(['disabled' => true])
-                                        ->xs()
+                                        ->sm()
                                         ->loader(false);
                             },
                         ],

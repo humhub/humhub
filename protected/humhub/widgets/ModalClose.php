@@ -7,32 +7,9 @@ namespace humhub\widgets;
  * If the frontend requires a modal response, this widget will close the global modal
  * and show an status message.
  *
- *
+ * @deprecated since 1.18.0 use [[humhub\widgets\modal\ModalClose]] instead
  * @author buddha
  */
-class ModalClose extends \yii\base\Widget
+class ModalClose extends modal\ModalClose
 {
-    public $success;
-    public $info;
-    public $error;
-    public $warn;
-    public $saved;
-    public $script;
-    public $reload = false;
-
-    /**
-     * @inheritdoc
-     */
-    public function run()
-    {
-        return $this->render('modalClose', [
-            'success' => $this->success,
-            'info' => $this->info,
-            'error' => $this->error,
-            'warn' => $this->warn,
-            'saved' => $this->saved,
-            'script' => $this->script,
-            'reload' => $this->reload,
-        ]);
-    }
 }

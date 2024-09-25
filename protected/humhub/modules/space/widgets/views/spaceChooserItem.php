@@ -6,7 +6,7 @@ use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\bootstrap\Badge;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 ?>
 

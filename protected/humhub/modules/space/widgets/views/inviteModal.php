@@ -16,9 +16,9 @@ use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
 
-$modal = ModalDialog::begin([
+Modal::beginDialog([
     'header' => Yii::t('SpaceModule.base', '<strong>Invite</strong> members'),
 ]);
 
@@ -167,7 +167,7 @@ $form = ActiveForm::begin([
 </div>
 <?php ActiveForm::end() ?>
 
-<?php ModalDialog::end(); ?>
+<?php Modal::endDialog(); ?>
 
 <script <?= Html::nonce() ?>>
     $('#inviteform-allregisteredusers').on('change', function () {

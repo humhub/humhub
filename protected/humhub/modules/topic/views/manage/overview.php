@@ -16,9 +16,9 @@ use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $dataProvider ActiveDataProvider */
@@ -64,11 +64,11 @@ use yii\helpers\Html;
                     'buttons' => [
                         'update' => function ($url, $model) use ($contentContainer) {
                             /* @var $model Topic */
-                            return ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->xs()->loader(false);
+                            return ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->sm()->loader(false);
                         },
                         'view' => function ($url, $model) use ($contentContainer) {
                             /* @var $model Topic */
-                            return Button::primary()->link($model->getUrl())->icon('fa-filter')->xs()->loader(false);
+                            return Button::primary()->link($model->getUrl())->icon('fa-filter')->sm()->loader(false);
                         },
                         'delete' => function ($url, $model) use ($contentContainer) {
                             /* @var $model Topic */
@@ -76,7 +76,7 @@ use yii\helpers\Html;
                                 Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
                                 Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
                                 Yii::t('base', 'Delete')
-                            )->xs()->loader(false);
+                            )->sm()->loader(false);
                         },
                     ],
                 ],

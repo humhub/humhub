@@ -13,7 +13,7 @@ use humhub\libs\DbDateValidator;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /**
  * Date Field

@@ -16,7 +16,7 @@ use humhub\events\OembedFetchEvent;
 use humhub\libs\RestrictedCallException;
 use humhub\libs\UrlOembedClient;
 use humhub\libs\UrlOembedHttpClient;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\helpers\Json;
 use yii\db\ActiveRecord;
 use Yii;

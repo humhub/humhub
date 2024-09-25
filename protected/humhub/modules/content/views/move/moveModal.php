@@ -4,8 +4,8 @@ use humhub\modules\content\models\forms\MoveContentForm;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $model MoveContentForm */
 
@@ -14,7 +14,7 @@ $canMove = $model->isMovable() === true;
 
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('ContentModule.base', '<strong>Move</strong> content')]) ?>
+<?php Modal::beginDialog(['header' => Yii::t('ContentModule.base', '<strong>Move</strong> content')]) ?>
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
 <div class="modal-body">
     <?php if ($canMove): ?>
@@ -34,4 +34,4 @@ $canMove = $model->isMovable() === true;
     <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove) ?>
 </div>
 <?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

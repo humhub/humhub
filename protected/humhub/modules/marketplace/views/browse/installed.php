@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var int $moduleId */
 ?>
-<?php ModalDialog::begin([
+<?php Modal::beginDialog([
     'header' => Yii::t('MarketplaceModule.base', 'Module <strong>installed</strong>')
 ]) ?>
 
@@ -25,4 +25,4 @@ use humhub\widgets\ModalDialog;
         ->options(['data-module-id' => $moduleId]) ?>
 </div>
 
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

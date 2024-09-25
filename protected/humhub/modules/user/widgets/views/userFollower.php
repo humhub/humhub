@@ -2,7 +2,7 @@
 
 use humhub\modules\user\models\User;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var User[] $followers */
 /* @var User[] $following */

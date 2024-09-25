@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use humhub\assets\AppAsset;
 use humhub\widgets\PoweredBy;
 use yii\web\View;

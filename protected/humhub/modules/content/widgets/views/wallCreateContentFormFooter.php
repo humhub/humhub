@@ -17,8 +17,8 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\Link;
-use yii\helpers\Html;
 
 /* @var $submitUrl string */
 /* @var $submitButtonText string */

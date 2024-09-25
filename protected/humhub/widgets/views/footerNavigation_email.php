@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\ui\menu\MenuLink;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $entries MenuLink[] */

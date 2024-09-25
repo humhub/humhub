@@ -10,14 +10,14 @@ use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $this View */
 /* @var $model Topic */
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('TopicModule.base', '<strong>Edit</strong> Topic')]) ?>
+<?php Modal::beginDialog(['header' => Yii::t('TopicModule.base', '<strong>Edit</strong> Topic')]) ?>
 <?php $form = ActiveForm::begin() ?>
 <div class="modal-body">
     <?= $form->field($model, 'name') ?>
@@ -28,4 +28,4 @@ use humhub\widgets\ModalDialog;
     <?= ModalButton::submitModal() ?>
 </div>
 <?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>

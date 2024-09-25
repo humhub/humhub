@@ -6,7 +6,7 @@ use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\JPlayerPlaylistWidget;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 
 /* @var  $previewImage PreviewImage */
 /* @var  $files \humhub\modules\file\models\File[] */

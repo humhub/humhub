@@ -8,7 +8,7 @@ use humhub\modules\file\models\File;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Html;
 use yii\widgets\ActiveForm;
 
 /**
