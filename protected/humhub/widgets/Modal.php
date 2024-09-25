@@ -15,5 +15,4 @@ namespace humhub\widgets;
  */
 class Modal extends modal\JsModal
 {
-
 }
