@@ -14,6 +14,7 @@ Version 1.17 (Unreleased)
 #### Removed
 
 - Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
+- Removed `\humhub\widgets\ShowMorePager` widget
 
 
 Version 1.17 (Unreleased)
