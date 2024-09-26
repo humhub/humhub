@@ -37,6 +37,7 @@ HumHub Changelog
 - Enh #7226: Added configuration option for default stream sorting on space level
 - Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
 - Enh #7231: Removed deprecated `ShowMorePager` widget
+- Fix #7230: Update module with new id
 
 1.16.3 (Unreleased)
 --------------------------
@@ -48,7 +49,6 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Fix #7230: Update module with new id
 
 1.16.2 (September 5, 2024)
 --------------------------
