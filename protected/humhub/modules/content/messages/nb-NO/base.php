@@ -69,6 +69,7 @@ return [
     'Your last edit state has been saved!' => 'Din siste redigerte versjon er lagret!',
     'in' => 'i',
     '(Also visible to non-members of this space)' => '',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',

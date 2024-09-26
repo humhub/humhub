@@ -9,6 +9,7 @@ return [
     'Activate scheduling' => 'Aktivovať plánovanie',
     'Add a member to notify' => 'Pridať člena, ktorého chcete upozorniť',
     'Add tag...' => 'Pridať značku',
+    'Advanced Content Search' => 'Rozšírené Vyhľadávanie Obsahu',
     'Archived' => 'Archivovaný',
     'Attach Files' => 'Pripojiť súbory',
     'Back to stream' => 'Späť na stream',
@@ -68,6 +69,7 @@ return [
     'Scheduled for {dateTime}' => 'Naplánované na {dateTime}',
     'Select type...' => 'Vyberte typ...',
     'Specify who can see this content.' => 'Zadajte, kto môže vidieť tento obsah.',
+    'Submit' => 'Vystaviť',
     'Tag' => 'Značka',
     'Target Space' => 'Cieľový Priestor',
     'The author of this content is not allowed to create private content within the selected space.' => 'Autor tohto obsahu nemá povolené vytvárať súkromný obsah vo vybranom priestore.',
@@ -108,6 +110,5 @@ return [
     'You do not have the permission to move this content.' => 'Nemáte povolenie na presun tohto obsahu.',
     'Your last edit state has been saved!' => 'Stav poslednej úpravy bol uložený!',
     'in' => 'v',
-    'Advanced Content Search' => '',
-    'Submit' => '',
+    '(Also visible to people who are not logged in)' => '',
 ];

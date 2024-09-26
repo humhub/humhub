@@ -1,6 +1,7 @@
 <?php
 return array (
   '(Also visible to non-members of this space)' => '(مرئي أيضًا لغير أعضاء هذه الباحة)',
+  '(Also visible to people who are not logged in)' => '(مرئي أيضًا للأشخاص الذين لم يسجلوا الدخول)',
   '<strong>Delete</strong> content?' => '<strong>حذف</strong> المحتوى؟',
   '<strong>Move</strong> content' => '<strong> نقل </strong> محتوى',
   '<strong>Permalink</strong> to this post' => '<strong>الرابط الدائم</strong> لهذه المشاركة',

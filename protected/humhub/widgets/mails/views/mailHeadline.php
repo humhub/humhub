@@ -4,6 +4,15 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
+
+use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\modules\ui\view\components\View;
+
+/* @var View $this */
+/* @var int $level */
+/* @var string $style */
+/* @var string $text */
+
 switch ($level) {
     case 3:
         $fontSize = '12px';
@@ -24,16 +33,16 @@ switch ($level) {
 ?>
 <table border="0" cellspacing="0" cellpadding="0" align="left" >
     <tr>
-        <td  style="font-size: <?= $fontSize ?>; line-height: 22px; font-family:Open Sans, Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555'); ?> font-weight:<?= $weight ?>; text-align:left;">
+        <td  style="font-size: <?= $fontSize ?>; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-highlight', '#555') ?> font-weight:<?= $weight ?>; text-align:left">
             <span>
-                <a href="#" style="text-decoration: none; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555') ?>; font-weight:<?= $weight ?>; <?= $style ?>"><?= $text ?></a>
+                <a href="#" style="text-decoration: none; color:<?= $this->theme->variable('text-color-highlight', '#555') ?>; font-weight:<?= $weight ?>; <?= $style ?>"><?= $text ?></a>
             </span>
         </td>
     </tr>
 
     <!--start space height -->
     <tr>
-        <td height="<?= $margin ?>" ></td>
+        <td height="<?= $margin ?>"></td>
     </tr>
     <!--end space height -->
 </table>

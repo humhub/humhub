@@ -34,6 +34,7 @@ return array (
   'Disconnect account' => 'افصل الحساب',
   'Edit' => 'تحرير',
   'Email' => 'البريد الإلكتروني',
+  'Empty password cannot be saved!' => 'كلمة المرور الفارغة لا يمكن حفظها!',
   'Enable Notifications' => 'تفعيل الإشعارات',
   'Find people by their profile data or user tags' => 'العثور على أشخاص بواسطة بيانات الملف الشخصي أو علامات المستخدم',
   'Follow' => 'متابعة',

@@ -81,6 +81,7 @@ return [
     'You do not have the permission to move this content.' => 'Нямате разрешение да преместите това съдържание.',
     'Your last edit state has been saved!' => 'Последното състояние на редактиране е запазено!',
     'in' => 'в',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',

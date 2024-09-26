@@ -6,6 +6,7 @@ return array (
   'Login required for this section.' => 'تسجيل الدخول مطلوب لهذا القسم.',
   'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'تم تفعيل وضع الصيانة: لقد تم تسجيل خروجك تلقائيًا ولن تتمكن من الوصول إلى النظام الأساسي حتى اكتمال الصيانة.',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'وضع الصيانة نشط. يمكن للمسؤولين فقط الوصول إلى النظام الأساسي.',
+  'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => 'الموديول  {moduleId} موجودة في ملف إعداد HumHub على الرغم من تعطيل هذه الموديول. يرجى إزالته من الإعداد.',
   'The specified URL cannot be called directly.' => 'لا يمكن استدعاء عنوان URL المحدد مباشرة.',
   'You are not allowed to perform this action.' => 'غير مسموح لك بتنفيذ هذا الإجراء.',
   'You are not permitted to access this section.' => 'لا يسمح لك بالدخول إلى هذا القسم.',
