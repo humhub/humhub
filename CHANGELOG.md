@@ -11,7 +11,7 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Enh #7229: Add an event trigger after send an invitation email
+- Enh #7229: Hide invitations with unknown sources
 
 1.16.2 (September 5, 2024)
 --------------------------

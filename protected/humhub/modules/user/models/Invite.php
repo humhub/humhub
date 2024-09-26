@@ -10,7 +10,6 @@ namespace humhub\modules\user\models;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\ActiveRecord;
-use humhub\libs\ParameterEvent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
@@ -41,7 +40,6 @@ use yii\helpers\Url;
  */
 class Invite extends ActiveRecord
 {
-    public const EVENT_AFTER_SEND = 'afterSend';
     public const SOURCE_SELF = 'self';
     public const SOURCE_INVITE = 'invite';
     public const SOURCE_INVITE_BY_LINK = 'invite_by_link';
@@ -56,6 +54,8 @@ class Invite extends ActiveRecord
      * @var bool
      */
     public $skipCaptchaValidation = false;
+
+    protected ?array $allowedSources = null;
 
     /**
      * @inheritdoc
@@ -229,10 +229,7 @@ class Invite extends ActiveRecord
             Yii::$app->setLanguage(Yii::$app->user->language);
         }
 
-        $event = new ParameterEvent(['result' => $result]);
-        $this->trigger(self::EVENT_AFTER_SEND, $event);
-
-        return $event->parameters['result'];
+        return $result;
     }
 
     /**
@@ -317,5 +314,23 @@ class Invite extends ActiveRecord
         return
             !$this->skipCaptchaValidation
             && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+    }
+
+    public function getAllowedSources(): array
+    {
+        if ($this->allowedSources === null) {
+            $this->allowedSources = [
+                self::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite by email'),
+                self::SOURCE_INVITE_BY_LINK => Yii::t('AdminModule.base', 'Invite by link'),
+                self::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
+            ];
+        }
+
+        return $this->allowedSources;
+    }
+
+    public static function filterSource(): array
+    {
+        return ['source' => array_keys((new static())->getAllowedSources())];
     }
 }

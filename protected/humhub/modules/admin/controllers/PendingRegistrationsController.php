@@ -64,12 +64,7 @@ class PendingRegistrationsController extends Controller
         return $this->render('index', [
             'dataProvider' => $dataProvider,
             'searchModel' => $searchModel,
-            'types' => [
-                null => null,
-                PendingRegistrationSearch::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite by email'),
-                PendingRegistrationSearch::SOURCE_INVITE_BY_LINK => Yii::t('AdminModule.base', 'Invite by link'),
-                PendingRegistrationSearch::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
-            ],
+            'types' => [null => null] + $searchModel->getAllowedSources(),
         ]);
     }
 
@@ -155,7 +150,7 @@ class PendingRegistrationsController extends Controller
     public function actionDeleteAll()
     {
         if (Yii::$app->request->isPost) {
-            Invite::deleteAll();
+            Invite::deleteAll(Invite::filterSource());
 
             $this->view->success(Yii::t(
                 'AdminModule.user',
@@ -180,7 +175,7 @@ class PendingRegistrationsController extends Controller
             $ids = Yii::$app->request->post('id');
             if (!empty($ids)) {
                 foreach ($ids as $id) {
-                    $invitation = Invite::findOne(['id' => $id]);
+                    $invitation = Invite::findOne(['id' => $id] + Invite::filterSource());
                     $invitation->delete();
                 }
                 $this->view->success(Yii::t(
@@ -228,7 +223,7 @@ class PendingRegistrationsController extends Controller
      */
     private function findInviteById($id)
     {
-        $invite = Invite::findOne(['id' => $id]);
+        $invite = Invite::findOne(['id' => $id] + Invite::filterSource());
         if ($invite === null) {
             throw new HttpException(404, Yii::t(
                 'AdminModule.user',
