@@ -34,6 +34,7 @@ HumHub Changelog
 - Fix #6987: Added LatAm Spanish
 - Enh #7214: Replace theme variables with CSS variables
 - Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
 - Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
 - Enh #7231: Removed deprecated `ShowMorePager` widget
 
