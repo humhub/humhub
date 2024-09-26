@@ -82,6 +82,10 @@ class ContentSearchService
 
     public function isIndexable(): bool
     {
+        if (empty($this->content->id)) {
+            return false;
+        }
+
         if ($this->content->stream_channel !== Content::STREAM_CHANNEL_DEFAULT) {
             return false;
         }
