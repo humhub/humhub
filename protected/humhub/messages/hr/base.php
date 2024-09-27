@@ -69,7 +69,7 @@ return array (
   'Show less' => 'Prikaži manje',
   'Show more' => 'Prikaži više',
   'Some files could not be uploaded:' => 'Neke datoteke nisu prenesene:',
-  'Stop impersonation' => '',
+  'Stop impersonation' => 'Zaustavi imitaciju',
   'Text could not be copied to clipboard' => 'Tekst nije mogao biti kopiran u privremenu memoriju',
   'Text has been copied to clipboard' => 'Tekst je kopiran u privremenu memoriju',
   'The date has to be in the past.' => 'Datum mora biti u prošlosti.',

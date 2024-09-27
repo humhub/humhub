@@ -26,7 +26,7 @@ return array (
   'Driver' => 'Driver',
   'Dynamic Config' => 'Configuração dinâmica',
   'Error' => 'Erro',
-  'Flush entries' => 'Flush entradas',
+  'Flush entries' => 'Limpar entradas',
   'HumHub' => 'HumHub',
   'HumHub Documentation' => 'Documentação do HumHub',
   'HumHub is currently in debug mode. Disable it when running on production!' => 'HumHub está em modo debug. Desabilite isso quando no mode de produção!',
