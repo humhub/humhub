@@ -53,9 +53,6 @@ class PendingRegistrationsController extends Controller
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
     public function actionIndex()
     {
         $searchModel = new PendingRegistrationSearch();
@@ -95,7 +92,7 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
-     * Resend a invite
+     * Resend an invitation
      *
      * @param int $id
      * @return string
@@ -117,7 +114,7 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
-     * Delete an invite
+     * Delete an invitation
      *
      * @param int $id
      * @return string
@@ -129,20 +126,20 @@ class PendingRegistrationsController extends Controller
         $this->forcePostRequest();
         $invite = $this->findInviteById($id);
         if (Yii::$app->request->isPost) {
-            $invite->delete();
-            $this->view->success(Yii::t(
-                'AdminModule.user',
-                'Deleted invitation',
-            ));
+            if ($invite->delete()) {
+                $this->view->success(Yii::t(
+                    'AdminModule.user',
+                    'Deleted invitation',
+                ));
+            }
             return $this->redirect(['index']);
         }
         return $this->render('delete', ['model' => $invite]);
     }
 
     /**
-     * Delete all invitations
+     * Resend all invitations
      *
-     * @param int $id
      * @return string
      * @throws HttpException
      * @throws Throwable
@@ -150,7 +147,7 @@ class PendingRegistrationsController extends Controller
     public function actionResendAll()
     {
         if (Yii::$app->request->isPost) {
-            foreach (Invite::find()->each() as $invite) {
+            foreach (Invite::find()->where(Invite::filterSource())->each() as $invite) {
                 $invite->sendInviteMail();
             }
 
@@ -184,9 +181,8 @@ class PendingRegistrationsController extends Controller
     }
 
     /**
-     * Delete all or selected invitation
+     * Resend all or selected invitation
      *
-     * @param int $id
      * @return string
      * @throws HttpException
      * @throws Throwable
@@ -212,7 +208,6 @@ class PendingRegistrationsController extends Controller
     /**
      * Delete all or selected invitation
      *
-     * @param int $id
      * @return string
      * @throws HttpException
      * @throws Throwable
