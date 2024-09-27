@@ -322,6 +322,10 @@ span.likeLinkContainer .unlike.disabled {
 #topbar-first .nav > .account .dropdown-toggle #user-account-image {
   margin-bottom: 0;
 }
+#topbar-first .nav > .account .dropdown-toggle #user-account-image + .caret {
+  float: right;
+  margin: 12px 0 0 6px;
+}
 #topbar-first .topbar-brand {
   position: relative;
   z-index: 2;
@@ -1932,12 +1936,22 @@ input[type=checkbox]:checked {
   color: white;
 }
 input[type=checkbox]:checked::after {
-  content: '\2714';
-  font-size: 14px;
+  content: '\f00c';
+  /* FontAwesome checkmark */
+  font-family: 'FontAwesome';
+  /* FontAwesome Font */
+  font-size: 12px;
   position: absolute;
-  top: -3px;
+  top: 0;
   left: 1px;
   color: white;
+}
+/* Chromium */
+@supports (-webkit-appearance: none) {
+  input[type=checkbox]:checked::after {
+    top: 1px;
+    left: 1px;
+  }
 }
 input[type=radio] {
   border-radius: 50%;
@@ -3356,9 +3370,28 @@ ul.files li.file-preview-item .file-fileInfo {
   object-fit: cover;
   border-radius: 4px;
 }
-@media (max-width: 650px) {
+@media (max-width: 768px) {
   .post-files img {
-    height: 100px;
+    height: 150px;
+  }
+  .post-files .col-xs-12 img {
+    height: 300px;
+  }
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  .post-files img {
+    height: 150px;
+  }
+  .post-files .col-sm-6 img {
+    height: 250px;
+  }
+}
+@media (min-width: 992px) {
+  .post-files img {
+    height: 200px;
+  }
+  .post-files .col-sm-6 img {
+    height: 300px;
   }
 }
 .post-file-list {
@@ -6389,7 +6422,7 @@ ul.tag_input li img {
  * Define or overwrite your theme variables here.
  *
  * Check for @humhub/static/less/variables.less file for all available variables.
- *
+ * 
  * You can also access your variables within your view files by calling Yii::$app->view->theme->variable('myVariable');
  *
  * You can disable the import of humhub theme components by using variables of the format @prev-{component} e.g.:
