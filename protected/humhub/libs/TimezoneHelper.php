@@ -83,10 +83,10 @@ class TimezoneHelper
      * Returns the date time from the database connection
      *
      * @return DateTime
+     * @deprecated since 1.17 because it is not used anymore
      */
     public static function getDatabaseConnectionTime(): DateTime
     {
-
         $timestamp = Yii::$app->db->createCommand('SELECT NOW()')->queryScalar();
         return DateTime::createFromFormat("Y-m-d H:i:s", $timestamp);
     }
