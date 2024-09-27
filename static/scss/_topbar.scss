@@ -96,6 +96,10 @@
 
             #user-account-image {
                 margin-bottom: 0;
+                + .caret { // Temp fix for Mac Safari browser
+                    float: right;
+                    margin: 12px 0 0 6px;
+                }
             }
         }
     }

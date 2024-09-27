@@ -29,14 +29,24 @@ foreach ($files as $file) {
     }
 }
 
-$fullWidthColumnClass = 'col-media col-12 col-sm-12 col-md-12';
-$nonFluidColumnClass = 'col-media col-3 col-sm-3 col-md-4';
-$fluidColumnClass = 'col-media col-3 col-sm-3 col-md-2';
+$nbFiles = count($files);
+$isFluid = ThemeHelper::isFluid();
 
-$galleryColumnClass = ThemeHelper::isFluid() ? $fluidColumnClass : $nonFluidColumnClass;
+// Image height is defined in file.less and matches this template
+$mobileBsColumns = 6;
+$desktopBsColumns = $isFluid ? 3 : 4;
+if ($nbFiles === 1) {
+    $mobileBsColumns = 12;
+    $desktopBsColumns = $isFluid ? 4 : 6;
+}
+if ($nbFiles === 2) {
+    $desktopBsColumns = $isFluid ? 4 : 6;
+}
+$fullWidthColumnClass = 'col-media col-xs-12 col-sm-12 col-md-12';
+$galleryColumnClass = 'col-media col-xs-' . $mobileBsColumns . ' col-sm-' . $desktopBsColumns . ' col-md-' . $desktopBsColumns;
 ?>
 
-<?php if (count($files) > 0): ?>
+<?php if ($nbFiles > 0): ?>
     <!-- hideOnEdit mandatory since 1.2 -->
     <div class="hideOnEdit">
         <!-- Show Images as Thumbnails -->

@@ -65,30 +65,43 @@ ul.files {
     }
 }
 
-@if $isFluid {
-    @media (min-width: 1200px) and (max-width: 1700px) {
-        .post-files img {
-            height: 100px;
-        }
-    }
+// Matches the protected/humhub/modules/file/widgets/views/showFiles.php template
 
-    @media (min-width: 992px) and (max-width: 1199px) {
-        .post-files img {
-            height: 80px;
+// extra-small
+@media (max-width: 768px) {
+    .post-files {
+        img {
+            height: 150px;
         }
-    }
 
-    @media (max-width: 991px) {
-        .post-files img {
-            height: 100px;
+        .col-xs-12 img { // One image
+            height: 300px;
         }
     }
 }
 
-@if not $isFluid {
-    @media (max-width: 650px) {
-        .post-files img {
-            height: 100px;
+// small
+@media (min-width: 768px) and (max-width: 991px) {
+    .post-files {
+        img {
+            height: 150px;
+        }
+
+        .col-sm-6 img { // One or two images
+            height: 250px;
+        }
+    }
+}
+
+// medium
+@media (min-width: 992px) {
+    .post-files {
+        img {
+            height: 200px;
+        }
+
+        .col-sm-6 img { // One or two images
+            height: 300px;
         }
     }
 }

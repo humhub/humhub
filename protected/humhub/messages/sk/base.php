@@ -1,7 +1,7 @@
 <?php
 return array (
   '<strong>Confirm</strong> Action' => '<strong>Potvrdiť</strong> Akciu',
-  '<strong>Latest</strong> updates' => '<strong>Najnovšie</strong> udalosti',
+  '<strong>Latest</strong> updates' => '<strong>Najnovšie</strong> aktualizácie',
   '<strong>Mail</strong> summary' => '<strong>Mailový</strong> súhrn',
   'Actions' => 'Akcie',
   'Add:' => 'Pridať',
@@ -38,7 +38,7 @@ return array (
   'Expand' => 'Rozbaliť',
   'Export' => 'Exportovať',
   'Info:' => 'Informácie:',
-  'Invalid request method!' => 'Neplatná metóda požiadavky!',
+  'Invalid request method!' => 'Neplatný spôsob žiadosti!',
   'It looks like you may have taken the wrong turn.' => 'Zdá sa, že ste možno odbočili nesprávne.',
   'Language' => 'Jazyk',
   'Loading...' => 'Načítanie...',

@@ -34,12 +34,23 @@ HumHub Changelog
 - Fix #6987: Added LatAm Spanish
 - Enh #7214: Replace theme variables with CSS variables
 - Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
 - Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
 - Enh #7231: Removed deprecated `ShowMorePager` widget
+- Fix #7230: Update module with new id
+- Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
 
 1.16.3 (Unreleased)
 --------------------------
 - Fix #7212: Fix horizontal scroll bar on space stream on small screen
+- Fix #7210: Small style fix for top account menu (temp fix for Mac Safari browser)
+- Fix #7218: Fix visibility of wall stream content creating form
+- Fix #7219: Renamed deprecated meta tag
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7222: Fix rendering of checkbox on MacOS and iOS
+- Fix #7225: Fix module JS config initialisation on AJAX request
+- Fix #7227: Fix search reindexing after create new content
+- Enh #7229: Hide invitations with unknown sources
 
 1.16.2 (September 5, 2024)
 --------------------------

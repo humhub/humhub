@@ -36,6 +36,8 @@ use humhub\widgets\form\ActiveForm;
 
 <?= $form->field($model, 'defaultIndexGuestRoute')->dropDownList($indexModuleSelection) ?>
 
+<?= $form->field($model, 'defaultStreamSort')->dropDownList($model::defaultStreamSortOptions()) ?>
+
 <?= $form->field($model, 'defaultHideMembers')->checkbox() ?>
 
 <?= $form->field($model, 'defaultHideActivities')->checkbox() ?>

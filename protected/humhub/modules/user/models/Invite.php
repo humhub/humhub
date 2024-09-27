@@ -57,6 +57,8 @@ class Invite extends ActiveRecord
      */
     public $skipCaptchaValidation = false;
 
+    protected ?array $allowedSources = null;
+
     /**
      * @inheritdoc
      */
@@ -324,5 +326,23 @@ class Invite extends ActiveRecord
     public function getUpdatedBy()
     {
         return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    public function getAllowedSources(): array
+    {
+        if ($this->allowedSources === null) {
+            $this->allowedSources = [
+                self::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite by email'),
+                self::SOURCE_INVITE_BY_LINK => Yii::t('AdminModule.base', 'Invite by link'),
+                self::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
+            ];
+        }
+
+        return $this->allowedSources;
+    }
+
+    public static function filterSource(): array
+    {
+        return ['source' => array_keys((new static())->getAllowedSources())];
     }
 }
