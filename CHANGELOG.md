@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
+- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
 
 1.16.2 (September 5, 2024)
 --------------------------
