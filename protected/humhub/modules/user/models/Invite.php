@@ -227,6 +227,11 @@ class Invite extends ActiveRecord
             Yii::$app->setLanguage(Yii::$app->user->language);
         }
 
+        if ($result) {
+            // Refresh the updated_at timestamp
+            $this->save();
+        }
+
         return $result;
     }
 
