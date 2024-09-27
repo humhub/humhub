@@ -4,51 +4,51 @@
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
-/* @var $this yii\web\View */
-/* @var $viewable humhub\modules\space\notifications\ApprovalRequest */
-/* @var $url string */
-/* @var $date string */
-/* @var $isNew bool */
-/* @var $originator \humhub\modules\user\models\User */
-/* @var $source yii\db\ActiveRecord */
-/* @var $contentContainer ContentContainerActiveRecord */
-/* @var $space humhub\modules\space\models\Space */
-/* @var $record Notification */
 
-/* @var $message string */
-
-use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\notification\models\Notification;
+use humhub\modules\space\models\Space;
+use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\modules\ui\view\components\View;
+use humhub\modules\user\models\User;
+use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
+use humhub\widgets\mails\MailContentEntry;
 
+/* @var $this View */
+/* @var $viewable BaseNotification */
+/* @var $url string */
+/* @var $message string */
+/* @var $date string */
+/* @var $originator User */
+/* @var $space Space */
+/* @var $record Notification */
+/* @var $_params_ array */
 ?>
-
-<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_); ?>
+<?php $this->beginContent('@notification/views/layouts/mail.php', $_params_) ?>
 
     <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
         <tr>
-            <td style="font-size: 14px; line-height: 22px; font-family:Open Sans,Arial,Tahoma, Helvetica, sans-serif; color:<?= Yii::$app->view->theme->variable('text-color-highlight', '#555555') ?>; font-weight:300; text-align:left;">
-                <?= $viewable->html(); ?>
+            <td style="font-size: 14px; line-height: 22px; font-family:<?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-highlight', '#555555') ?>; font-weight:300; text-align:left">
+                <?= $viewable->html() ?>
             </td>
         </tr>
         <tr>
             <td height="10"></td>
         </tr>
         <tr>
-            <td height="10" style="border-top: 1px solid #eee;"></td>
+            <td height="10" style="border-top: 1px solid #eee"></td>
         </tr>
         <tr>
             <td>
-                <?=
-                humhub\widgets\mails\MailContentEntry::widget([
+                <?= MailContentEntry::widget([
                     'originator' => $originator,
                     'receiver' => $record->user,
                     'content' => $message,
                     'date' => $date,
                     'space' => $space,
-                    'isComment' => true
-                ])
-                ?>
+                    'isComment' => true,
+                ]) ?>
             </td>
         </tr>
         <tr>
@@ -56,11 +56,12 @@ use humhub\widgets\mails\MailButtonList;
         </tr>
         <tr>
             <td>
-                <?=
-                MailButtonList::widget(['buttons' => [
-                    humhub\widgets\mails\MailButton::widget(['url' => $url, 'text' => Yii::t('SpaceModule.notification', 'View Online')])
-                ]]);
-                ?>
+                <?= MailButtonList::widget(['buttons' => [
+                    MailButton::widget([
+                        'url' => $url,
+                        'text' => Yii::t('SpaceModule.notification', 'View Online'),
+                    ]),
+                ]]) ?>
             </td>
         </tr>
     </table>

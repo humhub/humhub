@@ -12,6 +12,7 @@ return [
     'Your user account is inactive, please login with an active account or contact a network administrator.' => 'החשבון אינו פעיל. נא להכנס מחשבון פעיל או לפנות למנהל הרשת.',
     'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => '',
     'Maintenance mode is active. Only Administrators can access the platform.' => '',
+    'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => '',
     'The specified URL cannot be called directly.' => '',
     'You must change password.' => '',
 ];

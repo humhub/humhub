@@ -76,4 +76,6 @@ return [
     'Visit Marketplace' => 'Látogassa meg a piacteret',
     'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Nincs jogosultsága a modulok konfigurálására. További információért forduljon a rendszergazdához.',
     'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Nincs jogosultsága a modulok kezelésére. További információért forduljon a rendszergazdához.',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
 ];

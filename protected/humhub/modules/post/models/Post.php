@@ -44,9 +44,14 @@ class Post extends ContentActiveRecord
     public $canMove = CreatePost::class;
 
     /**
-     * Scenarios
+     * Scenario - when validating with ajax
      */
     public const SCENARIO_AJAX_VALIDATION = 'ajaxValidation';
+
+    /**
+     * Scenario - when related content has attached files
+     */
+    public const SCENARIO_HAS_FILES = 'hasFiles';
 
     /**
      * @inheritdoc
@@ -67,7 +72,7 @@ class Post extends ContentActiveRecord
     public function rules()
     {
         return [
-            [['message'], 'required', 'except' => self::SCENARIO_AJAX_VALIDATION],
+            [['message'], 'required', 'except' => [self::SCENARIO_AJAX_VALIDATION, self::SCENARIO_HAS_FILES]],
             [['message'], 'string'],
             [['url'], 'string', 'max' => 255],
         ];

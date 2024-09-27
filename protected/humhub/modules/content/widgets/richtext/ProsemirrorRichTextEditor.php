@@ -2,7 +2,9 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
-use humhub\modules\file\widgets\UploadInput;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\widgets\FileHandlerButtonDropdown;
+use humhub\modules\file\widgets\UploadButton;
 
 /**
  * Rich text editor implementation for the ProsemirrorRichText.
@@ -57,9 +59,16 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
      */
     public function prepend()
     {
-        return UploadInput::widget([
-            'id' => $this->getId(true) . '-file-upload',
-            'hideInStream' => true,
+        return FileHandlerButtonDropdown::widget([
+            'primaryButton' => UploadButton::widget([
+                'id' => $this->getId(true) . '-file-upload',
+                'hideInStream' => true,
+            ]),
+            'handlers' => FileHandlerCollection::getByType([
+                FileHandlerCollection::TYPE_IMPORT,
+                FileHandlerCollection::TYPE_CREATE,
+            ]),
+            'cssClass' => 'btn-group hidden',
         ]);
     }
 }

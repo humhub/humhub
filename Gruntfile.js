@@ -83,7 +83,7 @@ module.exports = function (grunt) {
                 command: function (name) {
                     let theme = name || grunt.option('name') || "HumHub";
                     let sep = cmdSep();
-                    return `cd themes/${theme}/less ${sep} lessc -x build.less ../css/theme.css`;
+                    return `cd themes/${theme}/less ${sep} lessc --clean-css build.less ../css/theme.css`;
                 }
             },
             migrateCreate: {

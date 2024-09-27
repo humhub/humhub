@@ -116,6 +116,7 @@ return [
     'or' => 'eller',
     'Advanced Profile Search' => '',
     'Block user' => '',
+    'Empty password cannot be saved!' => '',
     'Group Manager(s)' => '',
     'The Group Manager can approve pending registrations of this group.' => '',
     'The user has been blocked for you.' => '',
