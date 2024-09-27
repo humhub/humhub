@@ -412,31 +412,6 @@ class SelfTest
 
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
-            $dbConnectionTime = TimezoneHelper::getDatabaseConnectionTime();
-            $timeDiffMargin = 60;
-            $timeDiff = abs($dbConnectionTime->getTimestamp() - time());
-
-            $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Time zone');
-            if ($timeDiff < $timeDiffMargin) {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'OK',
-                ];
-            } else {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'WARNING',
-                    'hint' => Yii::t(
-                        'AdminModule.information',
-                        'Database connection time: {dbTime} - Configured time zone: {time}',
-                        [
-                            'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
-                            'time' => Yii::$app->formatter->asTime(time(), 'short'),
-                        ],
-                    ),
-                ];
-            }
-
             if (Yii::$app->isInstalled()) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
