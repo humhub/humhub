@@ -147,7 +147,7 @@ trait BootstrapVariationsTrait
         return $this;
     }
 
-    public function id(string $id): static
+    public function id(?string $id): static
     {
         $this->id = $id;
 
