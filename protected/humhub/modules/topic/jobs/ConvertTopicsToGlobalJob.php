@@ -37,7 +37,7 @@ class ConvertTopicsToGlobalJob extends ActiveJob implements ExclusiveJobInterfac
                         'sort_order' => $topic->sort_order,
                         'contentcontainer_id' => null,
                     ]);
-                    $globalTopic->save();
+                    $globalTopic->save(false);
                 }
                 ContentTagRelation::updateAll(['tag_id' => $globalTopic->id], ['tag_id' => $topic->id]);
                 $topic->delete();

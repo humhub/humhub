@@ -65,6 +65,8 @@ use yii\db\IntegrityException;
  */
 class ContentTag extends ActiveRecord
 {
+    const string EVENT_GLOBAL_CONVERSION_SUGGESTION = 'contentTagGlobalConversionSuggestion';
+
     /**
      * @var string id of the module related to this content tag concept
      */
@@ -157,9 +159,9 @@ class ContentTag extends ActiveRecord
     public function validateUnique($attribute, $params, $validator)
     {
         if (empty($this->contentcontainer_id)) {
-            $query = static::find()->andWhere('contentcontainer_id IS NULL');
+            $query = static::find();
         } else {
-            $query = static::findByContainer($this->contentcontainer_id);
+            $query = static::findByContainer($this->contentcontainer_id, true);
         }
 
         $query->andWhere(['name' => $this->name]);
@@ -168,8 +170,18 @@ class ContentTag extends ActiveRecord
             $query->andWhere(['<>', 'id', $this->id]);
         }
 
-        if ($query->count() > 0) {
-            $this->addError('name', Yii::t('ContentModule.base', 'The given name is already in use.'));
+        /** @var static $found */
+        $found = $query->one();
+
+        if ($found) {
+            if ($this->contentcontainer_id && !$found->contentcontainer_id) {
+                $this->addError('name', Yii::t('ContentModule.base', 'Topic already exists globally.'));
+            } elseif (!$this->contentcontainer_id && $found->contentcontainer_id) {
+                $this->trigger(self::EVENT_GLOBAL_CONVERSION_SUGGESTION);
+                $this->addError('name', Yii::t('ContentModule.base', 'Topic already exists on Space/Profile level.'));
+            } else {
+                $this->addError('name', Yii::t('ContentModule.base', 'The given name is already in use.'));
+            }
         }
     }
 
@@ -329,7 +341,16 @@ class ContentTag extends ActiveRecord
     public static function find()
     {
         $query = parent::find()
-            ->orderBy('sort_order ASC')->addOrderBy('name ASC');
+            ->select([
+                '*',
+                'is_global' => new Expression('content_tag.contentcontainer_id IS NULL')
+            ])
+            ->orderBy([
+                'is_global' => SORT_DESC,
+                'sort_order' => SORT_ASC,
+                'name' => SORT_ASC
+            ]);
+
         return static::addQueryCondition($query);
     }
 

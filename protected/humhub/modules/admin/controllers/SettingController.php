@@ -324,10 +324,18 @@ class SettingController extends Controller
     public function actionTopics()
     {
         $model = new Topic();
+        $suggestGlobalConversion = false;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $this->view->saved();
-            $model->name = '';
+        if ($model->load(Yii::$app->request->post())) {
+            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function() use (&$suggestGlobalConversion) {
+                $suggestGlobalConversion = true;
+            });
+            $model->validate();
+
+            if (!$model->hasErrors() && $model->save()) {
+                $this->view->saved();
+                $model->name = '';
+            }
         }
 
         $globalTopicSettingModel = new GlobalTopicSettingForm();
@@ -349,6 +357,7 @@ class SettingController extends Controller
                 ],
             ]),
             'addModel' => $model,
+            'suggestGlobalConversion' => $suggestGlobalConversion,
             'globalTopicSettingModel' => $globalTopicSettingModel,
         ]);
     }
@@ -368,7 +377,10 @@ class SettingController extends Controller
 
         $topic->delete();
 
-        return ['success' => true, 'message' => Yii::t('TopicModule.base', 'Topic has been deleted!')];
+        return $this->asJson([
+            'success' => true,
+            'message' => Yii::t('AdminModule.settings', 'Topic has been deleted!')
+        ]);
     }
 
     public function actionEditTopic($id)
