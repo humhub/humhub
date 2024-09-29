@@ -327,7 +327,7 @@ class SettingController extends Controller
         $suggestGlobalConversion = false;
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function() use (&$suggestGlobalConversion) {
+            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion) {
                 $suggestGlobalConversion = true;
             });
 
@@ -383,7 +383,7 @@ class SettingController extends Controller
 
         return $this->asJson([
             'success' => true,
-            'message' => Yii::t('AdminModule.settings', 'Topic has been deleted!')
+            'message' => Yii::t('AdminModule.settings', 'Topic has been deleted!'),
         ]);
     }
 

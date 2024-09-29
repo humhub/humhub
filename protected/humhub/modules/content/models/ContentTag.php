@@ -65,7 +65,7 @@ use yii\db\IntegrityException;
  */
 class ContentTag extends ActiveRecord
 {
-    const string EVENT_GLOBAL_CONVERSION_SUGGESTION = 'contentTagGlobalConversionSuggestion';
+    public const string EVENT_GLOBAL_CONVERSION_SUGGESTION = 'contentTagGlobalConversionSuggestion';
 
     /**
      * @var string id of the module related to this content tag concept
@@ -343,12 +343,12 @@ class ContentTag extends ActiveRecord
         $query = parent::find()
             ->select([
                 '*',
-                'is_global' => new Expression('content_tag.contentcontainer_id IS NULL')
+                'is_global' => new Expression('content_tag.contentcontainer_id IS NULL'),
             ])
             ->orderBy([
                 'is_global' => SORT_DESC,
                 'sort_order' => SORT_ASC,
-                'name' => SORT_ASC
+                'name' => SORT_ASC,
             ]);
 
         return static::addQueryCondition($query);
