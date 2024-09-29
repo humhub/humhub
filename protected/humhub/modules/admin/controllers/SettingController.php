@@ -330,11 +330,15 @@ class SettingController extends Controller
             $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function() use (&$suggestGlobalConversion) {
                 $suggestGlobalConversion = true;
             });
-            $model->validate();
 
-            if (!$model->hasErrors() && $model->save()) {
-                $this->view->saved();
+            if (!!Yii::$app->request->post('convert-to-global', false)) {
+                Topic::convertToGlobal($model->name);
+
                 $model->name = '';
+                $this->view->saved();
+            } elseif ($model->save()) {
+                $model->name = '';
+                $this->view->saved();
             }
         }
 

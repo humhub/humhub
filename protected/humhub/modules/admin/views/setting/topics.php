@@ -45,8 +45,17 @@ AdminTopicAsset::register($this);
     ],
     'errorOptions' => ['style' => ['display' => 'inline-block'], 'tag' => 'span'],
     'hintOptions' => ['style' => ['display' => 'inline-block'], 'tag' => 'span'],
-])->hint($suggestGlobalConversion ? Html::a('Convert this topic into global?', '#') : '') ?>
-
+])->hint($suggestGlobalConversion
+    ? Button::info()->setText(Yii::t('AdminModule.settings', 'Convert \'{topicName}\' into global', ['topicName' => $addModel->name]))
+        ->action('admin.topic.convertTopic')
+        ->xs()->loader(false)
+        ->confirm(
+            Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic conversion'),
+            Yii::t('AdminModule.settings', 'Do you really want to convert \'{topicName}\' into global?', ['topicName' => $addModel->name]),
+            Yii::t('base', 'Convert')
+        )
+    : '') ?>
+<?= Html::hiddenInput('convert-to-global', 0) ?>
 <?php ActiveForm::end(); ?>
 <?php $form = ActiveForm::begin([
     'id' => 'global-topics-settings-form',

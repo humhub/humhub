@@ -27,9 +27,4 @@ class AdminTopicAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.topic.js',
     ];
-
-    public $publishOptions = [
-        'forceCopy' => true, //will be removed when ready
-    ];
-
 }

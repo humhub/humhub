@@ -4,13 +4,15 @@ humhub.module('admin.topic', function (module, require, $) {
     var status = require('ui.status');
     var event = require('event');
 
-
+    var convertTopic = function (evt) {
+        $('input[name="convert-to-global"]').val(1);
+        evt.$trigger.closest('form').trigger('submit');
+    };
 
     var removeTopic = function (evt) {
         var $controls = evt.$trigger.parent();
         loader.set($controls, {size: '10px', css: {padding: '0px'}});
         client.post(evt).then(function (response) {
-            console.log(response.success, $controls.closest('tr'))
             if (response.success) {
                 $controls.closest('tr').fadeOut('slow', function () {
                     $(this).remove();
@@ -24,7 +26,6 @@ humhub.module('admin.topic', function (module, require, $) {
 
     var init = function () {
         event.on('humhub:ready', function (evt) {
-
             $('#global-topics-settings-form').find('input[type="checkbox"]').on('change', function() {
                 $('#global-topics-settings-form').trigger('submit');
             });
@@ -38,6 +39,7 @@ humhub.module('admin.topic', function (module, require, $) {
 
     module.export({
         init: init,
+        convertTopic: convertTopic,
         removeTopic: removeTopic,
     });
 });
