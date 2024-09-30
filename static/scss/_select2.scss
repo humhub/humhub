@@ -167,7 +167,7 @@ $clear-selection-color: $dropdown-arrow-color;
         }
 
         .select2-results__option {
-            padding: $input-btn-padding-x $input-btn-padding-x;
+            padding: $input-btn-padding-y $input-btn-padding-x;
 
             .select2-results__group {
                 padding-left: 0;
@@ -203,7 +203,7 @@ $clear-selection-color: $dropdown-arrow-color;
     .select2-results__group {
         color: $dropdown-header-color;
         display: block;
-        padding: $input-btn-padding-x $input-btn-padding-x;
+        padding: $input-btn-padding-y $input-btn-padding-x;
         font-size: $font-size-sm;
         line-height: $line-height-base;
         white-space: nowrap;
@@ -331,7 +331,7 @@ $clear-selection-color: $dropdown-arrow-color;
     .select2-selection--single {
         height: $input-height;
         line-height: $line-height-base;
-        padding: $input-btn-padding-x $input-btn-padding-x + $input-btn-padding-x $input-btn-padding-x; // Removed $caret-width*3 because it's a em value instead of rem
+        padding: $input-btn-padding-y $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x; // Removed $caret-width*3 because it's a em value instead of rem
 
         /**
          * Adjust the single Select2's dropdown arrow button appearance.
@@ -410,7 +410,7 @@ $clear-selection-color: $dropdown-arrow-color;
             border-radius: 4px;
             cursor: default;
             float: left;
-            padding: 0 $input-btn-padding-x;
+            padding: 0 $input-btn-padding-y;
 
             background-color: $info;
             color: #fff;
@@ -474,7 +474,7 @@ $clear-selection-color: $dropdown-arrow-color;
          */
 
         .select2-selection__clear {
-            margin-top: $input-btn-padding-x;
+            margin-top: $input-btn-padding-y;
         }
     }
 
@@ -505,7 +505,7 @@ $clear-selection-color: $dropdown-arrow-color;
             font-size: $font-size-sm;
             height: $input-height-sm;
             line-height: $line-height-sm;
-            padding: $input-btn-padding-y-sm $input-btn-padding-x-sm + $input-btn-padding-y-sm $input-btn-padding-x-sm; // Removed $caret-width*3 because it's a em value instead of rem
+            padding: $input-btn-padding-y-sm $input-btn-padding-x-sm $input-btn-padding-y-sm $input-btn-padding-x-sm; // Removed $caret-width*3 because it's a em value instead of rem
 
             /* 2 */
             .select2-selection__arrow b {
@@ -545,7 +545,7 @@ $clear-selection-color: $dropdown-arrow-color;
             font-size: $font-size-lg;
             height: $input-height-lg;
             line-height: $line-height-lg;
-            padding: $input-btn-padding-y-lg $input-btn-padding-x-lg + $input-btn-padding-y-lg $input-btn-padding-x-lg; // Removed $caret-width*3 because it's a em value instead of rem
+            padding: $input-btn-padding-y-lg $input-btn-padding-x-lg $input-btn-padding-y-lg $input-btn-padding-x-lg; // Removed $caret-width*3 because it's a em value instead of rem
 
             /* 1 */
             .select2-selection__arrow {
