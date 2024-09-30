@@ -93,9 +93,17 @@ trait BootstrapVariationsTrait
         return static::instance($label);
     }
 
-    public function icon($icon, bool $right = false, $options = []): static
+    public function icon(string|Icon $icon, bool $right = false, $options = []): static
     {
+        // Extract icon from FontAwesome 4 HTML element
+        // TODO: remove later ($icon should be the name of the Icon or an instance of Icon)
+        $matches = [];
+        if (is_string($icon) && preg_match('/fa-([a-z0-9-]+)/', $icon, $matches)) {
+            $icon = $matches[1] ?? null;
+        }
+
         $this->icon = ($icon instanceof Icon) ? $icon : Icon::get($icon, $options);
+
         if ($right) {
             $this->icon->right();
         }

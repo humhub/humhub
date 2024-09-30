@@ -6,7 +6,7 @@
 
     li > a:hover, li > a:focus {
         background-color: $background-color-secondary;
-        border-bottom-color: #ddd;
+        border-bottom-color: var(--bs-nav-tabs-border-color);
     }
 
     li.active > a {
@@ -30,11 +30,12 @@
 
     .nav-tabs {
         padding-left: 10px;
+        border-bottom: none; // Overwrite BS5 default border, as it's added to li > a
 
         li > a {
             padding-top: 12px;
-            border-color: #ddd;
-            border-bottom: 1px solid #ddd;
+            border-color: var(--bs-nav-tabs-border-color);
+            border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
             background-color: $background-color-secondary;
             max-height: 41px;
             outline: none;
@@ -42,7 +43,7 @@
 
         li > a:hover, li > a:focus {
             padding-top: 10px;
-            border-top: 3px solid #ddd;
+            border-top: 3px solid var(--bs-nav-tabs-border-color);
         }
 
         li > a:hover {
@@ -71,8 +72,8 @@ ul.tab-menu {
 ul.tab-menu-settings {
     li > a {
         padding-top: 12px;
-        border-color: #ddd;
-        border-bottom: 1px solid #ddd;
+        border-color: var(--bs-nav-tabs-border-color);
+        border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
         background-color: $background-color-secondary;
         max-height: 41px;
         outline: none;
@@ -80,7 +81,7 @@ ul.tab-menu-settings {
 
     li > a:hover, li > a:focus {
         padding-top: 10px;
-        border-top: 3px solid #ddd !important;
+        border-top: 3px solid var(--bs-nav-tabs-border-color) !important;
     }
 
     li > a:hover {

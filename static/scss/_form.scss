@@ -168,7 +168,7 @@ input[type=checkbox], input[type=radio] {
     height: auto;
     min-height: auto;
     padding: 7px;
-    margin: -4px 2px 0 0;
+    margin: 0 6px 0 0;
     vertical-align: middle;
     background: white;
     border: 2px solid #ccc;
@@ -196,17 +196,10 @@ input[type=checkbox] {
             font-family: 'FontAwesome'; /* FontAwesome Font */
             font-size: 12px;
             position: absolute;
-            top: 0;
+            top: -1px;
             left: 1px;
             color: white;
         }
-    }
-}
-/* Chromium */
-@supports (-webkit-appearance: none) {
-    input[type=checkbox]:checked::after {
-        top: 1px;
-        left: 1px;
     }
 }
 
