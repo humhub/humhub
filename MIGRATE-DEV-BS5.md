@@ -77,6 +77,10 @@ However, you need to check the output manually.
 In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
 E.g.: `color: $primary` -> `color: var(--primary)`
 
+### Select2 stylesheet
+
+`static/css/select2Theme` folder has been remove, and the SCSS file moved and renamed to `static/scss/_select2.scss`
+
 
 ## Bootstrap widgets
 

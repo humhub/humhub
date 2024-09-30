@@ -209,7 +209,7 @@ $prev-search: false;
 
 $prev-select2: false;
 @if not $prev-select2 {
-    @import "../css/select2Theme/build";
+    @import "select2";
 }
 
 // TODO: Remove this when Bootstrap 3 is no longer supported
