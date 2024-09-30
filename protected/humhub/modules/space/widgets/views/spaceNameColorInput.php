@@ -25,7 +25,7 @@ if ($model->color === null) {
     <?= $form->field($model, 'name', ['template' => '
             {label}
             <div class="input-group">
-                <span class="input-group-addon">
+                <span class="input-group-text">
                     <i></i>
                 </span>
                 {input}

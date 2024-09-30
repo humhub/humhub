@@ -26,7 +26,7 @@ humhub.module('ui.colorpicker', function (module, require, $) {
             color: color,
             'align': 'left',
             horizontal: false,
-            component: '.input-group-addon',
+            component: '.input-group-text',
             input: input
         });
 

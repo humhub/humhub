@@ -5,8 +5,8 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\TimeAgo;
 use humhub\widgets\bootstrap\Html;
+use humhub\widgets\TimeAgo;
 
 /** @var User $originator */
 /** @var Space $space */
@@ -47,7 +47,7 @@ use humhub\widgets\bootstrap\Html;
         <br>
         <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
     </div>
-    <div class="flex-shrink-0 order-last align-center">
+    <div class="flex-shrink-0 order-last text-center">
         <?php if ($isNew) : ?>
             <span class="badge-new"></span>
         <?php endif; ?>

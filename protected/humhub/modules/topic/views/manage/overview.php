@@ -14,11 +14,11 @@ use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\modal\ModalButton;
 use yii\data\ActiveDataProvider;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $dataProvider ActiveDataProvider */
@@ -44,9 +44,7 @@ use humhub\widgets\bootstrap\Html;
         <div class="form-group">
             <div class="input-group">
                 <?= Html::activeTextInput($addModel, 'name', ['style' => 'height:36px', 'class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
-                <span class="input-group-btn">
-                    <?= Button::secondary()->icon('add')->loader()->submit() ?>
-                </span>
+                <?= Button::secondary()->icon('add')->loader()->submit() ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>

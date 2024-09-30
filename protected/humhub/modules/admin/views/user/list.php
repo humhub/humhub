@@ -6,9 +6,9 @@ use humhub\modules\admin\widgets\ExportButton;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
@@ -38,9 +38,7 @@ use yii\widgets\ActiveForm;
         <div class="col-md-8">
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
-                </span>
+                <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
         <div class="col-md-4 usersearch-statuses">

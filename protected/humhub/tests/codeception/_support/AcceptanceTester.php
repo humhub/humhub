@@ -1,8 +1,8 @@
 <?php
 
+use Facebook\WebDriver\WebDriverKeys;
 use tests\codeception\_pages\LoginPage;
 use yii\helpers\Url;
-use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Inherited Methods
@@ -138,7 +138,7 @@ class AcceptanceTester extends BaseTester
 
         foreach ($topics as $topic) {
             $this->fillField('#topic-name', $topic);
-            $this->click('.input-group-btn .btn-secondary');
+            $this->click('.input-group .btn-secondary');
             $this->waitForText($topic, null, '.layout-content-container .table-hover');
         }
     }

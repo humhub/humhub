@@ -8,9 +8,9 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $group Group */
@@ -36,9 +36,7 @@ AdminGroupAsset::register($this);
                     'focus' => true,
                 ]) ?>
                 <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
-                <span class="input-group-btn">
-                    <?= Button::primary()->submit()->style('height:40px')->icon('add') ?>
-                </span>
+                <?= Button::primary()->submit()->style('height:40px')->icon('add') ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>
@@ -46,9 +44,7 @@ AdminGroupAsset::register($this);
             <?php $form = ActiveForm::begin(['method' => 'get']); ?>
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                <span class="input-group-btn">
-                    <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
-                </span>
+                <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
             </div>
             <?php ActiveForm::end(); ?>
         </div>

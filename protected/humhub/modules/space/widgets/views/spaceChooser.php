@@ -40,7 +40,7 @@ use yii\helpers\Url;
                            placeholder="<?= Yii::t('SpaceModule.chooser', 'Search') ?>"
                            title="<?= Yii::t('SpaceModule.chooser', 'Search for spaces') ?>">
                     <?php if ($canAccessDirectory) : ?>
-                        <span id="space-directory-link" class="input-group-addon">
+                        <span id="space-directory-link" class="input-group-text">
                             <a href="<?= Url::to(['/space/spaces']) ?>">
                                 <?= Icon::get('directory') ?>
                             </a>

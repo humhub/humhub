@@ -8,10 +8,10 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\TimeAgo;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $space Space */
 ?>
@@ -28,9 +28,7 @@ use humhub\widgets\bootstrap\Html;
             <div class="col-md-6">
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                    <span class="input-group-btn">
-                        <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
-                    </span>
+                    <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <div class="col-md-4">

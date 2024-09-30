@@ -732,8 +732,8 @@ $clear-selection-color: $dropdown-arrow-color;
 .select2-humhub-append,
 .select2-humhub-prepend {
     .select2-container--humhub,
-    .input-group-btn,
-    .input-group-btn .btn {
+    .input-group,
+    .input-group .btn {
         vertical-align: top;
     }
 }

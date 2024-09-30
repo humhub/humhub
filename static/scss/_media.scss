@@ -2,6 +2,117 @@
 // Media
 // --------------------------------------------------
 
+
+.media-list {
+    > div, > a {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        border-left: 3px solid white;
+
+        &a, a {
+            color: $text-color-main;
+        }
+
+        &.new {
+            border-left: 3px solid $info;
+            background-color: $background-color-highlight;
+
+            &:hover {
+                background-color: $background-color-highlight-soft;
+            }
+        }
+
+        &:hover,
+        &.selected {
+            background-color: $background-color-secondary;
+            border-left: 3px solid $info;
+        }
+
+        &.placeholder {
+            font-size: 14px !important;
+            border-bottom: none;
+        }
+
+        &.placeholder:hover {
+            background: none !important;
+            border-left: 3px solid white;
+        }
+
+        // TODO: move to Enterprise Theme module
+        .badge-space-type {
+            background-color: $background-color-secondary;
+            border: 1px solid $background3;
+            color: $background4;
+            padding: 3px 3px 2px 3px;
+        }
+
+        .flex-shrink-0 {
+            margin-right: 10px;
+        }
+
+        .flex-grow-1 {
+            font-size: 13px;
+            white-space: normal;
+            @include text-break();
+        }
+
+        h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: $text-color-highlight;
+
+            a {
+                color: $text-color-highlight;
+            }
+
+            small,
+            small a {
+                font-size: 11px;
+                color: $text-color-soft;
+            }
+
+            .content {
+                margin-right: 35px;
+            }
+        }
+
+        h5 {
+            color: $text-color-soft2;
+            font-weight: 300;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            min-height: 15px;
+        }
+
+        .content a {
+            word-break: break-all;
+            color: $link;
+        }
+
+        strong {
+            color: $text-color-highlight;
+        }
+
+        .time {
+            font-size: 11px;
+            color: $text-color-soft;
+        }
+
+        .module-controls {
+            font-size: 85%;
+
+            a {
+                color: $link;
+            }
+        }
+
+        .content .files a {
+            color: $text-color-highlight;
+        }
+    }
+}
+
 .content span {
     @include text-break;
 }

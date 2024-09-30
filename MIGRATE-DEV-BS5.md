@@ -107,8 +107,30 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `data-target` -> `data-bs-target`
 - `data-dismiss` -> `data-bs-dismiss`
 - `no-space` -> `m-0 p-0`
+- `align-center` -> `text-center` or `d-flex justify-content-center`
 - `col-xs-` -> `col- `
+- `input-group-addon` -> `input-group-text` (or `input-group-prepend` or `input-group-append`)
 - Remove `jumbotron` class
+
+### Input groups
+
+Remove `<span class="input-group-btn">` button wrapper inside `<div class="input-group">`.
+
+Example:
+```html
+<div class="input-group">
+  <span class="input-group-btn">
+    <button class="btn btn-default">My action</button>
+  </span>
+</div>
+```
+
+Should be replaced with:
+```html
+<div class="input-group">
+  <button class="btn btn-secondary">My action</button>
+</div>
+```
 
 ### Hidden classes
 

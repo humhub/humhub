@@ -9,9 +9,9 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
+use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $searchModel SpaceSearch */
@@ -33,9 +33,7 @@ use yii\helpers\Url;
     <div class="col-md-8">
         <div class="input-group">
             <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.space', 'Search by name, description, id or owner.')]); ?>
-            <span class="input-group-btn">
-                <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
-            </span>
+            <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
         </div>
     </div>
     <div class="col-md-4 spacesearch-visibilities">

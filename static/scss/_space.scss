@@ -30,11 +30,11 @@
     cursor: pointer;
 }
 
-#space-menu-dropdown .input-group-addon {
+#space-menu-dropdown .input-group-text {
     border-radius: 0 4px 4px 0;
 }
 
-#space-menu-dropdown .input-group-addon.focus {
+#space-menu-dropdown .input-group-text.focus {
     border-radius: 0 4px 4px 0;
     border: 2px solid $info;
     border-left: 0;
