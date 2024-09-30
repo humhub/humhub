@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * If an user was invited to a workspace, this notification is fired.

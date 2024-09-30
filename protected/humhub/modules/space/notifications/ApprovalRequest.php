@@ -8,10 +8,10 @@
 
 namespace humhub\modules\space\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\space\models\Membership;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 
 /**

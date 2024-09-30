@@ -6,12 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $space Space */

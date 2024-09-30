@@ -6,9 +6,9 @@
  */
 
 use humhub\components\Module;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $module Module */
 /* @var $space Space */

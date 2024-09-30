@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
 use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
@@ -8,7 +9,6 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\TimeAgo;

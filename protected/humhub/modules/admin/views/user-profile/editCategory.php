@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\ui\form\widgets\SortOrderField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\tour\assets\TourAsset;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Url;

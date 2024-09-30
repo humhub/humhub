@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentControls;
 use humhub\modules\comment\widgets\CommentEntryLinks;
@@ -9,7 +10,6 @@ use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\file\widgets\ShowFiles;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\TimeAgo;
 
 /* @var $this View */

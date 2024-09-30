@@ -8,10 +8,10 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\helpers\Html;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use humhub\widgets\bootstrap\Html;
 use yii\widgets\InputWidget;
 
 /**

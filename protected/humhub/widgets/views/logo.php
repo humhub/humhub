@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\LogoImage;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $place string */
 ?>

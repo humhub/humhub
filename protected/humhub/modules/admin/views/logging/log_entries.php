@@ -1,10 +1,10 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\models\Log;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\LinkPager;
 use yii\data\Pagination;
 use yii\log\Logger;

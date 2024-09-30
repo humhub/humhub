@@ -8,9 +8,8 @@
 
 namespace humhub\widgets;
 
-use humhub\assets\JplayerAsset;
 use humhub\assets\JplayerModuleAsset;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\libs\Helpers;
 use humhub\modules\file\libs\FileHelper;
 

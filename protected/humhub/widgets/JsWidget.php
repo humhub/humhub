@@ -3,7 +3,7 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 

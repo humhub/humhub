@@ -9,10 +9,10 @@
 namespace humhub\modules\like\notifications;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\Html;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Notifies a user about likes of his objects (posts, comments, tasks & co)

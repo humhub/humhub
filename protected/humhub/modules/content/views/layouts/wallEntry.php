@@ -1,9 +1,9 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
+use humhub\modules\activity\models\Activity;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\models\Content;
-use humhub\modules\activity\models\Activity;
 
 /**
  * WallEntry used in a stream and the activity stream.

@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 <?php if (count($friends) > 0) { ?>

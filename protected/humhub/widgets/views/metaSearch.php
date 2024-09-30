@@ -6,11 +6,11 @@
  */
 
 use humhub\assets\SearchAsset;
+use humhub\helpers\Html;
 use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\MetaSearchProviderWidget;
 use yii\web\View;
 

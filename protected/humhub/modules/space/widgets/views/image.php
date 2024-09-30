@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 if ($link == true) :
     echo Html::beginTag('a', $linkOptions);

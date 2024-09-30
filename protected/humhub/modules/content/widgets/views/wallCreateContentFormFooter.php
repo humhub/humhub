@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -17,8 +18,7 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $submitUrl string */
 /* @var $submitButtonText string */

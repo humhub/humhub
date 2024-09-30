@@ -8,8 +8,8 @@
 
 namespace humhub\libs;
 
+use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use yii\grid\Column;
 use yii\helpers\Url;
 

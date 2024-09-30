@@ -6,7 +6,7 @@
  */
 
 use humhub\assets\CardsAsset;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\space\components\SpaceDirectoryQuery;
 use humhub\modules\space\widgets\SpaceDirectoryCard;
 use humhub\modules\space\widgets\SpaceDirectoryFilters;

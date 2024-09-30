@@ -2,13 +2,10 @@
 
 namespace tests\codeception\unit\modules\web\security;
 
-use web\WebSecurityTest;
-use Yii;
-use humhub\widgets\bootstrap\Html;
-use humhub\modules\web\Module;
+use humhub\helpers\Html;
 use humhub\modules\web\security\helpers\Security;
 use humhub\modules\web\security\models\SecuritySettings;
-use yii\helpers\Json;
+use web\WebSecurityTest;
 
 class SecuritySettingsTest extends WebSecurityTest
 {

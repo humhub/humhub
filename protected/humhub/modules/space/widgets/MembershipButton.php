@@ -9,10 +9,10 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\ArrayHelper;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Json;
 
 /**

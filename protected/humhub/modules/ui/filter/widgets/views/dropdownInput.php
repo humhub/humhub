@@ -5,8 +5,8 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $options [] */

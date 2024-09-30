@@ -6,7 +6,7 @@
  * @license https://www.humhub.org/en/licences
  */
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\widgets\IncompleteSetupWarning;
 use humhub\modules\ui\view\components\View;
 

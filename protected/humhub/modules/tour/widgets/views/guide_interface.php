@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 

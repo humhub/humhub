@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
 use humhub\modules\user\widgets\PeopleActionButtons;

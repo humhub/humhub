@@ -6,8 +6,8 @@
  *
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 ?>

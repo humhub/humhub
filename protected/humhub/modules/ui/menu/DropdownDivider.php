@@ -8,8 +8,8 @@
 
 namespace humhub\modules\ui\menu;
 
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Class DropdownDivider

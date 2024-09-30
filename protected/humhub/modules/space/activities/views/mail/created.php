@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\libs\Helpers;
 
 echo Yii::t('ActivityModule.base', "{displayName} created the new space {spaceName}", [

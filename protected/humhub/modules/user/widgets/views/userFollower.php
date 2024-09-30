@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\bootstrap\Html;
 
 /* @var User[] $followers */
 /* @var User[] $following */

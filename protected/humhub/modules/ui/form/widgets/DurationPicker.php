@@ -10,7 +10,7 @@ namespace humhub\modules\ui\form\widgets;
 
 use DateTime;
 use humhub\assets\JqueryTimeEntryAsset;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use yii\helpers\Json;
 
 /**

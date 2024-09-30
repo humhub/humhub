@@ -11,12 +11,12 @@ namespace humhub\modules\file\widgets;
 use Exception;
 use humhub\components\ActiveRecord;
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\file\models\File;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Base upload utility component which combines upload input/button, preview and progress components.

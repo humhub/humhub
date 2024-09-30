@@ -1,14 +1,14 @@
 <?php
 
+use humhub\helpers\Html;
+use humhub\modules\admin\grid\CheckboxColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
-use humhub\modules\admin\grid\CheckboxColumn;
 use yii\data\ArrayDataProvider;
 use yii\grid\ActionColumn;
 use yii\helpers\Url;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $category ProfileFieldCategory */
 

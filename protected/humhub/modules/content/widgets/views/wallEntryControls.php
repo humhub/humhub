@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\LegacyWallEntryControlLink;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;

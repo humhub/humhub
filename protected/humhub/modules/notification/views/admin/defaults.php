@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\notification\models\forms\NotificationSettings;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $model NotificationSettings */

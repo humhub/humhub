@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\BaseImage;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Return space image or acronym

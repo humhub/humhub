@@ -5,11 +5,11 @@
  * @var bool $showProfilePostForm
  */
 
+use humhub\helpers\Html;
 use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\dashboard\widgets\DashboardContent;
 use humhub\modules\dashboard\widgets\Sidebar;
 use humhub\widgets\FooterMenu;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 

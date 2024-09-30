@@ -8,10 +8,10 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Widget;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * UserFollowButton

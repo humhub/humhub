@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\controllers\ApprovalController;
 use humhub\modules\admin\grid\ApprovalActionColumn;
 use humhub\modules\admin\models\forms\ApproveUserForm;
@@ -9,7 +10,6 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 

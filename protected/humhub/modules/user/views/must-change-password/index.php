@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Password;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
 use yii\helpers\Url;

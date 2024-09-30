@@ -11,9 +11,9 @@ namespace humhub\components;
 use humhub\components\access\ControllerAccess;
 use humhub\components\access\StrictAccess;
 use humhub\components\behaviors\AccessControl;
+use humhub\helpers\Html;
 use humhub\modules\user\services\IsOnlineService;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 

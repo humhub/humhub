@@ -9,7 +9,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\components\Widget;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 /**
  * Widget for rendering stream filter blocks.

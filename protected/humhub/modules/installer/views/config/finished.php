@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use yii\helpers\Url;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 <div class="panel panel-default animated fadeIn">

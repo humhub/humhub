@@ -10,9 +10,7 @@ namespace humhub\modules\admin\controllers;
 use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\admin\permissions\ManageSettings;
-use humhub\modules\user\models\Group;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * ApprovalController handels new user approvals

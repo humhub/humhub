@@ -1,10 +1,10 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
 use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $model StatisticSettingsForm */
 

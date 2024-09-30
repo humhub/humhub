@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 
 /* @var $originator \humhub\modules\user\models\User */

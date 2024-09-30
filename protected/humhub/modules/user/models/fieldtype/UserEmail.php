@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 /**
  * UserEmail is a virtual profile field

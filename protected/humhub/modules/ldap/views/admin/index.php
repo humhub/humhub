@@ -14,9 +14,9 @@
  * @var $userCount string
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ldap\models\LdapSettings;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 use yii\web\View;
 
 ?>

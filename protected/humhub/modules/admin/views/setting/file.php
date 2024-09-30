@@ -4,11 +4,11 @@
  * @var FileSettingsForm $model
  */
 
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\file\Module;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 
 /** @var Module $fileModule */
 $fileModule = Yii::$app->getModule('file');

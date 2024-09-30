@@ -2,7 +2,7 @@
 
 namespace humhub\modules\admin\grid;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\models\ProfileField;
 use yii\grid\DataColumn;
 

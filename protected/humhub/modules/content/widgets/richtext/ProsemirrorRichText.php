@@ -2,13 +2,13 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
+use humhub\helpers\Html;
 use humhub\libs\ParameterEvent;
 use humhub\modules\content\widgets\richtext\extensions\emoji\RichTextEmojiExtension;
 use humhub\modules\content\widgets\richtext\extensions\file\FileExtension;
 use humhub\modules\content\widgets\richtext\extensions\mentioning\MentioningExtension;
 use humhub\modules\content\widgets\richtext\extensions\oembed\OembedExtension;
 use humhub\modules\content\widgets\richtext\extensions\RichTextCompatibilityExtension;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * The ProsemirrorRichText is a [Prosemirror](https://prosemirror.net) and [Markdown-it](https://github.com/markdown-it/markdown-it)

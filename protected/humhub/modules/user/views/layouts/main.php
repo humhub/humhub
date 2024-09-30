@@ -1,8 +1,8 @@
 <?php
 
 use humhub\assets\AppAsset;
+use humhub\helpers\Html;
 use humhub\widgets\FooterMenu;
-use humhub\widgets\bootstrap\Html;
 use yii\web\View;
 
 /* @var $this View */

@@ -1,10 +1,10 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\widgets\GroupManagerMenu;
 use humhub\modules\user\models\Group;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $group Group */
 

@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 

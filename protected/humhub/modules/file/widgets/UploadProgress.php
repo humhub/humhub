@@ -3,7 +3,6 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\widgets\JsWidget;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * UploadButtonWidget renders an upload button with integrated file input.

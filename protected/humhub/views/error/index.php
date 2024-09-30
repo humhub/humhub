@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\FooterMenu;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('base', 'Error');

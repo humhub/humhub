@@ -6,11 +6,11 @@
  *
  */
 
+use humhub\helpers\Html;
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
 use humhub\modules\ui\filter\widgets\FilterPanel;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $panels [] */

@@ -1,7 +1,7 @@
 <?php
 
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 /* @var array $modules */
 ?>

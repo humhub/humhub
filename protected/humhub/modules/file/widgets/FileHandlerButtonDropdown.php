@@ -9,8 +9,8 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\file\handler\BaseFileHandler;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\ArrayHelper;
 
 /**

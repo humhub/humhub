@@ -1,10 +1,10 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminPendingRegistrationsAsset;
 use humhub\modules\admin\models\PendingRegistrationSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\helpers\Url;
 

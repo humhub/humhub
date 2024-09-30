@@ -2,10 +2,10 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\helpers\Html;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /**

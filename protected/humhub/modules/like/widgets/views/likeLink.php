@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 humhub\modules\like\assets\LikeAsset::register($this);
 ?>

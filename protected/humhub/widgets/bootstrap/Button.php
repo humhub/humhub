@@ -8,6 +8,7 @@
 
 namespace humhub\widgets\bootstrap;
 
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\Url;
 
@@ -24,7 +25,7 @@ class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
 
-    public ?string $link = null;
+    public bool $link = false;
 
     public bool $loader = true;
     /**

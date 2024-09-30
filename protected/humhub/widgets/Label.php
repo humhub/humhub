@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 /**
  * Labels for Wall Entries

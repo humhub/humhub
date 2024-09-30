@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\installer\forms\ConfigBasicForm;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 
 /**

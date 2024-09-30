@@ -5,10 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\widgets\ContainerModuleActionButtons;
-use humhub\widgets\bootstrap\Html;
 
 /* @var ContentContainerModule $module */
 /* @var ContentContainerActiveRecord $contentContainer */

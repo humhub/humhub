@@ -4,6 +4,7 @@ namespace humhub\modules\space\widgets;
 
 use Exception;
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
@@ -17,7 +18,6 @@ use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\Query;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /**

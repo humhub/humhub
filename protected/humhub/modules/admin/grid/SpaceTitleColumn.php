@@ -8,10 +8,10 @@
 
 namespace humhub\modules\admin\grid;
 
+use humhub\helpers\Html;
 use humhub\libs\Helpers;
 use humhub\modules\space\models\Space;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\bootstrap\Html;
 use Yii;
 
 /**

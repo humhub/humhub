@@ -6,7 +6,7 @@
  *
  */
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\view\components\View;
 

@@ -2,11 +2,11 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\controllers\ContainerImageController;
-use humhub\modules\user\controllers\ImageController;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\controllers\ImageController;
 use humhub\widgets\JsWidget;
 use Yii;
 

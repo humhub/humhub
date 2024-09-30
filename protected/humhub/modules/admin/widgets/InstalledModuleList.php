@@ -9,7 +9,7 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
 use humhub\components\Widget;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
 

@@ -1,10 +1,10 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\LinkPager;
 use yii\data\Pagination;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * @var $this View

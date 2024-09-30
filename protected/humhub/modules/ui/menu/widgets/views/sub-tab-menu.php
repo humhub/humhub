@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use humhub\modules\ui\view\components\View;

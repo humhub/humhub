@@ -7,7 +7,7 @@
 
 namespace humhub\modules\marketplace\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
 use humhub\modules\ui\icon\widgets\Icon;

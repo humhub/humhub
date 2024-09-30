@@ -6,9 +6,9 @@
  */
 
 use humhub\components\Module;
+use humhub\helpers\Html;
 use humhub\modules\admin\widgets\InstalledModuleActionButtons;
 use humhub\modules\admin\widgets\InstalledModuleControls;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $module Module */
 ?>

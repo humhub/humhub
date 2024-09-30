@@ -5,11 +5,11 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleUpdateActionButtons;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\bootstrap\Html;
 
 /* @var View $this */
 /* @var Module $module */

@@ -7,7 +7,7 @@
  */
 
 use humhub\components\access\ControllerAccess;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use yii\helpers\Url;
 
 ?>

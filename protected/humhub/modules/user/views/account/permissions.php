@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /** @var $multipleGroups bool * */

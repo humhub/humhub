@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\notification\models\Notification;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\TimeAgo;
 
 /** @var User $originator */

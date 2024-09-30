@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 ?>
 <div id="pretty-urls" class="panel panel-default animated fadeIn">

@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleControls;
 use humhub\modules\marketplace\widgets\ModuleInstalledActionButtons;
 use humhub\modules\marketplace\widgets\ModuleStatus;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $module Module */
 ?>

@@ -2,12 +2,12 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
 use humhub\libs\BasePermission;
+use humhub\modules\user\models\UserFilter;
 use Yii;
 use yii\base\Widget;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
-use humhub\modules\user\models\UserFilter;
 
 /**
  * UserPickerWidget displays a user picker instead of an input field.

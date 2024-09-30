@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\widgets\AjaxLinkPager;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\modal\Modal;
 
 /* @var $spaces Space[] */

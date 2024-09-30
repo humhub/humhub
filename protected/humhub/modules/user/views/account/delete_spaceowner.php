@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\widgets\Image;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>

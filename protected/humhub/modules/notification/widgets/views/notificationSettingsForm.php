@@ -6,9 +6,9 @@
 
 /* @var $defaultSpaces Space[] */
 
+use humhub\helpers\Html;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\space\models\Space;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 

@@ -5,11 +5,11 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\mails\MailContentContainerImage;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $container ContentContainerActiveRecord */

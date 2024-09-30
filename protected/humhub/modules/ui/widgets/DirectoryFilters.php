@@ -8,7 +8,7 @@
 namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\widgets\bootstrap\Button;
 use Yii;

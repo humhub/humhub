@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\comment\widgets\ShowMore;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $text string */
 /* @var $showMoreUrl string */

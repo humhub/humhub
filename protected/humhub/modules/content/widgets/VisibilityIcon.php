@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;

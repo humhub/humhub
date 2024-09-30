@@ -2,12 +2,12 @@
 
 namespace humhub\modules\content\widgets\richtext\extensions\oembed;
 
+use humhub\components\ActiveRecord;
+use humhub\helpers\Html;
 use humhub\models\UrlOembed;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
-use humhub\components\ActiveRecord;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * This LinkExtension is used to represent mentionings in the richtext as:

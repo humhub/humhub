@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
@@ -10,7 +11,6 @@ use humhub\modules\file\widgets\UploadButton;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $this View */

@@ -7,9 +7,9 @@
 
 namespace humhub\modules\marketplace\search;
 
+use humhub\helpers\Html;
 use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\marketplace\models\Module as ModelModule;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Search Record for Marketplace Module

@@ -5,9 +5,9 @@
  * @license https://www.humhub.org/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\activity\assets\ActivityAsset;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this humhub\modules\ui\view\components\View */
 /* @var $streamUrl string */

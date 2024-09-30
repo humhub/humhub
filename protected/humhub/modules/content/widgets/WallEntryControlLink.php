@@ -3,8 +3,8 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use yii\helpers\ArrayHelper;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Generic WallEntryControlLink.

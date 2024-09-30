@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\friendship\widgets\ManageMenu;
 use humhub\widgets\GridView;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 <div class="panel-heading">

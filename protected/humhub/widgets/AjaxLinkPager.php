@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\widgets\assets\AjaxLinkPagerAsset;
 use yii\helpers\ArrayHelper;
 

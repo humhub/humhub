@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
@@ -35,7 +35,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password reset');
     </div>
 </div>
 
-<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field

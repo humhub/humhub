@@ -10,11 +10,11 @@
 
 /* @var $searchUrl string */
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 

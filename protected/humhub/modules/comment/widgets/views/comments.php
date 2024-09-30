@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\widgets\Comment;
 use humhub\modules\comment\widgets\Form;

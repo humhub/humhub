@@ -1,12 +1,12 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\grid\UserActionColumn;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;

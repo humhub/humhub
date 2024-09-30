@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\marketplace\widgets\AboutVersion;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 

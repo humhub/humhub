@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\stream\assets\StreamAsset;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $filterNav string */

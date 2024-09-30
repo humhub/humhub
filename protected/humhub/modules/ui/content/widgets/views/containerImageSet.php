@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\ui\content\assets\UiImageSetAsset;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\bootstrap\Html;
 
 UiImageSetAsset::register($this);
 ?>

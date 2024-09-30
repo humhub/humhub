@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\friendship\models\Friendship;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $user \humhub\modules\user\models\User */
 /* @var $friendshipState string */

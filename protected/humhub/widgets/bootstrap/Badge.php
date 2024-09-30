@@ -7,7 +7,7 @@
 
 namespace humhub\widgets\bootstrap;
 
-use humhub\widgets\Link;
+use humhub\helpers\Html;
 use yii\base\InvalidConfigException;
 use yii\bootstrap5\Widget;
 

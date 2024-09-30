@@ -10,8 +10,8 @@
 
 /* @var $form \humhub\widgets\form\ActiveForm */
 
+use humhub\helpers\Html;
 use humhub\modules\space\widgets\SpacePickerField;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 
 ?>

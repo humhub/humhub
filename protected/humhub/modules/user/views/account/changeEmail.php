@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 

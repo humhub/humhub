@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\PoweredBy;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $entries MenuLink[] */

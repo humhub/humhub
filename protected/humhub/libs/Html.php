@@ -15,6 +15,6 @@ namespace humhub\libs;
  * @since 1.2
  * @author Luke
  */
-class Html extends \humhub\widgets\bootstrap\Html
+class Html extends \humhub\helpers\Html
 {
 }

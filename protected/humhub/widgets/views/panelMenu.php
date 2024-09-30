@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $id string */
 

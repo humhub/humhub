@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\bootstrap\Html;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
 
 /**

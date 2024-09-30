@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 

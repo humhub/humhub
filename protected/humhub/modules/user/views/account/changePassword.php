@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
 

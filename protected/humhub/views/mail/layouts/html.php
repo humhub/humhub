@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\FooterMenu;
-use yii\helpers\Url;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\PoweredBy;
+use yii\helpers\Url;
 
 /* @var View $this */
 /* @var string $content */

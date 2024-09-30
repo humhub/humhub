@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\interfaces\MetaSearchProviderInterface;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 
 /* @var array $options */
 /* @var MetaSearchProviderInterface $provider */

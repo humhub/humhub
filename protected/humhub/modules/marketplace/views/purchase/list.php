@@ -1,11 +1,11 @@
 <?php
 
 use humhub\components\Module;
+use humhub\helpers\Html;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use yii\base\View;
 use yii\helpers\Url;
 

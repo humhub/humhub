@@ -11,7 +11,7 @@ namespace humhub\modules\topic\widgets;
 
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\bootstrap\Badge;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /**
  * @since 1.18

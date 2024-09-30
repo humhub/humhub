@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminGroupAsset;
 use humhub\modules\admin\models\forms\AddGroupMemberForm;
 use humhub\modules\admin\models\UserSearch;
@@ -8,7 +9,6 @@ use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use yii\helpers\Url;

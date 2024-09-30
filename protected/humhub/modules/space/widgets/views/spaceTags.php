@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $space Space */

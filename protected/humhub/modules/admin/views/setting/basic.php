@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 
 /* @var BasicSettingsForm $model */
 ?>

@@ -6,7 +6,7 @@
  *
  */
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\ContentTypePicker;
 use humhub\modules\ui\view\components\View;
 

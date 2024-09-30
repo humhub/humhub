@@ -8,9 +8,6 @@
 
 namespace humhub\components;
 
-use Yii;
-use humhub\widgets\bootstrap\Html;
-
 /**
  * @inheritdoc
  * @deprecated since 1.3

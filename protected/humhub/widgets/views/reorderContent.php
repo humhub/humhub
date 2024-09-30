@@ -11,7 +11,7 @@
  */
 ?>
 
-<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
 $(function() {
 	$( ".<?php echo $containerClassName; ?>" ).sortable({
 		stop: function(event, ui) {

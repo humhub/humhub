@@ -8,8 +8,8 @@
 
 namespace humhub\widgets\form;
 
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\bootstrap\Html;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;
 

@@ -8,6 +8,7 @@
 
 namespace humhub\modules\comment\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\notification\components\BaseNotification;
@@ -15,7 +16,6 @@ use humhub\modules\notification\models\Notification;
 use humhub\modules\user\models\User;
 use humhub\modules\user\notifications\Mentioned;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Notification for new comments

@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
-use humhub\widgets\bootstrap\Html;
 use yii\captcha\Captcha;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;

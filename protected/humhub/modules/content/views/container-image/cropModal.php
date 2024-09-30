@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\models\forms\CropProfileImage;
@@ -7,7 +8,6 @@ use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\ui\widgets\CropImage;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;

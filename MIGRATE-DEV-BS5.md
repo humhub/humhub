@@ -27,7 +27,7 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\form\ContentHiddenCheckbox` instead
 - `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\form\ContentVisibilitySelect` instead
 - `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
-- `humhub\libs\Html` use `humhub\widgets\bootstrap\Html` instead
+- `humhub\libs\Html` use `humhub\helper\Html` instead
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
 - `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
@@ -79,7 +79,7 @@ E.g.: `color: $primary` -> `color: var(--primary)`
 
 ### Select2 stylesheet
 
-`static/css/select2Theme` folder has been remove, and the SCSS file moved and renamed to `static/scss/_select2.scss`
+`static/css/select2Theme` folder has been removed, and the SCSS file moved and renamed to `static/scss/_select2.scss`
 
 
 ## Bootstrap widgets

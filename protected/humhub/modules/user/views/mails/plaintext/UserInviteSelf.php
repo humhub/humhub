@@ -1,8 +1,6 @@
 <?php
 
 
-use humhub\widgets\bootstrap\Html;
-
 /* @var $registrationUrl string */
 
 ?>

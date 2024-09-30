@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
@@ -7,7 +8,6 @@ use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $model DesignSettingsForm */

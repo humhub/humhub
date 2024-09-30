@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
@@ -49,7 +49,7 @@ use humhub\widgets\modal\ModalButton;
     <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
 </div>
 
-<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);

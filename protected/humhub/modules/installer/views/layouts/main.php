@@ -1,7 +1,7 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
 use humhub\assets\AppAsset;
+use humhub\helpers\Html;
 use humhub\widgets\PoweredBy;
 use yii\web\View;
 

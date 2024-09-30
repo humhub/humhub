@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
 use humhub\modules\user\Module;

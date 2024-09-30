@@ -9,8 +9,8 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\bootstrap\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
 

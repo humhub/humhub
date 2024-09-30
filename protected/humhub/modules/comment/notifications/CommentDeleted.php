@@ -8,9 +8,9 @@
 
 namespace humhub\modules\comment\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * CommentDeletedNotification is fired when admin deletes a comment

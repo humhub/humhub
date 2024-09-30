@@ -6,13 +6,13 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\FooterMenu;
-use humhub\widgets\bootstrap\Html;
 
 /* @var $this View */
 /* @var $menu DropdownMenu */

@@ -8,8 +8,8 @@
 
 namespace humhub\widgets\form;
 
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * A HumHub enhanced version of native bootstrap ActiveForm

@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 ?>
@@ -22,7 +22,7 @@ use yii\helpers\Url;
 
         </div>
     </div>
-    <script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
+    <script <?= \humhub\helpers\Html::nonce() ?>>
         function toggleUp() {
             $('.pups').slideUp("fast", function () {
                 // Animation complete.

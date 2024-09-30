@@ -8,8 +8,8 @@
 
 namespace humhub\modules\user\grid;
 
+use humhub\helpers\Html;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * DisplayNameColumn

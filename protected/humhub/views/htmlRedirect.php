@@ -1,4 +1,4 @@
-<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
 
     // If current URL == New Url (absolute || relative) then only Refresh
     if (window.location.pathname + window.location.search + window.location.hash == '<?php echo $url; ?>' || '<?php echo $url; ?>' == window.location.href) {

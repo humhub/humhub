@@ -8,9 +8,9 @@
 
 namespace humhub\modules\friendship\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * Declined Friends Request Notification

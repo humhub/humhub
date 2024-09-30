@@ -1,7 +1,7 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\models\ProfileField;
 use yii\widgets\ActiveForm;
 

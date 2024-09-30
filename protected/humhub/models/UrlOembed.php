@@ -8,18 +8,18 @@
 
 namespace humhub\models;
 
+use humhub\events\OembedFetchEvent;
+use humhub\helpers\Html;
+use humhub\libs\RestrictedCallException;
+use humhub\libs\UrlOembedClient;
+use humhub\libs\UrlOembedHttpClient;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\widgets\bootstrap\Button;
-use humhub\events\OembedFetchEvent;
-use humhub\libs\RestrictedCallException;
-use humhub\libs\UrlOembedClient;
-use humhub\libs\UrlOembedHttpClient;
-use humhub\widgets\bootstrap\Html;
-use yii\helpers\Json;
-use yii\db\ActiveRecord;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\helpers\Json;
 
 /**
  * UrlOembed records hold already loaded oembed previews.

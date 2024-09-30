@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\WallEntryAddons;
@@ -8,7 +9,6 @@ use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\TimeAgo;
 use yii\helpers\Url;
 

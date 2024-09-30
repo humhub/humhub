@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\grid\SpaceActionColumn;
 use humhub\modules\admin\grid\SpaceImageColumn;
 use humhub\modules\admin\grid\SpaceTitleColumn;
@@ -9,7 +10,6 @@ use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;

@@ -8,11 +8,11 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
 use yii\base\InvalidConfigException;
-use humhub\widgets\bootstrap\Html;
 
 class AuthChoice extends \yii\authclient\widgets\AuthChoice
 {

@@ -13,8 +13,8 @@
  * @deprecated since 1.2 use UserPickerField instead.
  */
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
-use humhub\widgets\bootstrap\Html;
 
 $this->registerJsFile("@web-static/js/jquery.highlight.min.js");
 $this->registerJsFile("@web-static/resources/user/userpicker.js");
@@ -34,7 +34,7 @@ foreach (explode(",", $currentValue) as $guid) {
 }
 ?>
 
-<script <?= \humhub\widgets\bootstrap\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
     $(document).ready(function () {
         $('#<?php echo $inputId; ?>').userpicker({
             inputId: '#<?php echo $inputId; ?>',

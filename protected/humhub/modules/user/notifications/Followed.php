@@ -8,9 +8,9 @@
 
 namespace humhub\modules\user\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 use yii\db\IntegrityException;
 
 /**

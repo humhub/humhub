@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\Url;
 
@@ -236,9 +236,9 @@ class Button extends BootstrapComponent
         if ($this->_link) {
             $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
             return Html::a($this->getText(), $href, $this->htmlOptions);
-        } else {
-            return Html::button($this->getText(), $this->htmlOptions);
         }
+
+        return Html::button($this->getText(), $this->htmlOptions);
     }
 
     public function getWidgetOptions()

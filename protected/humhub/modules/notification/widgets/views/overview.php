@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\LoaderWidget;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 
 /* @var $options [] */

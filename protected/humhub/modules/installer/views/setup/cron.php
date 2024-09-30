@@ -1,6 +1,6 @@
 <?php
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 
 ?>
 <div id="cron" class="panel panel-default animated fadeIn">

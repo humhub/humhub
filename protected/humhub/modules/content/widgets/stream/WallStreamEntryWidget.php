@@ -3,6 +3,7 @@
 namespace humhub\modules\content\widgets\stream;
 
 use Exception;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchiveLink;
 use humhub\modules\content\widgets\DeleteLink;
@@ -21,7 +22,6 @@ use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image as UserImage;
-use humhub\widgets\bootstrap\Html;
 use Yii;
 use yii\helpers\Url;
 

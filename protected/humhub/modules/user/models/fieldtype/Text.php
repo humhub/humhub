@@ -8,10 +8,10 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use humhub\widgets\bootstrap\Html;
 
 /**
  * ProfileFieldTypeText handles text profile fields.

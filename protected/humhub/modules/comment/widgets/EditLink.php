@@ -7,7 +7,7 @@
 
 namespace humhub\modules\comment\widgets;
 
-use humhub\widgets\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\WidgetMenuEntry;

@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
-use humhub\widgets\bootstrap\Html;
 use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
 

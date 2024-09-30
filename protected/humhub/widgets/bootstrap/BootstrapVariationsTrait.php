@@ -8,6 +8,7 @@
 
 namespace humhub\widgets\bootstrap;
 
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\ArrayHelper;
 

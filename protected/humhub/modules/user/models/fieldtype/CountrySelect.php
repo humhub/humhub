@@ -9,9 +9,9 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use Collator;
+use humhub\helpers\Html;
 use humhub\libs\Iso3166Codes;
 use humhub\modules\user\models\User;
-use humhub\widgets\bootstrap\Html;
 use Yii;
 
 /**

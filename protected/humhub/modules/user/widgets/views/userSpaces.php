@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\PanelMenu;
-use humhub\widgets\bootstrap\Html;
 
 ?>
 <?php if (count($spaces) > 0) { ?>

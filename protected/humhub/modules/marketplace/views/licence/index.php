@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
-use humhub\widgets\bootstrap\Html;
 use yii\helpers\Url;
 use yii\widgets\ActiveForm;
 
