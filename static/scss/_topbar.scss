@@ -96,6 +96,7 @@
 
             #user-account-image {
                 margin-bottom: 0;
+
                 + .caret { // Temp fix for Mac Safari browser
                     float: right;
                     margin: 12px 0 0 6px;
@@ -263,7 +264,7 @@
             }
 
             i.accepted {
-                color: $link !important;
+                color: var(--bs-link-color) !important;
             }
 
             i.declined {
@@ -337,73 +338,85 @@
         }
     }
 
-    .nav > li > a {
-        display: block;
-        padding: 7px 13px 0;
-        text-decoration: none;
-        text-shadow: none;
-        font-weight: 600;
-        font-size: 10px;
-        min-height: 50px;
-        text-transform: uppercase;
-        text-align: center;
+    .nav {
+        > li.nav-item {
 
-        &:hover,
-        &:active,
-        &:focus {
-            border-bottom: 3px solid $info;
-            background-color: $background-color-secondary;
-            color: $text-color-highlight;
-            text-decoration: none;
+            > a {
+                color: var(--hh-text-color-highlight);
+                display: block;
+                padding: 7px 13px 0;
+                text-decoration: none;
+                text-shadow: none;
+                font-weight: 600;
+                font-size: 10px;
+                min-height: 50px;
+                text-transform: uppercase;
+                text-align: center;
+
+                &:hover,
+                &:active,
+                &:focus {
+                    border-bottom: 3px solid $info;
+                    background-color: $background-color-secondary;
+                    color: $text-color-highlight;
+                    text-decoration: none;
+                }
+
+                i {
+                    font-size: 14px;
+                }
+
+                .caret {
+                    border-top-color: $text-color-secondary;
+                }
+            }
+
+            &.active > a {
+                min-height: 47px;
+            }
+
+            > ul > li > a {
+                border-left: 3px solid #fff;
+                background-color: #fff;
+                color: $text-color-highlight;
+            }
+
+            > ul > li > a:hover,
+            > ul > li > a.active {
+                border-left: 3px solid $info;
+                background-color: $background-color-secondary;
+                color: $text-color-highlight;
+            }
+
+            > a#space-menu {
+                padding-right: 13px;
+                border-right: 1px solid #ededed;
+
+                .no-space {
+                    display: inline;
+                }
+            }
+
+            > a#search-menu {
+                padding-top: 15px;
+
+                &::after {
+                    display: none; // Remove Bootstrap dropdown arrow
+                }
+            }
+
+            > a:hover,
+            &.active {
+                border-bottom: 3px solid $info;
+                background-color: $background-color-secondary;
+                color: $text-color-highlight;
+            }
+
+            &.active > a:hover,
+            &.active > a:focus {
+                border-bottom: none;
+            }
         }
-
-        i {
-            font-size: 14px;
-        }
-
-        .caret {
-            border-top-color: $text-color-secondary;
-        }
-    }
-
-    .nav > li.active > a {
-        min-height: 47px;
-    }
-
-    .nav > li > ul > li > a {
-        border-left: 3px solid #fff;
-        background-color: #fff;
-        color: $text-color-highlight;
-    }
-
-    .nav > li > ul > li > a:hover, .nav > li > ul > li > a.active {
-        border-left: 3px solid $info;
-        background-color: $background-color-secondary;
-        color: $text-color-highlight;
-    }
-
-    .nav > li > a#space-menu {
-        padding-right: 13px;
-        border-right: 1px solid #ededed;
-
-        .no-space {
-            display: inline;
-        }
-    }
-
-    .nav > li > a#search-menu {
-        padding-top: 15px;
-    }
-
-    .nav > li > a:hover,
-    .nav > li.active {
-        border-bottom: 3px solid $info;
-        background-color: $background-color-secondary;
-        color: $text-color-highlight;
-    }
-
-    .nav > li.active > a:hover, .nav > li.active > a:focus {
-        border-bottom: none;
     }
 
     #space-menu-dropdown p.space-description {

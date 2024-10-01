@@ -79,10 +79,12 @@ $columns[] = [
             'id' => 'screen-options',
             'class' => 'dropdown-menu p-4'
         ]) ?>
-        <h6 class="dropdown-header">
+        <div>
+            <h6 class="dropdown-header">
             <strong><?= Yii::t('AdminModule.user', 'Select the profile fields you want to add as columns') ?></strong>
-        </h6>
-        <li class="dropdown-divider"></li>
+            </h6>
+        </div>
+        <div><hr class="dropdown-divider"></div>
         <div style="padding: 0 15px;">
             <?php foreach ($availableProfileFields as $field): ?>
                 <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-' . $field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?>

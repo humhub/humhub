@@ -32,12 +32,14 @@ use yii\widgets\ActiveForm;
             <?php if ($canRegister && $showRegistrationForm) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
+                        <li class="nav-item<?= !isset($_POST['Invite']) ? ' active' : '' ?> tab-login"><a
                                 href="#login"
-                                data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login'); ?></a>
+                                class="nav-link"
+                                data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login') ?></a>
                         </li>
-                        <li class="<?= (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
+                        <li class="nav-item<?= (isset($_POST['Invite'])) ? ' active' : '' ?> tab-register"><a
                                 href="#register"
+                                class="nav-link"
                                 data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
                         </li>
                     </ul>

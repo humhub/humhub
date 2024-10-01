@@ -78,7 +78,7 @@ $md-block-spacing: 1.2em;
 
     code {
         background-color: lighten($info, 50%);
-        color: darken($info, 10%);
+        color: var(--bs-code-color);
     }
 
     blockquote {
@@ -150,7 +150,7 @@ $md-block-spacing: 1.2em;
     a:visited {
         background-color: inherit;
         text-decoration: none;
-        color: $link !important;
+        color: var(--bs-link-color) !important;
     }
 
     a.header-anchor {

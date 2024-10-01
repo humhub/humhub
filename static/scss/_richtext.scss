@@ -477,7 +477,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: $link;
+        color: var(--bs-link-color);
     }
 
     .ProseMirror {
@@ -618,11 +618,11 @@
 .atwho-user,
 .atwho-space,
 .atwho-input a {
-    color: $link;
+    color: var(--bs-link-color);
 }
 
 .atwho-input a:hover {
-    color: $link;
+    color: var(--bs-link-color);
 }
 
 .atwho-view strong {
@@ -669,7 +669,7 @@
     overflow-wrap: break-word;
 
     a {
-        color: $link
+        color: var(--bs-link-color)
     }
 }
 

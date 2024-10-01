@@ -53,7 +53,7 @@ $userModel = Yii::$app->user->identity;
         <ul class="dropdown-menu float-end">
             <?php foreach ($entries as $entry): ?>
                 <?php if (!($entry instanceof DropdownDivider)) : ?><li><?php endif; ?>
-                <?= $entry->render() ?>
+                <?= $entry->render(['class' => 'dropdown-item']) ?>
                 <?php if (!($entry instanceof DropdownDivider)) : ?></li><?php endif; ?>
             <?php endforeach; ?>
             <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_ACCOUNT_MENU]); ?>

@@ -277,7 +277,7 @@
 }
 
 .btn-link {
-    color: $link !important;
+    color: var(--bs-link-color) !important;
 
     &:hover,
     &:focus {

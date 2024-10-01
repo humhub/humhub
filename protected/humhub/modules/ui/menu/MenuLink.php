@@ -63,8 +63,6 @@ class MenuLink extends MenuEntry
 
     public function getHtmlOptions($extraOptions = [])
     {
-        $this->getLink()->cssClass('dropdown-item');
-
         if ($this->isActive) {
             $this->getLink()->cssClass('active');
         }

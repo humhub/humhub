@@ -82,11 +82,11 @@
 .atwho-user,
 .atwho-space,
 .atwho-input a {
-    color: $link;
+    color: var(--bs-link-color);
 }
 
 .atwho-input a:hover {
-    color: $link;
+    color: var(--bs-link-color);
 }
 
 .atwho-view strong {
@@ -104,7 +104,7 @@
 }
 
 .atwho-view .cur small {
-    color: var(--danger);
+    color: var(--bs-danger);
 }
 
 .atwho-view strong, .atwho-view b {

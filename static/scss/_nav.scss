@@ -106,14 +106,14 @@ ul.tab-menu-settings {
         background-color: $primary;
         border: none;
 
-        li.dropdown-divider {
-            background-color: darken($primary, 5%);
-            border-bottom: none;
-            margin: 9px 1px !important;
-        }
-
         li {
             border-left: 3px solid $primary;
+
+            .dropdown-divider {
+                background-color: darken($primary, 5%);
+                border-bottom: none;
+                margin: 9px 1px !important;
+            }
 
             a {
                 color: white;
@@ -138,8 +138,8 @@ ul.tab-menu-settings {
             }
         }
 
-        li:hover:not(.dropdown-divider),
-        li.selected {
+        li > a:hover,
+        li > .selected {
             border-left: 3px solid $info;
             color: $text-color-contrast !important;
             background-color: darken($primary, 5%) !important;
@@ -167,7 +167,7 @@ ul.tab-menu-settings {
         }
     }
 
-    li.dropdown-divider:last-of-type {
+    li:has(.dropdown-divider):last-of-type {
         display: none;
     }
 }
@@ -217,7 +217,7 @@ ul.tab-menu-settings {
 
 .tab-content .tab-pane {
     a {
-        color: $link;
+        color: var(--bs-link-color);
     }
 
     .form-group {

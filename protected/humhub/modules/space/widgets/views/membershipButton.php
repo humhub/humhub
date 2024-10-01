@@ -26,7 +26,7 @@ if ($membership === null) {
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], $options['declineInvite']['attrs']); ?></li>
+            <li><?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], array_merge(['class' => 'dropdown-item'], $options['declineInvite']['attrs'])) ?></li>
         </ul>
     </div>
     <?php

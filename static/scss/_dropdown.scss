@@ -52,14 +52,14 @@
     .dropdown-menu {
         border: 1px solid $background3;
 
-        li.dropdown-divider {
-            background-color: $background-color-secondary;
-            border-bottom: none;
-            margin: 9px 1px !important;
-        }
-
         li {
             border-left: 3px solid white;
+
+            .dropdown-divider {
+                background-color: $background-color-secondary;
+                border-bottom: none;
+                margin: 9px 1px !important;
+            }
 
             a {
                 color: $text-color-highlight;
@@ -77,8 +77,8 @@
             }
         }
 
-        li:hover:not(.dropdown-divider),
-        li.selected {
+        li > a:hover,
+        li > a.selected {
             border-left: 3px solid $info;
             background-color: $background-color-secondary !important;
         }
@@ -88,14 +88,14 @@
 ul.contextMenu {
     border: 1px solid $background3;
 
-    li.dropdown-divider {
-        background-color: $background-color-secondary;
-        border-bottom: none;
-        margin: 9px 1px !important;
-    }
-
     li {
         border-left: 3px solid white;
+
+        .dropdown-divider {
+            background-color: $background-color-secondary;
+            border-bottom: none;
+            margin: 9px 1px !important;
+        }
 
         a {
             color: $text-color-highlight;
@@ -113,8 +113,8 @@ ul.contextMenu {
         }
     }
 
-    li:hover,
-    li.selected {
+    li > a:hover,
+    li > a.selected {
         border-left: 3px solid $info;
         background-color: $background-color-secondary !important;
     }

@@ -80,28 +80,30 @@ use humhub\widgets\bootstrap\Link;
             </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
                        aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
                     <ul class="dropdown-menu float-end">
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')->cssClass('dropdown-item') ?>
                         </li>
                         <?php if (TopicPicker::showTopicPicker($contentContainer)) : ?>
                             <li>
-                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon)->cssClass('dropdown-item') ?>
                             </li>
                         <?php endif; ?>
                         <?php if ($canSwitchVisibility): ?>
                             <li>
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
+                                    ->cssClass('dropdown-item')
                                     ->id('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
+                                ->cssClass('dropdown-item')
                                 ->icon('edit')
                                 ->options([
                                     'data-state' => Content::STATE_DRAFT,
@@ -111,6 +113,7 @@ use humhub\widgets\bootstrap\Link;
                         </li>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                ->cssClass('dropdown-item')
                                 ->icon('clock-o') ?>
                         </li>
                     </ul>

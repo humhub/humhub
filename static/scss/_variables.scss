@@ -98,60 +98,161 @@ $border-color-danger: #ff8989;
 // Fonts
 // --------------------------------------------------
 
+// Body fonts
+// $since 1.18
+$body-font-size: 1rem;
+$body-font-weight: 400;
+$body-line-height: 1.5;
+
 // Mail Fonts
 $mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
 // CSS Variables
 // $since 1.14.0
+@function hex-to-rgb($hex) {
+    @return red($hex), green($hex), blue($hex);
+}
 :root {
-    // Deprecated since 1.18
-    --default: $default;
-
-    // Colors for buttons status etc.
-    --primary: $primary;
-    --info: $info;
-    --success: $success;
-    --warning: $warning;
-    --danger: $danger;
-    --link: $link;
+    // Bootstrap values (commented are unchanged values)
+    //--bs-blue: #0d6efd;
+    //--bs-indigo: #6610f2;
+    //--bs-purple: #6f42c1;
+    //--bs-pink: #d63384;
+    //--bs-red: #dc3545;
+    //--bs-orange: #fd7e14;
+    //--bs-yellow: #ffc107;
+    //--bs-green: #198754;
+    //--bs-teal: #20c997;
+    //--bs-cyan: #0dcaf0;
+    //--bs-black: #000;
+    //--bs-white: #fff;
+    //--bs-gray: #6c757d;
+    //--bs-gray-dark: #343a40;
+    //--bs-gray-100: #f8f9fa;
+    //--bs-gray-200: #e9ecef;
+    //--bs-gray-300: #dee2e6;
+    //--bs-gray-400: #ced4da;
+    //--bs-gray-500: #adb5bd;
+    //--bs-gray-600: #6c757d;
+    //--bs-gray-700: #495057;
+    //--bs-gray-800: #343a40;
+    //--bs-gray-900: #212529;
+    --bs-primary: #{$primary};
+    --bs-secondary: #{$secondary};
+    --bs-success: #{$success};
+    --bs-info: #{$info};
+    --bs-warning: #{$warning};
+    --bs-danger: #{$danger};
+    --bs-light: #{$light};
+    --bs-dark: #{$dark};
+    --bs-primary-rgb: #{hex-to-rgb($primary)};
+    --bs-secondary-rgb: #{hex-to-rgb($secondary)};
+    --bs-success-rgb: #{hex-to-rgb($success)};
+    --bs-info-rgb: #{hex-to-rgb($info)};
+    --bs-warning-rgb: #{hex-to-rgb($warning)};
+    --bs-danger-rgb: #{hex-to-rgb($danger)};
+    --bs-light-rgb: #{hex-to-rgb($light)};
+    --bs-dark-rgb: #{hex-to-rgb($dark)};
+    //--bs-white-rgb: 255, 255, 255;
+    //--bs-black-rgb: 0, 0, 0;
+    --bs-body-color-rgb: #{hex-to-rgb($text-color-main)};
+    --bs-body-bg-rgb: #{hex-to-rgb($background-color-page)};
+    --bs-font-sans-serif: 'Open Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    //--bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    //--bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+    --bs-body-font-family: var(--bs-font-sans-serif);
+    --bs-body-font-size: #{$body-font-size};
+    --bs-body-font-weight: #{$body-font-weight};
+    --bs-body-line-height: #{$body-line-height};
+    --bs-body-color: #{$text-color-main};
+    --bs-body-bg: #{$background-color-page};
+    //--bs-border-width: 1px;
+    //--bs-border-style: solid;
+    //--bs-border-color: #dee2e6;
+    //--bs-border-color-translucent: rgba(0, 0, 0, 0.175);
+    //--bs-border-radius: 0.375rem;
+    //--bs-border-radius-sm: 0.25rem;
+    //--bs-border-radius-lg: 0.5rem;
+    //--bs-border-radius-xl: 1rem;
+    //--bs-border-radius-2xl: 2rem;
+    //--bs-border-radius-pill: 50rem;
+    --bs-link-color: #{$link};
+    --bs-link-hover-color: #{darken($link, 10%)};
+    --bs-code-color: #{darken($info, 10%)};
+    --bs-highlight-bg: #{$background-color-highlight};
 
     // Text colors
-    --text-color-main: $text-color-main;
-    --text-color-default: $text-color-default;
-    --text-color-secondary: $text-color-secondary;
-    --text-color-highlight: $text-color-highlight;
-    --text-color-soft: $text-color-soft;
-    --text-color-soft2: $text-color-soft2;
-    --text-color-soft3: $text-color-soft3;
-    --text-color-contrast: $text-color-contrast;
+    --hh-text-color-main: #{$text-color-main};
+    --hh-text-color-default: #{$text-color-default};
+    --hh-text-color-secondary: #{$text-color-secondary};
+    --hh-text-color-highlight: #{$text-color-highlight};
+    --hh-text-color-soft: #{$text-color-soft};
+    --hh-text-color-soft2: #{$text-color-soft2};
+    --hh-text-color-soft3: #{$text-color-soft3};
+    --hh-text-color-contrast: #{$text-color-contrast};
 
     // Background colors
-    --background-color-main: $background-color-main;
-    --background-color-secondary: $background-color-secondary;
-    --background-color-page: $background-color-page;
-    --background-color-highlight: $background-color-highlight;
-    --background-color-highlight-soft: $background-color-highlight-soft;
-    --background3: $background3;
-    --background4: $background4;
+    --hh-background-color-main: #{$background-color-main};
+    --hh-background-color-secondary: #{$background-color-secondary};
+    --hh-background-color-page: #{$background-color-page};
+    --hh-background-color-highlight: #{$background-color-highlight};
+    --hh-background-color-highlight-soft: #{$background-color-highlight-soft};
+    --hh-background3: #{$background3};
+    --hh-background4: #{$background4};
 
     // Bootstrap Alert boxes
     // Success
-    --background-color-success: $background-color-success;
-    --text-color-success: $text-color-success;
-    --border-color-success: $border-color-success;
+    --hh-background-color-success: #{$background-color-success};
+    --hh-text-color-success: #{$text-color-success};
+    --hh-border-color-success: #{$border-color-success};
     // Warning
-    --background-color-warning: $background-color-warning;
-    --text-color-warning: $text-color-warning;
-    --border-color-warning: $border-color-warning;
+    --hh-background-color-warning: #{$background-color-warning};
+    --hh-text-color-warning: #{$text-color-warning};
+    --hh-border-color-warning: #{$border-color-warning};
     // Danger
-    --background-color-danger: $background-color-danger;
-    --text-color-danger: $text-color-danger;
-    --border-color-danger: $border-color-danger;
+    --hh-background-color-danger: #{$background-color-danger};
+    --hh-text-color-danger: #{$text-color-danger};
+    --hh-border-color-danger: #{$border-color-danger};
 
     // Fonts
-    --mail-font-family: $mail-font-family;
+    --hh-mail-font-family: #{$mail-font-family};
 
     // Dimensions
     --hh-fixed-header-height: 130px;
     --hh-fixed-footer-height: 0px; // Force keeping `px` after CSS compilation (required for `calc()` function)
+
+
+    // Deprecated since 1.18, use the above variable instead
+    --default: #{$default};
+    --primary: var(--bs-primary);
+    --info: var(--bs-info);
+    --success: var(--bs-success);
+    --warning: var(--bs-warning);
+    --danger: var(--bs-danger);
+    --link: var(--bs-link-color);
+    --text-color-main: #{$text-color-main};
+    --text-color-default: #{$text-color-default};
+    --text-color-secondary: #{$text-color-secondary};
+    --text-color-highlight: #{$text-color-highlight};
+    --text-color-soft: #{$text-color-soft};
+    --text-color-soft2: #{$text-color-soft2};
+    --text-color-soft3: #{$text-color-soft3};
+    --text-color-contrast: #{$text-color-contrast};
+    --background-color-main: #{$background-color-main};
+    --background-color-secondary: #{$background-color-secondary};
+    --background-color-page: #{$background-color-page};
+    --background-color-highlight: #{$background-color-highlight};
+    --background-color-highlight-soft: #{$background-color-highlight-soft};
+    --background3: #{$background3};
+    --background4: #{$background4};
+    --background-color-success: #{$background-color-success};
+    --text-color-success: #{$text-color-success};
+    --border-color-success: #{$border-color-success};
+    --background-color-warning: #{$background-color-warning};
+    --text-color-warning: #{$text-color-warning};
+    --border-color-warning: #{$border-color-warning};
+    --background-color-danger: #{$background-color-danger};
+    --text-color-danger: #{$text-color-danger};
+    --border-color-danger: #{$border-color-danger};
+    --mail-font-family: #{$mail-font-family};
 }

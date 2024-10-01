@@ -20,7 +20,7 @@ use humhub\modules\friendship\models\Friendship;
         </button>
         <ul class="dropdown-menu">
             <li>
-                <?= Html::a($options['denyFriendRequest']['title'], '#', $options['denyFriendRequest']['attrs']); ?>
+                <?= Html::a($options['denyFriendRequest']['title'], '#', array_merge(['class' => 'dropdown-item'], $options['denyFriendRequest']['attrs'])) ?>
             </li>
         </ul>
     </div>

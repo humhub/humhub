@@ -158,9 +158,7 @@ trait BootstrapVariationsTrait
 
     public function id(?string $id): static
     {
-        $this->id = $id;
-
-        return $this;
+        return $this->options(['id' => $id]);
     }
 
     /**
@@ -179,11 +177,7 @@ trait BootstrapVariationsTrait
         return $this->title($title)->cssClass('tt');
     }
 
-    /**
-     * @param $cssClass
-     * @return $this
-     */
-    public function cssClass($cssClass): static
+    public function cssClass(array|string $cssClass): static
     {
         Html::addCssClass($this->options, $cssClass);
 

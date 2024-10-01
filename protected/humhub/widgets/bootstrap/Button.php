@@ -40,7 +40,7 @@ class Button extends \yii\bootstrap5\Button
 
     public static function asLink(string $label = null, string $href = '#'): static
     {
-        return self::instance($label, 'link')
+        return self::instance($label)
             ->loader(false)
             ->link($href);
     }
@@ -195,6 +195,7 @@ class Button extends \yii\bootstrap5\Button
             ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
         if ($this->link) {
+            Html::removeCssClass($this->options, ['widget' => 'btn']);
             $href = $this->options['href'] ?? null;
             return Html::a($text, $href, $this->options);
         }

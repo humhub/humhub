@@ -8,9 +8,12 @@ html {
 body {
     @include text-break();
     padding-top: var(--hh-fixed-header-height);
-    background-color: $background-color-page;
-    color: $text-color-main;
-    font-family: 'Open Sans', sans-serif;
+    background-color: var(--bs-body-bg);
+    color: var(--bs-body-color);
+    font-family: var(--bs-body-font-family);
+    font-size: var(--bs-body-font-size);
+    font-weight: var(--bs-body-font-weight);
+    line-height: var(--bs-body-line-height);
 
     a,
     a:hover,
@@ -119,7 +122,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 
 .panel-body a[data-bs-toggle], .modal-body a[data-bs-toggle] {
-    color: $link;
+    color: var(--bs-link-color);
 }
 
 .showMore {

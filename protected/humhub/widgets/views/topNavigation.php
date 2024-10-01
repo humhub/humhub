@@ -12,13 +12,13 @@ TopNavigationAsset::register($this);
 ?>
 
 <?php foreach ($entries as $entry) : ?>
-    <li class="top-menu-item <?php if ($entry->getIsActive()): ?>active<?php endif; ?>">
-        <?= Html::a($entry->getIcon() . '<br />' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
+    <li class="nav-item top-menu-item <?php if ($entry->getIsActive()): ?>active<?php endif; ?>">
+        <?= Html::a($entry->getIcon() . '<br />' . $entry->getLabel(), $entry->getUrl(), array_merge(['class' => 'nav-link'], $entry->getHtmlOptions())); ?>
     </li>
 <?php endforeach; ?>
 
-<li id="top-menu-sub" class="dropdown" style="display:none;">
-    <a href="#" id="top-dropdown-menu" class="dropdown-toggle" data-bs-toggle="dropdown">
+<li id="top-menu-sub" class="nav-item dropdown" style="display:none;">
+    <a href="#" id="top-dropdown-menu" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
         <i class="fa fa-align-justify"></i><br>
         <?= Yii::t('base', 'Menu'); ?>
     </a>

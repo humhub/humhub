@@ -21,7 +21,7 @@
         color: $text-color-highlight;
 
         a {
-            color: $link;
+            color: var(--bs-link-color);
         }
 
         img {

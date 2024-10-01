@@ -20,7 +20,7 @@ table {
 
     td {
         a:hover {
-            color: $link;
+            color: var(--bs-link-color);
         }
     }
 }

@@ -17,8 +17,10 @@ use humhub\widgets\bootstrap\Button;
     </button>
     <ul class="dropdown-menu">
         <li><?= Button::asLink('csv', $csv)->pjax(false)
+                ->cssClass('dropdown-item')
                 ->icon('fa-file-code-o')->sm() ?></li>
         <li><?= Button::asLink('xlsx', $xlsx)->pjax(false)
+                ->cssClass('dropdown-item')
                 ->icon('fa-file-excel-o')->sm() ?></li>
     </ul>
 </div>

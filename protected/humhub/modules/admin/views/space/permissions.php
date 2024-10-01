@@ -23,8 +23,8 @@ use yii\helpers\Url;
 
 <ul id="tabs" class="nav nav-tabs tab-sub-menu permission-group-tabs">
     <?php foreach ($groups as $currentGroupId => $groupLabel) : ?>
-        <li class="<?= ($groupId === $currentGroupId) ? 'active' : '' ?>">
-            <a href="<?= Url::toRoute(['/admin/space/permissions', 'groupId' => $currentGroupId]) ?>"><?= $groupLabel ?></a>
+        <li class="nav-item<?= ($groupId === $currentGroupId) ? ' active' : '' ?>">
+            <a class="nav-link" href="<?= Url::toRoute(['/admin/space/permissions', 'groupId' => $currentGroupId]) ?>"><?= $groupLabel ?></a>
         </li>
     <?php endforeach; ?>
 </ul>

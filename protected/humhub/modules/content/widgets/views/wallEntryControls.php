@@ -23,10 +23,10 @@ use humhub\modules\ui\view\components\View;
     <ul class="dropdown-menu float-end">
         <?php foreach ($entries as $entry) : ?>
             <?php if ($entry instanceof LegacyWallEntryControlLink) : ?>
-                <?= $entry->render() ?>
+                <?= $entry->render(['class' => 'dropdown-item']) ?>
             <?php else: ?>
                 <li>
-                    <?= $entry->render() ?>
+                    <?= $entry->render(['class' => 'dropdown-item']) ?>
                 </li>
             <?php endif; ?>
         <?php endforeach; ?>

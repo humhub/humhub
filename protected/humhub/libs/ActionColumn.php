@@ -57,11 +57,11 @@ class ActionColumn extends Column
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {
-                $html .= '<li class="dropdown-divider"></li>';
+                $html .= '<li><hr class="dropdown-divider"></li>';
             } else {
-                $linkOptions = null;
+                $linkOptions = ['class' => 'dropdown-item'];
                 if (isset($url['linkOptions'])) {
-                    $linkOptions = $url['linkOptions'];
+                    $linkOptions = array_merge($linkOptions, $url['linkOptions']);
                     unset($url['linkOptions']);
                 }
 

@@ -21,7 +21,7 @@ use humhub\modules\ui\menu\MenuLink;
 ?>
 
 <?php if (!empty($entries)): ?>
-    <li class="dropdown-divider d-none d-sm-block d-md-none"></li>
+    <li class="d-none d-sm-block d-md-none"><hr class="dropdown-divider"></li>
     <?php foreach ($entries as $k => $entry): ?>
         <?php if ($entry instanceof MenuLink): ?>
             <li class="d-none d-sm-block d-md-none footer-nav-entry">

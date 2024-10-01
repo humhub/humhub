@@ -23,7 +23,7 @@ use humhub\widgets\bootstrap\Button;
 <ul class="dropdown-menu float-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
-            <?= $entry->render() ?>
+            <?= $entry->render(['class' => 'dropdown-item']) ?>
         </li>
     <?php endforeach; ?>
 </ul>

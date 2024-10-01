@@ -18,19 +18,19 @@ use humhub\modules\ui\menu\MenuEntry;
 <ul class="nav nav-tabs">
     <?php foreach ($entries as $e => $entry) : ?>
         <?php $entry->setIsActive($e === 0) ?>
-        <li<?= $entry->getIsActive() ? ' class="active"' : '' ?>>
-            <?= $entry->render() ?>
+        <li class="nav-item<?= $entry->getIsActive() ? ' active' : '' ?>">
+            <?= $entry->render(['class' => 'nav-link']) ?>
         </li>
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
-            <li class="content-create-menu-more">
-                <?= Icon::get('caret-down', ['htmlOptions' => ['data-bs-toggle' => 'dropdown']]) ?>
+            <li class="nav-item content-create-menu-more">
+                <?= Icon::get('caret-down', ['htmlOptions' => ['class' => 'nav-link dropdown-toggle', 'data-bs-toggle' => 'dropdown']]) ?>
                 <ul class="dropdown-menu float-end">
                     <?php foreach ($entries as $e => $entry) : ?>
                         <?php if ($e < $menu->visibleEntriesNum) {
                             continue;
                         } ?>
                         <li>
-                            <?= $entry->render() ?>
+                            <?= $entry->render(['class' => 'dropdown-item']) ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>

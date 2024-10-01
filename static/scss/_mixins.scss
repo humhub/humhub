@@ -44,9 +44,9 @@
     border-color: $info !important;
 }
 
-/* Info */
+/* Link */
 @mixin colorLink {
-    color: $link !important;
+    color: var(--bs-link-color) !important;
 }
 
 /* Success */

@@ -41,21 +41,21 @@ $form = ActiveForm::begin([
     <?php if ($canInviteByEmail || $canInviteByLink) : ?>
         <div class="text-center">
             <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                <li class="<?= $isInviteTabActiveClass ?> tab-user-picker">
-                    <a href="#user-picker" data-bs-toggle="tab">
+                <li class="nav-item <?= $isInviteTabActiveClass ?> tab-user-picker">
+                    <a class="nav-link" href="#user-picker" data-bs-toggle="tab">
                         <?= Yii::t('SpaceModule.base', 'Pick users'); ?>
                     </a>
                 </li>
                 <?php if ($canInviteByEmail) : ?>
-                    <li class="<?= $isInviteByEmailTabActiveClass ?> tab-invite-by-email">
-                        <a href="#invite-by-email" data-bs-toggle="tab">
+                    <li class="nav-item <?= $isInviteByEmailTabActiveClass ?> tab-invite-by-email">
+                        <a class="nav-link" href="#invite-by-email" data-bs-toggle="tab">
                             <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if ($canInviteByLink) : ?>
-                    <li class="tab-invite-by-link">
-                        <a href="#invite-by-link" data-bs-toggle="tab">
+                    <li class="nav-item tab-invite-by-link">
+                        <a class="nav-link" href="#invite-by-link" data-bs-toggle="tab">
                             <?= Yii::t('SpaceModule.base', 'Invite by link'); ?>
                         </a>
                     </li>

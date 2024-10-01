@@ -25,7 +25,7 @@
     }
 
     .panel a {
-        color: $link;
+        color: var(--bs-link-color);
     }
 
     h1,

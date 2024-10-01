@@ -18,8 +18,9 @@ $categories = $user->profile->getProfileFieldCategories();
         <?php $firstClass = "active" ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($categories as $category): ?>
-                <li class="<?= $firstClass ?>">
-                    <a href="#profile-category-<?= $category->id; ?>"
+                <li class="nav-item <?= $firstClass ?>">
+                    <a href="#profile-category-<?= $category->id ?>"
+                       class="nav-link"
                        data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                 </li>
                 <?php

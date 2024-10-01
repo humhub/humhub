@@ -113,7 +113,7 @@ ul.files {
     margin-bottom: 10px !important;
 
     a, a:active, a:focus, a:hover {
-        color: $link;
+        color: var(--bs-link-color);
     }
 }
 
@@ -264,7 +264,7 @@ ul.files {
 }
 
 div.jp-type-playlist div.jp-playlist a.jp-playlist-current, div.jp-type-playlist div.jp-playlist a:hover {
-    color: $link !important;
+    color: var(--bs-link-color) !important;
 }
 
 .jp-details, .jp-playlist {

@@ -28,8 +28,8 @@ use yii\helpers\Url;
         <div class="tab-menu permission-group-tabs">
             <ul class="nav nav-tabs" role="tablist">
                 <?php foreach ($groups as $groupId => $groupTitle) : ?>
-                    <li role="presentation" class="<?php if ($groupId == $group): ?>active<?php endif; ?>">
-                        <a href="<?= Url::to(['permissions', 'groupId' => $groupId]); ?>"
+                    <li role="presentation" class="nav-item<?= ($groupId == $group) ? ' active' : '' ?>">
+                        <a class="nav-link" href="<?= Url::to(['permissions', 'groupId' => $groupId]); ?>"
                            role="tab"><?= Html::encode($groupTitle); ?></a>
                     </li>
                 <?php endforeach; ?>

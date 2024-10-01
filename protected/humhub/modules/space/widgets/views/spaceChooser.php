@@ -19,8 +19,8 @@ use yii\helpers\Url;
 
 ?>
 
-<li class="dropdown">
-    <a href="#" id="space-menu" class="dropdown-toggle" data-bs-toggle="dropdown">
+<li class="nav-item dropdown">
+    <a href="#" id="space-menu" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
         <?php if ($currentSpace) : ?>
             <?= Image::widget(['space' => $currentSpace, 'width' => 32, 'htmlOptions' => ['class' => 'current-space-image']]); ?>
@@ -34,7 +34,7 @@ use yii\helpers\Url;
 
     <ul class="dropdown-menu" id="space-menu-dropdown">
         <li>
-            <form action="" class="dropdown-controls">
+            <form action="" class="dropdown-header dropdown-controls">
                 <div <?= $canAccessDirectory ? 'class="input-group"' : '' ?>>
                     <input type="text" id="space-menu-search" class="form-control" autocomplete="off"
                            placeholder="<?= Yii::t('SpaceModule.chooser', 'Search') ?>"
@@ -50,15 +50,14 @@ use yii\helpers\Url;
                 </div>
             </form>
         </li>
-
-        <li class="dropdown-divider"></li>
+        <li><hr class="dropdown-divider"></li>
         <li>
-            <div class="media-list notLoaded" id="space-menu-spaces">
+            <div class="dropdown-item media-list notLoaded" id="space-menu-spaces">
                 <?= $renderedItems ?>
             </div>
         </li>
         <li class="remoteSearch">
-            <div id="space-menu-remote-search" class="media-list notLoaded"></div>
+            <div id="space-menu-remote-search" class="dropdown-item media-list notLoaded"></div>
         </li>
 
         <?php if ($canCreateSpace) : ?>

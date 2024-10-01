@@ -297,9 +297,9 @@ $moduleUpdateCardBg: darken($primary, 10);
 
 .modules-updates-info {
     border-radius: 3px;
-    border: 1px solid var(--border-color-warning);
-    background: var(--background-color-warning);
-    color: var(--text-color-warning);
+    border: 1px solid var(--hh-border-color-warning);
+    background: var(--hh-background-color-warning);
+    color: var(--hh-text-color-warning);
     padding: 14px 20px 14px 25px;
     margin: 20px 10px 10px;
     font-size: 11px;

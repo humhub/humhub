@@ -1,8 +1,8 @@
 <?php
 
+use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 use humhub\modules\user\widgets\PermisionGridModuleFilter;
 use humhub\modules\user\widgets\PermissionGridEditor;
-use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 
 ?>
 
@@ -26,8 +26,8 @@ use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
 
     <ul id="tabs" class="nav nav-tabs tab-sub-menu permission-group-tabs">
         <?php foreach ($groups as $currentGroupId => $groupLabel) : ?>
-            <li class="<?= ($groupId === $currentGroupId) ? 'active' : '' ?>">
-                <a href='<?= $space->createUrl('permissions', ['groupId' => $currentGroupId]); ?>'><?= $groupLabel ?></a>
+            <li class="nav-item<?= ($groupId === $currentGroupId) ? ' active' : '' ?>">
+                <a class="nav-link" href='<?= $space->createUrl('permissions', ['groupId' => $currentGroupId]); ?>'><?= $groupLabel ?></a>
             </li>
         <?php endforeach; ?>
     </ul>

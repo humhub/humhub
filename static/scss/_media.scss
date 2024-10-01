@@ -87,7 +87,7 @@
 
         .content a {
             word-break: break-all;
-            color: $link;
+            color: var(--bs-link-color);
         }
 
         strong {
@@ -103,7 +103,7 @@
             font-size: 85%;
 
             a {
-                color: $link;
+                color: var(--bs-link-color);
             }
         }
 

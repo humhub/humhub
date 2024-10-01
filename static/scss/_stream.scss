@@ -106,7 +106,7 @@ $wallEntryContentLeftPaddingMobile: 0;
         }
 
         .wall-entry-container-link {
-            color: $link;
+            color: var(--bs-link-color);
         }
 
         .stream-entry-icon-list {
@@ -214,7 +214,7 @@ $wallEntryContentLeftPaddingMobile: 0;
 
     .content {
         a {
-            color: $link;
+            color: var(--bs-link-color);
         }
 
         img {

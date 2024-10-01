@@ -53,6 +53,7 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
+- CSS variables. Use the new ones prefixed with `--bs-` (for Bootstrap variables) or `--hh-` (for HumHub variables). See `static/scss/_variables.scss`.
 
 
 ## Bootstrap widgets
@@ -127,11 +128,54 @@ E.g., you can use `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
 
 ### Dropdown
 
-- Search for `dropdown-menu` in the code and add `dropdown-item` class to all link items ([see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
-- Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`) and replace with `dropdown-divider`
+- Search for `dropdown-menu` in the code and add `dropdown-header` (if a header item) or `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
+- Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`), replace with `dropdown-divider`, and move them to a `hr` child tag of `li`.
+- Move the tags with `dropdown-header` class to a child tag of `li` (usually in a `h6` tag)
 - `dropdown-menu-left` -> `dropdown-menu-start`
 - `dropdown-menu-right` -> `dropdown-menu-end`
 - Remove `<span class="caret"></span>` and `<b class="caret"></b>` in dropdown buttons (as there are already added by Bootstrap 5 via the `:after` pseudo-element)
+
+Example:
+```html
+<ul class="dropdown-menu">
+    <li><h6 class="dropdown-header">Dropdown header</h6></li>
+    <li><a class="dropdown-item" href="#">Action</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><a class="dropdown-item" href="#">Separated link</a></li>
+</ul>
+```
+
+### Navs & tabs
+
+Make sure the required classes `nav-item` and `nav-link` exists in HTML tags about nav & tabs ([see documentation with examples](https://getbootstrap.com/docs/5.3/components/navs-tabs/)). Search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?nav(?:\s[^"']*)?["'][^>]*>`.
+
+Example:
+```html
+<ul class="nav">
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    ...
+</ul>
+```
+
+### Tabs with dropdown
+
+Example:
+```html
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link" href="#">Link</a>
+    </li>
+    <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false">Dropdown</a>
+        <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><hr class="dropdown-divider"></li>
+        </ul>
+    </li>
+</ul>
+```
 
 ## Deprecated Bootstrap 3 components
 
@@ -198,11 +242,14 @@ However, you need to check the output manually.
 
 ### Variables
 
-- `$default` is deprecated. Use `$light` or `$secondary` instead.
+- `$default` is deprecated. Use `$secondary` or `$light` instead.
 - New variables: `$secondary`, `$light` and `$dark`
 
 In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
-E.g.: `color: $primary` -> `color: var(--primary)`
+Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-` for HumHub variables.
+E.g.: `color: $primary` -> `color: var(--bs-primary)`
+
+If you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module ID. E.g. `my-module` will use `hh-mm-`. 
 
 ### Select2 stylesheet
 
