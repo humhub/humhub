@@ -73,8 +73,6 @@ class DashboardController extends Controller
      */
     public function actionIndex()
     {
-//        var_dump(Yii::$app->getModule('installer')->enableAutoSetup);die;
-
         if (Yii::$app->user->isGuest) {
             return $this->render('index_guest', []);
         } else {
