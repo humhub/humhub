@@ -39,6 +39,8 @@ HumHub Changelog
 - Enh #7231: Removed deprecated `ShowMorePager` widget
 - Fix #7230: Update module with new id
 - Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
+- Enh #7237: Changed PoweredBy URL
+- Enh #7238: Fixed PHP warning related to `.env`
 
 1.16.3 (Unreleased)
 --------------------------
