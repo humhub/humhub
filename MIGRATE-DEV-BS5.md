@@ -55,33 +55,6 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
 
 
-## LESS is replaced with SCSS
-
-LESS format is not supported anymore.
-Use SCSS instead. See https://getbootstrap.com/docs/5.3/customize/sass/
-
-### Convert LESS to SCSS
-
-Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
-Prefix all SCSS files with `_` except the `build.scss` file.
-E.g.: `less/variables.less` -> `scss/_variables.scss`
-
-Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
-However, you need to check the output manually.
-
-### Variables
-
-- `$default` is deprecated. Use `$light` or `$secondary` instead.
-- New variables: `$secondary`, `$light` and `$dark`
-
-In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
-E.g.: `color: $primary` -> `color: var(--primary)`
-
-### Select2 stylesheet
-
-`static/css/select2Theme` folder has been removed, and the SCSS file moved and renamed to `static/scss/_select2.scss`
-
-
 ## Bootstrap widgets
 
 Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
@@ -207,6 +180,60 @@ Replacements:
 - Remove `float-start` (or `pull-left`) class for images inside a `<div class="flex-shrink-0">`
 
 Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
+
+
+## Themes and Modules: LESS is replaced with SCSS
+
+LESS format is not supported anymore.
+Use SCSS instead. See https://getbootstrap.com/docs/5.3/customize/sass/
+
+### Convert LESS to SCSS
+
+Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
+Prefix all SCSS files with `_` except the `build.scss` file.
+E.g.: `less/variables.less` -> `scss/_variables.scss`
+
+Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
+However, you need to check the output manually.
+
+### Variables
+
+- `$default` is deprecated. Use `$light` or `$secondary` instead.
+- New variables: `$secondary`, `$light` and `$dark`
+
+In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
+E.g.: `color: $primary` -> `color: var(--primary)`
+
+### Select2 stylesheet
+
+`static/css/select2Theme` folder has been removed, and the SCSS file moved and renamed to `static/scss/_select2.scss`
+
+
+## Themes
+
+### Build file
+
+The `build.scss` file mustn't import parent theme files anymore, as it is automatically done by the new compiler.
+
+Take example with the `HumHub` community theme.
+
+### Compiler
+
+Grunt compiler has been removed.
+
+Instead, compile your theme online, using the new "(Re)build Theme CSS" button in Administration -> Settings -> Appearance.
+
+If you use the "Updater", you don't need anymore to recompile your theme CSS after updating HumHub core, as it will be done automatically.
+
+But if you upgrade HumHub without this module, you will have to click on the "(Re)build Theme CSS" button after each HumHub core upgrade.
+
+### Overwritten view files
+
+Most of the views have been refactored to use the new Bootstrap 5 HTML tags and classes.
+
+Please review all overwritten view files. See https://community.humhub.com/s/theming-appearance/wiki/134/Migration%3A+Identify+Template+Changes+ for more information.
+
+The most important change concerns the `protected/humhub/views/layouts/main.php` file, which has been refactored with bs5 flex logic (instead of floating right elements).
 
 
 ## Documentation
