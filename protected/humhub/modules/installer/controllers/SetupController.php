@@ -100,9 +100,22 @@ class SetupController extends Controller
                     $password = $config['components']['db']['password'];
                 }
             } elseif ($this->module->enableAutoSetup) {
-                $username = Yii::$app->db->username;
+                $username = $model->username = Yii::$app->db->username;
                 $password = Yii::$app->db->password;
                 $connectionString = Yii::$app->db->dsn;
+                $model->create = 1;
+
+                if (preg_match('/host=([^;]+)/', $connectionString  ?: '', $matches)) {
+                    $model->hostname = $matches[1];
+                }
+                if (preg_match('/port=([^;]+)/', $connectionString  ?: '', $matches)) {
+                    $model->port = $matches[1];
+                }
+                if (preg_match('/dbname=([^;]+)/', $connectionString  ?: '', $matches)) {
+                    $model->database = $matches[1];
+                }
+
+                $connectionString = preg_replace('/;dbname=[^;]*/', '', $connectionString);
             } else {
                 $username = '';
                 $password = '';
