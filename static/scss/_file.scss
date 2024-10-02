@@ -10,7 +10,6 @@ ul.files {
 
     li.file-preview-item {
         padding-left: 24px;
-        display: none;
 
         .file-fileInfo {
             padding-right: 20px;
@@ -74,7 +73,7 @@ ul.files {
             height: 150px;
         }
 
-        .col-xs-12 img { // One image
+        .col-12 img { // One image
             height: 300px;
         }
     }

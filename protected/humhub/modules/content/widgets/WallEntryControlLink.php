@@ -4,6 +4,7 @@ namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
 use humhub\helpers\Html;
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -59,6 +60,8 @@ class WallEntryControlLink extends Widget
             $this->options['data-action-url'] = $this->getActionUrl();
         }
 
+        $this->options['class'] = 'dropdown-item';
+
         ArrayHelper::remove($this->options, 'sortOrder');
         parent::init();
     }
@@ -98,7 +101,7 @@ class WallEntryControlLink extends Widget
      */
     protected function renderLinkText()
     {
-        return ($this->icon) ? '<i class="fa ' . $this->getIcon() . '"></i> ' . $this->getLabel() : $this->getLabel();
+        return ($this->icon) ? Icon::get($this->getIcon()) . $this->getLabel() : $this->getLabel();
     }
 
     /**

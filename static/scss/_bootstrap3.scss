@@ -114,24 +114,24 @@ a.label-warning:hover {
         position: relative;
         border-left: 3px solid white;
 
+        &:hover,
+        &.selected {
+            background-color: $background-color-secondary;
+            border-left: 3px solid $info;
+        }
+
+        &.new {
+            border-left: 3px solid $info;
+            background-color: $background-color-highlight;
+
+            &:hover {
+                background-color: $background-color-highlight-soft;
+            }
+        }
+
         a {
             color: $text-color-main;
         }
-    }
-
-    li.new {
-        border-left: 3px solid $info;
-        background-color: $background-color-highlight;
-
-        &:hover {
-            background-color: $background-color-highlight-soft;
-        }
-    }
-
-    li:hover,
-    li.selected {
-        background-color: $background-color-secondary;
-        border-left: 3px solid $info;
     }
 }
 
@@ -175,7 +175,7 @@ a.label-warning:hover {
         white-space: normal;
         @include text-break();
 
-        h4.media-heading {
+        h4, h5 {
             font-size: 14px;
             font-weight: 500;
             color: $text-color-highlight;

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Link;
 
 /* @var $id string */
@@ -9,10 +9,15 @@ use humhub\widgets\bootstrap\Link;
 
 <ul data-ui-widget="ui.panel.PanelMenu" data-ui-init class="nav nav-pills preferences">
     <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
-           aria-label="<?= Yii::t('base', 'Toggle panel menu'); ?>" aria-haspopup="true">
-            <?= Icon::get('dropdownToggle') ?>
-        </a>
+        <?= Html::a('', '#', [
+            'class' => 'nav-link dropdown-toggle',
+            'data-bs-toggle' => 'dropdown',
+            'aria-label' => Yii::t('base', 'Toggle panel menu'),
+            'aria-haspopup' => 'true',
+            'aria-expanded' => 'false',
+            'role' => 'button',
+        ]) ?>
+
         <ul class="dropdown-menu float-end">
             <li>
                 <?= Link::instance()->action('toggle')->cssClass(['dropdown-item', 'panel-collapse'])?>

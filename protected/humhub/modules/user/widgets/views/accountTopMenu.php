@@ -7,7 +7,6 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use humhub\modules\ui\view\components\View;
@@ -52,9 +51,7 @@ $userModel = Yii::$app->user->identity;
         </a>
         <ul class="dropdown-menu float-end">
             <?php foreach ($entries as $entry): ?>
-                <?php if (!($entry instanceof DropdownDivider)) : ?><li><?php endif; ?>
-                <?= $entry->render(['class' => 'dropdown-item']) ?>
-                <?php if (!($entry instanceof DropdownDivider)) : ?></li><?php endif; ?>
+                <li><?= $entry->render(['class' => 'dropdown-item']) ?></li>
             <?php endforeach; ?>
             <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_ACCOUNT_MENU]); ?>
         </ul>

@@ -87,7 +87,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `data-dismiss` -> `data-bs-dismiss`
 - `no-space` -> `m-0 p-0`
 - `align-center` -> `text-center` or `d-flex justify-content-center`
-- `col-xs-` -> `col- `
+- `col-xs-` -> `col- ` and make sure the parent element has the `row` class, and the parent of parent the `container` class ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
 - `input-group-addon` -> `input-group-text` (or `input-group-prepend` or `input-group-append`)
 - `Button::none(` -> `Button::asLink(`
 - Remove `jumbotron` class

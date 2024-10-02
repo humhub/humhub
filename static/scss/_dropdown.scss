@@ -4,6 +4,8 @@
 .dropdown-menu {
     li {
         a {
+            white-space: nowrap;
+
             i {
                 margin-right: 5px;
                 font-size: 14px;
@@ -55,6 +57,12 @@
         li {
             border-left: 3px solid white;
 
+            &:hover,
+            &.selected {
+                border-left: 3px solid $info;
+                background-color: $background-color-secondary !important;
+            }
+
             .dropdown-divider {
                 background-color: $background-color-secondary;
                 border-bottom: none;
@@ -76,12 +84,6 @@
                 background: none;
             }
         }
-
-        li > a:hover,
-        li > a.selected {
-            border-left: 3px solid $info;
-            background-color: $background-color-secondary !important;
-        }
     }
 }
 
@@ -90,6 +92,12 @@ ul.contextMenu {
 
     li {
         border-left: 3px solid white;
+
+        &:hover,
+        &.selected {
+            border-left: 3px solid $info;
+            background-color: $background-color-secondary !important;
+        }
 
         .dropdown-divider {
             background-color: $background-color-secondary;
@@ -111,11 +119,5 @@ ul.contextMenu {
         a:hover {
             background: none;
         }
-    }
-
-    li > a:hover,
-    li > a.selected {
-        border-left: 3px solid $info;
-        background-color: $background-color-secondary !important;
     }
 }

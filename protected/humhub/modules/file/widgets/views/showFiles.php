@@ -42,16 +42,16 @@ if ($nbFiles === 1) {
 if ($nbFiles === 2) {
     $desktopBsColumns = $isFluid ? 4 : 6;
 }
-$fullWidthColumnClass = 'col-media col-xs-12 col-sm-12 col-md-12';
-$galleryColumnClass = 'col-media col-xs-' . $mobileBsColumns . ' col-sm-' . $desktopBsColumns . ' col-md-' . $desktopBsColumns;
+$fullWidthColumnClass = 'col-media col-12 col-sm-12 col-md-12';
+$galleryColumnClass = 'col-media col-' . $mobileBsColumns . ' col-sm-' . $desktopBsColumns . ' col-md-' . $desktopBsColumns;
 ?>
 
 <?php if ($nbFiles > 0): ?>
     <!-- hideOnEdit mandatory since 1.2 -->
-    <div class="hideOnEdit">
+    <div class="container hideOnEdit">
         <!-- Show Images as Thumbnails -->
         <?php if ($showPreview): ?>
-            <div class="post-files clearfix" id="post-files-<?= $object->getUniqueId() ?>">
+            <div class="post-files row" id="post-files-<?= $object->getUniqueId() ?>">
                 <?php if (!empty($audios)): ?>
                     <div class="<?= $fullWidthColumnClass ?>">
                         <?= JPlayerPlaylistWidget::widget(['playlist' => $audios]) ?>

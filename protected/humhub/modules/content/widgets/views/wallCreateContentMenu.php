@@ -7,7 +7,6 @@
 
 use humhub\helpers\Html;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
 
 /* @var $menu WallCreateContentMenu */
@@ -23,7 +22,7 @@ use humhub\modules\ui\menu\MenuEntry;
         </li>
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
             <li class="nav-item content-create-menu-more">
-                <?= Icon::get('caret-down', ['htmlOptions' => ['class' => 'nav-link dropdown-toggle', 'data-bs-toggle' => 'dropdown']]) ?>
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
                 <ul class="dropdown-menu float-end">
                     <?php foreach ($entries as $e => $entry) : ?>
                         <?php if ($e < $menu->visibleEntriesNum) {

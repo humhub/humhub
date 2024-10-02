@@ -11,9 +11,10 @@ use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */
 ?>
-<?= Button::secondary(Icon::get('cog') . Icon::get('dropdownToggle'))
+<?= Button::secondary(Icon::get('cog'))
     ->options(['data-bs-toggle' => 'dropdown'])
     ->sm()
+    ->cssClass('dropdown-toggle')
     ->loader(false) ?>
 <ul class="dropdown-menu float-end">
     <?php foreach ($entries as $entry) : ?>

@@ -6,7 +6,6 @@
  */
 
 use humhub\helpers\Html;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
 
 /* @var MenuEntry[] $entries */
@@ -16,10 +15,14 @@ use humhub\modules\ui\menu\MenuEntry;
 <div class="comment-entry-loader float-end"></div>
 <?= Html::beginTag('ul', $options) ?>
 <li class="dropdown ">
-    <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#"
-       aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
-        <?= Icon::get('dropdownToggle') ?>
-    </a>
+    <?= Html::a('', '#', [
+        'class' => 'dropdown-toggle',
+        'data-bs-toggle' => 'dropdown',
+        'aria-label' => Yii::t('base', 'Toggle comment menu'),
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+        'role' => 'button',
+    ]) ?>
 
     <ul class="dropdown-menu float-end">
         <?php foreach ($entries as $entry) : ?>

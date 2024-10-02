@@ -130,8 +130,6 @@ $wallEntryContentLeftPaddingMobile: 0;
         }
 
         .wall-entry-header-image {
-            display: table-cell;
-            width: 40px;
             padding-right: $wallEntryInnerPadding;
 
             .fa {
@@ -146,7 +144,7 @@ $wallEntryContentLeftPaddingMobile: 0;
             padding-right: 30px;
             width: 100%;
 
-            .h5 {
+            h4, h5 {
                 font-size: 15px;
                 padding-top: 1px;
                 margin-bottom: 3px;
@@ -163,7 +161,7 @@ $wallEntryContentLeftPaddingMobile: 0;
             top: 0;
         }
 
-        .h5 {
+        h4, h5 {
             i.fa-caret-right {
                 margin: 0 2px;
             }
@@ -232,7 +230,7 @@ $wallEntryContentLeftPaddingMobile: 0;
         }
     }
 
-    .h4 {
+    h4, h5 {
         font-size: 14px;
         padding-top: 1px;
         margin-bottom: 3px;
@@ -253,7 +251,7 @@ $wallEntryContentLeftPaddingMobile: 0;
 
     }
 
-    .h5 {
+    h4, h5 {
         color: $text-color-soft;
         font-size: 12px;
 

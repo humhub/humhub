@@ -10,6 +10,12 @@
         position: relative;
         border-left: 3px solid white;
 
+        &:hover,
+        &.selected {
+            background-color: $background-color-secondary;
+            border-left: 3px solid $info;
+        }
+
         &a, a {
             color: $text-color-main;
         }
@@ -21,12 +27,6 @@
             &:hover {
                 background-color: $background-color-highlight-soft;
             }
-        }
-
-        &:hover,
-        &.selected {
-            background-color: $background-color-secondary;
-            border-left: 3px solid $info;
         }
 
         &.placeholder {
