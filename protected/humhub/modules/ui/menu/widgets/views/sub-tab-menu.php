@@ -13,8 +13,8 @@ use humhub\modules\ui\view\components\View;
 
 <?= Html::beginTag('ul', $options) ?>
 <?php foreach ($entries as $entry): ?>
-    <li <?php if ($entry->getIsActive()): ?>class="active"<?php endif; ?>>
-        <?= $entry->render() ?>
+    <li class="nav-item<?= $entry->getIsActive() ? ' active' : '' ?>">
+        <?= $entry->render(['class' => 'nav-link']) ?>
     </li>
 <?php endforeach; ?>
 <?= Html::endTag('ul') ?>

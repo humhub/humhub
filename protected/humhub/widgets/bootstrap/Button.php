@@ -25,7 +25,7 @@ class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
 
-    public bool $link = false;
+    public bool $asLink = false;
 
     public bool $loader = true;
     /**
@@ -40,9 +40,11 @@ class Button extends \yii\bootstrap5\Button
 
     public static function asLink(string $label = null, string $href = '#'): static
     {
-        return self::instance($label)
+        $button = self::instance($label)
             ->loader(false)
             ->link($href);
+        $button->asLink = true;
+        return $button;
     }
 
     /**
@@ -81,7 +83,6 @@ class Button extends \yii\bootstrap5\Button
 
     public function link($url = null, $pjax = true): static
     {
-        $this->link = true;
         $this->options['href'] = Url::to($url);
         $this->pjax($pjax);
 
@@ -194,10 +195,14 @@ class Button extends \yii\bootstrap5\Button
             ($this->icon ? $this->icon . ' ' : '') .
             ($this->encodeLabel ? Html::encode($this->label) : $this->label);
 
-        if ($this->link) {
-            Html::removeCssClass($this->options, ['widget' => 'btn']);
+        if ($this->asLink) {
+            Html::removeCssClass($this->options, ['class' => 'btn']);
             $href = $this->options['href'] ?? null;
             return Html::a($text, $href, $this->options);
+        }
+
+        if ($this->size) {
+            Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);
         }
 
         return Html::button($text, $this->options);

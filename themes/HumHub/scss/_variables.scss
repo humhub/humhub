@@ -1,13 +1,18 @@
 /**
  * Define or overwrite your theme variables here.
  *
- * Check for @humhub/static/less/variables.less file for all available variables.
- * 
+ * You must import the parent theme SCSS variables. E.g.:
+ * @import "../../HumHub/scss/_variables.scss";
+ *
+ * Check for @humhub/static/scss/_variables.scss file for all available variables.
+ *
  * You can also access your variables within your view files by calling Yii::$app->view->theme->variable('myVariable');
  *
  * You can disable the import of humhub theme components by using variables of the format @prev-{component} e.g.:
- * This will prevent comment.less component from beeing imported.
+ * This will prevent comment.less component from being imported.
  * e.g.:
  * @prev-comment: true;
  *
 **/
+
+@import "../../../static/scss/_variables.scss";

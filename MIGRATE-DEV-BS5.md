@@ -89,6 +89,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `align-center` -> `text-center` or `d-flex justify-content-center`
 - `col-xs-` -> `col- `
 - `input-group-addon` -> `input-group-text` (or `input-group-prepend` or `input-group-append`)
+- `Button::none(` -> `Button::asLink(`
 - Remove `jumbotron` class
 
 ### Input groups
@@ -276,7 +277,10 @@ However, you need to check the output manually.
 - `$default` is deprecated. Use `$secondary` or `$light` instead.
 - New variables: `$secondary`, `$light` and `$dark`
 
-In all SCSS files except `_variables.scss`, replace all SCSS variables with CSS variables.
+In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `_variables.scss`). You can use regex:
+- search: `\$([a-zA-Z0-9-_]+)`
+- replace: `var(--$1)`
+
 Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-` for HumHub variables.
 E.g.: `color: $primary` -> `color: var(--bs-primary)`
 
