@@ -9,6 +9,7 @@ Module and Theme Migration Guide to Bootstrap 5
 ## Removed
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
+- `js/humhub/legacy/jquery.loader.js`
 
 ## New
 
@@ -176,6 +177,36 @@ Example:
     </li>
 </ul>
 ```
+
+### Spinners
+
+Search for `sk-` and replace this code, or similar:
+```html
+<div class="sk-spinner sk-spinner-three-bounce">
+    <div class="sk-bounce1"></div>
+    <div class="sk-bounce2"></div>
+    <div class="sk-bounce3"></div>
+</div>
+```
+
+with, for a button:
+```html
+<span class="spinner-border spinner-border-sm"></span>
+```
+
+or, in a container:
+```html
+<div class="text-center">
+    <div class="spinner-border" role="status">
+        <span class="visually-hidden"><?= Yii::t('base', 'Loading...') ?></span>
+    </div>
+</div>
+```
+
+If wrapped in an HTML element having `loader` (search for the `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?loader(?:\s[^"']*)?["'][^>]*>` regex expression) or `humhub-ui-loader` classes, replace the hole HTML code with the `LoaderWidget` widget.
+
+[See documentation](https://getbootstrap.com/docs/5.3/components/spinners) for more options and examples.
+
 
 ## Deprecated Bootstrap 3 components
 

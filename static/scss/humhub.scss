@@ -142,11 +142,6 @@ $prev-mentioning: false;
     @import "mentioning";
 }
 
-$prev-loader: false;
-@if not $prev-loader {
-    @import "loader";
-}
-
 $prev-markdown: false;
 @if not $prev-markdown {
     @import "markdown";

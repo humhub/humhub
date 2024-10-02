@@ -11530,6 +11530,14 @@ a.list-group-item:hover, a.list-group-item.active:hover, a.list-group-item.activ
     border-left: 3px solid #21A1B3 !important;
   }
 }
+.panel a.list-group-item:first-child {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.panel a.list-group-item:last-child {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+}
 @media (max-width: 991px) {
   .list-group {
     margin-left: 4px;
@@ -13071,48 +13079,6 @@ ul.tour-list li.completed a {
 }
 .atwho-view span {
   padding: 5px;
-}
-.sk-adjust-huener-three-bounce.sk-adjust-huener {
-  margin: 0 auto;
-  width: 70px;
-  text-align: center;
-}
-.loader {
-  padding: 30px 0;
-}
-.loader .sk-adjust-huener-three-bounce div, .loader .sk-adjust-huener-three-bounce span {
-  width: 12px;
-  height: 12px;
-  background-color: #21A1B3;
-  border-radius: 100%;
-  display: inline-block;
-  animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
-  /* Prevent first frame from flickering when animation starts */
-  animation-fill-mode: both;
-}
-.loader .sk-adjust-huener-three-bounce .sk-bounce1 {
-  animation-delay: -0.32s;
-}
-.loader .sk-adjust-huener-three-bounce .sk-bounce2 {
-  animation-delay: -0.16s;
-}
-@keyframes sk-threeBounceDelay {
-  0%, 80%, 100% {
-    transform: scale(0);
-  }
-  40% {
-    transform: scale(1);
-  }
-}
-.loader-modal {
-  padding: 8px 0;
-}
-.loader-postform {
-  padding: 9px 0;
-}
-.loader-postform .sk-adjust-huener-three-bounce.sk-adjust-huener {
-  text-align: left;
-  margin: 0;
 }
 .md-editor.active {
   border: 2px solid #21A1B3 !important;
@@ -15846,6 +15812,48 @@ a.label-warning:hover {
 }
 .modal-dialog-large {
   width: 900px;
+}
+.sk-adjust-huener-three-bounce.sk-adjust-huener {
+  margin: 0 auto;
+  width: 70px;
+  text-align: center;
+}
+.loader {
+  padding: 30px 0;
+}
+.loader .sk-adjust-huener-three-bounce div, .loader .sk-adjust-huener-three-bounce span {
+  width: 12px;
+  height: 12px;
+  background-color: #21A1B3;
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
+  /* Prevent first frame from flickering when animation starts */
+  animation-fill-mode: both;
+}
+.loader .sk-adjust-huener-three-bounce .sk-bounce1 {
+  animation-delay: -0.32s;
+}
+.loader .sk-adjust-huener-three-bounce .sk-bounce2 {
+  animation-delay: -0.16s;
+}
+@keyframes sk-threeBounceDelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}
+.loader-modal {
+  padding: 8px 0;
+}
+.loader-postform {
+  padding: 9px 0;
+}
+.loader-postform .sk-adjust-huener-three-bounce.sk-adjust-huener {
+  text-align: left;
+  margin: 0;
 }
 ul.tag_input {
   list-style: none;

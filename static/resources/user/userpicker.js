@@ -225,7 +225,7 @@ $.fn.userpicker = function (options) {
         $('#' + uniqueID + '_userpicker li').remove();
 
         // show loader while loading
-        $('#' + uniqueID + '_userpicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
+        $('#' + uniqueID + '_userpicker').html('<li><div id="loader_search"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">...</span></div></div></li>');
 
         // build data object
         var data = options['data'] || {};

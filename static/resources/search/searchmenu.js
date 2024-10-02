@@ -68,7 +68,7 @@ $(document).ready(function () {
                 $('#search-menu-dropdown li:not(:first)').remove();
 
                 // DOM elements to show the loader
-                var _menuStructure = '<li><hr class="dropdown-divider"></li><li><div class="dropdown-item media-list"><div id="loader_search"><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div></div></li>';
+                var _menuStructure = '<li><hr class="dropdown-divider"></li><li><div class="dropdown-item media-list"><div id="loader_search"><div class="spinner-border" role="status"><span class="visually-hidden">...</span></div></div></div></li>';
 
                 // add the DOM element to search dropdown menu
                 $('#search-menu-dropdown').append(_menuStructure);
