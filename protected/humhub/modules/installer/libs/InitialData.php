@@ -60,7 +60,7 @@ class InitialData
 
         // File
         [,,$defaultMaxUploadSize] = FileSettingsForm::getPHPMaxUploadSize();
-        Yii::$app->getModule('file')->settings->set('maxFileSize', $defaultMaxUploadSize);
+        Yii::$app->getModule('file')->settings->set('maxFileSize', $defaultMaxUploadSize * 1024 * 1024);
         Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
 
         // Caching
