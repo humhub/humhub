@@ -98,10 +98,10 @@ class DynamicConfig extends BaseObject
             $config['language'] = Yii::$app->language;
         }
 
-        $defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
-        if (!empty($defaultTimeZone)) {
-            $config['timeZone'] = $defaultTimeZone;
-            $config['components']['formatter']['defaultTimeZone'] = $defaultTimeZone;
+        $serverTimeZone = Yii::$app->settings->get('serverTimeZone');
+        if (!empty($serverTimeZone)) {
+            $config['timeZone'] = $serverTimeZone;
+            $config['components']['formatter']['defaultTimeZone'] = $serverTimeZone;
         }
 
         // Add Caching

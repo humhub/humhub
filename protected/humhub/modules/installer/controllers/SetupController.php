@@ -14,6 +14,7 @@ use humhub\components\Controller;
 use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
+use humhub\modules\installer\forms\LocalisationForm;
 use humhub\modules\installer\Module;
 use humhub\services\MigrationService;
 use Yii;
@@ -144,9 +145,22 @@ class SetupController extends Controller
         }
 
         $this->initDatabase();
-        return $this->redirect(['cron']);
+        return $this->redirect(['localisation']);
     }
 
+    /**
+     * Localisation
+     */
+    public function actionLocalisation()
+    {
+        $form = new LocalisationForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
+            return $this->redirect('cron');
+        }
+
+        return $this->render('localisation', ['model' => $form]);
+    }
 
     /**
      * Crontab
