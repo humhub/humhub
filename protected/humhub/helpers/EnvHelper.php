@@ -9,10 +9,10 @@ use yii\helpers\StringHelper;
 
 class EnvHelper
 {
-    private const string FIXED_SETTING_PREFIX = 'HUMHUB_FIXED_SETTINGS';
-    private const string MAIN_PREFIX = 'HUMHUB_CONFIG';
-    private const array FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
-    private const string DEPTH_SEPARATOR = '__';
+    private const FIXED_SETTING_PREFIX = 'HUMHUB_FIXED_SETTINGS';
+    private const MAIN_PREFIX = 'HUMHUB_CONFIG';
+    private const FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
+    private const DEPTH_SEPARATOR = '__';
 
     public static function toConfig(?array $env = []): array
     {
