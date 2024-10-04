@@ -9,9 +9,10 @@ use yii\helpers\StringHelper;
 
 class EnvHelper
 {
-    private const FIXED_SETTING_PREFIX = 'HUMHUB_FIXED_SETTINGS.';
-    private const MAIN_PREFIX = 'HUMHUB_CONFIG.';
-    private const FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
+    private const string FIXED_SETTING_PREFIX = 'HUMHUB_FIXED_SETTINGS';
+    private const string MAIN_PREFIX = 'HUMHUB_CONFIG';
+    private const array FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
+    private const string DEPTH_SEPARATOR = '__';
 
     public static function toConfig(?array $env = []): array
     {
@@ -25,21 +26,21 @@ class EnvHelper
                 continue;
             }
 
-            if (StringHelper::startsWith($key, self::FIXED_SETTING_PREFIX)) {
+            if (StringHelper::startsWith($key, self::FIXED_SETTING_PREFIX . self::DEPTH_SEPARATOR)) {
                 ArrayHelper::setValue(
                     $config,
                     [
                         ...self::FIXED_SETTINGS_PATH,
-                        ...self::keyToPath(str_replace(self::FIXED_SETTING_PREFIX, '', $key)),
+                        ...self::keyToPath(str_replace(self::FIXED_SETTING_PREFIX . self::DEPTH_SEPARATOR, '', $key)),
                     ],
                     $value,
                 );
             }
-            if (StringHelper::startsWith($key, self::MAIN_PREFIX)) {
+            if (StringHelper::startsWith($key, self::MAIN_PREFIX . self::DEPTH_SEPARATOR)) {
                 ArrayHelper::setValue(
                     $config,
                     [
-                        ...self::keyToPath(str_replace(self::MAIN_PREFIX, '', $key)),
+                        ...self::keyToPath(str_replace(self::MAIN_PREFIX . self::DEPTH_SEPARATOR, '', $key)),
                     ],
                     $value,
                 );
@@ -69,7 +70,7 @@ class EnvHelper
     private static function keyToPath(string $key): array
     {
         return ArrayHelper::getColumn(
-            explode('.', $key),
+            explode(self::DEPTH_SEPARATOR, $key),
             function ($path) {
                 return Inflector::variablize(strtolower($path));
             },
