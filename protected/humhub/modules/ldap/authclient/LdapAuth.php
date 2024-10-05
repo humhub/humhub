@@ -21,14 +21,13 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
+use LdapRecord\Connection;
+use LdapRecord\Container;
+use LdapRecord\Models\ActiveDirectory\User as LdapUser;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\VarDumper;
-use Laminas\Ldap\Exception\LdapException;
-use Laminas\Ldap\Ldap;
-use humhub\modules\ldap\components\ZendLdap;
-use Laminas\Ldap\Node;
 
 /**
  * LDAP Authentication
@@ -39,7 +38,7 @@ use Laminas\Ldap\Node;
 class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, ApprovalBypass, PrimaryClient
 {
     /**
-     * @var Ldap
+     * @var Connection
      */
     private $_ldap = null;
 
@@ -60,7 +59,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      *
      * @var int 389
      */
-    public $port;
+    public $port = 389;
 
     /**
      * Whether or not the LDAP client should use SSL encrypted transport.
@@ -162,7 +161,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
      */
     public $ignoredDNs = [];
 
-
     /**
      * @inheritdoc
      */
@@ -241,7 +239,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     }
 
     /**
-     * Try to find the user if authclient_id mapping is not set yet (legency)
+     * Try to find the user if authclient_id mapping is not set yet (legacy)
      * or idAttribute is not specified.
      *
      * @return User
@@ -371,14 +369,13 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Returns Users LDAP Node
      *
-     * @return Node the users ldap node
-     * @throws LdapException
+     * @return LdapUser the users ldap node
      */
     protected function getUserNode()
     {
         $dn = $this->getUserDn();
         if ($dn !== '') {
-            return $this->getLdap()->getNode($dn);
+            return LdapUser::find($dn);
         }
 
         return null;
@@ -402,55 +399,51 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         }
 
         try {
-            $this->getLdap()->bind($userName, $this->login->password);
+            $this->getLdap()->auth()->attempt($userName, $this->login->password);
 
             // Rebind with administrative DN
-            $this->getLdap()->bind();
+            $this->getLdap()->auth()->attempt($this->bindUsername, $this->bindPassword);
 
-            $dn = $this->getLdap()->getCanonicalAccountName($userName, Ldap::ACCTNAME_FORM_DN);
+            $dn = LdapUser::findByOrFail('samaccountname', $userName)->getDn();
 
             return $dn;
-        } catch (LdapException $ex) {
+        } catch (Exception $ex) {
             // User not found in LDAP
         }
         return '';
     }
 
     /**
-     * Returns Zend LDAP
+     * Returns LdapRecord Connection
      *
-     * @return ZendLdap
-     * @throws LdapException
+     * @return Connection
      */
     public function getLdap()
     {
         if ($this->_ldap === null) {
-            $options = [
-                'host' => $this->hostname,
+            $this->_ldap = new Connection([
+                'hosts' => [$this->hostname],
                 'port' => $this->port,
                 'username' => $this->bindUsername,
                 'password' => $this->bindPassword,
-                'useStartTls' => $this->useStartTls,
-                'useSsl' => $this->useSsl,
-                'bindRequiresDn' => true,
-                'baseDn' => $this->baseDn,
-                'accountFilterFormat' => $this->loginFilter,
-                'networkTimeout' => $this->networkTimeout,
-            ];
+                'use_ssl' => $this->useSsl,
+                'use_tls' => $this->useStartTls,
+                'base_dn' => $this->baseDn,
+                'timeout' => $this->networkTimeout,
+            ]);
 
-            $this->_ldap = new ZendLdap($options);
-            $this->_ldap->bind();
+            Container::addConnection($this->_ldap);
         }
 
         return $this->_ldap;
     }
 
     /**
-     * Sets an Zend LDAP Instance
+     * Sets an LdapRecord Connection Instance
      *
-     * @param Ldap $ldap
+     * @param Connection $ldap
      */
-    public function setLdap(Ldap $ldap)
+    public function setLdap(Connection $ldap)
     {
         $this->_ldap = $ldap;
     }
@@ -473,7 +466,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Refresh ldap users
      *
-     * New users (found in ldap) will be automatically created if all required fiélds are set.
+     * New users (found in ldap) will be automatically created if all required fields are set.
      * Profile fields which are bind to LDAP will automatically updated.
      */
     public function syncUsers()
@@ -534,8 +527,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
                     }
                 }
             }
-        } catch (LdapException $ex) {
-            Yii::error('Could not connect to LDAP instance: ' . $ex->getMessage(), 'ldap');
         } catch (Exception $ex) {
             Yii::error('An error occurred while user sync: ' . $ex->getMessage(), 'ldap');
         }
@@ -554,7 +545,6 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
 
     /**
      * @return array
-     * @throws LdapException
      */
     public function getUserCollection()
     {
@@ -562,10 +552,10 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $module = Yii::$app->getModule('ldap');
 
         if (empty($module->pageSize)) {
-            return $this->getLdap()->search($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->queriedAttributes);
+            return LdapUser::query()->where($this->userFilter)->get();
         }
 
-        return $this->getLdap()->multiPageSearch($this->userFilter, $this->baseDn, Ldap::SEARCH_SCOPE_SUB, $module->queriedAttributes, null, null, 0, $module->pageSize);
+        return LdapUser::query()->where($this->userFilter)->paginate($module->pageSize);
     }
 
     /**
