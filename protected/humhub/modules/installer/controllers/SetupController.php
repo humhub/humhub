@@ -105,13 +105,13 @@ class SetupController extends Controller
                 $connectionString = Yii::$app->db->dsn;
                 $model->create = 1;
 
-                if (preg_match('/host=([^;]+)/', $connectionString  ?: '', $matches)) {
+                if (preg_match('/host=([^;]+)/', $connectionString ?: '', $matches)) {
                     $model->hostname = $matches[1];
                 }
-                if (preg_match('/port=([^;]+)/', $connectionString  ?: '', $matches)) {
+                if (preg_match('/port=([^;]+)/', $connectionString ?: '', $matches)) {
                     $model->port = $matches[1];
                 }
-                if (preg_match('/dbname=([^;]+)/', $connectionString  ?: '', $matches)) {
+                if (preg_match('/dbname=([^;]+)/', $connectionString ?: '', $matches)) {
                     $model->database = $matches[1];
                 }
 
