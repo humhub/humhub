@@ -167,6 +167,7 @@ humhub.module('ui.richtext.prosemirror', function (module, require, $) {
             this.$.html(this.editor.render());
             additions.applyTo(this.$, {filter: ['highlightCode']});
             this.$.find('table').wrap('<div class="table-responsive"></div>');
+            this.$.css('display', 'block');
             this.$.trigger('afterRender');
         }
 

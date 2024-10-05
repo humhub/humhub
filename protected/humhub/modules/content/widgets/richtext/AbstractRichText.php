@@ -287,6 +287,8 @@ abstract class AbstractRichText extends JsWidget
     public static function output($text, $config = []): string
     {
         $config['text'] = $text;
+        $config['options']['style'] = ['display' => 'none'];
+
         return static::widget($config);
     }
 
