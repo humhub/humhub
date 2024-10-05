@@ -42,6 +42,7 @@ HumHub Changelog
 - Enh #7237: Changed PoweredBy URL
 - Enh #7238: Fixed PHP warning related to `.env`
 - Enh #7240: Fixed maximum file size setting in initialization
+- Enh #7245: Deferred showing content until Markdown is rendered properly in `AbstractRichText` widget
 
 1.16.3 (Unreleased)
 --------------------------
