@@ -168,7 +168,7 @@ $md-block-spacing: 1.2em;
         margin: 5px 0;
     }
 
-    img:not(.center-block) {
+    img:not(.mx-auto) {
         max-width: 100%;
     }
 
@@ -180,7 +180,7 @@ $md-block-spacing: 1.2em;
         margin: 5px 10px 0 0;
     }
 
-    img.center-block {
+    img.mx-auto {
         margin-top: 5px;
         margin-bottom: 5px;
     }

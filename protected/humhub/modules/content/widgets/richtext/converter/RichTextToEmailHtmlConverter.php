@@ -29,7 +29,7 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
     public const CLASS_STYLES = [
         'float-start' => ['float' => 'left'],
         'float-end' => ['float' => 'right'],
-        'center-block' => ['display' => 'block', 'margin' => 'auto'],
+        'd-block mx-auto' => ['display' => 'block', 'margin' => 'auto'],
     ];
 
     /**

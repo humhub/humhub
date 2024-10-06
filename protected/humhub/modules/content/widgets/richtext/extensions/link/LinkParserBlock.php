@@ -66,7 +66,7 @@ class LinkParserBlock extends Model
             // Extract image alignment from image alt text
             $text = trim((string)$this->block[static::BLOCK_KEY_TEXT]);
             if (substr($text, -2) === '><') {
-                $this->setClass('center-block');
+                $this->setClass('d-block mx-auto');
                 $this->setText(substr($text, 0, -2));
             } elseif (substr($text, -1) === '<') {
                 $this->setClass('float-start');

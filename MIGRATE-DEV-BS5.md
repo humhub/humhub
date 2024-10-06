@@ -76,6 +76,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `btn-default` -> `btn-secondary`
 - `pull-left` -> `float-start`
 - `pull-right` -> `float-end`
+- `center-block` -> `mx-auto` (image, inline or inline-block elements: `d-block mx-auto`)
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
 - `btn-group-xs` -> `btn-group-sm`
