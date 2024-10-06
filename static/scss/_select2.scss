@@ -90,6 +90,7 @@ $clear-selection-color: $dropdown-arrow-color;
         outline: 0;
         min-height: 35px;
         font-size: 14px;
+        background-color: var(--hh-background-color-main);
     }
 
     /**
@@ -115,6 +116,10 @@ $clear-selection-color: $dropdown-arrow-color;
             font-weight: normal;
         }
 
+    }
+
+    .select2-results__option--highlighted[aria-selected] {
+        background-color: transparent !important;
     }
 
     /**
@@ -331,6 +336,7 @@ $clear-selection-color: $dropdown-arrow-color;
         height: $input-height;
         line-height: $line-height-base;
         padding: $input-btn-padding-y $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x; // Removed $caret-width*3 because it's a em value instead of rem
+        background-color: var(--hh-background-color-main);
 
         /**
          * Adjust the single Select2's dropdown arrow button appearance.

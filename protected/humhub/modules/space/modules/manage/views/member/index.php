@@ -28,7 +28,7 @@ use humhub\widgets\TimeAgo;
             <div class="col-md-6">
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                    <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+                    <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </div>
             <div class="col-md-4">

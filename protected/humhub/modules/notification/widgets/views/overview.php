@@ -28,14 +28,14 @@ use yii\helpers\Url;
             <div class="arrow"></div>
             <?= Yii::t('NotificationModule.base', 'Notifications') ?>
             <div class="dropdown-header-actions">
-                <?= Button::secondary()
+                <?= Button::light()
                     ->icon('check')
                     ->action('markAsSeen', ['/notification/list/mark-as-seen'])
                     ->id('mark-seen-link')
                     ->style('display:none')
                     ->sm()
                     ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
-                <?= Button::secondary()
+                <?= Button::light()
                     ->icon('cog')
                     ->link(['/notification/user'])
                     ->sm()
@@ -51,7 +51,7 @@ use yii\helpers\Url;
     </li>
     <li>
         <div class="dropdown-footer">
-            <a class="btn btn-secondary col-md-12" href="<?= Url::to(['/notification/overview']) ?>">
+            <a class="btn btn-light col-md-12" href="<?= Url::to(['/notification/overview']) ?>">
                 <?= Yii::t('NotificationModule.base', 'Show all notifications') ?>
             </a>
         </div>

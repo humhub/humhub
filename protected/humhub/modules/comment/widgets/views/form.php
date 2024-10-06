@@ -68,12 +68,12 @@ $placeholder = ($isNestedComment)
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-secondary',
+                'cssButtonClass' => 'btn-sm btn-light',
             ]);
             echo FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-sm btn-secondary',
+                'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
             ]);
             echo Button::info()

@@ -33,10 +33,10 @@ Assets::register($this);
                 <div class="col-md-12">
                     <div class="form-group form-group-search">
                         <?= Html::textInput('licenceKey', $licenceKey, ['class' => 'form-control form-search', 'placeholder' => Yii::t('MarketplaceModule.base', 'Add purchased module by license key')]); ?>
-                        <?= Button::secondary(Yii::t('MarketplaceModule.base', 'Register'))
+                        <?= Button::light(Yii::t('MarketplaceModule.base', 'Register'))
                             ->submit()
                             ->action('marketplace.registerLicenceKey')
-                            ->cssClass('btn btn-secondary btn-sm form-button-search'); ?>
+                            ->cssClass('btn btn-light btn-sm form-button-search'); ?>
                     </div>
                     <?php if ($message != ''): ?>
                         <div style="color:<?= ($hasError) ? 'red' : 'green'; ?>"><?= Html::encode($message); ?></div>

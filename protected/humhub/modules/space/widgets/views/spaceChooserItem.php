@@ -12,7 +12,7 @@ use humhub\widgets\bootstrap\Badge;
 
 <a
     href="<?= $space->getUrl() ?>"
-    class="d-flex"
+    class="dropdown-item d-flex"
     <?= $visible ? '' : 'style="display:none"' ?>
     data-space-chooser-item <?= $data ?>
     data-space-guid="<?= $space->guid ?>">

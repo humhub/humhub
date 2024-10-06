@@ -36,7 +36,7 @@ use humhub\widgets\form\ActiveForm;
     ]) ?>
 <?php endif; ?>
 <?php if ($model->userSettingsLoaded): ?>
-    <?= Html::a(Yii::t('NotificationModule.base', 'Reset to defaults'), ['reset'], ['class' => 'btn btn-secondary float-end', 'data-ui-loader' => '', 'data-method' => 'POST']) ?>
+    <?= Html::a(Yii::t('NotificationModule.base', 'Reset to defaults'), ['reset'], ['class' => 'btn btn-light float-end', 'data-ui-loader' => '', 'data-method' => 'POST']) ?>
 <?php endif; ?>
 
 <?php ActiveForm::end(); ?>

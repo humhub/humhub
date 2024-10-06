@@ -11,7 +11,7 @@ use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */
 ?>
-<?= Button::secondary(Icon::get('cog'))
+<?= Button::light(Icon::get('cog'))
     ->options(['data-bs-toggle' => 'dropdown'])
     ->sm()
     ->cssClass('dropdown-toggle')

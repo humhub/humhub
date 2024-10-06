@@ -29,7 +29,7 @@ $this->registerJsVar('fileuploader_error_modal_errormsg', Yii::t('FileModule.bas
         cursor: pointer;
     }
 </style>
-<span class="btn btn-secondary fileinput-button tt" data-bs-toggle="tooltip" data-placement="bottom" title=""
+<span class="btn btn-light fileinput-button tt" data-bs-toggle="tooltip" data-placement="bottom" title=""
       data-original-title="<?php echo Yii::t('FileModule.base', 'Upload files'); ?>">
     <i class="fa fa-cloud-upload"></i>
 

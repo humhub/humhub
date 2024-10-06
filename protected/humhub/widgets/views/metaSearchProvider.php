@@ -39,7 +39,7 @@ use humhub\widgets\bootstrap\Button;
                 <div class="search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
             <?php endif; ?>
             <div class="search-provider-actions">
-                <?= Button::secondary($provider->getAllResultsText())
+                <?= Button::light($provider->getAllResultsText())
                     ->link($provider->getService()->getUrl())
                     ->cssClass('search-provider-show-all')
                     ->options(['target' => $provider->getService()->getLinkTarget()])

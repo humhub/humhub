@@ -41,7 +41,7 @@ SpaceAsset::register($this);
             <?= Html::button(
                 Yii::t('SpaceModule.base', 'Close'),
                 [
-                    'class' => ['btn', 'btn-secondary'],
+                    'class' => ['btn', 'btn-light'],
                     'data' => [
                         'dismiss' => 'modal',
                     ],

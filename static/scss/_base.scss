@@ -1,6 +1,7 @@
 //
 // General
 // --------------------------------------------------
+
 html {
     scroll-padding-top: var(--hh-fixed-header-height);
 }
@@ -75,6 +76,10 @@ hr {
 h4 {
     font-weight: 300;
     font-size: 150%;
+}
+
+h5, .h5 {
+    font-size: 1rem;
 }
 
 input[type=text],

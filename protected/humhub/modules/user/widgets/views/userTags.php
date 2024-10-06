@@ -15,7 +15,7 @@ use yii\helpers\Url;
             <!-- start: tags for user skills -->
             <div class="tags">
                 <?php foreach ($user->getTags() as $tag): ?>
-                    <?php echo Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => $tag]), ['class' => 'btn btn-secondary btn-sm tag']); ?>
+                    <?php echo Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => $tag]), ['class' => 'btn btn-light btn-sm tag']); ?>
                 <?php endforeach; ?>
             </div>
             <!-- end: tags for user skills -->

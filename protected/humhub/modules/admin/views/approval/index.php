@@ -45,7 +45,7 @@ $columns[] = [
     'options' => ['style' => 'width:160px;'],
     'buttons' => [
         'view' => function ($url, $model) {
-            return Button::secondary()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
+            return Button::light()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
         },
         'sendMessage' => function ($url, $model) {
             $nbMsgSent = ApproveUserForm::getNumberMessageSent($model->id);
@@ -69,7 +69,7 @@ $columns[] = [
 
     <div class="dropdown float-end">
         <?php if (!empty($availableProfileFields)): ?>
-            <?= Button::secondary()
+            <?= Button::light()
                 ->icon('cog')
                 ->loader(false)
                 ->options(['data-bs-toggle' => 'dropdown']) ?>

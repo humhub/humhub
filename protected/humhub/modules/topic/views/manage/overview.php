@@ -44,7 +44,7 @@ use yii\data\ActiveDataProvider;
         <div class="form-group">
             <div class="input-group">
                 <?= Html::activeTextInput($addModel, 'name', ['style' => 'height:36px', 'class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
-                <?= Button::secondary()->icon('add')->loader()->submit() ?>
+                <?= Button::light()->icon('add')->loader()->submit() ?>
             </div>
         </div>
         <?php ActiveForm::end(); ?>

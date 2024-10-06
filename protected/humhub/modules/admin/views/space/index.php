@@ -33,7 +33,7 @@ use yii\helpers\Url;
     <div class="col-md-8">
         <div class="input-group">
             <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.space', 'Search by name, description, id or owner.')]); ?>
-            <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+            <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
         </div>
     </div>
     <div class="col-md-4 spacesearch-visibilities">

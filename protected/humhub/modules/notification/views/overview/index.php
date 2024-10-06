@@ -14,14 +14,14 @@ use humhub\widgets\form\ActiveForm;
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
                     <div class="float-end">
-                        <?= Button::secondary()
+                        <?= Button::light()
                             ->icon('check')
                             ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])
                             ->id('notification_overview_markseen')
                             ->style('display:none')
                             ->sm()
                             ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
-                        <?= Button::secondary()
+                        <?= Button::light()
                             ->icon('cog')
                             ->link(['/notification/user'])
                             ->sm()

@@ -64,7 +64,7 @@ use humhub\widgets\bootstrap\Link;
             'dropZone' => '#contentFormBody',
             'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ]); ?>
-        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-secondary']); ?>
+        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-light']); ?>
 
         <!-- public checkbox -->
         <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm d-none', 'aria-hidden' => 'true']); ?>

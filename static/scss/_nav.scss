@@ -1,6 +1,13 @@
 //
 // Navs
 // --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+.nav-tabs {
+    --bs-nav-tabs-link-active-bg: var(--hh-background-color-main);
+}
+
 .tab-sub-menu {
     padding-left: 10px;
 

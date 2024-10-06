@@ -36,7 +36,7 @@ SearchAsset::register($this);
         </div>
     </div>
     <div class="dropdown-search-form">
-        <?= Button::secondary()
+        <?= Button::light()
             ->icon('search')
             ->action('search')
             ->cssClass('dropdown-search-button')

@@ -12,7 +12,7 @@ $info: #21A1B3;
 $success: #97d271;
 $warning: #FFC107;
 $danger: #FC4A64;
-$light: #f7f7f7;
+$light: #e7e7e7;
 $dark: #333;
 $link: $info;
 $isFluid: false;
@@ -123,7 +123,7 @@ $input-border-color: $gray-200;
 
 // Body fonts
 // $since 1.18
-$body-font-size: 1rem;
+$body-font-size: 14px;
 $body-font-weight: 400;
 $body-line-height: 1.5;
 
@@ -171,7 +171,6 @@ $mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
     --bs-link-color: #{$link};
     --bs-link-hover-color: #{darken($link, 10%)};
     --bs-code-color: #{darken($info, 10%)};
-    --bs-highlight-bg: #{$background-color-highlight};
 
     // Text colors
     --hh-text-color-main: #{$text-color-main};

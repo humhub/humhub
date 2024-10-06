@@ -1,6 +1,42 @@
 //
 // Buttons
 // --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+}
+
+.btn-secondary {
+    --bs-btn-bg: var(--bs-secondary);
+}
+
+.btn-success {
+    --bs-btn-bg: var(--bs-success);
+}
+
+.btn-info {
+    --bs-btn-bg: var(--bs-info);
+}
+
+.btn-warning {
+    --bs-btn-bg: var(--bs-warning);
+}
+
+.btn-danger {
+    --bs-btn-bg: var(--bs-danger);
+}
+
+.btn-light {
+    --bs-btn-bg: var(--bs-light);
+    --bs-btn-color: var(--hh-text-color-default);
+}
+
+.btn-dark {
+    --bs-btn-bg: var(--bs-dark);
+}
+
 .btn {
     float: none;
     border: none;

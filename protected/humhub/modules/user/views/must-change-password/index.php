@@ -39,7 +39,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Change password');
 
                 <?php ActiveForm::end(); ?>
 
-                <?= Button::secondary(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
+                <?= Button::light(Yii::t('UserModule.auth', 'Log out'))->link(Url::toRoute('/user/auth/logout'), false)->options(['data-method' => 'POST'])->right() ?>
 
             </div>
         </div>

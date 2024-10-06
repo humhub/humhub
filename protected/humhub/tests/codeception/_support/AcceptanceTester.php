@@ -138,7 +138,7 @@ class AcceptanceTester extends BaseTester
 
         foreach ($topics as $topic) {
             $this->fillField('#topic-name', $topic);
-            $this->click('.input-group .btn-secondary');
+            $this->click('.input-group .btn-light');
             $this->waitForText($topic, null, '.layout-content-container .table-hover');
         }
     }

@@ -52,7 +52,7 @@ class ActionColumn extends Column
         }
 
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown']);
-        $html .= Button::secondary()->cssClass('dropdown-toggle')
+        $html .= Button::light()->cssClass('dropdown-toggle')
             ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
         $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
         foreach ($actions as $title => $url) {

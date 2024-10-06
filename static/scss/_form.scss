@@ -27,11 +27,13 @@ div.required.has-error > label:after {
     border: 2px solid $background-color-page;
     box-shadow: none;
     min-height: 35px;
+    background-color: $background-color-main;
 
     &:focus {
         border: 2px solid $info;
         outline: 0;
         box-shadow: none;
+        background-color: $background-color-main;
     }
 }
 

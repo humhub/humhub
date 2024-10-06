@@ -154,7 +154,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             $i++;
             if ($i == $this->maxShowClients + 1) {
                 // Add more button
-                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-secondary float-end btn-sxm btn-auth-choice-more']);
+                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-light float-end btn-sxm btn-auth-choice-more']);
 
                 // Div contains more auth clients
                 echo Html::beginTag('div', ['class' => 'auth-choice-more-buttons']);
@@ -199,7 +199,7 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
         if (!isset($htmlOptions['class'])) {
             $htmlOption['class'] = '';
         }
-        $htmlOptions['class'] .= ' ' . 'btn btn-secondary btn-ac-' . $client->getName();
+        $htmlOptions['class'] .= ' ' . 'btn btn-light btn-ac-' . $client->getName();
         $htmlOptions['data-pjax-prevent'] = '';
 
         $icon = (isset($viewOptions['cssIcon'])) ? '<i class="' . $viewOptions['cssIcon'] . '" aria-hidden="true"></i>' : '';

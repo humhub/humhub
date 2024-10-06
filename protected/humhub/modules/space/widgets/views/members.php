@@ -58,7 +58,7 @@ use humhub\widgets\PanelMenu;
         <?php if ($showListButton) : ?>
             <br>
             <a href="<?= $urlMembersList; ?>" data-bs-target="#globalModal"
-               class="btn btn-secondary btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
+               class="btn btn-light btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
         <?php endif; ?>
 
     </div>

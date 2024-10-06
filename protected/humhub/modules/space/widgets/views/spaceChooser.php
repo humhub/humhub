@@ -52,7 +52,7 @@ use yii\helpers\Url;
         </li>
         <li><hr class="dropdown-divider"></li>
         <li>
-            <div class="dropdown-item media-list notLoaded" id="space-menu-spaces">
+            <div class="media-list notLoaded" id="space-menu-spaces">
                 <?= $renderedItems ?>
             </div>
         </li>

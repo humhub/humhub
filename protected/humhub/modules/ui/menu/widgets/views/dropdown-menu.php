@@ -12,7 +12,7 @@ use humhub\modules\ui\view\components\View;
 ?>
 
 <?= Html::beginTag('div', $options) ?>
-<button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true">
+<button type="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true">
     <?= $menu->label ?>
 </button>
 

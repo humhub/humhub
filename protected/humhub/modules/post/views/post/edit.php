@@ -38,10 +38,10 @@ use humhub\widgets\form\ActiveForm;
                     'preview' => '#post_upload_preview_' . $model->post->id,
                     'progress' => '#post_upload_progress_' . $model->post->id,
                     'max' => Yii::$app->getModule('content')->maxAttachedFiles,
-                    'cssButtonClass' => 'btn-sm btn-secondary',
+                    'cssButtonClass' => 'btn-sm btn-light',
                 ]),
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-sm btn-secondary',
+                'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
             ]) ?>
             <?= Button::info()

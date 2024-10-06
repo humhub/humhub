@@ -1,6 +1,13 @@
 //
 // Dropdowns
 // --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+.dropdown-menu {
+    --bs-dropdown-bg: var(--hh-background-color-main);
+}
+
 .dropdown-menu {
     li {
         a {

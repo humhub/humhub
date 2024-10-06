@@ -73,7 +73,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `img-responsive` -> `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
 - `alert-default` -> `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
 - `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
-- `btn-default` -> `btn-secondary`
+- `btn-default` -> `btn-light` (the new `btn-secondary` can also be used, but it will darker gray)
 - `pull-left` -> `float-start`
 - `pull-right` -> `float-end`
 - `center-block` -> `mx-auto` (image, inline or inline-block elements: `d-block mx-auto`)
@@ -115,14 +115,14 @@ Should be replaced with:
 
 ### Hidden classes
 
-In the following replacements, you replace `block` with `inline` or `flex` (depending on the desired display mode).
-E.g., you can use `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
+In the following replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
+E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
 
 - `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
 - `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
 - `hidden-md` → `d-md-none d-lg-block`
 - `hidden-lg` → `d-lg-none d-xl-block`
-- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")` and `Class' => 'hidden'`) -> `d-none`
+- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
 - `visible-xs` → `d-block d-sm-none`
 - `visible-sm` → `d-none d-sm-block d-md-none`
 - `visible-md` → `d-none d-md-block d-lg-none`

@@ -38,7 +38,7 @@ use yii\widgets\ActiveForm;
         <div class="col-md-8">
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+                <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
         <div class="col-md-4 usersearch-statuses">
@@ -72,6 +72,6 @@ use yii\widgets\ActiveForm;
     </div>
     <?php if ($showPendingRegistrations): ?>
         <br/>
-        <?= Button::secondary(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
+        <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
     <?php endif; ?>
 </div>
