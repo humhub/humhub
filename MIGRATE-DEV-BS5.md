@@ -80,7 +80,6 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
 - `btn-group-xs` -> `btn-group-sm`
-- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
 - `img-rounded` -> `rounded`
 - `media-object img-rounded` -> `rounded`
 - `data-toggle` -> `data-bs-toggle`
@@ -261,10 +260,10 @@ Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
 
 ## Javascript
 
-As the `d-flex` class is set in Bootstrap CSS to `flex !important`, the jQuery `hide()` function won't work, because of the `!important`.
-So, on these `d-flex-` elements, you should make these replacements:
-- `hide()` -> `addClass('d-none')`
-- `show()` -> `removeClass('d-none')`
+As the `d-flex` is set in Bootstrap CSS to `flex !important` and the `d-none` class to `display: none !important;`, the jQuery `hide()` and `show()` functions won't work, because of the `!important`.
+Replacements to do on these elements:
+- `.hide()` -> `.addClass('d-none')`
+- `.show()` -> `.removeClass('d-none')`
 
 ## Themes and Modules: LESS is replaced with SCSS
 

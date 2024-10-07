@@ -20,13 +20,10 @@ $imageUrl = $space->getProfileImage()->getUrl();
     <?= Html::beginTag('a', $linkOptions) ?>
 <?php endif; ?>
 
-<?php if ($isDefaultImage): ?>
-    <?= Html::beginTag('div', $acronymHtmlOptions) ?>
-    <?= $acronym ?>
-    <?= Html::endTag('div') ?>
-<?php else: ?>
-    <?= Html::img($imageUrl, $imageHtmlOptions) ?>
-<?php endif; ?>
+<?= Html::beginTag('div', $acronymHtmlOptions) ?>
+<?= $acronym ?>
+<?= Html::endTag('div') ?>
+<?= Html::img($imageUrl, $imageHtmlOptions) ?>
 
 <?php if ($link): ?>
     <?= Html::endTag('a') ?>

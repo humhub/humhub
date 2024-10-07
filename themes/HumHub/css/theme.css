@@ -13762,6 +13762,9 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
   margin-right: 3px;
   margin-top: 3px;
 }
+.d-none-space-image {
+  display: none !important;
+}
 @media (max-width: 767.98px) {
   #space-menu > .title {
     display: none;
@@ -13864,7 +13867,6 @@ ul.files li.file-preview-item .file-fileInfo {
   position: relative;
 }
 .image-upload-container .image-upload-buttons {
-  display: none;
   position: absolute;
   right: 5px;
   bottom: 5px;

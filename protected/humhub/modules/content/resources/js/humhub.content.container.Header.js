@@ -50,7 +50,7 @@ humhub.module('content.container.Header', function (module, require, $) {
     };
 
     ProfileImage.prototype.replaceImage = function (file) {
-        this.getAcronym().addClass('d-none'); //only for spaces
+        this.getAcronym().addClass('d-none-space-image'); //only for spaces
 
         var $image = this.getImage();
 
@@ -60,14 +60,15 @@ humhub.module('content.container.Header', function (module, require, $) {
         var random = Math.random();
 
         $image.attr('src', file.url + '&c=' + random)
-            .addClass('animated bounceIn').removeClass('d-none');
+            .addClass('animated bounceIn')
+            .removeClass('d-none-space-image');
 
         this.getEditButtons().removeClass('d-none');
 
         if (file.type === 'image') { // Only replace profile images
             var containerId = this.getContainerId();
-            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').addClass('d-none');
-            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', file.url + '&c=' + random).removeClass('d-none');
+            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').addClass('d-none-space-image');
+            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', file.url + '&c=' + random).removeClass('d-none-space-image');
         }
 
     };
@@ -77,18 +78,18 @@ humhub.module('content.container.Header', function (module, require, $) {
         var $acronym = this.getAcronym();
         var containerId = this.getContainerId();
 
-        $image.addClass('d-none').attr('src', defaultUrl);
+        $image.addClass('d-none-space-image').attr('src', defaultUrl);
 
 
         if ($acronym.length) { // Space only
             // required for retriggering the animation
             $acronym.removeClass('animated bounceIn')[0].offsetWidth;
-            $acronym.addClass('animated bounceIn').removeClass('d-none');
-            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').removeClass('d-none');
-            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).addClass('d-none');
+            $acronym.addClass('animated bounceIn').removeClass('d-none-space-image');
+            $('div[data-contentcontainer-id="' + containerId + '"].space-acronym').removeClass('d-none-space-image');
+            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).addClass('d-none-space-image');
         } else {
-            $image.removeClass('d-none');
-            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).removeClass('d-none');
+            $image.removeClass('d-none-space-image');
+            $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).removeClass('d-none-space-image');
         }
 
         this.getEditButtons().addClass('d-none');

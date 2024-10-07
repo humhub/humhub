@@ -60,7 +60,7 @@ class Image extends BaseImage
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
         $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " rounded profile-user-photo";
-        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
+        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px;";
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         $imageHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
@@ -73,9 +73,13 @@ class Image extends BaseImage
             Html::addCssClass($this->linkOptions, 'tt');
         }
 
-        $isDefaultImage =
-            basename($this->space->getProfileImage()->getUrl()) === 'default_space.jpg'
-            || basename($this->space->getProfileImage()->getUrl()) === 'default_space.jpg?cacheId=0';
+        $isDefaultImage = str_starts_with(basename($this->space->getProfileImage()->getUrl()), 'default_space.jpg');
+
+        if ($isDefaultImage) {
+            $imageHtmlOptions['class'] .= ' d-none-space-image'; // Don't replace with `d-none` because it would be removed after changing space
+        } else {
+            $acronymHtmlOptions['class'] .= ' d-none-space-image'; // Idem
+        }
 
         return $this->render('@space/widgets/views/image', [
             'space' => $this->space,
@@ -84,7 +88,6 @@ class Image extends BaseImage
             'linkOptions' => $this->linkOptions,
             'acronymHtmlOptions' => $acronymHtmlOptions,
             'imageHtmlOptions' => $imageHtmlOptions,
-            'isDefaultImage' => $isDefaultImage,
         ]);
     }
 

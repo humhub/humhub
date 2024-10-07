@@ -65,6 +65,10 @@
     margin-top: 3px;
 }
 
+.d-none-space-image {
+    display: none !important;
+}
+
 @include media-breakpoint-down(md) {
     #space-menu > .title {
         display: none;
