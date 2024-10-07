@@ -10744,7 +10744,7 @@ textarea.form-control-lg {
   --hh-background-color-main: #fff;
   --hh-background-color-secondary: #f9f9f9;
   --hh-background-color-page: #ededed;
-  --hh-background-color-highlight: fade(#21A1B3, 20%);
+  --hh-background-color-highlight: rgba(33, 161, 179, 0.2);
   --hh-background-color-highlight-soft: #f2f9fb;
   --hh-background3: #d7d7d7;
   --hh-background4: #b2b2b2;
@@ -10778,7 +10778,7 @@ textarea.form-control-lg {
   --background-color-main: #fff;
   --background-color-secondary: #f9f9f9;
   --background-color-page: #ededed;
-  --background-color-highlight: fade(#21A1B3, 20%);
+  --background-color-highlight: rgba(33, 161, 179, 0.2);
   --background-color-highlight-soft: #f2f9fb;
   --background3: #d7d7d7;
   --background4: #b2b2b2;
@@ -11374,7 +11374,7 @@ ul.contextMenu li a:hover {
 }
 .media-list > div.new, .media-list > a.new {
   border-left: 3px solid #21A1B3;
-  background-color: fade(#21A1B3, 20%);
+  background-color: rgba(33, 161, 179, 0.2);
 }
 .media-list > div.new:hover, .media-list > a.new:hover {
   background-color: #f2f9fb;
@@ -12758,7 +12758,7 @@ table td a:hover {
   right: -3px;
 }
 .comment .d-flex.comment-current {
-  background: fade(#21A1B3, 20%);
+  background: rgba(33, 161, 179, 0.2);
   padding: 0 5px 5px 5px;
   margin: 0 -5px -5px -5px;
   border-radius: 3px;
@@ -14359,7 +14359,7 @@ ul.tour-list li.completed a {
   color: #85CA2B;
 }
 .highlight {
-  background-color: fade(#21A1B3, 20%);
+  background-color: rgba(33, 161, 179, 0.2);
 }
 .alert-default {
   color: #000;
@@ -14929,7 +14929,7 @@ img.bounceIn {
   padding-top: 10px;
 }
 .emoji-nav .emoji-nav-item {
-  border-top: 2px solid fade(#21A1B3, 20%);
+  border-top: 2px solid rgba(33, 161, 179, 0.2);
 }
 .emoji-nav .emoji-nav-item.cur {
   border-left: 0;
@@ -15802,7 +15802,7 @@ img.bounceIn {
   flex-direction: column;
 }
 .dropdown.search-menu .dropdown-backdrop {
-  background: fade(#000, 15%);
+  background: rgba(0, 0, 0, 0.15);
 }
 .dropdown.search-menu.open #search-menu {
   background: #fff;
@@ -16490,7 +16490,7 @@ a.label-warning:hover {
 }
 .media-list li.new {
   border-left: 3px solid #21A1B3;
-  background-color: fade(#21A1B3, 20%);
+  background-color: rgba(33, 161, 179, 0.2);
 }
 .media-list li.new:hover {
   background-color: #f2f9fb;
@@ -16958,7 +16958,7 @@ ul.tag_input li img {
   --hh-background-color-main: #fff;
   --hh-background-color-secondary: #f9f9f9;
   --hh-background-color-page: #ededed;
-  --hh-background-color-highlight: fade(#21A1B3, 20%);
+  --hh-background-color-highlight: rgba(33, 161, 179, 0.2);
   --hh-background-color-highlight-soft: #f2f9fb;
   --hh-background3: #d7d7d7;
   --hh-background4: #b2b2b2;
@@ -16992,7 +16992,7 @@ ul.tag_input li img {
   --background-color-main: #fff;
   --background-color-secondary: #f9f9f9;
   --background-color-page: #ededed;
-  --background-color-highlight: fade(#21A1B3, 20%);
+  --background-color-highlight: rgba(33, 161, 179, 0.2);
   --background-color-highlight-soft: #f2f9fb;
   --background3: #d7d7d7;
   --background4: #b2b2b2;

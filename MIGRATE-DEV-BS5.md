@@ -258,6 +258,12 @@ Replacements:
 
 Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
 
+## Javascript
+
+As the `d-flex` class is set in Bootstrap CSS to `flex !important`, the jQuery `hide()` function won't work, because of the `!important`.
+So, on these `d-flex-` elements, you should make these replacements:
+- `hide()` -> `addClass('d-none')`
+- `show()` -> `removeClass('d-none')`
 
 ## Themes and Modules: LESS is replaced with SCSS
 
@@ -271,7 +277,8 @@ Prefix all SCSS files with `_` except the `build.scss` file.
 E.g.: `less/variables.less` -> `scss/_variables.scss`
 
 Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
-However, you need to check the output manually.
+However, you need to check the output manually, such as:
+- `color: fade(@color, 20%);` -> `color: rgba($color, 0.2);`
 
 ### Variables
 

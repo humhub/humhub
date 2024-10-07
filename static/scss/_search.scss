@@ -213,7 +213,7 @@
 
 .dropdown.search-menu {
     .dropdown-backdrop {
-        background: fade($text-color-highlight, 15%);
+        background: rgba($text-color-highlight, 0.15);
     }
 
     &.open #search-menu {

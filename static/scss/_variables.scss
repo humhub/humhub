@@ -65,7 +65,7 @@ $background-color-page: #ededed;
 
 // Informative highlighting color
 // (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight: fade($info, 20%);
+$background-color-highlight: rgba($info, 0.2);
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
