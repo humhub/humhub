@@ -99,10 +99,10 @@
 
     .ProseMirror-menu-dropdown, .ProseMirror-menu-dropdown-menu {
         white-space: nowrap;
-        @media (max-width: 400px) {
+        @include media-breakpoint-down(sm) {
             white-space: normal !important;
         }
-        @media (max-width: 768px) {
+        @include media-breakpoint-down(md) {
             small {
                 white-space: normal;
             }
@@ -682,13 +682,13 @@
     }
 }
 
-@media screen and (max-width: 460px) {
+@include media-breakpoint-down(sm) {
     .ProsemirrorEditor .ProseMirror-menu-dropdown-right {
         right: 0;
     }
 }
 
-@media screen and (max-width: 768px) {
+@include media-breakpoint-down(md) {
     .ProsemirrorEditor.focusMenu {
         .form-control:focus {
             border-top-right-radius: 0 !important;

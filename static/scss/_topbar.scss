@@ -6,8 +6,8 @@
     display: block;
     height: 50px;
     width: 100%;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 0;
+    padding-right: 0;
 
     ul.nav {
         float: left;
@@ -312,13 +312,13 @@
         width: 400px;
 
         .media-list {
-            max-height: 400px;
+            max-height: 200px;
             overflow: auto;
         }
 
-        @media screen and (max-width: 768px) {
+        @include media-breakpoint-up(md) {
             .media-list {
-                max-height: 200px;
+                max-height: 400px;
             }
         }
 
@@ -427,9 +427,9 @@
     }
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-up(md) {
     .topbar {
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: 15px;
+        padding-right: 15px;
     }
 }

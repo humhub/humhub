@@ -33,17 +33,20 @@ $nbFiles = count($files);
 $isFluid = ThemeHelper::isFluid();
 
 // Image height is defined in file.less and matches this template
-$mobileBsColumns = 6;
-$desktopBsColumns = $isFluid ? 3 : 4;
+$bsColumns = 6;
+$bsColumnsMd = $isFluid ? 4 : 6;
+$bsColumnsLg = $isFluid ? 3 : 4;
 if ($nbFiles === 1) {
-    $mobileBsColumns = 12;
-    $desktopBsColumns = $isFluid ? 4 : 6;
+    $bsColumns = 12;
+    $bsColumnsMd = $isFluid ? 6 : 12;
+    $bsColumnsLg = $isFluid ? 4 : 6;
 }
 if ($nbFiles === 2) {
-    $desktopBsColumns = $isFluid ? 4 : 6;
+    $bsColumnsMd = 6;
+    $bsColumnsLg = $isFluid ? 4 : 6;
 }
-$fullWidthColumnClass = 'col-media col-12 col-sm-12 col-md-12';
-$galleryColumnClass = 'col-media col-' . $mobileBsColumns . ' col-sm-' . $desktopBsColumns . ' col-md-' . $desktopBsColumns;
+$fullWidthColumnClass = 'col-media col-12';
+$galleryColumnClass = 'col-media col-' . $bsColumns . ' col-md-' . $bsColumnsMd . ' col-lg-' . $bsColumnsLg;
 ?>
 
 <?php if ($nbFiles > 0): ?>

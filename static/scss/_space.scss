@@ -65,7 +65,7 @@
     margin-top: 3px;
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
     #space-menu > .title {
         display: none;
     }

@@ -294,7 +294,7 @@ $wallEntryContentLeftPaddingMobile: 0;
     }
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
     .wall-entry .wall-entry-body {
         padding-left: $wallEntryContentLeftPaddingMobile;
         padding-right: $wallEntryContentLeftPaddingMobile;
@@ -395,7 +395,7 @@ $wallEntryContentLeftPaddingMobile: 0;
     }
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
     #wall-stream-filter-nav {
         .wall-stream-filter-root {
             white-space: nowrap;

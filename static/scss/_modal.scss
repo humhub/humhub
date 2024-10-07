@@ -19,12 +19,6 @@ body.modal-open {
     overflow-y: hidden;
 }
 
-@media screen and (max-width: 768px) {
-    .modal-dialog {
-        width: calc(100vw - 4px) !important;
-    }
-}
-
 .modal-top {
     z-index: 999999 !important;
 }
@@ -33,7 +27,7 @@ body.modal-open {
     overflow-y: visible;
 }
 
-@media screen and (max-width: 991px) {
+@include media-breakpoint-down(lg) {
     .modal-dialog-large {
         width: auto !important;
         padding-top: 30px;

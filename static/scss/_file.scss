@@ -62,49 +62,36 @@ ul.files {
         object-fit: cover;
         border-radius: 4px;
     }
-}
 
-// Matches the protected/humhub/modules/file/widgets/views/showFiles.php template
+    .col-12 img { // One image
+        height: 300px;
+    }
 
-// extra-small
-@media (max-width: 768px) {
-    .post-files {
-        img {
+    // Medium (see protected/humhub/modules/file/widgets/views/showFiles.php template)
+    @include media-breakpoint-only(md) {
+        img,
+        .col-12 img {
             height: 150px;
         }
 
-        .col-12 img { // One image
+        .col-md-12 img { // One image
             height: 300px;
         }
     }
-}
 
-// small
-@media (min-width: 768px) and (max-width: 991px) {
-    .post-files {
-        img {
-            height: 150px;
-        }
-
-        .col-sm-6 img { // One or two images
-            height: 250px;
-        }
-    }
-}
-
-// medium
-@media (min-width: 992px) {
-    .post-files {
-        img {
+    // Large and over (see protected/humhub/modules/file/widgets/views/showFiles.php template)
+    @include media-breakpoint-up(lg) {
+        img,
+        .col-12 img {
             height: 200px;
         }
 
-        .col-sm-6 img { // One or two images
+        .col-lg-6 img { // One or two images
             height: 300px;
         }
     }
-}
 
+}
 
 .post-file-list {
     padding: 10px;
@@ -219,7 +206,7 @@ ul.files {
     background-image: url("../img/mime/audio.png");
 }
 
-@media (max-width: 480px) {
+@include media-breakpoint-down(sm) {
     .jp-current-time {
         margin-left: 0 !important;
     }

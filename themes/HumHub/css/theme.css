@@ -10835,18 +10835,21 @@ hr {
   position: inherit;
 }
 .layout-nav-container {
-  padding: 0 0 0 15px;
+  padding: 0 15px;
+}
+.layout-nav-container .left-navigation {
+  margin-bottom: 0;
+}
+@media (min-width: 768px) {
+  .layout-nav-container {
+    padding: 0 0 0 15px;
+  }
+  .layout-nav-container .left-navigation {
+    margin-bottom: 15px;
+  }
 }
 .layout-sidebar-container {
   padding: 0 15px 0 0;
-}
-@media (max-width: 768px) {
-  .layout-nav-container {
-    padding: 0 15px;
-  }
-  .layout-nav-container .left-navigation {
-    margin-bottom: 0;
-  }
 }
 h4, .h4 {
   font-weight: 300;
@@ -10868,7 +10871,7 @@ input[type=text], input[type=password], input[type=select] {
 [data-ui-show-more] {
   overflow: hidden;
 }
-@media (min-width: 768px) and (max-width: 991px) {
+@media (min-width: 768px) and (max-width: 991.98px) {
   .layout-nav-container {
     padding: 0 15px;
   }
@@ -10904,8 +10907,8 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   display: block;
   height: 50px;
   width: 100%;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 0;
+  padding-right: 0;
 }
 .topbar ul.nav {
   float: left;
@@ -11138,12 +11141,12 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   width: 400px;
 }
 #topbar-second #space-menu-dropdown .media-list, #topbar-second #search-menu-dropdown .media-list {
-  max-height: 400px;
+  max-height: 200px;
   overflow: auto;
 }
-@media screen and (max-width: 768px) {
+@media (min-width: 768px) {
   #topbar-second #space-menu-dropdown .media-list, #topbar-second #search-menu-dropdown .media-list {
-    max-height: 200px;
+    max-height: 400px;
   }
 }
 #topbar-second #space-menu-dropdown form, #topbar-second #search-menu-dropdown form {
@@ -11223,10 +11226,10 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   margin: 0;
   font-weight: 400;
 }
-@media (max-width: 767px) {
+@media (min-width: 768px) {
   .topbar {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 .login-container {
@@ -11273,24 +11276,21 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 .dropdown-menu {
   --bs-dropdown-bg: var(--hh-background-color-main);
 }
-.dropdown-menu li a {
-  white-space: nowrap;
+@media (min-width: 576px) {
+  .dropdown-menu li a {
+    white-space: nowrap;
+  }
+}
+@media (max-width: 767.98px) {
+  .dropdown-menu li a small, .dropdown-menu li a .small {
+    white-space: normal;
+  }
 }
 .dropdown-menu li a i {
   margin-right: 5px;
   font-size: 14px;
   display: inline-block;
   width: 14px;
-}
-@media (max-width: 400px) {
-  .dropdown-menu li a {
-    white-space: normal !important;
-  }
-}
-@media (max-width: 768px) {
-  .dropdown-menu li a small, .dropdown-menu li a .small {
-    white-space: normal;
-  }
 }
 .dropdown-menu li a:not(.btn):hover, .dropdown-menu li a:not(.btn):visited, .dropdown-menu li a:not(.btn):focus {
   background: none;
@@ -11733,7 +11733,7 @@ ul.tab-menu-settings li.active > a {
   font-size: 12px;
   text-align: center;
 }
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .controls-header {
     text-align: left !important;
   }
@@ -11791,7 +11791,7 @@ ul.tab-menu-settings li.active > a {
   border-left-color: #21A1B3;
   background-color: #f9f9f9 !important;
 }
-@media (max-width: 480px) {
+@media (max-width: 575.98px) {
   #contentFormMenu .nav-tabs {
     display: flex;
     width: 100%;
@@ -12411,7 +12411,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 * #notification_overview_list .d-flex:not(.new), #notification_overview_list .d-flex:not(.new) strong {
   color: #7a7a7a;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .notifications {
     position: inherit !important;
     float: left !important;
@@ -12542,7 +12542,7 @@ a.list-group-item:hover, a.list-group-item.active:hover, a.list-group-item.activ
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
 }
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .list-group {
     margin-left: 4px;
   }
@@ -12561,7 +12561,7 @@ a.list-group-item:hover, a.list-group-item.active:hover, a.list-group-item.activ
     color: #fff !important;
   }
 }
-@media (max-width: 991px) and (hover: hover) and (pointer: fine) {
+@media (max-width: 991.98px) and (hover: hover) and (pointer: fine) {
   a.list-group-item:hover, a.list-group-item.active:hover, a.list-group-item.active:focus {
     border: none !important;
     background: #435f6f !important;
@@ -12578,18 +12578,13 @@ body.modal-open {
   height: 100vh;
   overflow-y: hidden;
 }
-@media screen and (max-width: 768px) {
-  .modal-dialog {
-    width: calc(100vw - 4px) !important;
-  }
-}
 .modal-top {
   z-index: 999999 !important;
 }
 .modal {
   overflow-y: visible;
 }
-@media screen and (max-width: 991px) {
+@media (max-width: 991.98px) {
   .modal-dialog-large {
     width: auto !important;
     padding-top: 30px;
@@ -12730,7 +12725,7 @@ table td a:hover {
 .table-middle > thead > tr > th, .table-middle > tbody > tr > th, .table-middle > tfoot > tr > th, .table-middle > thead > tr > td, .table-middle > tbody > tr > td, .table-middle > tfoot > tr > td {
   vertical-align: middle !important;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .table-responsive > .table > tbody > tr > td.notification-type {
     white-space: normal;
   }
@@ -12738,7 +12733,7 @@ table td a:hover {
 .comment-container {
   margin-top: 10px;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .comment .post-files img {
     height: 100px;
   }
@@ -13566,7 +13561,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
   font-size: 0.85em;
   font-weight: normal;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .wall-entry .wall-entry-body {
     padding-left: 0;
     padding-right: 0;
@@ -13646,7 +13641,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 #wall-stream-filter-nav .wall-stream-filter-bar .btn, #wall-stream-filter-nav .wall-stream-filter-bar .label {
   box-shadow: 0 0 2px #7a7a7a;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   #wall-stream-filter-nav {
     margin-bottom: 5px;
   }
@@ -13767,7 +13762,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
   margin-right: 3px;
   margin-top: 3px;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   #space-menu > .title {
     display: none;
   }
@@ -13825,27 +13820,22 @@ ul.files li.file-preview-item .file-fileInfo {
   object-fit: cover;
   border-radius: 4px;
 }
-@media (max-width: 768px) {
-  .post-files img {
+.post-files .col-12 img {
+  height: 300px;
+}
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .post-files img, .post-files .col-12 img {
     height: 150px;
   }
-  .post-files .col-12 img {
+  .post-files .col-md-12 img {
     height: 300px;
   }
 }
-@media (min-width: 768px) and (max-width: 991px) {
-  .post-files img {
-    height: 150px;
-  }
-  .post-files .col-sm-6 img {
-    height: 250px;
-  }
-}
 @media (min-width: 992px) {
-  .post-files img {
+  .post-files img, .post-files .col-12 img {
     height: 200px;
   }
-  .post-files .col-sm-6 img {
+  .post-files .col-lg-6 img {
     height: 300px;
   }
 }
@@ -13931,7 +13921,7 @@ ul.files li.file-preview-item .file-fileInfo {
 .mime-audio {
   background-image: url("../img/mime/audio.png");
 }
-@media (max-width: 480px) {
+@media (max-width: 575.98px) {
   .jp-current-time {
     margin-left: 0 !important;
   }
@@ -14257,7 +14247,7 @@ ul.tour-list li.completed a {
 .markdown-render table th, [data-ui-markdown] table th, [data-ui-richtext] table th {
   padding: 10px 15px;
 }
-@media (max-width: 991px) {
+@media (max-width: 991.98px) {
   .layout-sidebar-container {
     display: none;
   }
@@ -14483,12 +14473,12 @@ img.bounceIn {
 .ProsemirrorEditor .ProseMirror-menu-dropdown, .ProsemirrorEditor .ProseMirror-menu-dropdown-menu {
   white-space: nowrap;
 }
-@media (max-width: 400px) {
+@media (max-width: 575.98px) {
   .ProsemirrorEditor .ProseMirror-menu-dropdown, .ProsemirrorEditor .ProseMirror-menu-dropdown-menu {
     white-space: normal !important;
   }
 }
-@media (max-width: 768px) {
+@media (max-width: 767.98px) {
   .ProsemirrorEditor .ProseMirror-menu-dropdown small, .ProsemirrorEditor .ProseMirror-menu-dropdown .small, .ProsemirrorEditor .ProseMirror-menu-dropdown-menu small, .ProsemirrorEditor .ProseMirror-menu-dropdown-menu .small {
     white-space: normal;
   }
@@ -14946,12 +14936,12 @@ img.bounceIn {
   word-break: initial;
   hyphens: initial;
 }
-@media screen and (max-width: 460px) {
+@media (max-width: 575.98px) {
   .ProsemirrorEditor .ProseMirror-menu-dropdown-right {
     right: 0;
   }
 }
-@media screen and (max-width: 768px) {
+@media (max-width: 767.98px) {
   .ProsemirrorEditor.focusMenu .form-control:focus, .ProsemirrorEditor.focusMenu .grid-view .filters input:focus, .grid-view .filters .ProsemirrorEditor.focusMenu input:focus, .ProsemirrorEditor.focusMenu .grid-view .filters select:focus, .grid-view .filters .ProsemirrorEditor.focusMenu select:focus {
     border-top-right-radius: 0 !important;
   }
@@ -14963,7 +14953,14 @@ img.bounceIn {
     margin-top: 0;
   }
 }
-@media only screen and (max-width: 768px) {
+/**
+ * TODO: With Bootstrap 5, Mobile should be the default values
+ * So we should move the values of this file to the default files.
+ * And create a new _medium-devices.scss file to overwrite the values for larger screens
+ * Or, instead of creating a new file, include the overwrites directly in the concerned SCSS files
+ * See https://getbootstrap.com/docs/5.3/layout/breakpoints/#min-width
+ */
+@media (max-width: 767.98px) {
   :root {
     --hh-fixed-header-height: 105px;
   }
@@ -15438,7 +15435,7 @@ img.bounceIn {
 .container-modules .marketplace-settings-dropdown .dropdown-toggle:hover {
   color: #1d8e9d;
 }
-@media (max-width: 460px) {
+@media (max-width: 575.98px) {
   .container-modules .card {
     width: 100%;
   }
@@ -15446,6 +15443,11 @@ img.bounceIn {
 .container-content-modules {
   width: 100%;
   padding: 0 18px 5px 5px;
+}
+@media (min-width: 768px) {
+  .container-content-modules {
+    padding: 0 12px 5px 0;
+  }
 }
 .container-content-modules h4, .container-content-modules .h4 {
   font-size: 16px;
@@ -15466,11 +15468,6 @@ img.bounceIn {
 @media (min-width: 656px) {
   .container-content-modules .card {
     width: 33.33333333%;
-  }
-}
-@media (min-width: 768px) {
-  .container-content-modules {
-    padding: 0 12px 5px 0;
   }
 }
 @media (min-width: 1200px) {
@@ -15809,7 +15806,7 @@ img.bounceIn {
   z-index: 1000;
   position: relative;
 }
-@media (max-width: 440px) {
+@media (max-width: 575.98px) {
   .dropdown.search-menu {
     position: initial;
   }
@@ -16588,7 +16585,7 @@ a.label-warning:hover {
 .activities li .media .media-body {
   max-width: 295px;
 }
-@media only screen and (max-width: 768px) {
+@media (max-width: 767.98px) {
   #layout-content .col-xs-1, #layout-content .col-xs-2, #layout-content .col-xs-3, #layout-content .col-xs-4, #layout-content .col-xs-5, #layout-content .col-xs-6, #layout-content .col-xs-7, #layout-content .col-xs-8, #layout-content .col-xs-9, #layout-content .col-xs-10, #layout-content .col-xs-11, #layout-content .col-xs-12 {
     padding-right: 2px !important;
     padding-left: 2px !important;
@@ -16767,7 +16764,7 @@ a.label-warning:hover {
 .panel.pulse, .panel.fadeIn {
   animation-duration: 200ms;
 }
-@media (max-width: 767px) {
+@media (max-width: 767.98px) {
   .panel-profile-controls {
     padding-left: 0 !important;
     padding-top: 50px;

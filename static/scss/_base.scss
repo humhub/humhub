@@ -56,21 +56,25 @@ hr {
 }
 
 .layout-nav-container {
-    padding: 0 0 0 15px;
+    padding: 0 15px;
+
+    .left-navigation {
+        margin-bottom: 0;
+    }
+}
+
+@include media-breakpoint-up(md) {
+    .layout-nav-container {
+        padding: 0 0 0 15px;
+
+        .left-navigation {
+            margin-bottom: 15px;
+        }
+    }
 }
 
 .layout-sidebar-container {
     padding: 0 15px 0 0;
-}
-
-@media (max-width: 768px) {
-    .layout-nav-container {
-        padding: 0 15px;
-
-        .left-navigation {
-            margin-bottom: 0;
-        }
-    }
 }
 
 h4 {
@@ -102,7 +106,7 @@ input[type=select] {
     overflow: hidden;
 }
 
-@media (min-width: 768px) and (max-width: 991px) {
+@include media-breakpoint-only(md) {
     .layout-nav-container {
         padding: 0 15px;
     }

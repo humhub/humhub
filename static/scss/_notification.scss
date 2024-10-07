@@ -32,7 +32,7 @@
     }
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
     .notifications {
         position: inherit !important;
         float: left !important;

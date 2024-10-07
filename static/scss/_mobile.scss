@@ -12,10 +12,15 @@
 // Mobile Theme style.less
 // --------------------------------------------------
 
-// The mobile design will load when screen is less then 768px
-$responsive: "only screen and (max-width: 768px)";
+/**
+ * TODO: With Bootstrap 5, Mobile should be the default values
+ * So we should move the values of this file to the default files.
+ * And create a new _medium-devices.scss file to overwrite the values for larger screens
+ * Or, instead of creating a new file, include the overwrites directly in the concerned SCSS files
+ * See https://getbootstrap.com/docs/5.3/layout/breakpoints/#min-width
+ */
 
-@media #{$responsive} {
+@include media-breakpoint-down(md) {
 
     :root {
         --hh-fixed-header-height: 105px;

@@ -224,7 +224,7 @@
     }
 }
 
-@media (max-width: 440px) {
+@include media-breakpoint-down(sm) {
     .dropdown.search-menu {
         position: initial;
     }

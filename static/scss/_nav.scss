@@ -288,7 +288,7 @@ ul.tab-menu-settings {
     text-align: center;
 }
 
-@media (max-width: 991px) {
+@include media-breakpoint-down(lg) {
     .controls-header {
         text-align: left !important;
     }
@@ -360,7 +360,7 @@ ul.tab-menu-settings {
         }
     }
 
-    @media (max-width: 480px) {
+    @include media-breakpoint-down(sm) {
         .nav-tabs {
             display: flex;
             width: 100%;

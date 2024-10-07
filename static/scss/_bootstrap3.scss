@@ -269,9 +269,7 @@ a.label-warning:hover {
 // Mobile
 // --------------------------------------------------
 
-$responsive: "only screen and (max-width: 768px)";
-
-@media #{$responsive} {
+@include media-breakpoint-down(md) {
     #layout-content {
         .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
             padding-right: 2px !important;
@@ -326,7 +324,7 @@ $responsive: "only screen and (max-width: 768px)";
         .spacesearch-visibilities {
             padding-top: 5px;
             padding-bottom: 5px;
-            @media (min-width: 992px) {
+            @include media-breakpoint-up(lg) {
                 padding-top: 0;
                 padding-bottom: 0;
                 padding-left: 0;
@@ -495,7 +493,7 @@ $responsive: "only screen and (max-width: 768px)";
     animation-duration: 200ms;
 }
 
-@media (max-width: 767px) {
+@include media-breakpoint-down(md) {
     .panel-profile-controls {
         padding-left: 0 !important;
         padding-top: 50px;

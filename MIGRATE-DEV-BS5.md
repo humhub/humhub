@@ -295,12 +295,54 @@ E.g.: `color: $primary` -> `color: var(--bs-primary)`
 
 If you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module ID. E.g. `my-module` will use `hh-mm-`. 
 
+### Breakpoints
+
+Search for `@media` and replace custom sizes with:
+
+```scss
+// X-Small devices (portrait phones, less than 576px)
+// No media query necessary for xs breakpoint as it's effectively `@media (min-width: 0) { ... }`
+
+// Small devices (landscape phones, 576px and up)
+@include media-breakpoint-up(sm) { ... } // @media (min-width: 576px) { ... }
+
+// Medium devices (tablets, 768px and up)
+@include media-breakpoint-up(md) { ... } // @media (min-width: 768px) { ... }
+
+// Large devices (desktops, 992px and up)
+@include media-breakpoint-up(lg) { ... } // @media (min-width: 992px) { ... }
+
+// X-Large devices (large desktops, 1200px and up)
+@include media-breakpoint-up(xl) { ... } // @media (min-width: 1200px) { ... }
+
+// XX-Large devices (larger desktops, 1400px and up)
+@include media-breakpoint-up(xxl) { ... } // @media (min-width: 1400px) { ... }
+```
+
+It is also possible to use `max-width` (should be occasionally used) using `media-breakpoint-down`. E.g.:
+
+```scss
+// `sm` applies to x-small devices (portrait phones, less than 576px)
+@include media-breakpoint-down(sm) { ... } // @media (max-width: 575.98px) { ... }
+
+// `md` applies to small devices (landscape phones, less than 768px)
+@include media-breakpoint-down(md) { ... } // @media (max-width: 767.98px) { ... }
+
+// etc...
+```
+
+[See documentation](https://getbootstrap.com/docs/5.3/layout/breakpoints/) for more options and examples.
+
 ### Select2 stylesheet
 
 `static/css/select2Theme` folder has been removed, and the SCSS file moved and renamed to `static/scss/_select2.scss`
 
 
 ## Themes
+
+See also the previous topic "Themes and Modules".
+
+Many styles have been refactored. Please review all your overwritten CSS selectors and values.
 
 ### Build file
 

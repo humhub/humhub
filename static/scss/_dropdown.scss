@@ -11,22 +11,21 @@
 .dropdown-menu {
     li {
         a {
-            white-space: nowrap;
+            @include media-breakpoint-up(sm) {
+                white-space: nowrap;
+            }
+
+            @include media-breakpoint-down(md) {
+                small {
+                    white-space: normal;
+                }
+            }
 
             i {
                 margin-right: 5px;
                 font-size: 14px;
                 display: inline-block;
                 width: 14px;
-            }
-
-            @media (max-width: 400px) {
-                white-space: normal !important;
-            }
-            @media (max-width: 768px) {
-                small {
-                    white-space: normal;
-                }
             }
 
             &:not(.btn) {

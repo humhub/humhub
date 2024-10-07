@@ -78,7 +78,7 @@
         }
     }
 
-    @media (max-width: 460px) {
+    @include media-breakpoint-down(sm) {
         .card {
             width: 100%;
         }
@@ -88,6 +88,10 @@
 .container-content-modules {
     width: 100%;
     padding: 0 18px 5px 5px;
+
+    @include media-breakpoint-up(md) {
+        padding: 0 12px 5px 0;
+    }
 
     h4 {
         font-size: 16px;
@@ -112,9 +116,6 @@
         .card {
             width: 33.33333333%;
         }
-    }
-    @media (min-width: 768px) {
-        padding: 0 12px 5px 0;
     }
     @media (min-width: 1200px) {
         .card {
