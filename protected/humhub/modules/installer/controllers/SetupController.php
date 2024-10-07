@@ -49,6 +49,11 @@ class SetupController extends Controller
     {
         Yii::$app->cache->flush();
 
+        if ($this->module->enableAutoSetup) {
+            return $this->redirect(['database']);
+
+        }
+
         return $this->render('prerequisites', ['hasError' => PrerequisitesList::hasError()]);
     }
 
@@ -81,31 +86,53 @@ class SetupController extends Controller
             $model->password = self::PASSWORD_PLACEHOLDER;
         }
 
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            $connectionString = 'mysql:host=' . $model->hostname;
-            if ($model->port !== '') {
-                $connectionString .= ';port=' . $model->port;
-            }
-            if (!$model->create) {
-                $connectionString .= ';dbname=' . $model->database;
-            }
+        if (($modelLoaded = $model->load(Yii::$app->request->post()) && $model->validate()) || $this->module->enableAutoSetup) {
+            if ($modelLoaded) {
+                $connectionString =  'mysql:host=' . $model->hostname;
+                if ($model->port !== '') {
+                    $connectionString .= ';port=' . $model->port;
+                }
+                if (!$model->create) {
+                    $connectionString .= ';dbname=' . $model->database;
+                }
+                $username = $model->username;
+                $password = $model->password;
+                if ($password == self::PASSWORD_PLACEHOLDER) {
+                    $password = $config['components']['db']['password'];
+                }
+            } elseif ($this->module->enableAutoSetup) {
+                $username = $model->username = Yii::$app->db->username;
+                $password = Yii::$app->db->password;
+                $connectionString = Yii::$app->db->dsn;
+                $model->create = 1;
 
-            $password = $model->password;
-            if ($password == self::PASSWORD_PLACEHOLDER) {
-                $password = $config['components']['db']['password'];
+                if (preg_match('/host=([^;]+)/', $connectionString ?: '', $matches)) {
+                    $model->hostname = $matches[1];
+                }
+                if (preg_match('/port=([^;]+)/', $connectionString ?: '', $matches)) {
+                    $model->port = $matches[1];
+                }
+                if (preg_match('/dbname=([^;]+)/', $connectionString ?: '', $matches)) {
+                    $model->database = $matches[1];
+                }
+
+                $connectionString = preg_replace('/;dbname=[^;]*/', '', $connectionString);
+            } else {
+                $username = '';
+                $password = '';
+                $connectionString = '';
             }
 
             // Create Test DB Connection
             $dbConfig = [
                 'class' => 'yii\db\Connection',
                 'dsn' => $connectionString,
-                'username' => $model->username,
+                'username' => $username,
                 'password' => $password,
                 'charset' => 'utf8',
             ];
 
             try {
-
                 /** @var yii\db\Connection $temporaryConnection */
                 $temporaryConnection = Yii::createObject($dbConfig);
 
@@ -167,6 +194,10 @@ class SetupController extends Controller
      */
     public function actionCron()
     {
+        if ($this->module->enableAutoSetup) {
+            return $this->redirect(['finalize']);
+        }
+
         return $this->render('cron', []);
     }
 
@@ -175,6 +206,10 @@ class SetupController extends Controller
      */
     public function actionPrettyUrls()
     {
+        if ($this->module->enableAutoSetup) {
+            return $this->redirect(['finalize']);
+        }
+
         return $this->render('pretty-urls');
     }
 

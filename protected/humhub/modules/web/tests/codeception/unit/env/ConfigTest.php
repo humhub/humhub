@@ -19,9 +19,9 @@ class ConfigTest extends HumHubDbTestCase
     public function testFixedSettings()
     {
         $ENV = [
-            'HUMHUB_FIXED_SETTINGS.BASE.MAILER.DSN' => 'smtp://...',
-            'HUMHUB_FIXED_SETTINGS.BASE.MAILER.TRANSPORT_TYPE' => 'php',
-            'HUMHUB_FIXED_SETTINGS.BASE.MAILER.SYSTEM_EMAIL_ADDRESS' => 'noreply@humhub.com',
+            'HUMHUB_FIXED_SETTINGS__BASE__MAILER__DSN' => 'smtp://...',
+            'HUMHUB_FIXED_SETTINGS__BASE__MAILER__TRANSPORT_TYPE' => 'php',
+            'HUMHUB_FIXED_SETTINGS__BASE__MAILER__SYSTEM_EMAIL_ADDRESS' => 'noreply@humhub.com',
         ];
 
         $config = [
@@ -44,7 +44,7 @@ class ConfigTest extends HumHubDbTestCase
     public function testArrayConfig()
     {
         $ENV = [
-            'HUMHUB_CONFIG.PARAMS.MODULE_AUTOLOAD_PATHS' => ["/app/modules/humhub","/app/modules/humhub-contrib"],
+            'HUMHUB_CONFIG__PARAMS__MODULE_AUTOLOAD_PATHS' => ["/app/modules/humhub","/app/modules/humhub-contrib"],
         ];
 
         $config = [
@@ -62,7 +62,7 @@ class ConfigTest extends HumHubDbTestCase
     public function testJsonConfig()
     {
         $ENV = [
-            'HUMHUB_CONFIG.COMPONENTS.DB' => '{"on afterOpen":["humhub\\\libs\\\Helpers","SqlMode"]}',
+            'HUMHUB_CONFIG__COMPONENTS__DB' => '{"on afterOpen":["humhub\\\libs\\\Helpers","SqlMode"]}',
         ];
 
         $config = [
@@ -79,8 +79,8 @@ class ConfigTest extends HumHubDbTestCase
     public function testBooleanConfig()
     {
         $ENV = [
-            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.SHOW_SCRIPT_NAME' => 'false',
-            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.ENABLE_PRETTY_URL' => 'true',
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__ENABLE_PRETTY_URL' => 'true',
         ];
 
         $config = [
@@ -98,8 +98,8 @@ class ConfigTest extends HumHubDbTestCase
     public function testEmptyConfig()
     {
         $ENV = [
-            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.SHOW_SCRIPT_NAME' => 'false',
-            'HUMHUB_CONFIG.COMPONENTS.URL_MANAGER.ENABLE_PRETTY_URL' => null,
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__ENABLE_PRETTY_URL' => null,
         ];
 
         $config = [

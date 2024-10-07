@@ -193,4 +193,9 @@ class DynamicConfig extends BaseObject
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
     }
+
+    public static function exist()
+    {
+        return file_exists(self::getConfigFilePath());
+    }
 }
