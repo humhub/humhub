@@ -142,7 +142,6 @@ class InstallController extends Controller
         Yii::$app->settings->set('name', $site_name);
         Yii::$app->settings->set('mailer.systemEmailName', $site_email);
         Yii::$app->settings->set('secret', UUID::v4());
-        Yii::$app->settings->set('timeZone', Yii::$app->timeZone);
 
         Yii::$app->setInstalled();
 
