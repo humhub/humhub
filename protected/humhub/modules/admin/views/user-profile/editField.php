@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
      * Switcher for Sub Forms (FormField Type)
      */
     var checkFieldTypeFormState = function () {
-        $("#edit-profile-field-root .form-group").show();
+        $("#edit-profile-field-root .mb-3").show();
 
         // Hide all form type specific forms
         $(".fieldTypeSettings").hide();

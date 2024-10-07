@@ -757,11 +757,3 @@ $clear-selection-color: $dropdown-arrow-color;
     position: absolute !important;
     width: 1px !important;
 }
-
-/**
- * Display override for inline forms
-*/
-
-.form-inline .select2-container--humhub {
-    display: inline-block;
-}

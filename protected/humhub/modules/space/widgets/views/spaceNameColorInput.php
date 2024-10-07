@@ -19,7 +19,7 @@ if ($model->color === null) {
 }
 ?>
 
-<div id="<?= $containerId ?>" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
+<div id="<?= $containerId ?>" class="mb-3 space-color-chooser-edit" style="margin-top: 5px;">
     <?= ColorPickerField::widget(['model' => $model, 'field' => 'color', 'container' => $containerId]); ?>
 
     <?= $form->field($model, 'name', ['template' => '

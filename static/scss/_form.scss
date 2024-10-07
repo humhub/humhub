@@ -227,7 +227,7 @@ input[type=radio] {
     }
 }
 
-div.form-group {
+div.mb-3 {
     div.checkbox {
         .help-block {
             margin-left: 23px;
@@ -421,7 +421,7 @@ div.form-group {
         align-items: flex-end;
         flex-direction: column;
 
-        > .form-group {
+        > .mb-3 {
             flex-grow: 1;
             width: 100%;
 
@@ -435,7 +435,7 @@ div.form-group {
             }
         }
 
-        .form-group, .help-block {
+        .mb-3, .help-block {
             margin: 0;
         }
     }

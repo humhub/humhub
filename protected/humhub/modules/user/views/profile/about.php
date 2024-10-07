@@ -37,7 +37,7 @@ $categories = $user->profile->getProfileFieldCategories();
                 ?>" id="profile-category-<?= $category->id ?>">
                     <form class="form-horizontal" role="form">
                         <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class="col-sm-3 control-label">
                                     <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
                                 </label>

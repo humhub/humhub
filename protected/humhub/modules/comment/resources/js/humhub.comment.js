@@ -17,7 +17,7 @@ humhub.module('comment', function (module, require, $) {
                 that.getInput().val('').trigger('autosize.resize');
                 richText.$.trigger('clear');
                 that.getUpload().reset();
-                that.$.find('.form-group').removeClass('has-error');
+                that.$.find('.mb-3').removeClass('has-error');
                 that.$.find('.help-block-error').html('');
             },
             400: function (response) {

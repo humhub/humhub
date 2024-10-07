@@ -31,7 +31,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
                 <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
-                <div class="form-group">
+                <div class="mb-3">
                     <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
                         'model' => $model,
                         'attribute' => 'verifyCode',

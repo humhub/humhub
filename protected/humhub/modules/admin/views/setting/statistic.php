@@ -18,7 +18,7 @@ use humhub\widgets\form\ActiveForm;
 
 <?= $form->errorSummary($model); ?>
 
-<div class="form-group">
+<div class="mb-3">
     <?= $form->field($model, 'trackingHtmlCode')->widget(CodeMirrorInputWidget::class); ?>
 </div>
 

@@ -129,7 +129,7 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.handleError = function (response) {
         var that = this;
-        var model = that.$.find('.form-group:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
+        var model = that.$.find('.mb-3:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
         $.each(response.errors, function (fieldName, errorMessages) {
             var fieldSelector = '.field-' + model + '-' + fieldName;
             var inputSelector = '.field-contentForm_' + fieldName;
@@ -137,7 +137,7 @@ humhub.module('content.form', function (module, require, $) {
             that.$.find(fieldSelector).addClass('has-error');
             that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
                 .find('.help-block-error:first').html(errorMessages.join('<br>'));
-            that.$.find(multiInputSelector).closest('.form-group').addClass('has-error');
+            that.$.find(multiInputSelector).closest('.mb-3').addClass('has-error');
         });
     };
 

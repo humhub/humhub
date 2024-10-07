@@ -20,7 +20,7 @@ use humhub\widgets\form\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'name')->textInput(); ?>
         </div>
         <hr>

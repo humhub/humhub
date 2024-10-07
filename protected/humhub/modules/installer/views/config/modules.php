@@ -19,7 +19,7 @@ use humhub\helpers\Html;
         <?= Html::beginForm(); ?>
 
         <?php foreach ($modules as $module): ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="checkbox">
                     <label>
                         <?= Html::checkbox('enableModules[' . $module['id'] . ']', true) ?>

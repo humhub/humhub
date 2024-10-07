@@ -11,6 +11,6 @@ use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 ?>
-<div class="form-group">
+<div class="mb-3">
     <?= Html::textInput(null, null, $options) ?>
 </div>

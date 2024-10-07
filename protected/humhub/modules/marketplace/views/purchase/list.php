@@ -31,7 +31,7 @@ Assets::register($this);
             <?= Html::beginForm(Url::to(['/marketplace/purchase']), 'post', ['class' => 'form-search']); ?>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group form-group-search">
+                    <div class="mb-3 form-group-search">
                         <?= Html::textInput('licenceKey', $licenceKey, ['class' => 'form-control form-search', 'placeholder' => Yii::t('MarketplaceModule.base', 'Add purchased module by license key')]); ?>
                         <?= Button::light(Yii::t('MarketplaceModule.base', 'Register'))
                             ->submit()

@@ -11267,7 +11267,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 .login-container select {
   color: #000;
 }
-#account-login-form .form-group {
+#account-login-form .mb-3 {
   margin-bottom: 10px;
 }
 .dropdown-menu {
@@ -11705,7 +11705,7 @@ ul.tab-menu-settings li.active > a {
 .tab-content .tab-pane a {
   color: var(--bs-link-color);
 }
-.tab-content .tab-pane .form-group {
+.tab-content .tab-pane .mb-3 {
   margin-bottom: 5px;
 }
 .nav .caret, .nav .caret:hover, .nav .caret:active {
@@ -12221,10 +12221,10 @@ input[type=radio]:checked::after {
   left: 3px;
   font-size: 32px;
 }
-div.form-group div.checkbox .help-block {
+div.mb-3 div.checkbox .help-block {
   margin-left: 23px;
 }
-div.form-group div.checkbox .help-block.help-block-error:empty {
+div.mb-3 div.checkbox .help-block.help-block-error:empty {
   display: none;
 }
 .radio-pills {
@@ -12347,18 +12347,18 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
   align-items: flex-end;
   flex-direction: column;
 }
-.content_create .content-create-input-group > .form-group, .content_edit .content-create-input-group > .form-group {
+.content_create .content-create-input-group > .mb-3, .content_edit .content-create-input-group > .mb-3 {
   flex-grow: 1;
   width: 100%;
 }
-.content_create .content-create-input-group > .form-group [data-ui-markdown], .content_edit .content-create-input-group > .form-group [data-ui-markdown] {
+.content_create .content-create-input-group > .mb-3 [data-ui-markdown], .content_edit .content-create-input-group > .mb-3 [data-ui-markdown] {
   word-break: break-word !important;
 }
-.content_create .content-create-input-group > .form-group [data-ui-markdown] pre code, .content_edit .content-create-input-group > .form-group [data-ui-markdown] pre code {
+.content_create .content-create-input-group > .mb-3 [data-ui-markdown] pre code, .content_edit .content-create-input-group > .mb-3 [data-ui-markdown] pre code {
   display: block;
   width: 0;
 }
-.content_create .content-create-input-group .form-group, .content_create .content-create-input-group .help-block, .content_edit .content-create-input-group .form-group, .content_edit .content-create-input-group .help-block {
+.content_create .content-create-input-group .mb-3, .content_create .content-create-input-group .help-block, .content_edit .content-create-input-group .mb-3, .content_edit .content-create-input-group .help-block {
   margin: 0;
 }
 .content_create .upload-buttons, .content_edit .upload-buttons {
@@ -13051,10 +13051,10 @@ input[type=radio]:checked::after {
   left: 3px;
   font-size: 32px;
 }
-div.form-group div.checkbox .help-block {
+div.mb-3 div.checkbox .help-block {
   margin-left: 23px;
 }
-div.form-group div.checkbox .help-block.help-block-error:empty {
+div.mb-3 div.checkbox .help-block.help-block-error:empty {
   display: none;
 }
 .radio-pills {
@@ -13177,18 +13177,18 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
   align-items: flex-end;
   flex-direction: column;
 }
-.content_create .content-create-input-group > .form-group, .content_edit .content-create-input-group > .form-group {
+.content_create .content-create-input-group > .mb-3, .content_edit .content-create-input-group > .mb-3 {
   flex-grow: 1;
   width: 100%;
 }
-.content_create .content-create-input-group > .form-group [data-ui-markdown], .content_edit .content-create-input-group > .form-group [data-ui-markdown] {
+.content_create .content-create-input-group > .mb-3 [data-ui-markdown], .content_edit .content-create-input-group > .mb-3 [data-ui-markdown] {
   word-break: break-word !important;
 }
-.content_create .content-create-input-group > .form-group [data-ui-markdown] pre code, .content_edit .content-create-input-group > .form-group [data-ui-markdown] pre code {
+.content_create .content-create-input-group > .mb-3 [data-ui-markdown] pre code, .content_edit .content-create-input-group > .mb-3 [data-ui-markdown] pre code {
   display: block;
   width: 0;
 }
-.content_create .content-create-input-group .form-group, .content_create .content-create-input-group .help-block, .content_edit .content-create-input-group .form-group, .content_edit .content-create-input-group .help-block {
+.content_create .content-create-input-group .mb-3, .content_create .content-create-input-group .help-block, .content_edit .content-create-input-group .mb-3, .content_edit .content-create-input-group .help-block {
   margin: 0;
 }
 .content_create .upload-buttons, .content_edit .upload-buttons {
@@ -13373,24 +13373,24 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
 #content-topic-bar .label {
   margin-left: 4px;
 }
-#contentFormBody .form-group, #contentFormBody .help-block-error {
+#contentFormBody .mb-3, #contentFormBody .help-block-error {
   margin: 0;
 }
-#contentFormBody .contentForm_options .form-group {
+#contentFormBody .contentForm_options .mb-3 {
   margin-bottom: 15px;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label {
+#contentFormBody .contentForm_options .mb-3 .checkbox label {
   padding-left: 22px;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label input[type=checkbox] {
+#contentFormBody .contentForm_options .mb-3 .checkbox label input[type=checkbox] {
   position: absolute;
   top: 4px;
   left: 0;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label input[type=checkbox]:focus {
+#contentFormBody .contentForm_options .mb-3 .checkbox label input[type=checkbox]:focus {
   border-color: #ccc !important;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label input[type=checkbox]:focus:checked {
+#contentFormBody .contentForm_options .mb-3 .checkbox label input[type=checkbox]:focus:checked {
   border-color: #21A1B3 !important;
 }
 .placeholder-empty-stream {
@@ -16398,12 +16398,6 @@ img.bounceIn {
 .form-control.select2-hidden-accessible, .grid-view .filters input.select2-hidden-accessible, .grid-view .filters select.select2-hidden-accessible {
   position: absolute !important;
   width: 1px !important;
-}
-/**
- * Display override for inline forms
-*/
-.form-inline .select2-container--humhub {
-  display: inline-block;
 }
 /**
 Compatibility with Bootstrap 3

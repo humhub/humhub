@@ -13,6 +13,6 @@ use humhub\modules\ui\view\components\View;
 /* @var $selection [] */
 /* @var $items [] */
 ?>
-<div class="form-group">
+<div class="mb-3">
     <?= Html::dropDownList(null, $selection, $items, $options) ?>
 </div>

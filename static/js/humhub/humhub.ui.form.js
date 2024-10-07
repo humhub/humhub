@@ -36,7 +36,7 @@ humhub.module('ui.form', function (module, require, $) {
             $tabContent.append('<div class="tab-pane" data-tab-index="' + index + '" id="tab-' + index + '"></div>');
 
             // clone inputs from fieldSet into our tab structure
-            var $inputs = $fieldSet.children(".form-group");
+            var $inputs = $fieldSet.children(".mb-3");
             $('#tab-' + index).html($inputs);
 
             // remove old fieldset from dom
@@ -104,7 +104,7 @@ humhub.module('ui.form', function (module, require, $) {
             if (legend && legend.length) {
                 result[legend] = $lastFieldSet = $fieldSet;
             } else if ($lastFieldSet) {
-                $lastFieldSet.append($fieldSet.children(".form-group"));
+                $lastFieldSet.append($fieldSet.children(".mb-3"));
             }
         });
         return result;

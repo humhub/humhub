@@ -29,7 +29,7 @@ use humhub\widgets\bootstrap\Link;
 /* @var $scheduleUrl string */
 ?>
 
-<div id="notifyUserContainer" class="form-group" style="margin-top:15px;display:none">
+<div id="notifyUserContainer" class="mb-3" style="margin-top:15px;display:none">
     <?= UserPickerField::widget([
         'id' => 'notifyUserInput',
         'url' => $pickerUrl,
@@ -40,7 +40,7 @@ use humhub\widgets\bootstrap\Link;
     ]) ?>
 </div>
 
-<div id="postTopicContainer" class="form-group" style="margin-top:15px;display:none">
+<div id="postTopicContainer" class="mb-3" style="margin-top:15px;display:none">
     <?= TopicPicker::widget([
         'id' => 'postTopicInput',
         'name' => 'postTopicInput',

@@ -27,11 +27,11 @@ use yii\helpers\Url;
 
             <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $form->field($model, 'email')->textInput(['id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')]); ?>
             </div>
 
-            <div class="form-group">
+            <div class="mb-3">
                 <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
                     'model' => $model,
                     'attribute' => 'verifyCode',
