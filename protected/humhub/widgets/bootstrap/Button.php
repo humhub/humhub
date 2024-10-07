@@ -38,7 +38,7 @@ class Button extends \yii\bootstrap5\Button
         return static::primary($label ?? Yii::t('base', 'Save'));
     }
 
-    public static function asLink(string $label = null, string $href = '#'): static
+    public static function asLink(string $label = null, $href = '#'): static
     {
         $button = self::instance($label)
             ->loader(false)

@@ -73,13 +73,9 @@ class Image extends BaseImage
             Html::addCssClass($this->linkOptions, 'tt');
         }
 
-        $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
-
-        if (!$defaultImage) {
-            $acronymHtmlOptions['class'] .= " d-none";
-        } else {
-            $imageHtmlOptions['class'] .= " d-none";
-        }
+        $isDefaultImage =
+            basename($this->space->getProfileImage()->getUrl()) === 'default_space.jpg'
+            || basename($this->space->getProfileImage()->getUrl()) === 'default_space.jpg?cacheId=0';
 
         return $this->render('@space/widgets/views/image', [
             'space' => $this->space,
@@ -88,6 +84,7 @@ class Image extends BaseImage
             'linkOptions' => $this->linkOptions,
             'acronymHtmlOptions' => $acronymHtmlOptions,
             'imageHtmlOptions' => $imageHtmlOptions,
+            'isDefaultImage' => $isDefaultImage,
         ]);
     }
 

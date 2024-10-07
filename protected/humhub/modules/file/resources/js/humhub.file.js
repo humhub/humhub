@@ -396,7 +396,7 @@ humhub.module('file', function (module, require, $) {
                 $file.find('.file-preview-content').popover({
                     html: true,
                     trigger: 'hover',
-                    animation: 'fade',
+                    animation: true,
                     delay: 100,
                     placement: this.options.popoverPosition || 'right',
                     container: 'body',

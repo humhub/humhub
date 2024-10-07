@@ -11,9 +11,9 @@ humhub.module('content.container.Header', function (module, require, $) {
 
     Header.prototype.init = function () {
         this.$.find('.image-upload-container').on('mouseover', function () {
-            $(this).find('.image-upload-buttons').show();
+            $(this).find('.image-upload-buttons').removeClass('d-none');
         }).on('mouseout', function () {
-            $(this).find('.image-upload-buttons').hide();
+            $(this).find('.image-upload-buttons').addClass('d-none');
         });
 
         this.$.find('.fileinput-button').each(function () {
@@ -21,9 +21,9 @@ humhub.module('content.container.Header', function (module, require, $) {
             var upload = Widget.instance($this.find('input[type="file"]'));
             var profileImage = new ProfileImage($this.closest('.image-upload-container'));
             upload.on('uploadStart', function () {
-                profileImage.getLoader().show();
+                profileImage.getLoader().removeClass('d-none');
             }).on('uploadEnd', function (evt, response) {
-                profileImage.getLoader().hide();
+                profileImage.getLoader().addClass('d-none');
                 var file = response.result.files[0];
                 if (!file.error) {
                     profileImage.replaceImage(file);
@@ -62,7 +62,7 @@ humhub.module('content.container.Header', function (module, require, $) {
         $image.attr('src', file.url + '&c=' + random)
             .addClass('animated bounceIn').removeClass('d-none');
 
-        this.getEditButtons().show();
+        this.getEditButtons().removeClass('d-none');
 
         if (file.type === 'image') { // Only replace profile images
             var containerId = this.getContainerId();
@@ -91,7 +91,7 @@ humhub.module('content.container.Header', function (module, require, $) {
             $('img[data-contentcontainer-id="' + containerId + '"]').attr('src', defaultUrl).removeClass('d-none');
         }
 
-        this.getEditButtons().hide();
+        this.getEditButtons().addClass('d-none');
     };
 
     ProfileImage.prototype.getContainerId = function () {
