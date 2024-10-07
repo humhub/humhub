@@ -9,8 +9,8 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\content\models\ContentTag;
+use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
 use yii\db\ActiveRecord;
 

@@ -8,12 +8,14 @@
 
 namespace humhub\modules\topic\models;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\models\ContentTag;
+use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\content\services\ContentTagService;
 use humhub\modules\stream\helpers\StreamHelper;
-use humhub\modules\content\models\Content;
 use humhub\modules\topic\permissions\AddTopic;
-use humhub\modules\content\models\ContentTag;
 use Yii;
 
 /**
@@ -56,9 +58,9 @@ class Topic extends ContentTag
     /**
      * @return string link to topic filter stream page
      */
-    public function getUrl()
+    public function getUrl(?ContentContainerActiveRecord $contentContainer = null)
     {
-        return StreamHelper::createUrl($this->container, ['topicId' => $this->id]);
+        return StreamHelper::createUrl($contentContainer ?: $this->container, ['topicId' => $this->id]);
     }
 
     /**
@@ -107,5 +109,41 @@ class Topic extends ContentTag
         }
 
         (new ContentTagService($content))->addTags($result);
+    }
+
+    public static function convertToGlobal($topicName = null)
+    {
+        $transaction = Yii::$app->db->beginTransaction();
+        try {
+            $topics = static::find()
+                ->where(['IS NOT', 'contentcontainer_id', null])
+                ->andWhere(['module_id' => (new static())->moduleId])
+                ->andFilterWhere(['name' => $topicName])
+                ->all();
+
+            foreach ($topics as $topic) {
+                $existingGlobalTopic = Topic::find()->where(['name' => $topic->name, 'contentcontainer_id' => null])->one();
+
+                if ($existingGlobalTopic) {
+                    $globalTopic = $existingGlobalTopic;
+                } else {
+                    $globalTopic = new static([
+                        'name' => $topic->name,
+                        'module_id' => $topic->module_id,
+                        'type' => $topic->type,
+                        'color' => $topic->color,
+                        'sort_order' => $topic->sort_order,
+                        'contentcontainer_id' => null,
+                    ]);
+                    $globalTopic->save(false);
+                }
+                ContentTagRelation::updateAll(['tag_id' => $globalTopic->id], ['tag_id' => $topic->id]);
+                $topic->delete();
+            }
+            $transaction->commit();
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
     }
 }
