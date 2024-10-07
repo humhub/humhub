@@ -14,7 +14,6 @@ use humhub\modules\web\pwa\controllers\OfflineController;
 use humhub\modules\web\pwa\controllers\ServiceWorkerController;
 use humhub\modules\web\security\helpers\Security;
 use Yii;
-use yii\db\Connection;
 
 /**
  * Event Handling Callbacks
@@ -50,13 +49,5 @@ class Events
     {
         // Make sure a new nonce is generated after login
         Security::setNonce(null);
-    }
-
-    public static function onConnectionAfterOpen($event)
-    {
-        /* @var $connection Connection */
-        $connection = $event->sender;
-
-        $connection->pdo->exec('SET time_zone = ' . $connection->quoteValue(Yii::$app->timeZone));
     }
 }

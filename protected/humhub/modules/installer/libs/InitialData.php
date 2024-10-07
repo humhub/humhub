@@ -73,7 +73,6 @@ class InitialData
 
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);
-        Yii::$app->settings->set('defaultLanguage', Yii::$app->language);
 
         // Notification
         Yii::$app->getModule('notification')->settings->set('enable_html5_desktop_notifications', 0);

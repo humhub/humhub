@@ -5,7 +5,6 @@
 use humhub\modules\web\Events;
 use humhub\modules\user\controllers\AuthController;
 use humhub\modules\web\Module;
-use yii\db\Connection;
 use yii\web\Controller;
 
 return [
@@ -20,6 +19,5 @@ return [
     'events' => [
         [Controller::class, Controller::EVENT_BEFORE_ACTION, [Events::class, 'onBeforeAction']],
         [AuthController::class, AuthController::EVENT_AFTER_LOGIN, [Events::class, 'onAfterLogin']],
-        [Connection::class, Connection::EVENT_AFTER_OPEN, [Events::class, 'onConnectionAfterOpen']],
     ],
 ];

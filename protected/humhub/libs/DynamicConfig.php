@@ -91,18 +91,7 @@ class DynamicConfig extends BaseObject
         $config['name'] = Yii::$app->settings->get('name');
 
         // Add Default language
-        $defaultLanguage = Yii::$app->settings->get('defaultLanguage');
-        if ($defaultLanguage !== null && $defaultLanguage != '') {
-            $config['language'] = Yii::$app->settings->get('defaultLanguage');
-        } else {
-            $config['language'] = Yii::$app->language;
-        }
-
-        $serverTimeZone = Yii::$app->settings->get('serverTimeZone');
-        if (!empty($serverTimeZone)) {
-            $config['timeZone'] = $serverTimeZone;
-            $config['components']['formatter']['defaultTimeZone'] = $serverTimeZone;
-        }
+        $config['language'] = Yii::$app->settings->get('defaultLanguage', Yii::$app->language);
 
         // Add Caching
         $cacheClass = Yii::$app->settings->get('cache.class');

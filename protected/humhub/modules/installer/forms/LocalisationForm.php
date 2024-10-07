@@ -57,17 +57,6 @@ class LocalisationForm extends Model
         ];
     }
 
-    /**
-     * @inheritdoc
-     */
-    public function attributeHints()
-    {
-        return [
-            'language' => Yii::t('InstallerModule.base', 'Set default network language.'),
-            'timeZone' => Yii::t('InstallerModule.base', 'Set default network timezone.'),
-        ];
-    }
-
     public function save(): bool
     {
         if (!$this->validate()) {

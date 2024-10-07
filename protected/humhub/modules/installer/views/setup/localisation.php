@@ -14,11 +14,11 @@ use humhub\widgets\Button;
 <div id="localisation" class="panel panel-default animated fadeIn">
 
     <div class="panel-heading">
-        <?= Yii::t('InstallerModule.base', '<strong>Localisation</strong> Settings') ?>
+        <strong><?= Yii::t('InstallerModule.base', 'Localisation') ?></strong>
     </div>
 
     <div class="panel-body">
-        <p><?= Yii::t('InstallerModule.base', 'Your new social network requires a few localization settings. Please update the default timezone and language.') ?></p>
+        <p><?= Yii::t('InstallerModule.base', 'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.') ?></p>
 
         <?php $form = ActiveForm::begin() ?>
 
