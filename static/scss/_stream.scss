@@ -310,7 +310,7 @@ $wallEntryContentLeftPaddingMobile: 0;
 
 .wall-entry-controls a {
     font-size: 11px;
-    color: $text-color-soft;
+    color: var(--bs-link-color);
     margin-top: 10px;
     margin-bottom: 0;
 }

@@ -27,14 +27,14 @@ $module = Yii::$app->getModule('comment');
 
 ?>
 
-<div class="<?= $class ?>" id="comment_<?= $comment->id; ?>"
-     data-action-component="comment.Comment">
+<hr class="comment-separator">
 
-    <hr class="comment-separator">
+<div class="<?= $class ?>" id="comment_<?= $comment->id ?>"
+     data-action-component="comment.Comment">
 
     <?= CommentControls::widget(['comment' => $comment]) ?>
 
-    <div class="flex-shrink-0">
+    <div class="flex-shrink-0 comment-header-image">
         <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id]]) ?>
     </div>
 

@@ -12738,9 +12738,6 @@ table td a:hover {
 .comment-container {
   margin-top: 10px;
 }
-.comment-container .wall-entry-controls {
-  margin-left: 35px;
-}
 @media (max-width: 767px) {
   .comment .post-files img {
     height: 100px;
@@ -12785,6 +12782,9 @@ table td a:hover {
   margin-top: 0;
   padding-top: 5px;
 }
+.comment .d-flex .comment-header-image {
+  margin-right: 10px;
+}
 .comment .comment-blocked-user img[data-contentcontainer-id] {
   filter: grayscale(100%);
 }
@@ -12816,16 +12816,15 @@ table td a:hover {
 .comment-container [data-ui-richtext] pre, .comment-container [data-ui-richtext] pre code.hljs {
   background-color: #ececec;
 }
-.comment_edit_content {
-  margin-left: 35px;
-  margin-top: 0;
-}
 .comment-message {
   overflow: hidden;
   word-wrap: break-word;
   overflow-wrap: break-word;
   word-break: break-word;
   hyphens: auto;
+}
+.content-create-input-group .mb-3 {
+  margin-bottom: 0 !important;
 }
 .content-create-input-group.scrollActive .upload-buttons {
   right: 22px;
@@ -12836,7 +12835,7 @@ table td a:hover {
   margin-bottom: 3px;
   font-weight: 500;
 }
-div.comment > div.d-flex:first-of-type hr.comment-separator {
+div.comment hr.comment-separator:first-of-type {
   display: none;
 }
 div.comment > div.d-flex:first-of-type .nav-pills.preferences {
@@ -13579,7 +13578,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 }
 .wall-entry-controls a {
   font-size: 11px;
-  color: #555555;
+  color: var(--bs-link-color);
   margin-top: 10px;
   margin-bottom: 0;
 }
