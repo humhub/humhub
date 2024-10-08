@@ -7,10 +7,10 @@ use humhub\modules\admin\widgets\ExportButton;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /**
  * @var $searchModel UserSearch
@@ -73,5 +73,6 @@ use yii\widgets\ActiveForm;
     <?php if ($showPendingRegistrations): ?>
         <br/>
         <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
+        <div class="clearfix"></div>
     <?php endif; ?>
 </div>

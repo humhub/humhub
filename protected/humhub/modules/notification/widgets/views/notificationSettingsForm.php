@@ -1,7 +1,7 @@
 <?php
 
 /* @var $model NotificationSettings */
-/* @var $form yii\widgets\ActiveForm */
+/* @var $form humhub\widgets\form\ActiveForm */
 /* @var $showSpaces bool */
 
 /* @var $defaultSpaces Space[] */

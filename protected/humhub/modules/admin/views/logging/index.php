@@ -42,8 +42,11 @@ if ($filter->day) {
 </style>
 
 <div id="admin-log-root">
-    <div class="row" data-ui-widget="admin.log.LogFilterForm" data-ui-init="1">
-        <?php $form = ActiveForm::begin(['action' => Url::to(['/admin/logging/index'])]) ?>
+    <div data-ui-widget="admin.log.LogFilterForm" data-ui-init="1">
+        <?php $form = ActiveForm::begin([
+            'action' => Url::to(['/admin/logging/index']),
+            'options' => ['class' => 'row'],
+        ]) ?>
 
         <div class="col-md-3 col-md-push-1" style="padding-right:0">
             <?= $form->field($filter, 'term')->textInput(

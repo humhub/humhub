@@ -150,6 +150,7 @@
     }
 
     .card {
+        border: none;
         display: flex;
         flex-direction: row;
 
@@ -219,6 +220,8 @@
             padding: 16px;
             display: table;
             width: 100%;
+            border-bottom: none;
+            background-color: transparent;
 
             .card-image-wrapper {
                 display: table-cell;
@@ -293,6 +296,8 @@
 
         .card-footer {
             padding: 0 16px 20px;
+            border-top: none;
+            background-color: transparent;
 
             a.btn {
                 float: left;

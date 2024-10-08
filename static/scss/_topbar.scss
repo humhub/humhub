@@ -350,6 +350,7 @@
                 text-transform: uppercase;
                 text-align: center;
 
+                &.active,
                 &:hover,
                 &:active,
                 &:focus {
@@ -358,17 +359,6 @@
                     color: $text-color-highlight;
                     text-decoration: none;
                 }
-
-                &.active {
-                    min-height: 47px;
-
-                    &,
-                    &:hover,
-                    &:focus {
-                        border-bottom: none;
-                    }
-                }
-
 
                 &#space-menu {
                     padding-right: 13px;
@@ -389,6 +379,10 @@
 
                 .caret {
                     border-top-color: $text-color-secondary;
+                }
+
+                i {
+                    font-size: 14px;
                 }
             }
 

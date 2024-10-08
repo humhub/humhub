@@ -42,7 +42,7 @@ class MenuLink extends MenuEntry
     public function getLink()
     {
         if (!$this->link) {
-            $this->link = Button::asLink();
+            $this->link = Button::none();
         }
 
         return $this->link;

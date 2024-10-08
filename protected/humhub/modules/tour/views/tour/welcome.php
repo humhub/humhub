@@ -7,9 +7,9 @@ use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /* @var $user User */
 

@@ -8,7 +8,7 @@ Module and Theme Migration Guide to Bootstrap 5
 
 ## Removed
 
-- `humhub\widgets\ActiveForm` use `humhub\widgets\bootstrap\ActiveForm` instead
+- `humhub\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
 - `js/humhub/legacy/jquery.loader.js`
 
 ## New
@@ -132,8 +132,9 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `align-center` -> `text-center` or `d-flex justify-content-center`
 - `col-xs-` -> `col- ` and make sure the parent element has the `row` class, and the parent of parent the `container` class ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
 - `input-group-addon` -> `input-group-text` (or `input-group-prepend` or `input-group-append`)
-- `Button::none(` -> `Button::asLink(`
 - `form-group` -> `mb-3`
+- `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`  -> `humhub\widgets\form\ActiveForm` (required for the new Bootstrap 5 syntax)
+- `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`  -> `humhub\widgets\form\ActiveField` (required for the new Bootstrap 5 syntax)
 - Remove `jumbotron` class
 
 ### Input groups

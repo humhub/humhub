@@ -4,9 +4,9 @@ use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
 use yii\captcha\Captcha;
-use yii\widgets\ActiveForm;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 

@@ -3,7 +3,7 @@
 use humhub\compat\HForm;
 use humhub\helpers\Html;
 use humhub\modules\user\models\ProfileField;
-use yii\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $field ProfileField */
 /* @var $hForm HForm */

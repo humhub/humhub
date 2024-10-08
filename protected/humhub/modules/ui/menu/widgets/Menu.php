@@ -16,7 +16,6 @@ use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\helpers\Url;
-use yii\web\View;
 
 /**
  * Base class for menus and navigations.
@@ -378,17 +377,4 @@ abstract class Menu extends JsWidget
             $this->removeEntry($entry);
         }
     }
-
-    /**
-     * @deprecated since 1.4
-     */
-    public static function setViewState()
-    {
-        $instance = new static();
-        if (!empty($instance->id)) {
-            $active = $instance->getActive();
-            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("' . $instance->id . '", ' . json_encode($active) . ');', View::POS_END, 'active-' . $instance->id);
-        }
-    }
-
 }

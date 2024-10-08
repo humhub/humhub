@@ -77,7 +77,7 @@ $columns[] = [
 
         <?= Html::beginForm('#', 'post', [
             'id' => 'screen-options',
-            'class' => 'dropdown-menu p-4'
+            'class' => 'dropdown-menu',
         ]) ?>
         <div>
             <h6 class="dropdown-header">

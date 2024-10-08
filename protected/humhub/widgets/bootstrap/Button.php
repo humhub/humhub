@@ -25,8 +25,6 @@ class Button extends \yii\bootstrap5\Button
 {
     use BootstrapVariationsTrait;
 
-    public bool $asLink = false;
-
     public bool $loader = true;
     /**
      * @inerhitdoc
@@ -43,7 +41,15 @@ class Button extends \yii\bootstrap5\Button
         $button = self::instance($label)
             ->loader(false)
             ->link($href);
-        $button->asLink = true;
+        Html::removeCssClass($button->options, ['class' => 'btn']);
+        return $button;
+    }
+
+    public static function none(string $label = null): static
+    {
+        $button = self::instance($label)
+            ->loader(false);
+        Html::removeCssClass($button->options, ['class' => 'btn']);
         return $button;
     }
 
@@ -194,10 +200,6 @@ class Button extends \yii\bootstrap5\Button
         $text =
             ($this->icon ? $this->icon . ' ' : '') .
             ($this->encodeLabel ? Html::encode($this->label) : $this->label);
-
-        if ($this->asLink) {
-            Html::removeCssClass($this->options, ['class' => 'btn']);
-        }
 
         if ($this->size) {
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);

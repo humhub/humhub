@@ -14,10 +14,10 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
-use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\widgets\form\ActiveField;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
 use Yii;
-use yii\widgets\ActiveField;
 
 /**
  * HForm - Yii1 compatible form generator

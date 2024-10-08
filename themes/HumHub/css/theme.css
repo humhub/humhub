@@ -11171,17 +11171,11 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   text-transform: uppercase;
   text-align: center;
 }
-#topbar-second .nav > li.nav-item > a.nav-link:hover, #topbar-second .nav > li.nav-item > a.nav-link:active, #topbar-second .nav > li.nav-item > a.nav-link:focus {
+#topbar-second .nav > li.nav-item > a.nav-link.active, #topbar-second .nav > li.nav-item > a.nav-link:hover, #topbar-second .nav > li.nav-item > a.nav-link:active, #topbar-second .nav > li.nav-item > a.nav-link:focus {
   border-bottom: 3px solid #21A1B3;
   background-color: #f9f9f9;
   color: #000;
   text-decoration: none;
-}
-#topbar-second .nav > li.nav-item > a.nav-link.active {
-  min-height: 47px;
-}
-#topbar-second .nav > li.nav-item > a.nav-link.active, #topbar-second .nav > li.nav-item > a.nav-link.active:hover, #topbar-second .nav > li.nav-item > a.nav-link.active:focus {
-  border-bottom: none;
 }
 #topbar-second .nav > li.nav-item > a.nav-link#space-menu {
   padding-right: 13px;
@@ -11198,6 +11192,9 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 #topbar-second .nav > li.nav-item > a.nav-link .caret {
   border-top-color: #7a7a7a;
+}
+#topbar-second .nav > li.nav-item > a.nav-link i {
+  font-size: 14px;
 }
 #topbar-second .nav > li.nav-item > ul > li > a {
   border-left: 3px solid #fff;
@@ -11264,6 +11261,10 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 .dropdown-menu {
   --bs-dropdown-bg: var(--hh-background-color-main);
+  --bs-dropdown-font-size: 14px;
+}
+.dropdown-menu .dropdown-header {
+  font-size: 12px;
 }
 @media (min-width: 576px) {
   .dropdown-menu li a {
@@ -11650,9 +11651,6 @@ ul.tab-menu-settings .nav-link.active {
 .nav-pills.preferences li.nav-item:has(> .dropdown-divider):last-of-type {
   display: none;
 }
-.nav-pills > li.nav-item > a.nav-link, .nav-pills > li.nav-item > a.nav-link:hover, .nav-pills > li.nav-item > a.nav-link:focus {
-  background-color: #435f6f;
-}
 .nav-tabs {
   margin-bottom: 10px;
 }
@@ -12034,6 +12032,7 @@ ul.tab-menu-settings .nav-link.active {
 }
 label {
   font-weight: 700;
+  margin-bottom: 5px;
 }
 .radio, .checkbox {
   margin-top: 5px !important;
@@ -12847,6 +12846,7 @@ div.nested-comments-root div.comment-container {
 }
 label {
   font-weight: 700;
+  margin-bottom: 5px;
 }
 .radio, .checkbox {
   margin-top: 5px !important;
@@ -15224,6 +15224,7 @@ img.bounceIn {
   line-height: 34px;
 }
 .container-cards .card {
+  border: none;
   display: flex;
   flex-direction: row;
 }
@@ -15282,6 +15283,8 @@ img.bounceIn {
   padding: 16px;
   display: table;
   width: 100%;
+  border-bottom: none;
+  background-color: transparent;
 }
 .container-cards .card .card-header .card-image-wrapper {
   display: table-cell;
@@ -15342,6 +15345,8 @@ img.bounceIn {
 }
 .container-cards .card .card-footer {
   padding: 0 16px 20px;
+  border-top: none;
+  background-color: transparent;
 }
 .container-cards .card .card-footer a.btn {
   float: left;
@@ -15373,6 +15378,7 @@ img.bounceIn {
 }
 .container-modules .card-module .card-header {
   position: relative;
+  border-bottom: none;
 }
 .container-modules .card-module .card-body {
   padding-top: 8px;
@@ -15515,6 +15521,7 @@ img.bounceIn {
 }
 .container-module-updates .card {
   padding-right: 1px;
+  background-color: transparent;
 }
 .container-module-updates .card .card-panel {
   color: #FFF;

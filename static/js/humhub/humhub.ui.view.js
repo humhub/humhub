@@ -30,15 +30,6 @@ humhub.module('ui.view', function (module, require, $) {
         return module.getWidth() >= 991;
     };
 
-    var setState = function (moduleId, controlerId, action) {
-        state = {
-            title: document.title,
-            moduleId: moduleId,
-            controllerId: controlerId,
-            action: action
-        };
-    };
-
     var getHeight = function () {
         return window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
     };
@@ -181,8 +172,6 @@ humhub.module('ui.view', function (module, require, $) {
         getHeight: getHeight,
         getWidth: getWidth,
         getContentTop: getContentTop,
-        // This function is called by controller itself
-        setState: setState,
         getViewContext: getViewContext,
         setViewContext: setViewContext,
         getState: function () {

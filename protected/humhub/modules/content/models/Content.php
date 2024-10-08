@@ -1098,15 +1098,4 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     {
         return new ContentStateService(['content' => $this]);
     }
-
-    /**
-     * @param int|string|null $state
-     * @param array $options Additional options depending on state
-     * @since 1.14
-     * @deprecated Use $this->getStateService()->set(). It will be deleted in v1.15.
-     */
-    public function setState($state, array $options = [])
-    {
-        $this->getStateService()->set($state, $options);
-    }
 }

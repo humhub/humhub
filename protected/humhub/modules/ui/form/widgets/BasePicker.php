@@ -131,7 +131,7 @@ abstract class BasePicker extends JsInputWidget
      * If the ActiveForm is set, it will be used to create the picker field,
      * otherwise it's created by Html::activeDropDownList
      *
-     * @var \yii\widgets\ActiveForm
+     * @var \humhub\widgets\form\ActiveForm
      */
     public $form;
 

@@ -67,16 +67,16 @@ use yii\helpers\Url;
             <br/><br/>
             <div class="input-group" style="width: 100%;">
                 <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
-                <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
-                    <a href="#" class="float-end"
-                       data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
-                       data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
-                       data-action-click="ui.modal.load"
-                       data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link']) ?>">
-                        <small><?= Yii::t('SpaceModule.base', 'Create new link'); ?></small>
-                    </a>
-                <?php endif; ?>
             </div>
+            <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
+                <a href="#" class="float-end"
+                   data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
+                   data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
+                   data-action-click="ui.modal.load"
+                   data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link']) ?>">
+                    <small><?= Yii::t('SpaceModule.base', 'Create new link'); ?></small>
+                </a>
+            <?php endif; ?>
             <br>
             <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
                 ->link('mailto:' .

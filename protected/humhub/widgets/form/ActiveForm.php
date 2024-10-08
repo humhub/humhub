@@ -88,4 +88,13 @@ class ActiveForm extends \yii\bootstrap5\ActiveForm
         return Html::endTag('fieldset') .
             Html::endTag('div');
     }
+
+    /**
+     * {@inheritDoc}
+     * @return ActiveField|\yii\bootstrap5\ActiveField|\yii\widgets\ActiveField
+     */
+    public function field($model, $attribute, $options = []): ActiveField
+    {
+        return parent::field($model, $attribute, $options);
+    }
 }

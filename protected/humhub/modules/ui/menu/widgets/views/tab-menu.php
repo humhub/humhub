@@ -16,7 +16,7 @@ use humhub\modules\ui\view\components\View;
     <?php foreach ($entries as $entry): ?>
         <li class="nav-item">
             <?= $entry->render([
-                'class' => ['nav-link'] + ($entry->getIsActive() ? ['active'] : []),
+                'class' => 'nav-link' . ($entry->getIsActive() ? ' active' : ''),
             ]) ?>
         </li>
     <?php endforeach; ?>

@@ -16,7 +16,7 @@ TopNavigationAsset::register($this);
         <?= Html::a(
             $entry->getIcon() . '<br />' . $entry->getLabel(),
             $entry->getUrl(),
-            array_merge(['class' => ['nav-link'] + ($entry->getIsActive() ? ['active'] : [])], $entry->getHtmlOptions())
+            array_merge(['class' => 'nav-link' . ($entry->getIsActive() ? ' active' : '')], $entry->getHtmlOptions())
         ) ?>
     </li>
 <?php endforeach; ?>

@@ -221,8 +221,6 @@ class Controller extends \yii\web\Controller
             }
 
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
-                $this->setJsViewStatus();
-
                 if (Yii::$app->isInstalled()) {
                     // Update "is online" status ony on full page loads
                     (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
@@ -290,23 +288,6 @@ class Controller extends \yii\web\Controller
             return Yii::$app->getResponse();
         }
         return Yii::$app->getResponse()->redirect(Url::to($url), $statusCode);
-    }
-
-    /**
-     * Sets some ui state as current controller/module and active topmenu.
-     *
-     * This is required for some modules in pjax mode.
-     *
-     * @since 1.2
-     */
-    public function setJsViewStatus()
-    {
-        $moduleId = (Yii::$app->controller->module) ? Yii::$app->controller->module->id : '';
-        $this->view->registerJs('humhub.modules.ui.view.setState("' . $moduleId . '", "' . Yii::$app->controller->id . '", "' . Yii::$app->controller->action->id . '");', \yii\web\View::POS_BEGIN);
-
-        if (Yii::$app->request->isPjax) {
-            \humhub\widgets\TopMenu::setViewState();
-        }
     }
 
     /**

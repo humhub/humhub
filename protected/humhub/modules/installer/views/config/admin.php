@@ -2,7 +2,7 @@
 
 use humhub\compat\HForm;
 use humhub\helpers\Html;
-use yii\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /**
  * @var $hForm HForm

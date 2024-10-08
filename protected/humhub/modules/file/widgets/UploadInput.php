@@ -6,10 +6,10 @@ use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\helpers\Html;
 use humhub\modules\file\models\File;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\base\Model;
-use yii\widgets\ActiveForm;
 
 /**
  * The file input will upload files either to the given $url or to the default

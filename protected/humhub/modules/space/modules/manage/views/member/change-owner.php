@@ -3,7 +3,7 @@
 use humhub\modules\space\modules\manage\models\ChangeOwnerForm;
 use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\widgets\bootstrap\Button;
-use yii\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $model ChangeOwnerForm */
 ?>

@@ -169,12 +169,6 @@ ul.tab-menu-settings {
     }
 }
 
-.nav-pills > li.nav-item > a.nav-link {
-    &, &:hover, &:focus {
-        background-color: $primary;
-    }
-}
-
 // Nav-Tabs
 .nav-tabs {
     margin-bottom: 10px;
