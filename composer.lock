@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c01ec00c3b5160c13f2b8ceddefd72e0",
+    "content-hash": "b5853e88b4ff718831b18d59def323dd",
     "packages": [
         {
             "name": "async-aws/core",
@@ -3864,6 +3864,21 @@
                 "url": "https://registry.npmjs.org/jquery-autosize/-/jquery-autosize-1.18.18.tgz"
             },
             "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/jquery-highlight",
+            "version": "3.5.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/jquery-highlight/-/jquery-highlight-3.5.0.tgz"
+            },
+            "require": {
+                "npm-asset/jquery": ">=1.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
         },
         {
             "name": "npm-asset/jquery-knob",
@@ -14221,5 +14236,5 @@
     "platform-overrides": {
         "php": "8.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

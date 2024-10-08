@@ -8,18 +8,22 @@
 
 namespace humhub\assets;
 
-use humhub\components\assets\WebStaticAssetBundle;
+use yii\web\AssetBundle;
 
 /**
  * jquery-highlight
  *
  * @author buddha
  */
-class JqueryHighlightAsset extends WebStaticAssetBundle
+class JqueryHighlightAsset extends AssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $js = ['js/jquery.highlight.min.js'];
+    public $sourcePath = '@npm/jquery-highlight';
 
+    /**
+     * @inheritdoc
+     */
+    public $js = ['jquery.highlight.js'];
 }

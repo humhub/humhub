@@ -16,7 +16,6 @@
 use humhub\modules\user\models\User;
 use yii\helpers\Html;
 
-$this->registerJsFile("@web-static/js/jquery.highlight.min.js");
 $this->registerJsFile("@web-static/resources/user/userpicker.js");
 ?>
 
