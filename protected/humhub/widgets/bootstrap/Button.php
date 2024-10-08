@@ -197,15 +197,15 @@ class Button extends \yii\bootstrap5\Button
 
         if ($this->asLink) {
             Html::removeCssClass($this->options, ['class' => 'btn']);
-            $href = $this->options['href'] ?? null;
-            return Html::a($text, $href, $this->options);
         }
 
         if ($this->size) {
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);
         }
 
-        return Html::button($text, $this->options);
+        return $this->getHref() ?
+            Html::a($text, $this->getHref(), $this->options) :
+            Html::button($text, $this->options);
     }
 
     public static function instance(?string $text = null, ?string $color = null): static

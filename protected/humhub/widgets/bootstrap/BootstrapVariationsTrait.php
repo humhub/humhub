@@ -226,4 +226,20 @@ trait BootstrapVariationsTrait
         $this->_visible = $isVisible;
         return $this;
     }
+
+    /**
+     * @deprecated since 1.18
+     */
+    public function color($color)
+    {
+        return $this;
+    }
+
+    /**
+     * @deprecated since 1.18
+     */
+    public function textColor($color)
+    {
+        return $this;
+    }
 }

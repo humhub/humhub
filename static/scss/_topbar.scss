@@ -213,8 +213,8 @@
         }
     }
 
-    a {
-        color: white;
+    a:not(.btn) {
+        color: $text-color-contrast;
     }
 
     .caret {

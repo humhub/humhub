@@ -11068,8 +11068,8 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 #topbar-first .dropdown-footer .btn {
   width: 100%;
 }
-#topbar-first a {
-  color: white;
+#topbar-first a:not(.btn) {
+  color: #fff;
 }
 #topbar-first .caret {
   border-top-color: #fff;
@@ -11084,13 +11084,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 #topbar-first .btn-enter:hover {
   background-color: #527588;
 }
-#topbar-first .media-list {
-  padding: 8px;
-  margin: 0 16px 5px;
-  color: #000;
-  border-radius: 4px;
-  border: none;
-}
 #topbar-first .media-list a {
   color: #000;
   padding: 0;
@@ -11100,7 +11093,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   background: none;
 }
 #topbar-first .media-list a.new:hover {
-  background-color: #f9f9f9;
+  background-color: #f9f9f9 !important;
 }
 #topbar-first .media-list a.new time {
   color: #21A1B3;
