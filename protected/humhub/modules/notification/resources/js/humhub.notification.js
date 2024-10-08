@@ -109,8 +109,8 @@ humhub.module('notification', function (module, require, $) {
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
 
-        // Since the handler will be called before the bootstrap trigger it's an open event if the dropdown is not visible yet
-        this.isOpen = !this.$dropdown.is(':visible');
+        // Since the handler will be called before the bootstrap trigger, isOpen is true if the dropdown is shown
+        this.isOpen = this.$dropdown.hasClass('show');
         if (this.isOpen) {
             this.$entryList.empty().hide();
             this.loadEntries();

@@ -4,6 +4,12 @@
 
 
 .media-list {
+
+    &.dropdown-item:hover {
+        background-color: inherit;
+        color: inherit;
+    }
+
     > div, > a {
         padding: 10px;
         border-bottom: 1px solid #eee;
