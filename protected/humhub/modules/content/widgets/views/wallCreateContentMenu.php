@@ -17,8 +17,8 @@ use humhub\modules\ui\menu\MenuEntry;
 <ul class="nav nav-tabs">
     <?php foreach ($entries as $e => $entry) : ?>
         <?php $entry->setIsActive($e === 0) ?>
-        <li class="nav-item<?= $entry->getIsActive() ? ' active' : '' ?>">
-            <?= $entry->render(['class' => 'nav-link']) ?>
+        <li class="nav-item">
+            <?= $entry->render(['class' => ['nav-link'] + ($entry->getIsActive() ? ['active'] : [])]) ?>
         </li>
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
             <li class="nav-item content-create-menu-more">

@@ -108,15 +108,11 @@ class Modal extends \yii\bootstrap5\Modal
      *   ```
      *   <?php Modal::beginDialog([
      *     'title' => Yii::t('ModuleIdModule.base', 'Title'),
+     *     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
      *     'id' => 'modal-custom-id',
      *     'size' => Modal::SIZE_LARGE,
      *   ]) ?>
-     *     <div class="modal-body">
      *       Content
-     *     </div>
-     *     <div class="modal-footer">
-     *       <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
-     *     </div>
      *   <?php Modal::endDialog()?>
      *   ```
      */

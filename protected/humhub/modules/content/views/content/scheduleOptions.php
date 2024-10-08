@@ -17,7 +17,6 @@ use humhub\widgets\modal\ModalButton;
 /* @var ScheduleOptionsForm $scheduleOptions */
 /* @var bool $disableInputs */
 ?>
-<?php Modal::beginDialog(['header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options')]) ?>
 
 <?php $form = ActiveForm::begin() ?>
 <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>
@@ -25,33 +24,32 @@ use humhub\widgets\modal\ModalButton;
 <?= Html::hiddenInput('buttonTitle', Yii::t('ContentModule.base', 'Save scheduling')) ?>
 <?= Html::hiddenInput('scheduledDate', $scheduleOptions->date) ?>
 
-<div class="modal-body">
-    <?= $form->field($scheduleOptions, 'enabled')->checkbox() ?>
-    <div class="row">
-        <div class="col-sm-3 col-6">
-            <?= $form->field($scheduleOptions, 'date')
-                ->widget(DatePicker::class, ['options' => ['disabled' => $disableInputs]])
-                ->label(false) ?>
-        </div>
-        <div class="col-sm-3 col-6" style="padding-left:0">
-            <?= $form->field($scheduleOptions, 'time')
-                ->widget(TimePicker::class, ['disabled' => $disableInputs])
-                ->label(false) ?>
-        </div>
-        <div class="col-12">
-            <p class="help-block"><?= Yii::t('ContentModule.base', 'Note: Due to technical reasons there may be a delay of a few minutes.') ?></p>
-        </div>
+
+<?php Modal::beginDialog([
+    'header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options'),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
+]) ?>
+
+<?= $form->field($scheduleOptions, 'enabled')->checkbox() ?>
+<div class="row">
+    <div class="col-sm-3 col-6">
+        <?= $form->field($scheduleOptions, 'date')
+            ->widget(DatePicker::class, ['options' => ['disabled' => $disableInputs]])
+            ->label(false) ?>
+    </div>
+    <div class="col-sm-3 col-6" style="padding-left:0">
+        <?= $form->field($scheduleOptions, 'time')
+            ->widget(TimePicker::class, ['disabled' => $disableInputs])
+            ->label(false) ?>
+    </div>
+    <div class="col-12">
+        <p class="help-block"><?= Yii::t('ContentModule.base', 'Note: Due to technical reasons there may be a delay of a few minutes.') ?></p>
     </div>
 </div>
 
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= ModalButton::submitModal() ?>
-</div>
+<?php Modal::endDialog() ?>
 
 <?php ActiveForm::end() ?>
-
-<?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
     $('#scheduleoptionsform-enabled').click(function () {

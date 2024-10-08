@@ -1,6 +1,11 @@
 //
 // Forms
 // --------------------------------------------------
+
+label {
+    font-weight: 700;
+}
+
 .radio,
 .checkbox {
     margin-top: 5px !important;
@@ -60,11 +65,6 @@ div.required.has-error > label:after {
         right: 4px;
         border-radius: 30px;
     }
-}
-
-textarea {
-    resize: none;
-    height: 1.5em;
 }
 
 select.form-control:not([multiple]) {

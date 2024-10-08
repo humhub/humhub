@@ -12,9 +12,7 @@ use humhub\widgets\modal\Modal;
 <?php Modal::beginDialog(['header' => $title]) ?>
 
 <?php if (count($spaces) === 0) : ?>
-    <div class="modal-body">
-        <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
-    </div>
+    <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
 <?php endif; ?>
 
 <div id="spacelist-content">
@@ -25,8 +23,8 @@ use humhub\widgets\modal\Modal;
             <a href="<?= $space->getUrl() ?>" data-modal-close="1" class="d-flex">
                 <div class="flex-shrink-0">
                     <img class="rounded"
-                     src="<?= $space->getProfileImage()->getUrl() ?>" width="50"
-                     height="50" style="width: 50px; height: 50px;">
+                         src="<?= $space->getProfileImage()->getUrl() ?>" width="50"
+                         height="50" style="width: 50px; height: 50px;">
                 </div>
 
                 <div class="flex-grow-1">

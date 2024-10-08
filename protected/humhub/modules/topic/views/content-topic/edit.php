@@ -18,16 +18,15 @@ use humhub\widgets\modal\ModalButton;
 
 ?>
 
-<?php Modal::beginDialog(['header' => Yii::t('TopicModule.base', '<strong>Manage</strong> Topics')]) ?>
 <?php $form = ActiveForm::begin() ?>
-<div class="modal-body">
-    <?= $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer(), 'options' => ['autofocus' => '']])->label(false) ?>
-</div>
 
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= ModalButton::submitModal() ?>
-</div>
+<?php Modal::beginDialog([
+    'header' => Yii::t('TopicModule.base', '<strong>Manage</strong> Topics'),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
+]) ?>
+
+<?= $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer(), 'options' => ['autofocus' => '']])->label(false) ?>
+
+<?php Modal::endDialog() ?>
 
 <?php ActiveForm::end() ?>
-<?php Modal::endDialog() ?>

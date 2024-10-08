@@ -32,14 +32,16 @@ use yii\widgets\ActiveForm;
             <?php if ($canRegister && $showRegistrationForm) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="nav-item<?= !isset($_POST['Invite']) ? ' active' : '' ?> tab-login"><a
+                        <li class="nav-item tab-login">
+                            <a
                                 href="#login"
-                                class="nav-link"
+                                class="nav-link<?= !isset($_POST['Invite']) ? ' active' : '' ?>"
                                 data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login') ?></a>
                         </li>
-                        <li class="nav-item<?= (isset($_POST['Invite'])) ? ' active' : '' ?> tab-register"><a
+                        <li class="nav-item tab-register">
+                            <a
                                 href="#register"
-                                class="nav-link"
+                                class="nav-link<?= (isset($_POST['Invite'])) ? ' active' : '' ?>"
                                 data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
                         </li>
                     </ul>
@@ -49,7 +51,7 @@ use yii\widgets\ActiveForm;
 
 
             <div class="tab-content">
-                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
+                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : "" ?>" id="login">
 
                     <?php if (Yii::$app->session->hasFlash('error')): ?>
                         <div class="alert alert-danger" role="alert">

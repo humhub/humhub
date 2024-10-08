@@ -14,24 +14,25 @@ $canMove = $model->isMovable() === true;
 
 ?>
 
-<?php Modal::beginDialog(['header' => Yii::t('ContentModule.base', '<strong>Move</strong> content')]) ?>
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
-<div class="modal-body">
-    <?php if ($canMove): ?>
-        <?= $form->field($model, 'target')->widget(SpacePickerField::class, [
-            'maxSelection' => 1,
-            'focus' => true,
-            'url' => $model->getSearchUrl()
-        ]) ?>
-    <?php else: ?>
-        <div class="alert alert-warning">
-            <?= Yii::t('ContentModule.base', $movableResult); ?>
-        </div>
-    <?php endif; ?>
-</div>
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove) ?>
-</div>
-<?php ActiveForm::end() ?>
+
+<?php Modal::beginDialog([
+    'header' => Yii::t('ContentModule.base', '<strong>Move</strong> content'),
+    'footer' => ModalButton::cancel() . ' ' . Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove),
+]) ?>
+
+<?php if ($canMove): ?>
+    <?= $form->field($model, 'target')->widget(SpacePickerField::class, [
+        'maxSelection' => 1,
+        'focus' => true,
+        'url' => $model->getSearchUrl(),
+    ]) ?>
+<?php else: ?>
+    <div class="alert alert-warning">
+        <?= Yii::t('ContentModule.base', $movableResult); ?>
+    </div>
+<?php endif; ?>
+
 <?php Modal::endDialog() ?>
+
+<?php ActiveForm::end() ?>

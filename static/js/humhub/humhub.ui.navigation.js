@@ -7,11 +7,6 @@ humhub.module('ui.navigation', function (module, require, $) {
     };
 
     var initTopNav = function () {
-        // Default implementation for topbar. Activate li on click.
-        $('#top-menu-nav a:not(#space-menu):not(#top-dropdown-menu):not([data-action-click="ui.modal.load"])').on('click', function () {
-            module.setActiveItem($(this));
-        });
-
         event.on('humhub:ready', function () {
             // Activate by config
             $.each(module.config['active'], function (id, url) {
@@ -28,7 +23,6 @@ humhub.module('ui.navigation', function (module, require, $) {
         }
 
         if (!item) {
-            module.setActiveItem(null);
             return;
         }
 
@@ -42,32 +36,12 @@ humhub.module('ui.navigation', function (module, require, $) {
         if ((!$item || !$item.length) && item.url) {
             $item = $menu.find('[href="' + item.url + '"]');
         }
-
-        module.setActiveItem($item);
-    };
-
-    var setActiveItem = function ($item) {
-        $('#top-menu-nav li').removeClass('active');
-
-        if (!$item || !$item.length) {
-            return;
-        }
-
-        $item.each(function () {
-            var $this = $(this);
-            $this.closest('ul').find('li').removeClass('active');
-            $this.closest('ul').find('a').removeClass('active');
-            $this.closest('li').addClass('active');
-            $this.addClass('active');
-            $this.trigger('blur');
-        });
     };
 
     module.export({
         init: init,
         sortOrder: 100,
         setActive: setActive,
-        initTopNav: initTopNav,
-        setActiveItem: setActiveItem
+        initTopNav: initTopNav
     });
 });

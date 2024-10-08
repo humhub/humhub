@@ -39,6 +39,7 @@ use humhub\widgets\PanelMenu;
                 <br>
                 <br>
                 <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'float-end btn btn-sm btn-light', 'data-bs-target' => '#globalModal']); ?>
+                <div class="clearfix"></div>
             <?php endif; ?>
         </div>
     </div>

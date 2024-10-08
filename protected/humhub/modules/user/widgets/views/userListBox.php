@@ -10,12 +10,13 @@ use humhub\widgets\modal\ModalButton;
 /* @var bool $hideOnlineStatus */
 ?>
 
-<?php Modal::beginDialog(['header' => $title]) ?>
+<?php Modal::beginDialog([
+    'header' => $title,
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+]) ?>
 
 <?php if (count($users) === 0): ?>
-    <div class="modal-body">
-        <p><?= Yii::t('UserModule.base', 'No users found.'); ?></p>
-    </div>
+    <p><?= Yii::t('UserModule.base', 'No users found.'); ?></p>
 <?php endif; ?>
 
 <div id="userlist-content">
@@ -43,13 +44,8 @@ use humhub\widgets\modal\ModalButton;
 <div class="pagination-container">
     <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
 </div>
-</div>
 
-<div class="modal-footer">
-    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
-</div>
-
-<script <?= \humhub\helpers\Html::nonce() ?>>
+<script <?= Html::nonce() ?>>
 
     // scroll to top of list
     $(".modal-body").animate({scrollTop: 0}, 200);

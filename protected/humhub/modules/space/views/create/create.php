@@ -15,35 +15,36 @@ use yii\helpers\Url;
 $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 ?>
 
-<?php Modal::beginDialog(['header' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'), 'size' => 'small']) ?>
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
-<div class="modal-body">
 
-    <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
-    <?= $form->field($model, 'description'); ?>
+<?php Modal::beginDialog([
+    'header' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'),
+    'footer' => ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.manage', 'Next')),
+    'size' => Modal::SIZE_SMALL,
+]) ?>
 
-    <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
-        <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.manage', 'Advanced access settings'); ?>
-    </a>
+<?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
+<?= $form->field($model, 'description'); ?>
 
-    <div id="collapse-access-settings" class="panel-collapse collapse">
-        <br>
-        <div class="row">
-            <div class="col-md-6">
-                <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false); ?>
-            </div>
-            <div class="col-md-6 spaceJoinPolicy">
-                <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false); ?>
-            </div>
+<a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
+    <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.manage', 'Advanced access settings'); ?>
+</a>
+
+<div id="collapse-access-settings" class="panel-collapse collapse">
+    <br>
+    <div class="row">
+        <div class="col-md-6">
+            <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false); ?>
+        </div>
+        <div class="col-md-6 spaceJoinPolicy">
+            <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false); ?>
         </div>
     </div>
 </div>
 
-<div class="modal-footer">
-    <?= ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.manage', 'Next')); ?>
-</div>
-<?php ActiveForm::end(); ?>
 <?php Modal::endDialog(); ?>
+
+<?php ActiveForm::end(); ?>
 
 <script <?= Html::nonce() ?>>
 

@@ -11,14 +11,17 @@
 .tab-sub-menu {
     padding-left: 10px;
 
-    li > a:hover, li > a:focus {
-        background-color: $background-color-secondary;
-        border-bottom-color: var(--bs-nav-tabs-border-color);
-    }
+    .nav-link {
+        &:hover,
+        &:focus {
+            background-color: $background-color-secondary;
+            border-bottom-color: var(--bs-nav-tabs-border-color);
+        }
 
-    li.active > a {
-        background-color: $background-color-main;
-        border-bottom-color: transparent;
+        &.active {
+            background-color: $background-color-main;
+            border-bottom-color: transparent;
+        }
     }
 }
 
@@ -30,32 +33,30 @@
         padding-left: 10px;
         border-bottom: none; // Overwrite BS5 default border, as it's added to li > a
 
-        li > a {
+        .nav-link {
             padding-top: 12px;
             border-color: var(--bs-nav-tabs-border-color);
             border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
             background-color: $background-color-secondary;
             max-height: 41px;
             outline: none;
-        }
 
-        li > a:hover, li > a:focus {
-            padding-top: 10px;
-            border-top: 3px solid var(--bs-nav-tabs-border-color);
-        }
+            &:hover,
+            &:focus {
+                padding-top: 10px;
+                border-top: 3px solid var(--bs-nav-tabs-border-color);
+            }
 
-        li > a:hover {
-            background-color: $background-color-secondary;
-        }
+            &:hover {
+                background-color: $background-color-secondary;
+            }
 
-        li.active > a, li.active > a:hover {
-            padding-top: 10px;
-            border-top: 3px solid $info;
-        }
-
-        li.active > a {
-            background-color: $background-color-main;
-            border-bottom-color: transparent;
+            &.active {
+                padding-top: 10px;
+                border-top: 3px solid $info;
+                background-color: $background-color-main;
+                border-bottom-color: transparent;
+            }
         }
     }
 }
@@ -68,32 +69,30 @@ ul.tab-menu {
 }
 
 ul.tab-menu-settings {
-    li > a {
+    .nav-link {
         padding-top: 12px;
         border-color: var(--bs-nav-tabs-border-color);
         border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
         background-color: $background-color-secondary;
         max-height: 41px;
         outline: none;
-    }
 
-    li > a:hover, li > a:focus {
-        padding-top: 10px;
-        border-top: 3px solid var(--bs-nav-tabs-border-color) !important;
-    }
+        &:hover,
+        &:focus {
+            padding-top: 10px;
+            border-top: 3px solid var(--bs-nav-tabs-border-color) !important;
+        }
 
-    li > a:hover {
-        background-color: $background-color-secondary;
-    }
+        &:hover {
+            background-color: $background-color-secondary;
+        }
 
-    li.active > a, li.active > a:hover, li.active > a:focus {
-        padding-top: 10px;
-        border-top: 3px solid $info !important;
-    }
-
-    li.active > a {
-        background-color: $background-color-main;
-        border-bottom-color: transparent !important;
+        &.active {
+            padding-top: 10px;
+            border-top: 3px solid $info !important;
+            background-color: $background-color-main;
+            border-bottom-color: transparent !important;
+        }
     }
 }
 
@@ -133,13 +132,13 @@ ul.tab-menu-settings {
                     width: 19px;
                     text-align: center;
                 }
-            }
 
-            a:hover,
-            a:visited,
-            a:hover,
-            a:focus {
-                background: none;
+                &:hover,
+                &:visited,
+                &:hover,
+                &:focus {
+                    background: none;
+                }
             }
         }
     }
@@ -165,15 +164,15 @@ ul.tab-menu-settings {
         }
     }
 
-    li:has(> .dropdown-divider):last-of-type {
+    li.nav-item:has(> .dropdown-divider):last-of-type {
         display: none;
     }
 }
 
-.nav-pills > li.active > a,
-.nav-pills > li.active > a:hover,
-.nav-pills > li.active > a:focus {
-    background-color: $primary;
+.nav-pills > li.nav-item > a.nav-link {
+    &, &:hover, &:focus {
+        background-color: $primary;
+    }
 }
 
 // Nav-Tabs
@@ -193,24 +192,24 @@ ul.tab-menu-settings {
         }
     }
 
-    > li {
+    > li.nav-item {
         font-weight: 600;
         font-size: 12px;
 
-        > a,
-        > a[data-bs-toggle] {
-            margin-right: 2px;
-            color: $text-color-main;
-        }
+        > a.nav-link {
+            &,
+            &[data-bs-toggle] {
+                margin-right: 2px;
+                color: $text-color-main;
+            }
 
-        &.active > a,
-        &.active > a:hover,
-        &.active > a:focus,
-        > a:hover,
-        > a:focus {
-            color: $text-color-highlight;
-            border: 1px solid var(--bs-nav-tabs-border-color);
-            border-bottom-color: transparent;
+            &.active,
+            &:hover,
+            &:focus {
+                color: $text-color-highlight;
+                border: 1px solid var(--bs-nav-tabs-border-color);
+                border-bottom-color: transparent;
+            }
         }
     }
 }
@@ -307,10 +306,12 @@ ul.tab-menu-settings {
         border: none;
         float: right;
 
-        > li > a, > li.active > a {
-            color: #7A7A7A;
-            background: #fff;
-            border-color: #fff;
+        > li.nav-item > a.nav-link {
+            &, &.active {
+                color: #7A7A7A;
+                background: #fff;
+                border-color: #fff;
+            }
 
             &:hover, &.active {
                 z-index: 1;
@@ -365,7 +366,7 @@ ul.tab-menu-settings {
             display: flex;
             width: 100%;
 
-            > li {
+            > li.nav-item {
                 flex-grow: 1;
                 text-align: center;
 

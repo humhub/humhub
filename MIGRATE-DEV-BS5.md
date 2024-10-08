@@ -44,7 +44,7 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
-- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead
+- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "ModalDialog" chapter bellow)
 - `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
 - `humhub\widgets\modal\JsModal::header` & `humhub\widgets\modal\Modal::header`: use `title` instead
 - `humhub\widgets\modal\JsModal::animation` & `humhub\widgets\modal\Modal::animation` (all modal boxes are opened with the fade animation)
@@ -62,6 +62,49 @@ Module and Theme Migration Guide to Bootstrap 5
 Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
 
 But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead. E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`. If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
+
+### ModalDialog
+
+`ModalDialog::begin()` now includes `<div class="modal-body">`, and the footer must be defined as a parameter, similar to the `header`.
+
+Example:
+
+```php
+<?php ModalDialog::begin([
+	'header' => Yii::t('ModuleIdModule.base', 'Title'),
+]) ?>
+	<div class="modal-body">
+		Content
+	</div>
+	<div class="modal-footer">
+		<?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+	</div>
+<?php ModalDialog::end()?>
+```
+
+Should be replaced with:
+
+```php
+<?php ModalDialog::begin([
+	'header' => Yii::t('ModuleIdModule.base', 'Title'),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+]) ?>
+	Content
+<?php ModalDialog::end()?>
+```
+
+If the footer contains a form submit button, the modal dialog must be included in the form must . Example:
+
+```php
+<?php $form = ActiveForm::begin() ?>
+    <?php ModalDialog::begin([
+        'header' => Yii::t('ModuleIdModule.base', 'Title'),
+        'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
+    ]) ?>
+        The form inputs
+    <?php ModalDialog::end()?>
+<?php ActiveForm::end() ?>
+```
 
 
 ## Replacements in HTML attributes
@@ -98,6 +141,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 Remove `<span class="input-group-btn">` button wrapper inside `<div class="input-group">`.
 
 Example:
+
 ```html
 <div class="input-group">
   <span class="input-group-btn">
@@ -107,6 +151,7 @@ Example:
 ```
 
 Should be replaced with:
+
 ```html
 <div class="input-group">
   <button class="btn btn-secondary">My action</button>
@@ -139,6 +184,7 @@ E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
 - Remove `<span class="caret"></span>` and `<b class="caret"></b>` in dropdown buttons (as there are already added by Bootstrap 5 via the `:after` pseudo-element)
 
 Example:
+
 ```html
 <ul class="dropdown-menu">
     <li><h6 class="dropdown-header">Dropdown header</h6></li>
@@ -152,11 +198,14 @@ Example:
 
 Make sure the required classes `nav-item` and `nav-link` exists in HTML tags about nav & tabs ([see documentation with examples](https://getbootstrap.com/docs/5.3/components/navs-tabs/)). Search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?nav(?:\s[^"']*)?["'][^>]*>`.
 
+The `active` must be added to the `nav-link` element (and not the `nav-item`).
+
 Example:
+
 ```html
 <ul class="nav">
     <li class="nav-item">
-        <a class="nav-link" href="#">Link</a>
+        <a class="nav-link active" href="#">Link</a>
     </li>
     ...
 </ul>
@@ -165,6 +214,7 @@ Example:
 ### Tabs with dropdown
 
 Example:
+
 ```html
 <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -183,6 +233,7 @@ Example:
 ### Spinners
 
 Search for `sk-` and replace this code, or similar:
+
 ```html
 <div class="sk-spinner sk-spinner-three-bounce">
     <div class="sk-bounce1"></div>
@@ -192,11 +243,13 @@ Search for `sk-` and replace this code, or similar:
 ```
 
 with, for a button:
+
 ```html
 <span class="spinner-border spinner-border-sm"></span>
 ```
 
 or, in a container:
+
 ```html
 <div class="text-center">
     <div class="spinner-border" role="status">

@@ -41,11 +41,6 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 
 ?>
 
-<?php Modal::beginDialog([
-    'id' => 'profile-image-crop-modal',
-    'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
-    'size' => Modal::SIZE_SMALL]) ?>
-
 <?php $form = ActiveForm::begin(['id' => 'profile-image-crop-modal-form']); ?>
 <?= $form->errorSummary($model); ?>
 <?= $form->field($model, 'cropX')->hiddenInput(['id' => 'cropX'])->label(false) ?>
@@ -53,38 +48,36 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 <?= $form->field($model, 'cropW')->hiddenInput(['id' => 'cropW'])->label(false) ?>
 <?= $form->field($model, 'cropH')->hiddenInput(['id' => 'cropH'])->label(false) ?>
 
-<div class="modal-body">
-    <style>
-        /* Dirty Workaround against bootstrap and jcrop */
-        #profile-image-crop-modal img {
-            max-width: none;
-        }
+<?php Modal::beginDialog([
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
+    'id' => 'profile-image-crop-modal',
+    'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
+    'size' => Modal::SIZE_SMALL,
+]) ?>
 
-        #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
-            opacity: 0
-        }
+<style>
+    /* Dirty Workaround against bootstrap and jcrop */
+    #profile-image-crop-modal img {
+        max-width: none;
+    }
 
-        #cropimage > .jcrop-holder {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
+    #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
+        opacity: 0
+    }
 
-    <div id="cropimage" style="overflow:hidden;">
-        <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
+    #cropimage > .jcrop-holder {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
 
-        <?= CropImage::widget([
-            'selector' => '#crop-profile-image',
-            'pluginOptions' => $model->getPluginOptions(),
-        ]); ?>
-    </div>
+<div id="cropimage" style="overflow:hidden;">
+    <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
+    <?= CropImage::widget(['selector' => '#crop-profile-image',
+        'pluginOptions' => $model->getPluginOptions(),]); ?>
 </div>
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= ModalButton::submitModal() ?>
-</div>
-
-<?php ActiveForm::end(); ?>
 
 <?php Modal::endDialog() ?>
+
+<?php ActiveForm::end(); ?>

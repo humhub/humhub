@@ -26,8 +26,8 @@ use humhub\modules\user\widgets\PermissionGridEditor;
 
     <ul id="tabs" class="nav nav-tabs tab-sub-menu permission-group-tabs">
         <?php foreach ($groups as $currentGroupId => $groupLabel) : ?>
-            <li class="nav-item<?= ($groupId === $currentGroupId) ? ' active' : '' ?>">
-                <a class="nav-link" href='<?= $space->createUrl('permissions', ['groupId' => $currentGroupId]); ?>'><?= $groupLabel ?></a>
+            <li class="nav-item">
+                <a class="nav-link<?= ($groupId === $currentGroupId) ? ' active' : '' ?>" href='<?= $space->createUrl('permissions', ['groupId' => $currentGroupId]); ?>'><?= $groupLabel ?></a>
             </li>
         <?php endforeach; ?>
     </ul>

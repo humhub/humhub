@@ -35,20 +35,6 @@ body.modal-open {
     }
 }
 
-.modal {
-    border: none;
-
-    h1,
-    h2,
-    h3,
-    h4,
-    h5 {
-        margin-top: 20px;
-        color: $text-color-highlight;
-        font-weight: 300;
-    }
-}
-
 .modal-title {
     font-size: 20px;
     font-weight: 200;
@@ -83,14 +69,12 @@ body.modal-open {
     }
 
     .modal-body {
-        padding: 20px;
         font-size: 13px;
     }
 
     .modal-footer {
         margin-top: 0;
         text-align: left;
-        padding: 10px 20px 30px;
         border-top: none;
         text-align: center;
 

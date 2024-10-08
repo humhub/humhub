@@ -8,20 +8,25 @@ use humhub\widgets\modal\Modal;
 
 /* @var $this View */
 /* @var $object ContentActiveRecord */
-
 ?>
 
-<?php Modal::beginDialog(['header' => Yii::t('CommentModule.base', 'Comments')]) ?>
-<div class="modal-body comment-container comment-modal-body" style="margin-top:0">
-    <div id="userlist-content">
-        <div class="well well-small" id="comment_<?= $id ?>">
-            <div class="comment" id="comments_area_<?= $id ?>">
-                <?= $output ?>
-            </div>
-            <?= Form::widget(['object' => $object]); ?>
+<?php Modal::beginDialog([
+    'header' => Yii::t('CommentModule.base', 'Comments'),
+    'bodyOptions' => [
+        'class' => ['comment-container', 'comment-modal-body'],
+        'style' => 'margin-top: 0;',
+    ],
+]) ?>
+
+<div id="userlist-content">
+    <div class="well well-small" id="comment_<?= $id ?>">
+        <div class="comment" id="comments_area_<?= $id ?>">
+            <?= $output ?>
         </div>
+        <?= Form::widget(['object' => $object]); ?>
     </div>
 </div>
+
 <?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
