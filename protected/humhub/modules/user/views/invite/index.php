@@ -20,7 +20,7 @@ use yii\helpers\Url;
 ?>
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
+    'title' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 

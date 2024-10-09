@@ -49,7 +49,7 @@ $footer =
         ->loader(false);
 
 Modal::beginDialog([
-    'header' => Yii::t('SpaceModule.base', '<strong>Invite</strong> members'),
+    'title' => Yii::t('SpaceModule.base', '<strong>Invite</strong> members'),
     'footer' => $footer,
 ]);
 ?>

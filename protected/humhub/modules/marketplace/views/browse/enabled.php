@@ -21,7 +21,7 @@ if ($moduleConfigUrl) {
 ?>
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('MarketplaceModule.base', 'Module <strong>enabled</strong>'),
+    'title' => Yii::t('MarketplaceModule.base', 'Module <strong>enabled</strong>'),
     'footer' => $footer,
 ]) ?>
 

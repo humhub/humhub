@@ -11,7 +11,7 @@ use humhub\widgets\modal\ModalButton;
 /* @var int $moduleId */
 ?>
 <?php Modal::beginDialog([
-    'header' => Yii::t('MarketplaceModule.base', 'Module <strong>installed</strong>'),
+    'title' => Yii::t('MarketplaceModule.base', 'Module <strong>installed</strong>'),
     'footer' =>
         ModalButton::cancel(Yii::t('MarketplaceModule.base', 'No, thank you!')) . ' ' .
         ModalButton::primary(Yii::t('MarketplaceModule.base', 'Enable now'))

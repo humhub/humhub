@@ -26,7 +26,7 @@ use humhub\widgets\modal\ModalButton;
 
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options'),
+    'title' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options'),
     'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
 ]) ?>
 

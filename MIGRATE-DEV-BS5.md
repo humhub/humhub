@@ -44,7 +44,7 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
-- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "ModalDialog" chapter bellow)
+- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "Modal Dialog" chapter bellow)
 - `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
 - `humhub\widgets\modal\JsModal::header` & `humhub\widgets\modal\Modal::header`: use `title` instead
 - `humhub\widgets\modal\JsModal::animation` & `humhub\widgets\modal\Modal::animation` (all modal boxes are opened with the fade animation)
@@ -63,9 +63,9 @@ Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibil
 
 But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead. E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`. If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
 
-### ModalDialog
+### Modal Dialog
 
-`ModalDialog::begin()` now includes `<div class="modal-body">`, and the footer must be defined as a parameter, similar to the `header`.
+`Modal::beginDialog()` (formerly `ModalDialog::begin()`) now includes `<div class="modal-body">` and the footer must be defined as a parameter, similar to the `header` which has been renamed to `title`.
 
 Example:
 
@@ -85,24 +85,24 @@ Example:
 Should be replaced with:
 
 ```php
-<?php ModalDialog::begin([
-	'header' => Yii::t('ModuleIdModule.base', 'Title'),
+<?php Modal::beginDialog([
+	'title' => Yii::t('ModuleIdModule.base', 'Title'),
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 	Content
-<?php ModalDialog::end()?>
+<?php Modal::endDialog()?>
 ```
 
 If the footer contains a form submit button, the modal dialog must be included in the form must . Example:
 
 ```php
 <?php $form = ActiveForm::begin() ?>
-    <?php ModalDialog::begin([
-        'header' => Yii::t('ModuleIdModule.base', 'Title'),
+    <?php Modal::beginDialog([
+        'title' => Yii::t('ModuleIdModule.base', 'Title'),
         'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
     ]) ?>
         The form inputs
-    <?php ModalDialog::end()?>
+    <?php Modal::endDialog()?>
 <?php ActiveForm::end() ?>
 ```
 

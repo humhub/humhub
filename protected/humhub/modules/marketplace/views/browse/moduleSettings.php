@@ -16,7 +16,7 @@ use humhub\widgets\modal\ModalButton;
 <?php $form = ActiveForm::begin() ?>
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings'),
+    'title' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings'),
     'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
 ]) ?>
 

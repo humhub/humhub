@@ -9,7 +9,7 @@ use humhub\widgets\modal\Modal;
 ?>
 
 
-<?php Modal::beginDialog(['header' => $title]) ?>
+<?php Modal::beginDialog(['title' => $title]) ?>
 
 <?php if (count($spaces) === 0) : ?>
     <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>

@@ -11,7 +11,7 @@ use humhub\widgets\modal\Modal;
 ?>
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('CommentModule.base', 'Comments'),
+    'title' => Yii::t('CommentModule.base', 'Comments'),
     'bodyOptions' => [
         'class' => ['comment-container', 'comment-modal-body'],
         'style' => 'margin-top: 0;',

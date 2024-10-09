@@ -7,11 +7,12 @@ use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
 /* @var $users \humhub\modules\user\models\User[] */
-/* @var bool $hideOnlineStatus */
+/* @var $hideOnlineStatus bool */
+/* @var $title string */
 ?>
 
 <?php Modal::beginDialog([
-    'header' => $title,
+    'title' => $title,
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 

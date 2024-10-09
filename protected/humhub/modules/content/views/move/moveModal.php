@@ -17,7 +17,7 @@ $canMove = $model->isMovable() === true;
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]) ?>
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('ContentModule.base', '<strong>Move</strong> content'),
+    'title' => Yii::t('ContentModule.base', '<strong>Move</strong> content'),
     'footer' => ModalButton::cancel() . ' ' . Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove),
 ]) ?>
 

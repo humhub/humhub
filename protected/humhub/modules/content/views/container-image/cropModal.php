@@ -49,9 +49,9 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 <?= $form->field($model, 'cropH')->hiddenInput(['id' => 'cropH'])->label(false) ?>
 
 <?php Modal::beginDialog([
+    'title' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
     'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
     'id' => 'profile-image-crop-modal',
-    'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
     'size' => Modal::SIZE_SMALL,
 ]) ?>
 

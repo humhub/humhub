@@ -15,7 +15,7 @@ use humhub\widgets\modal\ModalButton;
 ?>
 
 <?php Modal::beginDialog([
-    'header' => Yii::t('FileModule.base', '<strong>Open</strong> file', ['fileName' => Html::encode($file->file_name)]),
+    'title' => Yii::t('FileModule.base', '<strong>Open</strong> file', ['fileName' => Html::encode($file->file_name)]),
     'footer' => ModalButton::cancel(Yii::t('base', 'Close'))->right(),
 ]) ?>
 
