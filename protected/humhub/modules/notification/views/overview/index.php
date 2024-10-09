@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\notification\models\forms\FilterForm;
-use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $overview string */
 /* @var $filterForm FilterForm */
@@ -13,15 +13,15 @@ use yii\bootstrap\ActiveForm;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
-                    <div class="pull-right">
-                        <?= Button::defaultType()
+                    <div class="float-end">
+                        <?= Button::light()
                             ->icon('check')
                             ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])
                             ->id('notification_overview_markseen')
                             ->style('display:none')
                             ->sm()
                             ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
-                        <?= Button::defaultType()
+                        <?= Button::light()
                             ->icon('cog')
                             ->link(['/notification/user'])
                             ->sm()

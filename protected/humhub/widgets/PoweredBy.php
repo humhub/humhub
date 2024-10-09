@@ -9,7 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use Yii;
 
 /**

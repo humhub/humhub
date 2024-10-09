@@ -11,7 +11,7 @@ use humhub\components\Widget;
 use humhub\modules\marketplace\models\Licence;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -30,7 +30,7 @@ class ModuleActionButtons extends Widget
     /**
      * @var string Template for buttons
      */
-    public $template = '<div class="card-footer text-right">{buttons}</div>';
+    public $template = '<div class="card-footer text-end">{buttons}</div>';
 
     /**
      * @inheritdoc

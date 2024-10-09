@@ -8,14 +8,13 @@
 
 namespace humhub\widgets;
 
-use humhub\components\Widget;
-use humhub\libs\Html;
-use Yii;
+use humhub\helpers\Html;
 
 /**
  * Labels for Wall Entries
  * This widget will attached labels like Pinned, Archived to Wall Entries
  *
+ * @deprecated since 1.18, use [[\humhub\widgets\bootstrap\Badge]] instead
  * @since 1.2.2
  */
 class Label extends BootstrapComponent

@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\ui\view\components\View;
-use yii\helpers\Html;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
 
 /**
@@ -18,9 +18,10 @@ $categories = $user->profile->getProfileFieldCategories();
         <?php $firstClass = "active" ?>
         <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
             <?php foreach ($categories as $category): ?>
-                <li class="<?= $firstClass ?>">
-                    <a href="#profile-category-<?= $category->id; ?>"
-                       data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                <li class="nav-item <?= $firstClass ?>">
+                    <a href="#profile-category-<?= $category->id ?>"
+                       class="nav-link"
+                       data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                 </li>
                 <?php
                 $firstClass = "";
@@ -36,7 +37,7 @@ $categories = $user->profile->getProfileFieldCategories();
                 ?>" id="profile-category-<?= $category->id ?>">
                     <form class="form-horizontal" role="form">
                         <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class="col-sm-3 control-label">
                                     <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
                                 </label>

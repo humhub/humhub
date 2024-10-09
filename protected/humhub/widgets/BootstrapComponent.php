@@ -9,7 +9,7 @@
 namespace humhub\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\helpers\ArrayHelper;
@@ -23,7 +23,7 @@ use yii\helpers\ArrayHelper;
  *
  *  - none
  *  - primary
- *  - defaultType
+ *  - secondary
  *  - info
  *  - warn
  *  - danger
@@ -38,14 +38,18 @@ use yii\helpers\ArrayHelper;
  * BootstrapComponent::primary('My Label');
  * ```
  *
- *
+ * @deprecated since 1.18
  *
  * @package humhub\widgets
  */
 abstract class BootstrapComponent extends Widget
 {
     public const TYPE_PRIMARY = 'primary';
-    public const TYPE_DEFAULT = 'default';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_DEFAULT = self::TYPE_SECONDARY;
+    public const TYPE_SECONDARY = 'secondary';
     public const TYPE_INFO = 'info';
     public const TYPE_WARNING = 'warning';
     public const TYPE_DANGER = 'danger';
@@ -89,12 +93,22 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * @deprecated since 1.18
      * @param string $text Button text
      * @return static
      */
     public static function defaultType($text = null)
     {
-        return new static(['type' => self::TYPE_DEFAULT, 'text' => $text]);
+        return self::secondary($text);
+    }
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function secondary($text = null)
+    {
+        return new static(['type' => self::TYPE_SECONDARY, 'text' => $text]);
     }
 
     /**
@@ -168,10 +182,10 @@ abstract class BootstrapComponent extends Widget
     public function right($right = true)
     {
         if ($right) {
-            Html::removeCssClass($this->htmlOptions, 'pull-left');
-            Html::addCssClass($this->htmlOptions, 'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'float-start');
+            Html::addCssClass($this->htmlOptions, 'float-end');
         } else {
-            Html::removeCssClass($this->htmlOptions, 'pull-right');
+            Html::removeCssClass($this->htmlOptions, 'float-end');
         }
 
         return $this;
@@ -184,10 +198,10 @@ abstract class BootstrapComponent extends Widget
     public function left($left = true)
     {
         if ($left) {
-            Html::removeCssClass($this->htmlOptions, 'pull-right');
-            Html::addCssClass($this->htmlOptions, 'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'float-end');
+            Html::addCssClass($this->htmlOptions, 'float-start');
         } else {
-            Html::removeCssClass($this->htmlOptions, 'pull-left');
+            Html::removeCssClass($this->htmlOptions, 'float-start');
         }
 
         return $this;
@@ -214,13 +228,12 @@ abstract class BootstrapComponent extends Widget
     }
 
     /**
+     * @deprecated since 1.18
      * @return $this
      */
     public function xs()
     {
-        Html::addCssClass($this->htmlOptions, 'btn-xs');
-
-        return $this;
+        return $this->sm();
     }
 
     /**

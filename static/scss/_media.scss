@@ -1,0 +1,184 @@
+//
+// Media
+// --------------------------------------------------
+
+
+.media-list {
+
+    &.dropdown-item:hover {
+        background-color: inherit;
+        color: inherit;
+    }
+
+    > div, > a {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        border-left: 3px solid white;
+
+        &:hover,
+        &.selected {
+            background-color: $background-color-secondary;
+            border-left: 3px solid $info;
+        }
+
+        &a, a {
+            color: $text-color-main;
+        }
+
+        &.new {
+            border-left: 3px solid $info;
+            background-color: $background-color-highlight;
+
+            &:hover {
+                background-color: $background-color-highlight-soft;
+            }
+        }
+
+        &.placeholder {
+            font-size: 14px !important;
+            border-bottom: none;
+        }
+
+        &.placeholder:hover {
+            background: none !important;
+            border-left: 3px solid white;
+        }
+
+        // TODO: move to Enterprise Theme module
+        .badge-space-type {
+            background-color: $background-color-secondary;
+            border: 1px solid $background3;
+            color: $background4;
+            padding: 3px 3px 2px 3px;
+        }
+
+        .flex-shrink-0 {
+            margin-right: 10px;
+        }
+
+        .flex-grow-1 {
+            font-size: 13px;
+            white-space: normal;
+            @include text-break();
+        }
+
+        h4 {
+            font-size: 14px;
+            font-weight: 500;
+            color: $text-color-highlight;
+
+            a {
+                color: $text-color-highlight;
+            }
+
+            small,
+            small a {
+                font-size: 11px;
+                color: $text-color-soft;
+            }
+
+            .content {
+                margin-right: 35px;
+            }
+        }
+
+        h5 {
+            color: $text-color-soft2;
+            font-weight: 300;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            min-height: 15px;
+        }
+
+        .content a {
+            word-break: break-all;
+            color: var(--bs-link-color);
+        }
+
+        strong {
+            color: $text-color-highlight;
+        }
+
+        .time {
+            font-size: 11px;
+            color: $text-color-soft;
+        }
+
+        .module-controls {
+            font-size: 85%;
+
+            a {
+                color: var(--bs-link-color);
+            }
+        }
+
+        .content .files a {
+            color: $text-color-highlight;
+        }
+    }
+}
+
+.content span {
+    @include text-break;
+}
+
+#blueimp-gallery {
+    .slide {
+        img {
+            max-height: 80%;
+        }
+    }
+}
+
+
+audio, canvas, progress, video {
+    display: inline-block;
+    vertical-align: baseline;
+    max-width: 100%;
+    height: auto;
+}
+
+img {
+    image-orientation: from-image;
+}
+
+.has-online-status {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 10px;
+
+    .user-online-status {
+        aspect-ratio: 1 / 1;
+        width: 30%;
+        border-radius: 100%;
+        position: absolute;
+        right: -10%;
+        bottom: -10%;
+        border: 1px solid transparent;
+
+        &.user-is-online {
+            border-color: $background-color-main;
+            background-color: $success;
+        }
+
+        &.user-is-offline {
+            // Invisible but a color can be added in a custom theme
+        }
+    }
+
+    &.img-size-small {
+        margin-bottom: 5px;
+
+        .user-online-status {
+            width: 10px;
+            right: -3px;
+            bottom: -3px;
+        }
+    }
+
+    &.img-size-large .user-online-status {
+        width: 20px;
+        border-width: 2px;
+    }
+}

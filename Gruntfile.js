@@ -79,13 +79,6 @@ module.exports = function (grunt) {
                     return doBuild ? `${build} ${sep} ${run}` : run;
                 }
             },
-            buildTheme: {
-                command: function (name) {
-                    let theme = name || grunt.option('name') || "HumHub";
-                    let sep = cmdSep();
-                    return `cd themes/${theme}/less ${sep} lessc --clean-css build.less ../css/theme.css`;
-                }
-            },
             migrateCreate: {
                 command: function (name) {
                     let migrationName = name || grunt.option('name');

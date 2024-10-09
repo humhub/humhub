@@ -1,8 +1,8 @@
 <?php
 
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
 
@@ -29,7 +29,7 @@ $this->registerJs(<<<JS
                     }).replace(/([A-Z])/, " $1");
                 var inputId = 'oembedproviderform-' + key;
 
-                formGroup = '<div class="form-group col-xs-12 col-sm-6">' +
+                formGroup = '<div class="mb-3 col-12 col-sm-6">' +
                     '<label for="' + inputId + '" class="control-label" type="text">' + label + '</label>' +
                     '<input id="' + inputId + '" value="' + (!value.match(/\%\w+\%/) ? value : "") + '" type="text" class="form-control endpoint-param" data-param-name="' + key + '">' +
                     '</div>';
@@ -72,7 +72,7 @@ JS, View::POS_LOAD);
 
     <div class="clearfix">
         <?= Button::back(Url::to(['setting/oembed']), Yii::t('AdminModule.settings', 'Back to overview')) ?>
-        <h4 class="pull-left">
+        <h4 class="float-start">
             <?php
             if (empty($name)) {
                 echo Yii::t('AdminModule.settings', 'Add OEmbed provider');
