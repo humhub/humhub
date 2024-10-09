@@ -76,6 +76,7 @@ class ThemeHelper
     public static function getThemesByPath($path, $additionalOptions = [])
     {
         $themes = [];
+        $path = realpath($path);
         foreach (scandir($path) as $file) {
             if ($file == "." || $file == ".." || !is_dir($path . DIRECTORY_SEPARATOR . $file)) {
                 continue;

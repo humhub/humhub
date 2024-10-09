@@ -12,7 +12,7 @@ class m160125_053702_stored_filename extends Migration
             $oldFileName = $file->store->get('') . DIRECTORY_SEPARATOR . $file->getFileName();
             $newFileName = $file->store->get('') . DIRECTORY_SEPARATOR . 'file';
 
-            if (!file_exists($newFileName) && file_exists($oldFileName) && is_writable($file->store->get(''))) {
+            if (!file_exists($newFileName) && file_exists($oldFileName) && is_writable(realpath($file->store->get('')))) {
                 rename($oldFileName, $newFileName);
             }
         }

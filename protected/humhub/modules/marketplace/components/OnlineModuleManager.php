@@ -51,7 +51,7 @@ class OnlineModuleManager extends Component
     {
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $modulesPath = Yii::getAlias($marketplaceModule->modulesPath);
+        $modulesPath = realpath(Yii::getAlias($marketplaceModule->modulesPath));
 
         if (!is_writable($modulesPath)) {
             $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulesPath]));

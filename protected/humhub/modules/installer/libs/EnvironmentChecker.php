@@ -22,18 +22,18 @@ class EnvironmentChecker
      */
     public static function preInstallChecks()
     {
-        $assetsPath = Yii::getAlias(Yii::$app->assetManager->basePath);
+        $assetsPath = realpath(Yii::getAlias(Yii::$app->assetManager->basePath));
         if (!is_writable($assetsPath)) {
             print "Error: The assets directory is not writable by the PHP process.";
             exit(1);
         }
 
-        if (!is_writable(Yii::getAlias("@runtime"))) {
+        if (!is_writable(realpath(Yii::getAlias("@runtime")))) {
             print "Error: The runtime directory is not writable by the PHP process.";
             exit(1);
         }
 
-        $dynamicConfigFile = DynamicConfig::getConfigFilePath();
+        $dynamicConfigFile = realpath(DynamicConfig::getConfigFilePath());
         if (file_exists($dynamicConfigFile) && !is_writable($dynamicConfigFile)) {
             print "Error: The dynamic configuration (config/dynamic.php) is not writable by the PHP process.";
             exit(1);

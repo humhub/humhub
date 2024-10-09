@@ -150,7 +150,7 @@ class ModuleController extends Controller
                 throw new HttpException(500, Yii::t('AdminModule.modules', 'Could not find requested module!'));
             }
 
-            if (!is_writable($module->getBasePath())) {
+            if (!is_writable(realpath($module->getBasePath()))) {
                 throw new HttpException(500, Yii::t('AdminModule.modules', 'Module path %path% is not writeable!', ['%path%' => $module->getBasePath()]));
             }
 
