@@ -281,6 +281,32 @@ class MarketplaceController extends Controller
     }
 
     /**
+     * Displays module info
+     *
+     * @param string $moduleId Module ID
+     */
+    public function actionInfo($moduleId)
+    {
+        $this->stdout('ID: ' . $moduleId . PHP_EOL);
+
+        $module = Yii::$app->moduleManager->getModule($moduleId, false);
+
+        $this->stdout('Installed: ' . ($module instanceof Module ? 'Yes' : 'No') . PHP_EOL);
+
+        if ($module === null) {
+            return 1;
+        }
+
+        $this->stdout('Enabled: ' . ($module->isEnabled ? 'Yes' : 'No') . PHP_EOL);
+        $this->stdout('Version: ' . $module->version . PHP_EOL);
+        $this->stdout('Name: ' . $module->name . PHP_EOL);
+        $this->stdout('Description: ' . $module->description . PHP_EOL);
+        $this->stdout('Path: ' . $module->basePath . PHP_EOL);
+
+        return 0;
+    }
+
+    /**
      * @return \humhub\modules\marketplace\Module
      */
     private function getMarketplaceModule()
