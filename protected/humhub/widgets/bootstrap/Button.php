@@ -31,6 +31,39 @@ class Button extends \yii\bootstrap5\Button
      */
     public $encodeLabel = false;
 
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_PRIMARY = 'primary';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_DEFAULT = self::TYPE_SECONDARY;
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_SECONDARY = 'secondary';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_INFO = 'info';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_WARNING = 'warning';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_DANGER = 'danger';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_SUCCESS = 'success';
+    /**
+     * @deprecated since 1.18
+     */
+    public const TYPE_NONE = 'none';
+
     public static function save($label = null): static
     {
         return static::primary($label ?? Yii::t('base', 'Save'));
@@ -216,5 +249,25 @@ class Button extends \yii\bootstrap5\Button
             'label' => $text,
             'options' => $color ? ['class' => ['btn-' . $color]] : [],
         ]);
+    }
+
+    /**
+     * @deprecated since 1.18
+     */
+    public function setType($type): static
+    {
+        if ($type !== static::TYPE_NONE) {
+            $this->options['class'] = ['btn-' . $type];
+        }
+        return $this;
+    }
+
+    /**
+     * @deprecated since 1.18
+     */
+    public function setText($text): static
+    {
+        $this->label = $text;
+        return $this;
     }
 }
