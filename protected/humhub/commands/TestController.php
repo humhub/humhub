@@ -25,13 +25,25 @@ class TestController extends \yii\console\Controller
      */
     public function actionEmail($address)
     {
-        $message = "Console test message<br /><br />";
+        $message = 'Console test message<br /><br />';
 
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $message]);
         $mail->setTo($address);
         $mail->setSubject('Test message');
         $mail->send();
 
-        Console::output("Message successfully sent!");
+        Console::output('Message successfully sent!');
+    }
+
+
+    /**
+     * Test database connection
+     */
+    public function actionDbConnection()
+    {
+        $isConfigured = !empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username);
+        $this->stdout('DB Connection is ' . ($isConfigured ? '' : 'not ') . 'configured' . PHP_EOL);
+
+        $this->stdout('DB Connection is ' . (Yii::$app->isDatabaseInstalled(true) ? 'ok' : 'failed') . PHP_EOL);
     }
 }
