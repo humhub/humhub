@@ -44,6 +44,7 @@ HumHub Changelog
 - Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
 - Enh #7240: Fixed maximum file size setting in initialization
 - Enh #7244: Changed .env var depth separator from `.` to `__`
+- Enh #7253: CSV export improvements
 
 1.16.3 (Unreleased)
 --------------------------
