@@ -276,10 +276,10 @@ class SpreadsheetExport extends Component
     }
 
     /**
-    * Composes header row contents.
-    * @param Spreadsheet $spreadsheet
-    * @throws \PhpOffice\PhpSpreadsheet\Exception
-    */
+     * Composes header row contents.
+     * @param Spreadsheet $spreadsheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     protected function composeHeaderRow($spreadsheet)
     {
         $worksheet = $spreadsheet->getActiveSheet();
@@ -346,6 +346,7 @@ class SpreadsheetExport extends Component
         foreach ($this->columns as $columnIndex => $column) {
             $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
             $value = $column->renderDataCellContent($model, $key, $index);
+            $value = $this->sanitizeValue($value);
 
             if ($column->dataType !== null) {
                 $worksheet->getCell($coordinate)->setValueExplicit($value, $column->dataType);
@@ -357,6 +358,32 @@ class SpreadsheetExport extends Component
                 $worksheet->getStyle($coordinate)->applyFromArray($column->styles);
             }
         }
+    }
+
+    /**
+     * Sanitize value to prevent injection.
+     */
+    private function sanitizeValue(?string $value): ?string
+    {
+        if (!empty($value) && $this->resultConfig['writerType'] === 'csv') {
+            // Extended list of risky starting characters
+            $riskyCharacters = ['=', '+', '-', '@', '|', '/', '\\', '\'', '!', '"', '^', '{', '}', '[', ']', '%', '&', ':', ';'];
+            // Regex pattern to check for values that look like a formula, even if they don't start with risky characters
+            $pattern = '/^\d+[+\-*\/].+/';
+
+            // Check if the value starts with a risky character or looks like a formula
+            if (in_array($value[0] ?? '', $riskyCharacters) || preg_match($pattern, $value)) {
+                $value = "'" . $value; // Prepend single quote to prevent injection
+            }
+
+            // Sanitize escaping quotes, wrapping in double quotes if needed
+            if (str_contains($value, '"') || str_contains($value, ',') || str_contains($value, "\n")) {
+                $value = str_replace('"', '""', $value);
+                $value = '"' . $value . '"';
+            }
+        }
+
+        return $value;
     }
 
     /**
