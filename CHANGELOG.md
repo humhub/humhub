@@ -44,6 +44,7 @@ HumHub Changelog
 - Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
 - Enh #7240: Fixed maximum file size setting in initialization
 - Enh #7244: Changed .env var depth separator from `.` to `__`
+- Fix #7248: Upgrade jQuery Highlight plugin
 
 1.16.3 (Unreleased)
 --------------------------

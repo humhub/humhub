@@ -46,6 +46,7 @@
         "npm-asset/jplayer": "^2.9",
         "npm-asset/jquery": "~3.7.1",
         "npm-asset/jquery-autosize": "^1.0",
+        "npm-asset/jquery-highlight": "^3.5",
         "npm-asset/jquery-knob": "^1.2",
         "npm-asset/jquery-ui": "^1.13.2",
         "npm-asset/jquery.cookie": "^1.4.1",

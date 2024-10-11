@@ -257,8 +257,7 @@ humhub.module('space.chooser', function (module, require, $) {
     };
 
     SpaceChooser.prototype.highlight = function (input, selector) {
-        selector = selector || SELECTOR_ITEM;
-        // this.$chooser.find(SELECTOR_ITEM).removeHighlight().highlight(input); // TODO: uncommented when https://github.com/humhub/humhub-internal/issues/415 is fixed
+        this.$chooser.find(selector || SELECTOR_ITEM).unhighlight().highlight(input);
     };
 
     SpaceChooser.prototype.triggerRemoteSearch = function (input) {
@@ -368,7 +367,7 @@ humhub.module('space.chooser', function (module, require, $) {
             this.$search.val('').focus();
         }
         this.$search.removeData('last-search');
-        this.getItems().removeClass(['d-none', 'selected']); // TODO: add .removeHighlight() back when https://github.com/humhub/humhub-internal/issues/415 is fixed
+        this.getItems().unhighlight().removeClass(['d-none', 'selected']);
         this.$chooser.css('max-height', '400px');
         this.$remoteSearch.empty();
         this.trigger('resetSearch');
