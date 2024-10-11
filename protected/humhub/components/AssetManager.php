@@ -41,7 +41,7 @@ class AssetManager extends \yii\web\AssetManager
             return;
         }
 
-        foreach (scandir(realpath($this->basePath)) as $file) {
+        foreach (scandir($this->basePath) as $file) {
             if (substr($file, 0, 1) === '.') {
                 continue;
             }
