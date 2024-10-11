@@ -80,6 +80,10 @@ class PostController extends ContentContainerController
 
         $post->load(Yii::$app->request->post(), 'Post');
 
+        if (!empty(Yii::$app->request->post('fileList'))) {
+            $post->scenario = Post::SCENARIO_HAS_FILES;
+        }
+
         return Post::getDb()->transaction(function ($db) use ($post) {
             return WallCreateContentForm::create($post, $this->contentContainer);
         });

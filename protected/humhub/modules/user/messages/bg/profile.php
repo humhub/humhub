@@ -112,9 +112,11 @@ return [
     'Zip' => 'Zip',
     '{attribute} is required!' => '{attribute} се изисква!',
     'Diverse' => '',
+    'Each line must be formatted as Key=>Value!' => '',
     'Instagram URL' => '',
     'Link Prefix (e.g. https://, mailto:, tel://)' => '',
     'Mastodon URL' => '',
+    'This profile is disabled!' => '',
     'TikTok URL' => '',
     'Use as Directory filter' => '',
 ];

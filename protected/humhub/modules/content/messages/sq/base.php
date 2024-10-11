@@ -9,6 +9,7 @@ return [
     'Edit' => 'Ndrysho',
     'Enable' => 'Aktivizoni',
     '(Also visible to non-members of this space)' => '',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Move</strong> content' => '',
     '<strong>Permalink</strong> to this post' => '',

@@ -1,6 +1,52 @@
 HumHub Changelog
 ================
 
+1.17.0 (TBA)
+------------
+- Enh #7070: Add GitHub action for PHP CS Fixer
+- Enh #7073: Add a link to notification settings on top dropdown list
+- Fix #7100: Enable all file handlers on RichText editor toolbar
+- Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
+- Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7131: Introduce new CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height`
+- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
+- Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
+- Enh #7138: Added missing DB relations to UserInvite model
+- Enh #7139: Export `confirmUnload` function from `humhub.client.js`
+- Enh #7068: Bulk re-send email invites
+- Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
+- Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
+- Fix #7149: Fixed dropdown issue on mobile
+- Fix #7151: Disable new post's required validation for `message` when post has attached files
+- Enh #7106: Enable option for non-member users of a space to create posts
+- Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7173: Fix marketplace module label "Professional Edition"
+- Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Enh #7198: Increase default Uplaod Max File Size to 64mb
+- Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
+- Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
+- Enh #7202: Increased minimum PHP version to 8.1
+- Enh #7208: Improvements in dotenv parsing
+- Enh #7211: Remove obsolete property `AbstractRichText::$record`
+- Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
+- Fix #7215: Wording: replace British "licence" with American "license"
+- Fix #6987: Added LatAm Spanish
+- Enh #7214: Replace theme variables with CSS variables
+- Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
+- Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
+- Enh #7231: Removed deprecated `ShowMorePager` widget
+- Fix #7230: Update module with new id
+- Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
+- Enh #7237: Changed PoweredBy URL
+- Enh #7238: Fixed PHP warning related to `.env`
+- Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
+- Enh #7240: Fixed maximum file size setting in initialization
+- Enh #7244: Changed .env var depth separator from `.` to `__`
+- Fix #7248: Upgrade jQuery Highlight plugin
+- Fix #7250: Check writable path
+
 1.16.3 (Unreleased)
 --------------------------
 - Fix #7212: Fix horizontal scroll bar on space stream on small screen
@@ -11,9 +57,7 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
-- Fix #7241: Fix file visibility for object with viewable interface
-- Fix #7250: Check writable path
+- Enh #7229: Hide invitations with unknown sources
 
 1.16.2 (September 5, 2024)
 --------------------------

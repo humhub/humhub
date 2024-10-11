@@ -113,6 +113,7 @@ return [
     'Advanced Profile Search' => '',
     'Allow users to mention you' => '',
     'Block user' => '',
+    'Empty password cannot be saved!' => '',
     'Group Manager(s)' => '',
     'Mentioning' => '',
     'Offline' => '',

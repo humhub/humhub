@@ -5,4 +5,5 @@ return [
     'User Interface' => 'Interfața utilizatorului',
     'Read more' => '',
     'Reset filters' => '',
+    'Select' => '',
 ];
