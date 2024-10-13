@@ -257,8 +257,7 @@ humhub.module('space.chooser', function (module, require, $) {
     };
 
     SpaceChooser.prototype.highlight = function (input, selector) {
-        selector = selector || SELECTOR_ITEM;
-        this.$chooser.find(SELECTOR_ITEM).removeHighlight().highlight(input);
+        this.$chooser.find(selector || SELECTOR_ITEM).unhighlight().highlight(input);
     };
 
     SpaceChooser.prototype.triggerRemoteSearch = function (input) {
@@ -368,7 +367,7 @@ humhub.module('space.chooser', function (module, require, $) {
             this.$search.val('').focus();
         }
         this.$search.removeData('last-search');
-        this.getItems().show().removeHighlight().removeClass('selected');
+        this.getItems().show().unhighlight().removeClass('selected');
         this.$chooser.css('max-height', '400px');
         this.$remoteSearch.empty();
         this.trigger('resetSearch');
