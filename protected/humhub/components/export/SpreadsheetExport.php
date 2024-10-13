@@ -365,22 +365,18 @@ class SpreadsheetExport extends Component
      */
     private function sanitizeValue(?string $value): ?string
     {
-        if (!empty($value) && $this->resultConfig['writerType'] === 'csv') {
-            // Extended list of risky starting characters
-            $riskyCharacters = ['=', '+', '-', '@', '|', '/', '\\', '\'', '!', '"', '^', '{', '}', '[', ']', '%', '&', ':', ';'];
-            // Regex pattern to check for values that look like a formula, even if they don't start with risky characters
-            $pattern = '/^\d+[+\-*\/].+/';
+        if (empty($value) || $this->resultConfig['writerType'] !== 'csv') {
+            return $value;
+        }
 
-            // Check if the value starts with a risky character or looks like a formula
-            if (in_array($value[0] ?? '', $riskyCharacters) || preg_match($pattern, $value)) {
-                $value = "'" . $value; // Prepend single quote to prevent injection
-            }
+        // Check for risky starting characters or formula-like values and prepend single quote
+        if (strpbrk($value[0], '=+-@,;'. "\t" . "\r") !== false || preg_match('/^\d+[+\-*\/].+/', $value)) {
+            $value = "'" . $value;
+        }
 
-            // Sanitize escaping quotes, wrapping in double quotes if needed
-            if (str_contains($value, '"') || str_contains($value, ',') || str_contains($value, "\n")) {
-                $value = str_replace('"', '""', $value);
-                $value = '"' . $value . '"';
-            }
+        // Sanitize escaping quotes, wrapping in double quotes if needed
+        if (strpbrk($value, "\"\n,") !== false) {
+            $value = '"' . str_replace('"', '""', $value) . '"';
         }
 
         return $value;
