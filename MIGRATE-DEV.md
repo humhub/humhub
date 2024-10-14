@@ -6,22 +6,19 @@ See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/h
 Version 1.17 (Unreleased)
 -------------------------
 
+### New
+- CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
+- `LikeNotificationInterface` interface for `humhub\components\ActiveRecord` classes which can be "Liked"
+
 ### Behaviour change
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
-
 
 #### Removed
 
 - Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
 - Removed `\humhub\widgets\ShowMorePager` widget
 
-
-Version 1.17 (Unreleased)
--------------------------
-
-### New
-- CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
 
 Version 1.16 (April 2024)
 -------------------------
@@ -58,7 +55,6 @@ At least PHP 8.0 is required with this version.
 - `humhub\modules\stream\models\GlobalContentStreamQuery`
 - `humhub\modules\stream\models\filters\GlobalContentStreamFilter`
 - A new protected function `SpreadsheetExport::getColumnLetter()` has been introduced to get the column letter based on the column index.
-- `LikeNotificationInterface` interface for `humhub\components\ActiveRecord` classes which can be "Liked"
 
 ### Type restrictions
 - `\humhub\commands\MigrateController` enforces types on fields, method parameters, & return types
