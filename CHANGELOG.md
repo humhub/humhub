@@ -47,6 +47,7 @@ HumHub Changelog
 - Fix #7248: Upgrade jQuery Highlight plugin
 - Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
 - Fix #7250: Check writable path
+- Enh #7255: Improved CSP headers
 
 1.16.3 (Unreleased)
 --------------------------
