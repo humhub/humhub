@@ -2,8 +2,10 @@
 
 namespace humhub\modules\like\widgets;
 
+use humhub\components\ActiveRecord;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\like\models\Like as LikeModel;
 use humhub\modules\like\Module;
 use Yii;
@@ -22,7 +24,7 @@ class LikeLink extends Widget
     /**
      * The Object to be liked
      *
-     * @var LikeModel|ContentActiveRecord
+     * @var ContentAddonActiveRecord|ContentActiveRecord|ActiveRecord
      */
     public $object;
 
@@ -64,9 +66,9 @@ class LikeLink extends Widget
             'likes' => $likes,
             'currentUserLiked' => $currentUserLiked,
             'id' => $this->object->getUniqueId(),
-            'likeUrl' => Url::to(['/like/like/like', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
-            'unlikeUrl' => Url::to(['/like/like/unlike', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->id]),
-            'userListUrl' => Url::to(['/like/like/user-list', 'contentModel' => PolymorphicRelation::getObjectModel($this->object), 'contentId' => $this->object->getPrimaryKey()]),
+            'likeUrl' => Url::to(['/like/like/like', 'objectModel' => PolymorphicRelation::getObjectModel($this->object), 'objectId' => $this->object->id]),
+            'unlikeUrl' => Url::to(['/like/like/unlike', 'objectModel' => PolymorphicRelation::getObjectModel($this->object), 'objectId' => $this->object->id]),
+            'userListUrl' => Url::to(['/like/like/user-list', 'objectModel' => PolymorphicRelation::getObjectModel($this->object), 'objectId' => $this->object->getPrimaryKey()]),
             'title' => $this->generateLikeTitleText($currentUserLiked, $likes),
         ]);
     }
