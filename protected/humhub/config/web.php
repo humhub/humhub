@@ -55,7 +55,6 @@ $config = [
             'security' => [
                 "headers" => [
                     "Strict-Transport-Security" => "max-age=31536000",
-                    "X-XSS-Protection" => "1; mode=block",
                     "X-Content-Type-Options" => "nosniff",
                     "Referrer-Policy" => "no-referrer-when-downgrade",
                     "X-Permitted-Cross-Domain-Policies" => "master-only",
