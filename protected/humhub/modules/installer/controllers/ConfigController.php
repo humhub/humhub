@@ -550,7 +550,6 @@ class ConfigController extends Controller
         }
 
         Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);
-        Yii::$app->settings->set('timeZone', Yii::$app->timeZone);
 
         // Set to installed
         Yii::$app->setInstalled();
