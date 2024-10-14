@@ -524,7 +524,7 @@ class SelfTest
 
         // Check Runtime Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Runtime');
-        $path = Yii::getAlias('@runtime');
+        $path = realpath(Yii::getAlias('@runtime'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -540,7 +540,7 @@ class SelfTest
 
         // Check Assets Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Assets');
-        $path = Yii::getAlias('@webroot/assets');
+        $path = realpath(Yii::getAlias('@webroot/assets'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -556,7 +556,7 @@ class SelfTest
 
         // Check Uploads Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads');
-        $path = Yii::getAlias('@webroot/uploads');
+        $path = realpath(Yii::getAlias('@webroot/uploads'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -572,7 +572,7 @@ class SelfTest
 
         // Check Profile Image Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Profile Image');
-        $path = Yii::getAlias('@webroot/uploads/profile_image');
+        $path = realpath(Yii::getAlias('@webroot/uploads/profile_image'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -590,7 +590,7 @@ class SelfTest
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Module Directory');
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $path = Yii::getAlias($marketplaceModule->modulesPath);
+        $path = realpath(Yii::getAlias($marketplaceModule->modulesPath));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -605,7 +605,7 @@ class SelfTest
         }
         // Check Dynamic Config is Writable
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
-        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
+        $path = realpath(Yii::getAlias(Yii::$app->params['dynamicConfigFile']));
         if (!is_file($path)) {
             $path = dirname($path);
         }

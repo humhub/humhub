@@ -45,6 +45,9 @@ HumHub Changelog
 - Enh #7240: Fixed maximum file size setting in initialization
 - Enh #7244: Changed .env var depth separator from `.` to `__`
 - Enh #7251: Commands for module info and test DB connection
+- Fix #7248: Upgrade jQuery Highlight plugin
+- Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
+- Fix #7250: Check writable path
 
 1.16.3 (Unreleased)
 --------------------------
