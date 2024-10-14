@@ -46,7 +46,7 @@ HumHub Changelog
 - Enh #7244: Changed .env var depth separator from `.` to `__`
 - Fix #7248: Upgrade jQuery Highlight plugin
 - Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
-- Enh #7253: CSV export improvements
+- Enh #7253: CSV/XLSX export improvements
 
 1.16.3 (Unreleased)
 --------------------------

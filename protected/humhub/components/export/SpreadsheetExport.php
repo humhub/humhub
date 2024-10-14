@@ -7,6 +7,7 @@
 
 namespace humhub\components\export;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Yii;
 use yii\base\Component;
@@ -365,7 +366,7 @@ class SpreadsheetExport extends Component
      */
     private function sanitizeValue(?string $value): ?string
     {
-        if (empty($value) || $this->resultConfig['writerType'] !== 'csv') {
+        if (empty($value) || !in_array(ucfirst($this->resultConfig['writerType']), [IOFactory::WRITER_CSV, IOFactory::WRITER_XLSX, IOFactory::WRITER_XLS])) {
             return $value;
         }
 
