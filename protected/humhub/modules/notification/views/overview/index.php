@@ -1,11 +1,11 @@
 <?php
 
+use humhub\modules\notification\models\forms\FilterForm;
+use humhub\widgets\Button;
 use yii\bootstrap\ActiveForm;
-use yii\helpers\Url;
 
 /* @var $overview string */
-/* @var $filterForm */
-
+/* @var $filterForm FilterForm */
 ?>
 <div class="container">
     <div class="row">
@@ -13,11 +13,20 @@ use yii\helpers\Url;
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
-                    <a id="notification_overview_markseen" href="#" data-action-click="notification.markAsSeen"
-                       data-action-url="<?= Url::to(['/notification/list/mark-as-seen']); ?>"
-                       class="pull-right heading-link">
-                        <b><?= Yii::t('NotificationModule.base', 'Mark all as seen'); ?></b>
-                    </a>
+                    <div class="pull-right">
+                        <?= Button::defaultType()
+                            ->icon('check')
+                            ->action('notification.markAsSeen', ['/notification/list/mark-as-seen'])
+                            ->id('notification_overview_markseen')
+                            ->style('display:none')
+                            ->sm()
+                            ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
+                        <?= Button::defaultType()
+                            ->icon('cog')
+                            ->link(['/notification/user'])
+                            ->sm()
+                            ->tooltip(Yii::t('NotificationModule.base', 'Notification Settings')) ?>
+                    </div>
                 </div>
                 <div class="panel-body">
                     <?= $overview ?>

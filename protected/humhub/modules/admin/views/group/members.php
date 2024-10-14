@@ -55,9 +55,7 @@ AdminGroupAsset::register($this);
     </div>
 
     <div class="table-responsive">
-        <?php
-        $actionUrl = Url::to(['edit-manager-role']);
-        echo GridView::widget(
+        <?= GridView::widget(
             [
                 'dataProvider' => $dataProvider,
                 #'filterModel' => $searchModel,
@@ -76,15 +74,15 @@ AdminGroupAsset::register($this);
                         'visible' => $isManagerApprovalSetting,
                         'label' => Yii::t('AdminModule.user', 'Group Manager'),
                         'format' => 'raw',
-                        'value' => function ($data) use ($group, $actionUrl) {
+                        'value' => function ($data) use ($group) {
                             $isManager = $group->isManager($data);
                             $yesSelected = ($isManager) ? 'selected' : '';
                             $noSelected = ($isManager) ? '' : 'selected';
-                            $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . $actionUrl . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
+                            $result = '<select class="editableCell form-control" data-action-change="admin.group.setManagerRole" data-action-url="' . Url::to(['edit-manager-role']) . '" data-userid="' . $data->id . '"  data-groupid="' . $group->id . '">';
                             $result .= '<option value="0" ' . $noSelected . '>' . Yii::t('AdminModule.user', 'No') . '</option>';
                             $result .= '<option value="1" ' . $yesSelected . '>' . Yii::t('AdminModule.user', 'Yes') . '</option>';
                             return $result;
-                        }
+                        },
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -97,18 +95,25 @@ AdminGroupAsset::register($this);
                                 return false;
                             },
                             'delete' => function ($url, $model) use ($group) {
-                                return Button::danger()
-                                    ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
-                                    ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
-                                    ->icon('remove')->xs()
-                                    ->confirm();
-                            }
+                                return $model->getGroups()->count() > 1
+                                    ? Button::danger()
+                                        ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
+                                        ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
+                                        ->icon('remove')
+                                        ->xs()
+                                        ->confirm()
+                                    : Button::danger()
+                                        ->tooltip(Yii::t('AdminModule.user', 'The user cannot be removed from this Group, as users are required to be assigned to at least one Group.'))
+                                        ->icon('remove')
+                                        ->options(['disabled' => true])
+                                        ->xs()
+                                        ->loader(false);
+                            },
                         ],
                     ],
                 ],
             ]
-        );
-        ?>
+        ) ?>
     </div>
 </div>
 <?php $this->endContent(); ?>

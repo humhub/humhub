@@ -123,7 +123,7 @@ class PeopleFilterPicker extends BasePicker
     protected function getData()
     {
         $result = parent::getData();
-        $result['placeholder'] = '';
+        $result['placeholder'] = Yii::t('UiModule.base', 'Select');
         $result['no-result'] = Yii::t('UserModule.chooser', 'No results found.');
         $result['maximum-selected'] = '';
 

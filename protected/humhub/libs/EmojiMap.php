@@ -1,10 +1,55 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 namespace humhub\libs;
 
-//https://github.com/discourse/discourse/blob/master/lib/emoji/db.json
+use Yii;
+
 class EmojiMap
 {
+    public const DATA_PATH = '@npm/unicode-emoji-json/data-by-emoji.json';
+
+    /**
+     * @since 1.16
+     */
+    public static function getData(): array
+    {
+        return Yii::$app->runtimeCache->getOrSet('emoji-map', function () {
+            $dataPath = Yii::getAlias(self::DATA_PATH);
+
+            if (!is_file($dataPath)) {
+                return [];
+            }
+
+            $data = (array) json_decode(file_get_contents($dataPath));
+
+            $emojis = self::MAP;
+            foreach ($data as $e => $emoji) {
+                $emojis[$emoji->name] = $e;
+            }
+
+            return $emojis;
+        });
+    }
+
+    /**
+     * @since 1.16
+     */
+    public static function getUnicode(?string $name): ?string
+    {
+        return is_string($name) ? (self::getData()[$name] ?? null) : null;
+    }
+
+    /**
+     * This array contains old emojis, use method getData() instead.
+     *
+     * @deprecated
+     * https://github.com/discourse/discourse/blob/master/lib/emoji/db.json
+     */
     public const MAP = [
         'grinning' => '😀',
         'smiley' => '😃',

@@ -14,6 +14,7 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
@@ -24,6 +25,15 @@ use yii\db\Expression;
 
 class MysqlDriver extends AbstractDriver
 {
+    /**
+     * Minimum word length for "And Terms",
+     * Words with less length are handled as "Or Terms"
+     * NOTE: Using of the config value mysql.ft_min_word_len doesn't work properly.
+     *
+     * @var int $minAndTermLength
+     */
+    public int $minAndTermLength = 3;
+
     public function purge(): void
     {
         ContentFulltext::deleteAll();
@@ -31,21 +41,21 @@ class MysqlDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
-
-        $this->delete($content);
+        $this->delete($content->id);
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
+        $record->contents = $content->id;
 
-        $record->contents = implode(
+        $record->contents .= implode(
             ', ',
             array_map(function (ContentTag $tag) {
                 return $tag->name;
             }, $content->tags),
         ) . " \n";
 
-        foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
-            $record->contents .= $attributeValue . " \n";
+        foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
+            $record->contents .= RichTextToPlainTextConverter::process($attributeValue) . " \n";
         }
 
         $record->comments .= (new ContentSearchService($content))->getCommentsAsText() . " \n";
@@ -54,9 +64,9 @@ class MysqlDriver extends AbstractDriver
         $record->save();
     }
 
-    public function delete(Content $content): void
+    public function delete(int $contentId): void
     {
-        ContentFulltext::deleteAll(['content_id' => $content->id]);
+        ContentFulltext::deleteAll(['content_id' => $contentId]);
     }
 
     /**
@@ -96,9 +106,12 @@ class MysqlDriver extends AbstractDriver
                 ->andWhere(['IN', 'user.guid', $request->author]);
         }
 
-        if (!empty($request->space)) {
-            $query->andWhere(['contentcontainer.class' => Space::class])
-                ->andWhere(['IN', 'contentcontainer.guid', $request->space]);
+        if (!empty($request->contentContainerClass)) {
+            $query->andWhere(['contentcontainer.class' => $request->contentContainerClass]);
+        }
+
+        if (!empty($request->contentContainer)) {
+            $query->andWhere(['IN', 'contentcontainer.guid', $request->contentContainer]);
         }
 
         $this->addQueryFilterVisibility($query);
@@ -128,14 +141,14 @@ class MysqlDriver extends AbstractDriver
     {
         $againstQuery = '';
 
-        foreach ($query->andTerms as $keyword) {
-            $againstQuery .= '+' . rtrim($keyword, '*') . '* ';
+        foreach ($query->terms as $term) {
+            if (strlen(rtrim($term, '*')) >= $this->minAndTermLength) {
+                $againstQuery .= '+';// Search with "AND" condition
+            }
+            $againstQuery .= $this->prepareTerm($term) . ' ';
         }
-        foreach ($query->orTerms as $keyword) {
-            $againstQuery .= rtrim($keyword, '*') . '* ';
-        }
-        foreach ($query->notTerms as $keyword) {
-            $againstQuery .= '-' . $keyword . ' ';
+        foreach ($query->notTerms as $term) {
+            $againstQuery .= '-' . $this->prepareTerm($term) . ' ';
         }
 
         return sprintf(
@@ -143,6 +156,15 @@ class MysqlDriver extends AbstractDriver
             implode(', ', $matchFields),
             Yii::$app->db->quoteValue(trim($againstQuery)),
         );
+    }
+
+    protected function prepareTerm(string $term): string
+    {
+        // Remove chars `-` to avoid mysql error
+        $term = preg_replace('/-+(\*?)$/', '$1', $term);
+
+        // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
+        return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $term) ? '"' . $term . '"' : $term;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery
@@ -190,8 +212,7 @@ class MysqlDriver extends AbstractDriver
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
             $globalCondition = 'content.contentcontainer_id IS NULL';
-        } elseif
-        (AuthHelper::isGuestAccessEnabled()) {
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';

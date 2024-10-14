@@ -279,7 +279,7 @@ class File extends FileCompat implements ViewableInterface
         }
 
         return $length
-            ? substr($this->hash_sha1, 0, $length)
+            ? substr($this->hash_sha1 ?: '', 0, $length)
             : $this->hash_sha1;
     }
 

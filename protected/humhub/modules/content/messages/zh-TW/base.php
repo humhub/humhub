@@ -66,6 +66,7 @@ return [
     'You do not have the permission to move this content to the given space.' => '您沒有將此貼文移動到指定Space的權限。',
     'You do not have the permission to move this content.' => '您沒有移動此貼文的權限。',
     'in' => '即將在',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',

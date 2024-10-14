@@ -34,19 +34,19 @@ use yii\helpers\Html;
                 // Show Owner image & tooltip
                 echo Image::widget(array_merge($imageWidgetConfig, [
                     'tooltipText' => Yii::t('SpaceModule.base', 'Owner:') . "\n" . Html::encode($user->displayName),
-                    'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
+                    'imageOptions' => ['style' => 'border:1px solid var(--success)'],
                 ]));
             } elseif (in_array($user->id, $privilegedUserIds[Space::USERGROUP_ADMIN])) {
                 // Show Admin image & tooltip
                 echo Image::widget(array_merge($imageWidgetConfig, [
                     'tooltipText' => Yii::t('SpaceModule.base', 'Administrator:') . "\n" . Html::encode($user->displayName),
-                    'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('success')]
+                    'imageOptions' => ['style' => 'border:1px solid var(--success)'],
                 ]));
             } elseif (in_array($user->id, $privilegedUserIds[Space::USERGROUP_MODERATOR])) {
                 // Show Moderator image & tooltip
                 echo Image::widget(array_merge($imageWidgetConfig, [
                     'tooltipText' => Yii::t('SpaceModule.base', 'Moderator:') . "\n" . Html::encode($user->displayName),
-                    'imageOptions' => ['style' => 'border:1px solid ' . $this->theme->variable('info')]
+                    'imageOptions' => ['style' => 'border:1px solid var(--info)'],
                 ]));
             } else {
                 // Standard member

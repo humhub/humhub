@@ -30,8 +30,8 @@ $canMove = $model->isMovable() === true;
     <?php endif; ?>
 </div>
 <div class="modal-footer">
-    <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove) ?>
     <?= ModalButton::cancel() ?>
+    <?= Button::primary(Yii::t('base', 'Save'))->action('content.submitMove')->submit()->loader(true)->visible($canMove) ?>
 </div>
 <?php ActiveForm::end() ?>
 <?php ModalDialog::end() ?>

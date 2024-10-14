@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\ui\view\components\View;
-use yii\helpers\Url;
 
 /* @var $this View */
 ?>
@@ -15,7 +14,7 @@ use yii\helpers\Url;
         style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Version:'); ?> <?= Yii::$app->version ?></span><br/>
     <?php if (!empty($licence->licencedTo)): ?>
         <span
-            style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Licenced to:'); ?> <?= $licence->licencedTo; ?></span>
+            style="font-size:18px"><?= Yii::t('MarketplaceModule.base', 'Licensed to:'); ?> <?= $licence->licencedTo; ?></span>
         <br/>
     <?php endif; ?>
     <?php if (!empty($licence->maxUsers)): ?>

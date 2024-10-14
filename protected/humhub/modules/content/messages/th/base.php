@@ -87,6 +87,7 @@ return [
     'You do not have the permission to move this content.' => 'คุณไม่ได้รับอนุญาตให้ย้ายเนื้อหานี้',
     'Your last edit state has been saved!' => 'บันทึกสถานะการแก้ไขล่าสุดของคุณแล้ว',
     'in' => 'ใน',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',

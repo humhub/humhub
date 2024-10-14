@@ -5,6 +5,8 @@ namespace humhub\modules\admin\models\forms;
 use humhub\components\SettingsManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
+use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\widgets\WallStreamFilterNavigation;
 use Yii;
 use yii\base\Model;
 
@@ -50,6 +52,11 @@ class SpaceSettingsForm extends Model
     public $defaultIndexGuestRoute = null;
 
     /**
+     * @var string|null
+     */
+    public $defaultStreamSort = null;
+
+    /**
      * @var bool
      */
     public $defaultHideMembers = false;
@@ -82,7 +89,8 @@ class SpaceSettingsForm extends Model
         return [
             [['defaultVisibility', 'defaultJoinPolicy', 'defaultContentVisibility'], 'integer'],
             ['defaultSpaceGuid', 'checkSpaceGuid'],
-            [['defaultIndexRoute', 'defaultIndexGuestRoute'], 'string'],
+            [['defaultIndexRoute', 'defaultIndexGuestRoute', 'defaultStreamSort'], 'string'],
+            ['defaultStreamSort', 'in', 'range' => array_keys(self::defaultStreamSortOptions())],
             [['defaultHideMembers', 'defaultHideActivities', 'defaultHideAbout', 'defaultHideFollowers'], 'boolean'],
         ];
     }
@@ -99,6 +107,7 @@ class SpaceSettingsForm extends Model
             'defaultContentVisibility' => Yii::t('AdminModule.space', 'Default Content Visiblity'),
             'defaultIndexRoute' => Yii::t('AdminModule.space', 'Default Homepage'),
             'defaultIndexGuestRoute' => Yii::t('AdminModule.space', 'Default Homepage (Non-members)'),
+            'defaultStreamSort' => Yii::t('AdminModule.space', 'Default Stream Sort'),
             'defaultHideMembers' => Yii::t('AdminModule.space', 'Default "Hide Members"'),
             'defaultHideActivities' => Yii::t('AdminModule.space', 'Default "Hide Activity Sidebar Widget"'),
             'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
@@ -139,6 +148,7 @@ class SpaceSettingsForm extends Model
         $this->defaultSpaces = Space::findAll(['auto_add_new_members' => 1]);
         $this->defaultIndexRoute = $this->settingsManager->get('defaultIndexRoute');
         $this->defaultIndexGuestRoute = $this->settingsManager->get('defaultIndexGuestRoute');
+        $this->defaultStreamSort = $this->settingsManager->get('defaultStreamSort', WallStreamFilterNavigation::FILTER_SORT_CREATION);
         $this->defaultHideMembers = $this->settingsManager->get('defaultHideMembers', $module->hideMembers);
         $this->defaultHideActivities = $this->settingsManager->get('defaultHideActivities', $module->hideActivities);
         $this->defaultHideAbout = $this->settingsManager->get('defaultHideAbout', $module->hideAboutPage);
@@ -159,6 +169,7 @@ class SpaceSettingsForm extends Model
         $this->settingsManager->set('defaultContentVisibility', $this->defaultContentVisibility);
         $this->settingsManager->set('defaultIndexRoute', $this->defaultIndexRoute);
         $this->settingsManager->set('defaultIndexGuestRoute', $this->defaultIndexGuestRoute);
+        $this->settingsManager->set('defaultStreamSort', $this->defaultStreamSort);
         $this->settingsManager->set('defaultHideMembers', $this->defaultHideMembers);
         $this->settingsManager->set('defaultHideActivities', $this->defaultHideActivities);
         $this->settingsManager->set('defaultHideAbout', $this->defaultHideAbout);
@@ -192,6 +203,14 @@ class SpaceSettingsForm extends Model
                 }
             }
         }
+    }
+
+    public static function defaultStreamSortOptions(): array
+    {
+        return [
+            Stream::SORT_CREATED_AT => Yii::t('ContentModule.base', 'Creation time'),
+            Stream::SORT_UPDATED_AT => Yii::t('ContentModule.base', 'Last update'),
+        ];
     }
 
 }

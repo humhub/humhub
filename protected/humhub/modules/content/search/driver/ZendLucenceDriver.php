@@ -8,12 +8,12 @@ use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Exception;
 use yii\data\Pagination;
 use yii\helpers\FileHelper;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
@@ -24,8 +24,10 @@ use ZendSearch\Lucene\Exception\RuntimeException;
 use ZendSearch\Lucene\Index;
 use ZendSearch\Lucene\Index\Term;
 use ZendSearch\Lucene\Lucene;
+use ZendSearch\Lucene\Search\Query\AbstractQuery;
 use ZendSearch\Lucene\Search\Query\Boolean;
 use ZendSearch\Lucene\Search\Query\MultiTerm;
+use ZendSearch\Lucene\Search\Query\Phrase;
 use ZendSearch\Lucene\Search\Query\Range;
 use ZendSearch\Lucene\Search\Query\Term as TermQuery;
 use ZendSearch\Lucene\Search\Query\Wildcard;
@@ -64,7 +66,7 @@ class ZendLucenceDriver extends AbstractDriver
         }
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeName => $attributeValue) {
-            $document->addField(Field::unStored($attributeName, $attributeValue));
+            $document->addField(Field::unStored($attributeName, RichTextToPlainTextConverter::process($attributeValue)));
         }
 
         try {
@@ -97,9 +99,9 @@ class ZendLucenceDriver extends AbstractDriver
         ];
     }
 
-    public function delete(Content $content): void
+    public function delete(int $contentId): void
     {
-        $query = new TermQuery(new Term($content->id, 'content_id'));
+        $query = new TermQuery(new Term($contentId, 'content_id'));
         foreach ($this->getIndex()->find($query) as $result) {
             try {
                 $this->getIndex()->delete($result->id);
@@ -142,17 +144,32 @@ class ZendLucenceDriver extends AbstractDriver
             } catch (\Exception $ex) {
                 throw new \Exception('Could not get content id from Lucence search result');
             }
+
             $content = Content::findOne(['id' => $contentId]);
             if ($content !== null) {
                 $resultSet->results[] = $content;
             } else {
-                throw new Exception('Could not load result! Content ID: ' . $contentId);
-                // ToDo: Delete Result
-                Yii::error("Could not load search result content: " . $contentId);
+                Yii::warning("Deleted non-existing content from search index. Content ID: " . $contentId, 'content');
+                $this->delete($contentId);
             }
         }
 
         return $resultSet;
+    }
+
+    protected function prepareTerm(string $term): AbstractQuery
+    {
+        $term = mb_strtolower($term);
+
+        if (str_contains($term, ' ')) {
+            return new Phrase(explode(' ', $term));
+        }
+
+        if (str_ends_with($term, '*')) {
+            return new Wildcard(new Term($term));
+        }
+
+        return new TermQuery(new Term($term));
     }
 
     protected function buildSearchQuery(SearchRequest $request): Boolean
@@ -162,16 +179,13 @@ class ZendLucenceDriver extends AbstractDriver
         Wildcard::setMinPrefixLength(0);
 
         $keywordQuery = new Boolean();
-        foreach ($request->getSearchQuery()->orTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), null);
-        }
 
-        foreach ($request->getSearchQuery()->andTerms as $term) {
-            $keywordQuery->addSubquery(new Wildcard(new Term(mb_strtolower($term) . '*')), true);
+        foreach ($request->getSearchQuery()->terms as $term) {
+            $keywordQuery->addSubquery($this->prepareTerm($term), true);
         }
 
         foreach ($request->getSearchQuery()->notTerms as $term) {
-            $keywordQuery->addSubquery(new TermQuery(new Term(mb_strtolower($term))), false);
+            $keywordQuery->addSubquery($this->prepareTerm($term), false);
         }
 
         if (count($keywordQuery->getSubqueries())) {
@@ -202,14 +216,18 @@ class ZendLucenceDriver extends AbstractDriver
             $query->addSubquery(new MultiTerm($authors, $signs), true);
         }
 
-        if ($request->space) {
-            $spaces = [];
+        if (!empty($request->contentContainerClass)) {
+            $query->addSubquery(new TermQuery(new Term($request->contentContainerClass, 'container_class')), true);
+        }
+
+        if ($request->contentContainer) {
+            $containers = [];
             $signs = [];
-            foreach ($request->space as $space) {
-                $spaces[] = new Term($space, 'container_guid');
+            foreach ($request->contentContainer as $contentContainerGuid) {
+                $containers[] = new Term($contentContainerGuid, 'container_guid');
                 $signs[] = null;
             }
-            $query->addSubquery(new MultiTerm($spaces, $signs), true);
+            $query->addSubquery(new MultiTerm($containers, $signs), true);
         }
 
         if (!empty($request->contentType)) {

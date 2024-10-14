@@ -24,8 +24,8 @@ use yii\bootstrap\ActiveForm;
     <?= $form->field($model, 'sort_order')->widget(SortOrderField::class) ?>
 </div>
 <div class="modal-footer">
-    <?= ModalButton::submitModal() ?>
     <?= ModalButton::cancel() ?>
+    <?= ModalButton::submitModal() ?>
 </div>
 <?php ActiveForm::end() ?>
 <?php ModalDialog::end() ?>

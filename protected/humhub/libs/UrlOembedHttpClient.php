@@ -24,6 +24,7 @@ class UrlOembedHttpClient implements UrlOembedClient
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($curl, CURLOPT_TIMEOUT, 15);
+        curl_setopt($curl, CURLOPT_USERAGENT, Yii::$app->name);
 
         // Not available when open_basedir is set.
         if (!function_exists('ini_get') || !ini_get('open_basedir')) {
@@ -62,7 +63,8 @@ class UrlOembedHttpClient implements UrlOembedClient
                 return Json::decode($json);
             }
         } catch (\Exception $ex) {
-            Yii::warning($ex);
+            Yii::warning("Error decoding JSON from OEmbed URL:\n" . $json .
+                "\n\n" . $ex->getTraceAsString());
         }
 
         return null;

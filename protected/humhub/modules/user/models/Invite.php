@@ -35,8 +35,10 @@ use yii\helpers\Url;
  * @property string $lastname
  * @property string $captcha
  *
- * @property Space $space
- * @property User|null $originator
+ * @property-read Space $space
+ * @property-read User|null $originator
+ * @property-read User|null $createdBy
+ * @property-read User|null $updatedBy
  */
 class Invite extends ActiveRecord
 {
@@ -54,6 +56,8 @@ class Invite extends ActiveRecord
      * @var bool
      */
     public $skipCaptchaValidation = false;
+
+    protected ?array $allowedSources = null;
 
     /**
      * @inheritdoc
@@ -74,7 +78,7 @@ class Invite extends ActiveRecord
             [['firstname', 'lastname'], 'string', 'max' => 255],
             [['source', 'token'], 'string', 'max' => 254],
             [['email'], 'string', 'max' => 150],
-            [['language'], 'string', 'max' => 10],
+            [['language'], 'string', 'max' => 20],
             [['email'], 'required'],
             [['email'], 'unique', 'except' => self::SCENARIO_INVITE_BY_LINK_FORM],
             [['email'], 'email'],
@@ -312,5 +316,33 @@ class Invite extends ActiveRecord
         return
             !$this->skipCaptchaValidation
             && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+    }
+
+    public function getCreatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'created_by']);
+    }
+
+    public function getUpdatedBy()
+    {
+        return $this->hasOne(User::class, ['id' => 'updated_by']);
+    }
+
+    public function getAllowedSources(): array
+    {
+        if ($this->allowedSources === null) {
+            $this->allowedSources = [
+                self::SOURCE_INVITE => Yii::t('AdminModule.base', 'Invite by email'),
+                self::SOURCE_INVITE_BY_LINK => Yii::t('AdminModule.base', 'Invite by link'),
+                self::SOURCE_SELF => Yii::t('AdminModule.base', 'Sign up'),
+            ];
+        }
+
+        return $this->allowedSources;
+    }
+
+    public static function filterSource(): array
+    {
+        return ['source' => array_keys((new static())->getAllowedSources())];
     }
 }

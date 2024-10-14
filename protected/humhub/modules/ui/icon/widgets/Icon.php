@@ -798,27 +798,25 @@ class Icon extends Widget
         if ($this->color) {
             switch ($this->color) {
                 case 'default':
-                    $this->color = $this->view->theme->variable('default');
+                    $this->color = 'var(--default)';
                     break;
                 case 'primary':
-                    $this->color = $this->view->theme->variable('primary');
+                    $this->color = 'var(--primary)';
                     break;
                 case 'info':
-                    $this->color = $this->view->theme->variable('info');
+                    $this->color = 'var(--info)';
                     break;
                 case 'success':
-                    $this->color = $this->view->theme->variable('success');
+                    $this->color = 'var(--success)';
                     break;
                 case 'warning':
                 case 'warn':
-                    $this->color = $this->view->theme->variable('warn');
+                    $this->color = 'var(--warning)';
                     break;
-
                 case 'error':
                 case 'danger':
-                    $this->color = $this->view->theme->variable('danger');
+                    $this->color = 'var(--danger)';
                     break;
-
             }
         }
 
@@ -944,6 +942,17 @@ class Icon extends Widget
     public function style($style)
     {
         Html::addCssStyle($this->htmlOptions, $style);
+        return $this;
+    }
+
+    /**
+     * @param string $class
+     * @return $this
+     * @since 1.16
+     */
+    public function class(string $class): self
+    {
+        Html::addCssClass($this->htmlOptions, $class);
         return $this;
     }
 

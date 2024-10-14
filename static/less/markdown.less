@@ -123,10 +123,13 @@
     ul, ol {
         margin-top: 0;
         padding-left: 30px;
-
+        display: table;
         li p {
             // otherwise single list items p hides the marker
             overflow: visible !important;
+        }
+        li > p:first-child {
+            display: inline;
         }
     }
 
@@ -189,6 +192,10 @@
         margin-bottom: @md-block-spacing !important;
         font-size: 1em;
         width: 100%;
+
+        tbody {
+            vertical-align: top;
+        }
 
         th, td {
             border: 1px solid @background3 !important;

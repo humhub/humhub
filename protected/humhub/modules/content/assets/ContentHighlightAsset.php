@@ -9,6 +9,7 @@ namespace humhub\modules\content\assets;
 
 use humhub\components\assets\AssetBundle;
 use Yii;
+use yii\web\Application;
 
 class ContentHighlightAsset extends AssetBundle
 {
@@ -27,16 +28,39 @@ class ContentHighlightAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public static function register($view)
+    public function init()
     {
-        if (!Yii::$app->request->isConsoleRequest) {
-            $highlight = Yii::$app->session->get('contentHighlight');
-            if ($highlight !== null && $highlight !== '') {
-                Yii::$app->session->remove('contentHighlight');
-                $view->registerJsConfig('content.highlight', ['keyword' => $highlight]);
-            }
+        parent::init();
+
+        $keyword = $this->getKeyword();
+        if ($keyword !== null) {
+            Yii::$app->view->registerJsConfig('content.highlight', ['keyword' => $keyword]);
+        }
+    }
+
+    private function getKeyword(): ?string
+    {
+        if (!(Yii::$app instanceof Application && Yii::$app->isInstalled())) {
+            return null;
         }
 
-        return parent::register($view);
+        $keyword = Yii::$app->session->get('contentHighlight');
+        if ($keyword !== null && $keyword !== '') {
+            Yii::$app->session->remove('contentHighlight');
+            return $keyword;
+        }
+
+        $keyword = Yii::$app->request->get('highlight');
+        if ($keyword !== null && $keyword !== '') {
+            return $keyword;
+        }
+
+        if (isset(Yii::$app->request->referrer) &&
+            preg_match('/search.*?(&|\?)keyword=(.*?)(&|$)/i', Yii::$app->request->referrer, $m) &&
+            $m[2] !== '') {
+            return urldecode($m[2]);
+        }
+
+        return null;
     }
 }

@@ -5,6 +5,7 @@ namespace humhub\modules\content\tests\codeception\unit\search;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
+use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\content\search\ResultSet;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
@@ -45,16 +46,23 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Something Other']))->save();
         (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'Marabru Leav Test X']))->save();
 
-        // Test Multiple AND Keywords
-        #$this->assertCount(1, $this->getSearchResultByKeyword('Marabru')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru" Tes')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('"Marabr" Test')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Marabru Leav" "Leav Test"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"Something Other"')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('Some Test')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Some -Test')->results);
 
-        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav Abcd')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Marabru Leav NOT Abcd')->results);
+        $this->assertCount(0, $this->getSearchResultByKeyword('Marabru -Leav')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('+Marabru +Leav* +Abcd')->results);
         $this->assertCount(0, $this->getSearchResultByKeyword('Marabru Leav +Abcd')->results);
 
         $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marabru')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('Something -Marab')->results);
 
-        // Wildcards
+        // Wildcards (it is applied automatically even if the char `*` is not typed)
         $this->assertCount(1, $this->getSearchResultByKeyword('Marabr*')->results);
     }
 
@@ -73,6 +81,24 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
     }
 
+    public function testUrlKeywords()
+    {
+        $space = Space::findOne(['id' => 1]);
+        $this->becomeUser('Admin');
+
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://site.com/home.html']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://site.com/category/subcat/page/index.html']))->save();
+        (new Post($space, Content::VISIBILITY_PUBLIC, ['message' => 'https://web.net/index.php?page=2&from=string']))->save();
+
+        $this->assertCount(1, $this->getSearchResultByKeyword('"https://site.com/category/subcat/page/index.html"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('https://site.com/category/subcat/page/index.html')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('/site.com/category/subcat/')->results);
+        $this->assertCount(2, $this->getSearchResultByKeyword('site.com')->results);
+        $this->assertCount(2, $this->getSearchResultByKeyword('"site.com"')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('https://web.net/index.php?page=2&from=string')->results);
+        $this->assertCount(1, $this->getSearchResultByKeyword('"https://web.net/index.php?page=2&from=string"')->results);
+    }
+
     private function getSearchRequest(): SearchRequest
     {
         foreach (Content::find()->where(['visibility' => Content::VISIBILITY_PUBLIC])->each() as $content) {
@@ -83,7 +109,7 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
         return new SearchRequest();
     }
 
-    private function getSearchResultByKeyword(string $keyword): ResultSet
+    protected function getSearchResultByKeyword(string $keyword): ResultSet
     {
         $request = $this->getSearchRequest();
         $request->keyword = $keyword;
@@ -226,23 +252,24 @@ abstract class AbstractDriverTestSuite extends HumHubDbTestCase
 
         $this->assertCount(6, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space1->guid];
+        $request->contentContainerClass = Space::class;
+        $request->contentContainer = [$space1->guid];
         $this->assertCount(1, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space2->guid];
+        $request->contentContainer = [$space2->guid];
         $this->assertCount(2, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space3->guid];
+        $request->contentContainer = [$space3->guid];
         $this->assertCount(3, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space1->guid, $space3->guid];
+        $request->contentContainer = [$space1->guid, $space3->guid];
         $this->assertCount(4, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space2->guid, $space3->guid];
+        $request->contentContainer = [$space2->guid, $space3->guid];
         $result = $this->searchDriver->search($request);
         $this->assertCount(5, $this->searchDriver->search($request)->results);
 
-        $request->space = [$space1->guid, $space2->guid, $space3->guid];
+        $request->contentContainer = [$space1->guid, $space2->guid, $space3->guid];
         $this->assertCount(6, $this->searchDriver->search($request)->results);
     }
 

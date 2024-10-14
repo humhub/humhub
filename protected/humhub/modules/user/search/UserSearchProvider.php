@@ -78,7 +78,7 @@ class UserSearchProvider implements MetaSearchProviderInterface
 
         $results = [];
         foreach ($peopleQuery->all() as $user) {
-            $results[] = new SearchRecord($user);
+            $results[] = Yii::createObject(SearchRecord::class, [$user]);
         }
 
         return [

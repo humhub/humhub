@@ -39,6 +39,16 @@ SpaceAsset::register($this);
         </div>
         <div class="modal-footer">
             <hr/>
+            <?= Html::button(
+                Yii::t('SpaceModule.base', 'Close'),
+                [
+                    'class' => ['btn', 'btn-default'],
+                    'data' => [
+                        'dismiss' => 'modal',
+                    ],
+                ]
+            ) ?>
+
             <?= Html::a(
                 Yii::t('SpaceModule.base', 'Send'),
                 '#',
@@ -51,15 +61,6 @@ SpaceAsset::register($this);
                 ]
             ) ?>
 
-            <?= Html::button(
-                Yii::t('SpaceModule.base', 'Close'),
-                [
-                    'class' => ['btn', 'btn-primary'],
-                    'data' => [
-                        'dismiss' => 'modal',
-                    ],
-                ]
-            ) ?>
         </div>
         <?php $form::end(); ?>
     </div>

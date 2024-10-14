@@ -15,6 +15,7 @@ use yii\base\ErrorException;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
 use yii\db\ActiveRecord;
+use yii\web\BadRequestHttpException;
 
 /**
  * This is the model class for table "user_password".
@@ -64,6 +65,11 @@ class Password extends ActiveRecord
 
     public function beforeSave($insert)
     {
+        if (empty($this->password) || empty($this->algorithm)) {
+            Yii::error(sprintf('Stop saving of empty password for user #%s', $this->user_id), 'user');
+            throw new BadRequestHttpException(Yii::t('UserModule.base', 'Empty password cannot be saved!'));
+        }
+
         $this->created_at = date('Y-m-d H:i:s');
 
         return parent::beforeSave($insert);
