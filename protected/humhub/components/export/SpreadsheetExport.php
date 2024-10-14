@@ -371,7 +371,7 @@ class SpreadsheetExport extends Component
         }
 
         // Check for risky starting characters or formula-like values and prepend single quote
-        if (strpbrk($value[0], '=+-@,;'. "\t" . "\r") !== false || preg_match('/^\d+[+\-*\/].+/', $value)) {
+        if (strpbrk($value[0], '=+-@,;' . "\t" . "\r") !== false || preg_match('/^\d+[+\-*\/].+/', $value)) {
             $value = "'" . $value;
         }
 
