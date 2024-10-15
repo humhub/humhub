@@ -15,6 +15,7 @@ use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\data\BaseDataProvider;
 use yii\di\Instance;
+use yii\helpers\ArrayHelper;
 use yii\i18n\Formatter;
 
 /**
@@ -366,7 +367,13 @@ class SpreadsheetExport extends Component
      */
     private function sanitizeValue(?string $value): ?string
     {
-        if (empty($value) || !in_array(ucfirst($this->resultConfig['writerType']), [IOFactory::WRITER_CSV, IOFactory::WRITER_XLSX, IOFactory::WRITER_XLS])) {
+        if (
+            empty($value) ||
+            !in_array(
+                ucfirst(ArrayHelper::getValue($this->resultConfig, 'writerType', (new ExportResult)->writerType)),
+                [IOFactory::WRITER_CSV, IOFactory::WRITER_XLSX, IOFactory::WRITER_XLS]
+            )
+        ) {
             return $value;
         }
 
