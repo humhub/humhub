@@ -287,21 +287,40 @@ class MarketplaceController extends Controller
      */
     public function actionInfo($moduleId)
     {
-        $this->stdout('ID: ' . $moduleId . PHP_EOL);
+        $this->stdout('====================================================' . PHP_EOL);
+        $this->stdout('                 MODULE INFORMATION' . PHP_EOL);
+        $this->stdout('====================================================' . PHP_EOL . PHP_EOL);
+
+        $this->stdout('📦 ID:          ' . $moduleId . PHP_EOL);
 
         $module = Yii::$app->moduleManager->getModule($moduleId, false);
 
-        $this->stdout('Installed: ' . ($module instanceof Module ? 'Yes' : 'No') . PHP_EOL);
+        if ($module instanceof Module) {
+            $this->stdout('✅ Installed:   Yes' . PHP_EOL);
+        } else {
+            $this->stdout('❌ Installed:   No' . PHP_EOL);
+        }
 
         if ($module === null) {
+            $this->stdout(PHP_EOL . '====================================================' . PHP_EOL);
             return 1;
         }
 
-        $this->stdout('Enabled: ' . ($module->isEnabled ? 'Yes' : 'No') . PHP_EOL);
-        $this->stdout('Version: ' . $module->version . PHP_EOL);
-        $this->stdout('Name: ' . $module->name . PHP_EOL);
-        $this->stdout('Description: ' . $module->description . PHP_EOL);
-        $this->stdout('Path: ' . $module->basePath . PHP_EOL);
+        if ($module->isEnabled) {
+            $this->stdout('✅ Enabled:     Yes' . PHP_EOL);
+        } else {
+            $this->stdout('❌ Enabled:     No' . PHP_EOL);
+        }
+
+        $this->stdout('📄 Version:     ' . $module->version . PHP_EOL);
+
+        $this->stdout(PHP_EOL . '----------------------------------------------------' . PHP_EOL);
+
+        $this->stdout('📝 Name:        ' . $module->name . PHP_EOL);
+        $this->stdout('🔍 Description: ' . $module->description . PHP_EOL);
+        $this->stdout('📂 Path:        ' . $module->basePath . PHP_EOL);
+
+        $this->stdout(PHP_EOL . '====================================================' . PHP_EOL);
 
         return 0;
     }
