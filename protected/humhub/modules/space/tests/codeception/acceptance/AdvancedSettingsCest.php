@@ -58,14 +58,18 @@ class AdvancedSettingsCest
         $I->amSpaceAdmin(false, 2);
 
         $I->amOnPage('/s/space-2/space/manage/default/advanced');
-        $I->see('About', '#space-main-menu');
+        $I->waitForElementVisible('#space-header-controls-menu');
+        $I->click('#space-header-controls-menu');
+        $I->see('About', '.dropdown-menu');
 
         $I->checkOption('#advancedsettings-hideabout');
         $I->submitForm('#spaceIndexForm', []);
 
-        $I->waitForText('Saved');
+        $I->seeSuccess('Saved');
 
-        $I->dontSee('About', '#space-main-menu');
+        $I->waitForElementVisible('#space-header-controls-menu');
+        $I->click('#space-header-controls-menu');
+        $I->dontSee('About', '.dropdown-menu');
     }
 
     public function testHideFollowers(AcceptanceTester $I)
