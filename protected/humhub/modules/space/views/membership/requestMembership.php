@@ -1,11 +1,10 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\LoaderWidget;
+use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
 /**
@@ -22,7 +21,7 @@ SpaceAsset::register($this);
         <?php $form = ActiveForm::begin(); ?>
         <?= $form->field($model, 'options')->hiddenInput()->label(false); ?>
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('SpaceModule.base', '<strong>Request</strong> Membership'); ?>
             </h4>
@@ -42,7 +41,7 @@ SpaceAsset::register($this);
             <?= Html::button(
                 Yii::t('SpaceModule.base', 'Close'),
                 [
-                    'class' => ['btn', 'btn-default'],
+                    'class' => ['btn', 'btn-light'],
                     'data' => [
                         'dismiss' => 'modal',
                     ],

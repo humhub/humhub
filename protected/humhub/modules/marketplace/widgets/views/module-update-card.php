@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\modules\marketplace\models\Module;
 use humhub\modules\marketplace\widgets\ModuleUpdateActionButtons;
@@ -19,7 +19,7 @@ Assets::register($this);
 <div class="card-panel">
     <div class="card-header">
         <?= Html::img($module->image, [
-            'class' => 'media-object img-rounded',
+            'class' => 'rounded',
             'data-src' => 'holder.js/60x60',
             'alt' => '60x60',
             'style' => 'width:60px;height:60px',

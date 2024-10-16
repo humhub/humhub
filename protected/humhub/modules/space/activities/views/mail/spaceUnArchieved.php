@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\helpers\Html;
 use humhub\libs\Helpers;
 
 echo Yii::t('ActivityModule.base', '{spaceName} has been unarchived', [

@@ -36,9 +36,9 @@ class AcceptanceTester extends \AcceptanceTester
 
         $user = User::findOne(['username' => $userName]);
         $this->waitForText('User administration');
-        $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown-navigation button');
+        $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown button');
         $this->waitForText('Impersonate');
-        $this->click('Impersonate', '.dropdown-navigation.open');
+        $this->click('Impersonate', '.dropdown.open');
         $this->acceptPopup();
     }
 

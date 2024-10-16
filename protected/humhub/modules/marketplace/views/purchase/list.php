@@ -1,11 +1,12 @@
 <?php
 
 use humhub\components\Module;
+use humhub\helpers\Html;
 use humhub\modules\marketplace\assets\Assets;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 use yii\base\View;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var Module[] $modules */
@@ -19,7 +20,7 @@ Assets::register($this);
 <div class="modal-dialog modal-dialog-normal animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('MarketplaceModule.base', 'Add License Key'); ?>
             </h4>
@@ -30,12 +31,12 @@ Assets::register($this);
             <?= Html::beginForm(Url::to(['/marketplace/purchase']), 'post', ['class' => 'form-search']); ?>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="form-group form-group-search">
+                    <div class="mb-3 form-group-search">
                         <?= Html::textInput('licenceKey', $licenceKey, ['class' => 'form-control form-search', 'placeholder' => Yii::t('MarketplaceModule.base', 'Add purchased module by license key')]); ?>
-                        <?= Button::defaultType(Yii::t('MarketplaceModule.base', 'Register'))
+                        <?= Button::light(Yii::t('MarketplaceModule.base', 'Register'))
                             ->submit()
                             ->action('marketplace.registerLicenceKey')
-                            ->cssClass('btn btn-default btn-sm form-button-search'); ?>
+                            ->cssClass('btn btn-light btn-sm form-button-search'); ?>
                     </div>
                     <?php if ($message != ''): ?>
                         <div style="color:<?= ($hasError) ? 'red' : 'green'; ?>"><?= Html::encode($message); ?></div>
@@ -56,17 +57,17 @@ Assets::register($this);
 
                 <?php foreach ($modules as $module): ?>
                     <hr>
-                    <div class="media">
-                        <img class="media-object img-rounded pull-left" data-src="holder.js/64x64" alt="64x64"
-                             style="width: 64px; height: 64px;"
-                             src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']; ?>">
+                    <div class="d-flex">
+                        <div class="flex-shrink-0">
+                            <img class="rounded" data-src="holder.js/64x64" alt="64x64"
+                                 style="width: 64px; height: 64px;"
+                                 src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl']; ?>">
+                        </div>
 
-                        <div class="media-body">
-                            <h4 class="media-heading"><?= $module['name']; ?>
+                        <div class="flex-grow-1">
+                            <h4 class="mt-0"><?= $module['name']; ?>
                                 <?php if (Yii::$app->moduleManager->hasModule($module['id'])): ?>
-                                    <small><span
-                                            class="label label-info"><?= Yii::t('MarketplaceModule.base', 'Installed'); ?>
-                                    </span></small>
+                                    <small><?= Badge::info(Yii::t('MarketplaceModule.base', 'Installed')) ?></small>
                                 <?php endif; ?>
                             </h4>
                             <p><?= $module['description']; ?></p>
@@ -87,7 +88,7 @@ Assets::register($this);
                 <?php endforeach; ?>
             <?php endif; ?>
 
-            <small class="pull-right"><br/>Installation
+            <small class="float-end"><br/>Installation
                 Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
             <div class="clearfix"></div>
 
