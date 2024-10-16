@@ -16,22 +16,20 @@ use humhub\widgets\PoweredBy;
 
 ?>
 
-<?php if (!empty($entries)): ?>
-    <div class="footer-nav footer-nav-sidebar">
-        <small>
-            <?php foreach ($entries as $k => $entry): ?>
-                <?php if ($entry instanceof MenuLink): ?>
-                    <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
-                <?php endif; ?>
+<div class="footer-nav footer-nav-sidebar">
+    <small>
+        <?php foreach ($entries as $k => $entry): ?>
+            <?php if ($entry instanceof MenuLink): ?>
+                <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
+            <?php endif; ?>
 
-                <?php if (!PoweredBy::isHidden() || array_key_last($entries) !== $k): ?>
-                    &nbsp;&middot;&nbsp;
-                <?php endif; ?>
+            <?php if (!PoweredBy::isHidden() || array_key_last($entries) !== $k): ?>
+                &nbsp;&middot;&nbsp;
+            <?php endif; ?>
 
-            <?php endforeach; ?>
+        <?php endforeach; ?>
 
-            <?= PoweredBy::widget(); ?>
-        </small>
-    </div>
-    <br/>
-<?php endif; ?>
+        <?= PoweredBy::widget(); ?>
+    </small>
+</div>
+<br/>

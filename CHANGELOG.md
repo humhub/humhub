@@ -48,6 +48,8 @@ HumHub Changelog
 - Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
 - Fix #7250: Check writable path
 - Enh #7253: CSV/XLSX export improvements
+- Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
+- Enh #7257: Move "About" into Space Control Menu
 
 1.16.3 (Unreleased)
 --------------------------
