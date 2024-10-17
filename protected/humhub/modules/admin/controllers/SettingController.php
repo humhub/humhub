@@ -16,6 +16,7 @@ use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
+use humhub\modules\admin\models\forms\GlobalTopicSettingForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
@@ -25,9 +26,14 @@ use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\models\Log;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\ModalClose;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\db\Expression;
+use yii\web\NotFoundHttpException;
 
 /**
  * SettingController
@@ -312,6 +318,95 @@ class SettingController extends Controller
             'model' => $form,
             'limitAgeOptions' => $limitAgeOptions,
             'dating' => $dating,
+        ]);
+    }
+
+    public function actionTopics()
+    {
+        $model = new Topic();
+        $suggestGlobalConversion = false;
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion) {
+                $suggestGlobalConversion = true;
+            });
+
+            if (!!Yii::$app->request->post('convert-to-global', false)) {
+                Topic::convertToGlobal($model->name);
+
+                $model->name = '';
+                $this->view->saved();
+            } elseif ($model->save()) {
+                $model->name = '';
+                $this->view->saved();
+            }
+        }
+
+        $globalTopicSettingModel = new GlobalTopicSettingForm();
+
+        if ($globalTopicSettingModel->load(Yii::$app->request->post()) && $globalTopicSettingModel->validate()) {
+            $globalTopicSettingModel->save();
+            $this->view->saved();
+        }
+
+        return $this->render('topics', [
+            'contentContainer' => null,
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Topic::find()
+                    ->orderBy('sort_order, name')
+                    ->where(['is', 'contentcontainer_id', new Expression('NULL')])
+                    ->andWhere(['module_id' => (new Topic())->moduleId, 'type' => Topic::class]),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]),
+            'addModel' => $model,
+            'suggestGlobalConversion' => $suggestGlobalConversion,
+            'globalTopicSettingModel' => $globalTopicSettingModel,
+        ]);
+    }
+
+    public function actionDeleteTopic($id)
+    {
+        $this->forcePostRequest();
+
+        $topic = Topic::find()
+            ->where(['id' => $id])
+            ->andWhere(['is', 'contentcontainer_id', new Expression('NULL')])
+            ->one();
+
+        if (!$topic) {
+            throw new NotFoundHttpException();
+        }
+
+        $topic->delete();
+
+        return $this->asJson([
+            'success' => true,
+            'message' => Yii::t('AdminModule.settings', 'Topic has been deleted!'),
+        ]);
+    }
+
+    public function actionEditTopic($id)
+    {
+        $topic = Topic::find()
+            ->where(['id' => $id])
+            ->andWhere(['is', 'contentcontainer_id', new Expression('NULL')])
+            ->one();
+
+        if (!$topic) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($topic->load(Yii::$app->request->post()) && $topic->save()) {
+            return ModalClose::widget([
+                'saved' => true,
+                'reload' => true,
+            ]);
+        }
+
+        return $this->renderAjax('@topic/views/manage/editModal', [
+            'model' => $topic,
         ]);
     }
 
