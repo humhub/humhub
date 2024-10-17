@@ -9,6 +9,7 @@
 namespace humhub\commands;
 
 use Yii;
+use yii\helpers\BaseConsole;
 use yii\helpers\Console;
 
 /**
@@ -41,22 +42,14 @@ class TestController extends \yii\console\Controller
      */
     public function actionDbConnection()
     {
-        $this->stdout('====================================================' . PHP_EOL);
-        $this->stdout('               DATABASE CONNECTION TEST' . PHP_EOL);
-        $this->stdout('====================================================' . PHP_EOL . PHP_EOL);
-
-        if (!empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username)) {
-            $this->stdout('✅ DB Connection is configured' . PHP_EOL);
+        $this->stdout(PHP_EOL . 'DB Connection: ');
+        if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
+            $this->stdout('Not Configured!', BaseConsole::FG_RED, BaseConsole::BOLD);
+        } elseif (Yii::$app->isDatabaseInstalled(true)) {
+            $this->stdout('OK!', BaseConsole::FG_GREEN, BaseConsole::BOLD);
         } else {
-            $this->stdout('❌ DB Connection is not configured' . PHP_EOL);
+            $this->stdout('Failed!', BaseConsole::FG_RED, BaseConsole::BOLD);
         }
-
-        if (Yii::$app->isDatabaseInstalled(true)) {
-            $this->stdout('✅ DB Connection is ok' . PHP_EOL);
-        } else {
-            $this->stdout('❌ DB Connection is failed' . PHP_EOL);
-        }
-
-        $this->stdout(PHP_EOL . '====================================================' . PHP_EOL);
+        $this->stdout(PHP_EOL . PHP_EOL);
     }
 }

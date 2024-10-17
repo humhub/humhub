@@ -17,6 +17,7 @@ use yii\base\Exception;
 use yii\base\InvalidArgumentException;
 use yii\base\InvalidConfigException;
 use yii\console\Controller;
+use yii\helpers\BaseConsole;
 use yii\helpers\Console;
 use yii\web\HttpException;
 
@@ -60,7 +61,13 @@ class MarketplaceController extends Controller
         $mask = "| %-20s | %10s |%20s | %-30s \n";
         printf($mask, 'ID', 'ENABLED', 'INSTALLED VERSION', 'TITLE');
         foreach ($installedModules as $module) {
-            printf($mask, $module->id, (Yii::$app->hasModule($module->id) ? 'Yes' : 'No'), $module->getVersion(), $module->getName());
+            printf(
+                $mask,
+                $module->id,
+                (Yii::$app->hasModule($module->id) ? 'Yes' : 'No'),
+                $module->getVersion(),
+                $module->getName()
+            );
         }
     }
 
@@ -77,8 +84,14 @@ class MarketplaceController extends Controller
         printf($mask, 'ID', 'INSTALLED', 'LATEST VERSION', 'LATEST COMPAT VERSION', 'TITLE');
 
         foreach ($modules as $module) {
-
-            printf($mask, $module['id'], (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'), $module['latestVersion'], (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-", $module['name']);
+            printf(
+                $mask,
+                $module['id'],
+                (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'),
+                $module['latestVersion'],
+                (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-",
+                $module['name']
+            );
         }
     }
 
@@ -107,7 +120,6 @@ class MarketplaceController extends Controller
      */
     public function actionRemove($moduleId)
     {
-
         $module = Yii::$app->moduleManager->getModule($moduleId);
 
         if ($module == null) {
@@ -130,7 +142,6 @@ class MarketplaceController extends Controller
      */
     public function actionUpdate($moduleId)
     {
-
         if (!Yii::$app->moduleManager->hasModule($moduleId)) {
             print "\nModule " . $moduleId . " is not installed!\n";
             exit;
@@ -192,7 +203,6 @@ class MarketplaceController extends Controller
                     $onlineModuleManager->install($moduleId);
                     print "Reinstalled: " . $moduleId . "\n";
                 } catch (\Exception $ex) {
-
                 }
             }
         }
@@ -206,7 +216,10 @@ class MarketplaceController extends Controller
      */
     public function actionEnable($moduleId)
     {
-        $this->stdout(Yii::t('MarketplaceModule.base', "--- Enable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
+        $this->stdout(
+            Yii::t('MarketplaceModule.base', "--- Enable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]),
+            Console::BOLD
+        );
 
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
@@ -217,7 +230,11 @@ class MarketplaceController extends Controller
 
         $module->enable();
 
-        $this->stdout(Yii::t('MarketplaceModule.base', "\nModule successfully enabled!\n"), Console::FG_GREEN, Console::BOLD);
+        $this->stdout(
+            Yii::t('MarketplaceModule.base', "\nModule successfully enabled!\n"),
+            Console::FG_GREEN,
+            Console::BOLD
+        );
         return 0;
     }
 
@@ -229,22 +246,40 @@ class MarketplaceController extends Controller
      */
     public function actionDisable($moduleId)
     {
-        if (!$this->confirm(Yii::t('MarketplaceModule.base', 'All {moduleId} module content will be deleted. Continue?', ['moduleId' => $moduleId]), false)) {
+        if (!$this->confirm(
+            Yii::t(
+                'MarketplaceModule.base',
+                'All {moduleId} module content will be deleted. Continue?',
+                ['moduleId' => $moduleId]
+            ),
+            false
+        )) {
             return 1;
         }
 
-        $this->stdout(Yii::t('MarketplaceModule.base', "--- Disable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]), Console::BOLD);
+        $this->stdout(
+            Yii::t('MarketplaceModule.base', "--- Disable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]),
+            Console::BOLD
+        );
 
         /** @var Module $module */
         $module = Yii::$app->moduleManager->getModule($moduleId);
         if ($module === null || !Yii::$app->hasModule($moduleId)) {
-            $this->stdout(Yii::t('MarketplaceModule.base', "Module not found or enabled!\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(
+                Yii::t('MarketplaceModule.base', "Module not found or enabled!\n"),
+                Console::FG_RED,
+                Console::BOLD
+            );
             return 1;
         }
 
         $module->disable();
 
-        $this->stdout(Yii::t('MarketplaceModule.base', "\nModule successfully disabled!\n"), Console::FG_GREEN, Console::BOLD);
+        $this->stdout(
+            Yii::t('MarketplaceModule.base', "\nModule successfully disabled!\n"),
+            Console::FG_GREEN,
+            Console::BOLD
+        );
         return 0;
     }
 
@@ -260,23 +295,39 @@ class MarketplaceController extends Controller
     public function actionRegister($licenceKey)
     {
         if (empty($licenceKey)) {
-            $this->stdout(Yii::t('MarketplaceModule.base', 'Module license key cannot be empty!' . "\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(
+                Yii::t('MarketplaceModule.base', 'Module license key cannot be empty!' . "\n"),
+                Console::FG_RED,
+                Console::BOLD
+            );
             return 1;
         }
 
         $result = HumHubAPI::request('v1/modules/registerPaid', ['licenceKey' => $licenceKey]);
 
         if (!isset($result['status'])) {
-            $this->stdout(Yii::t('MarketplaceModule.base', 'Could not connect to HumHub API!' . "\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(
+                Yii::t('MarketplaceModule.base', 'Could not connect to HumHub API!' . "\n"),
+                Console::FG_RED,
+                Console::BOLD
+            );
             return 1;
         }
 
         if ($result['status'] != 'ok' && $result['status'] != 'created') {
-            $this->stdout(Yii::t('MarketplaceModule.base', 'Invalid module license key!' . "\n"), Console::FG_RED, Console::BOLD);
+            $this->stdout(
+                Yii::t('MarketplaceModule.base', 'Invalid module license key!' . "\n"),
+                Console::FG_RED,
+                Console::BOLD
+            );
             return 1;
         }
 
-        $this->stdout(Yii::t('MarketplaceModule.base', 'Module license added!' . "\n"), Console::FG_GREEN, Console::BOLD);
+        $this->stdout(
+            Yii::t('MarketplaceModule.base', 'Module license added!' . "\n"),
+            Console::FG_GREEN,
+            Console::BOLD
+        );
         return 0;
     }
 
@@ -287,41 +338,53 @@ class MarketplaceController extends Controller
      */
     public function actionInfo($moduleId)
     {
+        $module = Yii::$app->moduleManager->getModule($moduleId, false);
+
+
         $this->stdout('====================================================' . PHP_EOL);
         $this->stdout('                 MODULE INFORMATION' . PHP_EOL);
         $this->stdout('====================================================' . PHP_EOL . PHP_EOL);
 
-        $this->stdout('📦 ID:          ' . $moduleId . PHP_EOL);
+        $this->stdout("ID:\t\t");
+        $this->stdout($moduleId, BaseConsole::FG_GREY, BaseConsole::BOLD);
+        $this->stdout(PHP_EOL . PHP_EOL);
 
-        $module = Yii::$app->moduleManager->getModule($moduleId, false);
-
-        if ($module instanceof Module) {
-            $this->stdout('✅ Installed:   Yes' . PHP_EOL);
+        $this->stdout("Installed:\t");
+        if (($module instanceof Module)) {
+            $this->stdout('Yes', BaseConsole::FG_GREEN, BaseConsole::BOLD);
         } else {
-            $this->stdout('❌ Installed:   No' . PHP_EOL);
+            $this->stdout('No', BaseConsole::FG_RED, BaseConsole::BOLD);
         }
+        $this->stdout(PHP_EOL);
 
         if ($module === null) {
-            $this->stdout(PHP_EOL . '====================================================' . PHP_EOL);
+            $this->stdout(PHP_EOL);
             return 1;
         }
 
+        $this->stdout("Enabled:\t");
         if ($module->isEnabled) {
-            $this->stdout('✅ Enabled:     Yes' . PHP_EOL);
+            $this->stdout('Yes', BaseConsole::FG_GREEN, BaseConsole::BOLD);
         } else {
-            $this->stdout('❌ Enabled:     No' . PHP_EOL);
+            $this->stdout('No', BaseConsole::FG_RED, BaseConsole::BOLD);
         }
+        $this->stdout(PHP_EOL . PHP_EOL);
 
-        $this->stdout('📄 Version:     ' . $module->version . PHP_EOL);
+        $this->stdout("Name:\t\t");
+        $this->stdout($module->name . PHP_EOL, BaseConsole::FG_GREY, BaseConsole::BOLD);
 
-        $this->stdout(PHP_EOL . '----------------------------------------------------' . PHP_EOL);
+        $this->stdout("Version:\t");
+        $this->stdout($module->version . PHP_EOL, BaseConsole::FG_GREY, BaseConsole::BOLD);
 
-        $this->stdout('📝 Name:        ' . $module->name . PHP_EOL);
-        $this->stdout('🔍 Description: ' . $module->description . PHP_EOL);
-        $this->stdout('📂 Path:        ' . $module->basePath . PHP_EOL);
+        $this->stdout(PHP_EOL);
 
-        $this->stdout(PHP_EOL . '====================================================' . PHP_EOL);
+        $this->stdout("Description:\t");
+        $this->stdout($module->description . PHP_EOL, BaseConsole::FG_GREY, BaseConsole::BOLD);
 
+        $this->stdout("Path:\t\t");
+        $this->stdout($module->basePath . PHP_EOL, BaseConsole::FG_GREY, BaseConsole::BOLD);
+
+        $this->stdout(PHP_EOL);
         return 0;
     }
 
