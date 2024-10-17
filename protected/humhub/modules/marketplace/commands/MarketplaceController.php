@@ -66,7 +66,7 @@ class MarketplaceController extends Controller
                 $module->id,
                 (Yii::$app->hasModule($module->id) ? 'Yes' : 'No'),
                 $module->getVersion(),
-                $module->getName()
+                $module->getName(),
             );
         }
     }
@@ -90,7 +90,7 @@ class MarketplaceController extends Controller
                 (Yii::$app->moduleManager->hasModule($module['id']) ? 'Yes' : 'No'),
                 $module['latestVersion'],
                 (isset($module['latestCompatibleVersion']) && $module['latestCompatibleVersion']) ? $module['latestCompatibleVersion'] : "-",
-                $module['name']
+                $module['name'],
             );
         }
     }
@@ -218,7 +218,7 @@ class MarketplaceController extends Controller
     {
         $this->stdout(
             Yii::t('MarketplaceModule.base', "--- Enable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]),
-            Console::BOLD
+            Console::BOLD,
         );
 
         /** @var Module $module */
@@ -233,7 +233,7 @@ class MarketplaceController extends Controller
         $this->stdout(
             Yii::t('MarketplaceModule.base', "\nModule successfully enabled!\n"),
             Console::FG_GREEN,
-            Console::BOLD
+            Console::BOLD,
         );
         return 0;
     }
@@ -250,16 +250,16 @@ class MarketplaceController extends Controller
             Yii::t(
                 'MarketplaceModule.base',
                 'All {moduleId} module content will be deleted. Continue?',
-                ['moduleId' => $moduleId]
+                ['moduleId' => $moduleId],
             ),
-            false
+            false,
         )) {
             return 1;
         }
 
         $this->stdout(
             Yii::t('MarketplaceModule.base', "--- Disable module: {moduleId} ---\n\n", ['moduleId' => $moduleId]),
-            Console::BOLD
+            Console::BOLD,
         );
 
         /** @var Module $module */
@@ -268,7 +268,7 @@ class MarketplaceController extends Controller
             $this->stdout(
                 Yii::t('MarketplaceModule.base', "Module not found or enabled!\n"),
                 Console::FG_RED,
-                Console::BOLD
+                Console::BOLD,
             );
             return 1;
         }
@@ -278,7 +278,7 @@ class MarketplaceController extends Controller
         $this->stdout(
             Yii::t('MarketplaceModule.base', "\nModule successfully disabled!\n"),
             Console::FG_GREEN,
-            Console::BOLD
+            Console::BOLD,
         );
         return 0;
     }
@@ -298,7 +298,7 @@ class MarketplaceController extends Controller
             $this->stdout(
                 Yii::t('MarketplaceModule.base', 'Module license key cannot be empty!' . "\n"),
                 Console::FG_RED,
-                Console::BOLD
+                Console::BOLD,
             );
             return 1;
         }
@@ -309,7 +309,7 @@ class MarketplaceController extends Controller
             $this->stdout(
                 Yii::t('MarketplaceModule.base', 'Could not connect to HumHub API!' . "\n"),
                 Console::FG_RED,
-                Console::BOLD
+                Console::BOLD,
             );
             return 1;
         }
@@ -318,7 +318,7 @@ class MarketplaceController extends Controller
             $this->stdout(
                 Yii::t('MarketplaceModule.base', 'Invalid module license key!' . "\n"),
                 Console::FG_RED,
-                Console::BOLD
+                Console::BOLD,
             );
             return 1;
         }
@@ -326,7 +326,7 @@ class MarketplaceController extends Controller
         $this->stdout(
             Yii::t('MarketplaceModule.base', 'Module license added!' . "\n"),
             Console::FG_GREEN,
-            Console::BOLD
+            Console::BOLD,
         );
         return 0;
     }
