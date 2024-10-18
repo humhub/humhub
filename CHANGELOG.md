@@ -44,9 +44,11 @@ HumHub Changelog
 - Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
 - Enh #7240: Fixed maximum file size setting in initialization
 - Enh #7244: Changed .env var depth separator from `.` to `__`
+- Enh #7251: Commands for module info and test DB connection
 - Fix #7248: Upgrade jQuery Highlight plugin
 - Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
 - Fix #7250: Check writable path
+- Enh #7255: Improved CSP headers
 - Enh #7253: CSV/XLSX export improvements
 - Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
 - Enh #7257: Move "About" into Space Control Menu
