@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
@@ -21,7 +21,7 @@ ContentContainerAsset::register($this);
         Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
         [
             'id' => "notification_off_$content->id",
-            'class' => ['turnOffNotifications'],
+            'class' => ['dropdown-item ', 'turnOffNotifications'],
             'style' => [
                 'display' => $state ? 'block' : 'none',
             ],
@@ -38,7 +38,7 @@ ContentContainerAsset::register($this);
         Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
         [
             'id' => "notification_on_$content->id",
-            'class' => ['turnOnNotifications'],
+            'class' => ['dropdown-item ', 'turnOnNotifications'],
             'style' => [
                 'display' => $state ? 'none' : 'block',
             ],

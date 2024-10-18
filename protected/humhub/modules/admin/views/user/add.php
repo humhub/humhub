@@ -1,9 +1,9 @@
 <?php
 
 use humhub\compat\HForm;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\ModalButton;
 
 /**
  * @var $hForm HForm
@@ -14,7 +14,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <div class="panel-body">
     <div class="clearfix">
-        <div class="pull-right">
+        <div class="float-end">
             <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview'))
                 ->right(false) ?>
 
@@ -24,7 +24,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
             <?php endif; ?>
         </div>
 
-        <h4 class="pull-left"><?= Yii::t('AdminModule.user', 'Add new user') ?></h4>
+        <h4 class="float-start"><?= Yii::t('AdminModule.user', 'Add new user') ?></h4>
     </div>
     <br>
     <?php $form = ActiveForm::begin(['options' => ['data-ui-widget' => 'ui.form.TabbedForm', 'data-ui-init' => ''], 'acknowledge' => true]); ?>

@@ -1,8 +1,8 @@
 /**
  * Module for creating an manipulating modal dialoges.
  * Normal layout of a dialog:
- * 
- * <div class="modal">
+ *
+ * <div class="modal fade">
  *     <div class="modal-dialog">
  *         <div class="modal-content">
  *             <div class="modal-header"></div>
@@ -11,7 +11,7 @@
  *         </div>
  *     </div>
  * </div>
- *  
+ *
  * @param {type} param1
  * @param {type} param2
  */

@@ -6,7 +6,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
 
             $match.each(function () {
                 var $input = $(this);
-                var $formGroup = $input.parent('.form-group');
+                var $formGroup = $input.parent('.mb-3');
                 var invisibleTop = 0;
 
                 var timeout = $formGroup.closest('.animated').length ? 800 : 100;

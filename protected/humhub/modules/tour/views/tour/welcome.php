@@ -1,15 +1,15 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\controllers\ContainerImageController;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\ModalButton;
-use yii\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 use humhub\modules\user\models\User;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\ModalButton;
+use yii\helpers\Url;
 
 /* @var $user User */
 
@@ -115,7 +115,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     </div>
 
                     <div class="row">
-                        <div class="col-md-12 text-right">
+                        <div class="col-md-12 text-end">
                             <hr>
                             <br>
                             <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.base', 'Save and close')) ?>

@@ -1,8 +1,8 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\helpers\Html;
 use humhub\widgets\DataSaved;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 ?>
 
@@ -26,7 +26,3 @@ use yii\helpers\Html;
 
 <?php ActiveForm::end(); ?>
 <?php $this->endContent(); ?>
-
-
-
-
