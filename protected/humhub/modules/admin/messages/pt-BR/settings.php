@@ -65,7 +65,7 @@ return array (
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Aqui você pode configurar o comportamento de registro e configurações adicionais de usuário de sua rede social.',
   'Here you can configure basic settings of your social network.' => 'Aqui você pode configurar as definições básicas de sua rede social.',
   'Horizontal scrolling images on a mobile device' => 'Imagens de rolagem horizontal em um dispositivo móvel',
-  'Icon upload' => 'Upload de ícone',
+  'Icon upload' => 'Enviar Ícone',
   'Inserted script tags must contain a nonce. e.g. {code}' => 'As tags de script inseridas devem conter um nonce. Por exemplo, {code}',
   'Last visit' => 'Última visita',
   'Logo upload' => 'Enviar logomarca',
