@@ -55,6 +55,8 @@ HumHub Changelog
 - Enh #7262: Disable `Like` on archived content
 - Enh #7125: Prerequisites - Check test for pending migrations
 - Fix #173 : Remove UISetting "Include Captcha in Registr
+- Fix #7066: Allow using `Space::canJoin($userId)` in command line
+
 
 1.16.3 (Unreleased)
 --------------------------
