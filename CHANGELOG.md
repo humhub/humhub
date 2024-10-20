@@ -53,6 +53,7 @@ HumHub Changelog
 - Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
 - Enh #7257: Move "About" into Space Control Menu
 - Enh #7262: Disable `Like` on archived content
+- Enh #7125: Prerequisites - Check test for pending migrations
 
 1.16.3 (Unreleased)
 --------------------------
