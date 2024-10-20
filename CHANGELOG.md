@@ -34,11 +34,42 @@ HumHub Changelog
 - Fix #6987: Added LatAm Spanish
 - Enh #7214: Replace theme variables with CSS variables
 - Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
 - Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
+- Enh #7231: Removed deprecated `ShowMorePager` widget
+- Fix #7230: Update module with new id
+- Enh #7234: Remove using of database timezone
+- Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
+- Enh #7237: Changed PoweredBy URL
+- Enh #7238: Fixed PHP warning related to `.env`
+- Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
+- Enh #7240: Fixed maximum file size setting in initialization
+- Enh #7244: Changed .env var depth separator from `.` to `__`
+- Enh #7251: Commands for module info and test DB connection
+- Fix #7248: Upgrade jQuery Highlight plugin
+- Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
+- Fix #7250: Check writable path
+- Enh #7255: Improved CSP headers
+- Enh #7253: CSV/XLSX export improvements
+- Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
+- Enh #7257: Move "About" into Space Control Menu
+- Enh #7262: Disable `Like` on archived content
+- Enh #7125: Prerequisites - Check test for pending migrations
+- Fix #173 : Remove UISetting "Include Captcha in Registr
+- Fix #7066: Allow using `Space::canJoin($userId)` in command line
+- Enh #7037: Space creation notification to users allowed to manage spaces
 
 1.16.3 (Unreleased)
 --------------------------
 - Fix #7212: Fix horizontal scroll bar on space stream on small screen
+- Fix #7210: Small style fix for top account menu (temp fix for Mac Safari browser)
+- Fix #7218: Fix visibility of wall stream content creating form
+- Fix #7219: Renamed deprecated meta tag
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7222: Fix rendering of checkbox on MacOS and iOS
+- Fix #7225: Fix module JS config initialisation on AJAX request
+- Fix #7227: Fix search reindexing after create new content
+- Enh #7229: Hide invitations with unknown sources
 
 1.16.2 (September 5, 2024)
 --------------------------
@@ -88,6 +119,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
+- Enh #7079: Improve `MenuEntry::isActiveState` to support query params check
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------

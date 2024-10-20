@@ -50,7 +50,6 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', '1');
-        Yii::$app->getModule('user')->settings->set('auth.showCaptureInRegisterForm', '1');
 
         // Mailing
         Yii::$app->settings->set('mailer.transportType', 'php');
@@ -60,7 +59,7 @@ class InitialData
 
         // File
         [,,$defaultMaxUploadSize] = FileSettingsForm::getPHPMaxUploadSize();
-        Yii::$app->getModule('file')->settings->set('maxFileSize', $defaultMaxUploadSize);
+        Yii::$app->getModule('file')->settings->set('maxFileSize', $defaultMaxUploadSize * 1024 * 1024);
         Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
 
         // Caching

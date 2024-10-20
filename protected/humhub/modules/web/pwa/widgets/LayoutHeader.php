@@ -36,7 +36,7 @@ class LayoutHeader extends Widget
         // Apple/IOS headers
         // https://developer.apple.com/library/archive/documentation/AppleApplications/Reference/SafariWebContent/ConfiguringWebApplications/ConfiguringWebApplications.html
         $view->registerMetaTag(['name' => 'apple-mobile-web-app-title', 'content' => Yii::$app->name]);
-        $view->registerMetaTag(['name' => 'apple-mobile-web-app-capable', 'content' => 'yes']);
+        $view->registerMetaTag(['name' => 'mobile-web-app-capable', 'content' => 'yes']);
         $view->registerMetaTag(['name' => 'apple-mobile-web-app-status-bar-style', 'content' => Yii::$app->view->theme->variable('primary')]);
 
         $view->registerLinkTag(['rel' => 'manifest', 'href' => Url::to(['/web/pwa-manifest/index'])]);
