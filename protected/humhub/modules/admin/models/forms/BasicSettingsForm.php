@@ -86,13 +86,6 @@ class BasicSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'defaultTimeZone' => Yii::t(
-                'AdminModule.settings',
-                'Reported database time: {dateTime}',
-                [
-                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime()),
-                ],
-            ),
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
             'maintenanceMode' => Alert::widget([
                 'options' => ['class' => 'alert-danger'],

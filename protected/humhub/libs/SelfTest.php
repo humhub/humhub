@@ -12,6 +12,7 @@ use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\MigrationService;
 use Yii;
 use yii\helpers\UnsetArrayValue;
 
@@ -412,31 +413,6 @@ class SelfTest
 
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
-            $dbConnectionTime = TimezoneHelper::getDatabaseConnectionTime();
-            $timeDiffMargin = 60;
-            $timeDiff = abs($dbConnectionTime->getTimestamp() - time());
-
-            $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Time zone');
-            if ($timeDiff < $timeDiffMargin) {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'OK',
-                ];
-            } else {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'WARNING',
-                    'hint' => Yii::t(
-                        'AdminModule.information',
-                        'Database connection time: {dbTime} - Configured time zone: {time}',
-                        [
-                            'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
-                            'time' => Yii::$app->formatter->asTime(time(), 'short'),
-                        ],
-                    ),
-                ];
-            }
-
             if (Yii::$app->isInstalled()) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
@@ -775,6 +751,24 @@ class SelfTest
                     'tables' => implode(', ', $tablesWithNotRecommendedEngines),
                 ]),
             ];
+        }
+
+        if (Yii::$app->isInstalled()) {
+            $title = Yii::t('AdminModule.information', 'Database') . ' - ';
+            $migrations = MigrationService::create()->getPendingMigrations();
+            if ($migrations === []) {
+                $checks[] = [
+                    'title' => $title . Yii::t('AdminModule.information', 'No pending migrations'),
+                    'state' => 'OK',
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title . Yii::t('AdminModule.information', 'New migrations should be applied: {migrations}', [
+                        'migrations' => implode(', ', $migrations),
+                    ]),
+                    'state' => 'ERROR',
+                ];
+            }
         }
 
         return $checks;
