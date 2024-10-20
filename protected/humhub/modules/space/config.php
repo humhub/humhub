@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\user\models\User;
 use humhub\modules\space\Events;
 use humhub\modules\space\Module;
@@ -28,5 +29,6 @@ return [
         [User::class, User::EVENT_BEFORE_SOFT_DELETE, [Events::class, 'onUserSoftDelete']],
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
         [TopMenu::class, TopMenu::EVENT_INIT, [Events::class, 'onTopMenuInit']],
+        [HeaderControlsMenu::class, HeaderControlsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceHeaderControlsMenuInit']],
     ],
 ];

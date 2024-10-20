@@ -6,11 +6,11 @@ class m161031_161947_file_directories extends Migration
 {
     public function up()
     {
-        $uploadsDir = Yii::getAlias("@webroot/uploads/file");
+        $uploadsDir = realpath(Yii::getAlias('@webroot/uploads/file'));
 
         if (is_dir($uploadsDir)) {
             foreach (scandir($uploadsDir) as $guid) {
-                $oldDir = $uploadsDir . DIRECTORY_SEPARATOR . $guid;
+                $oldDir = realpath($uploadsDir . DIRECTORY_SEPARATOR . $guid);
 
                 if (is_dir($oldDir) && strlen($guid) == 36 && is_writable($oldDir)) {
                     $newDir = $uploadsDir . DIRECTORY_SEPARATOR . substr($guid, 0, 1) . DIRECTORY_SEPARATOR . substr($guid, 1, 1);

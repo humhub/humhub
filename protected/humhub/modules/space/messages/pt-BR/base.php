@@ -63,7 +63,7 @@ return array (
   'I want to become a member because...' => 'Eu quero me tornar um membro porque...',
   'Incorrect name, try again.' => 'Nome incorreto, tente novamente.',
   'Invite' => 'Convite',
-  'Invite and request' => 'Convide e solicite',
+  'Invite and request' => 'Convidar e solicitar',
   'Invite by email' => 'Convidar por e-mail',
   'Invite by link' => 'Convidar por link',
   'Invite link' => 'Link de convite',

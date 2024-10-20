@@ -10,24 +10,20 @@ Version 1.17 (Unreleased)
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 
-
-#### Removed
-
-- Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
-- Removed `\humhub\widgets\ShowMorePager` widget
-
-
-Version 1.17 (Unreleased)
--------------------------
-
 ### New
 - CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
+- `\humhub\modules\user\Module::enableRegistrationFormCaptcha` which is true by default (can be disabled via [file configuration](https://docs.humhub.org/docs/admin/advanced-configuration#module-configurations))
+
+### Removed
+- `Include captcha in registration form` checkbox removed from "Administration" -> "Users" -> "Settings"
+- Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
+- Removed `\humhub\widgets\ShowMorePager` widget
 
 Version 1.16 (April 2024)
 -------------------------
 At least PHP 8.0 is required with this version.
 
-#### Removed
+### Removed
 - `\humhub\modules\search\*` The existing search module was removed and the related features merged into the 'content', 'user' and 'space' modules.
 - `\humhub\modules\user\models\User::getSearchAttributes()` and `\humhub\modules\space\models\Space::getSearchAttributes()`
 
@@ -38,6 +34,7 @@ At least PHP 8.0 is required with this version.
     - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
 - The method `setCellValueByColumnAndRow()` has been replaced with `setCellValue()` and `setValueExplicit()`.
 - When rendering xlsx generated data cells, use the `setCellValue()` method with the appropriate coordinate obtained using `getColumnLetter()`.
+- Switch `Module::$resourcesPath` to `resources`
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead

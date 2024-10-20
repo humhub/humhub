@@ -231,6 +231,11 @@ class Invite extends ActiveRecord
             Yii::$app->setLanguage(Yii::$app->user->language);
         }
 
+        if ($result) {
+            // Refresh the updated_at timestamp
+            $this->save();
+        }
+
         return $result;
     }
 
@@ -315,7 +320,7 @@ class Invite extends ActiveRecord
     {
         return
             !$this->skipCaptchaValidation
-            && (Yii::$app->getModule('user')->settings->get('auth.showCaptureInRegisterForm'));
+             && (Yii::$app->getModule('user')->enableRegistrationFormCaptcha);
     }
 
     public function getCreatedBy()

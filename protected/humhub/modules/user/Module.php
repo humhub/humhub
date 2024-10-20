@@ -193,6 +193,12 @@ class Module extends \humhub\components\Module
     public $allowUserRegistrationFromAuthClientIds = [];
 
     /**
+     * @var bool Include captcha in registration form
+     * @since 1.17
+     */
+    public $enableRegistrationFormCaptcha = true;
+
+    /**
      * @var int Time to live in days for invites.
      * Invites older than this number of days will be automatically deleted.
      * @since 1.17
