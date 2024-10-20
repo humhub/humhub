@@ -38,6 +38,7 @@ HumHub Changelog
 - Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
 - Enh #7231: Removed deprecated `ShowMorePager` widget
 - Fix #7230: Update module with new id
+- Enh #7234: Remove using of database timezone
 - Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
 - Enh #7237: Changed PoweredBy URL
 - Enh #7238: Fixed PHP warning related to `.env`
@@ -56,7 +57,6 @@ HumHub Changelog
 - Enh #7125: Prerequisites - Check test for pending migrations
 - Fix #173 : Remove UISetting "Include Captcha in Registr
 - Fix #7066: Allow using `Space::canJoin($userId)` in command line
-
 
 1.16.3 (Unreleased)
 --------------------------
