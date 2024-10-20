@@ -54,6 +54,7 @@ HumHub Changelog
 - Enh #7257: Move "About" into Space Control Menu
 - Enh #7262: Disable `Like` on archived content
 - Enh #7125: Prerequisites - Check test for pending migrations
+- Fix #173 : Remove UISetting "Include Captcha in Registr
 
 1.16.3 (Unreleased)
 --------------------------
