@@ -2,11 +2,11 @@
 
 namespace tests\codeception\unit\modules\web\security;
 
-use web\WebSecurityTest;
-use Yii;
 use humhub\libs\Html;
 use humhub\modules\web\security\helpers\Security;
 use humhub\modules\web\security\models\SecuritySettings;
+use web\WebSecurityTest;
+use Yii;
 
 class SecurityTest extends WebSecurityTest
 {
@@ -33,7 +33,6 @@ class SecurityTest extends WebSecurityTest
 
         $this->assertStringContainsString(Security::getNonce(), Yii::$app->response->headers->get(SecuritySettings::HEADER_CONTENT_SECRUITY_POLICY));
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_STRICT_TRANSPORT_SECURITY), 'max-age=31536000');
-        $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_XSS_PROTECTION), '1; mode=block');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_CONTENT_TYPE), 'nosniff');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_X_FRAME_OPTIONS), 'deny');
         $this->assertEquals(Yii::$app->response->headers->get(SecuritySettings::HEADER_REFERRER_POLICY), 'no-referrer-when-downgrade');

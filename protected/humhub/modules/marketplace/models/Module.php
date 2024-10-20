@@ -220,17 +220,13 @@ class Module extends Model
         return !empty($this->professional_only);
     }
 
+    /**
+     * @return bool
+     * @deprecated since 1.17 Use isProFeature()
+     */
     public function isProOnly(): bool
     {
-        if (!$this->isProFeature()) {
-            return false;
-        }
-
-        /* @var MarketplaceModule */
-        $marketplaceModule = Yii::$app->getModule('marketplace');
-        $licence = $marketplaceModule->getLicence();
-
-        return $licence->type !== Licence::LICENCE_TYPE_PRO;
+        return $this->isProFeature();
     }
 
     public function getCheckoutUrl(): string

@@ -20,7 +20,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
 ?>
 
-<div id="user-auth-login-modal" class="container" style="text-align: center;">
+<div id="user-auth-login" class="container" style="text-align: center;">
     <?= SiteLogo::widget(['place' => 'login']); ?>
     <br>
 

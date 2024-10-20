@@ -17,8 +17,10 @@ return array (
   'Invalid Mime-Type' => 'Neplatný Mime-Type',
   'Last update by:' => 'Posledná aktualizácia:',
   'Size:' => 'Veľkosť:',
-  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => '',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Ľutujeme, naraz môžete nahrať maximálne {n,plural,=1{# súbor} =2{# súbori}
+ =3{# súbori} =3{# súbori} =4{# súbori} other{# súborov}}.',
   'The uploaded image is not a squared.' => 'Nahraný obrázok nie je štvorcový.',
-  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Toto pole nahrávania povoľuje maximálne {n,plural,=1{# súbor} =2{# súbori}
+ =3{# súbori} =3{# súbori} =4{# súbori} other{# súborov}}.',
   'Upload files' => 'Nahrať súbory',
 );

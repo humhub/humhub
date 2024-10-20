@@ -9,7 +9,7 @@ return array (
   'Friendship' => 'Amizade',
   'Pending' => 'Pendente',
   'Requests' => 'Solicitações',
-  'Sent requests' => 'Enviar solicitações',
+  'Sent requests' => 'Solicitações Enviadas',
   'Show all friends' => 'Exibir amigos',
   'Unfriend' => 'Cancelar amizade',
   'Would you like to accept the friendship request?' => 'Gostaria de aceitar o pedido de amizade?',

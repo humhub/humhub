@@ -41,7 +41,7 @@ class AssetManager extends \yii\web\AssetManager
             return;
         }
 
-        foreach (scandir($this->basePath) as $file) {
+        foreach (scandir(realpath($this->basePath)) as $file) {
             if (substr($file, 0, 1) === '.') {
                 continue;
             }
@@ -66,7 +66,7 @@ class AssetManager extends \yii\web\AssetManager
         $bundle = parent::loadBundle($name, $config, $publish);
         $bundleClass = get_class($bundle);
 
-        if($bundleClass !== AppAsset::class
+        if ($bundleClass !== AppAsset::class
            && !in_array($bundleClass, AppAsset::STATIC_DEPENDS)
            && !in_array($bundleClass, CoreBundleAsset::STATIC_DEPENDS)
            && !is_subclass_of($bundleClass, assets\AssetBundle::class)) {
@@ -75,12 +75,12 @@ class AssetManager extends \yii\web\AssetManager
             array_unshift($bundle->depends, CoreBundleAsset::class);
 
             // Allows to add defer to non HumHub AssetBundles
-            if(property_exists($bundle, 'defer') && $bundle->defer) {
+            if (property_exists($bundle, 'defer') && $bundle->defer) {
                 $bundle->jsOptions['defer'] = 'defer';
             }
         }
 
-        if($this->preventDefer && isset($bundle->jsOptions['defer'])) {
+        if ($this->preventDefer && isset($bundle->jsOptions['defer'])) {
             unset($bundle->jsOptions['defer']);
         }
 

@@ -51,6 +51,14 @@ class LoginCest
         $I->waitForText('Your account is disabled!');
     }
 
+    public function testDisabledUserProfilePage(AcceptanceTester $I)
+    {
+        $I->wantTo('ensure that disabled user profile page is not viewable');
+        $I->amAdmin();
+        $I->amOnPage('/u/disableduser');
+        $I->waitForText('This profile is disabled!');
+    }
+
     public function testUnApprovedUser(AcceptanceTester $I)
     {
         $user = User::findOne(['id' => 4]);

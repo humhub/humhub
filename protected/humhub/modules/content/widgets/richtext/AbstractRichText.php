@@ -145,11 +145,6 @@ abstract class AbstractRichText extends JsWidget
     protected static $converterClass;
 
     /**
-     * @var mixed can be used to identify the related record
-     */
-    public $record;
-
-    /**
      * @var array of richtext extension classes used for preparing and post processing output and converter result
      * @since 1.8
      */

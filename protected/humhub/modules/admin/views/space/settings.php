@@ -2,8 +2,8 @@
 
 use humhub\libs\Html;
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
-use humhub\widgets\Button;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\Button;
 
 /* @var $model SpaceSettingsForm */
 /* @var $joinPolicyOptions array */
@@ -35,6 +35,8 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?= $form->field($model, 'defaultIndexRoute')->dropDownList($indexModuleSelection) ?>
 
 <?= $form->field($model, 'defaultIndexGuestRoute')->dropDownList($indexModuleSelection) ?>
+
+<?= $form->field($model, 'defaultStreamSort')->dropDownList($model::defaultStreamSortOptions()) ?>
 
 <?= $form->field($model, 'defaultHideMembers')->checkbox() ?>
 

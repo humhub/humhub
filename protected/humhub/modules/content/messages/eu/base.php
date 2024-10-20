@@ -9,6 +9,7 @@ return [
     'Activate scheduling' => 'Aktibatu programazioa',
     'Add a member to notify' => 'Gehitu kide bat jakinarazteko',
     'Add tag...' => 'Gehitu etiketa',
+    'Advanced Content Search' => 'Edukien bilaketa aurreratua',
     'Archived' => 'Artxibatua',
     'Attach Files' => 'Erantsi fitxategiak',
     'Back to stream' => 'Itzuli jariora',
@@ -109,5 +110,5 @@ return [
     'You do not have the permission to move this content.' => 'Ez duzu eduki hau mugitzeko baimenik.',
     'Your last edit state has been saved!' => 'Zure azken edizio-egoera gorde da!',
     'in' => '-n',
-    'Advanced Content Search' => '',
+    '(Also visible to people who are not logged in)' => '',
 ];

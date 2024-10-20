@@ -116,5 +116,7 @@ return [
     'YouTube URL' => 'URL odkaz YouTube',
     'Zip' => 'PSČ',
     '{attribute} is required!' => '{attribute} je povinný!',
+    'Each line must be formatted as Key=>Value!' => '',
     'Mastodon URL' => '',
+    'This profile is disabled!' => '',
 ];

@@ -16,7 +16,6 @@ use humhub\modules\content\tests\codeception\unit\TestContentManagePermission;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
-
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 

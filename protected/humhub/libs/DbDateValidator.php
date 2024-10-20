@@ -49,7 +49,7 @@ class DbDateValidator extends DateValidator
             $this->format = Yii::$app->formatter->dateInputFormat;
         }
 
-        if(!$this->timeZone) {
+        if (!$this->timeZone) {
             $this->timeZone = DateHelper::getUserTimeZone(true);
         }
 
@@ -62,7 +62,7 @@ class DbDateValidator extends DateValidator
     public function validateAttribute($model, $attribute)
     {
         // If the date is already in system format, we do not need any further translation or parsing
-        if(DateHelper::isInDbFormat($model->$attribute, $this->isDateOnly())) {
+        if (DateHelper::isInDbFormat($model->$attribute, $this->isDateOnly())) {
             return;
         }
 
