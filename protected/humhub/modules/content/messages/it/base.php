@@ -109,5 +109,6 @@ return [
     'You do not have the permission to move this content.' => 'Non hai il permesso di spostare questo contenuto.',
     'Your last edit state has been saved!' => 'La tua ultima modifica è stato salvata!',
     'in' => 'in',
+    '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
 ];

@@ -21,16 +21,23 @@ class m240422_162959_new_is_untouched_settings extends Migration
     {
         $rows = (new Query())
             ->select([
-                "module_id",
-                "contentcontainer_id",
-                new Expression("'is_touched_settings' as name"),
-                new Expression("'1' as value"),
+                'cs1.module_id',
+                'cs1.contentcontainer_id',
+                new Expression('"is_touched_settings" as name'),
+                new Expression('"1" as value'),
             ])
-            ->from(ContentContainerSetting::tableName())
+            ->from(ContentContainerSetting::tableName() . ' AS cs1')
+            ->leftJoin(
+                ContentContainerSetting::tableName() . ' AS cs2',
+                'cs1.module_id = cs2.module_id AND
+                    cs1.contentcontainer_id = cs2.contentcontainer_id AND
+                    cs2.name = "is_touched_settings"',
+            )
             ->where([
-                'name' => 'notification.like_email',
-                'module_id' => 'notification',
+                'cs1.name' => 'notification.like_email',
+                'cs1.module_id' => 'notification',
             ])
+            ->andWhere(['IS', 'cs2.id', new Expression('NULL')])
             ->all();
 
         $query = Yii::$app->db->createCommand()

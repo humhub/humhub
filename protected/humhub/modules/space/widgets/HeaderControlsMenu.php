@@ -92,7 +92,7 @@ class HeaderControlsMenu extends DropdownMenu
         if ($this->space->isMember()) {
             $membership = $this->space->getMembership();
 
-            if (!$membership->send_notifications) {
+            if (!$membership->send_notifications && !Yii::$app->notification->hasSpace($this->space)) {
                 $this->addEntry(new MenuLink([
                     'label' => Yii::t('SpaceModule.manage', 'Receive Notifications for new content'),
                     'url' => $this->space->createUrl('/space/membership/receive-notifications'),

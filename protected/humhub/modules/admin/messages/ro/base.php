@@ -63,6 +63,8 @@ return [
     'OEmbed providers' => '',
     'Pending user registrations' => '',
     'Permissions' => '',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
     'Self test' => '',
     'Set as default' => '',
     'Show in Marketplace' => '',

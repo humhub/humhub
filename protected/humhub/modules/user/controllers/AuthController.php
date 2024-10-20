@@ -158,6 +158,7 @@ class AuthController extends Controller
         }
 
         $authClientService = new AuthClientService($authClient);
+        $authClientService->autoMapToExistingUser();
 
         $user = $authClientService->getUser();
 
@@ -166,7 +167,6 @@ class AuthController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
-        $authClientService->autoMapToExistingUser();
 
         if ($user !== null) {
             return $this->login($user, $authClient);

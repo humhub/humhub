@@ -81,31 +81,7 @@ class ZendLdap extends Ldap
         }
         $resource = $this->getResource();
         ErrorHandler::start(E_WARNING);
-        $cookie = '';
-        $results = [];
-
-        if (version_compare(PHP_VERSION, '7.3') >= 0) {
-            $results = $this->ldapSearchPaged($resource, $basedn, $filter, $attributes, 0, $pageSize, $timelimit);
-        } else {
-            do {
-                ldap_control_paged_result($resource, $pageSize, true, $cookie);
-
-                $result = ldap_search(
-                    $resource,
-                    $basedn,
-                    $filter,
-                    $attributes,
-                );
-                foreach (ldap_get_entries($resource, $result) as $item) {
-                    if (!is_array($item)) {
-                        continue;
-                    }
-
-                    array_push($results, (array)$item);
-                }
-                ldap_control_paged_result_response($resource, $result, $cookie);
-            } while ($cookie);
-        }
+        $results = $this->ldapSearchPaged($resource, $basedn, $filter, $attributes, 0, $pageSize, $timelimit);
         ErrorHandler::stop();
         if (count($results) == 0) {
             throw new Exception\LdapException($this, 'searching: ' . $filter);
@@ -113,13 +89,10 @@ class ZendLdap extends Ldap
         return $results;
     }
 
-
     private function ldapSearchPaged($resource, $basedn, $filter, $attributes, $attributesOnly, $sizelimit, $timelimit)
     {
         $results = [];
         $cookie = '';
-
-        // define("LDAP_CONTROL_PAGEDRESULTS", "1.2.840.113556.1.4.319");
 
         do {
             $result = ldap_search(
@@ -131,7 +104,7 @@ class ZendLdap extends Ldap
                 0,
                 $timelimit,
                 null,
-                [['oid' => '1.2.840.113556.1.4.319', 'value' => ['size' => $sizelimit, 'cookie' => $cookie]]],
+                [['oid' => LDAP_CONTROL_PAGEDRESULTS, 'value' => ['size' => $sizelimit, 'cookie' => $cookie]]],
             );
 
             $errCode = $dn = $errMsg = $refs = null;
@@ -145,11 +118,7 @@ class ZendLdap extends Ldap
                 array_push($results, (array)$item);
             }
 
-            if (isset($controls['1.2.840.113556.1.4.319']['value']['cookie'])) {
-                $cookie = $controls['1.2.840.113556.1.4.319']['value']['cookie'];
-            } else {
-                $cookie = '';
-            }
+            $cookie = $controls[LDAP_CONTROL_PAGEDRESULTS]['value']['cookie'] ?? '';
         } while (!empty($cookie));
 
         return $results;

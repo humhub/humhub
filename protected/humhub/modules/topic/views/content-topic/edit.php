@@ -21,12 +21,12 @@ use yii\bootstrap\ActiveForm;
 <?php ModalDialog::begin(['header' => Yii::t('TopicModule.base', '<strong>Manage</strong> Topics')]) ?>
 <?php $form = ActiveForm::begin() ?>
 <div class="modal-body">
-    <?= $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer()])->label(false) ?>
+    <?= $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer(), 'options' => ['autofocus' => '']])->label(false) ?>
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::submitModal() ?>
     <?= ModalButton::cancel() ?>
+    <?= ModalButton::submitModal() ?>
 </div>
 
 <?php ActiveForm::end() ?>

@@ -51,6 +51,10 @@ class m220121_193617_oembed_setting_update extends Migration
                 'pattern' => '/slideshare\.net/',
                 'endpoint' => 'https://www.slideshare.net/api/oembed/2?url=%url%&format=json&maxwidth=450',
             ],
+            'Reddit' => [
+                'pattern' => '/reddit\.com/',
+                'endpoint' => 'https://www.reddit.com/oembed?format=json&url=%url%',
+            ],
         ];
 
         foreach (UrlOembed::getProviders() as $providerUrl => $providerEndpoint) {

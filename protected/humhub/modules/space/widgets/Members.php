@@ -88,9 +88,9 @@ class Members extends Widget
 
         $query = Membership::find()->where(['space_id' => $this->space->id]);
         $query->andWhere(['IN', 'group_id', [Space::USERGROUP_OWNER, Space::USERGROUP_ADMIN, Space::USERGROUP_MODERATOR]]);
-        foreach ($query->all() as $membership) {
-            if (isset($privilegedMembers[$membership->group_id])) {
-                $privilegedMembers[$membership->group_id][] = $membership->user_id;
+        foreach ($query->select(['user_id', 'group_id'])->asArray()->all() as $membership) {
+            if (isset($privilegedMembers[$membership['group_id']])) {
+                $privilegedMembers[$membership['group_id']][] = $membership['user_id'];
             }
         }
 

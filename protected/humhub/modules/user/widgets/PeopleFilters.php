@@ -173,6 +173,7 @@ class PeopleFilters extends DirectoryFilters
                 ->leftJoin('group_user AS fgu', 'fgu.user_id = user.id')
                 ->leftJoin('group', 'fgu.group_id = group.id')
                 ->select(['group.id', 'group.name'])
+                ->andWhere(['show_at_directory' => 1])
                 ->andWhere(['IS NOT', 'group.id', new Expression('NULL')])
                 ->offset(null)
                 ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])

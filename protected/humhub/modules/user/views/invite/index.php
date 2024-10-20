@@ -16,7 +16,6 @@ use yii\bootstrap\ActiveForm;
  * @var $model Invite
  * @var $canInviteByEmail bool
  * @var $canInviteByLink bool
- * @var $adminIsAlwaysAllowed bool
  */
 ?>
 
@@ -49,7 +48,7 @@ use yii\bootstrap\ActiveForm;
                 <?php $form = ActiveForm::begin(); ?>
                 <?= $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')); ?>
                 <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
-                   data-action-url="<?= Url::to(['/user/invite', 'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed]) ?>" data-ui-loader>
+                   data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
                     <?= Yii::t('UserModule.invite', 'Send invite') ?>
                 </a>
                 <?php ActiveForm::end(); ?>
@@ -73,7 +72,7 @@ use yii\bootstrap\ActiveForm;
                            data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
-                           data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link', 'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed]) ?>">
+                           data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link']) ?>">
                             <small><?= Yii::t('SpaceModule.base', 'Create new link'); ?></small>
                         </a>
                     <?php endif; ?>

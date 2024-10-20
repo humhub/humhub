@@ -1,10 +1,10 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\SiteLogo;
-use yii\bootstrap\ActiveForm;
 
 /**
  * @var $hForm Registration

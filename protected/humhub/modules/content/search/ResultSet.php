@@ -10,6 +10,7 @@ namespace humhub\modules\content\search;
 
 use humhub\modules\content\models\Content;
 use yii\data\Pagination;
+use yii\db\Expression;
 
 /**
  * SearchResultSet
@@ -41,6 +42,10 @@ class ResultSet
         $this->pagination = $data['pagination'];
         $this->results = empty($data['results'])
             ? []
-            : Content::find()->where(['IN', 'id', $data['results']])->all();
+            : Content::find()
+                ->where(['IN', 'id', $data['results']])
+                // Restore an original order what was before serializing
+                ->orderBy([new Expression('FIELD(id, ' . implode(',', $data['results']) . ')')])
+                ->all();
     }
 }

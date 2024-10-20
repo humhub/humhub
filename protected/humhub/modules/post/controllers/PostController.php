@@ -80,6 +80,10 @@ class PostController extends ContentContainerController
 
         $post->load(Yii::$app->request->post(), 'Post');
 
+        if (!empty(Yii::$app->request->post('fileList'))) {
+            $post->scenario = Post::SCENARIO_HAS_FILES;
+        }
+
         return Post::getDb()->transaction(function ($db) use ($post) {
             return WallCreateContentForm::create($post, $this->contentContainer);
         });
@@ -102,7 +106,7 @@ class PostController extends ContentContainerController
             // Reload record to get populated updated_at field
             if ($model->save()) {
                 $post = Post::findOne(['id' => $id]);
-                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($post));
+                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($post, WallStreamEntryOptions::getInstanceFromRequest()));
             } else {
                 Yii::$app->response->statusCode = 400;
             }
@@ -112,6 +116,7 @@ class PostController extends ContentContainerController
             'model' => $model,
             'fileHandlers' => FileHandlerCollection::getByType([FileHandlerCollection::TYPE_IMPORT, FileHandlerCollection::TYPE_CREATE]),
             'submitUrl' => $post->content->container->createUrl('/post/post/edit', ['id' => $post->id]),
+            'viewContext' => Yii::$app->request->get('viewContext'),
         ]);
     }
 

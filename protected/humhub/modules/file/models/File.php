@@ -279,7 +279,7 @@ class File extends FileCompat implements ViewableInterface
         }
 
         return $length
-            ? substr($this->hash_sha1, 0, $length)
+            ? substr($this->hash_sha1 ?: '', 0, $length)
             : $this->hash_sha1;
     }
 
@@ -297,11 +297,13 @@ class File extends FileCompat implements ViewableInterface
     public function canView($user = null): bool
     {
         $object = $this->getPolymorphicRelation();
-        if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
-            return $object->content->canView($user);
-        }
+
         if ($object instanceof ViewableInterface) {
             return $object->canView($user);
+        }
+
+        if ($object instanceof ContentActiveRecord || $object instanceof ContentAddonActiveRecord) {
+            return $object->content->canView($user);
         }
 
         return true;

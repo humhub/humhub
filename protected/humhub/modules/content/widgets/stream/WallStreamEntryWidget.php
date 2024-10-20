@@ -191,7 +191,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
             $this->renderOptions = (new WallStreamEntryOptions());
         }
 
-        if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH) || $this->model->content->isArchived()) {
+        if ($this->model->content->isArchived()) {
             // Disable all except permalink
             $this->renderOptions
                 ->disableControlsEntryEdit()
@@ -204,7 +204,7 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
         }
 
         if ($this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH)) {
-            $this->renderOptions->disableControlsEntryDelete();
+            $this->renderOptions->disableControlsEntryPin();
         }
 
         if ($this->model->content->container instanceof User && !$this->renderOptions->isViewContext(WallStreamEntryOptions::VIEW_CONTEXT_DEFAULT)) {
@@ -329,12 +329,6 @@ abstract class WallStreamEntryWidget extends StreamEntryWidget
     {
         if ($this->model->content->getStateService()->isDeleted()) {
             return [];
-        }
-
-        if ($this->renderOptions->isViewContext([WallStreamEntryOptions::VIEW_CONTEXT_SEARCH])) {
-            return [
-                [PermaLink::class, ['content' => $this->model], ['sortOrder' => 200]],
-            ];
         }
 
         $result = [

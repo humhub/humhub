@@ -5,12 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\components\Module;
 use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerModule;
 use humhub\modules\content\widgets\ContainerModuleActionButtons;
 
-/* @var Module $module */
+/* @var ContentContainerModule $module */
 /* @var ContentContainerActiveRecord $contentContainer */
 ?>
 <div class="module-row row">
@@ -26,7 +26,7 @@ use humhub\modules\content\widgets\ContainerModuleActionButtons;
         <?= $module->getContentContainerName($contentContainer) ?>
         <br><small><?= Yii::t('AdminModule.base', 'Version') . ' ' . $module->getVersion() ?></small>
     </div>
-    <div class="col-xs-6 col-sm-5 col-md-6"><?= $module->getDescription() ?></div>
+    <div class="col-xs-6 col-sm-5 col-md-6"><?= $module->getContentContainerDescription($contentContainer) ?></div>
     <div class="col-xs-5 col-sm-3 module-actions">
         <?= ContainerModuleActionButtons::widget([
             'module' => $module,

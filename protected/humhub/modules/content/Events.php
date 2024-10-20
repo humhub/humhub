@@ -11,8 +11,6 @@ namespace humhub\modules\content;
 use humhub\commands\CronController;
 use humhub\commands\IntegrityController;
 use humhub\components\Event;
-use humhub\modules\content\assets\ContentHighlightAsset;
-use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\services\ContentSearchService;
 use humhub\modules\user\events\UserEvent;
@@ -109,16 +107,16 @@ class Events extends BaseObject
     }
 
     /**
-     * After a components\ContentActiveRecord was deleted
+     * After a Content was deleted
      *
      * @param \yii\base\Event $event
      */
-    public static function onContentActiveRecordDelete($event)
+    public static function onContentAfterDelete($event)
     {
-        /** @var ContentActiveRecord $record */
-        $record = $event->sender;
+        /* @var Content $content */
+        $content = $event->sender;
 
-        (new ContentSearchService($record->content))->delete();
+        (new ContentSearchService($content))->delete();
     }
 
     /**
@@ -142,14 +140,6 @@ class Events extends BaseObject
             $controller->stdout('done.' . PHP_EOL, Console::FG_GREEN);
         }
     }
-
-    public static function onViewBeginBody($event)
-    {
-        if (Yii::$app->isInstalled()) {
-            ContentHighlightAsset::register($event->sender);
-        }
-    }
-
 
     private static function canPublishScheduledContent(): bool
     {

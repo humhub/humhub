@@ -154,10 +154,10 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
             $i++;
             if ($i == $this->maxShowClients + 1) {
                 // Add more button
-                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-default pull-right btn-sxm', 'id' => 'btnAuthChoiceMore']);
+                echo Html::a('<i class="fa fa-angle-double-down" aria-hidden="true"></i>', '#', ['class' => 'btn btn-default pull-right btn-sxm btn-auth-choice-more']);
 
                 // Div contains more auth clients
-                echo Html::beginTag('div', ['class' => 'authChoiceMore']);
+                echo Html::beginTag('div', ['class' => 'auth-choice-more-buttons']);
                 $extraCssClass = 'btn-sm'; // further buttons small
             }
             $this->clientLink($client, null, ['class' => $extraCssClass]);

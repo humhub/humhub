@@ -37,7 +37,7 @@ class JPlayerPlaylistWidget extends JsWidget
      */
     public function run()
     {
-        if(empty($this->playlist)) {
+        if (empty($this->playlist)) {
             return;
         }
 
@@ -57,7 +57,7 @@ class JPlayerPlaylistWidget extends JsWidget
     public function getJsonPlaylist()
     {
         $result = [];
-        foreach($this->playlist as $track) {
+        foreach ($this->playlist as $track) {
             $result[] = [
                 'title' => Html::encode(Helpers::trimText($track->file_name, 50)),
                 FileHelper::getExtension($track->file_name) => $track->getUrl(),

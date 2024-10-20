@@ -76,4 +76,6 @@ return [
     'Visit Marketplace' => 'Merkatu plaza bisitatu',
     'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Ez duzu moduluak konfiguratzeko baimenik. Mesedez, informazio gehiagorako jarri zaitez harremanetan administratzailearekin.',
     'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Ez duzu moduluak kudeatzeko baimenik. Mesedez, informazio gehiagorako jarri zaitez harremanetan administratzailearekin.',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
 ];

@@ -26,7 +26,7 @@ use yii\bootstrap\ActiveForm;
             </div>
         </div>
         <hr>
-        <p><i class="fa fa-exclamation-triangle" style="color: <?= $this->theme->variable('danger') ?>"></i>
+        <p><i class="fa fa-exclamation-triangle" style="color:var(--danger)"></i>
             &nbsp;<?= Yii::t('AdminModule.user', 'All the personal data of this user will be irrevocably deleted.'); ?>
         </p>
 

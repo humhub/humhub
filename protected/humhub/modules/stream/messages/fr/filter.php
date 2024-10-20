@@ -1,6 +1,6 @@
 <?php
-return array (
-  'Author' => 'Auteur·e',
+return [
+  'Author' => 'Auteur',
   'Content' => 'Contenu',
   'Content Type' => 'Type de contenu',
   'Date from' => 'Date : depuis le',
@@ -9,4 +9,4 @@ return array (
   'Sorting' => 'Tri',
   'Topic' => 'Sujet',
   'Visibility' => 'Visibilité',
-);
+];

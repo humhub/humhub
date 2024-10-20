@@ -8,7 +8,6 @@
 
 namespace humhub\modules\content\components;
 
-use humhub\components\SettingActiveRecord;
 use humhub\libs\BaseSettingsManager;
 use Yii;
 
@@ -70,7 +69,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
     protected function createRecord()
     {
         $record = parent::createRecord();
-        $record->contentcontainer_id = $this->contentContainer->contentContainerRecord->id;
+        $record->contentcontainer_id = $this->contentContainer->contentcontainer_id;
         return $record;
     }
 
@@ -79,7 +78,7 @@ class ContentContainerSettingsManager extends BaseSettingsManager
      */
     protected function find()
     {
-        return parent::find()->andWhere(['contentcontainer_id' => $this->contentContainer->contentContainerRecord->id]);
+        return parent::find()->andWhere(['contentcontainer_id' => $this->contentContainer->contentcontainer_id]);
     }
 
     /**

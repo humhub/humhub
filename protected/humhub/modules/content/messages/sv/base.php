@@ -96,6 +96,7 @@ return [
     'You do not have the permission to move this content.' => 'Du har inte behörighet att flytta detta innehåll.',
     'Your last edit state has been saved!' => 'Din senaste redigering har sparats!',
     'in' => 'i',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',

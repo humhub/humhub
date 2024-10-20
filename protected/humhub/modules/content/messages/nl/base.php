@@ -1,6 +1,7 @@
 <?php
 return array (
   '(Also visible to non-members of this space)' => '(Ook zichtbaar voor niet-leden van deze ruimte)',
+  '(Also visible to people who are not logged in)' => '(Ook zichtbaar voor mensen die niet zijn ingelogd)',
   '<strong>Delete</strong> content?' => 'Inhoud <strong>verwijderen</strong>?',
   '<strong>Move</strong> content' => 'Inhoud <strong>verplaatsen</strong>',
   '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> naar dit bericht',
