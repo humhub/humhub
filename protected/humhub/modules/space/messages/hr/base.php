@@ -107,7 +107,7 @@ return array (
   'Public (Registered users only)' => 'Javno (Samo registrirani korisnici)',
   'Request Message' => 'Zatražite poruku',
   'Role' => 'Uloga',
-  'Search...' => '',
+  'Search...' => 'Pretraži...',
   'See all' => 'Vidi sve',
   'Select all registered users' => 'Odaberite sve registrirane korisnike',
   'Send' => 'Pošalji',

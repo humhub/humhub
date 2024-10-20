@@ -6,6 +6,7 @@ return [
     '<strong>Settings</strong> and Configuration' => '<strong>Ezarpenak</strong> eta konfigurazioa',
     '<strong>User</strong> administration' => '<strong>Erabiltzaile</strong> administrazioa',
     '<strong>Warning:</strong> All individual profile permission settings are reset to the default values!' => '<strong>Erne:</strong> profilaren baimen-ezarpen guztiak lehenetsitako balioetara berrezarri dira!',
+    'About the account request for \'{displayName}\'.' => '\'{displayName}\'en kontu eskaerari buruz.',
     'Accept user: <strong>{displayName}</strong> ' => 'Onartu ondorengo erabiltzailea: <strong>{displayName}</strong>',
     'Account' => 'Kontua',
     'Account Request for \'{displayName}\' has been approved.' => '"{displayName}"-(r)en kontu-eskaera onartu da.',
@@ -34,6 +35,7 @@ return [
     'Are you really sure that you want to impersonate this user?' => 'Ziur al zaude erabiltzaile honen nortasuna ordezkatu nahi duzula?',
     'Are you really sure? The selected users will be approved and notified by e-mail.' => 'Benetan ziur al zaude? Hautatutako erabiltzaileei e-posta bidez onartuko zaie eta jakinaraziko zaie.',
     'Are you really sure? The selected users will be deleted and notified by e-mail.' => 'Benetan ziur al zaude? Hautatutako erabiltzaileak ezabatu egingo dira eta e-posta bidez jakinaraziko dira.',
+    'Are you really sure? The selected users will be notified by e-mail.' => 'Ziur zaude? Aukeratutako erabiltzaileak posta elektronikoz jakinaraziko dira.',
     'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => 'Benetan ziur al zaude? Beste talde batera esleituta ez dauden erabiltzaileak talde lehenetsira automatikoki esleituko dira.',
     'Are you sure that you want to delete following user?' => 'Ziur ondorengo erabiltzailea ezabatu nahi duzula?',
     'Cancel' => 'Utzi bertan behera',
@@ -42,6 +44,7 @@ return [
     'Could not approve the user!' => 'Ezin izan da erabiltzailea onartu!',
     'Could not decline the user!' => 'Ezin izan da erabiltzailea baztertu!',
     'Could not load category.' => 'Ezin izan da kategoria kargatu.',
+    'Could not send the message to the user!' => 'Ezin izan diot mezua bidali erabiltzaileari!',
     'Create new group' => 'Sortu talde berria',
     'Create new profile category' => 'Sortu profil kategoria berria',
     'Create new profile field' => 'Sortu profil eremu berria',
@@ -52,6 +55,7 @@ return [
     'Default' => 'Lehenetsia',
     'Default Profile Permissions' => 'Profilaren baimen lehenetsiak',
     'Default Sorting' => 'Sailkapen lehenetsia',
+    'Default content of the email when sending a message to the user' => 'Posta elektronikoaren eduki lehenetsia erabiltzaileari mezu bat bidaltzean',
     'Default content of the registration approval email' => 'Erregistroa onartzeko mezu elektronikoaren eduki lehenetsia',
     'Default content of the registration denial email' => 'Erregistroa ukatzeko mezu elektronikoaren eduki lehenetsia',
     'Default group can not be deleted!' => 'Talde lehenetsia ezin da ezabatu!',
@@ -75,6 +79,7 @@ return [
     'Edit profile category' => 'Editatu profilaren kategoria',
     'Edit profile field' => 'Editatu profilaren eremua',
     'Edit user: {name}' => 'Editatu erabiltzailea: {name}',
+    'Email all selected' => 'Posta elektronikoa hautatutako guztiei.',
     'Enable' => 'Aktibatu',
     'Enable individual profile permissions' => 'Gaitu profil indibidualaren baimenak',
     'Enabled' => 'Aktibatuta',
@@ -83,6 +88,15 @@ return [
     'Group not found!' => 'Taldea ez da aurkitu!',
     'Group user not found!' => 'Taldeko erabiltzailea ez da aurkitu!',
     'Groups' => 'Taldeak',
+    'Hello {displayName},
+
+Your account creation is under review.
+Could you tell us the motivation behind your registration?
+
+Kind Regards
+{AdminName}
+
+' => 'Kaixo, {displayName}. Esango zeniguke zein den zure erregistroaren arrazoia? Agur, {AdminName}.',
     'Hello {displayName},
 
 Your account has been activated.
@@ -104,6 +118,7 @@ Kind Regards
 ' => 'Kaixo {displayName}: Zure kontu eskaera baztertu egin da. Agur bero bat {AdminName}',
     'Here you can create or edit profile categories and fields.' => 'Hemen profil-kategoriak eta eremuak sortu edo edita ditzakezu.',
     'Hide online status of users' => 'Ezkutatu erabiltzaileen onlineko egoera',
+    'If enabled, the Group Manager will need to approve registration.' => 'Gaituz gero, Taldeko Zuzendariak matrikula onartu beharko du.',
     'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Banakako profilen baimenak onartzen ez badira, ondorengo ezarpen hauek ezin izango dira aldatu erabiltzaile guztientzat. Banakako profilen baimenak onartzen badira, konfigurazioa lehenetsi gisa baino ez da ezartzen eta erabiltzaileek pertsonaliza dezakete. Ondorengo sarrera hauek modu berean agertzen dira erabiltzaileen profilaren ezarpenetan:',
     'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Aukera hau hautatzen ez bada, espazioen jabetza zure kontura transferituko da.',
     'Impersonate' => 'Pertsonalizatu',
@@ -143,6 +158,7 @@ Kind Regards
     'People' => 'Jendea',
     'Permanently delete' => 'Ezabatu betiko',
     'Permissions' => 'Baimenak',
+    'Post-registration approval required' => 'Matrikulatu ondorengo homologazioa behar da.',
     'Prioritised User Group' => 'Lehenetsitako Erabiltzaile Taldea',
     'Profile Permissions' => 'Profilaren baimenak',
     'Profiles' => 'Profilak',
@@ -156,8 +172,11 @@ Kind Regards
     'Select a prioritised group whose members are displayed before all others when the sorting option \'Default\' is selected. The users within the group and the users outside the group are additionally sorted by their last login.' => 'Hautatu lehenetsitako talde bat, zeinaren kideak beste guztien aurretik bistaratzen diren "Lehenetsia" ordenatzeko aukera hautatzen denean. Taldeko erabiltzaileak eta taldetik kanpoko erabiltzaileak, gainera, azken saioaren arabera ordenatzen dira.',
     'Select the profile fields you want to add as columns' => 'Hautatu zutabe gisa gehitu nahi dituzun profileko eremuak',
     'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. ' => 'Hautatu zein erabiltzaile-informazioa bistaratu behar den \'Jendea\' ikuspegi orokorrean. Edozein profil-eremu hauta ditzakezu, baita bakarka sortu dituzunak ere.',
+    'Send' => 'Bidali',
     'Send & decline' => 'Bidali eta baztertu',
     'Send & save' => 'Bidali eta gorde',
+    'Send a message' => 'Bidali mezu bat',
+    'Send a message to <strong>{displayName}</strong> ' => 'Bidali mezu bat <strong>{displayName}</strong>',
     'Send invitation email' => 'Bidali gonbidapen-mezu elektronikoa',
     'Send invitation email again?' => 'Gonbidapen-mezu elektronikoa bidali nahi duzu berriro?',
     'Send notifications to users when added to or removed from the group.' => 'Bidali jakinarazpenak erabiltzaileei taldetik kideak gehitzen edo kentzen direnean.',
@@ -167,12 +186,14 @@ Kind Regards
     'The Space memberships of all group members will be updated. This may take up to several minutes.' => 'Taldekide guztien Espazioko kidetzak eguneratuko dira. Prozesuak hainbat minutu iraun ditzake.',
     'The following list contains all pending sign-ups and invites.' => 'Hurrengo zerrendak zain dauden izen-emate eta gonbidapen guztiak ditu.',
     'The following list contains all registered users awaiting an approval.' => 'Ondorengo zerrendan erregistratutako erabiltzaile guztiak daude onarpenaren zain.',
+    'The message has been sent by email.' => 'Mezua posta elektronikoz bidali dute.',
     'The registration was approved and the user was notified by email.' => 'Erregistroa onartu zen eta erabiltzaileari e-posta bidez jakinarazi zitzaion.',
     'The registration was declined and the user was notified by email.' => 'Erregistroa baztertu zen eta erabiltzaileari e-posta bidez jakinarazi zitzaion.',
     'The registrations were approved and the users were notified by email.' => 'Erregistroak onartu ziren eta erabiltzaileei e-posta bidez jakinarazi zitzaien.',
     'The registrations were declined and the users were notified by email.' => 'Erregistroak baztertu ziren eta erabiltzaileei posta elektroniko bidez jakinarazi zieten.',
     'The selected invitations have been successfully deleted!' => 'Hautatutako gonbidapenak behar bezala ezabatu dira!',
     'The user is the owner of these spaces:' => 'Erabiltzailea ondorengo espazio hauen jabea da:',
+    'The users were notified by email.' => 'Erabiltzaileei posta elektronikoz jakinarazi zitzaien.',
     'This option allows you to determine whether users may set individual permissions for their own profiles.' => 'Aukera honek erabiltzaileek beren profiletarako baimen indibidualak ezar ditzaketen ala ez zehazten du.',
     'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Ikuspegi orokor honek erregistratutako erabiltzaile bakoitzaren zerrenda dauka, erabiltzaileak ikusteko, editatzeko eta ezabatzeko ekintzekin.',
     'This user owns no spaces.' => 'Erabiltzaile honek ez du Espaziorik.',
@@ -190,26 +211,15 @@ Kind Regards
     'You can only delete empty categories!' => 'Hutsik dauden kategoriak soilik ezabatu ditzakezu!',
     'You cannot delete yourself!' => 'Ezin duzu zure burua ezabatu!',
     'never' => 'Inoiz ez',
-    'About the account request for \'{displayName}\'.' => '',
-    'Are you really sure? The selected users will be notified by e-mail.' => '',
-    'Could not send the message to the user!' => '',
-    'Default content of the email when sending a message to the user' => '',
-    'Email all selected' => '',
-    'Hello {displayName},
-
-Your account creation is under review.
-Could you tell us the motivation behind your registration?
-
-Kind Regards
-{AdminName}
-
-' => '',
-    'If enabled, the Group Manager will need to approve registration.' => '',
-    'Post-registration approval required' => '',
-    'Send' => '',
-    'Send a message' => '',
-    'Send a message to <strong>{displayName}</strong> ' => '',
-    'The message has been sent by email.' => '',
-    'The users were notified by email.' => '',
-    '{nbMsgSent} already sent' => '',
+    '{nbMsgSent} already sent' => 'Dagoeneko {nbMsgSent} mezu bidali dira.',
+    'All open registration invitations were successfully re-sent.' => '',
+    'Delete pending registrations?' => '',
+    'Do you really want to delete pending registrations?' => '',
+    'Do you really want to re-send the invitations to pending registration users?' => '',
+    'Re-send to all' => '',
+    'Resend invitation?' => '',
+    'Resend invitations?' => '',
+    'The selected invitations have been successfully re-sent!' => '',
+    'The user cannot be removed from this Group!' => '',
+    'The user cannot be removed from this Group, as users are required to be assigned to at least one Group.' => '',
 ];

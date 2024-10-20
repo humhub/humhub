@@ -65,6 +65,7 @@ return [
     'Your last edit state has been saved!' => 'Ultima stare de editare a ta a fost salvată!',
     'in' => 'în',
     '(Also visible to non-members of this space)' => '',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',

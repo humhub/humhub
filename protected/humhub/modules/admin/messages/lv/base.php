@@ -64,6 +64,8 @@ return [
     'Open documentation' => '',
     'Pending user registrations' => '',
     'People' => '',
+    'Resend to all' => '',
+    'Resend to selected rows' => '',
     'Set as default' => '',
     'Show in Marketplace' => '',
     'Sign up' => '',

@@ -8,7 +8,7 @@ return array (
   'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => '',
   'All your personal data will be irrevocably deleted.' => '',
   'Are you sure that you want to delete your account?' => '',
-  'Blocked users' => '',
+  'Blocked users' => 'Erabiltzaileak blokeatuta',
   'Changing the username can make some links unusable, for example old links to the profile.' => '',
   'Confirm' => 'Berretsi',
   'Current password' => '',

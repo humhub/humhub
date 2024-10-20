@@ -99,6 +99,7 @@
 @mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
 // CSS Variables
+// @since 1.14.0
 :root {
     // Colors for buttons status etc.
     --default: @default;
@@ -144,4 +145,8 @@
 
     // Fonts
     --mail-font-family: @mail-font-family;
+
+    // Dimensions
+    --hh-fixed-header-height: 130px;
+    --hh-fixed-footer-height: 0px; // Force keeping `px` after CSS compilation (required for `calc()` function)
 }

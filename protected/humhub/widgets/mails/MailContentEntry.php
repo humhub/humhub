@@ -76,7 +76,7 @@ class MailContentEntry extends \yii\base\Widget
                 RichTextToHtmlConverter::OPTION_CACHE_KEY => RichTextToHtmlConverter::buildCacheKeyForContent($this->content, 'mail_entry'),
             ]);
 
-            if(!$this->originator) {
+            if (!$this->originator) {
                 $this->originator = $this->content->content->createdBy;
             }
         }

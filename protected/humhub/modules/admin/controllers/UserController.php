@@ -85,7 +85,8 @@ class UserController extends Controller
         $searchModel = new UserSearch();
         $searchModel->status = User::STATUS_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
+        $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists() &&
+            Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
 
         return $this->render('list', [
             'dataProvider' => $dataProvider,
@@ -268,14 +269,12 @@ class UserController extends Controller
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
-        $adminIsAlwaysAllowed = Yii::$app->user->isAdmin();
         $invite = new InviteForm();
 
         return $this->render('add', [
             'hForm' => $registration,
-            'canInviteByEmail' => $invite->canInviteByEmail($adminIsAlwaysAllowed),
-            'canInviteByLink' => $invite->canInviteByLink($adminIsAlwaysAllowed),
-            'adminIsAlwaysAllowed' => $adminIsAlwaysAllowed,
+            'canInviteByEmail' => $invite->canInviteByEmail(),
+            'canInviteByLink' => $invite->canInviteByLink(),
         ]);
     }
 

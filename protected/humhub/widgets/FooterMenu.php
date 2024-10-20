@@ -68,16 +68,12 @@ class FooterMenu extends Menu
     }
 
     /**
+     * Make sure "Powered by" is displayed even if no entries in the menu
      * @inheritDoc
      */
     public function run()
     {
-        // Make sure Footer on login for powered by
-        if (empty($this->entries) && $this->location === static::LOCATION_LOGIN) {
-            return $this->render($this->template, $this->getViewParams());
-        }
-
-        return parent::run();
+        $this->trigger(static::EVENT_RUN);
+        return $this->render($this->template, $this->getViewParams());
     }
-
 }
