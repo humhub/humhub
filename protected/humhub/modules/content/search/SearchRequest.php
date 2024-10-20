@@ -38,9 +38,9 @@ class SearchRequest extends Model
 
     public array $author = [];
 
-    public array $space = [];
+    public ?string $contentContainerClass = null;
 
-    public $contentContainer = [];
+    public array $contentContainer = [];
 
     public $orderBy = self::ORDER_BY_CREATION_DATE;
 
@@ -58,7 +58,7 @@ class SearchRequest extends Model
     public function rules()
     {
         return [
-            [['keyword', 'topic', 'author', 'space'], 'safe'],
+            [['keyword', 'topic', 'author', 'contentContainerClass', 'contentContainer'], 'safe'],
             [['keyword'], 'required'],
             [['contentType'], 'in', 'range' => array_keys(static::getContentTypes())],
             [['dateFrom', 'dateTo'], 'date', 'format' => 'php:' . FormatConverter::convertDateIcuToPhp(self::DATE_FORMAT)],

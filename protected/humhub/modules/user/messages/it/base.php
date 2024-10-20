@@ -111,6 +111,7 @@ return [
     'Advanced Profile Search' => '',
     'Block user' => '',
     'Did you forget your password?' => '',
+    'Empty password cannot be saved!' => '',
     'Group Manager(s)' => '',
     'If this wasn\'t you, you can disregard this message.' => '',
     'It looks like you clicked on an invalid password reset link. Please try again.' => '',

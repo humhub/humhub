@@ -231,7 +231,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
                 $phpCoverage = unserialize(file_get_contents($filename));
             }
 
-            return array($phpCoverage, $file);
+            return [$phpCoverage, $file];
         } else {
             $phpCoverage = new PHP_CodeCoverage();
         }
@@ -255,7 +255,7 @@ if (!defined('C3_CODECOVERAGE_MEDIATE_STORAGE')) {
             __c3_error($e->getMessage());
         }
 
-        return array($phpCoverage, $file);
+        return [$phpCoverage, $file];
     }
 
     function __c3_exit()

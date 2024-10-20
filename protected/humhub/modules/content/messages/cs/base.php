@@ -109,5 +109,6 @@ return [
     'You do not have the permission to move this content.' => 'K přesunu tohoto obsahu nemáte oprávnění.',
     'Your last edit state has been saved!' => 'Poslední úpravy uloženy.',
     'in' => 'v prostoru',
+    '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
 ];

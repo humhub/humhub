@@ -2,10 +2,11 @@
 return array (
   '<strong>Login</strong> required' => '<strong>Login</strong> Requerido',
   'An internal server error occurred.' => 'Ocorreu um erro interno no servidor.',
-  'Guest mode not active, please login first.' => 'Modo de convidado não está ativo, favor efetuar o login.',
+  'Guest mode not active, please login first.' => 'Modo convidado não ativo, faça login primeiro.',
   'Login required for this section.' => 'Login necessário para essa seção',
   'Maintenance mode activated: You have been automatically logged out and will no longer have access the platform until the maintenance has been completed.' => 'Modo de manutenção ativado: Você foi desconectado automaticamente e não terá mais acesso à plataforma até que a manutenção seja concluída.',
   'Maintenance mode is active. Only Administrators can access the platform.' => 'O modo de manutenção está ativo. Apenas administradores podem acessar a plataforma.',
+  'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.' => 'O módulo {moduleId} está presente no arquivo de configuração do HumHub, mesmo que este módulo esteja desabilitado. Remova-o da configuração.',
   'The specified URL cannot be called directly.' => 'A URL especificada não pode ser chamada diretamente.',
   'You are not allowed to perform this action.' => 'Você não tem permissão para executar esta ação.',
   'You are not permitted to access this section.' => 'Você não tem autorização para acessar essa seção.',

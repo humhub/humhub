@@ -17,8 +17,8 @@ use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Component;
-use yii\base\InvalidConfigException;
 use yii\base\Event;
+use yii\base\InvalidConfigException;
 
 /**
  * Class LicenceManager
@@ -33,7 +33,7 @@ class LicenceManager extends Component
     private static $_licence = null;
 
     /**
-     * @event Event an event that is triggered when the current licence is requested
+     * @event Event an event that is triggered when the current license is requested
      */
     public const EVENT_GET_LICENCE = 'getLicence';
 
@@ -48,7 +48,7 @@ class LicenceManager extends Component
 
 
     /**
-     * Returns the current licence object
+     * Returns the current license object
      *
      * @param bool $useCache
      * @return Licence
@@ -65,7 +65,7 @@ class LicenceManager extends Component
 
 
     /**
-     * Returns the current licence object
+     * Returns the current license object
      *
      * @return Licence
      */
@@ -87,7 +87,7 @@ class LicenceManager extends Component
                     } catch (InvalidConfigException $e) {
                         Yii::error($e->getMessage(), 'marketplace');
                     }
-                    Yii::error('Could not fetch PE licence since: ' . $lastFetchDateTime, 'marketplace');
+                    Yii::error('Could not fetch PE license since: ' . $lastFetchDateTime, 'marketplace');
                     return $licence;
                 }
             }
@@ -102,7 +102,7 @@ class LicenceManager extends Component
         }
 
         if (isset(Yii::$app->params['hosting'])) {
-            // In our demo hosting, we allow pro licences without registration
+            // In our demo hosting, we allow pro licenses without registration
             $licence->type = Licence::LICENCE_TYPE_PRO;
         }
 
@@ -111,7 +111,7 @@ class LicenceManager extends Component
     }
 
     /**
-     * Fetches the licence from the HumHub API
+     * Fetches the license from the HumHub API
      *
      * @return bool The retrieval of the license worked, whether it is valid or not.
      */
@@ -137,7 +137,7 @@ class LicenceManager extends Component
                     return true;
                 }
             } catch (Throwable $e) {
-                Yii::error('Could not fetch/remove licence: ' . $e->getMessage());
+                Yii::error('Could not fetch/remove license: ' . $e->getMessage());
             }
         }
 
@@ -146,7 +146,7 @@ class LicenceManager extends Component
 
 
     /**
-     * Removes the licence from this installation and the HumHub Marketplace
+     * Removes the license from this installation and the HumHub Marketplace
      *
      * @return bool
      */

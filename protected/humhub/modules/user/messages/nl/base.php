@@ -34,6 +34,7 @@ return array (
   'Disconnect account' => 'Ontkoppel account',
   'Edit' => 'Bijwerken',
   'Email' => 'E-mail',
+  'Empty password cannot be saved!' => 'Een leeg wachtwoord kan niet worden opgeslagen!',
   'Enable Notifications' => 'Notificaties aanzetten',
   'Find people by their profile data or user tags' => 'Vind leden op basis van hun profielgegevens of labels',
   'Follow' => 'Volg',

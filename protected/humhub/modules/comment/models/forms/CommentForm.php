@@ -57,10 +57,7 @@ class CommentForm extends yii\base\Model
     }
 
     /**
-     * @param null $attributeNames
-     * @param bool $clearErrors
-     * @return bool
-     * @throws ServerErrorHttpException
+     * @inheritdoc
      */
     public function validate($attributeNames = null, $clearErrors = true)
     {
@@ -70,6 +67,7 @@ class CommentForm extends yii\base\Model
 
         if (!$this->comment->validate() || !parent::validate($attributeNames, $clearErrors)) {
             $this->comment->addError('message', Yii::t('CommentModule.base', 'Comment could not be saved!'));
+            return false;
         }
 
         if (!empty($this->comment->message)) {
@@ -82,6 +80,7 @@ class CommentForm extends yii\base\Model
         }
 
         $this->comment->addError('message', Yii::t('CommentModule.base', 'The comment must not be empty!'));
+        return false;
     }
 
     /**

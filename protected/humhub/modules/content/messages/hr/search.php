@@ -11,7 +11,7 @@ return array (
   'No results found!' => '',
   'Results ({count})' => '',
   'Search' => 'Pretraži',
-  'Search...' => '',
+  'Search...' => 'Pretraži...',
   'Sorting' => 'Sortiraj',
   'Space' => 'Prostor',
   'Topic' => 'Naslov',
