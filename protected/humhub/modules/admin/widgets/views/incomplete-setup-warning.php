@@ -6,7 +6,6 @@
  * @license https://www.humhub.org/en/licences
  */
 
-use humhub\libs\Html;
 use humhub\modules\admin\widgets\IncompleteSetupWarning;
 use humhub\modules\ui\view\components\View;
 
@@ -21,18 +20,22 @@ use humhub\modules\ui\view\components\View;
         <ul>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_QUEUE_RUNNER, $problems)): ?>
                 <li>
-                    <?= Yii::t('AdminModule.base', 'The cron job for the background jobs (queue) does not seem to work properly.'); ?>
+                    <?= Yii::t('AdminModule.base', 'The cron job for the background jobs (queue) does not seem to work properly.') ?>
+                    <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/cron-jobs') ?>
                 </li>
             <?php endif; ?>
             <?php if (in_array(IncompleteSetupWarning::PROBLEM_CRON_JOBS, $problems)): ?>
                 <li>
-                    <?= Yii::t('AdminModule.base', 'The cron job for the regular tasks (cron) does not seem to work properly.'); ?>
+                    <?= Yii::t('AdminModule.base', 'The cron job for the regular tasks (cron) does not seem to work properly.') ?>
+                    <?= IncompleteSetupWarning::docBtn('https://docs.humhub.org/docs/admin/cron-jobs') ?>
+                </li>
+            <?php endif; ?>
+            <?php if (in_array(IncompleteSetupWarning::PROBLEM_MOBILE_APP_PUSH_SERVICE, $problems)): ?>
+                <li>
+                    <?= Yii::t('AdminModule.base', 'The mobile app push service is not available. Please install and configure the "Push Notifications" module.') ?>
+                    <?= IncompleteSetupWarning::docBtn('https://marketplace.humhub.com/module/fcm-push/installation') ?>
                 </li>
             <?php endif; ?>
         </ul>
-        <br/>
-        <?php if (Yii::$app->user->isAdmin()): ?>
-            <?= Html::a(Yii::t('AdminModule.base', 'Open documentation'), 'https://docs.humhub.org/docs/admin/cron-jobs', ['class' => 'btn btn-danger', 'target' => '_blank']); ?>
-        <?php endif; ?>
     </div>
 </div>
