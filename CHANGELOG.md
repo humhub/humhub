@@ -1,11 +1,109 @@
 HumHub Changelog
 ================
 
-
 1.17.0 (TBA)
 ------------
-- Fix #173 : Remove UISetting "Include Captcha in Registration"
+- Enh #7070: Add GitHub action for PHP CS Fixer
+- Enh #7073: Add a link to notification settings on top dropdown list
+- Fix #7100: Enable all file handlers on RichText editor toolbar
+- Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
+- Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7131: Introduce new CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height`
+- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
+- Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
+- Enh #7138: Added missing DB relations to UserInvite model
+- Enh #7139: Export `confirmUnload` function from `humhub.client.js`
+- Enh #7068: Bulk re-send email invites
+- Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
+- Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
+- Fix #7149: Fixed dropdown issue on mobile
+- Fix #7151: Disable new post's required validation for `message` when post has attached files
+- Enh #7106: Enable option for non-member users of a space to create posts
+- Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7173: Fix marketplace module label "Professional Edition"
+- Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Enh #7198: Increase default Uplaod Max File Size to 64mb
+- Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
+- Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
+- Enh #7202: Increased minimum PHP version to 8.1
+- Enh #7208: Improvements in dotenv parsing
+- Enh #7211: Remove obsolete property `AbstractRichText::$record`
+- Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
+- Fix #7215: Wording: replace British "licence" with American "license"
+- Fix #6987: Added LatAm Spanish
+- Enh #7214: Replace theme variables with CSS variables
+- Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
+- Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
+- Enh #7231: Removed deprecated `ShowMorePager` widget
+- Fix #7230: Update module with new id
+- Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
+- Enh #7237: Changed PoweredBy URL
+- Enh #7238: Fixed PHP warning related to `.env`
+- Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
+- Enh #7240: Fixed maximum file size setting in initialization
+- Enh #7244: Changed .env var depth separator from `.` to `__`
+- Enh #7251: Commands for module info and test DB connection
+- Fix #7248: Upgrade jQuery Highlight plugin
+- Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
+- Fix #7250: Check writable path
+- Enh #7255: Improved CSP headers
+- Enh #7253: CSV/XLSX export improvements
+- Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
+- Enh #7257: Move "About" into Space Control Menu
+- Enh #7262: Disable `Like` on archived content
+- Enh #7125: Prerequisites - Check test for pending migrations
+- Fix #173 : Remove UISetting "Include Captcha in Registr
 
+1.16.3 (Unreleased)
+--------------------------
+- Fix #7212: Fix horizontal scroll bar on space stream on small screen
+- Fix #7210: Small style fix for top account menu (temp fix for Mac Safari browser)
+- Fix #7218: Fix visibility of wall stream content creating form
+- Fix #7219: Renamed deprecated meta tag
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7222: Fix rendering of checkbox on MacOS and iOS
+- Fix #7225: Fix module JS config initialisation on AJAX request
+- Fix #7227: Fix search reindexing after create new content
+- Enh #7229: Hide invitations with unknown sources
+
+1.16.2 (September 5, 2024)
+--------------------------
+- Fix #7102: Fix content search with word ending with hyphen
+- Fix #7104: Missing `--text-color-default` CSS variable
+- Enh #7105: Add an external link icon to the "Install Updates" button to avoid thinking it updates the modules directly
+- Fix #7116: Fix rebuilding the search index with Grunt (since 1.16.0)
+- Fix #7120: Error after failed migration of content fulltext index
+- Fix #7126: Fix member count on a space directory
+- Enh #6794: Improve log wrong parsing of OEmbed URL
+- Fix #6794: Add `User-Agent` to oEmbed CURL request (fix for Reddit)
+- Fix #7146: Fix search request by container guid
+- Fix #7141: Fix meta searching twice for the same keyword
+- Fix #7150: Remove js statement `with` to avoid error on build assets by grunt uglify
+- Fix #7156: Fix duplicated following spaces in the chooser widget
+- Enh #7157: Highlight content after open a page from search results
+- Fix #7153: Fix content visibility of disabled users
+- Fix #324: Focus on active and selected nav page after reload on mobile
+- Fix #7170: Fix rendering of new line on email messages
+- Fix #7178: Highlight only words with 3 or more characters
+- Fix #7180: Fix active form on registration and user edit forms for correct working of widget inputs
+- Fix #7181: Fix duplicated label of checkbox profile field
+- Fix #7182: Fix initialization of several select2 inputs on the same page
+- Fix #7187: Fix search reindexing after content deletion
+- Fix #7152: Fix search starting with special characters
+- Enh #7148: Improve rendering of meta search content
+- Fix #7192: Deny deleting user from single group
+- Fix #7200: Fix module description for space and user
+- Enh #7204: Make "Invite new people" always possible for user with permission "Manage Users"
+
+1.16.1 (July 1, 2024)
+---------------------
+- Fix #7084: Fix compatibility for PHP 8.0+
+- Fix #7088: Improve handling of legacy configuration for "search" component
+- Fix #7089: Fix markdown sub list style
+- Fix #7092: Missing closing `div` HTML tag in the registration by link view
+- Enh #7094: Allow color boxes in select2 picker
 
 1.16.0 (June 19, 2024)
 ----------------------
@@ -18,7 +116,6 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
-
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
@@ -159,7 +256,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7013: Opening more auth clients
 - Fix #7024: Automatic mapping of existing AuthClient users failed
 - Fix #7030: Fix list style near aligned image
-- Fix #7024: Automatic mapping of existing AuthClient users failed 
+- Fix #7024: Automatic mapping of existing AuthClient users failed
 - Fix #7044: Don't cache markdown profile field in session
 - Fix #7047: Update visibility of activities according to the parent object
 - Fix #7050: Fix container setting for broken records
@@ -646,9 +743,7 @@ See also: HumHub 1.12 - [Release Notes](https://docs.humhub.org/docs/about/relea
 
 1.11.4 (July 6, 2022)
 ---------------------
-This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-p7h3-73v7-959c) issue.
-HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces.
-An update is STRONGLY recommended.
+This release also fixes a [security](https://github.com/humhub/humhub/security/advisories/GHSA-p7h3-73v7-959c) issue. HumHub was vulnerable to a stored Cross-Site Scripting (XSS) vulnerability. For exploitation, the user would need a permission to administer Spaces. An update is STRONGLY recommended.
 
 - Fix #5776: Hide beta modules on disabled filter
 - Fix #5799: Incorrect selection when multiple custom filters are in place
@@ -2196,8 +2291,7 @@ Please read the [Update Guide](http://docs.humhub.org/beta/admin-updating-130.ht
 1.2.6  (May 14, 2018)
 -----------------------
 
-When you are using a custom theme, you may need to add the newly introduced footer navigation to your overwritten view files.
-You can find a full list of the view changes here: https://github.com/humhub/humhub/commit/a1815fb61d83619ce9ca40166800b8c5dcb9d539
+When you are using a custom theme, you may need to add the newly introduced footer navigation to your overwritten view files. You can find a full list of the view changes here: https://github.com/humhub/humhub/commit/a1815fb61d83619ce9ca40166800b8c5dcb9d539
 
 - Fix #3108: Fixed cronjob examples with leading zero (acs-ferreira)
 - Fix: Memory leak in activity mail summary processor cron
@@ -2209,8 +2303,7 @@ You can find a full list of the view changes here: https://github.com/humhub/hum
 1.2.5  (April 11, 2018)
 -----------------------
 
-When you customized or used the createCVS method of PendingRegistrationsController please
-migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
+When you customized or used the createCVS method of PendingRegistrationsController please migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 
 - Enh: Added BaseURL setting protocol scheme validation
 - Fix #2849: ActiveQueryContent doesn't find public profile content when guest access is enabled
@@ -2266,8 +2359,7 @@ migrate your code to SpreadsheetExport. PHPOffice is replaced by PHPSpreadsheet.
 1.2.3  (October 23, 2017)
 -------------------------
 
-Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users.
-Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
+Important note for LDAP users: There is a new setting "ID Attribute" which should be set to clearly identify users. Important note for Git/Composer installations: http://www.yiiframework.com/news/148/important-note-about-bower-and-the-asset-plugin/
 
 - Fix: Readonly markdown field issue.
 - Enh: Fixed registration approval/denial mails and made their default value configurable.

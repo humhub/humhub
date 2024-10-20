@@ -108,7 +108,7 @@ humhub.module('ui.picker', function (module, require, $) {
         results.sort(function (a, b) {
             if (a.disabled !== b.disabled) {
                 return (a.disabled < b.disabled) ? -1 : 1;
-            } else if(a.new !== b.new) {
+            } else if (a.new !== b.new) {
                 return (a.new < b.new) ? -1 : 1;
             } else if (a.priority !== b.priority) {
                 return (a.priority > b.priority) ? -1 : 1;
@@ -167,7 +167,7 @@ humhub.module('ui.picker', function (module, require, $) {
             Widget.instance($node).renderPlaceholder(true);
 
             // Focus if auto focus is active
-            if ($node.data('picker-focus')) {
+            if (Widget.instance($node).data('picker-focus')) {
                 Widget.instance($node).focus();
             }
 
@@ -216,6 +216,7 @@ humhub.module('ui.picker', function (module, require, $) {
         resultDisabled: '<a href="#" title="{disabledText}" data-placement="right" tabindex="-1" style="margin-right:5px;opacity: 0.4;cursor:not-allowed">{imageNode} <span class="picker-text"></span></a>',
         imageNode: '<img class="img-rounded" src="{image}" alt="" style="width:24px;height:24px;"  height="24" width="24">',
         imageIcon: '<i class="fa {image}"></i> ',
+        imageColor: '<span class="picker-color" style="background:{image}"></span> ',
         option: '<option value="{id}" data-image=\'{image}\' selected></option>',
     };
 
@@ -241,15 +242,17 @@ humhub.module('ui.picker', function (module, require, $) {
             item.new = false;
         });
 
-        var encodedTerm =  string.encode(params.term);
+        var encodedTerm = string.encode(params.term);
 
-        if(encodedTerm && encodedTerm.length >= that.options.minimumInputLength &&
+        if (encodedTerm && encodedTerm.length >= that.options.minimumInputLength &&
             that.options.addOptions &&
-            $(data).filter(function() {return this.text.localeCompare(encodedTerm)=== 0}).length === 0) {
+            $(data).filter(function () {
+                return this.text.localeCompare(encodedTerm) === 0
+            }).length === 0) {
 
             data.push({
-                'id': '_add:'+params.term,
-                'text': module.text('addOption')+' \''+encodedTerm+'\'',
+                'id': '_add:' + params.term,
+                'text': module.text('addOption') + ' \'' + encodedTerm + '\'',
                 'textValue': params.term,
                 'image': '<i class="fa fa-plus-circle" aria-hidden="true"></i>',
                 'new': true
@@ -270,7 +273,7 @@ humhub.module('ui.picker', function (module, require, $) {
      */
     Picker.prototype.templateResult = function (item) {
         // If no item id is given the function was called for the search term.
-        if (typeof(item.id) === 'undefined') {
+        if (typeof (item.id) === 'undefined') {
             return loader.set($('<div></div>'), {'css': {'padding': '4px'}});
         }
 
@@ -279,10 +282,10 @@ humhub.module('ui.picker', function (module, require, $) {
         var template = (item.disabled) ? Picker.template.resultDisabled : Picker.template.result;
 
         var $result = $(string.template(template, item))
-                .tooltip({html: false, container: 'body', placement: "bottom"})
-                .on('click', function (evt) {
-                    evt.preventDefault();
-                });
+            .tooltip({html: false, container: 'body', placement: "bottom"})
+            .on('click', function (evt) {
+                evt.preventDefault();
+            });
 
         $result.find('.picker-text').text(item.text);
 
@@ -343,16 +346,17 @@ humhub.module('ui.picker', function (module, require, $) {
             return '';
         }
 
-        if(image.indexOf('<') >= 0) {
+        if (image.indexOf('<') >= 0) {
             return image;
-        } else if(image.indexOf('fa-') === 0) {
+        }
+        if (image.indexOf('fa-') === 0) {
             return string.template(Picker.template.imageIcon, item);
-        } else {
-            return string.template(Picker.template.imageNode, item);
+        }
+        if (image.indexOf('#') === 0) {
+            return string.template(Picker.template.imageColor, item);
         }
 
-        // The image is either an html node itself or just an url
-        return (image.indexOf('<') >= 0) ? image : string.template(Picker.template.imageNode, item);
+        return string.template(Picker.template.imageNode, item);
     };
 
 
@@ -381,7 +385,7 @@ humhub.module('ui.picker', function (module, require, $) {
             })).text(text));
         }
 
-        if(options.triggerChange !== false) {
+        if (options.triggerChange !== false) {
             this.triggerChange();
         }
 
@@ -400,23 +404,23 @@ humhub.module('ui.picker', function (module, require, $) {
 
         this.clear(false);
 
-        selection.forEach(function(item) {
-            if(translate) {
+        selection.forEach(function (item) {
+            if (translate) {
                 item = translate.call(this, item);
             }
 
-            if(item && that.select(item.id, item.text, item.image, {triggerChange: false}) && vals.indexOf(item.id) < 0) {
+            if (item && that.select(item.id, item.text, item.image, {triggerChange: false}) && vals.indexOf(item.id) < 0) {
                 changed = true;
             }
         });
 
-        vals.forEach(function(id) {
-            if(!that.isSelected(id)) {
+        vals.forEach(function (id) {
+            if (!that.isSelected(id)) {
                 changed = true;
             }
         });
 
-        if(changed) {
+        if (changed) {
             that.triggerChange();
         }
     };
@@ -428,7 +432,7 @@ humhub.module('ui.picker', function (module, require, $) {
 
     Picker.prototype.remove = function (id) {
         var values = this.val();
-        if(this.isSelected(id)) {
+        if (this.isSelected(id)) {
             values.splice(values.indexOf(id), 1);
             this.$.val(values).trigger('change');
         }
@@ -448,14 +452,14 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.prototype.clear = function (triggerChange) {
         this.$.val(null);
 
-        if(triggerChange !== false) {
+        if (triggerChange !== false) {
             this.triggerChange();
         }
 
         return this;
     };
 
-    Picker.prototype.disable = function($disable) {
+    Picker.prototype.disable = function ($disable) {
         $disable = (!object.isDefined($disable)) ? true : $disable;
         this.$.prop('disabled', $disable);
     };
@@ -477,38 +481,38 @@ humhub.module('ui.picker', function (module, require, $) {
         this.$.trigger('change');
     };
 
-    Picker.prototype.val = function() {
+    Picker.prototype.val = function () {
         return this.$.val();
     };
 
-    Picker.prototype.hasValue = function(value) {
+    Picker.prototype.hasValue = function (value) {
         var values = this.val();
         return values && values.indexOf(value) >= 0;
     };
 
-    Picker.prototype.hasValues = function(value) {
+    Picker.prototype.hasValues = function (value) {
         var values = this.val();
         return values && values.length;
     }
 
-    Picker.prototype.data = function() {
+    Picker.prototype.data = function () {
         return this.$.select2('data');
     };
 
-    Picker.prototype.map = function() {
+    Picker.prototype.map = function () {
         var val = this.val();
 
-        if(!val) {
+        if (!val) {
             return {};
         }
 
-        if(!Array.isArray(val)) {
+        if (!Array.isArray(val)) {
             val = [val];
         }
 
         var result = {};
         var that = this;
-        val.forEach(function(value) {
+        val.forEach(function (value) {
             result[value] = that.getOption(value).text();
         })
 

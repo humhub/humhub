@@ -41,8 +41,7 @@ class MysqlDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
-
-        $this->delete($content);
+        $this->delete($content->id);
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
@@ -65,9 +64,9 @@ class MysqlDriver extends AbstractDriver
         $record->save();
     }
 
-    public function delete(Content $content): void
+    public function delete(int $contentId): void
     {
-        ContentFulltext::deleteAll(['content_id' => $content->id]);
+        ContentFulltext::deleteAll(['content_id' => $contentId]);
     }
 
     /**
@@ -107,9 +106,12 @@ class MysqlDriver extends AbstractDriver
                 ->andWhere(['IN', 'user.guid', $request->author]);
         }
 
-        if (!empty($request->space)) {
-            $query->andWhere(['contentcontainer.class' => Space::class])
-                ->andWhere(['IN', 'contentcontainer.guid', $request->space]);
+        if (!empty($request->contentContainerClass)) {
+            $query->andWhere(['contentcontainer.class' => $request->contentContainerClass]);
+        }
+
+        if (!empty($request->contentContainer)) {
+            $query->andWhere(['IN', 'contentcontainer.guid', $request->contentContainer]);
         }
 
         $this->addQueryFilterVisibility($query);
@@ -158,6 +160,9 @@ class MysqlDriver extends AbstractDriver
 
     protected function prepareTerm(string $term): string
     {
+        // Remove chars `-` to avoid mysql error
+        $term = preg_replace('/-+(\*?)$/', '$1', $term);
+
         // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
         return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $term) ? '"' . $term . '"' : $term;
     }
@@ -207,8 +212,7 @@ class MysqlDriver extends AbstractDriver
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
             $globalCondition = 'content.contentcontainer_id IS NULL';
-        } elseif
-        (AuthHelper::isGuestAccessEnabled()) {
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';

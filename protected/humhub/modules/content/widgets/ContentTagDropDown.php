@@ -97,13 +97,14 @@ class ContentTagDropDown extends JsInputWidget
             }
         }
 
+        /* @var ContentTag[] $tags */
         $tags = $this->items = $this->query->all();
 
         $result = [];
         foreach ($tags as $tag) {
             $result[$tag->id] = $tag->name;
             $this->itemOptions[$tag->id] = [
-                'data-type-color' => $tag->color,
+                'data-color' => $tag->color,
             ];
         }
 

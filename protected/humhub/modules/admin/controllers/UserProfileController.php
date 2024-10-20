@@ -10,7 +10,6 @@ namespace humhub\modules\admin\controllers;
 
 use humhub\modules\admin\permissions\ManageUsers;
 use Yii;
-
 use yii\web\HttpException;
 use humhub\compat\HForm;
 use humhub\modules\admin\components\Controller;

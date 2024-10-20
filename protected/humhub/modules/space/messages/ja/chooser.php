@@ -1,6 +1,6 @@
 <?php
 return array (
-  'Add Space' => 'スペース追加',
+  'Add Space' => 'ｽﾍﾟｰｽ追加',
   'Create Space' => 'スペースを作成する',
   'My spaces' => 'マイスペース',
   'No member or following spaces found.' => 'メンバーまたは次のスペースが見つかりません。',

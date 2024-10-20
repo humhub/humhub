@@ -27,7 +27,7 @@ use yii\widgets\ActiveForm;
                     </strong><br/>
                     <?= Yii::t(
                         'MarketplaceModule.base',
-                        'Licenced for max. {number} users.',
+                        'Licensed for max. {number} users.',
                         ['number' => $model->maxUsers]
                     ); ?>
                 </p>
@@ -61,11 +61,10 @@ use yii\widgets\ActiveForm;
 
         <?php if ($model->type === Licence::LICENCE_TYPE_PRO): ?>
             <a href="<?= Url::to(['/marketplace/licence/remove']); ?>" class="pull-right">
-                <small><?= Yii::t('MarketplaceModule.base', 'Remove licence key'); ?></small>
+                <small><?= Yii::t('MarketplaceModule.base', 'Remove license key'); ?></small>
             </a>
         <?php endif; ?>
 
     </div>
 
 </div>
-

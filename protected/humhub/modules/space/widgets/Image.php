@@ -10,6 +10,7 @@ namespace humhub\modules\space\widgets;
 
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\BaseImage;
+use Yii;
 use yii\bootstrap\Html;
 
 /**
@@ -40,7 +41,7 @@ class Image extends BaseImage
         if ($this->space->color != null) {
             $color = Html::encode($this->space->color);
         } else {
-            $color = '#d7d7d7';
+            $color = 'var(--background3)';
         }
 
         if (!isset($this->htmlOptions['class'])) {

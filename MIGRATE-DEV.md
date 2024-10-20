@@ -1,25 +1,30 @@
 Module Migration Guide
 ======================
 
-See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md)
-for full version.
+See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md) for full version.
 
-Version 1.17
+Version 1.17 (Unreleased)
 -------------------------
+
+### Behaviour change
+
+- Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
+
+### New
+- CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
+- `\humhub\modules\user\Module::enableRegistrationFormCaptcha` which is true by default (can be disabled via [file configuration](https://docs.humhub.org/docs/admin/advanced-configuration#module-configurations))
 
 ### Removed
 - `Include captcha in registration form` checkbox removed from "Administration" -> "Users" -> "Settings"
-
-### New
-- `\humhub\modules\user\Module::enableRegistrationFormCaptcha` which is true by default (can be disabled via [file configuration](https://docs.humhub.org/docs/admin/advanced-configuration#module-configurations))
+- Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
+- Removed `\humhub\widgets\ShowMorePager` widget
 
 Version 1.16 (April 2024)
 -------------------------
 At least PHP 8.0 is required with this version.
 
 ### Removed
-- `\humhub\modules\search\*` The existing search module was removed and the related features merged
-  into the 'content', 'user' and 'space' modules.
+- `\humhub\modules\search\*` The existing search module was removed and the related features merged into the 'content', 'user' and 'space' modules.
 - `\humhub\modules\user\models\User::getSearchAttributes()` and `\humhub\modules\space\models\Space::getSearchAttributes()`
 
 ### Behaviour change
@@ -29,11 +34,11 @@ At least PHP 8.0 is required with this version.
     - Use `(new ContentSearchService($exampleContent->content))->update();` instead of `Yii::$app->search->update($exampleContent);`
 - The method `setCellValueByColumnAndRow()` has been replaced with `setCellValue()` and `setValueExplicit()`.
 - When rendering xlsx generated data cells, use the `setCellValue()` method with the appropriate coordinate obtained using `getColumnLetter()`.
+- Switch `Module::$resourcesPath` to `resources`
 
 ### Deprecations
 - `\humhub\components\Module::getIsActivated()` use `getIsEnabled()` instead
-  (note: this also affects the virtual instance property `\humhub\modules\friendship\Module::$isActivated` which should
-  now read `$isEnabled`!)
+  (note: this also affects the virtual instance property `\humhub\modules\friendship\Module::$isActivated` which should now read `$isEnabled`!)
 - `\humhub\components\Module::migrate()` use `getMigrationService()->migrateUp(MigrationService::ACTION_MIGRATE)` instead
 - `\humhub\libs\BaseSettingsManager::isDatabaseInstalled()` use `Yii::$app->isDatabaseInstalled()` instead
 - `\humhub\models\Setting::isInstalled()` use `Yii::$app->isInstalled()` instead
@@ -41,9 +46,7 @@ At least PHP 8.0 is required with this version.
 - `\humhub\modules\content\components\ContentAddonActiveRecord::canWrite()`
 - `\humhub\modules\file\models\File::canRead()` use `canView()` instead
 - `\humhub\modules\friendship\Module::getIsEnabled()` use `isFriendshipEnabled()` instead
-  (note: `\humhub\modules\friendship\Module::getIsEnabled()` and the virtual
-  property `\humhub\modules\friendship\Module::isEnabled` now return the status of the module -
-  which yields always true for core modules.)
+  (note: `\humhub\modules\friendship\Module::getIsEnabled()` and the virtual property `\humhub\modules\friendship\Module::isEnabled` now return the status of the module - which yields always true for core modules.)
 - `\humhub\modules\marketplace\Module::isEnabled()` use `isMarketplaceEnabled()` instead
 - `\humhub\modules\marketplace\services\ModuleService::activate()` use `enable()` instead
 
@@ -72,9 +75,7 @@ Version 1.15
 -------------------------
 
 ### Behaviour change
-- `\humhub\libs\BaseSettingsManager::deleteAll()` no longer uses the `$prefix` parameter as a full wildcard, but
-  actually as a prefix. Use `$prefix = '%pattern%'` to get the old behaviour. Or use `$parameter = '%suffix'` if you
-  want to match against the end of the names.
+- `\humhub\libs\BaseSettingsManager::deleteAll()` no longer uses the `$prefix` parameter as a full wildcard, but actually as a prefix. Use `$prefix = '%pattern%'` to get the old behaviour. Or use `$parameter = '%suffix'` if you want to match against the end of the names.
 - `\humhub\libs\BaseSettingsManager::get()` now returns a pure int in case the (trimmed) value can be converted
 - New `PolymorphicRelation::getObjectModel()`: should replace `get_class()`
 - Removed deprecated javascript method `setModalLoader()`

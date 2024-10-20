@@ -3,9 +3,13 @@ humhub.module('content.highlight', function (module, require, $) {
     const event = require('event');
     const highlightWords = require('ui.additions').highlightWords;
 
-    const layout = $('.layout-content-container');
+    const layout = $('.layout-content-container').length
+        ? $('.layout-content-container')
+        : $('#layout-content');
 
     const init = function () {
+        $(document).ready(() => highlight());
+
         event.on('humhub:modules:content:highlight:afterInit', () => highlight());
         layout.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]')
             .on('afterRender', (obj) => highlight(obj.target));

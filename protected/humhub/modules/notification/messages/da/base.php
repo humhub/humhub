@@ -3,7 +3,6 @@
 return [
     'Filter' => 'Filter',
     'Mark all as seen' => 'Markér alle som set',
-    'New' => 'Ny',
     'Notifications' => 'Notifikationer',
     'There are no notifications yet.' => 'Der er ingen notifikationer endnu.',
     'Type' => 'Type',
@@ -15,6 +14,7 @@ return [
     'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => '',
     'Module Filter' => '',
     'No notifications found!' => '',
+    'Notification Settings' => '',
     'Notifications are sent directly to your users to inform them about new activities in your network.' => '',
     'Notifications are sent instantly to you to inform you about new activities in your network.' => '',
     'Open the notification dropdown menu' => '',
