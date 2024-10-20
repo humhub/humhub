@@ -57,6 +57,7 @@ HumHub Changelog
 - Enh #7125: Prerequisites - Check test for pending migrations
 - Fix #173 : Remove UISetting "Include Captcha in Registr
 - Fix #7066: Allow using `Space::canJoin($userId)` in command line
+- Enh #7037: Space creation notification to users allowed to manage spaces
 
 1.16.3 (Unreleased)
 --------------------------
@@ -118,6 +119,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
+- Enh #7079: Improve `MenuEntry::isActiveState` to support query params check
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------
