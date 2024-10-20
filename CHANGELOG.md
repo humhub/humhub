@@ -57,6 +57,7 @@ HumHub Changelog
 - Enh #7125: Prerequisites - Check test for pending migrations
 - Fix #173 : Remove UISetting "Include Captcha in Registr
 - Fix #7066: Allow using `Space::canJoin($userId)` in command line
+- Enh #7037: Space creation notification to users allowed to manage spaces
 
 1.16.3 (Unreleased)
 --------------------------
