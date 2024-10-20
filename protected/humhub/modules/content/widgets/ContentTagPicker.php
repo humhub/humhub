@@ -8,11 +8,10 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Html;
-use Yii;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\ui\form\widgets\BasePicker;
 use humhub\modules\content\models\ContentTag;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -91,6 +90,7 @@ class ContentTagPicker extends BasePicker
             $result[] = [
                 'id' => $tag->id,
                 'text' => $tag->name,
+                'image' => $tag->color,
             ];
         }
 

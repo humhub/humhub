@@ -10,7 +10,7 @@ namespace humhub\modules\content\search;
 use humhub\interfaces\MetaSearchResultInterface;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\content\widgets\richtext\converter\RichTextToHtmlConverter;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use Yii;
@@ -46,7 +46,37 @@ class SearchRecord implements MetaSearchResultInterface
      */
     public function getTitle(): string
     {
-        return RichText::output($this->content->getContentDescription(), ['record' => $this->content->getModel()]);
+        $title = RichTextToHtmlConverter::process($this->content->getContentDescription());
+        $title = preg_replace('/[\r\n\s]+/', ' ', strip_tags($title));
+        return $this->cutStringToKeyword($title);
+    }
+
+    /**
+     * Cut string to a word before first word contained the searched keyword
+     *
+     * @param string $string
+     * @param int $maxWordNumberBeforeKeyword
+     * @return string
+     */
+    private function cutStringToKeyword(string $string, int $maxWordNumberBeforeKeyword = 1): string
+    {
+        $index = stripos($string, $this->keyword);
+
+        if ($index === false || $index < 40) {
+            // Don't cut if the keyword is almost at the beginning
+            return $string;
+        }
+
+        $wordNumber = 0;
+        do {
+            $index--;
+            $subString = substr($string, $index);
+            if ($subString[0] === ' ') {
+                $wordNumber++;
+            }
+        } while ($index > 0 && $wordNumber <= $maxWordNumberBeforeKeyword);
+
+        return ($index > 0 ? '...' : '') . trim($subString);
     }
 
     /**

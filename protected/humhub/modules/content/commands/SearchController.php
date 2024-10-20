@@ -27,7 +27,7 @@ class SearchController extends Controller
     public function actionOptimize()
     {
         print "Optimizing search index: ";
-        $driver = $this->getSearchDriver();
+        $driver = ContentSearchService::getDriver();
         $driver->optimize();
         print "OK!\n\n";
     }
@@ -37,7 +37,7 @@ class SearchController extends Controller
      */
     public function actionRebuild()
     {
-        $driver = $this->getSearchDriver();
+        $driver = ContentSearchService::getDriver();
         $driver->purge();
         foreach (Content::find()->each() as $content) {
             (new ContentSearchService($content))->update(false);
@@ -67,7 +67,7 @@ class SearchController extends Controller
      */
     public function actionFind($keyword)
     {
-        $driver = $this->getSearchDriver();
+        $driver = ContentSearchService::getDriver();
 
         $user = User::findOne(['id' => 1]);
 
@@ -81,13 +81,5 @@ class SearchController extends Controller
         foreach ($searchResultSet->results as $content) {
             print "\t - " . $content->object_model . ' ' . $content->object_id . "\n";
         }
-    }
-
-    private function getSearchDriver(): AbstractDriver
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('content');
-
-        return $module->getSearchDriver();
     }
 }

@@ -342,25 +342,23 @@ class Space extends ContentContainerActiveRecord
     /**
      * Indicates that this user can join this workspace
      *
-     * @param $userId User Id of User
+     * @param $userId int|string|null User Id of User
      */
-    public function canJoin($userId = '')
+    public function canJoin($userId = null): bool
     {
-        if (Yii::$app->user->isGuest) {
+        // Take current userId if none is given
+        $userId ??= Yii::$app->user->id;
+
+        if (!$userId) {
             return false;
         }
 
-        // Take current userId if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
-        // Checks if User is already member
+        // Checks if User is already a member
         if ($this->isMember($userId)) {
             return false;
         }
 
-        if ($this->join_policy == self::JOIN_POLICY_NONE) {
+        if ($this->join_policy === self::JOIN_POLICY_NONE) {
             return false;
         }
 

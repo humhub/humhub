@@ -35,7 +35,7 @@ class ModuleCleanupsJob extends LongRunningActiveJob
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('marketplace');
-        $moduleDownloadFolder = Yii::getAlias($module->modulesDownloadPath);
+        $moduleDownloadFolder = realpath(Yii::getAlias($module->modulesDownloadPath));
 
         if (!is_dir($moduleDownloadFolder)) {
             return;
@@ -54,7 +54,7 @@ class ModuleCleanupsJob extends LongRunningActiveJob
      */
     private function cleanupModuleBackups()
     {
-        $moduleBackupFolder = Yii::getAlias('@runtime/module_backups');
+        $moduleBackupFolder = realpath(Yii::getAlias('@runtime/module_backups'));
 
         if (!is_dir($moduleBackupFolder)) {
             return;

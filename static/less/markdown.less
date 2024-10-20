@@ -123,10 +123,13 @@
     ul, ol {
         margin-top: 0;
         padding-left: 30px;
-        display: inline-block;
+        display: table;
         li p {
             // otherwise single list items p hides the marker
             overflow: visible !important;
+        }
+        li > p:first-child {
+            display: inline;
         }
     }
 

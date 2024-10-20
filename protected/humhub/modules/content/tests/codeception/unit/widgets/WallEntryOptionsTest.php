@@ -121,16 +121,17 @@ class WallEntryOptionsTest extends HumHubDbTestCase
         $this->assertWallEntryNotContains('wall-entry-links', (new WallStreamEntryOptions())->disableWallEntryLinks());
     }
 
-    public function testSearchStreamDoesOnlyIncludePermalink()
+    public function testSearchStreamDoesNotIncludePin()
     {
-        $this->assertWallEntryControlsContains('Permalink', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Delete', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Edit', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Move to archive', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Move', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Pin to top', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Turn on notifications', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
-        $this->assertWallEntryControlsNotContains('Change to "Public"', (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH));
+        $options = (new WallStreamEntryOptions())->viewContext(WallStreamEntryOptions::VIEW_CONTEXT_SEARCH);
+        $this->assertWallEntryControlsNotContains('Pin to top', $options);
+        $this->assertWallEntryControlsContains('Permalink', $options);
+        $this->assertWallEntryControlsContains('Delete', $options);
+        $this->assertWallEntryControlsContains('Edit', $options);
+        $this->assertWallEntryControlsContains('Move to archive', $options);
+        $this->assertWallEntryControlsContains('Move', $options);
+        $this->assertWallEntryControlsContains('Turn on notifications', $options);
+        $this->assertWallEntryControlsContains('Change to "Public"', $options);
     }
 
     private function testDisableControlsItem($searchStr, $renderOptions)

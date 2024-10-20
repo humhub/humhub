@@ -7,9 +7,9 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\components\Module;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentContainerModule;
 
 /**
  * ModuleCard shows a card with module data of Content Container
@@ -19,12 +19,8 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
  */
 class ContainerModule extends Widget
 {
-    public Module $module;
-
-    /**
-     * @var ContentContainerActiveRecord
-     */
-    public $contentContainer;
+    public ContentContainerModule $module;
+    public ContentContainerActiveRecord $contentContainer;
 
     /**
      * @inheritdoc

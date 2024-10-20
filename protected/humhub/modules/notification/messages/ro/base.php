@@ -8,7 +8,6 @@ return [
     'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'În această vizualizare, poți defini comportamentul implicit pentru utilizatorii tăi. Aceste setări pot fi suprascrise de către utilizatori de pe pagina setărilor contului.',
     'Mark all as seen' => 'Marchează toate ca citite',
     'Module Filter' => 'Filtru Modul',
-    'New' => 'Noi',
     'No notifications found!' => 'Nu s-au găsit notificări!',
     'Notifications' => 'Notificări',
     'Notifications are sent directly to your users to inform them about new activities in your network.' => 'Notificările sunt trimise direct către utilizatorii tăi pentru a-i informa despre noile activități din rețeaua ta.',
@@ -27,5 +26,6 @@ return [
     '{displayName} and {number} others' => '{displayName} și {number} alții',
     'Do you want to reset the settings concerning email summaries for all users?' => '',
     'Do you want to reset the settings concerning notifications for all users?' => '',
+    'Notification Settings' => '',
     'Reset for all users' => '',
 ];
