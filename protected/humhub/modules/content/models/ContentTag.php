@@ -65,7 +65,7 @@ use yii\db\IntegrityException;
  */
 class ContentTag extends ActiveRecord
 {
-    public const string EVENT_GLOBAL_CONVERSION_SUGGESTION = 'contentTagGlobalConversionSuggestion';
+    public const EVENT_GLOBAL_CONVERSION_SUGGESTION = 'contentTagGlobalConversionSuggestion';
 
     /**
      * @var string id of the module related to this content tag concept
