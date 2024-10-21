@@ -90,9 +90,6 @@ class DynamicConfig extends BaseObject
         // Add Application Name to Configuration
         $config['name'] = Yii::$app->settings->get('name');
 
-        // Add Default language
-        $config['language'] = Yii::$app->settings->get('defaultLanguage', Yii::$app->language);
-
         // Add Caching
         $cacheClass = Yii::$app->settings->get('cache.class');
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {

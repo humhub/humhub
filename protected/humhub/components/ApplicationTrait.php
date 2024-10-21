@@ -49,6 +49,11 @@ trait ApplicationTrait
 
         parent::__construct($config);
 
+        $this->initLocales();
+    }
+
+    private function initLocales(): void
+    {
         if ($this->isDatabaseInstalled(true)) {
             if ($this->settings instanceof SettingsManager) {
                 $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
@@ -157,7 +162,7 @@ trait ApplicationTrait
                 'components' => [],
             ],
             $applicationConfig,
-            SelfTest::getLegancyConfigSettings(),
+            SelfTest::getLegacyConfigSettings(),
         );
     }
 }

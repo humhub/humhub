@@ -18,6 +18,7 @@ use humhub\libs\UUID;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\installer\forms\ConfigBasicForm;
+use humhub\modules\installer\forms\LocalisationForm;
 use humhub\modules\installer\forms\SampleDataForm;
 use humhub\modules\installer\forms\SecurityForm;
 use humhub\modules\installer\forms\UseCaseForm;
@@ -128,6 +129,20 @@ class ConfigController extends Controller
         }
 
         return $this->render('basic', ['model' => $form]);
+    }
+
+    /**
+     * Localisation
+     */
+    public function actionLocalisation()
+    {
+        $form = new LocalisationForm();
+
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
+            return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
+        }
+
+        return $this->render('localisation', ['model' => $form]);
     }
 
     /**

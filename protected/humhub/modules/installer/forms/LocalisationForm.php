@@ -63,8 +63,6 @@ class LocalisationForm extends Model
             return false;
         }
 
-        Yii::$app->db;
-
         Yii::$app->settings->set('defaultLanguage', $this->language);
         Yii::$app->settings->set('serverTimeZone', $this->timeZone);
 
