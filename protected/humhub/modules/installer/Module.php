@@ -141,6 +141,16 @@ class Module extends \humhub\components\Module
             },
         ];
 
+        /**
+         * Step: Localisation
+         */
+        $this->configSteps['localisation'] = [
+            'sort' => 130,
+            'url' => Url::to(['/installer/config/localisation']),
+            'isCurrent' => function () {
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'localisation');
+            },
+        ];
 
         /**
          * Step: Use Case

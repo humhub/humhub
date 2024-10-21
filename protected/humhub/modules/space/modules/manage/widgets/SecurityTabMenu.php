@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
@@ -34,14 +35,14 @@ class SecurityTabMenu extends TabMenu
             'label' => Yii::t('AdminModule.base', 'General'),
             'url' => $this->space->createUrl('/space/manage/security'),
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState(null, 'security', 'index'),
+            'isActive' => ControllerHelper::isActivePath(null, 'security', 'index'),
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Permissions'),
             'url' => $this->space->createUrl('/space/manage/security/permissions'),
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState(null, 'security', 'permissions'),
+            'isActive' => ControllerHelper::isActivePath(null, 'security', 'permissions'),
         ]));
 
         parent::init();
