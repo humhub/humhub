@@ -1,16 +1,16 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\grid\UserActionColumn;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /**
  * @var $searchModel UserSearch
@@ -21,7 +21,7 @@ use yii\widgets\ActiveForm;
 
 <div class="panel-body">
 
-    <div class="pull-right">
+    <div class="float-end">
         <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('user-plus')->sm()->link(['/admin/user/add']) ?>
         <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
     </div>
@@ -38,9 +38,7 @@ use yii\widgets\ActiveForm;
         <div class="col-md-8">
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                </span>
+                <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
         <div class="col-md-4 usersearch-statuses">
@@ -74,6 +72,7 @@ use yii\widgets\ActiveForm;
     </div>
     <?php if ($showPendingRegistrations): ?>
         <br/>
-        <?= Button::defaultType(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
+        <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
+        <div class="clearfix"></div>
     <?php endif; ?>
 </div>

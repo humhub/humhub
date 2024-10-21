@@ -3,9 +3,8 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\models\Content;
 use Yii;
 use yii\helpers\Url;
 

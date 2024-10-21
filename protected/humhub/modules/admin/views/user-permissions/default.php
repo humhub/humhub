@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\content\components\ContentContainerDefaultPermissionManager;
 use humhub\modules\user\Module;
@@ -71,8 +71,8 @@ $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePerm
 
     <ul id="tabs" class="nav nav-tabs tab-sub-menu permission-group-tabs">
         <?php foreach ($groups as $currentGroupId => $groupLabel) : ?>
-            <li class="<?= ($groupId === $currentGroupId) ? 'active' : '' ?>">
-                <a href="<?= Url::toRoute(['/admin/user-permissions', 'groupId' => $currentGroupId]) ?>"><?= $groupLabel ?></a>
+            <li class="nav-item">
+                <a class="nav-link<?= ($groupId === $currentGroupId) ? ' active' : '' ?>" href="<?= Url::toRoute(['/admin/user-permissions', 'groupId' => $currentGroupId]) ?>"><?= $groupLabel ?></a>
             </li>
         <?php endforeach; ?>
     </ul>

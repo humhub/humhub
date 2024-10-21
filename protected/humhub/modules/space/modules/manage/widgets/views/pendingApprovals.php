@@ -1,10 +1,10 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\widgets\Image;
-use yii\helpers\Html;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $applicants Membership[] */
 /* @var $space Space */

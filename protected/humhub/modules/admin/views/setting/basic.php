@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var BasicSettingsForm $model */
 ?>

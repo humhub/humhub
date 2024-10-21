@@ -1,13 +1,13 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\form\ActiveForm;
 use yii\captcha\Captcha;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /* @var $canRegister bool */
 /* @var $model Login */
@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
 <div id="user-auth-login-modal" class="modal-dialog modal-dialog-small animated fadeIn">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title"
                 id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Join</strong> the network'); ?></h4>
         </div>
@@ -32,13 +32,17 @@ use yii\widgets\ActiveForm;
             <?php if ($canRegister && $showRegistrationForm) : ?>
                 <div class="text-center">
                     <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
-                        <li class="<?= (!isset($_POST['Invite'])) ? "active" : ""; ?> tab-login"><a
+                        <li class="nav-item tab-login">
+                            <a
                                 href="#login"
-                                data-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login'); ?></a>
+                                class="nav-link<?= !isset($_POST['Invite']) ? ' active' : '' ?>"
+                                data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'Login') ?></a>
                         </li>
-                        <li class="<?= (isset($_POST['Invite'])) ? "active" : ""; ?> tab-register"><a
+                        <li class="nav-item tab-register">
+                            <a
                                 href="#register"
-                                data-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
+                                class="nav-link<?= (isset($_POST['Invite'])) ? ' active' : '' ?>"
+                                data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
                         </li>
                     </ul>
                 </div>
@@ -47,7 +51,7 @@ use yii\widgets\ActiveForm;
 
 
             <div class="tab-content">
-                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : ""; ?>" id="login">
+                <div class="tab-pane <?= (!isset($_POST['Invite'])) ? "active" : "" ?>" id="login">
 
                     <?php if (Yii::$app->session->hasFlash('error')): ?>
                         <div class="alert alert-danger" role="alert">
@@ -81,7 +85,7 @@ use yii\widgets\ActiveForm;
 
                             </div>
                             <?php if ($passwordRecoveryRoute) : ?>
-                                <div class="col-md-8 text-right">
+                                <div class="col-md-8 text-end">
                                     <small>
                                         <?= Html::a(
                                             Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),

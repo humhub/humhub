@@ -96,7 +96,7 @@ return [
             'app',
         ],
     ],
-    'yii\\bootstrap\\BootstrapAsset' => [
+    'yii\\bootstrap5\\BootstrapAsset' => [
         'sourcePath' => null,
         'js' => [],
         'css' => [],
@@ -104,13 +104,13 @@ return [
             'app',
         ],
     ],
-    'yii\\bootstrap\\BootstrapPluginAsset' => [
+    'yii\\bootstrap5\\BootstrapPluginAsset' => [
         'sourcePath' => null,
         'js' => [],
         'css' => [],
         'depends' => [
             'yii\\web\\JqueryAsset',
-            'yii\\bootstrap\\BootstrapAsset',
+            'yii\\bootstrap5\\BootstrapAsset',
             'humhub\\assets\\JuiBootstrapBridgeAsset',
             'app',
         ],
@@ -246,8 +246,8 @@ return [
             'yii\\web\\YiiAsset',
             'yii\\widgets\\ActiveFormAsset',
             'yii\\validators\\ValidationAsset',
-            'yii\\bootstrap\\BootstrapAsset',
-            'yii\\bootstrap\\BootstrapPluginAsset',
+            'yii\\bootstrap5\\BootstrapAsset',
+            'yii\\bootstrap5\\BootstrapPluginAsset',
             'humhub\\assets\\BluebirdAsset',
             'humhub\\assets\\FontAwesomeAsset',
             'humhub\\assets\\AnimateCssAsset',

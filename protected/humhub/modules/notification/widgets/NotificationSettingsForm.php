@@ -4,9 +4,9 @@ namespace humhub\modules\notification\widgets;
 
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\space\models\Space;
+use humhub\widgets\form\ActiveForm;
 use Yii;
 use yii\base\Widget;
-use yii\widgets\ActiveForm;
 
 /**
  * Description of NotificationSettingForm

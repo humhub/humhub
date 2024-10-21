@@ -74,7 +74,7 @@ class RequestMembershipCest
 
         $I->waitForText('Pending Approvals', null, '.tab-menu .active');
 
-        $I->click('.dropdown-navigation', '.controls-header');
+        $I->click('.dropdown', '.controls-header');
         $I->waitForText('Members', null, '.controls-header');
         $I->click('Members', '.controls-header');
 
@@ -126,7 +126,7 @@ class RequestMembershipCest
         $I->amOnSpace1();
         $I->dontSeeElement('.panel-danger');
 
-        $I->click('.dropdown-navigation', '.controls-header');
+        $I->click('.dropdown', '.controls-header');
         $I->waitForText('Members', null, '.controls-header');
         $I->click('Members', '.controls-header');
 

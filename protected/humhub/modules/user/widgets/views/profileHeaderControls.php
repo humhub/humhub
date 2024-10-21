@@ -24,7 +24,7 @@ $controls[] = [HeaderControlsMenu::class, ['user' => $container]];
             <div class="col-md-12">
                 <?= ProfileHeaderCounterSet::widget(['user' => $container]); ?>
 
-                <div class="controls controls-header pull-right">
+                <div class="controls controls-header float-end">
                     <?= ProfileHeaderControls::widget([
                         'user' => $container,
                         'widgets' => $controls

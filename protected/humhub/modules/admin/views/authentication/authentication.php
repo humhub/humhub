@@ -1,12 +1,12 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\AuthenticationSettingsForm;
 use humhub\modules\content\widgets\richtext\RichTextField;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\widgets\DataSaved;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var AuthenticationSettingsForm $model */
 

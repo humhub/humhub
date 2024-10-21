@@ -1,0 +1,624 @@
+/**
+Compatibility with Bootstrap 3
+
+$deprecated since 1.18
+
+TODO: Remove this file when Bootstrap 3 is no longer supported
+ */
+
+
+//
+// Labels
+// --------------------------------------------------
+
+.label {
+    text-transform: uppercase;
+}
+
+.label {
+    text-transform: uppercase;
+    display: inline-block;
+    padding: 3px 5px 4px;
+    font-weight: 600;
+    font-size: 10px;
+    color: white;
+    vertical-align: baseline;
+    white-space: nowrap;
+    text-shadow: none;
+}
+
+.label-default {
+    background: $background-color-page;
+    color: $text-color-secondary !important;
+}
+
+a.label-default:hover {
+    background: darken($background-color-page, 5%) !important;
+}
+
+.label-info {
+    background-color: $info;
+}
+
+a.label-info:hover {
+    background: darken($info, 5%) !important;
+}
+
+.label-danger {
+    background-color: $danger;
+}
+
+a.label-danger:hover {
+    background: darken($danger, 5%) !important;
+}
+
+.label-success {
+    background-color: $success;
+}
+
+a.label-success:hover {
+    background: darken($success, 5%) !important;
+}
+
+.label-warning {
+    background-color: $warning;
+}
+
+a.label-warning:hover {
+    background: darken($warning, 5%) !important;
+}
+
+.label-light {
+    background-color: transparent;
+    color: $text-color-secondary;
+    border: 1px solid lighten($text-color-secondary, 25%);
+}
+
+.topic-label-list, .wall-entry-topics {
+    margin-bottom: 10px;
+
+    a {
+        margin-right: 4px;
+    }
+
+    .label {
+        padding: 5px;
+        border-radius: 4px;
+    }
+}
+
+
+//
+// Markdown
+// --------------------------------------------------
+
+.markdown-render, [data-ui-markdown], [data-ui-richtext] {
+    img.pull-right {
+        margin: 5px 0 0 10px;
+    }
+
+    img.pull-left {
+        margin: 5px 10px 0 0;
+    }
+}
+
+
+//
+// Media
+// --------------------------------------------------
+
+.media-list {
+    li {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        border-left: 3px solid white;
+
+        &:hover,
+        &.selected {
+            background-color: $background-color-secondary;
+            border-left: 3px solid $info;
+        }
+
+        &.new {
+            border-left: 3px solid $info;
+            background-color: $background-color-highlight;
+
+            &:hover {
+                background-color: $background-color-highlight-soft;
+            }
+        }
+
+        a {
+            color: $text-color-main;
+        }
+    }
+}
+
+.media-list li.placeholder {
+    font-size: 14px !important;
+    border-bottom: none;
+}
+
+.media-list li.placeholder:hover {
+    background: none !important;
+    border-left: 3px solid white;
+}
+
+.media-left,
+.media > .pull-left {
+    padding-right: 0;
+    margin-right: 10px;
+}
+
+.media:after {
+    content: '';
+    clear: both;
+    display: block;
+}
+
+.media {
+    .time {
+        font-size: 11px;
+        color: $text-color-soft;
+    }
+
+    .img-space {
+        position: absolute;
+        top: 35px;
+        left: 35px;
+    }
+
+    .media-body {
+        overflow: hidden !important;
+        font-size: 13px;
+        white-space: normal;
+        @include text-break();
+
+        h4, h5 {
+            font-size: 14px;
+            font-weight: 500;
+            color: $text-color-highlight;
+
+            a {
+                color: $text-color-highlight;
+            }
+
+            small,
+            small a {
+                font-size: 11px;
+                color: $text-color-soft;
+            }
+
+            .content {
+                margin-right: 35px;
+            }
+        }
+
+        .content a {
+            word-break: break-all;
+        }
+
+        strong {
+            color: $text-color-highlight;
+        }
+
+        h5 {
+            color: $text-color-soft2;
+            font-weight: 300;
+            margin-top: 5px;
+            margin-bottom: 5px;
+            min-height: 15px;
+        }
+
+        .module-controls {
+            font-size: 85%;
+
+            a {
+                color: var(--bs-link-color);
+            }
+        }
+    }
+
+    .content {
+        a {
+            color: var(--bs-link-color);
+        }
+    }
+
+    .content .files a {
+        color: $text-color-highlight;
+    }
+
+    .align-center {
+        align-content: center;
+    }
+}
+
+
+//
+// Activities
+// --------------------------------------------------
+
+.activities {
+    max-height: 400px;
+    overflow: auto;
+
+    li.activity-entry {
+        padding: 0;
+    }
+
+    li .media {
+        position: relative;
+        padding: 10px;
+    }
+
+    li .media .img-space {
+        position: absolute;
+        top: 24px;
+        left: 24px;
+    }
+
+    li .media .media-body {
+        max-width: 295px;
+    }
+}
+
+
+//
+// Mobile
+// --------------------------------------------------
+
+@include media-breakpoint-down(md) {
+    #layout-content {
+        .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12 {
+            padding-right: 2px !important;
+            padding-left: 2px !important;
+        }
+    }
+}
+
+
+//
+// Panel
+//
+.panel {
+    @include text-break();
+    border: none;
+    background-color: $background-color-main;
+    box-shadow: 0 0 3px #dadada;
+    border-radius: 4px;
+    position: relative;
+    margin-bottom: 15px;
+
+    h1 {
+        font-size: 16px;
+        font-weight: 300;
+        margin-top: 0;
+        color: $text-color-highlight;
+    }
+
+    .panel-heading {
+        @include heading;
+        border-radius: 4px;
+
+        .heading-link {
+            color: #6fdbe8 !important;
+            font-size: 0.8em;
+        }
+    }
+
+    .panel-body {
+        padding: 10px;
+        font-size: 13px;
+
+        p {
+            color: $text-color-main;
+
+            a {
+                color: var(--bs-link-color);
+            }
+        }
+
+        .usersearch-statuses,
+        .spacesearch-visibilities {
+            padding-top: 5px;
+            padding-bottom: 5px;
+            @include media-breakpoint-up(lg) {
+                padding-top: 0;
+                padding-bottom: 0;
+                padding-left: 0;
+            }
+        }
+    }
+
+    .statistics {
+        .entry {
+            margin-left: 20px;
+            font-size: 12px;
+            color: $text-color-highlight;
+
+            .count {
+                color: var(--bs-link-color);
+                font-weight: 600;
+                font-size: 20px;
+                line-height: 0.8em;
+            }
+        }
+    }
+}
+
+.panel-danger {
+    border: 2px solid $danger;
+
+    .panel-heading {
+        color: $danger;
+    }
+}
+
+.panel-success {
+    border: 2px solid $success;
+
+    .panel-heading {
+        color: $success;
+    }
+}
+
+.panel-warning {
+    border: 2px solid $warning;
+
+    .panel-heading {
+        color: $warning;
+    }
+}
+
+.panel-info {
+    border: 2px solid $info;
+
+    .panel-heading {
+        color: $info;
+    }
+}
+
+.panel-primary {
+    border: 2px solid $primary;
+
+    .panel-heading {
+        color: $primary;
+    }
+}
+
+.panel.profile {
+    position: relative;
+
+    .controls {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+    }
+}
+
+.panel.groups,
+.panel.spaces {
+    .panel-body a img {
+        margin-bottom: 5px;
+    }
+}
+
+.panel-profile {
+    .panel-profile-header {
+        position: relative;
+        border: 3px solid #fff;
+        border-top-right-radius: 3px;
+        border-top-left-radius: 3px;
+
+        .img-profile-header-background {
+            border-radius: 3px;
+            min-height: 110px;
+        }
+
+        .img-profile-data {
+            position: absolute;
+            height: 100px;
+            width: 100%;
+            bottom: 0;
+            left: 0;
+            padding-left: 180px;
+            padding-top: 30px;
+            border-bottom-right-radius: 3px;
+            border-bottom-left-radius: 3px;
+            color: #fff;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
+
+            h1 {
+                margin-bottom: 7px;
+                max-width: 600px;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+
+                a {
+                    font-size: 30px;
+                    font-weight: 100;
+                    color: #fff;
+                }
+            }
+
+            h2 {
+                font-size: 16px;
+                font-weight: 400;
+                margin-top: 0;
+            }
+
+            h1.space {
+                a {
+                    font-weight: 700;
+                }
+            }
+
+            h2.space {
+                font-size: 13px;
+                font-weight: 300;
+                max-width: 600px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .profile-user-photo-container {
+            position: absolute;
+            bottom: -60px;
+            left: 15px;
+
+            .profile-user-photo {
+                border: 3px solid #fff;
+                border-radius: 5px;
+
+                // Force position of the online status because of the 3px border on the photo
+                + .user-online-status {
+                    right: -5px;
+                    bottom: -5px;
+                }
+            }
+        }
+    }
+
+    .panel-profile-controls {
+        padding-left: 160px;
+    }
+}
+
+.panel.pulse,
+.panel.fadeIn {
+    animation-duration: 200ms;
+}
+
+@include media-breakpoint-down(md) {
+    .panel-profile-controls {
+        padding-left: 0 !important;
+        padding-top: 50px;
+    }
+
+    .panel-profile .panel-profile-header .img-profile-data h1 {
+        font-size: 20px !important;
+        margin-bottom: 2px;
+    }
+}
+
+.panel-body > .tab-menu {
+    margin-left: -10px;
+    margin-right: -10px
+}
+
+//
+// Well
+// --------------------------------------------------
+.well-small {
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.well {
+    border: none;
+    box-shadow: none;
+    background-color: $background-color-secondary;
+    margin-bottom: 1px;
+
+    hr {
+        margin: 10px 0;
+        border-top: 1px solid $background-color-secondary;
+    }
+
+    table > thead {
+        font-size: 11px;
+    }
+}
+
+
+//
+// Modals
+// --------------------------------------------------
+
+.modal.in {
+    padding-right: 0 !important;
+}
+
+.modal-dialog-extra-small {
+    width: 400px;
+}
+
+.modal-dialog-small {
+    width: 500px;
+}
+
+.modal-dialog-normal {
+    width: 600px;
+}
+
+.modal-dialog-medium {
+    width: 768px;
+}
+
+.modal-dialog-large {
+    width: 900px;
+}
+
+
+//
+// Loader
+// --------------------------------------------------
+
+// SpinKit (Loader)
+.sk-adjust-huener-three-bounce.sk-adjust-huener {
+    margin: 0 auto;
+    width: 70px;
+    text-align: center;
+}
+
+// Ajax loader
+.loader {
+    padding: 30px 0;
+
+    .sk-adjust-huener-three-bounce div, .sk-adjust-huener-three-bounce span {
+        width: 12px;
+        height: 12px;
+        background-color: $info;
+        border-radius: 100%;
+        display: inline-block;
+        animation: sk-threeBounceDelay 1.4s infinite ease-in-out;
+        /* Prevent first frame from flickering when animation starts */
+        animation-fill-mode: both;
+    }
+
+    .sk-adjust-huener-three-bounce .sk-bounce1 {
+        animation-delay: -0.32s;
+    }
+
+    .sk-adjust-huener-three-bounce .sk-bounce2 {
+        animation-delay: -0.16s;
+    }
+
+    @keyframes sk-threeBounceDelay {
+        0%,
+        80%,
+        100% {
+            transform: scale(0);
+        }
+        40% {
+            transform: scale(1);
+        }
+    }
+}
+
+.loader-modal {
+    padding: 8px 0;
+}
+
+.loader-postform {
+    padding: 9px 0;
+
+    .sk-adjust-huener-three-bounce.sk-adjust-huener {
+        text-align: left;
+        margin: 0;
+    }
+}
