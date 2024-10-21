@@ -964,12 +964,7 @@ class SelfTest
             'components' => [
                 'formatterApp' => new UnsetArrayValue(),
                 'search' => new UnsetArrayValue(),
-                'formatter' => [
-                    'defaultTimeZone' => new UnsetArrayValue(),
-                ],
             ],
-            'timeZone' => new UnsetArrayValue(),
-            'language' => new UnsetArrayValue(),
         ];
     }
 

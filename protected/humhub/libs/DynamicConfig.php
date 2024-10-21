@@ -127,6 +127,14 @@ class DynamicConfig extends BaseObject
         unset($config['components']['db']['charset']);
         unset($config['components']['formatterApp']);
 
+        // Remove old localisation options
+        unset($config['timeZone']);
+        unset($config['language']);
+        unset($config['components']['formatter']['defaultTimeZone']);
+        if (empty($config['components']['formatter'])) {
+            unset($config['components']['formatter']);
+        }
+
         $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 
