@@ -262,7 +262,9 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
              * Replacement for old super_admin flag version
              */
             return $this->isSystemAdmin();
-        } elseif ($name == 'profile') {
+        }
+
+        if ($name == 'profile') {
             /**
              * Ensure there is always a related Profile Model also when it's
              * not really exists yet.
@@ -274,6 +276,11 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
                 $this->populateRelation('profile', $profile);
             }
             return $profile;
+        }
+
+        if ($name === 'time_zone' && empty(parent::__get($name))) {
+            // Fall back to default time zone
+            return Yii::$app->settings->get('defaultTimeZone', Yii::$app->timeZone);
         }
 
         return parent::__get($name);

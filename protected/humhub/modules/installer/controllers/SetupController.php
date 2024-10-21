@@ -174,7 +174,6 @@ class SetupController extends Controller
         return $this->redirect(['cron']);
     }
 
-
     /**
      * Crontab
      */
