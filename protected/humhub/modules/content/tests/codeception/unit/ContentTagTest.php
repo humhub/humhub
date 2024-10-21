@@ -44,11 +44,9 @@ class ContentTagTest extends HumHubDbTestCase
         $space2 = Space::findOne(2);
         $this->assertTrue($this->createTestTag('testTag1', $space2));
 
-        // Global tag should be able to use the same name
-        $tag = new TestTagOtherModule(null, 'testTag1');
-        $saved = $tag->save();
-        var_dump($tag->getFirstErrors());
-        $this->assertTrue($saved);
+        // Global tag should not be able to use the same name
+        $tag = new TestTagOtherModule(null, 'testTag');
+        $this->assertFalse($tag->save());
     }
 
     public function testFindByContainer()
