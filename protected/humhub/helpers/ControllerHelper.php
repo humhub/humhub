@@ -22,6 +22,10 @@ class ControllerHelper
      */
     public static function isActivePath(?string $moduleId = null, $controllerIds = [], $actionIds = [], array $queryParams = []): bool
     {
+        if (!isset(Yii::$app->controller)) {
+            return false;
+        }
+
         if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
             return false;
         }
