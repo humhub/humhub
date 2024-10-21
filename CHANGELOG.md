@@ -58,6 +58,7 @@ HumHub Changelog
 - Fix #173 : Remove UISetting "Include Captcha in Registr
 - Fix #7066: Allow using `Space::canJoin($userId)` in command line
 - Enh #7037: Space creation notification to users allowed to manage spaces
+- Enh #7223: Add ability to convert Topic to global
 
 1.16.3 (Unreleased)
 --------------------------
