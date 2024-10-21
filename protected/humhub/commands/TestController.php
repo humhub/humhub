@@ -9,6 +9,7 @@
 namespace humhub\commands;
 
 use Yii;
+use yii\helpers\BaseConsole;
 use yii\helpers\Console;
 
 /**
@@ -25,13 +26,30 @@ class TestController extends \yii\console\Controller
      */
     public function actionEmail($address)
     {
-        $message = "Console test message<br /><br />";
+        $message = 'Console test message<br /><br />';
 
         $mail = Yii::$app->mailer->compose(['html' => '@humhub/views/mail/TextOnly'], ['message' => $message]);
         $mail->setTo($address);
         $mail->setSubject('Test message');
         $mail->send();
 
-        Console::output("Message successfully sent!");
+        Console::output('Message successfully sent!');
+    }
+
+
+    /**
+     * Test database connection
+     */
+    public function actionDbConnection()
+    {
+        $this->stdout(PHP_EOL . 'DB Connection: ');
+        if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
+            $this->stdout('Not Configured!', BaseConsole::FG_RED, BaseConsole::BOLD);
+        } elseif (Yii::$app->isDatabaseInstalled(true)) {
+            $this->stdout('OK!', BaseConsole::FG_GREEN, BaseConsole::BOLD);
+        } else {
+            $this->stdout('Failed!', BaseConsole::FG_RED, BaseConsole::BOLD);
+        }
+        $this->stdout(PHP_EOL . PHP_EOL);
     }
 }
