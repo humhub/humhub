@@ -26,10 +26,6 @@ humhub.module('admin.topic', function (module, require, $) {
 
     var init = function () {
         event.on('humhub:ready', function (evt) {
-            $('#global-topics-settings-form').find('input[type="checkbox"]').on('change', function() {
-                $('#global-topics-settings-form').trigger('submit');
-            });
-
             $('#topic-name').on('input', function() {
                 var form = $(this).closest('form');
                 form.find('.field-topic-name').removeClass('has-error').find('.help-block').remove();

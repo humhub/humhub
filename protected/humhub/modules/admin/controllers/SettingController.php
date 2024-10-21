@@ -342,13 +342,6 @@ class SettingController extends Controller
             }
         }
 
-        $globalTopicSettingModel = new GlobalTopicSettingForm();
-
-        if ($globalTopicSettingModel->load(Yii::$app->request->post()) && $globalTopicSettingModel->validate()) {
-            $globalTopicSettingModel->save();
-            $this->view->saved();
-        }
-
         return $this->render('topics', [
             'contentContainer' => null,
             'dataProvider' => new ActiveDataProvider([
@@ -362,7 +355,6 @@ class SettingController extends Controller
             ]),
             'addModel' => $model,
             'suggestGlobalConversion' => $suggestGlobalConversion,
-            'globalTopicSettingModel' => $globalTopicSettingModel,
         ]);
     }
 

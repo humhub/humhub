@@ -16,7 +16,6 @@ use yii\widgets\Pjax;
  * @var View $this
  * @var ActiveDataProvider $dataProvider
  * @var Topic $addModel
- * @var GlobalTopicSettingForm $globalTopicSettingModel
  * @var bool $suggestGlobalConversion
  */
 
@@ -56,13 +55,6 @@ AdminTopicAsset::register($this);
         )
     : '') ?>
 <?= Html::hiddenInput('convert-to-global', 0) ?>
-<?php ActiveForm::end(); ?>
-<?php $form = ActiveForm::begin([
-    'id' => 'global-topics-settings-form',
-    'options' => ['data-pjax' => true]
-]); ?>
-<?= $form->field($globalTopicSettingModel, 'restrictAdditionalTopics')
-    ->checkbox() ?>
 <?php ActiveForm::end(); ?>
 
 <?= GridView::widget([
