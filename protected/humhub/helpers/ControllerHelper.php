@@ -17,9 +17,10 @@ class ControllerHelper
      * @param string|null $moduleId
      * @param string|array $controllerIds
      * @param string|array $actionIds
+     * @param array $queryParams
      * @return bool
      */
-    public static function isActivePath(?string $moduleId = null, $controllerIds = [], $actionIds = []): bool
+    public static function isActivePath(?string $moduleId = null, $controllerIds = [], $actionIds = [], array $queryParams = []): bool
     {
         if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
             return false;
@@ -43,6 +44,10 @@ class ControllerHelper
 
         if (!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
             return false;
+        }
+
+        if (!empty($queryParams)) {
+            return !empty(array_intersect_assoc(Yii::$app->request->queryParams, $queryParams));
         }
 
         return true;
