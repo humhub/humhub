@@ -48,8 +48,8 @@ return array (
   'Wrap in block quote' => 'Zabaliť do bloku úvodzoviek',
   'Wrap in bullet list' => 'Zabaliť do zoznamu s odrážkami',
   'Wrap in ordered list' => 'Zabaliť do zoradeného zoznamu',
-  '[Code Block]' => '',
-  '[Image]' => '',
-  '[Invalid file]' => '',
-  '[Table]' => '',
+  '[Code Block]' => '[Blok kódu]',
+  '[Image]' => '[Obrázok]',
+  '[Invalid file]' => '[Neplatný súbor]',
+  '[Table]' => '[Tabuľka]',
 );

@@ -3,14 +3,12 @@
 namespace humhub\modules\web\security\models;
 
 use Exception;
-use humhub\modules\web\security\helpers\Security;
-use Yii;
-use yii\base\InvalidConfigException;
-use yii\base\Model;
-use yii\helpers\Json;
-use yii\helpers\Url;
 use humhub\modules\web\security\helpers\CSPBuilder;
+use humhub\modules\web\security\helpers\Security;
 use humhub\modules\web\security\Module;
+use Yii;
+use yii\base\Model;
+use yii\helpers\Url;
 
 /**
  * The SecuritySettings are used to load and parse a security config file.
@@ -36,12 +34,8 @@ use humhub\modules\web\security\Module;
 class SecuritySettings extends Model
 {
     public const HEADER_CONTENT_SECRUITY_POLICY = 'Content-Security-Policy';
-    public const HEADER_CONTENT_SECRUITY_POLICY_IE = 'X-Content-Security-Policy';
     public const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY = 'Content-Security-Policy-Report-Only';
-    public const HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE = 'X-Content-Security-Policy-Report-Only';
-
     public const HEADER_X_CONTENT_TYPE = 'X-Content-Type-Options';
-    public const HEADER_X_XSS_PROTECTION = 'X-XSS-Protection';
     public const HEADER_STRICT_TRANSPORT_SECURITY = 'Strict-Transport-Security';
     public const HEADER_X_FRAME_OPTIONS = 'X-Frame-Options';
 
@@ -149,10 +143,10 @@ class SecuritySettings extends Model
     {
         // If the `csp section is set to report-only`
         if ($this->isReportOnlyCSP()) {
-            return [static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY, static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE];
+            return [static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY];
         }
 
-        return [static::HEADER_CONTENT_SECRUITY_POLICY, static::HEADER_CONTENT_SECRUITY_POLICY_IE];
+        return [static::HEADER_CONTENT_SECRUITY_POLICY];
     }
 
     /**
@@ -254,9 +248,7 @@ class SecuritySettings extends Model
     {
         return in_array($header, [
             static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY,
-            static::HEADER_CONTENT_SECRUITY_POLICY_REPORT_ONLY_IE,
-            static::HEADER_CONTENT_SECRUITY_POLICY,
-            static::HEADER_CONTENT_SECRUITY_POLICY_IE], true);
+            static::HEADER_CONTENT_SECRUITY_POLICY], true);
     }
 
     /**

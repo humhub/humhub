@@ -41,8 +41,7 @@ class MysqlDriver extends AbstractDriver
 
     public function update(Content $content): void
     {
-
-        $this->delete($content);
+        $this->delete($content->id);
 
         $record = new ContentFulltext();
         $record->content_id = $content->id;
@@ -65,9 +64,9 @@ class MysqlDriver extends AbstractDriver
         $record->save();
     }
 
-    public function delete(Content $content): void
+    public function delete(int $contentId): void
     {
-        ContentFulltext::deleteAll(['content_id' => $content->id]);
+        ContentFulltext::deleteAll(['content_id' => $contentId]);
     }
 
     /**
@@ -213,8 +212,7 @@ class MysqlDriver extends AbstractDriver
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
             $globalCondition = 'content.contentcontainer_id IS NULL';
-        } elseif
-        (AuthHelper::isGuestAccessEnabled()) {
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';

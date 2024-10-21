@@ -9,12 +9,12 @@ use humhub\helpers\ControllerHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Password;
-use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Mentioning;
-use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\Password;
+use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\PeopleAccess;
 use Yii;
 use yii\base\BaseObject;
@@ -138,6 +138,16 @@ class Events extends BaseObject
                 }
             }
         }
+    }
+
+    /**
+     * Tasks on daily cron job
+     *
+     * @param \yii\base\Event $event
+     */
+    public static function onDailyCron($event)
+    {
+        Yii::$app->queue->push(new jobs\CleanupInvites());
     }
 
     /**

@@ -105,6 +105,7 @@ return [
     'Advanced Profile Search' => '',
     'Block user' => '',
     'Did you forget your password?' => '',
+    'Empty password cannot be saved!' => '',
     'Following (User)' => '',
     'Group Manager(s)' => '',
     'If this wasn\'t you, you can disregard this message.' => '',

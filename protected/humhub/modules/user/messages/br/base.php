@@ -37,6 +37,7 @@ return [
     'Disconnect account' => '',
     'Edit' => '',
     'Email' => '',
+    'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
     'Find people by their profile data or user tags' => '',
     'Follow' => '',

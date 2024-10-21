@@ -10,6 +10,7 @@ namespace humhub\modules\space\models;
 
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\models\Content;
@@ -19,16 +20,19 @@ use humhub\modules\space\behaviors\SpaceModelMembership;
 use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\components\UrlValidator;
 use humhub\modules\space\Module;
+use humhub\modules\space\notifications\SpaceCreated;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
-use humhub\modules\user\behaviors\Followable;
-use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\space\services\MemberListService;
+use humhub\modules\user\behaviors\Followable;
+use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupSpace;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 
@@ -248,6 +252,8 @@ class Space extends ContentContainerActiveRecord
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException
+     * @throws \Throwable
      */
     public function afterSave($insert, $changedAttributes)
     {
@@ -255,7 +261,7 @@ class Space extends ContentContainerActiveRecord
 
         $user = User::findOne(['id' => $this->created_by]);
 
-        if ($insert) {
+        if ($insert && $user) {
             // Auto add creator as admin
             $this->addMember($user->id, 1, true, self::USERGROUP_ADMIN);
 
@@ -263,6 +269,11 @@ class Space extends ContentContainerActiveRecord
             $activity->source = $this;
             $activity->originator = $user;
             $activity->create();
+
+            // If the space creator is not allowed to manage spaces, notify space managers
+            if (!(new PermissionManager(['subject' => $user]))->can(ManageSpaces::class)) {
+                SpaceCreated::instance()->from($user)->about($this)->sendBulk(PermissionManager::findUsersByPermission(new ManageSpaces()));
+            }
         }
 
         Yii::$app->cache->delete('userSpaces_' . $user->id);
@@ -331,25 +342,23 @@ class Space extends ContentContainerActiveRecord
     /**
      * Indicates that this user can join this workspace
      *
-     * @param $userId User Id of User
+     * @param $userId int|string|null User Id of User
      */
-    public function canJoin($userId = '')
+    public function canJoin($userId = null): bool
     {
-        if (Yii::$app->user->isGuest) {
+        // Take current userId if none is given
+        $userId ??= Yii::$app->user->id;
+
+        if (!$userId) {
             return false;
         }
 
-        // Take current userId if none is given
-        if ($userId == '') {
-            $userId = Yii::$app->user->id;
-        }
-
-        // Checks if User is already member
+        // Checks if User is already a member
         if ($this->isMember($userId)) {
             return false;
         }
 
-        if ($this->join_policy == self::JOIN_POLICY_NONE) {
+        if ($this->join_policy === self::JOIN_POLICY_NONE) {
             return false;
         }
 

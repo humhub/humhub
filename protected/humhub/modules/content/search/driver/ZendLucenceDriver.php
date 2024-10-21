@@ -14,7 +14,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\base\Exception;
 use yii\data\Pagination;
 use yii\helpers\FileHelper;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
@@ -100,9 +99,9 @@ class ZendLucenceDriver extends AbstractDriver
         ];
     }
 
-    public function delete(Content $content): void
+    public function delete(int $contentId): void
     {
-        $query = new TermQuery(new Term($content->id, 'content_id'));
+        $query = new TermQuery(new Term($contentId, 'content_id'));
         foreach ($this->getIndex()->find($query) as $result) {
             try {
                 $this->getIndex()->delete($result->id);
@@ -145,13 +144,13 @@ class ZendLucenceDriver extends AbstractDriver
             } catch (\Exception $ex) {
                 throw new \Exception('Could not get content id from Lucence search result');
             }
+
             $content = Content::findOne(['id' => $contentId]);
             if ($content !== null) {
                 $resultSet->results[] = $content;
             } else {
-                throw new Exception('Could not load result! Content ID: ' . $contentId);
-                // ToDo: Delete Result
-                Yii::error("Could not load search result content: " . $contentId);
+                Yii::warning("Deleted non-existing content from search index. Content ID: " . $contentId, 'content');
+                $this->delete($contentId);
             }
         }
 

@@ -30,7 +30,6 @@ class AuthenticationSettingsForm extends Model
     public $hideOnlineStatus;
     public $defaultUserIdleTimeoutSec;
     public $allowGuestAccess;
-    public $showCaptureInRegisterForm;
     public $defaultUserProfileVisibility;
     public $registrationSendMessageMailContent;
     public $registrationApprovalMailContent;
@@ -56,7 +55,6 @@ class AuthenticationSettingsForm extends Model
         $this->hideOnlineStatus = $settingsManager->get('auth.hideOnlineStatus');
         $this->defaultUserIdleTimeoutSec = $settingsManager->get('auth.defaultUserIdleTimeoutSec');
         $this->allowGuestAccess = $settingsManager->get('auth.allowGuestAccess');
-        $this->showCaptureInRegisterForm = $settingsManager->get('auth.showCaptureInRegisterForm');
         $this->defaultUserProfileVisibility = $settingsManager->get('auth.defaultUserProfileVisibility');
         $this->registrationSendMessageMailContent = $settingsManager->get('auth.registrationSendMessageMailContent', ApproveUserForm::getDefaultSendMessageMailContent());
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
@@ -69,7 +67,7 @@ class AuthenticationSettingsForm extends Model
     public function rules()
     {
         return [
-            [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showCaptureInRegisterForm', 'showRegistrationUserGroup', 'blockUsers', 'hideOnlineStatus'], 'boolean'],
+            [['internalUsersCanInviteByEmail', 'internalUsersCanInviteByLink', 'internalAllowAnonymousRegistration', 'internalRequireApprovalAfterRegistration', 'allowGuestAccess', 'showRegistrationUserGroup', 'blockUsers', 'hideOnlineStatus'], 'boolean'],
             ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationSendMessageMailContent', 'registrationApprovalMailContent', 'registrationDenialMailContent'], 'string'],
@@ -91,7 +89,6 @@ class AuthenticationSettingsForm extends Model
             'hideOnlineStatus' => Yii::t('AdminModule.user', 'Hide online status of users'),
             'defaultUserIdleTimeoutSec' => Yii::t('AdminModule.user', 'Default user idle timeout, auto-logout (in seconds, optional)'),
             'allowGuestAccess' => Yii::t('AdminModule.user', 'Allow visitors limited access to content without an account (Adds visibility: "Guest")'),
-            'showCaptureInRegisterForm' => Yii::t('AdminModule.user', 'Include captcha in registration form'),
             'defaultUserProfileVisibility' => Yii::t('AdminModule.user', 'Default user profile visibility'),
             'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
@@ -132,10 +129,6 @@ class AuthenticationSettingsForm extends Model
 
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
-        }
-
-        if ($settingsManager->get('auth.anonymousRegistration')) {
-            $settingsManager->set('auth.showCaptureInRegisterForm', $this->showCaptureInRegisterForm);
         }
 
         if ($settingsManager->get('auth.needApproval')) {

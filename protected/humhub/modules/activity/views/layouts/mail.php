@@ -9,8 +9,9 @@
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
+use humhub\modules\ui\view\components\View;
+use humhub\modules\user\models\User;
 use yii\helpers\Html;
-use yii\web\View;
 
 /* @var $this View */
 /* @var $space Space */
@@ -19,7 +20,7 @@ use yii\web\View;
 /* @var $html string */
 /* @var $text string */
 /* @var $originator User */
-
+/* @var $content string */
 ?>
 
 <!-- START NOTIFICATION/ACTIVITY -->
@@ -27,14 +28,14 @@ use yii\web\View;
     <td align="center" valign="top" class="fix-box">
 
         <!-- start  container width 600px -->
-        <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container" bgcolor="#ffffff"
-               style="background-color: #ffffff; border-bottom-left-radius: 4px;">
+        <table width="600" align="center" border="0" cellspacing="0" cellpadding="0" class="container"
+               style="background-color: <?= $this->theme->variable('background-color-main', '#fff') ?>; border-bottom-left-radius: 4px">
             <tr>
                 <td valign="top">
 
                     <!-- start container width 560px -->
                     <table width="560" align="center" border="0" cellspacing="0" cellpadding="0" class="full-width"
-                           bgcolor="#ffffff" style="background-color:#ffffff;">
+                           style="background-color:<?= $this->theme->variable('background-color-main', '#fff') ?>">
 
                         <!-- start image and content -->
                         <tr>
@@ -57,7 +58,7 @@ use yii\web\View;
                                             <table border="0" cellspacing="0" cellpadding="0" align="left">
                                                 <tr>
 
-                                                    <td valign="top" align="left" style="padding-right:20px;">
+                                                    <td valign="top" align="left" style="padding-right:20px">
                                                         <!-- START: USER IMAGE -->
                                                         <a href="<?= $originator->createUrl('/user/profile', [], true) ?>">
                                                             <img
@@ -77,10 +78,10 @@ use yii\web\View;
                                                                align="left">
 
                                                             <tr>
-                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:#555555; font-weight:300; text-align:left; ">
+                                                                <td style="font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left; ">
                                                                     <!-- prevent content overflow -->
                                                                     <div
-                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:#555555; font-weight:300; text-align:left;">
+                                                                        style="width:480px;overflow:hidden;text-overflow:ellipsis;font-size: 13px; line-height: 22px; font-family: <?= $this->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= $this->theme->variable('text-color-main', '#555') ?>; font-weight:300; text-align:left">
                                                                         <!-- content output-->
                                                                         <?= $content ?>
 
@@ -90,19 +91,19 @@ use yii\web\View;
                                                                                 $space->displayName,
                                                                                 $space->createUrl(null, [], true),
                                                                                 [
-                                                                                    'style' => 'text-decoration: none; color: #555555;'
-                                                                                ]
+                                                                                    'style' => 'text-decoration: none; color: ' . $this->theme->variable('text-color-main', '#555'),
+                                                                                ],
                                                                             ) ?>
-                                                                        <?php endif; ?>
+                                                                        <?php endif ?>
 
                                                                         <?php if ($url != '') : ?>
                                                                             <!-- START: CONTENT LINK -->
                                                                             <span
-                                                                                style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>;"> - <a
+                                                                                style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>"> - <a
                                                                                     href="<?= $url ?>"
-                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>; font-weight: bold;"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
+                                                                                    style="text-decoration: none; color: <?= $this->theme->variable('primary') ?>; font-weight: bold"><?= Yii::t('ActivityModule.base', 'see online') ?></a></span>
                                                                             <!-- END: CONTENT LINK -->
-                                                                        <?php endif; ?>
+                                                                        <?php endif ?>
                                                                     </div>
 
                                                                 </td>

@@ -9,10 +9,10 @@
 namespace humhub\modules\admin\widgets;
 
 use humhub\modules\admin\models\PendingRegistrationSearch;
-use yii\helpers\Url;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\helpers\Url;
 
 /**
  * PendingRegistrations shows a grid view of all open/pending UserInvites
@@ -80,6 +80,10 @@ class PendingRegistrations extends JsWidget
     public function getData()
     {
         return [
+            'url-resend-selected' => Url::to(['pending-registrations/resend-all-selected']),
+            'url-resend-all' => Url::to(['pending-registrations/resend-all']),
+            'note-resend-selected' => Yii::t('AdminModule.base', 'Resend to selected rows'),
+            'note-resend-all' => Yii::t('AdminModule.base', 'Resend to all'),
             'url-delete-selected' => Url::to(['pending-registrations/delete-all-selected']),
             'url-delete-all' => Url::to(['pending-registrations/delete-all']),
             'note-delete-selected' => Yii::t('AdminModule.base', 'Delete selected rows'),

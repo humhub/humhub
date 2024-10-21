@@ -77,6 +77,7 @@ return [
     'Block user' => '',
     'Currently in use' => '',
     'Did you forget your password?' => '',
+    'Empty password cannot be saved!' => '',
     'Find people by their profile data or user tags' => '',
     'Following (User)' => '',
     'Force password change upon first login' => '',

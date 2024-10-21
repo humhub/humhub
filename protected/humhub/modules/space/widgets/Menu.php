@@ -47,11 +47,10 @@ class Menu extends LeftNavigation
 
         parent::init();
 
-        // For private Spaces without membership, show only the About Page in the menu.
+        // For private Spaces without membership, don't show menu entries.
         // This is necessary for the invitation process otherwise there is no access in this case anyway.
-        if (!$this->space->isMember() && $this->space->visibility == Space::VISIBILITY_NONE) {
+        if ($this->space->visibility == Space::VISIBILITY_NONE && !$this->space->isMember()) {
             $this->entries = [];
-            $this->addAboutPage();
             return;
         }
 
@@ -62,24 +61,7 @@ class Menu extends LeftNavigation
             'sortOrder' => 100,
             'isActive' => ControllerHelper::isActivePath('space', 'space', ['index', 'home']),
         ]));
-
-        if (!$this->space->getAdvancedSettings()->hideAbout) {
-            $this->addAboutPage();
-        }
     }
-
-    private function addAboutPage()
-    {
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('SpaceModule.base', 'About'),
-            'url' => $this->space->createUrl('/space/space/about'),
-            'icon' => 'about',
-            'sortOrder' => 10000,
-            'isActive' => ControllerHelper::isActivePath('space', 'space', ['about']),
-        ]));
-
-    }
-
 
     /**
      * Searches for urls of modules which are activated for the current space

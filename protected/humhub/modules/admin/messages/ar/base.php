@@ -56,6 +56,8 @@ return array (
   'People' => 'الأشخاص',
   'Permissions' => 'الأذونات',
   'Proxy' => 'الوكيل',
+  'Resend to all' => 'إعادة إرسال للجميع',
+  'Resend to selected rows' => 'إعادة الإرسال إلى الصفوف المحددة',
   'Self test' => 'اختبار ذاتي',
   'Set as default' => 'ضبط كوضع افتراضي',
   'Settings' => 'الإعدادات',

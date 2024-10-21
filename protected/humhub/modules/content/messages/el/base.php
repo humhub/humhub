@@ -84,6 +84,7 @@ return [
     'You do not have the permission to move this content.' => 'Δεν έχετε την άδεια να μετακινήσετε αυτό το περιεχόμενο.',
     'Your last edit state has been saved!' => 'Η τελευταία κατάσταση επεξεργασίας έχει αποθηκευτεί!',
     'in' => 'σε',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',

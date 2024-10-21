@@ -114,7 +114,9 @@ return [
     'Zip' => 'Código Postal',
     '{attribute} is required!' => '{attribute} obrigatório!',
     'Diverse' => '',
+    'Each line must be formatted as Key=>Value!' => '',
     'Instagram URL' => '',
     'Mastodon URL' => '',
+    'This profile is disabled!' => '',
     'TikTok URL' => '',
 ];
