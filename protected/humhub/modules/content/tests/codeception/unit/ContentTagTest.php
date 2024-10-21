@@ -45,7 +45,7 @@ class ContentTagTest extends HumHubDbTestCase
         $this->assertTrue($this->createTestTag('testTag1', $space2));
 
         // Global tag should not be able to use the same name
-        $tag = new TestTagOtherModule(null, 'testTag');
+        $tag = new TestTagOtherModule(null, 'testTag1');
         $this->assertFalse($tag->save());
     }
 
