@@ -1,5 +1,6 @@
 <?php
 
+use humhub\libs\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
 use humhub\modules\admin\models\forms\GlobalTopicSettingForm;
 use humhub\modules\topic\models\Topic;
@@ -9,7 +10,6 @@ use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 use yii\widgets\Pjax;
 
 /**
@@ -21,13 +21,16 @@ use yii\widgets\Pjax;
 
 AdminTopicAsset::register($this);
 
-?>
-<?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
-<?php Pjax::begin(['enablePushState' => false, 'id' => 'global-topics']); ?>
-<?php $form = ActiveForm::begin(['options' => ['data-pjax' => true]]); ?>
-<p><?= Yii::t('AdminModule.settings', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
 
-<?= $form->field($addModel, 'name', [
+$this->beginContent('@admin/views/setting/_advancedLayout.php');
+
+Pjax::begin(['enablePushState' => false, 'id' => 'global-topics']);
+
+$form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
+
+echo Html::tag('p', Yii::t('AdminModule.settings', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.'));
+
+echo $form->field($addModel, 'name', [
     'template' => '
 <div class="input-group">
 {input}
@@ -37,6 +40,9 @@ AdminTopicAsset::register($this);
 </div>
 {error}
 {hint}',
+    'options' => [
+        'style' => 'margin-bottom: 0',
+    ],
     'inputOptions' => [
         'style' => 'height:36px',
         'class' => 'form-control',
@@ -44,20 +50,17 @@ AdminTopicAsset::register($this);
     ],
     'errorOptions' => ['style' => ['display' => 'inline-block'], 'tag' => 'span'],
     'hintOptions' => ['style' => ['display' => 'inline-block'], 'tag' => 'span'],
-])->hint($suggestGlobalConversion
-    ? Button::info()->setText(Yii::t('AdminModule.settings', 'Convert \'{topicName}\' into global', ['topicName' => $addModel->name]))
-        ->action('admin.topic.convertTopic')
-        ->xs()->loader(false)
-        ->confirm(
-            Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic conversion'),
-            Yii::t('AdminModule.settings', 'Do you really want to convert \'{topicName}\' into global?', ['topicName' => $addModel->name]),
-            Yii::t('base', 'Convert')
-        )
-    : '') ?>
-<?= Html::hiddenInput('convert-to-global', 0) ?>
-<?php ActiveForm::end(); ?>
+]);
 
-<?= GridView::widget([
+if ($suggestGlobalConversion) {
+    echo $form->field($addModel, 'convertToGlobal')
+        ->checkbox()
+        ->label(Yii::t('AdminModule.settings', 'Convert \'{topicName}\' into global', ['topicName' => $addModel->name]));
+}
+
+ActiveForm::end();
+
+echo GridView::widget([
     'dataProvider' => $dataProvider,
     'tableOptions' => ['class' => 'table table-hover'],
     'columns' => [

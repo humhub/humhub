@@ -26,9 +26,9 @@ humhub.module('admin.topic', function (module, require, $) {
 
     var init = function () {
         event.on('humhub:ready', function (evt) {
-            $('#topic-name').on('input', function() {
+            $('#addtopicform-name, #addtopicform-converttoglobal').on('input', function() {
                 var form = $(this).closest('form');
-                form.find('.field-topic-name').removeClass('has-error').find('.help-block').remove();
+                form.find('.field-addtopicform-name').removeClass('has-error').find('.help-block').remove();
             });
         });
     };

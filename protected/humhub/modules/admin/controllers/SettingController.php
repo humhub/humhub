@@ -12,11 +12,11 @@ use Exception;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
-use humhub\modules\admin\models\forms\GlobalTopicSettingForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
@@ -323,7 +323,7 @@ class SettingController extends Controller
 
     public function actionTopics()
     {
-        $model = new Topic();
+        $model = new AddTopicForm();
         $suggestGlobalConversion = false;
 
         if ($model->load(Yii::$app->request->post())) {
@@ -331,7 +331,7 @@ class SettingController extends Controller
                 $suggestGlobalConversion = true;
             });
 
-            if (!!Yii::$app->request->post('convert-to-global', false)) {
+            if (!!$model->convertToGlobal) {
                 Topic::convertToGlobal($model->name);
 
                 $model->name = '';
