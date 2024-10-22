@@ -104,7 +104,6 @@ return [
     'Provider Name' => '',
     'Redis' => '',
     'Regular expression by which the link match will be checked.' => '',
-    'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
     'Show introduction tour for new users' => '',
     'Show user profile post form on dashboard' => '',

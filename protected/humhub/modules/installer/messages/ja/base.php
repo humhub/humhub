@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>管理者</strong> アカウント',
   '<strong>Configuration</strong>' => '<strong>かんたん設定</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>おめでとうございます</strong>。構築が完了しました。',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'おめでとうございます！条件を満たしているのでインストール準備ができました！',
   'Create Admin Account' => '管理者アカウントの作成',
   'Create the database if it doesn\'t exist yet.' => 'データベースがまだ存在しない場合は作成します。',
+  'Default Language' => '',
+  'Default Timezone' => 'デフォルトのタイムゾーン',
   'Downloading & Installing Modules...' => 'モジュールをダウンロードしてインストールしています。',
   'External users can register (show registration form on login)' => 'ユーザー登録を可能にする（ログイン画面に登録画面を表示する）',
   'Here you can decide how new, unregistered users can access HumHub.' => 'HumHubにアクセスした外部ユーザーや、新規ユーザーの閲覧権限を決めてください。',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'この機能を有効にするには、HumHub構成を編集する必要があり、場合によっては Web サーバーの構成も編集する必要があります。',
   'Initializing database...' => 'データベースを構築しています。',
   'Installation Example:' => 'インストール例：',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'クラブ',
   'My community' => '仲間',
   'My company (Social Intranet / Project management)' => '会社（イントラネット、プロジェクト管理）',
@@ -72,4 +76,4 @@ return array (
   'Your MySQL password.' => 'MySQLのパスワードを入力してください。',
   'Your MySQL username' => 'MySQLのユーザー名を入力してください。',
   'Your first sample space to discover the platform.' => 'プラットフォームを発見するための最初のサンプルスペース。',
-);
+];

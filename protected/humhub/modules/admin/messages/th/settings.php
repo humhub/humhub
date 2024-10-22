@@ -74,7 +74,6 @@ return [
     'Port number' => 'หมายเลขพอร์ต',
     'Prevent client caching of following scripts' => 'ป้องกันการแคชไคลเอ็นต์ของสคริปต์ต่อไปนี้',
     'Redis' => 'Redis',
-    'Reported database time: {dateTime}' => 'เวลาฐานข้อมูลที่รายงาน: {dateTime}',
     'Save' => 'บันทึก',
     'Save & Flush Caches' => 'บันทึกและล้างแคช',
     'Save & Test' => 'บันทึกและทดสอบ',

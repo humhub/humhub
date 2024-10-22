@@ -3,7 +3,6 @@
 return [
     '<strong>Notification</strong> Overview' => '<strong>Notificări</strong> în Ansamblu',
     '<strong>Notification</strong> Settings' => 'Setări <strong>Notificări</strong>',
-    'Allow desktop notifications by default.' => 'Permite notificări de desktop implicit.',
     'Filter' => 'Filtrează',
     'In this view, you can define the default behavior for your users. These settings can be overwritten by users in their account settings page.' => 'În această vizualizare, poți defini comportamentul implicit pentru utilizatorii tăi. Aceste setări pot fi suprascrise de către utilizatori de pe pagina setărilor contului.',
     'Mark all as seen' => 'Marchează toate ca citite',
@@ -14,7 +13,6 @@ return [
     'Notifications are sent instantly to you to inform you about new activities in your network.' => 'Notificările sunt trimise instant către tine pentru a te informa despre noile activități din rețeaua ta.',
     'Open the notification dropdown menu' => 'Deschide meniul cu notificări',
     'Receive \'New Content\' Notifications for the following spaces' => 'Primește Notificări \'Conținut Nou\' pentru următoarele spații',
-    'Receive desktop notifications when you are online.' => 'Primește notificări de desktop atunci când ești online.',
     'Reset to defaults' => 'Resetează la implicit',
     'Show all notifications' => 'Arată toate notificările',
     'The requested content is not valid or was removed!' => 'Conținutul cerut nu este valid sau a fost îndepărtat!',

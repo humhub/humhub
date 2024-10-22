@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => 'Účet <strong>Správcu</strong>',
   '<strong>Configuration</strong>' => '<strong>Konfigurácia</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Blahoželáme</strong>.  Skončili ste.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Gratulujem!  Všetko je v poriadku a pripravené začať odznova!',
   'Create Admin Account' => 'Vytvoriť účet Správcu',
   'Create the database if it doesn\'t exist yet.' => 'Vytvorte databázu, ak ešte neexistuje.',
+  'Default Language' => '',
+  'Default Timezone' => 'Predvolené časové pásmo',
   'Downloading & Installing Modules...' => 'Sťahovanie a inštalácia modulov...',
   'External users can register (show registration form on login)' => 'Externí používatelia sa môžu zaregistrovať (zobraziť registračný formulár pri prihlásení)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Tu sa môžete rozhodnúť, aký budú mať noví, neregistrovaní používatelia prístup k HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Na aktiváciu tejto funkcie je potrebné upraviť konfiguráciu HumHub a prípadne aj konfiguráciu WebServera.',
   'Initializing database...' => 'Inicializuje sa databáza...',
   'Installation Example:' => 'Príklad inštalácie:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Môj klub',
   'My community' => 'Moja komunita',
   'My company (Social Intranet / Project management)' => 'Moja spoločnosť (Sociálny intranet / projektový manažment)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Vaše heslo MySQL.',
   'Your MySQL username' => 'Vaše užívateľské meno MySQL',
   'Your first sample space to discover the platform.' => 'Váš prvý vzorový priestor na objavenie platformy.',
-);
+];

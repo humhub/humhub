@@ -160,8 +160,10 @@ return [
     '{email} is not valid!' => '{email}이 유효하지 않습니다!',
     '<strong>Leave</strong> Space' => '',
     'Advanced Spaces Search' => '',
+    'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',
     'Leave' => '',
     'Space Name' => '',
+    'Stream Sort' => '',
     'Updated by' => '',
 ];

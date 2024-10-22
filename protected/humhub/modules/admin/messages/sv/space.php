@@ -30,4 +30,5 @@ return [
     'Default "Hide Members"' => '',
     'Default Homepage' => '',
     'Default Homepage (Non-members)' => '',
+    'Default Stream Sort' => '',
 ];

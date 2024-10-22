@@ -28,7 +28,6 @@ HumHub Changelog
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
 - Enh #7208: Improvements in dotenv parsing
-- Enh #7211: Remove obsolete property `AbstractRichText::$record`
 - Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
 - Fix #7215: Wording: replace British "licence" with American "license"
 - Fix #6987: Added LatAm Spanish
@@ -60,6 +59,9 @@ HumHub Changelog
 - Enh #7037: Space creation notification to users allowed to manage spaces
 - Enh #7243: Server time zone
 - Enh #7188: Helper for detecting a current path by module/controller/action
+- Enh #7265: Profile "About" page: don't display the menu if only one entry
+- Enh #7269: Remove desktop notifications
+- Enh #5423: Display password rules in form field hint
 - Enh #7223: Add ability to convert Topic to global
 
 1.16.3 (Unreleased)

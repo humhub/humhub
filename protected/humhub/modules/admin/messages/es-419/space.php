@@ -15,6 +15,7 @@ return [
     'Default Join Policy' => '',
     'Default Space Permissions' => '',
     'Default Space(s)' => '',
+    'Default Stream Sort' => '',
     'Default Visibility' => '',
     'Default space' => '',
     'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => '',
