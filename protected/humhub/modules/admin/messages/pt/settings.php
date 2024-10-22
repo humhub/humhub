@@ -73,7 +73,6 @@ return [
     'Port number' => 'Número do porto',
     'Prevent client caching of following scripts' => 'Prevenir armazenamento em cache dos seguintes scripts',
     'Redis' => 'Redis',
-    'Reported database time: {dateTime}' => 'Data e hora da base de dados: {dateTime}',
     'Save' => 'Guardar',
     'Save & Flush Caches' => 'Guardar e limpar caches',
     'Save & Test' => 'Guardar e testar',

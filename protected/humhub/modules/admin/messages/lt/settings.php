@@ -91,7 +91,6 @@ return [
     'Provider Name' => 'Teikėjo pavadinimas',
     'Redis' => '"Redis"',
     'Regular expression by which the link match will be checked.' => 'Reguliarioji išraiška, pagal kurią bus tikrinamas nuorodos atitikimas.',
-    'Reported database time: {dateTime}' => 'Pranešamas duomenų bazės laikas: {dateTime}',
     'Save' => 'Išsaugoti',
     'Save & Flush Caches' => 'Išsaugoti ir perkelti į slėptuvę',
     'Save & Test' => 'Išsaugoti ir išbandyti',

@@ -115,7 +115,6 @@ return [
     'Provider Name' => '',
     'Redis' => '',
     'Regular expression by which the link match will be checked.' => '',
-    'Reported database time: {dateTime}' => '',
     'Saved and sent test email to: {address}' => '',
     'Test message' => '',
     'Url Pattern' => '',

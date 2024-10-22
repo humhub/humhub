@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => 'Conta de <strong>Administrador</strong>',
   '<strong>Configuration</strong>' => '<strong>Configuração</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Parabéns!</strong> Você terminou.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Parabéns! Está tudo ok e pronto para começar!',
   'Create Admin Account' => 'Criar conta de Administrador',
   'Create the database if it doesn\'t exist yet.' => 'Crie o banco de dados se ele ainda não existir.',
+  'Default Language' => '',
+  'Default Timezone' => 'Fuso horário padrão',
   'Downloading & Installing Modules...' => 'Baixando e instalando módulos...',
   'External users can register (show registration form on login)' => 'O usuário externo pode se inscrever (O formulário de registro será exibido no Login)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Aqui você pode decidir como novos usuários não registrados podem acessar o HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Para ativar esse recurso, é necessário editar a configuração do HumHub e, potencialmente, a configuração do WebServer.',
   'Initializing database...' => 'Preparando o banco de dados...',
   'Installation Example:' => 'Exemplo de instalação:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Meu clube',
   'My community' => 'Minha comunidade',
   'My company (Social Intranet / Project management)' => 'Minha empresa (Intranet Social / Gerenciamento de Projetos)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Senha do usuário do MySQL.',
   'Your MySQL username' => 'Usuário do MySQL criado para utilização pelo sistema.',
   'Your first sample space to discover the platform.' => 'Seu primeiro espaço de exemplo para descobrir a plataforma.',
-);
+];

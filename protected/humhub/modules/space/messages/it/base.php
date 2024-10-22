@@ -162,6 +162,8 @@ return [
     '{email} is not valid!' => '{email} non è valida!',
     '<strong>Leave</strong> Space' => '',
     'Advanced Spaces Search' => '',
+    'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',
     'Space Name' => '',
+    'Stream Sort' => '',
 ];

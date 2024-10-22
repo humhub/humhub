@@ -109,7 +109,6 @@ return [
     'Provider Name' => '',
     'Redis' => '',
     'Regular expression by which the link match will be checked.' => '',
-    'Reported database time: {dateTime}' => '',
     'Save & Flush Caches' => '',
     'Save & Test' => '',
     'Saved and sent test email to: {address}' => '',

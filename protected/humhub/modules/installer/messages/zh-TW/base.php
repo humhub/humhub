@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>管理者</strong>帳戶',
   '<strong>Configuration</strong>' => '<strong>恭喜</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>恭喜</strong> 您已經完成全部安裝。',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => '恭喜! 一切都已經完成，準備好開始吧!',
   'Create Admin Account' => '建立管理者帳戶',
   'Create the database if it doesn\'t exist yet.' => '如果資料庫不存在，建立新資料庫。',
+  'Default Language' => '',
+  'Default Timezone' => '預設時區',
   'Downloading & Installing Modules...' => '正在下載並安裝模組...',
   'External users can register (show registration form on login)' => '外部用戶可以註冊 (在登入畫面顯示註冊表單)',
   'Here you can decide how new, unregistered users can access HumHub.' => '',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => '',
   'Initializing database...' => '資料庫初始化...',
   'Installation Example:' => '安裝範例資料:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => '我的社群',
   'My community' => '我的社區',
   'My company (Social Intranet / Project management)' => '我的公司 (內部社交網站/專案管理)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => '您的 MySQL 密碼',
   'Your MySQL username' => '您的 MySQL 用戶名',
   'Your first sample space to discover the platform.' => '',
-);
+];

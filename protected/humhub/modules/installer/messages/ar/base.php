@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>مشرف</strong> الحساب',
   '<strong>Configuration</strong>' => '<strong>الإعدادات</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>تهانينا</strong>. انتهيت.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'تهانينا! كل شيء على ما يرام وجاهز للبدء من جديد!',
   'Create Admin Account' => 'إنشاء حساب مسؤول',
   'Create the database if it doesn\'t exist yet.' => 'قم بإنشاء قاعدة البيانات إذا لم تكن موجودة بعد.',
+  'Default Language' => '',
+  'Default Timezone' => 'المنطقة الزمنية الافتراضية',
   'Downloading & Installing Modules...' => 'تحميل وتثبيت الوحدات النمطية ...',
   'External users can register (show registration form on login)' => 'يمكن للمستخدمين الخارجيين التسجيل (إظهار نموذج التسجيل عند تسجيل الدخول)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'هنا يمكنك تحديد كيفية وصول المستخدمين الجدد  وغير المسجلين. إلى HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'لتفعيل هذه الميزة، من الضروري تعديل إعداد HumHub، وربما إعدادات الخادم.',
   'Initializing database...' => 'جاري تهيئة قاعدة البيانات ...',
   'Installation Example:' => 'مثال التثبيت:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'النادي الخاص بي',
   'My community' => 'مجتمعي',
   'My company (Social Intranet / Project management)' => 'شركتي (الإنترانت الاجتماعية / إدارة المشاريع)',
@@ -72,4 +76,4 @@ return array (
   'Your MySQL password.' => 'كلمة السر الخاصة بك MySQL.',
   'Your MySQL username' => 'اسم مستخدم MySQL الخاص بك',
   'Your first sample space to discover the platform.' => 'باحة العينة الأولى لاكتشاف النظام الأساسي.',
-);
+];

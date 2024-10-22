@@ -3,7 +3,6 @@
 return [
     '<strong>Notification</strong> Overview' => '<strong>알림</strong> 개요',
     '<strong>Notification</strong> Settings' => '<strong>알림</strong> 설정',
-    'Allow desktop notifications by default.' => '기본적으로 데스크톱 알림을 허용합니다.',
     'Do you want to reset the settings concerning email summaries for all users?' => '모든 사용자의 이메일 요약 관련 설정을 재설정하시겠습니까?',
     'Do you want to reset the settings concerning notifications for all users?' => '모든 사용자에 대한 알림 관련 설정을 재설정하시겠습니까?',
     'Filter' => '필터',
@@ -16,7 +15,6 @@ return [
     'Notifications are sent instantly to you to inform you about new activities in your network.' => '네트워크의 새로운 활동에 대해 알려주는 알림이 즉시 전송됩니다.',
     'Open the notification dropdown menu' => '알림 드롭다운 메뉴 열기',
     'Receive \'New Content\' Notifications for the following spaces' => '다음 스페이스에 대한 \'새 콘텐츠\' 알림 받기',
-    'Receive desktop notifications when you are online.' => '온라인 상태일 때 데스크톱 알림을 받습니다.',
     'Reset for all users' => '모든 사용자에 대한 재설정',
     'Reset to defaults' => '기본값으로 재설정',
     'Show all notifications' => '모든 알림 표시',
