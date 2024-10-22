@@ -13,7 +13,6 @@ use yii\bootstrap\Html;
 ?>
 
 <br/>
-<?= $form->field($model, 'desktopNotifications')->checkbox(); ?>
 
 <?php if ($showSpaces): ?>
     <?= humhub\modules\space\widgets\SpacePickerField::widget([
@@ -57,4 +56,3 @@ use yii\bootstrap\Html;
         </tbody>
     </table>
 </div>
-

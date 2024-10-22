@@ -73,12 +73,8 @@ class InitialData
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);
 
-        // Notification
-        Yii::$app->getModule('notification')->settings->set('enable_html5_desktop_notifications', 0);
-
         // Avoid warning direct after installation
         Yii::$app->settings->set('cronLastRun', time());
-
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory();
