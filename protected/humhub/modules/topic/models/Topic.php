@@ -123,7 +123,7 @@ class Topic extends ContentTag
                 ->andFilterWhere(['name' => $topicName]);
 
             if ($containerType) {
-                $topicsQuery->innerJoinWith(['contentContainer contentContainer' => function(ActiveQuery $query) use ($containerType) {
+                $topicsQuery->innerJoinWith(['contentContainer contentContainer' => function (ActiveQuery $query) use ($containerType) {
                     $query->andOnCondition(['contentContainer.class' => $containerType]);
                 }], false);
             }
