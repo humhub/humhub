@@ -28,7 +28,7 @@ use yii\web\HttpException;
 
 /**
  * Description of PermissionManager
- *
+ * @property-read array $permissions
  * @author luke
  */
 class PermissionManager extends Component
@@ -490,6 +490,7 @@ class PermissionManager extends Component
                 'contentContainer' => $permission->contentContainer,
             ];
         }
+
         return $permissions;
     }
 

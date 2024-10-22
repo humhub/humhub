@@ -382,35 +382,6 @@ class NotificationManager
     }
 
     /**
-     * Defines the enable_html5_desktop_notifications setting for the given user or global if no user is given.
-     *
-     * @param int $value
-     * @param User $user
-     */
-    public function setDesktopNoficationSettings($value = 0, User $user = null)
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('notification');
-        $settingManager = ($user) ? $module->settings->user($user) : $module->settings;
-        $settingManager->set('enable_html5_desktop_notifications', $value);
-    }
-
-    /**
-     * Determines the enable_html5_desktop_notifications setting either for the given user or global if no user is given.
-     * By default the setting is enabled.
-     * @param User $user
-     * @return int
-     */
-    public function getDesktopNoficationSettings(User $user = null)
-    {
-        if ($user) {
-            return Yii::$app->getModule('notification')->settings->user($user)->getInherit('enable_html5_desktop_notifications', 1);
-        } else {
-            return Yii::$app->getModule('notification')->settings->get('enable_html5_desktop_notifications', 1);
-        }
-    }
-
-    /**
      * Sets the send_notifications settings for the given space and user.
      *
      * @param User $user user instance for which this settings will aplly

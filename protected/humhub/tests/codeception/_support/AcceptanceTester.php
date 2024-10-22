@@ -32,7 +32,7 @@ class AcceptanceTester extends BaseTester
 
     public function amSpaceAdmin($logout = false, $spaceId = 2)
     {
-        switch($spaceId) {
+        switch ($spaceId) {
             case 1:
             case 3:
                 $this->amAdmin($logout);
@@ -83,11 +83,11 @@ class AcceptanceTester extends BaseTester
 
     public function amOnSpace($guid, $path = '/space/space', $params = [])
     {
-        if(!$path) {
+        if (!$path) {
             $path = '/space/space';
         }
 
-        if(is_int($guid)) {
+        if (is_int($guid)) {
             $guid = $this->getFixtureSpaceGuid(--$guid);
         }
 
@@ -132,7 +132,7 @@ class AcceptanceTester extends BaseTester
         $this->amOnSpace($guid, '/topic/manage');
         $this->waitForText('Topic Overview');
 
-        if(is_string($topics)) {
+        if (is_string($topics)) {
             $topics = [$topics];
         }
 
@@ -151,7 +151,7 @@ class AcceptanceTester extends BaseTester
         $this->executeJS("$('#contentForm_message').trigger('focusout');");
         $this->wait(1);
 
-        if($topics) {
+        if ($topics) {
             $this->click('.dropdown-toggle', '.contentForm_options .preferences');
             $this->wait(1);
             $this->click('Topics', '.contentForm_options');
@@ -246,7 +246,7 @@ class AcceptanceTester extends BaseTester
     {
         $this->wait(2);
         $this->jsClick('[data-menu-id="account-logout"]');
-        if(!$this->guestAccessAllowed) {
+        if (!$this->guestAccessAllowed) {
             $this->waitForElementVisible('#login-form');
         } else {
             $this->waitForText('Sign in / up');
@@ -301,7 +301,7 @@ class AcceptanceTester extends BaseTester
         $this->waitForText('Notifications', 5, '.notifications');
         $this->waitForText($text, 5, '.notifications');
 
-        if($click) {
+        if ($click) {
             $this->click($text, '.notifications');
             $this->wait(2);
         } else {
@@ -325,7 +325,7 @@ class AcceptanceTester extends BaseTester
 
     public function selectFromPicker($selector, $search)
     {
-        if(is_array($search)) {
+        if (is_array($search)) {
             foreach ($search as $searchItem) {
                 $this->selectFromPicker($selector, $searchItem);
                 $this->wait(1);

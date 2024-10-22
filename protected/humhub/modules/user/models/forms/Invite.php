@@ -10,6 +10,7 @@ namespace humhub\modules\user\models\forms;
 
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use humhub\modules\user\services\LinkRegistrationService;
 use Throwable;
@@ -17,7 +18,6 @@ use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use humhub\modules\user\models\User;
 use yii\helpers\Url;
 use yii\validators\EmailValidator;
 
@@ -87,35 +87,35 @@ class Invite extends Model
     /**
      * Checks if external user invitation setting is enabled
      *
-     * @param bool $adminIsAlwaysAllowed
      * @return bool
      * @throws InvalidConfigException
      * @throws Throwable
      */
-    public function canInviteByEmail(bool $adminIsAlwaysAllowed = false)
+    public function canInviteByEmail()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
-        return
-            (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail'))
-            || ($adminIsAlwaysAllowed && Yii::$app->user->can([ManageUsers::class, ManageGroups::class]));
+
+        return (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail'))
+            || Yii::$app->user->isAdmin()
+            || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
     }
 
     /**
      * Checks if external user invitation setting is enabled
      *
-     * @param bool $adminIsAlwaysAllowed
      * @return bool
      * @throws Throwable
      * @throws InvalidConfigException
      */
-    public function canInviteByLink(bool $adminIsAlwaysAllowed = false)
+    public function canInviteByLink()
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
-        return
-            (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink'))
-            || ($adminIsAlwaysAllowed && Yii::$app->user->can([ManageUsers::class, ManageGroups::class]));
+
+        return (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink'))
+            || Yii::$app->user->isAdmin()
+            || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
     }
 
     /**

@@ -149,6 +149,7 @@ abstract class StreamEntryWidget extends JsWidget
             'stream-entry' => 1,
             'stream-pinned' => (int)$this->renderOptions->isPinned($this->model),
             'content-key' => $content->id,
+            'view-context' => $this->renderOptions->getViewContext(),
         ];
 
         if ($this->renderOptions->isInjected()) {

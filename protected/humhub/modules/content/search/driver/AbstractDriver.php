@@ -15,7 +15,7 @@ abstract class AbstractDriver extends Component
 
     abstract public function update(Content $content): void;
 
-    abstract public function delete(Content $content): void;
+    abstract public function delete(int $contentId): void;
 
     /**
      * Run search process

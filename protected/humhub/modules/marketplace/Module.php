@@ -124,7 +124,7 @@ class Module extends BaseModule
 
 
     /**
-     * Returns the currently active licence object
+     * Returns the currently active Licence object
      *
      * @return Licence
      */

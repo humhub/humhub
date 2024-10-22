@@ -12,6 +12,7 @@ use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\MigrationService;
 use Yii;
 use yii\helpers\UnsetArrayValue;
 
@@ -24,6 +25,8 @@ use yii\helpers\UnsetArrayValue;
  */
 class SelfTest
 {
+    public const PHP_INFO_CACHE_KEY = 'cron_php_info';
+
     /**
      * Get Results of the Application SelfTest.
      *
@@ -410,31 +413,6 @@ class SelfTest
 
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
-            $dbConnectionTime = TimezoneHelper::getDatabaseConnectionTime();
-            $timeDiffMargin = 60;
-            $timeDiff = abs($dbConnectionTime->getTimestamp() - time());
-
-            $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Time zone');
-            if ($timeDiff < $timeDiffMargin) {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'OK',
-                ];
-            } else {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'WARNING',
-                    'hint' => Yii::t(
-                        'AdminModule.information',
-                        'Database connection time: {dbTime} - Configured time zone: {time}',
-                        [
-                            'dbTime' => Yii::$app->formatter->asTime($dbConnectionTime, 'short'),
-                            'time' => Yii::$app->formatter->asTime(time(), 'short'),
-                        ],
-                    ),
-                ];
-            }
-
             if (Yii::$app->isInstalled()) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
@@ -481,9 +459,48 @@ class SelfTest
             }
         }
 
+        // Checks that WebApp and ConsoleApp uses the same php version and same user
+        if (Yii::$app->cache->exists(self::PHP_INFO_CACHE_KEY)) {
+            $cronPhpInfo = Yii::$app->cache->get(self::PHP_INFO_CACHE_KEY);
+
+            if ($cronPhpVersion = ArrayHelper::getValue($cronPhpInfo, 'version')) {
+                $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Web Application and Cron uses the same PHP version');
+
+                if ($cronPhpVersion == phpversion()) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Yii::t('AdminModule.information', 'Web Application PHP version: `{webPhpVersion}`, Cron PHP Version: `{cronPhpVersion}`', ['webPhpVersion' => phpversion(), 'cronPhpVersion' => $cronPhpVersion]),
+                    ];
+                }
+            }
+
+            if ($cronPhpUser = ArrayHelper::getValue($cronPhpInfo, 'user')) {
+                $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Web Application and Cron uses the same user');
+
+                if ($cronPhpUser == get_current_user()) {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'OK',
+                    ];
+                } else {
+                    $checks[] = [
+                        'title' => $title,
+                        'state' => 'WARNING',
+                        'hint' => Yii::t('AdminModule.information', 'Web Application user: `{webUser}`, Cron user: `{cronUser}`', ['webUser' => get_current_user(), 'cronUser' => $cronPhpUser]),
+                    ];
+                }
+            }
+        }
+
         // Check Runtime Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Runtime');
-        $path = Yii::getAlias('@runtime');
+        $path = realpath(Yii::getAlias('@runtime'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -499,7 +516,7 @@ class SelfTest
 
         // Check Assets Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Assets');
-        $path = Yii::getAlias('@webroot/assets');
+        $path = realpath(Yii::getAlias('@webroot/assets'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -515,7 +532,7 @@ class SelfTest
 
         // Check Uploads Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Uploads');
-        $path = Yii::getAlias('@webroot/uploads');
+        $path = realpath(Yii::getAlias('@webroot/uploads'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -531,7 +548,7 @@ class SelfTest
 
         // Check Profile Image Directory
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Profile Image');
-        $path = Yii::getAlias('@webroot/uploads/profile_image');
+        $path = realpath(Yii::getAlias('@webroot/uploads/profile_image'));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -549,7 +566,7 @@ class SelfTest
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Module Directory');
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $path = Yii::getAlias($marketplaceModule->modulesPath);
+        $path = realpath(Yii::getAlias($marketplaceModule->modulesPath));
         if (is_writeable($path)) {
             $checks[] = [
                 'title' => $title,
@@ -564,7 +581,7 @@ class SelfTest
         }
         // Check Dynamic Config is Writable
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
-        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
+        $path = realpath(Yii::getAlias(Yii::$app->params['dynamicConfigFile']));
         if (!is_file($path)) {
             $path = dirname($path);
         }
@@ -670,7 +687,7 @@ class SelfTest
         $tablesWithNotRecommendedEngines = [];
         foreach ($dbTables as $dbTable) {
             if (!in_array($dbTable['Collation'], $tableCollations)) {
-                $tableCollations[] = $dbTable['Collation'];
+                $tableCollations[ArrayHelper::getValue($dbTable, 'Name')] = ArrayHelper::getValue($dbTable, 'Collation');
             }
             if (!is_string($dbTable['Collation']) || stripos($dbTable['Collation'], $recommendedCollation) !== 0) {
                 $tablesWithNotRecommendedCollations[] = $dbTable['Name'];
@@ -686,19 +703,31 @@ class SelfTest
         // Checks Table Collations
         $title = $driver['title'] . ' - ' . Yii::t('AdminModule.information', 'Table collations') . ' - ' . implode(', ', $tableCollations);
 
-        if (empty($tablesWithNotRecommendedCollations)) {
+        if (empty($tablesWithNotRecommendedCollations) && count($tableCollations) == 1) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
             ];
         } else {
+            $hint = [];
+
+            if (count($tableCollations) > 1) {
+                $hint[] = Yii::t('AdminModule.information', 'Different table collations in the tables: {tables}', [
+                    'tables' => http_build_query($tableCollations, '', ', '),
+                ]);
+            }
+
+            if (!empty($tablesWithNotRecommendedCollations)) {
+                $hint[] = Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
+                    'collation' => $recommendedCollation,
+                    'tables' => implode(', ', $tablesWithNotRecommendedCollations),
+                ]);
+            }
+
             $checks[] = [
                 'title' => $title,
                 'state' => 'WARNING',
-                'hint' => Yii::t('AdminModule.information', 'Recommended collation is {collation} for the tables: {tables}', [
-                    'collation' => $recommendedCollation,
-                    'tables' => implode(', ', $tablesWithNotRecommendedCollations),
-                ]),
+                'hint' => implode('. ', $hint),
             ];
         }
 
@@ -722,6 +751,24 @@ class SelfTest
                     'tables' => implode(', ', $tablesWithNotRecommendedEngines),
                 ]),
             ];
+        }
+
+        if (Yii::$app->isInstalled()) {
+            $title = Yii::t('AdminModule.information', 'Database') . ' - ';
+            $migrations = MigrationService::create()->getPendingMigrations();
+            if ($migrations === []) {
+                $checks[] = [
+                    'title' => $title . Yii::t('AdminModule.information', 'No pending migrations'),
+                    'state' => 'OK',
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title . Yii::t('AdminModule.information', 'New migrations should be applied: {migrations}', [
+                        'migrations' => implode(', ', $migrations),
+                    ]),
+                    'state' => 'ERROR',
+                ];
+            }
         }
 
         return $checks;
@@ -873,7 +920,7 @@ class SelfTest
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Configuration File');
 
             $foundLegacyConfigKeys = [];
-            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegancyConfigSettings()));
+            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegacyConfigSettings()));
             foreach (array_keys(ArrayHelper::flatten(Yii::$app->loadedAppConfig)) as $config) {
                 foreach ($legacyConfigKeys as $legacyConfig) {
                     if (str_starts_with($config, $legacyConfig)) {
@@ -907,7 +954,7 @@ class SelfTest
      * @since 1.16
      * @return array
      */
-    public static function getLegancyConfigSettings(): array
+    public static function getLegacyConfigSettings(): array
     {
         return [
             'modules' => [
@@ -916,6 +963,7 @@ class SelfTest
             ],
             'components' => [
                 'formatterApp' => new UnsetArrayValue(),
+                'search' => new UnsetArrayValue(),
             ],
         ];
     }
