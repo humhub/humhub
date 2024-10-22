@@ -9,6 +9,7 @@
 namespace humhub\modules\space;
 
 use humhub\components\Event;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -125,7 +126,7 @@ class Events extends BaseObject
             'label' => Yii::t('SpaceModule.base', 'Spaces'),
             'url' => ['/space/spaces'],
             'sortOrder' => 250,
-            'isActive' => MenuLink::isActiveState('space', 'spaces'),
+            'isActive' => ControllerHelper::isActivePath('space', 'spaces'),
         ]));
     }
 

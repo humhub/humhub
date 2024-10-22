@@ -58,6 +58,8 @@ HumHub Changelog
 - Fix #173 : Remove UISetting "Include Captcha in Registr
 - Fix #7066: Allow using `Space::canJoin($userId)` in command line
 - Enh #7037: Space creation notification to users allowed to manage spaces
+- Enh #7243: Server time zone
+- Enh #7188: Helper for detecting a current path by module/controller/action
 
 1.16.3 (Unreleased)
 --------------------------
@@ -69,6 +71,8 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
+- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
+- Fix #7241: Fix file visibility for object with viewable interface
 - Enh #7229: Hide invitations with unknown sources
 
 1.16.2 (September 5, 2024)

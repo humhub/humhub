@@ -12,9 +12,9 @@ use humhub\helpers\DatabaseHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\DynamicConfig;
 use humhub\libs\SelfTest;
+use humhub\libs\TimezoneHelper;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\UnsetArrayValue;
 use yii\helpers\Url;
 
 trait ApplicationTrait
@@ -49,6 +49,18 @@ trait ApplicationTrait
         $config = $this->removeLegacyConfigSettings($config);
 
         parent::__construct($config);
+
+        $this->initLocales();
+    }
+
+    private function initLocales(): void
+    {
+        if ($this->isDatabaseInstalled(true)) {
+            if ($this->settings instanceof SettingsManager) {
+                $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
+            }
+            $this->db->pdo->exec('SET time_zone = ' . $this->db->quoteValue(TimezoneHelper::convertToTime($this->timeZone)));
+        }
     }
 
     /**
@@ -151,7 +163,7 @@ trait ApplicationTrait
                 'components' => [],
             ],
             $applicationConfig,
-            SelfTest::getLegancyConfigSettings(),
+            SelfTest::getLegacyConfigSettings(),
         );
     }
 }

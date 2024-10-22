@@ -8,6 +8,7 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
@@ -38,7 +39,7 @@ class MemberMenu extends TabMenu
             'label' => Yii::t('SpaceModule.manage', 'Members'),
             'url' => $this->space->createUrl('/space/manage/member/index'),
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState(null, 'member', 'index'),
+            'isActive' => ControllerHelper::isActivePath(null, 'member', 'index'),
         ]));
 
         if ($this->countPendingInvites() != 0) {
@@ -46,7 +47,7 @@ class MemberMenu extends TabMenu
                 'label' => Yii::t('SpaceModule.manage', 'Pending Invites') . '&nbsp;&nbsp;' . Badge::danger($this->countPendingInvites()),
                 'url' => $this->space->createUrl('/space/manage/member/pending-invitations'),
                 'sortOrder' => 200,
-                'isActive' => MenuLink::isActiveState(null, 'member', 'pending-invitations'),
+                'isActive' => ControllerHelper::isActivePath(null, 'member', 'pending-invitations'),
             ]));
         }
         if ($this->countPendingApprovals() != 0) {
@@ -54,7 +55,7 @@ class MemberMenu extends TabMenu
                 'label' => Yii::t('SpaceModule.manage', 'Pending Approvals') . '&nbsp;&nbsp;' . Badge::danger($this->countPendingApprovals()),
                 'url' => $this->space->createUrl('/space/manage/member/pending-approvals'),
                 'sortOrder' => 300,
-                'isActive' => MenuLink::isActiveState(null, 'member', 'pending-approvals'),
+                'isActive' => ControllerHelper::isActivePath(null, 'member', 'pending-approvals'),
             ]));
         }
 
@@ -63,7 +64,7 @@ class MemberMenu extends TabMenu
                 'label' => Yii::t('SpaceModule.manage', 'Owner'),
                 'url' => $this->space->createUrl('/space/manage/member/change-owner'),
                 'sortOrder' => 500,
-                'isActive' => MenuLink::isActiveState(null, 'member', 'change-owner'),
+                'isActive' => ControllerHelper::isActivePath(null, 'member', 'change-owner'),
             ]));
         }
 

@@ -8,10 +8,11 @@
 
 namespace humhub\modules\space\modules\manage\widgets;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\space\models\Space;
-use Yii;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use Yii;
 
 /**
  * Space Administration Menu
@@ -34,14 +35,14 @@ class DefaultMenu extends TabMenu
             'label' => Yii::t('AdminModule.base', 'Basic'),
             'url' => $this->space->createUrl('/space/manage/default/index'),
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState(null, 'default', 'index'),
+            'isActive' => ControllerHelper::isActivePath(null, 'default', 'index'),
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Advanced'),
             'url' => $this->space->createUrl('/space/manage/default/advanced'),
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState(null, 'default', 'advanced'),
+            'isActive' => ControllerHelper::isActivePath(null, 'default', 'advanced'),
         ]));
 
         parent::init();

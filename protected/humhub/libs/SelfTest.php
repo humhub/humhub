@@ -920,7 +920,7 @@ class SelfTest
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Configuration File');
 
             $foundLegacyConfigKeys = [];
-            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegancyConfigSettings()));
+            $legacyConfigKeys = array_keys(ArrayHelper::flatten(self::getLegacyConfigSettings()));
             foreach (array_keys(ArrayHelper::flatten(Yii::$app->loadedAppConfig)) as $config) {
                 foreach ($legacyConfigKeys as $legacyConfig) {
                     if (str_starts_with($config, $legacyConfig)) {
@@ -954,7 +954,7 @@ class SelfTest
      * @since 1.16
      * @return array
      */
-    public static function getLegancyConfigSettings(): array
+    public static function getLegacyConfigSettings(): array
     {
         return [
             'modules' => [
