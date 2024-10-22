@@ -9,6 +9,13 @@ class AddTopicForm extends Topic
 {
     public $convertToGlobal;
 
+    public function init()
+    {
+        $this->type = Topic::class;
+
+        parent::init();
+    }
+
     public function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
