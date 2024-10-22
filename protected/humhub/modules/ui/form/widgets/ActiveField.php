@@ -147,7 +147,7 @@ class ActiveField extends \yii\bootstrap\ActiveField
                     'value' => $value,
                 ], $itemOptions);
                 return '<div class="radio' . ($checked ? ' active' : '') . '">'
-                    . Html::radio($name, $checked, $options)
+                        . Html::radio($name, $checked, $options)
                     . '</div>';
             };
         }

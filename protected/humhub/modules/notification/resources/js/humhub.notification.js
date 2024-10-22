@@ -287,13 +287,21 @@ humhub.module('notification', function (module, require, $) {
     };
 
     var handleFilterChanges = function () {
-        var filterForm = $('#notification_overview_filter');
-        filterForm.on('click', 'label', function (evt) {
+        const filterForm = $('#notification_overview_filter');
+        filterForm.on('click', '.field-filterform-categoryfilter label', function (evt) {
             if (evt.target.isSameNode(this)) {
                 evt.preventDefault();
-                var checkbox = $(this).children().first();
+                const checkbox = $(this).children().first();
                 checkbox.prop('checked', !checkbox.prop('checked'));
             }
+            const allSelected = filterForm.find('.field-filterform-categoryfilter input[type=checkbox]:not(:checked)').length === 0;
+            filterForm.find('.field-filterform-allfilter input').prop('checked', allSelected);
+            event.trigger('humhub:notification:filterApplied', filterForm);
+        }).on('click', '.field-filterform-allfilter label', function () {
+            const selectAll = $(this).find('input[type=checkbox]').prop('checked');
+            filterForm.find('#filterform-categoryfilter input[type=checkbox]').prop('checked', selectAll);
+            event.trigger('humhub:notification:filterApplied', filterForm);
+        }).on('change', 'input[name="FilterForm[seenFilter]"]', function () {
             event.trigger('humhub:notification:filterApplied', filterForm);
         });
     };
