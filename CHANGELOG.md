@@ -61,6 +61,7 @@ HumHub Changelog
 - Enh #7188: Helper for detecting a current path by module/controller/action
 - Enh #7265: Profile "About" page: don't display the menu if only one entry
 - Enh #7269: Remove desktop notifications
+- Enh #5423: Display password rules in form field hint
 
 1.16.3 (Unreleased)
 --------------------------
