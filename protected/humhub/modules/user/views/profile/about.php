@@ -2,8 +2,8 @@
 
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\ui\view\components\View;
-use yii\helpers\Html;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
+use yii\helpers\Html;
 
 /**
  * @var $this View
@@ -12,22 +12,28 @@ use humhub\modules\user\models\fieldtype\MarkdownEditor;
 $categories = $user->profile->getProfileFieldCategories();
 ?>
 <div class="panel panel-default">
-    <div
-        class="panel-heading"><?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?></div>
+    <div class="panel-heading">
+        <?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?>
+    </div>
+
     <div class="panel-body">
         <?php $firstClass = "active" ?>
-        <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
-            <?php foreach ($categories as $category): ?>
-                <li class="<?= $firstClass ?>">
-                    <a href="#profile-category-<?= $category->id; ?>"
-                       data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
-                </li>
-                <?php
-                $firstClass = "";
-            endforeach;
-            ?>
-        </ul>
-        <?php $firstClass = "active" ?>
+
+        <?php if (count($categories) > 1): ?>
+            <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+                <?php foreach ($categories as $category): ?>
+                    <li class="<?= $firstClass ?>">
+                        <a href="#profile-category-<?= $category->id; ?>"
+                           data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                    </li>
+                    <?php
+                    $firstClass = "";
+                endforeach;
+                ?>
+            </ul>
+            <?php $firstClass = "active" ?>
+        <?php endif; ?>
+
         <div class="tab-content">
             <?php foreach ($categories as $category): ?>
                 <div class="tab-pane <?php
