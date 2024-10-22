@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\libs\DynamicConfig;
+use humhub\modules\topic\jobs\ConvertTopicsToGlobalJob;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
 use Yii;
@@ -34,6 +35,7 @@ class AuthenticationSettingsForm extends Model
     public $registrationSendMessageMailContent;
     public $registrationApprovalMailContent;
     public $registrationDenialMailContent;
+    public $allowUserTopics = true;
 
     /**
      * @inheritdoc
@@ -59,6 +61,7 @@ class AuthenticationSettingsForm extends Model
         $this->registrationSendMessageMailContent = $settingsManager->get('auth.registrationSendMessageMailContent', ApproveUserForm::getDefaultSendMessageMailContent());
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
         $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', ApproveUserForm::getDefaultDeclineMessage());
+        $this->allowUserTopics = $settingsManager->get('auth.allowUserTopics', true);
     }
 
     /**
@@ -71,6 +74,7 @@ class AuthenticationSettingsForm extends Model
             ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationSendMessageMailContent', 'registrationApprovalMailContent', 'registrationDenialMailContent'], 'string'],
+            [['allowUserTopics'], 'boolean'],
         ];
     }
 
@@ -93,6 +97,7 @@ class AuthenticationSettingsForm extends Model
             'registrationSendMessageMailContent' => Yii::t('AdminModule.user', 'Default content of the email when sending a message to the user'),
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),
+            'allowUserTopics' => Yii::t('AdminModule.user', 'Allow custom content topics at User level'),
         ];
     }
 
@@ -126,6 +131,7 @@ class AuthenticationSettingsForm extends Model
         $settingsManager->set('auth.hideOnlineStatus', $this->hideOnlineStatus);
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
+        $settingsManager->set('auth.allowUserTopics', $this->allowUserTopics);
 
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
@@ -152,6 +158,12 @@ class AuthenticationSettingsForm extends Model
             } else {
                 $settingsManager->set('auth.registrationDenialMailContent', $this->registrationDenialMailContent);
             }
+        }
+
+        if (!$this->allowUserTopics) {
+            Yii::$app->queue->push(new ConvertTopicsToGlobalJob([
+                'containerType' => User::class,
+            ]));
         }
 
         DynamicConfig::rewrite();

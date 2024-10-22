@@ -77,6 +77,11 @@ class SpaceSettingsForm extends Model
     public $defaultHideFollowers = false;
 
     /**
+     * @var bool
+     */
+    public $allowSpaceTopics = true;
+
+    /**
      * @var SettingsManager|null
      */
     public ?SettingsManager $settingsManager;
@@ -91,7 +96,7 @@ class SpaceSettingsForm extends Model
             ['defaultSpaceGuid', 'checkSpaceGuid'],
             [['defaultIndexRoute', 'defaultIndexGuestRoute', 'defaultStreamSort'], 'string'],
             ['defaultStreamSort', 'in', 'range' => array_keys(self::defaultStreamSortOptions())],
-            [['defaultHideMembers', 'defaultHideActivities', 'defaultHideAbout', 'defaultHideFollowers'], 'boolean'],
+            [['defaultHideMembers', 'defaultHideActivities', 'defaultHideAbout', 'defaultHideFollowers', 'allowSpaceTopics'], 'boolean'],
         ];
     }
 
@@ -112,6 +117,7 @@ class SpaceSettingsForm extends Model
             'defaultHideActivities' => Yii::t('AdminModule.space', 'Default "Hide Activity Sidebar Widget"'),
             'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
             'defaultHideFollowers' => Yii::t('AdminModule.space', 'Default "Hide Followers"'),
+            'allowSpaceTopics' => Yii::t('AdminModule.space', 'Allow custom content topics at Space level'),
         ];
     }
 
@@ -153,6 +159,7 @@ class SpaceSettingsForm extends Model
         $this->defaultHideActivities = $this->settingsManager->get('defaultHideActivities', $module->hideActivities);
         $this->defaultHideAbout = $this->settingsManager->get('defaultHideAbout', $module->hideAboutPage);
         $this->defaultHideFollowers = $this->settingsManager->get('defaultHideFollowers', $module->hideFollowers);
+        $this->allowSpaceTopics = $this->settingsManager->get('allowSpaceTopics', true);
     }
 
     /**
@@ -174,7 +181,14 @@ class SpaceSettingsForm extends Model
         $this->settingsManager->set('defaultHideActivities', $this->defaultHideActivities);
         $this->settingsManager->set('defaultHideAbout', $this->defaultHideAbout);
         $this->settingsManager->set('defaultHideFollowers', $this->defaultHideFollowers);
+        $this->settingsManager->set('allowSpaceTopics', $this->allowSpaceTopics);
         $this->updateDefaultSpaces();
+
+        if (!$this->allowSpaceTopics) {
+            Yii::$app->queue->push(new ConvertTopicsToGlobalJob([
+                'containerType' => Space::class,
+            ]));
+        }
 
         return true;
     }

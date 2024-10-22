@@ -17,6 +17,7 @@ use humhub\modules\content\services\ContentTagService;
 use humhub\modules\stream\helpers\StreamHelper;
 use humhub\modules\topic\permissions\AddTopic;
 use Yii;
+use yii\db\ActiveQuery;
 
 /**
  * ContentTag type used for categorizing content.
@@ -111,17 +112,23 @@ class Topic extends ContentTag
         (new ContentTagService($content))->addTags($result);
     }
 
-    public static function convertToGlobal($topicName = null)
+    public static function convertToGlobal(?string $containerType = null, ?string $topicName = null)
     {
         $transaction = Yii::$app->db->beginTransaction();
         try {
-            $topics = static::find()
+            $topicsQuery = static::find()
+                ->addSelect('')
                 ->where(['IS NOT', 'contentcontainer_id', null])
                 ->andWhere(['module_id' => (new static())->moduleId])
-                ->andFilterWhere(['name' => $topicName])
-                ->all();
+                ->andFilterWhere(['name' => $topicName]);
 
-            foreach ($topics as $topic) {
+            if ($containerType) {
+                $topicsQuery->innerJoinWith(['contentContainer contentContainer' => function(ActiveQuery $query) use ($containerType) {
+                    $query->andOnCondition(['contentContainer.class' => $containerType]);
+                }], false);
+            }
+
+            foreach ($topicsQuery->all() as $topic) {
                 $existingGlobalTopic = Topic::find()->where(['name' => $topic->name, 'contentcontainer_id' => null])->one();
 
                 if ($existingGlobalTopic) {
@@ -138,6 +145,7 @@ class Topic extends ContentTag
                     $globalTopic->save(false);
                 }
                 ContentTagRelation::updateAll(['tag_id' => $globalTopic->id], ['tag_id' => $topic->id]);
+
                 $topic->delete();
             }
             $transaction->commit();

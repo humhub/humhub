@@ -236,10 +236,6 @@ class ContentTag extends ActiveRecord
      */
     public function getContentContainer()
     {
-        if ($this->contentcontainer_id === null) {
-            return null;
-        }
-
         return $this->hasOne(ContentContainer::class, ['id' => 'contentcontainer_id']);
     }
 
@@ -342,7 +338,7 @@ class ContentTag extends ActiveRecord
     {
         $query = parent::find()
             ->select([
-                '*',
+                'content_tag.*',
                 'is_global' => new Expression('content_tag.contentcontainer_id IS NULL'),
             ])
             ->orderBy([

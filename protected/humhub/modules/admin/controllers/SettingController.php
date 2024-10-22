@@ -332,7 +332,7 @@ class SettingController extends Controller
             });
 
             if (!!$model->convertToGlobal) {
-                Topic::convertToGlobal($model->name);
+                Topic::convertToGlobal(null, $model->name);
 
                 $model->name = '';
                 $this->view->saved();
