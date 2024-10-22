@@ -60,6 +60,7 @@ HumHub Changelog
 - Enh #7037: Space creation notification to users allowed to manage spaces
 - Enh #7243: Server time zone
 - Enh #7188: Helper for detecting a current path by module/controller/action
+- Enh #7265: Profile "About" page: don't display the menu if only one entry
 
 1.16.3 (Unreleased)
 --------------------------
