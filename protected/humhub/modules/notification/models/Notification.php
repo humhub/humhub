@@ -29,7 +29,6 @@ use yii\db\Query;
  * @property int $emailed
  * @property string module
  * @property string $created_at
- * @property int $desktop_notified
  * @property int $originator_user_id
  * @property int $send_web_notifications
  * @property string $payload
@@ -97,7 +96,7 @@ class Notification extends ActiveRecord
         return [
             [['class', 'user_id'], 'required'],
             [
-                ['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'desktop_notified', 'originator_user_id'],
+                ['user_id', 'seen', 'source_pk', 'space_id', 'emailed', 'originator_user_id'],
                 'integer',
             ],
             [['class', 'source_class'], 'string', 'max' => 100],
@@ -289,18 +288,5 @@ class Notification extends ActiveRecord
         return Notification::findGrouped($user)
             ->andWhere(['notification.seen' => 0])
             ->orWhere(['IS', 'notification.seen', new Expression('NULL')]);
-    }
-
-    /**
-     * Finds all grouped unseen notifications which were not already sent to the frontend.
-     *
-     * @param User $user
-     * @return ActiveQuery
-     * @throws Throwable
-     * @since 1.2
-     */
-    public static function findUnnotifiedInFrontend(User $user = null)
-    {
-        return self::findUnseen($user)->andWhere(['notification.desktop_notified' => 0]);
     }
 }
