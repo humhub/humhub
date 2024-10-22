@@ -66,6 +66,7 @@ use yii\db\IntegrityException;
 class ContentTag extends ActiveRecord
 {
     public const EVENT_GLOBAL_CONVERSION_SUGGESTION = 'contentTagGlobalConversionSuggestion';
+    public const INTERNAL_ERROR_EXIST_ON_SPACE_USER_LEVEL = 'existOnSpaceUserLevel';
 
     /**
      * @var string id of the module related to this content tag concept
@@ -178,7 +179,8 @@ class ContentTag extends ActiveRecord
                 $this->addError('name', Yii::t('ContentModule.base', 'Topic already exists globally.'));
             } elseif (!$this->contentcontainer_id && $found->contentcontainer_id) {
                 $this->trigger(self::EVENT_GLOBAL_CONVERSION_SUGGESTION);
-                $this->addError('name', Yii::t('ContentModule.base', 'Topic already exists on Space/Profile level.'));
+                $this->addError('name', Yii::t('ContentModule.base', 'Topic already in use in Spaces or on Profiles.'));
+                $this->addError('internal', self::INTERNAL_ERROR_EXIST_ON_SPACE_USER_LEVEL);
             } else {
                 $this->addError('name', Yii::t('ContentModule.base', 'The given name is already in use.'));
             }

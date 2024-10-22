@@ -28,7 +28,15 @@ Pjax::begin(['enablePushState' => false, 'id' => 'global-topics']);
 
 $form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
 
-echo Html::tag('p', Yii::t('AdminModule.settings', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.'));
+echo Html::tag('p', Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'));
+
+if ($addModel->getFirstError('internal') === $addModel::INTERNAL_ERROR_EXIST_ON_SPACE_USER_LEVEL) {
+    $info = $addModel->getFirstError('name');
+    $addModel->clearErrors('name');
+} else {
+    $info = '';
+}
+
 
 echo $form->field($addModel, 'name', [
     'template' => '
@@ -39,6 +47,7 @@ echo $form->field($addModel, 'name', [
 </span>
 </div>
 {error}
+' . $info . '
 {hint}',
     'options' => [
         'style' => 'margin-bottom: 0',
@@ -55,7 +64,7 @@ echo $form->field($addModel, 'name', [
 if ($suggestGlobalConversion) {
     echo $form->field($addModel, 'convertToGlobal')
         ->checkbox()
-        ->label(Yii::t('AdminModule.settings', 'Convert \'{topicName}\' into global', ['topicName' => $addModel->name]));
+        ->label(Yii::t('AdminModule.settings', 'Convert to global topic'));
 }
 
 ActiveForm::end();
