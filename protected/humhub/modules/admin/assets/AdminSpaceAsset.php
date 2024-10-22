@@ -21,8 +21,4 @@ class AdminSpaceAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.space.js',
     ];
-
-    public $publishOptions = [
-        'forceCopy' => true,
-    ];
 }

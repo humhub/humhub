@@ -21,8 +21,4 @@ class AdminUserAsset extends AssetBundle
     public $js = [
         'js/humhub.admin.user.js',
     ];
-
-    public $publishOptions = [
-        'forceCopy' => true,
-    ];
 }
