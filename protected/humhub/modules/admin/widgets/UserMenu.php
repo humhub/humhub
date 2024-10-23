@@ -15,7 +15,6 @@ use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
-use Yii;
 use humhub\widgets\bootstrap\Badge;
 use Yii;
 
