@@ -32,14 +32,14 @@ class Settings extends Menu
             'label' => Yii::t('MarketplaceModule.base', 'General Settings'),
             'url' => ['/marketplace/browse/module-settings'],
             'icon' => 'cog',
-            'htmlOptions' => ['data-target' => '#globalModal'],
+            'htmlOptions' => ['data-bs-target' => '#globalModal'],
             'sortOrder' => 100,
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'Add License Key'),
             'url' => ['/marketplace/purchase'],
-            'htmlOptions' => ['data-target' => '#globalModal'],
+            'htmlOptions' => ['data-bs-target' => '#globalModal'],
             'icon' => 'key',
             'sortOrder' => 200,
         ]));

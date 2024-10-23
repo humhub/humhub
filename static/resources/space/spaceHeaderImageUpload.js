@@ -32,8 +32,8 @@ $(document).on('humhub:ready', function () {
                     } else {
                         $('.space-profile-image-' + data.result.files[0].space_id).attr('src', data.result.files[0].url + '&c=' + Math.random());
 
-                        $('.space-profile-acronym-' + data.result.files[0].space_id).addClass('hidden');
-                        $('.space-profile-image-' + data.result.files[0].space_id).removeClass('hidden');
+                        $('.space-profile-acronym-' + data.result.files[0].space_id).addClass('d-none');
+                        $('.space-profile-image-' + data.result.files[0].space_id).removeClass('d-none');
                         $('.space-profile-image-' + data.result.files[0].space_id).addClass('animated bounceIn');
                     }
 
@@ -112,8 +112,8 @@ function resetProfileImage(json) {
 
     if (json.type == 'profile') {
         $('.space-profile-image-' + json.space_id).attr('src', json.defaultUrl);
-        $('.space-profile-acronym-' + json.space_id).removeClass('hidden');
-        $('.space-profile-image-' + json.space_id).addClass('hidden');
+        $('.space-profile-acronym-' + json.space_id).removeClass('d-none');
+        $('.space-profile-image-' + json.space_id).addClass('d-none');
         $('#deleteLinkPost_modal_profileimagedelete').hide();
         $('#profile-image-upload-edit-button').hide();
 

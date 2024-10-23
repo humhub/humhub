@@ -1,9 +1,9 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\fieldtype\MarkdownEditor;
-use yii\helpers\Html;
 
 /**
  * @var $this View
@@ -15,34 +15,30 @@ $categories = $user->profile->getProfileFieldCategories();
     <div class="panel-heading">
         <?= Yii::t('UserModule.profile', '<strong>About</strong> this user') ?>
     </div>
-
     <div class="panel-body">
-        <?php $firstClass = "active" ?>
 
         <?php if (count($categories) > 1): ?>
+            <?php $isFirstCategory = true; ?>
             <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
                 <?php foreach ($categories as $category): ?>
-                    <li class="<?= $firstClass ?>">
-                        <a href="#profile-category-<?= $category->id; ?>"
-                           data-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
+                    <li class="nav-item">
+                        <a href="#profile-category-<?= $category->id ?>"
+                           class="nav-link<?= $isFirstCategory ? ' active' : '' ?>"
+                           data-bs-toggle="tab"><?= Html::encode(Yii::t($category->getTranslationCategory(), $category->title)) ?></a>
                     </li>
-                    <?php
-                    $firstClass = "";
-                endforeach;
-                ?>
+                    <?php $isFirstCategory = false; ?>
+                <?php endforeach; ?>
             </ul>
-            <?php $firstClass = "active" ?>
         <?php endif; ?>
 
         <div class="tab-content">
+            <?php $isFirstCategory = true; ?>
             <?php foreach ($categories as $category): ?>
-                <div class="tab-pane <?php
-                echo $firstClass;
-                $firstClass = "";
-                ?>" id="profile-category-<?= $category->id ?>">
+                <div class="tab-pane <?= $isFirstCategory ? ' active' : '' ?>"
+                     id="profile-category-<?= $category->id ?>">
                     <form class="form-horizontal" role="form">
                         <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
-                            <div class="form-group">
+                            <div class="mb-3">
                                 <label class="col-sm-3 control-label">
                                     <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
                                 </label>
@@ -67,6 +63,7 @@ $categories = $user->profile->getProfileFieldCategories();
                         <?php endforeach; ?>
                     </form>
                 </div>
+                <?php $isFirstCategory = false; ?>
             <?php endforeach; ?>
         </div>
     </div>

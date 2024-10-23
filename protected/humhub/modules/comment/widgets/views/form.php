@@ -1,5 +1,6 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
@@ -7,10 +8,9 @@ use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this View */
@@ -68,12 +68,12 @@ $placeholder = ($isNestedComment)
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-default',
+                'cssButtonClass' => 'btn-sm btn-light',
             ]);
             echo FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-sm btn-default',
+                'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
             ]);
             echo Button::info()

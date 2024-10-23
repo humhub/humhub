@@ -31,7 +31,6 @@ class SpaceDirectoryStatus extends Widget
     {
         if ($this->space->isArchived()) {
             return $this->render('spaceDirectoryStatus', [
-                'class' => 'label label-primary',
                 'text' => Yii::t('SpaceModule.base', 'Archived'),
             ]);
         }

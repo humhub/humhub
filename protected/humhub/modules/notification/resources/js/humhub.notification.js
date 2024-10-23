@@ -84,7 +84,7 @@ humhub.module('notification', function (module, require, $) {
     };
 
     NotificationDropDown.prototype.initDropdown = function () {
-        this.$entryList = this.$.find('ul.media-list');
+        this.$entryList = this.$.find('div.media-list');
         this.$dropdown = this.$.find('#dropdown-notifications');
 
         var that = this;
@@ -107,8 +107,8 @@ humhub.module('notification', function (module, require, $) {
         this.lastEntryLoaded = false;
         this.lastEntryId = 0;
 
-        // Since the handler will be called before the bootstrap trigger it's an open event if the dropdown is not visible yet
-        this.isOpen = !this.$dropdown.is(':visible');
+        // Since the handler will be called before the bootstrap trigger, isOpen is true if the dropdown is shown
+        this.isOpen = this.$dropdown.hasClass('show');
         if (this.isOpen) {
             this.$entryList.empty().hide();
             this.loadEntries();
@@ -269,7 +269,7 @@ humhub.module('notification', function (module, require, $) {
         initOverviewPage();
 
         if (!$pjax && view.isLarge()) {
-            $("#dropdown-notifications ul.media-list").niceScroll({
+            $("#dropdown-notifications div.media-list").niceScroll({
                 cursorwidth: "7",
                 cursorborder: "",
                 cursorcolor: "#555",
@@ -278,7 +278,7 @@ humhub.module('notification', function (module, require, $) {
                 railpadding: {top: 0, right: 3, left: 0, bottom: 0}
             });
 
-            $("#dropdown-notifications ul.media-list").on('touchmove', function (evt) {
+            $("#dropdown-notifications div.media-list").on('touchmove', function (evt) {
                 evt.preventDefault();
             });
         }
@@ -302,7 +302,7 @@ humhub.module('notification', function (module, require, $) {
         handleFilterChanges();
         if ($('#notification_overview_list').length) {
             OverviewWidget.instance('#notification_overview_list');
-            if ($('#notification_overview_list li.new').length) {
+            if ($('#notification_overview_list .new').length) {
                 $('#notification_overview_markseen').show();
             }
         }

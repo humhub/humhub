@@ -1,12 +1,12 @@
 <?php
 
 use humhub\components\Module;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\ModuleSetAsDefaultForm;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\user\models\User;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 use yii\web\View;
 
@@ -24,7 +24,7 @@ AdminAsset::register($this);
     <div class="modal-content">
 
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
             <h4 class="modal-title" id="myModalLabel">
                 <?= Yii::t('AdminModule.modules', '%moduleName% - Set as default module', ['%moduleName%' => "<strong>" . $module->getName() . "</strong>"]); ?>
             </h4>

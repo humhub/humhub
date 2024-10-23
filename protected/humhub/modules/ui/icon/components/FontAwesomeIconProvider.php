@@ -2,7 +2,7 @@
 
 namespace humhub\modules\ui\icon\components;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 
 /**
@@ -46,11 +46,11 @@ class FontAwesomeIconProvider implements IconProvider
         }
 
         if ($icon->right) {
-            Html::addCssClass($options, 'fa-pull-right');
+            Html::addCssClass($options, 'fa-float-end');
         }
 
         if ($icon->left) {
-            Html::addCssClass($options, 'fa-pull-left');
+            Html::addCssClass($options, 'fa-float-start');
         }
 
         if ($icon->border) {

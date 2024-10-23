@@ -6,10 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\view\components\View;
 use humhub\services\MigrationService;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /**
  * @var $this View

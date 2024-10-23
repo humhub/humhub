@@ -20,7 +20,7 @@ use humhub\modules\ui\view\components\View;
             <div class="col-md-12">
                 <?= HeaderCounterSet::widget(['space' => $container]); ?>
 
-                <div class="controls controls-header pull-right">
+                <div class="controls controls-header float-end">
                     <?= HeaderControls::widget(['widgets' => [
                         [InviteButton::class, ['space' => $container], ['sortOrder' => 10]],
                         [MembershipButton::class, [
