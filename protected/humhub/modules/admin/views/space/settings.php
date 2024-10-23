@@ -17,7 +17,9 @@ AdminSpaceAsset::register($this);
 
 $this->registerJsConfig('admin.space', [
     'text' => [
-        'confirm.body' => Yii::t('AdminModule.space', 'All existing space\'s topics will be converted to Global.'),
+        'confirm.header' => Yii::t('AdminModule.space', 'Convert Space Topics'),
+        'confirm.body' => Yii::t('AdminModule.space', 'All existing Space Topics will be converted to Global Topics.'),
+        'confirm.confirmText' => Yii::t('AdminModule.space', 'Convert'),
     ]
 ]);
 

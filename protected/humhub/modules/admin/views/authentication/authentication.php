@@ -14,7 +14,9 @@ AdminUserAsset::register($this);
 
 $this->registerJsConfig('admin.space', [
     'text' => [
-        'confirm.body' => Yii::t('AdminModule.user', 'All existing user\'s topics will be converted to Global.'),
+        'confirm.header' => Yii::t('AdminModule.user', 'Convert Profile Topics'),
+        'confirm.body' => Yii::t('AdminModule.user', 'All existing Profile Topics will be converted to Global Topics.'),
+        'confirm.confirmText' => Yii::t('AdminModule.user', 'Convert'),
     ]
 ]);
 

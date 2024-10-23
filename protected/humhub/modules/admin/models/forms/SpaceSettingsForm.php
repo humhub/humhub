@@ -118,7 +118,7 @@ class SpaceSettingsForm extends Model
             'defaultHideActivities' => Yii::t('AdminModule.space', 'Default "Hide Activity Sidebar Widget"'),
             'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
             'defaultHideFollowers' => Yii::t('AdminModule.space', 'Default "Hide Followers"'),
-            'allowSpaceTopics' => Yii::t('AdminModule.space', 'Allow custom content topics at Space level'),
+            'allowSpaceTopics' => Yii::t('AdminModule.space', 'Allow individual topics in Spaces'),
         ];
     }
 
