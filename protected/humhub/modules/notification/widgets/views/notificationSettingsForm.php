@@ -13,7 +13,6 @@ use humhub\modules\space\models\Space;
 ?>
 
 <br/>
-<?= $form->field($model, 'desktopNotifications')->checkbox(); ?>
 
 <?php if ($showSpaces): ?>
     <?= humhub\modules\space\widgets\SpacePickerField::widget([

@@ -52,7 +52,7 @@ $module = Yii::$app->getModule('comment');
         <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
             <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more
                  data-read-more-text="<?= Yii::t('CommentModule.base', 'Read full comment...') ?>">
-                <?= RichText::output($comment->message) ?>
+                <?= RichText::output($comment->message, ['record' => $comment]) ?>
             </div>
             <?= ShowFiles::widget(['object' => $comment]); ?>
         </div>

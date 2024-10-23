@@ -81,7 +81,6 @@ return [
     'Prevent client caching of following scripts' => 'Sprečite klijentsko keširanje sljedećih skripti',
     'Provider Name' => 'Ime provejdera',
     'Redis' => 'Redis',
-    'Reported database time: {dateTime}' => 'Izvješteno vrijeme baze podataka: {dateTime}',
     'Save' => 'Sačuvaj',
     'Save & Flush Caches' => 'Spremi i isprazni Cache',
     'Save & Test' => 'Spremi i Testiraj',

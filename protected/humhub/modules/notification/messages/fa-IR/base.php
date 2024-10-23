@@ -3,7 +3,6 @@
 return [
     '<strong>Notification</strong> Overview' => 'چکیده‌ی <strong>آگهی</strong>',
     '<strong>Notification</strong> Settings' => 'تنظیمات <strong>آگهی</strong>',
-    'Allow desktop notifications by default.' => 'به طور پیش‌فرض به آگهی‌های رومیزی اجازه بده.',
     'Filter' => 'پالایه',
     'Mark all as seen' => 'علامت‌گذاری همه به عنوان دیده‌شده',
     'Module Filter' => 'پالایه‌ی ماژول',
@@ -11,7 +10,6 @@ return [
     'Notifications' => 'آگهی‌ها',
     'Open the notification dropdown menu' => 'بازکردن منوی پایین‌افتادنی آگهی',
     'Receive \'New Content\' Notifications for the following spaces' => 'دریافت آگهی «محتوای تازه» برای انجمن‌های زیر',
-    'Receive desktop notifications when you are online.' => 'دريافت آگهی رومیزی هنگامی كه آنلاين هستيد.',
     'Reset to defaults' => 'بازگشت به پیش‌فرض‌ها',
     'Show all notifications' => 'نمایش همه‌ی آگهی‌ها',
     'The requested content is not valid or was removed!' => 'محتوای درخواست شده نادرست است یا حذف شده است!',

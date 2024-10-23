@@ -145,6 +145,14 @@ abstract class AbstractRichText extends JsWidget
     protected static $converterClass;
 
     /**
+     * @var mixed can be used to identify the related record
+     * Note: This property is used by external modules:
+     *   - Legal Tools: https://github.com/humhub/legal/blob/master/Events.php#L263
+     *   - Link Preview: https://github.com/humhub/linkpreview/blob/master/widgets/Viewer.php#L44
+     */
+    public $record;
+
+    /**
      * @var array of richtext extension classes used for preparing and post processing output and converter result
      * @since 1.8
      */

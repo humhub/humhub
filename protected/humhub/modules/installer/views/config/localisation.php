@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\libs\Html;
 use humhub\modules\installer\forms\LocalisationForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
@@ -37,3 +38,6 @@ use humhub\widgets\Button;
         <?php $form::end() ?>
     </div>
 </div>
+<script <?= Html::nonce() ?>>
+    $('#localisationform-timezone').val(Intl.DateTimeFormat().resolvedOptions().timeZone);
+</script>

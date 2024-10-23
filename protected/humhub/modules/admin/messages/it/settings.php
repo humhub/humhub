@@ -91,7 +91,6 @@ return [
     'Provider Name' => 'Nome del provider',
     'Redis' => 'Redis',
     'Regular expression by which the link match will be checked.' => 'Espressione regolare con cui verrà verificata la corrispondenza del collegamento.',
-    'Reported database time: {dateTime}' => 'Ora database segnalata: {dateTime}',
     'Save' => 'Salva',
     'Save & Flush Caches' => 'Salva e svuota Cache',
     'Save & Test' => 'Salva e testa',

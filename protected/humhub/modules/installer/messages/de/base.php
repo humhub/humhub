@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>Administrator</strong> Konto',
   '<strong>Configuration</strong>' => '<strong>Konfiguration</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Glückwunsch</strong>. Du hast die Installation abgeschlossen.',
@@ -19,6 +19,8 @@ Deinem Sozialen Netzwerk.',
   'Congratulations! Everything is ok and ready to start over!' => 'Glückwunsch! Alles ist in Ordnung und bereit zur Installation!',
   'Create Admin Account' => 'Erstelle Administrator-Konto',
   'Create the database if it doesn\'t exist yet.' => 'Erstelle die Datenbank, wenn sie noch nicht existiert.',
+  'Default Language' => '',
+  'Default Timezone' => 'Standard Zeitzone',
   'Downloading & Installing Modules...' => 'Module herunterladen &amp; installieren ...',
   'External users can register (show registration form on login)' => 'Externe Benutzer können sich registrieren (Registrierungsformular beim Login anzeigen)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Hier kannst du entscheiden, wie neue, nicht registrierte Benutzer auf HumHub zugreifen können.',
@@ -30,6 +32,8 @@ Deinem Sozialen Netzwerk.',
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Um diese Funktion zu aktivieren, ist es notwendig, die HumHub-Konfiguration und gegebenenfalls die Konfiguration des WebServers zu bearbeiten.',
   'Initializing database...' => 'Initialisiere Datenbank ...',
   'Installation Example:' => 'Installationsbeispiel:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Mein Club / Verein',
   'My community' => 'Meine Community',
   'My company (Social Intranet / Project management)' => 'Meine Firma (Social Intranet / Projektmanagement)',
@@ -71,4 +75,4 @@ Deinem Sozialen Netzwerk.',
   'Your MySQL password.' => 'Dein MySQL Passwort',
   'Your MySQL username' => 'Dein MySQL Benutzername',
   'Your first sample space to discover the platform.' => 'Dein erstes Beispiel, um die Plattform zu entdecken',
-);
+];
