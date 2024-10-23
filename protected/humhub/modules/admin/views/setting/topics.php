@@ -2,7 +2,6 @@
 
 use humhub\libs\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
-use humhub\modules\admin\models\forms\GlobalTopicSettingForm;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
@@ -19,15 +18,15 @@ use yii\widgets\Pjax;
  * @var bool $suggestGlobalConversion
  */
 
-$this->beginContent('@admin/views/setting/_advancedLayout.php');
-
 AdminTopicAsset::register($this);
+
+echo Html::beginTag('div', ['class' => 'panel-body']);
+echo Html::tag('h4', Yii::t('AdminModule.settings', 'Topics'));
+echo Html::tag('div', Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'), ['class' => 'help-block']);
 
 Pjax::begin(['enablePushState' => false, 'id' => 'global-topics']);
 
 $form = ActiveForm::begin(['options' => ['data-pjax' => true]]);
-
-echo Html::tag('p', Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'));
 
 echo $form->field($addModel, 'name', [
     'template' => '
@@ -86,6 +85,7 @@ echo GridView::widget([
             ],
         ],
     ]]);
-Pjax::end();
-$this->endContent();
 
+Pjax::end();
+
+echo Html::endTag('div');

@@ -87,15 +87,6 @@ class AdvancedSettingMenu extends SubTabMenu
             'isVisible' => Yii::$app->user->isAdmin(),
         ]));
 
-        $this->addEntry(new MenuLink([
-            'label' => Yii::t('AdminModule.base', 'Topics'),
-            'url' => Url::toRoute('/admin/setting/topics'),
-            'icon' => 'tags',
-            'sortOrder' => 700,
-            'isActive' => MenuLink::isActiveState('admin', 'setting', ['topics', 'topic-edit']),
-            'isVisible' => Yii::$app->user->isAdmin(),
-        ]));
-
         parent::init();
     }
 
