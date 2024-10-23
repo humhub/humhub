@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicLabel;
 use humhub\modules\ui\view\components\View;
@@ -24,7 +23,7 @@ use humhub\modules\ui\view\components\View;
         <div class="wall-entry-body">
             <div class="topic-label-list">
                 <?php foreach ($topics as $topic) : ?>
-                    <?= TopicLabel::forTopic($topic) ?>
+                    <?= TopicLabel::forTopic($topic, $model->content->contentContainer->getPolymorphicRelation()) ?>
                 <?php endforeach; ?>
             </div>
 

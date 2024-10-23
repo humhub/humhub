@@ -11,12 +11,12 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\view\components\View;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\Button;
 use humhub\widgets\GridView;
 use humhub\widgets\ModalButton;
 use yii\bootstrap\ActiveForm;
-use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\AccountSettingsMenu;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 
@@ -31,14 +31,20 @@ use yii\helpers\Html;
 <div class="panel panel-default">
     <div class="panel-heading"><?= $title ?></div>
 
-    <?php if ($contentContainer instanceof Space) : ?>
-        <?= DefaultMenu::widget(['space' => $contentContainer]); ?>
-    <?php elseif ($contentContainer instanceof User) : ?>
-        <?= AccountSettingsMenu::widget() ?>
-    <?php endif; ?>
+    <?php
+    if ($contentContainer instanceof Space) {
+        echo DefaultMenu::widget(['space' => $contentContainer]);
+        $topicsAllowed = !! Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true);
+    } elseif ($contentContainer instanceof User) {
+        echo AccountSettingsMenu::widget();
+        $topicsAllowed = !! Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true);
+    } else {
+        $topicsAllowed = false;
+    }
+    ?>
 
     <div class="panel-body">
-
+        <?php if ($topicsAllowed) : ?>
         <?php $form = ActiveForm::begin(); ?>
         <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
         <div class="form-group">
@@ -50,6 +56,7 @@ use yii\helpers\Html;
             </div>
         </div>
         <?php ActiveForm::end(); ?>
+        <?php endif; ?>
 
         <?= GridView::widget([
             'dataProvider' => $dataProvider,
