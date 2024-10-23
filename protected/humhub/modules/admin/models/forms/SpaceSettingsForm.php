@@ -7,6 +7,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
 use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
+use humhub\modules\topic\jobs\ConvertTopicsToGlobalJob;
 use Yii;
 use yii\base\Model;
 
