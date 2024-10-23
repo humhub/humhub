@@ -5,7 +5,6 @@ namespace humhub\modules\user\models\forms;
 use humhub\modules\user\assets\UserAsset;
 use humhub\modules\user\authclient\BaseClient;
 use humhub\modules\user\authclient\BaseFormAuth;
-use humhub\modules\user\Module;
 use Yii;
 use yii\base\Model;
 
@@ -65,18 +64,6 @@ class Login extends Model
             'password' => Yii::t('UserModule.auth', 'Password'),
             'rememberMe' => Yii::t('UserModule.auth', 'Remember me'),
         ];
-    }
-
-    /**
-     * @inerhitdoc
-     */
-    public function attributeHints()
-    {
-        /* @var $module Module */
-        $module = Yii::$app->getModule('user');
-        $passwordHint = $module->getPasswordHint();
-
-        return $passwordHint ? ['password' => $passwordHint] : [];
     }
 
     /**
