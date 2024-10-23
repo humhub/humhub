@@ -14,8 +14,10 @@ use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentTag;
 use humhub\modules\content\models\ContentTagRelation;
 use humhub\modules\content\services\ContentTagService;
+use humhub\modules\space\models\Space;
 use humhub\modules\stream\helpers\StreamHelper;
 use humhub\modules\topic\permissions\AddTopic;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\db\ActiveQuery;
 
@@ -153,5 +155,17 @@ class Topic extends ContentTag
             $transaction->rollBack();
             throw $e;
         }
+    }
+
+    public static function isAllowedToCreate(ContentContainerActiveRecord $contentContainer)
+    {
+        return (
+            $contentContainer instanceof Space &&
+            Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)
+        ) ||
+        (
+            $contentContainer instanceof User &&
+            Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true)
+        );
     }
 }
