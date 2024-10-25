@@ -15,6 +15,7 @@ use humhub\modules\user\models\User;
 use humhub\widgets\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
 
 class ManageController extends ContentContainerController
@@ -38,6 +39,15 @@ class ManageController extends ContentContainerController
         if ($this->contentContainer instanceof User) {
             $this->subLayout = "@humhub/modules/user/views/account/_layout";
         }
+    }
+
+    public function beforeAction($action)
+    {
+        if (!Topic::isAllowedToCreate($this->contentContainer)) {
+            throw new ForbiddenHttpException();
+        }
+
+        return parent::beforeAction($action);
     }
 
     public function actionIndex()
