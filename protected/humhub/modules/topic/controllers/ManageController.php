@@ -79,7 +79,7 @@ class ManageController extends ContentContainerController
         $this->forcePostRequest();
 
         $topic = Topic::find()
-            ->where(['id' => $id, 'contentcontainer_id' => $this->contentContainer->id])
+            ->where(['id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id])
             ->one();
 
         if (!$topic) {
@@ -94,7 +94,7 @@ class ManageController extends ContentContainerController
     public function actionEdit($id)
     {
         $topic = Topic::find()
-            ->where(['id' => $id, 'contentcontainer_id' => $this->contentContainer->id])
+            ->where(['id' => $id, 'contentcontainer_id' => $this->contentContainer->contentcontainer_id])
             ->one();
 
         if (!$topic) {
