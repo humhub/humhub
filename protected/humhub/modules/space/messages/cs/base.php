@@ -160,8 +160,10 @@ return [
     '{email} is not valid!' => 'E-mailová adresa {email} není platná!',
     '<strong>Leave</strong> Space' => '',
     'Advanced Spaces Search' => '',
+    'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',
     'Neither..nor' => '',
     'Shown on About Page.' => '',
     'Space Name' => '',
+    'Stream Sort' => '',
 ];

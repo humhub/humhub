@@ -90,20 +90,6 @@ class DynamicConfig extends BaseObject
         // Add Application Name to Configuration
         $config['name'] = Yii::$app->settings->get('name');
 
-        // Add Default language
-        $defaultLanguage = Yii::$app->settings->get('defaultLanguage');
-        if ($defaultLanguage !== null && $defaultLanguage != '') {
-            $config['language'] = Yii::$app->settings->get('defaultLanguage');
-        } else {
-            $config['language'] = Yii::$app->language;
-        }
-
-        $defaultTimeZone = Yii::$app->settings->get('defaultTimeZone');
-        if (!empty($defaultTimeZone)) {
-            $config['timeZone'] = $defaultTimeZone;
-            $config['components']['formatter']['defaultTimeZone'] = $defaultTimeZone;
-        }
-
         // Add Caching
         $cacheClass = Yii::$app->settings->get('cache.class');
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {
@@ -140,6 +126,14 @@ class DynamicConfig extends BaseObject
         // Cleanups
         unset($config['components']['db']['charset']);
         unset($config['components']['formatterApp']);
+
+        // Remove old localisation options
+        unset($config['timeZone']);
+        unset($config['language']);
+        unset($config['components']['formatter']['defaultTimeZone']);
+        if (empty($config['components']['formatter'])) {
+            unset($config['components']['formatter']);
+        }
 
         $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
@@ -203,5 +197,10 @@ class DynamicConfig extends BaseObject
     public static function getConfigFilePath()
     {
         return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
+    }
+
+    public static function exist()
+    {
+        return file_exists(self::getConfigFilePath());
     }
 }

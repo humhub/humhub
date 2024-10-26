@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => 'Cuenta de <strong>administrador</strong>',
   '<strong>Configuration</strong>' => '<strong>Configuración</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>¡Felicidades!</strong>. Ya has acabado.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => '¡Felicidades! ¡Todo está correcto y listo para empezar!',
   'Create Admin Account' => 'Crear cuenta de administrador',
   'Create the database if it doesn\'t exist yet.' => 'Crear la base de datos si aún no existe.',
+  'Default Language' => '',
+  'Default Timezone' => 'Zona horaria por defecto',
   'Downloading & Installing Modules...' => 'Descargando e instalando módulos...',
   'External users can register (show registration form on login)' => 'Los usuarios externos pueden registrarse (mostrar el formulario de registro en la página de login)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Aquí puedes decidir cómo los nuevos usuarios, no registrados, pueden acceder a HumHub',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Para activar esta función es necesario editar la configuración de HumHub y, posiblemente, la configuración del servidor web.',
   'Initializing database...' => 'Inicializando base de datos...',
   'Installation Example:' => 'Ejemplo de instalación:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Mi club',
   'My community' => 'Mi comunidad',
   'My company (Social Intranet / Project management)' => 'Mi empresa (intranet social / gestión de proyectos)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Tu contraseña MySQL',
   'Your MySQL username' => 'Tu nombre de usuario MySQL',
   'Your first sample space to discover the platform.' => 'Tu primer espacio para descubrir la plataforma.',
-);
+];

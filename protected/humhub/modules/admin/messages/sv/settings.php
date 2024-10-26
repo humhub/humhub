@@ -76,7 +76,6 @@ return [
     'Port number' => 'Port nummer',
     'Prevent client caching of following scripts' => 'Förhindra klientcachelagring av följande skript',
     'Redis' => 'Redis',
-    'Reported database time: {dateTime}' => 'Rapporterad databastid: {dateTime}',
     'Save' => 'Spara',
     'Save & Flush Caches' => 'Spara och spola cacher',
     'Save & Test' => 'Spara &amp; Testa',

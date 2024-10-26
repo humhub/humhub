@@ -164,4 +164,6 @@ return [
     '{count} members' => '{count} nariai',
     '{email} is not valid!' => '{email} negalioja!',
     'Advanced Spaces Search' => '',
+    'Default Stream Sort' => '',
+    'Stream Sort' => '',
 ];

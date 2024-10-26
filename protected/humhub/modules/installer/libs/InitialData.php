@@ -50,7 +50,6 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', '1');
-        Yii::$app->getModule('user')->settings->set('auth.showCaptureInRegisterForm', '1');
 
         // Mailing
         Yii::$app->settings->set('mailer.transportType', 'php');
@@ -73,14 +72,9 @@ class InitialData
 
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);
-        Yii::$app->settings->set('defaultLanguage', Yii::$app->language);
-
-        // Notification
-        Yii::$app->getModule('notification')->settings->set('enable_html5_desktop_notifications', 0);
 
         // Avoid warning direct after installation
         Yii::$app->settings->set('cronLastRun', time());
-
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory();

@@ -28,9 +28,7 @@ class Overview extends JsWidget
     public function init()
     {
         $this->view->registerJsConfig('notification', [
-            'icon' => $this->view->theme->getBaseUrl() . '/ico/notification-o.png',
             'loadEntriesUrl' => Url::to(['/notification/list']),
-            'sendDesktopNotifications' => boolval(Yii::$app->notification->getDesktopNoficationSettings(Yii::$app->user->getIdentity())),
             'text' => [
                 'placeholder' => Yii::t('NotificationModule.base', 'There are no notifications yet.'),
             ],

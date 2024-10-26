@@ -46,11 +46,6 @@ class NotificationSettings extends Model
     public $user;
 
     /**
-     * @var bool manage if the user/users should receive desktop notifications.
-     */
-    public $desktopNotifications;
-
-    /**
      * @var BaseTarget[]
      */
     protected $_targets;
@@ -70,8 +65,6 @@ class NotificationSettings extends Model
             $this->spaceGuids = Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces');
         }
 
-        $this->desktopNotifications = Yii::$app->notification->getDesktopNoficationSettings($this->user);
-
         $module = Yii::$app->getModule('notification');
 
         return ($this->user) ? $module->settings->user($this->user) : $module->settings;
@@ -83,7 +76,6 @@ class NotificationSettings extends Model
     public function rules()
     {
         return [
-            ['desktopNotifications', 'integer'],
             [['settings', 'spaceGuids'], 'safe'],
         ];
     }
@@ -93,14 +85,8 @@ class NotificationSettings extends Model
      */
     public function attributeLabels()
     {
-        if ($this->user) {
-            $desktopNotificationLabel = Yii::t('NotificationModule.base', 'Receive desktop notifications when you are online.');
-        } else {
-            $desktopNotificationLabel = Yii::t('NotificationModule.base', 'Allow desktop notifications by default.');
-        }
         return [
             'spaceGuids' => Yii::t('NotificationModule.base', 'Receive \'New Content\' Notifications for the following spaces'),
-            'desktopNotifications' => $desktopNotificationLabel,
         ];
     }
 
@@ -166,7 +152,6 @@ class NotificationSettings extends Model
         }
 
         $this->saveSpaceSettings();
-        Yii::$app->notification->setDesktopNoficationSettings($this->desktopNotifications, $this->user);
         Yii::$app->notification->setSpaces($this->spaceGuids, $this->user);
 
         $settings = $this->getSettings();
@@ -251,7 +236,6 @@ class NotificationSettings extends Model
 
         $settings = $this->getSettings();
         $settings?->delete(NotificationManager::IS_TOUCHED_SETTINGS);
-        $settings?->delete('enable_html5_desktop_notifications');
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $settings->delete($target->getSettingKey($category));
@@ -276,7 +260,7 @@ class NotificationSettings extends Model
      */
     public function resetAllUserSettings()
     {
-        $notificationSettings = [NotificationManager::IS_TOUCHED_SETTINGS, 'enable_html5_desktop_notifications'];
+        $notificationSettings = [NotificationManager::IS_TOUCHED_SETTINGS];
         foreach ($this->targets() as $target) {
             foreach ($this->categories() as $category) {
                 $notificationSettings[] = $target->getSettingKey($category);

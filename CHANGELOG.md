@@ -28,7 +28,6 @@ HumHub Changelog
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
 - Enh #7208: Improvements in dotenv parsing
-- Enh #7211: Remove obsolete property `AbstractRichText::$record`
 - Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
 - Fix #7215: Wording: replace British "licence" with American "license"
 - Fix #6987: Added LatAm Spanish
@@ -38,10 +37,31 @@ HumHub Changelog
 - Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
 - Enh #7231: Removed deprecated `ShowMorePager` widget
 - Fix #7230: Update module with new id
+- Enh #7234: Remove using of database timezone
 - Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
 - Enh #7237: Changed PoweredBy URL
 - Enh #7238: Fixed PHP warning related to `.env`
+- Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
 - Enh #7240: Fixed maximum file size setting in initialization
+- Enh #7244: Changed .env var depth separator from `.` to `__`
+- Enh #7251: Commands for module info and test DB connection
+- Fix #7248: Upgrade jQuery Highlight plugin
+- Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
+- Fix #7250: Check writable path
+- Enh #7255: Improved CSP headers
+- Enh #7253: CSV/XLSX export improvements
+- Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
+- Enh #7257: Move "About" into Space Control Menu
+- Enh #7262: Disable `Like` on archived content
+- Enh #7125: Prerequisites - Check test for pending migrations
+- Fix #173 : Remove UISetting "Include Captcha in Registr
+- Fix #7066: Allow using `Space::canJoin($userId)` in command line
+- Enh #7037: Space creation notification to users allowed to manage spaces
+- Enh #7243: Server time zone
+- Enh #7188: Helper for detecting a current path by module/controller/action
+- Enh #7265: Profile "About" page: don't display the menu if only one entry
+- Enh #7269: Remove desktop notifications
+- Enh #5423: Display password rules in form field hint
 
 1.16.3 (Unreleased)
 --------------------------
@@ -53,6 +73,8 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
+- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
+- Fix #7241: Fix file visibility for object with viewable interface
 - Enh #7229: Hide invitations with unknown sources
 
 1.16.2 (September 5, 2024)
@@ -103,6 +125,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
+- Enh #7079: Improve `MenuEntry::isActiveState` to support query params check
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------

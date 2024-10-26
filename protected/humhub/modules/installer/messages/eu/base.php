@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>Admin</strong> kontua',
   '<strong>Configuration</strong>' => '<strong>Konfigurazio</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Zorionak</strong>. Bukatu duzu.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Zorionak! Dena ondo dago eta berriz hasteko prest!',
   'Create Admin Account' => 'Sortu Admin kontua',
   'Create the database if it doesn\'t exist yet.' => 'Datu-basea sortu, oraindik existitzen ez bada.',
+  'Default Language' => '',
+  'Default Timezone' => 'Ordu-eremu lehenetsia',
   'Downloading & Installing Modules...' => 'Deskargatu eta instalatzeko moduluak...',
   'External users can register (show registration form on login)' => 'Kanpoko erabiltzaileek izena eman dezakete (erregistro-formularioa erakutsi loginean)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Hemen erabaki dezakezu erregistratu gabeko erabiltzaile berriak nola sar daitezkeen HumHubera.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Ezaugarri hau aktibatzeko, HumHub konfigurazioa editatu behar da eta, potentzialki, WebServer konfigurazioa.',
   'Initializing database...' => 'Datu-basea abiaraztea...',
   'Installation Example:' => 'Instalazioaren adibidea:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Nire kluba',
   'My community' => 'Nire komunitatea',
   'My company (Social Intranet / Project management)' => 'Nire enpresa (Intranet soziala/Proiektuen kudeaketa)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'MySQL pasahitza.',
   'Your MySQL username' => 'MySQL zure erabiltzaile izena',
   'Your first sample space to discover the platform.' => 'Zure lehen lagin-espazioa plataforma aurkitzeko.',
-);
+];

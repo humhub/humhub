@@ -13,7 +13,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
 $dotenv->safeLoad();
 
 $dynamicConfig =  (is_readable(__DIR__ . '/config/dynamic.php')) ? require(__DIR__ . '/config/dynamic.php') : [];
-$debug = !!($_ENV['HUMHUB_DEBUG'] ?? false) || !$dynamicConfig['params']['installed'];
+$debug = !!($_ENV['HUMHUB_DEBUG'] ?? false) || !($dynamicConfig['params']['installed'] ?? false);
 
 defined('YII_DEBUG') or define('YII_DEBUG', $debug);
 

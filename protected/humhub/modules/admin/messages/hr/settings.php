@@ -70,7 +70,6 @@ return [
     'Port number' => 'Broj porta',
     'Prevent client caching of following scripts' => 'Spriječite klijentsko predmemoriranje sljedećih skripti',
     'Redis' => 'Redis',
-    'Reported database time: {dateTime}' => 'Izvješteno vrijeme baze podataka: {dateTime}',
     'Save' => 'Spremi',
     'Save & Flush Caches' => 'Spremi i isprazni Cache',
     'Save & Test' => 'Spremi i Testiraj',
