@@ -23,7 +23,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\services\AuthClientService;
 use LdapRecord\Connection;
 use LdapRecord\Container;
-use LdapRecord\Models\ActiveDirectory\User as LdapUser;
+use LdapRecord\Models\ActiveDirectory\Entry;
 use Yii;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
@@ -182,6 +182,8 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             $this->emailAttribute = 'mail';
         }
         $this->emailAttribute = strtolower($this->emailAttribute);
+
+        $this->connect();
     }
 
     /**
@@ -369,13 +371,13 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     /**
      * Returns Users LDAP Node
      *
-     * @return LdapUser the users ldap node
+     * @return Entry the users ldap node
      */
     protected function getUserNode()
     {
         $dn = $this->getUserDn();
         if ($dn !== '') {
-            return LdapUser::find($dn);
+            return Entry::find($dn)->get();
         }
 
         return null;
@@ -404,9 +406,7 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
             // Rebind with administrative DN
             $this->getLdap()->auth()->attempt($this->bindUsername, $this->bindPassword);
 
-            $dn = LdapUser::findByOrFail('samaccountname', $userName)->getDn();
-
-            return $dn;
+            return Entry::findByOrFail('samaccountname', $userName)->getDn();
         } catch (Exception $ex) {
             // User not found in LDAP
         }
@@ -421,21 +421,28 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
     public function getLdap()
     {
         if ($this->_ldap === null) {
-            $this->_ldap = new Connection([
-                'hosts' => [$this->hostname],
-                'port' => $this->port,
-                'username' => $this->bindUsername,
-                'password' => $this->bindPassword,
-                'use_ssl' => $this->useSsl,
-                'use_tls' => $this->useStartTls,
-                'base_dn' => $this->baseDn,
-                'timeout' => $this->networkTimeout,
-            ]);
-
-            Container::addConnection($this->_ldap);
+            $this->connect();
         }
 
         return $this->_ldap;
+    }
+
+    private function connect()
+    {
+        $this->_ldap = new Connection([
+            'hosts' => [$this->hostname],
+            'port' => $this->port,
+            'username' => $this->bindUsername,
+            'password' => $this->bindPassword,
+            'use_ssl' => $this->useSsl,
+            'use_tls' => $this->useStartTls,
+            'base_dn' => $this->baseDn,
+            'timeout' => $this->networkTimeout,
+        ]);
+
+        $this->_ldap->connect();
+
+        Container::getInstance()->addConnection($this->_ldap);
     }
 
     /**
@@ -552,10 +559,10 @@ class LdapAuth extends BaseFormAuth implements AutoSyncUsers, SyncAttributes, Ap
         $module = Yii::$app->getModule('ldap');
 
         if (empty($module->pageSize)) {
-            return LdapUser::query()->where($this->userFilter)->get();
+            return Entry::query()->where($this->userFilter)->get();
         }
 
-        return LdapUser::query()->where($this->userFilter)->paginate($module->pageSize);
+        return Entry::query()->where($this->userFilter)->paginate($module->pageSize)->toArray();
     }
 
     /**

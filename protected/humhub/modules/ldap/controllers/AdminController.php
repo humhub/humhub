@@ -13,8 +13,7 @@ use humhub\modules\admin\components\Controller;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\ldap\models\LdapSettings;
 use humhub\modules\user\authclient\LdapAuth;
-use Laminas\Ldap\Exception\LdapException;
-use Laminas\Ldap\Ldap;
+use LdapRecord\Models\Entry;
 use Yii;
 
 /**
@@ -64,12 +63,9 @@ class AdminController extends Controller
         if ($settings->enabled) {
             $enabled = true;
             try {
-                /** @var \humhub\modules\ldap\authclient\LdapAuth $ldapAuthClient */
-                $ldapAuthClient = Yii::createObject($settings->getLdapAuthDefinition());
-                $ldap = $ldapAuthClient->getLdap();
-                $userCount = $ldap->count($settings->userFilter, $settings->baseDn, Ldap::SEARCH_SCOPE_SUB);
-            } catch (LdapException $ex) {
-                $errorMessage = $ex->getMessage();
+                Yii::createObject($settings->getLdapAuthDefinition());
+
+                $userCount = Entry::query()->in($settings->baseDn)->rawFilter($settings->userFilter)->get()->count();
             } catch (Exception $ex) {
                 $errorMessage = $ex->getMessage();
             }
