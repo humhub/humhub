@@ -1,7 +1,9 @@
 <?php
 
 use humhub\libs\Html;
+use humhub\modules\admin\assets\AdminSpaceAsset;
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
+use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
 
@@ -11,51 +13,40 @@ use humhub\widgets\Button;
 /* @var $contentVisibilityOptions array */
 /* @var $indexModuleSelection array */
 
-?>
-<h4><?= Yii::t('AdminModule.space', 'Space Settings'); ?></h4>
-<div class="help-block">
-    <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
-</div>
+AdminSpaceAsset::register($this);
 
-<?php $form = ActiveForm::begin(['id' => 'space-settings-form', 'acknowledge' => true]); ?>
+$this->registerJsConfig('admin.space', [
+    'text' => [
+        'confirm.header' => Yii::t('AdminModule.space', 'Convert Space Topics'),
+        'confirm.body' => Yii::t('AdminModule.space', 'All existing Space Topics will be converted to Global Topics.'),
+        'confirm.confirmText' => Yii::t('AdminModule.space', 'Convert'),
+    ]
+]);
 
-<?= humhub\modules\space\widgets\SpacePickerField::widget([
+echo Html::tag('h4', Yii::t('AdminModule.space', 'Space Settings'));
+echo Html::tag(
+    'p',
+    Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'),
+    ['class' => 'help-block']
+);
+
+$form = ActiveForm::begin(['id' => 'space-settings-form', 'acknowledge' => true]);
+echo SpacePickerField::widget([
     'form' => $form,
     'model' => $model,
     'attribute' => 'defaultSpaceGuid',
     'selection' => $model->defaultSpaces
-]) ?>
-
-<?= $form->field($model, 'defaultVisibility')->dropDownList($visibilityOptions) ?>
-
-<?= $form->field($model, 'defaultJoinPolicy')->dropDownList($joinPolicyOptions, ['disabled' => $model->defaultVisibility == 0]) ?>
-
-<?= $form->field($model, 'defaultContentVisibility')->dropDownList($contentVisibilityOptions, ['disabled' => $model->defaultVisibility == 0]) ?>
-
-<?= $form->field($model, 'defaultIndexRoute')->dropDownList($indexModuleSelection) ?>
-
-<?= $form->field($model, 'defaultIndexGuestRoute')->dropDownList($indexModuleSelection) ?>
-
-<?= $form->field($model, 'defaultStreamSort')->dropDownList($model::defaultStreamSortOptions()) ?>
-
-<?= $form->field($model, 'defaultHideMembers')->checkbox() ?>
-
-<?= $form->field($model, 'defaultHideActivities')->checkbox() ?>
-
-<?= $form->field($model, 'defaultHideAbout')->checkbox() ?>
-
-<?= $form->field($model, 'defaultHideFollowers')->checkbox() ?>
-
-<?= Button::primary(Yii::t('base', 'Save'))->submit(); ?>
-
-<?php ActiveForm::end(); ?>
-
-<?= Html::beginTag('script'); ?>
-$('#spacesettingsform-defaultvisibility').on('change', function () {
-if (this.value == 0) {
-$('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', true);
-} else {
-$('#spacesettingsform-defaultjoinpolicy, #spacesettingsform-defaultcontentvisibility').val('0').prop('disabled', false);
-}
-});
-<?= Html::endTag('script'); ?>
+]);
+echo $form->field($model, 'defaultVisibility')->dropDownList($visibilityOptions);
+echo $form->field($model, 'defaultJoinPolicy')->dropDownList($joinPolicyOptions, ['disabled' => $model->defaultVisibility == 0]);
+echo $form->field($model, 'defaultContentVisibility')->dropDownList($contentVisibilityOptions, ['disabled' => $model->defaultVisibility == 0]);
+echo $form->field($model, 'defaultIndexRoute')->dropDownList($indexModuleSelection);
+echo $form->field($model, 'defaultIndexGuestRoute')->dropDownList($indexModuleSelection);
+echo $form->field($model, 'defaultStreamSort')->dropDownList($model::defaultStreamSortOptions());
+echo $form->field($model, 'defaultHideMembers')->checkbox();
+echo $form->field($model, 'defaultHideActivities')->checkbox();
+echo $form->field($model, 'defaultHideAbout')->checkbox();
+echo $form->field($model, 'defaultHideFollowers')->checkbox();
+echo $form->field($model, 'allowSpaceTopics')->checkbox(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]);
+echo Button::primary(Yii::t('base', 'Save'))->submit();
+ActiveForm::end();

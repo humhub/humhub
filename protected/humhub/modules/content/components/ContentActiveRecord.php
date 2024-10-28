@@ -272,7 +272,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {
             /** @var $topic Topic */
-            $labels[] = TopicLabel::forTopic($topic);
+            $labels[] = TopicLabel::forTopic($topic, $this->content->getPolymorphicRelation());
         }
 
         return Label::sort($labels);
