@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.17.0 (TBA)
-------------
+1.17.0-beta.1 (October 28, 2024)
+--------------------------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
 - Enh #7073: Add a link to notification settings on top dropdown list
 - Fix #7100: Enable all file handlers on RichText editor toolbar
@@ -21,9 +21,6 @@ HumHub Changelog
 - Enh #7106: Enable option for non-member users of a space to create posts
 - Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
 - Enh #7166: When browsing HumHub from the mobile app, add a warning to the dashboard (`IncompleteSetupWarning` widget) if HumHub doesn't support push notifications
-
-1.16.2 (Unreleased)
----------------------
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
 - Fix #7173: Fix marketplace module label "Professional Edition"
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
