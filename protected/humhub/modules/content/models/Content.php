@@ -239,7 +239,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             (
                 $this->container->visibility === Space::VISIBILITY_NONE ||
                 (
-                    !Yii::$app->request->isConsoleRequest &&
+                    Yii::$app->user->identity && // Allow creating public content from console
                     !$this->container->can(CreatePublicContent::class)
                 )
             )
