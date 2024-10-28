@@ -63,6 +63,7 @@ HumHub Changelog
 - Enh #7269: Remove desktop notifications
 - Enh #5423: Display password rules in form field hint
 - Enh #7223: Global Topics
+- Enh #7274: Restrict user content visibility on Dashboard for guests
 
 1.16.3 (Unreleased)
 --------------------------
