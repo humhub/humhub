@@ -22,6 +22,7 @@
         "cebe/markdown": "^1.2.1",
         "codeception/phpunit-wrapper": ">6.0.15 <6.1.0 | ^6.6.1 | ^7.7.1 | ^8.1.1 | ^9.0",
         "codeception/stub": "^2.0 | ^3.0",
+        "directorytree/ldaprecord": "^3.7",
         "firebase/php-jwt": "^6.0",
         "jbroadway/urlify": "^1.0",
         "kartik-v/yii2-widgets": "^3.4",
