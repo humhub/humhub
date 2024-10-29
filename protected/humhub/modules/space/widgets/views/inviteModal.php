@@ -7,14 +7,12 @@
 /* @var $submitAction string */
 /* @var $model InviteForm */
 /* @var $attribute string */
-
 /* @var $searchUrl string */
 
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\bootstrap\ActiveForm;
 use humhub\libs\Html;
@@ -79,26 +77,16 @@ $form = ActiveForm::begin([
             <?= $form->field($model, 'invite')
                 ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
 
+            <br/>
+            <?= $form->field($model, 'allRegisteredUsers')->checkbox() ?>
+
             <?php if ($canAddWithoutInvite) : ?>
                 <br/>
-                <?= $form
-                ->field($model, 'withoutInvite')
-                ->label(Yii::t(
-                    'SpaceModule.base',
-                    'Add users without invitation'
-                ))
-                ->checkbox() ?>
-                <br/>
-
-                <?= $form
-                    ->field($model, 'allRegisteredUsers')
-                    ->label(Yii::t(
-                        'SpaceModule.base',
-                        'Select all registered users'
-                    ))
-                    ->checkbox() ?>
+                <?= $form->field($model, 'withoutInvite')->checkbox() ?>
             <?php endif; ?>
 
+            <br/>
+            <?= $form->field($model, 'addDefaultSpace')->checkbox() ?>
         </div>
 
         <?php if ($canInviteByEmail) : ?>
