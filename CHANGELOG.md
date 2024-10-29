@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.0-beta.2 (Unreleased)
+--------------------------------
+- Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
+
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
 - Enh #7070: Add GitHub action for PHP CS Fixer
