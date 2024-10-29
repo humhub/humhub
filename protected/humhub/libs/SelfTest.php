@@ -437,9 +437,13 @@ class SelfTest
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
                 : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
             );
-            $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
-                . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
-                ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
+            $currentBaseUrl = $scheme . '://' . preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])
+                . (
+                    ($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
+                    ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort)
+                    ? ''
+                    : ':' . $_SERVER['SERVER_PORT']
+                )
                 . ($_SERVER['BASE'] ?? '');
             if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
                 $checks[] = [
