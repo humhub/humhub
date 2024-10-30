@@ -76,7 +76,7 @@ class InviteForm extends Model
     public function init()
     {
         parent::init();
-        $this->addDefaultSpace = $this->space->auto_add_new_members;
+        $this->addDefaultSpace = $this->space instanceof Space ? $this->space->auto_add_new_members : false;
     }
 
     /**

@@ -13,8 +13,7 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
 
-        $inviteForm = new InviteForm();
-        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm(['space' => Space::findOne(['name' => 'Space 2'])]);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
@@ -40,9 +39,8 @@ class LinkInviteCest
 
         // Generate Token
         $space = Space::findOne(['name' => 'Space 2']);
-        $inviteForm = new InviteForm();
-        $inviteForm->space = $space;
-        $inviteUrl = $inviteForm->getInviteLink();
+        $inviteForm = new InviteForm(['space' => $space]);
+        $inviteForm->getInviteLink();
 
         $linkRegistrationService = new LinkRegistrationService(null, $space);
         $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => $space->id]);
@@ -65,8 +63,7 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
-        $inviteForm = new InviteForm();
-        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm(['space' => Space::findOne(['name' => 'Space 2'])]);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
