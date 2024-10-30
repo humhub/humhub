@@ -9,6 +9,7 @@ namespace humhub\modules\content\models;
 
 use humhub\components\ActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\components\ContentTagActiveQuery;
 use Yii;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -332,11 +333,11 @@ class ContentTag extends ActiveRecord
     /**
      * Finds instances and filters by module_id if a static module_id is given.
      *
-     * @return ActiveQuery
+     * @return ContentTagActiveQuery
      */
     public static function find()
     {
-        $query = parent::find()
+        $query = Yii::createObject(ContentTagActiveQuery::class, [get_called_class()])
             ->select([
                 'content_tag.*',
                 'is_global' => new Expression('content_tag.contentcontainer_id IS NULL'),
@@ -418,7 +419,7 @@ class ContentTag extends ActiveRecord
      */
     public static function findByModule($moduleId)
     {
-        return parent::find()->where(['module_id' => $moduleId]);
+        return parent::find()->where(['content_tag.module_id' => $moduleId]);
     }
 
     /**
@@ -438,7 +439,7 @@ class ContentTag extends ActiveRecord
      * Finds instances by given name and optionally by contentContainer.
      * @param $name
      * @param ContentContainerActiveRecord|int|null $contentContainer
-     * @return ActiveQuery
+     * @return ContentTagActiveQuery
      */
     public static function findByName($name, $contentContainer = null)
     {
@@ -454,7 +455,7 @@ class ContentTag extends ActiveRecord
 
     /**
      * Finds all global content tags of this type.
-     * @return ActiveQuery
+     * @return ContentTagActiveQuery
      */
     public static function findGlobal()
     {
@@ -612,7 +613,7 @@ class ContentTag extends ActiveRecord
      *
      * @param $container ContentContainerActiveRecord|int
      * @param bool $includeGlobal if true the query will include global tags as well @since 1.2.3
-     * @return ActiveQuery
+     * @return ContentTagActiveQuery
      * @internal param ContentContainerActiveRecord|int $record Container instance or contentcontainer_id
      * @internal param null $type
      */
