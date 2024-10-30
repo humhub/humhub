@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b5853e88b4ff718831b18d59def323dd",
+    "content-hash": "9131bee50b366cd971f1c72c4308c50f",
     "packages": [
         {
             "name": "async-aws/core",
@@ -2671,21 +2671,21 @@
         },
         {
             "name": "laminas/laminas-servicemanager",
-            "version": "3.22.1",
+            "version": "3.23.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-servicemanager.git",
-                "reference": "de98d297d4743956a0558a6d71616979ff779328"
+                "reference": "a8640182b892b99767d54404d19c5c3b3699f79b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/de98d297d4743956a0558a6d71616979ff779328",
-                "reference": "de98d297d4743956a0558a6d71616979ff779328",
+                "url": "https://api.github.com/repos/laminas/laminas-servicemanager/zipball/a8640182b892b99767d54404d19c5c3b3699f79b",
+                "reference": "a8640182b892b99767d54404d19c5c3b3699f79b",
                 "shasum": ""
             },
             "require": {
-                "laminas/laminas-stdlib": "^3.17",
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
+                "laminas/laminas-stdlib": "^3.19",
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0",
                 "psr/container": "^1.0"
             },
             "conflict": {
@@ -2702,15 +2702,15 @@
             },
             "require-dev": {
                 "composer/package-versions-deprecated": "^1.11.99.5",
-                "friendsofphp/proxy-manager-lts": "^1.0.14",
-                "laminas/laminas-code": "^4.10.0",
+                "friendsofphp/proxy-manager-lts": "^1.0.18",
+                "laminas/laminas-code": "^4.14.0",
                 "laminas/laminas-coding-standard": "~2.5.0",
                 "laminas/laminas-container-config-test": "^0.8",
-                "mikey179/vfsstream": "^1.6.11",
-                "phpbench/phpbench": "^1.2.9",
-                "phpunit/phpunit": "^10.4",
+                "mikey179/vfsstream": "^1.6.12",
+                "phpbench/phpbench": "^1.3.1",
+                "phpunit/phpunit": "^10.5.36",
                 "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.8.0"
+                "vimeo/psalm": "^5.26.1"
             },
             "suggest": {
                 "friendsofphp/proxy-manager-lts": "ProxyManager ^2.1.1 to handle lazy initialization of services"
@@ -2757,34 +2757,34 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2023-10-24T11:19:47+00:00"
+            "time": "2024-10-28T21:32:16+00:00"
         },
         {
             "name": "laminas/laminas-stdlib",
-            "version": "3.19.0",
+            "version": "3.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laminas/laminas-stdlib.git",
-                "reference": "6a192dd0882b514e45506f533b833b623b78fff3"
+                "reference": "8974a1213be42c3e2f70b2c27b17f910291ab2f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/6a192dd0882b514e45506f533b833b623b78fff3",
-                "reference": "6a192dd0882b514e45506f533b833b623b78fff3",
+                "url": "https://api.github.com/repos/laminas/laminas-stdlib/zipball/8974a1213be42c3e2f70b2c27b17f910291ab2f4",
+                "reference": "8974a1213be42c3e2f70b2c27b17f910291ab2f4",
                 "shasum": ""
             },
             "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0"
+                "php": "~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
             },
             "conflict": {
                 "zendframework/zend-stdlib": "*"
             },
             "require-dev": {
-                "laminas/laminas-coding-standard": "^2.5",
-                "phpbench/phpbench": "^1.2.15",
-                "phpunit/phpunit": "^10.5.8",
-                "psalm/plugin-phpunit": "^0.18.4",
-                "vimeo/psalm": "^5.20.0"
+                "laminas/laminas-coding-standard": "^3.0",
+                "phpbench/phpbench": "^1.3.1",
+                "phpunit/phpunit": "^10.5.38",
+                "psalm/plugin-phpunit": "^0.19.0",
+                "vimeo/psalm": "^5.26.1"
             },
             "type": "library",
             "autoload": {
@@ -2816,7 +2816,7 @@
                     "type": "community_bridge"
                 }
             ],
-            "time": "2024-01-19T12:39:49+00:00"
+            "time": "2024-10-29T13:46:07+00:00"
         },
         {
             "name": "laminas/laminas-uri",
@@ -3419,22 +3419,6 @@
             "time": "2024-10-08T18:51:32+00:00"
         },
         {
-            "name": "npm-asset/accepts",
-            "version": "1.3.8",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/accepts/-/accepts-1.3.8.tgz"
-            },
-            "require": {
-                "npm-asset/mime-types": "~2.1.34",
-                "npm-asset/negotiator": "0.6.3"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "npm-asset/after",
             "version": "0.8.2",
             "dist": {
@@ -3471,6 +3455,18 @@
             ]
         },
         {
+            "name": "npm-asset/backo2",
+            "version": "1.0.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/backo2/-/backo2-1.0.2.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/base64-arraybuffer",
             "version": "0.1.4",
             "dist": {
@@ -3478,18 +3474,6 @@
                 "url": "https://registry.npmjs.org/base64-arraybuffer/-/base64-arraybuffer-0.1.4.tgz"
             },
             "type": "npm-asset"
-        },
-        {
-            "name": "npm-asset/base64id",
-            "version": "2.0.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/base64id/-/base64id-2.0.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
         },
         {
             "name": "npm-asset/blob",
@@ -3630,11 +3614,20 @@
             ]
         },
         {
-            "name": "npm-asset/component-emitter",
-            "version": "1.2.1",
+            "name": "npm-asset/component-bind",
+            "version": "1.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.2.1.tgz"
+                "url": "https://registry.npmjs.org/component-bind/-/component-bind-1.0.0.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/component-emitter",
+            "version": "1.3.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/component-emitter/-/component-emitter-1.3.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -3642,26 +3635,23 @@
             ]
         },
         {
-            "name": "npm-asset/cookie",
-            "version": "0.4.2",
+            "name": "npm-asset/component-inherit",
+            "version": "0.0.3",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/cookie/-/cookie-0.4.2.tgz"
+                "url": "https://registry.npmjs.org/component-inherit/-/component-inherit-0.0.3.tgz"
             },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
+            "type": "npm-asset"
         },
         {
             "name": "npm-asset/debug",
-            "version": "4.1.1",
+            "version": "3.1.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/debug/-/debug-4.1.1.tgz"
+                "url": "https://registry.npmjs.org/debug/-/debug-3.1.0.tgz"
             },
             "require": {
-                "npm-asset/ms": ">=2.1.1,<3.0.0"
+                "npm-asset/ms": "2.0.0"
             },
             "type": "npm-asset",
             "license": [
@@ -3669,19 +3659,24 @@
             ]
         },
         {
-            "name": "npm-asset/engine.io",
-            "version": "3.6.2",
+            "name": "npm-asset/engine.io-client",
+            "version": "3.5.4",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/engine.io/-/engine.io-3.6.2.tgz"
+                "url": "https://registry.npmjs.org/engine.io-client/-/engine.io-client-3.5.4.tgz"
             },
             "require": {
-                "npm-asset/accepts": "~1.3.4",
-                "npm-asset/base64id": "2.0.0",
-                "npm-asset/cookie": "~0.4.1",
-                "npm-asset/debug": "~4.1.0",
+                "npm-asset/component-emitter": "~1.3.0",
+                "npm-asset/component-inherit": "0.0.3",
+                "npm-asset/debug": "~3.1.0",
                 "npm-asset/engine.io-parser": "~2.2.0",
-                "npm-asset/ws": "~7.5.10"
+                "npm-asset/has-cors": "1.1.0",
+                "npm-asset/indexof": "0.0.1",
+                "npm-asset/parseqs": "0.0.6",
+                "npm-asset/parseuri": "0.0.6",
+                "npm-asset/ws": "~7.5.10",
+                "npm-asset/xmlhttprequest-ssl": "~1.6.2",
+                "npm-asset/yeast": "0.1.2"
             },
             "type": "npm-asset",
             "license": [
@@ -3759,6 +3754,18 @@
             ]
         },
         {
+            "name": "npm-asset/has-cors",
+            "version": "1.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/has-cors/-/has-cors-1.1.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/humhub-prosemirror-richtext",
             "version": "2.1.5",
             "dist": {
@@ -3784,6 +3791,15 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "npm-asset/indexof",
+            "version": "0.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/indexof/-/indexof-0.0.1.tgz"
+            },
+            "type": "npm-asset"
         },
         {
             "name": "npm-asset/intersection-observer",
@@ -3918,50 +3934,11 @@
             "type": "npm-asset"
         },
         {
-            "name": "npm-asset/mime-db",
-            "version": "1.52.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/mime-db/-/mime-db-1.52.0.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/mime-types",
-            "version": "2.1.35",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/mime-types/-/mime-types-2.1.35.tgz"
-            },
-            "require": {
-                "npm-asset/mime-db": "1.52.0"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
             "name": "npm-asset/ms",
-            "version": "2.1.3",
+            "version": "2.0.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/negotiator",
-            "version": "0.6.3",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/negotiator/-/negotiator-0.6.3.tgz"
+                "url": "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -3974,6 +3951,30 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/nprogress/-/nprogress-0.2.0.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/parseqs",
+            "version": "0.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/parseqs/-/parseqs-0.0.6.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/parseuri",
+            "version": "0.0.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/parseuri/-/parseuri-0.0.6.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4005,36 +4006,24 @@
             ]
         },
         {
-            "name": "npm-asset/socket.io-adapter",
-            "version": "1.1.2",
+            "name": "npm-asset/socket.io-client",
+            "version": "2.5.0",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/socket.io-adapter/-/socket.io-adapter-1.1.2.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/socket.io-client",
-            "version": "2.5.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/socketio/socket.io.git",
-                "reference": "88b2cdb6abd38d6466fa4360748f2f67d8837ad4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/socketio/socket.io/zipball/88b2cdb6abd38d6466fa4360748f2f67d8837ad4",
-                "reference": "88b2cdb6abd38d6466fa4360748f2f67d8837ad4"
+                "url": "https://registry.npmjs.org/socket.io-client/-/socket.io-client-2.5.0.tgz"
             },
             "require": {
-                "npm-asset/debug": "~4.1.0",
-                "npm-asset/engine.io": "~3.6.0",
+                "npm-asset/backo2": "1.0.2",
+                "npm-asset/component-bind": "1.0.0",
+                "npm-asset/component-emitter": "~1.3.0",
+                "npm-asset/debug": "~3.1.0",
+                "npm-asset/engine.io-client": "~3.5.0",
                 "npm-asset/has-binary2": "~1.0.2",
-                "npm-asset/socket.io-adapter": "~1.1.0",
-                "npm-asset/socket.io-parser": "~3.4.0"
+                "npm-asset/indexof": "0.0.1",
+                "npm-asset/parseqs": "0.0.6",
+                "npm-asset/parseuri": "0.0.6",
+                "npm-asset/socket.io-parser": "~3.3.0",
+                "npm-asset/to-array": "0.1.4"
             },
             "type": "npm-asset",
             "license": [
@@ -4043,14 +4032,14 @@
         },
         {
             "name": "npm-asset/socket.io-parser",
-            "version": "3.4.1",
+            "version": "3.3.2",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.4.1.tgz"
+                "url": "https://registry.npmjs.org/socket.io-parser/-/socket.io-parser-3.3.2.tgz"
             },
             "require": {
-                "npm-asset/component-emitter": "1.2.1",
-                "npm-asset/debug": "~4.1.0",
+                "npm-asset/component-emitter": "~1.3.0",
+                "npm-asset/debug": "~3.1.0",
                 "npm-asset/isarray": "2.0.1"
             },
             "type": "npm-asset",
@@ -4083,6 +4072,15 @@
             "type": "npm-asset"
         },
         {
+            "name": "npm-asset/to-array",
+            "version": "0.1.4",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/to-array/-/to-array-0.1.4.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
             "name": "npm-asset/unicode-emoji-json",
             "version": "0.5.0",
             "dist": {
@@ -4100,6 +4098,27 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/ws/-/ws-7.5.10.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/xmlhttprequest-ssl",
+            "version": "1.6.3",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/xmlhttprequest-ssl/-/xmlhttprequest-ssl-1.6.3.tgz"
+            },
+            "type": "npm-asset"
+        },
+        {
+            "name": "npm-asset/yeast",
+            "version": "0.1.2",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/yeast/-/yeast-0.1.2.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -12019,12 +12038,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "bae581ca4125f92b1ad4d316ac691fa2d5231649"
+                "reference": "f7a59dd2b8c3ed9bc58f5679d8eda9ba3ebd86fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/bae581ca4125f92b1ad4d316ac691fa2d5231649",
-                "reference": "bae581ca4125f92b1ad4d316ac691fa2d5231649",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/f7a59dd2b8c3ed9bc58f5679d8eda9ba3ebd86fb",
+                "reference": "f7a59dd2b8c3ed9bc58f5679d8eda9ba3ebd86fb",
                 "shasum": ""
             },
             "conflict": {
@@ -12044,6 +12063,7 @@
                 "alextselegidis/easyappointments": "<1.5",
                 "alterphp/easyadmin-extension-bundle": ">=1.2,<1.2.11|>=1.3,<1.3.1",
                 "amazing/media2click": ">=1,<1.3.3",
+                "ameos/ameos_tarteaucitron": "<1.2.23",
                 "amphp/artax": "<1.0.6|>=2,<2.0.6",
                 "amphp/http": "<=1.7.2|>=2,<=2.1",
                 "amphp/http-client": ">=4,<4.4",
@@ -12201,7 +12221,7 @@
                 "ezsystems/ezpublish-legacy": "<=2017.12.7.3|>=2018.6,<=2019.03.5.1",
                 "ezsystems/platform-ui-assets-bundle": ">=4.2,<4.2.3",
                 "ezsystems/repository-forms": ">=2.3,<2.3.2.1-dev|>=2.5,<2.5.15",
-                "ezyang/htmlpurifier": "<4.1.1",
+                "ezyang/htmlpurifier": "<=4.2",
                 "facade/ignition": "<1.16.15|>=2,<2.4.2|>=2.5,<2.5.2",
                 "facturascripts/facturascripts": "<=2022.08",
                 "fastly/magento2": "<1.2.26",
@@ -12844,7 +12864,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-10-24T22:04:53+00:00"
+            "time": "2024-10-29T22:05:01+00:00"
         },
         {
             "name": "softcreatr/jsonpath",

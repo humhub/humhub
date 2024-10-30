@@ -54,7 +54,7 @@
         "npm-asset/nprogress": "^0.2",
         "npm-asset/select2": "^4.0.4",
         "npm-asset/select2-bootstrap-theme": "^0.1.0-beta.4",
-        "npm-asset/socket.io-client": "^2.0",
+        "npm-asset/socket.io-client": "2.5.0",
         "npm-asset/swiped-events": "^1.0.9",
         "npm-asset/timeago": "^1.6.3",
         "npm-asset/unicode-emoji-json": "^0.5.0",
