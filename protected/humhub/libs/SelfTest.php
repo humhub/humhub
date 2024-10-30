@@ -585,12 +585,12 @@ class SelfTest
         }
         // Check Dynamic Config is Writable
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
-        $path = realpath(Yii::getAlias(Yii::$app->params['dynamicConfigFile']));
+        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
         if (!is_file($path)) {
             $path = dirname($path);
         }
 
-        if (is_writeable($path)) {
+        if (is_writeable(realpath($path))) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
