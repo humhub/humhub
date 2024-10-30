@@ -951,7 +951,7 @@ class SelfTest
     public static function isPushModuleAvailable(): bool
     {
         /* @var \humhub\modules\fcmPush\Module|null $pushModule */
-        $pushModule = $modules['fcm-push'] ?? null;
+        $pushModule = Yii::$app->getModule('fcm-push');
         return
             $pushModule instanceof \humhub\modules\fcmPush\Module &&
             $pushModule->getIsEnabled() &&
