@@ -307,17 +307,15 @@ class Profile extends ActiveRecord
 
     /**
      * Returns all profile fields with user data by given category
-     *
-     * @param ProfileFieldCategory $category
-     * @return ProfileField[]
      */
-    public function getProfileFields(ProfileFieldCategory $category = null)
+    public function getProfileFields(?ProfileFieldCategory $category = null, ?array $withoutTypes = null): array
     {
         $fields = [];
 
         if ($this->user !== null) {
             $query = ProfileField::find()
                 ->where(['visible' => 1])
+                ->andFilterWhere(['NOT IN', 'field_type_class', (array) $withoutTypes])
                 ->orderBy('sort_order');
 
             if ($category !== null) {
