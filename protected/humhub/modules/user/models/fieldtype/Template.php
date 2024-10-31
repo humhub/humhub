@@ -34,9 +34,9 @@ class Template extends BaseType
         $variables = ArrayHelper::map(
             $user->profile->getProfileFields(null, static::class),
             'internal_name',
-            function(ProfileField $profileField) use ($user) {
+            function (ProfileField $profileField) use ($user) {
                 return $user->profile->{$profileField->internal_name};
-            }
+            },
         );
 
         $twig = new Environment(new ArrayLoader([]));
