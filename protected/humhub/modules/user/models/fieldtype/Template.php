@@ -5,7 +5,9 @@ namespace humhub\modules\user\models\fieldtype;
 use humhub\helpers\ArrayHelper;
 use humhub\modules\user\models\ProfileField;
 use Twig\Environment;
+use Twig\Extension\SandboxExtension;
 use Twig\Loader\ArrayLoader;
+use Twig\Sandbox\SecurityPolicy;
 use Yii;
 
 /**
@@ -40,6 +42,7 @@ class Template extends BaseType
         );
 
         $twig = new Environment(new ArrayLoader([]));
+        $twig->addExtension(new SandboxExtension(new SecurityPolicy(['if'], ['escape']), true));
 
         return $twig->createTemplate($this->template)->render($variables);
     }
@@ -55,7 +58,7 @@ class Template extends BaseType
                         'type' => 'textarea',
                         'label' => Yii::t('UserModule.profile', 'Template'),
                         'class' => 'form-control autosize',
-                        'hint' => Yii::t('UserModule.profile', 'Twig template that will be used to render this field. You can use the internal names as variables.'),
+                        'hint' => Yii::t('UserModule.profile', 'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`'),
                     ],
                 ],
             ]]);
