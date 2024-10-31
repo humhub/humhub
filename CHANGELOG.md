@@ -5,6 +5,7 @@ HumHub Changelog
 --------------------------------
 - Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
 - Fix #7284: Content tag visibility
+- Enh #7287: Add `Template` virtual field
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
@@ -19,7 +20,6 @@ HumHub Changelog
 - Enh #7138: Added missing DB relations to UserInvite model
 - Enh #7139: Export `confirmUnload` function from `humhub.client.js`
 - Enh #7068: Bulk re-send email invites
-- Enh #7139 : Export `confirmUnload` function from `humhub.client.js`
 - Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
 - Fix #7149: Fixed dropdown issue on mobile
 - Fix #7151: Disable new post's required validation for `message` when post has attached files
@@ -29,7 +29,7 @@ HumHub Changelog
 - Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
 - Fix #7173: Fix marketplace module label "Professional Edition"
 - Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
-- Enh #7198: Increase default Uplaod Max File Size to 64mb
+- Enh #7198: Increase default Upload Max File Size to 64mb
 - Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
 - Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
 - Enh #7202: Increased minimum PHP version to 8.1
