@@ -590,7 +590,11 @@ class SelfTest
             $path = dirname($path);
         }
 
-        if (is_writeable(realpath($path))) {
+        // Use realpath on the path alone to get the canonical path
+        // Applying realpath to a boolean (from is_writable) would cause errors, so keep them separate
+        $realPath = realpath($path);
+
+        if ($realPath !== false && is_writable($realPath)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
