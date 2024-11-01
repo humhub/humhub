@@ -4,6 +4,7 @@ HumHub Changelog
 1.17.0-beta.2 (Unreleased)
 --------------------------------
 - Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
+- Fix #7281: SelfTest for DynamicConfig broken when not exist yet
 - Fix #7284: Content tag visibility
 - Enh #7287: Add `Template` virtual field
 
