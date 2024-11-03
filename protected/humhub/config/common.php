@@ -8,11 +8,9 @@
 
 use humhub\components\i18n\PhpMessageSource;
 
-Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
-Yii::setAlias('@app', '@webroot/protected');
-Yii::setAlias('@humhub', '@app/humhub');
-Yii::setAlias('@config', '@app/config');
-Yii::setAlias('@themes', '@webroot/themes');
+Yii::setAlias('@webroot', $_ENV['HUMHUB_ALIASES__WEBROOT'] ?? realpath(__DIR__ . '/../../../'));
+Yii::setAlias('@app', $_ENV['HUMHUB_ALIASES__APP'] ?? '@webroot/protected');
+Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? '@app/humhub');
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
@@ -30,12 +28,19 @@ $config = [
     'minRecommendedPhpVersion' => '8.1',
     'minSupportedPhpVersion' => '8.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
+    'bootstrap' => [
+        'log',
+        'humhub\components\bootstrap\ModuleAutoLoader',
+        'queue',
+        'humhub\modules\ui\view\bootstrap\ThemeLoader'
+    ],
     'sourceLanguage' => 'en',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@filestore' => '@webroot/uploads/file',
+        '@config' => '@app/config',
+        '@themes' => '@webroot/themes',
     ],
     'components' => [
         'moduleManager' => [
@@ -60,9 +65,13 @@ $config = [
                     'class' => \yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
-                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
-                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus',
+                        'yii\web\HttpException:400',
+                        'yii\web\HttpException:401',
+                        'yii\web\HttpException:403',
+                        'yii\web\HttpException:404',
+                        'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie',
+                        'yii\web\User::renewAuthStatus',
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
@@ -70,9 +79,13 @@ $config = [
                     'class' => \yii\log\DbTarget::class,
                     'levels' => ['error', 'warning'],
                     'except' => [
-                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
-                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus',
+                        'yii\web\HttpException:400',
+                        'yii\web\HttpException:401',
+                        'yii\web\HttpException:403',
+                        'yii\web\HttpException:404',
+                        'yii\web\HttpException:405',
+                        'yii\web\User::getIdentityAndDurationFromCookie',
+                        'yii\web\User::renewAuthStatus',
                     ],
                     'logVars' => ['_GET', '_SERVER'],
                 ],
