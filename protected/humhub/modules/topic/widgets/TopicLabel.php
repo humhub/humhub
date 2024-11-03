@@ -23,12 +23,19 @@ class TopicLabel extends Label
      */
     public static function forTopic(Topic $topic, ?ContentContainerActiveRecord $contentContainer = null)
     {
-        $link = Link::withAction('', 'topic.addTopic')->options([
-            'data-topic-id' => $topic->id,
-            'data-topic-url' => $topic->getUrl($contentContainer ?: ContentContainerHelper::getCurrent()),
-        ]);
+        $label = static::light($topic->name)
+            ->sortOrder(20)
+            ->color($topic->color)
+            ->icon('fa-star');
 
-        return static::light($topic->name)->sortOrder(20)->color($topic->color)->withLink($link)->icon('fa-star');
+        if ($contentContainer = $contentContainer ?: ContentContainerHelper::getCurrent()) {
+            $label->withLink(Link::withAction('', 'topic.addTopic')->options([
+                'data-topic-id' => $topic->id,
+                'data-topic-url' => $topic->getUrl($contentContainer),
+            ]));
+        }
+
+        return $label;
     }
 
 }
