@@ -45,7 +45,7 @@ trait ApplicationTrait
      */
     public function __construct($config = [])
     {
-        EnvHelper::resolveConfigAliases($config);
+        $config = EnvHelper::resolveConfigAliases($config);
 
         $this->loadedAppConfig = $config;
 
