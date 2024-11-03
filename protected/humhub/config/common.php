@@ -32,7 +32,7 @@ $config = [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
         'queue',
-        'humhub\modules\ui\view\bootstrap\ThemeLoader'
+        'humhub\modules\ui\view\bootstrap\ThemeLoader',
     ],
     'sourceLanguage' => 'en',
     'aliases' => [
