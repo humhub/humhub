@@ -8,9 +8,7 @@
 
 use humhub\components\i18n\PhpMessageSource;
 
-Yii::setAlias('@webroot', $_ENV['HUMHUB_ALIASES__WEBROOT'] ?? realpath(__DIR__ . '/../../../'));
-Yii::setAlias('@app', $_ENV['HUMHUB_ALIASES__APP'] ?? '@webroot/protected');
-Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? '@app/humhub');
+Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
@@ -32,10 +30,12 @@ $config = [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
         'queue',
-        'humhub\modules\ui\view\bootstrap\ThemeLoader'
+        'humhub\modules\ui\view\bootstrap\ThemeLoader',
     ],
+    'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
     'aliases' => [
+        '@webroot' => realpath(__DIR__ . '/../../../'),
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@filestore' => '@webroot/uploads/file',
