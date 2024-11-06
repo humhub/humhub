@@ -110,5 +110,7 @@ return [
     'Your last edit state has been saved!' => '마지막 편집 상태가 저장되었습니다!',
     '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'in' => '',
 ];

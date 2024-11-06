@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '<strong>Administratie</strong> menu',
   '<strong>Maintenance</strong> Mode' => '<strong>Onderhoudsmodus</strong>',
   '<strong>Module</strong> administration' => '<strong>Module</strong> administratie',
@@ -67,7 +67,9 @@ return array (
   'Statistics' => 'Statistieken',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'De cron-taak voor de achtergrondtaken (wachtrij) lijkt niet goed te werken.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'De cron-taak voor de reguliere taken (cron) lijkt niet goed te werken.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'Dit overzicht toont u alle geïnstalleerde modules en stelt u in staat deze in te schakelen, uit te schakelen, te configureren en natuurlijk te verwijderen. Neem een kijkje in onze Marktplaats om nieuwe modules te ontdekken. Houd er rekening mee dat het deactiveren of verwijderen van een module zal resulteren in het verlies van alle inhoud die met die module is gemaakt.',
+  'Topics' => 'Rubrieken',
   'Uninstall' => 'Verwijderen',
   'Updates available for {count} of your modules' => 'Updates beschikbaar voor {count} van uw modules',
   'User not found!' => 'Gebruiker niet gevonden!',
@@ -77,4 +79,4 @@ return array (
   'Visit Marketplace' => 'Bezoek de Marktplaats',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'U heeft geen toestemming om modules te configureren. Neem contact op met de beheerder voor meer informatie.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'U heeft geen rechten om modules te beheren. Neem contact op met de beheerder voor meer informatie.',
-);
+];

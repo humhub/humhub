@@ -116,6 +116,7 @@ return [
     '<strong>Leave</strong> Space' => '',
     '<strong>Space</strong> tags' => '',
     '<strong>Spaces</strong>' => '',
+    'Add as Default Space for new users' => '',
     'Add users without invitation' => '',
     'Advanced Spaces Search' => '',
     'Any' => '',

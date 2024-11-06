@@ -164,6 +164,7 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'Tu solicitud ha sido enviada correctamente a los administradores del espacio.',
     '{count} members' => '{count} miembros',
     '{email} is not valid!' => '¡{email} no es válido!',
+    'Add as Default Space for new users' => '',
     'Default Stream Sort' => '',
     'Stream Sort' => '',
 ];

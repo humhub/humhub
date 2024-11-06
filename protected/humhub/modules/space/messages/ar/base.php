@@ -164,6 +164,7 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'تم إرسال طلبك بنجاح إلى مسؤولي الباحة.',
     '{count} members' => '{count} أعضاء',
     '{email} is not valid!' => '{email} غير صحيح!',
+    'Add as Default Space for new users' => '',
     'Default Stream Sort' => '',
     'Stream Sort' => '',
 ];

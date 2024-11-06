@@ -100,6 +100,8 @@ return [
     'The content has been successfully published.' => '',
     'The module {moduleName} is not enabled on the selected target space.' => '',
     'This content type can\'t be moved due to a missing module-id setting.' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'Unlock comments' => '',
     'Visible also to unregistered users' => '',
     'Visible only to you' => '',

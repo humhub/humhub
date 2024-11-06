@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => 'Menu de <strong>administração</strong>',
   '<strong>Maintenance</strong> Mode' => '<strong>Modo</strong> de manutenção',
   '<strong>Module</strong> administration' => 'Administração do <strong>módulo</strong>',
@@ -67,7 +67,9 @@ return array (
   'Statistics' => 'Estatísticas',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'O trabalho cron para os trabalhos em segundo plano (fila) parece não funcionar corretamente.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'O trabalho cron para as tarefas regulares (cron) parece não funcionar corretamente.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'Esta visão geral mostra todos os módulos instalados e permite que você habilite, desabilite, configure e, claro, desinstale-os. Para descobrir novos módulos, dê uma olhada em nosso Marketplace. Observe que desativar ou desinstalar um módulo resultará na perda de qualquer conteúdo que tenha sido criado com esse módulo.',
+  'Topics' => 'Tópicos',
   'Uninstall' => 'Desinstalar',
   'Updates available for {count} of your modules' => 'Atualizações disponíveis para {count} dos seus módulos',
   'User not found!' => 'Usuário não encontrado!',
@@ -77,4 +79,4 @@ return array (
   'Visit Marketplace' => 'Visite o Marketplace',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Você não tem permissão para configurar módulos. Entre em contato com o administrador para obter mais informações.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Você não tem permissão para gerenciar módulos. Entre em contato com o administrador para obter mais informações.',
-);
+];

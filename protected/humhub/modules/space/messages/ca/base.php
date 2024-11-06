@@ -143,6 +143,7 @@ return [
     '{count} members' => '{count} membres',
     '{email} is not valid!' => '{email} no vàlid!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Change visibility' => '',
     'Create new link' => '',

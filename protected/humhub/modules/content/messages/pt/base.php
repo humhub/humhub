@@ -111,4 +111,6 @@ return [
     'Scheduled for {dateTime}' => '',
     'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
 ];

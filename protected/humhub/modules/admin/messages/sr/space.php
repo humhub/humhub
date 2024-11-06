@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Ove opcije vam omogućuju da postavite podrazumevane dozvole za sve prostore. Autorizovani korisnici mogu individualno da podese ovo za pojedinacni prostor',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Ovaj pregled sadrži listu svake prostorije s akcijama za pregledanje, uređivanje i brisanje razmaka.',
     'Update Space memberships also for existing members.' => 'Apdejtuj članstvo u prostoru i za postojeće članove',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];
