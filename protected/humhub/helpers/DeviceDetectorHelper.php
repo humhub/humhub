@@ -38,14 +38,22 @@ class DeviceDetectorHelper
     {
         return
             static::isAppRequest()
-            && str_contains((string)Yii::$app->request->getUserAgent(), 'iPhone');
+            && Yii::$app->request->headers->has('x-humhub-app-is-ios')
+            && !str_contains(
+                Yii::$app->request->headers->get('x-humhub-app-is-ios', '', true),
+                '1',
+            );
     }
 
     public static function isAndroidApp(): bool
     {
         return
             static::isAppRequest()
-            && str_contains((string)Yii::$app->request->getUserAgent(), 'Android');
+            && Yii::$app->request->headers->has('x-humhub-app-is-android')
+            && !str_contains(
+                Yii::$app->request->headers->get('x-humhub-app-is-android', '', true),
+                '1',
+            );
     }
 
     public static function isMicrosoftOffice(): bool
