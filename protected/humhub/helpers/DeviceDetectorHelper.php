@@ -10,6 +10,9 @@ namespace humhub\helpers;
 
 use Yii;
 
+/**
+ * @since 1.17
+ */
 class DeviceDetectorHelper
 {
     public static function isAppRequest(): bool
