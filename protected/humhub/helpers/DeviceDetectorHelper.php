@@ -41,22 +41,14 @@ class DeviceDetectorHelper
     {
         return
             static::isAppRequest()
-            && Yii::$app->request->headers->has('x-humhub-app-is-ios')
-            && !str_contains(
-                Yii::$app->request->headers->get('x-humhub-app-is-ios', '', true),
-                '1',
-            );
+            && Yii::$app->request->headers->get('x-humhub-app-is-ios');
     }
 
     public static function isAndroidApp(): bool
     {
         return
             static::isAppRequest()
-            && Yii::$app->request->headers->has('x-humhub-app-is-android')
-            && !str_contains(
-                Yii::$app->request->headers->get('x-humhub-app-is-android', '', true),
-                '1',
-            );
+            && Yii::$app->request->headers->get('x-humhub-app-is-android');
     }
 
     public static function isMicrosoftOffice(): bool
