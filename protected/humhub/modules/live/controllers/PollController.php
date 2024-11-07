@@ -14,6 +14,7 @@ use humhub\modules\live\components\LiveEvent;
 use humhub\modules\live\driver\Poll;
 use humhub\modules\live\models\Live;
 use humhub\modules\user\services\IsOnlineService;
+use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\Exception;
 use yii\db\ActiveQuery;
@@ -91,6 +92,7 @@ class PollController extends Controller
         $results['queryTime'] = time();
         $results['lastQueryTime'] = $lastQueryTime;
         $results['lastSessionTime'] = $lastSessionTime;
+        $results['nonce'] = Security::getNonce();
         $results['events'] = [];
 
         foreach ($this->buildLookupQuery($lastQueryTime)->all() as $live) {
