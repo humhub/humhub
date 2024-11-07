@@ -250,6 +250,7 @@ humhub.module('live.poll', function (module, require, $) {
             typeof module.config.nonce !== 'undefined' &&
             response.data.nonce !== module.config.nonce) {
             // Reload current page if the nonce value has been changed since last page loading
+            module.log.info('Force page reload. Nonce (session) has changed.');
             location.reload();
         }
     };
