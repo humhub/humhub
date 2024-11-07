@@ -55,10 +55,7 @@ class AccountRecoverPassword extends Model
         $user = User::findOne(['email' => $this->email]);
 
         if ($user === null) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', '{attribute} "{value}" was not found!', [
-                'attribute' => $this->getAttributeLabel($attribute),
-                'value' => $this->email,
-            ])));
+            // Don't display any error about not existing email for safe reason
             return;
         }
 
@@ -88,7 +85,12 @@ class AccountRecoverPassword extends Model
 
         $user = User::findOne(['email' => $this->email]);
 
-        return $user && $user->getPasswordRecoveryService()->sendRecoveryInfo();
+        if (!$user) {
+            // Make the case of not existing email as successful for safe reason
+            return true;
+        }
+
+        return $user->getPasswordRecoveryService()->sendRecoveryInfo();
     }
 
 }

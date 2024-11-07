@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)
 - Fix #7278: Don't remove html tags by JS from search post record because it is done by PHP
 - Fix #7296: Fix email validation of invite new users
+- Fix #7298: Don't check email for existing on password recovery
 
 1.16.2 (September 5, 2024)
 --------------------------
