@@ -20,6 +20,7 @@ use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\helpers\Url;
 use yii\validators\EmailValidator;
+use yii\validators\StringValidator;
 
 /**
  * Invite Form Model
@@ -49,22 +50,28 @@ class Invite extends Model
      * E-Mails needs to be valid and not already registered.
      *
      * @param string $attribute
-     * @param array $params
      */
-    public function checkEmails($attribute, $params)
+    public function checkEmails($attribute)
     {
-        if ($this->$attribute != "") {
-            foreach ($this->getEmails() as $email) {
-                $validator = new EmailValidator();
-                if (!$validator->validate($email)) {
-                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', ["{email}" => $email]));
-                    continue;
-                }
+        if (empty($this->$attribute)) {
+            return;
+        }
 
-                if (User::findOne(['email' => $email]) != null) {
-                    $this->addError($attribute, Yii::t('UserModule.invite', '{email} is already registered!', ["{email}" => $email]));
-                    continue;
-                }
+        foreach ($this->getEmails() as $email) {
+            $validator = new StringValidator(['max' => 150]);
+            if (!$validator->validate($email)) {
+                $this->addError($attribute, Yii::t('UserModule.invite', '{email} should contain at most {charNum} characters.', ['email' => $email, 'charNum' => 150]));
+                continue;
+            }
+
+            $validator = new EmailValidator();
+            if (!$validator->validate($email)) {
+                $this->addError($attribute, Yii::t('UserModule.invite', '{email} is not valid!', ['email' => $email]));
+                continue;
+            }
+
+            if (User::find()->where(['email' => $email])->exists()) {
+                $this->addError($attribute, Yii::t('UserModule.invite', '{email} is already registered!', ['email' => $email]));
             }
         }
     }
