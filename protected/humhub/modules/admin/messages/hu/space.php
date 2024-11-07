@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Itt meghatározhatja a helyek alapértelmezett engedélyeit. Ezek a beállítások felülírják a konfigurációs fájl alapértelmezett jogosultságait, és minden egyes hely felülírható.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Ez az áttekintés tartalmazza az egyes közösségek listáját, megtekintés, szerkesztés és törlés opciókkal.',
     'Update Space memberships also for existing members.' => 'A területi tagságok frissítése a meglévő tagok számára is.',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];

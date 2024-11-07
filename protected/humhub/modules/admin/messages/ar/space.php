@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'تسمح لك هذه الخيارات بتعيين الأذونات الافتراضية لجميع الباحات. يمكن للمستخدمين المعتمدين تخصيصها لكل باحة. تتم إضافة المزيد من الإدخالات مع تثبيت وحدات جديدة.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'تحتوي هذه النظرة العامة على قائمة بكل مساحة مع إجراءات لعرض المساحات وتعديلها وحذفها.',
     'Update Space memberships also for existing members.' => 'تحديث عضويات الباحة أيضًا للأعضاء الحاليين.',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];

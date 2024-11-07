@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Queste opzioni ti consentono di impostare i permessi predefiniti per tutti gli Spazi. Gli utenti autorizzati possono personalizzarli per ogni Spazio. Ulteriori voci vengono aggiunte con l\'installazione di nuovi moduli.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Questa panoramica contiene un elenco di ogni spazio con le azioni per vedere, modificare e eliminare utenti.',
     'Update Space memberships also for existing members.' => 'Aggiorna le iscrizioni allo spazio anche per i membri esistenti.',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];

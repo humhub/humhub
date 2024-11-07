@@ -161,6 +161,7 @@ return [
     '{count} members' => '{count} membri',
     '{email} is not valid!' => '{email} non è valida!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',

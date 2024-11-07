@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Эти опции позволяют вам установить разрешения по умолчанию для всех Сообществ. Авторизованные пользователи могут индивидуализировать их для каждого Сообщества. Дальнейшие записи добавляются при установке новых модулей.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Содержит список сообществ с возможностью просмотра, редактирования и удаления.',
     'Update Space memberships also for existing members.' => 'Обновление членств в Сообществах также для существующих членов.',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];

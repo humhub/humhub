@@ -164,6 +164,7 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'A kérelmedet sikeresen rögzítettük és továbbítottuk a közösség adminisztrátorainak.',
     '{count} members' => '{count} tag',
     '{email} is not valid!' => '{email} cím érvénytelen!',
+    'Add as Default Space for new users' => '',
     'Default Stream Sort' => '',
     'Stream Sort' => '',
 ];

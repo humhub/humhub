@@ -8,6 +8,9 @@ HumHub Changelog
 - Fix #7284: Content tag visibility
 - Enh #7287: Add `Template` virtual field
 - Enh #7291: Disable link in `TopicLabel` when contentContainer is not present
+- Enh #7293: Add Twig string extension
+- Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
+- Fix #7295: iOS mobile app detection for iPad devices
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------

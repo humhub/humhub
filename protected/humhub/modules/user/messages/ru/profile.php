@@ -118,5 +118,7 @@ return [
     'Zip' => 'Почтовый индекс',
     '{attribute} is required!' => 'Требуется указать {attribute}!',
     'Each line must be formatted as Key=>Value!' => '',
+    'Template' => '',
     'This profile is disabled!' => '',
+    'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
 ];

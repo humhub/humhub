@@ -229,6 +229,10 @@ class Profile extends ActiveRecord
                 /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
+                if ($profileField->fieldType->isVirtual) {
+                    continue;
+                }
+
                 if (!in_array($profileField->internal_name, $safeAttributes)) {
                     if ($profileField->visible && $this->scenario != 'registration') {
                         $profileField->editable = false;
