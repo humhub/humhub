@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #7293: Add Twig string extension
 - Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
 - Fix #7295: iOS mobile app detection for iPad devices
+- Fix #7299: Fix public content from spaces on the profile in guest access mode
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
