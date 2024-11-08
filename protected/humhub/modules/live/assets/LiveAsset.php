@@ -9,6 +9,8 @@
 namespace humhub\modules\live\assets;
 
 use humhub\components\assets\AssetBundle;
+use humhub\modules\web\security\helpers\Security;
+use Yii;
 
 class LiveAsset extends AssetBundle
 {
@@ -24,4 +26,16 @@ class LiveAsset extends AssetBundle
         'js/humhub.live.js',
         'js/humhub.live.poll.js',
     ];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+
+        Yii::$app->view->registerJsConfig('live.poll', [
+            'nonce' => Security::getNonce(),
+        ]);
+    }
 }
