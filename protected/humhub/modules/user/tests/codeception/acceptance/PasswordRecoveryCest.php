@@ -30,7 +30,7 @@ class PasswordRecoveryCest
         $I->wait(3);
         $I->expectTo('see confirm messages even with wrong email for safe reason');
         $I->see('Password recovery!');
-        $I->see('We’ve sent you an email containing a link that will allow you to reset your password.');
+        $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
 
         $I->amGoingTo('request a recovery mail with valid data');
         LoginPage::openBy($I);
@@ -44,6 +44,6 @@ class PasswordRecoveryCest
         $I->wait(3);
         $I->expectTo('see confirm messages');
         $I->see('Password recovery!');
-        $I->see('We’ve sent you an email containing a link that will allow you to reset your password.');
+        $I->see('If a user account associated with this email address exists, further instructions will be sent to you by email shortly.');
     }
 }
