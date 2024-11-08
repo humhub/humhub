@@ -2,12 +2,12 @@
 // General
 // --------------------------------------------------
 html {
-    scroll-padding-top: 130px;
+    scroll-padding-top: var(--hh-fixed-header-height);
 }
 
 body {
     .text-break();
-    padding-top: 130px;
+    padding-top: var(--hh-fixed-header-height);
     background-color: @background-color-page;
     color: @text-color-main;
     font-family: 'Open Sans', sans-serif;
@@ -58,6 +58,7 @@ hr {
 @media (max-width: 768px) {
     .layout-nav-container {
         padding: 0 15px;
+
         .left-navigation {
             margin-bottom: 0;
         }
@@ -114,11 +115,11 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 
 .panel-body a[data-toggle], .modal-body a[data-toggle] {
-    color:@link;
+    color: @link;
 }
 
 .showMore {
-    font-size:13px;
+    font-size: 13px;
 }
 
 .table-responsive {

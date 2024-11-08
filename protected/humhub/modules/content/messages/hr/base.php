@@ -2,6 +2,7 @@
 
 return [
     '(Also visible to non-members of this space)' => '(Vidljivo i nečlanovima ovog prostora)',
+    '(Also visible to people who are not logged in)' => '(Također vidljivo osobama koje nisu prijavljene)',
     '<strong>Move</strong> content' => '<strong>Premjesti</strong> sadržaj',
     '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> na ovu objavu',
     'Add a member to notify' => 'Dodaj člana za obaviještavanje',
@@ -67,6 +68,7 @@ return [
     'Turn off notifications' => 'Isključi obavijesti',
     'Turn on notifications' => 'Uključi obavijesti',
     'Unarchive' => 'Dearhiviraj',
+    'Unlock comments' => 'Otključaj komentare',
     'Unpin' => 'Otkači',
     'Updated' => 'Ažurirano',
     'Visible also to unregistered users' => 'Vidljivo i neregistriranim korisnicima',
@@ -106,7 +108,8 @@ return [
     'Select type...' => '',
     'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
-    'Unlock comments' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'You cannot block the space owner!' => '',
     'You cannot block the user of the same container!' => '',
     'You cannot block yourself!' => '',

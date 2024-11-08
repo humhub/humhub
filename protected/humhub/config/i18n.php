@@ -24,6 +24,7 @@ return [
         'de',
         'el',
         'es',
+        'es-419',
         'et',
         'eu',
         'fa-IR',

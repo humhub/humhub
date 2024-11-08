@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => 'Menu <strong>quản trị</strong>',
   '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module</strong> administration' => '',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Người',
   'Permissions' => 'Quyền truy cập',
   'Proxy' => 'Proxy',
+  'Resend to all' => '',
+  'Resend to selected rows' => '',
   'Self test' => 'Tự kiểm thử',
   'Set as default' => 'Đặt làm mặc định',
   'Settings' => 'Cài đặt',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Thống kê',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Cron job cho tác vụ ngầm (queue) có vẻ không hoạt động.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Cron job cho các tasks thông thường (cron) có vẻ không hoạt động.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
+  'Topics' => 'Chủ đề',
   'Uninstall' => 'Gỡ cài đặt',
   'Updates available for {count} of your modules' => '',
   'User not found!' => 'Không tìm thấy người dùng!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => '',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => '',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => '',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>Beheerder</strong> Account',
   '<strong>Configuration</strong>' => '<strong>Configuratie</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Gefeliciteerd</strong>. Je bent klaar.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Gefeliciteerd! Alles ziet er goed uit en klaar om opnieuw te beginnen!',
   'Create Admin Account' => 'Maak beheerdersaccount',
   'Create the database if it doesn\'t exist yet.' => 'Maak de gegevensbank aan als deze nog niet bestaat.',
+  'Default Language' => 'Standaardtaal',
+  'Default Timezone' => 'Standaard tijdzone',
   'Downloading & Installing Modules...' => 'Modules downloaden en installeren...',
   'External users can register (show registration form on login)' => 'Externe gebruikers kunnen inschrijven (Toon registratieformulier op login-pagina)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Hier kunt u bepalen hoe nieuwe, niet-geregistreerde gebruikers toegang krijgen tot HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Om deze functie te activeren, is het noodzakelijk om de HumHub-configuratie te werken, en mogelijk de instellingen van de webserver.',
   'Initializing database...' => 'Databank initialiseren...',
   'Installation Example:' => 'Installatie voorbeeld:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => 'De taal en tijdzone worden automatisch ingesteld volgens de browserinstellingen van de gebruiker. Als dat niet mogelijk is, worden de standaardinstellingen gebruikt.',
+  'Localisation' => 'Lokalisatie',
   'My club' => 'Mijn club',
   'My community' => 'Mijn vereniging',
   'My company (Social Intranet / Project management)' => 'Mijn bedrijf (Personeelsvereniging / projectmanagement)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Je MySQL wachtwoord.',
   'Your MySQL username' => 'Je MySQL gebruikersnaam.',
   'Your first sample space to discover the platform.' => 'Uw eerste voorbeeld ruimte om het platform te ontdekken.',
-);
+];

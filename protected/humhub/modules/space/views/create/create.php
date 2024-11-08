@@ -1,12 +1,12 @@
 <?php
 
+use humhub\libs\Html;
 use humhub\modules\space\models\Space;
-use yii\bootstrap\ActiveForm;
+use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
-use humhub\modules\space\widgets\SpaceNameColorInput;
+use yii\bootstrap\ActiveForm;
 use yii\helpers\Url;
-use humhub\libs\Html;
 
 /* @var $model Space */
 /* @var $visibilityOptions array */
@@ -19,7 +19,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
 <div class="modal-body">
 
-    <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model]) ?>
+    <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
     <?= $form->field($model, 'description'); ?>
 
     <a data-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">

@@ -9,7 +9,6 @@
 namespace humhub\modules\user;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\like\models\Like;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\permissions\CanMention;
@@ -129,6 +128,16 @@ class Module extends \humhub\components\Module
     public $passwordStrength = [];
 
     /**
+     * Password hint to display in the registration and password changing forms
+     * E.g.: 'Minimum 8 characters, at least one uppercase letter, one lowercase letter and one number'
+     * Can be translated via the `UserModule.base` file (see https://docs.humhub.org/docs/admin/translations#overwrite-translation-messages)
+     * If empty, no hint will be displayed, except if the passwordStrength has only one rule.
+     * @var null|string
+     * @since 1.17
+     */
+    public $passwordHint = null;
+
+    /**
      * @var bool disable profile stream
      * @since 1.6
      */
@@ -192,6 +201,19 @@ class Module extends \humhub\components\Module
      * @var string[]
      */
     public $allowUserRegistrationFromAuthClientIds = [];
+
+    /**
+     * @var bool Include captcha in registration form
+     * @since 1.17
+     */
+    public $enableRegistrationFormCaptcha = true;
+
+    /**
+     * @var int Time to live in days for invites.
+     * Invites older than this number of days will be automatically deleted.
+     * @since 1.17
+     */
+    public int $invitesTimeToLiveInDays = 30;
 
     /**
      * @inheritdoc
@@ -264,6 +286,20 @@ class Module extends \humhub\components\Module
     public function isCustomPasswordStrength()
     {
         return $this->getDefaultPasswordStrength() !== $this->getPasswordStrength();
+    }
+
+    public function getPasswordHint(): ?string
+    {
+        if ($this->passwordHint) {
+            return Yii::t('UserModule.base', $this->passwordHint);
+        }
+        // If only one rule, display it as hint
+        $passwordStrength = $this->getPasswordStrength();
+        if ($passwordStrength && count($passwordStrength) === 1) {
+            $firstRule = reset($passwordStrength);
+            return $firstRule ?: null;
+        }
+        return null;
     }
 
     /**

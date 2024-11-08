@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"Mijn ruimtes" sorteren',
   '1 month' => '1 maand',
   '1 week' => '1 week',
@@ -9,10 +9,12 @@ return array (
   '6 months' => 'zes maanden',
   '<strong>Confirm</strong> icon deletion' => '<strong>Bevestig</strong> de verwijdering van het pictogram',
   '<strong>Confirm</strong> image deletion' => '<strong>Bevestig</strong> de verwijdering van de afbeelding',
+  '<strong>Confirm</strong> topic deletion' => '<strong> Bevestig het verwijderen van deze rubriek</strong>',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'Toegangstoken',
   'Access token is not provided yet.' => 'Toegangstoken is nog niet verstrekt.',
   'Add OEmbed provider' => 'OEmbed provider toevoegen',
+  'Add Topic' => 'Voeg rubriek toe',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Voeg aangepaste informatietekst toe voor de onderhoudsmodus. Weergegeven op de inlogpagina.',
   'Add individual info text...' => 'Individuele infotekst toevoegen...',
   'Add new provider' => 'Nieuwe provider toevoegen',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Cache Backend',
   'Comma separated list. Leave empty to allow all.' => 'Lijst gescheiden door komma\'s. Laat leeg om alles toe te staan.',
   'Configuration (Use settings from configuration file)' => 'Configuratie (gebruik instellingen uit configuratiebestand)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'Kan test-e-mail niet verzenden.',
   'Currently no provider active!' => 'Geen enkele provider is ingeschakeld!',
   'Currently there are {count} records in the database dating from {dating}.' => 'Momenteel zijn er {count} records in de gegevensbank vanaf {dating}.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Standaard paginering grootte (Berichten per pagina)',
   'Default stream content order' => 'Standaard inhoud volgorde',
   'Delete' => 'Verwijder',
+  'Do you really want to delete this topic?' => 'Wilt u dit rubriek echt verwijderen?',
   'E-Mail' => 'E-mail',
   'E-Mail reply-to' => 'Antwoord naar e-mail adres',
   'E-Mail sender address' => 'E-mailadres afzender',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Vriendschap',
   'General' => 'Algemeen',
   'General Settings' => 'Algemene instellingen',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'HTML tracking code',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Hieronder past u de registratie en aanvullende gebruiker instellingen van uw website aan.',
   'Here you can configure basic settings of your social network.' => 'Hieronder verandert u de basis instellingen van uw website.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Provider naam',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Reguliere expressie waarmee de koppeling wordt gecontroleerd.',
-  'Reported database time: {dateTime}' => 'Gemelde gegevensbanktijd: {dateTime}',
   'Save' => 'Bewaar',
   'Save & Flush Caches' => 'Bewaar &amp; vernieuw de caches',
   'Save & Test' => 'Bewaar &amp; Test',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Thema',
   'These settings refer to advanced topics of your social network.' => 'Hieronder stelt u geavanceerde onderdelen van uw site in.',
   'These settings refer to the appearance of your social network.' => 'Hieronder stelt u het uiterlijk van uw site in.',
+  'Topic has been deleted!' => 'Rubriek is verwijderd.',
+  'Topics' => 'Rubrieken',
   'Url Pattern' => 'URL-patroon',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Gebruik %url% als plaatshouder voor een URL. Het formaat dient JSON te zijn (bijv. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
   'Use SMTPS' => 'SMTPS gebruiken',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'bijv. localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'bijv. smtps://gebruiker:pas@smtp.voorbeeld.com:poort',
   'never' => 'nooit',
-);
+];

@@ -47,14 +47,12 @@ humhub.module('notification', function (module, require, $) {
         this.originalTitle = document.title;
         this.initDropdown();
         this.handleResult(update);
-        // this.sendDesktopNotifications(update);
 
         var that = this;
         event.on('humhub:modules:notification:live:NewNotification', function (evt, events, update) {
             var filteredEvents = that.filterEvents(events);
             var count = (that.$.data('notification-count')) ? parseInt(that.$.data('notification-count')) + filteredEvents.length : filteredEvents.length;
             that.updateCount(count);
-            that.sendDesktopNotifications(events, update.lastSessionTime);
         });
 
         // e.g. Mail module can fire this to `updateTitle`.
@@ -174,20 +172,17 @@ humhub.module('notification', function (module, require, $) {
             return;
         }
 
-        $('#badge-notifications').hide();
-
         event.trigger('humhub:notification:updateCount', [$count]);
 
         if (!$count) {
             updateTitle(false);
             $('#badge-notifications').html('0');
-            $('#mark-seen-link').hide();
+            $('#badge-notifications, #mark-seen-link').hide();
             $('#icon-notifications .fa').removeClass("animated swing");
         } else {
             updateTitle($count);
             $('#badge-notifications').html($count);
-            $('#mark-seen-link').show();
-            $('#badge-notifications').fadeIn('fast');
+            $('#badge-notifications, #mark-seen-link').fadeIn('fast');
 
             // Clone icon to retrigger animation
             var $icon = $('#icon-notifications .fa');
@@ -199,46 +194,9 @@ humhub.module('notification', function (module, require, $) {
         this.$.data('notification-count', $count);
     };
 
-    NotificationDropDown.prototype.sendDesktopNotifications = function (response, lastSessionTime) {
-        if (!response) {
-            return;
-        }
-
-        if (!module.config.sendDesktopNotifications) {
-            return;
-        }
-
-        if (response.text) { // Single Notification
-            module.sendDesktopNotifiaction(response.text);
-        } else if (response.notifications) { // Multiple Notifications
-            var $notifications = response.notifications;
-            for (var i = 0; i < $notifications.length; i++) {
-                module.sendDesktopNotifiaction($notifications[i]);
-            }
-        } else if (object.isArray(response)) { // Live events
-            $.each(response, function (i, liveEvent) {
-                if (lastSessionTime && lastSessionTime > liveEvent.data.ts) {
-                    return; // continue
-                }
-
-                if (liveEvent.data && liveEvent.data.text) {
-                    module.sendDesktopNotifiaction(liveEvent.data.text);
-                }
-            });
-        }
-
-    };
-
     var getNotificationCount = function () {
         var widget = NotificationDropDown.instance('#notification_widget');
         return widget.$.data('notification-count');
-    };
-
-    var sendDesktopNotifiaction = function (body, icon) {
-        icon = icon || module.config.icon;
-        if (body && body.length) {
-            notify.createNotification("Notification", {body: body, icon: icon});
-        }
     };
 
     var _errorHandler = function (e) {
@@ -344,8 +302,8 @@ humhub.module('notification', function (module, require, $) {
         handleFilterChanges();
         if ($('#notification_overview_list').length) {
             OverviewWidget.instance('#notification_overview_list');
-            if (!$('#notification_overview_list li.new').length) {
-                $('#notification_overview_markseen').hide();
+            if ($('#notification_overview_list li.new').length) {
+                $('#notification_overview_markseen').show();
             }
         }
     };
@@ -353,10 +311,8 @@ humhub.module('notification', function (module, require, $) {
     module.export({
         init: init,
         markAsSeen: markAsSeen,
-        sendDesktopNotifiaction: sendDesktopNotifiaction,
         getNotificationCount: getNotificationCount,
         NotificationDropDown: NotificationDropDown,
         OverviewWidget: OverviewWidget
     });
 });
-

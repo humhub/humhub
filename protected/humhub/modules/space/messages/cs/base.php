@@ -159,9 +159,12 @@ return [
     '{count} members' => '{count} členů',
     '{email} is not valid!' => 'E-mailová adresa {email} není platná!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
+    'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',
     'Neither..nor' => '',
     'Shown on About Page.' => '',
     'Space Name' => '',
+    'Stream Sort' => '',
 ];

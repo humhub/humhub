@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => 'Ordre de tri de "Mes espaces"',
   '1 month' => '1 mois',
   '1 week' => '1 semaine',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6 mois',
   '<strong>Confirm</strong> icon deletion' => '<strong>Confirmer</strong> la suppression de l\'icône',
   '<strong>Confirm</strong> image deletion' => '<strong>Confirmer</strong> la suppression de l\'image',
+  '<strong>Confirm</strong> topic deletion' => '<strong>Confirmer</strong> la suppression du sujet',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'Jeton d’accès',
   'Access token is not provided yet.' => 'Le jeton d’accès n’est pas encore fourni.',
   'Add OEmbed provider' => 'Ajouter un fournisseur OEmbed',
+  'Add Topic' => 'Ajouter un sujet',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Ajouter un texte personnaliser pour le mode maintenance. Il sera afficher sur la page de connexion.',
   'Add individual info text...' => 'Ajouter un texte d’info individuel…',
   'Add new provider' => 'Ajouter un nouveau fournisseur',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Type de mémoire cache',
   'Comma separated list. Leave empty to allow all.' => 'Liste séparée par des virgules (laisser vide pour tout autoriser)',
   'Configuration (Use settings from configuration file)' => 'Configuration (utiliser les réglages du fichier de configuration)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'L\'envoi du courrier de test a échoué.',
   'Currently no provider active!' => 'Aucun fournisseur actif actuellement.',
   'Currently there are {count} records in the database dating from {dating}.' => 'Il y a actuellement {count} enregistrements dans la base de données datant de {dating}.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Taille de pagination par défaut (entrées par page)',
   'Default stream content order' => 'Ordre du contenu par défaut dans le fil d\'actualités',
   'Delete' => 'Supprimer',
+  'Do you really want to delete this topic?' => 'Voulez-vous vraiment supprimer ce sujet ?',
   'E-Mail' => 'E-mail',
   'E-Mail reply-to' => 'E-mail de réponse (reply-to)',
   'E-Mail sender address' => 'Adresse expéditeur des e-mails',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Amitié',
   'General' => 'Général',
   'General Settings' => 'Paramètres généraux',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'Code HTML de suivi de statistiques',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Ici, vous pouvez configurer le comportement d\'enregistrement et les paramètres utilisateur supplémentaires de votre réseau social.',
   'Here you can configure basic settings of your social network.' => 'Vous pouvez configurer ici les paramètres basiques de votre réseau social.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Nom du fournisseur',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Expression régulière utilisée pour vérifier la validité du lien.',
-  'Reported database time: {dateTime}' => 'Temps de base de données rapporté: {dateTime}',
   'Save' => 'Enregistrer',
   'Save & Flush Caches' => 'Enregistrer et purger le cache',
   'Save & Test' => 'Enregistrer et Tester',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Thème',
   'These settings refer to advanced topics of your social network.' => 'Ces paramètres concernent les sujets avancés de votre réseau social.',
   'These settings refer to the appearance of your social network.' => 'Ces paramètres concernent l\'apparence de votre réseau social.',
+  'Topic has been deleted!' => 'Ce sujet a bien été supprimée.',
+  'Topics' => 'Sujets',
   'Url Pattern' => 'Motif d’URL',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Utiliser %url% comme espace réservé pour l\'URL. Le format doit être JSON. (p.ex. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
   'Use SMTPS' => 'Utiliser SMTPS',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'par exemple « localhost »',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'par exemple : smtps://identifiant:motdepasse@smtp.exemple.com:port',
   'never' => 'jamais',
-);
+];

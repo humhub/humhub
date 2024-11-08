@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y ans',
   '<b>This profile stream is still empty!</b>' => '<b>Ce profil est vide.</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Ce profil est vide.</b><br>Soyez le premier à publier quelque chose...',
@@ -28,6 +28,7 @@ return array (
   'Diverse' => 'Autre',
   'E-Mail' => 'E-Mail',
   'E-mail address of the user' => 'Adresse e-mail de l\'utilisateur',
+  'Each line must be formatted as Key=>Value!' => 'Chaque ligne doit être au format Clé=&gt;Valeur !',
   'Edit account' => 'Modifier votre compte',
   'Editable' => 'Modifiable',
   'Facebook URL' => 'Lien Facebook',
@@ -90,16 +91,19 @@ return array (
   'Stream' => 'Fil d\'actualités',
   'Street' => 'Rue',
   'Supported ISO3166 country codes' => 'Codes pays au format ISO3166 autorisés',
+  'Template' => 'Modèle',
   'Text' => 'Texte',
   'Text Area' => 'Texte long',
   'Text Field Options' => 'Options de champ de texte',
   'Text area field options' => 'Options de champ de texte long',
+  'This profile is disabled!' => 'Ce profil est désactivé !',
   'This profile is no longer available!' => 'Ce profil n\'est plus disponible.',
   'This user account is not approved yet!' => 'Ce compte utilisateur n\'a pas encore été approuvé.',
   'This will add an additional input element for custom values' => 'Ceci va ajouter un nouvel élément de saisie pour les valeurs personnalisées',
   'TikTok URL' => 'Lien TikTok',
   'Title' => 'Titre',
   'Translation Category ID' => 'ID de traduction de la catégorie',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
   'Twitter URL' => 'Lien Twitter',
   'Type Config' => 'Configuration de type',
   'Updated at' => 'Mis à jour le',
@@ -116,4 +120,4 @@ return array (
   'YouTube URL' => 'Lien YouTube',
   'Zip' => 'Code postal',
   '{attribute} is required!' => '{attribute} est requis!',
-);
+];

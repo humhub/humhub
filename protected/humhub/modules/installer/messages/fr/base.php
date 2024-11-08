@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => 'Compte <strong>Administrateur</strong>',
   '<strong>Configuration</strong>' => '<strong>Configuration</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Félicitations</strong>. Vous avez terminé.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Félicitations ! Tout fonctionne et est prêt à démarrer !',
   'Create Admin Account' => 'Créer un compte administrateur',
   'Create the database if it doesn\'t exist yet.' => 'Créez la base de données si elle n’existe pas encore.',
+  'Default Language' => 'Langue par défaut',
+  'Default Timezone' => 'Fuseau horaire par défaut',
   'Downloading & Installing Modules...' => 'Téléchargement et installation des modules...',
   'External users can register (show registration form on login)' => 'Les utilisateurs externes peuvent s\'inscrire (le formulaire d\'inscription sera affiché lors de la connexion)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Vous pouvez décider ici de la façon dont les nouveaux utilisateurs non inscrits peuvent accéder à HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Pour activer cette fonction, il faut modifier la configuration de HumHub et éventuellement celle du serveur web.',
   'Initializing database...' => 'Initialisation de la base de données…',
   'Installation Example:' => 'Exemple d’installation :',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => 'La langue et le fuseau horaire sont réglés automatiquement en fonction des réglages du navigateur de l’utilisateur ou de l’utilisatrice. Si ce n’est pas possible, les réglages par défaut sont utilisés.',
+  'Localisation' => 'Localisation',
   'My club' => 'Mon club',
   'My community' => 'Ma communauté',
   'My company (Social Intranet / Project management)' => 'Ma société (intranet social / gestion de projet)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Votre mot de passe MySQL',
   'Your MySQL username' => 'Votre nom d\'utilisateur MySQL',
   'Your first sample space to discover the platform.' => 'Votre premier espace de test pour découvrir la plateforme.',
-);
+];

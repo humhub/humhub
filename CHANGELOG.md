@@ -1,6 +1,82 @@
 HumHub Changelog
 ================
 
+1.17.0-beta.2 (Unreleased)
+--------------------------------
+- Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
+- Fix #7281: SelfTest for DynamicConfig broken when not exist yet
+- Fix #7284: Content tag visibility
+- Enh #7287: Add `Template` virtual field
+- Enh #7291: Disable link in `TopicLabel` when contentContainer is not present
+- Enh #7293: Add Twig string extension
+- Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
+- Fix #7295: iOS mobile app detection for iPad devices
+- Fix #7298: Don't check email for existing on password recovery
+
+1.17.0-beta.1 (October 28, 2024)
+--------------------------------
+- Enh #7070: Add GitHub action for PHP CS Fixer
+- Enh #7073: Add a link to notification settings on top dropdown list
+- Fix #7100: Enable all file handlers on RichText editor toolbar
+- Enh #7127: Prerequisites - Check that Web and Cli php version and user is the same
+- Enh #7128: Prerequisites - check for mixed table collations
+- Enh #7131: Introduce new CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height`
+- Enh #7129: Link `wall-entry-controls`- color to `--text-color-soft`
+- Chg #7136: When opening a modal box, don't autofocus automatically on the first form input
+- Enh #7138: Added missing DB relations to UserInvite model
+- Enh #7139: Export `confirmUnload` function from `humhub.client.js`
+- Enh #7068: Bulk re-send email invites
+- Enh #7144: Add `DeviceDetectorHelper` class to detect devices such as the mobile app
+- Fix #7149: Fixed dropdown issue on mobile
+- Fix #7151: Disable new post's required validation for `message` when post has attached files
+- Enh #7106: Enable option for non-member users of a space to create posts
+- Enh #7160: Default state set to Deny for `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Enh #7166: When browsing HumHub from the mobile app, add a warning to the dashboard (`IncompleteSetupWarning` widget) if HumHub doesn't support push notifications
+- Fix #7174: In lists, when an item text is displayed on multiple lines, the lines below are not lining up with the first one
+- Fix #7173: Fix marketplace module label "Professional Edition"
+- Fix #7176: Fix of broken tests related to `Create Private Spaces` and `Create Public Spaces` Groups permissions
+- Enh #7198: Increase default Upload Max File Size to 64mb
+- Fix #7197: Increased version of `PHPOffice/PHPSpreadsheet` to v2.2+
+- Enh #7167: Disable DEBUG mode automatically after successful humhub installation. Add `.env` support
+- Enh #7202: Increased minimum PHP version to 8.1
+- Enh #7208: Improvements in dotenv parsing
+- Enh #7213: By default, enabled "Mobile" notification types for those enabled for "Web"
+- Fix #7215: Wording: replace British "licence" with American "license"
+- Fix #6987: Added LatAm Spanish
+- Enh #7214: Replace theme variables with CSS variables
+- Enh #7221: Increase language column size for new language codes
+- Enh #7226: Added configuration option for default stream sorting on space level
+- Enh #7224: Added `user\Module::$invitesTimeToLiveInDays` to automatically clean up User Invites after a specified number of days
+- Enh #7231: Removed deprecated `ShowMorePager` widget
+- Fix #7230: Update module with new id
+- Enh #7234: Remove using of database timezone
+- Enh #7233: Mobile view: enlarge images in gallery preview of entries for the wall stream
+- Enh #7237: Changed PoweredBy URL
+- Enh #7238: Fixed PHP warning related to `.env`
+- Enh #7239: Added option `\humhub\modules\installer\Module::$enableAutoSetup` to enable/disable auto setup of humhub installation
+- Enh #7240: Fixed maximum file size setting in initialization
+- Enh #7244: Changed .env var depth separator from `.` to `__`
+- Enh #7251: Commands for module info and test DB connection
+- Fix #7248: Upgrade jQuery Highlight plugin
+- Fix #7254: Fix Login view HTML element ID from `user-auth-login-modal` to `user-auth-login`
+- Fix #7250: Check writable path
+- Enh #7255: Improved CSP headers
+- Enh #7253: CSV/XLSX export improvements
+- Enh #7252: Show "Powered by HumHub" even if no entries in the Footer menu
+- Enh #7257: Move "About" into Space Control Menu
+- Enh #7262: Disable `Like` on archived content
+- Enh #7125: Prerequisites - Check test for pending migrations
+- Fix #173 : Remove UISetting "Include Captcha in Registr
+- Fix #7066: Allow using `Space::canJoin($userId)` in command line
+- Enh #7037: Space creation notification to users allowed to manage spaces
+- Enh #7243: Server time zone
+- Enh #7188: Helper for detecting a current path by module/controller/action
+- Enh #7265: Profile "About" page: don't display the menu if only one entry
+- Enh #7269: Remove desktop notifications
+- Enh #5423: Display password rules in form field hint
+- Enh #7223: Global Topics
+- Enh #7274: Restrict user content visibility on Dashboard for guests
+
 1.16.3 (Unreleased)
 --------------------------
 - Fix #7212: Fix horizontal scroll bar on space stream on small screen
@@ -13,10 +89,11 @@ HumHub Changelog
 - Fix #7227: Fix search reindexing after create new content
 - Fix #7232: Refresh the updated_at timestamp of invitation after resend it
 - Fix #7241: Fix file visibility for object with viewable interface
+- Enh #7229: Hide invitations with unknown sources
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)
 - Fix #7278: Don't remove html tags by JS from search post record because it is done by PHP
 - Fix #7296: Fix email validation of invite new users
-- Fix #7298: Don't check email for existing on password recovery
+- Fix #7297: Auto refresh a page with obsolete nonce value
 
 1.16.2 (September 5, 2024)
 --------------------------
@@ -66,6 +143,7 @@ See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/relea
 - Fix #7059: Saving of empty password by admin
 - Fix #7065: Space members manager crashes on HumHub 1.16.0-beta.3
 - Enh #7062: Render emojis also in email content
+- Enh #7079: Improve `MenuEntry::isActiveState` to support query params check
 
 1.16.0-beta.3 (June 10, 2024)
 -----------------------------

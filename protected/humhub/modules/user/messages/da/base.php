@@ -64,6 +64,7 @@ return [
     'Delete Account' => '',
     'Did you forget your password?' => '',
     'Disconnect account' => '',
+    'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
     'Find people by their profile data or user tags' => '',
     'Following (User)' => '',

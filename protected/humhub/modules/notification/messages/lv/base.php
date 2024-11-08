@@ -1,12 +1,11 @@
 <?php
 
 return [
-    'New' => 'Jauns',
+    'Notification Settings' => 'Notifikāciju iestatījumi',
     'Reset to defaults' => 'Atiestatīt uz noklusēto',
     'Type' => 'Tips',
     '<strong>Notification</strong> Overview' => '',
     '<strong>Notification</strong> Settings' => '',
-    'Allow desktop notifications by default.' => '',
     'Do you want to reset the settings concerning email summaries for all users?' => '',
     'Do you want to reset the settings concerning notifications for all users?' => '',
     'Filter' => '',
@@ -19,7 +18,6 @@ return [
     'Notifications are sent instantly to you to inform you about new activities in your network.' => '',
     'Open the notification dropdown menu' => '',
     'Receive \'New Content\' Notifications for the following spaces' => '',
-    'Receive desktop notifications when you are online.' => '',
     'Reset for all users' => '',
     'Show all notifications' => '',
     'The requested content is not valid or was removed!' => '',

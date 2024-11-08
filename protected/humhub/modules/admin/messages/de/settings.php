@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"Meine Spaces" Sortierung',
   '1 month' => '1 Monat',
   '1 week' => '1 Woche',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6 Monate',
   '<strong>Confirm</strong> icon deletion' => 'Löschen des Icons <strong>bestätigen</strong>',
   '<strong>Confirm</strong> image deletion' => 'Löschen des Bildes <strong>bestätigen</strong>',
+  '<strong>Confirm</strong> topic deletion' => 'Themenlöschung <strong>bestätigen</strong>',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'Access Token',
   'Access token is not provided yet.' => 'Kein Access Token angegeben.',
   'Add OEmbed provider' => 'OEmbed Anbieter hinzufügen',
+  'Add Topic' => 'Thema hinzufügen',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Benutzerdefinierten Informationstext für den Wartungsmodus hinzufügen, wird auf der Anmeldeseite angezeigt.',
   'Add individual info text...' => 'Individuellen Infotext hinzufügen...',
   'Add new provider' => 'Neuen Anbieter hinzufügen',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Cache Backend',
   'Comma separated list. Leave empty to allow all.' => 'Komma-separierte Liste (CSV). Leer lassen, um alle zu erlauben.',
   'Configuration (Use settings from configuration file)' => 'Konfiguration (Nutze Einstellungen aus Konfigurationsdatei)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'Test-E-Mail konnte nicht versandt werden.',
   'Currently no provider active!' => 'Aktuell sind keine Anbieter eingerichtet!',
   'Currently there are {count} records in the database dating from {dating}.' => 'Beginnend mit dem {dating} enthält die Datenbank {count} Datensätze.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Standardseitengröße (Einträge pro Seite)',
   'Default stream content order' => 'Standardsortierung des Streams',
   'Delete' => 'Löschen',
+  'Do you really want to delete this topic?' => 'Möchtest du dieses Thema wirklich löschen?',
   'E-Mail' => 'E-Mail',
   'E-Mail reply-to' => 'E-Mail Antwortadresse',
   'E-Mail sender address' => 'E-Mail-Absenderadresse',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Freundschaften',
   'General' => 'Allgemein',
   'General Settings' => 'Allgemeine Einstellungen',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'HTML Tracking Code',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Hier kannst du Registrierungseinstellungen und weitere Benutzereinstellungen deines sozialen Netzwerks konfigurieren.',
   'Here you can configure basic settings of your social network.' => 'Hier kannst du grundlegende Einstellungen deines sozialen Netzwerks konfigurieren.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Provider Name',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Regulärer Ausdruck zur Suche nach einem Link Muster.',
-  'Reported database time: {dateTime}' => 'Gemeldete Datenbankzeit: {dateTime}',
   'Save' => 'Speichern',
   'Save & Flush Caches' => 'Speichern &amp; Cache leeren',
   'Save & Test' => 'Speichern &amp; Testen',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Thema',
   'These settings refer to advanced topics of your social network.' => 'Diese Einstellungen betreffen fortgeschrittene Themen deines sozialen Netzwerkes.',
   'These settings refer to the appearance of your social network.' => 'Diese Einstellungen beziehen sich auf die Darstellung deines Sozialen Netzwerks.',
+  'Topic has been deleted!' => 'Thema wurde gelöscht!',
+  'Topics' => 'Themen',
   'Url Pattern' => 'URL Schema',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Benutze %url% als Platzhalter für die URL. Als Format muss JSON zurückgegeben werden. (z. B. http://www.youtube.de/oembed?url=%url%&amp;format=json)',
   'Use SMTPS' => 'Nutze SMTPS',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'z.B. localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'z.B. smtps://user:pass@smtp.example.com:port',
   'never' => 'Nie',
-);
+];

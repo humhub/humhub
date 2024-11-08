@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '',
   '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module</strong> administration' => '',
@@ -56,6 +56,8 @@ return array (
   'People' => 'ህዝብ',
   'Permissions' => 'ፈቃዶች',
   'Proxy' => 'ተኪ',
+  'Resend to all' => '',
+  'Resend to selected rows' => '',
   'Self test' => 'የራስ ፍተሻ',
   'Set as default' => 'ነባሪ አድርግ',
   'Settings' => 'ማስተካከያዎች',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'ቁጥራዊ መረጃዎች',
   'The cron job for the background jobs (queue) does not seem to work properly.' => '',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => '',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
+  'Topics' => 'አርዕስት',
   'Uninstall' => 'አውርድ',
   'Updates available for {count} of your modules' => '',
   'User not found!' => 'ተጠቃሚው አልተገኙም!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => '',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => '',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => '',
-);
+];

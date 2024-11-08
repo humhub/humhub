@@ -8,11 +8,11 @@
 
 namespace humhub\modules\notification\components;
 
-use humhub\modules\user\models\User;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\notification\targets\MailTarget;
-use humhub\modules\notification\targets\WebTarget;
 use humhub\modules\notification\targets\MobileTarget;
+use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\user\models\User;
 use yii\base\BaseObject;
 use yii\base\InvalidConfigException;
 
@@ -65,15 +65,10 @@ abstract class NotificationCategory extends BaseObject
      */
     public function getDefaultSetting(BaseTarget $target)
     {
-        if ($target->id === MailTarget::getId()) {
-            return true;
-        } elseif ($target->id === WebTarget::getId()) {
-            return true;
-        } elseif ($target->id === MobileTarget::getId()) {
-            return false;
-        }
-
-        return $target->defaultSetting;
+        return match ($target->id) {
+            MailTarget::getId(), WebTarget::getId(), MobileTarget::getId() => true,
+            default => $target->defaultSetting,
+        };
     }
 
     /**

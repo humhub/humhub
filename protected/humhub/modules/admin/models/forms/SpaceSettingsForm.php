@@ -5,6 +5,9 @@ namespace humhub\modules\admin\models\forms;
 use humhub\components\SettingsManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\Module;
+use humhub\modules\stream\actions\Stream;
+use humhub\modules\stream\widgets\WallStreamFilterNavigation;
+use humhub\modules\topic\jobs\ConvertTopicsToGlobalJob;
 use Yii;
 use yii\base\Model;
 
@@ -50,6 +53,11 @@ class SpaceSettingsForm extends Model
     public $defaultIndexGuestRoute = null;
 
     /**
+     * @var string|null
+     */
+    public $defaultStreamSort = null;
+
+    /**
      * @var bool
      */
     public $defaultHideMembers = false;
@@ -70,6 +78,11 @@ class SpaceSettingsForm extends Model
     public $defaultHideFollowers = false;
 
     /**
+     * @var bool
+     */
+    public $allowSpaceTopics = true;
+
+    /**
      * @var SettingsManager|null
      */
     public ?SettingsManager $settingsManager;
@@ -82,8 +95,9 @@ class SpaceSettingsForm extends Model
         return [
             [['defaultVisibility', 'defaultJoinPolicy', 'defaultContentVisibility'], 'integer'],
             ['defaultSpaceGuid', 'checkSpaceGuid'],
-            [['defaultIndexRoute', 'defaultIndexGuestRoute'], 'string'],
-            [['defaultHideMembers', 'defaultHideActivities', 'defaultHideAbout', 'defaultHideFollowers'], 'boolean'],
+            [['defaultIndexRoute', 'defaultIndexGuestRoute', 'defaultStreamSort'], 'string'],
+            ['defaultStreamSort', 'in', 'range' => array_keys(self::defaultStreamSortOptions())],
+            [['defaultHideMembers', 'defaultHideActivities', 'defaultHideAbout', 'defaultHideFollowers', 'allowSpaceTopics'], 'boolean'],
         ];
     }
 
@@ -99,10 +113,12 @@ class SpaceSettingsForm extends Model
             'defaultContentVisibility' => Yii::t('AdminModule.space', 'Default Content Visiblity'),
             'defaultIndexRoute' => Yii::t('AdminModule.space', 'Default Homepage'),
             'defaultIndexGuestRoute' => Yii::t('AdminModule.space', 'Default Homepage (Non-members)'),
+            'defaultStreamSort' => Yii::t('AdminModule.space', 'Default Stream Sort'),
             'defaultHideMembers' => Yii::t('AdminModule.space', 'Default "Hide Members"'),
             'defaultHideActivities' => Yii::t('AdminModule.space', 'Default "Hide Activity Sidebar Widget"'),
             'defaultHideAbout' => Yii::t('AdminModule.space', 'Default "Hide About Page"'),
             'defaultHideFollowers' => Yii::t('AdminModule.space', 'Default "Hide Followers"'),
+            'allowSpaceTopics' => Yii::t('AdminModule.space', 'Allow individual topics in Spaces'),
         ];
     }
 
@@ -139,10 +155,12 @@ class SpaceSettingsForm extends Model
         $this->defaultSpaces = Space::findAll(['auto_add_new_members' => 1]);
         $this->defaultIndexRoute = $this->settingsManager->get('defaultIndexRoute');
         $this->defaultIndexGuestRoute = $this->settingsManager->get('defaultIndexGuestRoute');
+        $this->defaultStreamSort = $this->settingsManager->get('defaultStreamSort', WallStreamFilterNavigation::FILTER_SORT_CREATION);
         $this->defaultHideMembers = $this->settingsManager->get('defaultHideMembers', $module->hideMembers);
         $this->defaultHideActivities = $this->settingsManager->get('defaultHideActivities', $module->hideActivities);
         $this->defaultHideAbout = $this->settingsManager->get('defaultHideAbout', $module->hideAboutPage);
         $this->defaultHideFollowers = $this->settingsManager->get('defaultHideFollowers', $module->hideFollowers);
+        $this->allowSpaceTopics = $this->settingsManager->get('allowSpaceTopics', true);
     }
 
     /**
@@ -159,11 +177,19 @@ class SpaceSettingsForm extends Model
         $this->settingsManager->set('defaultContentVisibility', $this->defaultContentVisibility);
         $this->settingsManager->set('defaultIndexRoute', $this->defaultIndexRoute);
         $this->settingsManager->set('defaultIndexGuestRoute', $this->defaultIndexGuestRoute);
+        $this->settingsManager->set('defaultStreamSort', $this->defaultStreamSort);
         $this->settingsManager->set('defaultHideMembers', $this->defaultHideMembers);
         $this->settingsManager->set('defaultHideActivities', $this->defaultHideActivities);
         $this->settingsManager->set('defaultHideAbout', $this->defaultHideAbout);
         $this->settingsManager->set('defaultHideFollowers', $this->defaultHideFollowers);
+        $this->settingsManager->set('allowSpaceTopics', $this->allowSpaceTopics);
         $this->updateDefaultSpaces();
+
+        if (!$this->allowSpaceTopics) {
+            Yii::$app->queue->push(new ConvertTopicsToGlobalJob([
+                'containerType' => Space::class,
+            ]));
+        }
 
         return true;
     }
@@ -192,6 +218,14 @@ class SpaceSettingsForm extends Model
                 }
             }
         }
+    }
+
+    public static function defaultStreamSortOptions(): array
+    {
+        return [
+            Stream::SORT_CREATED_AT => Yii::t('ContentModule.base', 'Creation time'),
+            Stream::SORT_UPDATED_AT => Yii::t('ContentModule.base', 'Last update'),
+        ];
     }
 
 }

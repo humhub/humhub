@@ -69,6 +69,7 @@ return [
     'Default Group' => '',
     'Default Space' => '',
     'Did you forget your password?' => '',
+    'Empty password cannot be saved!' => '',
     'Enable Notifications' => '',
     'Find people by their profile data or user tags' => '',
     'Following (User)' => '',

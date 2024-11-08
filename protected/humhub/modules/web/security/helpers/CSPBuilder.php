@@ -882,9 +882,6 @@ class CSPBuilder
         // If we're supporting legacy devices, include these too:
         if ($legacy) {
             $return [] = $this->reportOnly
-                ? 'X-Content-Security-Policy-Report-Only'
-                : 'X-Content-Security-Policy';
-            $return [] = $this->reportOnly
                 ? 'X-Webkit-CSP-Report-Only'
                 : 'X-Webkit-CSP';
         }

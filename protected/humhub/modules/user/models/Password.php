@@ -10,6 +10,7 @@ namespace humhub\modules\user\models;
 
 use humhub\libs\UUID;
 use humhub\modules\user\components\CheckPasswordValidator;
+use humhub\modules\user\Module;
 use Yii;
 use yii\base\ErrorException;
 use yii\base\Exception;
@@ -151,6 +152,18 @@ class Password extends ActiveRecord
             'newPasswordConfirm' => Yii::t('UserModule.base', 'Confirm new password'),
             'mustChangePassword' => Yii::t('UserModule.base', 'Force password change upon first login'),
         ];
+    }
+
+    /**
+     * @inerhitdoc
+     */
+    public function attributeHints()
+    {
+        /* @var $module Module */
+        $module = Yii::$app->getModule('user');
+        $passwordHint = $module->getPasswordHint();
+
+        return $passwordHint ? ['newPassword' => $passwordHint] : [];
     }
 
     /**

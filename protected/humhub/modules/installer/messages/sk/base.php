@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => 'Účet <strong>Správcu</strong>',
   '<strong>Configuration</strong>' => '<strong>Konfigurácia</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Blahoželáme</strong>.  Skončili ste.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Gratulujem!  Všetko je v poriadku a pripravené začať odznova!',
   'Create Admin Account' => 'Vytvoriť účet Správcu',
   'Create the database if it doesn\'t exist yet.' => 'Vytvorte databázu, ak ešte neexistuje.',
+  'Default Language' => '',
+  'Default Timezone' => 'Predvolené časové pásmo',
   'Downloading & Installing Modules...' => 'Sťahovanie a inštalácia modulov...',
   'External users can register (show registration form on login)' => 'Externí používatelia sa môžu zaregistrovať (zobraziť registračný formulár pri prihlásení)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Tu sa môžete rozhodnúť, aký budú mať noví, neregistrovaní používatelia prístup k HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Na aktiváciu tejto funkcie je potrebné upraviť konfiguráciu HumHub a prípadne aj konfiguráciu WebServera.',
   'Initializing database...' => 'Inicializuje sa databáza...',
   'Installation Example:' => 'Príklad inštalácie:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Môj klub',
   'My community' => 'Moja komunita',
   'My company (Social Intranet / Project management)' => 'Moja spoločnosť (Sociálny intranet / projektový manažment)',
@@ -37,7 +41,7 @@ return array (
   'Name of your network' => 'Názov vašej siete',
   'Newly registered users have to be activated by an admin first' => 'Novo registrovaných užívateľov musí najprv aktivovať administrátor',
   'Next' => 'Ďalej',
-  'Nike – Just buy it. :wink:' => '',
+  'Nike – Just buy it. :wink:' => 'Nike – Stačí si ho kúpiť.  :wink:',
   'Of course, your new social network needs a name. Please change the default name with one you like. (For example the name of your company, organization or club)' => 'Vaša nová sociálna sieť samozrejme potrebuje názov.  Zmeňte predvolený názov na taký, ktorý sa vám páči.  (Napríklad názov vašej spoločnosti, organizácie alebo klubu)',
   'Ohh, something went wrong!' => 'Oh, niečo sa pokazilo!',
   'On HumHub\'s side, you will need to edit the configuration file <code>{configFile}</code> and add the following block:' => 'Na strane HumHubu budete musieť upraviť konfiguračný súbor <code>{configFile}</code> a pridať nasledujúci blok:',
@@ -52,13 +56,13 @@ return array (
   'Registered members can invite new users via link' => 'Registrovaní členovia môžu pozývať nových používateľov prostredníctvom odkazu',
   'Security <strong>Settings</strong>' => 'Zabezpečenie <strong>Nastavenia</strong>',
   'Set up example content (recommended)' => 'Nastavte vzorový obsah (odporúča sa)',
-  'Sign in' => '',
+  'Sign in' => 'Prihlásiť sa',
   'Skip this step, I want to set up everything manually' => 'Preskočte tento krok, chcem všetko nastaviť ručne',
   'Social Network <strong>Name</strong>' => '<strong>Názov</strong> sociálnej siete',
   'The installation completed successfully! Have fun with your new social network.' => 'Inštalácia bola úspešne dokončená!  Bavte sa so svojou novou sociálnou sieťou.',
   'The name of the database you want to run HumHub in.' => 'Názov databázy, v ktorej chcete spustiť HumHub.',
   'This overview shows all system requirements of HumHub.' => 'Tento prehľad zobrazuje všetky systémové požiadavky HumHub.',
-  'This topic is covered in more detail in our <a href="{link}" target="_blank">documentation</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your server administrator for support.' => '',
+  'This topic is covered in more detail in our <a href="{link}" target="_blank">documentation</a>. If you have trouble setting up the job scheduling described in the documentation, please contact your server administrator for support.' => 'Tejto téme sa podrobnejšie venuje naša <a href="{link}">dokumentácia</a>.  Ak máte problémy s nastavením plánovania úloh popísaného v dokumentácii, požiadajte o podporu svojho správcu servera.',
   'This wizard will install and configure your own HumHub instance.<br><br>To continue, click Next.' => 'Tento sprievodca nainštaluje a nakonfiguruje vašu vlastnú inštanciu HumHub.<br><br>Ak chcete pokračovať, kliknite na tlačidlo Ďalej.',
   'To avoid a blank dashboard after your initial login, HumHub can install example contents for you. Those will give you a nice general view of how HumHub works. You can always delete the individual contents.' => 'Aby ste sa vyhli prázdnemu dashboardu po prvom prihlásení, HumHub vám môže nainštalovať vzorový obsah.  Tie vám poskytnú pekný všeobecný prehľad o tom, ako HumHub funguje.  Jednotlivé obsahy môžete kedykoľvek vymazať.',
   'To simplify the configuration, we have predefined setups for the most common use cases with different options for modules and settings. You can adjust them during the next step.' => 'Pre zjednodušenie konfigurácie sme preddefinovali nastavenia pre najbežnejšie prípady použitia s rôznymi možnosťami modulov a nastavení.  V ďalšom kroku ich môžete upraviť.',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Vaše heslo MySQL.',
   'Your MySQL username' => 'Vaše užívateľské meno MySQL',
   'Your first sample space to discover the platform.' => 'Váš prvý vzorový priestor na objavenie platformy.',
-);
+];

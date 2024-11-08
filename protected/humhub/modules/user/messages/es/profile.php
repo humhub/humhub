@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y Años',
   '<b>This profile stream is still empty!</b>' => '<b>¡La actividad de este perfil está aún vacía!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Esta actividad está vacía todavía</b><br />Sé el primero en añadir algo...',
@@ -28,6 +28,7 @@ return array (
   'Diverse' => 'Diverso',
   'E-Mail' => 'Correo electrónico',
   'E-mail address of the user' => 'Correo electrónico del usuario',
+  'Each line must be formatted as Key=>Value!' => '',
   'Edit account' => 'Editar cuenta',
   'Editable' => 'Editable',
   'Facebook URL' => 'Enlace de Facebook',
@@ -90,16 +91,19 @@ return array (
   'Stream' => 'Actividad',
   'Street' => 'Calle',
   'Supported ISO3166 country codes' => 'Códigos de país ISO3166 soportados',
+  'Template' => 'Plantilla',
   'Text' => 'Texto',
   'Text Area' => 'Área de texto',
   'Text Field Options' => 'Opciones del campo Texto',
   'Text area field options' => 'Opciones del campo Área de texto',
+  'This profile is disabled!' => '',
   'This profile is no longer available!' => '¡Este perfil ya no está disponible!',
   'This user account is not approved yet!' => '¡Esta cuenta de usuario no está aprobada todavía!',
   'This will add an additional input element for custom values' => 'Añade un elemento de entrada adicional para incluir valores personalizados',
   'TikTok URL' => 'URL de TikTok',
   'Title' => 'Título',
   'Translation Category ID' => 'ID de la categoría de traducción',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
   'Twitter URL' => 'Enlace de Twitter',
   'Type Config' => 'Configuración de tipo',
   'Updated at' => 'Actualizado el',
@@ -116,4 +120,4 @@ return array (
   'YouTube URL' => 'Enlace de YouTube',
   'Zip' => 'Código postal',
   '{attribute} is required!' => 'Se requiere {attribute}!',
-);
+];

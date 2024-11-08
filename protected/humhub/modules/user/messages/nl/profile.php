@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y jaar',
   '<b>This profile stream is still empty!</b>' => '<b>Dit profiel is momenteel nog leeg!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Uw profiel is momenteel nog leeg.</b><br />Wees de eerste en een schrijf een bericht...',
@@ -28,6 +28,7 @@ return array (
   'Diverse' => 'Verschillend',
   'E-Mail' => 'E-mail',
   'E-mail address of the user' => 'E-mailadres van de gebruiker',
+  'Each line must be formatted as Key=>Value!' => 'Elke regel moet worden opgemaakt als Sleutel=&gt;Waarde!',
   'Edit account' => 'Bewerk account',
   'Editable' => 'Aanpasbaar',
   'Facebook URL' => 'Facebook URL',
@@ -90,16 +91,19 @@ return array (
   'Stream' => 'Stream',
   'Street' => 'Straat',
   'Supported ISO3166 country codes' => 'Ondersteunde ISO3166 land codes',
+  'Template' => 'Sjabloon',
   'Text' => 'Tekst',
   'Text Area' => 'Tekstvlak',
   'Text Field Options' => 'Tekstveld opties',
   'Text area field options' => 'Tekstvlak opties',
+  'This profile is disabled!' => 'Dit profiel is uitgeschakeld!',
   'This profile is no longer available!' => 'Dit profiel is niet langer beschikbaar!',
   'This user account is not approved yet!' => 'Dit account is nog niet goedgekeurd!',
   'This will add an additional input element for custom values' => 'Dit voegt een extra invoerelement toe voor aangepaste waarden',
   'TikTok URL' => 'TikTok URL',
   'Title' => 'Titel',
   'Translation Category ID' => 'Vertaling Categorie ID',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
   'Twitter URL' => 'Twitter URL',
   'Type Config' => 'Soort configuratie',
   'Updated at' => 'Aangepast op',
@@ -116,4 +120,4 @@ return array (
   'YouTube URL' => 'YouTube URL',
   'Zip' => 'Postcode',
   '{attribute} is required!' => '{attribute} is vereist!',
-);
+];

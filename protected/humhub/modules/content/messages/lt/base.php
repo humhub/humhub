@@ -109,5 +109,8 @@ return [
     'You do not have the permission to move this content.' => 'Jūs neturite leidimo perkelti šį turinį.',
     'Your last edit state has been saved!' => 'Paskutinis redagavimas išsaugotas!',
     'in' => 'į',
+    '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
 ];

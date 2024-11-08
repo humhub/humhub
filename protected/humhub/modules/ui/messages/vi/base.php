@@ -5,4 +5,5 @@ return [
     'User Interface' => 'Giao diện người dùng',
     'Read more' => '',
     'Reset filters' => '',
+    'Select' => '',
 ];

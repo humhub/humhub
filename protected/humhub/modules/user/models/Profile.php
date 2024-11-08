@@ -229,6 +229,10 @@ class Profile extends ActiveRecord
                 /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
+                if ($profileField->fieldType->isVirtual) {
+                    continue;
+                }
+
                 if (!in_array($profileField->internal_name, $safeAttributes)) {
                     if ($profileField->visible && $this->scenario != 'registration') {
                         $profileField->editable = false;
@@ -307,17 +311,15 @@ class Profile extends ActiveRecord
 
     /**
      * Returns all profile fields with user data by given category
-     *
-     * @param ProfileFieldCategory $category
-     * @return ProfileField[]
      */
-    public function getProfileFields(ProfileFieldCategory $category = null)
+    public function getProfileFields(?ProfileFieldCategory $category = null, ?array $withoutTypes = null): array
     {
         $fields = [];
 
         if ($this->user !== null) {
             $query = ProfileField::find()
                 ->where(['visible' => 1])
+                ->andFilterWhere(['NOT IN', 'field_type_class', (array) $withoutTypes])
                 ->orderBy('sort_order');
 
             if ($category !== null) {

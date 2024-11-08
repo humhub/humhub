@@ -94,6 +94,7 @@ return [
     'You do not have the permission to move this content.' => 'Não tens permissão para mover este conteúdo.',
     'Your last edit state has been saved!' => 'A tua última edição foi guardada!',
     'in' => 'em',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
     'Advanced Content Search' => '',
@@ -110,4 +111,6 @@ return [
     'Scheduled for {dateTime}' => '',
     'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
 ];

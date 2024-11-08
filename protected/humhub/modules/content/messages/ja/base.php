@@ -2,6 +2,7 @@
 
 return [
     '(Also visible to non-members of this space)' => '（このスペースはメンバー以外にも表示されます）',
+    '(Also visible to people who are not logged in)' => '(ログインしていない人にも表示されます)',
     '<strong>Delete</strong> content?' => 'コンテンツを<strong>削除</strong>しますか？',
     '<strong>Move</strong> content' => 'コンテンツの<strong>移動</strong>',
     '<strong>Permalink</strong> to this post' => 'この投稿への<strong>パーマリンク</strong>',
@@ -9,6 +10,7 @@ return [
     'Activate scheduling' => 'スケジューリングを有効にする',
     'Add a member to notify' => '通知するメンバーを追加',
     'Add tag...' => 'タグを追加...',
+    'Advanced Content Search' => '高度なコンテンツ検索',
     'Archived' => 'アーカイブ',
     'Attach Files' => 'ファイルの添付',
     'Back to stream' => 'ストリームに戻る',
@@ -109,5 +111,6 @@ return [
     'You do not have the permission to move this content.' => 'このコンテンツを移動する権限がありません',
     'Your last edit state has been saved!' => '前回の編集状態が保存されました',
     'in' => 'in',
-    'Advanced Content Search' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
 ];
