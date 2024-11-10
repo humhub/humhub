@@ -11,7 +11,7 @@ HumHub Changelog
 - Enh #7293: Add Twig string extension
 - Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
 - Fix #7295: iOS mobile app detection for iPad devices
-- Fix: Profile header: on small screens, the space at the left and the right of the image must be equal   
+- Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
