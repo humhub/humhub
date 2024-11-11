@@ -67,7 +67,7 @@ return [
   'Statistics' => '統計',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'バックグラウンドジョブ（キュー）のcronジョブが正常に動作しないようです。',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => '定期的なタスク(cron)のcronジョブが正常に動作しないようです。',
-  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => 'モバイルアプリのプッシュ サービスは利用できません。「プッシュ通知」モジュールをインストールして設定してください。',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'この概要にはインストールされているすべてのモジュールが表示され、モジュールを有効化、無効化、構成し、もちろんアンインストールすることができます。新しいモジュールを見つけるにはマーケットプレイスを覗いてください。モジュールを非アクティブ化またはアンインストールすると、そのモジュールで作成されたコンテンツがすべて失われることに注意してください。',
   'Topics' => 'トピック',
   'Uninstall' => 'アンインストール',
