@@ -3,7 +3,6 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\models\User;
-use humhub\modules\user\authclient\Password;
 use Yii;
 use yii\base\Model;
 
@@ -60,15 +59,7 @@ class AccountRecoverPassword extends Model
         }
 
         if ($user->getPasswordRecoveryService()->isLimited()) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery can only be initiated once every 10 minutes.')));
-            return;
-        }
-
-        // Checks if we can recover users password.
-        // This may not possible on e.g. LDAP accounts.
-        $passwordAuth = new Password();
-        if ($user->auth_mode !== $passwordAuth->getId()) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery disabled. Please contact your system administrator.')));
+            $this->addError($attribute, Yii::t('UserModule.account', 'Password recovery can only be initiated once every 10 minutes.'));
         }
     }
 
