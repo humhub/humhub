@@ -3,7 +3,6 @@
 namespace humhub\modules\user\models\forms;
 
 use humhub\modules\user\models\User;
-use humhub\modules\user\authclient\Password;
 use Yii;
 use yii\base\Model;
 
@@ -55,23 +54,12 @@ class AccountRecoverPassword extends Model
         $user = User::findOne(['email' => $this->email]);
 
         if ($user === null) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', '{attribute} "{value}" was not found!', [
-                'attribute' => $this->getAttributeLabel($attribute),
-                'value' => $this->email,
-            ])));
+            // Don't display any error about not existing email for safe reason
             return;
         }
 
         if ($user->getPasswordRecoveryService()->isLimited()) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery can only be initiated once every 10 minutes.')));
-            return;
-        }
-
-        // Checks if we can recover users password.
-        // This may not possible on e.g. LDAP accounts.
-        $passwordAuth = new Password();
-        if ($user->auth_mode !== $passwordAuth->getId()) {
-            $this->addError($attribute, Yii::t('UserModule.account', Yii::t('UserModule.account', 'Password recovery disabled. Please contact your system administrator.')));
+            $this->addError($attribute, Yii::t('UserModule.account', 'Password recovery can only be initiated once every 10 minutes.'));
         }
     }
 
@@ -88,7 +76,12 @@ class AccountRecoverPassword extends Model
 
         $user = User::findOne(['email' => $this->email]);
 
-        return $user && $user->getPasswordRecoveryService()->sendRecoveryInfo();
+        if (!$user) {
+            // Make the case of not existing email as successful for safe reason
+            return true;
+        }
+
+        return $user->getPasswordRecoveryService()->sendRecoveryInfo();
     }
 
 }

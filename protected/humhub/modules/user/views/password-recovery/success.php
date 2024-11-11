@@ -15,7 +15,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
             <div
                 class="panel-heading"><?php echo Yii::t('UserModule.auth', '<strong>Password</strong> recovery!'); ?></div>
             <div class="panel-body">
-                <p><?= Yii::t('UserModule.auth', "We’ve sent you an email containing a link that will allow you to reset your password."); ?></p>
+                <p><?= Yii::t('UserModule.auth', 'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.') ?></p>
                 <br/>
                 <?= Button::primary(Yii::t('UserModule.auth', 'back to home'))->link(Url::home())->pjax(false) ?>
             </div>
