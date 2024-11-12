@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.17.0-beta.2 (Unreleased)
---------------------------------
+1.17.0-beta.2 (November 12, 2024)
+---------------------------------
 - Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
 - Fix #7281: SelfTest for DynamicConfig broken when not exist yet
 - Fix #7284: Content tag visibility
@@ -13,7 +13,7 @@ HumHub Changelog
 - Fix #7295: iOS mobile app detection for iPad devices
 - Fix #7299: Fix public content from spaces on the profile in guest access mode
 - Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
-- Fix #7298: Don't check email for existing on password recovery
+- Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
 - Enh #7038: Optimize notification overview
 
 1.17.0-beta.1 (October 28, 2024)
