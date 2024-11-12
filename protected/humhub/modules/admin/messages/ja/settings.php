@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"マイスペース" の並べ替え',
   '1 month' => '1ヶ月',
   '1 week' => '1週間',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6ヶ月',
   '<strong>Confirm</strong> icon deletion' => '<strong>確認</strong> アイコンの削除',
   '<strong>Confirm</strong> image deletion' => '<strong>確認</strong> 画像の削除',
+  '<strong>Confirm</strong> topic deletion' => '<strong>確認</strong>トピックの削除',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'アクセス Token',
   'Access token is not provided yet.' => 'アクセス Tokenはまだ提供されていません。',
   'Add OEmbed provider' => 'OEmbedプロパイダを追加する',
+  'Add Topic' => 'ﾄﾋﾟｯｸを追加',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'メンテナンスモードのカスタム情報テキストを追加します。 ログインページに表示されます。',
   'Add individual info text...' => '個別の情報テキストを追加します...',
   'Add new provider' => 'プロパイダを追加する',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'キャッシュバックエンド',
   'Comma separated list. Leave empty to allow all.' => 'コンマ区切りリスト。すべてを許可するには空のままにします。',
   'Configuration (Use settings from configuration file)' => '構成 (構成ファイルの設定を使用)',
+  'Convert to global topic' => 'グローバルトピックに変換',
   'Could not send test email.' => 'テストメールを送信できませんでした。',
   'Currently no provider active!' => '現在、有効なプロパイダはありません',
   'Currently there are {count} records in the database dating from {dating}.' => '現在{dating}からデータベースに{count}レコードがあります。',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'デフォルトのページネーション数（ページあたりのエントリ数）',
   'Default stream content order' => 'デフォルトのストリームコンテンツ順序',
   'Delete' => '削除',
+  'Do you really want to delete this topic?' => '本当にこのトピックを削除しますか？',
   'E-Mail' => 'Eメール',
   'E-Mail reply-to' => 'メールの返信先',
   'E-Mail sender address' => 'メールアドレス',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'フレンドシップ',
   'General' => '基本',
   'General Settings' => '基本設定',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => 'グローバルトピックは、すべてのスペースのすべてのユーザーが使用できます。これによりネットワーク全体で一貫したキーワードを簡単に定義できます。ユーザーがすでにスペースでトピックを作成している場合は、ここでそれらをグローバルトピックに変換することもできます。',
   'HTML tracking code' => 'HTMLのトラッキングコード',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'ここでは、ソーシャルネットワークの登録動作や追加のユーザー設定を行うことができます。',
   'Here you can configure basic settings of your social network.' => 'ここでは、ソーシャルネットワークの基本的な設定を行うことができます。',
@@ -93,7 +98,6 @@ return array (
   'Provider Name' => 'プロバイダ名',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'リンクの一致をチェックする正規表現。',
-  'Reported database time: {dateTime}' => '報告されたデータベース時間：{dateTime}',
   'Save' => '保存',
   'Save & Flush Caches' => '保存してキャッシュをクリア',
   'Save & Test' => '保存してテストメールを送信',
@@ -109,6 +113,8 @@ return array (
   'Theme' => 'テーマ',
   'These settings refer to advanced topics of your social network.' => 'ここでは、ソーシャルネットワークの高度な設定を行うことができます。',
   'These settings refer to the appearance of your social network.' => 'ここでは、ソーシャルネットワークの外観の設定を行うことができます。',
+  'Topic has been deleted!' => 'トピックを削除しました',
+  'Topics' => 'トピック',
   'Url Pattern' => 'URL パターン',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'URLのプレースホルダに %url% を使用します。書式はJSONである必要があります。（例：http://www.youtube.com/oembed?url=%url%&amp;format=json）',
   'Use SMTPS' => 'SMTPSを使う',
@@ -127,4 +133,4 @@ return array (
   'e.g. localhost' => '例：localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => '例：smtps://user:pass@smtp.example.com:port',
   'never' => 'なし',
-);
+];

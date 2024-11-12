@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"Push Notifications (Firebase)" module and setup of Firebase API Key required' => 'Module "Push Notifications (Firebase)" en de configuratie van Firebase API Key is vereist',
   '<strong>CronJob</strong> Status' => '<strong>CronJob</strong> status',
   '<strong>Queue</strong> Status' => '<strong>Wachtrij</strong> status',
@@ -13,7 +13,6 @@ return array (
   'Custom Modules ({modules})' => 'Eigen modules ({modules})',
   'Database' => 'Gegevensbank',
   'Database collation' => 'Gegevensbank-sortering',
-  'Database connection time: {dbTime} - Configured time zone: {time}' => 'Gegevensbankverbindingstijd: {dbTime} - in tijdzone: {time}',
   'Database driver - {driver}' => 'Gegevensbankstuurprogramma - {driver}',
   'Database migration results:' => 'Resultaten van de gegevensbank-migratie',
   'Delayed' => 'Uitgesteld',
@@ -53,6 +52,8 @@ return array (
   'Multibyte String Functions' => 'Multibyte tekenreeksfuncties',
   'Must be updated manually. Check compatibility with newer HumHub versions before updating.' => 'Moet handmatig worden bijgewerkt. Controleer de compatibiliteit met nieuwere HumHub-versies voordat u gaat updaten.',
   'Never' => 'Nooit',
+  'New migrations should be applied: {migrations}' => 'Nieuwe migraties moeten worden toegepast: {migrations}',
+  'No pending migrations' => 'Geen migraties in behandeling',
   'Optional' => 'Optioneel',
   'Other' => 'Andere',
   'Outstanding database migrations:' => 'Openstaande gegevensbank migraties:',
@@ -85,7 +86,6 @@ return array (
   'The module(s) are no longer maintained and should be uninstalled.' => 'De module(s) worden niet langer onderhouden en moeten worden verwijderd.',
   'There is a new update available! (Latest version: %version%)' => 'Er is een nieuwe update beschikbaar! (Laatste versie: %version%)',
   'This HumHub installation is up to date!' => 'Deze installatie is up-to-date!',
-  'Time zone' => 'Tijdzone',
   'Total {count} entries found.' => '{count} berichten gevonden.',
   'Trace' => 'Opsporen',
   'Update Database' => 'Gegevensbank updaten',
@@ -102,4 +102,4 @@ return array (
   '{imageExtension} Support' => '{imageExtension} Ondersteuning',
   '{phpExtension} Extension' => '{phpExtension} Extensie',
   '{phpExtension} Support' => '{phpExtension} Ondersteuning',
-);
+];

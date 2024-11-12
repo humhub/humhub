@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '(Also visible to non-members of this space)' => '（このスペースはメンバー以外にも表示されます）',
   '(Also visible to people who are not logged in)' => '(ログインしていない人にも表示されます)',
   '<strong>Delete</strong> content?' => 'コンテンツを<strong>削除</strong>しますか？',
@@ -88,6 +88,8 @@ return array (
   'This content type can\'t be moved.' => 'このコンテンツタイプは移動できません。',
   'This space is archived.' => 'このスペースはアーカイブされています',
   'This space is not visible!' => 'このスペースは非表示です',
+  'Topic already exists globally.' => 'トピックはすでにグローバルに存在します。',
+  'Topic already in use in Spaces or on Profiles.' => 'トピックはスペースまたはプロフィールですでに使用されています。',
   'Topics' => 'トピック',
   'Turn off notifications' => '通知しない',
   'Turn on notifications' => '通知する',
@@ -110,4 +112,4 @@ return array (
   'You do not have the permission to move this content.' => 'このコンテンツを移動する権限がありません',
   'Your last edit state has been saved!' => '前回の編集状態が保存されました',
   'in' => 'in',
-);
+];

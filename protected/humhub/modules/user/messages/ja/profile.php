@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y歳',
   '<b>This profile stream is still empty!</b>' => '<b>このプロフィールストリームには何も書かれていません。</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>このプロフィールストリームはまだ空です</b><br>最初に投稿してください...',
@@ -91,6 +91,7 @@ return array (
   'Stream' => 'ストリーム',
   'Street' => '通り',
   'Supported ISO3166 country codes' => 'サポートされているISO3166国コード',
+  'Template' => 'テンプレート',
   'Text' => 'テキスト',
   'Text Area' => 'テキストエリア',
   'Text Field Options' => 'テキスト型のオプション',
@@ -102,6 +103,7 @@ return array (
   'TikTok URL' => 'TikTok URL',
   'Title' => 'タイトル',
   'Translation Category ID' => '翻訳カテゴリID',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => 'このフィールドをレンダリングするために使用される Twig テンプレート。内部名を変数として使用できます。例: `{{ firstname }} {{ lastname }}`',
   'Twitter URL' => 'Twitter URL',
   'Type Config' => 'タイプ構成',
   'Updated at' => 'で更新',
@@ -118,4 +120,4 @@ return array (
   'YouTube URL' => 'YouTube URL',
   'Zip' => '郵便番号',
   '{attribute} is required!' => '{attribute}が必要です！',
-);
+];

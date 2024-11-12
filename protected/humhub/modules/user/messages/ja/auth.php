@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> registration' => '<strong>アカウント</strong> 登録',
   '<strong>Change</strong> Password' => 'パスワードを<strong>変更</strong>',
   '<strong>Change</strong> your password' => 'あなたのパスワードを<strong>変更する</strong>',
@@ -26,12 +26,14 @@ return array (
   'Group' => 'グループ',
   'Hello {displayName}' => 'こんにちは {displayName}さん',
   'Hello {displayName},' => 'こんにちは {displayName}さん、',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'このメールアドレスに関連するユーザーアカウントがある場合は、追ってメールで詳細をお送りします。',
   'If you don\'t use this link within 24 hours, it will expire.' => 'このリンクに24時間以内にアクセスしないと，このリンクは無効になります。',
   'If you\'re already a member, please login with your username/email and password.' => 'あなたがこのSNSのメンバーなら、ユーザー名 または Eメールとパスワードを入力してログインしてください。',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'あなたのEメールアドレスを入力してください。パスワード再登録の案内メールを送ります。',
   'Log out' => 'ログアウト',
   'Login' => 'ログイン',
   'New user needs approval' => '新規登録希望者が承認を求めています。',
+  'Password' => 'パスワード',
   'Password recovery' => 'パスワード再登録',
   'Password reset' => 'パスワードリセット',
   'Please check your email and follow the instructions!' => 'Eメールを読んで指示に従ってください。',
@@ -48,13 +50,11 @@ return array (
   'Sign in' => 'ログイン',
   'To log in with your new account, click the button below.' => '下のボタンから新しいアカウントでログインしてください。',
   'User or Password incorrect.' => 'ユーザ名かパスワードが間違っています',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'あなたのパスワードをリセットするためのリンクが含まれたメールを送信しました',
+  'Username or Email' => 'ユーザー名 または Eメール',
   'Your email' => 'Eメールアドレス',
   'Your password' => 'あなたのパスワード',
   'Your password has been successfully changed!' => 'パスワードを変更しました。',
   'Your password is incorrect!' => 'パスワードが間違っています',
   'a new user {displayName} needs approval.' => '{displayName}さんが新規登録を希望していらっしゃいます。',
   'back to home' => 'ホームに戻る',
-  'Password' => 'パスワード',
-  'Username or Email' => 'ユーザー名 または Eメール',
-);
+];

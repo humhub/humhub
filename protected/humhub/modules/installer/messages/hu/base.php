@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>Adminisztátor</strong> fiók',
   '<strong>Configuration</strong>' => '<strong>Konfiguráció</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Gratulálunk</strong>. Készen vagy!',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Gratulálunk! Minden rendben, készen állsz az indulásra!',
   'Create Admin Account' => 'Adminisztrátori fiók létrehozása',
   'Create the database if it doesn\'t exist yet.' => 'Hozdd létre az adatbázist, ha még nem létezik.',
+  'Default Language' => '',
+  'Default Timezone' => 'Alapértelmezett időzóna',
   'Downloading & Installing Modules...' => 'Modulok letöltése és telepítése...',
   'External users can register (show registration form on login)' => 'Regisztráció engedélyezése (mutassa a regisztrációs űrlapot a bejelentkezési oldalon)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Itt döntheted el, hogy az új, nem regisztrált felhasználók, hogyan érhetik el a HumHub-ot.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'A funkció aktiválásához módosítani kell a HumHub konfigurációját, és adott esetben a WebServer konfigurációját.',
   'Initializing database...' => 'Adatbázis inicializálása...',
   'Installation Example:' => 'Telepítési példa:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'A klubom',
   'My community' => 'A közösségem',
   'My company (Social Intranet / Project management)' => 'Cégem (közösségi intranet / projekt menedzsment)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'MySQL jelszó',
   'Your MySQL username' => 'MySQL felhasználónév',
   'Your first sample space to discover the platform.' => 'Az első mintaközösséged a platform felfedezéséhez.',
-);
+];

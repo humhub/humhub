@@ -3,7 +3,6 @@
 return [
     '<strong>Notification</strong> Overview' => '<strong>Notifications</strong> Visió general',
     '<strong>Notification</strong> Settings' => '<strong>Notifications</strong> Settings',
-    'Allow desktop notifications by default.' => 'Permet les notificacions d\'escriptori per defecte.',
     'Do you want to reset the settings concerning email summaries for all users?' => 'Voleu restablir la configuració dels resums de correu electrònic per a tots els usuaris?',
     'Do you want to reset the settings concerning notifications for all users?' => 'Voleu restablir la configuració de les notificacions per a tots els usuaris?',
     'Filter' => 'Filtre',
@@ -16,7 +15,6 @@ return [
     'Notifications are sent instantly to you to inform you about new activities in your network.' => 'Les notificacions s\'envien a l\'instant per informar-vos de noves activitats a la vostra xarxa.',
     'Open the notification dropdown menu' => 'Obriu el menú desplegable de notificacions',
     'Receive \'New Content\' Notifications for the following spaces' => 'Rebeu notificacions de "Contingut nou" per als espais següents',
-    'Receive desktop notifications when you are online.' => 'Rebre notificacions d\'escriptori quan estigui en línia.',
     'Reset for all users' => 'Restableix per a tots els usuaris',
     'Reset to defaults' => 'Reestablir els valors predeterminats',
     'Show all notifications' => 'Mostra totes les notificacions',

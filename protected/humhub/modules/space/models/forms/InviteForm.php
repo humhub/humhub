@@ -2,7 +2,6 @@
 
 namespace humhub\modules\space\models\forms;
 
-use humhub\libs\UUID;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\Membership;
@@ -64,11 +63,21 @@ class InviteForm extends Model
      */
     public $withoutInvite = false;
     public $allRegisteredUsers = false;
+    public $addDefaultSpace = false;
 
     /**
      * Parsed list of E-Mails of field inviteEmails
      */
     protected $_inviteEmails = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        parent::init();
+        $this->addDefaultSpace = $this->space instanceof Space ? $this->space->auto_add_new_members : false;
+    }
 
     /**
      * Declares the validation rules.
@@ -78,7 +87,7 @@ class InviteForm extends Model
     public function rules()
     {
         return [
-            [['withoutInvite', 'allRegisteredUsers'], 'boolean'],
+            [['withoutInvite', 'allRegisteredUsers', 'addDefaultSpace'], 'boolean'],
             ['invite', 'checkInvite'],
             ['inviteEmails', 'checkInviteExternal'],
         ];
@@ -92,6 +101,9 @@ class InviteForm extends Model
         return [
             'invite' => Yii::t('SpaceModule.base', 'Invites'),
             'inviteEmails' => Yii::t('SpaceModule.base', 'New user by e-mail (comma separated)'),
+            'allRegisteredUsers' => Yii::t('SpaceModule.base', 'Select all registered users'),
+            'withoutInvite' => Yii::t('SpaceModule.base', 'Add users without invitation'),
+            'addDefaultSpace' => Yii::t('SpaceModule.base', 'Add as Default Space for new users'),
         ];
     }
 
@@ -114,6 +126,9 @@ class InviteForm extends Model
         }
 
         $this->inviteExternalByEmail();
+
+        $this->space->auto_add_new_members = $this->addDefaultSpace ? 1 : null;
+        $this->space->save();
 
         return true;
     }

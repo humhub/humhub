@@ -107,6 +107,8 @@ return [
     'Select type...' => '',
     'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'Unlock comments' => '',
     'You cannot block the space owner!' => '',
     'You cannot block the user of the same container!' => '',

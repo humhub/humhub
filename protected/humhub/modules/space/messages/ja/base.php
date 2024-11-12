@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<b>This space is still empty!</b>' => '<b>このスペースにはまだ何も書かれていません。</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>スペースにはまだ何も書かれていません! </b><br> 何か投稿してください…',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>あなたはこのスペースのメンバーではなく、閲覧できる公開投稿がまだありません。</b>',
@@ -20,6 +20,7 @@ return array (
   'Accept' => '同意',
   'Accept Invite' => '招待を受ける',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'このワークスペースの承認されたメンバーになるため、短い自己紹介をしてください。',
+  'Add as Default Space for new users' => '新規ユーザーのデフォルトスペースとして追加',
   'Add users without invitation' => '招待なしでメンバーを追加する',
   'Admin' => '管理者',
   'Administrator:' => '管理者：',
@@ -41,6 +42,7 @@ return array (
   'Decline' => '却下',
   'Decline Invite' => '招待を却下',
   'Default' => 'デフォルト',
+  'Default Stream Sort' => 'デフォルトのストリームの並べ替え',
   'Default content visibility' => 'コンテンツの見え方',
   'Delete' => '削除',
   'Description' => '説明',
@@ -127,6 +129,7 @@ return array (
   'Spaces' => 'スペース',
   'Status' => 'ステータス',
   'Stream' => 'ストリーム',
+  'Stream Sort' => 'ストリームのソート',
   'Tags' => 'タグ',
   'The default homepage for members of this Space' => 'このスペースのメンバーのデフォルトのホームページ',
   'The default homepage for non-members and guests visiting this Space' => 'このスペースにアクセスする非メンバー及びゲストのデフォルトホームページ',
@@ -163,4 +166,4 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'リクエストはスペースの管理者に正しく送られました。',
   '{count} members' => '{count} メンバー',
   '{email} is not valid!' => '{email}は有効ではありません。',
-);
+];

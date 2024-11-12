@@ -437,9 +437,13 @@ class SelfTest
                 ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
                 : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
             );
-            $currentBaseUrl = $scheme . '://' . $_SERVER['HTTP_HOST']
-                . (($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
-                ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort) ? '' : ':' . $_SERVER['SERVER_PORT'])
+            $currentBaseUrl = $scheme . '://' . preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])
+                . (
+                    ($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
+                    ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort)
+                    ? ''
+                    : ':' . $_SERVER['SERVER_PORT']
+                )
                 . ($_SERVER['BASE'] ?? '');
             if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
                 $checks[] = [
@@ -581,12 +585,16 @@ class SelfTest
         }
         // Check Dynamic Config is Writable
         $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
-        $path = realpath(Yii::getAlias(Yii::$app->params['dynamicConfigFile']));
+        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
         if (!is_file($path)) {
             $path = dirname($path);
         }
 
-        if (is_writeable($path)) {
+        // Use realpath on the path alone to get the canonical path
+        // Applying realpath to a boolean (from is_writable) would cause errors, so keep them separate
+        $realPath = realpath($path);
+
+        if ($realPath !== false && is_writable($realPath)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -900,11 +908,7 @@ class SelfTest
 
             // Check Mobile App - Push Service
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
-            /* @var \humhub\modules\fcmPush\Module|null $pushModule */
-            $pushModule = $modules['fcm-push'] ?? null;
-            if ($pushModule instanceof \humhub\modules\fcmPush\Module &&
-                $pushModule->getIsEnabled() &&
-                $pushModule->getGoService()->isConfigured()) {
+            if (static::isPushModuleAvailable()) {
                 $checks[] = [
                     'title' => $title,
                     'state' => 'OK',
@@ -948,11 +952,21 @@ class SelfTest
         return $checks;
     }
 
+    public static function isPushModuleAvailable(): bool
+    {
+        /* @var \humhub\modules\fcmPush\Module|null $pushModule */
+        $pushModule = Yii::$app->getModule('fcm-push');
+        return
+            $pushModule instanceof \humhub\modules\fcmPush\Module &&
+            $pushModule->getIsEnabled() &&
+            $pushModule->getGoService()->isConfigured();
+    }
+
     /**
      * Returns an array with legacy HumHub configuration options.
      *
-     * @since 1.16
      * @return array
+     * @since 1.16
      */
     public static function getLegacyConfigSettings(): array
     {

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Information</strong>' => '<strong>Informatie</strong>',
   '<strong>Profile</strong> Permissions' => '<strong>Profielrechten</strong>',
   '<strong>Settings</strong> and Configuration' => '<strong>Instellingen</strong> en configuratie',
@@ -19,10 +19,12 @@ return array (
   'Add new members...' => 'Nieuwe leden toevoegen...',
   'Add new user' => 'Voeg een nieuwe gebruiker toe',
   'Administrator group could not be deleted!' => 'De beheerdersgroep kunt u niet verwijderen!',
+  'All existing Profile Topics will be converted to Global Topics.' => 'Alle bestaande profielonderwerpen worden omgezet naar globale rubrieken',
   'All open registration invitations were successfully deleted.' => 'Alle openstaande registratie-uitnodigingen zijn succesvol verwijderd.',
   'All open registration invitations were successfully re-sent.' => 'Alle openstaande registratie-uitnodigingen zijn opnieuw verzonden.',
   'All the personal data of this user will be irrevocably deleted.' => 'Alle persoonlijke gegevens van deze gebruiker worden definitief verwijderd.',
   'Allow' => 'Allow',
+  'Allow individual topics on profiles' => 'Individuele rubrieken op profielen toestaan',
   'Allow users to block each other' => 'Sta gebruikers toe elkaar te blokkeren',
   'Allow users to set individual permissions for their own profile?' => 'Gebruikers toestaan individuele rechten voor hun eigen profiel in te stellen?',
   'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => 'Sta beperkte toegang voor niet-ingelogde gebruikers  (gasten) toe',
@@ -39,8 +41,11 @@ return array (
   'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => 'Weet u het zeker? Gebruikers die niet aan een andere groep zijn toegewezen, worden automatisch aan de standaardgroep toegewezen.',
   'Are you sure that you want to delete following user?' => 'Weet u zeker dat u de volgende gebruiker wilt verwijderen?',
   'Cancel' => 'Annuleer',
+  'Cannot resend invitation email!' => 'Kan uitnodigingsmail niet opnieuw verzenden!',
   'Click here to review' => 'Klik hier om te beoordelen',
   'Confirm user deletion' => 'Bevestig de verwijdering van de gebruiker',
+  'Convert' => 'Omzetten',
+  'Convert Profile Topics' => 'Profielrubrieken converteren',
   'Could not approve the user!' => 'Kan de gebruiker niet toelaten!',
   'Could not decline the user!' => 'Kan de gebruiker niet weigeren!',
   'Could not load category.' => 'Kon categorie niet laden.',
@@ -125,7 +130,6 @@ Kind Regards
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => 'Als individuele profielrechten niet zijn toegestaan, kunnen de volgende instellingen niet voor alle gebruikers worden gewijzigd. Als individuele profielrechtenen zijn toegestaan, worden de instellingen alleen ingesteld als standaardwaarden die gebruikers kunnen aanpassen. De volgende vermeldingen worden vervolgens in hetzelfde formulier weergegeven in de gebruikersprofielinstellingen:',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'Als deze optie niet is geselecteerd, wordt het eigendom van de spaties overgedragen aan uw account.',
   'Impersonate' => 'Imiteren ( wordt deze gebruiker)',
-  'Include captcha in registration form' => 'Inclusief captcha in inschrijfformulier',
   'Information 1' => 'Informatie 1',
   'Information 2' => 'Informatie 2',
   'Information 3' => 'Informatie 3',
@@ -144,7 +148,6 @@ Kind Regards
   'Members can invite external users by email' => 'Leden kunnen externe gebruikers uitnodigen per email',
   'Members can invite external users by link' => 'Leden kunnen externe gebruikers uitnodigen met een link',
   'Message' => 'Bericht',
-  'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Minimum waarde is 20 seconden. Indien niet ingesteld, zal de sessie na 1400 seconden (24 minuten) verlopen, ongeacht activiteit.',
   'New approval requests' => 'Nieuwe goedkeuring verzoeken',
   'New users can register' => 'Anonieme gebruikers kunnen registreren',
   'No' => 'Nee',
@@ -190,6 +193,7 @@ Kind Regards
   'Show group selection at registration' => 'Toon groepskeuze bij inschrijving',
   'Subject' => 'Onderwerp',
   'The Space memberships of all group members will be updated. This may take up to several minutes.' => 'De ruimte-lidmaatschappen van alle groepsleden worden bijgewerkt. Dit kan enkele minuten duren.',
+  'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.' => 'De standaard time-out voor inactiviteit van de gebruiker wordt gebruikt wanneer de gebruikerssessie gedurende een bepaalde tijd inactief is. De gebruiker wordt na deze tijd automatisch uitgelogd.',
   'The following list contains all pending sign-ups and invites.' => 'De volgende lijst bevat alle wachtende registraties en uitnodigingen.',
   'The following list contains all registered users awaiting an approval.' => 'De volgende lijst bevat alle geregistreerde mensen die wachtten op goedkeuring.',
   'The message has been sent by email.' => 'Het bericht is per e-mail verzonden.',
@@ -221,4 +225,4 @@ Kind Regards
   'You cannot delete yourself!' => 'U kunt uzelf niet verwijderen!',
   'never' => 'Nooit',
   '{nbMsgSent} already sent' => '{nbMsgSent} is al verzonden',
-);
+];

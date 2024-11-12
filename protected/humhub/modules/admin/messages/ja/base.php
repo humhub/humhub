@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '<strong>管理</strong>メニュー',
   '<strong>Maintenance</strong> Mode' => '<strong>メンテナンス </strong>モード',
   '<strong>Module</strong> administration' => '<strong>モジュール</strong>の管理',
@@ -67,7 +67,9 @@ return array (
   'Statistics' => '統計',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'バックグラウンドジョブ（キュー）のcronジョブが正常に動作しないようです。',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => '定期的なタスク(cron)のcronジョブが正常に動作しないようです。',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => 'モバイルアプリのプッシュ サービスは利用できません。「プッシュ通知」モジュールをインストールして設定してください。',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'この概要にはインストールされているすべてのモジュールが表示され、モジュールを有効化、無効化、構成し、もちろんアンインストールすることができます。新しいモジュールを見つけるにはマーケットプレイスを覗いてください。モジュールを非アクティブ化またはアンインストールすると、そのモジュールで作成されたコンテンツがすべて失われることに注意してください。',
+  'Topics' => 'トピック',
   'Uninstall' => 'アンインストール',
   'Updates available for {count} of your modules' => '{count} 個のモジュールで利用可能なアップデートがあります',
   'User not found!' => 'ユーザーが見つかりませんでした。',
@@ -77,4 +79,4 @@ return array (
   'Visit Marketplace' => 'マーケットプレイスにアクセス',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'モジュールを構成する権限がありません。詳細については管理者にお問い合わせください。',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'モジュールを管理する権限がありません。詳細については管理者にお問い合わせください。',
-);
+];

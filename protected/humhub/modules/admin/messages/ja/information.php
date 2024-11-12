@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"Push Notifications (Firebase)" module and setup of Firebase API Key required' => '「プッシュ通知（Firebase）」 モジュールとFirebase API Keyの設定が必要です',
   '<strong>CronJob</strong> Status' => '<strong>Cronジョブ</strong> ステータス',
   '<strong>Queue</strong> Status' => '<strong>キュー</strong> ステータス',
@@ -13,7 +13,6 @@ return array (
   'Custom Modules ({modules})' => 'カスタム モジュール ({modules})',
   'Database' => 'データベース',
   'Database collation' => 'データベース照合',
-  'Database connection time: {dbTime} - Configured time zone: {time}' => 'データベース接続時間：{dbTime}-構成されたタイムゾーン：{time}',
   'Database driver - {driver}' => 'データベースドライバー - {driver}',
   'Database migration results:' => 'データベースの移行結果',
   'Delayed' => '遅延',
@@ -53,6 +52,8 @@ return array (
   'Multibyte String Functions' => 'マルチバイト文字列関数',
   'Must be updated manually. Check compatibility with newer HumHub versions before updating.' => '手動で更新する必要があります。更新する前に新しい HumHub バージョンとの互換性を確認してください。',
   'Never' => 'しない',
+  'New migrations should be applied: {migrations}' => '新しいMigrationを適用する必要があります: {migrations}',
+  'No pending migrations' => '保留中の移行はありません',
   'Optional' => 'オプション',
   'Other' => 'その他',
   'Outstanding database migrations:' => '優れたデータベース移行：',
@@ -85,7 +86,6 @@ return array (
   'The module(s) are no longer maintained and should be uninstalled.' => 'モジュールはもうメンテナンスされていないため、アンインストールする必要があります。',
   'There is a new update available! (Latest version: %version%)' => '新しいバージョンがあります！ (最新バージョンは: %version%)',
   'This HumHub installation is up to date!' => 'このHumHubは最新です！',
-  'Time zone' => 'タイムゾーン',
   'Total {count} entries found.' => '合計{count}のエントリが見つかりました。',
   'Trace' => 'トレース',
   'Update Database' => 'データベースを更新する',
@@ -102,4 +102,4 @@ return array (
   '{imageExtension} Support' => '{imageExtension}サポート',
   '{phpExtension} Extension' => '{phpExtension}拡張機能',
   '{phpExtension} Support' => '{phpExtension}サポート',
-);
+];

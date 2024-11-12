@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => '<strong>Учётная запись</strong> администратора',
   '<strong>Configuration</strong>' => '<strong>Конфигурация</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Поздравляем.</strong> Установка закончена.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Поздравляем! Всё в порядке и готово к установке!',
   'Create Admin Account' => 'Создать учётную запись администратора',
   'Create the database if it doesn\'t exist yet.' => 'Создайте базу данных, если она еще не существует.',
+  'Default Language' => '',
+  'Default Timezone' => 'Часовой пояс по умолчанию',
   'Downloading & Installing Modules...' => 'Загрузка и установка модулей ...',
   'External users can register (show registration form on login)' => 'Каждый может зарегистрироваться (Регистрация будет доступна при входе)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Здесь Вы можете решить, как новые и незарегистрированные пользователи могут получить доступ к HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Чтобы активировать эту функцию, необходимо отредактировать конфигурацию HumHub и, возможно, конфигурацию веб-сервера.',
   'Initializing database...' => 'Инициализация базы данных ...',
   'Installation Example:' => 'Пример установки:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => '',
+  'Localisation' => '',
   'My club' => 'Мой клуб',
   'My community' => 'Моё комьюнити',
   'My company (Social Intranet / Project management)' => 'Моя компания (Социальный Интранет / Управление проектами)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Пароль MySQL',
   'Your MySQL username' => 'Имя пользователя MySQL',
   'Your first sample space to discover the platform.' => 'Ваше первое демонстрационное сообщество для знакомства с платформой.',
-);
+];

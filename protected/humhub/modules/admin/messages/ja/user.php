@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Information</strong>' => '<strong>情報</strong>',
   '<strong>Profile</strong> Permissions' => '<strong>プロフィール</strong>の権限',
   '<strong>Settings</strong> and Configuration' => '<strong>設定</strong> と編集',
@@ -19,10 +19,12 @@ return array (
   'Add new members...' => '新しいメンバーを追加します。。。',
   'Add new user' => 'ユーザー新規作成',
   'Administrator group could not be deleted!' => '管理者グループを削除できませんでした！',
+  'All existing Profile Topics will be converted to Global Topics.' => '既存のプロファイルトピックはすべてグローバルトピックに変換されます。',
   'All open registration invitations were successfully deleted.' => '開いている登録の招待状はすべて正常に削除されました。',
   'All open registration invitations were successfully re-sent.' => 'すべての登録招待状が正常に再送信されました。',
   'All the personal data of this user will be irrevocably deleted.' => 'このユーザーのすべての情報を削除します。戻すことは出来ません。',
   'Allow' => '許可する',
+  'Allow individual topics on profiles' => 'プロフィールに個別のトピックを許可する',
   'Allow users to block each other' => 'ユーザーどうしでブロックすることを許す',
   'Allow users to set individual permissions for their own profile?' => 'ユーザーが自分のプロフィールに個別のアクセス許可を設定できるようにしますか？',
   'Allow visitors limited access to content without an account (Adds visibility: "Guest")' => '登録メンバーではない人（匿名ゲスト）にも閲覧を許可する',
@@ -39,8 +41,11 @@ return array (
   'Are you really sure? Users who are not assigned to another group are automatically assigned to the default group.' => '本当によろしいですか？ 別のグループに割り当てられていないユーザーは、デフォルトのグループに自動的に割り当てられます。',
   'Are you sure that you want to delete following user?' => '次のユーザーを削除してもよろしいですか？',
   'Cancel' => 'キャンセル',
+  'Cannot resend invitation email!' => '招待メールを再送信できません！',
   'Click here to review' => '確認するには、ここをクリックしてください',
   'Confirm user deletion' => 'ユーザー削除確認',
+  'Convert' => '変換する',
+  'Convert Profile Topics' => 'プロフィールトピックを変換',
   'Could not approve the user!' => 'ユーザーを承認できませんでした',
   'Could not decline the user!' => 'ユーザーを拒否できませんでした',
   'Could not load category.' => 'カテゴリを読み込めませんでした。',
@@ -125,7 +130,6 @@ Kind Regards
   'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:' => '個々のプロフィールのアクセス許可が許可されていない場合、次の設定はすべてのユーザーに対して変更できません。 個別のプロフィール権限が許可されている場合、設定はユーザーがカスタマイズできるデフォルトとしてのみ設定されます。 次のエントリは、ユーザープロフィール設定に同じ形式で表示されます。',
   'If this option is not selected, the ownership of the spaces will be transferred to your account.' => 'このオプションが選択されていない場合、スペースの所有権がアカウントに転送されます。',
   'Impersonate' => '代替ログイン',
-  'Include captcha in registration form' => '登録フォームにCAPTCHAを含める',
   'Information 1' => '情報1',
   'Information 2' => '情報2',
   'Information 3' => '情報3',
@@ -144,7 +148,6 @@ Kind Regards
   'Members can invite external users by email' => 'メンバーは外部ユーザーをメールで招待することが可能',
   'Members can invite external users by link' => 'メンバーはリンクで外部ユーザーを招待できます',
   'Message' => '内容',
-  'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => '最小値は20秒です。 空白の場合、セッションは1400秒（24分）後にタイムアウトします。',
   'New approval requests' => '新しい承認要求',
   'New users can register' => '匿名ユーザーの登録',
   'No' => 'いいえ',
@@ -190,6 +193,7 @@ Kind Regards
   'Show group selection at registration' => '登録時にグループ選択を表示する',
   'Subject' => '件名',
   'The Space memberships of all group members will be updated. This may take up to several minutes.' => 'すべてのグループメンバーのスペースメンバーシップが更新されます。 これには数分かかる場合があります。',
+  'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.' => 'デフォルトのユーザーアイドルタイムアウトは、ユーザーセッションが一定時間アイドル状態になった場合に使用されます。この時間が経過するとユーザーは自動的にログアウトされます。',
   'The following list contains all pending sign-ups and invites.' => '次のリストには、保留中のすべてのサインアップと招待が含まれています。',
   'The following list contains all registered users awaiting an approval.' => '次のリストには、承認待ちのすべての登録済みユーザーが含まれています。',
   'The message has been sent by email.' => 'メッセージはE-mailで送信されました。',
@@ -221,4 +225,4 @@ Kind Regards
   'You cannot delete yourself!' => '自分自身を削除することはできません！',
   'never' => 'なし',
   '{nbMsgSent} already sent' => '{nbMsgSent} はすでに送信済みです',
-);
+];

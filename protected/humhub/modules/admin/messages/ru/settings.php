@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => 'Сортировка "Моих сообществ"',
   '1 month' => '1 месяц',
   '1 week' => '1 неделя',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6 месяцев',
   '<strong>Confirm</strong> icon deletion' => '<strong>Подтвердите</strong> удаление иконки',
   '<strong>Confirm</strong> image deletion' => '<strong>Подтвердите</strong> удаление изображения',
+  '<strong>Confirm</strong> topic deletion' => '<strong>Подтверждение</strong> удаления темы',
   'APC(u)' => 'Пользовательский кеш APC(u)',
   'Access Token' => 'Токен доступа',
   'Access token is not provided yet.' => 'Токен доступа еще не предоставлен.',
   'Add OEmbed provider' => 'Добавить OEmbed сервис',
+  'Add Topic' => 'Добавить Тему',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Добавьте пользовательский информационный текст для режима обслуживания. Отображается на странице входа.',
   'Add individual info text...' => 'Добавить индивидуальный информационный текст...',
   'Add new provider' => 'Добавить новый сервис',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Кеширование бекенда',
   'Comma separated list. Leave empty to allow all.' => 'Список, разделенный запятыми. Оставьте поле пустым, если хотите разрешить загружать файлы с любыми расширениями.',
   'Configuration (Use settings from configuration file)' => 'Конфигурация (Использовать настройки из файла конфигурации)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'Не удалось отправить тестовое письмо.',
   'Currently no provider active!' => 'В настоящее ни один сервис не активиен!',
   'Currently there are {count} records in the database dating from {dating}.' => 'В настоящее время в базе данных имеется {count} записей, датированных от {dating}.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Пагинация по умолчанию (количество записей на странице)',
   'Default stream content order' => 'Сортировка записей в ленте по умолчанию',
   'Delete' => 'Удалить',
+  'Do you really want to delete this topic?' => 'Вы уверены, что хотите удалить тему?',
   'E-Mail' => 'Email',
   'E-Mail reply-to' => 'Ответ на электронную почту',
   'E-Mail sender address' => 'Email отправителя',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Дружба',
   'General' => 'Общее',
   'General Settings' => 'Общие настройки',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'HTML код счётчика',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Здесь Вы можете настроить поведение при регистрации и дополнительные настройки пользователей Вашей социальной сети.',
   'Here you can configure basic settings of your social network.' => 'Здесь Вы можете настроить основные параметры Вашей социальной сети.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Имя провайдера',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Регулярное выражение, по которому будет проверяться совпадение ссылок.',
-  'Reported database time: {dateTime}' => 'Отчетное время базы данных: {dateTime}',
   'Save' => 'Сохранить',
   'Save & Flush Caches' => 'Сохранить и удалить кеш',
   'Save & Test' => 'Сохранить и протестировать',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Тема оформления',
   'These settings refer to advanced topics of your social network.' => 'Эта вкладка относятся к более глубоким настройкам Вашей социальной сети.',
   'These settings refer to the appearance of your social network.' => 'Эта вкладка относятся к внешнему виду Вашей социальной сети.',
+  'Topic has been deleted!' => 'Тема была удалена!',
+  'Topics' => 'Темы',
   'Url Pattern' => 'Шаблон URL-адреса',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Используйте плейсхолдер %url% вместо URL. Строка должна быть в JSON формате. (например: https://www.youtube.com/oembed?url=%url%&format=json)',
   'Use SMTPS' => 'Используйте SMTPS',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'например, localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'например smtps://user:pass@smtp.example.com:port',
   'never' => 'никогда',
-);
+];
