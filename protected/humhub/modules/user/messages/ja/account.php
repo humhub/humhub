@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> Settings' => '<strong>アカウント</strong>の設定',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>確認</strong> あなたの新しいEメールアドレスです。',
   '<strong>Permissions</strong>' => '<strong>権限</strong>',
@@ -34,6 +34,8 @@ return array (
   'Notifications' => '通知',
   'Other users' => 'その他のユーザー',
   'Password Recovery' => 'パスワードの回復',
+  'Password recovery can only be initiated once every 10 minutes.' => 'パスワード復旧は10分に1回しか開始できない。',
+  'Password recovery disabled. Please contact your system administrator.' => 'パスワード回復が無効です。システム管理者に連絡してください。',
   'Permissions' => '権限',
   'Plain' => 'プレーンテキスト',
   'Profile' => 'プロフィール',
@@ -64,4 +66,4 @@ return array (
   'Your password has been successfully changed!' => 'パスワードを変更しました。',
   'Your username has been changed' => 'ユーザー名を変更しました。',
   'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'ユーザー名は正常に変更されました。 <br>新しい情報が記載されたメールをお送りしました。',
-);
+];

@@ -38,6 +38,7 @@ class AccountChangeEmail extends Model
     {
         $rules = [
             ['newEmail', 'required'],
+            ['newEmail', 'string', 'max' => 150],
             ['newEmail', 'email'],
             ['newEmail', 'unique', 'targetAttribute' => 'email', 'targetClass' => User::class, 'message' => '{attribute} "{value}" is already in use!'],
         ];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Invite</strong> new people' => 'Neue Benutzer <strong>einladen</strong>',
   'Click here to create an account:' => 'Klicke hier, um ein Konto zu erstellen:',
   'Email' => 'E-Mail-Adresse',
@@ -10,6 +10,7 @@ return array (
   'You\'ve been invited to join %appName%' => 'Du wurdest eingeladen, %appName% beizutreten',
   '{email} is already registered!' => 'Die Adresse "{email}" ist bereits registriert!',
   '{email} is not valid!' => 'Die Adresse "{email}" ist ungültig!',
+  '{email} should contain at most {charNum} characters.' => '{email} sollte höchstens {charNum} Zeichen enthalten.',
   '{username} invited you to join "{space}" on {name}.' => '{username} hat dich eingeladen "{space}" auf {name} beizutreten.',
   '{username} invited you to {name}.' => '{username} hat dich zu {name} eingeladen.',
-);
+];

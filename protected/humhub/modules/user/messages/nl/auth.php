@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> registration' => '<strong>Account</strong> registratie',
   '<strong>Change</strong> Password' => '<strong>Wachtwoord wijzigen</strong>',
   '<strong>Change</strong> your password' => '<strong>Wijzig</strong> je wachtwoord',
@@ -26,12 +26,14 @@ return array (
   'Group' => 'Groep',
   'Hello {displayName}' => 'Hallo {displayName}',
   'Hello {displayName},' => 'Beste {displayName},',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'Als er een gebruikersaccount aan dit e-mailadres is gekoppeld, ontvangt u binnenkort per e-mail verdere instructies.',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Deze link verloopt binnen 24 uur.',
   'If you\'re already a member, please login with your username/email and password.' => 'Als u al lid bent, meld u dan aan met uw gebruikersnaam/e-mailadres en het wachtwoord.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Vul uw e-mailadres in. Wij sturen dan instructies om uw wachtwoord te herstellen!',
   'Log out' => 'Uitloggen',
   'Login' => 'Login',
   'New user needs approval' => 'Nieuwe gebruiker vereist goedkeuring',
+  'Password' => 'wachtwoord',
   'Password recovery' => 'Wachtwoord herstellen',
   'Password reset' => 'Wachtwoord reset',
   'Please check your email and follow the instructions!' => 'Controleer uw e-mail en volg de instructies!',
@@ -48,13 +50,11 @@ return array (
   'Sign in' => 'Aanmelden',
   'To log in with your new account, click the button below.' => 'Om aan te melden met uw nieuwe account, klikt u op onderstaande knop.',
   'User or Password incorrect.' => 'Gebruiker of wachtwoord is onjuist.',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'We hebben u een e-mail gestuurd met een link waarmee u uw wachtwoord opnieuw kan instellen.',
+  'Username or Email' => 'gebruikersnaam of e-mail',
   'Your email' => 'uw e-mailadres',
   'Your password' => 'Uw wachtwoord',
   'Your password has been successfully changed!' => 'Uw paswoord is succesvol aangepast!',
   'Your password is incorrect!' => 'Uw wachtwoord is onjuist!',
   'a new user {displayName} needs approval.' => 'De nieuwe gebruiker {displayName} heeft goedkeuring nodig.',
   'back to home' => 'Terug naar begin',
-  'Password' => 'wachtwoord',
-  'Username or Email' => 'gebruikersnaam of e-mail',
-);
+];

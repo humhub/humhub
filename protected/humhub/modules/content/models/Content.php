@@ -235,11 +235,16 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         // Force to private content for private space or if user has no permission to create public content
         if ($this->container instanceof Space &&
             $this->container->visibility !== Space::VISIBILITY_ALL &&
-            $this->visibility === self::VISIBILITY_PUBLIC) {
-            if ($this->container->visibility === Space::VISIBILITY_NONE ||
-                !$this->container->can(CreatePublicContent::class)) {
-                $this->visibility = self::VISIBILITY_PRIVATE;
-            }
+            $this->visibility === self::VISIBILITY_PUBLIC &&
+            (
+                $this->container->visibility === Space::VISIBILITY_NONE ||
+                (
+                    Yii::$app->user->identity && // Allow creating public content from console
+                    !$this->container->can(CreatePublicContent::class)
+                )
+            )
+        ) {
+            $this->visibility = self::VISIBILITY_PRIVATE;
         }
 
         if ($insert) {

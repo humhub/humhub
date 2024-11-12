@@ -1797,6 +1797,10 @@ div.required.has-error > label:after {
   font-weight: bold;
   padding-left: 0;
 }
+.form-checkboxes-normal .radio label,
+.form-checkboxes-normal .checkbox label {
+  font-weight: 500;
+}
 .form-control {
   border: 2px solid #ededed;
   box-shadow: none;
@@ -2194,6 +2198,19 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
 }
 #notification_overview_filter label {
   display: block;
+}
+.field-filterform-allfilter input[type=checkbox] {
+  border-color: #ccc;
+}
+.field-filterform-allfilter input[type=checkbox]:checked {
+  border-color: #e7e7e7;
+  background: #e7e7e7;
+}
+.field-filterform-allfilter input[type=checkbox]:checked::after {
+  color: #555;
+}
+.field-filterform-allfilter input[type=checkbox]:focus {
+  border-color: #ccc !important;
 }
 #notification_overview_list .img-space {
   position: absolute;
@@ -4941,7 +4958,7 @@ a.label-warning:hover {
   }
   #layout-content .panel-profile .panel-profile-header .img-profile-data {
     padding-top: 50px !important;
-    padding-left: 130px;
+    padding-left: 125px;
   }
   .modal-dialog {
     width: calc(100vw - 4px) !important;

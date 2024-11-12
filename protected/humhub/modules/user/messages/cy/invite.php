@@ -11,6 +11,7 @@ return [
     'You\'ve been invited to join %appName%' => '',
     '{email} is already registered!' => '',
     '{email} is not valid!' => '',
+    '{email} should contain at most {charNum} characters.' => '',
     '{username} invited you to join "{space}" on {name}.' => '',
     '{username} invited you to {name}.' => '',
 ];
