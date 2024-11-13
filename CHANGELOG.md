@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
+- Fix #7304: Rounded corners in site logo preview
 - Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
 - Fix #7281: SelfTest for DynamicConfig broken when not exist yet
 - Fix #7284: Content tag visibility
