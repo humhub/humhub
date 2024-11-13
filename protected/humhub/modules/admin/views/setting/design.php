@@ -75,7 +75,7 @@ $iconUrl = SiteIcon::getUrl(140);
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
-            <img class="img-rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
+            <img id="logo-image" src="<?= LogoImage::getUrl() ?>"
                  data-src="holder.js/140x140"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
                  style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
