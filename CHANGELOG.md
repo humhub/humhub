@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
 - Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
 - Enh #7038: Optimize notification overview
+- Enh #7307: Improve request scheme detection
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
