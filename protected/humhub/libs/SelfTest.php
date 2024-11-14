@@ -430,17 +430,12 @@ class SelfTest
             }
 
             $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Base URL');
-            $sslPort = 443;
-            $httpPort = 80;
-            $scheme = $_SERVER['REQUEST_SCHEME'] ?? (
-                isset($_SERVER['HTTPS'])
-                ? ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] === 1 || $_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
-                : ($_SERVER['SERVER_PORT'] == $sslPort ? 'https' : 'http')
-            );
+            $scheme = Yii::$app->request->getIsSecureConnection() ? 'https' : 'http';
+
             $currentBaseUrl = $scheme . '://' . preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])
                 . (
-                    ($scheme === 'https' && $_SERVER['SERVER_PORT'] == $sslPort) ||
-                    ($scheme === 'http' && $_SERVER['SERVER_PORT'] == $httpPort)
+                    ($scheme === 'https' && $_SERVER['SERVER_PORT'] == 443) ||
+                    ($scheme === 'http' && $_SERVER['SERVER_PORT'] == 80)
                     ? ''
                     : ':' . $_SERVER['SERVER_PORT']
                 )
