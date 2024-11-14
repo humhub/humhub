@@ -5,6 +5,7 @@ namespace humhub\modules\web\security\helpers;
 use Exception;
 use Psr\Http\Message\MessageInterface;
 use TypeError;
+use Yii;
 
 use function array_keys;
 use function file_exists;
@@ -785,7 +786,7 @@ class CSPBuilder
                 if ($url !== false) {
                     if ($this->supportOldBrowsers) {
                         if (strpos($url, '://') === false) {
-                            if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
+                            if ((Yii::$app->request->isSecureConnection && $this->httpsTransformOnHttpsConnections)
                                 || !empty($this->policies['upgrade-insecure-requests'])) {
                                 // We only want HTTPS connections here.
                                 $ret .= 'https://' . $url . ' ';
@@ -794,7 +795,7 @@ class CSPBuilder
                             }
                         }
                     }
-                    if (($this->isHTTPSConnection() && $this->httpsTransformOnHttpsConnections)
+                    if ((Yii::$app->request->isSecureConnection && $this->httpsTransformOnHttpsConnections)
                         || !empty($this->policies['upgrade-insecure-requests'])) {
                         $ret .= str_replace('http://', 'https://', $url) . ' ';
                     } else {
@@ -886,19 +887,6 @@ class CSPBuilder
                 : 'X-Webkit-CSP';
         }
         return $return;
-    }
-
-    /**
-     * Is this user currently connected over HTTPS?
-     *
-     * @return bool
-     */
-    protected function isHTTPSConnection()
-    {
-        if (!empty($_SERVER['HTTPS'])) {
-            return $_SERVER['HTTPS'] !== 'off';
-        }
-        return false;
     }
 
     /**
