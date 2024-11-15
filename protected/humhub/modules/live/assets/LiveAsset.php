@@ -36,7 +36,7 @@ class LiveAsset extends AssetBundle
 
         if (!Yii::$app->request->isConsoleRequest) {
             Yii::$app->view->registerJsConfig('live.poll', [
-                'nonce' => Security::getNonce(),
+                'nonce' => Security::getNonce(true),
             ]);
         }
     }
