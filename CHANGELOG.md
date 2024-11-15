@@ -5,7 +5,8 @@ HumHub Changelog
 1.17.0-beta.3 (Unreleased)
 ---------------------------------
 - Enh #7307: Improve request scheme detection
-- Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7309: Fix style of the "Notification Settings" button on small screen
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
