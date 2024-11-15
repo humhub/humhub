@@ -4965,21 +4965,15 @@ a.label-warning:hover {
     padding: 0 !important;
     margin: 2px !important;
   }
-  .dropdown-menu > li a,
-  .nav-pills .dropdown-menu li a,
-  .nav-tabs .dropdown-menu li a,
-  .account .dropdown-menu li a,
-  .modal .dropdown-menu li a,
-  .panel .dropdown-menu li a,
-  .nav-tabs .dropdown-menu li a {
+  .dropdown-menu {
+    max-width: 320px;
+  }
+  .dropdown-menu > li:not(.dropdown-header) a {
     padding-top: 10px;
     padding-bottom: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-  }
-  .dropdown-menu {
-    max-width: 320px;
   }
   select.form-control:not([multiple]) {
     padding-right: 23px;
