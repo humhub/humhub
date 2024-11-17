@@ -6,6 +6,7 @@ HumHub Changelog
 ---------------------------------
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
+- Enh #7311: Improve space/user picker focus
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
