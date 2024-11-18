@@ -28,6 +28,15 @@ humhub.module('live.push', function (module, require, $) {
             var message = JSON.parse(data);
             event.trigger(message.type.replace(/\./g, ':'), [[message]]);
         });
+
+        window.addEventListener('securitypolicyviolation', function (event) {
+            if (event.violatedDirective.includes('script-src')) {
+                // The directive "script-src" can be violated when nonce value has been recreated
+                // try to reload current page in order to solve the issue
+                module.log.info('Force page reload. The directive "script-src" is violated because of nonce was changed.');
+                window.location.reload();
+            }
+        });
     };
 
     module.export({
