@@ -310,7 +310,7 @@ class Profile extends ActiveRecord
     }
 
     /**
-     * Returns all profile fields with user data by given category
+     * @return ProfileField[] all profile fields with user data by given category
      */
     public function getProfileFields(?ProfileFieldCategory $category = null, ?array $withoutTypes = null): array
     {
