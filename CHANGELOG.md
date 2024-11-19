@@ -5,8 +5,8 @@ HumHub Changelog
 1.17.0-beta.3 (Unreleased)
 ---------------------------------
 - Enh #7307: Improve request scheme detection
-- Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
-- Fix #7312: Fix obsolete nonce value on Live Push driver
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
