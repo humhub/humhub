@@ -6085,10 +6085,15 @@ a.label-warning:hover {
 .select2-container--humhub .select2-selection--multiple .select2-selection__choice .picker-close {
   cursor: pointer;
 }
+
+.select2-container .select2-search--inline {
+  width: 100%;
+}
+
 .select2-container--humhub .select2-selection--multiple .select2-search--inline .select2-search__field {
   background: transparent;
   padding: 0 5px;
-  width: 100%;
+  width: 100% !important;
   height: 32px;
   line-height: 1.42857143;
   margin-top: 0;
