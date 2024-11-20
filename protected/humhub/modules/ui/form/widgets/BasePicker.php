@@ -422,7 +422,6 @@ abstract class BasePicker extends JsInputWidget
             'input-too-long' => Yii::t('UserModule.chooser', 'You reached the maximum number of allowed characters ({n}).', ['n' => $this->maxInput]),
             'default-results' => $this->getDefaultResultData(),
             'disabled' => $this->disabled,
-            'width' => '100%',
         ];
 
         if (!empty($this->disabledItems)) {
