@@ -2331,6 +2331,9 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
     display: none;
   }
 }
+.profile-item {
+  margin-top: 15px;
+}
 .list-group-item {
   padding: 6px 15px;
   border: none;
