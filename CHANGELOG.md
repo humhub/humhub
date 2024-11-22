@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
 - Fix #454: Profile about page missing left and right margin on mobile screen
+- Fix #7316: Fix formatter default time zone
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------

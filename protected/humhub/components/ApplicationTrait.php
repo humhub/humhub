@@ -16,6 +16,7 @@ use humhub\libs\TimezoneHelper;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
+use yii\i18n\Formatter;
 
 trait ApplicationTrait
 {
@@ -58,6 +59,9 @@ trait ApplicationTrait
         if ($this->isDatabaseInstalled(true)) {
             if ($this->settings instanceof SettingsManager) {
                 $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
+                if ($this->formatter instanceof Formatter) {
+                    $this->formatter->defaultTimeZone = $this->timeZone;
+                }
             }
             $this->db->pdo->exec('SET time_zone = ' . $this->db->quoteValue(TimezoneHelper::convertToTime($this->timeZone)));
         }
