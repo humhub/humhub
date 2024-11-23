@@ -3329,6 +3329,24 @@ div.nested-comments-root div.comment-container {
   margin-right: 3px;
   margin-top: 3px;
 }
+.card-space .card-header .card-space-link {
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 16px;
+}
+.card-space .card-header .card-icons {
+  position: absolute;
+  right: 16px;
+  top: 85px;
+}
+.card-space .card-body .card-space-link {
+  display: block;
+  margin: -16px;
+  padding: 16px;
+}
 @media (max-width: 767px) {
   #space-menu > .title {
     display: none;
