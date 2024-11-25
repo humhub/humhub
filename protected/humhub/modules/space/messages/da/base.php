@@ -92,6 +92,7 @@ return [
     '<strong>Space</strong> followers' => '',
     '<strong>Space</strong> tags' => '',
     '<strong>Spaces</strong>' => '',
+    'Add as Default Space for new users' => '',
     'Add users without invitation' => '',
     'Administrator:' => '',
     'Administrators' => '',

@@ -163,6 +163,7 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'Zure eskaera arrakastaz aurkeztu zitzaien espazioko administratzaileei.',
     '{count} members' => '{count} kide',
     '{email} is not valid!' => '{email} posta elektronikoak ez du balio!',
+    'Add as Default Space for new users' => '',
     'Default Stream Sort' => '',
     'Neither..nor' => '',
     'Stream Sort' => '',

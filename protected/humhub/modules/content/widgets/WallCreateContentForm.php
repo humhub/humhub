@@ -131,7 +131,7 @@ abstract class WallCreateContentForm extends Widget
 
         if ($record->save()) {
             $topics = Yii::$app->request->post('postTopicInput');
-            if (!empty($topics)) {
+            if (!empty($topics) && Topic::isAllowedToCreate($contentContainer)) {
                 Topic::attach($record->content, $topics);
             }
 

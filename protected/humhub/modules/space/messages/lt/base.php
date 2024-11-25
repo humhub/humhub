@@ -163,6 +163,7 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'Jūsų prašymas buvo sėkmingai perduotas erdvės administratoriams.',
     '{count} members' => '{count} nariai',
     '{email} is not valid!' => '{email} negalioja!',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Default Stream Sort' => '',
     'Stream Sort' => '',

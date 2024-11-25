@@ -144,7 +144,6 @@ Kind Regards
     'Members can invite external users by email' => 'يستطيع الأعضاء دعوة اشخاص عبر الإيميل',
     'Members can invite external users by link' => 'يمكن للأعضاء دعوة مستخدمين خارجيين عن طريق الرابط',
     'Message' => 'النص',
-    'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'القيمة الدنيا 20 ثانية. في حالة عدم التعيين ، ستنتهي مهلة الجلسة بعد 1400 ثانية (24 دقيقة) بغض النظر عن النشاط (مهلة الجلسة الافتراضية)',
     'New approval requests' => 'طلبات الموافقة الجديدة',
     'New users can register' => 'الزوار يستطيعون التسجيل',
     'No' => 'لا',
@@ -221,5 +220,10 @@ Kind Regards
     'You cannot delete yourself!' => 'لا تستطيع حذف نفسك!',
     'never' => 'أبدا',
     '{nbMsgSent} already sent' => 'تم إرسالها {nbMsgSent} بالفعل',
+    'All existing Profile Topics will be converted to Global Topics.' => '',
+    'Allow individual topics on profiles' => '',
     'Cannot resend invitation email!' => '',
+    'Convert' => '',
+    'Convert Profile Topics' => '',
+    'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.' => '',
 ];

@@ -89,6 +89,8 @@ return [
     'This content type can\'t be moved due to a missing module-id setting.' => '',
     'This content type can\'t be moved.' => '',
     'This space is not visible!' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'Topics' => '',
     'Turn off notifications' => '',
     'Turn on notifications' => '',

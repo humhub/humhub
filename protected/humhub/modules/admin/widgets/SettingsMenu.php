@@ -51,6 +51,14 @@ class SettingsMenu extends TabMenu
         ]));
 
         $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.base', 'Topics'),
+            'url' => ['/admin/setting/topics'],
+            'sortOrder' => 600,
+            'isActive' => ControllerHelper::isActivePath('admin', 'setting', ['topics', 'topic-edit']),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Advanced'),
             'url' => ['/admin/setting/advanced'],
             'sortOrder' => 1000,

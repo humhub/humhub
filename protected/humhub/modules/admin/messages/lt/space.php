@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Šiomis parinktimis galite nustatyti numatytuosius visų Erdvių leidimus. Įgaliotieji naudotojai gali juos individualizuoti kiekvienai Erdvei. Papildomi įrašai pridedami diegiant naujus modulius.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Čia pateikiamas Erdvių sąrašas bei veiksmais, leidžiančiais peržiūrėti, redaguoti ir ištrinti Erdves.',
     'Update Space memberships also for existing members.' => 'Atnaujinti narystę naujiems ir esamiems nariams.',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];

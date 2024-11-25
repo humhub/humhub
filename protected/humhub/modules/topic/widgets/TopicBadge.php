@@ -9,6 +9,8 @@
 
 namespace humhub\modules\topic\widgets;
 
+use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\topic\models\Topic;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Link;
@@ -23,11 +25,20 @@ class TopicBadge extends Badge
      * @return $this
      * @throws \Throwable
      */
-    public static function forTopic(Topic $topic): static
+    public static function forTopic(Topic $topic, ?ContentContainerActiveRecord $contentContainer = null): static
     {
-        $link = Link::withAction('', 'topic.addTopic')->options(['data-topic-id' => $topic->id, 'data-topic-url' => $topic->getUrl()]);
+        $badge = static::instance($topic->name, $topic->color)
+            ->sortOrder(20)
+            ->icon('star');
 
-        return static::instance($topic->name, $topic->color)->sortOrder(20)->withLink($link)->icon('star');
+        if ($contentContainer = $contentContainer ?: ContentContainerHelper::getCurrent()) {
+            $badge->withLink(Link::withAction('', 'topic.addTopic')->options([
+                'data-topic-id' => $topic->id,
+                'data-topic-url' => $topic->getUrl($contentContainer),
+            ]));
+        }
+
+        return $badge;
     }
 
 }

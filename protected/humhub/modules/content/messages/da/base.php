@@ -93,6 +93,8 @@ return [
     'This content type can\'t be moved.' => '',
     'This space is archived.' => '',
     'This space is not visible!' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'Topics' => '',
     'Unlock comments' => '',
     'Unpin' => '',

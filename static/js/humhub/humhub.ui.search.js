@@ -302,12 +302,6 @@ humhub.module('ui.search', function(module, require, $) {
 
                 // Prepare and set new content
                 const newProviderContent = $(response.html);
-                newProviderContent.find('[data-ui-widget="ui.richtext.prosemirror.RichText"]').each(function () {
-                    Widget.instance($(this));
-                });
-                newProviderContent.find(that.selectors.providerRecordText + ' > span').each(function () {
-                    $(this).html($(this).html().replace(/(<([^>]+)>)/gi, ' '));
-                });
                 provider.replaceWith(newProviderContent);
                 const records = newProviderContent.find(that.selectors.providerRecord);
                 if (records.length) {

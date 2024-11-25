@@ -143,6 +143,7 @@ return [
     '{count} members' => '{count} członków',
     '{email} is not valid!' => '{email} nie jest prawidłowy!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Change visibility' => '',
     'Create new link' => '',

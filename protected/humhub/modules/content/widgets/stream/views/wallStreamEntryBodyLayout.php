@@ -23,7 +23,7 @@ use humhub\modules\ui\view\components\View;
         <div class="wall-entry-body">
             <div class="topic-label-list">
                 <?php foreach ($topics as $topic) : ?>
-                    <?= TopicBadge::forTopic($topic) ?>
+                    <?= TopicBadge::forTopic($topic, $model->content->contentContainer->getPolymorphicRelation()) ?>
                 <?php endforeach; ?>
             </div>
 

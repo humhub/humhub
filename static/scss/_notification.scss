@@ -2,6 +2,22 @@
     display: block;
 }
 
+.field-filterform-allfilter {
+    input[type=checkbox] {
+        border-color: #ccc;
+        &:checked {
+            border-color: @default;
+            background: @default;
+            &::after {
+                color: @text-color-main;
+            }
+        }
+        &:focus {
+            border-color: #ccc !important;
+        }
+    }
+}
+
 #notification_overview_list {
     .img-space {
         position: absolute;

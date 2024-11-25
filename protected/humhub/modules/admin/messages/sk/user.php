@@ -144,7 +144,6 @@ Kind Regards
     'Members can invite external users by email' => 'Členovia môžu pozývať externých užívateľov e-mailom',
     'Members can invite external users by link' => 'Členovia môžu pozývať externých užívateľov pomocou odkazu',
     'Message' => 'Správa',
-    'Min value is 20 seconds. If not set, session will timeout after 1400 seconds (24 minutes) regardless of activity (default session timeout)' => 'Minimálna hodnota je 20 sekúnd.  Ak nie je nastavené, časový limit relácie vyprší po 1400 sekundách (24 minútach) bez ohľadu na aktivitu (predvolený časový limit relácie)',
     'New approval requests' => 'Nové žiadosti na schválenie',
     'New users can register' => 'Noví užívatelia sa môžu zaregistrovať',
     'No' => 'Nie',
@@ -221,5 +220,10 @@ Kind Regards
     'You cannot delete yourself!' => 'Nemôžete sa vymazať!',
     'never' => 'nikdy',
     '{nbMsgSent} already sent' => '{nbMsgSent} už bolo odoslané',
+    'All existing Profile Topics will be converted to Global Topics.' => '',
+    'Allow individual topics on profiles' => '',
     'Cannot resend invitation email!' => '',
+    'Convert' => '',
+    'Convert Profile Topics' => '',
+    'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.' => '',
 ];

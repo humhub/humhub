@@ -229,6 +229,7 @@ trait BootstrapVariationsTrait
 
     /**
      * @deprecated since 1.18
+     * Use `static::instance($text, $color)` instead
      */
     public function color($color)
     {

@@ -95,6 +95,8 @@ return [
     'This action is disabled!' => '',
     'This content type can\'t be moved due to a missing module-id setting.' => '',
     'This content type can\'t be moved.' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'Topics' => '',
     'Unlock comments' => '',
     'Visible also to unregistered users' => '',

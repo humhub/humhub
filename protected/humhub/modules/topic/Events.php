@@ -36,7 +36,7 @@ class Events extends BaseObject
     {
         $space = $event->sender->space;
 
-        if ($space->isAdmin()) {
+        if ($space->isAdmin() && Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)) {
             $event->sender->addItem([
                 'label' => Yii::t('TopicModule.base', 'Topics'),
                 'url' => $space->createUrl('/topic/manage'),
@@ -51,7 +51,7 @@ class Events extends BaseObject
      */
     public static function onProfileSettingMenuInit($event)
     {
-        if (Yii::$app->user->isGuest) {
+        if (Yii::$app->user->isGuest || !Yii::$app->getModule('user')->settings->get('auth.allowUserTopics', true)) {
             return;
         }
 

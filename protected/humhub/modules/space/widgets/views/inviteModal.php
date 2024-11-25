@@ -7,7 +7,6 @@
 /* @var $submitAction string */
 /* @var $model InviteForm */
 /* @var $attribute string */
-
 /* @var $searchUrl string */
 
 use humhub\helpers\Html;
@@ -17,6 +16,7 @@ use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 $modalAnimationClass = ($model->hasErrors()) ? 'shake' : 'fadeIn';
 
@@ -93,26 +93,18 @@ Modal::beginDialog([
         <br><br>
 
         <?= $form->field($model, 'invite')
-            ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']); ?>
+            ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']) ?>
+
+        <br>
+        <?= $form->field($model, 'allRegisteredUsers')->checkbox() ?>
 
         <?php if ($canAddWithoutInvite) : ?>
-            <?= $form
-                ->field($model, 'withoutInvite')
-                ->label(Yii::t(
-                    'SpaceModule.base',
-                    'Add users without invitation',
-                ))
-                ->checkbox() ?>
-
-            <?= $form
-                ->field($model, 'allRegisteredUsers')
-                ->label(Yii::t(
-                    'SpaceModule.base',
-                    'Select all registered users',
-                ))
-                ->checkbox() ?>
+            <br>
+            <?= $form->field($model, 'withoutInvite')->checkbox() ?>
         <?php endif; ?>
 
+        <br/>
+        <?= $form->field($model, 'addDefaultSpace')->checkbox() ?>
     </div>
 
     <?php if ($canInviteByEmail) : ?>

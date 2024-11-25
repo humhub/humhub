@@ -35,6 +35,8 @@ return [
     'Notifications' => '',
     'Other users' => '',
     'Password Recovery' => '',
+    'Password recovery can only be initiated once every 10 minutes.' => '',
+    'Password recovery disabled. Please contact your system administrator.' => '',
     'Permissions' => '',
     'Plain' => '',
     'Profile' => '',

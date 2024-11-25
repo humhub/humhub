@@ -12,6 +12,7 @@ use Exception;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
+use humhub\modules\admin\models\forms\AddTopicForm;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
@@ -25,10 +26,15 @@ use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\models\Log;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
+use humhub\modules\topic\models\Topic;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use humhub\widgets\modal\ModalClose;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\db\Expression;
+use yii\web\NotFoundHttpException;
 
 /**
  * SettingController
@@ -326,6 +332,87 @@ class SettingController extends Controller
             'model' => $form,
             'limitAgeOptions' => $limitAgeOptions,
             'dating' => $dating,
+        ]);
+    }
+
+    public function actionTopics()
+    {
+        $model = new AddTopicForm();
+        $suggestGlobalConversion = false;
+
+        if ($model->load(Yii::$app->request->post())) {
+            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion) {
+                $suggestGlobalConversion = true;
+            });
+
+            if (!!$model->convertToGlobal) {
+                Topic::convertToGlobal(null, $model->name);
+
+                $model->name = '';
+                $this->view->saved();
+            } elseif ($model->save()) {
+                $model->name = '';
+                $this->view->saved();
+            }
+        }
+
+        return $this->render('topics', [
+            'contentContainer' => null,
+            'dataProvider' => new ActiveDataProvider([
+                'query' => Topic::find()
+                    ->orderBy('sort_order, name')
+                    ->where(['is', 'contentcontainer_id', new Expression('NULL')])
+                    ->andWhere(['module_id' => (new Topic())->moduleId, 'type' => Topic::class]),
+                'pagination' => [
+                    'pageSize' => 20,
+                ],
+            ]),
+            'addModel' => $model,
+            'suggestGlobalConversion' => $suggestGlobalConversion,
+        ]);
+    }
+
+    public function actionDeleteTopic($id)
+    {
+        $this->forcePostRequest();
+
+        $topic = Topic::find()
+            ->where(['id' => $id])
+            ->andWhere(['is', 'contentcontainer_id', new Expression('NULL')])
+            ->one();
+
+        if (!$topic) {
+            throw new NotFoundHttpException();
+        }
+
+        $topic->delete();
+
+        return $this->asJson([
+            'success' => true,
+            'message' => Yii::t('AdminModule.settings', 'Topic has been deleted!'),
+        ]);
+    }
+
+    public function actionEditTopic($id)
+    {
+        $topic = Topic::find()
+            ->where(['id' => $id])
+            ->andWhere(['is', 'contentcontainer_id', new Expression('NULL')])
+            ->one();
+
+        if (!$topic) {
+            throw new NotFoundHttpException();
+        }
+
+        if ($topic->load(Yii::$app->request->post()) && $topic->save()) {
+            return ModalClose::widget([
+                'saved' => true,
+                'reload' => true,
+            ]);
+        }
+
+        return $this->renderAjax('@topic/views/manage/editModal', [
+            'model' => $topic,
         ]);
     }
 
