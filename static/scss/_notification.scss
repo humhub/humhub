@@ -6,10 +6,10 @@
     input[type=checkbox] {
         border-color: #ccc;
         &:checked {
-            border-color: @default;
-            background: @default;
+            border-color: var(--bs-secondary);
+            background: var(--bs-secondary);
             &::after {
-                color: @text-color-main;
+                color: var(--text-color-main);
             }
         }
         &:focus {

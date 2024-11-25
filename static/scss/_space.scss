@@ -69,6 +69,31 @@
     display: none !important;
 }
 
+.card-space {
+    .card-header {
+        .card-space-link {
+            position: absolute;
+            display: block;
+            width: 100%;
+            top: 0;
+            left: 0;
+            padding: 16px;
+        }
+        .card-icons {
+            position: absolute;
+            right: 16px;
+            top: 85px;
+        }
+    }
+    .card-body {
+        .card-space-link {
+            display: block;
+            margin: -16px;
+            padding: 16px;
+        }
+    }
+}
+
 @include media-breakpoint-down(md) {
     #space-menu > .title {
         display: none;
