@@ -198,8 +198,6 @@ humhub.module('live.poll', function (module, require, $) {
      * Handles the live update response.
      */
     PollClient.prototype.handleUpdate = function (response) {
-        this.refreshNonce(response);
-
         if (this.lastTs >= response.queryTime) {
             // We already have a more recent update
             return;
@@ -242,16 +240,6 @@ humhub.module('live.poll', function (module, require, $) {
             });
 
             this.lastIds = Object.keys(response.events);
-        }
-    };
-
-    PollClient.prototype.refreshNonce = function (response) {
-        if (typeof response.data.nonce !== 'undefined' &&
-            typeof module.config.nonce !== 'undefined' &&
-            response.data.nonce !== module.config.nonce) {
-            // Reload current page if the nonce value has been changed since last page loading
-            module.log.info('Force page reload. Nonce (session) has changed.');
-            location.reload();
         }
     };
 
