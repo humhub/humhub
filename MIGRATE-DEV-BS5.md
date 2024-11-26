@@ -336,10 +336,12 @@ However, you need to check the output manually, such as:
 
 ### Variables
 
+Changes:
 - `$default` is deprecated. Use `$secondary` or `$light` instead.
 - New variables: `$secondary`, `$light` and `$dark`
 
-In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `_variables.scss`). You can use regex:
+In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `_variables.scss`).
+You can use regex:
 - search: `\$([a-zA-Z0-9-_]+)`
 - replace: `var(--$1)`
 
@@ -347,6 +349,23 @@ Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-`
 E.g.: `color: $primary` -> `color: var(--bs-primary)`
 
 If you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module ID. E.g. `my-module` will use `hh-mm-`. 
+
+#### Root vs component variables
+
+**Root variables** are global variables that can be used in any component.
+They are stored in this file: `_variables.scss`
+See https://getbootstrap.com/docs/5.3/customize/css-variables/#root-variables
+
+**Component variables** only apply to the HTML elements having the related class (e.g. `.badge` for [Badge CSS variables](https://getbootstrap.com/docs/5.3/components/badge/#variables)), and HTML elements inside of it.
+
+Their values can be overwritten in the component related SCSS file (e.g. `_badge.scss`). Example:
+```scss
+.badge {
+    --bs-badge-padding-x: 0.8em;
+}
+```
+
+Full list of Bootstrap CSS variables here: https://github.com/twbs/bootstrap/tree/main/scss
 
 ### Breakpoints
 

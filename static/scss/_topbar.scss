@@ -1,6 +1,12 @@
 //
 // Topbar
 // --------------------------------------------------
+
+.navbar.topbar {
+    --bs-navbar-padding-x: 0;
+    --bs-navbar-padding-y: 0;
+}
+
 .topbar {
     position: fixed;
     display: block;
@@ -86,7 +92,7 @@
 
         .dropdown-toggle {
             display: block;
-            padding: 10px 5px 8px;
+            padding: 8px 5px;
             line-height: 1.1em;
             text-align: left;
 
@@ -149,6 +155,10 @@
             position: absolute;
             top: 4px;
             right: -2px;
+        }
+
+        .dropdown-toggle::after {
+            display: none; // Remove Bootstrap dropdown arrow
         }
 
         .dropdown-menu {

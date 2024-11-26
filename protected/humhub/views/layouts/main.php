@@ -29,7 +29,7 @@ AppAsset::register($this);
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
-        <div id="topbar-first" class="topbar">
+        <div id="topbar-first" class="topbar navbar">
             <div class="container d-flex justify-content-between">
                 <div class="topbar-brand d-none d-sm-block">
                     <?= SiteLogo::widget() ?>
@@ -47,7 +47,7 @@ AppAsset::register($this);
         <!-- end: first top navigation bar -->
 
         <!-- start: second top navigation bar -->
-        <div id="topbar-second" class="topbar">
+        <div id="topbar-second" class="topbar navbar">
             <div class="container">
                 <ul class="nav" id="top-menu-nav">
                     <!-- load space chooser widget -->

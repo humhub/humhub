@@ -10902,6 +10902,10 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   word-break: normal;
   hyphens: none;
 }
+.navbar.topbar {
+  --bs-navbar-padding-x: 0;
+  --bs-navbar-padding-y: 0;
+}
 .topbar {
   position: fixed;
   display: block;
@@ -10968,7 +10972,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 #topbar-first .nav > .account .dropdown-toggle {
   display: block;
-  padding: 10px 5px 8px;
+  padding: 8px 5px;
   line-height: 1.1em;
   text-align: left;
 }
@@ -11022,6 +11026,9 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   position: absolute;
   top: 4px;
   right: -2px;
+}
+#topbar-first .notifications .dropdown-toggle::after {
+  display: none;
 }
 #topbar-first .notifications .dropdown-menu {
   width: 400px;
@@ -12058,12 +12065,17 @@ div.required.has-error > label:after {
   box-shadow: none;
   min-height: 35px;
   background-color: #fff;
+  font-size: 14px;
 }
 .form-control:focus, .grid-view .filters input:focus, .grid-view .filters select:focus {
   border: 2px solid #21A1B3;
   outline: 0;
   box-shadow: none;
   background-color: #fff;
+}
+.form-control[readonly], .grid-view .filters input[readonly], .grid-view .filters select[readonly] {
+  background-color: var(--bs-secondary-bg);
+  opacity: 1;
 }
 .form-control.form-search, .grid-view .filters input.form-search, .grid-view .filters select.form-search {
   border-radius: 30px;
@@ -12891,12 +12903,17 @@ div.required.has-error > label:after {
   box-shadow: none;
   min-height: 35px;
   background-color: #fff;
+  font-size: 14px;
 }
 .form-control:focus, .grid-view .filters input:focus, .grid-view .filters select:focus {
   border: 2px solid #21A1B3;
   outline: 0;
   box-shadow: none;
   background-color: #fff;
+}
+.form-control[readonly], .grid-view .filters input[readonly], .grid-view .filters select[readonly] {
+  background-color: var(--bs-secondary-bg);
+  opacity: 1;
 }
 .form-control.form-search, .grid-view .filters input.form-search, .grid-view .filters select.form-search {
   border-radius: 30px;

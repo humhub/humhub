@@ -40,6 +40,7 @@ div.required.has-error > label:after {
     box-shadow: none;
     min-height: 35px;
     background-color: $background-color-main;
+    font-size: 14px;
 
     &:focus {
         border: 2px solid $info;
@@ -47,11 +48,16 @@ div.required.has-error > label:after {
         box-shadow: none;
         background-color: $background-color-main;
     }
-}
 
-.form-control.form-search {
-    border-radius: 30px;
-    padding-left: 34px;
+    &[readonly] {
+        background-color: var(--bs-secondary-bg);
+        opacity: 1;
+    }
+
+    &.form-search {
+        border-radius: 30px;
+        padding-left: 34px;
+    }
 }
 
 .form-group-search {
