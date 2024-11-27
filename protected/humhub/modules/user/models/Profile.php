@@ -405,4 +405,22 @@ class Profile extends ActiveRecord
             Yii::error('Could not soft delete profile!');
         }
     }
+
+    /**
+     * Get field value for this profile
+     *
+     * @param string $field
+     * @param bool $raw
+     * @return string|null
+     */
+    public function getFieldValue(string $field, bool $raw = false): ?string
+    {
+        if (!$this->hasAttribute($field) || !$this->user) {
+            return null;
+        }
+
+        $profileField = ProfileField::findOne(['internal_name' => $field]);
+
+        return $profileField?->getUserValue($this->user, $raw);
+    }
 }
