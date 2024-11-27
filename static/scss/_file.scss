@@ -28,7 +28,7 @@ ul.files {
 
 .file_upload_remove_link,
 .file_upload_remove_link:hover {
-    color: $danger;
+    color: var(--bs-danger);
     cursor: pointer;
 }
 
@@ -253,9 +253,9 @@ div.jp-type-playlist div.jp-playlist a.jp-playlist-current, div.jp-type-playlist
 }
 
 .jp-details, .jp-playlist {
-    border-top: 1px solid $info;
+    border-top: 1px solid var(--bs-info);
 }
 
 .jp-audio, .jp-audio-stream, .jp-video {
-    border: 1px solid $info;
+    border: 1px solid var(--bs-info);
 }

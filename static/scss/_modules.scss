@@ -185,7 +185,7 @@
     }
 }
 
-$moduleUpdateLayoutBg: $primary;
+$moduleUpdateLayoutBg: var(--bs-primary);
 $moduleUpdateCardBg: darken($primary, 10);
 .container-module-updates {
     background: $moduleUpdateLayoutBg;
@@ -278,7 +278,7 @@ $moduleUpdateCardBg: darken($primary, 10);
             padding-top: 16px;
 
             small {
-                color: $text-color-soft2;
+                color: var(--hh-text-color-soft2);
             }
         }
 

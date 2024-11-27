@@ -14,12 +14,12 @@
     .nav-link {
         &:hover,
         &:focus {
-            background-color: $background-color-secondary;
+            background-color: var(--hh-background-color-secondary);
             border-bottom-color: var(--bs-nav-tabs-border-color);
         }
 
         &.active {
-            background-color: $background-color-main;
+            background-color: var(--hh-background-color-main);
             border-bottom-color: transparent;
         }
     }
@@ -27,7 +27,7 @@
 
 .tab-menu {
     padding-top: 10px;
-    background-color: $background-color-main;
+    background-color: var(--hh-background-color-main);
 
     .nav-tabs {
         padding-left: 10px;
@@ -37,7 +37,7 @@
             padding-top: 12px;
             border-color: var(--bs-nav-tabs-border-color);
             border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
-            background-color: $background-color-secondary;
+            background-color: var(--hh-background-color-secondary);
             max-height: 41px;
             outline: none;
 
@@ -48,13 +48,13 @@
             }
 
             &:hover {
-                background-color: $background-color-secondary;
+                background-color: var(--hh-background-color-secondary);
             }
 
             &.active {
                 padding-top: 10px;
-                border-top: 3px solid $info;
-                background-color: $background-color-main;
+                border-top: 3px solid var(--bs-info);
+                background-color: var(--hh-background-color-main);
                 border-bottom-color: transparent;
             }
         }
@@ -63,7 +63,7 @@
 
 ul.tab-menu {
     padding-top: 10px;
-    background-color: $background-color-main;
+    background-color: var(--hh-background-color-main);
 
     padding-left: 10px;
 }
@@ -73,7 +73,7 @@ ul.tab-menu-settings {
         padding-top: 12px;
         border-color: var(--bs-nav-tabs-border-color);
         border-bottom: var(--bs-nav-tabs-border-width) solid var(--bs-nav-tabs-border-color);
-        background-color: $background-color-secondary;
+        background-color: var(--hh-background-color-secondary);
         max-height: 41px;
         outline: none;
 
@@ -84,13 +84,13 @@ ul.tab-menu-settings {
         }
 
         &:hover {
-            background-color: $background-color-secondary;
+            background-color: var(--hh-background-color-secondary);
         }
 
         &.active {
             padding-top: 10px;
-            border-top: 3px solid $info !important;
-            background-color: $background-color-main;
+            border-top: 3px solid var(--bs-info) !important;
+            background-color: var(--hh-background-color-main);
             border-bottom-color: transparent !important;
         }
     }
@@ -100,16 +100,16 @@ ul.tab-menu-settings {
 .nav-tabs,
 .account {
     .dropdown-menu {
-        background-color: $primary;
+        background-color: var(--bs-primary);
         border: none;
 
         li {
-            border-left: 3px solid $primary;
+            border-left: 3px solid var(--bs-primary);
 
             &:hover,
             &.selected {
-                border-left: 3px solid $info;
-                color: $text-color-contrast !important;
+                border-left: 3px solid var(--bs-info);
+                color: var(--hh-text-color-contrast) !important;
                 background-color: darken($primary, 5%) !important;
             }
 
@@ -147,7 +147,7 @@ ul.tab-menu-settings {
 .nav-pills.preferences {
     .dropdown .dropdown-toggle {
         i {
-            color: $info;
+            color: var(--bs-info);
             font-size: 15px;
             font-weight: 600;
         }
@@ -156,10 +156,10 @@ ul.tab-menu-settings {
     .dropdown.open {
         .dropdown-toggle,
         .dropdown-toggle:hover {
-            background-color: $primary;
+            background-color: var(--bs-primary);
 
             i {
-                color: $text-color-contrast;
+                color: var(--hh-text-color-contrast);
             }
         }
     }
@@ -194,13 +194,13 @@ ul.tab-menu-settings {
             &,
             &[data-bs-toggle] {
                 margin-right: 2px;
-                color: $text-color-main;
+                color: var(--hh-text-color-main);
             }
 
             &.active,
             &:hover,
             &:focus {
-                color: $text-color-highlight;
+                color: var(--hh-text-color-highlight);
                 border: 1px solid var(--bs-nav-tabs-border-color);
                 border-bottom-color: transparent;
             }
@@ -246,32 +246,32 @@ ul.tab-menu-settings {
 .nav .caret,
 .nav .caret:hover,
 .nav .caret:active {
-    border-top-color: $text-color-highlight;
-    border-bottom-color: $text-color-highlight;
+    border-top-color: var(--hh-text-color-highlight);
+    border-bottom-color: var(--hh-text-color-highlight);
     height: 6.928px;
 }
 
 .nav li.dropdown > a:hover .caret,
 .nav li.dropdown > a:active .caret {
-    border-top-color: $text-color-highlight;
-    border-bottom-color: $text-color-highlight;
+    border-top-color: var(--hh-text-color-highlight);
+    border-bottom-color: var(--hh-text-color-highlight);
 }
 
 .nav .open > a .caret,
 .nav .open > a:hover .caret,
 .nav .open > a:focus .caret {
-    border-top-color: $text-color-highlight;
-    border-bottom-color: $text-color-highlight;
+    border-top-color: var(--hh-text-color-highlight);
+    border-bottom-color: var(--hh-text-color-highlight);
 }
 
 .nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
     border-color: #ededed;
-    color: $text-color-highlight;
+    color: var(--hh-text-color-highlight);
 
     .caret {
-        color: $text-color-highlight;
+        color: var(--hh-text-color-highlight);
     }
 }
 
@@ -335,21 +335,21 @@ ul.tab-menu-settings {
         }
 
         .dropdown-menu {
-            background-color: $background-color-main;
+            background-color: var(--hh-background-color-main);
             border: 1px solid #D7D7D7;
             border-radius: 4px;
 
             li {
                 a {
-                    color: $text-color-highlight;
+                    color: var(--hh-text-color-highlight);
                 }
 
-                border-left-color: $background-color-main;
+                border-left-color: var(--hh-background-color-main);
 
                 &:hover, &.selected {
-                    color: $text-color-highlight;
-                    border-left-color: $info;
-                    background-color: $background-color-secondary !important;
+                    color: var(--hh-text-color-highlight);
+                    border-left-color: var(--bs-info);
+                    background-color: var(--hh-background-color-secondary) !important;
                 }
             }
         }

@@ -28,8 +28,8 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
 }
 
 .label-default {
-    background: $background-color-page;
-    color: $text-color-secondary !important;
+    background: var(--hh-background-color-page);
+    color: var(--hh-text-color-secondary) !important;
 }
 
 a.label-default:hover {
@@ -37,7 +37,7 @@ a.label-default:hover {
 }
 
 .label-info {
-    background-color: $info;
+    background-color: var(--bs-info);
 }
 
 a.label-info:hover {
@@ -45,7 +45,7 @@ a.label-info:hover {
 }
 
 .label-danger {
-    background-color: $danger;
+    background-color: var(--bs-danger);
 }
 
 a.label-danger:hover {
@@ -53,7 +53,7 @@ a.label-danger:hover {
 }
 
 .label-success {
-    background-color: $success;
+    background-color: var(--bs-success);
 }
 
 a.label-success:hover {
@@ -61,7 +61,7 @@ a.label-success:hover {
 }
 
 .label-warning {
-    background-color: $warning;
+    background-color: var(--bs-warning);
 }
 
 a.label-warning:hover {
@@ -70,7 +70,7 @@ a.label-warning:hover {
 
 .label-light {
     background-color: transparent;
-    color: $text-color-secondary;
+    color: var(--hh-text-color-secondary);
     border: 1px solid lighten($text-color-secondary, 25%);
 }
 
@@ -116,21 +116,21 @@ a.label-warning:hover {
 
         &:hover,
         &.selected {
-            background-color: $background-color-secondary;
-            border-left: 3px solid $info;
+            background-color: var(--hh-background-color-secondary);
+            border-left: 3px solid var(--bs-info);
         }
 
         &.new {
-            border-left: 3px solid $info;
-            background-color: $background-color-highlight;
+            border-left: 3px solid var(--bs-info);
+            background-color: var(--hh-background-color-highlight);
 
             &:hover {
-                background-color: $background-color-highlight-soft;
+                background-color: var(--hh-background-color-highlight-soft);
             }
         }
 
         a {
-            color: $text-color-main;
+            color: var(--hh-text-color-main);
         }
     }
 }
@@ -160,7 +160,7 @@ a.label-warning:hover {
 .media {
     .time {
         font-size: 11px;
-        color: $text-color-soft;
+        color: var(--hh-text-color-soft);
     }
 
     .img-space {
@@ -178,16 +178,16 @@ a.label-warning:hover {
         h4, h5 {
             font-size: 14px;
             font-weight: 500;
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
 
             a {
-                color: $text-color-highlight;
+                color: var(--hh-text-color-highlight);
             }
 
             small,
             small a {
                 font-size: 11px;
-                color: $text-color-soft;
+                color: var(--hh-text-color-soft);
             }
 
             .content {
@@ -200,11 +200,11 @@ a.label-warning:hover {
         }
 
         strong {
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
         }
 
         h5 {
-            color: $text-color-soft2;
+            color: var(--hh-text-color-soft2);
             font-weight: 300;
             margin-top: 5px;
             margin-bottom: 5px;
@@ -227,7 +227,7 @@ a.label-warning:hover {
     }
 
     .content .files a {
-        color: $text-color-highlight;
+        color: var(--hh-text-color-highlight);
     }
 
     .align-center {
@@ -285,7 +285,7 @@ a.label-warning:hover {
 .panel {
     @include text-break();
     border: none;
-    background-color: $background-color-main;
+    background-color: var(--hh-background-color-main);
     box-shadow: 0 0 3px #dadada;
     border-radius: 4px;
     position: relative;
@@ -295,7 +295,7 @@ a.label-warning:hover {
         font-size: 16px;
         font-weight: 300;
         margin-top: 0;
-        color: $text-color-highlight;
+        color: var(--hh-text-color-highlight);
     }
 
     .panel-heading {
@@ -313,7 +313,7 @@ a.label-warning:hover {
         font-size: 13px;
 
         p {
-            color: $text-color-main;
+            color: var(--hh-text-color-main);
 
             a {
                 color: var(--bs-link-color);
@@ -336,7 +336,7 @@ a.label-warning:hover {
         .entry {
             margin-left: 20px;
             font-size: 12px;
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
 
             .count {
                 color: var(--bs-link-color);
@@ -349,42 +349,42 @@ a.label-warning:hover {
 }
 
 .panel-danger {
-    border: 2px solid $danger;
+    border: 2px solid var(--bs-danger);
 
     .panel-heading {
-        color: $danger;
+        color: var(--bs-danger);
     }
 }
 
 .panel-success {
-    border: 2px solid $success;
+    border: 2px solid var(--bs-success);
 
     .panel-heading {
-        color: $success;
+        color: var(--bs-success);
     }
 }
 
 .panel-warning {
-    border: 2px solid $warning;
+    border: 2px solid var(--bs-warning);
 
     .panel-heading {
-        color: $warning;
+        color: var(--bs-warning);
     }
 }
 
 .panel-info {
-    border: 2px solid $info;
+    border: 2px solid var(--bs-info);
 
     .panel-heading {
-        color: $info;
+        color: var(--bs-info);
     }
 }
 
 .panel-primary {
-    border: 2px solid $primary;
+    border: 2px solid var(--bs-primary);
 
     .panel-heading {
-        color: $primary;
+        color: var(--bs-primary);
     }
 }
 
@@ -521,12 +521,12 @@ a.label-warning:hover {
 .well {
     border: none;
     box-shadow: none;
-    background-color: $background-color-secondary;
+    background-color: var(--hh-background-color-secondary);
     margin-bottom: 1px;
 
     hr {
         margin: 10px 0;
-        border-top: 1px solid $background-color-secondary;
+        border-top: 1px solid var(--hh-background-color-secondary);
     }
 
     table > thead {
@@ -582,7 +582,7 @@ a.label-warning:hover {
     .sk-adjust-huener-three-bounce div, .sk-adjust-huener-three-bounce span {
         width: 12px;
         height: 12px;
-        background-color: $info;
+        background-color: var(--bs-info);
         border-radius: 100%;
         display: inline-block;
         animation: sk-threeBounceDelay 1.4s infinite ease-in-out;

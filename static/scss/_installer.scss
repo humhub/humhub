@@ -18,7 +18,7 @@
 
     .powered,
     .powered a {
-        color: $text-color-soft3 !important;
+        color: var(--hh-text-color-soft3) !important;
         margin-top: 10px;
         font-size: 12px;
     }
@@ -28,15 +28,15 @@
     }
 
     .check-ok {
-        color: $success;
+        color: var(--bs-success);
     }
 
     .check-warning {
-        color: $warning;
+        color: var(--bs-warning);
     }
 
     .check-error {
-        color: $danger;
+        color: var(--bs-danger);
     }
 
     .prerequisites-list {

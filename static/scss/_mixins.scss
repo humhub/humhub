@@ -7,41 +7,41 @@
 
 /* Default */
 @mixin colorDefault {
-    color: $default;
+    color: var(--bs-light);
 }
 
 @mixin backgroundDefault {
-    background: $default;
+    background: var(--bs-light);
 }
 
 @mixin borderDefault {
-    border-color: $default;
+    border-color: var(--bs-light);
 }
 
 /* Primary */
 @mixin colorPrimary {
-    color: $primary !important;
+    color: var(--bs-primary) !important;
 }
 
 @mixin backgroundPrimary {
-    background: $primary !important;
+    background: var(--bs-primary) !important;
 }
 
 @mixin borderPrimary {
-    border-color: $primary !important;
+    border-color: var(--bs-primary) !important;
 }
 
 /* Info */
 @mixin colorInfo {
-    color: $info !important;
+    color: var(--bs-info) !important;
 }
 
 @mixin backgroundInfo {
-    background: $info !important;
+    background: var(--bs-info) !important;
 }
 
 @mixin borderInfo {
-    border-color: $info !important;
+    border-color: var(--bs-info) !important;
 }
 
 /* Link */
@@ -51,68 +51,68 @@
 
 /* Success */
 @mixin colorSuccess {
-    color: $success !important;
+    color: var(--bs-success) !important;
 }
 
 @mixin backgroundSuccess {
-    background: $success !important;
+    background: var(--bs-success) !important;
 }
 
 @mixin borderSuccess {
-    border-color: $success !important;
+    border-color: var(--bs-success) !important;
 }
 
 /* Warning */
 @mixin colorWarning {
-    color: $warning !important;
+    color: var(--bs-warning) !important;
 }
 
 @mixin backgroundWarning {
-    background: $warning !important;
+    background: var(--bs-warning) !important;
 }
 
 @mixin borderWarning {
-    border-color: $warning !important;
+    border-color: var(--bs-warning) !important;
 }
 
 /* Danger */
 @mixin colorDanger {
-    color: $danger !important;
+    color: var(--bs-danger) !important;
 }
 
 @mixin backgroundDanger {
-    background: $danger !important;
+    background: var(--bs-danger) !important;
 }
 
 @mixin borderDanger {
-    border-color: $danger !important;
+    border-color: var(--bs-danger) !important;
 }
 
 /* Fonts */
 @mixin colorFont1 {
-    color: $text-color-soft3 !important;
+    color: var(--hh-text-color-soft3) !important;
 }
 
 @mixin colorFont2 {
-    color: $text-color-secondary !important;
+    color: var(--hh-text-color-secondary) !important;
 }
 
 @mixin colorFont3 {
-    color: $text-color-highlight !important;
+    color: var(--hh-text-color-highlight) !important;
 }
 
 @mixin colorFont4 {
-    color: $text-color-soft !important;
+    color: var(--hh-text-color-soft) !important;
 }
 
 @mixin colorFont5 {
-    color: $text-color-soft2 !important;
+    color: var(--hh-text-color-soft2) !important;
 }
 
 @mixin heading {
     font-size: 16px;
     font-weight: 300;
-    color: $text-color-highlight;
+    color: var(--hh-text-color-highlight);
     background-color: white;
     border: none;
     padding: 10px;

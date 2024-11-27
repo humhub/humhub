@@ -18,20 +18,20 @@
 
         &:hover,
         &.selected {
-            background-color: $background-color-secondary;
-            border-left: 3px solid $info;
+            background-color: var(--hh-background-color-secondary);
+            border-left: 3px solid var(--bs-info);
         }
 
         &a, a {
-            color: $text-color-main;
+            color: var(--hh-text-color-main);
         }
 
         &.new {
-            border-left: 3px solid $info;
-            background-color: $background-color-highlight;
+            border-left: 3px solid var(--bs-info);
+            background-color: var(--hh-background-color-highlight);
 
             &:hover {
-                background-color: $background-color-highlight-soft;
+                background-color: var(--hh-background-color-highlight-soft);
             }
         }
 
@@ -47,9 +47,9 @@
 
         // TODO: move to Enterprise Theme module
         .badge-space-type {
-            background-color: $background-color-secondary;
-            border: 1px solid $background3;
-            color: $background4;
+            background-color: var(--hh-background-color-secondary);
+            border: 1px solid var(--hh-background3);
+            color: var(--hh-background4);
             padding: 3px 3px 2px 3px;
         }
 
@@ -66,16 +66,16 @@
         h4 {
             font-size: 14px;
             font-weight: 500;
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
 
             a {
-                color: $text-color-highlight;
+                color: var(--hh-text-color-highlight);
             }
 
             small,
             small a {
                 font-size: 11px;
-                color: $text-color-soft;
+                color: var(--hh-text-color-soft);
             }
 
             .content {
@@ -84,7 +84,7 @@
         }
 
         h5 {
-            color: $text-color-soft2;
+            color: var(--hh-text-color-soft2);
             font-weight: 300;
             margin-top: 5px;
             margin-bottom: 5px;
@@ -97,12 +97,12 @@
         }
 
         strong {
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
         }
 
         .time {
             font-size: 11px;
-            color: $text-color-soft;
+            color: var(--hh-text-color-soft);
         }
 
         .module-controls {
@@ -114,7 +114,7 @@
         }
 
         .content .files a {
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
         }
     }
 }
@@ -158,8 +158,8 @@ img {
         border: 1px solid transparent;
 
         &.user-is-online {
-            border-color: $background-color-main;
-            background-color: $success;
+            border-color: var(--hh-background-color-main);
+            background-color: var(--bs-success);
         }
 
         &.user-is-offline {

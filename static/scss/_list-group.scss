@@ -26,9 +26,9 @@ a.list-group-item {
 
     @mixin listGroupItemActiveOrFocus {
         z-index: 2;
-        color: $text-color-highlight;
-        background-color: $background-color-secondary;
-        border-left: 3px solid $info !important;
+        color: var(--hh-text-color-highlight);
+        background-color: var(--hh-background-color-secondary);
+        border-left: 3px solid var(--bs-info) !important;
     }
 
     &.active {
@@ -82,7 +82,7 @@ a.list-group-item {
     a.list-group-item {
         @mixin mobileListGroupItemActiveOrFocus {
             border: none !important;
-            background: $primary !important;
+            background: var(--bs-primary) !important;
             color: #fff !important;
         }
 

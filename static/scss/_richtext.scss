@@ -64,7 +64,7 @@
     }
 
     .ProseMirror-menuseparator {
-        border-right: 1px solid $background3;
+        border-right: 1px solid var(--hh-background3);
         margin-right: 1px;
     }
 
@@ -80,7 +80,7 @@
 
     .ProseMirror-menuitem {
         .ProseMirror-menu-group {
-            border-right: 1px solid $background3;
+            border-right: 1px solid var(--hh-background3);
         }
 
         .ProseMirror-menu-group.last {
@@ -92,7 +92,7 @@
         }
 
         .seperator {
-            border-right: 1px solid $background3;
+            border-right: 1px solid var(--hh-background3);
             border-radius: 0;
         }
     }
@@ -133,16 +133,16 @@
     }
 
     .ProseMirror-menu-dropdown-menu, .ProseMirror-menu-submenu {
-        background: $background-color-main;
-        border: 1px solid $text-color-soft2;
+        background: var(--hh-background-color-main);
+        border: 1px solid var(--hh-text-color-soft2);
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
-        color: $text-color-highlight;
+        color: var(--hh-text-color-highlight);
         position: absolute;
 
         .ProseMirror-menu-active {
-            background: $background-color-secondary;
-            border-left: 2px solid $info;
+            background: var(--hh-background-color-secondary);
+            border-left: 2px solid var(--bs-info);
             opacity: 1 !important;
             padding: 4px 7px 4px 5px;
         }
@@ -166,7 +166,7 @@
     }
 
     .ProseMirror-menu-dropdown-item:hover {
-        background: $background-color-secondary;
+        background: var(--hh-background-color-secondary);
     }
 
     .ProseMirror-menu-submenu-wrap {
@@ -185,7 +185,7 @@
     }
 
     .ProseMirror-menu-submenu {
-        background: $background-color-main;
+        background: var(--hh-background-color-main);
         border-top-right-radius: 4px;
         display: none;
         min-width: 4em;
@@ -213,7 +213,7 @@
         padding: 0 5px;
 
         &.ProseMirror-menu-active {
-            border-color: $text-color-soft3;
+            border-color: var(--hh-text-color-soft3);
         }
 
         &.ProseMirror-menu-tableOption,
@@ -239,7 +239,7 @@
     }
 
     .ProseMirror-editor-source {
-        border: 2px solid $background-color-page;
+        border: 2px solid var(--hh-background-color-page);
         border-radius: 0 4px 4px 4px;
         box-sizing: border-box;
         display: block;
@@ -252,7 +252,7 @@
     }
 
     .ProseMirror-editor-source:focus {
-        border: 2px solid $info;
+        border: 2px solid var(--bs-info);
     }
 }
 
@@ -273,7 +273,7 @@
     }
 
     .ProseMirror-menubar ~ .ProseMirror-focused {
-        border-color: $info !important;
+        border-color: var(--bs-info) !important;
     }
 
     .ProseMirror-textblock-dropdown {
@@ -286,11 +286,11 @@
 
     .ProseMirror-menubar {
         background: white;
-        border: 1px solid $background3;
+        border: 1px solid var(--hh-background3);
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         box-sizing: border-box;
-        color: $text-color-soft;
+        color: var(--hh-text-color-soft);
         position: relative;
         min-height: 1em;
         overflow: visible;
@@ -312,12 +312,12 @@
 
     .ProseMirror-menubar {
         background: white;
-        border: 1px solid $text-color-soft2;
+        border: 1px solid var(--hh-text-color-soft2);
         border-bottom: 0;
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
         box-sizing: border-box;
-        color: $text-color-soft;
+        color: var(--hh-text-color-soft);
         float: left;
         margin-top: -27px;
         min-height: 1em;
@@ -583,7 +583,7 @@
 
 .ProseMirror-prompt-close {
     background: transparent;
-    color: $text-color-soft;
+    color: var(--hh-text-color-soft);
     padding: 0;
     position: absolute;
     left: 2px;
@@ -612,7 +612,7 @@
 
 .atwho-view .cur {
     border-left: 3px solid lighten($info, 30%);
-    background-color: $background-color-secondary !important;
+    background-color: var(--hh-background-color-secondary) !important;
 }
 
 .atwho-user,
@@ -646,7 +646,7 @@
     }
 
     .atwho-emoji-entry.cur {
-        background-color: $background-color-page !important;
+        background-color: var(--hh-background-color-page) !important;
     }
 }
 
@@ -654,12 +654,12 @@
     padding-top: 10px;
 
     .emoji-nav-item {
-        border-top: 2px solid $background-color-highlight;
+        border-top: 2px solid var(--hh-background-color-highlight);
     }
 
     .emoji-nav-item.cur {
         border-left: 0;
-        border-top: 2px solid $info;
+        border-top: 2px solid var(--bs-info);
     }
 }
 

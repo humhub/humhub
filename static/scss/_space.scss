@@ -8,7 +8,7 @@
 
 // Member sign for directory list
 .space-member-sign {
-    color: $success;
+    color: var(--bs-success);
     position: absolute;
     top: 42px;
     left: 42px;
@@ -18,7 +18,7 @@
     height: 24px;
     padding: 2px 3px 1px 4px;
     border-radius: 50px;
-    border: 2px solid $success;
+    border: 2px solid var(--bs-success);
 }
 
 #space-menu-dropdown i.type {
@@ -36,7 +36,7 @@
 
 #space-menu-dropdown .input-group-text.focus {
     border-radius: 0 4px 4px 0;
-    border: 2px solid $info;
+    border: 2px solid var(--bs-info);
     border-left: 0;
 }
 

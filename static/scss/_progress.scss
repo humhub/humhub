@@ -5,12 +5,12 @@
     height: 10px;
     margin-bottom: 15px;
     box-shadow: none;
-    background: $background-color-page;
+    background: var(--hh-background-color-page);
     border-radius: 10px;
 }
 
 .progress-bar-info {
-    background-color: $info;
+    background-color: var(--bs-info);
     box-shadow: none;
 }
 

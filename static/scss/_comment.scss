@@ -29,7 +29,7 @@ $commentLeftMargin: 35px;
         }
 
         &.comment-current {
-            background: $background-color-highlight;
+            background: var(--hh-background-color-highlight);
             padding: 0 5px 5px 5px;
             margin: 0 -5px -5px -5px;
             border-radius: 3px;
@@ -140,7 +140,7 @@ $commentLeftMargin: 35px;
 
 .comment h4.comment-heading a {
     font-size: 13px;
-    color: $text-color-highlight;
+    color: var(--hh-text-color-highlight);
     margin-bottom: 3px;
     font-weight: 500;
 }

@@ -11,8 +11,8 @@
 .pagination > .active > span:hover,
 .pagination > .active > a:focus,
 .pagination > .active > span:focus {
-    background-color: $primary;
-    border-color: $primary;
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
 }
 
 .pagination > li > a,
@@ -20,6 +20,6 @@
 .pagination > li > a:hover,
 .pagination > li > a:active,
 .pagination > li > a:focus {
-    color: $text-color-highlight;
+    color: var(--hh-text-color-highlight);
     cursor: pointer;
 }

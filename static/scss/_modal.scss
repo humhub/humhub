@@ -38,7 +38,7 @@ body.modal-open {
 .modal-title {
     font-size: 20px;
     font-weight: 200;
-    color: $text-color-highlight;
+    color: var(--hh-text-color-highlight);
 }
 
 .modal-dialog, .modal-content {
@@ -59,7 +59,7 @@ body.modal-open {
             margin-top: 2px;
             margin-right: 5px;
             opacity: 1;
-            color: $primary;
+            color: var(--bs-primary);
             font-size: 28px;
 
             &:hover {

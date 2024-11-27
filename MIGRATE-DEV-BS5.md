@@ -35,12 +35,12 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead
 - `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
 - `humhub\widgets\bootstrap\Badge::xs()` use `humhub\widgets\bootstrap\Badge::sm()` instead
-- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::secondary()` instead
-- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::secondary()` instead
+- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `humhub\widgets\bootstrap\Button::secondary()` instead
+- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `humhub\widgets\bootstrap\Badge::secondary()` instead
 - `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
 - `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
 - `humhub\widgets\BootstrapComponent`
-- `Button::defaultType()` use `Button::secondary()` instead
+- `Button::defaultType()` use `Button::light()` or `Button::secondary()` instead
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
@@ -114,7 +114,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 ### General replacements
 
 - `img-responsive` -> `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
-- `alert-default` -> `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
+- `alert-default` -> `alert-light` or `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
 - `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
 - `btn-default` -> `btn-light` (the new `btn-secondary` can also be used, but it will darker gray)
 - `pull-left` -> `float-start`
@@ -155,7 +155,7 @@ Should be replaced with:
 
 ```html
 <div class="input-group">
-  <button class="btn btn-secondary">My action</button>
+  <button class="btn btn-light">My action</button>
 </div>
 ```
 
@@ -291,7 +291,7 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 For existing badges, also use the `humhub\widgets\bootstrap\Badge` widget when possible.
 
 Replacements:
-- `badge-default` -> `text-bg-secondary`
+- `badge-default` -> `text-bg-light` or `text-bg-secondary`
 - `badge-primary` -> `text-bg-primary`
 - `badge-danger` -> `text-bg-danger`
 - `badge-warning` -> `text-bg-warning`
@@ -337,18 +337,17 @@ However, you need to check the output manually, such as:
 ### Variables
 
 Changes:
-- `$default` is deprecated. Use `$secondary` or `$light` instead.
+- `$default` is deprecated. Use `$light` or `$secondary` instead.
 - New variables: `$secondary`, `$light` and `$dark`
-
-In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `_variables.scss`).
-You can use regex:
-- search: `\$([a-zA-Z0-9-_]+)`
-- replace: `var(--$1)`
 
 Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-` for HumHub variables.
 E.g.: `color: $primary` -> `color: var(--bs-primary)`
 
-If you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module ID. E.g. `my-module` will use `hh-mm-`. 
+In modules, if you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module ID. E.g. `my-module` will use `hh-mm-`.
+
+In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `_variables.scss`), except the one used in SCSS function (e.g. `lighten($primary, 5%)`). You can use regex:
+- search: `\$([a-zA-Z0-9-_]+)`
+- replace: `var(--bs-$1)` (mainly for base colors such as `$primary`) or `var(--hh-$1)`
 
 #### Root vs component variables
 

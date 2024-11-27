@@ -84,41 +84,41 @@
 }
 
 .btn-default {
-    background: $default;
-    color: $text-color-default !important;
+    background: var(--bs-light);
+    color: var(--hh-text-color-default) !important;
 
     &:hover,
     &:focus {
-        background: darken($default, 2%);
-        color: $text-color-default;
+        background: darken($light, 2%);
+        color: var(--hh-text-color-default);
         text-decoration: none;
     }
 
     &:active,
     &.active {
         outline: 0;
-        background: darken($default, 5%);
+        background: darken($light, 5%);
     }
 }
 
 .btn-default[disabled],
 .btn-default.disabled {
-    background: lighten($default, 2%);
+    background: lighten($light, 2%);
 
     &:hover,
     &:focus {
-        background: lighten($default, 2%);
+        background: lighten($light, 2%);
     }
 
     &:active,
     &.active {
-        background: lighten($default, 2%);
+        background: lighten($light, 2%);
     }
 }
 
 .btn-primary {
-    background: $primary;
-    color: $text-color-contrast !important;
+    background: var(--bs-primary);
+    color: var(--hh-text-color-contrast) !important;
 
     &:hover,
     &:focus {
@@ -129,10 +129,10 @@
     &:active,
     &.active {
         outline: 0;
-        border: 1px solid $primary;
+        border: 1px solid var(--bs-primary);
         padding: 7px 15px;
-        color: $primary !important;
-        background: $text-color-contrast !important;
+        color: var(--bs-primary) !important;
+        background: var(--hh-text-color-contrast) !important;
         box-shadow: none;
 
         &.btn-sm {
@@ -167,8 +167,8 @@
 }
 
 .btn-info {
-    background: $info;
-    color: $text-color-contrast !important;
+    background: var(--bs-info);
+    color: var(--hh-text-color-contrast) !important;
 
     &:hover,
     &:focus {
@@ -179,10 +179,10 @@
     &:active,
     &.active {
         outline: 0;
-        border: 1px solid $info;
+        border: 1px solid var(--bs-info);
         padding: 7px 15px;
-        color: $info !important;
-        background: $text-color-contrast !important;
+        color: var(--bs-info) !important;
+        background: var(--hh-text-color-contrast) !important;
         box-shadow: none;
 
         &.btn-sm {
@@ -217,8 +217,8 @@
 }
 
 .btn-danger {
-    background: $danger;
-    color: $text-color-contrast !important;
+    background: var(--bs-danger);
+    color: var(--hh-text-color-contrast) !important;
 
     &:hover,
     &:focus {
@@ -249,8 +249,8 @@
 }
 
 .btn-success {
-    background: $success;
-    color: $text-color-contrast !important;
+    background: var(--bs-success);
+    color: var(--hh-text-color-contrast) !important;
 
     &:hover,
     &:focus {
@@ -281,8 +281,8 @@
 }
 
 .btn-warning {
-    background: $warning;
-    color: $text-color-contrast !important;
+    background: var(--bs-warning);
+    color: var(--hh-text-color-contrast) !important;
 
     &:hover,
     &:focus {

@@ -21,7 +21,7 @@
     vertical-align: baseline;
     white-space: nowrap;
     text-shadow: none;
-    background-color: $background3;
+    background-color: var(--hh-background3);
     line-height: 1;
 }
 
@@ -30,5 +30,5 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background: $info;
+    background: var(--bs-info);
 }

@@ -24,7 +24,7 @@ if (!isset($confirmBody)) {
 }
 ?>
 
-<div class="image-upload-buttons">
+<div class="image-upload-buttons d-none">
 
     <?= $upload->button([
         'cssButtonClass' => 'btn btn-info btn-sm profile-image-upload',

@@ -21,7 +21,7 @@ body {
     a:focus,
     a:active,
     a.active {
-        color: $text-color-highlight;
+        color: var(--hh-text-color-highlight);
         text-decoration: none;
     }
 }
@@ -37,6 +37,7 @@ a:hover {
 hr {
     margin-top: 10px;
     margin-bottom: 10px;
+    opacity: 0.1;
 }
 
 // Cols (change position property to prevent the cutting of tooltips or menus)

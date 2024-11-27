@@ -45,7 +45,7 @@
 
             a, button {
                 &:hover {
-                    background: $default;
+                    background: var(--bs-light);
                 }
 
                 i {
@@ -57,7 +57,7 @@
 }
 
 #topbar-first {
-    background-color: $primary;
+    background-color: var(--bs-primary);
     top: 0;
     z-index: 1030;
     color: white;
@@ -206,7 +206,7 @@
                     &:not(.new) {
                         > a {
                             * &, strong {
-                                color: $text-color-secondary;
+                                color: var(--hh-text-color-secondary);
                             }
                         }
                     }
@@ -224,11 +224,11 @@
     }
 
     a:not(.btn) {
-        color: $text-color-contrast;
+        color: var(--hh-text-color-contrast);
     }
 
     .caret {
-        border-top-color: $text-color-contrast;
+        border-top-color: var(--hh-text-color-contrast);
     }
 
     .btn-group > a {
@@ -246,7 +246,7 @@
 
     .media-list {
         a {
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
             padding: 0;
 
             &.new {
@@ -254,11 +254,11 @@
                 background: none;
 
                 &:hover {
-                    background-color: $background-color-secondary !important;
+                    background-color: var(--hh-background-color-secondary) !important;
                 }
 
                 time {
-                    color: $info;
+                    color: var(--bs-info);
                 }
             }
 
@@ -275,7 +275,7 @@
             }
 
             i.declined {
-                color: $danger !important;
+                color: var(--bs-danger) !important;
             }
         }
     }
@@ -284,7 +284,7 @@
         text-align: right;
 
         span {
-            color: $background3;
+            color: var(--hh-background3);
         }
     }
 
@@ -292,7 +292,7 @@
     .dropdown.account.open > a,
     .dropdown.account > a:hover,
     .dropdown.account.open > a:hover {
-        background-color: $primary;
+        background-color: var(--bs-primary);
     }
 }
 
@@ -364,9 +364,9 @@
                 &:hover,
                 &:active,
                 &:focus {
-                    border-bottom: 3px solid $info;
-                    background-color: $background-color-secondary;
-                    color: $text-color-highlight;
+                    border-bottom: 3px solid var(--bs-info);
+                    background-color: var(--hh-background-color-secondary);
+                    color: var(--hh-text-color-highlight);
                     text-decoration: none;
                 }
 
@@ -388,7 +388,7 @@
                 }
 
                 .caret {
-                    border-top-color: $text-color-secondary;
+                    border-top-color: var(--hh-text-color-secondary);
                 }
 
                 i {
@@ -400,21 +400,21 @@
                 & {
                     border-left: 3px solid #fff;
                     background-color: #fff;
-                    color: $text-color-highlight;
+                    color: var(--hh-text-color-highlight);
                 }
 
                 &:hover,
                 &.active {
-                    border-left: 3px solid $info;
-                    background-color: $background-color-secondary;
-                    color: $text-color-highlight;
+                    border-left: 3px solid var(--bs-info);
+                    background-color: var(--hh-background-color-secondary);
+                    color: var(--hh-text-color-highlight);
                 }
             }
         }
     }
 
     #space-menu-dropdown p.space-description {
-        color: $text-color-soft;
+        color: var(--hh-text-color-soft);
         font-size: 11px;
         margin: 0;
         font-weight: 400;

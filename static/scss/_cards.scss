@@ -90,16 +90,16 @@
             }
 
             &.btn-primary {
-                border: 1px solid $primary;
+                border: 1px solid var(--bs-primary);
 
                 &.active, &:not(.active):hover {
-                    background: $primary !important;
+                    background: var(--bs-primary) !important;
                     color: #FFF !important;
                 }
 
                 &:not(.active) {
                     background: #FFF;
-                    color: $primary !important;
+                    color: var(--bs-primary) !important;
                 }
             }
         }
@@ -169,7 +169,7 @@
         }
 
         .card-icons .fa {
-            color: $info;
+            color: var(--bs-info);
 
             span {
                 font: 12px 'Open Sans', sans-serif;
@@ -207,7 +207,7 @@
             }
 
             &.card-status-featured {
-                background: $primary;
+                background: var(--bs-primary);
             }
 
             &.card-status-new {
@@ -237,7 +237,7 @@
             .card-status {
                 position: absolute;
                 right: 16px;
-                background: $primary;
+                background: var(--bs-primary);
             }
 
             .card-icons {
@@ -248,7 +248,7 @@
                 font-size: 16px;
 
                 .fa {
-                    color: $info;
+                    color: var(--bs-info);
 
                     &.fa-mobile-phone {
                         font-size: 22px;
@@ -280,7 +280,7 @@
                 color: #57646c;
 
                 a {
-                    color: $info;
+                    color: var(--bs-info);
                     text-decoration: underline;
 
                     &:hover {

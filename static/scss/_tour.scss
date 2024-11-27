@@ -19,7 +19,7 @@ ul.tour-list {
     li.completed {
         a {
             text-decoration: line-through;
-            color: $text-color-soft;
+            color: var(--hh-text-color-soft);
         }
     }
 }

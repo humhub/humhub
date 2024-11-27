@@ -31,18 +31,18 @@
 
         &:hover {
             border-left: none;
-            background-color: $background-color-secondary;
+            background-color: var(--hh-background-color-secondary);
         }
 
         &.new {
             time {
-                color: $info;
+                color: var(--bs-info);
             }
         }
 
         &:not(.new) {
             * &, strong {
-                color: $text-color-secondary;
+                color: var(--hh-text-color-secondary);
             }
         }
     }

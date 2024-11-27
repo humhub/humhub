@@ -15,12 +15,12 @@ label {
 
 div.required > label:after {
     content: " *";
-    color: $info;
+    color: var(--bs-info);
 }
 
 div.required.has-error > label:after {
     content: " *";
-    color: $danger;
+    color: var(--bs-danger);
 }
 
 .radio label,
@@ -36,17 +36,17 @@ div.required.has-error > label:after {
 }
 
 .form-control {
-    border: 2px solid $background-color-page;
+    border: 2px solid var(--hh-background-color-page);
     box-shadow: none;
     min-height: 35px;
-    background-color: $background-color-main;
+    background-color: var(--hh-background-color-main);
     font-size: 14px;
 
     &:focus {
-        border: 2px solid $info;
+        border: 2px solid var(--bs-info);
         outline: 0;
         box-shadow: none;
-        background-color: $background-color-main;
+        background-color: var(--hh-background-color-main);
     }
 
     &[readonly] {
@@ -98,7 +98,7 @@ div.PendingRegistrations {
 // Placeholder text
 
 ::placeholder {
-    color: $text-color-soft3 !important;
+    color: var(--hh-text-color-soft3) !important;
 }
 
 /* hide native password reveal icons */
@@ -123,7 +123,7 @@ textarea.placeholder {
 }
 
 .help-block:not(.help-block-error) {
-    color: $text-color-soft;
+    color: var(--hh-text-color-soft);
     font-size: 13px;
 }
 
@@ -133,12 +133,12 @@ textarea.placeholder {
 }
 
 .hint-block {
-    color: $text-color-soft2 !important;
+    color: var(--hh-text-color-soft2) !important;
     font-size: 12px;
 }
 
 .hint-block:hover {
-    color: $text-color-secondary !important;
+    color: var(--hh-text-color-secondary) !important;
     font-size: 12px;
 }
 
@@ -190,20 +190,20 @@ input[type=checkbox], input[type=radio] {
     border-radius: 3px;
 
     &:disabled {
-        background: $background3 !important;
-        border: 2px solid $background3 !important;
+        background: var(--hh-background3) !important;
+        border: 2px solid var(--hh-background3) !important;
         cursor: not-allowed;
     }
 }
 
 input[type=checkbox] {
     &:focus {
-        border: 2px solid $text-color-highlight !important;
+        border: 2px solid var(--hh-text-color-highlight) !important;
         outline: none;
     }
     &:checked {
-        border: 2px solid $info;
-        background: $info;
+        border: 2px solid var(--bs-info);
+        background: var(--bs-info);
         color: white;
 
         &::after {
@@ -222,7 +222,7 @@ input[type=radio] {
     border-radius: 50%;
 
     &:checked {
-        border: 2px solid $background3;
+        border: 2px solid var(--hh-background3);
         color: #99a1a7;
 
         &::after {
@@ -232,7 +232,7 @@ input[type=radio] {
             border-radius: 50%;
             position: absolute;
             top: 3px;
-            background: $info;
+            background: var(--bs-info);
             text-shadow: none;
             left: 3px;
             font-size: 32px;
@@ -257,7 +257,7 @@ div.mb-3 {
 .radio-pills {
     display: flex;
     flex-wrap: wrap;
-    border: 1px solid $default;
+    border: 1px solid var(--bs-light);
     border-radius: 4px;
     width: fit-content;
 
@@ -272,7 +272,7 @@ div.mb-3 {
         white-space: nowrap;
 
         &:hover, &.active {
-            background: $default;
+            background: var(--bs-light);
         }
 
         .fa {
@@ -295,7 +295,7 @@ div.mb-3 {
 
         &::after {
             content: ' ';
-            border-right: 1px solid $default;
+            border-right: 1px solid var(--bs-light);
             position: absolute;
             top: 20%;
             height: 60%;
@@ -323,13 +323,13 @@ div.mb-3 {
 // Errror handling
 //
 .errorMessage {
-    color: $danger;
+    color: var(--bs-danger);
     padding: 10px 0;
 }
 
 // Errror handling
 .error {
-    border-color: $danger !important;
+    border-color: var(--bs-danger) !important;
 }
 
 .has-error .help-block,
@@ -338,12 +338,12 @@ div.mb-3 {
 .has-error .checkbox,
 .has-error .radio-inline,
 .has-error .checkbox-inline {
-    color: $danger !important;
+    color: var(--bs-danger) !important;
 }
 
 .has-error .form-control,
 .has-error .form-control:focus {
-    border-color: $danger;
+    border-color: var(--bs-danger);
     box-shadow: none;
 }
 
@@ -353,12 +353,12 @@ div.mb-3 {
 .has-success .checkbox,
 .has-success .radio-inline,
 .has-success .checkbox-inline {
-    color: $success;
+    color: var(--bs-success);
 }
 
 .has-success .form-control,
 .has-success .form-control:focus {
-    border-color: $success;
+    border-color: var(--bs-success);
     box-shadow: none;
 }
 
@@ -368,12 +368,12 @@ div.mb-3 {
 .has-warning .checkbox,
 .has-warning .radio-inline,
 .has-warning .checkbox-inline {
-    color: $warning;
+    color: var(--bs-warning);
 }
 
 .has-warning .form-control,
 .has-warning .form-control:focus {
-    border-color: $warning;
+    border-color: var(--bs-warning);
     box-shadow: none;
 }
 
@@ -383,7 +383,7 @@ div.mb-3 {
 
 .form-collapsible-fields {
     margin-bottom: 12px;
-    border-left: 3px solid $primary;
+    border-left: 3px solid var(--bs-primary);
     background-color: #F4F4F4;
 }
 
@@ -463,8 +463,8 @@ div.mb-3 {
         }
 
         .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
-            background: $default;
-            color: $text-color-default !important;
+            background: var(--bs-light);
+            color: var(--hh-text-color-default) !important;
 
             &:hover, &:focus {
                 background: #dedede !important;
