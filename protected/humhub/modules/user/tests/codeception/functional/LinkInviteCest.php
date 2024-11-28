@@ -9,7 +9,7 @@ class LinkInviteCest
 {
     public function testDisabledLinkInvite(FunctionalTester $I)
     {
-        $I->wantTo('ensure that invite by link is correctly disabled');
+        $I->wantTo('ensure that invite by link is never disabled');
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
 
@@ -18,7 +18,8 @@ class LinkInviteCest
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);
-        $I->seeResponseCodeIs(404);
+        // The invitation by link is never disabled because admins or user managers always can send it
+        $I->seeResponseCodeIs(200);
     }
 
     public function testInvalidToken(FunctionalTester $I)
@@ -42,7 +43,7 @@ class LinkInviteCest
         $space = Space::findOne(['name' => 'Space 2']);
         $inviteForm = new InviteForm();
         $inviteForm->space = $space;
-        $inviteUrl = $inviteForm->getInviteLink();
+        $inviteForm->getInviteLink();
 
         $linkRegistrationService = new LinkRegistrationService(null, $space);
         $I->amOnRoute('/user/registration/by-link', ['token' => $linkRegistrationService->getStoredToken(), 'spaceId' => $space->id]);
@@ -54,7 +55,9 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
         $I->amOnRoute('/user/registration/by-link', ['token' => 'abc', 'spaceId' => 1]);
-        $I->seeResponseCodeIs(404);
+        // The invitation by link is never disabled because admins or user managers always can send it,
+        // but the request is denied because the passed token is wrong
+        $I->seeResponseCodeIs(400);
 
     }
 

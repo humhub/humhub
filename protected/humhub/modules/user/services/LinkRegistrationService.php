@@ -24,7 +24,6 @@ use yii\db\StaleObjectException;
  */
 final class LinkRegistrationService
 {
-    public const SETTING_VAR_ENABLED = 'auth.internalUsersCanInviteByLink';
     public const SETTING_VAR_SPACE_TOKEN = 'inviteToken';
     public const SETTING_VAR_TOKEN = 'registration.inviteToken';
     private ?Space $space;
@@ -57,10 +56,10 @@ final class LinkRegistrationService
 
     public function isEnabled(): bool
     {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
-
-        return (!empty($module->settings->get(self::SETTING_VAR_ENABLED)));
+        // Always enable if user has a link with correct token,
+        // because admins and user managers can send such invitation
+        // even if the setting 'auth.internalUsersCanInviteByLink' is disabled
+        return true;
     }
 
     public function getStoredToken(): ?string
