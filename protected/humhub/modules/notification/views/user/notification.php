@@ -14,7 +14,7 @@ use yii\helpers\Url;
     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Settings'); ?>
 </div>
 <div class="panel-body">
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('NotificationModule.base', 'Notifications are sent instantly to you to inform you about new activities in your network.'); ?>
         <br/>
         <?= Yii::t('NotificationModule.base', 'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.'); ?>

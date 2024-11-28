@@ -16,7 +16,7 @@ use humhub\modules\user\widgets\PermissionGridEditor;
     <?= SecurityTabMenu::widget(['space' => $space]); ?>
 
     <div class="panel-body">
-        <p class="help-block"><?= Yii::t('SpaceModule.manage', 'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.'); ?></p>
+        <p class="text-body-secondary"><?= Yii::t('SpaceModule.manage', 'Permissions are assigned to different user-roles. To edit a permission, select the user-role you want to edit and change the drop-down value of the given permission.'); ?></p>
     </div>
 
     <div class="float-end" style="margin-right:20px">

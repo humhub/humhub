@@ -23,7 +23,7 @@ use yii\helpers\Url;
 <?php endif; ?>
 
 <h4><?= Yii::t('AdminModule.space', 'Overview') ?></h4>
-<div class="help-block">
+<div class="text-body-secondary">
     <?= Yii::t('AdminModule.space', 'This overview contains a list of each space with actions to view, edit and delete spaces.'); ?>
 </div>
 

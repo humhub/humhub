@@ -16,7 +16,7 @@ use humhub\widgets\form\ActiveForm;
 <div class="panel-body">
 
     <h4><?= Yii::t('AdminModule.user', 'People'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. '); ?>
     </div>
 

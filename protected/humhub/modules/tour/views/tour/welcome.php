@@ -59,7 +59,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                         </div>
                     </div>
 
-                    <p class="help-block text-center">
+                    <p class="text-body-secondary text-center">
                         <?= Icon::get('arrow-up') ?>
                         <br>
                         <?= Yii::t('TourModule.base', 'Drag a photo here or click to browse your files'); ?>

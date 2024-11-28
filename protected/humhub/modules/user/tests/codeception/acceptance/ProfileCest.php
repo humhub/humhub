@@ -6,8 +6,8 @@ use humhub\modules\user\models\fieldtype\Checkbox;
 use humhub\modules\user\models\fieldtype\CheckboxList;
 use humhub\modules\user\models\fieldtype\Text;
 use humhub\modules\user\models\fieldtype\TextArea;
-use user\AcceptanceTester;
 use tests\codeception\_pages\AccountSettingsPage;
+use user\AcceptanceTester;
 
 class ProfileCest
 {
@@ -56,7 +56,7 @@ class ProfileCest
 
         $I->expectTo('see no errors after saving');
 
-        $I->dontSeeElement('.has-error');
+        $I->dontSeeElement('.is-invalid');
 
         $I->amGoingTo('access my profiles about page');
         $profile = $I->amOnProfile();

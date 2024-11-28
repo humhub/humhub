@@ -11,7 +11,7 @@ use humhub\widgets\form\ActiveForm;
 /* @var string $submitUrl */
 ?>
 
-<?= $form->field($post, 'message')->widget(RichTextField::class, [
+<?= $form->field($post, 'message', ['template' => "{input}"])->widget(RichTextField::class, [
     'id' => 'contentForm_message',
     'form' => $form,
     'layout' => RichTextField::LAYOUT_INLINE,
@@ -21,7 +21,7 @@ use humhub\widgets\form\ActiveForm;
     'disabled' => (property_exists(Yii::$app->controller, 'contentContainer') && Yii::$app->controller->contentContainer->isArchived()),
     'disabledText' => Yii::t("PostModule.base", "This space is archived."),
     'mentioningUrl' => $mentioningUrl,
-])->label(false) ?>
+]) ?>
 
 <?= WallCreateContentFormFooter::widget([
     'contentContainer' => $post->content->container,

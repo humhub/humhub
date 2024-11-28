@@ -26,7 +26,7 @@ AdminPendingRegistrationsAsset::register($this);
         <?= Yii::t('AdminModule.base', 'Pending user registrations') ?>
     </h4>
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'The following list contains all pending sign-ups and invites.') ?>
     </div>
 

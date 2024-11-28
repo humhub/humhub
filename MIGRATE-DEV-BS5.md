@@ -113,31 +113,36 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
 ### General replacements
 
-- `img-responsive` -> `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
-- `alert-default` -> `alert-light` or `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
-- `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
-- `btn-default` -> `btn-light` (the new `btn-secondary` can also be used, but it will darker gray)
-- `pull-left` -> `float-start`
-- `pull-right` -> `float-end`
-- `center-block` -> `mx-auto` (image, inline or inline-block elements: `d-block mx-auto`)
-- `text-left` -> `text-start`
-- `text-right` -> `text-end`
-- `btn-group-xs` -> `btn-group-sm`
-- `img-rounded` -> `rounded`
-- `media-object img-rounded` -> `rounded`
-- `data-toggle` -> `data-bs-toggle`
-- `data-target` -> `data-bs-target`
-- `data-dismiss` -> `data-bs-dismiss`
-- `no-space` -> `m-0 p-0`
-- `align-center` -> `text-center` or `d-flex justify-content-center`
-- `col-xs-` -> `col- ` and make sure the parent element has the `row` class, and the parent of parent the `container` class ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
-- `input-group-addon` -> `input-group-text` (or `input-group-prepend` or `input-group-append`)
-- `form-group` -> `mb-3`
+- `.img-responsive` -> `.img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
+- `.alert-default` -> `.alert-light` or `.alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
+- `.btn-xs` -> `.btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
+- `.btn-default` -> `.btn-light` (the new `.btn-secondary` can also be used, but it will darker gray)
+- `.pull-left` -> `.float-start`
+- `.pull-right` -> `.float-end`
+- `.center-block` -> `.mx-auto` (image, inline or inline-block elements: `.d-block` + `.mx-auto`)
+- `.text-left` -> `.text-start`
+- `.text-right` -> `.text-end`
+- `.btn-group-xs` -> `.btn-group-sm`
+- `.img-rounded` -> `.rounded`
+- `.media-object` + `.img-rounded` -> `.rounded`
+- `.data-toggle` -> `.data-bs-toggle`
+- `.data-target` -> `.data-bs-target`
+- `.data-dismiss` -> `.data-bs-dismiss`
+- `.no-space` -> `.m-0` + `.p-0`
+- `.align-center` -> `.text-center` or `.d-flex` + `.justify-content-center`
+- `.col-xs-` -> `.col- ` and make sure the parent element has  `.row`, and the parent of parent `.container` ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
+- `.input-group-addon` -> `.input-group-text` (or `.input-group-prepend` or `.input-group-append`)
+- `.form-group` -> `.mb-3`
+- `.has-error`, `.has-warning`, and `.has-success` -> `.is-invalid` or `.is-valid`, but the new classes are now append to the input instead of the previous `.form-group` (the input is a child of the form group) 
+- `.help-block` + `.help-block-error` -> `.invalid-feedback`
+- `.help-block` -> `.text-body-secondary` or `.form-text` if in a form
 - `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`  -> `humhub\widgets\form\ActiveForm` (required for the new Bootstrap 5 syntax)
 - `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`  -> `humhub\widgets\form\ActiveField` (required for the new Bootstrap 5 syntax)
-- Remove `jumbotron` class
+- Remove `.jumbotron` class
 
-### Input groups
+### Forms
+
+#### Input groups
 
 Remove `<span class="input-group-btn">` button wrapper inside `<div class="input-group">`.
 
@@ -157,6 +162,21 @@ Should be replaced with:
 <div class="input-group">
   <button class="btn btn-light">My action</button>
 </div>
+```
+
+#### Error messages with RichTextField widget
+
+When using the `RichTextField` widget AND setting the `form` attribute, as the active input is displayed as a nested input, the input elements mustn't be displayed twice.
+Previously, the error field was displayed by the parent input.
+But Bootstrap 5 requires the error field to be at the same level to the displayed input.
+So now, the error HTML element (`invalid-feedback`) is included in the widget.
+Which means it needs to be removed in the parent input (by specifying the template) to prevent displaying it twice.
+Example:
+
+```php
+<?= $form->field($model, 'attribute', ['template' => "{label}\n{input}"])->widget(RichTextField::class, [
+    'form' => $form,
+]) ?>
 ```
 
 ### Hidden classes

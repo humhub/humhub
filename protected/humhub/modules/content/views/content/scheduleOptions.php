@@ -43,7 +43,7 @@ use humhub\widgets\modal\ModalButton;
             ->label(false) ?>
     </div>
     <div class="col-12">
-        <p class="help-block"><?= Yii::t('ContentModule.base', 'Note: Due to technical reasons there may be a delay of a few minutes.') ?></p>
+        <p class="text-body-secondary"><?= Yii::t('ContentModule.base', 'Note: Due to technical reasons there may be a delay of a few minutes.') ?></p>
     </div>
 </div>
 

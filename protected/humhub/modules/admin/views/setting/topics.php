@@ -22,7 +22,7 @@ AdminTopicAsset::register($this);
 
 echo Html::beginTag('div', ['class' => 'panel-body']);
 echo Html::tag('h4', Yii::t('AdminModule.settings', 'Topics'));
-echo Html::tag('div', Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'), ['class' => 'help-block']);
+echo Html::tag('div', Yii::t('AdminModule.settings', 'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.'), ['class' => 'text-body-secondary']);
 
 Pjax::begin(['enablePushState' => false, 'id' => 'global-topics']);
 

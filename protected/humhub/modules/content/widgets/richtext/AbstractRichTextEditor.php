@@ -174,22 +174,16 @@ class AbstractRichTextEditor extends JsInputWidget
     {
         $inputOptions = $this->getInputAttributes();
 
-        if ($this->form != null) {
-            $this->fieldOptions['template'] = "{label}\n{input}";
-            $input = $this->form->field($this->model, $this->attribute, $this->fieldOptions)->textarea($inputOptions)->label(false);
-            $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
-            $richText = $this->getLabel() . $richText;
-        } elseif ($this->model != null) {
+        if ($this->form !== null) {
+            $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
+        } elseif ($this->model !== null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
-            $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
-            $richText = $this->getLabel() . $richText;
         } else {
             $input = Html::textarea(((!$this->name) ? 'richtext' : $this->name), $this->value, $inputOptions);
-            $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
-            $richText = $this->getLabel() . $richText;
         }
 
-        return $richText . $input . $this->prepend();
+        $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
+        return $this->getLabel() . $richText . $input . $this->prepend();
     }
 
     /**

@@ -38,7 +38,7 @@ $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePerm
 <?php $this->beginContent('@admin/views/authentication/_authenticationLayout.php') ?>
 
 <div class="panel-body">
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'This option allows you to determine whether users may set individual permissions for their own profiles.'); ?>
     </div>
     <br/>
@@ -60,7 +60,7 @@ $enabledProfilePermissions = (bool)$userModule->settings->get('enableProfilePerm
     <br/>
 
     <h5><?= Yii::t('AdminModule.user', 'Default Profile Permissions'); ?></h5>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'If individual profile permissions are not allowed, the following settings are unchangeable for all users. If individual profile permissions are allowed, the settings are only set as defaults that users can customise. The following entries are then displayed in the same form in the users profile settings:'); ?>
     </div>
     <br/>

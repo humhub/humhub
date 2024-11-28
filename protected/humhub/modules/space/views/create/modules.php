@@ -1,6 +1,5 @@
 <?php
 
-use humhub\modules\content\widgets\ContainerModule;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\view\components\View;
@@ -19,7 +18,7 @@ SpaceAsset::register($this);
                 <?= Yii::t('SpaceModule.manage', 'Add <strong>Modules</strong>') ?>
             </h4>
             <div
-                class="help-block"><?= Yii::t('SpaceModule.manage', 'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.') ?></div>
+                class="text-body-secondary"><?= Yii::t('SpaceModule.manage', 'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.') ?></div>
         </div>
         <div class="modal-body">
             <div class="container container-cards container-modules container-create-space-modules">

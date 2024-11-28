@@ -41,7 +41,7 @@ class ContentHiddenCheckbox extends InputWidget
      */
     public int $type = self::TYPE_CONTENT;
 
-    public array $hintOptions = ['tag' => 'p', 'class' => 'help-block'];
+    public array $hintOptions = ['tag' => 'p', 'class' => 'text-body-secondary'];
 
     /**
      * @inheritDoc

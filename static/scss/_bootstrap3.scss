@@ -280,6 +280,21 @@ a.label-warning:hover {
 
 
 //
+// Form
+//
+
+.help-block {
+    color: var(--hh-text-color-soft);
+    font-size: 13px;
+}
+
+.panel-body > .help-block {
+    padding-right: 20px;
+    margin-bottom: 20px;
+}
+
+
+//
 // Panel
 //
 .panel {

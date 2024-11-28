@@ -45,8 +45,8 @@ $placeholder = ($isNestedComment)
     <?= Html::hiddenInput('objectModel', $objectModel) ?>
     <?= Html::hiddenInput('objectId', $objectId) ?>
 
-    <div class="content-create-input-group">
-        <?= $form->field($model, 'message')->widget(RichTextField::class, [
+    <div class="content-create-input-group input-group">
+        <?= $form->field($model, 'message', ['template' => "{input}"])->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
             'form' => $form,
             'layout' => RichTextField::LAYOUT_INLINE,
@@ -55,12 +55,12 @@ $placeholder = ($isNestedComment)
             'placeholder' => $placeholder,
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
-                'scroll-inactive' => 'comment.scrollInactive'
-            ]
-        ])->label(false) ?>
+                'scroll-inactive' => 'comment.scrollInactive',
+            ],
+        ]) ?>
 
-        <div class="upload-buttons"><?php
-            $uploadButton = UploadButton::widget([
+        <div class="upload-buttons">
+            <?php $uploadButton = UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'options' => ['class' => 'main_comment_upload'],
@@ -69,18 +69,18 @@ $placeholder = ($isNestedComment)
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
                 'cssButtonClass' => 'btn-sm btn-light',
-            ]);
-            echo FileHandlerButtonDropdown::widget([
+            ]) ?>
+            <?= FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
                 'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
-            ]);
-            echo Button::info()
+            ]) ?>
+            <?= Button::info()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
-                ->action('submit', $submitUrl)->submit();
-            ?></div>
+                ->action('submit', $submitUrl)->submit() ?>
+        </div>
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>
@@ -88,7 +88,7 @@ $placeholder = ($isNestedComment)
     <?= FilePreview::widget([
         'id' => 'comment_create_upload_preview_' . $id,
         'options' => ['style' => 'margin-top:10px'],
-        'edit' => true
+        'edit' => true,
     ]) ?>
 
     <?php ActiveForm::end() ?>

@@ -12050,10 +12050,6 @@ div.required > label:after {
   content: " *";
   color: var(--bs-info);
 }
-div.required.has-error > label:after {
-  content: " *";
-  color: var(--bs-danger);
-}
 .radio label, .checkbox label {
   font-weight: bold;
   padding-left: 0;
@@ -12124,14 +12120,14 @@ input.placeholder, textarea.placeholder {
   padding: 0 0 0 10px;
   color: #999;
 }
-.help-block-error {
+.invalid-feedback {
   font-size: 12px;
 }
-.help-block:not(.help-block-error) {
+.form-text, .text-body-secondary {
   color: var(--hh-text-color-soft);
   font-size: 13px;
 }
-.panel-body > .help-block {
+.panel-body > .text-body-secondary {
   padding-right: 20px;
   margin-bottom: 20px;
 }
@@ -12159,7 +12155,7 @@ a.input-field-addon-sm {
 .timeZoneInputContainer {
   padding-top: 10px;
 }
-.timeZoneInputContainer ~ .help-block {
+.timeZoneInputContainer ~ .form-text {
   margin: 0;
 }
 .radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox] {
@@ -12224,10 +12220,10 @@ input[type=radio]:checked::after {
   left: 3px;
   font-size: 32px;
 }
-div.mb-3 div.checkbox .help-block {
+div.mb-3 div.checkbox .form-text {
   margin-left: 23px;
 }
-div.mb-3 div.checkbox .help-block.help-block-error:empty {
+div.mb-3 div.checkbox .invalid-feedback:empty {
   display: none;
 }
 .radio-pills {
@@ -12289,27 +12285,6 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 .error {
   border-color: var(--bs-danger) !important;
 }
-.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
-  color: var(--bs-danger) !important;
-}
-.has-error .form-control, .has-error .grid-view .filters input, .grid-view .filters .has-error input, .has-error .grid-view .filters select, .grid-view .filters .has-error select, .has-error .form-control:focus, .has-error .grid-view .filters input:focus, .grid-view .filters .has-error input:focus, .has-error .grid-view .filters select:focus, .grid-view .filters .has-error select:focus {
-  border-color: var(--bs-danger);
-  box-shadow: none;
-}
-.has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, .has-success .radio-inline, .has-success .checkbox-inline {
-  color: var(--bs-success);
-}
-.has-success .form-control, .has-success .grid-view .filters input, .grid-view .filters .has-success input, .has-success .grid-view .filters select, .grid-view .filters .has-success select, .has-success .form-control:focus, .has-success .grid-view .filters input:focus, .grid-view .filters .has-success input:focus, .has-success .grid-view .filters select:focus, .grid-view .filters .has-success select:focus {
-  border-color: var(--bs-success);
-  box-shadow: none;
-}
-.has-warning .help-block, .has-warning .control-label, .has-warning .radio, .has-warning .checkbox, .has-warning .radio-inline, .has-warning .checkbox-inline {
-  color: var(--bs-warning);
-}
-.has-warning .form-control, .has-warning .grid-view .filters input, .grid-view .filters .has-warning input, .has-warning .grid-view .filters select, .grid-view .filters .has-warning select, .has-warning .form-control:focus, .has-warning .grid-view .filters input:focus, .grid-view .filters .has-warning input:focus, .has-warning .grid-view .filters select:focus, .grid-view .filters .has-warning select:focus {
-  border-color: var(--bs-warning);
-  box-shadow: none;
-}
 .bootstrap-timepicker-widget .form-control, .bootstrap-timepicker-widget .grid-view .filters input, .grid-view .filters .bootstrap-timepicker-widget input, .bootstrap-timepicker-widget .grid-view .filters select, .grid-view .filters .bootstrap-timepicker-widget select {
   padding: 0;
 }
@@ -12361,7 +12336,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
   display: block;
   width: 0;
 }
-.content_create .content-create-input-group .mb-3, .content_create .content-create-input-group .help-block, .content_edit .content-create-input-group .mb-3, .content_edit .content-create-input-group .help-block {
+.content_create .content-create-input-group .mb-3, .content_create .content-create-input-group .form-text, .content_edit .content-create-input-group .mb-3, .content_edit .content-create-input-group .form-text {
   margin: 0;
 }
 .content_create .upload-buttons, .content_edit .upload-buttons {
@@ -12385,9 +12360,6 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 }
 .content_create .upload-buttons .btn.dropdown-toggle, .content_edit .upload-buttons .btn.dropdown-toggle {
   margin-left: 0;
-}
-.content_create .has-error + .upload-buttons, .content_edit .has-error + .upload-buttons {
-  padding-bottom: 22px;
 }
 .content_create .fileinput-button:active, .content_edit .fileinput-button:active {
   box-shadow: none !important;
@@ -12888,10 +12860,6 @@ div.required > label:after {
   content: " *";
   color: var(--bs-info);
 }
-div.required.has-error > label:after {
-  content: " *";
-  color: var(--bs-danger);
-}
 .radio label, .checkbox label {
   font-weight: bold;
   padding-left: 0;
@@ -12962,14 +12930,14 @@ input.placeholder, textarea.placeholder {
   padding: 0 0 0 10px;
   color: #999;
 }
-.help-block-error {
+.invalid-feedback {
   font-size: 12px;
 }
-.help-block:not(.help-block-error) {
+.form-text, .text-body-secondary {
   color: var(--hh-text-color-soft);
   font-size: 13px;
 }
-.panel-body > .help-block {
+.panel-body > .text-body-secondary {
   padding-right: 20px;
   margin-bottom: 20px;
 }
@@ -12997,7 +12965,7 @@ a.input-field-addon-sm {
 .timeZoneInputContainer {
   padding-top: 10px;
 }
-.timeZoneInputContainer ~ .help-block {
+.timeZoneInputContainer ~ .form-text {
   margin: 0;
 }
 .radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox] {
@@ -13062,10 +13030,10 @@ input[type=radio]:checked::after {
   left: 3px;
   font-size: 32px;
 }
-div.mb-3 div.checkbox .help-block {
+div.mb-3 div.checkbox .form-text {
   margin-left: 23px;
 }
-div.mb-3 div.checkbox .help-block.help-block-error:empty {
+div.mb-3 div.checkbox .invalid-feedback:empty {
   display: none;
 }
 .radio-pills {
@@ -13127,27 +13095,6 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 .error {
   border-color: var(--bs-danger) !important;
 }
-.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
-  color: var(--bs-danger) !important;
-}
-.has-error .form-control, .has-error .grid-view .filters input, .grid-view .filters .has-error input, .has-error .grid-view .filters select, .grid-view .filters .has-error select, .has-error .form-control:focus, .has-error .grid-view .filters input:focus, .grid-view .filters .has-error input:focus, .has-error .grid-view .filters select:focus, .grid-view .filters .has-error select:focus {
-  border-color: var(--bs-danger);
-  box-shadow: none;
-}
-.has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, .has-success .radio-inline, .has-success .checkbox-inline {
-  color: var(--bs-success);
-}
-.has-success .form-control, .has-success .grid-view .filters input, .grid-view .filters .has-success input, .has-success .grid-view .filters select, .grid-view .filters .has-success select, .has-success .form-control:focus, .has-success .grid-view .filters input:focus, .grid-view .filters .has-success input:focus, .has-success .grid-view .filters select:focus, .grid-view .filters .has-success select:focus {
-  border-color: var(--bs-success);
-  box-shadow: none;
-}
-.has-warning .help-block, .has-warning .control-label, .has-warning .radio, .has-warning .checkbox, .has-warning .radio-inline, .has-warning .checkbox-inline {
-  color: var(--bs-warning);
-}
-.has-warning .form-control, .has-warning .grid-view .filters input, .grid-view .filters .has-warning input, .has-warning .grid-view .filters select, .grid-view .filters .has-warning select, .has-warning .form-control:focus, .has-warning .grid-view .filters input:focus, .grid-view .filters .has-warning input:focus, .has-warning .grid-view .filters select:focus, .grid-view .filters .has-warning select:focus {
-  border-color: var(--bs-warning);
-  box-shadow: none;
-}
 .bootstrap-timepicker-widget .form-control, .bootstrap-timepicker-widget .grid-view .filters input, .grid-view .filters .bootstrap-timepicker-widget input, .bootstrap-timepicker-widget .grid-view .filters select, .grid-view .filters .bootstrap-timepicker-widget select {
   padding: 0;
 }
@@ -13199,7 +13146,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
   display: block;
   width: 0;
 }
-.content_create .content-create-input-group .mb-3, .content_create .content-create-input-group .help-block, .content_edit .content-create-input-group .mb-3, .content_edit .content-create-input-group .help-block {
+.content_create .content-create-input-group .mb-3, .content_create .content-create-input-group .form-text, .content_edit .content-create-input-group .mb-3, .content_edit .content-create-input-group .form-text {
   margin: 0;
 }
 .content_create .upload-buttons, .content_edit .upload-buttons {
@@ -13223,9 +13170,6 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 }
 .content_create .upload-buttons .btn.dropdown-toggle, .content_edit .upload-buttons .btn.dropdown-toggle {
   margin-left: 0;
-}
-.content_create .has-error + .upload-buttons, .content_edit .has-error + .upload-buttons {
-  padding-bottom: 22px;
 }
 .content_create .fileinput-button:active, .content_edit .fileinput-button:active {
   box-shadow: none !important;
@@ -13384,7 +13328,7 @@ div.mb-3 div.checkbox .help-block.help-block-error:empty {
 #content-topic-bar .label {
   margin-left: 4px;
 }
-#contentFormBody .mb-3, #contentFormBody .help-block-error {
+#contentFormBody .mb-3, #contentFormBody .invalid-feedback {
   margin: 0;
 }
 #contentFormBody .contentForm_options .mb-3 {
@@ -16349,40 +16293,31 @@ img.bounceIn {
  *
  * $see http://gethumhub.com/css/#forms-control-validation
  */
-.has-warning .select2-dropdown, .has-warning .select2-selection {
+.has-warning.select2-dropdown, .has-warning.select2-selection {
   border-color: #FFC107;
 }
-.has-warning .select2-container--focus .select2-selection, .has-warning .select2-container--open .select2-selection {
+.has-warning.select2-container--focus .select2-selection, .has-warning.select2-container--open .select2-selection {
   border-color: #d39e00;
 }
-.has-warning.select2-drop-active {
-  border-color: #d39e00;
-}
-.has-warning.select2-drop-active.select2-drop.select2-drop-above {
+.has-warning.select2-drop.select2-drop-above {
   border-top-color: #d39e00;
 }
-.has-error .select2-dropdown, .has-error .select2-selection {
+.is-invalid.select2-dropdown, .is-invalid.select2-selection {
   border-color: #FC4A64;
 }
-.has-error .select2-container--focus .select2-selection, .has-error .select2-container--open .select2-selection {
+.is-invalid.select2-container--focus .select2-selection, .is-invalid.select2-container--open .select2-selection {
   border-color: #fb1839;
 }
-.has-error.select2-drop-active {
-  border-color: #fb1839;
-}
-.has-error.select2-drop-active.select2-drop.select2-drop-above {
+.is-invalid.select2-drop.select2-drop-above {
   border-top-color: #fb1839;
 }
-.has-success .select2-dropdown, .has-success .select2-selection {
+.has-success.select2-dropdown, .has-success.select2-selection {
   border-color: #97d271;
 }
-.has-success .select2-container--focus .select2-selection, .has-success .select2-container--open .select2-selection {
+.has-success.select2-container--focus .select2-selection, .has-success.select2-container--open .select2-selection {
   border-color: #7bc64a;
 }
-.has-success.select2-drop-active {
-  border-color: #7bc64a;
-}
-.has-success.select2-drop-active.select2-drop.select2-drop-above {
+.has-success.select2-drop.select2-drop-above {
   border-top-color: #7bc64a;
 }
 /**
@@ -16634,6 +16569,14 @@ a.label-warning:hover {
     padding-right: 2px !important;
     padding-left: 2px !important;
   }
+}
+.help-block {
+  color: var(--hh-text-color-soft);
+  font-size: 13px;
+}
+.panel-body > .help-block {
+  padding-right: 20px;
+  margin-bottom: 20px;
 }
 .panel {
   word-wrap: break-word;

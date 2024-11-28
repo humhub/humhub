@@ -25,7 +25,7 @@ use yii\web\View;
 
 <div class="panel-body">
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('LdapModule.base', 'Specify your LDAP-backend used to fetch user accounts.') ?>
     </div>
     <br>

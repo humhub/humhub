@@ -9,6 +9,7 @@
 namespace humhub\widgets\form;
 
 use humhub\helpers\Html;
+use humhub\modules\ui\form\widgets\JsInputWidget;
 use humhub\modules\ui\icon\widgets\Icon;
 use yii\base\Widget;
 use yii\helpers\ArrayHelper;

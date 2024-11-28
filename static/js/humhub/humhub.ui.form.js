@@ -117,7 +117,7 @@ humhub.module('ui.form', function (module, require, $) {
      * @returns {boolean}
      */
     var _hasErrors = function ($fieldSet) {
-        return $fieldSet.find('.error, .has-error').length > 0;
+        return $fieldSet.find('.error, .is-invalid').length > 0;
     };
 
     var addValidationListener = function () {

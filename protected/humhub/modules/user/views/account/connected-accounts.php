@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
 
 <?php $this->beginContent('@user/views/account/_userSettingsLayout.php') ?>
-<div class="help-block">
+<div class="text-body-secondary">
     <?php echo Yii::t('UserModule.base', 'Here you can connect to external service provider for using external services like a single sign on authentication.'); ?>
 </div>
 <table class="table table-hover">

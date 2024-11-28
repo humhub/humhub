@@ -57,8 +57,8 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.submit = function (evt) {
         this.$.find('.preferences, .fileinput-button').hide();
-        this.$.find('.help-block-error').html('');
-        this.$.find('.has-error').removeClass('has-error');
+        this.$.find('.invalid-feedback').html('');
+        this.$.find('.is-invalid').removeClass('is-invalid');
 
         var that = this;
         evt.block = 'manual';
@@ -134,10 +134,10 @@ humhub.module('content.form', function (module, require, $) {
             var fieldSelector = '.field-' + model + '-' + fieldName;
             var inputSelector = '.field-contentForm_' + fieldName;
             var multiInputSelector = '[name="' + fieldName + '[]"]';
-            that.$.find(fieldSelector).addClass('has-error');
+            that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
             that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
-                .find('.help-block-error:first').html(errorMessages.join('<br>'));
-            that.$.find(multiInputSelector).closest('.mb-3').addClass('has-error');
+                .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
+            that.$.find(multiInputSelector).closest('.mb-3 .form-control').addClass('is-invalid');
         });
     };
 
@@ -253,7 +253,7 @@ humhub.module('content.form', function (module, require, $) {
 
         modal.post(evt, {data}).then(function () {
             modalGlobal.one('submitted', function () {
-                if (modalGlobal.find('.has-error').length) {
+                if (modalGlobal.find('.is-invalid').length) {
                     return;
                 }
 

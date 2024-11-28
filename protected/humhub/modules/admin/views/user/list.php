@@ -27,7 +27,7 @@ use yii\helpers\Url;
     </div>
 
     <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
 

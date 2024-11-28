@@ -40,7 +40,7 @@ $iconUrl = SiteIcon::getUrl(140);
     <?php ActiveForm::end(); ?>
 
     <h4><?= Yii::t('AdminModule.settings', 'Appearance Settings'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.settings', 'These settings refer to the appearance of your social network.'); ?>
     </div>
 

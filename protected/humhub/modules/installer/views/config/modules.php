@@ -25,7 +25,7 @@ use humhub\helpers\Html;
                         <?= Html::checkbox('enableModules[' . $module['id'] . ']', true) ?>
                         <?= $module['name'] ?>
                     </label>
-                    <p class="help-block"><?= $module['description'] ?></p>
+                    <p class="text-body-secondary"><?= $module['description'] ?></p>
                 </div>
             </div>
             <hr>

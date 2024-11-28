@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
     <h4><?= Yii::t('AdminModule.user', 'Manage groups'); ?></h4>
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
     </div>
 </div>

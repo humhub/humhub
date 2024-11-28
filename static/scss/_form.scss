@@ -18,11 +18,6 @@ div.required > label:after {
     color: var(--bs-info);
 }
 
-div.required.has-error > label:after {
-    content: " *";
-    color: var(--bs-danger);
-}
-
 .radio label,
 .checkbox label {
     font-weight: bold;
@@ -118,16 +113,16 @@ textarea.placeholder {
     color: #999;
 }
 
-.help-block-error {
+.invalid-feedback {
     font-size: 12px;
 }
 
-.help-block:not(.help-block-error) {
+.form-text, .text-body-secondary {
     color: var(--hh-text-color-soft);
     font-size: 13px;
 }
 
-.panel-body > .help-block {
+.panel-body > .text-body-secondary {
     padding-right: 20px;
     margin-bottom: 20px;
 }
@@ -162,7 +157,7 @@ a.input-field-addon-sm {
     padding-top: 10px;
 }
 
-.timeZoneInputContainer ~ .help-block {
+.timeZoneInputContainer ~ .form-text {
     margin: 0;
 }
 
@@ -242,12 +237,12 @@ input[type=radio] {
 
 div.mb-3 {
     div.checkbox {
-        .help-block {
+        .form-text {
             margin-left: 23px;
         }
 
         // avoid spacing between checkbox and hint
-        .help-block.help-block-error:empty {
+        .invalid-feedback:empty {
             display: none;
         }
     }
@@ -332,51 +327,6 @@ div.mb-3 {
     border-color: var(--bs-danger) !important;
 }
 
-.has-error .help-block,
-.has-error .control-label,
-.has-error .radio,
-.has-error .checkbox,
-.has-error .radio-inline,
-.has-error .checkbox-inline {
-    color: var(--bs-danger) !important;
-}
-
-.has-error .form-control,
-.has-error .form-control:focus {
-    border-color: var(--bs-danger);
-    box-shadow: none;
-}
-
-.has-success .help-block,
-.has-success .control-label,
-.has-success .radio,
-.has-success .checkbox,
-.has-success .radio-inline,
-.has-success .checkbox-inline {
-    color: var(--bs-success);
-}
-
-.has-success .form-control,
-.has-success .form-control:focus {
-    border-color: var(--bs-success);
-    box-shadow: none;
-}
-
-.has-warning .help-block,
-.has-warning .control-label,
-.has-warning .radio,
-.has-warning .checkbox,
-.has-warning .radio-inline,
-.has-warning .checkbox-inline {
-    color: var(--bs-warning);
-}
-
-.has-warning .form-control,
-.has-warning .form-control:focus {
-    border-color: var(--bs-warning);
-    box-shadow: none;
-}
-
 .bootstrap-timepicker-widget .form-control {
     padding: 0;
 }
@@ -448,7 +398,7 @@ div.mb-3 {
             }
         }
 
-        .mb-3, .help-block {
+        .mb-3, .form-text {
             margin: 0;
         }
     }
@@ -480,10 +430,6 @@ div.mb-3 {
         .btn.dropdown-toggle {
             margin-left: 0;
         }
-    }
-
-    .has-error + .upload-buttons {
-        padding-bottom: 22px;
     }
 
     .fileinput-button:active {

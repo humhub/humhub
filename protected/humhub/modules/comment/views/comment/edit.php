@@ -28,7 +28,7 @@ $contentModule = Yii::$app->getModule('content');
     <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="content-create-input-group">
-        <?= $form->field($comment, 'message')->widget(RichTextField::class, [
+        <?= $form->field($comment, 'message', ['template' => "{input}"])->widget(RichTextField::class, [
             'id' => 'comment_input_' . $comment->id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
@@ -38,7 +38,7 @@ $contentModule = Yii::$app->getModule('content');
                 'scroll-active' => 'comment.scrollActive',
                 'scroll-inactive' => 'comment.scrollInactive'
             ]
-        ])->label(false) ?>
+        ]) ?>
 
         <div class="upload-buttons"><?php
             $uploadButton = UploadButton::widget([

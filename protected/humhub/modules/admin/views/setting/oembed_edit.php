@@ -92,10 +92,10 @@ JS, View::POS_LOAD);
 <?= $form->field($model, 'name')->textInput(['class' => 'form-control']); ?>
 
 <?= $form->field($model, 'pattern')->textInput(['class' => 'form-control']); ?>
-    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Regular expression by which the link match will be checked.'); ?></p>
+    <p class="text-body-secondary"><?= Yii::t('AdminModule.settings', 'Regular expression by which the link match will be checked.'); ?></p>
 
 <?= $form->field($model, 'endpoint')->textInput(['class' => 'form-control']); ?>
-    <p class="help-block"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
+    <p class="text-body-secondary"><?= Yii::t('AdminModule.settings', 'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)'); ?></p>
 
 <?php if (isset($query['access_token'])): ?>
     <?= $form->field($model, 'access_token')->textInput(['class' => 'form-control endpoint-param', 'data-param-name' => 'access_token', 'value' => $query['access_token']]) ?>

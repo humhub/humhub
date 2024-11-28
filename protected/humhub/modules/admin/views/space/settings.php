@@ -1,11 +1,10 @@
 <?php
 
-use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminSpaceAsset;
 use humhub\modules\admin\models\forms\SpaceSettingsForm;
+use humhub\modules\space\widgets\SpacePickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
-use humhub\modules\space\widgets\SpacePickerField;
 
 /* @var $model SpaceSettingsForm */
 /* @var $joinPolicyOptions array */
@@ -25,7 +24,7 @@ $this->registerJsConfig('admin.space', [
 ?>
 
 <h4><?= Yii::t('AdminModule.space', 'Space Settings'); ?></h4>
-<div class="help-block">
+<div class="text-body-secondary">
     <?= Yii::t('AdminModule.space', 'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.'); ?>
 </div>
 

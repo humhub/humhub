@@ -17,7 +17,7 @@ use yii\helpers\Url;
 <div class="panel-body">
 
     <div class="panel-body">
-        <p class="help-block"><?= Yii::t('UserModule.account', 'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.'); ?></p>
+        <p class="text-body-secondary"><?= Yii::t('UserModule.account', 'These settings allow you to determine which permissions you want to grant visitors of your own individual profile. Each user can freely adjust the settings for his or her own profile.'); ?></p>
     </div>
 
     <div class="clearfix">

@@ -6,7 +6,7 @@ use humhub\widgets\form\ActiveForm;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php'); ?>
-<div class="help-block">
+<div class="text-body-secondary">
     <?php echo Yii::t('UserModule.account', 'Your current password can be changed here.') ?>
 </div>
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>

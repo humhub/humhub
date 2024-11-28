@@ -104,7 +104,7 @@ humhub.module('ui.form.elements', function (module, require, $) {
             that.clickCollab();
         });
 
-        if (this.$.find('.error, .has-error').length > 0) {
+        if (this.$.find('.error, .is-invalid').length > 0) {
             this.show();
         }
     };

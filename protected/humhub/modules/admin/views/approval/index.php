@@ -97,7 +97,7 @@ $columns[] = [
 
     <h4><?= Yii::t('AdminModule.user', 'Pending user approvals') ?></h4>
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'The following list contains all registered users awaiting an approval.') ?>
     </div>
 
