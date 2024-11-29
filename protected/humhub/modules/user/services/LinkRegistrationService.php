@@ -51,15 +51,7 @@ final class LinkRegistrationService
 
     public function isValid(): bool
     {
-        return ($this->isEnabled() && $this->getStoredToken() === $this->token);
-    }
-
-    public function isEnabled(): bool
-    {
-        // Always enable if user has a link with correct token,
-        // because admins and user managers can send such invitation
-        // even if the setting 'auth.internalUsersCanInviteByLink' is disabled
-        return true;
+        return $this->getStoredToken() === $this->token;
     }
 
     public function getStoredToken(): ?string
