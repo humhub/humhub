@@ -37,6 +37,8 @@ class ArchivedCest
 
         // Archive Space fully
         $I->amOnSpace(2, '/space/manage');
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Archive');
 
         $I->amOnProfile();
@@ -108,6 +110,8 @@ class ArchivedCest
 
         // Archive Space
         $I->amOnSpace(2, '/space/manage');
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Archive');
         $I->amOnDashboard();
         $archivedContents = array_merge($archivedContents, array_slice($notArchivedContents, 0, 4));
@@ -126,7 +130,9 @@ class ArchivedCest
         $I->amOnRoute(['/admin/setting/basic']);
         $I->wait(2);
         $I->click('[data-action-click=clickCollab]');
-        $I->click('[for="basicsettingsform-dashboardshowprofilepostform"]');
+        $I->click('#basicsettingsform-dashboardshowprofilepostform');
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Save');
         $I->seeSuccess('Saved');
 

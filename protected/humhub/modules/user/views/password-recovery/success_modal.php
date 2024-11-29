@@ -1,20 +1,14 @@
 <?php
 
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
 
 ?>
-<div class="modal-dialog modal-dialog-small animated fadeIn">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></h4>
-        </div>
-        <div class="modal-body">
-            <p><?= Yii::t('UserModule.auth', 'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.') ?></p>
-            <br/>
-            <a href="<?= Url::home(); ?>" data-ui-loader data-pjax-prevent
-               class="btn btn-primary"><?= Yii::t('UserModule.auth', 'back to home') ?></a>
-        </div>
-    </div>
-</div>
+
+<?php Modal::beginDialog([
+    'title' => Yii::t('UserModule.auth', '<strong>Password</strong> recovery'),
+    'footer' => ModalButton::primary(Yii::t('UserModule.auth', 'back to home'))->link(Url::home())->pjax(false),
+]) ?>
+    <p><?= Yii::t('UserModule.auth', 'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.') ?></p>
+<?php Modal::endDialog() ?>

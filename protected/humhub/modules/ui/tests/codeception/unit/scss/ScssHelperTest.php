@@ -9,14 +9,14 @@ use yii\helpers\ArrayHelper;
 class ScssHelperTest extends HumHubDbTestCase
 {
     /**
-     * Make sure value of less variables like @firstColor is replaced with real value like #FFF of the less variable with name firstColor
+     * Make sure value of SCSS variables like @firstColor is replaced with real value like #FFF of the SCSS variable with name firstColor
      */
     public function testParseLinkedScssVariables()
     {
-        // Get less variables from two sample files:
+        // Get SCSS variables from two sample files:
         $variables = ArrayHelper::merge(
-            ScssHelper::getVariables(__dir__ . DIRECTORY_SEPARATOR . 'first.less'),
-            ScssHelper::getVariables(__dir__ . DIRECTORY_SEPARATOR . 'second.less'),
+            ScssHelper::getVariables(__dir__ . DIRECTORY_SEPARATOR . 'first.scss'),
+            ScssHelper::getVariables(__dir__ . DIRECTORY_SEPARATOR . 'second.scss'),
         );
         // Update variables linked between two different files:
         $variables = ScssHelper::updateLinkedScssVariables($variables);

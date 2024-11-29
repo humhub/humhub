@@ -24,20 +24,20 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 ]) ?>
 
 <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
-<?= $form->field($model, 'description'); ?>
+<?= $form->field($model, 'description') ?>
 
 <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
-    <i class="fa fa-caret-right"></i> <?php echo Yii::t('SpaceModule.manage', 'Advanced access settings'); ?>
+    <i class="fa fa-caret-right"></i> <?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
 </a>
 
 <div id="collapse-access-settings" class="panel-collapse collapse">
     <br>
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false); ?>
+            <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false) ?>
         </div>
         <div class="col-md-6 spaceJoinPolicy">
-            <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false); ?>
+            <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false) ?>
         </div>
     </div>
 </div>

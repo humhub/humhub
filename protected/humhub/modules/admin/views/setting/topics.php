@@ -1,14 +1,15 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
-use humhub\widgets\ModalButton;
+use humhub\widgets\modal\ModalButton;
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
 use yii\widgets\Pjax;
 
 /**
@@ -33,7 +34,7 @@ echo $form->field($addModel, 'name', [
 <div class="input-group">
 {input}
 <span class="input-group-btn">
-    ' . Button::defaultType()->icon('add')->loader()->submit() . '
+    ' . Button::light()->icon('add')->loader()->submit() . '
 </span>
 </div>
 {error}
@@ -66,21 +67,21 @@ echo GridView::widget([
         'sort_order',
         [
             'header' => Yii::t('base', 'Actions'),
-            'class' => 'yii\grid\ActionColumn',
+            'class' => ActionColumn::class,
             'options' => ['width' => '80px'],
             'template' => '{update} {delete}',
             'buttons' => [
                 'update' => function ($url, $model) {
                     /* @var $model Topic */
-                    return ModalButton::primary()->load(['edit-topic', 'id' => $model->id])->icon('edit')->xs()->loader(false);
+                    return ModalButton::primary()->load(['edit-topic', 'id' => $model->id])->icon('edit')->sm()->loader(false);
                 },
                 'delete' => function ($url, $model) {
                     /* @var $model Topic */
                     return Button::danger()->icon('delete')->action('admin.topic.removeTopic', ['delete-topic', 'id' => $model->id])->confirm(
                         Yii::t('AdminModule.settings', '<strong>Confirm</strong> topic deletion'),
                         Yii::t('AdminModule.settings', 'Do you really want to delete this topic?'),
-                        Yii::t('base', 'Delete')
-                    )->xs()->loader(false);
+                        Yii::t('base', 'Delete'),
+                    )->sm()->loader(false);
                 },
             ],
         ],

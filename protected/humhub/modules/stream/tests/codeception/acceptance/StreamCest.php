@@ -266,7 +266,6 @@ class StreamCest
 
         $postSelector = '[data-content-key="13"]';
         $I->waitForElementVisible($postSelector);
-
         $I->click('Comment', $postSelector);
         $I->wait(1);
         $I->waitForElementVisible($postSelector . ' .comment-container', null);

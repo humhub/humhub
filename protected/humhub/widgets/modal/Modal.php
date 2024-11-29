@@ -114,7 +114,7 @@ class Modal extends \yii\bootstrap5\Modal
      *     'size' => Modal::SIZE_LARGE,
      *   ]) ?>
      *       Content
-     *   <?php Modal::endDialog()?>
+     *   <?php Modal::endDialog() ?>
      *   ```
      */
     public static function beginDialog($config = []): void

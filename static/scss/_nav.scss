@@ -153,17 +153,6 @@ ul.tab-menu-settings {
         }
     }
 
-    .dropdown.open {
-        .dropdown-toggle,
-        .dropdown-toggle:hover {
-            background-color: var(--bs-primary);
-
-            i {
-                color: var(--hh-text-color-contrast);
-            }
-        }
-    }
-
     li.nav-item:has(> .dropdown-divider):last-of-type {
         display: none;
     }
@@ -223,13 +212,6 @@ ul.tab-menu-settings {
 
     .dropdown .dropdown-toggle {
         padding: 2px 5px;
-    }
-
-    .dropdown.open {
-        .dropdown-toggle,
-        .dropdown-toggle:hover {
-            color: white;
-        }
     }
 }
 

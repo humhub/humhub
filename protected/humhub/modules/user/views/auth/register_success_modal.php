@@ -1,21 +1,20 @@
 <?php
 
+use humhub\widgets\modal\Modal;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Registration successful');
 ?>
-<div class="modal-dialog modal-dialog-small animated fadeIn">
-    <div class="modal-content">
-        <div class="modal-header">
-            <button type="button" class="close" data-bs-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title"
-                id="myModalLabel"><?php echo Yii::t('UserModule.auth', '<strong>Registration</strong> successful!'); ?></h4>
-        </div>
-        <div class="modal-body text-center">
-            <p><?php echo Yii::t('UserModule.auth', 'Please check your email and follow the instructions!'); ?></p>
-            <br>
-            <a href="<?= Url::to(["/"]) ?>" data-pjax-prevent data-ui-loader
-               class="btn btn-primary"><?php echo Yii::t('UserModule.auth', 'back to home') ?></a>
-        </div>
+
+<?php Modal::beginDialog([
+    'title' => Yii::t('UserModule.auth', '<strong>Registration</strong> successful!'),
+]) ?>
+
+    <div class="text-center">
+        <p><?php echo Yii::t('UserModule.auth', 'Please check your email and follow the instructions!'); ?></p>
+        <br>
+        <a href="<?= Url::to(["/"]) ?>" data-pjax-prevent data-ui-loader
+           class="btn btn-primary"><?php echo Yii::t('UserModule.auth', 'back to home') ?></a>
     </div>
-</div>
+
+<?php Modal::endDialog() ?>

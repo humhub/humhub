@@ -239,7 +239,7 @@ class ThemeHelper
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
             $imports[] = $treeTheme->getBasePath() . '/scss/build';
-        };
+        }
 
         // TODO: add Source Maps: https://scssphp.github.io/scssphp/docs/#source-maps
 

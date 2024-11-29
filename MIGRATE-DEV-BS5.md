@@ -90,7 +90,7 @@ Should be replaced with:
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 	Content
-<?php Modal::endDialog()?>
+<?php Modal::endDialog() ?>
 ```
 
 If the footer contains a form submit button, the modal dialog must be included in the form must . Example:

@@ -8,9 +8,9 @@
 
 namespace humhub\modules\ui\view\helpers;
 
+use Exception;
 use humhub\modules\ui\view\components\Theme;
-use ScssPhp\ScssPhp\Compiler;
-use ScssPhp\ScssPhp\Exception\SassException;
+use RuntimeException;
 
 /**
  * @since 1.18
@@ -29,21 +29,62 @@ class ScssHelper
 
     /**
      * Returns all SCSS variables of a given file
-     * @throws \Exception
+     * @param string $scssFilePath
+     * @return array
+     * @throws RuntimeException
      */
-    public static function getVariables(string $scssFile): array
+    public static function getVariables(string $scssFilePath): array
     {
-        if (file_exists($scssFile)) {
-            $compiler = new Compiler();
-            try {
-                $compiler->compileFile($scssFile);
-            } catch (SassException $e) {
-                throw new \Exception('Error while compiling SCSS file: ' . $e->getMessage());
-            }
-            return $compiler->getVariables();
+        if (!file_exists($scssFilePath)) {
+            return [];
         }
 
-        return [];
+        try {
+            // Read the SCSS file contents
+            $scssContent = file_get_contents($scssFilePath);
+
+            // Extract all variable declarations
+            preg_match_all('/\$([a-zA-Z0-9_-]+)\s*:\s*(.+?);/', $scssContent, $matches, PREG_SET_ORDER);
+
+            $variables = [];
+            $resolvedVariables = [];
+
+            // First pass: Collect all variable declarations
+            foreach ($matches as $match) {
+                $variableName = $match[1];
+                $variableValue = trim($match[2]);
+                $variables[$variableName] = $variableValue;
+            }
+
+            // Second pass: Resolve variables to their final values
+            foreach ($variables as $name => $value) {
+
+                // Remove $ and trim
+                $value = ltrim($value, '$');
+
+                // Track to prevent infinite recursion
+                $visited = [];
+
+                // Resolve variable references
+                while (isset($variables[$value]) && !isset($visited[$value])) {
+                    $visited[$value] = true;
+                    $value = $variables[$value];
+                    $value = ltrim($value, '$');
+                }
+
+                $resolvedVariables[$name] = $value;
+            }
+
+            return $resolvedVariables;
+        } catch (Exception $e) {
+            throw new RuntimeException("Error resolving SCSS variables: " . $e->getMessage());
+        }
+    }
+
+    public static function getVariable(string $scssFilePath, string $variableName): ?string
+    {
+        $variables = static::getVariables($scssFilePath);
+        return $variables[$variableName] ?? null;
     }
 
 

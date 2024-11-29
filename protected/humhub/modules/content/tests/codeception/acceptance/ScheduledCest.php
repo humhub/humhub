@@ -59,7 +59,7 @@ class ScheduledCest
     private function updateSchedulingOptions(AcceptanceTester $I, ?Datetime $datetime = null, $labelSelector = '.label-content-state')
     {
         $I->waitForText('Schedule publication');
-        $I->jsClick('.dropdown.open [data-action-click=scheduleOptions]');
+        $I->jsClick('.dropdown-menu.show [data-action-click=scheduleOptions]');
         $I->waitForText('Scheduling Options', null, '#globalModal');
         if ($datetime instanceof DateTime) {
             $I->checkOption('#scheduleoptionsform-enabled');
@@ -70,6 +70,7 @@ class ScheduledCest
             $I->uncheckOption('#scheduleoptionsform-enabled');
         }
         $I->click('Save');
+        $I->wait(1);
         $I->waitForText($this->getLabelText($datetime), 5, $labelSelector);
     }
 

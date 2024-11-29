@@ -29,8 +29,8 @@ if ($model->color === null) {
                     <i></i>
                 </span>
                 {input}
-            </div>
-            {error}{hint}',
+                {error}{hint}
+            </div>',
     ])->textInput(array_merge([
         'placeholder' => Yii::t('SpaceModule.manage', 'Space name'),
         'maxlength' => 45,
