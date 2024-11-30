@@ -13,10 +13,16 @@ TopNavigationAsset::register($this);
 
 <?php foreach ($entries as $entry) : ?>
     <li class="nav-item top-menu-item">
+        <?php
+        $options = $entry->getHtmlOptions();
+        $class = $options['class'] ?? '';
+        $class = is_array($class) ? implode(' ', $class) : $class;
+        $options['class'] = trim('nav-link ' . ($entry->getIsActive() ? 'active ' : '') . $class);
+        ?>
         <?= Html::a(
             $entry->getIcon() . '<br />' . $entry->getLabel(),
             $entry->getUrl(),
-            array_merge(['class' => 'nav-link' . ($entry->getIsActive() ? ' active' : '')], $entry->getHtmlOptions())
+            $options,
         ) ?>
     </li>
 <?php endforeach; ?>
