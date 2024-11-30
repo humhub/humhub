@@ -25,7 +25,7 @@ class ProfileImageCest
         $this->deleteImage($I, '.profile-banner-image-container');
 
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
-        $I->executeJS("$('.profile-banner-image-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-banner-image-container');
         $I->waitForElementVisible('.profile-banner-image-container .image-upload-buttons .profile-image-upload');
         $I->dontSeeElement('.profile-banner-image-container .image-upload-buttons .profile-image-delete');
         $I->dontSeeElement('.profile-banner-image-container .image-upload-buttons .profile-image-crop');
@@ -33,7 +33,7 @@ class ProfileImageCest
         $I->attachFile('.profile-banner-image-container .profile-upload-input', 'test.jpg');
         $I->wait(2);
         $I->dontSeeElement('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
-        $I->executeJS("$('.profile-banner-image-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-banner-image-container');
         $I->waitForElementVisible('.profile-banner-image-container .image-upload-buttons .profile-image-upload');
         $I->seeElement('.profile-banner-image-container .image-upload-buttons .profile-image-delete');
         $I->seeElement('.profile-banner-image-container .image-upload-buttons .profile-image-crop');
@@ -44,7 +44,7 @@ class ProfileImageCest
         $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
-        $I->executeJS("$('.profile-banner-image-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-banner-image-container');
         $I->waitForElementVisible('.profile-banner-image-container .image-upload-buttons .profile-image-upload');
         $I->dontSeeElement('.profile-banner-image-container .image-upload-buttons .profile-image-delete');
         $I->dontSeeElement('.profile-banner-image-container .image-upload-buttons .profile-image-crop');
@@ -66,7 +66,7 @@ class ProfileImageCest
         $this->deleteImage($I, '.profile-user-photo-container');
 
         $I->waitForElementVisible('.profile-user-photo-container .img-profile-header-background[src="/static/img/default_user.jpg"]');
-        $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-user-photo-container');
         $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .profile-image-upload');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-delete');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-crop');
@@ -74,7 +74,7 @@ class ProfileImageCest
         $I->attachFile('.profile-user-photo-container .profile-upload-input', 'test.jpg');
         $I->wait(2);
         $I->dontSeeElement('.profile-user-photo-container .img-profile-header-background[src="/static/img/default_user.jpg"]');
-        $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-user-photo-container');
         $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .profile-image-upload');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .profile-image-delete');
         $I->seeElement('.profile-user-photo-container .image-upload-buttons .profile-image-crop');
@@ -85,7 +85,7 @@ class ProfileImageCest
         $I->waitForText('Confirm image deletion', null, '#globalModalConfirm');
         $I->click('Delete', '#globalModalConfirm');
         $I->waitForElementVisible('.profile-user-photo-container .img-profile-header-background[src="/static/img/default_user.jpg"]');
-        $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-user-photo-container');
         $I->waitForElementVisible('.profile-user-photo-container .image-upload-buttons .profile-image-upload');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-delete');
         $I->dontSeeElement('.profile-user-photo-container .image-upload-buttons .profile-image-crop');
@@ -105,7 +105,7 @@ class ProfileImageCest
         $I->waitForElementVisible('.profile-banner-image-container .img-profile-header-background[src="/static/img/default_banner.jpg"]');
         $I->attachFile('.profile-banner-image-container .profile-upload-input', 'test.jpg');
         $I->wait(2);
-        $I->executeJS("$('.profile-banner-image-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-banner-image-container');
         $I->seeElement('.profile-banner-image-container .profile-image-crop');
         $I->click('.profile-banner-image-container .profile-image-crop');
 
@@ -128,7 +128,7 @@ class ProfileImageCest
         $I->waitForElementVisible('.profile-user-photo-container .img-profile-header-background[src="/static/img/default_user.jpg"]');
         $I->attachFile('.profile-user-photo-container .profile-upload-input', 'test.jpg');
         $I->wait(2);
-        $I->executeJS("$('.profile-user-photo-container .image-upload-buttons').removeClass('d-none')");
+        $I->click('.profile-user-photo-container');
         $I->seeElement('.profile-user-photo-container .profile-image-crop');
         $I->click('.profile-user-photo-container .profile-image-crop');
 
