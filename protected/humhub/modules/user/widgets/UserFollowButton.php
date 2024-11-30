@@ -90,9 +90,9 @@ class UserFollowButton extends Widget
 
         // Hide inactive button
         if ($this->user->isFollowedByUser()) {
-            $this->followOptions['style'] .= ' display:none;';
+            $this->followOptions['class'] .= ' d-none';
         } else {
-            $this->unfollowOptions['style'] .= ' display:none;';
+            $this->unfollowOptions['class'] .= ' d-none';
         }
 
         // Add UserId Buttons

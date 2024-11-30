@@ -117,6 +117,8 @@ class AcceptanceTester extends BaseTester
     {
         $this->amOnRoute(['/admin/authentication']);
         $this->jsClick('#authenticationsettingsform-allowguestaccess');
+        $this->scrollToBottom();
+        $this->wait(1);
         $this->click('button.btn-primary', '#authentication-settings-form');
         $this->wait(1);
         $this->guestAccessAllowed = true;
@@ -267,7 +269,7 @@ class AcceptanceTester extends BaseTester
     public function clickAccountDropDown()
     {
         $this->jsClick('#account-dropdown-link');
-        $this->waitForElementVisible('.account.open');
+        $this->waitForElementVisible('.account > .dropdown-menu.show');
     }
 
     public function amOnDirectory()

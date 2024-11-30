@@ -62,7 +62,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             '![Alt text><](http://local/image.jpg "Description text" =200x100)',
-            '<p><img class="d-block mx-auto" src="http://local/image.jpg" width="200" height="100" alt="Alt text" title="Description text" style="max-width: 100%; display: block; margin: auto;"></p>',
+            '<p><img class="d-block mx-auto" src="http://local/image.jpg" width="200" height="100" alt="Alt text" title="Description text" style="max-width: 100%;"></p>',
         );
     }
 
@@ -96,7 +96,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             '![alt><](http://local/image.jpg "desc")',
-            '<p><img class="d-block mx-auto" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; display: block; margin: auto;"></p>',
+            '<p><img class="d-block mx-auto" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%;"></p>',
         );
     }
 

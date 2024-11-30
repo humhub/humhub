@@ -21,32 +21,26 @@ ContentContainerAsset::register($this);
         Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
         [
             'id' => "notification_off_$content->id",
-            'class' => ['dropdown-item ', 'turnOffNotifications'],
-            'style' => [
-                'display' => $state ? 'block' : 'none',
-            ],
+            'class' => array_merge(['dropdown-item ', 'turnOffNotifications'], $state ? [] : ['d-none']),
             'data' => [
                 'action-click' => 'content.container.turnOffNotifications',
                 'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 0]),
                 'content-id' => $content->id,
-            ]
-        ]
-    ); ?>
+            ],
+        ],
+    ) ?>
 
     <?= Html::a(
         '<i class="fa fa-bell-o"></i> ' . Yii::t('ContentModule.base', 'Turn on notifications'),
         Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
         [
             'id' => "notification_on_$content->id",
-            'class' => ['dropdown-item ', 'turnOnNotifications'],
-            'style' => [
-                'display' => $state ? 'none' : 'block',
-            ],
+            'class' => array_merge(['dropdown-item ', 'turnOnNotifications'], $state ? ['d-none'] : []),
             'data' => [
                 'action-click' => 'content.container.turnOnNotifications',
                 'action-url' => Url::to(['/content/content/notification-switch', 'id' => $content->id, 'switch' => 1]),
                 'content-id' => $content->id,
-            ]
-        ]
-    ); ?>
+            ],
+        ],
+    ) ?>
 </li>

@@ -201,6 +201,8 @@ class ProfileCest
             $I->wait(1);
             $I->jsClick('.tab-pane.active tr[data-key=0] td:last-child a');
             $I->waitForText('Edit profile field');
+            $I->scrollToBottom();
+            $I->wait(1);
             $I->click('Delete');
             $I->waitForText('Confirm');
             $I->click('Confirm');

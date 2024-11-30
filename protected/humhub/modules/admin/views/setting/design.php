@@ -80,8 +80,8 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
 
 
-    <div class="well">
-        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
+    <div class="bg-light p-3">
+        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'class' => 'd-none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
             <img class="rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
@@ -99,8 +99,10 @@ $iconUrl = SiteIcon::getUrl(140);
         </div>
     </div>
 
-    <div class="well">
-        <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'style' => 'display: none', 'name' => 'icon[]']); ?>
+    <br>
+
+    <div class="bg-light p-3">
+        <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'class' => 'd-none', 'name' => 'icon[]']); ?>
         <div class="image-upload-container" id="icon-upload">
             <img class="rounded" id="icon-image" src="<?= $iconUrl ?>"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no icon at the moment. Upload your logo now."); ?>"

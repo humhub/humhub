@@ -266,8 +266,9 @@ class StreamCest
 
         $postSelector = '[data-content-key="13"]';
         $I->waitForElementVisible($postSelector);
-        $I->click('Comment', $postSelector);
+        $I->scrollTo($postSelector);
         $I->wait(1);
+        $I->click('Comment', $postSelector);
         $I->waitForElementVisible($postSelector . ' .comment-container', null);
         $I->fillField($postSelector . ' .comment_create .humhub-ui-richtext', 'My Comment');
         $I->click('[data-action-click=submit]', $postSelector . ' .comment_create');

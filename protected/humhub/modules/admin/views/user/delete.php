@@ -14,7 +14,7 @@ use humhub\widgets\form\ActiveForm;
     <br>
 
     <p><strong><?= Yii::t('AdminModule.user', 'Are you sure that you want to delete following user?'); ?></strong></p>
-    <div class="well">
+    <div class="bg-light p-3">
 
         <div class="d-flex">
             <div class="flex-shrink-0" style="padding-right:6px">

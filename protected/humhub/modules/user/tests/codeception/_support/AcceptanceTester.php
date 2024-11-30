@@ -38,7 +38,7 @@ class AcceptanceTester extends \AcceptanceTester
         $this->waitForText('User administration');
         $this->jsClick('tr[data-key=' . $user->id . '] div.dropdown button');
         $this->waitForText('Impersonate');
-        $this->click('Impersonate', '.dropdown.open');
+        $this->click('Impersonate', '.dropdown-menu.show');
         $this->acceptPopup();
     }
 
@@ -71,6 +71,9 @@ class AcceptanceTester extends \AcceptanceTester
         $this->fillField('#profilefield-title', $title);
         $this->selectOption('#profilefield-field_type_class', $type);
 
+        $this->scrollToBottom();
+        $this->wait(1);
+
         if ($options['required']) {
             $this->checkOption('#profilefield-required');
         }
@@ -95,6 +98,8 @@ class AcceptanceTester extends \AcceptanceTester
             $this->fillField('#checkboxlist-options', $options['checkboxlist-options']);
         }
 
+        $this->scrollToBottom();
+        $this->wait(1);
         $this->click('Save');
         $this->seeSuccess();
     }

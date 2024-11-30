@@ -111,36 +111,65 @@ If the footer contains a form submit button, the modal dialog must be included i
 
 These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
-### General replacements
+### General classes replacements
 
-- `.img-responsive` -> `.img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
-- `.alert-default` -> `.alert-light` or `.alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
-- `.btn-xs` -> `.btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
-- `.btn-default` -> `.btn-light` (the new `.btn-secondary` can also be used, but it will darker gray)
-- `.pull-left` -> `.float-start`
-- `.pull-right` -> `.float-end`
-- `.center-block` -> `.mx-auto` (image, inline or inline-block elements: `.d-block` + `.mx-auto`)
-- `.text-left` -> `.text-start`
-- `.text-right` -> `.text-end`
-- `.btn-group-xs` -> `.btn-group-sm`
-- `.img-rounded` -> `.rounded`
-- `.media-object` + `.img-rounded` -> `.rounded`
-- `.data-toggle` -> `.data-bs-toggle`
-- `.data-target` -> `.data-bs-target`
-- `.data-dismiss` -> `.data-bs-dismiss`
-- `.no-space` -> `.m-0` + `.p-0`
-- `.align-center` -> `.text-center` or `.d-flex` + `.justify-content-center`
-- `.col-xs-` -> `.col- ` and make sure the parent element has  `.row`, and the parent of parent `.container` ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
-- `.input-group-addon` -> `.input-group-text` (or `.input-group-prepend` or `.input-group-append`)
-- `.form-group` -> `.mb-3`
-- `.has-error`, `.has-warning`, and `.has-success` -> `.is-invalid` or `.is-valid`, but the new classes are now append to the input instead of the previous `.form-group` (the input is a child of the form group) 
-- `.help-block` + `.help-block-error` -> `.invalid-feedback`
-- `.help-block` -> `.text-body-secondary` or `.form-text` if in a form
-- `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`  -> `humhub\widgets\form\ActiveForm` (required for the new Bootstrap 5 syntax)
-- `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`  -> `humhub\widgets\form\ActiveField` (required for the new Bootstrap 5 syntax)
-- Remove `.jumbotron` class
+- `img-responsive` - > `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
+- `alert-default` - > `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
+- `btn-xs` - > `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
+- `btn-default` - > `btn-light` (the new  `btn-secondary` can also be used, but it will darker gray)
+- `pull-left` - > `float-start`
+- `pull-right` - > `float-end`
+- `center-block` - > `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
+- `text-left` - > `text-start`
+- `text-right` - > `text-end`
+- `btn-group-xs` - > `btn-group-sm`
+- `img-rounded` - > `rounded`
+- `media-object img-rounded` - > `rounded`
+- `data-toggle` - > `data-bs-toggle`
+- `data-target` - > `data-bs-target`
+- `data-dismiss` - > `data-bs-dismiss`
+- `no-space` - > `m-0 p-0`
+- `align-center` - > `text-center` or  `d-flex justify-content-center`
+- `col-xs-` - > `col- ` and make sure the parent element has   `row`, and the parent of parent  `container` ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
+- `input-group-addon` - > `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
+- `form-group` - > `mb-3`
+- `well` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?well(?:\s[^"']*)?["'][^>]*>`) -> `bg-light p-3` for a simple inset container or `card` (with a  `card-body` child element)
+- `has-error`,  `has-warning`, and  `has-success` - > `is-invalid` or  `is-valid`, but the new classes are now append to the input instead of the previous  `form-group` (the input is a child of the form group) 
+- `help-block help-block-error` - > `invalid-feedback`
+- `help-block` - > `text-body-secondary` or  `form-text` if in a form
+- Remove  `jumbotron` class
+
+
+### Hidden elements
+
+Use the new `d-none` class instead of the `display: none` / `display:none` style.
+
+In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
+E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
+
+- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
+- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
+- `hidden-md` → `d-md-none d-lg-block`
+- `hidden-lg` → `d-lg-none d-xl-block`
+- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
+- `visible-xs` → `d-block d-sm-none`
+- `visible-sm` → `d-none d-sm-block d-md-none`
+- `visible-md` → `d-none d-md-block d-lg-none`
+- `visible-lg` → `d-none d-lg-block d-xl-none`
+- `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
+
+JavaScript: as the `d-flex` is set in Bootstrap CSS to `flex !important` and the `d-none` class to `display: none !important;`, the jQuery `hide()` and `show()` functions won't work, because of the `!important`.
+Replacements to do on these elements:
+- `.hide()` -> `.addClass('d-none')`
+- `.show()` -> `.removeClass('d-none')`
+
 
 ### Forms
+
+#### Widgets replacements
+
+- `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`  -> `humhub\widgets\form\ActiveForm` (required for the new Bootstrap 5 syntax)
+- `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`  -> `humhub\widgets\form\ActiveField` (required for the new Bootstrap 5 syntax)
 
 #### Input groups
 
@@ -178,22 +207,6 @@ Example:
     'form' => $form,
 ]) ?>
 ```
-
-### Hidden classes
-
-In the following replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
-E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
-
-- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
-- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
-- `hidden-md` → `d-md-none d-lg-block`
-- `hidden-lg` → `d-lg-none d-xl-block`
-- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
-- `visible-xs` → `d-block d-sm-none`
-- `visible-sm` → `d-none d-sm-block d-md-none`
-- `visible-md` → `d-none d-md-block d-lg-none`
-- `visible-lg` → `d-none d-lg-block d-xl-none`
-- `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
 
 ### Dropdown
 
@@ -296,12 +309,6 @@ Should be replaced with cards.
 
 TODO in core and to document here
 
-### Well
-
-Should be replaced with cards.
-
-TODO in core and to document here
-
 ### Label & Badge
 
 Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
@@ -332,12 +339,6 @@ Replacements:
 
 Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
 
-## Javascript
-
-As the `d-flex` is set in Bootstrap CSS to `flex !important` and the `d-none` class to `display: none !important;`, the jQuery `hide()` and `show()` functions won't work, because of the `!important`.
-Replacements to do on these elements:
-- `.hide()` -> `.addClass('d-none')`
-- `.show()` -> `.removeClass('d-none')`
 
 ## Themes and Modules: LESS is replaced with SCSS
 

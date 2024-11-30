@@ -92,12 +92,12 @@ class FollowButton extends Widget
 
         // Hide inactive button
         if ($this->space->isMember()) {
-            $this->followOptions['style'] .= ' display:none;';
-            $this->unfollowOptions['style'] .= ' display:none;';
+            $this->followOptions['class'] .= ' d-none';
+            $this->unfollowOptions['class'] .= ' d-none';
         } elseif ($this->space->isFollowedByUser()) {
-            $this->followOptions['style'] .= ' display:none;';
+            $this->followOptions['class'] .= ' d-none';
         } else {
-            $this->unfollowOptions['style'] .= ' display:none;';
+            $this->unfollowOptions['class'] .= ' d-none';
         }
 
         // Add SpaceIds

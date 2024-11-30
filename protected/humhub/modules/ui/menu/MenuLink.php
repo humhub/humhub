@@ -77,7 +77,7 @@ class MenuLink extends MenuEntry
         $this->getLink()->options(['data-sort-order' => $this->getSortOrder()]);
 
 
-        return $this->getLink()->htmlOptions;
+        return $this->getLink()->options;
     }
 
     public function compare(MenuEntry $entry)
