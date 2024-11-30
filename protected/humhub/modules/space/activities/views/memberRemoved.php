@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\Helpers;
 use humhub\modules\content\components\ContentContainerController;
-use yii\helpers\Html;
 
 if (!Yii::$app->controller instanceof ContentContainerController) {
     echo Yii::t('ActivityModule.base', '{displayName} left the space {spaceName}', [

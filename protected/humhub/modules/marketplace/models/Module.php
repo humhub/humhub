@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -9,7 +10,7 @@ namespace humhub\modules\marketplace\models;
 
 use humhub\modules\marketplace\Module as MarketplaceModule;
 use humhub\modules\marketplace\services\FilterService;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;

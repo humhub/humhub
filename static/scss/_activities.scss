@@ -1,0 +1,21 @@
+// Activities
+.activities {
+    max-height: 400px;
+    overflow: auto;
+
+    div.activity-entry {
+        padding: 0;
+    }
+
+    .d-flex {
+        position: relative;
+        padding: 10px;
+        max-width: 295px;
+
+        .img-space {
+            position: absolute;
+            top: 24px;
+            left: 24px;
+        }
+    }
+}

@@ -1,16 +1,16 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\TimezoneHelper;
 use humhub\modules\admin\models\forms\BasicSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var BasicSettingsForm $model */
 ?>
 
 <div class="panel-body">
     <h4><?= Yii::t('AdminModule.settings', 'General Settings') ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.settings', 'Here you can configure basic settings of your social network.') ?>
     </div>
 

@@ -22,12 +22,12 @@
  * Note: Inline styles have been retained for legacy theme compatibility (prior to v1.4)
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 
 ContainerHeaderAsset::register($this);
 

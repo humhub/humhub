@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\installer\forms\SecurityForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use yii\bootstrap\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var SecurityForm $model */
 ?>
@@ -33,5 +33,3 @@ use yii\bootstrap\Html;
         <?php ActiveForm::end(); ?>
     </div>
 </div>
-
-

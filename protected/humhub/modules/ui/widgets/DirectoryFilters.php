@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -8,9 +9,9 @@
 namespace humhub\modules\ui\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\form\widgets\DatePicker;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\ArrayHelper;
 

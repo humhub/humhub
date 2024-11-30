@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -9,7 +10,7 @@ namespace humhub\modules\admin\widgets;
 
 use humhub\components\Module;
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\ArrayHelper;
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This is the initial test bootstrap, which will load the default test bootstrap from the humhub core
  */

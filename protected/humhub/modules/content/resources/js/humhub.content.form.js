@@ -57,8 +57,8 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.submit = function (evt) {
         this.$.find('.preferences, .fileinput-button').hide();
-        this.$.find('.help-block-error').html('');
-        this.$.find('.has-error').removeClass('has-error');
+        this.$.find('.invalid-feedback').html('');
+        this.$.find('.is-invalid').removeClass('is-invalid');
 
         var that = this;
         evt.block = 'manual';
@@ -129,15 +129,15 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.handleError = function (response) {
         var that = this;
-        var model = that.$.find('.form-group:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
+        var model = that.$.find('.mb-3:first').attr('class').replace(/^.+field-([^-]+).+$/, '$1');
         $.each(response.errors, function (fieldName, errorMessages) {
             var fieldSelector = '.field-' + model + '-' + fieldName;
             var inputSelector = '.field-contentForm_' + fieldName;
             var multiInputSelector = '[name="' + fieldName + '[]"]';
-            that.$.find(fieldSelector).addClass('has-error');
+            that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
             that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
-                .find('.help-block-error:first').html(errorMessages.join('<br>'));
-            that.$.find(multiInputSelector).closest('.form-group').addClass('has-error');
+                .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
+            that.$.find(multiInputSelector).closest('.mb-3 .form-control').addClass('is-invalid');
         });
     };
 
@@ -164,13 +164,13 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.setPublicVisibility = function () {
         $('#contentForm_visibility').prop("checked", true);
         $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
-        $('.label-public').removeClass('hidden');
+        $('.badge-public').removeClass('d-none');
     };
 
     CreateForm.prototype.setPrivateVisibility = function () {
         $('#contentForm_visibility').prop("checked", false);
         $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
-        $('.label-public').addClass('hidden');
+        $('.badge-public').addClass('d-none');
     };
 
     CreateForm.prototype.notifyUser = function () {
@@ -193,7 +193,7 @@ humhub.module('content.form', function (module, require, $) {
         const button = this.$.find('#post_submit_button');
 
         if (!stateLabel.length) {
-            stateLabel = $('<span>').addClass('label label-warning label-content-state');
+            stateLabel = $('<span>').addClass('badge text-bg-warning label-content-state');
             this.$.find('.label-container').append(stateLabel);
         }
 
@@ -253,7 +253,7 @@ humhub.module('content.form', function (module, require, $) {
 
         modal.post(evt, {data}).then(function () {
             modalGlobal.one('submitted', function () {
-                if (modalGlobal.find('.has-error').length) {
+                if (modalGlobal.find('.is-invalid').length) {
                     return;
                 }
 

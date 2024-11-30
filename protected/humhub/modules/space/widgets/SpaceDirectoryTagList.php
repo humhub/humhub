@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -7,10 +8,9 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\libs\Html;
-use humhub\modules\space\models\Space;
-use yii\helpers\Url;
 use humhub\components\Widget;
+use humhub\modules\space\models\Space;
+use humhub\widgets\bootstrap\Button;
 
 /**
  * SpaceDirectoryTagList displays the space tags on the directory spaces page
@@ -55,7 +55,7 @@ class SpaceDirectoryTagList extends Widget
         $html = '';
         foreach ($tags as $tag) {
             if (trim($tag) !== '') {
-                $html .= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => trim($tag)]), ['class' => 'label label-default']) . "&nbsp";
+                $html .= Button::asBadge($tag, 'secondary')->link(['/space/spaces', 'keyword' => trim($tag)]) . "&nbsp";
             }
         }
 

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Created by PhpStorm.
  * User: kingb
@@ -8,8 +9,7 @@
 
 namespace humhub\modules\ui\filter\widgets;
 
-use humhub\modules\ui\filter\widgets\FilterInput;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 
 class TextFilterInput extends FilterInput
 {

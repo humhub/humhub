@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -8,7 +9,7 @@
 
 namespace humhub\modules\topic\controllers;
 
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\topic\models\forms\ContentTopicsForm;

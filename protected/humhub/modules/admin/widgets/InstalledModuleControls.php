@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -44,7 +45,7 @@ class InstalledModuleControls extends Menu
                     'id' => 'default',
                     'label' => Yii::t('AdminModule.base', 'Set as default'),
                     'url' => $this->getActionUrl('/admin/module/set-as-default'),
-                    'htmlOptions' => ['data-target' => '#globalModal'],
+                    'htmlOptions' => ['data-bs-target' => '#globalModal'],
                     'icon' => 'check-square',
                     'sortOrder' => 200,
                 ]));

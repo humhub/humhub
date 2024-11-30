@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -8,11 +9,11 @@
 
 namespace humhub\modules\topic\controllers;
 
+use humhub\modules\user\models\User;
+use humhub\widgets\modal\ModalClose;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\permissions\ManageTopics;
-use humhub\modules\user\models\User;
-use humhub\widgets\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\web\ForbiddenHttpException;

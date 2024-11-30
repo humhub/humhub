@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -9,7 +10,7 @@
 namespace humhub\modules\ui\filter\widgets;
 
 use humhub\components\Widget;
-use yii\helpers\Html;
+use humhub\helpers\Html;
 
 /**
  * Widget for rendering stream filter blocks.

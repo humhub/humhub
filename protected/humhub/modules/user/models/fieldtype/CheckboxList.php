@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -8,10 +9,10 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * CheckboxList profile field for selecting multiple options.

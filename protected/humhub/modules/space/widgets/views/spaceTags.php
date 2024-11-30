@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /* @var $space Space */
@@ -17,7 +17,7 @@ use yii\helpers\Url;
         <div class="panel-body">
             <div class="tags">
                 <?php foreach ($space->getTags() as $tag): ?>
-                    <?= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => $tag]), ['class' => 'btn btn-default btn-xs tag']); ?>
+                    <?= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => $tag]), ['class' => 'btn btn-light btn-sm tag']); ?>
                 <?php endforeach; ?>
             </div>
         </div>

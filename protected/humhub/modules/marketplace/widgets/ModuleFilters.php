@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -7,12 +8,12 @@
 
 namespace humhub\modules\marketplace\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\widgets\DirectoryFilters;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\Url;
 

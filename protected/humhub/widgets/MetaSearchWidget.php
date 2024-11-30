@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -54,7 +55,7 @@ class MetaSearchWidget extends JsWidget
      */
     protected function getAttributes()
     {
-        return ['class' => 'dropdown search-menu'];
+        return ['class' => 'nav-item dropdown search-menu'];
     }
 
     /**

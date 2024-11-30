@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -35,7 +36,7 @@ class ActivityStreamCest
 
         $I->amOnSpace2();
 
-        $I->waitForText('There are no activities yet.', null, '#activityStream');
+        $I->waitForText('There are no activities yet.', 10, '#activityStream');
 
 
         $I->wantToTest('that another user see my activity in the activity stream');
