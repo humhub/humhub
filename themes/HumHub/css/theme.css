@@ -10903,6 +10903,9 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   word-break: normal;
   hyphens: none;
 }
+.bg-light {
+  background-color: var(--hh-background-color-secondary) !important;
+}
 .navbar.topbar {
   --bs-navbar-padding-x: 0;
   --bs-navbar-padding-y: 0;
@@ -11650,12 +11653,6 @@ ul.tab-menu-settings .nav-link.active {
   font-size: 15px;
   font-weight: 600;
 }
-.nav-pills.preferences .dropdown.open .dropdown-toggle, .nav-pills.preferences .dropdown.open .dropdown-toggle:hover {
-  background-color: var(--bs-primary);
-}
-.nav-pills.preferences .dropdown.open .dropdown-toggle i, .nav-pills.preferences .dropdown.open .dropdown-toggle:hover i {
-  color: var(--hh-text-color-contrast);
-}
 .nav-pills.preferences li.nav-item:has(> .dropdown-divider):last-of-type {
   display: none;
 }
@@ -11693,9 +11690,6 @@ ul.tab-menu-settings .nav-link.active {
 }
 .nav-pills.preferences .dropdown .dropdown-toggle {
   padding: 2px 5px;
-}
-.nav-pills.preferences .dropdown.open .dropdown-toggle, .nav-pills.preferences .dropdown.open .dropdown-toggle:hover {
-  color: white;
 }
 .tab-content .tab-pane a {
   color: var(--bs-link-color);

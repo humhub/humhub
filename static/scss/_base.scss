@@ -145,3 +145,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     word-break: normal;
     hyphens: none;
 }
+
+.bg-light {
+    background-color: var(--hh-background-color-secondary) !important;
+}
