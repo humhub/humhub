@@ -13,8 +13,6 @@ use humhub\widgets\modal\ModalButton;
 /* @var $confirmBody string */
 /* @var $dropZone string */
 
-$editButtonStyle = $hasImage ? '' : 'display: none;';
-
 if (!isset($dropZone)) {
     $dropZone = null;
 }
@@ -32,20 +30,21 @@ if (!isset($confirmBody)) {
         'dropZone' => $dropZone,
         'options' => ['class' => 'profile-upload-input']]) ?>
 
-    <?= ModalButton::info()->style($editButtonStyle)->sm()
+    <?= ModalButton::info()
+        ->sm()
         ->load($cropUrl)->icon('edit')
-        ->cssClass('profile-image-edit profile-image-crop') ?>
+        ->cssClass('profile-image-edit profile-image-crop' . ($hasImage ? '' : ' d-none')) ?>
 
     <?= Button::danger()
         ->icon('remove')
         ->action('delete', $deleteUrl)
-        ->style($editButtonStyle)->sm()
+        ->sm()
         ->loader(false)
-        ->cssClass('profile-image-edit profile-image-delete')
+        ->cssClass('profile-image-edit profile-image-delete' . ($hasImage ? '' : ' d-none'))
         ->confirm(
             Yii::t('SpaceModule.base', '<strong>Confirm</strong> image deletion'),
             $confirmBody,
             Yii::t('SpaceModule.base', 'Delete'),
-            Yii::t('SpaceModule.base', 'Cancel')
+            Yii::t('SpaceModule.base', 'Cancel'),
         ) ?>
 </div>
