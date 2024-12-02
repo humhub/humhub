@@ -30,6 +30,11 @@ use yii\validators\StringValidator;
 class Invite extends Model
 {
     /**
+     * @var string Target where this form is used
+     */
+    public string $target = LinkRegistrationService::TARGET_PEOPLE;
+
+    /**
      * @var string user's username or email address
      */
     public $emails;
@@ -103,9 +108,16 @@ class Invite extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        return (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail'))
-            || Yii::$app->user->isAdmin()
-            || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+        if (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail')) {
+            return true;
+        }
+
+        if ($this->target === LinkRegistrationService::TARGET_ADMIN) {
+            // Admins always can invite by email
+            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+        }
+
+        return false;
     }
 
     /**
@@ -120,9 +132,16 @@ class Invite extends Model
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        return (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink'))
-            || Yii::$app->user->isAdmin()
-            || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+        if (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByLink')) {
+            return true;
+        }
+
+        if ($this->target === LinkRegistrationService::TARGET_ADMIN) {
+            // Admins always can invite by link
+            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
+        }
+
+        return false;
     }
 
     /**
@@ -133,6 +152,7 @@ class Invite extends Model
     public function getInviteLink($forceResetToken = false)
     {
         $linkRegistrationService = new LinkRegistrationService();
+        $linkRegistrationService->target = $this->target;
         $token = $linkRegistrationService->getStoredToken();
         if ($forceResetToken || !$token) {
             $token = $linkRegistrationService->setNewToken();

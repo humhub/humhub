@@ -26,6 +26,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\base\Exception;
 use yii\db\Query;
@@ -268,7 +269,7 @@ class UserController extends Controller
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
-        $invite = new InviteForm();
+        $invite = new InviteForm(['target' => LinkRegistrationService::TARGET_ADMIN]);
 
         return $this->render('add', [
             'hForm' => $registration,

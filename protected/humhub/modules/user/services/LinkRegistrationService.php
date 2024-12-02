@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\services;
 
+use humhub\components\SettingsManager;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
@@ -24,10 +25,17 @@ use yii\db\StaleObjectException;
  */
 final class LinkRegistrationService
 {
+    public const SETTING_VAR_ENABLED = 'auth.internalUsersCanInviteByLink';
     public const SETTING_VAR_SPACE_TOKEN = 'inviteToken';
-    public const SETTING_VAR_TOKEN = 'registration.inviteToken';
+    public const SETTING_VAR_ADMIN_TOKEN = 'registration.inviteToken';
+    public const SETTING_VAR_PEOPLE_TOKEN = 'people.inviteToken';
+
+    public const TARGET_ADMIN = 'admin';
+    public const TARGET_PEOPLE = 'people';
+
     private ?Space $space;
     private ?string $token;
+    public ?string $target = null;
 
     public static function createFromRequest(): LinkRegistrationService
     {
@@ -42,16 +50,36 @@ final class LinkRegistrationService
         return new LinkRegistrationService($token, Space::findOne(['id' => $spaceId]));
     }
 
-
     public function __construct(?string $token = null, ?Space $space = null)
     {
         $this->token = $token;
         $this->space = $space;
+        $this->initTarget();
+    }
+
+    private function initTarget(): void
+    {
+        if ($this->token && $this->target === null) {
+            if ($this->token === $this->getSettings()->get(self::SETTING_VAR_ADMIN_TOKEN)) {
+                $this->target = self::TARGET_ADMIN;
+            } elseif ($this->token === $this->getSettings()->get(self::SETTING_VAR_PEOPLE_TOKEN)) {
+                $this->target = self::TARGET_PEOPLE;
+            }
+        }
     }
 
     public function isValid(): bool
     {
         return $this->getStoredToken() === $this->token;
+    }
+
+    public function isEnabled(): bool
+    {
+        if ($this->target === self::TARGET_ADMIN) {
+            return true;
+        }
+
+        return (bool) $this->getSettings()->get(self::SETTING_VAR_ENABLED, false);
     }
 
     public function getStoredToken(): ?string
@@ -60,10 +88,15 @@ final class LinkRegistrationService
             return $this->space->settings->get(self::SETTING_VAR_SPACE_TOKEN);
         }
 
-        /** @var Module $module */
-        $module = Yii::$app->getModule('user');
+        if ($this->target === self::TARGET_ADMIN) {
+            return $this->getSettings()->get(self::SETTING_VAR_ADMIN_TOKEN);
+        }
 
-        return $module->settings->get(self::SETTING_VAR_TOKEN);
+        if ($this->target === self::TARGET_PEOPLE) {
+            return $this->getSettings()->get(self::SETTING_VAR_PEOPLE_TOKEN);
+        }
+
+        return null;
     }
 
     public function setNewToken(): string
@@ -72,10 +105,10 @@ final class LinkRegistrationService
         if ($this->space) {
             $this->space->settings->set(self::SETTING_VAR_SPACE_TOKEN, $newToken);
         } else {
-            /** @var Module $module */
-            $module = Yii::$app->getModule('user');
-
-            $module->settings->set(self::SETTING_VAR_TOKEN, $newToken);
+            $settingName = $this->target === 'admin'
+                ? self::SETTING_VAR_ADMIN_TOKEN
+                : self::SETTING_VAR_PEOPLE_TOKEN;
+            $this->getSettings()->set($settingName, $newToken);
         }
 
         return $newToken;
@@ -137,5 +170,12 @@ final class LinkRegistrationService
     public function getSpace(): ?Space
     {
         return $this->space;
+    }
+
+    private function getSettings(): SettingsManager
+    {
+        /* @var Module $module */
+        $module = Yii::$app->getModule('user');
+        return $module->settings;
     }
 }

@@ -24,6 +24,8 @@ use yii\authclient\BaseClient;
 use yii\authclient\ClientInterface;
 use yii\base\Exception;
 use yii\db\StaleObjectException;
+use yii\web\BadRequestHttpException;
+use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 
 /**
@@ -137,8 +139,12 @@ class RegistrationController extends Controller
     {
         $linkRegistrationService = new LinkRegistrationService($token, Space::findOne(['id' => (int)$spaceId]));
 
+        if (!$linkRegistrationService->isEnabled()) {
+            throw new ForbiddenHttpException('Registration is disabled!');
+        }
+
         if ($token === null || !$linkRegistrationService->isValid()) {
-            throw new HttpException(400, 'Invalid token provided!');
+            throw new BadRequestHttpException('Invalid token provided!');
         }
 
         $linkRegistrationService->storeInSession();
