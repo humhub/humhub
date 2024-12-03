@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #7278: Don't remove html tags by JS from search post record because it is done by PHP
 - Fix #7296: Fix email validation of invite new users
 - Fix #7319: Display correct profile field value in user subtitle
+- Fix #7322: Always allow invitation by link from Administration. Implement separate invitation by link from People.
 
 1.16.2 (September 5, 2024)
 --------------------------
