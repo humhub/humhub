@@ -1,13 +1,13 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return array (
-  'New Content' => 'Новые записи',
-  'Receive Notifications for new content you follow.' => 'Получать уведомления о новых записях которые Вы хотите отслеживать.',
+  'New Content' => 'Новый Контент',
+  'Receive Notifications for new content you follow.' => 'Получать уведомления о новом контенте, на который вы подписаны.',
   'View Online' => 'Посмотреть на сайте',
-  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => 'Ваш {contentTitle} был удален пользователем {displayName} по причине "{reason}".',
-  '{displayName} created {contentTitle}.' => '{displayName} создал {contentTitle}.',
-  '{displayName} posted on your profile {contentTitle}.' => '{displayName} опубликовал(а) в Вашем профиле {contentTitle}.',
+  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => 'Ваш контент {contentTitle} была удалён пользователем {displayName} по причине: «{reason}»',
+  '{displayName} created {contentTitle}.' => '{displayName} создал(а) {contentTitle}.',
+  '{displayName} posted on your profile {contentTitle}.' => '{displayName} опубликовал(а) в вашем профиле {contentTitle}.',
   '{originator} just wrote {contentInfo}' => '{originator} только что написал(а) {contentInfo}',
   '{originator} just wrote {contentInfo} in space {space}' => '{originator} только что написал(а) {contentInfo} в сообществе {space}',
-  '{originator} notifies you about {contentInfo}' => '{originator} уведомляет Вас о {contentInfo}',
-  '{originator} notifies you about {contentInfo} in {space}' => '{originator} уведомляет Вас о {contentInfo} в сообществе {space}',
+  '{originator} notifies you about {contentInfo}' => '{originator} уведомляет вас о {contentInfo}',
+  '{originator} notifies you about {contentInfo} in {space}' => '{originator} уведомляет вас о {contentInfo} в сообществе {space}',
 );
