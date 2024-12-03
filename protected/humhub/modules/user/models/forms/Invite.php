@@ -86,7 +86,7 @@ class Invite extends Model
      *
      * @return array the emails
      */
-    public function getEmails()
+    public function getEmails(): array
     {
         $emails = [];
         foreach (explode(',', $this->emails) as $email) {
@@ -103,21 +103,14 @@ class Invite extends Model
      * @throws InvalidConfigException
      * @throws Throwable
      */
-    public function canInviteByEmail()
+    public function canInviteByEmail(): bool
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
 
-        if (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail')) {
-            return true;
-        }
-
-        if ($this->target === LinkRegistrationService::TARGET_ADMIN) {
-            // Admins always can invite by email
-            return Yii::$app->user->isAdmin() || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
-        }
-
-        return false;
+        return (!Yii::$app->user->isGuest && $module->settings->get('auth.internalUsersCanInviteByEmail'))
+            || Yii::$app->user->isAdmin()
+            || Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
     }
 
     /**
@@ -127,7 +120,7 @@ class Invite extends Model
      * @throws Throwable
      * @throws InvalidConfigException
      */
-    public function canInviteByLink()
+    public function canInviteByLink(): bool
     {
         /** @var Module $module */
         $module = Yii::$app->getModule('user');
@@ -149,7 +142,7 @@ class Invite extends Model
      * @return string
      * @throws Exception
      */
-    public function getInviteLink($forceResetToken = false)
+    public function getInviteLink(bool $forceResetToken = false): string
     {
         $linkRegistrationService = new LinkRegistrationService();
         $linkRegistrationService->target = $this->target;

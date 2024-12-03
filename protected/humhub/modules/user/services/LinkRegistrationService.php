@@ -70,12 +70,13 @@ final class LinkRegistrationService
 
     public function isValid(): bool
     {
-        return $this->getStoredToken() === $this->token;
+        return $this->isEnabled() && $this->getStoredToken() === $this->token;
     }
 
     public function isEnabled(): bool
     {
         if ($this->target === self::TARGET_ADMIN) {
+            // The link registration with token from Administration is always enabled
             return true;
         }
 
