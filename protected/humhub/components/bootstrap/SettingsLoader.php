@@ -9,6 +9,10 @@ class SettingsLoader implements BootstrapInterface
 {
     public function bootstrap($app)
     {
+        if (!$app) {
+            return;
+        }
+
         $this->setMailerConfig($app);
     }
 
