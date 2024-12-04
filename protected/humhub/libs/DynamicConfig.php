@@ -90,30 +90,7 @@ class DynamicConfig extends BaseObject
         $config['name'] = Yii::$app->settings->get('name');
 
         // Add Caching
-        $cacheClass = Yii::$app->settings->get('cache.class');
-        if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {
-            $config['components']['cache'] = [
-                'class' => $cacheClass,
-                'keyPrefix' => Yii::$app->id,
-            ];
-        } elseif ($cacheClass == 'yii\caching\ApcCache' && (function_exists('apcu_add') || function_exists('apc_add'))) {
-            $config['components']['cache'] = [
-                'class' => $cacheClass,
-                'keyPrefix' => Yii::$app->id,
-                'useApcu' => (function_exists('apcu_add')),
-            ];
-        } elseif ($cacheClass === \yii\redis\Cache::class) {
-            $config['components']['cache'] = [
-                'class' => \yii\redis\Cache::class,
-                'keyPrefix' => Yii::$app->id,
-            ];
-        }
 
-        // Add User settings
-        $config['components']['user'] = [];
-        if (Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-            $config['components']['user']['authTimeout'] = Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec');
-        }
 
         // Remove old theme/view stuff
         unset($config['components']['view']);
@@ -146,7 +123,7 @@ class DynamicConfig extends BaseObject
     public static function needRewrite($moduleId, $name)
     {
         return (in_array($name, [
-            'name', 'defaultLanguage', 'timeZone', 'cache.class', 'horImageScrollOnMobile']));
+            'name', 'defaultLanguage', 'timeZone', 'horImageScrollOnMobile']));
     }
 
     public static function getConfigFilePath()
