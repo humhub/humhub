@@ -20,7 +20,7 @@ class SettingsLoader implements BootstrapInterface
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
 
         if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
-            $app->mailer->setTransport(['dsn' => 'native://default']);
+            $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport(['dsn' => 'native://default']);
             $app->mailer->useFileTransport = true;
         } elseif($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
@@ -50,7 +50,7 @@ class SettingsLoader implements BootstrapInterface
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
                 $transport['dsn'] = $app->settings->get('mailer.dsn');
             }
-            $app->mailer->setTransport($transport);
+            $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport($transport);
         }
     }
 }
