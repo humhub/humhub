@@ -96,7 +96,7 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
+- Fix #7232: Refresh the `updated_at` timestamp of invitation after resend it
 - Fix #7241: Fix file visibility for object with viewable interface
 - Enh #7229: Hide invitations with unknown sources
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)
