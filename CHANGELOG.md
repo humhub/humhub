@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
 - Enh #7329: Add a new global "Manage Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
+- Enh: Add missing IDs in the modal login forms
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
@@ -102,7 +103,7 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
+- Fix #7232: Refresh the `updated_at` timestamp of invitation after resend it
 - Fix #7241: Fix file visibility for object with viewable interface
 - Enh #7229: Hide invitations with unknown sources
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)

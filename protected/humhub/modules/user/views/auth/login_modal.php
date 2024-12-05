@@ -66,7 +66,7 @@ use yii\widgets\ActiveForm;
                     <?php endif; ?>
 
                     <?php if ($showLoginForm): ?>
-                        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+                        <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]); ?>
                         <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')]); ?>
                         <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]); ?>
                         <?= $form->field($model, 'rememberMe')->checkbox(); ?>
@@ -120,7 +120,7 @@ use yii\widgets\ActiveForm;
                             <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
                         <?php endif; ?>
 
-                        <?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
+                        <?php $form = ActiveForm::begin(['id' => 'invite-form-modal', 'enableClientValidation' => false]); ?>
 
                         <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]); ?>
                         <?php if ($invite->showCaptureInRegisterForm()) : ?>
