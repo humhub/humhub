@@ -13,6 +13,13 @@ class Security
     public const SESSION_KEY_NONCE = 'security-script-src-nonce';
 
     /**
+     * Interval(in seconds) to reload page when Content Security Policy violation is detected.
+     * It may help to solve the issue when JS "nonce" value is expired, after re-login user in another browser tab.
+     * 0 - to disable the checking.
+     */
+    public const CSP_VIOLATION_RELOAD_INTERVAL = 1800; // 30 minutes
+
+    /**
      * @throws Exception
      */
     public static function applyHeader($withCsp = false)

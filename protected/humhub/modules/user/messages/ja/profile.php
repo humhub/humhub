@@ -103,7 +103,7 @@ return [
   'TikTok URL' => 'TikTok URL',
   'Title' => 'タイトル',
   'Translation Category ID' => '翻訳カテゴリID',
-  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => 'このフィールドをレンダリングするために使用される Twig テンプレート。内部名を変数として使用できます。例: `{{ firstname }} {{ lastname }}`',
   'Twitter URL' => 'Twitter URL',
   'Type Config' => 'タイプ構成',
   'Updated at' => 'で更新',

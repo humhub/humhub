@@ -103,7 +103,7 @@ return [
   'TikTok URL' => 'Lien TikTok',
   'Title' => 'Titre',
   'Translation Category ID' => 'ID de traduction de la catégorie',
-  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => 'Modèle Twig qui sera utilisé pour afficher ce champ. Vous pouvez utiliser les noms internes comme variables, par exemple  `{{ firstname }} {{ lastname }}`',
   'Twitter URL' => 'Lien Twitter',
   'Type Config' => 'Configuration de type',
   'Updated at' => 'Mis à jour le',

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> Settings' => '<strong>Kontoeinstellungen</strong>',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Bestätige</strong> deine neue E-Mail Adresse',
   '<strong>Permissions</strong>' => '<strong>Berechtigungen</strong>',
@@ -34,6 +34,8 @@ return array (
   'Notifications' => 'Benachrichtigungen',
   'Other users' => 'Andere Benutzer',
   'Password Recovery' => 'Passwort-Wiederherstellung',
+  'Password recovery can only be initiated once every 10 minutes.' => 'Die Passwortwiederherstellung kann nur einmal alle 10 Minuten ausgeführt werden.',
+  'Password recovery disabled. Please contact your system administrator.' => 'Die Passwortwiederherstellung ist deaktiviert. Bitte wende dich an den Systemadministrator.',
   'Permissions' => 'Berechtigungen',
   'Plain' => 'Einfach',
   'Profile' => 'Profil',
@@ -64,4 +66,4 @@ return array (
   'Your password has been successfully changed!' => 'Dein Passwort wurde erfolgreich geändert!',
   'Your username has been changed' => 'Dein Benutzername wurde geändert',
   'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Dein Benutzername wurde erfolgreich geändert.<br />Wir haben dir gerade eine E-Mail mit neuer Information gesandt.',
-);
+];

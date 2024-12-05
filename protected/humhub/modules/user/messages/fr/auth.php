@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> registration' => 'Enregistrement de <strong>compte</strong>',
   '<strong>Change</strong> Password' => '<strong>Modifier</strong> le mot de passe',
   '<strong>Change</strong> your password' => 'Modifier votre <strong>mot de passe</strong>',
@@ -26,12 +26,14 @@ return array (
   'Group' => 'Groupe',
   'Hello {displayName}' => 'Bonjour {displayName}',
   'Hello {displayName},' => 'Bonjour {displayName},',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'S\'il existe un compte d\'utilisateur associé à cette adresse, des instructions supplémentaires vous seront envoyées par email dans les plus brefs délais.',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Veuillez utiliser ce lien dans les prochaines 24 heures. Passé ce délai, il expirera automatiquement.',
   'If you\'re already a member, please login with your username/email and password.' => 'Si vous êtes déjà inscrit, connectez-vous à l\'aide de votre identifiant ou adresse e-mail ainsi que votre mot de passe.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Indiquez votre adresse e-mail. Nous vous enverrons les instructions de récupération de votre mot de passe.',
   'Log out' => 'Déconnexion',
   'Login' => 'Identifiant',
   'New user needs approval' => 'Les nouveaux utilisateurs doivent être approuvés',
+  'Password' => 'mot de passe',
   'Password recovery' => 'Récupérer votre mot de passe',
   'Password reset' => 'Réinitialiser votre mot de passe',
   'Please check your email and follow the instructions!' => 'Vérifiez votre boîte e-mail et suivez les instructions indiquées.',
@@ -48,13 +50,11 @@ return array (
   'Sign in' => 'Se connecter',
   'To log in with your new account, click the button below.' => 'Pour vous connecter avec votre compte, cliquez sur le bouton ci-dessous.',
   'User or Password incorrect.' => 'Identifiant ou mot de passe incorrect.',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Nous venons de vous envoyer un e-mail contenant le lien qui vous permettra de réinitialiser votre mot de passe.',
+  'Username or Email' => 'identifiant ou e-mail',
   'Your email' => 'adresse e-mail',
   'Your password' => 'Votre mot de passe',
   'Your password has been successfully changed!' => 'Votre mot de passe a été changé avec succès.',
   'Your password is incorrect!' => 'Votre mot de passe est incorrect.',
   'a new user {displayName} needs approval.' => 'un nouvel utilisateur {displayName} nécessite une validation.',
   'back to home' => 'Retour à l\'accueil',
-  'Password' => 'mot de passe',
-  'Username or Email' => 'identifiant ou e-mail',
-);
+];

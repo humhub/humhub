@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> registration' => '<strong>Benutzerkonto</strong>-Registrierung',
   '<strong>Change</strong> Password' => '<strong>Passwort</strong> ändern',
   '<strong>Change</strong> your password' => '<strong>Ändere</strong> dein Passwort',
@@ -26,12 +26,14 @@ return array (
   'Group' => 'Gruppe',
   'Hello {displayName}' => 'Hallo {displayName}',
   'Hello {displayName},' => 'Hallo {displayName},',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'Wenn ein Benutzerkonto mit dieser E-Mail-Adresse existiert, werden dir in Kürze weitere Anweisungen per E-Mail zugesandt.',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Wenn du diesen Link nicht innerhalb der nächsten 24 Stunden nutzt, wird er ungültig.',
   'If you\'re already a member, please login with your username/email and password.' => 'Wenn du bereits Mitglied bist, logge dich bitte mit Benutzername/E-Mail und Passwort ein.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Gib einfach deine E-Mail Adresse ein und wir senden dir eine Mail um dein Passwort neu zu setzen.',
   'Log out' => 'Abmelden',
   'Login' => 'Login',
   'New user needs approval' => 'Neuer Benutzer benötigt Freischaltung',
+  'Password' => 'Passwort',
   'Password recovery' => 'Passwort-Wiederherstellung',
   'Password reset' => 'Passwort zurücksetzen',
   'Please check your email and follow the instructions!' => 'Bitte prüfe dein E-Mail-Postfach und folge den Anweisungen!',
@@ -48,13 +50,11 @@ return array (
   'Sign in' => 'Einloggen',
   'To log in with your new account, click the button below.' => 'Um dich mit deinem neuen Benutzerkonto einzuloggen, klicke unten auf den Button.',
   'User or Password incorrect.' => 'Benutzername oder Passwort inkorrekt',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Wir haben dir eine E-Mail mit einem Link geschickt, mit dem du dein Passwort zurücksetzen kannst.',
+  'Username or Email' => 'Benutzername oder E-Mail',
   'Your email' => 'Deine E-Mail',
   'Your password' => 'Dein Passwort',
   'Your password has been successfully changed!' => 'Dein Passwort wurde erfolgreich geändert!',
   'Your password is incorrect!' => 'Dein Passwort ist nicht korrekt!',
   'a new user {displayName} needs approval.' => 'Neuer Benutzer {displayName} benötigt eine Freischaltung.',
   'back to home' => 'zurück zur Startseite',
-  'Password' => 'Passwort',
-  'Username or Email' => 'Benutzername oder E-Mail',
-);
+];

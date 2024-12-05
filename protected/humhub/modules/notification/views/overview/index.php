@@ -1,18 +1,23 @@
 <?php
+/**
+ * @link https://www.humhub.org/
+ * @copyright Copyright (c) HumHub GmbH & Co. KG
+ * @license https://www.humhub.com/licences
+ */
 
 use humhub\modules\notification\models\forms\FilterForm;
+use humhub\modules\notification\widgets\NotificationFilterForm;
 use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
 
-/* @var $overview string */
-/* @var $filterForm FilterForm */
+/* @var string $overview */
+/* @var FilterForm $filterForm */
 ?>
 <div class="container">
     <div class="row">
         <div class="col-md-9 layout-content-container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview'); ?>
+                    <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview') ?>
                     <div class="pull-right">
                         <?= Button::defaultType()
                             ->icon('check')
@@ -36,16 +41,11 @@ use yii\bootstrap\ActiveForm;
         <div class="col-md-3 layout-sidebar-container">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <strong><?= Yii::t('NotificationModule.base', 'Filter'); ?></strong>
-                    <hr style="margin-bottom:0px"/>
+                    <strong><?= Yii::t('NotificationModule.base', 'Filter') ?></strong>
+                    <hr style="margin-bottom:0">
                 </div>
-
                 <div class="panel-body">
-                    <?php $form = ActiveForm::begin(['id' => 'notification_overview_filter', 'method' => 'GET']); ?>
-                    <div style="padding-left: 5px;">
-                        <?= $form->field($filterForm, 'categoryFilter')->checkboxList($filterForm->getCategoryFilterSelection())->label(false); ?>
-                    </div>
-                    <?php ActiveForm::end(); ?>
+                    <?= NotificationFilterForm::widget(['filterForm' => $filterForm]) ?>
                 </div>
             </div>
         </div>

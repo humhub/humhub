@@ -1,8 +1,20 @@
 HumHub Changelog
 ================
 
-1.17.0-beta.2 (Unreleased)
---------------------------------
+
+1.17.0-beta.3 (Unreleased)
+---------------------------------
+- Enh #7307: Improve request scheme detection
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
+- Fix #454: Profile about page missing left and right margin on mobile screen
+- Fix #7316: Fix formatter default time zone
+- Enh #7317: Space browser: Make the whole space card header and body clickable
+- Enh: Add missing IDs in the modal login forms
+
+1.17.0-beta.2 (November 12, 2024)
+---------------------------------
 - Enh #7280: Allow to add a space as default for new users from "Invite members" modal window
 - Fix #7281: SelfTest for DynamicConfig broken when not exist yet
 - Fix #7284: Content tag visibility
@@ -11,6 +23,10 @@ HumHub Changelog
 - Enh #7293: Add Twig string extension
 - Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
 - Fix #7295: iOS mobile app detection for iPad devices
+- Fix #7299: Fix public content from spaces on the profile in guest access mode
+- Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
+- Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
+- Enh #7038: Optimize notification overview
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
@@ -86,7 +102,7 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
+- Fix #7232: Refresh the `updated_at` timestamp of invitation after resend it
 - Fix #7241: Fix file visibility for object with viewable interface
 - Enh #7229: Hide invitations with unknown sources
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)
