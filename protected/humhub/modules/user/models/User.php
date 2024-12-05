@@ -761,10 +761,10 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         $module = Yii::$app->getModule('content');
 
         return $module->adminCanViewAllContent && (
-                $this->isSystemAdmin()
+            $this->isSystemAdmin()
                 || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
                 || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
-            );
+        );
     }
 
     /**
