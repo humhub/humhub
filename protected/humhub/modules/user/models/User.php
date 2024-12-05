@@ -19,6 +19,7 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\jobs\ReindexUserContent;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
@@ -750,6 +751,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      *
      * @param string|null $containerClass class name of the content container
      * @return bool
+     * @throws InvalidConfigException
+     * @deprecated since 1.17 use canManageContent() instead
      * @since 1.8
      */
     public function canViewAllContent(?string $containerClass = null): bool
@@ -758,10 +761,27 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         $module = Yii::$app->getModule('content');
 
         return $module->adminCanViewAllContent && (
-            $this->isSystemAdmin()
+                $this->isSystemAdmin()
                 || ($containerClass === Space::class && (new PermissionManager(['subject' => $this]))->can(ManageSpaces::class))
                 || ($containerClass === static::class && (new PermissionManager(['subject' => $this]))->can(ManageUsers::class))
-        );
+            );
+    }
+
+    /**
+     * Checks if the user is allowed to manage content
+     *
+     * @return bool
+     * @throws InvalidConfigException
+     * @since 1.17
+     */
+    public function canManageContent(): bool
+    {
+        /** @var \humhub\modules\content\Module $module */
+        $module = Yii::$app->getModule('content');
+
+        return
+            $module->enableGlobalManageContentPermission
+            && (new PermissionManager(['subject' => $this]))->can(ManageContent::class);
     }
 
 

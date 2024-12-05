@@ -2,13 +2,15 @@
 
 namespace tests\codeception\unit\modules\content;
 
-use humhub\modules\user\models\User;
-use Throwable;
-use Yii;
-use tests\codeception\_support\HumHubDbTestCase;
+use humhub\modules\content\models\Content;
+use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
-use humhub\modules\content\models\Content;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\User;
+use tests\codeception\_support\HumHubDbTestCase;
+use Throwable;
+use Yii;
 use yii\base\Exception;
 
 class ReadableContentQueryTest extends HumHubDbTestCase
@@ -185,26 +187,84 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertCount(0, $posts);
     }
 
-    public function testPublicSpaceContentAsAdminNotMemberCannotViewAllContent()
+    public function testPublicSpaceGlobalManageContentPermission()
     {
-        $this->becomeUser('AdminNotMember');
+        // User3 is member of Group ID 3
+        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
 
+        $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
-
         $this->assertPostCount(1);
         $this->assertInPosts($this->publicSpacePublicPost);
-    }
-
-    public function testPublicSpaceContentAsAdminNotMemberCanViewAllContent()
-    {
-        Yii::$app->getModule('content')->adminCanViewAllContent = true;
-        $this->becomeUser('AdminNotMember');
-
+        $this->becomeUser('Admin');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->publicSpacePublicPost);
+        $this->becomeUser('AdminNotMember');
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->assertPostCount(1);
+        $this->assertInPosts($this->publicSpacePublicPost);
 
+        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        $this->becomeUser('User3');
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->assertPostCount(1);
+        $this->assertInPosts($this->publicSpacePublicPost);
+        $this->becomeUser('Admin');
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
         $this->assertPostCount(2);
         $this->assertInPosts($this->publicSpacePublicPost);
         $this->assertInPosts($this->publicSpacePrivatePost);
+        $this->becomeUser('AdminNotMember');
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->assertPostCount(2); // Manage Content permission is enabled by default for admins
+        $this->assertInPosts($this->publicSpacePublicPost);
+        $this->assertInPosts($this->publicSpacePrivatePost);
+
+        self::setGroupPermission(3, new ManageContent());
+        $this->becomeUser('User3');
+        $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->publicSpacePublicPost);
+        $this->assertInPosts($this->publicSpacePrivatePost);
+    }
+
+    public function testPrivateSpaceGlobalManageContentPermission()
+    {
+        // User3 is member of Group ID 3
+        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
+
+        $this->becomeUser('User3');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(0);
+        $this->becomeUser('Admin');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(2);
+        $this->becomeUser('AdminNotMember');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(0);
+
+        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        $this->becomeUser('User3');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(0);
+        $this->becomeUser('Admin');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->privateSpacePublicPost);
+        $this->assertInPosts($this->privateSpacePrivatePost);
+        $this->becomeUser('AdminNotMember');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->privateSpacePublicPost);
+        $this->assertInPosts($this->privateSpacePrivatePost);
+
+        self::setGroupPermission(3, new ManageContent());
+        $this->becomeUser('User3');
+        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
+        $this->assertPostCount(2);
+        $this->assertInPosts($this->privateSpacePublicPost);
+        $this->assertInPosts($this->privateSpacePrivatePost);
     }
 
     public function testPrivateSpaceContentAsMember()
@@ -238,27 +298,6 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertPostCount(0);
     }
 
-    public function testPrivateSpaceContentAsAdminNotMemberCannotViewAllContent()
-    {
-        $this->becomeUser('AdminNotMember');
-
-        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
-
-        $this->assertPostCount(0);
-    }
-
-    public function testPrivateSpaceContentAsAdminNotMemberCanViewAllContent()
-    {
-        Yii::$app->getModule('content')->adminCanViewAllContent = true;
-        $this->becomeUser('AdminNotMember');
-
-        $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
-
-        $this->assertPostCount(2);
-        $this->assertInPosts($this->privateSpacePublicPost);
-        $this->assertInPosts($this->privateSpacePrivatePost);
-    }
-
     public function testProfileContentOfGlobalUserAsOwner()
     {
         $this->becomeUser('User2');
@@ -283,25 +322,24 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->profilePrivatePost);
     }
 
-    public function testProfileContentOfMembersOnlyUserAsAdminCannotViewAllContent()
+    public function testProfileContentOfMembersOnlyUserGlobalManageContentPermission()
     {
-        $this->becomeUser('Admin');
+        // User3 is member of Group ID 3
+        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
+
+        $this->becomeUser('User3');
         $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
-
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
-
         $this->assertPostCount(1);
         $this->assertInPosts($this->profilePublicPost);
-    }
 
-    public function testProfileContentOfMembersOnlyUserAsAdminCanViewAllContent()
-    {
-        Yii::$app->getModule('content')->adminCanViewAllContent = true;
-        $this->becomeUser('Admin');
-        $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
-
+        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
+        $this->assertPostCount(1);
+        $this->assertInPosts($this->profilePublicPost);
 
+        self::setGroupPermission(3, new ManageContent());
+        $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
         $this->assertPostCount(2);
         $this->assertInPosts($this->profilePublicPost);
         $this->assertInPosts($this->profilePrivatePost);

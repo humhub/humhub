@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #454: Profile about page missing left and right margin on mobile screen
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
+- Enh: Add a new global "Manage Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
