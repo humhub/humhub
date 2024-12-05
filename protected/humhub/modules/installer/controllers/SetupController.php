@@ -220,9 +220,5 @@ class SetupController extends Controller
 
         // Migrate Up Database
         MigrationService::create()->migrateUp();
-
-        DynamicConfig::rewrite();
-
-        Yii::$app->setDatabaseInstalled();
     }
 }

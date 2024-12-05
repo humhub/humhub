@@ -92,10 +92,6 @@ class InstallController extends Controller
 
         MigrationService::create()->migrateUp();
 
-        DynamicConfig::rewrite();
-
-        Yii::$app->setDatabaseInstalled();
-
         $this->stdout("  * Finishing\n", Console::FG_YELLOW);
         Yii::$app->setInstalled();
 

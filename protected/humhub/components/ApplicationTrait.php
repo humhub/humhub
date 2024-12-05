@@ -143,19 +143,7 @@ trait ApplicationTrait
             return false;
         }
 
-        return Yii::$app->params['databaseInstalled'] = in_array('setting', $db->schema->getTableNames());
-    }
-
-    /**
-     * Sets the application database in installed state
-     *
-     * @since 1.16
-     */
-    public function setDatabaseInstalled()
-    {
-        $config = DynamicConfig::load();
-        $config['params']['databaseInstalled'] = true;
-        DynamicConfig::save($config);
+        return in_array('setting', $db->schema->getTableNames());
     }
 
 

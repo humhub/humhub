@@ -80,50 +80,16 @@ class DynamicConfig extends BaseObject
 
     /**
      * Rewrites DynamicConfiguration based on Database Stored Settings
+     *
+     * @deprecated since 1.8
      */
     public static function rewrite()
     {
         // Get Current Configuration
         $config = self::load();
-
-        // Add Application Name to Configuration
-        $config['name'] = Yii::$app->settings->get('name');
-
-        // Add Caching
-
-
-        // Remove old theme/view stuff
-        unset($config['components']['view']);
-
-        // Cleanups
-        unset($config['components']['db']['charset']);
-        unset($config['components']['formatterApp']);
-
-        // Remove old localisation options
-        unset($config['timeZone']);
-        unset($config['language']);
-        unset($config['components']['formatter']['defaultTimeZone']);
-        if (empty($config['components']['formatter'])) {
-            unset($config['components']['formatter']);
-        }
-
-        $config['params']['config_created_at'] = time();
         $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
 
         self::save($config);
-    }
-
-    /**
-     * Checks whether the config should be rewritten based on changed setting name
-     *
-     * @param $moduleId
-     * @param $name
-     * @return bool
-     */
-    public static function needRewrite($moduleId, $name)
-    {
-        return (in_array($name, [
-            'name', 'defaultLanguage', 'timeZone', 'horImageScrollOnMobile']));
     }
 
     public static function getConfigFilePath()
