@@ -879,7 +879,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * A user can edit a content if one of the following conditions are met:
      *
      *  - User is the owner of the content
-     *  - User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
+     *  - User can Manage Content
      *  - The user is granted the managePermission set by the model record class
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
@@ -906,12 +906,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         // Only owner can edit his content
-        if ($user !== null && $this->created_by == $user->id) {
+        if ($user !== null && $this->created_by === $user->id) {
             return true;
         }
 
-        // Global Admin can edit/delete arbitrarily content
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
+        if ($user->canManageContent()) {
             return true;
         }
 
@@ -950,8 +949,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
         $user = Yii::$app->user->getIdentity();
 
-        // Global Admin can lock comments
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
+        if ($user?->canManageContent()) {
             return true;
         }
 
@@ -980,6 +978,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException
+     * @throws Exception
+     * @throws Throwable
      */
     public function canView($user = null): bool
     {
@@ -995,7 +996,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         // User can access own content
-        if ($user !== null && $this->created_by == $user->id) {
+        if ($user !== null && $this->created_by === $user->id) {
             return true;
         }
 
@@ -1015,7 +1016,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         // Check system admin can see all content module configuration
-        if ($user->canViewAllContent(get_class($this->container))) {
+        if ($user->canManageContent()) {
             return true;
         }
 

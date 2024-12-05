@@ -63,9 +63,10 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
             ['content.contentcontainer_id' => $this->container->contentcontainer_id],
         ]);
 
-        if ($queryUser && $queryUser->canViewAllContent(Space::class)) {
+        if ($queryUser && $queryUser->canManageContent()) {
             // Don't restrict if user can view all content:
             $conditionSpaceMembershipRestriction = '';
+            $conditionUserPrivateRestriction = '';
         } else {
             // User must be a space's member OR Space and Content are public
             if ($queryUser) {
@@ -74,12 +75,6 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
                 $spaceMembership = '';
             }
             $conditionSpaceMembershipRestriction = " AND ($spaceMembership (content.visibility=1 AND space.visibility != 0) )";
-        }
-
-        if (!$queryUser || $queryUser->canViewAllContent(User::class)) {
-            // Don't restrict if user can view all content:
-            $conditionUserPrivateRestriction = '';
-        } else {
             // User can view only content of own profile
             $conditionUserPrivateRestriction = ' AND content.contentcontainer_id=' . $queryUser->contentcontainer_id;
         }

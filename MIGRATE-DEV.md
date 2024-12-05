@@ -1,7 +1,6 @@
 Module Migration Guide
 ======================
 
-See [humhub/documentation::docs/develop/modules-migrate.md](https://github.com/humhub/documentation/blob/master/docs/develop/modules-migrate.md) for full version.
 
 Version 1.17 (Unreleased)
 -------------------------
@@ -9,18 +8,21 @@ Version 1.17 (Unreleased)
 ### Behaviour change
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
+- The new global "Manage Content" Group Permission allows viewing and editing all content event if the user has no permission to "Manage Users" or "Manage Spaces"
 
 ### New
 - CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
 - `\humhub\modules\user\Module::enableRegistrationFormCaptcha` which is true by default (can be disabled via [file configuration](https://docs.humhub.org/docs/admin/advanced-configuration#module-configurations))
-- User `Module::$passwordHint` (see [#5423](https://github.com/humhub/humhub/issues/5423))
+- `\humhub\modules\user\Module::$passwordHint` (see [#5423](https://github.com/humhub/humhub/issues/5423))
 
 ### Deprecated
-- Method `humhub\modules\ui\menu\MenuEntry::isActiveState()` is replaced with `humhub\helpers\ControllerHelper::isActivePath()`
+- `\humhub\modules\ui\menu\MenuEntry::isActiveState()` use `\humhub\helpers\ControllerHelper::isActivePath()` instead
+- `\humhub\modules\content\Module::$adminCanViewAllContent` and `\humhub\modules\content\Module::adminCanEditAllContent` use `\humhub\modules\content\Module::$enableGlobalManageContentPermission` instead which enables the global "Manage Content" Group Permission
+- `\humhub\modules\user\models\User::canViewAllContent()` use `\humhub\modules\user\models\User::canManageContent()` instead
 
 ### Removed
 - `Include captcha in registration form` checkbox removed from "Administration" -> "Users" -> "Settings"
-- Removed obsolete property `humhub\modules\content\widgets\richtext\AbstractRichText::$record`
+- Removed obsolete property `\humhub\modules\content\widgets\richtext\AbstractRichText::$record`
 - Removed `\humhub\widgets\ShowMorePager` widget
 
 Version 1.16 (April 2024)
