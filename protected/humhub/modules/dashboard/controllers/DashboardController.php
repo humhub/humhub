@@ -10,7 +10,6 @@ namespace humhub\modules\dashboard\controllers;
 
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
-use humhub\libs\DynamicConfig;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
 use humhub\modules\ui\view\components\View;
 use Yii;
@@ -74,9 +73,6 @@ class DashboardController extends Controller
      */
     public function actionIndex()
     {
-        var_dump(DynamicConfig::load());
-        die;
-
         if (Yii::$app->user->isGuest) {
             return $this->render('index_guest', []);
         } else {
