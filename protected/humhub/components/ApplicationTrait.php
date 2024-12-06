@@ -10,7 +10,6 @@ namespace humhub\components;
 
 use humhub\helpers\DatabaseHelper;
 use humhub\interfaces\MailerInterface;
-use humhub\libs\DynamicConfig;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
 use Yii;
@@ -114,9 +113,7 @@ trait ApplicationTrait
      */
     public function setInstalled()
     {
-        $config = DynamicConfig::load();
-        $config['params']['installed'] = true;
-        DynamicConfig::save($config);
+        Yii::$app->settings->set('installed', true);
     }
 
 

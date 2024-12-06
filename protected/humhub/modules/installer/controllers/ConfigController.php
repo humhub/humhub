@@ -12,7 +12,6 @@ use Exception;
 use humhub\compat\HForm;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\DynamicConfig;
 use humhub\libs\ProfileImage;
 use humhub\libs\UUID;
 use humhub\modules\comment\models\Comment;
@@ -548,8 +547,6 @@ class ConfigController extends Controller
         if (Yii::$app->settings->get('secret') == "") {
             Yii::$app->settings->set('secret', UUID::v4());
         }
-
-        DynamicConfig::rewrite();
 
         return $this->redirect(['finished']);
     }

@@ -148,8 +148,6 @@ class SetupController extends Controller
 
                 // Write Config
                 $config['components']['db'] = $dbConfig;
-                $config['params']['installer']['db']['installer_hostname'] = $model->hostname;
-                $config['params']['installer']['db']['installer_database'] = $model->database;
 
                 DynamicConfig::save($config);
 

@@ -10,7 +10,6 @@ namespace humhub\libs;
 
 use Yii;
 use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
 
 /**
  * DynamicConfig provides access to the dynamic configuration file.
@@ -19,17 +18,6 @@ use yii\helpers\ArrayHelper;
  */
 class DynamicConfig extends BaseObject
 {
-    /**
-     * Add an array to the dynamic configuration
-     *
-     * @param array $new
-     */
-    public static function merge($new)
-    {
-        $config = ArrayHelper::merge(self::load(), $new);
-        self::save($config);
-    }
-
     /**
      * Returns the dynamic configuration
      *
@@ -64,7 +52,7 @@ class DynamicConfig extends BaseObject
     {
         $content = '<' . '?php return ';
         $content .= var_export($config, true);
-        $content .= '; ?' . '>';
+        $content .= ';';
 
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
@@ -85,11 +73,6 @@ class DynamicConfig extends BaseObject
      */
     public static function rewrite()
     {
-        // Get Current Configuration
-        $config = self::load();
-        $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
-
-        self::save($config);
     }
 
     public static function getConfigFilePath()

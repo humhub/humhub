@@ -66,8 +66,6 @@ class InstallController extends Controller
         $config = DynamicConfig::load();
 
         $config['components']['db'] = $dbConfig;
-        $config['params']['installer']['db']['installer_hostname'] = $db_host;
-        $config['params']['installer']['db']['installer_database'] = $db_name;
 
         DynamicConfig::save($config);
 
