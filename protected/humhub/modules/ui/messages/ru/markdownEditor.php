@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return array (
   'Bold' => 'Полужирный',
   'Code' => 'Блок кода',
@@ -12,15 +12,15 @@ return array (
   'Ordered List' => 'Упорядоченный список',
   'Preview' => 'Предпросмотр',
   'Quote' => 'Цитата',
-  'URL/Link' => 'Адрес/Ссылка',
+  'URL/Link' => 'URL-адрес/Ссылка',
   'Unordered List' => 'Маркированный список',
   'code text here' => 'вставьте код здесь',
   'emphasized text' => 'выделенный текст',
   'enter image description here' => 'введите описание изображения здесь',
   'enter image title here' => 'введите название изображения здесь',
   'enter link description here' => 'введите описание ссылки здесь',
-  'heading text' => 'заголовок текста',
-  'list text here' => 'введите список здесь',
-  'quote here' => 'процитировать',
-  'strong text' => 'выделенный текст',
+  'heading text' => 'текст заголовка',
+  'list text here' => 'введите пункты списка здесь',
+  'quote here' => 'введите цитируемый текст',
+  'strong text' => 'выделенный жирным текст',
 );

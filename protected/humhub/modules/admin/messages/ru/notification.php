@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return array (
   'Administrative' => 'Административные',
   'Notify from {appName}. You were added to the group.' => 'Уведомление от {appName}. Вы были добавлены в группу.',

@@ -1,12 +1,12 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return array (
   'Any' => 'Любой',
   'Author' => 'Автор',
   'Best' => 'Лучшее',
-  'Content type' => 'Тип содержимого',
+  'Content type' => 'Тип контента',
   'Date From' => 'С',
   'Date To' => 'До',
-  'Find Content based on keywords' => 'Поиск содержимого по ключевым словам',
+  'Find Content based on keywords' => 'Поиск контента по ключевым словам',
   'Newest first' => 'Сначала самые новые',
   'No results found!' => 'Результатов не найдено!',
   'Results ({count})' => 'Результаты ({count})',
