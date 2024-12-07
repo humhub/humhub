@@ -26,5 +26,5 @@ class Module extends \humhub\components\Module
     /**
      * @var array|null the queried LDAP attributes, leave empty to retrieve all
      */
-    public $queriedAttributes = [];
+    public $queriedAttributes = ['*', '+'];
 }
