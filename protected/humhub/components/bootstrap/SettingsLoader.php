@@ -23,7 +23,7 @@ class SettingsLoader implements BootstrapInterface
     {
         $app->set(
             $component,
-            ArrayHelper::merge(ArrayHelper::getValue($app->components, $component, []), $definition)
+            ArrayHelper::merge(ArrayHelper::getValue($app->components, $component, []), $definition),
         );
     }
 
