@@ -19,13 +19,29 @@ class SettingsLoader implements BootstrapInterface
         $this->setCacheConfig($app);
     }
 
+    private function updateComponentDefinition($app, $component, $definition)
+    {
+        $app->set(
+            $component,
+            ArrayHelper::merge(ArrayHelper::getValue($app->components, $component, []), $definition)
+        );
+    }
+
     private function setMailerConfig($app): void
     {
+        $instantiated = $app->has('mailer', true);
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
 
         if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
-            $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport(['dsn' => 'native://default']);
-            $app->mailer->useFileTransport = true;
+            if ($instantiated) {
+                $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport(['dsn' => 'native://default']);
+                $app->mailer->useFileTransport = true;
+            } else {
+                $this->updateComponentDefinition($app, 'mailer', [
+                    'transport' => ['dsn' => 'native://default'],
+                    'useFileTransport' => true,
+                ]);
+            }
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
@@ -54,14 +70,30 @@ class SettingsLoader implements BootstrapInterface
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
                 $transport['dsn'] = $app->settings->get('mailer.dsn');
             }
-            $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport($transport);
+
+
+            if ($instantiated) {
+                $app->mailer->useFileTransport = false;
+                $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport($transport);
+            } else {
+                $this->updateComponentDefinition($app, 'mailer', [
+                    'useFileTransport' => false,
+                    'transport' => $transport,
+                ]);
+            }
         }
     }
 
     private function setUserConfig($app): void
     {
         if ($defaultUserIdleTimeoutSec = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-            $app->user->authTimeout = $defaultUserIdleTimeoutSec;
+            if ($app->has('user', true)) {
+                $app->user->authTimeout = $defaultUserIdleTimeoutSec;
+            } else {
+                $this->updateComponentDefinition($app, 'user', [
+                    'authTimeout' => $defaultUserIdleTimeoutSec,
+                ]);
+            }
         }
     }
 
@@ -86,7 +118,7 @@ class SettingsLoader implements BootstrapInterface
         }
 
         if (!empty($cacheComponent)) {
-            $app->set('cache', ArrayHelper::merge($cacheComponent, [
+            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
                 'keyPrefix' => $app->id,
             ]));
         }
