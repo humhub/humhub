@@ -19,7 +19,7 @@ class SettingsLoader implements BootstrapInterface
         $this->setCacheConfig($app);
     }
 
-    protected function setMailerConfig($app): void
+    private function setMailerConfig($app): void
     {
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
 
@@ -58,14 +58,14 @@ class SettingsLoader implements BootstrapInterface
         }
     }
 
-    protected function setUserConfig($app): void
+    private function setUserConfig($app): void
     {
         if ($defaultUserIdleTimeoutSec = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
             $app->user->authTimeout = $defaultUserIdleTimeoutSec;
         }
     }
 
-    protected function setCacheConfig($app): void
+    private function setCacheConfig($app): void
     {
         $cacheClass = $app->settings->get('cache.class');
         $cacheComponent = [];
