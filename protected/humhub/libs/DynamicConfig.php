@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use Yii;
 use yii\base\BaseObject;
+use yii\helpers\ArrayHelper;
 
 /**
  * DynamicConfig provides access to the dynamic configuration file.
@@ -40,7 +41,19 @@ class DynamicConfig extends BaseObject
             return [];
         }
 
-        return $config;
+        $validConfig = [
+            'components' => [
+                'db' => [
+                    ArrayHelper::getValue($config, 'components.db', [])
+                ]
+            ]
+        ];
+
+        if ($validConfig != $config) {
+            self::save($validConfig);
+        }
+
+        return $validConfig;
     }
 
     /**
