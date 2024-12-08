@@ -2,9 +2,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use DateTimeZone;
-use humhub\libs\DynamicConfig;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
@@ -113,8 +110,6 @@ class BasicSettingsForm extends Model
         Yii::$app->getModule('dashboard')->settings->set('showProfilePostForm', $this->dashboardShowProfilePostForm);
         Yii::$app->getModule('tour')->settings->set('enable', $this->tour);
         Yii::$app->getModule('friendship')->settings->set('enable', $this->enableFriendshipModule);
-
-        DynamicConfig::rewrite();
 
         return true;
     }

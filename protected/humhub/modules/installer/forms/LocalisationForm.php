@@ -8,7 +8,6 @@
 
 namespace humhub\modules\installer\forms;
 
-use humhub\libs\DynamicConfig;
 use humhub\libs\TimezoneHelper;
 use Yii;
 use yii\base\Model;
@@ -66,8 +65,6 @@ class LocalisationForm extends Model
 
         Yii::$app->settings->set('defaultLanguage', $this->language);
         Yii::$app->settings->set('serverTimeZone', $this->timeZone);
-
-        DynamicConfig::rewrite();
 
         return true;
     }

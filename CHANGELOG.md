@@ -13,6 +13,7 @@ HumHub Changelog
 - Enh #7317: Space browser: Make the whole space card header and body clickable
 - Enh #7325: Add missing IDs in the modal login forms
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
