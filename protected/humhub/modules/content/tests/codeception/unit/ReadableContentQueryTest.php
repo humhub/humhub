@@ -187,7 +187,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertCount(0, $posts);
     }
 
-    public function testPublicSpaceGlobalManageContentPermission()
+    public function testPublicSpaceManageAllContentPermission()
     {
         // User3 is member of Group ID 3
         Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
@@ -229,7 +229,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->publicSpacePrivatePost);
     }
 
-    public function testPrivateSpaceGlobalManageContentPermission()
+    public function testPrivateSpaceManageAllContentPermission()
     {
         // User3 is member of Group ID 3
         Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
@@ -322,7 +322,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->profilePrivatePost);
     }
 
-    public function testProfileContentOfMembersOnlyUserGlobalManageContentPermission()
+    public function testProfileContentOfMembersOnlyUserManageAllContentPermission()
     {
         // User3 is member of Group ID 3
         Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));

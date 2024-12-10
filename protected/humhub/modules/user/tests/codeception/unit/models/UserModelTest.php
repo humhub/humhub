@@ -50,7 +50,7 @@ class UserModelTest extends HumHubDbTestCase
         $this->assertFalse($user->super_admin);
     }
 
-    public function testGlobalManageContentPermission()
+    public function testManageAllContentPermission()
     {
         $user = User::findOne(['username' => 'User2']);
         $this->assertFalse($user->canManageAllContent());

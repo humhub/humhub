@@ -51,7 +51,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertTrue(in_array($w2, $ids));
     }
 
-    public function testGlobalManageContentPermission()
+    public function testManageAllContentPermission()
     {
         $this->becomeUser('User1');
         $w1 = $this->createPrivatePost();
