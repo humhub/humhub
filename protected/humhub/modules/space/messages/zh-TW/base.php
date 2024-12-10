@@ -112,6 +112,7 @@ return [
     '<b>You are not member of this space and there is no public content, yet!</b>' => '',
     '<strong>Leave</strong> Space' => '',
     'Access to this Space is restricted. Please introduce yourself to become a member.' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Any' => '',
     'As owner you cannot revoke your membership!' => '',

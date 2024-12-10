@@ -11,7 +11,7 @@ use yii\helpers\Url;
                 id="myModalLabel"><?= Yii::t('UserModule.auth', '<strong>Password</strong> recovery'); ?></h4>
         </div>
         <div class="modal-body">
-            <p><?= Yii::t('UserModule.auth', "We’ve sent you an email containing a link that will allow you to reset your password."); ?></p>
+            <p><?= Yii::t('UserModule.auth', 'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.') ?></p>
             <br/>
             <a href="<?= Url::home(); ?>" data-ui-loader data-pjax-prevent
                class="btn btn-primary"><?= Yii::t('UserModule.auth', 'back to home') ?></a>

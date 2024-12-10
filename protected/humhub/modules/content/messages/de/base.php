@@ -88,6 +88,8 @@ return [
   'This content type can\'t be moved.' => 'Dieser Inhaltstyp kann nicht verschoben werden.',
   'This space is archived.' => 'Dieser Space ist archiviert.',
   'This space is not visible!' => 'Dieser Space ist nicht sichtbar!',
+  'Topic already exists globally.' => 'Für diesen Begriff existiert bereits ein globales Thema.',
+  'Topic already in use in Spaces or on Profiles.' => 'Dieses Thema wird bereits in Space oder in Profilen verwendet.',
   'Topics' => 'Themen',
   'Turn off notifications' => 'Benachrichtigungen abschalten',
   'Turn on notifications' => 'Benachrichtigungen aktivieren',

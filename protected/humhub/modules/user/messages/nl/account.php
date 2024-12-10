@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> Settings' => '<strong>Account</strong> Instellingen',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Bevestig</strong> uw nieuwe e-mailadres',
   '<strong>Permissions</strong>' => '<strong>Rechten</strong>',
@@ -34,6 +34,8 @@ return array (
   'Notifications' => 'Notificaties',
   'Other users' => 'Andere gebruikers',
   'Password Recovery' => 'Wachtwoord herstellen',
+  'Password recovery can only be initiated once every 10 minutes.' => 'U kunt wachtwoordherstel maar eenmaal per 10 minuten starten.',
+  'Password recovery disabled. Please contact your system administrator.' => 'Wachtwoordherstel is uitgeschakeld. Neem contact op met uw systeembeheerder.',
   'Permissions' => 'Rechten',
   'Plain' => 'Onopgemaakt',
   'Profile' => 'Profiel',
@@ -64,4 +66,4 @@ return array (
   'Your password has been successfully changed!' => 'Uw paswoord is succesvol aangepast!',
   'Your username has been changed' => 'Uw gebruikersnaam is gewijzigd.',
   'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Uw gebruikersnaam is succesvol gewijzigd.<br />We hebben u zojuist een e-mail gestuurd met nieuwe informatie.',
-);
+];

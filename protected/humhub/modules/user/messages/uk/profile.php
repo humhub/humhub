@@ -116,7 +116,9 @@ return [
     'Each line must be formatted as Key=>Value!' => '',
     'Instagram URL' => '',
     'Mastodon URL' => '',
+    'Template' => '',
     'This profile is disabled!' => '',
     'TikTok URL' => '',
+    'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
     'Website URL' => '',
 ];

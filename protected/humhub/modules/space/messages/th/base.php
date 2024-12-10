@@ -140,6 +140,7 @@ return [
     '{count} members' => '{count} สมาชิก',
     '{email} is not valid!' => '{email} ไม่ถูกต้อง!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Blocked users' => '',
     'Change visibility' => '',

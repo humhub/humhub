@@ -30,5 +30,9 @@ return [
     'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Aukera hauei esker, espazio guztien baimen lehenetsiak ezar ditzakezu. Baimendutako erabiltzaileek espazio bakoitzerako baimenak egokitu ditzakete Espazio bakoitzean. Modulu berriak instalatzean sarrera gehiago gehitzen dira.',
     'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Ikuspegi orokor honek espazio bakoitzaren zerrenda dauka, espazioak ikusteko, editatzeko eta ezabatzeko ekintzekin.',
     'Update Space memberships also for existing members.' => 'Eguneratu Espazioak ataleko kidetzak lehendik dauden kideentzat ere.',
+    'All existing Space Topics will be converted to Global Topics.' => '',
+    'Allow individual topics in Spaces' => '',
+    'Convert' => '',
+    'Convert Space Topics' => '',
     'Default Stream Sort' => '',
 ];

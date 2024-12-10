@@ -46,6 +46,7 @@ return [
     'Accept' => '',
     'Accept Invite' => '',
     'Access to this Space is restricted. Please introduce yourself to become a member.' => '',
+    'Add as Default Space for new users' => '',
     'Add users without invitation' => '',
     'Admin' => '',
     'Administrators' => '',

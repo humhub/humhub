@@ -111,4 +111,6 @@ return [
     'in' => 'in',
     '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
 ];

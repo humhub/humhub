@@ -2,8 +2,12 @@
 return [
   '<strong>Manage</strong> Spaces' => '<strong>スペース</strong>管理',
   'Add new space' => 'スペース追加',
+  'All existing Space Topics will be converted to Global Topics.' => '既存のすべてのスペーストピックはグローバルトピックに変換されます。',
+  'Allow individual topics in Spaces' => 'スペースで個別のトピックを許可する',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'ユーザーロールを使用することにより、スペース内にさまざまな権限グループを作成できます。 これらは、許可されたユーザーがスペースごとに個別化することもでき、その特定のスペースにのみ関連します。',
   'Change owner' => 'オーナーを変更',
+  'Convert' => '変換する',
+  'Convert Space Topics' => 'スペーストピックを変換する',
   'Default "Hide About Page"' => 'デフォルトの ”Aboutページを非表示”',
   'Default "Hide Activity Sidebar Widget"' => 'デフォルトの ”アクティビティサイドバーウィジェットを非表示”',
   'Default "Hide Followers"' => 'デフォルトの ”フォロワーを非表示”',

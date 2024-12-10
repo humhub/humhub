@@ -2,8 +2,12 @@
 return [
   '<strong>Manage</strong> Spaces' => 'Spaces <strong>verwalten</strong>',
   'Add new space' => 'Neuen Space hinzufügen',
+  'All existing Space Topics will be converted to Global Topics.' => 'Alle bestehenden Space Themen werden zu globalen Themen konvertiert.',
+  'Allow individual topics in Spaces' => 'Erlaubt individuelle Themen in Spaces',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Durch die Verwendung von Benutzerrollen, kannst du unterschiedliche Rechtegruppen innerhalb eins Space kreieren. Diese können von berechtigten Benutzern ebenfalls für jeden Space individualisiert werden.',
   'Change owner' => 'Besitzer ändern',
+  'Convert' => 'Konvertieren',
+  'Convert Space Topics' => 'Space Themen konvertieren',
   'Default "Hide About Page"' => '"Über"-Seite verbergen',
   'Default "Hide Activity Sidebar Widget"' => '"Aktivitäten Widget" verbergen',
   'Default "Hide Followers"' => '"Follower" verbergen',

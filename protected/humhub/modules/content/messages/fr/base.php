@@ -88,6 +88,8 @@ return [
   'This content type can\'t be moved.' => 'Ce contenu ne peut être déplacé.',
   'This space is archived.' => 'Cet espace est archivé',
   'This space is not visible!' => 'Cet espace n\'est pas visible.',
+  'Topic already exists globally.' => 'Le sujet existe déjà au niveau global.',
+  'Topic already in use in Spaces or on Profiles.' => 'Le sujet est déjà utilisé dans un Espace ou un Profil.',
   'Topics' => 'Sujets',
   'Turn off notifications' => 'Désactiver les notifications',
   'Turn on notifications' => 'Activer les notifications',

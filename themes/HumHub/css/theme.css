@@ -1797,6 +1797,10 @@ div.required.has-error > label:after {
   font-weight: bold;
   padding-left: 0;
 }
+.form-checkboxes-normal .radio label,
+.form-checkboxes-normal .checkbox label {
+  font-weight: 500;
+}
 .form-control {
   border: 2px solid #ededed;
   box-shadow: none;
@@ -2195,6 +2199,19 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
 #notification_overview_filter label {
   display: block;
 }
+.field-filterform-allfilter input[type=checkbox] {
+  border-color: #ccc;
+}
+.field-filterform-allfilter input[type=checkbox]:checked {
+  border-color: #e7e7e7;
+  background: #e7e7e7;
+}
+.field-filterform-allfilter input[type=checkbox]:checked::after {
+  color: #555;
+}
+.field-filterform-allfilter input[type=checkbox]:focus {
+  border-color: #ccc !important;
+}
 #notification_overview_list .img-space {
   position: absolute;
   top: 25px;
@@ -2313,6 +2330,9 @@ div.form-group div.checkbox .help-block.help-block-error:empty {
   .panel-profile {
     display: none;
   }
+}
+.profile-item {
+  margin-top: 15px;
 }
 .list-group-item {
   padding: 6px 15px;
@@ -3308,6 +3328,24 @@ div.nested-comments-root div.comment-container {
 .current-space-image {
   margin-right: 3px;
   margin-top: 3px;
+}
+.card-space .card-header .card-space-link {
+  position: absolute;
+  display: block;
+  width: 100%;
+  top: 0;
+  left: 0;
+  padding: 16px;
+}
+.card-space .card-header .card-icons {
+  position: absolute;
+  right: 16px;
+  top: 85px;
+}
+.card-space .card-body .card-space-link {
+  display: block;
+  margin: -16px;
+  padding: 16px;
 }
 @media (max-width: 767px) {
   #space-menu > .title {
@@ -4941,7 +4979,7 @@ a.label-warning:hover {
   }
   #layout-content .panel-profile .panel-profile-header .img-profile-data {
     padding-top: 50px !important;
-    padding-left: 130px;
+    padding-left: 125px;
   }
   .modal-dialog {
     width: calc(100vw - 4px) !important;

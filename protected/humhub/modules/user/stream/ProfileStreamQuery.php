@@ -2,9 +2,9 @@
 
 namespace humhub\modules\user\stream;
 
+use humhub\modules\stream\models\ContentContainerStreamQuery;
 use humhub\modules\stream\models\filters\ContentContainerStreamFilter;
 use humhub\modules\user\stream\filters\IncludeAllContributionsFilter;
-use humhub\modules\stream\models\ContentContainerStreamQuery;
 
 /**
  * ProfileStream

@@ -473,10 +473,43 @@ humhub.module('client', function (module, require, $) {
                 onBeforeLoad($match, ($match.data('acknowledgeMessage') || null));
             });
 
+            checkContentSecurityPolicyViolation();
         } else {
             offBeforeLoad();
         }
     };
+
+    const checkContentSecurityPolicyViolation = function () {
+        if (typeof module.config.cspViolationReloadInterval === 'undefined' ||
+            module.config.cspViolationReloadInterval === 0) {
+            // The module is not configured to check the CSP errors
+            return;
+        }
+
+        window.addEventListener('securitypolicyviolation', function (event) {
+            // The directive "script-src" may be violated when nonce value has been recreated, e.g. after re-login in another browser tab
+            if (!event.violatedDirective.includes('script-src')) {
+                return;
+            }
+
+            const lastReloadTime = localStorage.getItem('cspViolationReloadTime');
+            const nextReloadTime = lastReloadTime
+                ? module.config.cspViolationReloadInterval * 1000 - (Date.now() - lastReloadTime)
+                : 0;
+
+            if (nextReloadTime > 0) {
+                // Skip because a previous reloading was less than required seconds ago, to avoid a looping
+                module.log.info('The directive "script-src" is violated. ' +
+                    'Next auto reloading will be forced in ' + Math.floor(nextReloadTime / 60000) + ' minutes.');
+                return;
+            }
+
+            // Reload the page to solve the issue of Content Security Policy
+            module.log.info('Force page reload. The directive "script-src" is violated because nonce is obsolete.');
+            localStorage.setItem('cspViolationReloadTime', Date.now().toString());
+            window.location.reload();
+        });
+    }
 
     module.export({
         ajax: ajax,

@@ -20,6 +20,7 @@ return [
   'Accept' => '同意',
   'Accept Invite' => '招待を受ける',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'このワークスペースの承認されたメンバーになるため、短い自己紹介をしてください。',
+  'Add as Default Space for new users' => '新規ユーザーのデフォルトスペースとして追加',
   'Add users without invitation' => '招待なしでメンバーを追加する',
   'Admin' => '管理者',
   'Administrator:' => '管理者：',

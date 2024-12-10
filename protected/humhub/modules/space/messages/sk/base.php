@@ -164,6 +164,7 @@ return [
     'Your request was successfully submitted to the space administrators.' => 'Vaša žiadosť bola úspešne odoslaná správcom priestoru.',
     '{count} members' => '{count} členov',
     '{email} is not valid!' => '{email} nie je platný!',
+    'Add as Default Space for new users' => '',
     'Default Stream Sort' => '',
     'Stream Sort' => '',
 ];

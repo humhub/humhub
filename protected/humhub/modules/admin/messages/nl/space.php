@@ -2,8 +2,12 @@
 return [
   '<strong>Manage</strong> Spaces' => '<strong>Beheer</strong> ruimtes',
   'Add new space' => 'Nieuwe ruimte toevoegen.',
+  'All existing Space Topics will be converted to Global Topics.' => 'Alle bestaande rubrieken in een ruimte worden omgezet naar altijd beschikbare rubrieken.',
+  'Allow individual topics in Spaces' => 'Individuele rubrieken in ruimtes toestaan',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Door gebruikersrollen te gebruiken, kunt u verschillende rechtengroepen binnen een ruimte maken. Deze kunnen ook worden geïndividualiseerd door geautoriseerde gebruikers voor elke ruimte en zijn alleen relevant voor die specifieke ruimte.',
   'Change owner' => 'Wijzig eigenaar',
+  'Convert' => 'Omzetten',
+  'Convert Space Topics' => 'Rubrieken van een ruimte omzetten',
   'Default "Hide About Page"' => 'Standaard "Over pagina verbergen"',
   'Default "Hide Activity Sidebar Widget"' => 'Standaard "Activiteiten zijbalk widget verbergen"',
   'Default "Hide Followers"' => 'Standaard "Volgers verbergen"',

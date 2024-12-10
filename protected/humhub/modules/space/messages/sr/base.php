@@ -160,6 +160,7 @@ return [
     '{count} members' => '{count} članova',
     '{email} is not valid!' => '{email} nije važeći!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
     'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',

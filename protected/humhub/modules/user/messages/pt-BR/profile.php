@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y Anos',
   '<b>This profile stream is still empty!</b>' => '<b>Este perfil ainda está vazio!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Este perfil ainda está vazio</b><br>Seja o primeiro e publique algo...',
@@ -91,6 +91,7 @@ return array (
   'Stream' => 'Stream',
   'Street' => 'Endereço',
   'Supported ISO3166 country codes' => 'Códigos de país ISO3166 suportados',
+  'Template' => 'Modelo',
   'Text' => 'Texto',
   'Text Area' => 'Área de Texto',
   'Text Field Options' => 'Opções do campo texto',
@@ -102,6 +103,7 @@ return array (
   'TikTok URL' => 'TikTok',
   'Title' => 'Título',
   'Translation Category ID' => 'ID da categoria de tradução',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
   'Twitter URL' => 'Twitter/X',
   'Type Config' => 'Tipo de configuração',
   'Updated at' => 'Atualizado em',
@@ -118,4 +120,4 @@ return array (
   'YouTube URL' => 'YouTube',
   'Zip' => 'CEP',
   '{attribute} is required!' => '{attribute} é obrigatório!',
-);
+];

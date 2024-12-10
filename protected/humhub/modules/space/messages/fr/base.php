@@ -20,6 +20,7 @@ return [
   'Accept' => 'Accepter',
   'Accept Invite' => 'Accepter l\'invitation',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'Merci de vous présenter en quelques mots afin de devenir membre de cet espace.',
+  'Add as Default Space for new users' => 'Ajouter comme Espace par défaut pour les nouveaux utilisateurs',
   'Add users without invitation' => 'Ajouter des utilisateurs sans les inviter',
   'Admin' => 'Administrateur',
   'Administrator:' => 'Administrateur :',

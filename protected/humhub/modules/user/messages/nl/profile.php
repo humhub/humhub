@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y jaar',
   '<b>This profile stream is still empty!</b>' => '<b>Dit profiel is momenteel nog leeg!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Uw profiel is momenteel nog leeg.</b><br />Wees de eerste en een schrijf een bericht...',
@@ -91,6 +91,7 @@ return array (
   'Stream' => 'Stream',
   'Street' => 'Straat',
   'Supported ISO3166 country codes' => 'Ondersteunde ISO3166 land codes',
+  'Template' => 'Sjabloon',
   'Text' => 'Tekst',
   'Text Area' => 'Tekstvlak',
   'Text Field Options' => 'Tekstveld opties',
@@ -102,6 +103,7 @@ return array (
   'TikTok URL' => 'TikTok URL',
   'Title' => 'Titel',
   'Translation Category ID' => 'Vertaling Categorie ID',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => 'Twig-sjabloon dat zal worden gebruikt om dit veld te renderen. U kunt de interne namen gebruiken als variabelen, bijvoorbeeld `{{ firstname }} {{ lastname }}`',
   'Twitter URL' => 'Twitter URL',
   'Type Config' => 'Soort configuratie',
   'Updated at' => 'Aangepast op',
@@ -118,4 +120,4 @@ return array (
   'YouTube URL' => 'YouTube URL',
   'Zip' => 'Postcode',
   '{attribute} is required!' => '{attribute} is vereist!',
-);
+];

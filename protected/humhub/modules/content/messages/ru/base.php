@@ -111,4 +111,6 @@ return [
     'Your last edit state has been saved!' => 'Последнее состояние сохранено.',
     'in' => 'в',
     '(Also visible to people who are not logged in)' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
 ];

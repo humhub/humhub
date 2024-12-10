@@ -20,6 +20,7 @@ return [
   'Accept' => 'Aanvaarden',
   'Accept Invite' => 'Uitnodiging accepteren',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'De toegang tot deze ruimte is beperkt. Stel uzelf even voor om lid te worden.',
+  'Add as Default Space for new users' => 'Toevoegen als standaardruimte voor nieuwe gebruikers',
   'Add users without invitation' => 'Voeg gebruikers zonder uitnodiging toe',
   'Admin' => 'Beheerder',
   'Administrator:' => 'Beheerder:',
