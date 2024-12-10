@@ -14,6 +14,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\helpers\AuthHelper;
 use humhub\modules\user\models\User;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\data\Pagination;
 use yii\helpers\FileHelper;
 use ZendSearch\Lucene\Analysis\Analyzer\Analyzer;
@@ -237,6 +238,10 @@ class ZendLucenceDriver extends AbstractDriver
         return $this->addQueryFilterVisibility($query);
     }
 
+    /**
+     * @throws \Throwable
+     * @throws InvalidConfigException
+     */
     protected function addQueryFilterVisibility(Boolean $query): Boolean
     {
         $permissionQuery = new Boolean();
@@ -248,9 +253,9 @@ class ZendLucenceDriver extends AbstractDriver
             $permissionQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PUBLIC, 'visibility')));
 
             // Own created content is always visible
-            $permissionQuery->addSubquery(new TermQuery(new Term($user->guid, 'created_by')));
+            $permissionQuery->addSubquery(new TermQuery(new Term($user->guid ?? null, 'created_by')));
 
-            if ($user->canViewAllContent(Space::class)) {
+            if ($user?->canManageContent()) {
                 // Don't restrict if user can view all Space content:
                 $permissionQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')));
             } else {
@@ -273,7 +278,7 @@ class ZendLucenceDriver extends AbstractDriver
                 $permissionQuery->addSubquery($privateSpaceContentQuery);
             }
 
-            if ($user->canViewAllContent(User::class)) {
+            if ($user?->canManageContent()) {
                 // Don't restrict if user can view all User content:
                 $permissionQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')));
             } else {
@@ -281,7 +286,7 @@ class ZendLucenceDriver extends AbstractDriver
                 $privateUserContentQuery = new Boolean();
                 $privateUserContentQuery->addSubquery(new TermQuery(new Term(Content::VISIBILITY_PRIVATE, 'visibility')), true);
                 $privateUserContentQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')), true);
-                $privateUserContentQuery->addSubquery(new TermQuery(new Term($user->guid, 'container_guid')), true);
+                $privateUserContentQuery->addSubquery(new TermQuery(new Term($user->guid ?? null, 'container_guid')), true);
                 $permissionQuery->addSubquery($privateUserContentQuery);
             }
         } elseif (AuthHelper::isGuestAccessEnabled()) {

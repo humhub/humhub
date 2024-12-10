@@ -14,11 +14,11 @@ use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\modules\content\interfaces\ContentOwner;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\Module;
 use humhub\modules\user\models\User;
 use Throwable;
 use Yii;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 
 /**
  * HActiveRecordContentAddon is the base active record for content addons.
@@ -183,6 +183,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
      *
      * @param User|int|null $user the user
      * @return bool
+     * @throws InvalidConfigException
      * @since 1.4
      */
     public function canEdit($user = null): bool
@@ -209,14 +210,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
             return true;
         }
 
-        /** @var Module $contentModule */
-        $contentModule = Yii::$app->getModule('content');
-
-        if ($contentModule->adminCanEditAllContent && Yii::$app->user->isAdmin()) {
-            return true;
-        }
-
-        return false;
+        return $user->canManageContent();
     }
 
     /**

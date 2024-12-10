@@ -8,11 +8,9 @@
 
 namespace humhub\modules\content;
 
-use humhub\components\SettingsManager;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\driver\MysqlDriver;
-use humhub\modules\content\search\driver\ZendLucenceDriver;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
@@ -32,15 +30,23 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.1
+     * @deprecated since 1.17
      * @var bool global admin can see all content
      */
     public $adminCanViewAllContent = false;
 
     /**
      * @since 1.1
+     * @deprecated since 1.17
      * @var bool global admin can edit/delete all content
      */
     public $adminCanEditAllContent = true;
+
+    /**
+     * @since 1.17
+     * @var bool Enable the global "Manage Content" Group Permission
+     */
+    public $enableGlobalManageContentPermission = false;
 
     /**
      * @since 1.1
@@ -142,6 +148,12 @@ class Module extends \humhub\components\Module
                 // Note: we do not return CreatePrivateContent Permission since its not writable at the moment
                 new permissions\ManageContent(),
                 new permissions\CreatePublicContent(),
+            ];
+        }
+
+        if ($this->enableGlobalManageContentPermission) {
+            return [
+                new permissions\ManageContent(),
             ];
         }
 
