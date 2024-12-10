@@ -14,6 +14,7 @@ HumHub Changelog
 - Enh #7329: Add a new global "Manage Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
 - Enh #7325: Add missing IDs in the modal login forms
 - Enh #7333: Improved Yii alias handling and added ENV support  
+- Enh #7334: New safe method to rename a database column
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
