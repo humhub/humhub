@@ -9,7 +9,7 @@ class AjaxLinkPagerAsset extends AssetBundle
     /**
      * @inheritdoc
      */
-    public $sourcePath = '@app/humhub/widgets/resources';
+    public $sourcePath = '@humhub/widgets/resources';
 
     /**
      * @inheritdoc
