@@ -2,7 +2,7 @@
 
 namespace tests\codeception\unit\models;
 
-use humhub\modules\content\permissions\ManageContent;
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\User;
@@ -53,15 +53,15 @@ class UserModelTest extends HumHubDbTestCase
     public function testGlobalManageContentPermission()
     {
         $user = User::findOne(['username' => 'User2']);
-        $this->assertFalse($user->canManageContent());
+        $this->assertFalse($user->canManageAllContent());
 
-        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
 
-        $this->assertFalse($user->canManageContent());
+        $this->assertFalse($user->canManageAllContent());
 
-        self::setGroupPermission(3, new ManageContent());
+        self::setGroupPermission(3, new ManageAllContent());
 
-        $this->assertTrue($user->canManageContent());
+        $this->assertTrue($user->canManageAllContent());
     }
 
     public function testGetProfileInfo()

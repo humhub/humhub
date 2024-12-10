@@ -16,7 +16,6 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -554,6 +553,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return false;
         }
 
+        if (Yii::$app->user->identity?->canManageAllContent()) {
+            return true;
+        }
+
         return $this->getContainer()->permissionManager->can(ManageContent::class);
     }
 
@@ -606,6 +609,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         // No need to archive content on an archived container, content is marked as archived already
         if ($container->isArchived()) {
             return false;
+        }
+
+        if ($user?->canManageAllContent()) {
+            return true;
         }
 
         return $container->getPermissionManager($user)->can(new ManageContent());
@@ -734,7 +741,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             $container = $this->container;
         }
 
-        return $this->getModel()->isOwner() || Yii::$app->user->can(ManageUsers::class) || $container->can(ManageContent::class);
+        return
+            $this->getModel()->isOwner()
+            || Yii::$app->user->identity->canManageAllContent()
+            || $container->can(ManageContent::class);
     }
 
     /**
@@ -910,7 +920,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return true;
         }
 
-        if ($user->canManageContent()) {
+        if ($user->canManageAllContent()) {
             return true;
         }
 
@@ -949,7 +959,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
         $user = Yii::$app->user->getIdentity();
 
-        if ($user?->canManageContent()) {
+        if ($user?->canManageAllContent()) {
             return true;
         }
 
@@ -1015,8 +1025,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return true;
         }
 
-        // Check system admin can see all content module configuration
-        if ($user->canManageContent()) {
+        // Check user can manage all content
+        if ($user->canManageAllContent()) {
             return true;
         }
 

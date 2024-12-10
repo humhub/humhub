@@ -12,6 +12,7 @@ use DateTimeZone;
 use humhub\components\behaviors\GUID;
 use humhub\libs\UUIDValidator;
 use humhub\modules\admin\Module as AdminModule;
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
@@ -19,7 +20,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\content\jobs\ReindexUserContent;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\friendship\models\Friendship;
 use humhub\modules\space\helpers\MembershipHelper;
 use humhub\modules\space\models\Space;
@@ -752,7 +752,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * @param string|null $containerClass class name of the content container
      * @return bool
      * @throws InvalidConfigException
-     * @deprecated since 1.17 use canManageContent() instead
+     * @deprecated since 1.17 use canManageAllContent() instead
      * @since 1.8
      */
     public function canViewAllContent(?string $containerClass = null): bool
@@ -768,20 +768,20 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     }
 
     /**
-     * Checks if the user is allowed to manage content
+     * Checks if the user is allowed to manage all content
      *
      * @return bool
      * @throws InvalidConfigException
      * @since 1.17
      */
-    public function canManageContent(): bool
+    public function canManageAllContent(): bool
     {
-        /** @var \humhub\modules\content\Module $module */
-        $module = Yii::$app->getModule('content');
+        /** @var AdminModule $module */
+        $module = Yii::$app->getModule('admin');
 
         return
-            $module->enableGlobalManageContentPermission
-            && (new PermissionManager(['subject' => $this]))->can(ManageContent::class);
+            $module->enableManageAllContentPermission
+            && (new PermissionManager(['subject' => $this]))->can(ManageAllContent::class);
     }
 
 

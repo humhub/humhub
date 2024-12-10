@@ -17,8 +17,8 @@ Version 1.17 (Unreleased)
 
 ### Deprecated
 - `\humhub\modules\ui\menu\MenuEntry::isActiveState()` use `\humhub\helpers\ControllerHelper::isActivePath()` instead
-- `\humhub\modules\content\Module::$adminCanViewAllContent` and `\humhub\modules\content\Module::adminCanEditAllContent` use `\humhub\modules\content\Module::$enableGlobalManageContentPermission` instead which enables the global "Manage Content" Group Permission
-- `\humhub\modules\user\models\User::canViewAllContent()` use `\humhub\modules\user\models\User::canManageContent()` instead
+- `\humhub\modules\content\Module::$adminCanViewAllContent` and `\humhub\modules\content\Module::adminCanEditAllContent` use `\humhub\modules\admin\Module::$enableGlobalManageContentPermission` instead which enables the "Manage All Content" Group Permission
+- `\humhub\modules\user\models\User::canViewAllContent()` use `\humhub\modules\user\models\User::canManageAllContent()` instead
 
 ### Removed
 - `Include captcha in registration form` checkbox removed from "Administration" -> "Users" -> "Settings"

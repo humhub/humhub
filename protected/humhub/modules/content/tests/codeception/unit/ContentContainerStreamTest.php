@@ -2,8 +2,8 @@
 
 namespace tests\codeception\unit\modules\content;
 
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\stream\actions\ContentContainerStream;
@@ -70,7 +70,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertFalse(in_array($w1, $ids));
         $this->assertTrue(in_array($w2, $ids));
 
-        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
 
         $this->becomeUser('User2');
         $ids = $this->getStreamActionIds($this->space, 2);
@@ -85,7 +85,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertTrue(in_array($w1, $ids)); // Manage Content permission is enabled by default for admins
         $this->assertTrue(in_array($w2, $ids));
 
-        self::setGroupPermission(3, new ManageContent());
+        self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User2');
         $ids = $this->getStreamActionIds($this->space, 2);
         $this->assertTrue(in_array($w1, $ids));

@@ -210,7 +210,7 @@ class ContentAddonActiveRecord extends ActiveRecord implements ContentOwner, Vie
             return true;
         }
 
-        return $user->canManageContent();
+        return $user->canManageAllContent();
     }
 
     /**

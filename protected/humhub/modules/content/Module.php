@@ -30,23 +30,17 @@ class Module extends \humhub\components\Module
 
     /**
      * @since 1.1
-     * @deprecated since 1.17
+     * @deprecated since 1.17 use $enableManageAllContentPermission form the admin module
      * @var bool global admin can see all content
      */
     public $adminCanViewAllContent = false;
 
     /**
      * @since 1.1
-     * @deprecated since 1.17
+     * @deprecated since 1.17 use $enableManageAllContentPermission form the admin module
      * @var bool global admin can edit/delete all content
      */
     public $adminCanEditAllContent = true;
-
-    /**
-     * @since 1.17
-     * @var bool Enable the global "Manage Content" Group Permission
-     */
-    public $enableGlobalManageContentPermission = false;
 
     /**
      * @since 1.1
@@ -148,12 +142,6 @@ class Module extends \humhub\components\Module
                 // Note: we do not return CreatePrivateContent Permission since its not writable at the moment
                 new permissions\ManageContent(),
                 new permissions\CreatePublicContent(),
-            ];
-        }
-
-        if ($this->enableGlobalManageContentPermission) {
-            return [
-                new permissions\ManageContent(),
             ];
         }
 

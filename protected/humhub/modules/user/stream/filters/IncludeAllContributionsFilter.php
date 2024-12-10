@@ -63,7 +63,7 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
             ['content.contentcontainer_id' => $this->container->contentcontainer_id],
         ]);
 
-        if ($queryUser && $queryUser->canManageContent()) {
+        if ($queryUser && $queryUser->canManageAllContent()) {
             // Don't restrict if user can view all content:
             $conditionSpaceMembershipRestriction = '';
             $conditionUserPrivateRestriction = '';

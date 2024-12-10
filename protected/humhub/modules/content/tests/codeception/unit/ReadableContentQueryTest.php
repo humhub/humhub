@@ -2,8 +2,8 @@
 
 namespace tests\codeception\unit\modules\content;
 
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\permissions\ManageContent;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\Group;
@@ -205,7 +205,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertPostCount(1);
         $this->assertInPosts($this->publicSpacePublicPost);
 
-        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
         $this->assertPostCount(1);
@@ -221,7 +221,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->publicSpacePublicPost);
         $this->assertInPosts($this->publicSpacePrivatePost);
 
-        self::setGroupPermission(3, new ManageContent());
+        self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
         $this->assertPostCount(2);
@@ -244,7 +244,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
         $this->assertPostCount(0);
 
-        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
         $this->assertPostCount(0);
@@ -259,7 +259,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->privateSpacePublicPost);
         $this->assertInPosts($this->privateSpacePrivatePost);
 
-        self::setGroupPermission(3, new ManageContent());
+        self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
         $this->assertPostCount(2);
@@ -333,12 +333,12 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertPostCount(1);
         $this->assertInPosts($this->profilePublicPost);
 
-        Yii::$app->getModule('content')->enableGlobalManageContentPermission = true;
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
         $this->assertPostCount(1);
         $this->assertInPosts($this->profilePublicPost);
 
-        self::setGroupPermission(3, new ManageContent());
+        self::setGroupPermission(3, new ManageAllContent());
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
         $this->assertPostCount(2);
         $this->assertInPosts($this->profilePublicPost);

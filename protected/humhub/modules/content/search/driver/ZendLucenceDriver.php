@@ -255,7 +255,7 @@ class ZendLucenceDriver extends AbstractDriver
             // Own created content is always visible
             $permissionQuery->addSubquery(new TermQuery(new Term($user->guid ?? null, 'created_by')));
 
-            if ($user?->canManageContent()) {
+            if ($user?->canManageAllContent()) {
                 // Don't restrict if user can view all Space content:
                 $permissionQuery->addSubquery(new TermQuery(new Term(Space::class, 'container_class')));
             } else {
@@ -278,7 +278,7 @@ class ZendLucenceDriver extends AbstractDriver
                 $permissionQuery->addSubquery($privateSpaceContentQuery);
             }
 
-            if ($user?->canManageContent()) {
+            if ($user?->canManageAllContent()) {
                 // Don't restrict if user can view all User content:
                 $permissionQuery->addSubquery(new TermQuery(new Term(User::class, 'container_class')));
             } else {
