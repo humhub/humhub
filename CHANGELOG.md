@@ -12,6 +12,7 @@ HumHub Changelog
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
 - Enh: Add missing IDs in the modal login forms
+- Enh #7333: Improved Yii alias handling and added ENV support  
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
