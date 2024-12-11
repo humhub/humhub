@@ -3,8 +3,10 @@
 namespace humhub\components\bootstrap;
 
 use humhub\modules\admin\models\forms\MailingSettingsForm;
+use Yii;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
+use yii\log\Logger;
 
 class SettingsLoader implements BootstrapInterface
 {
@@ -29,19 +31,17 @@ class SettingsLoader implements BootstrapInterface
 
     private function setMailerConfig($app): void
     {
-        $instantiated = $app->has('mailer', true);
+        if ($app->has('mailer', true)) {
+            Yii::$app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+        }
+
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
 
         if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
-            if ($instantiated) {
-                $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport(['dsn' => 'native://default']);
-                $app->mailer->useFileTransport = true;
-            } else {
-                $this->updateComponentDefinition($app, 'mailer', [
-                    'transport' => ['dsn' => 'native://default'],
-                    'useFileTransport' => true,
-                ]);
-            }
+            $this->updateComponentDefinition($app, 'mailer', [
+                'transport' => ['dsn' => 'native://default'],
+                'useFileTransport' => true,
+            ]);
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
@@ -71,16 +71,10 @@ class SettingsLoader implements BootstrapInterface
                 $transport['dsn'] = $app->settings->get('mailer.dsn');
             }
 
-
-            if ($instantiated) {
-                $app->mailer->useFileTransport = false;
-                $app->mailer->hasMethod('setTransport') && $app->mailer->setTransport($transport);
-            } else {
-                $this->updateComponentDefinition($app, 'mailer', [
-                    'useFileTransport' => false,
-                    'transport' => $transport,
-                ]);
-            }
+            $this->updateComponentDefinition($app, 'mailer', [
+                'useFileTransport' => false,
+                'transport' => $transport,
+            ]);
         }
     }
 
@@ -88,7 +82,7 @@ class SettingsLoader implements BootstrapInterface
     {
         if ($defaultUserIdleTimeoutSec = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
             if ($app->has('user', true)) {
-                $app->user->authTimeout = $defaultUserIdleTimeoutSec;
+                Yii::$app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
             } else {
                 $this->updateComponentDefinition($app, 'user', [
                     'authTimeout' => $defaultUserIdleTimeoutSec,
@@ -99,6 +93,10 @@ class SettingsLoader implements BootstrapInterface
 
     private function setCacheConfig($app): void
     {
+        if ($app->has('cache', true)) {
+            Yii::$app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+        }
+
         $cacheClass = $app->settings->get('cache.class');
         $cacheComponent = [];
 
