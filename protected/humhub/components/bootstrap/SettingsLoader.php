@@ -21,6 +21,14 @@ class SettingsLoader implements BootstrapInterface
         $this->setCacheConfig($app);
     }
 
+    private function setComponentDefinition($app, $component, $definition)
+    {
+        $app->set(
+            $component,
+            $definition,
+        );
+    }
+
     private function updateComponentDefinition($app, $component, $definition)
     {
         $app->set(
@@ -56,7 +64,7 @@ class SettingsLoader implements BootstrapInterface
                 unset($definition['transport']);
             }
 
-            $this->updateComponentDefinition($app, 'mailer', $definition);
+            $this->setComponentDefinition($app, 'mailer', $definition);
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
