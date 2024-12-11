@@ -41,7 +41,7 @@ class SettingsLoader implements BootstrapInterface
     private function setMailerConfig($app): void
     {
         if ($app->has('mailer', true)) {
-            $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+//            $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
