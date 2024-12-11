@@ -2,6 +2,7 @@
 
 namespace tests\codeception\unit\modules\content;
 
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
@@ -36,35 +37,6 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertTrue(in_array($w2, $ids));
     }
 
-    public function testPrivateContentAsAdminNotMemberCannotViewAllContent()
-    {
-        $this->becomeUser('User2');
-
-        $w1 = $this->createPrivatePost();
-        $w2 = $this->createPublicPost();
-
-        $this->becomeUser('AdminNotMember');
-        $ids = $this->getStreamActionIds($this->space, 2);
-
-        $this->assertFalse(in_array($w1, $ids));
-        $this->assertTrue(in_array($w2, $ids));
-    }
-
-    public function testPrivateContentAsAdminNotMemberCanViewAllContent()
-    {
-        $this->becomeUser('User2');
-
-        $w1 = $this->createPrivatePost();
-        $w2 = $this->createPublicPost();
-
-        Yii::$app->getModule('content')->adminCanViewAllContent = true;
-        $this->becomeUser('AdminNotMember');
-        $ids = $this->getStreamActionIds($this->space, 2);
-
-        $this->assertTrue(in_array($w1, $ids));
-        $this->assertTrue(in_array($w2, $ids));
-    }
-
     public function testPublicContent()
     {
         $this->becomeUser('User2');
@@ -79,17 +51,43 @@ class ContentContainerStreamTest extends HumHubDbTestCase
         $this->assertTrue(in_array($w2, $ids));
     }
 
-    public function testPublicContentAsAdminCanViewAllContent()
+    public function testManageAllContentPermission()
     {
-        $this->becomeUser('User2');
-
+        $this->becomeUser('User1');
         $w1 = $this->createPrivatePost();
         $w2 = $this->createPublicPost();
 
-        Yii::$app->getModule('content')->adminCanViewAllContent = true;
+        $this->becomeUser('User2');
+        $ids = $this->getStreamActionIds($this->space, 2);
+        $this->assertFalse(in_array($w1, $ids));
+        $this->assertTrue(in_array($w2, $ids));
         $this->becomeUser('Admin');
         $ids = $this->getStreamActionIds($this->space, 2);
+        $this->assertFalse(in_array($w1, $ids));
+        $this->assertTrue(in_array($w2, $ids));
+        $this->becomeUser('AdminNotMember');
+        $ids = $this->getStreamActionIds($this->space, 2);
+        $this->assertFalse(in_array($w1, $ids));
+        $this->assertTrue(in_array($w2, $ids));
 
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
+        $this->becomeUser('User2');
+        $ids = $this->getStreamActionIds($this->space, 2);
+        $this->assertFalse(in_array($w1, $ids));
+        $this->assertTrue(in_array($w2, $ids));
+        $this->becomeUser('Admin');
+        $ids = $this->getStreamActionIds($this->space, 2);
+        $this->assertTrue(in_array($w1, $ids)); // Manage Content permission is enabled by default for admins
+        $this->assertTrue(in_array($w2, $ids));
+        $this->becomeUser('AdminNotMember');
+        $ids = $this->getStreamActionIds($this->space, 2);
+        $this->assertTrue(in_array($w1, $ids)); // Manage Content permission is enabled by default for admins
+        $this->assertTrue(in_array($w2, $ids));
+
+        self::setGroupPermission(3, new ManageAllContent());
+        $this->becomeUser('User2');
+        $ids = $this->getStreamActionIds($this->space, 2);
         $this->assertTrue(in_array($w1, $ids));
         $this->assertTrue(in_array($w2, $ids));
     }

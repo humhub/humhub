@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\helpers\DatabaseHelper;
+use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
@@ -44,6 +45,8 @@ trait ApplicationTrait
      */
     public function __construct($config = [])
     {
+        $config = EnvHelper::resolveConfigAliases($config);
+
         $this->loadedAppConfig = $config;
 
         $config = $this->removeLegacyConfigSettings($config);
