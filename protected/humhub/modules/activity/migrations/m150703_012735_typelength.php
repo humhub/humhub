@@ -1,14 +1,14 @@
 <?php
 
-
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m150703_012735_typelength extends Migration
 {
     public function up()
     {
-        $this->renameColumn('activity', 'type', 'class');
-        $this->alterColumn('activity', 'class', 'varchar(100) NOT NULL');
+        if ($this->safeRenameColumn('activity', 'type', 'class')) {
+            $this->alterColumn('activity', 'class', 'varchar(100) NOT NULL');
+        }
     }
 
     public function down()
@@ -17,15 +17,4 @@ class m150703_012735_typelength extends Migration
 
         return false;
     }
-
-    /*
-    // Use safeUp/safeDown to run migration code within a transaction
-    public function safeUp()
-    {
-    }
-
-    public function safeDown()
-    {
-    }
-    */
 }
