@@ -3,7 +3,6 @@
 namespace humhub\components\bootstrap;
 
 use humhub\modules\admin\models\forms\MailingSettingsForm;
-use Yii;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
@@ -32,7 +31,7 @@ class SettingsLoader implements BootstrapInterface
     private function setMailerConfig($app): void
     {
         if ($app->has('mailer', true)) {
-            Yii::$app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+            $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
@@ -82,7 +81,7 @@ class SettingsLoader implements BootstrapInterface
     {
         if ($defaultUserIdleTimeoutSec = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
             if ($app->has('user', true)) {
-                Yii::$app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+                $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
             } else {
                 $this->updateComponentDefinition($app, 'user', [
                     'authTimeout' => $defaultUserIdleTimeoutSec,
@@ -94,7 +93,7 @@ class SettingsLoader implements BootstrapInterface
     private function setCacheConfig($app): void
     {
         if ($app->has('cache', true)) {
-            Yii::$app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+            $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
         $cacheClass = $app->settings->get('cache.class');
