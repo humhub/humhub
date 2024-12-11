@@ -2,6 +2,7 @@
 
 namespace humhub\components\bootstrap;
 
+use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
@@ -24,8 +25,17 @@ class SettingsLoader implements BootstrapInterface
     {
         $app->set(
             $component,
-            ArrayHelper::merge(ArrayHelper::getValue($app->components, $component, []), $definition),
+            ArrayHelper::merge($this->getComponentDefinition($app, $component), $definition),
         );
+    }
+
+    private function getComponentDefinition($app, $component, $property = null)
+    {
+        if (!is_null($property)) {
+            return ArrayHelper::getValue($app->components, [$component, $property]);
+        } else {
+            return ArrayHelper::getValue($app->components, $component, []);
+        }
     }
 
     private function setMailerConfig($app): void
@@ -69,6 +79,10 @@ class SettingsLoader implements BootstrapInterface
                 $definition['transport']['dsn'] = 'native://default';
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
                 $definition['transport']['dsn'] = $app->settings->get('mailer.dsn');
+            }
+
+            if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
+                unset($definition['transport']);
             }
 
             $this->updateComponentDefinition($app, 'mailer', $definition);
