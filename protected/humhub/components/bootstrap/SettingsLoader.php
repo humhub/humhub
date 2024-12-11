@@ -47,16 +47,16 @@ class SettingsLoader implements BootstrapInterface
 
         if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
             $app->mailer->useFileTransport = true;
-//            $definition = [
-//                'transport' => ['dsn' => 'native://default'],
-//                'useFileTransport' => true,
-//            ];
-//
-//            if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
-//                unset($definition['transport']);
-//            }
-//
-//            $this->updateComponentDefinition($app, 'mailer', $definition);
+            //            $definition = [
+            //                'transport' => ['dsn' => 'native://default'],
+            //                'useFileTransport' => true,
+            //            ];
+            //
+            //            if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
+            //                unset($definition['transport']);
+            //            }
+            //
+            //            $this->updateComponentDefinition($app, 'mailer', $definition);
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
