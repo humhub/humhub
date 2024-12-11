@@ -6,7 +6,6 @@ use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\content\models\Content;
 use humhub\modules\post\models\Post;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Throwable;
@@ -485,10 +484,5 @@ class ReadableContentQueryTest extends HumHubDbTestCase
             }
         }
         $this->assertTrue($found, "Could not find {$post->id} in result");
-    }
-
-    private static function addUserToGroup(string $userName, int $groupId): void
-    {
-        Group::findOne($groupId)->addUser(User::findOne(['username' => $userName]));
     }
 }
