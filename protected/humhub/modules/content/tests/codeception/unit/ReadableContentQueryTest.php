@@ -218,7 +218,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->publicSpacePublicPost);
         $this->assertInPosts($this->publicSpacePrivatePost);
 
-        static::addUserToGroup(3, 'User3');
+        static::addUserToGroup('User3', 3);
         self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
@@ -254,7 +254,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->privateSpacePublicPost);
         $this->assertInPosts($this->privateSpacePrivatePost);
 
-        static::addUserToGroup(3, 'User3');
+        static::addUserToGroup('User3', 3);
         self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
@@ -320,7 +320,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
 
     public function testProfileContentOfMembersOnlyUserManageAllContentPermission()
     {
-        static::addUserToGroup(3, 'User3');
+        static::addUserToGroup('User3', 3);
         $this->becomeUser('User3');
         $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
