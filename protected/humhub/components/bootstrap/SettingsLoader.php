@@ -42,28 +42,30 @@ class SettingsLoader implements BootstrapInterface
     private function setMailerConfig($app): void
     {
         if ($app->has('mailer', true)) {
-            //            $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+            $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
 
-        if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
-            if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
-                //Test environment
-                $app->mailer->useFileTransport = true;
-            } else {
-                $definition = [
-                    'transport' => ['dsn' => 'native://default'],
-                    'useFileTransport' => true,
-                ];
+        //Check if Test environment
+        if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
+            $app->mailer->useFileTransport = true;
 
-                $this->updateComponentDefinition($app, 'mailer', $definition);
-            }
+            return;
+        }
+
+        if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
+            $definition = [
+                'transport' => ['dsn' => 'native://default'],
+                'useFileTransport' => true,
+            ];
+
+            $this->updateComponentDefinition($app, 'mailer', $definition);
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
             $definition = [
-                'useFileTransport' => false,
+                'useFileTransport' => true,
             ];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
