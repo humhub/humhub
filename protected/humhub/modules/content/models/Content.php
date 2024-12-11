@@ -16,7 +16,6 @@ use humhub\interfaces\ArchiveableInterface;
 use humhub\interfaces\EditableInterface;
 use humhub\interfaces\ViewableInterface;
 use humhub\libs\UUIDValidator;
-use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\content\activities\ContentCreated as ActivitiesContentCreated;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -554,6 +553,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return false;
         }
 
+        if (Yii::$app->user->identity?->canManageAllContent()) {
+            return true;
+        }
+
         return $this->getContainer()->permissionManager->can(ManageContent::class);
     }
 
@@ -606,6 +609,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         // No need to archive content on an archived container, content is marked as archived already
         if ($container->isArchived()) {
             return false;
+        }
+
+        if ($user?->canManageAllContent()) {
+            return true;
         }
 
         return $container->getPermissionManager($user)->can(new ManageContent());
@@ -734,7 +741,10 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             $container = $this->container;
         }
 
-        return $this->getModel()->isOwner() || Yii::$app->user->can(ManageUsers::class) || $container->can(ManageContent::class);
+        return
+            $this->getModel()->isOwner()
+            || Yii::$app->user->identity->canManageAllContent()
+            || $container->can(ManageContent::class);
     }
 
     /**
@@ -879,7 +889,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * A user can edit a content if one of the following conditions are met:
      *
      *  - User is the owner of the content
-     *  - User is system administrator and the content module setting `adminCanEditAllContent` is set to true (default)
+     *  - User can Manage Content
      *  - The user is granted the managePermission set by the model record class
      *  - The user meets the additional condition implemented by the model records class own `canEdit()` function.
      *
@@ -906,12 +916,11 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         // Only owner can edit his content
-        if ($user !== null && $this->created_by == $user->id) {
+        if ($user !== null && $this->created_by === $user->id) {
             return true;
         }
 
-        // Global Admin can edit/delete arbitrarily content
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
+        if ($user->canManageAllContent()) {
             return true;
         }
 
@@ -950,8 +959,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
         $user = Yii::$app->user->getIdentity();
 
-        // Global Admin can lock comments
-        if (Yii::$app->getModule('content')->adminCanEditAllContent && $user->isSystemAdmin()) {
+        if ($user?->canManageAllContent()) {
             return true;
         }
 
@@ -980,6 +988,9 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
     /**
      * @inheritdoc
+     * @throws InvalidConfigException
+     * @throws Exception
+     * @throws Throwable
      */
     public function canView($user = null): bool
     {
@@ -995,7 +1006,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         }
 
         // User can access own content
-        if ($user !== null && $this->created_by == $user->id) {
+        if ($user !== null && $this->created_by === $user->id) {
             return true;
         }
 
@@ -1014,8 +1025,8 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return true;
         }
 
-        // Check system admin can see all content module configuration
-        if ($user->canViewAllContent(get_class($this->container))) {
+        // Check user can manage all content
+        if ($user->canManageAllContent()) {
             return true;
         }
 
