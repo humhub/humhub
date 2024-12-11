@@ -113,6 +113,8 @@ HumHub Changelog
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)
 - Fix #7278: Don't remove html tags by JS from search post record because it is done by PHP
 - Fix #7296: Fix email validation of invite new users
+- Fix #7319: Display correct profile field value in user subtitle
+- Fix #7322: Always allow invitation by link from Administration. Implement separate invitation by link from People.
 - Fix #7297: Auto refresh a page with obsolete nonce value
 
 1.16.2 (September 5, 2024)

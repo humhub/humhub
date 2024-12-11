@@ -698,10 +698,8 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
             return call_user_func($module->displayNameSubCallback, $this);
         }
 
-        $attributeName = Yii::$app->settings->get('displayNameSubFormat');
-
-        if ($this->profile !== null && $this->profile->hasAttribute($attributeName)) {
-            return $this->profile->getAttribute($attributeName) ?? '';
+        if ($this->profile !== null) {
+            return $this->profile->getFieldValue(Yii::$app->settings->get('displayNameSubFormat', '')) ?? '';
         }
 
         return '';

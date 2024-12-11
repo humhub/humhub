@@ -72,7 +72,7 @@ use yii\bootstrap\ActiveForm;
                            data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
-                           data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link']) ?>">
+                           data-action-click-url="<?= Url::to(['/user/invite/reset-invite-link', 'target' => $model->target]) ?>">
                             <small><?= Yii::t('SpaceModule.base', 'Create new link'); ?></small>
                         </a>
                     <?php endif; ?>
