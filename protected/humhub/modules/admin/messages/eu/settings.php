@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"My Spaces" Sailkapena',
   '1 month' => 'Hilabete 1',
   '1 week' => 'Aste 1',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6 hilabete',
   '<strong>Confirm</strong> icon deletion' => '<strong>Berretsi</strong> ikonoaren ezabaketa',
   '<strong>Confirm</strong> image deletion' => '<strong>Berretsi</strong> irudiaren ezabaketa',
+  '<strong>Confirm</strong> topic deletion' => '<strong>Baieztatu</strong> gaia ezabatzea.',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'Sartzeko fitxa',
   'Access token is not provided yet.' => 'Oraindik ez da sarbide-fitxa eman.',
   'Add OEmbed provider' => 'Gehitu OEmbed hornitzailea',
+  'Add Topic' => 'Gehitu gaia',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Gehitu informazio testu pertsonalizatua mantentze-modurako. Saioa hasteko orrian bistaratzen da.',
   'Add individual info text...' => 'Gehitu banakako informazio-testua...',
   'Add new provider' => 'Gehitu hornitzaile berria',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Backend-aren Cache-a',
   'Comma separated list. Leave empty to allow all.' => 'Komaz bereizitako zerrenda. Utzi hutsik guztiak baimentzeko.',
   'Configuration (Use settings from configuration file)' => 'Konfigurazioa (Erabili konfigurazio fitxategiko ezarpenak)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'Ezin izan da proba-mezu elektronikoa bidali.',
   'Currently no provider active!' => 'Une honetan ez dago aktibatutako hornitzailerik!',
   'Currently there are {count} records in the database dating from {dating}.' => 'Une honetan {count} erregistro daude datu-basean {dating}-(e)tik datozenak.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Orrialde-tamaina lehenetsia (sarrerak orrialde bakoitzeko)',
   'Default stream content order' => 'Bidalitako edukiaren hurrenkera lehenetsia',
   'Delete' => 'Ezabatu',
+  'Do you really want to delete this topic?' => 'Gai hau ezabatu nahi duzu?',
   'E-Mail' => 'E-posta',
   'E-Mail reply-to' => 'E-postaren erantzuna',
   'E-Mail sender address' => 'E-posta bidaltzailearen helbidea',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Adiskidetasuna',
   'General' => 'Orokorra',
   'General Settings' => 'Ezarpen orokorrak',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'HTML jarraipen-kodea',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Hemen zure sare sozialaren erregistro-portaerak eta erabiltzaile-ezarpen gehigarriak konfigura ditzakezu.',
   'Here you can configure basic settings of your social network.' => 'Hemen zure sare sozialaren oinarrizko ezarpenak konfigura ditzakezu.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Hornitzailearen izena',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Lotura egiaztatzeko erabiliko den adierazpen erregularra.',
-  'Reported database time: {dateTime}' => 'Jakinarazitako datu-basearen denbora: {dateTime}',
   'Save' => 'Gorde',
   'Save & Flush Caches' => 'Gorde eta hustu cache-a',
   'Save & Test' => 'Gorde eta probatu',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Gaia',
   'These settings refer to advanced topics of your social network.' => 'Doikuntza horiek zure sare sozialeko gai aurreratuei dagozkie.',
   'These settings refer to the appearance of your social network.' => 'Doikuntza horiek zure sare sozialaren itxurari dagozkio.',
+  'Topic has been deleted!' => 'Gaia ezabatu dute!',
+  'Topics' => 'Gaiak',
   'Url Pattern' => 'URLaren patroia',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Erabili %url% URL-n markatzaile gisa. Formatuak JSON izan behar du. (adibidez: http://www.youtube.com/oembed?url=%url%&amp;format=json)',
   'Use SMTPS' => 'Erabili SMTPS',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'Adibidez: localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'Adibidez: smtps://user:pass@smtp.example.com:port',
   'never' => 'Inoiz ez',
-);
+];

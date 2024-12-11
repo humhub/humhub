@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<b>This space is still empty!</b>' => '<b>Cet espace est encore vide !</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Cet espace est encore vide !</b><br>Commencez par publier quelque chose ici…',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>Vous n\'êtes pas membre de cet espace et il n\'y a aucun contenu public à afficher pour l\'instant.</b>',
@@ -20,6 +20,7 @@ return array (
   'Accept' => 'Accepter',
   'Accept Invite' => 'Accepter l\'invitation',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'Merci de vous présenter en quelques mots afin de devenir membre de cet espace.',
+  'Add as Default Space for new users' => 'Ajouter comme Espace par défaut pour les nouveaux utilisateurs',
   'Add users without invitation' => 'Ajouter des utilisateurs sans les inviter',
   'Admin' => 'Administrateur',
   'Administrator:' => 'Administrateur :',
@@ -41,6 +42,7 @@ return array (
   'Decline' => 'Refuser',
   'Decline Invite' => 'Refuser l\'invitation',
   'Default' => 'Par défaut',
+  'Default Stream Sort' => 'Tri par défaut du flux',
   'Default content visibility' => 'Visibilité par défaut des contenus',
   'Delete' => 'Supprimer',
   'Description' => 'Description',
@@ -127,6 +129,7 @@ return array (
   'Spaces' => 'Espaces',
   'Status' => 'Statut',
   'Stream' => 'Fil d\'actualités',
+  'Stream Sort' => 'Tri du flux',
   'Tags' => 'Mots-clés',
   'The default homepage for members of this Space' => 'La page d\'accueil par défaut pour les membres de cet espace',
   'The default homepage for non-members and guests visiting this Space' => 'La page d\'accueil par défaut pour les non-membres et les invités visitant cet espace',
@@ -163,4 +166,4 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Votre demande a été transmise à l\'administrateur de cet espace.',
   '{count} members' => '{count} membres',
   '{email} is not valid!' => '{email} n\'est pas valide.',
-);
+];

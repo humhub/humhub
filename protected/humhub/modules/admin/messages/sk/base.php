@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '<strong>Administračná</strong> ponuka',
   '<strong>Maintenance</strong> Mode' => 'Režim <strong>Údržby</strong>',
   '<strong>Module</strong> administration' => '<strong>Modul</strong> administrácie',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Ľudia',
   'Permissions' => 'Oprávnenia',
   'Proxy' => 'Proxy',
+  'Resend to all' => 'Znovu poslať všetkým',
+  'Resend to selected rows' => 'Znova odoslať vybraným riadkom',
   'Self test' => 'Vlastný test',
   'Set as default' => 'Nastaviť ako predvolené',
   'Settings' => 'Nastavenie',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Štatistiky',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Zdá sa, že cron ulohy pozadí (queue) nefunguje správne.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Zdá sa, že bežná cron úloha (cron) nefunguje správne.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'Tento prehľad zobrazuje všetky nainštalované moduly a umožňuje vám ich povoliť, zakázať, nakonfigurovať a samozrejme odinštalovať. Ak chcete objaviť nové moduly, pozrite sa na náš Marketplace. Upozorňujeme, že deaktivácia alebo odinštalovanie modulu bude mať za následok stratu akéhokoľvek obsahu, ktorý bol s týmto modulom vytvorený.',
+  'Topics' => 'Témy',
   'Uninstall' => 'Odinštalovanie',
   'Updates available for {count} of your modules' => 'Dostupné aktualizácie pre {count} modulov (moduly)',
   'User not found!' => 'Užívateľ sa nenašiel!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => 'Navštívte Marketplace',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Nemáte oprávnenie na konfiguráciu modulov. Pre ďalšie informácie kontaktujte správcu.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Nemáte oprávnenie na správu modulov. Pre ďalšie informácie kontaktujte správcu.',
-);
+];

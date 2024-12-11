@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => 'Μενού <strong>Διαχείριση</strong>',
   '<strong>Maintenance</strong> Mode' => 'Λειτουργία <strong>Συντήρηση</strong>',
   '<strong>Module</strong> administration' => '',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Ανθρωποι',
   'Permissions' => 'Δικαιώματα',
   'Proxy' => 'Πληρεξούσιο',
+  'Resend to all' => '',
+  'Resend to selected rows' => '',
   'Self test' => 'Τεστ αυτοαξιολόγησης',
   'Set as default' => 'Ορισμός ως προεπιλογή',
   'Settings' => 'Ρυθμίσεις',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Στατιστικά',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Ο Χρονοπρογρ/στής για τις εργασίες υπόβαθρου (στη σειρά) δεν φαίνεται να λειτουργεί σωστά.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Ο Χρονοπρογρ/στής εργασίας για τις τακτικές εργασίες (cron) δεν φαίνεται να λειτουργεί σωστά.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
+  'Topics' => 'Θέματα',
   'Uninstall' => 'Απεγκατάσταση',
   'Updates available for {count} of your modules' => '',
   'User not found!' => 'Ο χρήστης δεν βρέθηκε!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => '',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => '',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => '',
-);
+];

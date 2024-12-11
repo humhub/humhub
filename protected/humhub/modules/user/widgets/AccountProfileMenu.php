@@ -8,9 +8,10 @@
 
 namespace humhub\modules\user\widgets;
 
-use Yii;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\TabMenu;
+use Yii;
 
 /**
  * Account Settings Tab Menu
@@ -26,14 +27,14 @@ class AccountProfileMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Profile'),
             'url' => ['/user/account/edit'],
             'sortOrder' => 100,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'edit'),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'edit'),
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('UserModule.base', 'Change Username'),
             'url' => ['/user/account/change-username'],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'change-username'),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-username'),
             'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeUsername(),
         ]));
 
@@ -41,7 +42,7 @@ class AccountProfileMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Change Email'),
             'url' => ['/user/account/change-email'],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('user', 'account', ['change-email', 'change-email-validate']),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', ['change-email', 'change-email-validate']),
             'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangeEmail(),
         ]));
 
@@ -49,7 +50,7 @@ class AccountProfileMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Change Password'),
             'url' => ['/user/account/change-password'],
             'sortOrder' => 400,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'change-password'),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'change-password'),
             'isVisible' => Yii::$app->user->getAuthClientUserService()->canChangePassword(),
         ]));
 
@@ -57,7 +58,7 @@ class AccountProfileMenu extends TabMenu
             'label' => Yii::t('UserModule.base', 'Delete Account'),
             'url' => ['/user/account/delete'],
             'sortOrder' => 500,
-            'isActive' => MenuLink::isActiveState('user', 'account', 'delete'),
+            'isActive' => ControllerHelper::isActivePath('user', 'account', 'delete'),
             'isVisible' => Yii::$app->user->getAuthClientUserService()->canDeleteAccount(),
         ]));
 

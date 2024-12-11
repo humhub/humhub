@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2023 HumHub GmbH & Co. KG
@@ -42,7 +43,7 @@ class ModuleControls extends Menu
         if ($this->module->isNonFree) {
             $this->addEntry(new MenuLink([
                 'id' => 'marketplace-licence-key',
-                'label' => Yii::t('MarketplaceModule.base', 'Add Licence Key'),
+                'label' => Yii::t('MarketplaceModule.base', 'Add License Key'),
                 'url' => ['/marketplace/purchase'],
                 'htmlOptions' => ['data-target' => '#globalModal'],
                 'icon' => 'key',

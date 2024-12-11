@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -37,7 +38,7 @@ class Settings extends Menu
         ]));
 
         $this->addEntry(new MenuLink([
-            'label' => Yii::t('MarketplaceModule.base', 'Add Licence Key'),
+            'label' => Yii::t('MarketplaceModule.base', 'Add License Key'),
             'url' => ['/marketplace/purchase'],
             'htmlOptions' => ['data-target' => '#globalModal'],
             'icon' => 'key',

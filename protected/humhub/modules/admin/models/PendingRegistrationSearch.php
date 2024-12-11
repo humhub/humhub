@@ -50,7 +50,9 @@ class PendingRegistrationSearch extends Invite
      */
     public function search($params = [])
     {
-        $query = self::find()->joinWith(['originator']);
+        $query = self::find()
+            ->joinWith(['originator'])
+            ->andWhere(self::filterSource());
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,

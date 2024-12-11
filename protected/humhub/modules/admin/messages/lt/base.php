@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '<strong>Administravimo</strong> meniu',
   '<strong>Maintenance</strong> Mode' => '<strong>Techninės priežiūros</strong> rėžimas',
   '<strong>Module</strong> administration' => '<strong>Modulių</strong> administravimas',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Asmenys',
   'Permissions' => 'Leidimai',
   'Proxy' => 'Įgaliojimas',
+  'Resend to all' => '',
+  'Resend to selected rows' => '',
   'Self test' => 'Savarankiškas testas',
   'Set as default' => 'Nustatyti, kaip numatytajį',
   'Settings' => 'Nustatymai',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Statistika',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Panašu, kad foninės (eilės) periodinės užduotys neveikia tinkamai.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Panašu, kad įprastos periodinės užduotys (ang. cronjob) neveikia tinkamai.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'Čia rodomi visi įdiegti moduliai, juos galima įjungti, išjungti, konfigūruoti ir, žinoma, pašalinti. Jei norite atrasti naujų modulių, aplankykite Prekybvietę. Atkreipkite dėmesį, kad išjungus arba pašalinus modulį, bus prarastas visas turinys, sukurtas naudojant tą modulį.',
+  'Topics' => 'Temos',
   'Uninstall' => 'Pašalinti',
   'Updates available for {count} of your modules' => 'Galimi {count} modulių atnaujinimai',
   'User not found!' => 'Vartotojas nerastas!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => 'Aplankyti Prekybvietę',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Neturite prieigos konfigūruoti modulius. Dėl papildomos informacijos kreipkitės į administratorių.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Neturite prieigos valdyti modulių. Dėl papildomos informacijos kreipkitės į administratorių.',
-);
+];

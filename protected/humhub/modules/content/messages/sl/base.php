@@ -3,6 +3,7 @@
 return [
     'Content' => 'Vsebina',
     '(Also visible to non-members of this space)' => '',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Move</strong> content' => '',
     '<strong>Permalink</strong> to this post' => '',
@@ -88,6 +89,8 @@ return [
     'This content type can\'t be moved.' => '',
     'This space is archived.' => '',
     'This space is not visible!' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'Topics' => '',
     'Turn off notifications' => '',
     'Turn on notifications' => '',

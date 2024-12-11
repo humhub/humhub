@@ -15,7 +15,6 @@ use humhub\modules\notification\models\Notification;
 use Throwable;
 use Yii;
 use yii\db\IntegrityException;
-use yii\db\StaleObjectException;
 use yii\web\HttpException;
 
 /**
@@ -55,7 +54,6 @@ class ListController extends Controller
 
                 $output .= $baseModel->render();
                 $lastEntryId = $notification->id;
-                $notification->desktop_notified = 1;
                 $notification->update();
             } catch (IntegrityException $ie) {
                 $notification->delete();
@@ -90,52 +88,14 @@ class ListController extends Controller
     }
 
     /**
-     * Returns new notifications
-     *
-     * @deprecated since version 1.2
-     */
-    public function actionGetUpdateJson()
-    {
-        return $this->asJson(self::getUpdates());
-    }
-
-    /**
-     * Returns a JSON which contains
+     * Returns a JSON array which contains
      * - Number of new / unread notification
-     * - Notification Output for new HTML5 Notifications
      *
-     * @param bool $includeContent weather or not to include the actual notification content
-     * @return string JSON String
+     * @return array JSON array
      * @throws Throwable
-     * @throws StaleObjectException
      */
-    public static function getUpdates($includeContent = true)
+    public static function getUpdates(): array
     {
-        $update['newNotifications'] = Notification::findUnseen()->count();
-
-        $unnotified = Notification::findUnnotifiedInFrontend()->all();
-
-        $update['notifications'] = [];
-        foreach ($unnotified as $notification) {
-            if ($includeContent && Yii::$app->getModule('notification')->settings->user()->getInherit('enable_html5_desktop_notifications', true)) {
-                try {
-                    $baseModel = $notification->getBaseModel();
-
-                    if ($baseModel->validate()) {
-                        $update['notifications'][] = $baseModel;
-                    } else {
-                        throw new IntegrityException('Invalid base model found for notification');
-                    }
-                } catch (IntegrityException $ex) {
-                    $notification->delete();
-                    Yii::warning('Deleted inconsistent notification with id ' . $notification->id . '. ' . $ex->getMessage());
-                    continue;
-                }
-            }
-            $notification->desktop_notified = 1;
-            $notification->update();
-        }
-
-        return $update;
+        return ['newNotifications' => Notification::findUnseen()->count()];
     }
 }

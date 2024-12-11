@@ -1,6 +1,7 @@
 <?php
 
 return [
+    '{email} is not valid!' => '{email} posta elektronikoak ez du balio!',
     '<strong>Invite</strong> new people' => '',
     'Click here to create an account:' => '',
     'Email' => '',
@@ -10,7 +11,7 @@ return [
     'Separate multiple email addresses by comma.' => '',
     'You\'ve been invited to join %appName%' => '',
     '{email} is already registered!' => '',
-    '{email} is not valid!' => '',
+    '{email} should contain at most {charNum} characters.' => '',
     '{username} invited you to join "{space}" on {name}.' => '',
     '{username} invited you to {name}.' => '',
 ];

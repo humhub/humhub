@@ -338,13 +338,12 @@ class ContentContainerModuleManager extends Component
     /**
      * This method is called to determine classes of Content models which can be posted on wall.
      *
-     * @param ContentContainerActiveRecord|null $contentContainer
      * @return ContentActiveRecord[]
      * @since 1.13
      */
     public function getContentClasses(): array
     {
-        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->id, function () {
+        return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->contentContainer->contentcontainer_id, function () {
             $contentClasses = [];
             foreach ($this->getEnabled() as $moduleId) {
                 $module = Yii::$app->getModule($moduleId);

@@ -159,9 +159,12 @@ return [
     '{count} members' => '{count}명의 회원',
     '{email} is not valid!' => '{email}이 유효하지 않습니다!',
     '<strong>Leave</strong> Space' => '',
+    'Add as Default Space for new users' => '',
     'Advanced Spaces Search' => '',
+    'Default Stream Sort' => '',
     'Incorrect name, try again.' => '',
     'Leave' => '',
     'Space Name' => '',
+    'Stream Sort' => '',
     'Updated by' => '',
 ];

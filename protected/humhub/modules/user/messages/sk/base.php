@@ -34,6 +34,7 @@ return array (
   'Disconnect account' => 'Odpojiť účet',
   'Edit' => 'Zmeniť',
   'Email' => 'Email',
+  'Empty password cannot be saved!' => 'Prázdne heslo sa nemôže uložiť!',
   'Enable Notifications' => 'Povoliť Upozornenia',
   'Find people by their profile data or user tags' => 'Nájdite ľudí podľa ich profilových údajov alebo používateľských štítkov',
   'Follow' => 'Nasledovať',

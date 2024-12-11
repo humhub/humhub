@@ -9,7 +9,6 @@
 namespace humhub\modules\installer;
 
 use Exception;
-use humhub\libs\DynamicConfig;
 use Yii;
 use yii\console\Application;
 use yii\helpers\Url;
@@ -31,6 +30,11 @@ class Module extends \humhub\components\Module
      * @inheritdoc
      */
     public $controllerNamespace = 'humhub\modules\installer\controllers';
+
+    /**
+     * @var bool enable auto setup
+     */
+    public bool $enableAutoSetup = false;
 
     /**
      * Array of config steps
@@ -126,7 +130,6 @@ class Module extends \humhub\components\Module
 
     protected function initConfigSteps()
     {
-
         /**
          * Step:  Basic Configuration
          */
@@ -138,6 +141,16 @@ class Module extends \humhub\components\Module
             },
         ];
 
+        /**
+         * Step: Localisation
+         */
+        $this->configSteps['localisation'] = [
+            'sort' => 130,
+            'url' => Url::to(['/installer/config/localisation']),
+            'isCurrent' => function () {
+                return (Yii::$app->controller->id == 'config' && Yii::$app->controller->action->id == 'localisation');
+            },
+        ];
 
         /**
          * Step: Use Case

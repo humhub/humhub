@@ -1,16 +1,16 @@
 <?php
 
-use yii\db\Migration;
+use humhub\components\Migration;
 
 class m170123_125622_pinned extends Migration
 {
     public function up()
     {
-        $this->renameColumn('content', 'sticked', 'pinned');
+        $this->safeRenameColumn('content', 'sticked', 'pinned');
     }
 
     public function down()
     {
-        $this->renameColumn('content', 'pinned', 'sticked');
+        $this->safeRenameColumn('content', 'pinned', 'sticked');
     }
 }

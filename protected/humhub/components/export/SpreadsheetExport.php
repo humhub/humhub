@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -7,6 +8,7 @@
 
 namespace humhub\components\export;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use Yii;
 use yii\base\Component;
@@ -14,6 +16,7 @@ use yii\base\InvalidConfigException;
 use yii\data\ActiveDataProvider;
 use yii\data\BaseDataProvider;
 use yii\di\Instance;
+use yii\helpers\ArrayHelper;
 use yii\i18n\Formatter;
 
 /**
@@ -276,10 +279,10 @@ class SpreadsheetExport extends Component
     }
 
     /**
-    * Composes header row contents.
-    * @param Spreadsheet $spreadsheet
-    * @throws \PhpOffice\PhpSpreadsheet\Exception
-    */
+     * Composes header row contents.
+     * @param Spreadsheet $spreadsheet
+     * @throws \PhpOffice\PhpSpreadsheet\Exception
+     */
     protected function composeHeaderRow($spreadsheet)
     {
         $worksheet = $spreadsheet->getActiveSheet();
@@ -346,6 +349,7 @@ class SpreadsheetExport extends Component
         foreach ($this->columns as $columnIndex => $column) {
             $coordinate = $this->getColumnLetter($columnIndex + 1) . $row;
             $value = $column->renderDataCellContent($model, $key, $index);
+            $value = $this->sanitizeValue($value);
 
             if ($column->dataType !== null) {
                 $worksheet->getCell($coordinate)->setValueExplicit($value, $column->dataType);
@@ -357,6 +361,34 @@ class SpreadsheetExport extends Component
                 $worksheet->getStyle($coordinate)->applyFromArray($column->styles);
             }
         }
+    }
+
+    /**
+     * Sanitize value to prevent injection.
+     */
+    private function sanitizeValue(?string $value): ?string
+    {
+        if (
+            empty($value) ||
+            !in_array(
+                ucfirst(ArrayHelper::getValue($this->resultConfig, 'writerType', (new ExportResult())->writerType)),
+                [IOFactory::WRITER_CSV, IOFactory::WRITER_XLSX, IOFactory::WRITER_XLS],
+            )
+        ) {
+            return $value;
+        }
+
+        // Check for risky starting characters or formula-like values and prepend single quote
+        if (strpbrk($value[0], '=+-@,;' . "\t" . "\r") !== false || preg_match('/^\d+[+\-*\/].+/', $value)) {
+            $value = "'" . $value;
+        }
+
+        // Sanitize escaping quotes, wrapping in double quotes if needed
+        if (strpbrk($value, "\"\n,") !== false) {
+            $value = '"' . str_replace('"', '""', $value) . '"';
+        }
+
+        return $value;
     }
 
     /**

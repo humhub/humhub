@@ -229,6 +229,10 @@ class Profile extends ActiveRecord
                 /** @var ProfileField $profileField */
                 $profileField->editable = true;
 
+                if ($profileField->fieldType->isVirtual) {
+                    continue;
+                }
+
                 if (!in_array($profileField->internal_name, $safeAttributes)) {
                     if ($profileField->visible && $this->scenario != 'registration') {
                         $profileField->editable = false;
@@ -306,18 +310,16 @@ class Profile extends ActiveRecord
     }
 
     /**
-     * Returns all profile fields with user data by given category
-     *
-     * @param ProfileFieldCategory $category
-     * @return ProfileField[]
+     * @return ProfileField[] all profile fields with user data by given category
      */
-    public function getProfileFields(ProfileFieldCategory $category = null)
+    public function getProfileFields(?ProfileFieldCategory $category = null, ?array $withoutTypes = null): array
     {
         $fields = [];
 
         if ($this->user !== null) {
             $query = ProfileField::find()
                 ->where(['visible' => 1])
+                ->andFilterWhere(['NOT IN', 'field_type_class', (array) $withoutTypes])
                 ->orderBy('sort_order');
 
             if ($category !== null) {
@@ -404,5 +406,23 @@ class Profile extends ActiveRecord
         if (!$this->save(false)) {
             Yii::error('Could not soft delete profile!');
         }
+    }
+
+    /**
+     * Get field value for this profile
+     *
+     * @param string $field
+     * @param bool $raw
+     * @return string|null
+     */
+    public function getFieldValue(string $field, bool $raw = false): ?string
+    {
+        if (!$this->hasAttribute($field) || !$this->user) {
+            return null;
+        }
+
+        $profileField = ProfileField::findOne(['internal_name' => $field]);
+
+        return $profileField?->getUserValue($this->user, $raw);
     }
 }

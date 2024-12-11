@@ -16,21 +16,19 @@ use yii\helpers\Html;
 
 ?>
 
-<?php if (!empty($entries)): ?>
-    <div class="text-center footer-nav footer-nav-default">
-        <small>
-            <?php foreach ($entries as $k => $entry): ?>
-                <?php if ($entry instanceof MenuLink): ?>
-                    <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
+<div class="text-center footer-nav footer-nav-default">
+    <small>
+        <?php foreach ($entries as $k => $entry): ?>
+            <?php if ($entry instanceof MenuLink): ?>
+                <?= Html::a($entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
 
-                    <?php if (!PoweredBy::isHidden() || array_key_last($entries) !== $k): ?>
-                        &nbsp;&middot;&nbsp;
-                    <?php endif; ?>
+                <?php if (!PoweredBy::isHidden() || array_key_last($entries) !== $k): ?>
+                    &nbsp;&middot;&nbsp;
                 <?php endif; ?>
-            <?php endforeach; ?>
+            <?php endif; ?>
+        <?php endforeach; ?>
 
-            <?= PoweredBy::widget(); ?>
-        </small>
-    </div>
-    <br/>
-<?php endif; ?>
+        <?= PoweredBy::widget(); ?>
+    </small>
+</div>
+<br/>

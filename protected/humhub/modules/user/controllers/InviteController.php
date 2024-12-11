@@ -50,6 +50,10 @@ class InviteController extends Controller
     {
         $model = new InviteForm();
 
+        if ($target = Yii::$app->request->get('target')) {
+            $model->target = $target;
+        }
+
         $canInviteByEmail = $model->canInviteByEmail();
         $canInviteByLink = $model->canInviteByLink();
         if (!$canInviteByEmail && !$canInviteByLink) {
@@ -104,6 +108,10 @@ class InviteController extends Controller
     public function actionResetInviteLink()
     {
         $model = new InviteForm();
+
+        if ($target = Yii::$app->request->get('target')) {
+            $model->target = $target;
+        }
 
         if (!Yii::$app->user->can([ManageUsers::class, ManageGroups::class])) {
             $this->forbidden();

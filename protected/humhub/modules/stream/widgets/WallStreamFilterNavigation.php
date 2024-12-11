@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -9,20 +10,20 @@
 namespace humhub\modules\stream\widgets;
 
 use humhub\modules\content\helpers\ContentContainerHelper;
+use humhub\modules\content\widgets\ContentTypePicker;
 use humhub\modules\space\models\Space;
-use humhub\modules\stream\models\filters\DateStreamFilter;
-use humhub\modules\ui\filter\widgets\DatePickerFilterInput;
-use humhub\modules\user\models\User;
-use humhub\modules\user\widgets\UserPickerField;
+use humhub\modules\stream\actions\Stream;
 use humhub\modules\stream\models\filters\ContentTypeStreamFilter;
+use humhub\modules\stream\models\filters\DateStreamFilter;
 use humhub\modules\stream\models\filters\DefaultStreamFilter;
 use humhub\modules\stream\models\filters\TopicStreamFilter;
-use humhub\modules\content\widgets\ContentTypePicker;
 use humhub\modules\topic\widgets\TopicPicker;
+use humhub\modules\ui\filter\widgets\DatePickerFilterInput;
+use humhub\modules\ui\filter\widgets\FilterNavigation;
 use humhub\modules\ui\filter\widgets\PickerFilterInput;
 use humhub\modules\ui\filter\widgets\RadioFilterInput;
-use humhub\modules\stream\actions\Stream;
-use humhub\modules\ui\filter\widgets\FilterNavigation;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\UserPickerField;
 use Yii;
 
 /**
@@ -251,7 +252,17 @@ class WallStreamFilterNavigation extends FilterNavigation
 
     protected function initSortFilters()
     {
-        $defaultSorting = Yii::$app->getModule('stream')->settings->get('defaultSort', Stream::SORT_CREATED_AT);
+        $contentContainer = ContentContainerHelper::getCurrent();
+        if ($contentContainer instanceof Space) {
+            $contentContainerDefaultSort = $contentContainer->settings->get(
+                'defaultStreamSort',
+                Yii::$app->getModule('space')->settings->get('defaultStreamSort', Stream::SORT_CREATED_AT),
+            );
+        } else {
+            $contentContainerDefaultSort = null;
+        }
+
+        $defaultSorting = $contentContainerDefaultSort ?: Yii::$app->getModule('stream')->settings->get('defaultSort', Stream::SORT_CREATED_AT);
 
         $this->addFilter([
             'id' => static::FILTER_SORT_CREATION,

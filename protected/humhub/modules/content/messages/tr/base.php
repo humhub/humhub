@@ -89,6 +89,7 @@ return [
     'You do not have the permission to move this content.' => 'Bu içeriği taşıma izniniz yok.',
     'in' => ',',
     '(Also visible to non-members of this space)' => '',
+    '(Also visible to people who are not logged in)' => '',
     '<strong>Delete</strong> content?' => '',
     '<strong>Scheduling</strong> Options' => '',
     'Activate scheduling' => '',
@@ -108,6 +109,8 @@ return [
     'Scheduled for {dateTime}' => '',
     'The content cannot be published!' => '',
     'The content has been successfully published.' => '',
+    'Topic already exists globally.' => '',
+    'Topic already in use in Spaces or on Profiles.' => '',
     'You cannot block the user of the same container!' => '',
     'Your last edit state has been saved!' => '',
 ];

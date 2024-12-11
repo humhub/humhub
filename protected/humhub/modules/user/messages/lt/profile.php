@@ -116,5 +116,9 @@ return [
     'YouTube URL' => 'YouTube URL',
     'Zip' => 'Indeksas',
     '{attribute} is required!' => 'Reikalingas {attribute}',
+    'Each line must be formatted as Key=>Value!' => '',
     'Mastodon URL' => '',
+    'Template' => '',
+    'This profile is disabled!' => '',
+    'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
 ];

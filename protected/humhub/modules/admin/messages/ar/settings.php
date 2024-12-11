@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"فرز" باحاتي',
   '1 month' => 'شهر واحد',
   '1 week' => 'أسبوع واحد',
@@ -9,10 +9,12 @@ return array (
   '6 months' => 'ستة أشهر',
   '<strong>Confirm</strong> icon deletion' => '<strong> تأكيد </strong> حذف الصورة المصغرة',
   '<strong>Confirm</strong> image deletion' => '<strong> تأكيد </strong> حذف الصورة',
+  '<strong>Confirm</strong> topic deletion' => '<strong> تأكيد </strong> حذف الموضوع',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'رمز وصول',
   'Access token is not provided yet.' => 'لم يتم توفير رمز الوصول بعد.',
   'Add OEmbed provider' => 'إضافة موفر OEmbed',
+  'Add Topic' => 'إضافة موضوع',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'أضف نص معلومات مخصص لوضع الصيانة. يتم عرضها على صفحة تسجيل الدخول.',
   'Add individual info text...' => 'إضافة نص المعلومات الفردية...',
   'Add new provider' => 'أضف مزود جديد',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'ذاكرة التخزين المؤقت الخلفية',
   'Comma separated list. Leave empty to allow all.' => 'قائمة مفصولة بفواصل. اتركه فارغا للسماح للجميع.',
   'Configuration (Use settings from configuration file)' => 'التكوين (استخدم الإعدادات من ملف التكوين)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'تعذر إرسال بريد إلكتروني تجريبي.',
   'Currently no provider active!' => 'حاليا لا يوجد مزود نشط!',
   'Currently there are {count} records in the database dating from {dating}.' => 'يوجد حاليًا عدد {count} من السجلات في قاعدة البيانات يرجع تاريخها إلى {Dating}.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'عدد الصفحات الافتراضي (عدد المواضيع في الصفحة الواحدة)',
   'Default stream content order' => 'ترتيب محتوى الدفق الافتراضي',
   'Delete' => 'حذف',
+  'Do you really want to delete this topic?' => 'هل تريد حقًا حذف هذا الموضوع؟',
   'E-Mail' => 'البريد الالكتروني',
   'E-Mail reply-to' => 'الرد على البريد الإلكتروني',
   'E-Mail sender address' => 'عنوان مُرسل البريد الإلكتروني',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'صداقة',
   'General' => 'العام',
   'General Settings' => 'الاعدادات العامة',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => '@HTML tracking code@',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'هنا يمكنك إعداد سلوك التسجيل وإعدادات المستخدم الإضافية لشبكتك الاجتماعية.',
   'Here you can configure basic settings of your social network.' => 'هنا يمكنك ضبط الإعدادات الأساسية لشبكتك الاجتماعية.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'اسم المزود',
   'Redis' => 'ريديس',
   'Regular expression by which the link match will be checked.' => 'التعبير العادي الذي سيتم من خلاله التحقق من تطابق الارتباط.',
-  'Reported database time: {dateTime}' => 'وقت قاعدة البيانات المُبلغ عنها: {dateTime}',
   'Save' => 'حفظ',
   'Save & Flush Caches' => 'حفظ ومسح ذاكرة التخزين المؤقت',
   'Save & Test' => 'حفظ واختبار',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'السمات',
   'These settings refer to advanced topics of your social network.' => 'تشير هذه الإعدادات إلى الموضوعات المتقدمة لشبكتك الاجتماعية.',
   'These settings refer to the appearance of your social network.' => 'تشير هذه الإعدادات إلى مظهر الشبكة الاجتماعية الخاصة بك.',
+  'Topic has been deleted!' => 'تم حذف الموضوع!',
+  'Topics' => 'المواضيع',
   'Url Pattern' => 'نمط عنوان URL',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'استخدم٪ url٪ كعنصر نائب لعنوان URL. يجب أن يكون التنسيق JSON. (مثل http://www.youtube.com/oembed؟url=٪url٪&format=json)',
   'Use SMTPS' => 'استخدم SMTPS',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'على سبيل المثال localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'على سبيل المثال smtps://user:pass@smtp.example.com:port',
   'never' => 'أبدا',
-);
+];

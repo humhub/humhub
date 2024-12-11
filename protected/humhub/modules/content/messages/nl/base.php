@@ -1,6 +1,7 @@
 <?php
-return array (
+return [
   '(Also visible to non-members of this space)' => '(Ook zichtbaar voor niet-leden van deze ruimte)',
+  '(Also visible to people who are not logged in)' => '(Ook zichtbaar voor mensen die niet zijn ingelogd)',
   '<strong>Delete</strong> content?' => 'Inhoud <strong>verwijderen</strong>?',
   '<strong>Move</strong> content' => 'Inhoud <strong>verplaatsen</strong>',
   '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> naar dit bericht',
@@ -87,6 +88,8 @@ return array (
   'This content type can\'t be moved.' => 'Dit inhoudstype kan niet worden verplaatst.',
   'This space is archived.' => 'Deze ruimte is gearchiveerd.',
   'This space is not visible!' => 'Deze ruimte is niet zichtbaar!',
+  'Topic already exists globally.' => 'Rubriek is al altijd beschikbaar.',
+  'Topic already in use in Spaces or on Profiles.' => 'Rubriek is al in gebruik in een ruimte of op een profiel.',
   'Topics' => 'Rubriek',
   'Turn off notifications' => 'Meldingen uitzetten',
   'Turn on notifications' => 'Meldingen aanzetten',
@@ -109,4 +112,4 @@ return array (
   'You do not have the permission to move this content.' => 'U bent niet gemachtigd om deze inhoud  te verplaatsen.',
   'Your last edit state has been saved!' => 'Uw laatste bewerking is bewaard!',
   'in' => 'in',
-);
+];

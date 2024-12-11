@@ -31,12 +31,12 @@ return [
     'modules' => [
         'user' => [
             'loginRememberMeDefault' => false,
+            'enableRegistrationFormCaptcha' => false,
         ],
         'web' => [
             'security' =>  [
                 "headers" => [
                     "Strict-Transport-Security" => "max-age=31536000",
-                    "X-XSS-Protection" => "1; mode=block",
                     "X-Content-Type-Options" => "nosniff",
                     "X-Frame-Options" => "deny",
                     "Referrer-Policy" => "no-referrer-when-downgrade",

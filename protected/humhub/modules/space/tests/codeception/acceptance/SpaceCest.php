@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -36,10 +37,11 @@ class SpaceCest
         $I->amOnPage('/s/space-1/space/space/home');
 
         $I->waitForText('Stream');
+        $I->waitForElementVisible('#space-header-controls-menu');
+        $I->click('#space-header-controls-menu');
+        $I->see('About', '.dropdown-menu');
         $I->click('About');
-        $I->waitForText('Space menu');
-        $I->see('Space 1');
-        $I->see('About');
+        $I->waitForText('About the Space');
 
         $I->expectTo('see the alias of space about page URL');
         $I->seeCurrentUrlEquals('/s/space-1/about');

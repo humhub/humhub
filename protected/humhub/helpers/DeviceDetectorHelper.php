@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -10,6 +11,9 @@ namespace humhub\helpers;
 
 use Yii;
 
+/**
+ * @since 1.17
+ */
 class DeviceDetectorHelper
 {
     public static function isAppRequest(): bool
@@ -38,14 +42,14 @@ class DeviceDetectorHelper
     {
         return
             static::isAppRequest()
-            && str_contains((string)Yii::$app->request->getUserAgent(), 'iPhone');
+            && Yii::$app->request->headers->get('x-humhub-app-is-ios');
     }
 
     public static function isAndroidApp(): bool
     {
         return
             static::isAppRequest()
-            && str_contains((string)Yii::$app->request->getUserAgent(), 'Android');
+            && Yii::$app->request->headers->get('x-humhub-app-is-android');
     }
 
     public static function isMicrosoftOffice(): bool

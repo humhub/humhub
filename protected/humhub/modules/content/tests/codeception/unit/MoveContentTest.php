@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -9,13 +10,14 @@
 namespace humhub\modules\content\tests\codeception\unit;
 
 use humhub\libs\BasePermission;
-use humhub\modules\admin\permissions\ManageUsers;
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\permissions\CreatePublicContent;
 use humhub\modules\post\models\Post;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\space\models\Space;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class MoveContentTest extends HumHubDbTestCase
 {
@@ -45,6 +47,8 @@ class MoveContentTest extends HumHubDbTestCase
 
     public function testCanMoveOtherProfileContentAsAdmin()
     {
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
         $space1 = Space::findOne(1);
         $space2 = Space::findOne(2);
         $space3 = Space::findOne(3);
@@ -69,6 +73,8 @@ class MoveContentTest extends HumHubDbTestCase
 
     public function testCanMoveOtherProfileContentAsNonAdmin()
     {
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
         $space1 = Space::findOne(1);
         $space2 = Space::findOne(2);
         $space3 = Space::findOne(3);
@@ -118,14 +124,16 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertTrue($post->canMove($space4) === true);
     }
 
-    public function testCanMoveSpacePostAsUserManager()
+    public function testCanMoveSpacePostAsManageAllContentAllowedUser()
     {
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
         $space1 = Space::findOne(1);
         $space2 = Space::findOne(2);
         $space3 = Space::findOne(3);
         $space4 = Space::findOne(4);
 
-        $this->setGroupPermission(3, ManageUsers::class);
+        $this->setGroupPermission(3, ManageAllContent::class);
 
         $this->becomeUser('User2');
 
@@ -147,13 +155,15 @@ class MoveContentTest extends HumHubDbTestCase
         $this->assertTrue($post->canMove($space4) === true);
     }
 
-    public function testCanMoveProfileContentAsUserManager()
+    public function testCanMoveProfileContentAsManageAllContentAllowedUser()
     {
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
         $space1 = Space::findOne(1);
         $space2 = Space::findOne(2);
         $space3 = Space::findOne(3);
 
-        $this->setGroupPermission(3, ManageUsers::class);
+        $this->setGroupPermission(3, ManageAllContent::class);
 
         // Login as non author with manage user permission
         $this->becomeUser('User2');
@@ -176,9 +186,11 @@ class MoveContentTest extends HumHubDbTestCase
 
     public function testMoveProfileContent()
     {
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
         $space2 = Space::findOne(2);
 
-        $this->setGroupPermission(3, ManageUsers::class);
+        $this->setGroupPermission(3, ManageAllContent::class);
 
         $profilePost = Content::findOne(['id' => 3]);
 
@@ -195,9 +207,11 @@ class MoveContentTest extends HumHubDbTestCase
 
     public function testMoveSpaceContent()
     {
+        Yii::$app->getModule('admin')->enableManageAllContentPermission = true;
+
         $space3 = Space::findOne(3);
 
-        $this->setGroupPermission(3, ManageUsers::class);
+        $this->setGroupPermission(3, ManageAllContent::class);
 
         $post = Content::findOne(['id' => 11]);
 

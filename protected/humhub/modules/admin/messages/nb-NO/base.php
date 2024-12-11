@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '<strong>Administrasjons</strong>meny',
   '<strong>Maintenance</strong> Mode' => '',
   '<strong>Module</strong> administration' => '',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Personer',
   'Permissions' => 'Tilatelser',
   'Proxy' => 'Proxy',
+  'Resend to all' => '',
+  'Resend to selected rows' => '',
   'Self test' => 'Selvtest',
   'Set as default' => 'Sett som default',
   'Settings' => 'Innstillinger',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Statistikk',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Cron-jobben for bakgrunnsjobber (kø) ser ikke ut til å fungere skikkelig.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Cron-jobben for de vanlige oppgavene (cron) ser ikke ut til å fungere skikkelig.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => '',
+  'Topics' => 'Emner',
   'Uninstall' => 'Avinstaller',
   'Updates available for {count} of your modules' => '',
   'User not found!' => 'Fant ikke bruker!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => '',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => '',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => '',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<b>This space is still empty!</b>' => '<b>Deze ruimte is nog leeg!</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Deze ruimte is nog leeg!</b><br>Begin met het schrijven van een bericht...',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>U bent geen lid van deze ruimte en er is nog geen openbare inhoud.</b>',
@@ -20,6 +20,7 @@ return array (
   'Accept' => 'Aanvaarden',
   'Accept Invite' => 'Uitnodiging accepteren',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'De toegang tot deze ruimte is beperkt. Stel uzelf even voor om lid te worden.',
+  'Add as Default Space for new users' => 'Toevoegen als standaardruimte voor nieuwe gebruikers',
   'Add users without invitation' => 'Voeg gebruikers zonder uitnodiging toe',
   'Admin' => 'Beheerder',
   'Administrator:' => 'Beheerder:',
@@ -41,6 +42,7 @@ return array (
   'Decline' => 'Afwijzen',
   'Decline Invite' => 'Uitnodiging afwijzen',
   'Default' => 'Standaard',
+  'Default Stream Sort' => 'Standaard berichtensortering',
   'Default content visibility' => 'Standaard zichtbaarheid inhoud',
   'Delete' => 'Verwijder',
   'Description' => 'Beschrijving',
@@ -127,6 +129,7 @@ return array (
   'Spaces' => 'Ruimtes',
   'Status' => 'Status',
   'Stream' => 'Stream',
+  'Stream Sort' => 'Berichtensortering',
   'Tags' => 'Labels',
   'The default homepage for members of this Space' => 'De standaard startpagina voor leden van deze Ruimte',
   'The default homepage for non-members and guests visiting this Space' => 'De standaard startpagina voor niet-leden en gasten die deze Ruimte bezoeken',
@@ -163,4 +166,4 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Uw aanvraag is succesvol naar de ruimte-beheerder verstuurd.',
   '{count} members' => '{count} leden',
   '{email} is not valid!' => '{email} is niet geldig!',
-);
+];

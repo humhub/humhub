@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y Jahre',
   '<b>This profile stream is still empty!</b>' => '<b>Dieser Profilstream ist noch leer!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Dieser Profil-Stream ist noch leer</b><br />Sei der erste und schreibe etwas ...',
@@ -28,6 +28,7 @@ return array (
   'Diverse' => 'Divers',
   'E-Mail' => 'E-Mail',
   'E-mail address of the user' => 'E-Mail Adresse des Benutzers',
+  'Each line must be formatted as Key=>Value!' => 'Jede Zeile muss als Schlüssel=&gt;Wert formatiert sein!',
   'Edit account' => 'Benutzerkonto bearbeiten',
   'Editable' => 'Editierbar',
   'Facebook URL' => 'Facebook-URL',
@@ -90,16 +91,19 @@ return array (
   'Stream' => 'Stream',
   'Street' => 'Straße',
   'Supported ISO3166 country codes' => 'Unterstützte ISO3166 Länder Codes',
+  'Template' => 'Vorlage',
   'Text' => 'Text',
   'Text Area' => 'Textbereich',
   'Text Field Options' => 'Textfeld-Optionen',
   'Text area field options' => 'Textbereichsfeld-Optionen',
+  'This profile is disabled!' => 'Dieses Profil ist deaktiviert!',
   'This profile is no longer available!' => 'Dieses Profil ist nicht mehr verfügbar!',
   'This user account is not approved yet!' => 'Dieser Account wurde noch nicht freigeschaltet!',
   'This will add an additional input element for custom values' => 'Fügt ein weiteres Eingabeelement für individuelle Werte hinzu',
   'TikTok URL' => 'TikTok URL',
   'Title' => 'Titel',
   'Translation Category ID' => 'Übersetzungs-Kategorie-ID',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => 'Twig-Vorlage, die zum Rendern dieses Feldes verwendet wird. Du kannst die internen Namen als Variablen verwenden, z. B. „{{ firstname }} {{ lastname }}“',
   'Twitter URL' => 'Twitter-URL',
   'Type Config' => 'Typ-Konfiguration',
   'Updated at' => 'Aktualisiert am',
@@ -116,4 +120,4 @@ return array (
   'YouTube URL' => 'YouTube-URL',
   'Zip' => 'PLZ',
   '{attribute} is required!' => '{attribute} ist erforderlich!',
-);
+];

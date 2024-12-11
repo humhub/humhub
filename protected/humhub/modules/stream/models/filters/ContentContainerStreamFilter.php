@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -11,6 +12,7 @@ namespace humhub\modules\stream\models\filters;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * This stream filter will only include content related to a given [[ContentContainerActiveRecord]] and furthermore
@@ -28,6 +30,8 @@ class ContentContainerStreamFilter extends StreamQueryFilter
 
     /**
      * @inheritDoc
+     * @throws InvalidConfigException
+     * @throws \Throwable
      */
     public function apply()
     {
@@ -44,7 +48,7 @@ class ContentContainerStreamFilter extends StreamQueryFilter
         if (!$this->container->canAccessPrivateContent($user)) {
             if (Yii::$app->user->isGuest) {
                 $this->query->andWhere('content.visibility = :visibility', [':visibility' => Content::VISIBILITY_PUBLIC]);
-            } elseif (!Yii::$app->user->getIdentity()->canViewAllContent(get_class($this->container))) {
+            } elseif (!Yii::$app->user->getIdentity()?->canManageAllContent()) {
                 // Limit only if current User/Admin cannot view all content
                 $this->query->andWhere('content.visibility = :visibility OR content.created_by = :userId', [
                     ':visibility' => Content::VISIBILITY_PUBLIC,

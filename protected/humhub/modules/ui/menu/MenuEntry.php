@@ -8,6 +8,7 @@
 
 namespace humhub\modules\ui\menu;
 
+use humhub\helpers\ControllerHelper;
 use humhub\modules\ui\menu\widgets\Menu;
 use Yii;
 use yii\base\BaseObject;
@@ -117,35 +118,13 @@ abstract class MenuEntry extends BaseObject
         return $this;
     }
 
-    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [])
+    /**
+     * @deprecated since 1.17, use humhub\helpers\ControllerHelper::isActivePath()
+     */
+    public static function isActiveState($moduleId = null, $controllerIds = [], $actionIds = [], $queryParams = [])
     {
-        if ($moduleId && (!Yii::$app->controller->module || Yii::$app->controller->module->id !== $moduleId)) {
-            return false;
-        }
-
-        if (empty($controllerIds) && empty($actionIds)) {
-            return true;
-        }
-
-        if ($controllerIds && !is_array($controllerIds)) {
-            $controllerIds = [$controllerIds];
-        }
-
-        if (!empty($controllerIds) && !in_array(Yii::$app->controller->id, $controllerIds)) {
-            return false;
-        }
-
-        if ($actionIds && !is_array($actionIds)) {
-            $actionIds = [$actionIds];
-        }
-
-        if (!empty($actionIds) && !in_array(Yii::$app->controller->action->id, $actionIds)) {
-            return false;
-        }
-
-        return true;
+        return ControllerHelper::isActivePath($moduleId, $controllerIds, $actionIds, $queryParams);
     }
-
 
     /**
      * @param $id string the id

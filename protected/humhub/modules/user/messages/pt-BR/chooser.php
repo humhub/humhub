@@ -1,7 +1,7 @@
 <?php
 return array (
   'Add user' => 'Adicionar usuário',
-  'An unexpected error occurred while loading the result.' => 'Um erro aconteceu ao carregar o resultado',
+  'An unexpected error occurred while loading the result.' => 'Ocorreu um erro inesperado ao carregar o resultado.',
   'Load more' => 'Carregar mais',
   'No results found.' => 'Nenhum resultado encontrado.',
   'No users found for the given query.' => 'Nenhum usuário encontrado para o filtro informado.',

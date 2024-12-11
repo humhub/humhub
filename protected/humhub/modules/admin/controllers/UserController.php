@@ -26,6 +26,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
+use humhub\modules\user\services\LinkRegistrationService;
 use Yii;
 use yii\base\Exception;
 use yii\db\Query;
@@ -85,7 +86,8 @@ class UserController extends Controller
         $searchModel = new UserSearch();
         $searchModel->status = User::STATUS_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $showPendingRegistrations = (Invite::find()->count() > 0 && Yii::$app->user->can([new ManageUsers(), new ManageGroups()]));
+        $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists() &&
+            Yii::$app->user->can([ManageUsers::class, ManageGroups::class]);
 
         return $this->render('list', [
             'dataProvider' => $dataProvider,
@@ -268,7 +270,7 @@ class UserController extends Controller
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
-        $invite = new InviteForm();
+        $invite = new InviteForm(['target' => LinkRegistrationService::TARGET_ADMIN]);
 
         return $this->render('add', [
             'hForm' => $registration,

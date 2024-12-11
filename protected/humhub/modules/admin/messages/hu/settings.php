@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"Saját közösségek" rendezés',
   '1 month' => '1 hónap',
   '1 week' => '1 hét',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6 hónap',
   '<strong>Confirm</strong> icon deletion' => 'Ikon törlés <strong>megerősítése</strong>',
   '<strong>Confirm</strong> image deletion' => 'Kép törlésének <strong>megerősítése</strong>',
+  '<strong>Confirm</strong> topic deletion' => 'Téma törlésének <strong>megerősítése</strong>',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'Hozzáférési token',
   'Access token is not provided yet.' => 'Hozzáférési token még nincs megadva.',
   'Add OEmbed provider' => 'OEmbed szolgáltató hozzáadása',
+  'Add Topic' => 'Téma hozzáadása',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Adjon hozzá egyedi információs szöveget a karbantartási módhoz. Meg fog jelenni a bejelentkezési oldalon.',
   'Add individual info text...' => 'Egyéni információs szöveg hozzáadása...',
   'Add new provider' => 'Új szolgáltató hozzáadása',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Gyorsítótár backend',
   'Comma separated list. Leave empty to allow all.' => 'Vesszővel elválasztott lista. Hagyd üresen, ha az összeset engedélyezni akarod.',
   'Configuration (Use settings from configuration file)' => 'Konfiguráció (Használja a konfigurációs fájl beállításait)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'Nem sikerült elküldeni a teszt e-mailt.',
   'Currently no provider active!' => 'Jelenleg egyetlen szolgáltató sem aktív!',
   'Currently there are {count} records in the database dating from {dating}.' => 'Jelenleg {count} rekord szerepel az adatbázisban, ami ekkor lett létrehozva: {dating}.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Alapértelmezett lapozásméret (oldalankénti bejegyzések)',
   'Default stream content order' => 'A stream tartalmának alapértelmezett sorrendje',
   'Delete' => 'Törlés',
+  'Do you really want to delete this topic?' => 'Biztos, hogy törölni szeretnéd ezt a témát?',
   'E-Mail' => 'E-mail',
   'E-Mail reply-to' => 'Válasz e-mail címre',
   'E-Mail sender address' => 'E-mail küldőjének címe',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Ismerősök',
   'General' => 'Általános',
   'General Settings' => 'Általános beállítások',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'HTML-követőkód',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Itt konfigurálhatod közösségi hálózatod regisztrálói viselkedéssel kapcsolatos beállításait és további felhasználói beállításokat.',
   'Here you can configure basic settings of your social network.' => 'Itt konfigurálhatod közösségi hálózatod alapbeállításait.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Szolgáltató neve',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Reguláris kifejezés, amellyel a hivatkozás egyezését ellenőrzi.',
-  'Reported database time: {dateTime}' => 'Jelentett adatbázis ideje: {dateTime}',
   'Save' => 'Mentés',
   'Save & Flush Caches' => 'Mentés és gyorsítótárak ürítése',
   'Save & Test' => 'Mentés és tesztelés',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Téma',
   'These settings refer to advanced topics of your social network.' => 'Ezek a beállítások közösségi hálózatod speciális témáira vonatkoznak.',
   'These settings refer to the appearance of your social network.' => 'Ezek a beállítások közösségi hálózatod megjelenésére vonatkoznak.',
+  'Topic has been deleted!' => 'A téma törölve lett!',
+  'Topics' => 'Témák',
   'Url Pattern' => 'URL-minta',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Használja a %url% címet helykitöltőnek az URL-hez. A formátumnak a következőnek kell lennie: JSON. (pl. http://www.youtube.com/oembed?url=%url%&amp;format=json))',
   'Use SMTPS' => 'SMTPS használata',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'pl. helyi kiszolgáló',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'pl. smtps://user:pass@smtp.example.com:port',
   'never' => 'soha',
-);
+];

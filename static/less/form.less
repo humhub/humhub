@@ -22,6 +22,12 @@ div.required.has-error > label:after {
     font-weight: bold;
     padding-left: 0;
 }
+.form-checkboxes-normal {
+    .radio label,
+    .checkbox label {
+        font-weight: 500;
+    }
+}
 
 .form-control {
     border: 2px solid @background-color-page;
@@ -186,20 +192,27 @@ input[type=checkbox] {
         border: 2px solid @text-color-highlight !important;
         outline: none;
     }
-
     &:checked {
         border: 2px solid @info;
         background: @info;
         color: white;
 
         &::after {
-            content: '\2714';
-            font-size: 14px;
+            content: '\f00c'; /* FontAwesome checkmark */
+            font-family: 'FontAwesome'; /* FontAwesome Font */
+            font-size: 12px;
             position: absolute;
-            top: -3px;
+            top: 0;
             left: 1px;
             color: white;
         }
+    }
+}
+/* Chromium */
+@supports (-webkit-appearance: none) {
+    input[type=checkbox]:checked::after {
+        top: 1px;
+        left: 1px;
     }
 }
 

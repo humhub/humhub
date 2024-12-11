@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '"My Spaces" Sorting' => '"Moje Priestory" triedenie',
   '1 month' => '1 mesiac',
   '1 week' => '1 týždeň',
@@ -9,10 +9,12 @@ return array (
   '6 months' => '6 mesiacov',
   '<strong>Confirm</strong> icon deletion' => '<strong>Potvrdiť</strong> odstránenie ikony',
   '<strong>Confirm</strong> image deletion' => '<strong>Potvrdiť</strong> odstránenie obrázku',
+  '<strong>Confirm</strong> topic deletion' => '<strong>Potvrdiť</strong> odstránenie témy',
   'APC(u)' => 'APC(u)',
   'Access Token' => 'Prístupový token',
   'Access token is not provided yet.' => 'Zatiaľ nie je dostupný prístupový token.',
   'Add OEmbed provider' => 'Pridať poskytovateľa OEmbed',
+  'Add Topic' => 'Pridať Tému',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'Pridajte vlastný informačný text pre režim údržby. Zobrazuje sa na prihlasovacej stránke.',
   'Add individual info text...' => 'Pridať individuálny informačný text...',
   'Add new provider' => 'Pridať nového poskytovateľa.',
@@ -26,6 +28,7 @@ return array (
   'Cache Backend' => 'Cache Backend',
   'Comma separated list. Leave empty to allow all.' => 'Zoznam oddelený čiarkami. Ak chcete povoliť všetko, nechajte prázdne.',
   'Configuration (Use settings from configuration file)' => 'Konfigurácia (použiť nastavenia z konfiguračného súboru)',
+  'Convert to global topic' => '',
   'Could not send test email.' => 'Nepodarilo sa odoslať testovací e-mail.',
   'Currently no provider active!' => 'Momentálne nie je aktívny žiadny poskytovateľ!',
   'Currently there are {count} records in the database dating from {dating}.' => 'V súčasnosti je v databáze {count} záznamov zo dňa {dating}.',
@@ -42,6 +45,7 @@ return array (
   'Default pagination size (Entries per page)' => 'Predvolená veľkosť stránkovania (počet záznamov na stránku)',
   'Default stream content order' => 'Predvolené radenie obsahu streamu',
   'Delete' => 'Odstrániť',
+  'Do you really want to delete this topic?' => 'Skutočne chceš odstrániť túto tému?',
   'E-Mail' => 'E-mail',
   'E-Mail reply-to' => 'Odpoveď na e-mail',
   'E-Mail sender address' => 'E-mailová adresa odosielateľa',
@@ -61,6 +65,7 @@ return array (
   'Friendship' => 'Priateľstvo',
   'General' => 'Všeobecné',
   'General Settings' => 'Všeobecné nastavenia',
+  'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
   'HTML tracking code' => 'Sledovanie HTML kódu',
   'Here you can configurate the registration behaviour and additinal user settings of your social network.' => 'Tu môžete nakonfigurovať správanie pri registrácii a ďalšie používateľské nastavenia vašej sociálnej siete.',
   'Here you can configure basic settings of your social network.' => 'Tu môžete nakonfigurovať základné nastavenia vašej sociálnej siete.',
@@ -92,7 +97,6 @@ return array (
   'Provider Name' => 'Meno poskytovateľa',
   'Redis' => 'Redis',
   'Regular expression by which the link match will be checked.' => 'Regulárny výraz, podľa ktorého sa skontroluje zhoda odkazu.',
-  'Reported database time: {dateTime}' => 'Nahlásený čas databázy: {dateTime}',
   'Save' => 'Uložiť',
   'Save & Flush Caches' => 'Uložiť a vyprázdníť vyrovnávaciu pamäť',
   'Save & Test' => 'Uložiť a otestovať',
@@ -108,6 +112,8 @@ return array (
   'Theme' => 'Téma',
   'These settings refer to advanced topics of your social network.' => 'Tieto nastavenia sa týkajú pokročilých tém vašej sociálnej siete.',
   'These settings refer to the appearance of your social network.' => 'Tieto nastavenia sa týkajú vzhľadu vašej sociálnej siete.',
+  'Topic has been deleted!' => 'Téma bola odstránená!',
+  'Topics' => 'Témy',
   'Url Pattern' => 'Vzor adresy URL',
   'Use %url% as placeholder for URL. Format needs to be JSON. (e.g. http://www.youtube.com/oembed?url=%url%&format=json)' => 'Použite %url% ako zástupný symbol pre URL. Formát musí byť JSON. (napr. http://www.youtube.com/oembed?url=%url%&amp;format=json)',
   'Use SMTPS' => 'Použiť SMTPS',
@@ -126,4 +132,4 @@ return array (
   'e.g. localhost' => 'napr. localhost',
   'e.g. smtps://user:pass@smtp.example.com:port' => 'napr. smtps://user:pass@smtp.example.com:port',
   'never' => 'nikdy',
-);
+];

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => 'قائمة <strong>الإدارة</strong>',
   '<strong>Maintenance</strong> Mode' => 'وضع <strong>الصيانة</strong>',
   '<strong>Module</strong> administration' => 'إدارة <strong>الموديول</strong>',
@@ -56,6 +56,8 @@ return array (
   'People' => 'الأشخاص',
   'Permissions' => 'الأذونات',
   'Proxy' => 'الوكيل',
+  'Resend to all' => 'إعادة إرسال للجميع',
+  'Resend to selected rows' => 'إعادة الإرسال إلى الصفوف المحددة',
   'Self test' => 'اختبار ذاتي',
   'Set as default' => 'ضبط كوضع افتراضي',
   'Settings' => 'الإعدادات',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'الإحصاءات',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'يبدو أن الوظائف التلقائية لوظائف الخلفية (قائمة الانتظار) لا تعمل بشكل صحيح.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'الوظائف التلقائية  للوظائف العادية لا يبدو أنها تعمل بشكل صحيح.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'توضح لك هذه النظرة العامة جميع الوحدات المثبتة وتسمح لك بتمكينها وتعطيلها وتكوينها وبالطبع إلغاء تثبيتها. لاكتشاف وحدات جديدة، قم بإلقاء نظرة على السوق الخاص بنا. يرجى ملاحظة أن إلغاء تنشيط الوحدة النمطية أو إلغاء تثبيتها سيؤدي إلى فقدان أي محتوى تم إنشاؤه باستخدام تلك الوحدة.',
+  'Topics' => 'المواضيع',
   'Uninstall' => 'إلغاء التثبيت',
   'Updates available for {count} of your modules' => 'تتوفر تحديثات لـ {count} من الموديولات',
   'User not found!' => 'لم يتم إيجاد المستخدم!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => 'زيارة السوق',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'لا تملك الأذونات لإعداد الموديولات. من فضلك اتصل بالمسؤول لمزيد من المعلومات.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'لا تملك الأذونات لإدارة الموديولات. من فضلك اتصل بالمسؤول لمزيد من المعلومات',
-);
+];

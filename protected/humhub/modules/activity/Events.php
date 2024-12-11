@@ -9,6 +9,7 @@
 namespace humhub\modules\activity;
 
 use humhub\components\ActiveRecord;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\activity\components\MailSummary;
 use humhub\modules\activity\helpers\ActivityHelper;
 use humhub\modules\activity\jobs\SendMailSummary;
@@ -93,7 +94,7 @@ class Events extends BaseObject
                 'icon' => 'envelope',
                 'url' => ['/activity/user'],
                 'sortOrder' => 105,
-                'isActive' => MenuLink::isActiveState('activity'),
+                'isActive' => ControllerHelper::isActivePath('activity'),
             ]));
         }
     }
@@ -109,7 +110,7 @@ class Events extends BaseObject
                 'label' => Yii::t('ActivityModule.base', 'E-Mail Summaries'),
                 'url' => ['/activity/admin/defaults'],
                 'sortOrder' => 300,
-                'isActive' => MenuLink::isActiveState('activity', 'admin', 'defaults'),
+                'isActive' => ControllerHelper::isActivePath('activity', 'admin', 'defaults'),
                 'isVisible' => Yii::$app->user->can(ManageSettings::class),
             ]));
         }

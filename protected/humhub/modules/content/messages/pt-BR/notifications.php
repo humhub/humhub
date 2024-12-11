@@ -1,9 +1,9 @@
 <?php
 return array (
   'New Content' => 'Novo Conteúdo',
-  'Receive Notifications for new content you follow.' => 'Receber notificações para novo conteúdo que você siga.',
+  'Receive Notifications for new content you follow.' => 'Receber notificações sobre novos conteúdos que você segue.',
   'View Online' => 'Ver Online',
-  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => 'Seu {contentTitle} foi deletar por {displayName} por \'{reason}\'',
+  'Your {contentTitle} has been deleted by {displayName} for \'{reason}\'' => 'Seu {contentTitle} foi excluído por {displayName} por \'{reason}\'',
   '{displayName} created {contentTitle}.' => '{displayName} criou {contentTitle}.',
   '{displayName} posted on your profile {contentTitle}.' => '{displayName} publicou no seu perfil {contentTitle}.',
   '{originator} just wrote {contentInfo}' => '{originator} acabou de escrever {contentInfo}',

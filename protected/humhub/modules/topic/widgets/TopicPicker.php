@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -10,9 +11,9 @@ namespace humhub\modules\topic\widgets;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
-use humhub\modules\topic\permissions\AddTopic;
 use humhub\modules\content\widgets\ContentTagPicker;
 use humhub\modules\topic\models\Topic;
+use humhub\modules\topic\permissions\AddTopic;
 use Yii;
 use yii\helpers\Url;
 
@@ -50,8 +51,7 @@ class TopicPicker extends ContentTagPicker
             $this->url = Url::to(['/topic/topic/search']);
         }
 
-        $this->addOptions = static::canAddTopic($this->contentContainer);
-
+        $this->addOptions = static::canAddTopic($this->contentContainer) && Topic::isAllowedToCreate($this->contentContainer);
         parent::init();
     }
 

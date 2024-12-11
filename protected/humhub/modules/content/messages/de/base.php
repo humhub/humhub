@@ -1,6 +1,7 @@
 <?php
-return array (
+return [
   '(Also visible to non-members of this space)' => '(Für Nutzer, die nicht Mitglied des Spaces sind, sichtbar.)',
+  '(Also visible to people who are not logged in)' => '(Auch für Personen sichtbar, die nicht angemeldet sind)',
   '<strong>Delete</strong> content?' => '<strong>Inhalt</strong> löschen?',
   '<strong>Move</strong> content' => 'Inhalt <strong>verschieben</strong>',
   '<strong>Permalink</strong> to this post' => '<strong>Permalink</strong> zu diesem Beitrag',
@@ -87,6 +88,8 @@ return array (
   'This content type can\'t be moved.' => 'Dieser Inhaltstyp kann nicht verschoben werden.',
   'This space is archived.' => 'Dieser Space ist archiviert.',
   'This space is not visible!' => 'Dieser Space ist nicht sichtbar!',
+  'Topic already exists globally.' => 'Für diesen Begriff existiert bereits ein globales Thema.',
+  'Topic already in use in Spaces or on Profiles.' => 'Dieses Thema wird bereits in Space oder in Profilen verwendet.',
   'Topics' => 'Themen',
   'Turn off notifications' => 'Benachrichtigungen abschalten',
   'Turn on notifications' => 'Benachrichtigungen aktivieren',
@@ -109,4 +112,4 @@ return array (
   'You do not have the permission to move this content.' => 'Du hast keine Berechtigung diesen Inhalt zu verschieben.',
   'Your last edit state has been saved!' => 'Dein letzter Bearbeitungsstand wurde gespeichert.',
   'in' => 'in',
-);
+];
