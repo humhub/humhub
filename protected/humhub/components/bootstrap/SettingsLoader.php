@@ -44,36 +44,34 @@ class SettingsLoader implements BootstrapInterface
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
-            $transport = [];
-            $app->mailer->useFileTransport = false;
+            $definition = [
+                'useFileTransport' => false,
+            ];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
                 if ($app->settings->get('mailer.hostname')) {
-                    $transport['host'] = $app->settings->get('mailer.hostname');
+                    $definition['transport']['host'] = $app->settings->get('mailer.hostname');
                 }
                 if ($app->settings->get('mailer.port')) {
-                    $transport['port'] = (int)$app->settings->get('mailer.port');
+                    $definition['transport']['port'] = (int)$app->settings->get('mailer.port');
                 } else {
-                    $transport['port'] = 25;
+                    $definition['transport']['port'] = 25;
                 }
                 if ($app->settings->get('mailer.username')) {
-                    $transport['username'] = $app->settings->get('mailer.username');
+                    $definition['transport']['username'] = $app->settings->get('mailer.username');
                 }
                 if ($app->settings->get('mailer.password')) {
-                    $transport['password'] = $app->settings->get('mailer.password');
+                    $definition['transport']['password'] = $app->settings->get('mailer.password');
                 }
-                $transport['scheme'] = (empty($app->settings->get('mailer.useSmtps'))) ? 'smtp' : 'smtps';
+                $definition['transport']['scheme'] = (empty($app->settings->get('mailer.useSmtps'))) ? 'smtp' : 'smtps';
 
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_PHP) {
-                $transport['dsn'] = 'native://default';
+                $definition['transport']['dsn'] = 'native://default';
             } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
-                $transport['dsn'] = $app->settings->get('mailer.dsn');
+                $definition['transport']['dsn'] = $app->settings->get('mailer.dsn');
             }
 
-            $this->updateComponentDefinition($app, 'mailer', [
-                'useFileTransport' => false,
-                'transport' => $transport,
-            ]);
+            $this->updateComponentDefinition($app, 'mailer', $definition);
         }
     }
 
