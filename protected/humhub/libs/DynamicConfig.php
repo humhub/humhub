@@ -44,9 +44,9 @@ class DynamicConfig extends BaseObject
         $validConfig = [
             'components' => [
                 'db' => [
-                    ArrayHelper::getValue($config, 'components.db', [])
-                ]
-            ]
+                    ArrayHelper::getValue($config, 'components.db', []),
+                ],
+            ],
         ];
 
         if ($validConfig != $config) {
