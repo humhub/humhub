@@ -28,6 +28,7 @@ use humhub\modules\notification\tests\codeception\fixtures\NotificationFixture;
 use humhub\modules\space\tests\codeception\fixtures\SpaceFixture;
 use humhub\modules\space\tests\codeception\fixtures\SpaceMembershipFixture;
 use humhub\modules\user\components\PermissionManager;
+use humhub\modules\user\models\Group;
 use humhub\modules\user\models\User;
 use humhub\modules\user\tests\codeception\fixtures\GroupPermissionFixture;
 use humhub\modules\user\tests\codeception\fixtures\UserFullFixture;
@@ -35,6 +36,7 @@ use humhub\tests\codeception\fixtures\SettingFixture;
 use humhub\tests\codeception\fixtures\UrlOembedFixture;
 use PHPUnit\Framework\SkippedTestError;
 use Yii;
+use yii\base\InvalidConfigException;
 
 /**
  * @SuppressWarnings(PHPMD)
@@ -205,5 +207,17 @@ class HumHubDbTestCase extends Unit
     public static function logout()
     {
         Yii::$app->user->logout();
+    }
+
+    /**
+     * @throws InvalidConfigException
+     */
+    public static function addUserToGroup(string $userName, int $groupId): bool
+    {
+        $group = Group::findOne($groupId);
+        if ($group === null) {
+            return false;
+        }
+        return $group->addUser(User::findOne(['username' => $userName]));
     }
 }
