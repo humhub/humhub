@@ -27,19 +27,4 @@ class m241211_193138_reduce_dynamic_config extends Migration
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m241211_193138_reduce_dynamic_config cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
