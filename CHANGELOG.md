@@ -4,6 +4,7 @@ HumHub Changelog
 1.18 (TBA)
 ------------------------------
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
 
 1.17.0-beta.3 (Unreleased)
 ---------------------------------
@@ -18,8 +19,6 @@ HumHub Changelog
 - Enh #7325: Add missing IDs in the modal login forms
 - Enh #7333: Improved Yii alias handling and added ENV support  
 - Enh #7334: New safe method to rename a database column
-- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
-- Enh #7332: Optimized `DynamicConfig` to store and read database information only
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
