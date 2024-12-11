@@ -218,7 +218,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->publicSpacePublicPost);
         $this->assertInPosts($this->publicSpacePrivatePost);
 
-        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
+        static::addUserToGroup(3, 'User3');
         self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
@@ -254,7 +254,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->privateSpacePublicPost);
         $this->assertInPosts($this->privateSpacePrivatePost);
 
-        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
+        static::addUserToGroup(3, 'User3');
         self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
@@ -320,7 +320,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
 
     public function testProfileContentOfMembersOnlyUserManageAllContentPermission()
     {
-        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
+        static::addUserToGroup(3, 'User3');
         $this->becomeUser('User3');
         $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
@@ -485,5 +485,10 @@ class ReadableContentQueryTest extends HumHubDbTestCase
             }
         }
         $this->assertTrue($found, "Could not find {$post->id} in result");
+    }
+
+    private static function addUserToGroup(string $userName, int $groupId): void
+    {
+        Group::findOne($groupId)->addUser(User::findOne(['username' => $userName]));
     }
 }
