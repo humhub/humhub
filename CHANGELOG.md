@@ -1,6 +1,9 @@
 HumHub Changelog
 ================
 
+1.18 (TBA)
+------------------------------
+- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 
 1.17.0-beta.3 (Unreleased)
 ---------------------------------

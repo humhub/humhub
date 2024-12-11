@@ -29,6 +29,7 @@ $config = [
     'bootstrap' => [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
+        'humhub\components\bootstrap\SettingsLoader',
         'queue',
         'humhub\modules\ui\view\bootstrap\ThemeLoader',
     ],
