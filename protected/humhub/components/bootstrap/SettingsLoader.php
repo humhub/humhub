@@ -2,7 +2,6 @@
 
 namespace humhub\components\bootstrap;
 
-use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use yii\base\BootstrapInterface;
 use yii\helpers\ArrayHelper;
@@ -19,14 +18,6 @@ class SettingsLoader implements BootstrapInterface
         $this->setMailerConfig($app);
         $this->setUserConfig($app);
         $this->setCacheConfig($app);
-    }
-
-    private function setComponentDefinition($app, $component, $definition)
-    {
-        $app->set(
-            $component,
-            $definition,
-        );
     }
 
     private function updateComponentDefinition($app, $component, $definition)
@@ -55,16 +46,17 @@ class SettingsLoader implements BootstrapInterface
         $transportType = $app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
 
         if ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
-            $definition = [
-                'transport' => ['dsn' => 'native://default'],
-                'useFileTransport' => true,
-            ];
-
-            if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
-                unset($definition['transport']);
-            }
-
-            $this->setComponentDefinition($app, 'mailer', $definition);
+            $app->mailer->useFileTransport = true;
+//            $definition = [
+//                'transport' => ['dsn' => 'native://default'],
+//                'useFileTransport' => true,
+//            ];
+//
+//            if ($this->getComponentDefinition($app, 'mailer', 'class') !== Mailer::class) {
+//                unset($definition['transport']);
+//            }
+//
+//            $this->updateComponentDefinition($app, 'mailer', $definition);
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
