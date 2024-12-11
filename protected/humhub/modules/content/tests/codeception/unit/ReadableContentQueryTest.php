@@ -189,9 +189,6 @@ class ReadableContentQueryTest extends HumHubDbTestCase
 
     public function testPublicSpaceManageAllContentPermission()
     {
-        // User3 is member of Group ID 3
-        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
-
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
         $this->assertPostCount(1);
@@ -221,6 +218,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->publicSpacePublicPost);
         $this->assertInPosts($this->publicSpacePrivatePost);
 
+        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
         self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->publicSpace)->readable()->all();
@@ -231,9 +229,6 @@ class ReadableContentQueryTest extends HumHubDbTestCase
 
     public function testPrivateSpaceManageAllContentPermission()
     {
-        // User3 is member of Group ID 3
-        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
-
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
         $this->assertPostCount(0);
@@ -259,6 +254,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
         $this->assertInPosts($this->privateSpacePublicPost);
         $this->assertInPosts($this->privateSpacePrivatePost);
 
+        Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
         self::setGroupPermission(3, new ManageAllContent());
         $this->becomeUser('User3');
         $this->posts = Post::find()->contentContainer($this->privateSpace)->readable()->all();
@@ -324,9 +320,7 @@ class ReadableContentQueryTest extends HumHubDbTestCase
 
     public function testProfileContentOfMembersOnlyUserManageAllContentPermission()
     {
-        // User3 is member of Group ID 3
         Group::findOne(3)->addUser(User::findOne(['username' => 'User3']));
-
         $this->becomeUser('User3');
         $this->user->updateAttributes(['visibility' => User::VISIBILITY_REGISTERED_ONLY]);
         $this->posts = Post::find()->contentContainer($this->user)->readable()->all();
