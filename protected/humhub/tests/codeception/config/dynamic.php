@@ -26,6 +26,5 @@ return  [
     'params' =>
      [
          'config_created_at' => 1509135303,
-         'horImageScrollOnMobile' => null,
      ],
 ];

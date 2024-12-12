@@ -143,6 +143,5 @@ class SettingsLoader implements BootstrapInterface
     {
         $app->name = $app->settings->get('name');
         $app->params['installed'] = $app->settings->get('installed');
-        $app->params['horImageScrollOnMobile'] = $app->settings->get('horImageScrollOnMobile');
     }
 }
