@@ -16,6 +16,7 @@ HumHub Changelog
 - Enh #7333: Improved Yii alias handling and added ENV support
 - Enh #7334: New safe method to rename a database column
 - Enh #7336: Update GitHub workflow versions
+- Enh: Add `DeviceDetectorHelper::isMultiInstanceApp()` method to detect if the app is running in a multi-instance mode
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
