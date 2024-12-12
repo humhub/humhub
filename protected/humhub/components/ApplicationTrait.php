@@ -11,7 +11,6 @@ namespace humhub\components;
 use humhub\helpers\DatabaseHelper;
 use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
-use humhub\libs\DynamicConfig;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
 use Yii;
@@ -117,9 +116,7 @@ trait ApplicationTrait
      */
     public function setInstalled()
     {
-        $config = DynamicConfig::load();
-        $config['params']['installed'] = true;
-        DynamicConfig::save($config);
+        Yii::$app->settings->set('installed', true);
     }
 
 
@@ -146,19 +143,7 @@ trait ApplicationTrait
             return false;
         }
 
-        return Yii::$app->params['databaseInstalled'] = in_array('setting', $db->schema->getTableNames());
-    }
-
-    /**
-     * Sets the application database in installed state
-     *
-     * @since 1.16
-     */
-    public function setDatabaseInstalled()
-    {
-        $config = DynamicConfig::load();
-        $config['params']['databaseInstalled'] = true;
-        DynamicConfig::save($config);
+        return in_array('setting', $db->schema->getTableNames());
     }
 
 

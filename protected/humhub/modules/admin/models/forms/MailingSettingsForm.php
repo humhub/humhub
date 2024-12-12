@@ -2,7 +2,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\DynamicConfig;
 use Yii;
 use yii\base\Model;
 
@@ -140,8 +139,6 @@ class MailingSettingsForm extends Model
         }
         $settingsManager->set('mailer.systemEmailName', $this->systemEmailName);
         $settingsManager->set('mailer.systemEmailReplyTo', $this->systemEmailReplyTo);
-
-        DynamicConfig::rewrite();
 
         return true;
     }

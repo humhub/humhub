@@ -4,6 +4,7 @@ HumHub Changelog
 1.18 (TBA)
 ------------------------------
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
 
 1.17.0-beta.3 (Unreleased)
 ---------------------------------

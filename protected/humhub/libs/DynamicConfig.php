@@ -20,17 +20,6 @@ use yii\helpers\ArrayHelper;
 class DynamicConfig extends BaseObject
 {
     /**
-     * Add an array to the dynamic configuration
-     *
-     * @param array $new
-     */
-    public static function merge($new)
-    {
-        $config = ArrayHelper::merge(self::load(), $new);
-        self::save($config);
-    }
-
-    /**
      * Returns the dynamic configuration
      *
      * @return array
@@ -52,7 +41,17 @@ class DynamicConfig extends BaseObject
             return [];
         }
 
-        return $config;
+        $validConfig = [
+            'components' => [
+                'db' => ArrayHelper::getValue($config, 'components.db', []),
+            ],
+        ];
+
+        if ($validConfig != $config) {
+            self::save($validConfig);
+        }
+
+        return $validConfig;
     }
 
     /**
@@ -64,7 +63,7 @@ class DynamicConfig extends BaseObject
     {
         $content = '<' . '?php return ';
         $content .= var_export($config, true);
-        $content .= '; ?' . '>';
+        $content .= ';';
 
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
@@ -80,50 +79,11 @@ class DynamicConfig extends BaseObject
 
     /**
      * Rewrites DynamicConfiguration based on Database Stored Settings
+     *
+     * @deprecated since 1.8
      */
     public static function rewrite()
     {
-        // Get Current Configuration
-        $config = self::load();
-
-        // Add Application Name to Configuration
-        $config['name'] = Yii::$app->settings->get('name');
-
-        // Add Caching
-
-
-        // Remove old theme/view stuff
-        unset($config['components']['view']);
-
-        // Cleanups
-        unset($config['components']['db']['charset']);
-        unset($config['components']['formatterApp']);
-
-        // Remove old localisation options
-        unset($config['timeZone']);
-        unset($config['language']);
-        unset($config['components']['formatter']['defaultTimeZone']);
-        if (empty($config['components']['formatter'])) {
-            unset($config['components']['formatter']);
-        }
-
-        $config['params']['config_created_at'] = time();
-        $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
-
-        self::save($config);
-    }
-
-    /**
-     * Checks whether the config should be rewritten based on changed setting name
-     *
-     * @param $moduleId
-     * @param $name
-     * @return bool
-     */
-    public static function needRewrite($moduleId, $name)
-    {
-        return (in_array($name, [
-            'name', 'defaultLanguage', 'timeZone', 'horImageScrollOnMobile']));
     }
 
     public static function getConfigFilePath()

@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
@@ -167,8 +166,6 @@ class DesignSettingsForm extends Model
         if ($this->icon) {
             SiteIcon::set($this->icon);
         }
-
-        DynamicConfig::rewrite();
 
         return true;
     }

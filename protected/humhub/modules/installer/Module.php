@@ -106,28 +106,6 @@ class Module extends \humhub\components\Module
         return true;
     }
 
-    /**
-     * Sets application in installed state (disables installer)
-     *
-     * @deprecated since v1.16; use Yii::$app->setInstalled()
-     * @see Yii::$app->setInstalled()
-     */
-    public function setInstalled()
-    {
-        Yii::$app->setInstalled();
-    }
-
-    /**
-     * Sets the application database in installed state
-     *
-     * @deprecated since v1.16; use Yii::$app->setDatabaseInstalled()
-     * @see Yii::$app->setDatabaseInstalled()
-     */
-    public function setDatabaseInstalled()
-    {
-        Yii::$app->setDatabaseInstalled();
-    }
-
     protected function initConfigSteps()
     {
         /**
