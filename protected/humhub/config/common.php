@@ -84,11 +84,11 @@ $config = [
             'targets' => [
                 \yii\log\FileTarget::class => \yii\helpers\ArrayHelper::merge(
                     ['class' => \yii\log\FileTarget::class],
-                    $logTargetConfig
+                    $logTargetConfig,
                 ),
                 \yii\log\DbTarget::class => \yii\helpers\ArrayHelper::merge(
                     ['class' => \yii\log\DbTarget::class],
-                    $logTargetConfig
+                    $logTargetConfig,
                 ),
             ],
         ],
