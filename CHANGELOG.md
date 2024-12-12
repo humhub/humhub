@@ -6,6 +6,7 @@ HumHub Changelog
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7340: Mask .env `DB__PASSWORD` variable
 
 1.17.0-beta.3 (Unreleased)
 ---------------------------------
