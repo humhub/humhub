@@ -20,6 +20,26 @@ if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);
 }
 
+$logTargetConfig = [
+    'levels' => ['error', 'warning'],
+    'except' => [
+        'yii\web\HttpException:400',
+        'yii\web\HttpException:401',
+        'yii\web\HttpException:403',
+        'yii\web\HttpException:404',
+        'yii\web\HttpException:405',
+        'yii\web\User::getIdentityAndDurationFromCookie',
+        'yii\web\User::renewAuthStatus',
+    ],
+    'logVars' => ['_GET', '_SERVER'],
+    'maskVars' => [
+        '_SERVER.HTTP_AUTHORIZATION',
+        '_SERVER.PHP_AUTH_USER',
+        '_SERVER.PHP_AUTH_PW',
+        '_SERVER.HUMHUB_CONFIG__COMPONENTS__DB__PASSWORD',
+    ],
+];
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.17.0-beta.2',
@@ -62,34 +82,14 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                \yii\log\FileTarget::class => [
-                    'class' => \yii\log\FileTarget::class,
-                    'levels' => ['error', 'warning'],
-                    'except' => [
-                        'yii\web\HttpException:400',
-                        'yii\web\HttpException:401',
-                        'yii\web\HttpException:403',
-                        'yii\web\HttpException:404',
-                        'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie',
-                        'yii\web\User::renewAuthStatus',
-                    ],
-                    'logVars' => ['_GET', '_SERVER'],
-                ],
-                \yii\log\DbTarget::class => [
-                    'class' => \yii\log\DbTarget::class,
-                    'levels' => ['error', 'warning'],
-                    'except' => [
-                        'yii\web\HttpException:400',
-                        'yii\web\HttpException:401',
-                        'yii\web\HttpException:403',
-                        'yii\web\HttpException:404',
-                        'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie',
-                        'yii\web\User::renewAuthStatus',
-                    ],
-                    'logVars' => ['_GET', '_SERVER'],
-                ],
+                \yii\log\FileTarget::class => \yii\helpers\ArrayHelper::merge(
+                    ['class' => \yii\log\FileTarget::class],
+                    $logTargetConfig
+                ),
+                \yii\log\DbTarget::class => \yii\helpers\ArrayHelper::merge(
+                    ['class' => \yii\log\DbTarget::class],
+                    $logTargetConfig
+                ),
             ],
         ],
         'settings' => [
