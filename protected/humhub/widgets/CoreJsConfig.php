@@ -268,7 +268,6 @@ class CoreJsConfig extends Widget
                     'adminDeleteModalUrl' => Url::to(['/content/content/get-admin-delete-modal']),
                 ],
                 'stream' => [
-                    'horizontalImageScrollOnMobile' => true,
                     'defaultSort' => Yii::$app->getModule('stream')->settings->get('defaultSort', 'c'),
                     'text' => [
                         'success.archive' => Yii::t('ContentModule.base', 'The content has been archived.'),
