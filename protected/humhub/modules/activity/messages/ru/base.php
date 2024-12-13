@@ -1,7 +1,7 @@
 <?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return array (
-  '<strong>E-Mail</strong> Summaries' => '<strong>Email Уведомления</strong>',
-  '<strong>Latest</strong> activities' => '<strong>Лента</strong> активности',
+  '<strong>E-Mail</strong> Summaries' => '<strong>Email уведомления</strong>',
+  '<strong>Latest</strong> activities' => '<strong>Лента активности</strong>',
   'Activities' => 'Действия',
   'Daily' => 'Ежедневно',
   'E-Mail Summaries' => 'Email Уведомления',
