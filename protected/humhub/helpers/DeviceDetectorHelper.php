@@ -52,6 +52,13 @@ class DeviceDetectorHelper
             && Yii::$app->request->headers->get('x-humhub-app-is-android');
     }
 
+    public static function isMultiInstanceApp(): bool
+    {
+        return
+            static::isAppRequest()
+            && Yii::$app->request->headers->get('x-humhub-app-is-multi-instance');
+    }
+
     public static function isMicrosoftOffice(): bool
     {
         return str_contains((string)Yii::$app->request->getUserAgent(), 'Microsoft Office');

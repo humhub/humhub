@@ -1,12 +1,19 @@
 name: PHP CS Fixer
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - next
+    paths:
+      - '**.php'
 
 jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Check the commit message for skipping PHP-CS-Fixer
         id: check_phpcs_skip
@@ -19,7 +26,7 @@ jobs:
             echo "Proceeding with PHP-CS-Fixer steps."
           fi
 
-      - uses: actions/cache@v3
+      - uses: actions/cache@v4
         if: steps.check_phpcs_skip.outputs.skip == 'false'
         with:
           path: .php-cs-fixer.cache
@@ -33,8 +40,20 @@ jobs:
         with:
           args: --config=.php-cs-fixer.php
 
-      - name: Auto commit changes
+      - name: Create branch and Pull Request for new changes
         if: steps.check_phpcs_skip.outputs.skip == 'false'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Autocommit PHP CS Fixer
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          PHP_FIXER_DATETIME=$(date +%Y-%m-%d-%H%M%S)
+          git checkout -b "php-fixer/$PHP_FIXER_DATETIME"
+          git add -u
+          git commit -m "Autocommit PHP CS Fixer"
+          git push origin "php-fixer/$PHP_FIXER_DATETIME"
+          gh pr create \
+            --title "PHP CS Fixer $PHP_FIXER_DATETIME" \
+            --body "This Pull Request includes automated changes from PHP-CS-Fixer." \
+            --base "${{ github.ref_name }}" \
+            --head "php-fixer/$PHP_FIXER_DATETIME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
