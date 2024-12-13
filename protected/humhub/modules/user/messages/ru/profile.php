@@ -80,7 +80,7 @@ return [
   'Regular Expression: Validator' => 'Регулярное выражение: Валидатор',
   'Required' => 'Обязательное',
   'Searchable' => 'Доступно для поиска',
-  'Select List' => 'Выберите список',
+  'Select List' => 'Список выбора',
   'Select field options' => 'Выберите параметры поля',
   'Show at registration' => 'Показывать при регистрации',
   'Show date/time picker' => 'Показать указатель даты/времени',
