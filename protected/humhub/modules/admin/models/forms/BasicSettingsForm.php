@@ -116,10 +116,4 @@ class BasicSettingsForm extends Model
 
         return true;
     }
-
-    public function isBaseUrlFixed()
-    {
-        return Yii::$app->settings->isFixed('baseUrl');
-    }
-
 }
