@@ -50,7 +50,7 @@ return array (
   'Licensed for max. {number} users.' => 'Лицензия рассчитана на ограниченное число пользователей. Максимальное количество пользователей: {number}',
   'Licensed to:' => 'Лицензировано для:',
   'Marketplace is disabled.' => 'Маркетплейс отключён.',
-  'Marketplace' => 'Маркет',
+  'Marketplace' => 'Маркетплейс',
   'Max. users:' => 'Максимальное количество пользователей:',
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => 'Модуль «{moduleName}» успешно обновлён до версии {newVersion}.',
   'Module <strong>enabled</strong>' => 'Модуль <strong>активирован</strong>',
