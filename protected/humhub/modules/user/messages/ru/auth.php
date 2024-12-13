@@ -4,7 +4,7 @@ return [
   '<strong>Change</strong> Password' => '<strong>Смена пароля</strong>',
   '<strong>Change</strong> your password' => '<strong>Изменить пароль</strong>',
   '<strong>Join</strong> the network' => '<strong>Присоединяйтесь к нам</strong>',
-  '<strong>Password</strong> changed!' => '<strong>Пароль</strong> изменён!',
+  '<strong>Password</strong> changed!' => '<strong>Пароль изменён</strong>!',
   '<strong>Password</strong> recovery!' => '<strong>Восстановление пароля!</strong>',
   '<strong>Password</strong> recovery' => '<strong>Восстановление пароля</strong>',
   '<strong>Please</strong> sign in' => '<strong>Войти</strong>',
