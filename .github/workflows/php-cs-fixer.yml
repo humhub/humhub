@@ -1,6 +1,13 @@
 name: PHP CS Fixer
 
-on: [push]
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - next
+    paths:
+      - '**.php'
 
 jobs:
   php-cs-fixer:
@@ -33,8 +40,20 @@ jobs:
         with:
           args: --config=.php-cs-fixer.php
 
-      - name: Auto commit changes
+      - name: Create branch and Pull Request for new changes
         if: steps.check_phpcs_skip.outputs.skip == 'false'
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: Autocommit PHP CS Fixer
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          PHP_FIXER_DATETIME=$(date +%Y-%m-%d-%H%M%S)
+          git checkout -b "php-fixer/$PHP_FIXER_DATETIME"
+          git add -u
+          git commit -m "Autocommit PHP CS Fixer"
+          git push origin "php-fixer/$PHP_FIXER_DATETIME"
+          gh pr create \
+            --title "PHP CS Fixer $PHP_FIXER_DATETIME" \
+            --body "This Pull Request includes automated changes from PHP-CS-Fixer." \
+            --base "${{ github.ref_name }}" \
+            --head "php-fixer/$PHP_FIXER_DATETIME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
