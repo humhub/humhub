@@ -17,7 +17,7 @@ return [
   'Check again' => 'Проверить ещё раз',
   'Congratulations! Everything is ok and ready to start over!' => 'Поздравляем! Всё в порядке и готово к установке!',
   'Create Admin Account' => 'Создать учётную запись администратора',
-  'Create the database if it doesn\'t exist yet.' => 'Создайте базу данных, если она ещё не существует.',
+  'Create the database if it doesn\'t exist yet.' => 'Создать базу данных, если она ещё не существует.',
   'Default Language' => 'Язык по умолчанию',
   'Default Timezone' => 'Часовой пояс по умолчанию',
   'Downloading & Installing Modules...' => 'Загрузка и установка модулей...',
