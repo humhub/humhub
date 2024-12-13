@@ -23,7 +23,7 @@ return array (
   'Collapse' => 'Свернуть',
   'Confirm' => 'Подтвердить',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'Источник Content Addon должен быть сущностью HActiveRecordContent либо HActiveRecordContentAddon!',
-  'Copy to clipboard' => 'Скопировано в буфер обмена',
+  'Copy to clipboard' => 'Скопировать в буфер обмена',
   'Could not find content of addon!' => 'Не удалось найти содержимое аддона!',
   'Could not find requested page.' => 'Не удалось найти запрашиваемую страницу.',
   'Default' => 'По умолчанию',
