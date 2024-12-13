@@ -10,7 +10,7 @@ return [
   'Convert' => 'Конвертировать',
   'Default Content Visiblity' => 'Видимость контента по умолчанию',
   'Default Hide About Page' => 'Скрывать страницу «О сообществе» по умолчанию',
-  'Default Hide Activity Sidebar Widget' => 'Скрывать боковую панель действий по умолчанию',
+  'Default Hide Activity Sidebar Widget' => 'Скрывать боковую панель активностей по умолчанию',
   'Default Hide Followers' =>'Скрывать подписчиков по умолчанию',
   'Default Hide Members' => 'Скрывать участников по умолчанию',
   'Default Homepage (Non-members)' => 'Домашняя страница по умолчанию (для тех кто не участник)',
