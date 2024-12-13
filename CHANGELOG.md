@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #7334: New safe method to rename a database column
 - Enh #7336: Update GitHub workflow versions
 - Enh #7339: Add `DeviceDetectorHelper::isMultiInstanceApp()` method to detect if the app is running in a multi-instance mode
+- Enh #7342: Mask .env `DB__PASSWORD` variable in logs
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
