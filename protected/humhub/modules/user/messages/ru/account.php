@@ -50,7 +50,7 @@ return [
   'TimeZone' => 'Часовой пояс',
   'Username has been changed' => 'Имя пользователя (юзернейм) было изменено',
   'Users' => 'Пользователи',
-  'Visible for all (also unregistered users)' => 'Видим для всех (включая гостей сайта)',
+  'Visible for all (also unregistered users)' => 'Виден для всех (включая гостей сайта)',
   'We´ve just sent an confirmation e-mail to your new address. <br /> Please follow the instructions inside.' => 'Мы только что отправили электронное письмо с подтверждением на ваш новый адрес.<br>Проверьте вашу почту и следуйте инструкциям внутри письма.',
   'You are currently the owner of following spaces:' => 'В настоящее время вы являетесь владельцем следующих сообществ:',
   'You cannot use this username.' => 'Вы не можете использовать это имя пользователя (юзернейм).',
