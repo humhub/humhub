@@ -19,7 +19,7 @@ use yii\helpers\Html;
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
     <?= $form->field($model, 'name') ?>
-    <?= $form->field($model, 'baseUrl')->textInput(['disabled' => $model->isBaseUrlFixed()]) ?>
+    <?= $form->field($model, 'baseUrl')->textInput(['disabled' => Yii::$app->settings->isFixed('baseUrl')]) ?>
 
     <?php $allowedLanguages = Yii::$app->i18n->getAllowedLanguages(); ?>
     <?php if (count($allowedLanguages) > 1) : ?>
