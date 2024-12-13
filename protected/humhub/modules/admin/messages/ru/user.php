@@ -73,13 +73,13 @@ return [
   'Delete pending registrations?' => 'Удалить ожидающие регистрации?',
   'Delete spaces which are owned by this user' => 'Удалить все сообщества, принадлежащие этому пользователю',
   'Delete' => 'Удалить',
-  'Deleted invitation' => 'Удалённое приглашение',
+  'Deleted invitation' => 'Приглашение удалено',
   'Deleted users' => 'Удалённые пользователи',
   'Deleted' => 'Удалено',
   'Disable' => 'Отключить',
   'Disabled users' => 'Отключённые пользователи',
   'Disabled' => 'Отключён',
-  'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'Пожалуйста, не меняйте заполнители типа {DisplayName}, если вы хотите, чтобы они автоматически заполнялись системой. Чтобы вернуть значения по умолчанию, оставьте поля пустыми.',
+  'Do not change placeholders like {displayName} if you want them to be automatically filled by the system. To reset the email content fields with the system default, leave them empty.' => 'Пожалуйста, не меняйте заполнители типа {displayName}, если вы хотите, чтобы они автоматически заполнялись системой. Чтобы вернуть значения по умолчанию, оставьте поля пустыми.',
   'Do you really want to delete pending registrations?' => 'Вы действительно хотите удалить ожидающие регистрации?',
   'Do you really want to re-send the invitations to pending registration users?' => 'Вы действительно хотите повторно отправить приглашения пользователям, ожидающим регистрации?',
   'Edit category' => 'Редактировать категорию',
@@ -105,8 +105,12 @@ Kind Regards
 {AdminName}
 
 ' => 'Здравствуйте {displayName}!
-Ваша учётная запись находится на рассмотрении. Не могли бы Вы рассказать нам о причинах Вашей регистрации?
-С уважением, {AdminName}',
+
+Ваша учётная запись находится на рассмотрении.
+Не могли бы Вы рассказать нам о причинах Вашей регистрации?
+
+С уважением,
+{AdminName}',
   'Hello {displayName},
 
 Your account has been activated.
@@ -118,8 +122,12 @@ Kind Regards
 {AdminName}
 
 ' => 'Здравствуйте, {displayName}!
-Ваша учётная запись активирована. Чтобы войти, перейдите по ссылке: {loginUrl}
-С уважением {AdminName}',
+
+Ваша учётная запись активирована.
+Чтобы войти, перейдите по ссылке: {loginUrl}
+
+С уважением,
+{AdminName}',
   'Hello {displayName},
 
 Your account request has been declined.
@@ -128,8 +136,11 @@ Kind Regards
 {AdminName}
 
 ' => 'Здравствуйте, {displayName}!
+
 Ваш запрос на создание учётной записи отклонён.
-С уважением {AdminName}',
+
+С уважением,
+{AdminName}',
   'Here you can create or edit profile categories and fields.' => 'Здесь вы можете создавать или редактировать категории и поля профилей пользователей.',
   'Hide online status of users' => 'Скрывать онлайн-статус пользователей',
   'If enabled, the Group Manager will need to approve registration.' => 'Если эта функция включена, менеджер группы должен одобрить регистрацию.',
@@ -180,7 +191,7 @@ Kind Regards
   'Re-send to all' => 'Отправить всем повторно',
   'Resend invitation email' => 'Повторно отправить приглашение по электронной почте',
   'Resend invitation?' => 'Отправить приглашение повторно?',
-  'Resend invitations?' => 'Отправить приглашения повторно',
+  'Resend invitations?' => 'Отправить приглашения повторно?',
   'Save' => 'Сохранить',
   'Search by name, email or id.' => 'Поиск по имени, email или id.',
   'Select Groups' => 'Выбрать группы',
@@ -224,7 +235,7 @@ Kind Regards
   'Using this option any contributions (e.g. contents, comments or likes) of this user will be irrevocably deleted.' => 'При использовании этой опции любые материалы (например, записи и прочий контент, комментарии или лайки) этого пользователя будут безвозвратно удалены.',
   'View profile' => 'Смотреть профиль',
   'Visible for members only' => 'Виден только для участников',
-  'Visible for members+guests' => 'Виден только для участников и гостей',
+  'Visible for members+guests' => 'Виден для участников и гостей',
   'Will be used as a filter in \'People\'.' => 'Будет использоваться в качестве фильтра в разделе «Люди».',
   'Yes' => 'Да',
   'You can only delete empty categories!' => 'Вы можете удалять только пустые категории!',
