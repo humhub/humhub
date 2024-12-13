@@ -2,9 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use DateTimeZone;
 use humhub\libs\DynamicConfig;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
@@ -104,7 +102,9 @@ class BasicSettingsForm extends Model
     public function save()
     {
         Yii::$app->settings->set('name', $this->name);
-        Yii::$app->settings->set('baseUrl', $this->baseUrl);
+        if (!$this->isBaseUrlFixed()) {
+            Yii::$app->settings->set('baseUrl', $this->baseUrl);
+        }
         Yii::$app->settings->set('defaultLanguage', $this->defaultLanguage);
         Yii::$app->settings->set('defaultTimeZone', $this->defaultTimeZone);
         Yii::$app->settings->set('maintenanceMode', $this->maintenanceMode);
@@ -117,6 +117,11 @@ class BasicSettingsForm extends Model
         DynamicConfig::rewrite();
 
         return true;
+    }
+
+    public function isBaseUrlFixed()
+    {
+        return Yii::$app->settings->isFixed('baseUrl');
     }
 
 }
