@@ -67,7 +67,7 @@ return [
   'Statistics' => 'Estatísticas',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'O trabalho cron para os trabalhos em segundo plano (fila) parece não funcionar corretamente.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'O trabalho cron para as tarefas regulares (cron) parece não funcionar corretamente.',
-  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => 'O serviço push do aplicativo móvel não está disponível. Por favor, instale e configure o módulo "Push Notifications".',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'Esta visão geral mostra todos os módulos instalados e permite que você habilite, desabilite, configure e, claro, desinstale-os. Para descobrir novos módulos, dê uma olhada em nosso Marketplace. Observe que desativar ou desinstalar um módulo resultará na perda de qualquer conteúdo que tenha sido criado com esse módulo.',
   'Topics' => 'Tópicos',
   'Uninstall' => 'Desinstalar',

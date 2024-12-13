@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '
 Module successfully disabled!
 ' => 'Moduł wyłączony poprawnie!',
@@ -31,7 +31,7 @@ The license was successfully removed!
   'A new update is available (HumHub %version%)!' => 'Aktualizacja dostępna (HumHub %version%)!',
   'Add License Key' => 'Dodaj klucz licencyjny',
   'Add purchased module by license key' => 'Dodaj zakupiony moduł wprowadzając klucz licencyjny',
-  'Advanced Module Search' => '',
+  'Advanced Module Search' => 'Zaawansowana szukajka modułów',
   'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => 'Po zainstalowaniu wymaganego modułu należy go aktywować. Wtedy z marszu można przejść do jego użytkowania. Część z modułów wymaga wcześniejszej konfiguracji.',
   'All' => 'Wszystko',
   'All modules' => 'Wszystkie moduły',
@@ -137,4 +137,4 @@ The license was successfully removed!
   'Without category' => 'Bez kategorii',
   'Would you like to jump straight to it?' => 'Czy chcesz przejść do niego?',
   'Your HumHub installation is up to date!' => 'Ta instalacja HumHub jest na czasie!',
-);
+];
