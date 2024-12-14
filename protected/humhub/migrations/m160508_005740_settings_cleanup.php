@@ -1,7 +1,7 @@
 <?php
 
-use yii\db\Migration;
 use yii\db\Expression;
+use yii\db\Migration;
 
 class m160508_005740_settings_cleanup extends Migration
 {
@@ -49,8 +49,8 @@ class m160508_005740_settings_cleanup extends Migration
         $this->update('setting', ['name' => 'auth.ldap.emailAttribute', 'module_id' => 'user'], ['module_id' => 'authentication_ldap', 'name' => 'emailAttribute']);
 
         // Fix cache settings module id
-        $this->update('setting', ['name' => 'cache.class', 'module_id' => 'base'], ['module_id' => 'cache', 'name' => 'type']);
-        $this->update('setting', ['name' => 'cache.expireTime', 'module_id' => 'base'], ['module_id' => 'cache', 'name' => 'expireTime']);
+        $this->update('setting', ['name' => 'cacheClass', 'module_id' => 'base'], ['module_id' => 'cache', 'name' => 'type']);
+        $this->update('setting', ['name' => 'cacheExpireTime', 'module_id' => 'base'], ['module_id' => 'cache', 'name' => 'expireTime']);
 
         // Fix mail settings module id
         $this->update('setting', ['name' => 'mailer.transportType', 'module_id' => 'base'], ['module_id' => 'mailing', 'name' => 'transportType']);
