@@ -104,7 +104,7 @@ class CacheSettingsForm extends Model
 
         $settingsManager->set('cacheClass', $this->type);
         $settingsManager->set('cacheExpireTime', $this->expireTime);
-        $settingsManager->set('cacheReloadableScript    ', $this->reloadableScripts);
+        $settingsManager->set('cacheReloadableScript', $this->reloadableScripts);
 
         DynamicConfig::rewrite();
         self::flushCache();
