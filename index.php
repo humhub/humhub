@@ -14,11 +14,6 @@ $dotenv->safeLoad();
 $dynamicConfig = (is_readable(__DIR__ . '/protected/config/dynamic.php')) ? require(__DIR__ . '/protected/config/dynamic.php') : [];
 $debug = filter_var($_ENV['HUMHUB_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN) || !filter_var($dynamicConfig['params']['installed'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
-var_dump($_ENV['HUMHUB_DEBUG']);
-var_dump($dynamicConfig['params']['installed']);
-var_dump($debug);
-die();
-
 defined('YII_DEBUG') or define('YII_DEBUG', $debug);
 defined('YII_ENV') or define('YII_ENV', $debug ? 'dev' : 'prod');
 
