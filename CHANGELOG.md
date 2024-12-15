@@ -19,6 +19,7 @@ HumHub Changelog
 - Enh #7339: Add `DeviceDetectorHelper::isMultiInstanceApp()` method to detect if the app is running in a multi-instance mode
 - Enh #7342: Mask .env `DB__PASSWORD` variable in logs
 - Enh #7344: Disable editing Base URL when setting is fixed
+- Fix #7345: Fix debug mode setting in .env
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
