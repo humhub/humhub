@@ -45,6 +45,10 @@ jobs:
         run: |
           git config user.name "GitHub Action"
           git config user.email "action@github.com"
+          if git diff --quiet; then
+            echo "No changes detected by PHP-CS-Fixer. Skipping commit and PR creation."
+            exit 0
+          fi
           PHP_FIXER_DATETIME=$(date +%Y-%m-%d-%H%M%S)
           git checkout -b "php-fixer/$PHP_FIXER_DATETIME"
           git add -u
