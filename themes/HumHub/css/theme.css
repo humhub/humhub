@@ -3443,12 +3443,12 @@ ul.files li.file-preview-item .file-fileInfo {
 .post-file-list a:hover {
   color: #21A1B3;
 }
-#wallStream.mobile .post-files {
+body.device-mobile #wallStream .post-files {
   margin-top: 10px;
   display: flex;
   overflow-x: auto;
 }
-#wallStream.mobile .post-files img {
+body.device-mobile #wallStream .post-files img {
   max-width: 190px;
   height: 100px;
   width: auto;
