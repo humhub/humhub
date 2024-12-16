@@ -106,7 +106,7 @@ trait ApplicationTrait
      */
     public function isInstalled(): bool
     {
-        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'];
+        return Yii::$app->settings->get('installed');
     }
 
     /**
