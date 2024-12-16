@@ -20,6 +20,7 @@ HumHub Changelog
 - Enh #7342: Mask .env `DB__PASSWORD` variable in logs
 - Enh #7344: Disable editing Base URL when setting is fixed
 - Fix #7345: Fix debug mode setting in .env
+- Enh #7349: Add body classes about the current device and methods to the `DeviceDetectorHelper` class
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
