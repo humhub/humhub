@@ -18,7 +18,7 @@ class EnvHelper
     private const DEPTH_SEPARATOR = '__';
     private const ALIASES_PREFIX = 'HUMHUB_ALIASES';
 
-    public static function toConfig(?array $env = [], ?string $envType = null): array
+    public static function toConfig(?array $env = [], ?string $applicationType = null): array
     {
         $config = [];
 
@@ -45,7 +45,7 @@ class EnvHelper
                 ArrayHelper::getValue([
                     \humhub\components\Application::class => [self::MAIN_PREFIX, self::WEB_PREFIX],
                     \humhub\components\console\Application::class => [self::MAIN_PREFIX, self::CLI_PREFIX],
-                ], $envType, [self::MAIN_PREFIX]) as $prefix
+                ], $applicationType, [self::MAIN_PREFIX]) as $prefix
             ) {
                 if (StringHelper::startsWith($key, $prefix . self::DEPTH_SEPARATOR)) {
                     ArrayHelper::setValue(
