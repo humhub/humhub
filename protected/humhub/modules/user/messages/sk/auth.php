@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> registration' => 'Registrácia <strong>účtu</strong>',
   '<strong>Change</strong> Password' => '<strong>Zmeniť</strong> heslo',
   '<strong>Change</strong> your password' => '<strong>Zmeniť</strong> svoje heslo',
@@ -26,6 +26,7 @@ return array (
   'Group' => 'Skupina',
   'Hello {displayName}' => 'Dobrý deň, {displayName}',
   'Hello {displayName},' => 'Dobrý deň, {displayName} ,',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'Ak existuje používateľský účet priradený k tejto e-mailovej adrese, ďalšie pokyny vám budú čoskoro zaslané e-mailom.',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Ak tento odkaz nepoužijete do 24 hodín, jeho platnosť vyprší.',
   'If you\'re already a member, please login with your username/email and password.' => 'Ak už ste členom, prihláste sa pomocou svojho používateľského mena/e-mailu a hesla.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Stačí zadať svoju e-mailovú adresu. Pošleme vám pokyny na obnovenie!',
@@ -50,11 +51,10 @@ return array (
   'To log in with your new account, click the button below.' => 'Ak sa chcete prihlásiť pomocou svojho nového účtu, kliknite na tlačidlo nižšie.',
   'User or Password incorrect.' => 'Nesprávny používateľ alebo heslo.',
   'Username or Email' => 'Užívateľské meno alebo email',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Poslali sme vám e-mail s odkazom, ktorý vám umožní obnoviť heslo.',
   'Your email' => 'Tvoj email',
   'Your password' => 'Tvoje heslo',
   'Your password has been successfully changed!' => 'Vaše heslo bolo úspešne zmenené!',
   'Your password is incorrect!' => 'Vaše heslo je nesprávne!',
   'a new user {displayName} needs approval.' => 'nový používateľ {displayName} potrebuje schválenie.',
   'back to home' => 'späť domov',
-);
+];

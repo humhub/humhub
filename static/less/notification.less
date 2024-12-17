@@ -2,11 +2,56 @@
     display: block;
 }
 
+.field-filterform-allfilter {
+    input[type=checkbox] {
+        border-color: #ccc;
+        &:checked {
+            border-color: @default;
+            background: @default;
+            &::after {
+                color: @text-color-main;
+            }
+        }
+        &:focus {
+            border-color: #ccc !important;
+        }
+    }
+}
+
 #notification_overview_list {
     .img-space {
         position: absolute;
         top: 25px;
         left: 25px;
+    }
+    .media {
+        display: flex;
+        .media-left {
+            margin-right: 16px;
+        }
+        .media-right {
+            min-width: 24px;
+        }
+    }
+    li {
+        border-left: none;
+        background: none;
+        &:hover {
+            border-left: none;
+            background-color: @background-color-secondary;
+        }
+        &.new {
+            time {
+                color: @info;
+            }
+        }
+        &:not(.new) {
+            .media-body {
+                *&, strong {
+                    color: @text-color-secondary;
+                }
+            }
+        }
     }
 }
 

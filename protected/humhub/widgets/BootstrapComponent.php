@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -328,7 +329,7 @@ abstract class BootstrapComponent extends Widget
     {
         $this->setCssClass();
 
-        if($this->getId(false)) {
+        if ($this->getId(false)) {
             $this->htmlOptions['id'] = $this->getId(false);
         }
 

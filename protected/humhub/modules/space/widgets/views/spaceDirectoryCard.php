@@ -18,33 +18,35 @@ use yii\web\View;
 /* @var $space Space */
 ?>
 
-<div class="card-panel<?php if ($space->isArchived()) : ?> card-archived<?php endif; ?>">
+<div class="card-panel<?= $space->isArchived() ? ' card-archived' : '' ?>" data-space-id="<?= $space->id ?>" data-space-guid="<?= $space->guid ?>">
     <div
-        class="card-bg-image"<?php if ($space->getProfileBannerImage()->hasImage()) : ?> style="background-image: url('<?= $space->getProfileBannerImage()->getUrl() ?>')"<?php endif; ?>></div>
+        class="card-bg-image"<?= $space->getProfileBannerImage()->hasImage() ? ' style="background-image: url(\'' . $space->getProfileBannerImage()->getUrl() . '\')"' : '' ?>></div>
     <div class="card-header">
-        <?= Image::widget([
-            'space' => $space,
-            'link' => true,
-            'linkOptions' => ['data-contentcontainer-id' => $space->contentcontainer_id, 'class' => 'card-image-link'],
-            'width' => 94,
-        ]); ?>
-        <?= SpaceDirectoryStatus::widget(['space' => $space]); ?>
+        <a href="<?= $space->getUrl() ?>" class="card-space-link">
+            <?= Image::widget([
+                'space' => $space,
+                'width' => 94,
+            ]) ?>
+            <?= SpaceDirectoryStatus::widget(['space' => $space]) ?>
+        </a>
         <div class="card-icons">
-            <?= SpaceDirectoryIcons::widget(['space' => $space]); ?>
+            <?= SpaceDirectoryIcons::widget(['space' => $space]) ?>
         </div>
     </div>
     <div class="card-body">
-        <strong class="card-title"><?= Html::containerLink($space); ?></strong>
-        <?php if (trim($space->description) !== '') : ?>
-            <div class="card-details"><?= Html::encode($space->description); ?></div>
-        <?php endif; ?>
+        <a href="<?= $space->getUrl() ?>" class="card-space-link">
+            <strong class="card-title"><?= Html::encode($space->name) ?></strong>
+            <?php if (trim($space->description) !== '') : ?>
+                <div class="card-details"><?= Html::encode($space->description) ?></div>
+            <?php endif; ?>
+        </a>
         <?= SpaceDirectoryTagList::widget([
             'space' => $space,
             'template' => '<div class="card-tags">{tags}</div>',
-        ]); ?>
+        ]) ?>
     </div>
     <?= SpaceDirectoryActionButtons::widget([
         'space' => $space,
         'template' => '<div class="card-footer">{buttons}</div>',
-    ]); ?>
+    ]) ?>
 </div>

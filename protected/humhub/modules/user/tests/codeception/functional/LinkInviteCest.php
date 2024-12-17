@@ -14,8 +14,7 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 0);
 
-        $inviteForm = new InviteForm();
-        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm(['space' => Space::findOne(['name' => 'Space 2'])]);
         $I->amOnPage($inviteForm->getInviteLink());
         $I->seeResponseCodeIs(403);
 
@@ -88,8 +87,7 @@ class LinkInviteCest
 
         // Generate Token
         $space = Space::findOne(['name' => 'Space 2']);
-        $inviteForm = new InviteForm();
-        $inviteForm->space = $space;
+        $inviteForm = new InviteForm(['space' => $space]);
         $inviteForm->getInviteLink();
 
         $linkRegistrationService = new LinkRegistrationService(null, $space);
@@ -110,8 +108,7 @@ class LinkInviteCest
 
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', 1);
 
-        $inviteForm = new InviteForm();
-        $inviteForm->space = Space::findOne(['name' => 'Space 2']);
+        $inviteForm = new InviteForm(['space' => Space::findOne(['name' => 'Space 2'])]);
         $inviteUrl = $inviteForm->getInviteLink();
 
         $I->amOnPage($inviteUrl);

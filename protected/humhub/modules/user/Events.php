@@ -5,15 +5,16 @@ namespace humhub\modules\user;
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\Event;
+use humhub\helpers\ControllerHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Password;
-use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\Follow;
 use humhub\modules\user\models\GroupUser;
 use humhub\modules\user\models\Mentioning;
-use humhub\modules\user\models\Follow;
+use humhub\modules\user\models\Password;
+use humhub\modules\user\models\Profile;
+use humhub\modules\user\models\User;
 use humhub\modules\user\permissions\PeopleAccess;
 use Yii;
 use yii\base\BaseObject;
@@ -140,6 +141,16 @@ class Events extends BaseObject
     }
 
     /**
+     * Tasks on daily cron job
+     *
+     * @param \yii\base\Event $event
+     */
+    public static function onDailyCron($event)
+    {
+        Yii::$app->queue->push(new jobs\CleanupInvites());
+    }
+
+    /**
      * Tasks on hourly cron job
      *
      * @param \yii\base\Event $event
@@ -171,7 +182,7 @@ class Events extends BaseObject
             'label' => Yii::t('UserModule.base', 'People'),
             'url' => ['/user/people'],
             'sortOrder' => 200,
-            'isActive' => MenuLink::isActiveState('user', 'people'),
+            'isActive' => ControllerHelper::isActivePath('user', 'people'),
         ]));
     }
 

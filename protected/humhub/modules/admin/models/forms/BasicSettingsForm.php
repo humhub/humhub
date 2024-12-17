@@ -2,9 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use DateTimeZone;
 use humhub\libs\DynamicConfig;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
@@ -87,13 +85,6 @@ class BasicSettingsForm extends Model
     public function attributeHints()
     {
         return [
-            'defaultTimeZone' => Yii::t(
-                'AdminModule.settings',
-                'Reported database time: {dateTime}',
-                [
-                    'dateTime' => Yii::$app->formatter->asTime(TimezoneHelper::getDatabaseConnectionTime()),
-                ],
-            ),
             'baseUrl' => Yii::t('AdminModule.settings', 'E.g. http://example.com/humhub'),
             'maintenanceMode' => Alert::widget([
                 'options' => ['class' => 'alert-danger'],
@@ -125,5 +116,4 @@ class BasicSettingsForm extends Model
 
         return true;
     }
-
 }

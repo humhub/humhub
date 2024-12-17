@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '
 Module successfully disabled!
 ' => 'Moduł wyłączony poprawnie!',
@@ -29,8 +29,9 @@ The license was successfully removed!
   '<strong>Activate</strong> your Professional Edition' => '<strong>Aktywuj</strong> swoją Wersję Profesjonalną',
   '<strong>General</strong> Settings' => '<strong>Ogólne</strong> ustawienia',
   'A new update is available (HumHub %version%)!' => 'Aktualizacja dostępna (HumHub %version%)!',
-  'Add Licence Key' => 'Dodaj klucz licencyjny',
-  'Add purchased module by licence key' => 'Dodaj zakupiony moduł wprowadzając klucz licencyjny',
+  'Add License Key' => 'Dodaj klucz licencyjny',
+  'Add purchased module by license key' => 'Dodaj zakupiony moduł wprowadzając klucz licencyjny',
+  'Advanced Module Search' => 'Zaawansowana szukajka modułów',
   'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => 'Po zainstalowaniu wymaganego modułu należy go aktywować. Wtedy z marszu można przejść do jego użytkowania. Część z modułów wymaga wcześniejszej konfiguracji.',
   'All' => 'Wszystko',
   'All modules' => 'Wszystkie moduły',
@@ -46,15 +47,15 @@ The license was successfully removed!
   'Could not connect to HumHub API!' => 'Nie można połączyć z HumHub API!',
   'Could not connect to HumHub API!
 ' => 'Nie można połączyć z API HumHub!',
-  'Could not connect to licence server!' => 'Nie można połączyć z serwerem licencyjnym!',
+  'Could not connect to license server!' => 'Nie można połączyć z serwerem licencyjnym!',
   'Could not extract module!' => 'Nie można wypakować modułu!',
   'Could not find requested module!' => 'Nie można znaleźć żądanego modułu.',
   'Could not find the requested module!' => 'Nie można odnaleźć poszukiwanego modułu!',
   'Could not remove old module path!' => 'Nie można usunąć starej ścieżki modułu!',
-  'Could not update licence. Error: ' => 'Nie można uaktualnić licencji. Błąd:',
+  'Could not update license. Error: ' => 'Nie można uaktualnić licencji. Błąd:',
   'Deprecated' => 'Przestarzały',
   'Download of module failed!' => 'Pobieranie modułu nie powiodło się!',
-  'Edit licence' => 'Edytuj licencję',
+  'Edit license' => 'Edytuj licencję',
   'Enable' => 'Aktywuj',
   'Enable now' => 'Włącz teraz',
   'Enabled' => 'Aktywowane',
@@ -66,16 +67,16 @@ The license was successfully removed!
   'Information' => 'Informacje',
   'Install' => 'Zainstaluj',
   'Installed' => 'Zainstalowane',
-  'Invalid module licence key!' => 'Błędny klucz licencyjny modułu!',
-  'Invalid module licence key!
+  'Invalid module license key!' => 'Błędny klucz licencyjny modułu!',
+  'Invalid module license key!
 ' => 'Błędny klucz licencyjny modułu!',
   'Latest version:' => 'Ostatnia wersja:',
   'Learn more' => 'Dowiedz się więcej',
-  'Licence Key:' => 'Klucz licencyjny:',
-  'Licence key' => 'Klucz licencji',
-  'Licenced for max. {number} users.' => 'Licencjonowanie dla max. {number} użytkowników.',
-  'Licenced to:' => 'Licencjonowane dla:',
+  'License Key:' => 'Klucz licencyjny:',
+  'License key' => 'Klucz licencji',
   'License not found or expired. Please contact the module publisher.' => 'Nie znaleziono licencji lub licencja wygasła. Skontaktuj się z wydawcą modułu.',
+  'Licensed for max. {number} users.' => 'Licencjonowanie dla max. {number} użytkowników.',
+  'Licensed to:' => 'Licencjonowane dla:',
   'Marketplace' => 'Sklep aplikacji',
   'Marketplace is disabled.' => 'Rynek jest wyłączony',
   'Max. users:' => 'Maksymalnie użytkowników:',
@@ -87,10 +88,10 @@ The license was successfully removed!
   'Module directory %modulePath% is not writeable!' => 'Katalog modułu %modulePath% nie jest zapisywalny!',
   'Module download failed! (%error%)' => 'Nie powiodło się pobieranie modułu! (%error%)',
   'Module is <strong>installing...</strong>' => 'Moduł jest <strong>instalowany...</strong>',
-  'Module licence added!' => 'Licencja modułu dodana!',
-  'Module licence added!
+  'Module license added!' => 'Licencja modułu dodana!',
+  'Module license added!
 ' => 'Dodano licencję modułu!',
-  'Module licence key cannot be empty!
+  'Module license key cannot be empty!
 ' => 'Klucz licencji modułu nie może być pusty!',
   'Module not found or enabled!
 ' => 'Moduł nie został odnaleziony lub włączony!',
@@ -104,6 +105,7 @@ The license was successfully removed!
   'No modules installed yet. Install some to enhance the functionality!' => 'Brak zainstalowanych modułów. Zainstaluj jakieś aby zwiększyć funkcjonalność!',
   'No purchased modules found!' => 'Nie znaleziono zakupionych modułów!',
   'No, thank you!' => 'Nie, dziękuję!',
+  'Not Installed' => ' ',
   'Official' => 'Oficjalny',
   'Ok' => 'Ok',
   'PROFESSIONAL EDITION' => 'WYDANIE PROFESJONALNE',
@@ -111,7 +113,7 @@ The license was successfully removed!
   'Professional Edition' => 'Wydanie profesjonalne',
   'Professional Edition is activated!' => 'Edycja Profesjonalna aktywowana!',
   'Register' => 'Zarejestruj się',
-  'Remove licence key' => 'Usuń klucz licencyjny',
+  'Remove license key' => 'Usuń klucz licencyjny',
   'Save and update' => 'Zapisz i aktualizuj',
   'Search' => 'Szukaj',
   'Search...' => 'Szukaj...',
@@ -124,7 +126,6 @@ The license was successfully removed!
   'Third-party disclaimer' => 'Oświadczenie osób trzecich',
   'This Module was developed by a third-party.' => 'Ten moduł został opracowany przez osoby trzecie.',
   'Try other keywords or remove filters.' => 'Spróbuj inne słowa kluczowe lub usuń filtry.',
-  'Not Installed' => '',
   'Update' => 'Aktualizuj',
   'Update all' => 'Zaktualizuj wszystkie',
   'Update successful' => 'Aktualizacja ukończona pomyślnie',
@@ -136,4 +137,4 @@ The license was successfully removed!
   'Without category' => 'Bez kategorii',
   'Would you like to jump straight to it?' => 'Czy chcesz przejść do niego?',
   'Your HumHub installation is up to date!' => 'Ta instalacja HumHub jest na czasie!',
-);
+];

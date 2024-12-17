@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -47,7 +48,7 @@ class ModuleActionButtons extends Widget
         $marketplaceModule = Yii::$app->getModule('marketplace');
         $licence = $marketplaceModule->getLicence();
 
-        if ($this->module->isProOnly() && $licence->type === Licence::LICENCE_TYPE_CE) {
+        if ($this->module->isProFeature() && $licence->type === Licence::LICENCE_TYPE_CE) {
             $html .= Button::primary(Icon::get('info-circle') . '&nbsp;&nbsp;' . Yii::t('MarketplaceModule.base', 'Learn more'))
                 ->link('https://www.humhub.com/en/professional-edition')
                 ->options(['target' => '_blank'])

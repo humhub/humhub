@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> topic deletion' => '<strong>確認</strong>トピックの削除',
   '<strong>Edit</strong> Topic' => 'トピックの<strong>編集</strong>',
   '<strong>Manage</strong> Topics' => 'トピックの<strong>管理</strong>',
@@ -13,4 +13,4 @@ return array (
   'Topic' => 'トピック',
   'Topic has been deleted!' => 'トピックを削除しました',
   'Topics' => 'トピック',
-);
+];

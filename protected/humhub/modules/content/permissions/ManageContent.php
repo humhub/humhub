@@ -9,8 +9,8 @@
 namespace humhub\modules\content\permissions;
 
 use humhub\libs\BasePermission;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**

@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => '<strong>Administracijski</strong> meni',
   '<strong>Maintenance</strong> Mode' => 'Mod održavanja',
   '<strong>Module</strong> administration' => 'Administacija <strong>modula</strong>',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Ljudi',
   'Permissions' => 'Dozvole',
   'Proxy' => 'Proxy',
+  'Resend to all' => '',
+  'Resend to selected rows' => '',
   'Self test' => 'Samoprovjera',
   'Set as default' => 'Postavi kao zadano',
   'Settings' => 'Postavke',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Statistika',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'The cron job for the background jobs (queue) does not seem to work properly.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'The cron job for the regular tasks (cron) does not seem to work properly.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => '',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'Ovaj pregled vam pokazuje sve instalirane module i daje vam da ih omogućite, onemogućite, konfigurišete i naravno, da ih deinstalirate. Da otkrijete nove module, pogledajte u našoj prodavnici. Obratite pažnju da deaktiviranje i deinstaliranje modula briše sav sadržaj kreiran u tom modulu',
+  'Topics' => 'Teme',
   'Uninstall' => 'Deinstaliraj',
   'Updates available for {count} of your modules' => 'Ažuriranja su dostupna za {count} vaših modula',
   'User not found!' => 'Korisnik nije pronađen!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => 'Posetite prodavnicu',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Nemate dozvole da konfigurišete module. Kontaktirajte administratora za dalje informacije.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Nemate dozvole da konfigurišete module. Kontaktirajte administratora za dalje informacije.',
-);
+];

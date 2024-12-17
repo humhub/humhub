@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%y Years' => '%y év',
   '<b>This profile stream is still empty!</b>' => '<b>Ez a profil hírfolyam még üres!</b>',
   '<b>This profile stream is still empty</b><br>Be the first and post something...' => '<b>Ez a profil hírfolyam még üres</b><br>Legyél te az első, aki ír valamit...',
@@ -28,6 +28,7 @@ return array (
   'Diverse' => 'Különböző',
   'E-Mail' => 'E-mail',
   'E-mail address of the user' => 'Felhasználó e-mail címe',
+  'Each line must be formatted as Key=>Value!' => '',
   'Edit account' => 'Fiók szerkesztése',
   'Editable' => 'Szerkeszthető',
   'Facebook URL' => 'Facebook URL',
@@ -90,16 +91,19 @@ return array (
   'Stream' => 'Hírfolyam',
   'Street' => 'Utca',
   'Supported ISO3166 country codes' => 'Támogatott ISO3166 országkódok',
+  'Template' => 'Sablonok',
   'Text' => 'Szöveg',
   'Text Area' => 'Szövegdoboz',
   'Text Field Options' => 'Szövegmező opciói',
   'Text area field options' => 'Szövegterület mezőbeállítások',
+  'This profile is disabled!' => '',
   'This profile is no longer available!' => 'Ez a profil már nem elérhető!',
   'This user account is not approved yet!' => 'Ez a fiók még nem lett jóváhagyva!',
   'This will add an additional input element for custom values' => 'Ez egy további bemeneti dobozt hoz létre egyéni értékek megadásához',
   'TikTok URL' => 'TikTok URL',
   'Title' => 'Megnevezés',
   'Translation Category ID' => 'Fordítói kategória azonosítója (ID)',
+  'Twig template that will be used to render this field. You can use the internal names as variables, e.g. `{{ firstname }} {{ lastname }}`' => '',
   'Twitter URL' => 'Twitter URL',
   'Type Config' => 'Típus Konfiguráció',
   'Updated at' => 'Frissítve',
@@ -116,4 +120,4 @@ return array (
   'YouTube URL' => 'YouTube URL',
   'Zip' => 'Irányítószám',
   '{attribute} is required!' => '{attribute} kötelező!',
-);
+];

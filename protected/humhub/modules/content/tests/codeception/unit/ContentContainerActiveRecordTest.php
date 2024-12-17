@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2020 HumHub GmbH & Co. KG
@@ -10,7 +11,6 @@ namespace tests\codeception\unit\modules\content;
 
 use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
-
 use humhub\modules\space\models\Space;
 use Yii;
 

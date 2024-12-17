@@ -18,10 +18,10 @@ use RecursiveIteratorIterator;
 use Yii;
 use yii\base\Component;
 use yii\base\ErrorException;
-use yii\base\InvalidConfigException;
-use yii\web\HttpException;
 use yii\base\Exception;
+use yii\base\InvalidConfigException;
 use yii\helpers\FileHelper;
+use yii\web\HttpException;
 use yii\web\ServerErrorHttpException;
 use ZipArchive;
 
@@ -51,7 +51,7 @@ class OnlineModuleManager extends Component
     {
         /** @var Module $marketplaceModule */
         $marketplaceModule = Yii::$app->getModule('marketplace');
-        $modulesPath = Yii::getAlias($marketplaceModule->modulesPath);
+        $modulesPath = realpath(Yii::getAlias($marketplaceModule->modulesPath));
 
         if (!is_writable($modulesPath)) {
             $this->throwError($moduleId, Yii::t('MarketplaceModule.base', 'Module directory %modulePath% is not writeable!', ['%modulePath%' => $modulesPath]));
@@ -259,7 +259,7 @@ class OnlineModuleManager extends Component
                 unset($this->_modules[$blacklistedModuleId]);
             }
 
-            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cache.expireTime'));
+            Yii::$app->cache->set('onlineModuleManager_modules', $this->_modules, Yii::$app->settings->get('cacheExpireTime'));
         }
 
         return $this->_modules;

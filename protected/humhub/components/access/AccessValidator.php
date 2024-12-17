@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2018 HumHub GmbH & Co. KG
@@ -72,7 +73,7 @@ abstract class AccessValidator extends BaseObject
 
     public function init()
     {
-        if(!$this->code) {
+        if (!$this->code) {
             $this->code = Yii::$app->user->isGuest ? 401 : 403;
         }
 

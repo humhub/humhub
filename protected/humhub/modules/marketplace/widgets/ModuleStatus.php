@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2021 HumHub GmbH & Co. KG
@@ -52,7 +53,7 @@ class ModuleStatus extends Widget
             return $this->_status;
         }
 
-        if ($this->module->isProOnly()) {
+        if ($this->module->isProFeature()) {
             $this->_status = 'professional';
         } elseif ($this->module->featured) {
             $this->_status = 'featured';

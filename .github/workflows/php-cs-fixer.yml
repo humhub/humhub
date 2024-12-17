@@ -1,0 +1,63 @@
+name: PHP CS Fixer
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+      - next
+    paths:
+      - '**.php'
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check the commit message for skipping PHP-CS-Fixer
+        id: check_phpcs_skip
+        run: |
+          if git log -1 --pretty=%B | grep -q '\[SKIP-PHPCS\]'; then
+            echo "skip=true" >> $GITHUB_OUTPUT
+            echo "Skip PHP-CS-Fixer because the commit message contains [SKIP-PHPCS]."
+          else
+            echo "skip=false" >> $GITHUB_OUTPUT
+            echo "Proceeding with PHP-CS-Fixer steps."
+          fi
+
+      - uses: actions/cache@v4
+        if: steps.check_phpcs_skip.outputs.skip == 'false'
+        with:
+          path: .php-cs-fixer.cache
+          key: ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.OS }}-${{ github.repository }}-phpcsfixer-
+
+      - name: Run PHP-CS-Fixer
+        if: steps.check_phpcs_skip.outputs.skip == 'false'
+        uses: docker://oskarstark/php-cs-fixer-ga
+        with:
+          args: --config=.php-cs-fixer.php
+
+      - name: Create branch and Pull Request for new changes
+        if: steps.check_phpcs_skip.outputs.skip == 'false'
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          if git diff --quiet; then
+            echo "No changes detected by PHP-CS-Fixer. Skipping commit and PR creation."
+            exit 0
+          fi
+          PHP_FIXER_DATETIME=$(date +%Y-%m-%d-%H%M%S)
+          git checkout -b "php-fixer/$PHP_FIXER_DATETIME"
+          git add -u
+          git commit -m "Autocommit PHP CS Fixer"
+          git push origin "php-fixer/$PHP_FIXER_DATETIME"
+          gh pr create \
+            --title "PHP CS Fixer $PHP_FIXER_DATETIME" \
+            --body "This Pull Request includes automated changes from PHP-CS-Fixer." \
+            --base "${{ github.ref_name }}" \
+            --head "php-fixer/$PHP_FIXER_DATETIME"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

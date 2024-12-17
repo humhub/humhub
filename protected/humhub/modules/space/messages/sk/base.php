@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<b>This space is still empty!</b>' => '<b>Tento priestor je stále prázdny!</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>Tento priestor je stále prázdny!</b><br>Začnite tým, že tu niečo zverejníte...',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>Zatiaľ nie ste členom tohto priestoru a neexistuje žiadny verejný obsah!</b>',
@@ -20,6 +20,7 @@ return array (
   'Accept' => 'Súhlasiť',
   'Accept Invite' => 'Prijať pozvanie',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'Prístup do tohto Priestoru je obmedzený.  Ak sa chcete stať členom, predstavte sa.',
+  'Add as Default Space for new users' => 'Pridať ako Predvolený Priestor pre nových používateľov',
   'Add users without invitation' => 'Pridať užívateľov bez pozvania',
   'Admin' => 'Admin',
   'Administrator:' => 'Správca:',
@@ -41,6 +42,7 @@ return array (
   'Decline' => 'Odmietnuť',
   'Decline Invite' => 'Odmietnuť pozvanie',
   'Default' => 'Východzie',
+  'Default Stream Sort' => 'Predvolené Zoradenie Toku',
   'Default content visibility' => 'Predvolená viditeľnosť obsahu',
   'Delete' => 'Zmazať',
   'Description' => 'Popis',
@@ -84,8 +86,8 @@ return array (
   'My space summary' => 'Moje Priestory súhrn',
   'Name' => 'Meno',
   'Name / Sort order' => 'Názov / Poradie zoradenia',
-  'Neither..nor' => '',
-  'New user by e-mail (comma separated)' => '',
+  'Neither..nor' => 'Žiadny z nich',
+  'New user by e-mail (comma separated)' => 'Nový používateľ e-mailom (oddelený čiarkou)',
   'New user?' => 'Nový užívateľ?',
   'Newest first' => 'Najnovšie ako prvé',
   'No results found!' => 'Nenašli sa žiadne výsledky!',
@@ -127,6 +129,7 @@ return array (
   'Spaces' => 'Priestory',
   'Status' => 'Stav',
   'Stream' => 'Prúd',
+  'Stream Sort' => 'Zoradiť Tok',
   'Tags' => 'Značky',
   'The default homepage for members of this Space' => 'Predvolená domovská stránka pre členov tohto priestoru',
   'The default homepage for non-members and guests visiting this Space' => 'Predvolená domovská stránka pre nečlenov a hostí navštevujúcich tento priestor',
@@ -163,4 +166,4 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Vaša žiadosť bola úspešne odoslaná správcom priestoru.',
   '{count} members' => '{count} členov',
   '{email} is not valid!' => '{email} nie je platný!',
-);
+];

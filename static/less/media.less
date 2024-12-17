@@ -22,7 +22,10 @@
 
     li.new {
         border-left: 3px solid @info;
-        background-color: lighten(@info, 45%);
+        background-color: @background-color-highlight;
+        &:hover {
+            background-color: @background-color-highlight-soft;
+        }
     }
 
     li:hover,
@@ -125,6 +128,10 @@
 
     .content .files a {
         color: @text-color-highlight;
+    }
+
+    .align-center {
+        align-content: center;
     }
 }
 

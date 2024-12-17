@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -9,8 +10,9 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentContainerActiveRecord;
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\content\components\ContentTagActiveQuery;
 use humhub\modules\content\models\ContentTag;
+use humhub\modules\ui\form\widgets\BasePicker;
 use Yii;
 use yii\db\ActiveRecord;
 
@@ -49,8 +51,9 @@ class ContentTagPicker extends BasePicker
 
     protected function findDefaults()
     {
-        $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true)
-            ->limit($this->limit);
+        /* @var ContentTagActiveQuery $query */
+        $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true);
+        $query->readable()->limit($this->limit);
 
         return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () use ($query) {
             return $query->all();
@@ -60,10 +63,14 @@ class ContentTagPicker extends BasePicker
     public static function search($term, $contentContainer = null, $includeGlobal = false)
     {
         $instance = new static();
+
+        /* @var ContentTagActiveQuery $query */
         $query = call_user_func([$instance->itemClass, 'find']);
         if (!empty($term)) {
             $query->andWhere(['like', 'content_tag.name', $term]);
         }
+        $query->readable();
+
         return static::jsonResult($query->limit($instance->limit)->all());
     }
 
@@ -74,11 +81,13 @@ class ContentTagPicker extends BasePicker
         }
 
         $instance = new static();
-        $query = call_user_func([$instance->itemClass, 'findByContainer'], $contentContainer, $includeGlobal);
 
+        /* @var ContentTagActiveQuery $query */
+        $query = call_user_func([$instance->itemClass, 'findByContainer'], $contentContainer, $includeGlobal);
         if (!empty($term)) {
             $query->andWhere(['like', 'content_tag.name', $term]);
         }
+        $query->readable();
 
         return static::jsonResult($query->limit($instance->limit)->all());
     }

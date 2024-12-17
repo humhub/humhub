@@ -2,11 +2,11 @@
 return array (
   'Author' => 'Egilea',
   'Content' => 'Edukia',
-  'Content Type' => '',
-  'Date from' => '',
-  'Date to' => '',
+  'Content Type' => 'data "To"',
+  'Date from' => 'data "To"',
+  'Date to' => 'data "To"',
   'Scope' => '',
-  'Sorting' => '',
-  'Topic' => '',
-  'Visibility' => '',
+  'Sorting' => 'Honen arabera ordenatu',
+  'Topic' => 'Gaia',
+  'Visibility' => 'Ikuspena',
 );

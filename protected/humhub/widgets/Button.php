@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -221,7 +222,7 @@ class Button extends BootstrapComponent
         }
 
         // Workaround since data-method handler prevents confirm or other action handlers from being executed.
-        if(isset($this->htmlOptions['data-action-confirm']) && isset($this->htmlOptions['data-method'])) {
+        if (isset($this->htmlOptions['data-action-confirm']) && isset($this->htmlOptions['data-method'])) {
             $method = $this->htmlOptions['data-method'];
             $this->htmlOptions['data-method'] = null;
             $this->htmlOptions['data-action-method'] = $method;

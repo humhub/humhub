@@ -1,12 +1,11 @@
 <?php
-
-return [
-    'Space has been archived' => '',
-    'Space has been unarchived' => '',
-    'Space member joined' => '',
-    'Space member left' => '',
-    'Whenever a member leaves one of your spaces.' => '',
-    'Whenever a new member joined one of your spaces.' => '',
-    'Whenever a space is archived.' => '',
-    'Whenever a space is unarchived.' => '',
-];
+return array (
+  'Space has been archived' => 'Espazioa artxibatu da.',
+  'Space has been unarchived' => 'Espazioa ez dago artxibatuta.',
+  'Space member joined' => 'Espazioko kideak bat egin zuen.',
+  'Space member left' => 'Espazioko kidea joan da.',
+  'Whenever a member leaves one of your spaces.' => 'Kide bat zure espazio batetik irteten den bakoitzean.',
+  'Whenever a new member joined one of your spaces.' => 'Kide berri bat zure espazio batean sartzen den bakoitzean.',
+  'Whenever a space is archived.' => 'Espazio bat artxibatzen den bakoitzean.',
+  'Whenever a space is unarchived.' => 'Espazio bat artxibatu gabe dagoen bakoitzean.',
+);

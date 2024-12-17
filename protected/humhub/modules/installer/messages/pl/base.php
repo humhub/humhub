@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Admin</strong> Account' => 'Konto <strong>Administratora</strong>',
   '<strong>Configuration</strong>' => '<strong>Konfiguracja</strong>',
   '<strong>Congratulations</strong>. You\'re done.' => '<strong>Gratulacje</strong>. Wszystko zrobione.',
@@ -18,6 +18,8 @@ return array (
   'Congratulations! Everything is ok and ready to start over!' => 'Gratulacje! Wszystko jest w porządku i gotowe do startu!',
   'Create Admin Account' => 'Utwórz konto Administratora',
   'Create the database if it doesn\'t exist yet.' => 'Utwórz bazę danych jeśli jeszcze taka nie istnieje.',
+  'Default Language' => 'Język domyślny',
+  'Default Timezone' => 'Domyślna Strefa Czasowa',
   'Downloading & Installing Modules...' => 'Pobieranie i instalowanie modułów...',
   'External users can register (show registration form on login)' => 'Zewnętrzny użytkownik może się zarejestrować (Formularz rejestracyjny będzie wyświetlany przy logowaniu)',
   'Here you can decide how new, unregistered users can access HumHub.' => 'Zadecyduj jak nowi, niezarejestrowani użytkownicy mogą korzystać z HumHub.',
@@ -29,6 +31,8 @@ return array (
   'In order to activate this feature, it is necessary to edit the HumHub configuration and, potentially, the configuration of the WebServer.' => 'Aby włączyć tę funkcję musisz zmienić konfigurację HumHub  a może nawet serwera www.',
   'Initializing database...' => 'Inicjalizuję bazę danych...',
   'Installation Example:' => 'Przykładowa instalacja:',
+  'Language and timezone are automatically set according to the user\'s browser settings. If that is not possible, the default settings are used.' => 'Język i strefa czasowa są aplikowane z automatu na bazie ustawień przeglądarki. W innym razie stosowane jest ustawienie domyślne.',
+  'Localisation' => 'Lokalizacja',
   'My club' => 'Mój klub',
   'My community' => 'Moja społeczność',
   'My company (Social Intranet / Project management)' => 'Moja firma (Intranet / Zarządzanie projektami)',
@@ -70,4 +74,4 @@ return array (
   'Your MySQL password.' => 'Hasło MySQL',
   'Your MySQL username' => 'użytkownik MySQL',
   'Your first sample space to discover the platform.' => 'Twoja pierwsza, przykładowa strefa do odkrywania platformy.',
-);
+];

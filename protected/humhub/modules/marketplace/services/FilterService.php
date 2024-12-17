@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -103,7 +104,7 @@ class FilterService
         foreach ($this->tags as $tag) {
             switch ($tag) {
                 case 'professional':
-                    if ($this->module->isProOnly()) {
+                    if ($this->module->isProFeature()) {
                         return true;
                     }
                     break;

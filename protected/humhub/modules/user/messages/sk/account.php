@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> Settings' => 'Nastavenia <strong>Účtu</strong>',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Potvrďte</strong> svoju novú e-mailovú adresu',
   '<strong>Permissions</strong>' => '<strong>Povolenia</strong>',
@@ -34,6 +34,8 @@ return array (
   'Notifications' => 'Upozornenia',
   'Other users' => 'Iní užívatelia',
   'Password Recovery' => 'Obnova hesla',
+  'Password recovery can only be initiated once every 10 minutes.' => 'Obnovenie hesla je možné spustiť iba raz za 10 minút.',
+  'Password recovery disabled. Please contact your system administrator.' => 'Obnova hesla vypnutá. Prosím, kontaktujte správcu systému.',
   'Permissions' => 'Oprávnenia',
   'Plain' => 'Prostý',
   'Profile' => 'Profil',
@@ -64,4 +66,4 @@ return array (
   'Your password has been successfully changed!' => 'Vaše heslo bolo úspešne zmenené!',
   'Your username has been changed' => 'Vaše užívateľské meno bolo zmenené',
   'Your username has been successfully changed. <br> We´ve just sent an e-mail to you with new information.' => 'Vaše užívateľské meno bolo úspešne zmenené. <br> Práve sme vám poslali e-mail s novými informáciami.',
-);
+];

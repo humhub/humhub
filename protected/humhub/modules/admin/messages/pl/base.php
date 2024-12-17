@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Administration</strong> menu' => 'Menu<strong> administracji</strong>',
   '<strong>Maintenance</strong> Mode' => 'Tryb <strong>Serwisowy</strong>',
   '<strong>Module</strong> administration' => 'Administrowanie <strong>modułami</strong>',
@@ -56,6 +56,8 @@ return array (
   'People' => 'Ludzie',
   'Permissions' => 'Uprawnienia',
   'Proxy' => 'Serwer Proxy',
+  'Resend to all' => 'Ponów wysyłkę do wszystkich',
+  'Resend to selected rows' => 'Ponów do wybranych',
   'Self test' => 'Auto test',
   'Set as default' => 'Ustaw jako domyślny',
   'Settings' => 'Ustawienia',
@@ -65,7 +67,9 @@ return array (
   'Statistics' => 'Statystyki',
   'The cron job for the background jobs (queue) does not seem to work properly.' => 'Zadanie cron dla zadań w tle (kolejka) prawdopodobnie nie wykonało się poprawnie.',
   'The cron job for the regular tasks (cron) does not seem to work properly.' => 'Zadanie cron dla normalnych zadań (cron) prawdopodobnie nie wykonało się poprawnie.',
+  'The mobile app push service is not available. Please install and configure the "Push Notifications" module.' => 'Powiadomienia push nie są dostępne. Proszę zainstaluj i skonfiguruj moduł "Powiadomienia push".',
   'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.' => 'To zestawienie zawiera wszystkie zainstalowane moduły. Możesz je włączyć, wyłączyć, skonfigurować a także odinstalować. W ramach ryneczku odnajdziesz nowości. Miej na uwadze, że wyłączając czy odinstalując moduł zniknie część treści - ta dodana przy jego użyciu.',
+  'Topics' => 'Tematy',
   'Uninstall' => 'Odinstaluj',
   'Updates available for {count} of your modules' => 'Aktualizacje dostępne dla {count} z Twoich modułów',
   'User not found!' => 'Użytkownik nie znaleziony!',
@@ -75,4 +79,4 @@ return array (
   'Visit Marketplace' => 'Odwiedź rynek',
   'You do not have the permission to configure modules. Please contact the administrator for further information.' => 'Nie masz uprawnień do konfigurowania modułów. Skontaktuj się z administratorem aby wyjaśnić sprawę.',
   'You do not have the permission to manage modules. Please contact the administrator for further information.' => 'Nie masz uprawnień do zarządzania modułami. Skontaktuj się z administratorem po więcej informacji.',
-);
+];

@@ -1,19 +1,24 @@
 <?php
-return array (
+return [
   '<strong>Manage</strong> Spaces' => '<strong>Zarządzaj</strong> strefami',
   'Add new space' => 'Dodaj nową strefę',
+  'All existing Space Topics will be converted to Global Topics.' => 'Wszystkie lokalne wątki zostaną zamienione na globalne.',
+  'Allow individual topics in Spaces' => 'Zezwól na pojedyncze wątki w przestrzeni',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Używając ról użytkowników, możesz tworzyć różne grupy uprawnień w strefie. Które również mogą być dopasowane przez autoryzowanych użytkowników w każdej strefie i mają wpływ tylko na wybraną strefę.',
   'Change owner' => 'Zmień właściciela',
-  'Default "Hide About Page"' => '',
-  'Default "Hide Activity Sidebar Widget"' => '',
-  'Default "Hide Followers"' => '',
-  'Default "Hide Members"' => '',
+  'Convert' => 'Skonwertuj',
+  'Convert Space Topics' => 'Przemianuj wątki przestrzeni',
+  'Default "Hide About Page"' => 'Domyślnie ukryj "Stronę o mnie"',
+  'Default "Hide Activity Sidebar Widget"' => 'Domyślnie "Ukryj aktywność widżetu w panelu bocznym"',
+  'Default "Hide Followers"' => 'Domyślnie "Ukryj śledzących"',
+  'Default "Hide Members"' => 'Domyślnie "Ukryj członków"',
   'Default Content Visiblity' => 'Domyślna widoczność treści',
-  'Default Homepage' => '',
-  'Default Homepage (Non-members)' => '',
+  'Default Homepage' => 'Domyślna strona główna',
+  'Default Homepage (Non-members)' => 'Domyślna strona główna (dla gości)',
   'Default Join Policy' => 'Domyślna polityka dołączania',
   'Default Space Permissions' => 'Domyślne Uprawnienia Strefy',
   'Default Space(s)' => 'Domyślne Strefy',
+  'Default Stream Sort' => 'Domyślne sortowanie strumienia',
   'Default Visibility' => 'Domyślna widoczność',
   'Default space' => 'Domyślna strefa',
   'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Tutaj możesz ustalić Twoje domyślne ustawienia dla nowych stref. Te ustawienia mogą być nadpisane przez każdą strefę.',
@@ -29,4 +34,4 @@ return array (
   'These options allow you to set the default permissions for all Spaces. Authorized users are able individualize these for each Space. Further entries are added with the installation of new modules.' => 'Te opcje pozwolą Ci ustawić domyślne uprawnienia dla wszystkich stref. Autoryzowani użytkownicy będą mieć możliwość dostosowywać te ustawienia w każdej strefie. Więcej wpisów zostanie dodanych po instalacji nowych modułów.',
   'This overview contains a list of each space with actions to view, edit and delete spaces.' => 'Ten przegląd zawiera listę wszystkich stref z możliwością ich podglądu, edycji i usunięcia.',
   'Update Space memberships also for existing members.' => 'Zaktualizuj członkowstwo w strefie dla istniejących członków.',
-);
+];

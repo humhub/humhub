@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -13,7 +14,7 @@ class TestActionValidator extends ActionAccessValidator
 {
     protected function validate($rule)
     {
-        if(!$rule['return']) {
+        if (!$rule['return']) {
             $this->access->code = 404;
             $this->access->reason = 'Not you again!';
             return false;

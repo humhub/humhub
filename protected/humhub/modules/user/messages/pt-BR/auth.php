@@ -1,6 +1,6 @@
 <?php
-return array (
-  '<strong>Account</strong> registration' => '<strong>Conta</strong> registro',
+return [
+  '<strong>Account</strong> registration' => '<strong>Criar</strong> conta',
   '<strong>Change</strong> Password' => '<strong> Alterar </strong> senha',
   '<strong>Change</strong> your password' => '<strong>Alterar</strong> sua senha',
   '<strong>Join</strong> the network' => '<strong>Junte-se</strong> à comunidade!',
@@ -26,12 +26,14 @@ return array (
   'Group' => 'Grupo',
   'Hello {displayName}' => 'Olá {displayName}',
   'Hello {displayName},' => 'Olá {displayName},',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'Se existir uma conta de usuário associada a este endereço de e-mail, mais instruções serão enviadas a você por e-mail em breve.',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Se você não usar este link no prazo de 24 horas, ele irá expirar.',
   'If you\'re already a member, please login with your username/email and password.' => 'Se você já é um membro, por favor faça o login com seu usuário/e-mail e senha.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Basta digitar o seu e-mail que enviaremos instruções de recuperação!',
   'Log out' => 'Sair',
   'Login' => 'Conecte-se',
-  'New user needs approval' => 'Novo usuário precisa de aprovação',
+  'New user needs approval' => 'Novos usuários precisam de aprovação',
+  'Password' => 'senha',
   'Password recovery' => 'Recuperação de senha',
   'Password reset' => 'Reconfigurar senha',
   'Please check your email and follow the instructions!' => 'Por favor, verifique seu e-mail e siga as instruções!',
@@ -48,13 +50,11 @@ return array (
   'Sign in' => 'Entrar',
   'To log in with your new account, click the button below.' => 'Para efetuar o login com a sua nova conta, clique no botão abaixo.',
   'User or Password incorrect.' => 'Usuário ou senha incorretos.',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Enviamos um e-mail contendo um link que lhe permitirá redefinir sua senha.',
-  'Your email' => 'seu e-mail',
+  'Username or Email' => 'Usuário ou e-mail',
+  'Your email' => 'Seu e-mail',
   'Your password' => 'Sua senha',
   'Your password has been successfully changed!' => 'Sua senha foi alterada com sucesso!',
   'Your password is incorrect!' => 'Sua senha está incorreta!',
-  'a new user {displayName} needs approval.' => 'o novo usuário {displayName} precisa de aprovação.',
+  'a new user {displayName} needs approval.' => 'um novo usuário {displayName} precisa de aprovação.',
   'back to home' => 'voltar ao início',
-  'Password' => 'senha',
-  'Username or Email' => 'usuário ou e-mail',
-);
+];

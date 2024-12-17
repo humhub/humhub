@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -48,7 +49,7 @@ class ModalButton extends Button
      */
     public static function submitModal($url = null, $text = null)
     {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Save');
         }
 
@@ -61,7 +62,7 @@ class ModalButton extends Button
      */
     public static function cancel($text = null)
     {
-        if(!$text) {
+        if (!$text) {
             $text = Yii::t('base', 'Cancel');
         }
 

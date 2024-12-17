@@ -13,7 +13,7 @@
     },
     "minimum-stability": "stable",
     "require": {
-        "php": ">=8.0",
+        "php": ">=8.1",
         "ext-exif": "*",
         "ext-intl": "*",
         "ext-json": "*",
@@ -46,6 +46,7 @@
         "npm-asset/jplayer": "^2.9",
         "npm-asset/jquery": "~3.6.3",
         "npm-asset/jquery-autosize": "^1.0",
+        "npm-asset/jquery-highlight": "^3.5",
         "npm-asset/jquery-knob": "^1.2",
         "npm-asset/jquery-ui": "^1.13.2",
         "npm-asset/jquery.cookie": "^1.4.1",
@@ -53,11 +54,11 @@
         "npm-asset/nprogress": "^0.2",
         "npm-asset/select2": "^4.0.4",
         "npm-asset/select2-bootstrap-theme": "^0.1.0-beta.4",
-        "npm-asset/socket.io-client": "^2.0",
+        "npm-asset/socket.io-client": "2.5.0",
         "npm-asset/swiped-events": "^1.0.9",
         "npm-asset/timeago": "^1.6.3",
         "npm-asset/unicode-emoji-json": "^0.5.0",
-        "phpoffice/phpspreadsheet": "^2.0",
+        "phpoffice/phpspreadsheet": "^2.2",
         "raoul2000/yii2-jcrop-widget": "^1.0",
         "symfony/amazon-mailer": "^5.4",
         "symfony/google-mailer": "^5.4",
@@ -69,7 +70,9 @@
         "symfony/postmark-mailer": "^5.4",
         "symfony/sendgrid-mailer": "^5.4",
         "symfony/sendinblue-mailer": "^5.4",
+        "twig/string-extra": "^3.13",
         "twig/twig": "^3.4.1",
+        "vlucas/phpdotenv": "^5.6",
         "web-token/jwt-checker": ">=1.0 <3.0",
         "web-token/jwt-signature": ">=1.0 <3.0",
         "web-token/jwt-signature-algorithm-ecdsa": ">=1.0 <3.0",
@@ -84,7 +87,8 @@
         "yiisoft/yii2-jui": "^2.0.0",
         "yiisoft/yii2-queue": "^2.3.0",
         "yiisoft/yii2-redis": "^2.0.0",
-        "yiisoft/yii2-symfonymailer": "^2.0"
+        "yiisoft/yii2-symfonymailer": "^2.0",
+        "mobiledetect/mobiledetectlib": "4.8.09"
     },
     "replace": {
     },
@@ -120,7 +124,7 @@
         },
         "platform-check": false,
         "platform": {
-            "php": "8.0"
+            "php": "8.1"
         },
         "allow-plugins": {
             "yiisoft/yii2-composer": true

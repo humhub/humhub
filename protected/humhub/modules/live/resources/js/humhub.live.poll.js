@@ -198,7 +198,6 @@ humhub.module('live.poll', function (module, require, $) {
      * Handles the live update response.
      */
     PollClient.prototype.handleUpdate = function (response) {
-
         if (this.lastTs >= response.queryTime) {
             // We already have a more recent update
             return;

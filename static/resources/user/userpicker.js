@@ -299,11 +299,8 @@ $.fn.userpicker = function (options) {
             }
 
 
-            // remove hightlight
-            $('#' + uniqueID + '_userpicker li').removeHighlight();
-
-            // add new highlight matching strings
-            $('#' + uniqueID + '_userpicker li').highlight(keyword);
+            // remove highlight and add new highlight matching strings
+            $('#' + uniqueID + '_userpicker li').unhighlight().highlight(keyword);
 
             // add selection to the first space entry
             $('#' + uniqueID + '_userpicker li:eq(0)').addClass('selected');
@@ -399,4 +396,3 @@ $.fn.userpicker.parseUserInput = function (id) {
     return result;
 
 }
-

@@ -9,17 +9,18 @@
 namespace humhub\modules\installer\libs;
 
 use humhub\modules\activity\components\MailSummary;
+use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\user\models\fieldtype\Birthday;
 use humhub\modules\user\models\fieldtype\CountrySelect;
 use humhub\modules\user\models\fieldtype\Select;
 use humhub\modules\user\models\fieldtype\Text;
 use humhub\modules\user\models\fieldtype\TextArea;
 use humhub\modules\user\models\fieldtype\UserEmail;
+use humhub\modules\user\models\Group;
+use humhub\modules\user\models\ProfileField;
+use humhub\modules\user\models\ProfileFieldCategory;
 use Yii;
 use yii\base\Exception;
-use humhub\modules\user\models\ProfileFieldCategory;
-use humhub\modules\user\models\ProfileField;
-use humhub\modules\user\models\Group;
 use yii\helpers\BaseUrl;
 
 /**
@@ -49,7 +50,6 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', '1');
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', '1');
-        Yii::$app->getModule('user')->settings->set('auth.showCaptureInRegisterForm', '1');
 
         // Mailing
         Yii::$app->settings->set('mailer.transportType', 'php');
@@ -58,12 +58,13 @@ class InitialData
         Yii::$app->getModule('activity')->settings->set('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
 
         // File
-        Yii::$app->getModule('file')->settings->set('maxFileSize', '1048576' * 5);
+        [,,$defaultMaxUploadSize] = FileSettingsForm::getPHPMaxUploadSize();
+        Yii::$app->getModule('file')->settings->set('maxFileSize', $defaultMaxUploadSize * 1024 * 1024);
         Yii::$app->getModule('file')->settings->set('excludeMediaFilesPreview', '1');
 
         // Caching
-        Yii::$app->settings->set('cache.class', 'yii\caching\FileCache');
-        Yii::$app->settings->set('cache.expireTime', '3600');
+        Yii::$app->settings->set('cacheClass', 'yii\caching\FileCache');
+        Yii::$app->settings->set('cacheExpireTime', '3600');
         Yii::$app->getModule('admin')->settings->set('installationId', md5(uniqid("", true)));
 
         // Design
@@ -71,14 +72,9 @@ class InitialData
 
         // Basic
         Yii::$app->getModule('tour')->settings->set('enable', 1);
-        Yii::$app->settings->set('defaultLanguage', Yii::$app->language);
-
-        // Notification
-        Yii::$app->getModule('notification')->settings->set('enable_html5_desktop_notifications', 0);
 
         // Avoid warning direct after installation
         Yii::$app->settings->set('cronLastRun', time());
-
 
         // Add Categories
         $cGeneral = new ProfileFieldCategory();

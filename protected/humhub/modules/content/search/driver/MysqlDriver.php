@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -180,18 +181,13 @@ class MysqlDriver extends AbstractDriver
 
             $query->leftJoin('space_membership', 'contentcontainer . pk = space_membership . space_id and contentcontainer .class=:spaceClass and space_membership . user_id =:userId', [':userId' => $user->id, ':spaceClass' => Space::class]);
 
-            if ($user->canViewAllContent(Space::class)) {
+            if ($user?->canManageAllContent()) {
                 // Don't restrict if user can view all content:
                 $conditionSpaceMembershipRestriction = '';
+                $conditionUserPrivateRestriction = '';
             } else {
                 // User must be a space's member OR Space and Content are public
                 $conditionSpaceMembershipRestriction = ' AND ( space_membership.status=3 OR (content.visibility=1 AND space.visibility != 0) )';
-            }
-
-            if ($user->canViewAllContent(User::class)) {
-                // Don't restrict if user can view all content:
-                $conditionUserPrivateRestriction = '';
-            } else {
                 // User can view only content of own profile
                 $conditionUserPrivateRestriction = ' AND content.contentcontainer_id=' . $user->contentcontainer_id;
             }
@@ -212,8 +208,7 @@ class MysqlDriver extends AbstractDriver
             // Created content of is always visible
             $conditionUser .= 'OR content.created_by=' . $user->id;
             $globalCondition = 'content.contentcontainer_id IS NULL';
-        } elseif
-        (AuthHelper::isGuestAccessEnabled()) {
+        } elseif (AuthHelper::isGuestAccessEnabled()) {
             $conditionSpace = 'space.id IS NOT NULL and space.visibility=' . Space::VISIBILITY_ALL . ' AND content.visibility=1';
             $conditionUser = 'cuser.id IS NOT NULL and cuser.visibility=' . User::VISIBILITY_ALL . ' AND content.visibility=1';
             $globalCondition = 'content.contentcontainer_id IS NULL AND content.visibility=1';

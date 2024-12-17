@@ -2,11 +2,9 @@
 
 namespace humhub\modules\dashboard\stream\filters;
 
-use humhub\modules\stream\models\filters\StreamQueryFilter;
-use Yii;
 use humhub\modules\content\models\Content;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
+use humhub\modules\stream\models\filters\StreamQueryFilter;
 use yii\db\Query;
 
 /**
@@ -33,15 +31,8 @@ class DashboardGuestStreamFilter extends StreamQueryFilter
             ->where(['space.visibility' => Space::VISIBILITY_ALL])
             ->andWhere(['space.status' => Space::STATUS_ENABLED]);
 
-        $publicProfilesSql = (new Query())
-            ->select("contentcontainer_id")
-            ->from('user')
-            ->where(['user.status' => User::STATUS_ENABLED])
-            ->andWhere(['user.visibility' => User::VISIBILITY_ALL]);
-
         $this->query->andFilterWhere(['OR',
             ['IN', 'content.contentcontainer_id', $publicSpacesSql],
-            ['IN', 'content.contentcontainer_id', $publicProfilesSql],
             'content.contentcontainer_id IS NULL',
         ]);
     }

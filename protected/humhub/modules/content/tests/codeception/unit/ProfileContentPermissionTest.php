@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
@@ -14,7 +15,6 @@ use humhub\modules\user\models\User;
 use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\post\models\Post;
-
 use humhub\modules\space\models\Space;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\actions\ContentContainerStream;

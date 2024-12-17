@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Followers</strong>' => '<strong>Abonnés</strong>',
   '<strong>Following</strong>' => '<strong>Abonnements</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>Membre</strong> des espaces',
@@ -34,6 +34,7 @@ return array (
   'Disconnect account' => 'Déconnecter le compte',
   'Edit' => 'Modifier',
   'Email' => 'e-mail',
+  'Empty password cannot be saved!' => 'Un mot de passe vide ne peut pas être enregistré !',
   'Enable Notifications' => 'Activer les notifications',
   'Find people by their profile data or user tags' => 'Rechercher des membres en fonction de leurs données de profil ou de leurs tags',
   'Follow' => 'Suivre',
@@ -120,4 +121,4 @@ return array (
   'invited you to join {name}.' => 'vous a invité à rejoindre {name}.',
   'invited you to join {space} on {name}.' => 'vous a invité à rejoindre {space} sur {name}.',
   'or' => 'ou',
-);
+];

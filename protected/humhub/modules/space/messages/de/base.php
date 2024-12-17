@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<b>This space is still empty!</b>' => '<b>Dieser Space ist noch leer!</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<strong>Dieser Space ist noch leer!</strong><br />Mache den Anfang und teile etwas mit ...',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>Du bist noch kein Mitglied dieses Spaces. Derzeit liegen keinen öffentlichen Inhalte vor!</b>',
@@ -20,6 +20,7 @@ return array (
   'Accept' => 'Akzeptieren',
   'Accept Invite' => 'Einladung annehmen',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'Um bestätigtes Mitglied dieses Spaces zu werden, stelle dich bitte kurz vor.',
+  'Add as Default Space for new users' => 'Als Standard-Space für neue Benutzer hinzufügen',
   'Add users without invitation' => 'Benutzer ohne Einladung hinzufügen',
   'Admin' => 'Admin',
   'Administrator:' => 'Administrator:',
@@ -41,6 +42,7 @@ return array (
   'Decline' => 'Ablehnen',
   'Decline Invite' => 'Einladung ablehnen',
   'Default' => 'Standard',
+  'Default Stream Sort' => 'Standard Stream Sortierung',
   'Default content visibility' => 'Standard-Sichtbarkeit der Inhalte',
   'Delete' => 'Löschen',
   'Description' => 'Beschreibung',
@@ -127,6 +129,7 @@ return array (
   'Spaces' => 'Spaces',
   'Status' => 'Status',
   'Stream' => 'Stream',
+  'Stream Sort' => 'Stream Sortierung',
   'Tags' => 'Tags',
   'The default homepage for members of this Space' => 'Die Homepage für Mitglieder dieses Spaces.',
   'The default homepage for non-members and guests visiting this Space' => 'Die Homepage für Nicht-Mitglieder dieses Spaces und Gäste.',
@@ -163,4 +166,4 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Deine Anfrage wurde erfolgreich an die Space-Administratoren weitergeleitet.',
   '{count} members' => '{count} Mitglieder',
   '{email} is not valid!' => '{email} ist ungültig!',
-);
+];

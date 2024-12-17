@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Account</strong> registration' => '<strong>Rejestracja</strong> konta',
   '<strong>Change</strong> Password' => '<strong>Zmień</strong> Hasło',
   '<strong>Change</strong> your password' => '<strong>Zmień</strong> swoje hasło',
@@ -26,12 +26,14 @@ return array (
   'Group' => 'Grupa',
   'Hello {displayName}' => 'Cześć {displayName}',
   'Hello {displayName},' => 'Witaj {displayName},',
+  'If a user account associated with this email address exists, further instructions will be sent to you by email shortly.' => 'O ile któreś z kont jest przypisane do tego adresu email, to dalsze instrukcje zostaną wysłane tą drogą.',
   'If you don\'t use this link within 24 hours, it will expire.' => 'Ten link wygaśnie jeżeli nie użyjesz go w ciągu 24 godzin.',
   'If you\'re already a member, please login with your username/email and password.' => 'Jeżeli już jesteś członkiem, proszę zaloguj się używając swojej nazwy użytkownika/e-maila i hasła.',
   'Just enter your e-mail address. We\'ll send you recovery instructions!' => 'Wprowadź swój adres e-mail. Wyślemy do ciebie instrukcje odzyskiwania hasła.',
   'Log out' => 'Wyloguj',
   'Login' => 'Login',
   'New user needs approval' => 'Nowi użytkownicy wymagają zatwierdzenia',
+  'Password' => 'hasło',
   'Password recovery' => 'Odzyskiwanie hasła',
   'Password reset' => 'Resetowanie hasła',
   'Please check your email and follow the instructions!' => 'Proszę sprawdź twój e-mail i podążaj za instrukcjami!',
@@ -48,13 +50,11 @@ return array (
   'Sign in' => 'Zaloguj się',
   'To log in with your new account, click the button below.' => 'Aby zalogować się na twoje nowe konto, kliknij poniższy przycisk.',
   'User or Password incorrect.' => 'Błędna nazwa Użytkownika lub Hasło.',
-  'We’ve sent you an email containing a link that will allow you to reset your password.' => 'Wysłaliśmy do ciebie e-mail zawierający link który pozwala zresetować twoje hasło.',
+  'Username or Email' => 'nazwa użytkownika lub e-mail',
   'Your email' => 'twój e-mail',
   'Your password' => 'Twoje hasło',
   'Your password has been successfully changed!' => 'Twoje hasła zostało z powodzeniem zmienione!',
   'Your password is incorrect!' => 'Twoje hasło jest niepoprawne!',
   'a new user {displayName} needs approval.' => 'nowy użytkownik {displayName} czeka na zatwierdzenie.',
   'back to home' => 'powróć do strony domowej',
-  'Password' => 'hasło',
-  'Username or Email' => 'nazwa użytkownika lub e-mail',
-);
+];

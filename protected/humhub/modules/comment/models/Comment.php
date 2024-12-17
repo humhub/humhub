@@ -252,7 +252,7 @@ class Comment extends ContentAddonActiveRecord
             $comments[$limit] = array_reverse($query->all());
 
             if ($useCaching) {
-                Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cache.expireTime'));
+                Yii::$app->cache->set($cacheID, $comments, Yii::$app->settings->get('cacheExpireTime'));
             }
         }
 
@@ -274,7 +274,7 @@ class Comment extends ContentAddonActiveRecord
 
         if ($commentCount === false) {
             $commentCount = Comment::find()->where(['object_model' => $model, 'object_id' => $id])->count();
-            Yii::$app->cache->set($cacheID, $commentCount, Yii::$app->settings->get('cache.expireTime'));
+            Yii::$app->cache->set($cacheID, $commentCount, Yii::$app->settings->get('cacheExpireTime'));
         }
 
         return $commentCount;

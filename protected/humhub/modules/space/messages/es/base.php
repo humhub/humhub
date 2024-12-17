@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<b>This space is still empty!</b>' => '<b>¡Este espacio todavía está vacío!</b>',
   '<b>This space is still empty!</b><br>Start by posting something here...' => '<b>¡Este espacio está aun vacio!</b><br>Empieza por escribir algo aqui...',
   '<b>You are not member of this space and there is no public content, yet!</b>' => '<b>No eres miembro de este espacio y no hay contenido público aún!</b>',
@@ -20,6 +20,7 @@ return array (
   'Accept' => 'Aceptar',
   'Accept Invite' => 'Aceptar invitación',
   'Access to this Space is restricted. Please introduce yourself to become a member.' => 'Por favor, preséntate brevemente, para ser un miembro aprobado de este espacio.',
+  'Add as Default Space for new users' => 'Añadir como espacio por defecto para los nuevos usuarios',
   'Add users without invitation' => 'Añadir usuarios sin invitación',
   'Admin' => 'Administrador',
   'Administrator:' => 'Administrador:',
@@ -41,6 +42,7 @@ return array (
   'Decline' => 'Declinar',
   'Decline Invite' => 'Declinar invitación',
   'Default' => 'Por defecto',
+  'Default Stream Sort' => 'Ordenación por defecto del stream',
   'Default content visibility' => 'Visibilidad por defecto del contenido',
   'Delete' => 'Borrar',
   'Description' => 'Descripción',
@@ -127,6 +129,7 @@ return array (
   'Spaces' => 'Espacios',
   'Status' => 'Estado',
   'Stream' => 'Actividad',
+  'Stream Sort' => 'Ordenación del stream',
   'Tags' => 'Etiquetas',
   'The default homepage for members of this Space' => 'Página de inicio por defecto para los miembros de este Espacio',
   'The default homepage for non-members and guests visiting this Space' => 'Página de inicio por defecto para no miembros e invitados que visitan este Espacio',
@@ -163,4 +166,4 @@ return array (
   'Your request was successfully submitted to the space administrators.' => 'Tu solicitud ha sido enviada correctamente a los administradores del espacio.',
   '{count} members' => '{count} miembros',
   '{email} is not valid!' => '¡{email} no es válido!',
-);
+];

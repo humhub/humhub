@@ -9,13 +9,15 @@
 namespace humhub\components;
 
 use humhub\helpers\DatabaseHelper;
+use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\DynamicConfig;
 use humhub\libs\SelfTest;
+use humhub\libs\TimezoneHelper;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\UnsetArrayValue;
 use yii\helpers\Url;
+use yii\i18n\Formatter;
 
 trait ApplicationTrait
 {
@@ -44,11 +46,28 @@ trait ApplicationTrait
      */
     public function __construct($config = [])
     {
+        $config = EnvHelper::resolveConfigAliases($config);
+
         $this->loadedAppConfig = $config;
 
         $config = $this->removeLegacyConfigSettings($config);
 
         parent::__construct($config);
+
+        $this->initLocales();
+    }
+
+    private function initLocales(): void
+    {
+        if ($this->isDatabaseInstalled(true)) {
+            if ($this->settings instanceof SettingsManager) {
+                $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
+                if ($this->formatter instanceof Formatter) {
+                    $this->formatter->defaultTimeZone = $this->timeZone;
+                }
+            }
+            $this->db->pdo->exec('SET time_zone = ' . $this->db->quoteValue(TimezoneHelper::convertToTime($this->timeZone)));
+        }
     }
 
     /**
@@ -145,10 +164,13 @@ trait ApplicationTrait
 
     private function removeLegacyConfigSettings($applicationConfig)
     {
-        return ArrayHelper::merge([
+        return ArrayHelper::merge(
+            [
                 'modules' => [],
                 'components' => [],
-            ], $applicationConfig, SelfTest::getLegancyConfigSettings()
+            ],
+            $applicationConfig,
+            SelfTest::getLegacyConfigSettings(),
         );
     }
 }

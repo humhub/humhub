@@ -1,6 +1,7 @@
 <?php
-return array (
+return [
   '(Also visible to non-members of this space)' => '(visible également pour les non-membres de cet espace)',
+  '(Also visible to people who are not logged in)' => '(également visible pour les personnes non connectées)',
   '<strong>Delete</strong> content?' => '<strong>Supprimer</strong> le contenu ?',
   '<strong>Move</strong> content' => '<strong>Déplacer</strong> le contenu',
   '<strong>Permalink</strong> to this post' => '<strong>Raccourci</strong> vers cette publication',
@@ -87,6 +88,8 @@ return array (
   'This content type can\'t be moved.' => 'Ce contenu ne peut être déplacé.',
   'This space is archived.' => 'Cet espace est archivé',
   'This space is not visible!' => 'Cet espace n\'est pas visible.',
+  'Topic already exists globally.' => 'Le sujet existe déjà au niveau global.',
+  'Topic already in use in Spaces or on Profiles.' => 'Le sujet est déjà utilisé dans un Espace ou un Profil.',
   'Topics' => 'Sujets',
   'Turn off notifications' => 'Désactiver les notifications',
   'Turn on notifications' => 'Activer les notifications',
@@ -109,4 +112,4 @@ return array (
   'You do not have the permission to move this content.' => 'Vous n\'êtes pas autorisé à déplacer cette publication.',
   'Your last edit state has been saved!' => 'Votre dernier état d\'édition a été sauvegardé.',
   'in' => 'dans',
-);
+];

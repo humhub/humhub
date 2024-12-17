@@ -96,7 +96,7 @@ return [
   'Group not found!' => 'Группа не найдена!',
   'Group user not found!' => 'Участник группы не найден!',
   'Groups' => 'Группы',
-    'Hello {displayName},
+  'Hello {displayName},
 
 Your account creation is under review.
 Could you tell us the motivation behind your registration?
