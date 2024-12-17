@@ -3,7 +3,6 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\libs\DynamicConfig;
-use humhub\libs\TimezoneHelper;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
@@ -117,5 +116,4 @@ class BasicSettingsForm extends Model
 
         return true;
     }
-
 }

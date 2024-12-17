@@ -14,6 +14,8 @@ class EnvHelper
     private const FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
     private const DEPTH_SEPARATOR = '__';
 
+    private const ALIASES_PREFIX = 'HUMHUB_ALIASES';
+
     public static function toConfig(?array $env = []): array
     {
         $config = [];
@@ -75,5 +77,30 @@ class EnvHelper
                 return Inflector::variablize(strtolower($path));
             },
         );
+    }
+
+    /**
+     * Writes variables defined in ENV with the syntax `HUMHUB_ALIASES__ALIASNAME` to the config alias map.
+     *
+     * @param array $config
+     * @return array
+     */
+    public static function resolveConfigAliases(array $config): array
+    {
+        if (!is_array($_ENV)) {
+            return $config;
+        }
+        if (!is_array($config['aliases'])) {
+            $config['aliases'] = [];
+        }
+
+        foreach ($_ENV as $key => $value) {
+            if (StringHelper::startsWith($key, self::ALIASES_PREFIX . self::DEPTH_SEPARATOR)) {
+                $aliasName = str_replace(self::ALIASES_PREFIX . self::DEPTH_SEPARATOR, '', $key);
+                $config['aliases']['@' . strtolower($aliasName)] = $value;
+            }
+        }
+
+        return $config;
     }
 }

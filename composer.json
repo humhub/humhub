@@ -88,7 +88,8 @@
         "yiisoft/yii2-jui": "^2.0.0",
         "yiisoft/yii2-queue": "^2.3.0",
         "yiisoft/yii2-redis": "^2.0.0",
-        "yiisoft/yii2-symfonymailer": "^2.0"
+        "yiisoft/yii2-symfonymailer": "^2.0",
+        "mobiledetect/mobiledetectlib": "4.8.09"
     },
     "replace": {
     },

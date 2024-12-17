@@ -1,6 +1,7 @@
 <?php
 
 use humhub\compat\HForm;
+use humhub\modules\user\services\LinkRegistrationService;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\ModalButton;
@@ -20,7 +21,9 @@ use humhub\widgets\modal\ModalButton;
 
             <?php if ($canInviteByEmail || $canInviteByLink): ?>
                 <?= ModalButton::success(Yii::t('AdminModule.user', 'Invite new people'))
-                    ->load(['/user/invite'])->icon('invite')->sm() ?>
+                    ->load(['/user/invite', 'target' => LinkRegistrationService::TARGET_ADMIN])
+                    ->icon('invite')
+                    ->sm() ?>
             <?php endif; ?>
         </div>
 

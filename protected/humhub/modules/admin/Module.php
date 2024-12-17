@@ -8,9 +8,10 @@
 
 namespace humhub\modules\admin;
 
-use Yii;
-use humhub\modules\user\models\User;
+use humhub\modules\admin\permissions\ManageAllContent;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
+use Yii;
 
 /**
  * Admin Module
@@ -67,6 +68,12 @@ class Module extends \humhub\components\Module
     public $cleanupPendingRegistrationInterval = 60 * 60 * 24 * 90;
 
     /**
+     * @since 1.17
+     * @var bool Enable the "Manage All Content" Permission
+     */
+    public $enableManageAllContentPermission = false;
+
+    /**
      * @inheritdoc
      */
     public function getName()
@@ -81,18 +88,22 @@ class Module extends \humhub\components\Module
     {
         if ($contentContainer instanceof Space) {
             return [];
-        } elseif ($contentContainer instanceof User) {
+        }
+
+        if ($contentContainer instanceof User) {
             return [];
         }
 
-        return [
+        return array_merge([
             new permissions\ManageModules(),
             new permissions\ManageSettings(),
             new permissions\SeeAdminInformation(),
             new permissions\ManageUsers(),
             new permissions\ManageGroups(),
             new permissions\ManageSpaces(),
-        ];
+        ], $this->enableManageAllContentPermission ? [
+            new ManageAllContent(),
+        ] : []);
     }
 
     /**

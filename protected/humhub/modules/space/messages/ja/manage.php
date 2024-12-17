@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '-' => '-',
   '<strong>Create</strong> Space' => 'スペースの <strong>新規作成</strong>',
   '<strong>Manage</strong> members' => 'メンバーの<strong>管理</strong>',
@@ -8,7 +8,6 @@ return array (
   '<strong>Space</strong> Modules' => '<strong>スペース</strong> のモジュール',
   '<strong>Space</strong> settings' => '<strong>スペース</strong>の設定',
   'Actions' => 'アクション',
-  'Enable' => '作動させる',
   'Add <strong>Modules</strong>' => '追加 <strong>モジュール</strong>',
   'Advanced access settings' => '上級者向けのアクセス設定',
   'All members excluding moderators and administrators of this Space will be removed. All pending invitations and membership requests will be terminated.' => 'このスペースのモデレーターと管理者を除くすべてのメンバーが削除されます。保留中のすべての招待状とメンバーシップ リクエストは終了します。',
@@ -25,6 +24,7 @@ return array (
   'Currently there are no modules available for this space!' => '現在、このスペースにはモジュールはありません',
   'Delete' => '削除',
   'Don\'t receive notifications for new content' => '通知を受け取らない',
+  'Enable' => '作動させる',
   'Hide posts on dashboard' => 'ダッシュボードに表示しない',
   'Invited By' => '招待者',
   'Members' => 'メンバー',
@@ -42,7 +42,7 @@ return array (
   'Remove from space' => 'このスペースから退室させる',
   'Role' => '役割',
   'Security' => 'セキュリティ',
-  'Show all' => '所有者の移設',
+  'Show all' => 'すべて',
   'Show posts on dashboard' => 'ダッシュボードにも表示する',
   'Space name' => 'スペース名',
   'Space owner' => 'スペースの所有者',
@@ -55,4 +55,4 @@ return array (
   'Unarchive' => 'アーカイブの解除',
   'e.g. example for {baseUrl}/s/example' => '例が {baseUrl}/s/example にあります',
   'never' => 'なし',
-);
+];
