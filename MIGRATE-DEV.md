@@ -15,6 +15,8 @@ Version 1.17 (Unreleased)
 - CSS variables: `--hh-fixed-header-height` and `--hh-fixed-footer-height` (see [#7131](https://github.com/humhub/humhub/issues/7131)): these variables should be added to custom themes in the `variables.less` file to overwrite the fixed header (e.g. the top menu + margins) and footer heights with the ones of the custom theme.
 - `\humhub\modules\user\Module::enableRegistrationFormCaptcha` which is true by default (can be disabled via [file configuration](https://docs.humhub.org/docs/admin/advanced-configuration#module-configurations))
 - `\humhub\modules\user\Module::$passwordHint` (see [#5423](https://github.com/humhub/humhub/issues/5423))
+- New methods in the `DeviceDetectorHelper` class: `isMobile()`, `isTablet()`, `getBodyClasses()`, `isMultiInstanceApp()` and `appOpenerState()`
+- HTML classes about the current device (see list in `DeviceDetectorHelper::getBodyClasses()`)
 
 ### Deprecated
 - `\humhub\modules\ui\menu\MenuEntry::isActiveState()` use `\humhub\helpers\ControllerHelper::isActivePath()` instead
