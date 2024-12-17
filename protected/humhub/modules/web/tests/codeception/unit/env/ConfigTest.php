@@ -112,4 +112,42 @@ class ConfigTest extends HumHubDbTestCase
 
         $this->assertEquals($config, EnvHelper::toConfig($ENV));
     }
+
+    public function testWebApplicationConfig()
+    {
+        $ENV = [
+            'HUMHUB_WEB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'true',
+            'HUMHUB_CLI_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
+        ];
+
+        $config = [
+            'components' => [
+                'urlManager' => [
+                    'showScriptName' => true,
+                ],
+            ],
+        ];
+
+        $this->assertEquals($config, EnvHelper::toConfig($ENV, \humhub\components\Application::class));
+    }
+
+    public function testConsoleApplicationConfig()
+    {
+        $ENV = [
+            'HUMHUB_CLI_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'true',
+            'HUMHUB_WEB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
+        ];
+
+        $config = [
+            'components' => [
+                'urlManager' => [
+                    'showScriptName' => true,
+                ],
+            ],
+        ];
+
+        $this->assertEquals($config, EnvHelper::toConfig($ENV, \humhub\components\console\Application::class));
+    }
 }

@@ -34,7 +34,7 @@ $config = yii\helpers\ArrayHelper::merge(
     // add more configurations here
     (is_readable(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php')) ? require(__DIR__ . '/protected/humhub/tests/codeception/config/dynamic.php') : [],
     require(__DIR__ . '/protected/humhub/tests/codeception/config/acceptance.php'),
-    humhub\helpers\EnvHelper::toConfig($_ENV),
+    humhub\helpers\EnvHelper::toConfig($_ENV, humhub\components\console\Application::class),
 );
 
 require_once './protected/vendor/codeception/codeception/autoload.php';
