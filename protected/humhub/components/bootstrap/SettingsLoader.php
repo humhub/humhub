@@ -19,7 +19,7 @@ class SettingsLoader implements BootstrapInterface
         $this->setMailerConfig($app);
         $this->setUserConfig($app);
         $this->setCacheConfig($app);
-        $this->setParams($app);
+        !YII_ENV_TEST && $this->setParams($app);
     }
 
     private function updateComponentDefinition($app, $component, $definition)
