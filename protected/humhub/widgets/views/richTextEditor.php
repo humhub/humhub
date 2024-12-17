@@ -99,7 +99,7 @@ use yii\helpers\Url;
         $editableContent = $('#<?php echo $id; ?>_contenteditable');
 
         //This is a workaround for mobile browsers especially for Android Chrome which is not able to remove contenteditable="false" nodes.
-        if ($('body').hasClass('device-mobile')) {
+        if ($('body').is('.device-mobile, .device-tablet')) {
             $editableContent.on('contextmenu', 'a, img', function() {
                 if($(this).parent().is('span')) {
                     $(this).parent().remove();

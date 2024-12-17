@@ -2,6 +2,7 @@
 
 use humhub\assets\AppAsset;
 use humhub\helpers\DeviceDetectorHelper;
+use humhub\libs\Html;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\AccountTopMenu;
@@ -26,7 +27,7 @@ AppAsset::register($this);
         <?= $this->render('head') ?>
     </head>
 
-    <body class="<?= implode(' ', DeviceDetectorHelper::getBodyClasses()) ?>">
+    <?= Html::beginTag('body', ['class' => DeviceDetectorHelper::getBodyClasses()]) ?>
         <?php $this->beginBody() ?>
 
         <!-- start: first top navigation bar -->
@@ -68,6 +69,6 @@ AppAsset::register($this);
         <?= $content ?>
 
         <?php $this->endBody() ?>
-    </body>
+    <?= Html::endTag('body') ?>
 </html>
 <?php $this->endPage() ?>
