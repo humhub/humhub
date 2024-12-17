@@ -6,10 +6,19 @@ Module and Theme Migration Guide to Bootstrap 5
 - Classes extending `\humhub\modules\content\widgets\WallCreateContentForm` must replace the required class for the `$form` param: `\humhub\modules\ui\form\widgets\ActiveForm` -> `\humhub\widgets\form\ActiveForm`
 - "Dropdown" replacements in HTML attributes (see bellow)
 
+
+## Deprecated Bootstrap 3 components
+
+The BS3 components removed from Bootstrap 5 are still be supported in HumHub for a while, via:
+- the `static/scss/_bootstrap3.scss` compatibility stylesheet
+- deprecated classes (see below)
+
+
 ## Removed
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
 - `js/humhub/legacy/jquery.loader.js`
+
 
 ## New
 
@@ -19,6 +28,7 @@ Module and Theme Migration Guide to Bootstrap 5
 - `humhub\widgets\bootstrap\Button::asBadge()`
 - `humhub\widgets\bootstrap\Button::light()`
 - `humhub\widgets\bootstrap\Button::dark()`
+
 
 ## Deprecations
 
@@ -61,9 +71,13 @@ Module and Theme Migration Guide to Bootstrap 5
 
 Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
 
-But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead. E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`. If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
+But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead.
 
-### Modal Dialog
+E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`.
+If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
+
+
+## Modal Dialog
 
 `Modal::beginDialog()` (formerly `ModalDialog::begin()`) now includes `<div class="modal-body">` and the footer must be defined as a parameter, similar to the `header` which has been renamed to `title`.
 
@@ -107,71 +121,14 @@ If the footer contains a form submit button, the modal dialog must be included i
 ```
 
 
-## Replacements in HTML attributes
+## Forms
 
-These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
-
-### General classes replacements
-
-- `img-responsive` - > `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
-- `alert-default` - > `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
-- `btn-xs` - > `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
-- `btn-default` - > `btn-light` (the new  `btn-secondary` can also be used, but it will darker gray)
-- `pull-left` - > `float-start`
-- `pull-right` - > `float-end`
-- `center-block` - > `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
-- `text-left` - > `text-start`
-- `text-right` - > `text-end`
-- `btn-group-xs` - > `btn-group-sm`
-- `img-rounded` - > `rounded`
-- `media-object img-rounded` - > `rounded`
-- `data-toggle` - > `data-bs-toggle`
-- `data-target` - > `data-bs-target`
-- `data-dismiss` - > `data-bs-dismiss`
-- `no-space` - > `m-0 p-0`
-- `align-center` - > `text-center` or  `d-flex justify-content-center`
-- `col-xs-` - > `col- ` and make sure the parent element has   `row`, and the parent of parent  `container` ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
-- `input-group-addon` - > `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
-- `form-group` - > `mb-3`
-- `well` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?well(?:\s[^"']*)?["'][^>]*>`) -> `bg-light p-3` for a simple inset container or `card` (with a  `card-body` child element)
-- `has-error`,  `has-warning`, and  `has-success` - > `is-invalid` or  `is-valid`, but the new classes are now append to the input instead of the previous  `form-group` (the input is a child of the form group) 
-- `help-block help-block-error` - > `invalid-feedback`
-- `help-block` - > `text-body-secondary` or  `form-text` if in a form
-- Remove  `jumbotron` class
-
-
-### Hidden elements
-
-Use the new `d-none` class instead of the `display: none` / `display:none` style.
-
-In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
-E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
-
-- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
-- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
-- `hidden-md` → `d-md-none d-lg-block`
-- `hidden-lg` → `d-lg-none d-xl-block`
-- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
-- `visible-xs` → `d-block d-sm-none`
-- `visible-sm` → `d-none d-sm-block d-md-none`
-- `visible-md` → `d-none d-md-block d-lg-none`
-- `visible-lg` → `d-none d-lg-block d-xl-none`
-- `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
-
-JavaScript: as the `d-flex` is set in Bootstrap CSS to `flex !important` and the `d-none` class to `display: none !important;`, the jQuery `hide()` and `show()` functions won't work, because of the `!important`.
-Replacements to do on these elements:
-- `.hide()` -> `.addClass('d-none')`
-- `.show()` -> `.removeClass('d-none')`
-
-
-### Forms
-
-#### Widgets replacements
+### Widgets replacements
 
 - `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`  -> `humhub\widgets\form\ActiveForm` (required for the new Bootstrap 5 syntax)
 - `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`  -> `humhub\widgets\form\ActiveField` (required for the new Bootstrap 5 syntax)
 
-#### Input groups
+### Input groups
 
 Remove `<span class="input-group-btn">` button wrapper inside `<div class="input-group">`.
 
@@ -193,13 +150,14 @@ Should be replaced with:
 </div>
 ```
 
-#### Error messages with RichTextField widget
+### Error messages with RichTextField widget
 
 When using the `RichTextField` widget AND setting the `form` attribute, as the active input is displayed as a nested input, the input elements mustn't be displayed twice.
 Previously, the error field was displayed by the parent input.
 But Bootstrap 5 requires the error field to be at the same level to the displayed input.
 So now, the error HTML element (`invalid-feedback`) is included in the widget.
 Which means it needs to be removed in the parent input (by specifying the template) to prevent displaying it twice.
+
 Example:
 
 ```php
@@ -208,7 +166,8 @@ Example:
 ]) ?>
 ```
 
-### Dropdown
+
+## Dropdown
 
 - Search for `dropdown-menu` in the code and add `dropdown-header` (if a header item) or `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
 - Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`), replace with `dropdown-divider`, and move them to a `hr` child tag of `li`.
@@ -228,7 +187,8 @@ Example:
 </ul>
 ```
 
-### Navs & tabs
+
+## Navs & tabs
 
 Make sure the required classes `nav-item` and `nav-link` exists in HTML tags about nav & tabs ([see documentation with examples](https://getbootstrap.com/docs/5.3/components/navs-tabs/)). Search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?nav(?:\s[^"']*)?["'][^>]*>`.
 
@@ -264,6 +224,62 @@ Example:
 </ul>
 ```
 
+
+## Replacements in HTML attributes
+
+These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
+
+### General classes replacements
+
+- `img-responsive` - > `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
+- `alert-default` - > `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
+- `btn-xs` - > `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
+- `btn-default` - > `btn-light` (the new  `btn-secondary` can also be used, but it will darker gray)
+- `pull-left` - > `float-start`
+- `pull-right` - > `float-end`
+- `center-block` - > `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
+- `text-left` - > `text-start`
+- `text-right` - > `text-end`
+- `btn-group-xs` - > `btn-group-sm`
+- `img-rounded` - > `rounded`
+- `media-object img-rounded` - > `rounded`
+- `data-toggle` - > `data-bs-toggle`
+- `data-target` - > `data-bs-target`
+- `data-dismiss` - > `data-bs-dismiss`
+- `no-space` - > `m-0 p-0`
+- `align-center` - > `text-center` or  `d-flex justify-content-center`
+- `col-xs-` - > `col- ` and make sure the parent element has   `row`, and the parent of parent  `container` ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
+- `input-group-addon` - > `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
+- `form-group` - > `mb-3`
+- `well` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?well(?:\s[^"']*)?["'][^>]*>`) -> `bg-light p-3` for a simple inset container or `card` (with a  `card-body` child element)
+- `has-error`,  `has-warning`, and  `has-success` - > `is-invalid` or  `is-valid`, but the new classes are now append to the input instead of the previous  `form-group` (the input is a child of the form group)
+- `help-block help-block-error` - > `invalid-feedback`
+- `help-block` - > `text-body-secondary` or  `form-text` if in a form
+- Remove  `jumbotron` class
+
+### Hidden elements
+
+Use the new `d-none` class instead of the `display: none` / `display:none` style.
+
+In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
+E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
+
+- `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
+- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
+- `hidden-md` → `d-md-none d-lg-block`
+- `hidden-lg` → `d-lg-none d-xl-block`
+- `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
+- `visible-xs` → `d-block d-sm-none`
+- `visible-sm` → `d-none d-sm-block d-md-none`
+- `visible-md` → `d-none d-md-block d-lg-none`
+- `visible-lg` → `d-none d-lg-block d-xl-none`
+- `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
+
+JavaScript: as the `d-flex` is set in Bootstrap CSS to `flex !important` and the `d-none` class to `display: none !important;`, the jQuery `hide()` and `show()` functions won't work, because of the `!important`.
+Replacements to do on these elements:
+- `.hide()` -> `.addClass('d-none')`
+- `.show()` -> `.removeClass('d-none')`
+
 ### Spinners
 
 Search for `sk-` and replace this code, or similar:
@@ -296,24 +312,15 @@ If wrapped in an HTML element having `loader` (search for the `<\w+\s+[^>]*class
 
 [See documentation](https://getbootstrap.com/docs/5.3/components/spinners) for more options and examples.
 
-
-## Deprecated Bootstrap 3 components
-
-They have been removed from Bootstrap 5, but will still be supported in HumHub for a while.
-
-See `static/scss/_bootstrap3.scss` for the full list of deprecations.
-
 ### Panel
 
 Should be replaced with cards.
 
-TODO in core and to document here
+TODO in core and to document here.
 
 ### Label & Badge
 
 Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
-
-Doc: https://getbootstrap.com/docs/5.3/components/badge/
 
 For existing badges, also use the `humhub\widgets\bootstrap\Badge` widget when possible.
 
@@ -324,6 +331,8 @@ Replacements:
 - `badge-warning` -> `text-bg-warning`
 - `badge-info` -> `text-bg-info`
 - `badge-success` -> `text-bg-success`
+
+Doc: https://getbootstrap.com/docs/5.3/components/badge/
 
 ### Media
 
@@ -429,34 +438,31 @@ It is also possible to use `max-width` (should be occasionally used) using `medi
 
 `static/css/select2Theme` folder has been removed, and the SCSS file moved and renamed to `static/scss/_select2.scss`
 
-
-## Themes
-
-See also the previous topic "Themes and Modules".
+### Themes
 
 Many styles have been refactored. Please review all your overwritten CSS selectors and values.
 
-### Build file
+#### Build file
 
 The `build.scss` file mustn't import parent theme files anymore, as it is automatically done by the new compiler.
 
 Take example with the `HumHub` community theme.
 
-### Compiler
+#### Compiler
 
 Grunt compiler has been removed.
 
-Instead, compile your theme online, using the new "(Re)build Theme CSS" button in Administration -> Settings -> Appearance.
+Instead, compile your theme with the web browser, using the new "(Re)build Theme CSS" button in Administration -> Settings -> Appearance.
 
-If you use the "Updater", you don't need anymore to recompile your theme CSS after updating HumHub core, as it will be done automatically.
+If you use the "Updater" module to update HumHub core, you don't need to recompile your custom theme CSS anymore, as it will be done automatically.
 
-But if you upgrade HumHub without this module, you will have to click on the "(Re)build Theme CSS" button after each HumHub core upgrade.
+But without this module, you will have to click on the "(Re)build Theme CSS" button after each HumHub core upgrade.
 
-### Overwritten view files
+#### Overwritten view files
 
 Most of the views have been refactored to use the new Bootstrap 5 HTML tags and classes.
 
-Please review all overwritten view files. See https://community.humhub.com/s/theming-appearance/wiki/134/Migration%3A+Identify+Template+Changes+ for more information.
+Please review all overwritten view files. See [Migration: Identify Template Changes](https://community.humhub.com/content/perma?id=237199) wiki for more information.
 
 The most important change concerns the `protected/humhub/views/layouts/main.php` file, which has been refactored with bs5 flex logic (instead of floating right elements).
 

@@ -2,7 +2,7 @@
 
 use humhub\assets\AppAsset;
 use humhub\helpers\DeviceDetectorHelper;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\space\widgets\Chooser;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\AccountTopMenu;
