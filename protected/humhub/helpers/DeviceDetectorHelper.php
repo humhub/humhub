@@ -18,9 +18,6 @@ use Yii;
  */
 class DeviceDetectorHelper
 {
-    /**
-     * @since 1.17
-     */
     public static function isMobile(): bool
     {
         $detect = new MobileDetect();
@@ -34,9 +31,6 @@ class DeviceDetectorHelper
         }
     }
 
-    /**
-     * @since 1.17
-     */
     public static function isTablet(): bool
     {
         $detect = new MobileDetect();
@@ -89,8 +83,6 @@ class DeviceDetectorHelper
     /**
      * True if the mobile app can support multiple HumHub instances.
      * Requires HumHub mobile app v1.0.124 or later.
-     *
-     * @since 1.17
      */
     public static function isMultiInstanceApp(): bool
     {
@@ -102,8 +94,6 @@ class DeviceDetectorHelper
     /**
      * True if the mobile app Opener landing page is visible and should be hidden.
      * Requires HumHub mobile app v1.0.124 or later.
-     *
-     * @since 1.17
      */
     public static function appOpenerState(): bool
     {
