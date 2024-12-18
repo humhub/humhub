@@ -116,9 +116,9 @@ class ConfigTest extends HumHubDbTestCase
     public function testWebApplicationConfig()
     {
         $ENV = [
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
             'HUMHUB_WEB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'true',
             'HUMHUB_CLI_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
-            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
         ];
 
         $config = [
@@ -135,9 +135,9 @@ class ConfigTest extends HumHubDbTestCase
     public function testConsoleApplicationConfig()
     {
         $ENV = [
+            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
             'HUMHUB_CLI_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'true',
             'HUMHUB_WEB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
-            'HUMHUB_CONFIG__COMPONENTS__URL_MANAGER__SHOW_SCRIPT_NAME' => 'false',
         ];
 
         $config = [
