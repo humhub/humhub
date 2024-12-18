@@ -19,6 +19,7 @@ HumHub Changelog
 - Fix #7319: Display correct profile field value in user subtitle
 - Fix #7322: Always allow invitation by link from Administration. Implement separate invitation by link from People.
 - Enh #7335: Update GitHub workflow versions
+- Fix #7351: Fix caching of space permissions in user stream
 
 1.16.2 (September 5, 2024)
 --------------------------
