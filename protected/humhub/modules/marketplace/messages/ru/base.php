@@ -1,7 +1,31 @@
-<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
-return array (
-  '--- Disable module: {moduleId} ---' => '--- Деактивация модуля: {moduleId} ---',
-  '--- Enable module: {moduleId} ---' => '--- Активация модуля: {moduleId} ---',
+<?php
+return [
+  '
+Module successfully disabled!
+' => 'Модуль успешно отключен!',
+  '
+Module successfully enabled!
+' => 'Модуль успешно подключен!',
+  '
+No active Professional Edition license found!
+' => 'Активная лицензия Professional Edition не найдена!',
+  '
+The license could not be activated:
+' => 'Лицензию не удалось активировать:',
+  '
+The license was successfully activated!
+
+' => 'Лицензия успешно активирована!',
+  '
+The license was successfully removed!
+
+' => 'Лицензия успешно удалена!',
+  '--- Disable module: {moduleId} ---
+
+' => '--- Отключение модуля: {moduleId} ---',
+  '--- Enable module: {moduleId} ---
+
+' => '--- Включение модуля: {moduleId} ---',
   '<strong>Activate</strong> your Professional Edition' => '<strong>Активируйте</strong> свою Профессиональную версию HumHub',
   '<strong>General</strong> Settings' => '<strong>Основные</strong> настройки',
   'A new update is available (HumHub %version%)!' => 'Доступно новое обновление: HumHub %version%!',
@@ -9,18 +33,20 @@ return array (
   'Add purchased module by license key' => 'Добавить приобретённый модуль с помощью лицензионного ключа',
   'Advanced Module Search' => 'Расширенный поиск модулей',
   'After installing the required module, all you have to do is activate it. After that you can instantly start using the module or function. Please note that some modules need to be configured before use.' => 'После установки необходимого модуля всё, что вам нужно сделать, это активировать его. После этого можно мгновенно начать использовать модуль или функцию. Обратите внимание, что некоторые модули необходимо предварительно настроить перед использованием.',
+  'All' => 'Все',
   'All modules' => 'Все модули',
   'All {moduleId} module content will be deleted. Continue?' => 'Весь контент модуля {moduleId} будет удалён. Продолжить?',
-  'All' => 'Все',
   'Allow module versions in beta status' => 'Разрешить использовать версии модулей со статусом бета',
   'Available Updates' => 'Доступные обновления',
-  'Buy (%price%)' => 'Купить (%price%)',
   'Buy' => 'Купить',
+  'Buy (%price%)' => 'Купить (%price%)',
   'Categories' => 'Категории',
   'Changelog' => 'Журнал изменений',
   'Community' => 'От сообщества',
   'Configure' => 'Настройки',
   'Could not connect to HumHub API!' => 'Не удалось подключиться к HumHub API!',
+  'Could not connect to HumHub API!
+' => 'Не удалось подключиться к API HumHub!',
   'Could not connect to license server!' => 'Не удалось подключиться к серверу лицензий!',
   'Could not extract module!' => 'Не удалось извлечь модуль!',
   'Could not find requested module!' => 'Не удалось найти запрошенный модуль!',
@@ -30,8 +56,8 @@ return array (
   'Deprecated' => 'Устарел',
   'Download of module failed!' => 'Не удалось загрузить модуль!',
   'Edit license' => 'Редактировать лицензию',
-  'Enable now' => 'Активировать сейчас',
   'Enable' => 'Активировать',
+  'Enable now' => 'Активировать сейчас',
   'Enabled' => 'Активирован',
   'Featured' => 'Рекомендуемые',
   'Find all the modules you can add to your network in our HumHub Marketplace. Discover numerous add-ons and features that customize the software and give you the possibility to configure your network to your needs.' => 'Найдите все необходимые модули, которые хотите добавить в свою социальная сеть, в нашем Маркетплейсе HumHub. Откройте для себя многочисленные и разнообразные дополнения и функции, которые дают возможность настроить вашу социальная сеть в соответствии с вашими желаниями и потребностями.',
@@ -42,6 +68,8 @@ return array (
   'Install' => 'Установить',
   'Installed' => 'Установленные',
   'Invalid module license key!' => 'Лицензионный ключ модуля недействительный!',
+  'Invalid module license key!
+' => 'Неверный лицензионный ключ модуля!',
   'Latest version:' => 'Последняя версия:',
   'Learn more' => 'Подробнее',
   'License Key:' => 'Лицензионный ключ:',
@@ -49,8 +77,8 @@ return array (
   'License not found or expired. Please contact the module publisher.' => 'Лицензия не найдена или срок её действия истёк. Пожалуйста, свяжитесь с разработчиком или издателем модуля.',
   'Licensed for max. {number} users.' => 'Лицензия рассчитана на ограниченное число пользователей. Максимальное количество пользователей: {number}',
   'Licensed to:' => 'Лицензировано для:',
-  'Marketplace is disabled.' => 'Маркетплейс отключён.',
   'Marketplace' => 'Маркетплейс',
+  'Marketplace is disabled.' => 'Маркетплейс отключён.',
   'Max. users:' => 'Максимальное количество пользователей:',
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => 'Модуль «{moduleName}» успешно обновлён до версии {newVersion}.',
   'Module <strong>enabled</strong>' => 'Модуль <strong>активирован</strong>',
@@ -61,14 +89,16 @@ return array (
   'Module download failed! (%error%)' => 'Не удалось загрузить модуль! (%error%)',
   'Module is <strong>installing...</strong>' => 'Модуль <strong>устанавливается</strong>...',
   'Module license added!' => 'Лицензия на модуль добавлена!',
-  'Module license key cannot be empty!' => 'Лицензионный ключ модуля не может быть пустым!',
-  'Module not found or enabled!' => 'Модуль не найден или не включён!',
-  'Module not found!' => 'Модуль не найден!',
-  'Module successfully disabled!' => 'Модуль успешно декативирован!',
-  'Module successfully enabled!' => 'Модуль успешно активирован!',
+  'Module license added!
+' => 'Добавлена ​​лицензия на модуль!',
+  'Module license key cannot be empty!
+' => 'Лицензионный ключ модуля не может быть пустым!',
+  'Module not found or enabled!
+' => 'Модуль не найден или не включён!',
+  'Module not found!
+' => 'Модуль не найден!',
   'More info' => 'Дополнительная информация',
   'New' => 'Новое',
-  'No active Professional Edition license found!' => 'Активная лицензия Профессиональной версии HumHub не найдена!',
   'No compatible module version found!' => 'Не найдено версий модуля, совместимых с вашей установкой HumHub!',
   'No license key? Find out more about the {pro} or contact us.' => 'Нет лицензионного ключа? Узнайте больше о {pro} или свяжитесь с нами напрямую через официальный сайт.',
   'No modules found.' => 'Модули не найдены.',
@@ -80,8 +110,8 @@ return array (
   'Ok' => 'Ок',
   'PROFESSIONAL EDITION' => 'ПРОФЕССИОНАЛЬНАЯ ВЕРСИЯ',
   'Partner' => 'Партнёр',
-  'Professional Edition is activated!' => 'Профессиональная версия активирована!',
   'Professional Edition' => 'Профессиональная версия',
+  'Professional Edition is activated!' => 'Профессиональная версия активирована!',
   'Register' => 'Регистрация',
   'Remove license key' => 'Удалить лицензионный ключ',
   'Save and update' => 'Сохранить и обновить',
@@ -91,17 +121,14 @@ return array (
   'Stop updating' => 'Остановить обновление',
   'Tags' => 'Теги',
   'The HumHub project does not guarantee the functionality, quality or the continuous development of this Module.' => 'Разработчики HumHub не гарантируют функциональность, качество или непрерывное развитие этого модуля.',
-  'The license could not be activated:' => 'Лицензия не может быть активирована:',
-  'The license was successfully activated!' => 'Лицензия была успешно активирована!',
-  'The license was successfully removed!' => 'Лицензия была успешно удалена!',
+  'Third-party' => 'Сторонние разработчики',
   'Third-party Modules are not covered by Professional Edition agreements.' => 'Соглашения о Профессиональной версии не распространяются на сторонние модули.',
   'Third-party disclaimer' => 'Отказ от ответственности за продукты сторонних разработчиков',
-  'Third-party' => 'Сторонние разработчики',
   'This Module was developed by a third-party.' => 'Этот модуль был разработан сторонними разработчиками.',
   'Try other keywords or remove filters.' => 'Попробуйте другие ключевые слова или сбросьте фильтры.',
+  'Update' => 'Обновить',
   'Update all' => 'Обновить всё',
   'Update successful' => 'Обновление прошло успешно',
-  'Update' => 'Обновить',
   'Upgrade to Professional Edition' => 'Улучшить до Профессиональной версии',
   'Version:' => 'Версия:',
   'We are almost there! As a final step, we recommend that you take a look at the module configuration, where you will find numerous configuration options, some of which are required.' => 'Мы почти закончили! В качестве последнего шага рекомендуем вам просмотреть настройки модуля, где вы найдёте множество параметров конфигурации, некоторые из которых являются обязательными.',
@@ -110,4 +137,4 @@ return array (
   'Without category' => 'Без категории',
   'Would you like to jump straight to it?' => 'Хотите сразу перейти к этому?',
   'Your HumHub installation is up to date!' => 'Ваша установка HumHub обновлена!',
-);
+];

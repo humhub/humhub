@@ -1,5 +1,5 @@
-<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
-return array (
+<?php
+return [
   '<strong>Confirm</strong> Action' => '<strong>Подтвердите действие</strong>',
   '<strong>Latest</strong> updates' => '<strong>Последние обновления</strong>',
   '<strong>Mail</strong> summary' => '<strong>Email рассылка</strong>',
@@ -86,12 +86,12 @@ return array (
   'Unsubscribe' => 'Отписаться',
   'Upload' => 'Загрузить',
   'Upload file' => 'Загрузить файл',
-  'verify your upload_max_filesize and post_max_size php settings.' => 'проверьте свои настройки php для upload_max_filesize и post_max_size.',
   'You are not allowed to run this action.' => 'Вы не можете запускать это действие.',
+  'verify your upload_max_filesize and post_max_size php settings.' => 'проверьте свои настройки php для upload_max_filesize и post_max_size.',
   '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => 'Атрибут {attribute} был пустым. Настроенная системой функция для заполнения пустых значений вернула недопустимое значение. Повторите попытку или обратитесь к своему администратору.',
   '{attribute} must be a string (UUID) or null; {type} given.' => '{attribute} должен быть строкой (UUID) или null; задан тип: {type}.',
-  '{attribute} must be an UUID or null. UUID has the format {{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}, where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => 'Атрибут {attribute} должен быть UUID или null. UUID имеет формат {{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}, где X = [a-fA-F0-9], а фигурные скобки и разделительные тире необязательны.',
+  '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '{attribute} должен быть UUID или нулевым. UUID имеет формат «{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}», где X = [a-fA-F0-9], а фигурные скобки и разделительные тире являются необязательными.',
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
-);
+];

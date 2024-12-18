@@ -1,4 +1,4 @@
-<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
+<?php
 return [
   '<strong>Manage</strong> Spaces' => '<strong>Управление Сообществами</strong>',
   'Add new space' => 'Добавить новое сообщество',
@@ -6,15 +6,15 @@ return [
   'Allow individual topics in Spaces' => 'Разрешить отдельные темы в сообществах',
   'By using user roles, you can create different permission groups within a Space. These can also be individualized by authorized users for each and every Space and are only relevant for that specific Space.' => 'Используя пользовательские роли, вы можете создавать различные группы прав в Сообществе. Они также могут быть индивидуализированы авторизованными пользователями для каждого сообщества и относиться только к этому конкретному сообществу.',
   'Change owner' => 'Сменить владельца сообщества',
-  'Convert Space Topics' => 'Конвертировать темы сообщества',
   'Convert' => 'Конвертировать',
+  'Convert Space Topics' => 'Конвертировать темы сообщества',
+  'Default "Hide About Page"' => 'По умолчанию «Скрыть страницу о странице»',
+  'Default "Hide Activity Sidebar Widget"' => 'По умолчанию «Скрыть виджет боковой панели активности»',
+  'Default "Hide Followers"' => 'По умолчанию «Скрыть подписчиков»',
+  'Default "Hide Members"' => 'По умолчанию «Скрыть участников»',
   'Default Content Visiblity' => 'Видимость контента по умолчанию',
-  'Default Hide About Page' => 'Скрывать страницу «О сообществе» по умолчанию',
-  'Default Hide Activity Sidebar Widget' => 'Скрывать боковую панель активностей по умолчанию',
-  'Default Hide Followers' =>'Скрывать подписчиков по умолчанию',
-  'Default Hide Members' => 'Скрывать участников по умолчанию',
-  'Default Homepage (Non-members)' => 'Домашняя страница по умолчанию (для тех кто не участник)',
   'Default Homepage' => 'Домашняя страница по умолчанию',
+  'Default Homepage (Non-members)' => 'Домашняя страница по умолчанию (для тех кто не участник)',
   'Default Join Policy' => 'Политика/правила присоединения по умолчанию',
   'Default Space Permissions' => 'Разрешения/права сообщества по умолчанию',
   'Default Space(s)' => 'Сообщество(а) по умолчанию',
