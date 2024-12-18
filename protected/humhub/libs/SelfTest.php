@@ -431,13 +431,13 @@ class SelfTest
 
             $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Base URL');
             $scheme = Yii::$app->request->getIsSecureConnection() ? 'https' : 'http';
-
+            $port = Yii::$app->request->getServerPort();
             $currentBaseUrl = $scheme . '://' . preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])
                 . (
-                    ($scheme === 'https' && $_SERVER['SERVER_PORT'] == 443) ||
-                    ($scheme === 'http' && $_SERVER['SERVER_PORT'] == 80)
+                    ($scheme === 'https' && $port == 443) ||
+                    ($scheme === 'http' && $port == 80)
                     ? ''
-                    : ':' . $_SERVER['SERVER_PORT']
+                    : ':' . $port
                 )
                 . ($_SERVER['BASE'] ?? '');
             if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
