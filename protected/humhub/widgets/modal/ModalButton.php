@@ -16,8 +16,9 @@ use Yii;
  * Usage examples:
  *
  * ```
- * <?= ModalButton::submitModal() ?>
- * <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+ * <?= ModalButton::save() ?>
+ * <?= ModalButton::primary()->submit() ?>
+ * <?= ModalButton::cancel() ?>
  * ```
  */
 class ModalButton extends Button
@@ -42,9 +43,27 @@ class ModalButton extends Button
     }
 
     /**
+     * @since 1.18
+     */
+    public function submit($url = null): static
+    {
+        $this->action('ui.modal.submit', $url);
+        return parent::submit();
+    }
+
+    /**
+     * @since 1.18
+     */
+    public static function save($label = null, $url = null): static
+    {
+        return parent::save($label)->action('ui.modal.submit', $url);
+    }
+
+    /**
      * @param null $url
      * @param null $text
      * @return Button
+     * @deprecated since 1.18
      */
     public static function submitModal($url = null, $text = null)
     {

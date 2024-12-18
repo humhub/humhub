@@ -19,7 +19,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 
 <?php Modal::beginDialog([
     'title' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'),
-    'footer' => ModalButton::submitModal(Url::to(['/space/create/create']), Yii::t('SpaceModule.manage', 'Next')),
+    'footer' => ModalButton::save(Yii::t('SpaceModule.manage', 'Next'), Url::to(['/space/create/create'])),
     'size' => Modal::SIZE_SMALL,
 ]) ?>
 

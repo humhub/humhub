@@ -78,6 +78,7 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
 - `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
+- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label, $url)` or `humhub\widgets\modal\ModalButton::primary($label)->submit($url)` instead
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
@@ -124,7 +125,7 @@ If the footer contains "Submit" button, the modal dialog must be included in the
 <?php $form = ActiveForm::begin() ?>
     <?php Modal::beginDialog([
         'title' => Yii::t('ModuleIdModule.base', 'Title'),
-        'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
+        'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
     ]) ?>
         The form inputs
     <?php Modal::endDialog()?>

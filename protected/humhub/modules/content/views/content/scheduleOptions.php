@@ -27,7 +27,7 @@ use humhub\widgets\modal\ModalButton;
 
 <?php Modal::beginDialog([
     'title' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options'),
-    'footer' => ModalButton::cancel() . ' ' . ModalButton::submitModal(),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
 ]) ?>
 
 <?= $form->field($scheduleOptions, 'enabled')->checkbox() ?>

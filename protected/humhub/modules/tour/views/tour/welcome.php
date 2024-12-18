@@ -116,7 +116,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                 <div class="col-md-12 text-end">
                     <hr>
                     <br>
-                    <?= ModalButton::submitModal(Url::to(['/tour/tour/welcome']), Yii::t('TourModule.base', 'Save and close')) ?>
+                    <?= ModalButton::save(Yii::t('TourModule.base', 'Save and close'), Url::to(['/tour/tour/welcome'])) ?>
                 </div>
             </div>
 
