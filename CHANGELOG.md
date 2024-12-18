@@ -21,6 +21,7 @@ HumHub Changelog
 - Enh #7344: Disable editing Base URL when setting is fixed
 - Fix #7345: Fix debug mode setting in .env
 - Enh #7349: Add body classes about the current device and methods to the `DeviceDetectorHelper` class
+- Enh #7353: Enable dot env to read variables based on application type
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
