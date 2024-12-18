@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return array (
-  'This content is archived' => 'Этот контент находится в архиве',
+  'This content is archived' => 'Этот контент помещён в архив',
 );
