@@ -3,15 +3,8 @@ Module and Theme Migration Guide to Bootstrap 5
 
 ## Mandatory changes for modules to work with Bootstrap 5
 
-- Classes extending `\humhub\modules\content\widgets\WallCreateContentForm` must replace the required class for the `$form` param: `\humhub\modules\ui\form\widgets\ActiveForm` -> `\humhub\widgets\form\ActiveForm`
+- Classes extending `\humhub\modules\content\widgets\WallCreateContentForm`: replace `renderActiveForm(\humhub\modules\ui\form\widgets\ActiveForm $form)` with `renderActiveForm(\humhub\widgets\form\ActiveForm $form)`
 - "Dropdown" replacements in HTML attributes (see bellow)
-
-
-## Deprecated Bootstrap 3 components
-
-The BS3 components removed from Bootstrap 5 are still be supported in HumHub for a while, via:
-- the `static/scss/_bootstrap3.scss` compatibility stylesheet
-- deprecated classes (see below)
 
 
 ## Removed
@@ -22,66 +15,84 @@ The BS3 components removed from Bootstrap 5 are still be supported in HumHub for
 
 ## New
 
+Widgets in these new folders:
+- `humhub\widgets\bootstrap`
+- `humhub\widgets\form`
+- `humhub\widgets\modal`
+
+And especially:
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
 - `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
-- `humhub\widgets\bootstrap\Button::secondary()`
 - `humhub\widgets\bootstrap\Button::asBadge()`
+- `humhub\widgets\bootstrap\Button::secondary()`
 - `humhub\widgets\bootstrap\Button::light()`
 - `humhub\widgets\bootstrap\Button::dark()`
+
+Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
 
 
 ## Deprecations
 
-- `humhub\modules\ui\form\widgets\ActiveField` use `humhub\widgets\form\ActiveField` instead
-- `humhub\modules\ui\form\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
-- `humhub\modules\ui\form\widgets\SortOrderField` use `humhub\widgets\form\SortOrderField` instead
-- `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\form\ContentHiddenCheckbox` instead
-- `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\form\ContentVisibilitySelect` instead
-- `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
-- `humhub\libs\Html` use `humhub\helper\Html` instead
+[Bootstrap 3 components](https://getbootstrap.com/docs/3.3/components/) are removed from Bootstrap 5, but those used in HumHub are still supported for a while via the `static/scss/_bootstrap3.scss` compatibility stylesheet
+
+Widgets & helpers:
+- `humhub\widgets\BootstrapComponent`
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
 - `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
 - `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead
+- `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
+- `humhub\libs\Html` use `humhub\helper\Html` instead
+
+Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
+- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `Button::light()` or `Button::secondary()` instead
 - `humhub\widgets\bootstrap\Badge::xs()` use `humhub\widgets\bootstrap\Badge::sm()` instead
 - `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `humhub\widgets\bootstrap\Button::secondary()` instead
 - `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `humhub\widgets\bootstrap\Badge::secondary()` instead
 - `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
 - `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
-- `humhub\widgets\BootstrapComponent`
-- `Button::defaultType()` use `Button::light()` or `Button::secondary()` instead
-- `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
+
+Forms and Modal Dialog: see bellow.
+
+CSS variables: use the new ones prefixed with `--bs-` (for Bootstrap variables) or `--hh-` (for HumHub variables).
+See `static/scss/_variables.scss`.
+
+Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" bellow)
+
+
+## HumHub widgets
+
+If available, use HumHub widgets instead of the native library widgets.
+This will make it easier to migrate to new versions of the external libraries ([see Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets)).
+
+E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`.
+
+If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues).
+
+
+## Modal Dialog
+
+### Deprecations
+
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
+- `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
+- `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
+- `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
+- `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
 - `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "Modal Dialog" chapter bellow)
 - `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
 - `humhub\widgets\modal\JsModal::header` & `humhub\widgets\modal\Modal::header`: use `title` instead
 - `humhub\widgets\modal\JsModal::animation` & `humhub\widgets\modal\Modal::animation` (all modal boxes are opened with the fade animation)
 - `humhub\widgets\modal\JsModal::centerText` & `humhub\widgets\modal\Modal::centerText`
 - `humhub\widgets\modal\JsModal::size` & `humhub\widgets\modal\Modal::size` values: use `Modal::SIZE_DEFAULT`, `Modal::SIZE_SMALL`, `Modal::SIZE_LARGE`, `Modal::SIZE_EXTRA_LARGE` instead of (`normal`, `extra-small`, `small`, `medium`, and `large`)
-- `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
-- `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
-- `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
-- `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
-- CSS variables. Use the new ones prefixed with `--bs-` (for Bootstrap variables) or `--hh-` (for HumHub variables). See `static/scss/_variables.scss`.
 
-
-## Bootstrap widgets
-
-Name spaces starting with `yii\bootstrap` are now `yii\bootstrap5` (a compatibility layer is provided, but will be removed in the future).
-
-But you shouldn't use Bootstrap widgets directly from the external library. Use HumHub ones instead.
-
-E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`.
-If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues). See the [Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets).
-
-
-## Modal Dialog
+### Usage
 
 `Modal::beginDialog()` (formerly `ModalDialog::begin()`) now includes `<div class="modal-body">` and the footer must be defined as a parameter, similar to the `header` which has been renamed to `title`.
 
-Example:
+Before:
 
 ```php
 <?php ModalDialog::begin([
@@ -96,7 +107,7 @@ Example:
 <?php ModalDialog::end()?>
 ```
 
-Should be replaced with:
+Now:
 
 ```php
 <?php Modal::beginDialog([
@@ -107,7 +118,7 @@ Should be replaced with:
 <?php Modal::endDialog() ?>
 ```
 
-If the footer contains a form submit button, the modal dialog must be included in the form must . Example:
+If the footer contains "Submit" button, the modal dialog must be included in the form:
 
 ```php
 <?php $form = ActiveForm::begin() ?>
@@ -123,16 +134,20 @@ If the footer contains a form submit button, the modal dialog must be included i
 
 ## Forms
 
-### Widgets replacements
+### Widgets deprecations
 
-- `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`  -> `humhub\widgets\form\ActiveForm` (required for the new Bootstrap 5 syntax)
-- `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`  -> `humhub\widgets\form\ActiveField` (required for the new Bootstrap 5 syntax)
+- `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`: use `humhub\widgets\form\ActiveForm` instead
+- `yii\widgets\ActiveField`, `yii\bootstrap\ActiveField`, `yii\bootstrap5\ActiveField`, `humhub\modules\ui\form\widgets\ActiveField`: use `humhub\widgets\form\ActiveField` instead
+- `humhub\modules\ui\form\widgets\SortOrderField` use `humhub\widgets\form\SortOrderField` instead
+- `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\form\ContentHiddenCheckbox` instead
+- `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\form\ContentVisibilitySelect` instead
+- `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
 
 ### Input groups
 
 Remove `<span class="input-group-btn">` button wrapper inside `<div class="input-group">`.
 
-Example:
+Before:
 
 ```html
 <div class="input-group">
@@ -142,7 +157,7 @@ Example:
 </div>
 ```
 
-Should be replaced with:
+Now:
 
 ```html
 <div class="input-group">
@@ -150,11 +165,12 @@ Should be replaced with:
 </div>
 ```
 
-### Error messages with RichTextField widget
+### Error messages with RichTextField input widget
 
-When using the `RichTextField` widget AND setting the `form` attribute, as the active input is displayed as a nested input, the input elements mustn't be displayed twice.
+When using the `RichTextField` input widget AND setting the `form` attribute, as the active input is displayed as a nested input, the input elements mustn't be displayed twice.
 Previously, the error field was displayed by the parent input.
 But Bootstrap 5 requires the error field to be at the same level to the displayed input.
+
 So now, the error HTML element (`invalid-feedback`) is included in the widget.
 Which means it needs to be removed in the parent input (by specifying the template) to prevent displaying it twice.
 
@@ -167,7 +183,9 @@ Example:
 ```
 
 
-## Dropdown
+## Dropdown, Navs & tabs
+
+### Dropdown
 
 - Search for `dropdown-menu` in the code and add `dropdown-header` (if a header item) or `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
 - Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`), replace with `dropdown-divider`, and move them to a `hr` child tag of `li`.
@@ -176,23 +194,44 @@ Example:
 - `dropdown-menu-right` -> `dropdown-menu-end`
 - Remove `<span class="caret"></span>` and `<b class="caret"></b>` in dropdown buttons (as there are already added by Bootstrap 5 via the `:after` pseudo-element)
 
-Example:
+Before:
 
 ```html
-<ul class="dropdown-menu">
-    <li><h6 class="dropdown-header">Dropdown header</h6></li>
-    <li><a class="dropdown-item" href="#">Action</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="#">Separated link</a></li>
-</ul>
+<li class="dropdown">
+    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        Dropdown button
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li><h6>Dropdown header</h6></li>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Action</a></li>
+    </ul>
+</li>
+```
+
+Now:
+
+```html
+<div class="dropdown">
+    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        Dropdown button
+    </button>
+    <ul class="dropdown-menu">
+        <li><h6 class="dropdown-header">Dropdown header</h6></li>
+        <li><hr class="dropdown-divider"></li>
+        <li><a class="dropdown-item" href="#">Action</a></li>
+    </ul>
+</li>
 ```
 
 
 ## Navs & tabs
 
-Make sure the required classes `nav-item` and `nav-link` exists in HTML tags about nav & tabs ([see documentation with examples](https://getbootstrap.com/docs/5.3/components/navs-tabs/)). Search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?nav(?:\s[^"']*)?["'][^>]*>`.
+Make sure the required classes `nav-item` and `nav-link` exist in HTML tags about nav & tabs ([see documentation with examples](https://getbootstrap.com/docs/5.3/components/navs-tabs/)).
+Search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?nav(?:\s[^"']*)?["'][^>]*>`.
 
-The `active` must be added to the `nav-link` element (and not the `nav-item`).
+The `active` class must be added to the `nav-link` element (and not the `nav-item`).
 
 Example:
 
@@ -205,7 +244,7 @@ Example:
 </ul>
 ```
 
-### Tabs with dropdown
+### Tabs with Dropdown
 
 Example:
 
@@ -234,7 +273,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `img-responsive` - > `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
 - `alert-default` - > `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
 - `btn-xs` - > `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
-- `btn-default` - > `btn-light` (the new  `btn-secondary` can also be used, but it will darker gray)
+- `btn-default` - > `btn-light` (the new  `btn-secondary` can also be used, but it will be a darker gray)
 - `pull-left` - > `float-start`
 - `pull-right` - > `float-end`
 - `center-block` - > `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
@@ -259,7 +298,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
 ### Hidden elements
 
-Use the new `d-none` class instead of the `display: none` / `display:none` style.
+Use the new `d-none` class instead of the `display: none;` style.
 
 In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
 E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
@@ -275,8 +314,14 @@ E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
 - `visible-lg` → `d-none d-lg-block d-xl-none`
 - `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
 
-JavaScript: as the `d-flex` is set in Bootstrap CSS to `flex !important` and the `d-none` class to `display: none !important;`, the jQuery `hide()` and `show()` functions won't work, because of the `!important`.
+#### JavaScript with `d-none`
+
+In Bootstrap 5 CSS, the `d-flex` class is set to `flex !important`, and the `d-none` class to `display: none !important;`.
+
+So, the jQuery `hide()` and `show()` functions won't work anymore, because of the `!important`.
+
 Replacements to do on these elements:
+
 - `.hide()` -> `.addClass('d-none')`
 - `.show()` -> `.removeClass('d-none')`
 
@@ -322,7 +367,7 @@ TODO in core and to document here.
 
 Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
 
-For existing badges, also use the `humhub\widgets\bootstrap\Badge` widget when possible.
+Use the `humhub\widgets\bootstrap\Badge` widget when possible.
 
 Replacements:
 - `badge-default` -> `text-bg-light` or `text-bg-secondary`
@@ -352,7 +397,9 @@ Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
 ## Themes and Modules: LESS is replaced with SCSS
 
 LESS format is not supported anymore.
-Use SCSS instead. See https://getbootstrap.com/docs/5.3/customize/sass/
+Use SCSS instead.
+
+Doc: https://getbootstrap.com/docs/5.3/customize/sass/
 
 ### Convert LESS to SCSS
 
@@ -360,9 +407,11 @@ Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
 Prefix all SCSS files with `_` except the `build.scss` file.
 E.g.: `less/variables.less` -> `scss/_variables.scss`
 
-Un can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
-However, you need to check the output manually, such as:
+You can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
+However, you need to check the output manually, mainly functions and syntaxes such as:
 - `color: fade(@color, 20%);` -> `color: rgba($color, 0.2);`
+
+An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks.
 
 ### Variables
 
@@ -432,7 +481,7 @@ It is also possible to use `max-width` (should be occasionally used) using `medi
 // etc...
 ```
 
-[See documentation](https://getbootstrap.com/docs/5.3/layout/breakpoints/) for more options and examples.
+Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
 
 ### Select2 stylesheet
 
