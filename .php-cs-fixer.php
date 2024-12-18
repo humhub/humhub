@@ -5,6 +5,7 @@ $finder = (new PhpCsFixer\Finder())
         'messages/',
         'views/',
     ])
+    ->notPath('protected/humhub/config/assets-prod.php')
     ->in([
         'protected/humhub',
     ]);
@@ -17,4 +18,3 @@ return (new PhpCsFixer\Config())
         'single_line_empty_body' => false,
     ])
     ->setFinder($finder);
-
