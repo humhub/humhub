@@ -18,14 +18,14 @@ use humhub\widgets\modal\Modal;
     ],
 ]) ?>
 
-<div id="userlist-content">
-    <div class="bg-light p-3" id="comment_<?= $id ?>">
-        <div class="comment" id="comments_area_<?= $id ?>">
-            <?= $output ?>
+    <div id="userlist-content">
+        <div class="bg-light p-3" id="comment_<?= $id ?>">
+            <div class="comment" id="comments_area_<?= $id ?>">
+                <?= $output ?>
+            </div>
+            <?= Form::widget(['object' => $object]); ?>
         </div>
-        <?= Form::widget(['object' => $object]); ?>
     </div>
-</div>
 
 <?php Modal::endDialog() ?>
 

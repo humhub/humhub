@@ -123,17 +123,16 @@ Now:
 <?php Modal::endDialog() ?>
 ```
 
-If the footer contains "Submit" button, the modal dialog must be included in the form:
+If the footer contains a "Submit" button, the modal dialog must be included in the form by using the `Modal::beginFormDialog()` and `Modal::endFormDialog()` methods:
 
 ```php
-<?php $form = ActiveForm::begin() ?>
-    <?php Modal::beginDialog([
-        'title' => Yii::t('ModuleIdModule.base', 'Title'),
-        'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
-    ]) ?>
-        The form inputs
-    <?php Modal::endDialog()?>
-<?php ActiveForm::end() ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('ModuleIdModule.base', 'Title'),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'form' => [], //  configuration for the form (optional)
+]) ?>
+    Content and the form inputs for $form
+<?php Modal::endFormDialog()?>
 ```
 
 
