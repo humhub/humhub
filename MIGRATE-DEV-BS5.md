@@ -73,6 +73,10 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 
 ## Modal Dialog
 
+### New
+
+- `humhub\widgets\modal\ModalButton::outline()` ([doc](https://getbootstrap.com/docs/5.3/components/buttons/#outline-buttons))
+
 ### Deprecations
 
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead

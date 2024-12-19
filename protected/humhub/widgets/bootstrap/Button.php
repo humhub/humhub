@@ -253,6 +253,20 @@ class Button extends \yii\bootstrap5\Button
     }
 
     /**
+     * @since 1.18
+     */
+    public function outline(): static
+    {
+        // btn-primary → btn-outline-primary
+        // btn-danger → btn-outline-danger
+        // And so on for all Bootstrap 5 colors
+        $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|light|dark)\b/';
+        $replacement = 'btn-outline-$1';
+        $this->options['class'] = preg_replace($pattern, $replacement, $this->options['class']);
+        return $this;
+    }
+
+    /**
      * @deprecated since 1.18
      */
     public function setType($type): static
