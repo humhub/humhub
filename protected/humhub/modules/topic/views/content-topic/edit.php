@@ -9,7 +9,6 @@
 use humhub\modules\topic\models\forms\ContentTopicsForm;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
@@ -18,15 +17,11 @@ use humhub\widgets\modal\ModalButton;
 
 ?>
 
-<?php $form = ActiveForm::begin() ?>
-
-<?php Modal::beginDialog([
+<?php $form = Modal::beginFormDialog([
     'title' => Yii::t('TopicModule.base', '<strong>Manage</strong> Topics'),
     'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
 ]) ?>
 
 <?= $form->field($model, 'topics')->widget(TopicPicker::class, ['contentContainer' => $model->getContentContainer(), 'options' => ['autofocus' => '']])->label(false) ?>
 
-<?php Modal::endDialog() ?>
-
-<?php ActiveForm::end() ?>
+<?php Modal::endFormDialog() ?>
