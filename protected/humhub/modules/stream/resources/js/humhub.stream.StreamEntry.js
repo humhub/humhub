@@ -425,7 +425,7 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         const that = this;
         modal.post(evt).then(function () {
             modal.global.$.one('submitted', function () {
-                if ($(this).find('.has-error').length) {
+                if ($(this).find('.is-invalid').length) {
                     return;
                 }
                 modal.global.close(true);

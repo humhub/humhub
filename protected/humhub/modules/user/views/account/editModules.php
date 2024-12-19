@@ -11,7 +11,7 @@ use humhub\modules\user\models\User;
     <div class="panel-heading">
         <?= Yii::t('UserModule.manage', '<strong>Profile</strong> modules') ?>
         <div
-            class="help-block"><?= Yii::t('UserModule.manage', 'Similar to Spaces, your personal profile also allows you to use modules. Please keep in mind that information you share on your profile is available to other users of the network.') ?></div>
+            class="text-body-secondary"><?= Yii::t('UserModule.manage', 'Similar to Spaces, your personal profile also allows you to use modules. Please keep in mind that information you share on your profile is available to other users of the network.') ?></div>
     </div>
     <div class="panel-body">
         <?php if (empty($modules)) : ?>

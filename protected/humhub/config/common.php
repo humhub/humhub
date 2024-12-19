@@ -15,6 +15,16 @@ Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
 Yii::$classMap['humhub\modules\search\interfaces\Searchable'] = '@humhub/compat/search/Searchable.php';
 Yii::$classMap['humhub\modules\search\events\SearchAddEvent'] = '@humhub/compat/search/SearchAddEvent.php';
 
+// Bootstrap 5 Migration
+Yii::$classMap['yii\bootstrap\ActiveForm'] = '@humhub/compat/bootstrap/ActiveForm.php';
+Yii::$classMap['yii\bootstrap\Alert'] = '@humhub/compat/bootstrap/Alert.php';
+Yii::$classMap['yii\bootstrap\BootstrapAsset'] = '@humhub/compat/bootstrap/BootstrapAsset.php';
+Yii::$classMap['yii\bootstrap\Button'] = '@humhub/compat/bootstrap/Button.php';
+Yii::$classMap['yii\bootstrap\Modal'] = '@humhub/compat/bootstrap/Modal.php';
+Yii::$classMap['yii\bootstrap\Html'] = '@humhub/compat/bootstrap/Html.php';
+Yii::$classMap['yii\bootstrap\Nav'] = '@humhub/compat/bootstrap/Nav.php';
+Yii::$classMap['yii\bootstrap\Widget'] = '@humhub/compat/bootstrap/Widget.php';
+
 // Workaround: If OpenSSL extension is not available (#3852)
 if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);

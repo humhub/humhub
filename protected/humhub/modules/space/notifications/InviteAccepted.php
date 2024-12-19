@@ -8,9 +8,9 @@
 
 namespace humhub\modules\space\notifications;
 
-use Yii;
-use yii\bootstrap\Html;
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
+use Yii;
 
 /**
  * SpaceInviteAcceptedNotification is sent to the originator of the invite to

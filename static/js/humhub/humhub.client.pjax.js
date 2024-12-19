@@ -5,7 +5,7 @@ humhub.module('client.pjax', function (module, require, $) {
 
     var init = function () {
         if (module.config.active) {
-            $(document).pjax('a:not([data-pjax-prevent],[target],[data-target],[data-toggle],.exclude-from-pjax-client a)', PJAX_CONTAINER_SELECTOR, module.config.options);
+            $(document).pjax('a:not([data-pjax-prevent],[target],[data-bs-target],[data-bs-toggle],.exclude-from-pjax-client a)', PJAX_CONTAINER_SELECTOR, module.config.options);
             pjaxRedirectFix();
             module.installLoader();
         }
@@ -29,7 +29,7 @@ humhub.module('client.pjax', function (module, require, $) {
 
     var pjaxRedirectFix = function () {
         $(document).on("pjax:beforeSend", function (evt, xhr, options) {
-            // Ignore links with data-target attribute
+            // Ignore links with data-bs-target attribute
             if ($(event.relatedTarget).data('target')) {
                 return false;
             }
