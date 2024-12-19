@@ -1,16 +1,16 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\ProfileBannerImage;
 use humhub\libs\ProfileImage;
 use humhub\models\forms\CropProfileImage;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\modules\ui\widgets\CropImage;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Json;
 
 /* @var $this View */
@@ -41,12 +41,6 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 
 ?>
 
-<?php ModalDialog::begin([
-    'id' => 'profile-image-crop-modal',
-    'header' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
-    'animation' => 'fadeIn',
-    'size' => 'small']) ?>
-
 <?php $form = ActiveForm::begin(['id' => 'profile-image-crop-modal-form']); ?>
 <?= $form->errorSummary($model); ?>
 <?= $form->field($model, 'cropX')->hiddenInput(['id' => 'cropX'])->label(false) ?>
@@ -54,38 +48,36 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
 <?= $form->field($model, 'cropW')->hiddenInput(['id' => 'cropW'])->label(false) ?>
 <?= $form->field($model, 'cropH')->hiddenInput(['id' => 'cropH'])->label(false) ?>
 
-<div class="modal-body">
-    <style>
-        /* Dirty Workaround against bootstrap and jcrop */
-        #profile-image-crop-modal img {
-            max-width: none;
-        }
+<?php Modal::beginDialog([
+    'title' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'id' => 'profile-image-crop-modal',
+    'size' => Modal::SIZE_SMALL,
+]) ?>
 
-        #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
-            opacity: 0
-        }
+<style>
+    /* Dirty Workaround against bootstrap and jcrop */
+    #profile-image-crop-modal img {
+        max-width: none;
+    }
 
-        #cropimage > .jcrop-holder {
-            left: 50%;
-            transform: translateX(-50%);
-        }
-    </style>
+    #profile-image-crop-modal .jcrop-keymgr, #profile-image-crop-modal label {
+        opacity: 0
+    }
 
-    <div id="cropimage" style="overflow:hidden;">
-        <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
+    #cropimage > .jcrop-holder {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+</style>
 
-        <?= CropImage::widget([
-            'selector' => '#crop-profile-image',
-            'pluginOptions' => $model->getPluginOptions(),
-        ]); ?>
-    </div>
+<div id="cropimage" style="overflow:hidden;">
+    <?= Html::img($profileImage->getUrl('_org'), ['id' => 'crop-profile-image']) ?>
 
+    <?= CropImage::widget(['selector' => '#crop-profile-image',
+        'pluginOptions' => $model->getPluginOptions(),]); ?>
 </div>
-<div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= ModalButton::submitModal() ?>
-</div>
+
+<?php Modal::endDialog() ?>
 
 <?php ActiveForm::end(); ?>
-
-<?php ModalDialog::end() ?>

@@ -16,7 +16,7 @@ humhub.module('ui.status', function (module, require, $) {
         success: '<i class="fa fa-check-circle success"></i><span>{msg}</span>',
         warn: '<i class="fa fa-exclamation-triangle warning"></i><span>{msg}</span>',
         error: '<i class="fa fa-exclamation-circle error"></i><span>{msg}</span>',
-        closeButton: '<a class="status-bar-close pull-right" style="">×</a>',
+        closeButton: '<a class="status-bar-close float-end" style="">×</a>',
         showMoreButton: '<a class="showMore"><i class="fa fa-angle-up"></i></a>',
         errorBlock: '<div class="status-bar-details" style="display:none;"><pre>{msg}</pre><div>'
     };

@@ -1,10 +1,10 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
-use yii\bootstrap\ActiveForm;
 use yii\captcha\Captcha;
 
 /**

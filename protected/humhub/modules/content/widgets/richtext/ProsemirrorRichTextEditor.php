@@ -68,7 +68,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
                 FileHandlerCollection::TYPE_IMPORT,
                 FileHandlerCollection::TYPE_CREATE,
             ]),
-            'cssClass' => 'btn-group hidden',
+            'cssClass' => 'btn-group d-none',
         ]);
     }
 }

@@ -20,7 +20,7 @@ use humhub\modules\marketplace\widgets\MarketplaceLink;
             ->right()->sm() ?>
     </div>
     <div class="panel-body">
-        <div class="help-block">
+        <div class="text-body-secondary">
             <?= Yii::t('AdminModule.base', 'This overview shows you all installed modules and allows you to enable, disable, configure and of course uninstall them. To discover new modules, take a look into our Marketplace. Please note that deactivating or uninstalling a module will result in the loss of any content that was created with that module.') ?>
         </div>
 

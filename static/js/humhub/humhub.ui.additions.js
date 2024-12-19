@@ -291,12 +291,12 @@ humhub.module('ui.additions', function (module, require, $) {
         var $out = (outButton instanceof $) ? outButton : $(outButton);
         var $in = (inButton instanceof $) ? inButton : $(inButton);
 
-        $out.hide();
+        $out.addClass('d-none');
         if (cfg.remove) {
             $out.remove();
         }
 
-        $in.addClass('animated ' + animation).show();
+        $in.addClass('animated ' + animation).removeClass('d-none');
     };
 
     var highlight = function (node) {

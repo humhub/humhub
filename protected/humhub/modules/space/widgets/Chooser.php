@@ -4,6 +4,7 @@ namespace humhub\modules\space\widgets;
 
 use Exception;
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\assets\SpaceChooserAsset;
 use humhub\modules\space\models\Membership;
@@ -17,7 +18,6 @@ use Throwable;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\db\Query;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -116,7 +116,7 @@ class Chooser extends Widget
      */
     protected function getNoSpaceHtml()
     {
-        $html = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'My spaces') . '<b class="caret"></b>';
+        $html = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'My spaces');
         return Html::tag('div', $html, ['class' => 'no-space']);
     }
 

@@ -1,11 +1,11 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\UserDeleteForm;
-use humhub\modules\user\widgets\Image as UserImage;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use humhub\modules\user\widgets\Image as UserImage;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $model UserDeleteForm */
 ?>
@@ -14,14 +14,14 @@ use yii\bootstrap\ActiveForm;
     <br>
 
     <p><strong><?= Yii::t('AdminModule.user', 'Are you sure that you want to delete following user?'); ?></strong></p>
-    <div class="well">
+    <div class="bg-light p-3">
 
-        <div class="media">
-            <div class="media-left" style="padding-right:6px">
+        <div class="d-flex">
+            <div class="flex-shrink-0" style="padding-right:6px">
                 <?= UserImage::widget(['user' => $model->user, 'width' => 38, 'link' => true]); ?>
             </div>
-            <div class="media-body">
-                <h4 class="media-heading"><?= Html::containerLink($model->user); ?></h4>
+            <div class="flex-grow-1">
+                <h4 class="mt-0"><?= Html::containerLink($model->user); ?></h4>
                 <?= Html::encode($model->user->email) ?>
             </div>
         </div>
@@ -35,12 +35,12 @@ use yii\bootstrap\ActiveForm;
             <p><b><?= Yii::t('AdminModule.user', 'The user is the owner of these spaces:'); ?></b></p>
 
             <?php foreach ($model->getOwningSpaces() as $space): ?>
-                <div class="media">
-                    <div class="media-left" style="padding-right:6px">
+                <div class="d-flex">
+                    <div class="flex-shrink-0" style="padding-right:6px">
                         <?= SpaceImage::widget(['space' => $space, 'width' => 38, 'link' => true]); ?>
                     </div>
-                    <div class="media-body">
-                        <h4 class="media-heading"><?= Html::containerLink($space); ?></h4>
+                    <div class="flex-grow-1">
+                        <h4 class="mt-0"><?= Html::containerLink($space); ?></h4>
                         <?= Yii::t('SpaceModule.base', '{count} members', ['count' => $space->getMemberships()->count()]); ?>
                     </div>
                 </div>

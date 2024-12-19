@@ -1,7 +1,6 @@
 <?php
 
-use yii\bootstrap\Html;
-use yii\helpers\Url;
+use humhub\helpers\Html;
 
 ?>
 <div id="pretty-urls" class="panel panel-default animated fadeIn">
@@ -38,5 +37,3 @@ use yii\helpers\Url;
 
     </div>
 </div>
-
-

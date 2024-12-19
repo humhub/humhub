@@ -10,7 +10,7 @@ namespace humhub\modules\marketplace\widgets;
 
 use humhub\components\Widget;
 use humhub\modules\marketplace\models\Module;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -29,7 +29,7 @@ class ModuleInstalledActionButtons extends Widget
     /**
      * @var string Template for buttons
      */
-    public $template = '<div class="card-footer text-right">{buttons}</div>';
+    public $template = '<div class="card-footer text-end">{buttons}</div>';
 
     /**
      * @inheritdoc

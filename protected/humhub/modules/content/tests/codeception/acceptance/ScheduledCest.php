@@ -42,7 +42,7 @@ class ScheduledCest
         $I->waitForText($postContent);
         $I->jsClick('.wall-entry:first .dropdown-toggle');
         $datetime = (new Datetime('today'))->setTime(7, 45);
-        $this->updateSchedulingOptions($I, $datetime, '.label-state-scheduled');
+        $this->updateSchedulingOptions($I, $datetime, '.badge-state-scheduled');
 
         $I->wantTo('ensure the scheduled content can be modified to draft');
         $I->jsClick('.wall-entry:first .dropdown-toggle');
@@ -59,7 +59,7 @@ class ScheduledCest
     private function updateSchedulingOptions(AcceptanceTester $I, ?Datetime $datetime = null, $labelSelector = '.label-content-state')
     {
         $I->waitForText('Schedule publication');
-        $I->jsClick('.dropdown.open [data-action-click=scheduleOptions]');
+        $I->jsClick('.dropdown-menu.show [data-action-click=scheduleOptions]');
         $I->waitForText('Scheduling Options', null, '#globalModal');
         if ($datetime instanceof DateTime) {
             $I->checkOption('#scheduleoptionsform-enabled');
@@ -70,11 +70,12 @@ class ScheduledCest
             $I->uncheckOption('#scheduleoptionsform-enabled');
         }
         $I->click('Save');
+        $I->wait(1);
         $I->waitForText($this->getLabelText($datetime), 5, $labelSelector);
     }
 
     private function disableSchedulingOptions(AcceptanceTester $I)
     {
-        $this->updateSchedulingOptions($I, null, '.label-state-draft');
+        $this->updateSchedulingOptions($I, null, '.badge-state-draft');
     }
 }
