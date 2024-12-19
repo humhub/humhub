@@ -14,6 +14,7 @@ use humhub\interfaces\MailerInterface;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
 use Yii;
+use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\i18n\Formatter;
@@ -40,6 +41,8 @@ trait ApplicationTrait
      */
     public array $loadedAppConfig;
 
+    public InstallationState $installationState;
+
     /**
      * @inheritdoc
      */
@@ -50,6 +53,8 @@ trait ApplicationTrait
         $this->loadedAppConfig = $config;
 
         $config = $this->removeLegacyConfigSettings($config);
+
+        $this->installationState = InstallationState::instance();
 
         parent::__construct($config);
 
@@ -116,7 +121,7 @@ trait ApplicationTrait
      */
     public function setInstalled()
     {
-        Yii::$app->settings->set('installed', true);
+        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::setState() instead.');
     }
 
 

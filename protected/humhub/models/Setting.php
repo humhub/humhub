@@ -8,6 +8,7 @@
 
 namespace humhub\models;
 
+use humhub\components\InstallationState;
 use humhub\components\SettingActiveRecord;
 use humhub\libs\BaseSettingsManager;
 use Yii;
@@ -121,13 +122,15 @@ class Setting extends SettingActiveRecord
     /**
      * Checks if Humhub is installed
      *
+     * @todo Clean after successful testing
+     *
      * @return bool
      * @deprecated since v1.16; use Yii::$app->isInstalled()
      * @see Yii::$app->isInstalled()
      */
     public static function isInstalled()
     {
-        return Yii::$app->isInstalled();
+        return Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);
     }
 
     /**

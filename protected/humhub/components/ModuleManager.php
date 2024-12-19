@@ -121,6 +121,9 @@ class ModuleManager extends Component
         if (!Yii::$app->isInstalled() && !Yii::$app->isDatabaseInstalled()) {
             return;
         }
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+            return;
+        }
 
         if (!Yii::$app->isDatabaseInstalled()) {
             $this->enabledModules = [];
@@ -197,7 +200,7 @@ class ModuleManager extends Component
             }
         }
 
-        if (!Yii::$app->isInstalled() && $isInstallerModule) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && $isInstallerModule) {
             $this->enabledModules[] = $config['id'];
         }
 

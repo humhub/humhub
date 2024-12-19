@@ -11,6 +11,7 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\components\InstallationState;
 use humhub\components\ModuleEvent;
 use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
@@ -272,7 +273,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/installerModule');
 
-        static::assertTrue(Yii::$app->isInstalled());
+        static::assertTrue(Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED));
 
         $this->registerModule($basePath, $config, false);
 

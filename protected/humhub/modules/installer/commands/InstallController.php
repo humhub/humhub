@@ -9,7 +9,7 @@
 namespace humhub\modules\installer\commands;
 
 use humhub\helpers\DatabaseHelper;
-use humhub\libs\DynamicConfig;
+use humhub\libs\DatabaseCredConfig;
 use humhub\libs\UUID;
 use humhub\modules\installer\libs\InitialData;
 use humhub\modules\user\models\Group;
@@ -63,11 +63,11 @@ class InstallController extends Controller
         $temporaryConnection = Yii::createObject($dbConfig);
         $temporaryConnection->open();
 
-        $config = DynamicConfig::load();
+        $config = DatabaseCredConfig::load();
 
         $config['components']['db'] = $dbConfig;
 
-        DynamicConfig::save($config);
+        DatabaseCredConfig::save($config);
 
         return ExitCode::OK;
     }
@@ -91,7 +91,7 @@ class InstallController extends Controller
         MigrationService::create()->migrateUp();
 
         $this->stdout("  * Finishing\n", Console::FG_YELLOW);
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setState(Yii::$app->installationState::STATE_INSTALLED);
 
         return ExitCode::OK;
     }
@@ -137,7 +137,7 @@ class InstallController extends Controller
         Yii::$app->settings->set('mailer.systemEmailName', $site_email);
         Yii::$app->settings->set('secret', UUID::v4());
 
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setState(Yii::$app->installationState::STATE_INSTALLED);
 
         return ExitCode::OK;
     }

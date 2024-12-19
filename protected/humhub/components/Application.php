@@ -69,7 +69,7 @@ class Application extends \yii\web\Application implements ApplicationInterface
         /**
          * Check if it's already installed - if not force controller module
          */
-        if (!$this->isInstalled() && $this->controller->module != null && $this->controller->module->id != 'installer') {
+        if (!$this->installationState->hasState(InstallationState::STATE_INSTALLED) && $this->controller->module != null && $this->controller->module->id != 'installer') {
             $this->controller->redirect(['/installer/index']);
             return false;
         }
