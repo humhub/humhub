@@ -41,8 +41,6 @@ trait ApplicationTrait
      */
     public array $loadedAppConfig;
 
-    public InstallationState $installationState;
-
     /**
      * @inheritdoc
      */
@@ -54,11 +52,14 @@ trait ApplicationTrait
 
         $config = $this->removeLegacyConfigSettings($config);
 
-        $this->installationState = InstallationState::instance();
-
         parent::__construct($config);
 
         $this->initLocales();
+    }
+
+    public function getInstallationState(): InstallationState
+    {
+        return InstallationState::instance();
     }
 
     private function initLocales(): void
