@@ -2,7 +2,7 @@ HumHub Changelog
 ================
 
 
-1.17.0-beta.3 (December 21, 2024)
+1.17.0-beta.4 (December 21, 2024)
 ---------------------------------
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
