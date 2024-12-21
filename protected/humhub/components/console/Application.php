@@ -40,7 +40,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
             ));
         }
 
-        if ($this->isDatabaseInstalled(true)) {
+        if ($this->installationState->isDatabaseConfigured()) {
             $baseUrl = $this->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {

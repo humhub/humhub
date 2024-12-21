@@ -45,7 +45,7 @@ class TestController extends \yii\console\Controller
         $this->stdout(PHP_EOL . 'DB Connection: ');
         if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
             $this->stdout('Not Configured!', BaseConsole::FG_RED, BaseConsole::BOLD);
-        } elseif (Yii::$app->isDatabaseInstalled(true)) {
+        } elseif (Yii::$app->installationState->isDatabaseInstalled()) {
             $this->stdout('OK!', BaseConsole::FG_GREEN, BaseConsole::BOLD);
         } else {
             $this->stdout('Failed!', BaseConsole::FG_RED, BaseConsole::BOLD);
