@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> Action' => '<strong>確認</strong> アクション',
   '<strong>Latest</strong> updates' => '<strong>最新</strong>情報',
   '<strong>Mail</strong> summary' => '<strong>メール</strong>サマリー',
@@ -95,4 +95,4 @@ X = [a-fA-F0-9]、波括弧と区切りダッシュは両方ともオプショ�
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
-);
+];

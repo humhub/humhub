@@ -8,7 +8,7 @@ return [
   '<strong>Profile</strong> menu' => '<strong>プロフィール</strong>',
   'About' => '紹介文',
   'Allow other selection' => 'すべての選択を許可する',
-  'Birthday' => 'お誕生日',
+  'Birthday' => '誕生日',
   'Birthday field options' => '誕生日フィールドのオプション',
   'Checkbox' => 'チェックボックス',
   'Checkbox List' => 'チェックボックリスト',

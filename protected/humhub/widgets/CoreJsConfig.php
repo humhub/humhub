@@ -13,6 +13,7 @@ use humhub\modules\file\validators\FileValidator;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\modules\user\models\UserPicker;
+use humhub\modules\web\security\helpers\Security;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
@@ -46,6 +47,7 @@ class CoreJsConfig extends Widget
                 'client' => [
                     'baseUrl' => Yii::$app->settings->get('baseUrl'),
                     'reloadableScripts' => CacheSettingsForm::getReloadableScriptUrls(),
+                    'cspViolationReloadInterval' => Security::CSP_VIOLATION_RELOAD_INTERVAL,
                     'text' => [
                         'warn.onBeforeLoad' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),
                         'warn.onBeforeCloseModal' => Yii::t('base', 'Unsaved changes will be lost. Do you want to proceed?'),

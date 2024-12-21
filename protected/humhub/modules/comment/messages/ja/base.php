@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> comment deleting' => 'コメントの削除を<strong>確認</strong>',
   '<strong>Delete</strong> comment?' => 'コメントを<strong>削除</strong> しますか？',
   '<strong>Permalink</strong> to this comment' => 'このコメントへの<strong>固定リンク</strong>',
@@ -25,8 +25,8 @@ return array (
   'Show previous {count} comments' => '以前の {count} 件のコメントを表示',
   'The comment must not be empty!' => 'コメントがありません',
   'Whenever a new comment was written.' => '新しいコメントが書かれたときはいつでも',
-  'Write a new comment...' => '新規コメントを書く...',
-  'Write a new reply...' => '新規リプライを書く...',
+  'Write a new comment...' => 'コメントを書く...',
+  'Write a new reply...' => 'リプライを書く...',
   'comment' => 'コメント',
   '{displayName} wrote a new comment ' => '{displayName}さんが新しいコメントを書きました',
-);
+];

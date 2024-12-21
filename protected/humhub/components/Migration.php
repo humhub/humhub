@@ -230,6 +230,40 @@ class Migration extends \yii\db\Migration
     }
 
     /**
+     * Rename the column
+     *
+     * @param string $table the table whose column is to be renamed
+     * @param string $name the old name of the column
+     * @param string $newName the new name of the column
+     *
+     * @return bool indicates if column has been renamed
+     * @see static::renameColumn()
+     * @noinspection PhpMissingReturnTypeInspection
+     * @since 1.17
+     */
+    protected function safeRenameColumn(string $table, string $name, string $newName): bool
+    {
+        if (!$this->columnExists($name, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped rename column from $name to $newName in table $table, column $name doesn't exist ...\n";
+            }
+            $this->logWarning("Tried to rename a not existing column '$name' to '$newName' in table '$table'");
+            return false;
+        }
+
+        if ($this->columnExists($newName, $table)) {
+            if (!$this->compact) {
+                echo "    > skipped rename column from $name to $newName in table $table, column $newName already exists ...\n";
+            }
+            $this->logWarning("Tried to rename to already existing column '$newName' from '$name' in table '$table'");
+            return false;
+        }
+
+        $this->renameColumn($table, $name, $newName);
+        return true;
+    }
+
+    /**
      * Check if the index already exists in the table
      *
      * @param string $index

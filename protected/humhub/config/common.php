@@ -8,11 +8,7 @@
 
 use humhub\components\i18n\PhpMessageSource;
 
-Yii::setAlias('@webroot', realpath(__DIR__ . '/../../../'));
-Yii::setAlias('@app', '@webroot/protected');
-Yii::setAlias('@humhub', '@app/humhub');
-Yii::setAlias('@config', '@app/config');
-Yii::setAlias('@themes', '@webroot/themes');
+Yii::setAlias('@humhub', $_ENV['HUMHUB_ALIASES__HUMHUB'] ?? realpath(__DIR__ . '/../'));
 
 // Workaround: PHP 7.3 compatible ZF2 ArrayObject class
 Yii::$classMap['Zend\Stdlib\ArrayObject'] = '@humhub/compat/ArrayObject.php';
@@ -24,18 +20,47 @@ if (!defined('PKCS7_DETACHED')) {
     define('PKCS7_DETACHED', 64);
 }
 
+$logTargetConfig = [
+    'levels' => ['error', 'warning'],
+    'except' => [
+        'yii\web\HttpException:400',
+        'yii\web\HttpException:401',
+        'yii\web\HttpException:403',
+        'yii\web\HttpException:404',
+        'yii\web\HttpException:405',
+        'yii\web\User::getIdentityAndDurationFromCookie',
+        'yii\web\User::renewAuthStatus',
+    ],
+    'logVars' => ['_GET', '_SERVER'],
+    'maskVars' => [
+        '_SERVER.HTTP_AUTHORIZATION',
+        '_SERVER.PHP_AUTH_USER',
+        '_SERVER.PHP_AUTH_PW',
+        '_SERVER.HUMHUB_CONFIG__COMPONENTS__DB__PASSWORD',
+    ],
+];
+
 $config = [
     'name' => 'HumHub',
     'version' => '1.17.0-beta.2',
     'minRecommendedPhpVersion' => '8.1',
     'minSupportedPhpVersion' => '8.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
-    'bootstrap' => ['log', 'humhub\components\bootstrap\ModuleAutoLoader', 'queue', 'humhub\modules\ui\view\bootstrap\ThemeLoader'],
+    'bootstrap' => [
+        'log',
+        'humhub\components\bootstrap\ModuleAutoLoader',
+        'queue',
+        'humhub\modules\ui\view\bootstrap\ThemeLoader',
+    ],
+    'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
     'aliases' => [
+        '@webroot' => realpath(__DIR__ . '/../../../'),
         '@bower' => '@vendor/bower-asset',
         '@npm' => '@vendor/npm-asset',
         '@filestore' => '@webroot/uploads/file',
+        '@config' => '@app/config',
+        '@themes' => '@webroot/themes',
     ],
     'components' => [
         'moduleManager' => [
@@ -56,26 +81,14 @@ $config = [
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
-                \yii\log\FileTarget::class => [
-                    'class' => \yii\log\FileTarget::class,
-                    'levels' => ['error', 'warning'],
-                    'except' => [
-                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
-                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus',
-                    ],
-                    'logVars' => ['_GET', '_SERVER'],
-                ],
-                \yii\log\DbTarget::class => [
-                    'class' => \yii\log\DbTarget::class,
-                    'levels' => ['error', 'warning'],
-                    'except' => [
-                        'yii\web\HttpException:400', 'yii\web\HttpException:401', 'yii\web\HttpException:403',
-                        'yii\web\HttpException:404', 'yii\web\HttpException:405',
-                        'yii\web\User::getIdentityAndDurationFromCookie', 'yii\web\User::renewAuthStatus',
-                    ],
-                    'logVars' => ['_GET', '_SERVER'],
-                ],
+                \yii\log\FileTarget::class => \yii\helpers\ArrayHelper::merge(
+                    ['class' => \yii\log\FileTarget::class],
+                    $logTargetConfig,
+                ),
+                \yii\log\DbTarget::class => \yii\helpers\ArrayHelper::merge(
+                    ['class' => \yii\log\DbTarget::class],
+                    $logTargetConfig,
+                ),
             ],
         ],
         'settings' => [

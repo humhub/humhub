@@ -1,6 +1,6 @@
 <?php
-return array (
-  'Add Space' => 'ｽﾍﾟｰｽ追加',
+return [
+  'Add Space' => 'スペースを追加',
   'Create Space' => 'スペースを作成する',
   'My spaces' => 'マイスペース',
   'No member or following spaces found.' => 'メンバーまたは次のスペースが見つかりません。',
@@ -14,4 +14,4 @@ return array (
   'To search for other spaces, type at least {count} characters.' => 'スペースを検索するには最低{count}文字必要です',
   'You are following this space' => 'あなたは、このスペースをフォローしています',
   '{n,plural,=1{# new entry} other{# new entries}} since your last visit' => '{n,plural,=1{# new entry} other{# new entries}} 最終ログインからの変化',
-);
+];

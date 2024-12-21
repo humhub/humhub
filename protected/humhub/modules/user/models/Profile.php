@@ -310,7 +310,7 @@ class Profile extends ActiveRecord
     }
 
     /**
-     * Returns all profile fields with user data by given category
+     * @return ProfileField[] all profile fields with user data by given category
      */
     public function getProfileFields(?ProfileFieldCategory $category = null, ?array $withoutTypes = null): array
     {
@@ -406,5 +406,23 @@ class Profile extends ActiveRecord
         if (!$this->save(false)) {
             Yii::error('Could not soft delete profile!');
         }
+    }
+
+    /**
+     * Get field value for this profile
+     *
+     * @param string $field
+     * @param bool $raw
+     * @return string|null
+     */
+    public function getFieldValue(string $field, bool $raw = false): ?string
+    {
+        if (!$this->hasAttribute($field) || !$this->user) {
+            return null;
+        }
+
+        $profileField = ProfileField::findOne(['internal_name' => $field]);
+
+        return $profileField?->getUserValue($this->user, $raw);
     }
 }

@@ -14,7 +14,7 @@ return [
   'Access Token' => 'アクセス Token',
   'Access token is not provided yet.' => 'アクセス Tokenはまだ提供されていません。',
   'Add OEmbed provider' => 'OEmbedプロパイダを追加する',
-  'Add Topic' => 'ﾄﾋﾟｯｸを追加',
+  'Add Topic' => 'トピックを追加',
   'Add custom info text for maintenance mode. Displayed on the login page.' => 'メンテナンスモードのカスタム情報テキストを追加します。 ログインページに表示されます。',
   'Add individual info text...' => '個別の情報テキストを追加します...',
   'Add new provider' => 'プロパイダを追加する',

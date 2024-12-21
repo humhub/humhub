@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Url;
+
 ?>
 
 <script <?= \humhub\libs\Html::nonce() ?>>
@@ -98,7 +99,7 @@ use yii\helpers\Url;
         $editableContent = $('#<?php echo $id; ?>_contenteditable');
 
         //This is a workaround for mobile browsers especially for Android Chrome which is not able to remove contenteditable="false" nodes.
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent)) {
+        if ($('body').is('.device-mobile, .device-tablet')) {
             $editableContent.on('contextmenu', 'a, img', function() {
                 if($(this).parent().is('span')) {
                     $(this).parent().remove();

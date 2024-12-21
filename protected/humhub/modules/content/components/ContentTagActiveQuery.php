@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @link https://www.humhub.org/
  * @copyright Copyright (c) HumHub GmbH & Co. KG
@@ -44,7 +45,7 @@ class ContentTagActiveQuery extends ActiveQuery
         ];
 
         if ($user !== null) {
-            if (!$user->canViewAllContent(Space::class)) {
+            if (!$user->canManageAllContent()) {
                 // User must be a space's member OR a space is not private
                 $this->leftJoin('space_membership AS rMembership', 'rMembership.space_id = rSpace.id AND rMembership.user_id = :userId', [':userId' => $user->id]);
                 $conditions['space'][] = [
@@ -52,9 +53,6 @@ class ContentTagActiveQuery extends ActiveQuery
                     ['rMembership.status' => Membership::STATUS_MEMBER],
                     ['!=', 'rSpace.visibility', Space::VISIBILITY_NONE],
                 ];
-            }
-
-            if (!$user->canViewAllContent(User::class)) {
                 // User can view only content of own profile
                 $conditions['user'][] = ['rUser.id' => $user->id];
             }

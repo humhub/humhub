@@ -7,6 +7,22 @@ HumHub Changelog
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
 - Fix #7309: Fix style of the "Notification Settings" button on small screen
+- Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
+- Fix #454: Profile about page missing left and right margin on mobile screen
+- Fix #7316: Fix formatter default time zone
+- Enh #7317: Space browser: Make the whole space card header and body clickable
+- Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
+- Enh #7325: Add missing IDs in the modal login forms
+- Enh #7333: Improved Yii alias handling and added ENV support
+- Enh #7334: New safe method to rename a database column
+- Enh #7336: Update GitHub workflow versions
+- Enh #7339: Add `DeviceDetectorHelper::isMultiInstanceApp()` method to detect if the app is running in a multi-instance mode
+- Enh #7342: Mask .env `DB__PASSWORD` variable in logs
+- Enh #7344: Disable editing Base URL when setting is fixed
+- Fix #7345: Fix debug mode setting in .env
+- Enh #7349: Add body classes about the current device and methods to the `DeviceDetectorHelper` class
+- Enh #7353: Enable dot env to read variables based on application type
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
@@ -22,6 +38,7 @@ HumHub Changelog
 - Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
 - Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
 - Enh #7038: Optimize notification overview
+- Enh #7346: Change cache settings keys to meet dot env naming
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
@@ -97,12 +114,14 @@ HumHub Changelog
 - Fix #7222: Fix rendering of checkbox on MacOS and iOS
 - Fix #7225: Fix module JS config initialisation on AJAX request
 - Fix #7227: Fix search reindexing after create new content
-- Fix #7232: Refresh the updated_at timestamp of invitation after resend it
+- Fix #7232: Refresh the `updated_at` timestamp of invitation after resend it
 - Fix #7241: Fix file visibility for object with viewable interface
 - Enh #7229: Hide invitations with unknown sources
 - Fix #7276: Cron jobs cannot "Create public content" (since 1.15.3)
 - Fix #7278: Don't remove html tags by JS from search post record because it is done by PHP
 - Fix #7296: Fix email validation of invite new users
+- Fix #7319: Display correct profile field value in user subtitle
+- Fix #7322: Always allow invitation by link from Administration. Implement separate invitation by link from People.
 - Fix #7297: Auto refresh a page with obsolete nonce value
 
 1.16.2 (September 5, 2024)

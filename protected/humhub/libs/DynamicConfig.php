@@ -91,7 +91,7 @@ class DynamicConfig extends BaseObject
         $config['name'] = Yii::$app->settings->get('name');
 
         // Add Caching
-        $cacheClass = Yii::$app->settings->get('cache.class');
+        $cacheClass = Yii::$app->settings->get('cacheClass');
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
@@ -189,7 +189,7 @@ class DynamicConfig extends BaseObject
     public static function needRewrite($moduleId, $name)
     {
         return (in_array($name, [
-            'name', 'defaultLanguage', 'timeZone', 'cache.class', 'mailer.transportType',
+            'name', 'defaultLanguage', 'timeZone', 'cacheClass', 'mailer.transportType',
             'mailer.hostname', 'mailer.username', 'mailer.password', 'mailer.encryption',
             'mailer.port', 'horImageScrollOnMobile']));
     }
