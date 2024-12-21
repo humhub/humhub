@@ -6,6 +6,7 @@ HumHub Changelog
 ---------------------------------
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7309: Fix style of the "Notification Settings" button on small screen
 - Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
 - Fix #454: Profile about page missing left and right margin on mobile screen
