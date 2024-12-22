@@ -9,6 +9,7 @@
 namespace humhub\components\console;
 
 use humhub\components\ApplicationTrait;
+use humhub\components\InstallationState;
 use humhub\interfaces\ApplicationInterface;
 use Yii;
 use yii\console\Exception;
@@ -40,7 +41,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
             ));
         }
 
-        if ($this->installationState->isDatabaseConfigured()) {
+        if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
             $baseUrl = $this->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
