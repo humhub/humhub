@@ -20,7 +20,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function init()
     {
-        $this->state = self::STATE_INSTALLED;// Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+        $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
     }
 
     public function setState(int $state): void
