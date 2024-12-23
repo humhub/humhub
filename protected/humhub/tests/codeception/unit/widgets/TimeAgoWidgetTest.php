@@ -88,7 +88,11 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
         // TS outside of default 172800 but default deactivated
         $ts = (new DateTime())->setTime(12, 00, 00)->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'timeAgoBefore' => 1]);
-        $this->assertStringContainsString('12:00 PM</time>', $result);
+
+        // Replace newly introduced Unicode separator whitespace, which a standard one, to sway backward compatible.
+        $result = str_replace(' ', ' ', $result);
+
+        $this->assertStringContainsString('12:00 PM</time>', $result);
     }
 
     public function testHideTimeAfterDeactivated()
@@ -96,7 +100,11 @@ class TimeAgoWidgetTest extends HumHubDbTestCase
         // TS outside of default 172800 but default deactivated
         $ts = DateTime::createFromFormat('Y-m-d H:i:s', '2018-10-12 12:00:00')->getTimestamp();
         $result = TimeAgo::widget(['timestamp' => $ts, 'hideTimeAfter' => false]);
-        $this->assertStringContainsString('Oct 12, 2018 - 12:00 PM</time>', $result);
+
+        // Replace newly introduced Unicode separator whitespace, which a standard one, to sway backward compatible.
+        $result = str_replace(' ', ' ', $result);
+
+        $this->assertStringContainsString('Oct 12, 2018 - 12:00 PM</time>', $result);
     }
 
     private function assertTimeAgoActive($result)
