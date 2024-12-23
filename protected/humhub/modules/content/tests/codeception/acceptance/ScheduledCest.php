@@ -52,7 +52,8 @@ class ScheduledCest
     private function getLabelText(?Datetime $datetime = null): string
     {
         return $datetime instanceof DateTime
-            ? 'SCHEDULED FOR ' . Yii::$app->formatter->asDatetime($datetime, self::DATE_FORMAT)
+            // Replace newly introduced Unicode separator whitespace, which a standard one, to sway backward compatible.
+            ? 'SCHEDULED FOR ' . str_replace(' ', ' ', Yii::$app->formatter->asDatetime($datetime, self::DATE_FORMAT))
             : 'DRAFT';
     }
 
