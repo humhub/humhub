@@ -78,7 +78,7 @@ class RequestMembershipCest
         $I->waitForText('Members', null, '.controls-header');
         $I->click('Members', '.controls-header');
 
-        $I->waitForText('Manage members');
+        $I->waitForText('Member since');
         $I->see('Pending Approvals');
         $I->click('Pending Approvals');
 
