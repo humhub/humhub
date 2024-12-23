@@ -70,7 +70,7 @@ class ScheduledCest
             $I->uncheckOption('#scheduleoptionsform-enabled');
         }
         $I->click('Save');
-        $I->waitForText($this->getLabelText($datetime), 5, $labelSelector);
+        $I->waitForText($this->getLabelText($datetime), null, $labelSelector);
     }
 
     private function disableSchedulingOptions(AcceptanceTester $I)
