@@ -22,6 +22,8 @@ if (!defined('PKCS7_DETACHED')) {
 
 $config = [
     'name' => 'HumHub',
+    'language' => 'en-US',
+    'timeZone' => 'Europe/Berlin',
     'version' => '1.17.0-beta.2',
     'minRecommendedPhpVersion' => '8.1',
     'minSupportedPhpVersion' => '8.1',

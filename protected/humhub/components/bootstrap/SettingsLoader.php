@@ -142,6 +142,5 @@ class SettingsLoader implements BootstrapInterface
     protected function setParams($app)
     {
         $app->name = $app->settings->get('name');
-        $app->params['installed'] = $app->settings->get('installed');
     }
 }

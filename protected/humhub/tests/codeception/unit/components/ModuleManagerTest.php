@@ -110,7 +110,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         /**
          * prevent calling ModuleEnabled::getEnabledIds() from @see ModuleManager::init()
          */
-        Yii::$app->params['databaseInstalled'] = false;
+        Yii::$app->installationState->setState(InstallationState::STATE_NOT_INSTALLED);
 
         $this->reset();
 

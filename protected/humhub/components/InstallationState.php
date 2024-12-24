@@ -3,6 +3,7 @@
 namespace humhub\components;
 
 use humhub\helpers\DatabaseHelper;
+use humhub\libs\DatabaseCredConfig;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\StaticInstanceInterface;
@@ -20,7 +21,11 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function init()
     {
-        $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+        if (!DatabaseCredConfig::exist()) {
+            $this->state = self::STATE_NOT_INSTALLED;
+        } else {
+            $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+        }
     }
 
     public function setState(int $state): void
