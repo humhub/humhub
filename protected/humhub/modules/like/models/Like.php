@@ -9,11 +9,11 @@
 namespace humhub\modules\like\models;
 
 use humhub\components\behaviors\PolymorphicRelation;
-use humhub\modules\like\activities\Liked;
-use Yii;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
+use humhub\modules\like\activities\Liked;
 use humhub\modules\like\notifications\NewLike;
+use Yii;
 use yii\db\ActiveRecord;
 
 /**
@@ -88,7 +88,7 @@ class Like extends ContentAddonActiveRecord
                     ->with('user')
                     ->all();
             },
-            Yii::$app->settings->get('cache.expireTime'),
+            Yii::$app->settings->get('cacheExpireTime'),
         );
     }
 

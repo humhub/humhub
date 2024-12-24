@@ -13,7 +13,7 @@ $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../', '.env');
 $dotenv->safeLoad();
 
 $dynamicConfig =  (is_readable(__DIR__ . '/config/dynamic.php')) ? require(__DIR__ . '/config/dynamic.php') : [];
-$debug = !!($_ENV['HUMHUB_DEBUG'] ?? false) || !($dynamicConfig['params']['installed'] ?? false);
+$debug = filter_var($_ENV['HUMHUB_DEBUG'] ?? false, FILTER_VALIDATE_BOOLEAN) || !filter_var($dynamicConfig['params']['installed'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
 defined('YII_DEBUG') or define('YII_DEBUG', $debug);
 
@@ -31,7 +31,7 @@ $config = yii\helpers\ArrayHelper::merge(
     $dynamicConfig,
     require(__DIR__ . '/config/common.php'),
     require(__DIR__ . '/config/console.php'),
-    humhub\helpers\EnvHelper::toConfig($_ENV),
+    humhub\helpers\EnvHelper::toConfig($_ENV, \humhub\components\console\Application::class),
 );
 
 try {

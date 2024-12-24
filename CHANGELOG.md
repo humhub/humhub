@@ -7,19 +7,27 @@ HumHub Changelog
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
 
-1.17.0-beta.3 (Unreleased)
+1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7309: Fix style of the "Notification Settings" button on small screen
 - Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
 - Fix #454: Profile about page missing left and right margin on mobile screen
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
-- Enh #7329: Add a new global "Manage Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
+- Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
 - Enh #7325: Add missing IDs in the modal login forms
-- Enh #7333: Improved Yii alias handling and added ENV support  
+- Enh #7333: Improved Yii alias handling and added ENV support
 - Enh #7334: New safe method to rename a database column
+- Enh #7336: Update GitHub workflow versions
+- Enh #7339: Add `DeviceDetectorHelper::isMultiInstanceApp()` method to detect if the app is running in a multi-instance mode
+- Enh #7342: Mask .env `DB__PASSWORD` variable in logs
+- Enh #7344: Disable editing Base URL when setting is fixed
+- Fix #7345: Fix debug mode setting in .env
+- Enh #7349: Add body classes about the current device and methods to the `DeviceDetectorHelper` class
+- Enh #7353: Enable dot env to read variables based on application type
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
@@ -35,6 +43,7 @@ HumHub Changelog
 - Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
 - Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
 - Enh #7038: Optimize notification overview
+- Enh #7346: Change cache settings keys to meet dot env naming
 
 1.17.0-beta.1 (October 28, 2024)
 --------------------------------
@@ -118,6 +127,8 @@ HumHub Changelog
 - Fix #7296: Fix email validation of invite new users
 - Fix #7319: Display correct profile field value in user subtitle
 - Fix #7322: Always allow invitation by link from Administration. Implement separate invitation by link from People.
+- Enh #7335: Update GitHub workflow versions
+- Fix #7351: Fix caching of space permissions in user stream
 - Fix #7297: Auto refresh a page with obsolete nonce value
 
 1.16.2 (September 5, 2024)

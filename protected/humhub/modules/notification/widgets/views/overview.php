@@ -33,6 +33,7 @@ use yii\helpers\Html;
             <?= Button::defaultType()
                 ->icon('cog')
                 ->link(['/notification/user'])
+                ->loader(false)
                 ->sm()
                 ->tooltip(Yii::t('NotificationModule.base', 'Notification Settings')) ?>
         </div>
