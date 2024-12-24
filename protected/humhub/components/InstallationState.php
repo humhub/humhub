@@ -13,8 +13,8 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     use StaticInstanceTrait;
 
     public const STATE_NOT_INSTALLED = 0;
-    public const STATE_DATABASE_CONFIGURED = 1 << 1;
-    public const STATE_INSTALLED = self::STATE_DATABASE_CONFIGURED;
+    public const STATE_DATABASE_CONFIGURED = 1 << 0;
+    public const STATE_INSTALLED = self::STATE_DATABASE_CONFIGURED | self::STATE_DATABASE_CONFIGURED;
 
     private int $state;
 
@@ -25,7 +25,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function setState(int $state): void
     {
-        $this->state |= $state;
+        $this->state = $state;
 
         Yii::$app->settings->set(self::class, $this->state);
     }
