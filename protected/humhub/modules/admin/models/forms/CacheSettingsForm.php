@@ -28,9 +28,9 @@ class CacheSettingsForm extends Model
         parent::init();
 
         $settingsManager = Yii::$app->settings;
-        $this->type = $settingsManager->get('cache.class');
-        $this->expireTime = $settingsManager->get('cache.expireTime');
-        $this->reloadableScripts = $settingsManager->get('cache.reloadableScripts');
+        $this->type = $settingsManager->get('cacheClass');
+        $this->expireTime = $settingsManager->get('cacheExpireTime');
+        $this->reloadableScripts = $settingsManager->get('cacheReloadableScript');
     }
 
     /**
@@ -44,10 +44,10 @@ class CacheSettingsForm extends Model
             ['type', 'checkCacheType'],
             ['expireTime', 'integer'],
             ['type', 'required', 'when' => function () {
-                return !Yii::$app->settings->isFixed('cache.class');
+                return !Yii::$app->settings->isFixed('cacheClass');
             }],
             ['type', 'in', 'range' => array_keys($this->getTypes()), 'when' => function () {
-                return !Yii::$app->settings->isFixed('cache.class');
+                return !Yii::$app->settings->isFixed('cacheClass');
             }],
         ];
     }
@@ -101,9 +101,9 @@ class CacheSettingsForm extends Model
     {
         $settingsManager = Yii::$app->settings;
 
-        $settingsManager->set('cache.class', $this->type);
-        $settingsManager->set('cache.expireTime', $this->expireTime);
-        $settingsManager->set('cache.reloadableScripts', $this->reloadableScripts);
+        $settingsManager->set('cacheClass', $this->type);
+        $settingsManager->set('cacheExpireTime', $this->expireTime);
+        $settingsManager->set('cacheReloadableScript', $this->reloadableScripts);
 
         self::flushCache();
 

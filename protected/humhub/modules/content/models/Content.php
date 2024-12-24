@@ -743,7 +743,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
 
         return
             $this->getModel()->isOwner()
-            || Yii::$app->user->identity->canManageAllContent()
+            || Yii::$app->user->identity?->canManageAllContent()
             || $container->can(ManageContent::class);
     }
 
@@ -920,7 +920,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             return true;
         }
 
-        if ($user->canManageAllContent()) {
+        if ($user?->canManageAllContent()) {
             return true;
         }
 

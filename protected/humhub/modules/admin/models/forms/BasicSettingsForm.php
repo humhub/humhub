@@ -113,5 +113,4 @@ class BasicSettingsForm extends Model
 
         return true;
     }
-
 }

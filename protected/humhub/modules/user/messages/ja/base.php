@@ -1,9 +1,9 @@
 <?php
-return array (
+return [
   '<strong>Followers</strong>' => '<strong>フォロワー</strong>',
   '<strong>Following</strong>' => '<strong>フォロー中</strong>',
   '<strong>Member</strong> in these spaces' => '<strong>スペース</strong> 一覧',
-  '<strong>Member</strong> of these Spaces' => 'この方のスペース<strong> 一覧</strong>',
+  '<strong>Member</strong> of these Spaces' => '<strong>スペース</strong>',
   '<strong>People</strong>' => '<strong>メンバー</strong>',
   '<strong>User</strong> tags' => '<strong>ユーザー</strong> タグ',
   'Advanced Profile Search' => '高度なプロフィール検索',
@@ -121,4 +121,4 @@ return array (
   'invited you to join {name}.' => 'はあなたを"{name}"に招待しました。',
   'invited you to join {space} on {name}.' => 'はあなたを"{name}"のスペース"{space}"に招待しました。',
   'or' => 'または',
-);
+];
