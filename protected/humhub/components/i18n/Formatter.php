@@ -8,6 +8,7 @@
 
 namespace humhub\components\i18n;
 
+use humhub\components\InstallationState;
 use IntlDateFormatter;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -36,7 +37,7 @@ class Formatter extends \yii\i18n\Formatter
     {
         parent::init();
 
-        if (Yii::$app->isInstalled() && Yii::$app->getModule('admin') !== null && !empty(Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat'))) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && Yii::$app->getModule('admin') !== null && !empty(Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat'))) {
             $this->dateInputFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         }
     }

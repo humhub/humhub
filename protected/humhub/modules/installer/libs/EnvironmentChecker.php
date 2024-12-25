@@ -8,7 +8,7 @@
 
 namespace humhub\modules\installer\libs;
 
-use humhub\libs\DynamicConfig;
+use humhub\libs\DatabaseCredConfig;
 use Yii;
 
 /**
@@ -33,7 +33,7 @@ class EnvironmentChecker
             exit(1);
         }
 
-        $dynamicConfigFile = DynamicConfig::getConfigFilePath();
+        $dynamicConfigFile = DatabaseCredConfig::getConfigFilePath();
         if (file_exists($dynamicConfigFile) && !is_writable($dynamicConfigFile)) {
             print "Error: The dynamic configuration (config/dynamic.php) is not writable by the PHP process.";
             exit(1);

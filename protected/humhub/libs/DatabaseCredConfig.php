@@ -15,9 +15,11 @@ use yii\helpers\ArrayHelper;
 /**
  * DynamicConfig provides access to the dynamic configuration file.
  *
+ * @todo check modules too
+ *
  * @author luke
  */
-class DynamicConfig extends BaseObject
+class DatabaseCredConfig extends BaseObject
 {
     /**
      * Returns the dynamic configuration

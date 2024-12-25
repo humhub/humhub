@@ -11,7 +11,7 @@ namespace humhub\modules\installer\controllers;
 use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\DynamicConfig;
+use humhub\libs\DatabaseCredConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
 use humhub\modules\installer\Module;
@@ -66,7 +66,7 @@ class SetupController extends Controller
     {
         $errorMessage = "";
 
-        $config = DynamicConfig::load();
+        $config = DatabaseCredConfig::load();
 
         $model = new DatabaseForm();
         if (isset($config['params']['installer']['db']['installer_hostname'])) {
@@ -149,7 +149,7 @@ class SetupController extends Controller
                 // Write Config
                 $config['components']['db'] = $dbConfig;
 
-                DynamicConfig::save($config);
+                DatabaseCredConfig::save($config);
 
                 return $this->redirect(['migrate']);
             } catch (Exception $e) {

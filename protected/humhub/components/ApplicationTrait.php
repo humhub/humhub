@@ -8,16 +8,18 @@
 
 namespace humhub\components;
 
-use humhub\helpers\DatabaseHelper;
 use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
-use Yii;
+use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\i18n\Formatter;
 
+/**
+ * @property-read InstallationState $installationState
+ */
 trait ApplicationTrait
 {
     /**
@@ -56,9 +58,14 @@ trait ApplicationTrait
         $this->initLocales();
     }
 
+    public function getInstallationState(): InstallationState
+    {
+        return InstallationState::instance();
+    }
+
     private function initLocales(): void
     {
-        if ($this->isDatabaseInstalled(true)) {
+        if ($this->installationState->isDatabaseInstalled()) {
             if ($this->settings instanceof SettingsManager) {
                 $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
                 if ($this->formatter instanceof Formatter) {
@@ -101,49 +108,38 @@ trait ApplicationTrait
     /**
      * Checks if Humhub is installed
      *
+     * @todo check in modules
      * @return bool
      * @since 1.16
      */
     public function isInstalled(): bool
     {
-        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'];
+        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::hasState() instead.');
     }
 
     /**
      * Sets application in installed state (disables installer)
      *
+     * @todo check in modules
+     *
      * @since 1.16
      */
     public function setInstalled()
     {
-        Yii::$app->settings->set('installed', true);
+        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::setState() instead.');
     }
 
 
     /**
      * Checks if settings table exists or application is not installed yet
      *
+     * @todo check in modules
+     *
      * @since 1.16
      */
     public function isDatabaseInstalled(bool $checkConnection = false): bool
     {
-        $dieOnError = $this->params['databaseInstalled'] ?? null;
-
-        if (!$checkConnection && $dieOnError !== null) {
-            return $dieOnError;
-        }
-
-        try {
-            $db = Yii::$app->db;
-            $db->open();
-        } catch (\Exception $ex) {
-            if ($dieOnError) {
-                DatabaseHelper::handleConnectionErrors($ex);
-            }
-            return false;
-        }
-
-        return in_array('setting', $db->schema->getTableNames());
+        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::hasState() instead.');
     }
 
 

@@ -9,6 +9,7 @@
 namespace humhub\modules\ui\view\bootstrap;
 
 use humhub\components\console\Application as ConsoleApplication;
+use humhub\components\InstallationState;
 use humhub\modules\installer\libs\EnvironmentChecker;
 use humhub\modules\ui\view\components\Theme;
 use humhub\modules\ui\view\helpers\ThemeHelper;
@@ -34,7 +35,7 @@ class ThemeLoader implements BootstrapInterface
             return;
         }
 
-        if ($app->isDatabaseInstalled()) {
+        if ($app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
             $themePath = $app->settings->get('theme');
             if (!empty($themePath) && is_dir($themePath)) {
                 $theme = ThemeHelper::getThemeByPath($themePath);

@@ -641,7 +641,7 @@ class Migration extends \yii\db\Migration
      */
     protected function isInitialInstallation(): bool
     {
-        return (!Yii::$app->isInstalled());
+        return (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED));
     }
 
     /**

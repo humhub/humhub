@@ -8,6 +8,7 @@
 
 namespace humhub\components\i18n;
 
+use humhub\components\InstallationState;
 use humhub\libs\I18NHelper;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -49,7 +50,7 @@ class I18N extends BaseI18N
      */
     public function autosetLocale()
     {
-        if (!Yii::$app->isInstalled() || Yii::$app->user->isGuest) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) || Yii::$app->user->isGuest) {
             $this->setGuestLocale();
         } else {
             $this->setUserLocale(Yii::$app->user->getIdentity());

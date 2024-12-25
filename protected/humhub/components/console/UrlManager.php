@@ -8,6 +8,7 @@
 
 namespace humhub\components\console;
 
+use humhub\components\InstallationState;
 use Yii;
 
 /**
@@ -36,7 +37,7 @@ class UrlManager extends \humhub\components\UrlManager
 
     private function getConfiguredBaseUrl()
     {
-        if (Yii::$app->isDatabaseInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 return $baseUrl;
