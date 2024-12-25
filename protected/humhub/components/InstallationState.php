@@ -43,6 +43,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function hasState(int $state): bool
     {
+        $this->init();
         return ($this->state & $state) === $state;
     }
 
