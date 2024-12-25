@@ -22,7 +22,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function init()
     {
-        if (!DatabaseCredConfig::exist()) {
+        if (!YII_ENV_TEST && !DatabaseCredConfig::exist()) {
             $this->state = self::STATE_NOT_INSTALLED;
         } else {
             $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
