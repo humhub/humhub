@@ -12,7 +12,6 @@ use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
-use yii\base\NotSupportedException;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\i18n\Formatter;
@@ -108,38 +107,43 @@ trait ApplicationTrait
     /**
      * Checks if Humhub is installed
      *
-     * @todo check in modules
+     * @deprecated since 1.18
+     * @see InstallationState::hasState()
      * @return bool
      * @since 1.16
      */
     public function isInstalled(): bool
     {
-        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::hasState() instead.');
+        return $this->installationState->hasState(InstallationState::STATE_INSTALLED);;
     }
 
     /**
      * Sets application in installed state (disables installer)
      *
-     * @todo check in modules
-     *
+     * @deprecated since 1.18
+     * @see InstallationState::setState()
      * @since 1.16
      */
     public function setInstalled()
     {
-        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::setState() instead.');
+        $this->installationState->setState(InstallationState::STATE_INSTALLED);
     }
 
 
     /**
      * Checks if settings table exists or application is not installed yet
      *
-     * @todo check in modules
-     *
+     * @deprecated since 1.18
+     * @see InstallationState::hasState()
      * @since 1.16
      */
     public function isDatabaseInstalled(bool $checkConnection = false): bool
     {
-        throw new NotSupportedException('This method is not supported anymore. Use InstallationState::hasState() instead.');
+        if ($checkConnection) {
+            return $this->installationState->isDatabaseInstalled();
+        }
+
+        return $this->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED);
     }
 
 
