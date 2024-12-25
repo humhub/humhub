@@ -3,6 +3,7 @@
 namespace humhub\helpers;
 
 use yii\base\InvalidArgumentException;
+use yii\helpers\ArrayHelper;
 use yii\helpers\Inflector;
 use yii\helpers\Json;
 use yii\helpers\StringHelper;
@@ -11,12 +12,13 @@ class EnvHelper
 {
     private const FIXED_SETTING_PREFIX = 'HUMHUB_FIXED_SETTINGS';
     private const MAIN_PREFIX = 'HUMHUB_CONFIG';
+    private const WEB_PREFIX = 'HUMHUB_WEB_CONFIG';
+    private const CLI_PREFIX = 'HUMHUB_CLI_CONFIG';
     private const FIXED_SETTINGS_PATH = ['params', 'fixed-settings'];
     private const DEPTH_SEPARATOR = '__';
-
     private const ALIASES_PREFIX = 'HUMHUB_ALIASES';
 
-    public static function toConfig(?array $env = []): array
+    public static function toConfig(?array $env = [], ?string $applicationType = null): array
     {
         $config = [];
 
@@ -38,14 +40,22 @@ class EnvHelper
                     $value,
                 );
             }
-            if (StringHelper::startsWith($key, self::MAIN_PREFIX . self::DEPTH_SEPARATOR)) {
-                ArrayHelper::setValue(
-                    $config,
-                    [
-                        ...self::keyToPath(str_replace(self::MAIN_PREFIX . self::DEPTH_SEPARATOR, '', $key)),
-                    ],
-                    $value,
-                );
+
+            foreach (
+                ArrayHelper::getValue([
+                    \humhub\components\Application::class => [self::MAIN_PREFIX, self::WEB_PREFIX],
+                    \humhub\components\console\Application::class => [self::MAIN_PREFIX, self::CLI_PREFIX],
+                ], $applicationType, [self::MAIN_PREFIX]) as $prefix
+            ) {
+                if (StringHelper::startsWith($key, $prefix . self::DEPTH_SEPARATOR)) {
+                    ArrayHelper::setValue(
+                        $config,
+                        [
+                            ...self::keyToPath(str_replace($prefix . self::DEPTH_SEPARATOR, '', $key)),
+                        ],
+                        $value,
+                    );
+                }
             }
         }
 

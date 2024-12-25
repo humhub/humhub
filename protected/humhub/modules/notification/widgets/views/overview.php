@@ -38,6 +38,7 @@ use yii\helpers\Url;
                 <?= Button::light()
                     ->icon('cog')
                     ->link(['/notification/user'])
+                    ->loader(false)
                     ->sm()
                     ->tooltip(Yii::t('NotificationModule.base', 'Notification Settings')) ?>
             </div>

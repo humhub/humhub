@@ -31,7 +31,7 @@ $config = yii\helpers\ArrayHelper::merge(
     $dynamicConfig,
     require(__DIR__ . '/config/common.php'),
     require(__DIR__ . '/config/console.php'),
-    humhub\helpers\EnvHelper::toConfig($_ENV),
+    humhub\helpers\EnvHelper::toConfig($_ENV, \humhub\components\console\Application::class),
 );
 
 try {
