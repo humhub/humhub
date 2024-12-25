@@ -14,8 +14,9 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     use StaticInstanceTrait;
 
     public const STATE_NOT_INSTALLED = 0;
-    public const STATE_DATABASE_CONFIGURED = 1 << 0;
-    public const STATE_INSTALLED = self::STATE_DATABASE_CONFIGURED | self::STATE_DATABASE_CONFIGURED;
+    public const STATE_IN_PROGRESS = 1 << 0;
+    public const STATE_DATABASE_CONFIGURED = 1 << 1;
+    public const STATE_INSTALLED = self::STATE_IN_PROGRESS | self::STATE_DATABASE_CONFIGURED;
 
     private int $state;
 

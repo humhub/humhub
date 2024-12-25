@@ -107,10 +107,6 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         static::$aliases = Yii::$aliases;
         static::$originalModuleManager = Yii::$app->moduleManager;
-        /**
-         * prevent calling ModuleEnabled::getEnabledIds() from @see ModuleManager::init()
-         */
-        Yii::$app->installationState->setState(InstallationState::STATE_NOT_INSTALLED);
 
         $this->reset();
 
