@@ -757,7 +757,7 @@ class SelfTest
             ];
         }
 
-        if (Yii::$app->Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             $title = Yii::t('AdminModule.information', 'Database') . ' - ';
             $migrations = MigrationService::create()->getPendingMigrations();
             if ($migrations === []) {
