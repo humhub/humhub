@@ -299,22 +299,28 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `help-block` - > `text-body-secondary` or  `form-text` if in a form
 - Remove  `jumbotron` class
 
-### Hidden elements
+### Hidden/Visible elements
 
 Use the new `d-none` class instead of the `display: none;` style (except for email views).
 
-In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
+In the following class replacements, you can also use `inline`, `flex`, etc. instead of `block` (depending on the desired display mode).
 E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
 
+In Bootstrap 3, the class applies to the designed screen size only, whereas in Bootstrap 5, the class applies to the designated screen size and larger.
+And `visible` will hide the element for other screen sizes, whereas in Bootstrap 5, you need to add `d-none` to hide for other screen sizes.
+
+Remplacement examples (must be adapted to the specific situation):
 - `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
-- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
-- `hidden-md` → `d-md-none d-lg-block`
-- `hidden-lg` → `d-lg-none d-xl-block`
+- `hidden-sm` (hide on small screens only) → `d-sm-none d-md-block` (hide on small screens, but show on medium or above ; idem, replace `block` with `inline` or `flex`)
+- `hidden-md` (hide on medium screens only) → `d-md-none d-lg-block` (hide on medium screens, but show on large or above)
+- `hidden-lg` (hide on large screens) → `d-lg-none` (hide on large screens and above, including extra large screens which doesn't exist in Bootstrap 3)
 - `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
-- `visible-xs` → `d-block d-sm-none`
-- `visible-sm` → `d-none d-sm-block d-md-none`
-- `visible-md` → `d-none d-md-block d-lg-none`
-- `visible-lg` → `d-none d-lg-block d-xl-none`
+- `visible-xs` (hide on small screens and above) → `d-block d-sm-none` or `d-sm-none` if the element is visible by default
+- `visible-sm` (visible on small screens only) → `d-none d-sm-block d-md-none` (hide on all screens except small screens)
+- `visible-xs visible-sm` -> `d-md-none` (hide on large screens of above)
+- `visible-md` → `d-none d-md-block d-lg-none` (show on medium screens only)
+- `visible-lg` → `d-none d-lg-block` (show on large screens or above)
+- `visible-md visible-lg` -> `d-none d-md-block` (show on medium screens of above)
 - `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
 
 #### JavaScript with `d-none`
