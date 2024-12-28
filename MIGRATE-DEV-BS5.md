@@ -40,16 +40,15 @@ Widgets & helpers:
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
 - `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
-- `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead
-- `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
-- `humhub\libs\Html` use `humhub\helper\Html` instead
+- `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead (watch out for class name changes!)
+- `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead (watch out for class name changes!)
+- `humhub\libs\Html` use `humhub\helpers\Html` instead
 
 Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
-- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `Button::light()` or `Button::secondary()` instead
+- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `Button::secondary()` instead
 - `humhub\widgets\bootstrap\Badge::xs()` use `humhub\widgets\bootstrap\Badge::sm()` instead
-- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `humhub\widgets\bootstrap\Button::secondary()` instead
-- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `humhub\widgets\bootstrap\Badge::secondary()` instead
+- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `Badge::secondary()` instead
 - `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
 - `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
 
@@ -66,7 +65,7 @@ Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see
 If available, use HumHub widgets instead of the native library widgets.
 This will make it easier to migrate to new versions of the external libraries ([see Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets)).
 
-E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`.
+E.g. `\yii\bootstrap5\Html`, use `humhub\widgets\bootstrap\Html` instead.
 
 If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues).
 
@@ -82,7 +81,7 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
 - `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
-- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label, $url)` or `humhub\widgets\modal\ModalButton::primary($label)->submit($url)` instead
+- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label, $url)` (watch out the parameter order change!) or `humhub\widgets\modal\ModalButton::primary($label)->submit($url)` instead
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
@@ -191,7 +190,7 @@ Example:
 
 ### Dropdown
 
-- Search for `dropdown-menu` in the code and add `dropdown-header` (if a header item) or `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
+- Search for `dropdown-menu` in the code and add a `dropdown-header` class to header items, and a `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
 - Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`), replace with `dropdown-divider`, and move them to a `hr` child tag of `li`.
 - Move the tags with `dropdown-header` class to a child tag of `li` (usually in a `h6` tag)
 - `dropdown-menu-left` -> `dropdown-menu-start`
@@ -284,8 +283,8 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `text-left` - > `text-start`
 - `text-right` - > `text-end`
 - `btn-group-xs` - > `btn-group-sm`
-- `img-rounded` - > `rounded`
 - `media-object img-rounded` - > `rounded`
+- `img-rounded` - > `rounded`
 - `data-toggle` - > `data-bs-toggle`
 - `data-target` - > `data-bs-target`
 - `data-dismiss` - > `data-bs-dismiss`
@@ -302,7 +301,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
 ### Hidden elements
 
-Use the new `d-none` class instead of the `display: none;` style.
+Use the new `d-none` class instead of the `display: none;` style (except for email views).
 
 In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
 E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
