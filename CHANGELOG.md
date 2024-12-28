@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.17.0-beta.5 (Unreleased)
 ---------------------------------
-- Enh: Fix `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
+- Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
