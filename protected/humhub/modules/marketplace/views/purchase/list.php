@@ -54,7 +54,7 @@ Assets::register($this);
         <?php foreach ($modules as $module): ?>
             <hr>
             <div class="d-flex">
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 me-2">
                     <img class="rounded me-3" data-src="holder.js/64x64" alt="64x64"
                          style="width: 64px; height: 64px;"
                          src="<?= empty($module['moduleImageUrl']) ? Yii::getAlias('@web-static/img/default_module.jpg') : $module['moduleImageUrl'] ?>">

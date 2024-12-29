@@ -27,22 +27,22 @@ use yii\helpers\Url;
     <div class="d-flex">
         <?php if ($originator !== null) : ?>
             <!-- Show user image -->
-            <div class="flex-shrink-0">
+            <div class="flex-shrink-0 me-2">
                 <?= $originator->getProfileImage()->render(32, ['link' => false]) ?>
             </div>
         <?php endif; ?>
 
         <!-- Show space image, if you are outside from a space -->
-        <?php if (!Yii::$app->controller instanceof ContentContainerController) : ?>
-            <?php if ($record->content->container instanceof Space) : ?>
-                <div class="flex-shrink-0">
-                    <?= Image::widget([
-                        'space' => $record->content->container,
-                        'width' => 20,
-                    ]) ?>
-                </div>
-            <?php endif; ?>
-
+        <?php if (
+            !Yii::$app->controller instanceof ContentContainerController
+            && $record->content->container instanceof Space
+        ) : ?>
+            <div class="flex-shrink-0 me-2">
+                <?= Image::widget([
+                    'space' => $record->content->container,
+                    'width' => 20,
+                ]) ?>
+            </div>
         <?php endif; ?>
 
         <div class="flex-grow-1 text-break">

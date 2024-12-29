@@ -15,7 +15,7 @@ use yii\data\Pagination;
 ?>
 
 <?= Html::beginTag('div', $options) ?>
-    <div class="media-list">
+    <div class="hh-list">
         <?php foreach ($notifications as $notification): ?>
             <?php try { ?>
                 <?= $notification->render() ?>

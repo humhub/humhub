@@ -34,7 +34,7 @@ $module = Yii::$app->getModule('comment');
 
     <?= CommentControls::widget(['comment' => $comment]) ?>
 
-    <div class="flex-shrink-0 comment-header-image">
+    <div class="flex-shrink-0 me-2 comment-header-image">
         <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id]]) ?>
     </div>
 

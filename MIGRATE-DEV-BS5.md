@@ -336,7 +336,9 @@ Replacements to do on these elements:
 
 ### Spinners
 
-Search for `sk-` and replace this code, or similar:
+Search for `sk-`.
+
+Before:
 
 ```html
 <div class="sk-spinner sk-spinner-three-bounce">
@@ -346,13 +348,13 @@ Search for `sk-` and replace this code, or similar:
 </div>
 ```
 
-with, for a button:
+After, for a button:
 
 ```html
 <span class="spinner-border spinner-border-sm"></span>
 ```
 
-or, in a container:
+After, in a container:
 
 ```html
 <div class="text-center">
@@ -374,7 +376,7 @@ TODO in core and to document here.
 
 ### Label & Badge
 
-Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
+Search for all `label` classes (`label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
 
 Use the `humhub\widgets\bootstrap\Badge` widget when possible.
 
@@ -390,13 +392,13 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 
 ### Media
 
-- Search for `media-list` and replace `ul` tag with `div`. E.g. `<ul class="media-list">` -> `<div class="media-list">`
+- Search for `media-list` and remove the HTML element, or, to keep a similar style, use the class `hh-list` and replace the `ul` tag with a `div`. E.g. `<ul class="media-list">` -> `<div class="hh-list">`
 - Inside, replace `li` tags with `div` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
 - Search for `media` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?media(?:\s[^"']*)?["'][^>]*>`) and replace with `d-flex`
 - `media-heading` -> `mt-0` (removes the top margin, keeping it close to the top of the content area) ; the related HTML tag can be replaced with `h5` or `h4`
 - `media-body` -> `flex-grow-1`
-- `media-left` -> `flex-shrink-0`
-- `media-right` -> `flex-shrink-0 order-last`
+- `media-left` -> `flex-shrink-0 me-2`
+- `media-right` -> `flex-shrink-0 ms-2 order-last`
 - `media-object` -> `flex-shrink-0` (if on an image, encapsulate the image in a `div` tag with `flex-shrink-0` class)
 - Remove `float-start` (or `pull-left`) class for images inside a `<div class="flex-shrink-0">`
 

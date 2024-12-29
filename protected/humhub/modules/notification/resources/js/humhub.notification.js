@@ -84,7 +84,7 @@ humhub.module('notification', function (module, require, $) {
     };
 
     NotificationDropDown.prototype.initDropdown = function () {
-        this.$entryList = this.$.find('div.media-list');
+        this.$entryList = this.$.find('div.hh-list');
         this.$dropdown = this.$.find('#dropdown-notifications');
 
         var that = this;
@@ -167,7 +167,7 @@ humhub.module('notification', function (module, require, $) {
     NotificationDropDown.prototype.updateCount = function ($count) {
         if (this.$.data('notification-count') === $count) {
             if (!$count) {
-                $('#badge-notifications').hide();
+                $('#badge-notifications').addClass('d-none');
             }
             return;
         }
@@ -177,12 +177,12 @@ humhub.module('notification', function (module, require, $) {
         if (!$count) {
             updateTitle(false);
             $('#badge-notifications').html('0');
-            $('#badge-notifications, #mark-seen-link').hide();
+            $('#badge-notifications, #mark-seen-link').addClass('d-none');
             $('#icon-notifications .fa').removeClass("animated swing");
         } else {
             updateTitle($count);
             $('#badge-notifications').html($count);
-            $('#badge-notifications, #mark-seen-link').fadeIn('fast');
+            $('#badge-notifications, #mark-seen-link').removeClass('d-none');
 
             // Clone icon to retrigger animation
             var $icon = $('#icon-notifications .fa');
@@ -215,8 +215,8 @@ humhub.module('notification', function (module, require, $) {
     NotificationDropDown.prototype.markAsSeen = function (evt) {
         var that = this;
         return client.post(evt).then(function (response) {
-            $('#badge-notifications').hide();
-            $('#mark-seen-link').hide();
+            $('#badge-notifications').addClass('d-none');
+            $('#mark-seen-link').addClass('d-none');
             that.updateCount(0);
             notificationIds = [];
             notificationGroups = [];
@@ -269,7 +269,7 @@ humhub.module('notification', function (module, require, $) {
         initOverviewPage();
 
         if (!$pjax && view.isLarge()) {
-            $("#dropdown-notifications div.media-list").niceScroll({
+            $("#dropdown-notifications div.hh-list").niceScroll({
                 cursorwidth: "7",
                 cursorborder: "",
                 cursorcolor: "#555",
@@ -278,7 +278,7 @@ humhub.module('notification', function (module, require, $) {
                 railpadding: {top: 0, right: 3, left: 0, bottom: 0}
             });
 
-            $("#dropdown-notifications div.media-list").on('touchmove', function (evt) {
+            $("#dropdown-notifications div.hh-list").on('touchmove', function (evt) {
                 evt.preventDefault();
             });
         }

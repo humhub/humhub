@@ -165,7 +165,7 @@
             width: 400px;
             margin-left: -173px;
 
-            div.media-list {
+            div.hh-list {
                 max-height: 400px;
                 overflow: auto;
 
@@ -187,9 +187,8 @@
                         color: #d9534f;
                     }
 
-                    .d-flex {
+                    > div {
                         position: relative;
-                        display: flex;
 
                         .img-space {
                             position: absolute;
@@ -244,10 +243,9 @@
         background-color: lighten($primary, 8%);
     }
 
-    .media-list {
+    .hh-list {
         a {
             color: var(--hh-text-color-highlight);
-            padding: 0;
 
             &.new {
                 border: none;
@@ -260,6 +258,10 @@
                 time {
                     color: var(--bs-info);
                 }
+            }
+
+            &:hover {
+                border-left: 3px solid transparent;
             }
 
             &.placeholder {
@@ -318,13 +320,13 @@
     #search-menu-dropdown {
         width: 400px;
 
-        .media-list {
+        .hh-list {
             max-height: 200px;
             overflow: auto;
         }
 
         @include media-breakpoint-up(md) {
-            .media-list {
+            .hh-list {
                 max-height: 400px;
             }
         }

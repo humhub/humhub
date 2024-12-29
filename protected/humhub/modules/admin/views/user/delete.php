@@ -17,7 +17,7 @@ use humhub\widgets\form\ActiveForm;
     <div class="bg-light p-3">
 
         <div class="d-flex">
-            <div class="flex-shrink-0" style="padding-right:6px">
+            <div class="flex-shrink-0 me-2">
                 <?= UserImage::widget(['user' => $model->user, 'width' => 38, 'link' => true]); ?>
             </div>
             <div class="flex-grow-1">
@@ -36,7 +36,7 @@ use humhub\widgets\form\ActiveForm;
 
             <?php foreach ($model->getOwningSpaces() as $space): ?>
                 <div class="d-flex">
-                    <div class="flex-shrink-0" style="padding-right:6px">
+                    <div class="flex-shrink-0 me-2">
                         <?= SpaceImage::widget(['space' => $space, 'width' => 38, 'link' => true]); ?>
                     </div>
                     <div class="flex-grow-1">

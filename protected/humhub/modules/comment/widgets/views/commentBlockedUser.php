@@ -20,7 +20,7 @@ use humhub\widgets\bootstrap\Button;
 
     <hr class="comment-separator">
 
-    <div class="flex-shrink-0">
+    <div class="flex-shrink-0 me-2">
         <?= UserImage::widget(['user' => $comment->user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $comment->user->contentcontainer_id]]); ?>
     </div>
 

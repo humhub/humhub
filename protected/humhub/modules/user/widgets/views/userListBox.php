@@ -17,15 +17,13 @@ use humhub\widgets\modal\ModalButton;
 ]) ?>
 
     <?php if (count($users) === 0): ?>
-        <p><?= Yii::t('UserModule.base', 'No users found.'); ?></p>
+        <p><?= Yii::t('UserModule.base', 'No users found.') ?></p>
     <?php endif; ?>
 
-    <div id="userlist-content">
-
-        <div class="media-list">
-            <?php foreach ($users as $user) : ?>
+    <div id="userlist-content" class="hh-list">
+        <?php foreach ($users as $user) : ?>
             <a href="<?= $user->getUrl(); ?>" data-modal-close="1" class="d-flex">
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 me-2">
                     <?= Image::widget([
                         'user' => $user,
                         'link' => false,
@@ -38,7 +36,6 @@ use humhub\widgets\modal\ModalButton;
                     <h5><?= Html::encode($user->displayNameSub); ?></h5>
                 </div>
             </a>
-        </div>
         <?php endforeach; ?>
     </div>
 
