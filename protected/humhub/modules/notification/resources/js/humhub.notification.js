@@ -133,7 +133,7 @@ humhub.module('notification', function (module, require, $) {
 
     NotificationDropDown.prototype.handleResult = function (response) {
         if (!response.counter) {
-            this.$entryList.append(string.template(module.templates.placeholder, {'text': module.text('placeholder')}));
+            this.$entryList.append(string.template(module.templates.info, {'text': module.text('info')}));
         } else {
             this.lastEntryId = response.lastEntryId;
             this.$entryList.append(response.output);
@@ -253,7 +253,7 @@ humhub.module('notification', function (module, require, $) {
     };
 
     module.templates = {
-        placeholder: '<li class="placeholder">{text}</li>'
+        info: '<li class="info">{text}</li>'
     };
 
     var init = function ($pjax) {
