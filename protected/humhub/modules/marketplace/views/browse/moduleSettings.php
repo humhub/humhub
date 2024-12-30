@@ -6,22 +6,17 @@
  */
 
 use humhub\modules\marketplace\models\forms\GeneralModuleSettingsForm;
-use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
 /* @var GeneralModuleSettingsForm $settings */
 ?>
 
-<?php $form = ActiveForm::begin() ?>
-
-<?php Modal::beginDialog([
+<?php $form = Modal::beginFormDialog([
     'title' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings'),
     'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
 ]) ?>
 
-<?= $form->field($settings, 'includeBetaUpdates')->checkbox() ?>
+    <?= $form->field($settings, 'includeBetaUpdates')->checkbox() ?>
 
-<?php Modal::endDialog() ?>
-
-<?php ActiveForm::end() ?>
+<?php Modal::endFormDialog(); ?>

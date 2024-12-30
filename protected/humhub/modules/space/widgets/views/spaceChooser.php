@@ -23,7 +23,7 @@ use yii\helpers\Url;
     <a href="#" id="space-menu" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
         <!-- start: Show space image and name if chosen -->
         <?php if ($currentSpace) : ?>
-            <?= Image::widget(['space' => $currentSpace, 'width' => 32, 'htmlOptions' => ['class' => 'current-space-image']]); ?>
+            <?= Image::widget(['space' => $currentSpace, 'width' => 32, 'htmlOptions' => ['class' => 'current-space-image']]) ?>
         <?php endif; ?>
 
         <?php if (!$currentSpace) : ?>
@@ -52,12 +52,12 @@ use yii\helpers\Url;
         </li>
         <li><hr class="dropdown-divider"></li>
         <li>
-            <div class="media-list notLoaded" id="space-menu-spaces">
+            <div id="space-menu-spaces" class="notLoaded hh-list">
                 <?= $renderedItems ?>
             </div>
         </li>
         <li class="remoteSearch">
-            <div id="space-menu-remote-search" class="dropdown-item media-list notLoaded"></div>
+            <div id="space-menu-remote-search" class="dropdown-item notLoaded hh-list"></div>
         </li>
 
         <?php if ($canCreateSpace) : ?>

@@ -10,10 +10,6 @@
 }
 
 .dropdown-menu {
-    .dropdown-header {
-        font-size: 12px;
-    }
-
     li {
         a {
             @include media-breakpoint-up(sm) {
@@ -38,7 +34,6 @@
                 &:visited,
                 &:hover,
                 &:focus {
-                    background: none;
                     cursor: pointer;
                 }
             }

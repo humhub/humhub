@@ -40,16 +40,15 @@ Widgets & helpers:
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
 - `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
-- `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead
-- `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead
-- `humhub\libs\Html` use `humhub\helper\Html` instead
+- `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead (watch out for class name changes!)
+- `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead (watch out for class name changes!)
+- `humhub\libs\Html` use `humhub\helpers\Html` instead
 
 Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
-- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `Button::light()` or `Button::secondary()` instead
+- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `Button::secondary()` instead
 - `humhub\widgets\bootstrap\Badge::xs()` use `humhub\widgets\bootstrap\Badge::sm()` instead
-- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `humhub\widgets\bootstrap\Button::secondary()` instead
-- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `humhub\widgets\bootstrap\Badge::secondary()` instead
+- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `Badge::secondary()` instead
 - `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
 - `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
 
@@ -66,7 +65,7 @@ Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see
 If available, use HumHub widgets instead of the native library widgets.
 This will make it easier to migrate to new versions of the external libraries ([see Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets)).
 
-E.g., use `humhub\widgets\bootstrap\Html` instead of `\yii\bootstrap5\Html`.
+E.g. `\yii\bootstrap5\Html`, use `humhub\widgets\bootstrap\Html` instead.
 
 If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues).
 
@@ -82,7 +81,7 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
 - `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
-- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label, $url)` or `humhub\widgets\modal\ModalButton::primary($label)->submit($url)` instead
+- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label, $url)` (watch out the parameter order change!) or `humhub\widgets\modal\ModalButton::primary($label)->submit($url)` instead
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
@@ -123,17 +122,16 @@ Now:
 <?php Modal::endDialog() ?>
 ```
 
-If the footer contains "Submit" button, the modal dialog must be included in the form:
+If the footer contains a "Submit" button, the modal dialog must be included in the form by using the `Modal::beginFormDialog()` and `Modal::endFormDialog()` methods:
 
 ```php
-<?php $form = ActiveForm::begin() ?>
-    <?php Modal::beginDialog([
-        'title' => Yii::t('ModuleIdModule.base', 'Title'),
-        'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
-    ]) ?>
-        The form inputs
-    <?php Modal::endDialog()?>
-<?php ActiveForm::end() ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('ModuleIdModule.base', 'Title'),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'form' => [], //  configuration for the form (optional)
+]) ?>
+    Content and the form inputs for $form
+<?php Modal::endFormDialog()?>
 ```
 
 
@@ -192,7 +190,7 @@ Example:
 
 ### Dropdown
 
-- Search for `dropdown-menu` in the code and add `dropdown-header` (if a header item) or `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
+- Search for `dropdown-menu` in the code and add a `dropdown-header` class to header items, and a `dropdown-item` class to all link items (usually `a` and `button` tags ; [see documentation with example](https://getbootstrap.com/docs/5.3/components/dropdowns/#examples)).
 - Search for `divider` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?divider(?:\s[^"']*)?["'][^>]*>`), replace with `dropdown-divider`, and move them to a `hr` child tag of `li`.
 - Move the tags with `dropdown-header` class to a child tag of `li` (usually in a `h6` tag)
 - `dropdown-menu-left` -> `dropdown-menu-start`
@@ -285,8 +283,8 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `text-left` - > `text-start`
 - `text-right` - > `text-end`
 - `btn-group-xs` - > `btn-group-sm`
-- `img-rounded` - > `rounded`
 - `media-object img-rounded` - > `rounded`
+- `img-rounded` - > `rounded`
 - `data-toggle` - > `data-bs-toggle`
 - `data-target` - > `data-bs-target`
 - `data-dismiss` - > `data-bs-dismiss`
@@ -301,22 +299,28 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `help-block` - > `text-body-secondary` or  `form-text` if in a form
 - Remove  `jumbotron` class
 
-### Hidden elements
+### Hidden/Visible elements
 
-Use the new `d-none` class instead of the `display: none;` style.
+Use the new `d-none` class instead of the `display: none;` style (except for email views).
 
-In the following class replacements, you can also use `inline` or `flex` instead of `block` (depending on the desired display mode).
+In the following class replacements, you can also use `inline`, `flex`, etc. instead of `block` (depending on the desired display mode).
 E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
 
+In Bootstrap 3, the class applies to the designed screen size only, whereas in Bootstrap 5, the class applies to the designated screen size and larger.
+And `visible` will hide the element for other screen sizes, whereas in Bootstrap 5, you need to add `d-none` to hide for other screen sizes.
+
+Remplacement examples (must be adapted to the specific situation):
 - `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
-- `hidden-sm` → `d-sm-none d-md-block` (idem, replace `block` with `inline` or `flex`)
-- `hidden-md` → `d-md-none d-lg-block`
-- `hidden-lg` → `d-lg-none d-xl-block`
+- `hidden-sm` (hide on small screens only) → `d-sm-none d-md-block` (hide on small screens, but show on medium or above ; idem, replace `block` with `inline` or `flex`)
+- `hidden-md` (hide on medium screens only) → `d-md-none d-lg-block` (hide on medium screens, but show on large or above)
+- `hidden-lg` (hide on large screens) → `d-lg-none` (hide on large screens and above, including extra large screens which doesn't exist in Bootstrap 3)
 - `hidden` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?hidden(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('hidden')`, `Class("hidden")`, `Class' => 'hidden'`) -> `d-none` and others
-- `visible-xs` → `d-block d-sm-none`
-- `visible-sm` → `d-none d-sm-block d-md-none`
-- `visible-md` → `d-none d-md-block d-lg-none`
-- `visible-lg` → `d-none d-lg-block d-xl-none`
+- `visible-xs` (hide on small screens and above) → `d-block d-sm-none` or `d-sm-none` if the element is visible by default
+- `visible-sm` (visible on small screens only) → `d-none d-sm-block d-md-none` (hide on all screens except small screens)
+- `visible-xs visible-sm` -> `d-md-none` (hide on large screens of above)
+- `visible-md` → `d-none d-md-block d-lg-none` (show on medium screens only)
+- `visible-lg` → `d-none d-lg-block` (show on large screens or above)
+- `visible-md visible-lg` -> `d-none d-md-block` (show on medium screens of above)
 - `visible` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?visible(?:\s[^"']*)?["'][^>]*>` ; search also in JS for strings such as  `Class('visible')`, `Class("visible")` and `Class' => 'visible'`) → `d-block`
 
 #### JavaScript with `d-none`
@@ -332,7 +336,9 @@ Replacements to do on these elements:
 
 ### Spinners
 
-Search for `sk-` and replace this code, or similar:
+Search for `sk-`.
+
+Before:
 
 ```html
 <div class="sk-spinner sk-spinner-three-bounce">
@@ -342,13 +348,13 @@ Search for `sk-` and replace this code, or similar:
 </div>
 ```
 
-with, for a button:
+After, for a button:
 
 ```html
 <span class="spinner-border spinner-border-sm"></span>
 ```
 
-or, in a container:
+After, in a container:
 
 ```html
 <div class="text-center">
@@ -370,7 +376,7 @@ TODO in core and to document here.
 
 ### Label & Badge
 
-Search for all `label` classes (search for `label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
+Search for all `label` classes (`label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
 
 Use the `humhub\widgets\bootstrap\Badge` widget when possible.
 
@@ -386,13 +392,13 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 
 ### Media
 
-- Search for `media-list` and replace `ul` tag with `div`. E.g. `<ul class="media-list">` -> `<div class="media-list">`
+- Search for `media-list` and remove the HTML element, or, to keep a similar style, use the class `hh-list` and replace the `ul` tag with a `div`. E.g. `<ul class="media-list">` -> `<div class="hh-list">`
 - Inside, replace `li` tags with `div` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
 - Search for `media` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?media(?:\s[^"']*)?["'][^>]*>`) and replace with `d-flex`
 - `media-heading` -> `mt-0` (removes the top margin, keeping it close to the top of the content area) ; the related HTML tag can be replaced with `h5` or `h4`
 - `media-body` -> `flex-grow-1`
-- `media-left` -> `flex-shrink-0`
-- `media-right` -> `flex-shrink-0 order-last`
+- `media-left` -> `flex-shrink-0 me-2`
+- `media-right` -> `flex-shrink-0 ms-2 order-last`
 - `media-object` -> `flex-shrink-0` (if on an image, encapsulate the image in a `div` tag with `flex-shrink-0` class)
 - Remove `float-start` (or `pull-left`) class for images inside a `<div class="flex-shrink-0">`
 

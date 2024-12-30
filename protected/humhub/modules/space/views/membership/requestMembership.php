@@ -4,7 +4,6 @@ use humhub\helpers\Html;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\forms\RequestMembershipForm;
 use humhub\modules\space\models\Space;
-use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\web\View;
@@ -19,14 +18,13 @@ SpaceAsset::register($this);
 
 ?>
 
-<?php $form = ActiveForm::begin(); ?>
-    <?php Modal::beginDialog([
-        'title' => Yii::t('SpaceModule.base', '<strong>Request</strong> Membership'),
-        'footer' =>
-            ModalButton::cancel() . ' ' .
-            ModalButton::primary(Yii::t('SpaceModule.base', 'Send'))
-                ->action('space.requestMembershipSend', $space->createUrl('/space/membership/request-membership-form')),
-    ]) ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('SpaceModule.base', '<strong>Request</strong> Membership'),
+    'footer' =>
+        ModalButton::cancel() . ' ' .
+        ModalButton::primary(Yii::t('SpaceModule.base', 'Send'))
+            ->action('space.requestMembershipSend', $space->createUrl('/space/membership/request-membership-form')),
+]) ?>
 
         <?= Yii::t('SpaceModule.base', 'Access to this Space is restricted. Please introduce yourself to become a member.'); ?>
 
@@ -38,8 +36,7 @@ SpaceAsset::register($this);
             'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...'),
         ]) ?>
 
-    <?php Modal::endDialog() ?>
-<?php $form::end(); ?>
+<?php Modal::endFormDialog(); ?>
 
 
 <script <?= Html::nonce() ?>>

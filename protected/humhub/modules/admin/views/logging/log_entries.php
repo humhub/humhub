@@ -26,11 +26,11 @@ use yii\log\Logger;
         <hr>
     <?php endif; ?>
 
-    <div class="media-list">
+    <div id="admin-log-entry-list">
         <?php foreach ($logEntries as $entry) : ?>
 
-            <div class="d-flex">
-                <div class="flex-grow-1" style="word-break: break-word">
+            <div class="d-flex mx-2 mb-5">
+                <div class="flex-grow-1 me-2" style="word-break: break-word">
 
                     <?php switch ($entry->level) {
                         case Logger::LEVEL_INFO:

@@ -11,17 +11,15 @@ use humhub\widgets\modal\Modal;
 
 <?php Modal::beginDialog(['title' => $title]) ?>
 
-<?php if (count($spaces) === 0) : ?>
-    <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
-<?php endif; ?>
+    <?php if (count($spaces) === 0) : ?>
+        <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
+    <?php endif; ?>
 
-<div id="spacelist-content">
-
-    <div class="media-list">
+    <div id="spacelist-content" class="hh-list">
         <!-- BEGIN: Results -->
         <?php foreach ($spaces as $space) : ?>
             <a href="<?= $space->getUrl() ?>" data-modal-close="1" class="d-flex">
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 me-2">
                     <img class="rounded"
                          src="<?= $space->getProfileImage()->getUrl() ?>" width="50"
                          height="50" style="width: 50px; height: 50px;">
@@ -38,14 +36,12 @@ use humhub\widgets\modal\Modal;
     </div>
 
     <div class="pagination-container">
-        <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+        <?= AjaxLinkPager::widget(['pagination' => $pagination]) ?>
     </div>
 
-</div>
-
-<script <?= Html::nonce() ?>>
-    // scroll to top of list
-    $(".modal-body").animate({scrollTop: 0}, 200);
-</script>
+    <script <?= Html::nonce() ?>>
+        // scroll to top of list
+        $(".modal-body").animate({scrollTop: 0}, 200);
+    </script>
 
 <?php Modal::endDialog() ?>

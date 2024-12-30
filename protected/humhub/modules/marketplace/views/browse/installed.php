@@ -19,6 +19,6 @@ use humhub\widgets\modal\ModalButton;
             ->options(['data-module-id' => $moduleId]),
 ]) ?>
 
-<?= Yii::t('MarketplaceModule.base', 'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?') ?>
+    <?= Yii::t('MarketplaceModule.base', 'Well done! To make the module available within your network, you will also need to enable it. Do you want to enable it now?') ?>
 
 <?php Modal::endDialog() ?>

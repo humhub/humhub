@@ -12,6 +12,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
 use humhub\modules\space\permissions\SpaceDirectoryAccess;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\components\PermissionManager;
 use humhub\modules\user\models\Follow;
 use Throwable;
@@ -116,7 +117,7 @@ class Chooser extends Widget
      */
     protected function getNoSpaceHtml()
     {
-        $html = '<i class="fa fa-dot-circle-o"></i><br>' . Yii::t('SpaceModule.chooser', 'My spaces');
+        $html = Icon::get('dot-circle-o') . '<br>' . Yii::t('SpaceModule.chooser', 'My spaces');
         return Html::tag('div', $html, ['class' => 'no-space']);
     }
 

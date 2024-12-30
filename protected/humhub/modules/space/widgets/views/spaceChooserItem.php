@@ -16,7 +16,7 @@ use humhub\widgets\bootstrap\Badge;
     data-space-chooser-item <?= $data ?>
     data-space-guid="<?= $space->guid ?>">
 
-    <div class="flex-shrink-0">
+    <div class="flex-shrink-0 me-2">
         <?= Image::widget(['space' => $space, 'width' => 24]) ?>
     </div>
     <div class="flex-grow-1">

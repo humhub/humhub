@@ -3,7 +3,6 @@
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceNameColorInput;
-use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
@@ -15,36 +14,33 @@ use yii\helpers\Url;
 $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 ?>
 
-<?php $form = ActiveForm::begin(['enableClientValidation' => false]); ?>
-
-<?php Modal::beginDialog([
+<?php $form = Modal::beginFormDialog([
     'title' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'),
     'footer' => ModalButton::save(Yii::t('SpaceModule.manage', 'Next'), Url::to(['/space/create/create'])),
     'size' => Modal::SIZE_SMALL,
+    'form' => ['enableClientValidation' => false],
 ]) ?>
 
-<?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
-<?= $form->field($model, 'description') ?>
+    <?= SpaceNameColorInput::widget(['form' => $form, 'model' => $model, 'focus' => true]) ?>
+    <?= $form->field($model, 'description') ?>
 
-<a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
-    <i class="fa fa-caret-right"></i> <?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
-</a>
+    <a data-bs-toggle="collapse" id="access-settings-link" href="#collapse-access-settings" style="font-size: 11px;">
+        <i class="fa fa-caret-right"></i> <?= Yii::t('SpaceModule.manage', 'Advanced access settings') ?>
+    </a>
 
-<div id="collapse-access-settings" class="panel-collapse collapse">
-    <br>
-    <div class="row">
-        <div class="col-md-6">
-            <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false) ?>
-        </div>
-        <div class="col-md-6 spaceJoinPolicy">
-            <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false) ?>
+    <div id="collapse-access-settings" class="panel-collapse collapse">
+        <br>
+        <div class="row">
+            <div class="col-md-6">
+                <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false) ?>
+            </div>
+            <div class="col-md-6 spaceJoinPolicy">
+                <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false) ?>
+            </div>
         </div>
     </div>
-</div>
 
-<?php Modal::endDialog(); ?>
-
-<?php ActiveForm::end(); ?>
+<?php Modal::endFormDialog(); ?>
 
 <script <?= Html::nonce() ?>>
 

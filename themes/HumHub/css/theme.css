@@ -11038,39 +11038,38 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   width: 400px;
   margin-left: -173px;
 }
-#topbar-first .notifications .dropdown-menu div.media-list {
+#topbar-first .notifications .dropdown-menu div.hh-list {
   max-height: 400px;
   overflow: auto;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex {
   position: relative;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex i.approval {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.approval {
   position: absolute;
   left: 2px;
   top: 36px;
   font-size: 14px;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex i.accepted {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.accepted {
   color: #5cb85c;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex i.declined {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.declined {
   color: #d9534f;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex .d-flex {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex > div {
   position: relative;
-  display: flex;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex .d-flex .img-space {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex > div .img-space {
   position: absolute;
   top: 14px;
   left: 14px;
 }
-#topbar-first .notifications .dropdown-menu div.media-list a.d-flex.new {
+#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex.new {
   background-color: transparent;
   border-left: none;
 }
-* #topbar-first .notifications .dropdown-menu div.media-list a.d-flex:not(.new) > a, #topbar-first .notifications .dropdown-menu div.media-list a.d-flex:not(.new) > a strong {
+* #topbar-first .notifications .dropdown-menu div.hh-list a.d-flex:not(.new) > a, #topbar-first .notifications .dropdown-menu div.hh-list a.d-flex:not(.new) > a strong {
   color: var(--hh-text-color-secondary);
 }
 #topbar-first .dropdown-footer {
@@ -11095,30 +11094,32 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 #topbar-first .btn-enter:hover {
   background-color: #527588;
 }
-#topbar-first .media-list a {
+#topbar-first .hh-list a {
   color: var(--hh-text-color-highlight);
-  padding: 0;
 }
-#topbar-first .media-list a.new {
+#topbar-first .hh-list a.new {
   border: none;
   background: none;
 }
-#topbar-first .media-list a.new:hover {
+#topbar-first .hh-list a.new:hover {
   background-color: var(--hh-background-color-secondary) !important;
 }
-#topbar-first .media-list a.new time {
+#topbar-first .hh-list a.new time {
   color: var(--bs-info);
 }
-#topbar-first .media-list a.placeholder {
+#topbar-first .hh-list a:hover {
+  border-left: 3px solid transparent;
+}
+#topbar-first .hh-list a.placeholder {
   border-bottom: none;
 }
-#topbar-first .media-list a time {
+#topbar-first .hh-list a time {
   font-size: 10px;
 }
-#topbar-first .media-list a i.accepted {
+#topbar-first .hh-list a i.accepted {
   color: var(--bs-link-color) !important;
 }
-#topbar-first .media-list a i.declined {
+#topbar-first .hh-list a i.declined {
   color: var(--bs-danger) !important;
 }
 #topbar-first .account .user-title {
@@ -11148,12 +11149,12 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 #topbar-second #space-menu-dropdown, #topbar-second #search-menu-dropdown {
   width: 400px;
 }
-#topbar-second #space-menu-dropdown .media-list, #topbar-second #search-menu-dropdown .media-list {
+#topbar-second #space-menu-dropdown .hh-list, #topbar-second #search-menu-dropdown .hh-list {
   max-height: 200px;
   overflow: auto;
 }
 @media (min-width: 768px) {
-  #topbar-second #space-menu-dropdown .media-list, #topbar-second #search-menu-dropdown .media-list {
+  #topbar-second #space-menu-dropdown .hh-list, #topbar-second #search-menu-dropdown .hh-list {
     max-height: 400px;
   }
 }
@@ -11274,9 +11275,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   --bs-dropdown-bg: var(--hh-background-color-main);
   --bs-dropdown-font-size: 14px;
 }
-.dropdown-menu .dropdown-header {
-  font-size: 12px;
-}
 @media (min-width: 576px) {
   .dropdown-menu li a {
     white-space: nowrap;
@@ -11294,7 +11292,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   width: 14px;
 }
 .dropdown-menu li a:not(.btn):hover, .dropdown-menu li a:not(.btn):visited, .dropdown-menu li a:not(.btn):focus {
-  background: none;
   cursor: pointer;
 }
 .dropdown-menu li:hover, .dropdown-menu li.selected {
@@ -11359,97 +11356,6 @@ ul.contextMenu li a i {
 }
 ul.contextMenu li a:hover {
   background: none;
-}
-.media-list.dropdown-item:hover {
-  background-color: inherit;
-  color: inherit;
-}
-.media-list > div, .media-list > a {
-  padding: 10px;
-  border-bottom: 1px solid #eee;
-  position: relative;
-  border-left: 3px solid white;
-}
-.media-list > div:hover, .media-list > div.selected, .media-list > a:hover, .media-list > a.selected {
-  background-color: var(--hh-background-color-secondary);
-  border-left: 3px solid var(--bs-info);
-}
-.media-list > diva, .media-list > div a, .media-list > aa, .media-list > a a {
-  color: var(--hh-text-color-main);
-}
-.media-list > div.new, .media-list > a.new {
-  border-left: 3px solid var(--bs-info);
-  background-color: var(--hh-background-color-highlight);
-}
-.media-list > div.new:hover, .media-list > a.new:hover {
-  background-color: var(--hh-background-color-highlight-soft);
-}
-.media-list > div.placeholder, .media-list > a.placeholder {
-  font-size: 14px !important;
-  border-bottom: none;
-}
-.media-list > div.placeholder:hover, .media-list > a.placeholder:hover {
-  background: none !important;
-  border-left: 3px solid white;
-}
-.media-list > div .badge-space-type, .media-list > a .badge-space-type {
-  background-color: var(--hh-background-color-secondary);
-  border: 1px solid var(--hh-background3);
-  color: var(--hh-background4);
-  padding: 3px 3px 2px 3px;
-}
-.media-list > div .flex-shrink-0, .media-list > a .flex-shrink-0 {
-  margin-right: 10px;
-}
-.media-list > div .flex-grow-1, .media-list > a .flex-grow-1 {
-  font-size: 13px;
-  white-space: normal;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  word-break: break-word;
-  hyphens: auto;
-}
-.media-list > div h4, .media-list > div .h4, .media-list > a h4, .media-list > a .h4 {
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--hh-text-color-highlight);
-}
-.media-list > div h4 a, .media-list > div .h4 a, .media-list > a h4 a, .media-list > a .h4 a {
-  color: var(--hh-text-color-highlight);
-}
-.media-list > div h4 small, .media-list > div .h4 small, .media-list > div h4 .small, .media-list > div .h4 .small, .media-list > div h4 small a, .media-list > div .h4 small a, .media-list > div h4 .small a, .media-list > div .h4 .small a, .media-list > a h4 small, .media-list > a .h4 small, .media-list > a h4 .small, .media-list > a .h4 .small, .media-list > a h4 small a, .media-list > a .h4 small a, .media-list > a h4 .small a, .media-list > a .h4 .small a {
-  font-size: 11px;
-  color: var(--hh-text-color-soft);
-}
-.media-list > div h4 .content, .media-list > div .h4 .content, .media-list > a h4 .content, .media-list > a .h4 .content {
-  margin-right: 35px;
-}
-.media-list > div h5, .media-list > div .h5, .media-list > a h5, .media-list > a .h5 {
-  color: var(--hh-text-color-soft2);
-  font-weight: 300;
-  margin-top: 5px;
-  margin-bottom: 5px;
-  min-height: 15px;
-}
-.media-list > div .content a, .media-list > a .content a {
-  word-break: break-all;
-  color: var(--bs-link-color);
-}
-.media-list > div strong, .media-list > a strong {
-  color: var(--hh-text-color-highlight);
-}
-.media-list > div .time, .media-list > a .time {
-  font-size: 11px;
-  color: var(--hh-text-color-soft);
-}
-.media-list > div .module-controls, .media-list > a .module-controls {
-  font-size: 85%;
-}
-.media-list > div .module-controls a, .media-list > a .module-controls a {
-  color: var(--bs-link-color);
-}
-.media-list > div .content .files a, .media-list > a .content .files a {
-  color: var(--hh-text-color-highlight);
 }
 .content span {
   word-wrap: break-word;
@@ -12487,6 +12393,94 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
 }
 .profile-item {
   margin-top: 15px;
+}
+.hh-list.dropdown-item:hover {
+  background-color: inherit;
+  color: inherit;
+}
+.hh-list > div, .hh-list > a {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  position: relative;
+  border-left: 3px solid white;
+}
+.hh-list > div:hover, .hh-list > div.selected, .hh-list > a:hover, .hh-list > a.selected {
+  background-color: var(--hh-background-color-secondary);
+  border-left: 3px solid var(--bs-info);
+}
+.hh-list > diva, .hh-list > div a, .hh-list > aa, .hh-list > a a {
+  color: var(--hh-text-color-main);
+}
+.hh-list > div.new, .hh-list > a.new {
+  border-left: 3px solid var(--bs-info);
+  background-color: var(--hh-background-color-highlight);
+}
+.hh-list > div.new:hover, .hh-list > a.new:hover {
+  background-color: var(--hh-background-color-highlight-soft);
+}
+.hh-list > div.placeholder, .hh-list > a.placeholder {
+  font-size: 14px !important;
+  border-bottom: none;
+}
+.hh-list > div.placeholder:hover, .hh-list > a.placeholder:hover {
+  background: none !important;
+  border-left: 3px solid white;
+}
+.hh-list > div .badge-space-type, .hh-list > a .badge-space-type {
+  background-color: var(--hh-background-color-secondary);
+  border: 1px solid var(--hh-background3);
+  color: var(--hh-background4);
+  padding: 3px 3px 2px 3px;
+}
+.hh-list > div .flex-grow-1, .hh-list > a .flex-grow-1 {
+  font-size: 13px;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  hyphens: auto;
+}
+.hh-list > div h4, .hh-list > div .h4, .hh-list > a h4, .hh-list > a .h4 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--hh-text-color-highlight);
+}
+.hh-list > div h4 a, .hh-list > div .h4 a, .hh-list > a h4 a, .hh-list > a .h4 a {
+  color: var(--hh-text-color-highlight);
+}
+.hh-list > div h4 small, .hh-list > div .h4 small, .hh-list > div h4 .small, .hh-list > div .h4 .small, .hh-list > div h4 small a, .hh-list > div .h4 small a, .hh-list > div h4 .small a, .hh-list > div .h4 .small a, .hh-list > a h4 small, .hh-list > a .h4 small, .hh-list > a h4 .small, .hh-list > a .h4 .small, .hh-list > a h4 small a, .hh-list > a .h4 small a, .hh-list > a h4 .small a, .hh-list > a .h4 .small a {
+  font-size: 11px;
+  color: var(--hh-text-color-soft);
+}
+.hh-list > div h4 .content, .hh-list > div .h4 .content, .hh-list > a h4 .content, .hh-list > a .h4 .content {
+  margin-right: 35px;
+}
+.hh-list > div h5, .hh-list > div .h5, .hh-list > a h5, .hh-list > a .h5 {
+  color: var(--hh-text-color-soft2);
+  font-weight: 300;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  min-height: 15px;
+}
+.hh-list > div .content a, .hh-list > a .content a {
+  word-break: break-all;
+  color: var(--bs-link-color);
+}
+.hh-list > div strong, .hh-list > a strong {
+  color: var(--hh-text-color-highlight);
+}
+.hh-list > div .time, .hh-list > a .time {
+  font-size: 11px;
+  color: var(--hh-text-color-soft);
+}
+.hh-list > div .module-controls, .hh-list > a .module-controls {
+  font-size: 85%;
+}
+.hh-list > div .module-controls a, .hh-list > a .module-controls a {
+  color: var(--bs-link-color);
+}
+.hh-list > div .content .files a, .hh-list > a .content .files a {
+  color: var(--hh-text-color-highlight);
 }
 .list-group {
   --bs-list-group-bg: var(--hh-background-color-main);
@@ -15026,15 +15020,15 @@ img.bounceIn {
     padding: 0 !important;
     margin: 2px !important;
   }
-  .dropdown-menu > li a, .nav-pills .dropdown-menu li a, .nav-tabs .dropdown-menu li a, .account .dropdown-menu li a, .modal .dropdown-menu li a, .panel .dropdown-menu li a {
+  .dropdown-menu {
+    max-width: 320px;
+  }
+  .dropdown-menu > li:not(.dropdown-header) a {
     padding-top: 10px;
     padding-bottom: 10px;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-  }
-  .dropdown-menu {
-    max-width: 320px;
   }
   select.form-control:not([multiple]), .grid-view .filters select:not([multiple]) {
     padding-right: 23px;

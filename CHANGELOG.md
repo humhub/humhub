@@ -2,10 +2,11 @@ HumHub Changelog
 ================
 
 
-1.17.0-beta.3 (Unreleased)
+1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
 - Enh #7307: Improve request scheme detection
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
+- Fix #7309: Fix style of the "Notification Settings" button on small screen
 - Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
 - Fix #454: Profile about page missing left and right margin on mobile screen
@@ -21,6 +22,7 @@ HumHub Changelog
 - Enh #7344: Disable editing Base URL when setting is fixed
 - Fix #7345: Fix debug mode setting in .env
 - Enh #7349: Add body classes about the current device and methods to the `DeviceDetectorHelper` class
+- Enh #7353: Enable dot env to read variables based on application type
 
 1.17.0-beta.2 (November 12, 2024)
 ---------------------------------
@@ -120,6 +122,8 @@ HumHub Changelog
 - Fix #7296: Fix email validation of invite new users
 - Fix #7319: Display correct profile field value in user subtitle
 - Fix #7322: Always allow invitation by link from Administration. Implement separate invitation by link from People.
+- Enh #7335: Update GitHub workflow versions
+- Fix #7351: Fix caching of space permissions in user stream
 - Fix #7297: Auto refresh a page with obsolete nonce value
 
 1.16.2 (September 5, 2024)

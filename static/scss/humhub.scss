@@ -72,6 +72,11 @@ $prev-profile: false;
     @import "profile";
 }
 
+$prev-list: false;
+@if not $prev-list {
+    @import "list";
+}
+
 $prev-list-group: false;
 @if not $prev-list-group {
     @import "list-group";

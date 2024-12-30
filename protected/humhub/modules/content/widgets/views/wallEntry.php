@@ -34,7 +34,7 @@ use yii\helpers\Url;
             <?php endif; ?>
             <!-- end: show wall entry options -->
 
-            <div class="flex-shrink-0">
+            <div class="flex-shrink-0 me-2">
                 <?= UserImage::widget([
                     'user' => $user,
                     'width' => 40,
@@ -43,7 +43,7 @@ use yii\helpers\Url;
             </div>
 
             <?php if ($showContentContainer && $container instanceof Space): ?>
-                <div class="flex-shrink-0">
+                <div class="flex-shrink-0 me-2">
                     <?= SpaceImage::widget([
                         'space' => $container,
                         'width' => 20,

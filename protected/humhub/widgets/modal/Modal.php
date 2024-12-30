@@ -8,6 +8,7 @@
 
 namespace humhub\widgets\modal;
 
+use humhub\widgets\form\ActiveForm;
 use yii\bootstrap5\Html;
 
 /**
@@ -134,5 +135,32 @@ class Modal extends \yii\bootstrap5\Modal
         if ($widget) {
             echo $widget->renderDialogEnd();
         }
+    }
+
+    /**
+     * Initializes and begins rendering the dialog part of the modal
+     * including an ActiveForm.
+     *
+     * @see beginDialog
+     * @param $config the ActiveForm configuration
+     * @return ActiveForm
+     */
+    public static function beginFormDialog($config = []): ActiveForm
+    {
+        $form = ActiveForm::begin($config['form'] ?? []);
+        unset($config['form']);
+
+        self::beginDialog($config);
+        return $form;
+    }
+
+    /**
+     * @see beginFormDialog
+     * @return void
+     */
+    public static function endFormDialog()
+    {
+        ActiveForm::end();
+        self::endDialog();
     }
 }

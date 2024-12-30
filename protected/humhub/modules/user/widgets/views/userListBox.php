@@ -16,41 +16,38 @@ use humhub\widgets\modal\ModalButton;
     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 
-<?php if (count($users) === 0): ?>
-    <p><?= Yii::t('UserModule.base', 'No users found.'); ?></p>
-<?php endif; ?>
+    <?php if (count($users) === 0): ?>
+        <p><?= Yii::t('UserModule.base', 'No users found.') ?></p>
+    <?php endif; ?>
 
-<div id="userlist-content">
-
-    <div class="media-list">
+    <div id="userlist-content" class="hh-list">
         <?php foreach ($users as $user) : ?>
-        <a href="<?= $user->getUrl(); ?>" data-modal-close="1" class="d-flex">
-            <div class="flex-shrink-0">
-                <?= Image::widget([
-                    'user' => $user,
-                    'link' => false,
-                    'hideOnlineStatus' => $hideOnlineStatus,
-                ]) ?>
-            </div>
+            <a href="<?= $user->getUrl(); ?>" data-modal-close="1" class="d-flex">
+                <div class="flex-shrink-0 me-2">
+                    <?= Image::widget([
+                        'user' => $user,
+                        'link' => false,
+                        'hideOnlineStatus' => $hideOnlineStatus,
+                    ]) ?>
+                </div>
 
-            <div class="flex-grow-1">
-                <h4 class="mt-0"><?= Html::encode($user->displayName); ?></h4>
-                <h5><?= Html::encode($user->displayNameSub); ?></h5>
-            </div>
-        </a>
+                <div class="flex-grow-1">
+                    <h4 class="mt-0"><?= Html::encode($user->displayName); ?></h4>
+                    <h5><?= Html::encode($user->displayNameSub); ?></h5>
+                </div>
+            </a>
+        <?php endforeach; ?>
     </div>
-    <?php endforeach; ?>
-</div>
 
-<div class="pagination-container">
-    <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
-</div>
+    <div class="pagination-container">
+        <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+    </div>
 
-<script <?= Html::nonce() ?>>
+    <script <?= Html::nonce() ?>>
 
-    // scroll to top of list
-    $(".modal-body").animate({scrollTop: 0}, 200);
+        // scroll to top of list
+        $(".modal-body").animate({scrollTop: 0}, 200);
 
-</script>
+    </script>
 
 <?php Modal::endDialog() ?>

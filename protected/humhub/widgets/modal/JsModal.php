@@ -15,7 +15,7 @@ use humhub\widgets\JsWidget;
  * Usage examples:
  *
  * ```
- * <?= Modal::widget([
+ * <?= JsModal::widget([
  *   'id' => 'myModal',
  *   'jsWidget' => 'myJsWidget',
  * ]) ?>

@@ -2,7 +2,6 @@
 
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
-use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use yii\captcha\Captcha;
 use yii\helpers\Url;
@@ -13,42 +12,38 @@ use yii\helpers\Url;
 
 ?>
 
-<?php $form = ActiveForm::begin() ?>
+<?php $form = Modal::beginFormDialog([
+    'title' => Yii::t('UserModule.auth', '<strong>Password</strong> recovery'),
+]) ?>
 
-    <?php Modal::beginDialog([
-        'title' => Yii::t('UserModule.auth', '<strong>Password</strong> recovery'),
-    ]) ?>
+    <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
 
-        <p><?= Yii::t('UserModule.auth', 'Just enter your e-mail address. We\'ll send you recovery instructions!'); ?></p>
+    <div class="mb-3">
+        <?= $form->field($model, 'email')->textInput(['id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')]); ?>
+    </div>
 
-        <div class="mb-3">
-            <?= $form->field($model, 'email')->textInput(['id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')]); ?>
-        </div>
+    <div class="mb-3">
+        <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
+            'model' => $model,
+            'attribute' => 'verifyCode',
+            'captchaAction' => '/user/auth/captcha',
+            'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')],
+        ])->label(false) ?>
+    </div>
 
-        <div class="mb-3">
-            <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                'model' => $model,
-                'attribute' => 'verifyCode',
-                'captchaAction' => '/user/auth/captcha',
-                'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')],
-            ])->label(false) ?>
-        </div>
+    <hr>
 
-        <hr>
+    <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
+       data-action-url="<?= Url::to(['/user/password-recovery']) ?>" data-ui-loader>
+        <?= Yii::t('UserModule.auth', 'Reset password') ?>
+    </a>
+    &nbsp;
+    <a href="#" class="btn btn-light" data-action-click="ui.modal.load"
+       data-action-url="<?= Url::to(['/user/auth/login']) ?>" data-ui-loader>
+        <?= Yii::t('UserModule.auth', 'Back') ?>
+    </a>
 
-        <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
-           data-action-url="<?= Url::to(['/user/password-recovery']) ?>" data-ui-loader>
-            <?= Yii::t('UserModule.auth', 'Reset password') ?>
-        </a>
-        &nbsp;
-        <a href="#" class="btn btn-light" data-action-click="ui.modal.load"
-           data-action-url="<?= Url::to(['/user/auth/login']) ?>" data-ui-loader>
-            <?= Yii::t('UserModule.auth', 'Back') ?>
-        </a>
-
-    <?php Modal::endDialog() ?>
-
-<?php $form::end() ?>
+<?php Modal::endFormDialog() ?>
 
 
 <script <?= Html::nonce() ?>>

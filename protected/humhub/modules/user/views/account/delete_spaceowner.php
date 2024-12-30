@@ -11,7 +11,7 @@ use humhub\modules\space\widgets\Image;
 
 <?php foreach ($ownSpaces as $space): ?>
     <div class="d-flex">
-        <div class="flex-shrink-0" style="padding-right:6px">
+        <div class="flex-shrink-0 me-2">
             <?= Image::widget(['space' => $space, 'width' => 38, 'link' => true]); ?>
         </div>
         <div class="flex-grow-1">

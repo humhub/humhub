@@ -21,10 +21,10 @@ use humhub\modules\ui\menu\MenuLink;
 ?>
 
 <?php if (!empty($entries)): ?>
-    <li class="d-none d-sm-block d-md-none"><hr class="dropdown-divider"></li>
+    <li class="d-md-none"><hr class="dropdown-divider"></li>
     <?php foreach ($entries as $k => $entry): ?>
         <?php if ($entry instanceof MenuLink): ?>
-            <li class="d-none d-sm-block d-md-none footer-nav-entry">
+            <li class="d-md-none footer-nav-entry">
                 <?= Html::a($entry->getIcon() . ' ' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
             </li>
         <?php endif; ?>

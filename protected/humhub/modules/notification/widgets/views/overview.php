@@ -18,8 +18,7 @@ use yii\helpers\Url;
 
 <?= Badge::danger()
     ->id('badge-notifications')
-    ->cssClass('label-notifications')
-    ->style('display:none;') ?>
+    ->cssClass(['label-notifications', 'd-none']) ?>
 
 <!-- container for ajax response -->
 <ul id="dropdown-notifications" class="dropdown-menu">
@@ -32,19 +31,20 @@ use yii\helpers\Url;
                     ->icon('check')
                     ->action('markAsSeen', ['/notification/list/mark-as-seen'])
                     ->id('mark-seen-link')
-                    ->style('display:none')
+                    ->cssClass('d-none')
                     ->sm()
                     ->tooltip(Yii::t('NotificationModule.base', 'Mark all as seen')) ?>
                 <?= Button::light()
                     ->icon('cog')
                     ->link(['/notification/user'])
+                    ->loader(false)
                     ->sm()
                     ->tooltip(Yii::t('NotificationModule.base', 'Notification Settings')) ?>
             </div>
         </div>
     </li>
     <li>
-        <div class="dropdown-item media-list"></div>
+        <div class="dropdown-item hh-list"></div>
     </li>
     <li id="loader_notifications">
         <?= LoaderWidget::widget() ?>
