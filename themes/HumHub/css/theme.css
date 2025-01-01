@@ -16871,112 +16871,25 @@ ul.tag_input li img {
 }
 /**
  * Define or overwrite your theme variables here.
+ * If a SCSS variable is overwritten, the equivalent CSS variables must be overwritten too
  *
- * You must import the parent theme SCSS variables. E.g.:
- * @import "../../HumHub/scss/_variables.scss";
+ * Use the `baseTheme` variable to define the parent theme. E.g.:
+ * $baseTheme: "HumHub";
  *
  * Check for @humhub/static/scss/_variables.scss file for all available variables.
  *
  * You can also access your variables within your view files by calling Yii::$app->view->theme->variable('myVariable');
  *
- * You can disable the import of humhub theme components by using variables of the format @prev-{component} e.g.:
- * This will prevent comment.less component from being imported.
- * e.g.:
+ * You can disable the import of HumHub theme components by using variables of the format @prev-{component}.
+ * This will prevent comment.scss component from being imported.
+ * E.g.:
  * @prev-comment: true;
  *
 **/
-:root {
-  --bs-primary: #435f6f;
-  --bs-secondary: #7a7a7a;
-  --bs-success: #97d271;
-  --bs-info: #21A1B3;
-  --bs-warning: #FFC107;
-  --bs-danger: #FC4A64;
-  --bs-light: #e7e7e7;
-  --bs-dark: #333;
-  --bs-primary-rgb: 67, 95, 111;
-  --bs-secondary-rgb: 122, 122, 122;
-  --bs-success-rgb: 151, 210, 113;
-  --bs-info-rgb: 33, 161, 179;
-  --bs-warning-rgb: 255, 193, 7;
-  --bs-danger-rgb: 252, 74, 100;
-  --bs-light-rgb: 231, 231, 231;
-  --bs-dark-rgb: 51, 51, 51;
-  --bs-body-color-rgb: 85, 85, 85;
-  --bs-body-bg-rgb: 237, 237, 237;
-  --bs-font-sans-serif: "Open Sans", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  --bs-body-font-family: var(--bs-font-sans-serif);
-  --bs-body-font-size: 14px;
-  --bs-body-font-weight: 400;
-  --bs-body-line-height: 1.5;
-  --bs-body-color: #555;
-  --bs-body-bg: #ededed;
-  --bs-link-color: #21A1B3;
-  --bs-link-hover-color: #197a88;
-  --bs-code-color: #197a88;
-  --hh-text-color-main: #555;
-  --hh-text-color-default: #4b4b4b;
-  --hh-text-color-secondary: #7a7a7a;
-  --hh-text-color-highlight: #000;
-  --hh-text-color-soft: #555555;
-  --hh-text-color-soft2: #aeaeae;
-  --hh-text-color-soft3: #bac2c7;
-  --hh-text-color-contrast: #fff;
-  --hh-background-color-main: #fff;
-  --hh-background-color-secondary: #f9f9f9;
-  --hh-background-color-page: #ededed;
-  --hh-background-color-highlight: rgba(33, 161, 179, 0.2);
-  --hh-background-color-highlight-soft: #f2f9fb;
-  --hh-background3: #d7d7d7;
-  --hh-background4: #b2b2b2;
-  --hh-background-color-success: #f7fbf4;
-  --hh-text-color-success: #84be5e;
-  --hh-border-color-success: #97d271;
-  --hh-background-color-warning: #fffbf7;
-  --hh-text-color-warning: #e9b168;
-  --hh-border-color-warning: #fdd198;
-  --hh-background-color-danger: #fff6f6;
-  --hh-text-color-danger: #ff8989;
-  --hh-border-color-danger: #ff8989;
-  --hh-mail-font-family: Open Sans, Arial, Tahoma, Helvetica, sans-serif;
-  --hh-fixed-header-height: 130px;
-  --hh-fixed-footer-height: 0px;
-  --default: #e7e7e7;
-  --primary: var(--bs-primary);
-  --info: var(--bs-info);
-  --success: var(--bs-success);
-  --warning: var(--bs-warning);
-  --danger: var(--bs-danger);
-  --link: var(--bs-link-color);
-  --text-color-main: #555;
-  --text-color-default: #4b4b4b;
-  --text-color-secondary: #7a7a7a;
-  --text-color-highlight: #000;
-  --text-color-soft: #555555;
-  --text-color-soft2: #aeaeae;
-  --text-color-soft3: #bac2c7;
-  --text-color-contrast: #fff;
-  --background-color-main: #fff;
-  --background-color-secondary: #f9f9f9;
-  --background-color-page: #ededed;
-  --background-color-highlight: rgba(33, 161, 179, 0.2);
-  --background-color-highlight-soft: #f2f9fb;
-  --background3: #d7d7d7;
-  --background4: #b2b2b2;
-  --background-color-success: #f7fbf4;
-  --text-color-success: #84be5e;
-  --border-color-success: #97d271;
-  --background-color-warning: #fffbf7;
-  --text-color-warning: #e9b168;
-  --border-color-warning: #fdd198;
-  --background-color-danger: #fff6f6;
-  --text-color-danger: #ff8989;
-  --border-color-danger: #ff8989;
-  --mail-font-family: Open Sans, Arial, Tahoma, Helvetica, sans-serif;
-}
 /**
  * Define your mixins within this file.
 **/
 /**
  * Define or overwrite your theme selectors within this file.
 **/
+/*# sourceMappingURL=./theme.map */

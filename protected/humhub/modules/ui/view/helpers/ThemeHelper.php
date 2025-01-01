@@ -241,11 +241,21 @@ class ThemeHelper
             $imports[] = $treeTheme->getBasePath() . '/scss/build';
         }
 
-        // TODO: add Source Maps: https://scssphp.github.io/scssphp/docs/#source-maps
+        // TODO improve the source map to deal with multiple import paths
+        $compiler->setSourceMap(Compiler::SOURCE_MAP_FILE);
+        $compiler->setSourceMapOptions([
+            'sourceMapURL' => './theme.map',
+            'sourceMapFilename' => 'theme.css',
+            'sourceRoot' => $theme->name === 'HumHub' ? '../../../static/scss/' : '../',
+            'sourceMapBasepath' => $theme->name === 'HumHub' ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
+        ]);
 
         try {
-            $css = $compiler->compileString('@import "' . implode('", "', $imports) . '";')->getCss();
-            if (file_put_contents($theme->getBasePath() . '/css/theme.css', $css) !== false) {
+            $result = $compiler->compileString('@import "' . implode('", "', $imports) . '";');
+            if (
+                file_put_contents($theme->getBasePath() . '/css/theme.css', $result->getCss()) !== false
+                && file_put_contents($theme->getBasePath() . '/css/theme.map', $result->getSourceMap()) !== false
+            ) {
                 Yii::$app->assetManager->clear();
                 return true;
             }

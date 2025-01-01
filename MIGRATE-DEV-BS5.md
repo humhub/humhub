@@ -460,7 +460,7 @@ Full list of Bootstrap CSS variables here: https://github.com/twbs/bootstrap/tre
 
 ### Breakpoints
 
-#### Available SCSS functions
+Search for `@media` and replace with SCSS functions:
 
 ```scss
 // X-Small devices (portrait phones and up)
@@ -494,29 +494,14 @@ It is also possible to use `max-width` (should be occasionally used) using `medi
 // etc...
 ```
 
+In modules, you will have to import the Boostrap breakpoints SCSS functions:
+```scss
+@import "../../../../vendor/bower-asset/bootstrap/scss/functions";
+@import "../../../../vendor/bower-asset/bootstrap/scss/variables";
+@import "../../../../vendor/bower-asset/bootstrap/scss/mixins/breakpoints";
+```
+
 Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
-
-#### Available CSS variables
-
-In modules, to avoid having to import Bootstrap functions, you can use CSS variables:
-
-```
-  --bs-breakpoint-xs
-  --bs-breakpoint-sm
-  --bs-breakpoint-md
-  --bs-breakpoint-lg
-  --bs-breakpoint-xl
-  --bs-breakpoint-xxl
-```
-
-E.g.:
-```css
-@media (min-width: var(--bs-breakpoint-lg)) { ... }
-```
-
-#### Replacements
-
-Search for `@media` and replace with CSS variables (or SCSS functions in themes).
 
 ### Select2 stylesheet
 
