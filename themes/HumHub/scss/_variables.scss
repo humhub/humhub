@@ -1,6 +1,9 @@
 /**
  * Define or overwrite your theme variables here.
  *
+ * Use the `baseTheme` variable to define the parent theme. E.g.:
+ * $baseTheme: "HumHub";
+ *
  * You must import the parent theme SCSS variables. E.g.:
  * @import "../../HumHub/scss/_variables.scss";
  *
@@ -8,9 +11,9 @@
  *
  * You can also access your variables within your view files by calling Yii::$app->view->theme->variable('myVariable');
  *
- * You can disable the import of humhub theme components by using variables of the format @prev-{component} e.g.:
+ * You can disable the import of HumHub theme components by using variables of the format @prev-{component}.
  * This will prevent comment.less component from being imported.
- * e.g.:
+ * E.g.:
  * @prev-comment: true;
  *
 **/

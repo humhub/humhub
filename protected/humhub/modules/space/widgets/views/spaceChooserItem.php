@@ -20,15 +20,15 @@ use humhub\widgets\bootstrap\Badge;
         <?= Image::widget(['space' => $space, 'width' => 24]) ?>
     </div>
     <div class="flex-grow-1">
-        <strong class="space-name"><?= Html::encode($space->name); ?></strong>
+        <strong class="space-name"><?= Html::encode($space->name) ?></strong>
         <?= $badge ?>
-        <div data-message-count="<?= $updateCount; ?>"
+        <div data-message-count="<?= $updateCount ?>"
              class="badge badge-space messageCount float-end tt d-none"
-             title="<?= Yii::t('SpaceModule.chooser', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]); ?>">
-            <?= $updateCount; ?>
+             title="<?= Yii::t('SpaceModule.chooser', '{n,plural,=1{# new entry} other{# new entries}} since your last visit', ['n' => $updateCount]) ?>">
+            <?= $updateCount ?>
         </div>
         <br>
-        <p class="space-description"><?= Html::encode(Helpers::truncateText($space->description, 60)); ?></p>
+        <p class="space-description"><?= Html::encode(Helpers::truncateText($space->description, 60)) ?></p>
         <?php if ($space->hasTags()) : ?>
             <div class="space-tags d-none">
                 <?php foreach ($space->getTags() as $tag) : ?>

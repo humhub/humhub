@@ -393,7 +393,7 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 ### Media
 
 - Search for `media-list` and remove the HTML element, or, to keep a similar style, use the class `hh-list` and replace the `ul` tag with a `div`. E.g. `<ul class="media-list">` -> `<div class="hh-list">`
-- Inside, replace `li` tags with `div` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
+- Inside, replace `li` tags with `div` or `a` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
 - Search for `media` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?media(?:\s[^"']*)?["'][^>]*>`) and replace with `d-flex`
 - `media-heading` -> `mt-0` (removes the top margin, keeping it close to the top of the content area) ; the related HTML tag can be replaced with `h5` or `h4`
 - `media-body` -> `flex-grow-1`
@@ -414,13 +414,15 @@ Doc: https://getbootstrap.com/docs/5.3/customize/sass/
 
 ### Convert LESS to SCSS
 
-Rename `less` folder to `scss` and rename all `.less` files to `.scss`.
+Rename `less` folder to `scss` and rename all `.less` files to `.scss`
 Prefix all SCSS files with `_` except the `build.scss` file.
 E.g.: `less/variables.less` -> `scss/_variables.scss`
+Linux command: `for file in *.less; do mv "$file" "_${file%.less}.scss"; done` and remove the `_` for the `build.scss` file
 
 You can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
 However, you need to check the output manually, mainly functions and syntaxes such as:
 - `color: fade(@color, 20%);` -> `color: rgba($color, 0.2);`
+- `transition:`: remove the `@include` added after the conversion
 
 An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks.
 
@@ -458,41 +460,63 @@ Full list of Bootstrap CSS variables here: https://github.com/twbs/bootstrap/tre
 
 ### Breakpoints
 
-Search for `@media` and replace custom sizes with:
+#### Available SCSS functions
 
 ```scss
-// X-Small devices (portrait phones, less than 576px)
+// X-Small devices (portrait phones and up)
 // No media query necessary for xs breakpoint as it's effectively `@media (min-width: 0) { ... }`
 
-// Small devices (landscape phones, 576px and up)
+// Small devices (landscape phones and up)
 @include media-breakpoint-up(sm) { ... } // @media (min-width: 576px) { ... }
 
-// Medium devices (tablets, 768px and up)
+// Medium devices (tablets and up)
 @include media-breakpoint-up(md) { ... } // @media (min-width: 768px) { ... }
 
-// Large devices (desktops, 992px and up)
+// Large devices (desktops and up)
 @include media-breakpoint-up(lg) { ... } // @media (min-width: 992px) { ... }
 
-// X-Large devices (large desktops, 1200px and up)
+// X-Large devices (large desktops and up)
 @include media-breakpoint-up(xl) { ... } // @media (min-width: 1200px) { ... }
 
-// XX-Large devices (larger desktops, 1400px and up)
+// XX-Large devices (larger desktops)
 @include media-breakpoint-up(xxl) { ... } // @media (min-width: 1400px) { ... }
 ```
 
 It is also possible to use `max-width` (should be occasionally used) using `media-breakpoint-down`. E.g.:
 
 ```scss
-// `sm` applies to x-small devices (portrait phones, less than 576px)
+// `sm` applies to x-small devices (portrait phones and down)
 @include media-breakpoint-down(sm) { ... } // @media (max-width: 575.98px) { ... }
 
-// `md` applies to small devices (landscape phones, less than 768px)
+// `md` applies to small devices (landscape phones and down)
 @include media-breakpoint-down(md) { ... } // @media (max-width: 767.98px) { ... }
 
 // etc...
 ```
 
 Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
+
+#### Available CSS variables
+
+In modules, to avoid having to import Bootstrap functions, you can use CSS variables:
+
+```
+  --bs-breakpoint-xs
+  --bs-breakpoint-sm
+  --bs-breakpoint-md
+  --bs-breakpoint-lg
+  --bs-breakpoint-xl
+  --bs-breakpoint-xxl
+```
+
+E.g.:
+```css
+@media (min-width: var(--bs-breakpoint-lg)) { ... }
+```
+
+#### Replacements
+
+Search for `@media` and replace with CSS variables (or SCSS functions in themes).
 
 ### Select2 stylesheet
 

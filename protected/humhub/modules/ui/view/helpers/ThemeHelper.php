@@ -201,7 +201,7 @@ class ThemeHelper
             ScssHelper::getVariableFile($theme),
         );
 
-        if (isset($variables['baseTheme']) && isset($themes[$variables['baseTheme']]) && $variables['baseTheme'] !== $theme->name) {
+        if (isset($variables['baseTheme'], $themes[$variables['baseTheme']]) && $variables['baseTheme'] !== $theme->name) {
             return $themes[$variables['baseTheme']];
         }
 
