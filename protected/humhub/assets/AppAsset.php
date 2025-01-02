@@ -12,7 +12,6 @@ use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\file\assets\FileAsset;
-use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
 use yii\jui\JuiAsset;
 use yii\validators\ValidationAsset;
@@ -54,7 +53,6 @@ class AppAsset extends WebStaticAssetBundle
         YiiAsset::class,
         ActiveFormAsset::class,
         ValidationAsset::class,
-        BootstrapAsset::class,
         BootstrapPluginAsset::class,
         BluebirdAsset::class,
         FontAwesomeAsset::class,

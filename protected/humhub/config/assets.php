@@ -11,7 +11,6 @@ use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
 use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\ui\view\components\View;
-use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
 use yii\jui\JuiAsset;
@@ -85,7 +84,6 @@ return [
                 'js' => ['dist/js/bootstrap.bundle.min.js'],
                 'depends' => [
                     JqueryAsset::class,
-                    BootstrapAsset::class,
                     JuiBootstrapBridgeAsset::class,
                 ],
             ],

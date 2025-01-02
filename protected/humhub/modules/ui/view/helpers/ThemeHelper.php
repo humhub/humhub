@@ -144,13 +144,8 @@ class ThemeHelper
      */
     public static function getAllVariables(Theme $theme): array
     {
-        $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/_variables.scss'));
+        $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
-            $eeVariablesFile = $treeTheme->getBasePath() . '/scss/_enterprise_variables.scss';
-            if (file_exists($eeVariablesFile)) {
-                $variables = ArrayHelper::merge($variables, ScssHelper::getVariables($eeVariablesFile));
-            }
-
             $variables = ArrayHelper::merge($variables, ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)));
         }
 
@@ -197,12 +192,13 @@ class ThemeHelper
     {
         $themes = static::getThemes();
 
-        $variables = ScssHelper::getVariables(
+        $baseTheme = ScssHelper::getVariable(
             ScssHelper::getVariableFile($theme),
+            'baseTheme',
         );
 
-        if (isset($variables['baseTheme'], $themes[$variables['baseTheme']]) && $variables['baseTheme'] !== $theme->name) {
-            return $themes[$variables['baseTheme']];
+        if ($baseTheme && isset($themes[$baseTheme]) && $baseTheme !== $theme->name) {
+            return $themes[$baseTheme];
         }
 
         return null;
@@ -226,18 +222,27 @@ class ThemeHelper
     public static function buildCss(?Theme $theme = null): bool|string
     {
         $theme = $theme ?? Yii::$app->view->theme;
-
+        $treeThemes = array_reverse(static::getThemeTree($theme));
         $compiler = new Compiler();
         $imports = [];
 
+        // Set import paths
         $compiler->setImportPaths(Yii::getAlias('@bower/bootstrap/scss'));
-        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap');
-
         $compiler->addImportPath(Yii::getAlias('@webroot-static/scss'));
-        $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
-
-        foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
+        foreach ($treeThemes as $treeTheme) {
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
+        }
+
+        // Import variables (bootstrap variables have a !default suffix to allow overwriting)
+        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
+        foreach ($treeThemes as $treeTheme) {
+            $imports[] = $treeTheme->getBasePath() . '/scss/variables';
+        }
+
+        // Import all other files
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+        $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
+        foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . '/scss/build';
         }
 

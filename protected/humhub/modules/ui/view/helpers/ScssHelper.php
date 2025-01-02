@@ -23,7 +23,7 @@ class ScssHelper
      */
     public static function getVariableFile(Theme $theme)
     {
-        return $theme->getBasePath() . '/scss/_variables.scss';
+        return $theme->getBasePath() . '/scss/variables.scss';
     }
 
 
@@ -53,7 +53,7 @@ class ScssHelper
             foreach ($matches as $match) {
                 $variableName = $match[1];
                 $variableValue = trim($match[2]);
-                $variables[$variableName] = $variableValue;
+                $variables[$variableName] = trim($variableValue, '"');
             }
 
             // Second pass: Resolve variables to their final values
@@ -69,7 +69,7 @@ class ScssHelper
                 while (isset($variables[$value]) && !isset($visited[$value])) {
                     $visited[$value] = true;
                     $value = $variables[$value];
-                    $value = ltrim($value, '$');
+                    $value = trim(ltrim($value, '$'), '"');
                 }
 
                 $resolvedVariables[$name] = $value;

@@ -321,28 +321,28 @@
 
     &:hover,
     &:focus {
-        color: darken($link, 2%);
+        color: darken($link-color, 2%);
         text-decoration: none;
     }
 
     &:active,
     &.active {
         outline: 0;
-        color: darken($link, 2%) !important;
+        color: darken($link-color, 2%) !important;
     }
 }
 
 .btn-link[disabled],
 .btn-link.disabled {
-    color: lighten($link, 5%);
+    color: lighten($link-color, 5%);
 
     &:hover,
     &:focus {
-        color: lighten($link, 5%);
+        color: lighten($link-color, 5%);
     }
 
     &:active,
     &.active {
-        color: lighten($link, 5%) !important;
+        color: lighten($link-color, 5%) !important;
     }
 }

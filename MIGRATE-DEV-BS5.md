@@ -11,6 +11,7 @@ Module and Theme Migration Guide to Bootstrap 5
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
 - `js/humhub/legacy/jquery.loader.js`
+- CSS for User & Space picker
 
 
 ## New
@@ -52,12 +53,11 @@ Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
 - `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
 
+Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" bellow)
+
 Forms and Modal Dialog: see bellow.
 
-CSS variables: use the new ones prefixed with `--bs-` (for Bootstrap variables) or `--hh-` (for HumHub variables).
-See `static/scss/_variables.scss`.
-
-Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" bellow)
+SCSS and CSS variables: see bellow.
 
 
 ## HumHub widgets
@@ -415,8 +415,8 @@ Doc: https://getbootstrap.com/docs/5.3/customize/sass/
 ### Convert LESS to SCSS
 
 Rename `less` folder to `scss` and rename all `.less` files to `.scss`
-Prefix all SCSS files with `_` except the `build.scss` file.
-E.g.: `less/variables.less` -> `scss/_variables.scss`
+Prefix all SCSS files with `_` except the `build.scss` and `variables.scss` files.
+E.g.: `less/theme.less` -> `scss/_theme.scss`
 Linux command: `for file in *.less; do mv "$file" "_${file%.less}.scss"; done` and remove the `_` for the `build.scss` file
 
 You can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
@@ -426,25 +426,37 @@ However, you need to check the output manually, mainly functions and syntaxes su
 
 An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks.
 
-### Variables
+### SCSS and CSS variables
 
-Changes:
-- `$default` is deprecated. Use `$light` or `$secondary` instead.
-- New variables: `$secondary`, `$light` and `$dark`
+#### Changes
+
+Deprecated SCSS variables:
+- `$default`: use `$light` instead
+- `$link`: use `$link-color` instead
+
+New SCSS variables:
+- `$secondary`
+- `$light`
+- `$dark`
+
+#### CSS variable prefixes
 
 Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-` for HumHub variables.
 E.g.: `color: $primary` -> `color: var(--bs-primary)`
+Full deprecation list in `static/scss/variables.scss`.
 
-In modules, if you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module ID. E.g. `my-module` will use `hh-mm-`.
+In modules or custom themes, if you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module or theme ID. E.g. `my-module` will use `hh-mm-`.
 
-In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `_variables.scss`), except the one used in SCSS function (e.g. `lighten($primary, 5%)`). You can use regex:
+#### Use CSS variables instead of SCSS variables
+
+In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `variables.scss`), except the one used in SCSS function (e.g. `lighten($primary, 5%)`). You can use regex:
 - search: `\$([a-zA-Z0-9-_]+)`
 - replace: `var(--bs-$1)` (mainly for base colors such as `$primary`) or `var(--hh-$1)`
 
 #### Root vs component variables
 
 **Root variables** are global variables that can be used in any component.
-They are stored in this file: `_variables.scss`
+They are stored in this file: `_root.scss`
 See https://getbootstrap.com/docs/5.3/customize/css-variables/#root-variables
 
 **Component variables** only apply to the HTML elements having the related class (e.g. `.badge` for [Badge CSS variables](https://getbootstrap.com/docs/5.3/components/badge/#variables)), and HTML elements inside of it.
@@ -513,7 +525,7 @@ Many styles have been refactored. Please review all your overwritten CSS selecto
 
 #### Build file
 
-The `build.scss` file mustn't import parent theme files anymore, as it is automatically done by the new compiler.
+The `build.scss` file mustn't import the parent theme files anymore, as it is automatically done by the new compiler.
 
 Take example with the `HumHub` community theme.
 

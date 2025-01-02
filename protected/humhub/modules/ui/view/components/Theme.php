@@ -102,7 +102,7 @@ class Theme extends BaseTheme
      *
      * @param bool $includeParents also register parent themes
      */
-    public function register($includeParents = true)
+    public function register($includeParents = false)
     {
         if (Yii::$app->request->isAjax) {
             return;
