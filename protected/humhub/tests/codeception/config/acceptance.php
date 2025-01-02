@@ -14,7 +14,7 @@ $testConfig = [
         ],
     ],
     'params' => [
-        'databaseCredFile' => '@humhub/tests/codeception/config/databaseCredentials.php',
+        'dynamicConfigFile' => '@humhub/tests/codeception/config/dynamic.php',
         'installed' => true,
         'settings' => [
             'core' => [

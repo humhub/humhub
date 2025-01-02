@@ -95,7 +95,7 @@ class DatabaseCredConfig extends BaseObject
 
     public static function getConfigFilePath()
     {
-        return Yii::getAlias(Yii::$app->params['databaseCredFile']);
+        return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
     }
 
     public static function exist()

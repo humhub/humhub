@@ -35,18 +35,15 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         Yii::$app->settings->set(self::class, $this->state);
     }
 
-    private function getState(): string
+    public function getState(): string
     {
-        if ($this->state === self::STATE_NOT_INSTALLED) {
-            $this->init();
-        }
-
         return $this->state;
     }
 
     public function hasState(int $state): bool
     {
-        return ($this->getState() & $state) === $state;
+        $this->init();
+        return ($this->state & $state) === $state;
     }
 
     public function isDatabaseInstalled(): bool
