@@ -13,8 +13,22 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
 
+    /**
+     * The application is not installed.
+     * This state indicates that the installation process has not been started or completed.
+     */
     public const STATE_NOT_INSTALLED = 0;
+
+    /**
+     * The database is configured.
+     * This state indicates that the database configuration is complete and is valid, but the application may not be fully installed.
+     */
     public const STATE_DATABASE_CONFIGURED = 1 << 1;
+
+    /**
+     * The application is fully installed.
+     * This state indicates that the installation process is complete and the application is ready to use.
+     */
     public const STATE_INSTALLED = self::STATE_DATABASE_CONFIGURED;
 
     private int $state;
