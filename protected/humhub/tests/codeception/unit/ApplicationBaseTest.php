@@ -8,13 +8,20 @@
 
 namespace humhub\tests\codeception\unit;
 
-use humhub\libs\DatabaseCredConfig;
 use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class ApplicationBaseTest extends HumHubDbTestCase
 {
     public function testIsDatabaseInstalled()
     {
-        $this->assertTrue(DatabaseCredConfig::exist());
+        try {
+            Yii::$app->db->open();
+            $databaseInstalled = true;
+        } catch (\Exception $e) {
+            $databaseInstalled = false;
+        }
+
+        $this->assertTrue($databaseInstalled);
     }
 }
