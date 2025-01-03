@@ -104,7 +104,7 @@ $border-color-danger: #ff8989;
 
 $font-family-base: 'Open Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 $font-family-sans-serif: $font-family-base;
-$font-size-base: 1rem;
+$font-size-root: 14px; // affects the value of `rem`, which is used for as well font sizes, paddings, and margins
 $font-weight-base: 400;
 $mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
