@@ -1,6 +1,9 @@
 HumHub Changelog
 ================
 
+1.17.0-beta.5 (Unreleased)
+---------------------------------
+- Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 1.18 (TBA)
 ------------------------------
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
