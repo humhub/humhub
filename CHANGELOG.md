@@ -1,16 +1,6 @@
 HumHub Changelog
 ================
 
-1.17.0-beta.5 (Unreleased)
----------------------------------
-- Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
-1.18 (TBA)
-------------------------------
-- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
-- Enh #7332: Optimized `DynamicConfig` to store and read database information only
-- Enh #7338: Remove `horImageScrollOnMobile` config option
-- Enh #7367: Changed Auto Debug Mode Detection
-
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
