@@ -42,8 +42,8 @@ use yii\log\Logger;
                             $levelName = Yii::t('AdminModule.information', 'Warning');
                             break;
                         case Logger::LEVEL_TRACE:
-                            $label = 'label-default';
-                            $labelName = Yii::t('AdminModule.information', 'Trace');
+                            $labelClass = 'label-default';
+                            $levelName = Yii::t('AdminModule.information', 'Trace');
                             break;
                         case Logger::LEVEL_ERROR:
                         default:
