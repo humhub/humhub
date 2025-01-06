@@ -187,16 +187,6 @@
                         color: #d9534f;
                     }
 
-                    > div {
-                        position: relative;
-
-                        .img-space {
-                            position: absolute;
-                            top: 14px;
-                            left: 14px;
-                        }
-                    }
-
                     &.new {
                         background-color: transparent;
                         border-left: none;

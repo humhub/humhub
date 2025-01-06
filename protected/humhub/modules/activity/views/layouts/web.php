@@ -25,25 +25,24 @@ use yii\helpers\Url;
     <?php endif; ?>
 
     <div class="d-flex">
-        <?php if ($originator !== null) : ?>
-            <!-- Show user image -->
-            <div class="flex-shrink-0 me-2">
+        <div class="flex-shrink-0 me-2 img-profile-space">
+            <?php if ($originator !== null) : ?>
+                <!-- Show user image -->
                 <?= $originator->getProfileImage()->render(32, ['link' => false]) ?>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <!-- Show space image, if you are outside from a space -->
-        <?php if (
-            !Yii::$app->controller instanceof ContentContainerController
-            && $record->content->container instanceof Space
-        ) : ?>
-            <div class="flex-shrink-0 me-2">
+            <!-- Show space image, if you are outside from a space -->
+            <?php if (
+                !Yii::$app->controller instanceof ContentContainerController
+                && $record->content->container instanceof Space
+            ) : ?>
                 <?= Image::widget([
                     'space' => $record->content->container,
                     'width' => 20,
+                    'htmlOptions' => ['class' => 'img-space'],
                 ]) ?>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
+        </div>
 
         <div class="flex-grow-1 text-break">
 

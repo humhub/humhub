@@ -22,7 +22,7 @@ use humhub\widgets\modal\ModalButton;
 
     <div id="userlist-content" class="hh-list">
         <?php foreach ($users as $user) : ?>
-            <a href="<?= $user->getUrl(); ?>" data-modal-close="1" class="d-flex">
+            <a href="<?= $user->getUrl() ?>" data-modal-close="1" class="d-flex">
                 <div class="flex-shrink-0 me-2">
                     <?= Image::widget([
                         'user' => $user,
@@ -32,15 +32,15 @@ use humhub\widgets\modal\ModalButton;
                 </div>
 
                 <div class="flex-grow-1">
-                    <h4 class="mt-0"><?= Html::encode($user->displayName); ?></h4>
-                    <h5><?= Html::encode($user->displayNameSub); ?></h5>
+                    <h4 class="mt-0"><?= Html::encode($user->displayName) ?></h4>
+                    <h5><?= Html::encode($user->displayNameSub) ?></h5>
                 </div>
             </a>
         <?php endforeach; ?>
     </div>
 
     <div class="pagination-container">
-        <?= AjaxLinkPager::widget(['pagination' => $pagination]); ?>
+        <?= AjaxLinkPager::widget(['pagination' => $pagination]) ?>
     </div>
 
     <script <?= Html::nonce() ?>>

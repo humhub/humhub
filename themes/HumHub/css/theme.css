@@ -11049,14 +11049,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 #topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.declined {
   color: #d9534f;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex > div {
-  position: relative;
-}
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex > div .img-space {
-  position: absolute;
-  top: 14px;
-  left: 14px;
-}
 #topbar-first .notifications .dropdown-menu div.hh-list a.d-flex.new {
   background-color: transparent;
   border-left: none;
@@ -11366,6 +11358,14 @@ audio, canvas, progress, video {
 }
 img {
   image-orientation: from-image;
+}
+.img-profile-space {
+  position: relative;
+}
+.img-profile-space .img-space {
+  position: absolute;
+  top: 15px;
+  left: 15px;
 }
 .has-online-status {
   position: relative;
@@ -12274,11 +12274,6 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
 .field-filterform-allfilter input[type=checkbox]:focus {
   border-color: #ccc !important;
 }
-#notification_overview_list .img-space {
-  position: absolute;
-  top: 25px;
-  left: 25px;
-}
 #notification_overview_list .d-flex {
   border-left: none;
   background: none;
@@ -12956,14 +12951,8 @@ div.nested-comments-root div.comment-container {
   padding: 0;
 }
 .activities .d-flex {
-  position: relative;
   padding: 10px;
   max-width: 295px;
-}
-.activities .d-flex .img-space {
-  position: absolute;
-  top: 24px;
-  left: 24px;
 }
 .contentForm_options {
   margin-top: 10px;

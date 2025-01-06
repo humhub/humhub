@@ -34,25 +34,23 @@ use yii\helpers\Url;
             <?php endif; ?>
             <!-- end: show wall entry options -->
 
-            <div class="flex-shrink-0 me-2">
+            <div class="flex-shrink-0 me-2 img-profile-space">
                 <?= UserImage::widget([
                     'user' => $user,
-                    'width' => 40,
+                    'width' => 32,
                     'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id],
                 ]) ?>
-            </div>
 
-            <?php if ($showContentContainer && $container instanceof Space): ?>
-                <div class="flex-shrink-0 me-2">
-                    <?= SpaceImage::widget([
-                        'space' => $container,
-                        'width' => 20,
-                        'htmlOptions' => ['class' => 'img-space'],
-                        'link' => 'true',
-                        'linkOptions' => ['data-contentcontainer-id' => $container->contentcontainer_id],
-                    ]) ?>
-                </div>
-            <?php endif; ?>
+                <?php if ($showContentContainer && $container instanceof Space): ?>
+                        <?= SpaceImage::widget([
+                            'space' => $container,
+                            'width' => 20,
+                            'htmlOptions' => ['class' => 'img-space'],
+                            'link' => 'true',
+                            'linkOptions' => ['data-contentcontainer-id' => $container->contentcontainer_id],
+                        ]) ?>
+                <?php endif; ?>
+            </div>
 
             <div class="flex-grow-1">
                 <h4 class="mt-0">

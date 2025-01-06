@@ -395,6 +395,7 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 - Search for `media-list` and remove the HTML element, or, to keep a similar style, use the class `hh-list` and replace the `ul` tag with a `div`. E.g. `<ul class="media-list">` -> `<div class="hh-list">`
 - Inside, replace `li` tags with `div` or `a` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
 - Search for `media` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?media(?:\s[^"']*)?["'][^>]*>`) and replace with `d-flex`
+- Search for `img-space` classes and surround the `UserImage` and `SpaceImage` with the `img-profile-space` (see example in `protected/humhub/modules/content/widgets/views/wallEntry.php`)
 - `media-heading` -> `mt-0` (removes the top margin, keeping it close to the top of the content area) ; the related HTML tag can be replaced with `h5` or `h4`
 - `media-body` -> `flex-grow-1`
 - `media-left` -> `flex-shrink-0 me-2`

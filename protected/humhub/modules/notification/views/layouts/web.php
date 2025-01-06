@@ -24,7 +24,8 @@ use humhub\widgets\TimeAgo;
     data-notification-group="<?= !empty($record->baseModel->getGroupkey())
         ? Html::encode(get_class($record->baseModel) . ':' . $record->baseModel->getGroupKey())
         : '' ?>">
-    <div class="flex-shrink-0 me-2">
+
+    <div class="flex-shrink-0 me-2 img-profile-space">
         <?php if ($originator) : ?>
             <?= UserImage::widget([
                 'user' => $originator,
@@ -42,11 +43,13 @@ use humhub\widgets\TimeAgo;
             ]) ?>
         <?php endif; ?>
     </div>
+
     <div class="flex-grow-1">
         <?= $content ?>
         <br>
         <?= TimeAgo::widget(['timestamp' => $record->created_at]) ?>
     </div>
+
     <div class="flex-shrink-0 ms-2 order-last text-center">
         <?php if ($isNew) : ?>
             <span class="badge-new"></span>

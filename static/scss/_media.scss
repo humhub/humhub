@@ -26,6 +26,16 @@ img {
     image-orientation: from-image;
 }
 
+.img-profile-space {
+    position: relative;
+
+    .img-space {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+    }
+}
+
 .has-online-status {
     position: relative;
     display: inline-block;
