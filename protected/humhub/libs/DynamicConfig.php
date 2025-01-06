@@ -20,7 +20,7 @@ use yii\helpers\ArrayHelper;
  *
  * @author luke
  */
-class DatabaseCredConfig extends BaseObject
+class DynamicConfig extends BaseObject
 {
     /**
      * Returns the dynamic configuration

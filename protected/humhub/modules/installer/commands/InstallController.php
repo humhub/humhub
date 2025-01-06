@@ -9,7 +9,7 @@
 namespace humhub\modules\installer\commands;
 
 use humhub\helpers\DatabaseHelper;
-use humhub\libs\DatabaseCredConfig;
+use humhub\libs\DynamicConfig;
 use humhub\libs\UUID;
 use humhub\modules\installer\libs\InitialData;
 use humhub\modules\user\models\Group;
@@ -63,11 +63,11 @@ class InstallController extends Controller
         $temporaryConnection = Yii::createObject($dbConfig);
         $temporaryConnection->open();
 
-        $config = DatabaseCredConfig::load();
+        $config = DynamicConfig::load();
 
         $config['components']['db'] = $dbConfig;
 
-        DatabaseCredConfig::save($config);
+        DynamicConfig::save($config);
 
         return ExitCode::OK;
     }

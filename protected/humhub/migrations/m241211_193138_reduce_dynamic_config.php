@@ -1,7 +1,7 @@
 <?php
 
 use humhub\components\InstallationState;
-use humhub\libs\DatabaseCredConfig;
+use humhub\libs\DynamicConfig;
 use yii\db\Migration;
 
 /**
@@ -15,7 +15,7 @@ class m241211_193138_reduce_dynamic_config extends Migration
     public function safeUp()
     {
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-            DatabaseCredConfig::load();
+            DynamicConfig::load();
         }
     }
 
