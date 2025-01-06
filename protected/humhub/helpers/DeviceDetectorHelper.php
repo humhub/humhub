@@ -20,11 +20,8 @@ class DeviceDetectorHelper
 {
     public static function isMobile(): bool
     {
-        $detect = new MobileDetect();
-        $detect->setUserAgent(Yii::$app->request->getUserAgent());
-
         try {
-            return $detect->isMobile();
+            return (bool)static::getMobileDetect()?->isMobile();
         } catch (MobileDetectException $e) {
             Yii::error('DeviceDetectorHelper::isMobile() error: ' . $e->getMessage());
             return false;
@@ -33,15 +30,24 @@ class DeviceDetectorHelper
 
     public static function isTablet(): bool
     {
-        $detect = new MobileDetect();
-        $detect->setUserAgent(Yii::$app->request->getUserAgent());
-
         try {
-            return $detect->isTablet();
+            return (bool)static::getMobileDetect()?->isTablet();
         } catch (MobileDetectException $e) {
             Yii::error('DeviceDetectorHelper::isTablet() error: ' . $e->getMessage());
             return false;
         }
+    }
+
+    private static function getMobileDetect(): ?MobileDetect
+    {
+        $userAgent = Yii::$app->request->getUserAgent();
+        if (!$userAgent) {
+            return null;
+        }
+
+        $detect = new MobileDetect();
+        $detect->setUserAgent($userAgent);
+        return $detect;
     }
 
     public static function isAppRequest(): bool

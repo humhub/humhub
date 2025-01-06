@@ -7,6 +7,10 @@ HumHub Changelog
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
 
+1.17.0-beta.5 (Unreleased)
+---------------------------------
+- Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
+
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
 - Enh #7307: Improve request scheme detection
