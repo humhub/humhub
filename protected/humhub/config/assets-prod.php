@@ -96,6 +96,14 @@ return [
             'app',
         ],
     ],
+    'yii\\bootstrap5\\BootstrapAsset' => [
+        'sourcePath' => null,
+        'js' => [],
+        'css' => [],
+        'depends' => [
+            'app',
+        ],
+    ],
     'yii\\bootstrap5\\BootstrapPluginAsset' => [
         'sourcePath' => null,
         'js' => [],
@@ -237,6 +245,7 @@ return [
             'yii\\web\\YiiAsset',
             'yii\\widgets\\ActiveFormAsset',
             'yii\\validators\\ValidationAsset',
+            'yii\\bootstrap5\\BootstrapAsset',
             'yii\\bootstrap5\\BootstrapPluginAsset',
             'humhub\\assets\\BluebirdAsset',
             'humhub\\assets\\FontAwesomeAsset',

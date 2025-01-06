@@ -54,7 +54,6 @@ class View extends \yii\web\View
      */
     protected static $preload = [
         'theme.css',
-        'bootstrap.css',
     ];
 
     /**
