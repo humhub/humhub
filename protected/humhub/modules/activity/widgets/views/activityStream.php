@@ -21,6 +21,6 @@ ActivityAsset::register($this);
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
     <?= Html::beginTag('div', $options) ?>
-    <div id="activityContents" class="hh-list" data-stream-content></div>
+    <div id="activityContents" class="hh-list activities" data-stream-content></div>
     <?= Html::endTag('div') ?>
 </div>

@@ -15,8 +15,8 @@
         position: relative;
         border-left: 3px solid white;
 
-        &:hover,
-        &.selected {
+        &:hover:not(.stream-end),
+        &.selected:not(.stream-end) {
             background-color: var(--hh-background-color-secondary);
             border-left: 3px solid var(--bs-info);
         }
@@ -29,7 +29,7 @@
             border-left: 3px solid var(--bs-info);
             background-color: var(--hh-background-color-highlight);
 
-            &:hover {
+            &:hover:not(.stream-end) {
                 background-color: var(--hh-background-color-highlight-soft);
             }
         }
@@ -39,7 +39,7 @@
             border-bottom: none;
         }
 
-        &.placeholder:hover {
+        &.placeholder:hover:not(.stream-end) {
             background: none !important;
             border-left: 3px solid white;
         }

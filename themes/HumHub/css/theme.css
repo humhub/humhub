@@ -12391,7 +12391,7 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
   position: relative;
   border-left: 3px solid white;
 }
-.hh-list > div:hover, .hh-list > div.selected, .hh-list > a:hover, .hh-list > a.selected {
+.hh-list > div:hover:not(.stream-end), .hh-list > div.selected:not(.stream-end), .hh-list > a:hover:not(.stream-end), .hh-list > a.selected:not(.stream-end) {
   background-color: var(--hh-background-color-secondary);
   border-left: 3px solid var(--bs-info);
 }
@@ -12402,14 +12402,14 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
   border-left: 3px solid var(--bs-info);
   background-color: var(--hh-background-color-highlight);
 }
-.hh-list > div.new:hover, .hh-list > a.new:hover {
+.hh-list > div.new:hover:not(.stream-end), .hh-list > a.new:hover:not(.stream-end) {
   background-color: var(--hh-background-color-highlight-soft);
 }
 .hh-list > div.placeholder, .hh-list > a.placeholder {
   font-size: 14px !important;
   border-bottom: none;
 }
-.hh-list > div.placeholder:hover, .hh-list > a.placeholder:hover {
+.hh-list > div.placeholder:hover:not(.stream-end), .hh-list > a.placeholder:hover:not(.stream-end) {
   background: none !important;
   border-left: 3px solid white;
 }
