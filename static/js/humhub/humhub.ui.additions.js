@@ -146,20 +146,11 @@ humhub.module('ui.additions', function (module, require, $) {
         // Workaround: Bootstrap bug with dropdowns in responsive tables
         // See: https://github.com/twbs/bootstrap/issues/11037
         $(document).on('shown.bs.dropdown', '.table-responsive', function (e) {
-            var t = $(this),
-                    m = $(e.target).find('.dropdown-menu'),
-                    tb = t.offset().top + t.height(),
-                    mb = m.offset().top + m.outerHeight(true),
-                    d = 20; // Space for shadow + scrollbar.
-            if (t[0].scrollWidth > t.innerWidth()) {
-                if (mb + d > tb) {
-                    t.css('padding-bottom', ((mb + d) - tb));
-                }
-            } else {
+            var t = $(this);
+            t.css('overflow', 'visible');
+            if (t[0].scrollWidth <= t.innerWidth()) {
                 t.css('overflow', 'visible');
             }
-        }).on('hidden.bs.dropdown', '.table-responsive', function () {
-            $(this).css({'padding-bottom': '', 'overflow': ''});
         });
 
 
