@@ -26,7 +26,6 @@ $config = yii\helpers\ArrayHelper::merge(
 );
 
 $application = new humhub\components\console\Application($config);
-$application->params['installed'] = false;
 
 $exitCode = $application->run();
 exit($exitCode);

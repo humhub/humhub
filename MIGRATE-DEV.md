@@ -1,6 +1,12 @@
 Module Migration Guide
 ======================
 
+1.18 (TBA)
+-------------------------
+### Deprecated
+- `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
 
 Version 1.17 (Unreleased)
 -------------------------

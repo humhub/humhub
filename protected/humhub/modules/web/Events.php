@@ -8,6 +8,7 @@
 
 namespace humhub\modules\web;
 
+use humhub\components\InstallationState;
 use humhub\controllers\ErrorController;
 use humhub\modules\web\pwa\controllers\ManifestController;
 use humhub\modules\web\pwa\controllers\OfflineController;
@@ -37,7 +38,7 @@ class Events
     private static function generateCSPRequestCheck()
     {
         return !Yii::$app->request->isAjax
-            && Yii::$app->isInstalled()
+            && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)
             && ($controller = Yii::$app->controller)
             && !($controller instanceof ErrorController)
             && !($controller instanceof OfflineController)
