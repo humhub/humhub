@@ -99,20 +99,11 @@ class Theme extends BaseTheme
 
     /**
      * Registers theme css and resources to the view
-     *
-     * @param bool $includeParents also register parent themes
      */
-    public function register($includeParents = false)
+    public function register()
     {
         if (Yii::$app->request->isAjax) {
             return;
-        }
-
-        if ($includeParents) {
-            foreach (array_reverse($this->getParents()) as $parent) {
-                /** @var Theme $parent */
-                $parent->register(false);
-            }
         }
 
         if (file_exists($this->getBasePath() . '/css/theme.css')) {
