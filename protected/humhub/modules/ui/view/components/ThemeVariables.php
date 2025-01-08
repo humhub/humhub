@@ -59,7 +59,7 @@ class ThemeVariables extends Component
      */
     public function get($key, $default = null)
     {
-        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             return null;
         }
 

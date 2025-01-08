@@ -35,7 +35,7 @@ class ThemeLoader implements BootstrapInterface
             return;
         }
 
-        if ($app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
+        if ($app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $themePath = $app->settings->get('theme');
             if (!empty($themePath) && is_dir($themePath)) {
                 $theme = ThemeHelper::getThemeByPath($themePath);

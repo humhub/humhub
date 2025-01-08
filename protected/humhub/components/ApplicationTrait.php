@@ -64,7 +64,7 @@ trait ApplicationTrait
 
     private function initLocales(): void
     {
-        if ($this->installationState->isDatabaseInstalled()) {
+        if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             if ($this->settings instanceof SettingsManager) {
                 $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
                 if ($this->formatter instanceof Formatter) {
@@ -121,12 +121,12 @@ trait ApplicationTrait
      * Sets application in installed state (disables installer)
      *
      * @deprecated since 1.18
-     * @see InstallationState::setState()
+     * @see InstallationState::setInstalled()
      * @since 1.16
      */
     public function setInstalled()
     {
-        $this->installationState->setState(InstallationState::STATE_INSTALLED);
+        $this->installationState->setInstalled();
     }
 
 
@@ -139,11 +139,7 @@ trait ApplicationTrait
      */
     public function isDatabaseInstalled(bool $checkConnection = false): bool
     {
-        if ($checkConnection) {
-            return $this->installationState->isDatabaseInstalled();
-        }
-
-        return $this->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED);
+        return $this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED);
     }
 
 

@@ -118,14 +118,14 @@ class ModuleManager extends Component
         parent::init();
 
         // Either database installed and not in installed state
-        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && !Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && !Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             return;
         }
         if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             return;
         }
 
-        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $this->enabledModules = [];
         } else {
             $this->enabledModules = ModuleEnabled::getEnabledIds();

@@ -41,7 +41,7 @@ class Application extends \yii\console\Application implements ApplicationInterfa
             ));
         }
 
-        if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
+        if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $baseUrl = $this->settings->get('baseUrl');
             if (!empty($baseUrl)) {
                 if (Yii::getAlias('@web', false) === false) {
