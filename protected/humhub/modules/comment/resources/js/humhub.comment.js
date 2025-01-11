@@ -305,7 +305,7 @@ humhub.module('comment', function (module, require, $) {
             target.slideToggle();
         }
 
-        if (!visible) {
+        if (!visible && !window.comments_collapsed) {
             target.find('.humhub-ui-richtext').trigger('focus');
         }
     }

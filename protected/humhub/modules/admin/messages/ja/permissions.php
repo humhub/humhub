@@ -8,7 +8,7 @@ return [
   'Can manage modules within the \'Administration ->  Modules\' section.' => '「管理メニュー → モジュール」で、モジュールの管理を許可します。',
   'Can manage users and groups' => 'ユーザーとグループの管理を許可します。',
   'Can manage users and user profiles.' => 'ユーザーとユーザープロフィールの管理を許可します。',
-  'Manage All Content' => '',
+  'Manage All Content' => 'すべてのコンテンツの管理',
   'Manage Groups' => 'グループの管理',
   'Manage Modules' => 'モジュールの管理',
   'Manage Settings' => '設定の管理',
