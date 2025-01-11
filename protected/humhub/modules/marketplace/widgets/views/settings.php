@@ -20,7 +20,7 @@ use humhub\widgets\bootstrap\Button;
     ->tooltip(Yii::t('MarketplaceModule.base', 'Settings'))
     ->options(['data-bs-toggle' => 'dropdown']) ?>
 
-<ul class="dropdown-menu float-end">
+<ul class="dropdown-menu dropdown-menu-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
             <?= $entry->render(['class' => 'dropdown-item']) ?>

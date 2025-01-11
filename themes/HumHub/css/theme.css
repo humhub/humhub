@@ -11546,10 +11546,25 @@ ul.tab-menu-settings .nav-link.active {
 .nav-pills .dropdown-menu li a:hover, .nav-pills .dropdown-menu li a:visited, .nav-pills .dropdown-menu li a:focus, .nav-tabs .dropdown-menu li a:hover, .nav-tabs .dropdown-menu li a:visited, .nav-tabs .dropdown-menu li a:focus, .account .dropdown-menu li a:hover, .account .dropdown-menu li a:visited, .account .dropdown-menu li a:focus {
   background: none;
 }
+.nav-pills.preferences {
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.nav-pills.preferences .dropdown .dropdown-toggle {
+  padding: 2px 8px;
+}
 .nav-pills.preferences .dropdown .dropdown-toggle i {
   color: var(--bs-info);
   font-size: 15px;
   font-weight: 600;
+}
+.nav-pills.preferences .dropdown .dropdown-toggle:hover {
+  background-color: var(--hh-background-color-secondary);
+}
+.nav-pills.preferences .dropdown .dropdown-toggle.show {
+  color: var(--hh-text-color-contrast);
+  background-color: var(--bs-primary);
 }
 .nav-pills.preferences li.nav-item:has(> .dropdown-divider):last-of-type {
   display: none;
@@ -11580,14 +11595,6 @@ ul.tab-menu-settings .nav-link.active {
 .list-group a [class^="fa-"], .list-group a [class*=" fa-"] {
   display: inline-block;
   width: 18px;
-}
-.nav-pills.preferences {
-  position: absolute;
-  right: 10px;
-  top: 10px;
-}
-.nav-pills.preferences .dropdown .dropdown-toggle {
-  padding: 2px 5px;
 }
 .tab-content .tab-pane a {
   color: var(--bs-link-color);

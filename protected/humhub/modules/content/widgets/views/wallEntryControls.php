@@ -24,7 +24,7 @@ use humhub\modules\ui\view\components\View;
         'role' => 'button',
     ]) ?>
 
-    <ul class="dropdown-menu float-end">
+    <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
             <?php if ($entry instanceof WidgetMenuEntry) : ?>
                 <?= $entry->render() ?>

@@ -16,7 +16,7 @@ use humhub\widgets\bootstrap\Button;
     ->sm()
     ->cssClass('dropdown-toggle')
     ->loader(false) ?>
-<ul class="dropdown-menu float-end">
+<ul class="dropdown-menu dropdown-menu-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
             <?= $entry->render(['class' => 'dropdown-item']) ?>

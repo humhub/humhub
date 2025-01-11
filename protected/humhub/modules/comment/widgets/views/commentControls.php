@@ -24,7 +24,7 @@ use humhub\modules\ui\menu\MenuEntry;
         'role' => 'button',
     ]) ?>
 
-    <ul class="dropdown-menu float-end">
+    <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
             <li>
                 <?= $entry->render(['class' => 'dropdown-item']) ?>

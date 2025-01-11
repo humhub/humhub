@@ -85,7 +85,7 @@ use humhub\widgets\bootstrap\Link;
                        aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
-                    <ul class="dropdown-menu float-end">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')->cssClass('dropdown-item') ?>
                         </li>

@@ -23,7 +23,7 @@ use humhub\modules\ui\menu\MenuEntry;
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
             <li class="nav-item content-create-menu-more">
                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
-                <ul class="dropdown-menu float-end">
+                <ul class="dropdown-menu dropdown-menu-end">
                     <?php foreach ($entries as $e => $entry) : ?>
                         <?php if ($e < $menu->visibleEntriesNum) {
                             continue;

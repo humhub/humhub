@@ -145,11 +145,26 @@ ul.tab-menu-settings {
 }
 
 .nav-pills.preferences {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+
     .dropdown .dropdown-toggle {
+        padding: 2px 8px;
+
         i {
             color: var(--bs-info);
             font-size: 15px;
             font-weight: 600;
+        }
+
+        &:hover {
+            background-color: var(--hh-background-color-secondary);
+        }
+
+        &.show {
+            color: var(--hh-text-color-contrast);
+            background-color: var(--bs-primary);
         }
     }
 
@@ -202,16 +217,6 @@ ul.tab-menu-settings {
     a [class*=" fa-"] {
         display: inline-block;
         width: 18px;
-    }
-}
-
-.nav-pills.preferences {
-    position: absolute;
-    right: 10px;
-    top: 10px;
-
-    .dropdown .dropdown-toggle {
-        padding: 2px 5px;
     }
 }
 

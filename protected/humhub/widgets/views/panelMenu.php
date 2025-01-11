@@ -18,7 +18,7 @@ use humhub\widgets\bootstrap\Link;
             'role' => 'button',
         ]) ?>
 
-        <ul class="dropdown-menu float-end">
+        <ul class="dropdown-menu dropdown-menu-end">
             <li>
                 <?= Link::instance()->action('toggle')->cssClass(['dropdown-item', 'panel-collapse'])?>
             </li>

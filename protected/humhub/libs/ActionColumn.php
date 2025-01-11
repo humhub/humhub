@@ -54,7 +54,7 @@ class ActionColumn extends Column
         $html = Html::beginTag('div', ['class' => 'btn-group dropdown']);
         $html .= Button::light()->cssClass('dropdown-toggle')
             ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
-        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu float-end']);
+        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu dropdown-menu-end']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {
                 $html .= '<li><hr class="dropdown-divider"></li>';
