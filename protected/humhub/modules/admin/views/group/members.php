@@ -25,7 +25,7 @@ AdminGroupAsset::register($this);
 <?php $this->beginContent('@admin/views/group/_manageLayout.php', ['group' => $group]) ?>
 <div class="panel-body">
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
             <div class="input-group select2-humhub-append">
                 <?= UserPickerField::widget([
@@ -40,7 +40,7 @@ AdminGroupAsset::register($this);
             </div>
             <?php ActiveForm::end(); ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['method' => 'get']); ?>
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>

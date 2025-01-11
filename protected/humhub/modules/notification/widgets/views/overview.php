@@ -51,7 +51,7 @@ use yii\helpers\Url;
     </li>
     <li>
         <div class="dropdown-footer">
-            <a class="btn btn-light col-md-12" href="<?= Url::to(['/notification/overview']) ?>">
+            <a class="btn btn-light col-lg-12" href="<?= Url::to(['/notification/overview']) ?>">
                 <?= Yii::t('NotificationModule.base', 'Show all notifications') ?>
             </a>
         </div>

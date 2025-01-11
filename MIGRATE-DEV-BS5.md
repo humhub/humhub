@@ -164,7 +164,7 @@ Now:
 
 ```html
 <div class="input-group">
-  <button class="btn btn-light">My action</button>
+    <button class="btn btn-light">My action</button>
 </div>
 ```
 
@@ -195,6 +195,8 @@ Example:
 - Move the tags with `dropdown-header` class to a child tag of `li` (usually in a `h6` tag)
 - `dropdown-menu-left` -> `dropdown-menu-start`
 - `dropdown-menu-right` -> `dropdown-menu-end`
+- `dropdown-menu float-start` -> `dropdown-menu dropdown-menu-start`
+- `dropdown-menu float-end` -> `dropdown-menu dropdown-menu-end`
 - Remove `<span class="caret"></span>` and `<b class="caret"></b>` in dropdown buttons (as there are already added by Bootstrap 5 via the `:after` pseudo-element)
 
 Before:
@@ -290,7 +292,6 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `data-dismiss` - > `data-bs-dismiss`
 - `no-space` - > `m-0 p-0`
 - `align-center` - > `text-center` or  `d-flex justify-content-center`
-- `col-xs-` - > `col- ` and make sure the parent element has   `row`, and the parent of parent  `container` ([see documentation](https://getbootstrap.com/docs/5.3/layout/columns/))
 - `input-group-addon` - > `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
 - `form-group` - > `mb-3`
 - `well` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?well(?:\s[^"']*)?["'][^>]*>`) -> `bg-light p-3` for a simple inset container or `card` (with a  `card-body` child element)
@@ -298,6 +299,34 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `help-block help-block-error` - > `invalid-feedback`
 - `help-block` - > `text-body-secondary` or  `form-text` if in a form
 - Remove  `jumbotron` class
+
+### Columns with breakpoints
+
+Bootstrap 3:
+- `xs`: < 768px
+- `sm`: ≥ 768px
+- `md`: ≥ 992px
+- `lg`: ≥ 1200px
+
+Bootstrap 5:
+- `xs`: removed (default)
+- `sm`: ≥ 576px (new)
+- `md`: ≥ 768px
+- `lg`: ≥ 992px
+- `xl`: ≥ 1200px
+- `xxl`: ≥ 1400px (new)
+
+So replacements are (to be done in this order):
+- `col-lg-` - > `col-xl-`
+- `col-md-` - > `col-lg-`
+- `col-sm-` - > `col-md-`
+- `col-xs-` - > `col- `
+
+Make sure:
+- the parent element has the `row` class
+- the parent of parent the `container` class
+
+[See documentation](https://getbootstrap.com/docs/5.3/layout/columns/)
 
 ### Hidden/Visible elements
 

@@ -14,7 +14,7 @@ use humhub\modules\content\widgets\ContainerModuleActionButtons;
 /* @var ContentContainerActiveRecord $contentContainer */
 ?>
 <div class="module-row row">
-    <div class="col-2 col-sm-1 module-icon">
+    <div class="col-2 col-md-1 module-icon">
         <?= Html::img($module->getImage(), [
             'class' => 'rounded',
             'data-src' => 'holder.js/34x34',
@@ -22,12 +22,12 @@ use humhub\modules\content\widgets\ContainerModuleActionButtons;
             'style' => 'width:34px;height:34px',
         ]) ?>
     </div>
-    <div class="col-10 col-sm-3 col-md-2">
+    <div class="col-10 col-md-3 col-lg-2">
         <?= $module->getContentContainerName($contentContainer) ?>
         <br><small><?= Yii::t('AdminModule.base', 'Version') . ' ' . $module->getVersion() ?></small>
     </div>
-    <div class="col-6 col-sm-5 col-md-6"><?= $module->getContentContainerDescription($contentContainer) ?></div>
-    <div class="col-5 col-sm-3 module-actions">
+    <div class="col-6 col-md-5 col-lg-6"><?= $module->getContentContainerDescription($contentContainer) ?></div>
+    <div class="col-5 col-md-3 module-actions">
         <?= ContainerModuleActionButtons::widget([
             'module' => $module,
             'contentContainer' => $contentContainer,

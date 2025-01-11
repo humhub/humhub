@@ -31,10 +31,10 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
     <div id="collapse-access-settings" class="panel-collapse collapse">
         <br>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <?= $form->field($model, 'visibility')->radioList($visibilityOptions)->hint(false) ?>
             </div>
-            <div class="col-md-6 spaceJoinPolicy">
+            <div class="col-lg-6 spaceJoinPolicy">
                 <?= $form->field($model, 'join_policy')->radioList($joinPolicyOptions)->hint(false) ?>
             </div>
         </div>

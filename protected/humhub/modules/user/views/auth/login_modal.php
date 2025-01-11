@@ -71,7 +71,7 @@ use yii\helpers\Url;
                 <?= $form->field($model, 'rememberMe')->checkbox(); ?>
                 <hr>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary"
                                 data-action-click="ui.modal.submit"
                                 data-action-url="<?= Url::to(['/user/auth/login']) ?>">
@@ -80,7 +80,7 @@ use yii\helpers\Url;
 
                     </div>
                     <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-md-8 text-end">
+                        <div class="col-lg-8 text-end">
                             <small>
                                 <?= Html::a(
                                     Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),

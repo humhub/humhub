@@ -25,16 +25,16 @@ use humhub\widgets\TimeAgo;
 
         <?php $form = ActiveForm::begin(['method' => 'get']); ?>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
                     <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
             </div>
-            <div class="col-md-2">
+            <div class="col-lg-2">
                 <div class="float-end">
                     <?= MemberHeaderControlsMenu::widget([
                         'space' => $space,

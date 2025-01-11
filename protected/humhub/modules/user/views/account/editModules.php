@@ -15,7 +15,7 @@ use humhub\modules\user\models\User;
     </div>
     <div class="panel-body">
         <?php if (empty($modules)) : ?>
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <?= Yii::t('UserModule.manage', 'Currently there are no modules available for you!'); ?>

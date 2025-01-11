@@ -89,6 +89,15 @@ a.list-group-item {
 }
 
 @include media-breakpoint-down(lg) {
+    // Left navigation on mobile, when becoming horizontal, should be scrollable
+    .left-navigation {
+        .list-group-horizontal.list-group-vertical-lg {
+            -webkit-overflow-scrolling: auto;
+            white-space: nowrap;
+            overflow-x: auto;
+        }
+    }
+
     .list-group {
         margin-left: 4px;
     }

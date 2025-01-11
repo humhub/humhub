@@ -10824,7 +10824,7 @@ hr {
   margin-bottom: 10px;
   opacity: 0.1;
 }
-.col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12 {
+.col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
   position: inherit;
 }
 .layout-nav-container {
@@ -12543,6 +12543,11 @@ a.list-group-item:hover, a.list-group-item.active:hover, a.list-group-item.activ
   }
 }
 @media (max-width: 991.98px) {
+  .left-navigation .list-group-horizontal.list-group-vertical-lg {
+    -webkit-overflow-scrolling: auto;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
   .list-group {
     margin-left: 4px;
   }
@@ -13486,7 +13491,7 @@ ul.files li.file-preview-item .file-fileInfo {
   .post-files img, .post-files .col-12 img {
     height: 150px;
   }
-  .post-files .col-md-12 img {
+  .post-files .col-lg-12 img {
     height: 300px;
   }
 }
@@ -13494,7 +13499,7 @@ ul.files li.file-preview-item .file-fileInfo {
   .post-files img, .post-files .col-12 img {
     height: 200px;
   }
-  .post-files .col-lg-6 img {
+  .post-files .col-xl-6 img {
     height: 300px;
   }
 }
@@ -14622,11 +14627,6 @@ img.bounceIn {
   :root {
     --hh-fixed-header-height: 105px;
   }
-  #layout-content .left-navigation .list-group-horizontal.list-group-vertical-md {
-    -webkit-overflow-scrolling: auto;
-    white-space: nowrap;
-    overflow-x: auto;
-  }
   #layout-content .table-responsive::-webkit-scrollbar, #layout-content .left-navigation .list-group::-webkit-scrollbar {
     -webkit-appearance: none;
   }
@@ -14659,7 +14659,7 @@ img.bounceIn {
     margin-right: -2px !important;
     margin-left: -2px !important;
   }
-  #layout-content > .container .col-sm-1, #layout-content > .container .col-md-1, #layout-content > .container .col-lg-1, #layout-content > .container .col-sm-2, #layout-content > .container .col-md-2, #layout-content > .container .col-lg-2, #layout-content > .container .col-sm-3, #layout-content > .container .col-md-3, #layout-content > .container .col-lg-3, #layout-content > .container .col-sm-4, #layout-content > .container .col-md-4, #layout-content > .container .col-lg-4, #layout-content > .container .col-sm-5, #layout-content > .container .col-md-5, #layout-content > .container .col-lg-5, #layout-content > .container .col-sm-6, #layout-content > .container .col-md-6, #layout-content > .container .col-lg-6, #layout-content > .container .col-sm-7, #layout-content > .container .col-md-7, #layout-content > .container .col-lg-7, #layout-content > .container .col-sm-8, #layout-content > .container .col-md-8, #layout-content > .container .col-lg-8, #layout-content > .container .col-sm-9, #layout-content > .container .col-md-9, #layout-content > .container .col-lg-9, #layout-content > .container .col-sm-10, #layout-content > .container .col-md-10, #layout-content > .container .col-lg-10, #layout-content > .container .col-sm-11, #layout-content > .container .col-md-11, #layout-content > .container .col-lg-11, #layout-content > .container .col-sm-12, #layout-content > .container .col-md-12, #layout-content > .container .col-lg-12 {
+  #layout-content > .container .col-md-1, #layout-content > .container .col-lg-1, #layout-content > .container .col-xl-1, #layout-content > .container .col-md-2, #layout-content > .container .col-lg-2, #layout-content > .container .col-xl-2, #layout-content > .container .col-md-3, #layout-content > .container .col-lg-3, #layout-content > .container .col-xl-3, #layout-content > .container .col-md-4, #layout-content > .container .col-lg-4, #layout-content > .container .col-xl-4, #layout-content > .container .col-md-5, #layout-content > .container .col-lg-5, #layout-content > .container .col-xl-5, #layout-content > .container .col-md-6, #layout-content > .container .col-lg-6, #layout-content > .container .col-xl-6, #layout-content > .container .col-md-7, #layout-content > .container .col-lg-7, #layout-content > .container .col-xl-7, #layout-content > .container .col-md-8, #layout-content > .container .col-lg-8, #layout-content > .container .col-xl-8, #layout-content > .container .col-md-9, #layout-content > .container .col-lg-9, #layout-content > .container .col-xl-9, #layout-content > .container .col-md-10, #layout-content > .container .col-lg-10, #layout-content > .container .col-xl-10, #layout-content > .container .col-md-11, #layout-content > .container .col-lg-11, #layout-content > .container .col-xl-11, #layout-content > .container .col-md-12, #layout-content > .container .col-lg-12, #layout-content > .container .col-xl-12 {
     padding-right: 2px !important;
     padding-left: 2px !important;
   }

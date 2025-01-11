@@ -32,7 +32,7 @@ class SpaceDirectoryFilters extends DirectoryFilters
             'placeholder' => Yii::t('SpaceModule.base', 'Search...'),
             'type' => 'input',
             'inputOptions' => ['autocomplete' => 'off'],
-            'wrapperClass' => 'col-md-6 form-search-filter-keyword',
+            'wrapperClass' => 'col-lg-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);

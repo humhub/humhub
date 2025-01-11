@@ -46,7 +46,7 @@ if ($nbFiles === 2) {
     $bsColumnsLg = $isFluid ? 4 : 6;
 }
 $fullWidthColumnClass = 'col-media col-12';
-$galleryColumnClass = 'col-media col-' . $bsColumns . ' col-md-' . $bsColumnsMd . ' col-lg-' . $bsColumnsLg;
+$galleryColumnClass = 'col-media col-' . $bsColumns . ' col-lg-' . $bsColumnsMd . ' col-xl-' . $bsColumnsLg;
 ?>
 
 <?php if ($nbFiles > 0): ?>

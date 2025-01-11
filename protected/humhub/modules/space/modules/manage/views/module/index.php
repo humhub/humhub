@@ -17,7 +17,7 @@ use yii\web\View;
     </div>
     <div class="panel-body">
         <?php if (empty($availableModules)) : ?>
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <div class="panel panel-default">
                     <div class="panel-body">
                         <?= Yii::t('SpaceModule.manage', 'Currently there are no modules available for this space!'); ?>

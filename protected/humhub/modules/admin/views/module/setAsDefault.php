@@ -30,21 +30,21 @@ AdminAsset::register($this);
 
     <div class="row">
         <?php if ($module->hasContentContainerType(Space::class)) : ?>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <?= $form->field($model, 'spaceDefaultState')->radioList($model->getStatesList())
                     ->label(Yii::t('AdminModule.modules', 'Spaces')); ?>
             </div>
         <?php endif; ?>
 
         <?php if ($module->hasContentContainerType(User::class)) : ?>
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <?= $form->field($model, 'userDefaultState')->radioList($model->getStatesList())
                     ->label(Yii::t('AdminModule.modules', 'Users')); ?>
             </div>
         <?php endif; ?>
         <br>
         <?php if ($model->mustConfirmModuleDeactivation()) : ?>
-            <div class="col-md-12">
+            <div class="col-lg-12">
                 <?= $form->field($model, 'moduleDeactivationConfirmed')->checkbox() ?>
             </div>
         <?php endif; ?>

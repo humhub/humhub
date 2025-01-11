@@ -37,10 +37,10 @@ $categories = $user->profile->getProfileFieldCategories();
                 <div class="tab-pane <?= $isFirst ? ' active' : '' ?>" id="profile-category-<?= $category->id ?>">
                     <?php foreach ($user->profile->getProfileFields($category) as $field) : ?>
                         <div class="profile-item row mt-3" data-profile-field-internal-name="<?= $field->internal_name ?>">
-                            <label class="col-sm-3 field-title text-lg-end">
+                            <label class="col-md-3 field-title text-lg-end">
                                 <?= Html::encode(Yii::t($field->getTranslationCategory(), $field->title)) ?>
                             </label>
-                            <div class="col-sm-9 field-value">
+                            <div class="col-md-9 field-value">
                                 <?= ($field->field_type_class === MarkdownEditor::class) ?
                                     RichText::output($field->getUserValue($user, true)) :
                                     $field->getUserValue($user, false) ?>

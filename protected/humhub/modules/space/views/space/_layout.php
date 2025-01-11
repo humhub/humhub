@@ -21,19 +21,19 @@ $space = $context->contentContainer;
 ?>
 <div class="container space-layout-container">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <?= Header::widget(['space' => $space]); ?>
         </div>
     </div>
     <div class="row space-content">
-        <div class="col-md-2 layout-nav-container">
+        <div class="col-lg-2 layout-nav-container">
             <?= Menu::widget(['space' => $space]); ?>
         </div>
-        <div class="col-md-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
+        <div class="col-lg-<?= ($this->hasSidebar()) ? '7' : '10' ?> layout-content-container">
             <?= SpaceContent::widget(['contentContainer' => $space, 'content' => $content]) ?>
         </div>
         <?php if ($this->hasSidebar()): ?>
-            <div class="col-md-3 layout-sidebar-container">
+            <div class="col-lg-3 layout-sidebar-container">
                 <?= $this->getSidebar() ?>
                 <?= FooterMenu::widget(['location' => FooterMenu::LOCATION_SIDEBAR]); ?>
             </div>

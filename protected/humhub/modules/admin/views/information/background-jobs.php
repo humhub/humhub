@@ -25,7 +25,7 @@ if (empty($lastRunDaily)) {
 }
 ?>
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-lg-6">
         <div class="panel">
             <div class="panel-heading">
                 <?= Yii::t('AdminModule.information', '<strong>CronJob</strong> Status'); ?>
@@ -39,7 +39,7 @@ if (empty($lastRunDaily)) {
         </div>
     </div>
 
-    <div class="col-md-6">
+    <div class="col-lg-6">
         <div class="panel">
             <div class="panel-heading">
                 <?php if ($canClearQueue): ?>

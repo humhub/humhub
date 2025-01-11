@@ -27,7 +27,7 @@ use humhub\modules\user\widgets\Image;
 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
                     <div class="d-flex">
                         <h5 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
@@ -48,7 +48,7 @@ use humhub\modules\user\widgets\Image;
                 <?php endif; ?>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <?php if (!empty($userGroups[Space::USERGROUP_ADMIN])): ?>
                     <div class="d-flex">
                         <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p></h4>
@@ -88,12 +88,12 @@ use humhub\modules\user\widgets\Image;
         <br/>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <p><strong><?= Yii::t('SpaceModule.base', 'Join Policy') ?></strong></p>
                 <p><i class="fa fa-users colorInfo"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
                 <br/>
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <p><strong><?= Yii::t('SpaceModule.base', 'Space Visibility') ?></strong></p>
                 <p><i class="fa fa-globe colorInfo"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
             </div>

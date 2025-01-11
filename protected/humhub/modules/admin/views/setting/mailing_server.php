@@ -21,10 +21,10 @@ use yii\web\View;
 <?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailName')]); ?>
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-lg-6">
         <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailAddress')]); ?>
     </div>
-    <div class="col-md-6">
+    <div class="col-lg-6">
         <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailReplyTo')]); ?>
     </div>
 
@@ -36,28 +36,28 @@ use yii\web\View;
 <div id="smtpOptions">
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
             <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailer.hostname')]); ?>
         </div>
-        <div class="col-md-4">
+        <div class="col-lg-4">
             <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailer.port')]); ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'useSmtps')->checkbox(); ?>
         </div>
-        <div class="col-md-6" id="encryptionOptions">
+        <div class="col-lg-6" id="encryptionOptions">
             <?= $form->field($model, 'allowSelfSignedCerts')->checkbox(); ?>
         </div>
     </div>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailer.username')]); ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailer.password')])->passwordInput(); ?>
         </div>
     </div>

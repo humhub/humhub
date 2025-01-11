@@ -56,7 +56,7 @@ class PeopleFilters extends DirectoryFilters
             'placeholder' => Yii::t('UserModule.base', 'Search...'),
             'type' => 'text',
             'inputOptions' => ['autocomplete' => 'off'],
-            'wrapperClass' => 'col-md-6 form-search-filter-keyword',
+            'wrapperClass' => 'col-lg-6 form-search-filter-keyword',
             'afterInput' => Html::submitButton('<span class="fa fa-search"></span>', ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);

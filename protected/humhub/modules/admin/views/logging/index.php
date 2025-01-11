@@ -48,7 +48,7 @@ if ($filter->day) {
             'options' => ['class' => 'row'],
         ]) ?>
 
-        <div class="col-md-3 col-md-push-1" style="padding-right:0">
+        <div class="col-lg-3 col-lg-push-1" style="padding-right:0">
             <?= $form->field($filter, 'term')->textInput(
                 [
                     'placeholder' => Yii::t('AdminModule.information', 'Search term...'),
@@ -57,7 +57,7 @@ if ($filter->day) {
                 ]
             )->label(false) ?>
         </div>
-        <div class="col-md-2" style="padding-right:0">
+        <div class="col-lg-2" style="padding-right:0">
             <?= $form->field($filter, 'day')->widget(DatePicker::class, [
                 'dateFormat' => Yii::$app->formatter->dateInputFormat,
                 'options' => [
@@ -65,13 +65,13 @@ if ($filter->day) {
                     'style' => 'height:40px'
                 ]])->label(false) ?>
         </div>
-        <div class="col-md-4" style="padding-right:0">
+        <div class="col-lg-4" style="padding-right:0">
             <?= $form->field($filter, 'levels')->widget(MultiSelect::class, [
                 'items' => $filter->getLevelSelection(),
                 'placeholderMore' => Yii::t('AdminModule.information', 'Select level...')
             ])->label(false) ?>
         </div>
-        <div class="col-md-3">
+        <div class="col-lg-3">
             <?= $form->field($filter, 'category')->dropDownList($filter->getCategorySelection(), ['style' => 'height:40px'])->label(false) ?>
         </div>
 

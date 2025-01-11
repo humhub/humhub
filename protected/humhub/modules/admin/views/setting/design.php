@@ -53,10 +53,10 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'paginationSize'); ?>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'displayNameFormat')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]); ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()); ?>
         </div>
 

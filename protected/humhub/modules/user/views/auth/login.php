@@ -57,11 +57,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
                 <hr>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                     </div>
                     <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-md-8 text-end">
+                        <div class="col-lg-8 text-end">
                             <small>
                                 <?= Html::a(
                                     Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),

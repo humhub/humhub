@@ -35,7 +35,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
     </div>
 
     <div class="row">
-        <div class="col-md-3" data-ui-widget="humhub.content.container.Header" data-ui-init>
+        <div class="col-lg-3" data-ui-widget="humhub.content.container.Header" data-ui-init>
             <div class="image-upload-container profile-user-photo-container"
                  style="width: 140px; height: 140px;">
                 <?= Html::img($user->getProfileImage()->getUrl(), [
@@ -64,56 +64,56 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
             </p>
         </div>
 
-        <div class="col-md-9">
+        <div class="col-lg-9">
             <?php $form = ActiveForm::begin(); ?>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your firstname')]); ?>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <?php echo $form->field($user->profile, 'lastname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your lastname')]); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-12">
                     <?php echo $form->field($user->profile, 'title')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your title or position')]); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-12">
                     <?php echo $form->field($user, 'tagsField')->widget(ContainerTagPicker::class, ['placeholderMore' => Yii::t('TourModule.base', 'Your skills, knowledge and experience')]); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <?php echo $form->field($user->profile, 'birthday')->widget(yii\jui\DatePicker::class, ['dateFormat' => 'medium', 'clientOptions' => [], 'options' => ['class' => 'form-control']]); ?>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <br><br>
                     <?php echo $form->field($user->profile, 'birthday_hide_year')->checkbox(['label' => Yii::t('TourModule.base', 'Hide my year of birth')]); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-lg-12">
                     <hr>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <?php echo $form->field($user->profile, 'phone_work')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your phone number at work')]); ?>
                 </div>
-                <div class="col-md-6">
+                <div class="col-lg-6">
                     <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your mobile phone number')]); ?>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-md-12 text-end">
+                <div class="col-lg-12 text-end">
                     <hr>
                     <br>
                     <?= ModalButton::save(Yii::t('TourModule.base', 'Save and close'), Url::to(['/tour/tour/welcome'])) ?>

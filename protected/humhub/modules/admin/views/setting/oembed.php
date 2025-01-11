@@ -28,7 +28,7 @@ JS, View::POS_READY);
 <?php if (count($providers) != 0): ?>
     <div id="oembed-providers">
         <?php foreach ($providers as $providerName => $provider) : ?>
-            <div class="oembed-provider-container col-6 col-md-3">
+            <div class="oembed-provider-container col-6 col-lg-3">
                 <div class="oembed-provider">
 
                     <div class="oembed-provider-name">

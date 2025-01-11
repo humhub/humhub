@@ -35,13 +35,13 @@ use yii\helpers\Url;
 
     <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/user/list'])]); ?>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
                 <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
-        <div class="col-md-4 usersearch-statuses">
+        <div class="col-lg-4 usersearch-statuses">
             <?= Html::activeDropDownList($searchModel, 'status', UserSearch::getStatusAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
         </div>
     </div>

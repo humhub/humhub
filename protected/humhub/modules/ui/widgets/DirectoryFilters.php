@@ -55,7 +55,7 @@ abstract class DirectoryFilters extends Widget
 
         $this->addFilter('reset', [
             'type' => 'info',
-            'wrapperClass' => 'col-md-2 form-search-without-info',
+            'wrapperClass' => 'col-lg-2 form-search-without-info',
             'info' => Html::a(Yii::t('UiModule.base', 'Reset filters'), [$this->pageUrl], ['class' => 'form-search-reset']),
             'sortOrder' => 10000,
         ]);
@@ -109,7 +109,7 @@ abstract class DirectoryFilters extends Widget
     public static function getDefaultFilterData(): array
     {
         return [
-            'wrapperClass' => 'col-md-2',
+            'wrapperClass' => 'col-lg-2',
             'titleClass' => 'form-search-field-info',
             'inputClass' => 'form-control',
             'beforeInput' => '',

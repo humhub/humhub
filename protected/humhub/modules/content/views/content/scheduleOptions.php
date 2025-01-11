@@ -28,12 +28,12 @@ use humhub\widgets\modal\ModalButton;
     <?= Html::hiddenInput('scheduledDate', $scheduleOptions->date) ?>
     <?= $form->field($scheduleOptions, 'enabled')->checkbox() ?>
     <div class="row">
-        <div class="col-sm-3 col-6">
+        <div class="col-md-3 col-6">
             <?= $form->field($scheduleOptions, 'date')
                 ->widget(DatePicker::class, ['options' => ['disabled' => $disableInputs]])
                 ->label(false) ?>
         </div>
-        <div class="col-sm-3 col-6" style="padding-left:0">
+        <div class="col-md-3 col-6" style="padding-left:0">
             <?= $form->field($scheduleOptions, 'time')
                 ->widget(TimePicker::class, ['disabled' => $disableInputs])
                 ->label(false) ?>

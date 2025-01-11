@@ -28,7 +28,7 @@ CardsAsset::register($this);
 
 <div class="row cards">
     <?php if (!$people->exists()): ?>
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <strong><?= Yii::t('UserModule.base', 'No results found!'); ?></strong><br/>

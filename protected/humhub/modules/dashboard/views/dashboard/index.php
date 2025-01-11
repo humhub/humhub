@@ -15,14 +15,14 @@ use humhub\widgets\FooterMenu;
 
 <?= Html::beginContainer() ?>
 <div class="row">
-    <div class="col-md-8 layout-content-container">
+    <div class="col-lg-8 layout-content-container">
         <?= DashboardContent::widget([
             'contentContainer' => $contentContainer,
             'showProfilePostForm' => $showProfilePostForm
         ]);
         ?>
     </div>
-    <div class="col-md-4 layout-sidebar-container">
+    <div class="col-lg-4 layout-sidebar-container">
         <?= Sidebar::widget([
             'widgets' => [
                 [

@@ -62,7 +62,7 @@ class ModuleGroups extends Widget
                 'count' => $updateModulesCount,
                 'view' => 'module-update-card',
                 'groupTemplate' => '<div class="container-module-updates">' . $updateAllButton . '{group}</div>',
-                'moduleTemplate' => '<div class="card card-module col-lg-2 col-md-3 col-sm-4 col-6">{card}</div>',
+                'moduleTemplate' => '<div class="card card-module col-xl-2 col-lg-3 col-md-4 col-6">{card}</div>',
                 'sortOrder' => 10,
             ]);
         }

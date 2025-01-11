@@ -14,7 +14,7 @@ use humhub\modules\notification\widgets\NotificationFilterForm;
 ?>
 <div class="container">
     <div class="row">
-        <div class="col-md-9 layout-content-container">
+        <div class="col-lg-9 layout-content-container">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <?= Yii::t('NotificationModule.base', '<strong>Notification</strong> Overview') ?>
@@ -38,7 +38,7 @@ use humhub\modules\notification\widgets\NotificationFilterForm;
                 </div>
             </div>
         </div>
-        <div class="col-md-3 layout-sidebar-container">
+        <div class="col-lg-3 layout-sidebar-container">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <strong><?= Yii::t('NotificationModule.base', 'Filter') ?></strong>
