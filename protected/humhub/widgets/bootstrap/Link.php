@@ -20,6 +20,9 @@ namespace humhub\widgets\bootstrap;
  */
 class Link extends Button
 {
+    /**
+     * @inerhitdoc
+     */
     public bool $asLink = true;
 
     public static function to($text, $url = '#', $pjax = true)

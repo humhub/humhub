@@ -32,6 +32,8 @@ class Button extends \yii\bootstrap5\Button
      */
     public $encodeLabel = false;
 
+    public bool $asLink = false;
+
     /**
      * @deprecated since 1.18
      */
@@ -125,6 +127,7 @@ class Button extends \yii\bootstrap5\Button
     {
         $this->options['href'] = Url::to($url);
         $this->pjax($pjax);
+        $this->asLink = true;
 
         return $this;
     }
@@ -239,7 +242,7 @@ class Button extends \yii\bootstrap5\Button
             Html::addCssClass($this->options, ['class' => 'btn-' . $this->size]);
         }
 
-        return $this->getHref() ?
+        return $this->asLink ?
             Html::a($text, $this->getHref(), $this->options) :
             Html::button($text, $this->options);
     }
