@@ -246,6 +246,7 @@ class ThemeHelper
             $imports[] = $treeTheme->getBasePath() . '/scss/build';
         }
 
+        // Set source map
         // TODO improve the source map to deal with multiple import paths
         $compiler->setSourceMap(Compiler::SOURCE_MAP_FILE);
         $compiler->setSourceMapOptions([
@@ -255,11 +256,25 @@ class ThemeHelper
             'sourceMapBasepath' => $theme->name === 'HumHub' ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
         ]);
 
+        // Define the output files
+        $cssFilePath = $theme->getBasePath() . '/css/theme.css';
+        $mapFilePath = $theme->getBasePath() . '/css/theme.map';
+        $errorMsgStart = Yii::t('UiModule.base', 'Cannot compile SCSS to CSS code.');
+
+        // Check if files are writable
+        if ($cssFilePermissionError = static::getFilePermissionError($cssFilePath)) {
+            return $errorMsgStart . ' ' . $cssFilePermissionError;
+        }
+        if ($mapFilePermissionError = static::getFilePermissionError($mapFilePath)) {
+            return $errorMsgStart . ' ' . $mapFilePermissionError;
+        }
+
+        // Compile to CSS
         try {
             $result = $compiler->compileString('@import "' . implode('", "', $imports) . '";');
             if (
-                file_put_contents($theme->getBasePath() . '/css/theme.css', $result->getCss()) !== false
-                && file_put_contents($theme->getBasePath() . '/css/theme.map', $result->getSourceMap()) !== false
+                file_put_contents($cssFilePath, $result->getCss()) !== false
+                && file_put_contents($mapFilePath, $result->getSourceMap()) !== false
             ) {
                 Yii::$app->assetManager->clear();
                 return true;
@@ -268,7 +283,19 @@ class ThemeHelper
             $errorMsg = $e->getMessage();
         }
 
-        return Yii::t('UiModule.base', 'Cannot compile SCSS to CSS code.') . (!empty($errorMsg) ? ' ' . $errorMsg : '');
+        return $errorMsgStart . (!empty($errorMsg) ? ' ' . $errorMsg : '');
     }
 
+    private static function getFilePermissionError($filePath): ?string
+    {
+        if (file_exists($filePath) && !is_writable($filePath)) {
+            return
+                Yii::t('UiModule.base', 'File {filePath} is not writable. Check files ownership and permissions. Current: {currentPermissions}', [
+                    'filePath' => $filePath,
+                    'currentPermissions' => substr(sprintf('%o', fileperms($filePath)), -4),
+                ]);
+        }
+
+        return null;
+    }
 }

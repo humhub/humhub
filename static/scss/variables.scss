@@ -110,6 +110,20 @@ $mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
 
 
 //
+// Grid containers
+// Define the maximum width of `.container` for different screen sizes.
+// --------------------------------------------------
+
+$container-max-widths: (
+    sm: 540px,
+    md: 720px,
+    lg: 960px,
+    xl: 1140px,
+    xxl: 1170px // instead of the Bootstrap default 1320px
+) !default;
+
+
+//
 // Other Bootstrap overwritten variables
 // --------------------------------------------------
 
