@@ -28,62 +28,42 @@
 
     // Layout Contents: Adjusting the contents to fit perfectly on mobile devices
     #layout-content {
-        // Layout Space: Space navigation
+
+        // Left navigation on mobile, when becoming horizontal, should be scrollable
         .left-navigation {
-            .list-group {
+            .list-group-horizontal.list-group-vertical-md {
                 -webkit-overflow-scrolling: auto;
                 white-space: nowrap;
                 overflow-x: auto;
             }
         }
 
-        .left-navigation .list-group::-webkit-scrollbar {
-            -webkit-appearance: none;
-        }
+        // Safari
+        .table-responsive,
+        .left-navigation .list-group {
+            &::-webkit-scrollbar {
+                -webkit-appearance: none;
+            }
 
-        .left-navigation .list-group::-webkit-scrollbar:vertical {
-            width: 8px;
-        }
+            &::-webkit-scrollbar:vertical {
+                width: 8px;
+            }
 
-        .left-navigation .list-group::-webkit-scrollbar:horizontal {
-            height: 8px;
-        }
+            &::-webkit-scrollbar:horizontal {
+                height: 8px;
+            }
 
-        .left-navigation .list-group::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, .5);
-            border-radius: 10px;
-            border: 2px solid #ffffff;
-        }
+            &::-webkit-scrollbar-thumb {
+                background-color: rgba(0, 0, 0, .5);
+                border-radius: 10px;
+                border: 2px solid #ffffff;
+            }
 
-        .left-navigation .list-group::-webkit-scrollbar-track {
-            border-radius: 10px;
-            background-color: #ffffff;
+            &::-webkit-scrollbar-track {
+                border-radius: 10px;
+                background-color: #ffffff;
+            }
         }
-
-        // Responsive tables
-        .table-responsive::-webkit-scrollbar {
-            -webkit-appearance: none;
-        }
-
-        .table-responsive::-webkit-scrollbar:vertical {
-            width: 8px;
-        }
-
-        .table-responsive::-webkit-scrollbar:horizontal {
-            height: 8px;
-        }
-
-        .table-responsive::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, .5);
-            border-radius: 10px;
-            border: 2px solid #ffffff;
-        }
-
-        .table-responsive::-webkit-scrollbar-track {
-            border-radius: 10px;
-            background-color: #ffffff;
-        }
-
 
         .panel {
             margin-bottom: 5px;

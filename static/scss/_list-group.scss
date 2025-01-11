@@ -61,6 +61,32 @@ a.list-group-item {
     }
 }
 
+// Introduce a new class for vertical list groups
+@include media-breakpoint-up(sm) {
+    .list-group-vertical-sm {
+        flex-direction: column;
+    }
+}
+@include media-breakpoint-up(md) {
+    .list-group-vertical-md {
+        flex-direction: column;
+    }
+}
+@include media-breakpoint-up(lg) {
+    .list-group-vertical-lg {
+        flex-direction: column;
+    }
+}
+@include media-breakpoint-up(xl) {
+    .list-group-vertical-xl {
+        flex-direction: column;
+    }
+}
+@include media-breakpoint-up(xxl) {
+    .list-group-vertical-xxl {
+        flex-direction: column;
+    }
+}
 
 @include media-breakpoint-down(lg) {
     .list-group {
