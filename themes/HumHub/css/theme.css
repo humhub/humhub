@@ -11030,30 +11030,30 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   width: 400px;
   margin-left: -173px;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list {
+#topbar-first .notifications .dropdown-menu .hh-list {
   max-height: 400px;
   overflow: auto;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex {
+#topbar-first .notifications .dropdown-menu .hh-list > div.d-flex, #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex {
   position: relative;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.approval {
+#topbar-first .notifications .dropdown-menu .hh-list > div.d-flex i.approval, #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex i.approval {
   position: absolute;
   left: 2px;
   top: 36px;
   font-size: 14px;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.accepted {
+#topbar-first .notifications .dropdown-menu .hh-list > div.d-flex i.accepted, #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex i.accepted {
   color: #5cb85c;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex i.declined {
+#topbar-first .notifications .dropdown-menu .hh-list > div.d-flex i.declined, #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex i.declined {
   color: #d9534f;
 }
-#topbar-first .notifications .dropdown-menu div.hh-list a.d-flex.new {
+#topbar-first .notifications .dropdown-menu .hh-list > div.d-flex.new, #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex.new {
   background-color: transparent;
   border-left: none;
 }
-* #topbar-first .notifications .dropdown-menu div.hh-list a.d-flex:not(.new) > a, #topbar-first .notifications .dropdown-menu div.hh-list a.d-flex:not(.new) > a strong {
+* #topbar-first .notifications .dropdown-menu .hh-list > div.d-flex:not(.new) > a, #topbar-first .notifications .dropdown-menu .hh-list > div.d-flex:not(.new) > a strong, * #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex:not(.new) > a, #topbar-first .notifications .dropdown-menu .hh-list > a.d-flex:not(.new) > a strong {
   color: var(--hh-text-color-secondary);
 }
 #topbar-first .dropdown-footer {
@@ -11078,32 +11078,32 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 #topbar-first .btn-enter:hover {
   background-color: #527588;
 }
-#topbar-first .hh-list a {
+#topbar-first .hh-list > div, #topbar-first .hh-list > a {
   color: var(--hh-text-color-highlight);
 }
-#topbar-first .hh-list a.new {
+#topbar-first .hh-list > div.new, #topbar-first .hh-list > a.new {
   border: none;
   background: none;
 }
-#topbar-first .hh-list a.new:hover {
+#topbar-first .hh-list > div.new:hover, #topbar-first .hh-list > a.new:hover {
   background-color: var(--hh-background-color-secondary) !important;
 }
-#topbar-first .hh-list a.new time {
+#topbar-first .hh-list > div.new time, #topbar-first .hh-list > a.new time {
   color: var(--bs-info);
 }
-#topbar-first .hh-list a:hover {
+#topbar-first .hh-list > div:hover, #topbar-first .hh-list > a:hover {
   border-left: 3px solid transparent;
 }
-#topbar-first .hh-list a.placeholder {
+#topbar-first .hh-list > div.placeholder, #topbar-first .hh-list > a.placeholder {
   border-bottom: none;
 }
-#topbar-first .hh-list a time {
+#topbar-first .hh-list > div time, #topbar-first .hh-list > a time {
   font-size: 10px;
 }
-#topbar-first .hh-list a i.accepted {
+#topbar-first .hh-list > div i.accepted, #topbar-first .hh-list > a i.accepted {
   color: var(--bs-link-color) !important;
 }
-#topbar-first .hh-list a i.declined {
+#topbar-first .hh-list > div i.declined, #topbar-first .hh-list > a i.declined {
   color: var(--bs-danger) !important;
 }
 #topbar-first .account .user-title {

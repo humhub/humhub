@@ -165,11 +165,11 @@
             width: 400px;
             margin-left: -173px;
 
-            div.hh-list {
+            .hh-list {
                 max-height: 400px;
                 overflow: auto;
 
-                a.d-flex {
+                > div.d-flex, > a.d-flex {
                     position: relative;
 
                     i.approval {
@@ -234,7 +234,7 @@
     }
 
     .hh-list {
-        a {
+        > div, > a {
             color: var(--hh-text-color-highlight);
 
             &.new {
