@@ -4,6 +4,7 @@ HumHub Changelog
 1.17.0-beta.5 (Unreleased)
 ---------------------------------
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
+- Fix: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
