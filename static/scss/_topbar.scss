@@ -236,6 +236,7 @@
     .hh-list {
         > div, > a {
             color: var(--hh-text-color-highlight);
+            margin: 0 16px 5px;
 
             &.new {
                 border: none;

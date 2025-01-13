@@ -3,20 +3,21 @@
 // --------------------------------------------------
 
 .hh-list {
+    padding: 0;
 
     &.dropdown-item:hover {
         background-color: inherit;
         color: inherit;
     }
 
-    > div, > a {
+    > div:not(.stream-end), > a:not(.stream-end) {
         padding: 10px;
         border-bottom: 1px solid #eee;
         position: relative;
         border-left: 3px solid white;
 
-        &:hover:not(.stream-end),
-        &.selected:not(.stream-end) {
+        &:hover,
+        &.selected {
             background-color: var(--hh-background-color-secondary);
             border-left: 3px solid var(--bs-info);
         }
@@ -29,7 +30,7 @@
             border-left: 3px solid var(--bs-info);
             background-color: var(--hh-background-color-highlight);
 
-            &:hover:not(.stream-end) {
+            &:hover {
                 background-color: var(--hh-background-color-highlight-soft);
             }
         }
@@ -39,7 +40,7 @@
             border-bottom: none;
         }
 
-        &.placeholder:hover:not(.stream-end) {
+        &.placeholder:hover {
             background: none !important;
             border-left: 3px solid white;
         }

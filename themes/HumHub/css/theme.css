@@ -11080,6 +11080,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 }
 #topbar-first .hh-list > div, #topbar-first .hh-list > a {
   color: var(--hh-text-color-highlight);
+  margin: 0 16px 5px;
 }
 #topbar-first .hh-list > div.new, #topbar-first .hh-list > a.new {
   border: none;
@@ -12385,45 +12386,48 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
 .profile-item {
   margin-top: 15px;
 }
+.hh-list {
+  padding: 0;
+}
 .hh-list.dropdown-item:hover {
   background-color: inherit;
   color: inherit;
 }
-.hh-list > div, .hh-list > a {
+.hh-list > div:not(.stream-end), .hh-list > a:not(.stream-end) {
   padding: 10px;
   border-bottom: 1px solid #eee;
   position: relative;
   border-left: 3px solid white;
 }
-.hh-list > div:hover:not(.stream-end), .hh-list > div.selected:not(.stream-end), .hh-list > a:hover:not(.stream-end), .hh-list > a.selected:not(.stream-end) {
+.hh-list > div:not(.stream-end):hover, .hh-list > div:not(.stream-end).selected, .hh-list > a:not(.stream-end):hover, .hh-list > a:not(.stream-end).selected {
   background-color: var(--hh-background-color-secondary);
   border-left: 3px solid var(--bs-info);
 }
-.hh-list > diva, .hh-list > div a, .hh-list > aa, .hh-list > a a {
+.hh-list > div:not(.stream-end)a, .hh-list > div:not(.stream-end) a, .hh-list > a:not(.stream-end)a, .hh-list > a:not(.stream-end) a {
   color: var(--hh-text-color-main);
 }
-.hh-list > div.new, .hh-list > a.new {
+.hh-list > div:not(.stream-end).new, .hh-list > a:not(.stream-end).new {
   border-left: 3px solid var(--bs-info);
   background-color: var(--hh-background-color-highlight);
 }
-.hh-list > div.new:hover:not(.stream-end), .hh-list > a.new:hover:not(.stream-end) {
+.hh-list > div:not(.stream-end).new:hover, .hh-list > a:not(.stream-end).new:hover {
   background-color: var(--hh-background-color-highlight-soft);
 }
-.hh-list > div.placeholder, .hh-list > a.placeholder {
+.hh-list > div:not(.stream-end).placeholder, .hh-list > a:not(.stream-end).placeholder {
   font-size: 14px !important;
   border-bottom: none;
 }
-.hh-list > div.placeholder:hover:not(.stream-end), .hh-list > a.placeholder:hover:not(.stream-end) {
+.hh-list > div:not(.stream-end).placeholder:hover, .hh-list > a:not(.stream-end).placeholder:hover {
   background: none !important;
   border-left: 3px solid white;
 }
-.hh-list > div .badge-space-type, .hh-list > a .badge-space-type {
+.hh-list > div:not(.stream-end) .badge-space-type, .hh-list > a:not(.stream-end) .badge-space-type {
   background-color: var(--hh-background-color-secondary);
   border: 1px solid var(--hh-background3);
   color: var(--hh-background4);
   padding: 3px 3px 2px 3px;
 }
-.hh-list > div .flex-grow-1, .hh-list > a .flex-grow-1 {
+.hh-list > div:not(.stream-end) .flex-grow-1, .hh-list > a:not(.stream-end) .flex-grow-1 {
   font-size: 13px;
   white-space: normal;
   word-wrap: break-word;
@@ -12431,46 +12435,46 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
   word-break: break-word;
   hyphens: auto;
 }
-.hh-list > div h4, .hh-list > div .h4, .hh-list > a h4, .hh-list > a .h4 {
+.hh-list > div:not(.stream-end) h4, .hh-list > div:not(.stream-end) .h4, .hh-list > a:not(.stream-end) h4, .hh-list > a:not(.stream-end) .h4 {
   font-size: 14px;
   font-weight: 500;
   color: var(--hh-text-color-highlight);
 }
-.hh-list > div h4 a, .hh-list > div .h4 a, .hh-list > a h4 a, .hh-list > a .h4 a {
+.hh-list > div:not(.stream-end) h4 a, .hh-list > div:not(.stream-end) .h4 a, .hh-list > a:not(.stream-end) h4 a, .hh-list > a:not(.stream-end) .h4 a {
   color: var(--hh-text-color-highlight);
 }
-.hh-list > div h4 small, .hh-list > div .h4 small, .hh-list > div h4 .small, .hh-list > div .h4 .small, .hh-list > div h4 small a, .hh-list > div .h4 small a, .hh-list > div h4 .small a, .hh-list > div .h4 .small a, .hh-list > a h4 small, .hh-list > a .h4 small, .hh-list > a h4 .small, .hh-list > a .h4 .small, .hh-list > a h4 small a, .hh-list > a .h4 small a, .hh-list > a h4 .small a, .hh-list > a .h4 .small a {
+.hh-list > div:not(.stream-end) h4 small, .hh-list > div:not(.stream-end) .h4 small, .hh-list > div:not(.stream-end) h4 .small, .hh-list > div:not(.stream-end) .h4 .small, .hh-list > div:not(.stream-end) h4 small a, .hh-list > div:not(.stream-end) .h4 small a, .hh-list > div:not(.stream-end) h4 .small a, .hh-list > div:not(.stream-end) .h4 .small a, .hh-list > a:not(.stream-end) h4 small, .hh-list > a:not(.stream-end) .h4 small, .hh-list > a:not(.stream-end) h4 .small, .hh-list > a:not(.stream-end) .h4 .small, .hh-list > a:not(.stream-end) h4 small a, .hh-list > a:not(.stream-end) .h4 small a, .hh-list > a:not(.stream-end) h4 .small a, .hh-list > a:not(.stream-end) .h4 .small a {
   font-size: 11px;
   color: var(--hh-text-color-soft);
 }
-.hh-list > div h4 .content, .hh-list > div .h4 .content, .hh-list > a h4 .content, .hh-list > a .h4 .content {
+.hh-list > div:not(.stream-end) h4 .content, .hh-list > div:not(.stream-end) .h4 .content, .hh-list > a:not(.stream-end) h4 .content, .hh-list > a:not(.stream-end) .h4 .content {
   margin-right: 35px;
 }
-.hh-list > div h5, .hh-list > div .h5, .hh-list > a h5, .hh-list > a .h5 {
+.hh-list > div:not(.stream-end) h5, .hh-list > div:not(.stream-end) .h5, .hh-list > a:not(.stream-end) h5, .hh-list > a:not(.stream-end) .h5 {
   color: var(--hh-text-color-soft2);
   font-weight: 300;
   margin-top: 5px;
   margin-bottom: 5px;
   min-height: 15px;
 }
-.hh-list > div .content a, .hh-list > a .content a {
+.hh-list > div:not(.stream-end) .content a, .hh-list > a:not(.stream-end) .content a {
   word-break: break-all;
   color: var(--bs-link-color);
 }
-.hh-list > div strong, .hh-list > a strong {
+.hh-list > div:not(.stream-end) strong, .hh-list > a:not(.stream-end) strong {
   color: var(--hh-text-color-highlight);
 }
-.hh-list > div .time, .hh-list > a .time {
+.hh-list > div:not(.stream-end) .time, .hh-list > a:not(.stream-end) .time {
   font-size: 11px;
   color: var(--hh-text-color-soft);
 }
-.hh-list > div .module-controls, .hh-list > a .module-controls {
+.hh-list > div:not(.stream-end) .module-controls, .hh-list > a:not(.stream-end) .module-controls {
   font-size: 85%;
 }
-.hh-list > div .module-controls a, .hh-list > a .module-controls a {
+.hh-list > div:not(.stream-end) .module-controls a, .hh-list > a:not(.stream-end) .module-controls a {
   color: var(--bs-link-color);
 }
-.hh-list > div .content .files a, .hh-list > a .content .files a {
+.hh-list > div:not(.stream-end) .content .files a, .hh-list > a:not(.stream-end) .content .files a {
   color: var(--hh-text-color-highlight);
 }
 .list-group {
