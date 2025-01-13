@@ -11464,7 +11464,6 @@ img {
 }
 .tab-menu .nav-tabs {
   padding-left: 10px;
-  border-bottom: none;
 }
 .tab-menu .nav-tabs .nav-link {
   padding-top: 12px;
@@ -11589,8 +11588,6 @@ ul.tab-menu-settings .nav-link.active {
 }
 .nav-tabs > li.nav-item > a.nav-link.active, .nav-tabs > li.nav-item > a.nav-link:hover, .nav-tabs > li.nav-item > a.nav-link:focus {
   color: var(--hh-text-color-highlight);
-  border: 1px solid var(--bs-nav-tabs-border-color);
-  border-bottom-color: transparent;
 }
 .list-group a [class^="fa-"], .list-group a [class*=" fa-"] {
   display: inline-block;

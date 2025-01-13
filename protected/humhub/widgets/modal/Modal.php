@@ -22,6 +22,32 @@ use yii\bootstrap5\Html;
 class Modal extends \yii\bootstrap5\Modal
 {
     /**
+     * Defines if a click on the modal background should close the modal
+     */
+    public bool $backdrop = true;
+
+    /**
+     * Defines if the modal can be closed by pressing escape
+     */
+    public bool $keyboard = true;
+
+    /**
+     * If set to false $backdrop and §keyboard will be considered as false,
+     * so the modal is only closable by buttons
+     */
+    public bool $closable = true;
+
+    /**
+     * Defines if the modal should be shown at startup
+     */
+    public bool $show = false;
+
+    /**
+     * @deprecated since 1.18.0 use [[closeButton]] instead
+     */
+    public $showClose;
+
+    /**
      * @deprecated since 1.18.0 use [[title]] instead
      */
     public $header;
@@ -52,7 +78,22 @@ class Modal extends \yii\bootstrap5\Modal
     {
         $this->title = $this->title ?: $this->header;
 
+        if ($this->showClose === false) {
+            $this->closeButton = false;
+        }
+
+        if (!$this->closable || !$this->backdrop) {
+            $this->options['data-bs-backdrop'] = 'static';
+        }
+
+        if (!$this->closable || !$this->keyboard) {
+            $this->options['data-bs-keyboard'] = 'false';
+        }
+
+        $this->clientOptions['show'] = $this->show;
+
         // Convert size from deprecated values to new ones
+        // TODO: remove in later version
         if ($this->size === 'extra-small') {
             $this->size = static::SIZE_SMALL;
         } elseif ($this->size === 'small') {

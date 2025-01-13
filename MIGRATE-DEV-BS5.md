@@ -87,10 +87,16 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
 - `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "Modal Dialog" chapter bellow)
 - `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
-- `humhub\widgets\modal\JsModal::header` & `humhub\widgets\modal\Modal::header`: use `title` instead
-- `humhub\widgets\modal\JsModal::animation` & `humhub\widgets\modal\Modal::animation` (all modal boxes are opened with the fade animation)
-- `humhub\widgets\modal\JsModal::centerText` & `humhub\widgets\modal\Modal::centerText`
+- `humhub\widgets\modal\Modal::header` & `humhub\widgets\modal\JsModal::header`: use `title` instead
+- `humhub\widgets\modal\Modal::animation` & `humhub\widgets\modal\JsModal::animation` (all modal boxes are opened with the fade animation)
+- `humhub\widgets\modal\Modal::centerText` & `humhub\widgets\modal\JsModal::centerText`
+- `humhub\widgets\modal\Modal::showClose`: use `closeButton` instead (but works differently, see `yii\bootstrap5\Modal::closeButton` doc)
 - `humhub\widgets\modal\JsModal::size` & `humhub\widgets\modal\Modal::size` values: use `Modal::SIZE_DEFAULT`, `Modal::SIZE_SMALL`, `Modal::SIZE_LARGE`, `Modal::SIZE_EXTRA_LARGE` instead of (`normal`, `extra-small`, `small`, `medium`, and `large`)
+
+### Replacements in HTML attributes
+
+- `data-backdrop` => `data-bs-backdrop`
+- `data-keyboard` => `data-bs-keyboard`
 
 ### Usage
 
@@ -275,29 +281,29 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 
 ### General classes replacements
 
-- `img-responsive` - > `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
-- `alert-default` - > `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
-- `btn-xs` - > `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
-- `btn-default` - > `btn-light` (the new  `btn-secondary` can also be used, but it will be a darker gray)
-- `pull-left` - > `float-start`
-- `pull-right` - > `float-end`
-- `center-block` - > `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
-- `text-left` - > `text-start`
-- `text-right` - > `text-end`
-- `btn-group-xs` - > `btn-group-sm`
-- `media-object img-rounded` - > `rounded`
-- `img-rounded` - > `rounded`
-- `data-toggle` - > `data-bs-toggle`
-- `data-target` - > `data-bs-target`
-- `data-dismiss` - > `data-bs-dismiss`
-- `no-space` - > `m-0 p-0`
-- `align-center` - > `text-center` or  `d-flex justify-content-center`
-- `input-group-addon` - > `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
-- `form-group` - > `mb-3`
+- `img-responsive` -> `img-fluid` (use the `humhub\modules\ui\widgets\BaseImage` widget when possible)
+- `alert-default` -> `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
+- `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
+- `btn-default` -> `btn-light` (the new  `btn-secondary` can also be used, but it will be a darker gray)
+- `pull-left` -> `float-start`
+- `pull-right` -> `float-end`
+- `center-block` -> `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
+- `text-left` -> `text-start`
+- `text-right` -> `text-end`
+- `btn-group-xs` -> `btn-group-sm`
+- `media-object img-rounded` -> `rounded`
+- `img-rounded` -> `rounded`
+- `data-toggle` -> `data-bs-toggle`
+- `data-target` -> `data-bs-target`
+- `data-dismiss` -> `data-bs-dismiss`
+- `no-space` -> `m-0 p-0`
+- `align-center` -> `text-center` or  `d-flex justify-content-center`
+- `input-group-addon` -> `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
+- `form-group` -> `mb-3`
 - `well` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?well(?:\s[^"']*)?["'][^>]*>`) -> `bg-light p-3` for a simple inset container or `card` (with a  `card-body` child element)
-- `has-error`,  `has-warning`, and  `has-success` - > `is-invalid` or  `is-valid`, but the new classes are now append to the input instead of the previous  `form-group` (the input is a child of the form group)
-- `help-block help-block-error` - > `invalid-feedback`
-- `help-block` - > `text-body-secondary` or  `form-text` if in a form
+- `has-error`,  `has-warning`, and  `has-success` -> `is-invalid` or  `is-valid`, but the new classes are now append to the input instead of the previous  `form-group` (the input is a child of the form group)
+- `help-block help-block-error` -> `invalid-feedback`
+- `help-block` -> `text-body-secondary` or  `form-text` if in a form
 - Remove  `jumbotron` class
 
 ### Columns with breakpoints
@@ -317,10 +323,10 @@ Bootstrap 5:
 - `xxl`: ≥ 1400px (new)
 
 So replacements are (to be done in this order):
-- `col-lg-` - > `col-xl-`
-- `col-md-` - > `col-lg-`
-- `col-sm-` - > `col-md-`
-- `col-xs-` - > `col- `
+- `col-lg-` -> `col-xl-`
+- `col-md-` -> `col-lg-`
+- `col-sm-` -> `col-md-`
+- `col-xs-` -> `col- `
 
 Make sure:
 - the parent element has the `row` class

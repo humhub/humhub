@@ -10,6 +10,7 @@
 namespace humhub\widgets\modal;
 
 use humhub\widgets\JsWidget;
+use yii\bootstrap5\Modal;
 
 /**
  * Usage examples:
@@ -70,26 +71,12 @@ class JsModal extends JsWidget
     public $size;
 
     /**
-     * @deprecated since 1.18.0 (all modal boxes are opened with the fade animation)
-     */
-    public $animation;
-
-    /**
-     * Can be set to true to force the x close button to be rendered even if
-     * there is no headtext available, or set to false if the button should not
-     * be rendered.
-     *
-     * @var bool
-     */
-    public $showClose;
-
-    /**
      * If set to false $backdrop and §keyboard will be set to false automaticly, so
      * the modal is only closable by buttons.
      *
      * @var bool
      */
-    public $closable = false;
+    public $closable = true;
 
     /**
      * Defines if a click on the modal background should close the modal
@@ -110,6 +97,16 @@ class JsModal extends JsWidget
     public $show = false;
 
     /**
+     * @deprecated since 1.18.0 (all modal boxes are opened with the fade animation)
+     */
+    public $animation;
+
+    /**
+     * @deprecated since 1.18.0 use [[Modal::closeButton]] instead
+     */
+    public $showClose;
+
+    /**
      * @deprecated since 1.18.0
      */
     public $centerText = false;
@@ -124,27 +121,17 @@ class JsModal extends JsWidget
 
     public function run()
     {
-        $this->title = $this->title ?: $this->header;
-
-        // Convert size from deprecated values to new ones
-        if ($this->size === 'extra-small') {
-            $this->size = Modal::SIZE_SMALL;
-        } elseif ($this->size === 'small') {
-            $this->size = Modal::SIZE_DEFAULT;
-        } elseif ($this->size === 'normal') {
-            $this->size = Modal::SIZE_DEFAULT;
-        } elseif ($this->size === 'medium') {
-            $this->size = Modal::SIZE_LARGE;
-        } elseif ($this->size === 'large') {
-            $this->size = Modal::SIZE_EXTRA_LARGE;
-        }
-
         return $this->render('@humhub/widgets/modal/views/modal', [
             'options' => $this->getOptions(),
             'title' => $this->title,
             'body' => $this->body,
             'footer' => $this->footer,
             'size' => $this->size,
+            'closable' => $this->closable,
+            'backdrop' => $this->backdrop,
+            'keyboard' => $this->keyboard,
+            'show' => $this->show,
+            'showClose' => $this->showClose,
             'initialLoader' => $this->initialLoader,
         ]);
     }
@@ -154,24 +141,5 @@ class JsModal extends JsWidget
         return [
             'aria-hidden' => "true",
         ];
-    }
-
-    public function getData()
-    {
-        $result = [];
-
-        if (!$this->closable || !$this->backdrop) {
-            $result['backdrop'] = 'static';
-        }
-
-        if (!$this->closable || !$this->keyboard) {
-            $result['keyboard'] = 'false';
-        }
-
-        if ($this->show) {
-            $result['show'] = 'true';
-        }
-
-        return $result;
     }
 }

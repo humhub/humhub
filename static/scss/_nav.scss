@@ -31,7 +31,6 @@
 
     .nav-tabs {
         padding-left: 10px;
-        border-bottom: none; // Overwrite BS5 default border, as it's added to li > a
 
         .nav-link {
             padding-top: 12px;
@@ -205,8 +204,6 @@ ul.tab-menu-settings {
             &:hover,
             &:focus {
                 color: var(--hh-text-color-highlight);
-                border: 1px solid var(--bs-nav-tabs-border-color);
-                border-bottom-color: transparent;
             }
         }
     }

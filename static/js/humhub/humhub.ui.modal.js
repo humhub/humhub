@@ -479,8 +479,8 @@ humhub.module('ui.modal', function (module, require, $) {
 
     Modal.prototype.updateDialogOptions = function () {
         this.set({
-            backdrop: this.getDialog().data('backdrop'),
-            keyboard: this.getDialog().data('keyboard')
+            backdrop: this.getDialog().data('bs-backdrop'),
+            keyboard: this.getDialog().data('bs-keyboard')
         });
     };
 
@@ -633,8 +633,8 @@ humhub.module('ui.modal', function (module, require, $) {
 
             var options = {
                 'show': true,
-                'backdrop': $(this).data('backdrop'),
-                'keyboard': $(this).data('keyboard')
+                'backdrop': $(this).data('bs-backdrop'),
+                'keyboard': $(this).data('bs-keyboard')
             };
 
             var globalModalElement = document.getElementById('globalModal');

@@ -10,6 +10,10 @@ use humhub\widgets\modal\Modal;
  * @var $body string
  * @var $footer string
  * @var $size string
+ * @var $closable boolean
+ * @var $backdrop boolean
+ * @var $keyboard boolean
+ * @var $show boolean
  * @var $initialLoader boolean
  * @var $options array
  */
@@ -19,6 +23,10 @@ use humhub\widgets\modal\Modal;
     'options' => $options,
     'title' => $title,
     'size' => $size,
+    'closable' => $closable,
+    'backdrop' => $backdrop,
+    'keyboard' => $keyboard,
+    'show' => $show,
     'footer' => $footer,
 ]); ?>
 <?= $body ?>
