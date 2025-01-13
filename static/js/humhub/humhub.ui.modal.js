@@ -477,10 +477,13 @@ humhub.module('ui.modal', function (module, require, $) {
         }, 100);
     };
 
+    /**
+     * Update Modal options from Dialog HumHub options defined in [[Modal::renderDialogBegin()]]
+     */
     Modal.prototype.updateDialogOptions = function () {
         this.set({
-            backdrop: this.getDialog().data('bs-backdrop'),
-            keyboard: this.getDialog().data('bs-keyboard')
+            backdrop: this.getDialog().data('hh-backdrop'),
+            keyboard: this.getDialog().data('hh-keyboard')
         });
     };
 

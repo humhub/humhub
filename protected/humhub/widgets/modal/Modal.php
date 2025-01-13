@@ -23,8 +23,10 @@ class Modal extends \yii\bootstrap5\Modal
 {
     /**
      * Defines if a click on the modal background should close the modal
+     * It's false because it's often used for serious work, for example html forms,
+     * accidental closing of which can lead to loss of user data.
      */
-    public bool $backdrop = true;
+    public $backdrop = false;
 
     /**
      * Defines if the modal can be closed by pressing escape
@@ -122,6 +124,10 @@ class Modal extends \yii\bootstrap5\Modal
 
     public function renderDialogBegin(): string
     {
+        // Set dialog backdrop and keyboard options to update modal options via humhub.ui.modal.js
+        $this->dialogOptions['data-hh-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
+        $this->dialogOptions['data-hh-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
+
         return
             Html::beginTag('div', $this->dialogOptions) . "\n" .
             Html::beginTag('div', ['class' => 'modal-content']) . "\n" .

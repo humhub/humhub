@@ -22,11 +22,4 @@ class GlobalModal extends JsModal
      * @var string this id need to js scripts
      */
     public $id = 'globalModal';
-
-    /**
-     * @inheritdoc
-     * It's false because it's often used for serious work, for example html forms,
-     * accidental closing of which can lead to loss of user data.
-     */
-    public $backdrop = false;
 }
