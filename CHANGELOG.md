@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.1 (Unreleased)
+-------------------
+- Enh #7377: Disable Cache on Installer 
+
 1.17.0 (January 13, 2025)
 -------------------------
 
