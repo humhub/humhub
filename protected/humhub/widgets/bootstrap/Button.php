@@ -100,7 +100,7 @@ class Button extends \yii\bootstrap5\Button
 
     public static function back($url, $label = null): static
     {
-        return self::secondary($label ?? Yii::t('base', 'Back'))
+        return self::light($label ?? Yii::t('base', 'Back'))
             ->link($url)
             ->icon('back')
             ->right()

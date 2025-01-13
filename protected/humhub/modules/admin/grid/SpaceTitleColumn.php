@@ -55,7 +55,7 @@ class SpaceTitleColumn extends SpaceBaseColumn
         return Html::tag(
             'div',
             Html::encode($space->name) . $badge .
-            ($space->sort_order === 100 ? '' : ' ' . Badge::secondary($space->sort_order)) .
+            ($space->sort_order === 100 ? '' : ' ' . Badge::light($space->sort_order)) .
             '<br> ' . '<small>' . Html::encode(Helpers::trimText($space->description, 100)) . '</small>',
         );
     }

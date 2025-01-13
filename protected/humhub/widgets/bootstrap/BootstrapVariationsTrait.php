@@ -47,7 +47,7 @@ trait BootstrapVariationsTrait
      */
     public static function defaultType($text = null)
     {
-        return self::secondary($text);
+        return self::light($text);
     }
 
     public static function primary(string $label = null): static

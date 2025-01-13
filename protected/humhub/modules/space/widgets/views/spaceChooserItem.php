@@ -32,7 +32,7 @@ use humhub\widgets\bootstrap\Badge;
         <?php if ($space->hasTags()) : ?>
             <div class="space-tags d-none">
                 <?php foreach ($space->getTags() as $tag) : ?>
-                    <?= Badge::secondary($tag) . ' ' ?>
+                    <?= Badge::light($tag) . ' ' ?>
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>

@@ -75,7 +75,7 @@ class Events extends BaseObject
         $menu = $event->sender;
 
         $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
-        $updatesCountInfo = $updatesCount > 0 ? ' ' . Badge::secondary($updatesCount) : '';
+        $updatesCountInfo = $updatesCount > 0 ? ' ' . Badge::light($updatesCount) : '';
 
         $menu->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'Marketplace') . $updatesCountInfo,

@@ -60,7 +60,7 @@ class PeopleTagList extends Widget
 
         foreach ($tags as $tag) {
             if (trim($tag) !== '') {
-                $html .= Button::asBadge($tag, 'secondary')->link(['/user/people', 'keyword' => trim($tag)]) . '&nbsp';
+                $html .= Button::asBadge($tag, 'light')->link(['/user/people', 'keyword' => trim($tag)]) . '&nbsp';
             }
         }
 

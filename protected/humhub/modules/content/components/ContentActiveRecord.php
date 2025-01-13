@@ -267,7 +267,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
         }
 
         if ($includeContentName) {
-            $labels[] = Badge::secondary($this->getContentName())->icon($this->getIcon())->sortOrder(400);
+            $labels[] = Badge::light($this->getContentName())->icon($this->getIcon())->sortOrder(400);
         }
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {

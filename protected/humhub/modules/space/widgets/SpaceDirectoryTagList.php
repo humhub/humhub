@@ -55,7 +55,7 @@ class SpaceDirectoryTagList extends Widget
         $html = '';
         foreach ($tags as $tag) {
             if (trim($tag) !== '') {
-                $html .= Button::asBadge($tag, 'secondary')->link(['/space/spaces', 'keyword' => trim($tag)]) . "&nbsp";
+                $html .= Button::asBadge($tag, 'light')->link(['/space/spaces', 'keyword' => trim($tag)]) . "&nbsp";
             }
         }
 

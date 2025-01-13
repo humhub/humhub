@@ -100,7 +100,7 @@ abstract class BootstrapComponent extends Widget
      */
     public static function defaultType($text = null)
     {
-        return self::secondary($text);
+        return self::light($text);
     }
 
     /**

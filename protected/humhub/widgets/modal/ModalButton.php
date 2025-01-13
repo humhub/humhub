@@ -84,7 +84,7 @@ class ModalButton extends Button
             $text = Yii::t('base', 'Cancel');
         }
 
-        return static::secondary($text)->close()->loader(false);
+        return static::light($text)->close()->loader(false);
     }
 
     /**

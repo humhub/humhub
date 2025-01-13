@@ -38,8 +38,8 @@ use yii\helpers\Url;
                 'value' => function (Group $group) {
                     // Yii::t is available for default texts
                     return Yii::t('AdminModule.base', $group->name) .
-                        ($group->is_default_group ? ' ' . Badge::secondary(Yii::t('AdminModule.user', 'Default')) : '') .
-                        ($group->is_protected ? ' ' . Badge::secondary(Yii::t('AdminModule.user', 'Protected')) : '');
+                        ($group->is_default_group ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Default')) : '') .
+                        ($group->is_protected ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Protected')) : '');
                 }
             ],
             [
