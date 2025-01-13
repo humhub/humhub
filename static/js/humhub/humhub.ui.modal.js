@@ -408,8 +408,8 @@ humhub.module('ui.modal', function (module, require, $) {
             this.getDialog().removeClass(['modal-sm', 'modal-lg', 'modal-xl']).addClass('modal-' + this.options.size);
         }
 
-        this.options.backdrop = object.defaultValue(options.backdrop, 'static');
-        this.options.keyboard = object.defaultValue(options.keyboard, false);
+        this.options.backdrop = object.defaultValue(options.backdrop, this.$.data('bs-backdrop'));
+        this.options.keyboard = object.defaultValue(options.keyboard, this.$.data('bs-keyboard'));
 
         const modalInstance = bootstrap.Modal.getInstance(this.$[0]);
         if (modalInstance) {

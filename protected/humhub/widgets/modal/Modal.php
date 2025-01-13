@@ -82,13 +82,8 @@ class Modal extends \yii\bootstrap5\Modal
             $this->closeButton = false;
         }
 
-        if (!$this->closable || !$this->backdrop) {
-            $this->options['data-bs-backdrop'] = 'static';
-        }
-
-        if (!$this->closable || !$this->keyboard) {
-            $this->options['data-bs-keyboard'] = 'false';
-        }
+        $this->options['data-bs-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
+        $this->options['data-bs-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
 
         $this->clientOptions['show'] = $this->show;
 
