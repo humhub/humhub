@@ -33,6 +33,7 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
+use yii\caching\DummyCache;
 use yii\web\HttpException;
 
 /**
@@ -76,8 +77,8 @@ class ConfigController extends Controller
     {
         if (parent::beforeAction($action)) {
 
-            // Flush Caches
-            Yii::$app->cache->flush();
+            // Disable cache for installer
+            Yii::$app->set('cache', ['class' => DummyCache::class]);
 
             // Database Connection seems not to work
             if (!$this->module->checkDBConnection()) {
@@ -104,7 +105,6 @@ class ConfigController extends Controller
      */
     public function actionIndex()
     {
-
         if (Yii::$app->settings->get('name') == "") {
             Yii::$app->settings->set('name', "HumHub");
         }
@@ -204,11 +204,23 @@ class ConfigController extends Controller
         }
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
-            Yii::$app->getModule('user')->settings->set('auth.needApproval', $form->internalRequireApprovalAfterRegistration);
-            Yii::$app->getModule('user')->settings->set('auth.anonymousRegistration', $form->internalAllowAnonymousRegistration);
+            Yii::$app->getModule('user')->settings->set(
+                'auth.needApproval',
+                $form->internalRequireApprovalAfterRegistration
+            );
+            Yii::$app->getModule('user')->settings->set(
+                'auth.anonymousRegistration',
+                $form->internalAllowAnonymousRegistration
+            );
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', $form->allowGuestAccess);
-            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByEmail', $form->canInviteExternalUsersByEmail);
-            Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', $form->canInviteExternalUsersByLink);
+            Yii::$app->getModule('user')->settings->set(
+                'auth.internalUsersCanInviteByEmail',
+                $form->canInviteExternalUsersByEmail
+            );
+            Yii::$app->getModule('user')->settings->set(
+                'auth.internalUsersCanInviteByLink',
+                $form->canInviteExternalUsersByLink
+            );
             Yii::$app->getModule('friendship')->settings->set('enable', $form->enableFriendshipModule);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -230,7 +242,10 @@ class ConfigController extends Controller
 
         $modules = $marketplaceModule->onlineModuleManager->getModules(false);
         foreach ($modules as $i => $module) {
-            if (!isset($module['useCases']) || strpos($module['useCases'], Yii::$app->settings->get('useCase')) === false) {
+            if (!isset($module['useCases']) || strpos(
+                    $module['useCases'],
+                    Yii::$app->settings->get('useCase')
+                ) === false) {
                 unset($modules[$i]);
             }
         }
@@ -279,7 +294,6 @@ class ConfigController extends Controller
             Yii::$app->getModule('installer')->settings->set('sampleData', $form->sampleData);
 
             if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
-
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
                 $adminImage = new ProfileImage($admin->guid);
@@ -364,7 +378,10 @@ class ConfigController extends Controller
 
                 // Create a sample post
                 $post = new Post();
-                $post->message = Yii::t("InstallerModule.base", "We're looking for great slogans of famous brands. Maybe you can come up with some samples?");
+                $post->message = Yii::t(
+                    "InstallerModule.base",
+                    "We're looking for great slogans of famous brands. Maybe you can come up with some samples?"
+                );
                 $post->content->container = $space;
                 $post->content->visibility = Content::VISIBILITY_PRIVATE;
                 $post->save();
@@ -382,7 +399,10 @@ class ConfigController extends Controller
                 Yii::$app->user->switchIdentity($userModel2);
 
                 $comment2 = new Comment();
-                $comment2->message = Yii::t("InstallerModule.base", "Calvin Klein – Between love and madness lies obsession.");
+                $comment2->message = Yii::t(
+                    "InstallerModule.base",
+                    "Calvin Klein – Between love and madness lies obsession."
+                );
                 $comment2->object_model = Post::class;
                 $comment2->object_id = $post->getPrimaryKey();
                 $comment2->save();
@@ -416,7 +436,6 @@ class ConfigController extends Controller
      */
     public function actionAdmin()
     {
-
         // Admin account already created
         if (User::find()->count() > 0) {
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
@@ -486,7 +505,6 @@ class ConfigController extends Controller
         $form->models['Profile'] = $profileModel;
 
         if ($form->submitted('save') && $form->validate()) {
-
             $form->models['User']->status = User::STATUS_ENABLED;
             $form->models['User']->language = '';
             $form->models['User']->tagsField = ['Administration', 'Support', 'HumHub'];
