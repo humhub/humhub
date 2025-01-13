@@ -206,20 +206,20 @@ class ConfigController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Yii::$app->getModule('user')->settings->set(
                 'auth.needApproval',
-                $form->internalRequireApprovalAfterRegistration
+                $form->internalRequireApprovalAfterRegistration,
             );
             Yii::$app->getModule('user')->settings->set(
                 'auth.anonymousRegistration',
-                $form->internalAllowAnonymousRegistration
+                $form->internalAllowAnonymousRegistration,
             );
             Yii::$app->getModule('user')->settings->set('auth.allowGuestAccess', $form->allowGuestAccess);
             Yii::$app->getModule('user')->settings->set(
                 'auth.internalUsersCanInviteByEmail',
-                $form->canInviteExternalUsersByEmail
+                $form->canInviteExternalUsersByEmail,
             );
             Yii::$app->getModule('user')->settings->set(
                 'auth.internalUsersCanInviteByLink',
-                $form->canInviteExternalUsersByLink
+                $form->canInviteExternalUsersByLink,
             );
             Yii::$app->getModule('friendship')->settings->set('enable', $form->enableFriendshipModule);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
@@ -243,9 +243,9 @@ class ConfigController extends Controller
         $modules = $marketplaceModule->onlineModuleManager->getModules(false);
         foreach ($modules as $i => $module) {
             if (!isset($module['useCases']) || strpos(
-                    $module['useCases'],
-                    Yii::$app->settings->get('useCase')
-                ) === false) {
+                $module['useCases'],
+                Yii::$app->settings->get('useCase'),
+            ) === false) {
                 unset($modules[$i]);
             }
         }
@@ -380,7 +380,7 @@ class ConfigController extends Controller
                 $post = new Post();
                 $post->message = Yii::t(
                     "InstallerModule.base",
-                    "We're looking for great slogans of famous brands. Maybe you can come up with some samples?"
+                    "We're looking for great slogans of famous brands. Maybe you can come up with some samples?",
                 );
                 $post->content->container = $space;
                 $post->content->visibility = Content::VISIBILITY_PRIVATE;
@@ -401,7 +401,7 @@ class ConfigController extends Controller
                 $comment2 = new Comment();
                 $comment2->message = Yii::t(
                     "InstallerModule.base",
-                    "Calvin Klein – Between love and madness lies obsession."
+                    "Calvin Klein – Between love and madness lies obsession.",
                 );
                 $comment2->object_model = Post::class;
                 $comment2->object_id = $post->getPrimaryKey();
