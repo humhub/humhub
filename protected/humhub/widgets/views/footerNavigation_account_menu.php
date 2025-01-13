@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuLink;
 
 /* @var $this \humhub\modules\ui\view\components\View */
@@ -21,10 +21,10 @@ use humhub\modules\ui\menu\MenuLink;
 ?>
 
 <?php if (!empty($entries)): ?>
-    <li class="divider visible-sm visible-xs"></li>
+    <li class="d-md-none"><hr class="dropdown-divider"></li>
     <?php foreach ($entries as $k => $entry): ?>
         <?php if ($entry instanceof MenuLink): ?>
-            <li class="visible-sm visible-xs footer-nav-entry">
+            <li class="d-md-none footer-nav-entry">
                 <?= Html::a($entry->getIcon() . ' ' . $entry->getLabel(), $entry->getUrl(), $entry->getHtmlOptions()); ?>
             </li>
         <?php endif; ?>

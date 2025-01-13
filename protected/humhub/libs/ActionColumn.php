@@ -8,10 +8,10 @@
 
 namespace humhub\libs;
 
-use humhub\widgets\Button;
+use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 use yii\grid\Column;
 use yii\helpers\Url;
-use humhub\libs\Html;
 
 /**
  * Description of ActionColumn
@@ -51,17 +51,17 @@ class ActionColumn extends Column
             return '';
         }
 
-        $html = Html::beginTag('div', ['class' => 'btn-group dropdown-navigation']);
-        $html .= Button::defaultType('<span class="caret"></span>')->cssClass('dropdown-toggle')
-            ->options(['data-toggle' => 'dropdown'])->icon('controls')->loader(false);
-        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu pull-right']);
+        $html = Html::beginTag('div', ['class' => 'btn-group dropdown']);
+        $html .= Button::light()->cssClass('dropdown-toggle')
+            ->options(['data-bs-toggle' => 'dropdown'])->icon('controls')->loader(false);
+        $html .= Html::beginTag('ul', ['class' => 'dropdown-menu dropdown-menu-end']);
         foreach ($actions as $title => $url) {
             if ($url === '---') {
-                $html .= '<li class="divider"></li>';
+                $html .= '<li><hr class="dropdown-divider"></li>';
             } else {
-                $linkOptions = null;
+                $linkOptions = ['class' => 'dropdown-item'];
                 if (isset($url['linkOptions'])) {
-                    $linkOptions = $url['linkOptions'];
+                    $linkOptions = array_merge($linkOptions, $url['linkOptions']);
                     unset($url['linkOptions']);
                 }
 
