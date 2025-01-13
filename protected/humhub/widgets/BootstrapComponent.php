@@ -55,6 +55,8 @@ abstract class BootstrapComponent extends Widget
     public const TYPE_WARNING = 'warning';
     public const TYPE_DANGER = 'danger';
     public const TYPE_SUCCESS = 'success';
+    public const TYPE_LIGHT = 'light';
+    public const TYPE_DARK = 'dark';
     public const TYPE_NONE = 'none';
 
     public $type;
@@ -146,6 +148,24 @@ abstract class BootstrapComponent extends Widget
     public static function danger($text = null)
     {
         return new static(['type' => self::TYPE_DANGER, 'text' => $text]);
+    }
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function light($text = null)
+    {
+        return new static(['type' => self::TYPE_LIGHT, 'text' => $text]);
+    }
+
+    /**
+     * @param string $text Button text
+     * @return static
+     */
+    public static function dark($text = null)
+    {
+        return new static(['type' => self::TYPE_DARK, 'text' => $text]);
     }
 
     /**

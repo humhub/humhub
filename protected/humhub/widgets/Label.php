@@ -20,10 +20,6 @@ use humhub\helpers\Html;
  */
 class Label extends BootstrapComponent
 {
-    /**
-     * @since 1.9
-     */
-    public const TYPE_LIGHT = 'light';
 
     public $_sortOrder = 1000;
     public $encode = true;
@@ -31,15 +27,6 @@ class Label extends BootstrapComponent
     public $_link;
     public $_action;
 
-    /**
-     * @param string $text Label text
-     * @return static
-     * @since 1.9
-     */
-    public static function light($text)
-    {
-        return new static(['type' => static::TYPE_LIGHT, 'text' => $text]);
-    }
 
     public function sortOrder($sortOrder)
     {
