@@ -1,8 +1,13 @@
 HumHub Changelog
 ================
 
-1.17.0-beta.5 (Unreleased)
----------------------------------
+1.17.0 (January 13, 2025)
+-------------------------
+
+See also: HumHub 1.16 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_17) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Info: The minimum PHP version is now `PHP 8.1`!
+
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 - Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
 
