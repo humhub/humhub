@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.17.1 (Unreleased)
 -------------------
-- Enh #7377: Disable Cache on Installer 
+- Fix #7377: Configured Redis cache key prefix was overwritten by the default value 
 
 1.17.0 (January 13, 2025)
 -------------------------

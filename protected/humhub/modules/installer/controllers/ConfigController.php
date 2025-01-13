@@ -76,11 +76,6 @@ class ConfigController extends Controller
     public function beforeAction($action)
     {
         if (parent::beforeAction($action)) {
-
-            // Disable cache for installer
-            Yii::$app->set('cache', ['class' => DummyCache::class]);
-            Yii::$app->settings->reload();
-
             // Database Connection seems not to work
             if (!$this->module->checkDBConnection()) {
                 $this->redirect(['/installer/setup']);
