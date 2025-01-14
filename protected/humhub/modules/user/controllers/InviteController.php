@@ -88,6 +88,7 @@ class InviteController extends Controller
         $userInvite->email = $email;
         $userInvite->source = Invite::SOURCE_INVITE;
         $userInvite->user_originator_id = Yii::$app->user->getIdentity()->id;
+        $userInvite->language = Yii::$app->settings->get('defaultLanguage');
 
         $existingInvite = Invite::findOne(['email' => $email]);
         if ($existingInvite !== null) {
