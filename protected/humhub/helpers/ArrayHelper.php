@@ -2,11 +2,9 @@
 
 namespace humhub\helpers;
 
-use function humhub\libs\array_flatten;
-
 class ArrayHelper extends \yii\helpers\ArrayHelper
 {
-    public static function flatten(array $array, string $separator = '.', string $path = ''): array
+    public static function flatten($array, $separator = '.', string $path = ''): array
     {
         $result = [];
         foreach ($array as $key => $value) {

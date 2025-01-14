@@ -1,6 +1,6 @@
 <?php
-return array (
-  'E-Mail' => 'e-mail',
+return [
+  'E-Mail' => 'E-mail',
   'Mobile' => 'Mobile',
   'Web' => 'En ligne',
-);
+];

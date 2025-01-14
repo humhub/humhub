@@ -92,21 +92,22 @@ class DynamicConfig extends BaseObject
 
         // Add Caching
         $cacheClass = Yii::$app->settings->get('cacheClass');
+        $cacheKeyPrefix = empty($config['components']['cache']['keyPrefix']) ? Yii::$app->id : $config['components']['cache']['keyPrefix'];
         if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
-                'keyPrefix' => Yii::$app->id,
+                'keyPrefix' => $cacheKeyPrefix,
             ];
         } elseif ($cacheClass == 'yii\caching\ApcCache' && (function_exists('apcu_add') || function_exists('apc_add'))) {
             $config['components']['cache'] = [
                 'class' => $cacheClass,
-                'keyPrefix' => Yii::$app->id,
+                'keyPrefix' => $cacheKeyPrefix,
                 'useApcu' => (function_exists('apcu_add')),
             ];
         } elseif ($cacheClass === \yii\redis\Cache::class) {
             $config['components']['cache'] = [
                 'class' => \yii\redis\Cache::class,
-                'keyPrefix' => Yii::$app->id,
+                'keyPrefix' => $cacheKeyPrefix,
             ];
         }
 

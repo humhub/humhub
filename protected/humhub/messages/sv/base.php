@@ -88,7 +88,7 @@ return [
   'Upload file' => 'Ladda upp fil',
   'You are not allowed to run this action.' => 'Du får inte genomföra den här åtgärden.',
   'verify your upload_max_filesize and post_max_size php settings.' => 'verifiera värdena för upload_max_filesize och post_max_size i dina php inställningar.',
-  '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '',
+  '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '{attribute} har varit tom. Den systemkonfigurerade funktionen för att fylla tomma värden har returnerat ett ogiltigt värde. Försök igen eller kontakta din administratör.',
   '{attribute} must be a string (UUID) or null; {type} given.' => '{attribute} måste vara en sträng (UUID) eller null; {type} angiven.',
   '{attribute} must be an UUID or null. UUID has the format "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", where X = [a-fA-F0-9] and both curly brackets and delimiting dashes are optional.' => '{attribute} måste vara ett UUID eller null. UUID har formatet "{{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}}", där X = [a-fA-F0-9] och både klammerparenteser och avgränsande bindestreck är valfria.',
   '{nFormatted}B' => '{nFormatted}B',
