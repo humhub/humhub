@@ -5,6 +5,7 @@ HumHub Changelog
 -------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
 - Enh #7383: Improve SelfTest for Base URL 
+- Enh #5426: Show language chooser for guest on the sidebar footer
 
 1.17.0 (January 13, 2025)
 -------------------------
