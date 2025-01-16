@@ -314,6 +314,14 @@ div.mb-3 {
     width: auto;
 }
 
+altcha-widget.form-control {
+    width: fit-content;
+    padding: 0;
+    .altcha {
+        border: none !important;
+    }
+}
+
 //
 // Errror handling
 //

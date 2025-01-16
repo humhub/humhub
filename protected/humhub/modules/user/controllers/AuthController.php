@@ -73,7 +73,7 @@ class AuthController extends Controller
     public function actions()
     {
         return [
-            'captcha' => [
+            'captcha' => [ // @deprecated since 1.18.0
                 'class' => CaptchaAction::class,
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],

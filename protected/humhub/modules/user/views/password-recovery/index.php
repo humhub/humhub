@@ -5,7 +5,6 @@ use humhub\modules\user\models\forms\AccountRecoverPassword;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
-use yii\captcha\Captcha;
 use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
@@ -32,12 +31,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
                 <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
                 <div class="mb-3">
-                    <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                        'model' => $model,
-                        'attribute' => 'verifyCode',
-                        'captchaAction' => '/user/auth/captcha',
-                        'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
-                    ])->label(false);
+                    <?= $form->field($model, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false);
                     ?>
                 </div>
 

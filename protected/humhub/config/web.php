@@ -67,6 +67,12 @@ $config = [
             ],
         ],
     ],
+    'params' => [
+        'captcha' => [
+            'inputClass' => \humhub\captcha\AltchaCaptchaInput::class, // or \humhub\captcha\YiiCaptchaInput::class
+            'validatorClass' => \humhub\captcha\AltchaCaptchaValidator::class, // or \humhub\captcha\YiiCaptchaValidator::class
+        ],
+    ],
     'container' => [
         'definitions' => [
             'yii\web\Cookie' => ['\humhub\libs\CookieBuilder', 'build'],

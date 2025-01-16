@@ -89,7 +89,9 @@
         "yiisoft/yii2-queue": "^2.3.0",
         "yiisoft/yii2-redis": "^2.0.0",
         "yiisoft/yii2-symfonymailer": "^2.0",
-        "mobiledetect/mobiledetectlib": "4.8.09"
+        "mobiledetect/mobiledetectlib": "4.8.09",
+        "altcha-org/altcha": "0.1.3",
+        "npm-asset/altcha": "1.1.0.0"
     },
     "replace": {
     },

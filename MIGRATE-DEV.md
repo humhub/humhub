@@ -1,8 +1,19 @@
 Module Migration Guide
 ======================
 
+Version 1.18 (Unreleased)
+-------------------------
 
-Version 1.17 (Unreleased)
+### New
+- `\humhub\captcha\AltchaCaptchaInput` which is now the default captcha form input
+- `\humhub\captcha\AltchaCaptchaValidator`
+- `\humhub\captcha\AltchaCaptchaAction`
+- `\humhub\captcha\AltchaCaptchaAsset`
+- `\humhub\captcha\YiiCaptchaInput`
+- `\humhub\captcha\YiiCaptchaValidator`
+- `Yii::$app->params['captcha']['inputClass']` and `Yii::$app->params['captcha']['validatorClass']` to get the default captcha input and validator classes
+
+Version 1.17 (January 2024)
 -------------------------
 
 ### Behaviour change

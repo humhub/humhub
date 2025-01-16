@@ -6,7 +6,6 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\SiteLogo;
-use yii\captcha\Captcha;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
@@ -110,9 +109,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                     <div id="registration-form-captcha" style="display: none;">
                         <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
 
-                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
+                        <?= $form->field($invite, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false) ?>
                     </div>
                 <?php endif; ?>
                 <hr>
