@@ -22,7 +22,7 @@
             border-left: 3px solid var(--bs-info);
         }
 
-        &a, a {
+        &, a {
             color: var(--hh-text-color-main);
         }
 
@@ -89,7 +89,6 @@
 
         .content a {
             word-break: break-all;
-            color: var(--bs-link-color);
         }
 
         strong {
@@ -103,10 +102,6 @@
 
         .module-controls {
             font-size: 85%;
-
-            a {
-                color: var(--bs-link-color);
-            }
         }
 
         .content .files a {
