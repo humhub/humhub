@@ -5,6 +5,7 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\CaptchaField;
 use humhub\widgets\modal\Modal;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
@@ -122,7 +123,7 @@ use yii\helpers\Url;
 
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <?= $form->field($invite, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false) ?>
+                    <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                 <?php endif; ?>
                 <hr>
 

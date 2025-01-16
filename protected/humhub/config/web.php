@@ -28,6 +28,10 @@ $config = [
         'response' => [
             'class' => \humhub\components\Response::class,
         ],
+        'captcha' => [
+//            'class' => \humhub\components\captcha\AltchaCaptcha::class
+            'class' => \humhub\components\captcha\YiiCaptcha::class
+        ],
         'user' => [
             'class' => \humhub\modules\user\components\User::class,
             'identityClass' => \humhub\modules\user\models\User::class,
@@ -65,12 +69,6 @@ $config = [
                     'nonce' => true,
                 ],
             ],
-        ],
-    ],
-    'params' => [
-        'captcha' => [
-            'inputClass' => \humhub\captcha\AltchaCaptchaInput::class, // or \humhub\captcha\YiiCaptchaInput::class
-            'validatorClass' => \humhub\captcha\AltchaCaptchaValidator::class, // or \humhub\captcha\YiiCaptchaValidator::class
         ],
     ],
     'container' => [

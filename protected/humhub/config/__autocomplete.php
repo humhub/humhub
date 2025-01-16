@@ -49,6 +49,7 @@ class __Application
  * Include only Web application related components here
  * @property \humhub\modules\user\components\User $user
  * @property \humhub\components\mail\Mailer $mailer
+ * @property \humhub\components\captcha\CaptchaInterface $captcha
  */
 class __WebApplication extends \humhub\components\Application
 {

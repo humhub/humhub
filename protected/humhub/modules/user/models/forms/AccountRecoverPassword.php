@@ -24,7 +24,7 @@ class AccountRecoverPassword extends Model
         return [
             ['email', 'required'],
             ['email', 'email'],
-            ['captcha', Yii::$app->params['captcha']['validatorClass']],
+            ['captcha', Yii::$app->captcha->getValidatorClass()],
             ['email', 'verifyEmail'],
         ];
     }

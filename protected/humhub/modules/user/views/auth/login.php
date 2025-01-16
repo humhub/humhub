@@ -5,6 +5,7 @@ use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\CaptchaField;
 use humhub\widgets\SiteLogo;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
@@ -107,7 +108,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
                     <div id="registration-form-captcha" style="display: none;">
-                        <?= $form->field($invite, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false) ?>
+                        <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                     </div>
                 <?php endif; ?>
                 <hr>
