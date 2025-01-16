@@ -122,7 +122,6 @@ use yii\helpers\Url;
 
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
-                    <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
                     <?= $form->field($invite, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false) ?>
                 <?php endif; ?>
                 <hr>

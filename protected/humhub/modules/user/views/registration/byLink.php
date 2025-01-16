@@ -42,8 +42,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
                     <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                     <?php if ($invite->showCaptureInRegisterForm()) : ?>
                         <div id="registration-form-captcha" style="display: none;">
-                            <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
-
                             <?= $form->field($invite, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false) ?>
                         </div>
                     <?php endif; ?>
