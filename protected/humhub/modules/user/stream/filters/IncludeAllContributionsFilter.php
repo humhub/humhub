@@ -69,14 +69,10 @@ class IncludeAllContributionsFilter extends ContentContainerStreamFilter
             $conditionUserPrivateRestriction = '';
         } else {
             // User must be a space's member OR Space and Content are public
-            if ($queryUser) {
-                $spaceMembership = 'space_membership.status=3 OR ';
-            } else {
-                $spaceMembership = '';
-            }
+            $spaceMembership = $queryUser ? 'space_membership.status=3 OR ' : '';
             $conditionSpaceMembershipRestriction = " AND ($spaceMembership (content.visibility=1 AND space.visibility != 0) )";
-            // User can view only content of own profile
-            $conditionUserPrivateRestriction = ' AND content.contentcontainer_id=' . $queryUser->contentcontainer_id;
+            // User can view a private content only of own profile
+            $conditionUserPrivateRestriction = $queryUser ? ' AND  content.contentcontainer_id=' . $queryUser->contentcontainer_id : '';
         }
 
         // Build Access Check based on Space Content Container
