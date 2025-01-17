@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #7375: Use default language for email invitation and show language chooser on registration form
 - Enh #7383: Improve SelfTest for Base URL 
 - Enh #5426: Show language chooser for guest on the sidebar footer
+- Fix #7395: Fix profile stream for guests
 
 1.17.0 (January 13, 2025)
 -------------------------
