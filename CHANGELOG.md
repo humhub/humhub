@@ -3,7 +3,8 @@ HumHub Changelog
 
 1.17.1 (Unreleased)
 -------------------
-- Fix #7377: Configured Redis cache key prefix was overwritten by the default value 
+- Fix #7377: Configured Redis cache key prefix was overwritten by the default value
+- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 
 1.17.0 (January 13, 2025)
 -------------------------
