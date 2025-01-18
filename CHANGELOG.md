@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.0-beta.1 (Unreleased)
+---------------------------------
+- Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
+
 1.17.0-beta.5 (Unreleased)
 ---------------------------------
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent

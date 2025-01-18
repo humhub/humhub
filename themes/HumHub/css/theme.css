@@ -12166,6 +12166,13 @@ div.mb-3 div.checkbox .invalid-feedback:empty {
 .radio-pills-wide {
   width: auto;
 }
+altcha-widget.form-control, .grid-view .filters input, .grid-view .filters select {
+  width: fit-content;
+  padding: 0;
+}
+altcha-widget.form-control .altcha, .grid-view .filters input .altcha, .grid-view .filters select .altcha {
+  border: none !important;
+}
 .errorMessage {
   color: var(--bs-danger);
   padding: 10px 0;
