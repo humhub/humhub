@@ -52,7 +52,7 @@ echo Html::tag(
     ['class' => 'help-block']
 );
 
-$form->field($model, 'defaultUserProfileVisibility')
+echo $form->field($model, 'defaultUserProfileVisibility')
     ->dropDownList(
         User::getVisibilityOptions(false),
         ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]
