@@ -2,11 +2,11 @@
 
 /**
  * @link https://www.humhub.org/
- * @copyright Copyright (c) 2017 HumHub GmbH & Co. KG
+ * @copyright Copyright (c) 2025 HumHub GmbH & Co. KG
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\captcha;
+namespace humhub\components\captcha;
 
 use AltchaOrg\Altcha\Altcha;
 use Exception;
@@ -25,7 +25,7 @@ class AltchaCaptchaValidator extends Validator
     public $skipOnEmpty = false;
 
     /**
-     * @inerhitdoc
+     * @inheritdoc
      */
     public function validateAttribute($model, $attribute)
     {
@@ -38,7 +38,11 @@ class AltchaCaptchaValidator extends Validator
             Yii::error('AltchaCaptcha verification error: ' . $e->getMessage());
         }
 
-        $this->addError($model, $attribute, Yii::t('base', 'We couldn\'t verify that you\'re human. Please check the box again.'));
+        $this->addError(
+            $model,
+            $attribute,
+            Yii::t('base', 'We couldn\'t verify that you\'re human. Please check the box again.')
+        );
     }
 
     public static function getHmacKey(): ?string

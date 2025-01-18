@@ -2,6 +2,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
+use humhub\widgets\form\CaptchaField;
 use humhub\widgets\modal\Modal;
 use yii\helpers\Url;
 
@@ -22,7 +23,7 @@ use yii\helpers\Url;
     </div>
 
     <div class="mb-3">
-        <?= $form->field($model, 'captcha')->widget(Yii::$app->params['captcha']['inputClass'])->label(false) ?>
+        <?= $form->field($model, 'captcha')->widget(CaptchaField::class)->label(false) ?>
     </div>
 
     <hr>
