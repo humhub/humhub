@@ -7,12 +7,8 @@ ul.tour-list {
     li {
         padding-top: 5px;
 
-        a {
-            color: var(--bs-link-color);
-
-            .fa {
-                width: 16px;
-            }
+        a .fa {
+            width: 16px;
         }
     }
 

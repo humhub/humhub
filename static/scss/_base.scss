@@ -21,7 +21,6 @@ body {
     a:focus,
     a:active,
     a.active {
-        color: var(--hh-text-color-highlight);
         text-decoration: none;
     }
 }
@@ -79,7 +78,6 @@ hr {
 }
 
 h4 {
-    font-weight: 300;
     font-size: 150%;
 }
 
@@ -129,10 +127,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     cursor: default;
     text-decoration: none;
     color: lightgrey;
-}
-
-.panel-body a[data-bs-toggle], .modal-body a[data-bs-toggle] {
-    color: var(--bs-link-color);
 }
 
 .showMore {

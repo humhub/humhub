@@ -144,10 +144,17 @@ $wallEntryContentLeftPaddingMobile: 0;
             padding-right: 30px;
             width: 100%;
 
-            h4, h5 {
+            h4 {
                 font-size: 15px;
                 padding-top: 1px;
                 margin-bottom: 3px;
+                a {
+                    color: var(--hh-text-color-highlight);
+                }
+            }
+
+            h5 {
+                font-size: 12px;
             }
 
             i.archived {
@@ -211,10 +218,6 @@ $wallEntryContentLeftPaddingMobile: 0;
     }
 
     .content {
-        a {
-            color: var(--bs-link-color);
-        }
-
         img {
             max-width: 100%;
         }
@@ -230,7 +233,7 @@ $wallEntryContentLeftPaddingMobile: 0;
         }
     }
 
-    h4, h5 {
+    h4 {
         font-size: 14px;
         padding-top: 1px;
         margin-bottom: 3px;
@@ -251,11 +254,12 @@ $wallEntryContentLeftPaddingMobile: 0;
 
     }
 
-    h4, h5 {
+    h5 {
         color: var(--hh-text-color-soft);
         font-size: 12px;
 
-        .time {
+        a .time {
+            color: var(--hh-text-color-soft);
             font-size: 12px;
             white-space: nowrap;
         }
@@ -310,9 +314,9 @@ $wallEntryContentLeftPaddingMobile: 0;
 
 .wall-entry-controls a {
     font-size: 11px;
-    color: var(--bs-link-color);
     margin-top: 10px;
     margin-bottom: 0;
+    color: var(--hh-text-color-soft);
 }
 
 #wall-stream-filter-nav {

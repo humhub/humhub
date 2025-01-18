@@ -616,12 +616,7 @@
 }
 
 .atwho-user,
-.atwho-space,
-.atwho-input a {
-    color: var(--bs-link-color);
-}
-
-.atwho-input a:hover {
+.atwho-space {
     color: var(--bs-link-color);
 }
 
@@ -667,10 +662,6 @@
 [data-ui-richtext] {
     overflow-x: auto;
     overflow-wrap: break-word;
-
-    a {
-        color: var(--bs-link-color)
-    }
 }
 
 #wallStream {
