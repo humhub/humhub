@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\LanguageChooser;
 use humhub\widgets\PoweredBy;
 use yii\helpers\Html;
 
@@ -28,7 +29,9 @@ use yii\helpers\Html;
             <?php endif; ?>
         <?php endforeach; ?>
 
-        <?= PoweredBy::widget(); ?>
+        <?= PoweredBy::widget() ?>
+
+        <?= LanguageChooser::widget() ?>
     </small>
 </div>
 <br/>

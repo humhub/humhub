@@ -4,6 +4,11 @@ HumHub Changelog
 1.17.1 (Unreleased)
 -------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
+- Fix #7375: Use default language for email invitation and show language chooser on registration form
+- Enh #7383: Improve SelfTest for Base URL 
+- Enh #5426: Show language chooser for guest on the sidebar footer
+- Fix #7395: Fix profile stream for guests
+- Fix #7377: Configured Redis cache key prefix was overwritten by the default value
 
 1.17.0 (January 13, 2025)
 -------------------------
@@ -14,7 +19,6 @@ Info: The minimum PHP version is now `PHP 8.1`!
 
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 - Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
-- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
