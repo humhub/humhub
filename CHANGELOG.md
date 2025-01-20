@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #7383: Improve SelfTest for Base URL 
 - Enh #5426: Show language chooser for guest on the sidebar footer
 - Fix #7395: Fix profile stream for guests
+- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 
 1.17.0 (January 13, 2025)
 -------------------------
