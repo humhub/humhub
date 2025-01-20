@@ -4,6 +4,7 @@ HumHub Changelog
 1.17.1 (Unreleased)
 -------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value 
+- Enh #7388: Add `transition: color 0.3s;` to `.wall-entry-controls a` for a smoother hover effect
 
 1.17.0 (January 13, 2025)
 -------------------------
