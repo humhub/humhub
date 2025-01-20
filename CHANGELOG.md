@@ -9,6 +9,7 @@ HumHub Changelog
 - Enh #5426: Show language chooser for guest on the sidebar footer
 - Fix #7395: Fix profile stream for guests
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
+- Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
 
 1.17.0 (January 13, 2025)
 -------------------------
