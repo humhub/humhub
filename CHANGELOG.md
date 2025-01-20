@@ -4,7 +4,6 @@ HumHub Changelog
 1.17.1 (Unreleased)
 -------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
-- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 
 1.17.0 (January 13, 2025)
 -------------------------
@@ -15,6 +14,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 - Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
+- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
