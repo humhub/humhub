@@ -83,7 +83,7 @@ class UserController extends Controller
      */
     public function actionList()
     {
-        $searchModel = new UserSearch();
+        $searchModel = Yii::createObject(UserSearch::class);
         $searchModel->status = User::STATUS_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists() &&
@@ -390,7 +390,7 @@ class UserController extends Controller
      */
     public function actionExport($format)
     {
-        $searchModel = new UserSearch();
+        $searchModel = Yii::createObject(UserSearch::class);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $exporter = new SpreadsheetExport([

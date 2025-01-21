@@ -132,7 +132,7 @@ class GroupController extends Controller
         $group = Group::findOne(['id' => Yii::$app->request->get('id')]);
         $this->checkGroupAccess($group);
 
-        $searchModel = new UserSearch();
+        $searchModel = Yii::createObject(UserSearch::class);
         $searchModel->query = $group->getUsers();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('members', [
