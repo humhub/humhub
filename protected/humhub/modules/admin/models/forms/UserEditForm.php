@@ -164,7 +164,7 @@ class UserEditForm extends User
     public function getAuthClientUserService(): AuthClientUserService
     {
         if ($this->authClientUserService === null) {
-            $this->authClientUserService = new AuthClientUserService($this);
+            $this->authClientUserService = Yii::createObject(AuthClientUserService::class, [$this]);
         }
 
         return $this->authClientUserService;
