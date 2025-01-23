@@ -2,6 +2,7 @@
 
 use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\Invite;
+use humhub\widgets\ModalButton;
 
 /* @var $this View */
 /* @var $model Invite */
@@ -22,6 +23,9 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Registration successful');
                 'emailAddress' => $model->email,
             ]) ?></p>
             <p><?= Yii::t('UserModule.auth', 'If you don\'t see the email, please check your spam folder.') ?></p>
+        </div>
+        <div class="modal-footer">
+            <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
         </div>
     </div>
 </div>
