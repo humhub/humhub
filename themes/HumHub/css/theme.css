@@ -10893,6 +10893,9 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 .bg-light {
   background-color: var(--hh-background-color-secondary) !important;
 }
+:focus-visible {
+  outline: none;
+}
 .navbar.topbar {
   --bs-navbar-padding-x: 0;
   --bs-navbar-padding-y: 0;
@@ -13213,6 +13216,7 @@ div.nested-comments-root div.comment-container {
   margin-top: 10px;
   margin-bottom: 0;
   color: var(--hh-text-color-soft);
+  transition: color 0.3s;
 }
 #wall-stream-filter-nav {
   font-size: 12px;
