@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 - Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
 - Fix: Always allow admins to edit/delete content in the other Profile stream
+- Fix: APCu Cache Compatibility in IsOnlineService
 
 1.17.0 (January 13, 2025)
 -------------------------
