@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '%moduleName% - Set as default module' => '%moduleName% - Definir como módulo padrão',
   'Always activated' => 'Sempre ativado',
   'Are you sure? *ALL* module data will be lost!' => 'Você tem certeza? *TODOS* os dados do módulo serão perdidos!',
@@ -10,16 +10,16 @@ return array (
   'Deactivation of this module has not been completed yet. Please retry in a few minutes.' => 'A desativação deste módulo ainda não foi concluída. Tente novamente em alguns minutos.',
   'Enable module...' => 'Habilitar módulo...',
   'Enabled' => 'Ativado',
-  'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Aqui você pode escolher se quer ou não que um módulo seja ativado automaticamente em um perfil do espaço ou usuário. Se o módulo deve ser ativado, escolha "sempre ativo".',
+  'Here you can choose whether or not a module should be automatically activated on a space or user profile. If the module should be activated, choose "always activated".' => 'Aqui você pode escolher se um módulo deve ou não ser ativado automaticamente em um espaço ou perfil de usuário. Se o módulo deve ser ativado, escolha "sempre ativado"',
   'Module deactivation in progress. This process may take a moment.' => 'Desativação do módulo em andamento. Este processo pode levar um tempo.',
   'Module path %path% is not writeable!' => 'O caminho do módulo %path% não tem permissão de escrita!',
   'Module uninstall in progress. This process may take a moment.' => 'Desinstalação do módulo em andamento. Este processo pode levar um tempo.',
   'Not available' => 'Não disponível',
   'Save' => 'Salvar',
-  'Space default state' => 'Estado padrão do espaço',
+  'Space default state' => 'Estado padrão do Espaço',
   'Spaces' => 'Espaços',
-  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'O módulo está sendo usado atualmente por usuários ou espaços {nbContainers}. Se você alterar sua disponibilidade, todo o conteúdo criado com o módulo será perdido. Continuar?',
+  'The module is currently being used by {nbContainers} users or spaces. If you change its availability, all content created with the module will be lost. Proceed?' => 'O módulo está sendo usado atualmente por {nbContainers} usuários ou espaços. Se você alterar sua disponibilidade, todo o conteúdo criado com o módulo será perdido. Continuar?',
   'Uninstallation of this module has not been completed yet. It will be removed in a few minutes.' => 'A desinstalação deste módulo ainda não foi concluída. Ele será removido em alguns minutos.',
-  'User default state' => 'Estado padrão do usuário',
+  'User default state' => 'Estado padrão do Usuário',
   'Users' => 'Usuários',
-);
+];

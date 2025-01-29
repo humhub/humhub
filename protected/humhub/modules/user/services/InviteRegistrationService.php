@@ -52,7 +52,9 @@ final class InviteRegistrationService
     {
         $invite = $this->getInvite();
         if ($invite !== null) {
-            Yii::$app->setLanguage($invite->language);
+            if (Yii::$app->request->post('ChooseLanguage') === null) {
+                Yii::$app->setLanguage($invite->language);
+            }
             $registration->getUser()->email = $invite->email;
         }
     }

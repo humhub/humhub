@@ -76,6 +76,8 @@ class Comments extends Widget
             $comments = CommentModel::GetCommentsLimited($objectModel, $objectId, $this->limit, $currentCommentId);
         }
 
+        $this->view->registerJsVar('comments_collapsed', $this->limit == 0);
+
         return $this->render('comments', [
             'object' => $this->object,
             'comments' => $comments,

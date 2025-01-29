@@ -42,9 +42,7 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'language' => 'en-US',
-    'timeZone' => 'Europe/Berlin',
-    'version' => '1.17.0-beta.5',
+    'version' => '1.17.1',
     'minRecommendedPhpVersion' => '8.1',
     'minSupportedPhpVersion' => '8.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,

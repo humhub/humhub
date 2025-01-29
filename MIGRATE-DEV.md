@@ -15,6 +15,7 @@ Version 1.17 (Unreleased)
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 - The new "Manage All Content" Group Permission allows managing all content (view, edit, move, archive, pin, etc.) even if the user is not a super administrator. It is disabled by default. It can be enabled via the configuration file, using the `\humhub\modules\admin\Module::$enableManageAllContentPermission` option.
+- System admins are allowed, in all cases (even when `enableManageAllContentPermission` is disabled), to edit and delete content in other Profile streams.
 - Users allowed to "Manage Users" can no longer move all content: they need to be allowed to "Manage All Content".
 
 ### New

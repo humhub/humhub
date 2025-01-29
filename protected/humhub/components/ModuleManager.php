@@ -584,8 +584,9 @@ class ModuleManager extends Component
         $marketplaceModule = Yii::$app->getModule('marketplace');
         if ($marketplaceModule !== null) {
             // Normalize paths before comparing in order to fix issues like Windows path separators `\`
+            // Realpath is required when the modules path is a symlinked
             $modulePath = FileHelper::normalizePath($module->getBasePath());
-            $aliasPath = FileHelper::normalizePath(Yii::getAlias($marketplaceModule->modulesPath));
+            $aliasPath = FileHelper::normalizePath(realpath(Yii::getAlias($marketplaceModule->modulesPath)));
             if (strpos($modulePath, $aliasPath) !== false) {
                 return true;
             }
