@@ -284,8 +284,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/installerModule');
 
-        Yii::$app->installationState->setState(InstallationState::STATE_NOT_INSTALLED);
-
+        Yii::$app->installationState->setUninstalled();
         $this->registerModule($basePath, $config, true);
 
         $this->assertModuleActive();

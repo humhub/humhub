@@ -8,7 +8,6 @@ use yii\base\BaseObject;
 use yii\base\StaticInstanceInterface;
 use yii\base\StaticInstanceTrait;
 
-
 final class InstallationState extends BaseObject implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
@@ -30,7 +29,6 @@ final class InstallationState extends BaseObject implements StaticInstanceInterf
      * Condition: The database has been migrated (e.g. `settings` table exists)
      */
     public const STATE_DATABASE_CREATED = 2;
-
 
     /**
      * The database is initialized.
@@ -59,9 +57,23 @@ final class InstallationState extends BaseObject implements StaticInstanceInterf
         }
     }
 
+    public function hasState(int $state): bool
+    {
+        return ($this->state >= $state);
+    }
+
     public function setInstalled(): void
     {
         $this->setState(self::STATE_INSTALLED);
+    }
+
+    /**
+     * Mark as uninstalled. Used for testing purposes.
+     */
+    public function setUninstalled(): void
+    {
+        Yii::$app->settings->delete(self::class);
+        $this->init();
     }
 
     private function setState(int $state): void
@@ -77,11 +89,6 @@ final class InstallationState extends BaseObject implements StaticInstanceInterf
         }
 
         return $this->state;
-    }
-
-    public function hasState(int $state): bool
-    {
-        return ($this->state >= $state);
     }
 
     private function isDatabaseInstalled(): bool
