@@ -1,15 +1,33 @@
 HumHub Changelog
 ================
 
-1.18 (TBA)
-------------------------------
+1.18.0 (Unreleased - Develop)
+----------------------------
+- Enh #7412: Confusing message after creating an account
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
 
-1.17.0-beta.5 (Unreleased)
----------------------------------
+1.17.1 (Unreleased)
+-------------------
+- Fix #7377: Configured Redis cache key prefix was overwritten by the default value
+- Fix #7375: Use default language for email invitation and show language chooser on registration form
+- Enh #7383: Improve SelfTest for Base URL 
+- Enh #5426: Show language chooser for guest on the sidebar footer
+- Fix #7395: Fix profile stream for guests
+- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
+- Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
+- Fix: Always allow admins to edit/delete content in the other Profile stream
+
+1.17.0 (January 13, 2025)
+-------------------------
+
+See also: HumHub 1.17 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_17) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Info: The minimum PHP version is now `PHP 8.1`!
+
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
+- Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------

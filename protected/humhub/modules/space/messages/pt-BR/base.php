@@ -86,7 +86,7 @@ return [
   'My space summary' => 'Meu resumo do espaço',
   'Name' => 'Nome',
   'Name / Sort order' => 'Nome / Ordem de classificação',
-  'Neither..nor' => 'Nenhum..nem',
+  'Neither..nor' => 'Nenhum',
   'New user by e-mail (comma separated)' => 'Novo usuário por e-mail (separados por vírgula)',
   'New user?' => 'Novo usuário?',
   'Newest first' => 'Os mais novos primeiro',

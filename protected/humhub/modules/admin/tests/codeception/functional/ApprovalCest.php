@@ -2,12 +2,8 @@
 
 namespace admin\functional;
 
-use humhub\modules\admin\permissions\ManageModules;
-use humhub\modules\admin\permissions\ManageSpaces;
-use humhub\modules\admin\permissions\SeeAdminInformation;
-use humhub\modules\user\models\Invite;
-use tests\codeception\_pages\AdminPage;
 use admin\FunctionalTester;
+use humhub\modules\user\models\Invite;
 use Yii;
 
 class ApprovalCest
@@ -100,7 +96,7 @@ class ApprovalCest
         $I->see('Sign up');
         $I->fillField('#register-email', 'approvalTest@test.de');
         $I->click('Register');
-        $I->see('Registration successful!');
+        $I->see('Almost there!');
 
         $invte = Invite::find()->all()[0];
 

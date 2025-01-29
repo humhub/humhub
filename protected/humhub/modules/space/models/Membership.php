@@ -299,7 +299,7 @@ class Membership extends ActiveRecord
     }
 
     /**
-     * Returns an ActiveQuery selcting all memberships for the given $user.
+     * Returns an ActiveQuery selecting all memberships for the given $user.
      *
      * @param User $user
      * @param int $membershipStatus the status of the Space by default self::STATUS_MEMBER.
