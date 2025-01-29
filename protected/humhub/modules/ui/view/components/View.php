@@ -11,6 +11,7 @@ namespace humhub\modules\ui\view\components;
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
+use humhub\components\InstallationState;
 use humhub\libs\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
@@ -460,7 +461,7 @@ class View extends \yii\web\View
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower(key($viewStatus));
@@ -490,7 +491,7 @@ class View extends \yii\web\View
         }
 
         // Since the JsConfig accesses user queries it fails before installation.
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             CoreJsConfig::widget();
         }
 

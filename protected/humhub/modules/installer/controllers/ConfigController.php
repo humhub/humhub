@@ -578,7 +578,7 @@ class ConfigController extends Controller
         Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);
 
         // Set to installed
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         try {
             Yii::$app->user->logout();

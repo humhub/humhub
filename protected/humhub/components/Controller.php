@@ -223,7 +223,7 @@ class Controller extends \yii\web\Controller
             if (!Yii::$app->request->isAjax || Yii::$app->request->isPjax) {
                 $this->setJsViewStatus();
 
-                if (Yii::$app->isInstalled()) {
+                if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                     // Update "is online" status ony on full page loads
                     (new IsOnlineService(Yii::$app->user->identity))->updateStatus();
                 }
