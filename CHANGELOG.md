@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.18.0 (Unreleased - Develop)
+----------------------------
+- Enh #7412: Confusing message after creating an account
+
 1.17.1 (Unreleased)
 -------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
@@ -10,7 +14,7 @@ HumHub Changelog
 - Fix #7395: Fix profile stream for guests
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 - Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
-- Enh #7412: Confusing message after creating an account
+- Fix: Always allow admins to edit/delete content in the other Profile stream
 
 1.17.0 (January 13, 2025)
 -------------------------
