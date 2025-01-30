@@ -143,8 +143,3 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 .bg-light {
     background-color: var(--hh-background-color-secondary) !important;
 }
-
-// Fix Safari native focus outline
-:focus-visible {
-    outline: none;
-}

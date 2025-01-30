@@ -10893,9 +10893,6 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 .bg-light {
   background-color: var(--hh-background-color-secondary) !important;
 }
-:focus-visible {
-  outline: none;
-}
 .navbar.topbar {
   --bs-navbar-padding-x: 0;
   --bs-navbar-padding-y: 0;
