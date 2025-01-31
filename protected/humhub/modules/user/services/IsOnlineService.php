@@ -30,16 +30,19 @@ class IsOnlineService
 
     public function updateStatus(): void
     {
-        if ($this->isEnabled() && !Yii::$app->cache->exists($this->getCacheKey())) {
+        if ($this->isEnabled() && $this->getStatus() === false) {
             Yii::$app->cache->set($this->getCacheKey(), true, 60); // Expires in 60 seconds
         }
     }
 
     public function getStatus(): bool
     {
-        return
-            $this->isEnabled()
-            && Yii::$app->cache->exists($this->getCacheKey());
+        if (!$this->isEnabled()) {
+            return false;
+        }
+
+        $cacheValue = Yii::$app->cache->get($this->getCacheKey());
+        return $cacheValue !== false; // Return true if key exists and is not `false`
     }
 
     public function isEnabled(): bool
