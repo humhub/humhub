@@ -1,20 +1,26 @@
 <?php
 
 use humhub\widgets\modal\Modal;
-use yii\helpers\Url;
+use humhub\modules\ui\view\components\View;
+use humhub\modules\user\models\Invite;
+use humhub\widgets\modal\ModalButton;
 
-$this->pageTitle = Yii::t('UserModule.auth', 'Registration successful');
+/* @var $this View */
+/* @var $model Invite */
+
+$this->pageTitle = Yii::t('UserModule.auth', 'Almost there!');
 ?>
 
 <?php Modal::beginDialog([
     'title' => Yii::t('UserModule.auth', '<strong>Registration</strong> successful!'),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 
     <div class="text-center">
-        <p><?php echo Yii::t('UserModule.auth', 'Please check your email and follow the instructions!'); ?></p>
-        <br>
-        <a href="<?= Url::to(["/"]) ?>" data-pjax-prevent data-ui-loader
-           class="btn btn-primary"><?php echo Yii::t('UserModule.auth', 'back to home') ?></a>
+        <p><?= Yii::t('UserModule.auth', 'An email has been sent to {emailAddress}. Please check your inbox to complete the registration.', [
+            'emailAddress' => $model->email,
+        ]) ?></p>
+        <p><?= Yii::t('UserModule.auth', 'If you don\'t see the email, please check your spam folder.') ?></p>
     </div>
 
 <?php Modal::endDialog() ?>

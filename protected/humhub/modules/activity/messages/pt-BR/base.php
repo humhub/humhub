@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>E-Mail</strong> Summaries' => '<strong>E-Mail</strong> de resumo',
   '<strong>Latest</strong> activities' => '<strong>Últimas</strong> atividades',
   'Activities' => 'Atividades',
@@ -27,7 +27,7 @@ return array (
   'Your weekly summary' => 'Seu resumo semanal',
   'see online' => 'ver online',
   'via' => 'via',
-  '{displayName} created the new space {spaceName}' => '{displayName} criou o novo espaço {spaceName}',
+  '{displayName} created the new space {spaceName}' => '{displayName} criou o espaço {spaceName}',
   '{displayName} created this space.' => '{displayName} criou este espaço.',
   '{displayName} joined the space {spaceName}' => '{displayName} entrou no espaço {spaceName}',
   '{displayName} joined this space.' => '{displayName} entrou neste espaço.',
@@ -36,4 +36,4 @@ return array (
   '{spaceName} has been archived' => '{spaceName} foi arquivado',
   '{spaceName} has been unarchived' => '{spaceName} foi desarquivado',
   '{user1} now follows {user2}.' => '{user1} agora segue {user2}.',
-);
+];

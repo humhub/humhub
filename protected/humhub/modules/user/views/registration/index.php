@@ -4,6 +4,7 @@ use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\form\ActiveForm;
+use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
 
 /**
@@ -32,12 +33,15 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Create Account');
 
                 <?php if ($showRegistrationForm): ?>
                     <?php $form = ActiveForm::begin(['id' => 'registration-form', 'enableClientValidation' => false]); ?>
+                    <?= Html::hiddenInput('ChooseLanguage[language]', Yii::$app->language) ?>
                     <?= $hForm->render($form); ?>
                     <?php ActiveForm::end(); ?>
                 <?php endif; ?>
             </div>
         </div>
     </div>
+
+    <?= LanguageChooser::widget() ?>
 </div>
 
 <script <?= Html::nonce() ?>>

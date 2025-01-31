@@ -7,6 +7,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\widgets\LanguageChooser;
 use humhub\widgets\PoweredBy;
 
 /* @var $this \humhub\modules\ui\view\components\View */
@@ -30,6 +31,8 @@ use humhub\widgets\PoweredBy;
         <?php endforeach; ?>
 
         <?= PoweredBy::widget(); ?>
+
+        <?= LanguageChooser::widget() ?>
     </small>
 </div>
 <br/>

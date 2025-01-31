@@ -16,6 +16,7 @@ use humhub\modules\marketplace\Module;
 use humhub\services\MigrationService;
 use Yii;
 use yii\helpers\UnsetArrayValue;
+use yii\helpers\Url;
 
 /**
  * SelfTest is a helper class which checks all dependencies of the application.
@@ -431,16 +432,7 @@ class SelfTest
             }
 
             $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Base URL');
-            $scheme = Yii::$app->request->getIsSecureConnection() ? 'https' : 'http';
-            $port = Yii::$app->request->getServerPort();
-            $currentBaseUrl = $scheme . '://' . preg_replace('/:\d+$/', '', $_SERVER['HTTP_HOST'])
-                . (
-                    ($scheme === 'https' && $port == 443) ||
-                    ($scheme === 'http' && $port == 80)
-                    ? ''
-                    : ':' . $port
-                )
-                . ($_SERVER['BASE'] ?? '');
+            $currentBaseUrl = Url::base(true);
             if ($currentBaseUrl === Yii::$app->settings->get('baseUrl')) {
                 $checks[] = [
                     'title' => $title,

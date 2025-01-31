@@ -17,7 +17,7 @@ return [
   'Change password' => 'Alterar senha',
   'Confirm' => 'Confirmar',
   'Create Account' => 'Criar conta',
-  'Create account' => 'Criar uma conta',
+  'Create account' => 'Criar conta',
   'Don\'t have an account? Join the network by entering your e-mail address.' => 'Não tem uma conta? Junte-se a nós informando o seu endereço de e-mail.',
   'Due to security reasons you are required to change your password in order to access the platform.' => 'Por motivos de segurança, é necessário alterar sua senha para acessar a plataforma.',
   'Enter security code above' => 'Digite o código de segurança acima',
