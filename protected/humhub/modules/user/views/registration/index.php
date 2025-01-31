@@ -1,9 +1,9 @@
 <?php
 
-use humhub\libs\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
 

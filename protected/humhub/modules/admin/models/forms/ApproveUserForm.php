@@ -2,6 +2,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\converter\RichTextToEmailHtmlConverter;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
@@ -10,7 +11,6 @@ use Yii;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\StaleObjectException;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;

@@ -10,6 +10,8 @@ namespace humhub\modules\ui\view\helpers;
 
 use Exception;
 use humhub\modules\ui\view\components\Theme;
+use ScssPhp\ScssPhp\Compiler;
+use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -138,20 +140,16 @@ class ThemeHelper
     /**
      * @param Theme $theme
      * @return array
+     * @throws Exception
      */
-    public static function getAllVariables(Theme $theme)
+    public static function getAllVariables(Theme $theme): array
     {
-        $variables = LessHelper::parseLessVariables(Yii::getAlias('@webroot-static/less/variables.less'));
-        foreach (array_reverse(static::getThemeTree($theme)) as $theme) {
-            $eeVariablesFile = $theme->getBasePath() . '/less/enterprise_variables.less';
-            if (file_exists($eeVariablesFile)) {
-                $variables = ArrayHelper::merge($variables, LessHelper::parseLessVariables($eeVariablesFile));
-            }
-
-            $variables = ArrayHelper::merge($variables, LessHelper::parseLessVariables(LessHelper::getVariableFile($theme)));
+        $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
+        foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
+            $variables = ArrayHelper::merge($variables, ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)));
         }
 
-        return LessHelper::updateLinkedLessVariables($variables);
+        return ScssHelper::updateLinkedScssVariables($variables);
     }
 
 
@@ -194,12 +192,13 @@ class ThemeHelper
     {
         $themes = static::getThemes();
 
-        $variables = LessHelper::parseLessVariables(
-            LessHelper::getVariableFile($theme),
+        $baseTheme = ScssHelper::getVariable(
+            ScssHelper::getVariableFile($theme),
+            'baseTheme',
         );
 
-        if (isset($variables['baseTheme']) && isset($themes[$variables['baseTheme']]) && $variables['baseTheme'] !== $theme->name) {
-            return $themes[$variables['baseTheme']];
+        if ($baseTheme && isset($themes[$baseTheme]) && $baseTheme !== $theme->name) {
+            return $themes[$baseTheme];
         }
 
         return null;
@@ -220,4 +219,83 @@ class ThemeHelper
         return $theme->variable('isFluid') == 'true';
     }
 
+    public static function buildCss(?Theme $theme = null): bool|string
+    {
+        $theme = $theme ?? Yii::$app->view->theme;
+        $treeThemes = array_reverse(static::getThemeTree($theme));
+        $compiler = new Compiler();
+        $imports = [];
+
+        // Set import paths
+        $compiler->setImportPaths(Yii::getAlias('@bower/bootstrap/scss'));
+        $compiler->addImportPath(Yii::getAlias('@webroot-static/scss'));
+        foreach ($treeThemes as $treeTheme) {
+            $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
+        }
+
+        // Import variables (bootstrap variables have a !default suffix to allow overwriting)
+        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
+        foreach ($treeThemes as $treeTheme) {
+            $imports[] = $treeTheme->getBasePath() . '/scss/variables';
+        }
+
+        // Import all other files
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+        $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
+        foreach ($treeThemes as $treeTheme) {
+            $imports[] = $treeTheme->getBasePath() . '/scss/build';
+        }
+
+        // Set source map
+        // TODO improve the source map to deal with multiple import paths
+        $compiler->setSourceMap(Compiler::SOURCE_MAP_FILE);
+        $compiler->setSourceMapOptions([
+            'sourceMapURL' => './theme.map',
+            'sourceMapFilename' => 'theme.css',
+            'sourceRoot' => $theme->name === 'HumHub' ? '../../../static/scss/' : '../',
+            'sourceMapBasepath' => $theme->name === 'HumHub' ? Yii::getAlias('@webroot-static/scss') : $theme->getBasePath(),
+        ]);
+
+        // Define the output files
+        $cssFilePath = $theme->getBasePath() . '/css/theme.css';
+        $mapFilePath = $theme->getBasePath() . '/css/theme.map';
+        $errorMsgStart = Yii::t('UiModule.base', 'Cannot compile SCSS to CSS code.');
+
+        // Check if files are writable
+        if ($cssFilePermissionError = static::getFilePermissionError($cssFilePath)) {
+            return $errorMsgStart . ' ' . $cssFilePermissionError;
+        }
+        if ($mapFilePermissionError = static::getFilePermissionError($mapFilePath)) {
+            return $errorMsgStart . ' ' . $mapFilePermissionError;
+        }
+
+        // Compile to CSS
+        try {
+            $result = $compiler->compileString('@import "' . implode('", "', $imports) . '";');
+            if (
+                file_put_contents($cssFilePath, $result->getCss()) !== false
+                && file_put_contents($mapFilePath, $result->getSourceMap()) !== false
+            ) {
+                Yii::$app->assetManager->clear();
+                return true;
+            }
+        } catch (SassException $e) {
+            $errorMsg = $e->getMessage();
+        }
+
+        return $errorMsgStart . (!empty($errorMsg) ? ' ' . $errorMsg : '');
+    }
+
+    private static function getFilePermissionError($filePath): ?string
+    {
+        if (file_exists($filePath) && !is_writable($filePath)) {
+            return
+                Yii::t('UiModule.base', 'File {filePath} is not writable. Check files ownership and permissions. Current: {currentPermissions}', [
+                    'filePath' => $filePath,
+                    'currentPermissions' => substr(sprintf('%o', fileperms($filePath)), -4),
+                ]);
+        }
+
+        return null;
+    }
 }

@@ -2,14 +2,8 @@
 
 return  [
     'name' => 'HumHub',
-    'language' => 'en-US',
-    'timeZone' => 'Europe/Berlin',
     'components' =>
      [
-         'formatter' =>
-          [
-              'defaultTimeZone' => 'Europe/Berlin',
-          ],
          'user' =>
           [
           ],
@@ -25,7 +19,7 @@ return  [
      ],
     'params' =>
      [
-         'config_created_at' => 1509135303,
+         'config_created_at' => 1732966138,
          'horImageScrollOnMobile' => null,
      ],
 ];

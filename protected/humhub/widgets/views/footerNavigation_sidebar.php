@@ -5,10 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\widgets\LanguageChooser;
 use humhub\widgets\PoweredBy;
-use yii\helpers\Html;
 
 /* @var $this \humhub\modules\ui\view\components\View */
 /* @var $entries MenuLink[] */

@@ -10,9 +10,9 @@ namespace humhub\modules\user\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\modules\user\models\User;
-use humhub\modules\user\models\Password;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
+use humhub\modules\user\models\Password;
+use humhub\modules\user\models\User;
 use humhub\modules\user\Module as UserModule;
 use Yii;
 use yii\web\ForbiddenHttpException;
@@ -37,18 +37,6 @@ class PasswordRecoveryController extends Controller
      * @var string
      */
     public $access = ControllerAccess::class;
-
-    /**
-     * @inheritdoc
-     */
-    public function actions()
-    {
-        return [
-            'captcha' => [
-                'class' => 'yii\captcha\CaptchaAction',
-            ],
-        ];
-    }
 
     public function beforeAction($action)
     {

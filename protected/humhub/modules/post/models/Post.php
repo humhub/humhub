@@ -8,8 +8,8 @@
 
 namespace humhub\modules\post\models;
 
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\WallEntry;
 use Yii;
@@ -112,9 +112,9 @@ class Post extends ContentActiveRecord
     /**
      * @inheritdoc
      */
-    public function getLabels($result = [], $includeContentName = true)
+    public function getBadges($result = [], $includeContentName = true)
     {
-        return parent::getLabels($result, false);
+        return parent::getBadges($result, false);
     }
 
     /**

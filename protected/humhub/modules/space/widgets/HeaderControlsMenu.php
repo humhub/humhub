@@ -8,13 +8,13 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
 use Yii;
-use yii\helpers\Html;
 
 /**
  * The Admin Navigation for spaces
@@ -134,7 +134,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'htmlOptions' => [
                         'data-method' => 'POST',
                         'class' => 'tt',
-                        'data-toggle' => 'tooltip',
+                        'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'left',
                         'title' => Yii::t('SpaceModule.manage', 'This option will hide new content from this space at your dashboard'),
                     ],
@@ -147,7 +147,7 @@ class HeaderControlsMenu extends DropdownMenu
                     'sortOrder' => 800,
                     'htmlOptions' => ['data-method' => 'POST',
                         'class' => 'tt',
-                        'data-toggle' => 'tooltip',
+                        'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'left',
                         'title' => Yii::t('SpaceModule.manage', 'This option will show new content from this space at your dashboard'),
                     ],

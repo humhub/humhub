@@ -1,12 +1,12 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\CaptchaField;
 use humhub\widgets\SiteLogo;
-use yii\captcha\Captcha;
-use yii\widgets\ActiveForm;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
@@ -57,11 +57,11 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
                 <hr>
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                     </div>
                     <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-md-8 text-right">
+                        <div class="col-lg-8 text-end">
                             <small>
                                 <?= Html::a(
                                     Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
@@ -108,11 +108,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email'), 'aria-label' => $invite->getAttributeLabel('email')])->label(false); ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
                     <div id="registration-form-captcha" style="display: none;">
-                        <div><?= Yii::t('UserModule.auth', 'Please enter the letters from the image.'); ?></div>
-
-                        <?= $form->field($invite, 'captcha')->widget(Captcha::class, [
-                            'captchaAction' => '/user/auth/captcha',
-                        ])->label(false); ?>
+                        <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                     </div>
                 <?php endif; ?>
                 <hr>

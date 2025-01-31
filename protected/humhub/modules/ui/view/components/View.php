@@ -11,7 +11,7 @@ namespace humhub\modules\ui\view\components;
 use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\components\assets\AssetBundle;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\web\pwa\widgets\LayoutHeader;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\CoreJsConfig;
@@ -54,7 +54,6 @@ class View extends \yii\web\View
      */
     protected static $preload = [
         'theme.css',
-        'bootstrap.css',
     ];
 
     /**

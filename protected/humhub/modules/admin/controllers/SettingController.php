@@ -27,9 +27,10 @@ use humhub\modules\admin\models\Log;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\Topic;
+use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -225,7 +226,20 @@ class SettingController extends Controller
     public function actionDesign()
     {
         $form = new DesignSettingsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
+        $post = Yii::$app->request->post();
+
+        if ($post['rebuild-theme-css'] ?? false) {
+            $buildResult = ThemeHelper::buildCss();
+            if ($buildResult === true) {
+                $this->view->success(Yii::t('AdminModule.settings', 'CSS successfully (re)built for the current theme!'));
+            } else {
+                Yii::error($buildResult, 'admin');
+                $this->view->error($buildResult);
+            }
+            return $this->refresh(); // Reload the page without ajax to refresh the theme
+        }
+
+        if ($form->load($post) && $form->validate() && $form->save()) {
             $this->view->saved();
             return $this->redirect([
                 '/admin/setting/design',
