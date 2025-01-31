@@ -15047,18 +15047,8 @@ img.bounceIn {
 .container-modules .card-module .card-footer.text-end a.btn:first-child {
   margin-left: 0;
 }
-.container-modules .marketplace-settings-dropdown {
-  float: right;
-  list-style: none;
-}
-.container-modules .marketplace-settings-dropdown .dropdown-toggle {
-  color: #02A1B1;
-  font-size: 22px;
-  line-height: 20px;
-  margin: 2px;
-}
-.container-modules .marketplace-settings-dropdown .dropdown-toggle:hover {
-  color: #1d8e9d;
+.container-modules .marketplace-settings-dropdown .btn-sm, .container-modules .marketplace-settings-dropdown .btn-group-sm > .btn, .container-modules .marketplace-settings-dropdown i {
+  font-size: 18px;
 }
 @media (max-width: 575.98px) {
   .container-modules .card {

@@ -141,6 +141,7 @@ If the footer contains a "Submit" button, the modal dialog must be included in t
 <?php Modal::endFormDialog()?>
 ```
 
+Search also for `<div class="modal-dialog` in the code to find modal dialogs not using the `Modal::beginDialog()` method.
 
 ## Forms
 
