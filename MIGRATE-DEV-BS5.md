@@ -368,6 +368,13 @@ Replacements to do on these elements:
 
 - `.hide()` -> `.addClass('d-none')`
 - `.show()` -> `.removeClass('d-none')`
+- `.toggle()` -> `.toggleClass('d-none')`
+- `.fadeIn()` -> `.removeClass('d-none')`
+- `.fadeOut()` -> `.addClass('d-none')`
+- `.fadeToggle()` -> `.toggleClass('d-none')`
+- `.slideDown()` -> `.removeClass('d-none')`
+- `.slideUp()` -> `.addClass('d-none')`
+- `.slideToggle()` -> `.toggleClass('d-none')` 
 
 ### Spinners
 
