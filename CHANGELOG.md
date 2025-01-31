@@ -21,6 +21,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 - Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
+- Enh #7382: Allow initial collapsed comments bu setting `\humhub\modules\comment\Module::$commentsPreviewMax` to 0
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
