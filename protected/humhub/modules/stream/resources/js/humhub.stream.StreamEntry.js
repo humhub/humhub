@@ -223,12 +223,12 @@ humhub.module('stream.StreamEntry', function (module, require, $) {
         var $loader = this.$.find('.stream-entry-loader');
         if ($show === false) {
             loader.reset($loader);
-            this.$.find('.wallentry-labels').show();
+            this.$.find('.wallentry-badges').show();
             this.$.find('.preferences').show();
             return;
         }
 
-        this.$.find('.wallentry-labels').hide();
+        this.$.find('.wallentry-badges').hide();
         this.$.find('.preferences').hide();
         loader.set($loader, {
             'position': 'left',

@@ -194,7 +194,7 @@ humhub.module('content.form', function (module, require, $) {
 
         if (!stateLabel.length) {
             stateLabel = $('<span>').addClass('badge text-bg-warning label-content-state');
-            this.$.find('.label-container').append(stateLabel);
+            this.$.find('.badge-container').append(stateLabel);
         }
 
         if (stateInput.data('initial') === undefined) {

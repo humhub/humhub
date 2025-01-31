@@ -4,7 +4,7 @@ namespace humhub\modules\content\widgets;
 
 use yii\base\Widget;
 
-class WallEntryLabels extends Widget
+class WallEntryBadges extends Widget
 {
     /**
      * Content Object with SIContentBehaviour
@@ -17,7 +17,7 @@ class WallEntryLabels extends Widget
      */
     public function run()
     {
-        return $this->render('labels', [
+        return $this->render('badges', [
             'object' => $this->object,
         ]);
     }

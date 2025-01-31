@@ -11013,7 +11013,7 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   text-decoration: none;
   text-align: left;
 }
-#topbar-first .notifications .btn-group > .label {
+#topbar-first .notifications .btn-group > .badge {
   position: absolute;
   top: 4px;
   right: -2px;
@@ -12310,21 +12310,24 @@ altcha-widget.form-control .altcha, .grid-view .filters input .altcha, .grid-vie
   margin-left: 1px;
 }
 .badge {
+  display: inline-block;
   padding: 3px 5px;
   border-radius: 2px;
   font-weight: normal;
   font-family: Arial, sans-serif;
   font-size: 10px !important;
   text-transform: uppercase;
-  color: #fff;
+  color: var(--hh-text-color-contrast);
   vertical-align: baseline;
   white-space: nowrap;
   text-shadow: none;
   background-color: var(--hh-background3);
   line-height: 1;
 }
+.badge.text-bg-danger {
+  color: var(--hh-text-color-contrast) !important;
+}
 .badge-new {
-  display: inline-block;
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -12959,9 +12962,6 @@ div.nested-comments-root div.comment-container {
   justify-content: center;
   align-items: center;
 }
-#oembed-providers .oembed-provider-container .oembed-provider .oembed-provider-name .label.label-error {
-  margin-left: 2px;
-}
 #endpoint-parameters {
   display: flex;
   flex-direction: row;
@@ -12988,7 +12988,7 @@ div.nested-comments-root div.comment-container {
 .contentForm_options .btn_container {
   position: relative;
 }
-.contentForm_options .btn_container .label-container {
+.contentForm_options .btn_container .badge-container {
   position: absolute;
   right: 40px;
   top: 11px;
@@ -12997,7 +12997,7 @@ div.nested-comments-root div.comment-container {
   margin-top: 5px;
   text-align: right;
 }
-#content-topic-bar .label {
+#content-topic-bar .badge {
   margin-left: 4px;
 }
 #contentFormBody .mb-3, #contentFormBody .invalid-feedback {
@@ -13032,7 +13032,7 @@ div.nested-comments-root div.comment-container {
   margin-bottom: 15px;
   margin-top: 15px;
 }
-#streamUpdateBadge .label {
+#streamUpdateBadge .badge {
   border-radius: 10px;
   font-size: 0.8em !important;
   padding: 5px 10px;
@@ -13271,12 +13271,12 @@ div.nested-comments-root div.comment-container {
   float: right;
   white-space: normal;
 }
-#wall-stream-filter-nav .wall-stream-filter-bar .label {
+#wall-stream-filter-nav .wall-stream-filter-bar .badge {
   height: 18px;
   padding-top: 4px;
   background-color: var(--hh-background-color-main);
 }
-#wall-stream-filter-nav .wall-stream-filter-bar .btn, #wall-stream-filter-nav .wall-stream-filter-bar .label {
+#wall-stream-filter-nav .wall-stream-filter-bar .btn, #wall-stream-filter-nav .wall-stream-filter-bar .badge {
   box-shadow: 0 0 2px var(--hh-text-color-secondary);
 }
 @media (max-width: 767.98px) {

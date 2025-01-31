@@ -74,7 +74,7 @@ use humhub\widgets\bootstrap\Link;
 
         <!-- content sharing -->
         <div class="float-end">
-            <span class="label-container">
+            <span class="badge-container">
                 <?= Badge::info(Yii::t('ContentModule.base', 'Public'))
                     ->cssClass(['badge-public', 'd-none']) ?>
             </span>

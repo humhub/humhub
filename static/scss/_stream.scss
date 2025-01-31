@@ -6,7 +6,7 @@
     .btn_container {
         position: relative;
 
-        .label-container {
+        .badge-container {
             position: absolute;
             right: 40px;
             top: 11px;
@@ -18,7 +18,7 @@
     margin-top: 5px;
     text-align: right;
 
-    .label {
+    .badge {
         margin-left: 4px;
     }
 }
@@ -67,7 +67,7 @@
     margin-bottom: 15px;
     margin-top: 15px;
 
-    .label {
+    .badge {
         border-radius: 10px;
         font-size: 0.8em !important;
         padding: 5px 10px;
@@ -388,13 +388,13 @@ $wallEntryContentLeftPaddingMobile: 0;
         float: right;
         white-space: normal;
 
-        .label {
+        .badge {
             height: 18px;
             padding-top: 4px;
             background-color: var(--hh-background-color-main);
         }
 
-        .btn, .label {
+        .btn, .badge {
             box-shadow: 0 0 2px var(--hh-text-color-secondary);
         }
     }

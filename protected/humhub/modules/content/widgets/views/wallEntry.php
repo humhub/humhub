@@ -4,8 +4,8 @@ use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\WallEntryAddons;
+use humhub\modules\content\widgets\WallEntryBadges;
 use humhub\modules\content\widgets\WallEntryControls;
-use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image as SpaceImage;
 use humhub\modules\user\widgets\Image as UserImage;
@@ -63,7 +63,7 @@ use yii\helpers\Url;
                     <?php endif; ?>
 
                     <div class="float-end <?= ($renderControls) ? 'labels' : '' ?>">
-                        <?= WallEntryLabels::widget(['object' => $object]); ?>
+                        <?= WallEntryBadges::widget(['object' => $object]); ?>
                     </div>
                 </h4>
 

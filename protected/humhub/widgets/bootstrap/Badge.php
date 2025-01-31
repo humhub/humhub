@@ -46,7 +46,7 @@ class Badge extends Widget
     {
         parent::init();
         $this->clientOptions = [];
-        Html::addCssClass($this->options, ['widget' => 'label']);
+        Html::addCssClass($this->options, ['widget' => 'badge']);
     }
 
     /**

@@ -236,6 +236,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
+     * @deprecated since 1.18 use getBadges() instead
+     */
+    public function getLabels($labels = [], $includeContentName = true)
+    {
+        return $this->getBadges($labels, $includeContentName);
+    }
+
+    /**
      * Returns either Label widget instances or strings.
      *
      * Subclasses should call `paren::getLabels()` as follows:
@@ -252,7 +260,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * @return Badge[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
-    public function getLabels($labels = [], $includeContentName = true)
+    public function getBadges($labels = [], $includeContentName = true)
     {
         if ($this->content->isPinned()) {
             $labels[] = Badge::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);

@@ -11,13 +11,14 @@
 }
 
 .badge {
+    display: inline-block;
     padding: 3px 5px;
     border-radius: 2px;
     font-weight: normal;
     font-family: Arial, sans-serif;
     font-size: 10px !important;
     text-transform: uppercase;
-    color: #fff;
+    color: var(--hh-text-color-contrast);
     vertical-align: baseline;
     white-space: nowrap;
     text-shadow: none;
@@ -25,8 +26,11 @@
     line-height: 1;
 }
 
+.badge.text-bg-danger {
+    color: var(--hh-text-color-contrast) !important;
+}
+
 .badge-new {
-    display: inline-block;
     width: 14px;
     height: 14px;
     border-radius: 50%;

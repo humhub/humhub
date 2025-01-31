@@ -18,7 +18,7 @@ use yii\helpers\Url;
 
 <?= Badge::danger()
     ->id('badge-notifications')
-    ->cssClass(['label-notifications', 'd-none']) ?>
+    ->cssClass(['badge-notifications', 'd-none']) ?>
 
 <!-- container for ajax response -->
 <ul id="dropdown-notifications" class="dropdown-menu">

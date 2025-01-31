@@ -11,8 +11,8 @@ use humhub\modules\content\components\ContentActiveRecord;
  * @since 0.5
  */
 ?>
-<span class="wallentry-labels">
-    <?php foreach ($object->getLabels() as $label) : ?>
-        <?= $label ?>
+<span class="wallentry-badges">
+    <?php foreach ($object->getBadges() as $badge) : ?>
+        <?= $badge ?>
     <?php endforeach; ?>
 <span>

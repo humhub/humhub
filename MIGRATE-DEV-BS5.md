@@ -10,6 +10,7 @@ Module and Theme Migration Guide to Bootstrap 5
 ## Removed
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
+- `humhub\modules\content\widgets\WallEntryLabels` use `humhub\modules\content\widgets\WallEntryBadges` instead
 - `js/humhub/legacy/jquery.loader.js`
 - CSS for User & Space picker
 
