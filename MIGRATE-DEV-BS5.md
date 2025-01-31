@@ -257,6 +257,8 @@ Example:
 </ul>
 ```
 
+So in CSS, `li.active a` must be replaced by `li a.active`.
+
 ### Tabs with Dropdown
 
 Example:
@@ -466,7 +468,7 @@ Linux command: `for file in *.less; do mv "$file" "_${file%.less}.scss"; done` a
 
 You can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
 However, you need to check the output manually, mainly functions and syntaxes such as:
-- `color: fade(@color, 20%);` -> `color: rgba($color, 0.2);`
+- `color: fade(@color, 20%);` -> `color: mix(white, $primary, 80%);`
 - `transition:`: remove the `@include` added after the conversion
 
 An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks.
