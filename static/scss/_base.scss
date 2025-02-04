@@ -121,6 +121,14 @@ input[type=select] {
     }
 }
 
+// Fix Safari issues
+:focus-visible {
+    outline: none; // User account menu blue outline when active
+}
+button.ProseMirror-icon {
+    color: inherit; // Prosemirror editor button blue color (-apple-system-blue)
+}
+
 // Todo find better place for this selector
 span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     pointer-events: none;

@@ -56,7 +56,6 @@ class AppAsset extends WebStaticAssetBundle
         ValidationAsset::class,
         BootstrapAsset::class,
         BootstrapPluginAsset::class,
-        SanitizeCssAsset::class,
         BluebirdAsset::class,
         FontAwesomeAsset::class,
         AnimateCssAsset::class, // preload

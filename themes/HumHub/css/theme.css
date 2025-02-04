@@ -10875,6 +10875,12 @@ input[type=text], input[type=password], input[type=select] {
     display: none;
   }
 }
+:focus-visible {
+  outline: none;
+}
+button.ProseMirror-icon {
+  color: inherit;
+}
 span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
   pointer-events: none;
   cursor: default;
