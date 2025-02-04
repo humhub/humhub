@@ -12580,6 +12580,7 @@ body.modal-open {
   z-index: 999999 !important;
 }
 .modal {
+  backdrop-filter: blur(2px);
   overflow-y: visible;
 }
 @media (max-width: 991.98px) {

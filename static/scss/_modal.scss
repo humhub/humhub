@@ -24,6 +24,7 @@ body.modal-open {
 }
 
 .modal {
+    backdrop-filter: blur(2px);
     overflow-y: visible;
 }
 
