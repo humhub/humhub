@@ -189,11 +189,10 @@ class Modal extends \yii\bootstrap5\Modal
      */
     public static function beginFormDialog($config = []): ActiveForm
     {
-        $form = ActiveForm::begin($config['form'] ?? []);
+        $formConfig = $config['form'] ?? [];
         unset($config['form']);
-
         self::beginDialog($config);
-        return $form;
+        return ActiveForm::begin($formConfig);
     }
 
     /**
