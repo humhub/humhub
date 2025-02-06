@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 - Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
 - Fix: Always allow admins to edit/delete content in the other Profile stream
+- Fix #7419: Reset modal window after close
 
 1.17.0 (January 13, 2025)
 -------------------------
@@ -25,6 +26,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 
 - Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
 - Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
+- Enh #7382: Allow initial collapsed comments bu setting `\humhub\modules\comment\Module::$commentsPreviewMax` to 0
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------
