@@ -416,7 +416,7 @@ class Profile extends ActiveRecord
      * @param bool $encode
      * @return string|null
      */
-    public function getFieldValue(string $field, bool $raw = false, bool $encode = false): ?string
+    public function getFieldValue(string $field, bool $raw = false, bool $encode = true): ?string
     {
         if (!$this->hasAttribute($field) || !$this->user) {
             return null;
