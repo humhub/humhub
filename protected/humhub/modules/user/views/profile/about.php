@@ -42,7 +42,7 @@ $categories = $user->profile->getProfileFieldCategories();
                             </label>
                             <div class="col-sm-9 field-value">
                                 <?= ($field->field_type_class === MarkdownEditor::class) ?
-                                    RichText::output($field->getUserValue($user, true)) :
+                                    RichText::output($field->getUserValue($user, true, false)) :
                                     $field->getUserValue($user, false) ?>
                             </div>
                         </div>

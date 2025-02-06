@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\libs\Html;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
 
@@ -21,15 +22,20 @@ use yii\base\InvalidConfigException;
 class UserLastLogin extends BaseTypeVirtual
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      * @throws InvalidConfigException
      */
-    public function getVirtualUserValue($user, $raw = true)
+    protected function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string
     {
-        if (empty($user->last_login)) {
+        $value = $user->last_login;
+        if (empty($value)) {
             return '-';
         }
 
-        return Yii::$app->formatter->asDate($user->last_login, 'long');
+        if (!$raw) {
+            $value = Yii::$app->formatter->asDate($value, 'long');
+        }
+
+        return $encode ? Html::encode($value) : $value;
     }
 }
