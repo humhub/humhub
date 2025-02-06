@@ -11,6 +11,7 @@ HumHub Changelog
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
 - Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
 - Fix: Always allow admins to edit/delete content in the other Profile stream
+- Fix #7414: Fix profile field encoding
 - Fix #7419: Reset modal window after close
 
 1.17.0 (January 13, 2025)
