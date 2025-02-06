@@ -302,13 +302,13 @@ class Comment extends ContentAddonActiveRecord
             ->limit($pageSize);
 
         if ($type === ShowMore::TYPE_NEXT) {
-            $query->orderBy(['created_at' => SORT_ASC]);
+            $query->orderBy(['created_at' => SORT_ASC, 'id' => SORT_ASC]);
             if ($commentId) {
                 $query->andWhere(['>', 'id', $commentId]);
             }
             $comments = $query->all();
         } else {
-            $query->orderBy(['created_at' => SORT_DESC]);
+            $query->orderBy(['created_at' => SORT_DESC, 'id' => SORT_DESC]);
             if ($commentId) {
                 $query->andWhere(['<', 'id', $commentId]);
             }

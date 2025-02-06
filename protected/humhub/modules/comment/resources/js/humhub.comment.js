@@ -308,6 +308,10 @@ humhub.module('comment', function (module, require, $) {
         if (!visible && !window.comments_collapsed) {
             target.find('.humhub-ui-richtext').trigger('focus');
         }
+
+        if (!visible && window.comments_collapsed && !target.find('.comment>.media').length) {
+            target.find('[data-action-click="comment.showMore"]').trigger('click');
+        }
     }
 
     var toggleCommentHandler = function (evt) {

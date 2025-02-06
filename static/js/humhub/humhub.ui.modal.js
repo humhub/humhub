@@ -92,6 +92,10 @@ humhub.module('ui.modal', function (module, require, $) {
         });
 
         this.set(options);
+
+        // Store initial data to reset it
+        this.initialOptions = options;
+        this.initialDialog = this.getDialog().clone(true);
     };
 
     Modal.prototype.checkAriaLabel = function () {
@@ -144,16 +148,14 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.reset = function () {
-        // Clear old script tags.
-        var $content = this.getContent().empty();
-        this.$.find('script').remove();
-        $content.append('<div class="modal-body" />');
-        loader.set(this.getBody());
         this.isFilled = false;
-
-        this.getDialog().removeClass('modal-dialog-large modal-dialog-normal modal-dialog-small modal-dialog-extra-small modal-dialog-medium');
-
-        //reset listeners:
+        // Remove scripts from previous modal window
+        this.$.find('script').remove();
+        // Reset dialog to initial html
+        this.getDialog().replaceWith(this.initialDialog.clone(true));
+        // Reset options in order to display initial window on load new window
+        this.options = this.initialOptions;
+        // Reset listeners to avoid unexpected js behaviour
         this.resetListener();
     };
 
