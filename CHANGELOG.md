@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.0 (Unreleased - Develop)
 ----------------------------
 - Enh #7412: Confusing message after creating an account
+- Enh #7043: Allow disabling "New Content" Notifications for default Spaces the User is not a member of and not following
 
 1.17.1 (Unreleased)
 -------------------
