@@ -6,9 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
 use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\ui\mail\DefaultMailStyle;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;

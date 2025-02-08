@@ -2,10 +2,10 @@
 
 use humhub\components\ActiveRecord;
 use humhub\helpers\Html;
+use humhub\helpers\ThemeHelper;
 use humhub\modules\file\converter\PreviewImage;
 use humhub\modules\file\libs\FileHelper;
 use humhub\modules\file\widgets\FilePreview;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\widgets\JPlayerPlaylistWidget;
 
 /* @var  $previewImage PreviewImage */

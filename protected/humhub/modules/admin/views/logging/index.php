@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\libs\DateHelper;
 use humhub\modules\admin\assets\LogAsset;
@@ -7,7 +8,6 @@ use humhub\modules\admin\models\forms\LogFilterForm;
 use humhub\modules\admin\models\Log;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\ActiveForm;
 use yii\data\Pagination;
 use yii\helpers\Url;

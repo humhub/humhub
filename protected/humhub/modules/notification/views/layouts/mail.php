@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 
 /* @var View $this */
 /* @var string $content */

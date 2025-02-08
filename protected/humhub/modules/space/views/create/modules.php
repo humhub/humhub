@@ -1,8 +1,8 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\space\assets\SpaceAsset;
 use humhub\modules\space\models\Space;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;

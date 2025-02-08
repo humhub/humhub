@@ -60,7 +60,7 @@ $config = [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
         'queue',
-        'humhub\modules\ui\view\bootstrap\ThemeLoader',
+        'humhub\components\bootstrap\ThemeLoader',
     ],
     'runtimePath' => '@app/runtime',
     'sourceLanguage' => 'en',
@@ -147,7 +147,7 @@ $config = [
             'view' => [
                 'class' => \yii\web\View::class,
                 'theme' => [
-                    'class' => \humhub\modules\ui\view\components\Theme::class,
+                    'class' => \humhub\components\Theme::class,
                     'name' => 'HumHub',
                 ],
             ],
@@ -158,9 +158,9 @@ $config = [
             'bundles' => require(__DIR__ . '/' . (YII_ENV_PROD || YII_ENV_TEST ? 'assets-prod.php' : 'assets-dev.php')),
         ],
         'view' => [
-            'class' => \humhub\modules\ui\view\components\View::class,
+            'class' => \humhub\components\View::class,
             'theme' => [
-                'class' => \humhub\modules\ui\view\components\Theme::class,
+                'class' => \humhub\components\Theme::class,
                 'name' => 'HumHub',
             ],
         ],

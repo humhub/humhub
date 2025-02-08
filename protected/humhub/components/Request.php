@@ -21,7 +21,7 @@ class Request extends \yii\web\Request
     /**
      * Http header name for view context information
      *
-     * @see \humhub\modules\ui\view\components\View::$viewContext
+     * @see \humhub\components\View::$viewContext
      */
     public const HEADER_VIEW_CONTEXT = 'HUMHUB-VIEW-CONTEXT';
     /**

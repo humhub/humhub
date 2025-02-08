@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\ui\view\helpers\ThemeHelper;
+use humhub\helpers\ThemeHelper;
 
 /* @var $content string */
 ?>

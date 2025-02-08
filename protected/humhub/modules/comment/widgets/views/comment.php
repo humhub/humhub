@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentControls;
@@ -8,7 +9,6 @@ use humhub\modules\comment\widgets\Comments;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\UpdatedIcon;
 use humhub\modules\file\widgets\ShowFiles;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\Image as UserImage;
 use humhub\widgets\TimeAgo;
 

@@ -1,13 +1,13 @@
 <?php
 /**
- * @var $this View
+ * @var $this \humhub\components\View
  * @var FileSettingsForm $model
  */
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\file\Module;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\ActiveForm;
 
 /** @var Module $fileModule */

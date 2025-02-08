@@ -6,12 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\view\bootstrap;
+namespace humhub\components\bootstrap;
 
 use humhub\components\console\Application as ConsoleApplication;
+use humhub\components\Theme;
+use humhub\helpers\ThemeHelper;
 use humhub\modules\installer\libs\EnvironmentChecker;
-use humhub\modules\ui\view\components\Theme;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\BootstrapInterface;
 

@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\widgets\TopicBadge;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $model ContentActiveRecord */

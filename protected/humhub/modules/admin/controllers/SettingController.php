@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use Exception;
+use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
@@ -27,7 +28,6 @@ use humhub\modules\admin\models\Log;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\modal\ModalClose;

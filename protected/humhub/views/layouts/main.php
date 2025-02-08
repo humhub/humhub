@@ -1,10 +1,10 @@
 <?php
 
 use humhub\assets\AppAsset;
+use humhub\components\View;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\Html;
 use humhub\modules\space\widgets\Chooser;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\AccountTopMenu;
 use humhub\widgets\NotificationArea;
 use humhub\widgets\SiteLogo;

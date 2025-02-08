@@ -1,7 +1,7 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\file\widgets\Upload;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\modal\ModalButton;
 

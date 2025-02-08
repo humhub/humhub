@@ -1,5 +1,5 @@
 <?php
-/* @var $this View */
+/* @var $this \humhub\components\View */
 /* @var $canInviteByEmail bool */
 /* @var $canInviteByLink bool */
 /* @var $canAddWithoutInvite bool */
@@ -9,9 +9,9 @@
 /* @var $attribute string */
 /* @var $searchUrl string */
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\space\models\forms\InviteForm;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\modal\Modal;

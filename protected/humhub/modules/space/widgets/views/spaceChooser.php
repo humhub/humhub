@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
 /**

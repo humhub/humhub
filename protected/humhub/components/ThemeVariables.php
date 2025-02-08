@@ -6,10 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\view\components;
+namespace humhub\components;
 
+use humhub\helpers\ThemeHelper;
 use humhub\modules\ui\Module;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\base\Component;
 

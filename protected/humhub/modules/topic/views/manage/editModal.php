@@ -6,8 +6,8 @@
  *
  */
 
+use humhub\components\View;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\form\SortOrderField;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;

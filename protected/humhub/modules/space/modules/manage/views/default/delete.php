@@ -1,8 +1,8 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\space\modules\manage\models\DeleteForm;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 

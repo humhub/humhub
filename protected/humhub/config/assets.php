@@ -10,7 +10,7 @@ use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
 use humhub\components\assets\WebStaticAssetBundle;
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use yii\bootstrap5\BootstrapAsset;
 use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
