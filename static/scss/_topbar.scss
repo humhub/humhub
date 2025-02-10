@@ -322,14 +322,15 @@
             }
         }
 
-        form {
-            margin: 10px;
+        form.dropdown-header {
+            margin: 0;
+            padding: 10px;
         }
 
         .search-reset {
             position: absolute;
             color: #BFBFBF;
-            margin: 7px;
+            margin: 4px;
             top: 0px;
             right: 40px;
             z-index: 10;

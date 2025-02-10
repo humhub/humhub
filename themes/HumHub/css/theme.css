@@ -11144,13 +11144,14 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
     max-height: 400px;
   }
 }
-#topbar-second #space-menu-dropdown form, #topbar-second #search-menu-dropdown form {
-  margin: 10px;
+#topbar-second #space-menu-dropdown form.dropdown-header, #topbar-second #search-menu-dropdown form.dropdown-header {
+  margin: 0;
+  padding: 10px;
 }
 #topbar-second #space-menu-dropdown .search-reset, #topbar-second #search-menu-dropdown .search-reset {
   position: absolute;
   color: #BFBFBF;
-  margin: 7px;
+  margin: 4px;
   top: 0px;
   right: 40px;
   z-index: 10;
