@@ -28,7 +28,6 @@ class GlobalConfirmModal extends \yii\base\Widget
             'id' => 'globalModalConfirm',
             'title' => ' ', // Force creation of the title element
             'jsWidget' => 'ui.modal.ConfirmModal',
-            'size' => Modal::SIZE_SMALL,
             'backdrop' => false,
             'keyboard' => false,
             'initialLoader' => false,

@@ -44,7 +44,6 @@ $model->cropSetSelect = Json::decode('[' . $cropSelect . ']');
     'title' => Yii::t('SpaceModule.views_admin_cropImage', '<strong>Modify</strong> image'),
     'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
     'id' => 'profile-image-crop-modal',
-    'size' => Modal::SIZE_SMALL,
     'form' => ['id' => 'profile-image-crop-modal-form'],
 ]) ?>
 

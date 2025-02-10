@@ -17,7 +17,6 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'),
     'footer' => ModalButton::save(Yii::t('SpaceModule.manage', 'Next'), Url::to(['/space/create/create'])),
-    'size' => Modal::SIZE_SMALL,
     'form' => ['enableClientValidation' => false],
 ]) ?>
 
