@@ -15701,7 +15701,7 @@ img.bounceIn {
 }
 .select2-container--humhub .select2-selection--multiple {
   min-height: calc(1.5em + 0.75rem + calc(var(--bs-border-width) * 2));
-  padding: 0.4rem 0.75rem;
+  padding: 0.1rem 0.2rem;
   /**
          * Make Multi Select2's choices match humhub 3's default button styles.
          */
@@ -15767,7 +15767,7 @@ img.bounceIn {
   padding: 0 5px;
   width: auto !important;
   height: calc(1.5em + 0.75rem + calc(var(--bs-border-width) * 2)) - 2;
-  line-height: 1.5;
+  line-height: 30px;
   margin-top: 0;
   min-width: 5em;
 }
