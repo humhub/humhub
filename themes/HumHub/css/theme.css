@@ -1866,7 +1866,7 @@ progress {
   line-height: 1.5;
   color: var(--bs-body-color);
   appearance: none;
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
   background-clip: padding-box;
   border: var(--bs-border-width) solid #e9ecef;
   border-radius: var(--bs-border-radius);
@@ -1885,7 +1885,7 @@ progress {
 }
 .form-control:focus, .grid-view .filters input:focus, .grid-view .filters select:focus {
   color: var(--bs-body-color);
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
   border-color: #a1afb7;
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(67, 95, 111, 0.25);
@@ -2010,7 +2010,7 @@ textarea.form-control-lg {
   line-height: 1.5;
   color: var(--bs-body-color);
   appearance: none;
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
   background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
   background-repeat: no-repeat;
   background-position: right 0.75rem center;
@@ -2078,7 +2078,7 @@ textarea.form-control-lg {
   margin-left: 0;
 }
 .form-check-input {
-  --bs-form-check-bg: var(--bs-body-bg);
+  --bs-form-check-bg: #fff;
   flex-shrink: 0;
   width: 1em;
   height: 1em;
@@ -2324,7 +2324,7 @@ textarea.form-control-lg {
   z-index: -1;
   height: 1.5em;
   content: "";
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
   border-radius: var(--bs-border-radius);
 }
 .form-floating > .form-control:-webkit-autofill ~ label, .grid-view .filters .form-floating > input:-webkit-autofill ~ label, .grid-view .filters .form-floating > select:-webkit-autofill ~ label {
@@ -15514,7 +15514,7 @@ img.bounceIn {
   top: 3px;
 }
 .select2-container--humhub .select2-selection {
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
   border: 2px solid #e9ecef;
   border-radius: var(--bs-border-radius);
   color: var(--bs-body-color);
@@ -15526,7 +15526,7 @@ img.bounceIn {
   background-color: var(--hh-background-color-main);
 }
 .select2-container--humhub .select2-search--dropdown .select2-search__field {
-  background-color: var(--bs-body-bg);
+  background-color: #fff;
   border: 2px solid #e9ecef;
   border-radius: var(--bs-border-radius);
   color: var(--bs-body-color);
