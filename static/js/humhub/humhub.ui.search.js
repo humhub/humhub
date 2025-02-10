@@ -43,7 +43,7 @@ humhub.module('ui.search', function(module, require, $) {
         $(document).on('click', that.selectors.close + ', '
             + that.selectors.providerRecord + ', '
             + that.selectors.providerShowAll, function () {
-            that.getMenuToggler().dropdown('toggle');
+            that.getBsMenuDropdown().hide();
         });
 
         that.getInput().on('keypress', function (e) {
@@ -146,6 +146,10 @@ humhub.module('ui.search', function(module, require, $) {
         return this.$.find(this.selectors.toggler);
     }
 
+    Search.prototype.getBsMenuDropdown = function () {
+        return new bootstrap.Dropdown(this.getMenuToggler().parent('.dropdown'));
+    }
+
     Search.prototype.getBackdrop = function () {
         return this.$.find(this.selectors.backdrop);
     }
@@ -196,19 +200,19 @@ humhub.module('ui.search', function(module, require, $) {
     }
 
     Search.prototype.isVisiblePanel = function () {
-        return this.$.hasClass('open');
+        return this.selectors.toggler.hasClass('show');
     }
 
     Search.prototype.showPanel = function () {
         if (!this.isVisiblePanel()) {
-            this.getMenuToggler().dropdown('toggle');
+            this.getBsMenuDropdown().show();
         }
         return this;
     }
 
     Search.prototype.hidePanel = function () {
         if (this.isVisiblePanel()) {
-            this.getMenuToggler().dropdown('toggle');
+            this.getBsMenuDropdown().hide();
         }
         return this;
     }

@@ -213,10 +213,16 @@
 
 .dropdown.search-menu {
     .dropdown-backdrop {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 990;
         background: rgba($text-color-highlight, 0.15);
     }
 
-    &.open #search-menu {
+    #search-menu.show {
         background: var(--hh-background-color-main);
         border-bottom: 3px solid var(--bs-info);
         z-index: 1000;

@@ -238,6 +238,18 @@ Now:
 </li>
 ```
 
+#### Javascript
+
+The jQuery `.dropdown()` method is removed. Use BS5 vanilla JS API instead. Example for a close button:
+
+```js
+$('#hideDropdownButton').on('click', function () {
+    const $dropdown = $('#my-dropdown'); // which has the `dropdown` class
+    const bsDropdown = new bootstrap.Dropdown(dropdownElement); // Bootstrap's API
+    bsDropdown.hide(); // https://getbootstrap.com/docs/5.3/components/dropdowns/#methods
+});
+```
+
 
 ## Navs & tabs
 
