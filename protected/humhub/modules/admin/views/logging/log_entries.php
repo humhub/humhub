@@ -51,11 +51,11 @@ use yii\log\Logger;
                             $levelName = Yii::t('AdminModule.information', 'Error');
                     } ?>
 
-                    <h4 class="mt-0">
+                    <h5 class="mt-0">
                         <?= Badge::instance($levelName, $bsColor) ?>&nbsp;
                         <?= date('r', (int)$entry->log_time) ?>&nbsp;
                         <span class="float-end"><?= Html::encode($entry->category) ?></span>
-                    </h4>
+                    </h5>
                     <div data-ui-show-more data-collapse-at="150">
                         <?= nl2br(Html::encode($entry->message)) ?>
                     </div>

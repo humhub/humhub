@@ -12331,7 +12331,7 @@ altcha-widget.form-control .altcha, .grid-view .filters input .altcha, .grid-vie
   background-color: var(--hh-background3);
   line-height: 1;
 }
-.badge.text-bg-danger {
+.badge.text-bg-info, .badge.text-bg-danger {
   color: var(--hh-text-color-contrast) !important;
 }
 .badge-new {

@@ -24,10 +24,11 @@
     text-shadow: none;
     background-color: var(--hh-background3);
     line-height: 1;
-}
 
-.badge.text-bg-danger {
-    color: var(--hh-text-color-contrast) !important;
+    &.text-bg-info,
+    &.text-bg-danger {
+        color: var(--hh-text-color-contrast) !important;
+    }
 }
 
 .badge-new {
