@@ -90,7 +90,7 @@
             }
 
             &.btn-primary {
-                border: 1px solid var(--bs-primary);
+                border: 1px solid var(--bs-primary) !important;
 
                 &.active, &:not(.active):hover {
                     background: var(--bs-primary) !important;
