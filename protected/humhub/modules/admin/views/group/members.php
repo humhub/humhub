@@ -27,7 +27,7 @@ AdminGroupAsset::register($this);
     <div class="row">
         <div class="col-lg-6">
             <?php $form = ActiveForm::begin(['action' => ['/admin/group/add-members']]); ?>
-            <div class="input-group select2-humhub-append">
+            <div class="select2-humhub-append input-group flex-nowrap">
                 <?= UserPickerField::widget([
                     'model' => $addGroupMemberForm,
                     'attribute' => 'userGuids',
@@ -36,7 +36,7 @@ AdminGroupAsset::register($this);
                     'focus' => true,
                 ]) ?>
                 <?= Html::activeHiddenInput($addGroupMemberForm, 'groupId', ['value' => $group->id]) ?>
-                <?= Button::primary()->submit()->style('height:40px')->icon('add') ?>
+                <?= Button::primary()->submit()->icon('add') ?>
             </div>
             <?php ActiveForm::end(); ?>
         </div>
