@@ -25,7 +25,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     <br>
 
     <div class="panel panel-default animated bounceIn" id="login-form"
-         style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+         style="max-width: 350px; margin: 0 auto 20px; text-align: left;">
 
         <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Please</strong> sign in'); ?></div>
 
