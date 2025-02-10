@@ -15022,7 +15022,10 @@ img.bounceIn {
   overflow: hidden;
 }
 .container-modules .card-module .card-panel > div:not(.card-status) {
-  background-color: #ffffff;
+  background-color: var(--hh-background-color-main);
+}
+.container-modules .card-module .card-panel a {
+  color: var(--hh-text-color-highlight);
 }
 .container-modules .card-module .card-header {
   position: relative;
@@ -15074,7 +15077,7 @@ img.bounceIn {
 }
 .container-content-modules h4, .container-content-modules .h4 {
   font-size: 16px;
-  color: #000;
+  color: var(--hh-text-color-highlight);
 }
 .container-content-modules .card {
   width: 100%;
@@ -15154,7 +15157,7 @@ img.bounceIn {
   margin-top: 0;
 }
 .container-module-updates .modules-type {
-  color: #FFFFFF;
+  color: var(--hh-text-color-contrast);
   margin: 10px 0 30px;
 }
 .container-module-updates .card {
@@ -15162,7 +15165,7 @@ img.bounceIn {
   background-color: transparent;
 }
 .container-module-updates .card .card-panel {
-  color: #FFF;
+  color: var(--hh-text-color-contrast);
   margin-top: 0;
 }
 .container-module-updates .card .card-panel > div:not(.card-status) {
@@ -15173,10 +15176,10 @@ img.bounceIn {
 }
 .container-module-updates .card .card-panel .card-body {
   padding: 4px 12px 20px;
-  color: #FFF;
+  color: var(--hh-text-color-contrast);
 }
 .container-module-updates .card .card-panel .card-body .card-title {
-  color: #FFF;
+  color: var(--hh-text-color-contrast);
   font-size: 14px;
 }
 .container-module-updates .card .card-panel .card-footer {
@@ -15193,7 +15196,7 @@ img.bounceIn {
   padding: 0 4px;
   border: 1px solid #FFF;
   background: #30444f;
-  color: #FFF !important;
+  color: var(--hh-text-color-contrast) !important;
 }
 .container-module-updates .card .card-panel .card-footer .btn-info:not(.active):hover, .container-module-updates .card .card-panel .card-footer .btn-info:not(.active):active {
   background: var(--bs-primary) !important;
