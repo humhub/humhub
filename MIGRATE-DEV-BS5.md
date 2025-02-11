@@ -11,6 +11,11 @@ Module and Theme Migration Guide to Bootstrap 5
 
 - `humhub\widgets\ActiveForm` use `humhub\widgets\form\ActiveForm` instead
 - `humhub\modules\content\widgets\WallEntryLabels` use `humhub\modules\content\widgets\WallEntryBadges` instead
+- `humhub\modules\ui\view\bootstrap\ThemeLoader` use `humhub\components\bootstrap\ThemeLoader` instead
+- `humhub\modules\ui\view\components\ThemeVariables` use `humhub\components\ThemeVariables` instead
+- `humhub\modules\ui\view\components\ThemeViews` use `humhub\components\ThemeViews` instead
+- `humhub\modules\ui\view\components\View` use `humhub\components\View` instead
+- `humhub\modules\ui\view\components\ViewMeta` use `humhub\components\ViewMeta` instead
 - `js/humhub/legacy/jquery.loader.js`
 - CSS for User & Space picker
 
@@ -45,6 +50,7 @@ Widgets & helpers:
 - `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead (watch out for class name changes!)
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead (watch out for class name changes!)
 - `humhub\libs\Html` use `humhub\helpers\Html` instead
+- `humhub\modules\ui\view\helpers\ThemeHelper` use `protected/humhub/helpers/ThemeHelper.php` instead
 
 Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
