@@ -130,16 +130,12 @@ class Modal extends \yii\bootstrap5\Modal
 
         return
             Html::beginTag('div', $this->dialogOptions) . "\n" .
-            Html::beginTag('div', ['class' => 'modal-content']) . "\n" .
-            $this->renderHeader() . "\n" .
-            $this->renderBodyBegin() . "\n";
+            Html::beginTag('div', ['class' => 'modal-content']) . "\n";
     }
 
     public function renderDialogEnd(): string
     {
         return
-            "\n" . $this->renderBodyEnd() .
-            "\n" . $this->renderFooter() .
             "\n" . Html::endTag('div') . // modal-content
             "\n" . Html::endTag('div'); // modal-dialog
     }
@@ -160,21 +156,31 @@ class Modal extends \yii\bootstrap5\Modal
      *   <?php Modal::endDialog() ?>
      *   ```
      */
-    public static function beginDialog($config = []): void
+    public static function beginDialog($config = [], bool $renderElements = true): void
     {
         $config['bypassParentInit'] = true;
         $widget = new static($config);
         self::$stackForDialog = $widget;
         echo $widget->renderDialogBegin();
+        if ($renderElements) {
+            echo
+                $widget->renderHeader() . "\n" .
+                $widget->renderBodyBegin() . "\n";
+        }
     }
 
     /**
      * Ends rendering the dialog part of the modal.
      */
-    public static function endDialog(): void
+    public static function endDialog(bool $renderElements = true): void
     {
         $widget = self::$stackForDialog;
         if ($widget) {
+            if ($renderElements) {
+                echo
+                    "\n" . $widget->renderBodyEnd() .
+                    "\n" . $widget->renderFooter();
+            }
             echo $widget->renderDialogEnd();
         }
     }
@@ -182,26 +188,27 @@ class Modal extends \yii\bootstrap5\Modal
     /**
      * Initializes and begins rendering the dialog part of the modal
      * including an ActiveForm.
-     *
-     * @see beginDialog
-     * @param $config the ActiveForm configuration
-     * @return ActiveForm
      */
     public static function beginFormDialog($config = []): ActiveForm
     {
         $formConfig = $config['form'] ?? [];
         unset($config['form']);
-        self::beginDialog($config);
-        return ActiveForm::begin($formConfig);
+
+        self::beginDialog($config, false);
+        $form = ActiveForm::begin($formConfig);
+        echo
+            self::$stackForDialog->renderHeader() . "\n" .
+            self::$stackForDialog->renderBodyBegin() . "\n";
+
+        return $form;
     }
 
-    /**
-     * @see beginFormDialog
-     * @return void
-     */
-    public static function endFormDialog()
+    public static function endFormDialog(): void
     {
+        echo
+            "\n" . self::$stackForDialog->renderBodyEnd() .
+            "\n" . self::$stackForDialog->renderFooter();
         ActiveForm::end();
-        self::endDialog();
+        self::endDialog(false);
     }
 }
