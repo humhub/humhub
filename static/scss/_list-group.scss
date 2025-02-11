@@ -133,3 +133,11 @@ a.list-group-item {
         }
     }
 }
+
+@include media-breakpoint-up(lg) {
+    .list-group-vertical-lg {
+        > .list-group-item:first-child:not(:last-child) {
+            border-bottom-left-radius: 0;
+        }
+    }
+}

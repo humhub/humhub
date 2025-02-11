@@ -12581,6 +12581,11 @@ a.list-group-item:hover, a.list-group-item.active:hover, a.list-group-item.activ
     color: #fff !important;
   }
 }
+@media (min-width: 992px) {
+  .list-group-vertical-lg > .list-group-item:first-child:not(:last-child) {
+    border-bottom-left-radius: 0;
+  }
+}
 .modal-backdrop {
   background-color: rgba(0, 0, 0, 0.5);
 }
