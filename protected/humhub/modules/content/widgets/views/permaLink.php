@@ -2,7 +2,7 @@
 
 use humhub\modules\ui\icon\widgets\Icon;
 
-/* @var $this humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $permaLink string */
 ?>
 

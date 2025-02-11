@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\view\components;
+namespace humhub\components;
 
 use humhub\modules\file\libs\FileHelper;
 use Yii;

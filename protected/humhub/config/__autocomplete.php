@@ -26,7 +26,7 @@ class Yii
  * @property \humhub\components\Controller $controller
  * @property \humhub\components\i18n\I18N $i18n
  * @property \humhub\components\mail\Mailer $mailer
- * @property \humhub\modules\ui\view\components\View $view
+ * @property \humhub\components\View $view
  * @property \humhub\components\SettingsManager $settings
  * @property \humhub\modules\notification\components\NotificationManager $notification
  * @property \humhub\components\i18n\Formatter

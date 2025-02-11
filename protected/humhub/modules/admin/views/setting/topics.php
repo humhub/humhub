@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\admin\assets\AdminTopicAsset;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;

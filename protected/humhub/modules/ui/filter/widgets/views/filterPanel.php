@@ -6,8 +6,8 @@
  *
  */
 
+use humhub\components\View;
 use humhub\modules\ui\filter\widgets\FilterBlock;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $span int */

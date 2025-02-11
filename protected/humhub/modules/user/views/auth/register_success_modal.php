@@ -1,8 +1,8 @@
 <?php
 
-use humhub\widgets\modal\Modal;
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use humhub\modules\user\models\Invite;
+use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 
 /* @var $this View */

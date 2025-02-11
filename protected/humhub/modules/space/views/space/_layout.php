@@ -1,11 +1,11 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Header;
 use humhub\modules\space\widgets\Menu;
 use humhub\modules\space\widgets\SpaceContent;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\FooterMenu;
 
 /**

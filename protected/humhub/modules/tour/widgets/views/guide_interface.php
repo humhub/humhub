@@ -1,7 +1,7 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\view\components\View;
 use yii\helpers\Url;
 
 /* @var $this View */

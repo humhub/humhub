@@ -1,9 +1,10 @@
 <?php
 
 /**
- * @var View $this
+ * @var \humhub\components\View $this
  */
 
+use humhub\components\View;
 use humhub\modules\activity\widgets\ActivityStreamViewer;
 use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\space\models\Space;
@@ -12,7 +13,6 @@ use humhub\modules\space\modules\manage\widgets\PendingApprovals;
 use humhub\modules\space\widgets\Members;
 use humhub\modules\space\widgets\Sidebar;
 use humhub\modules\stream\widgets\StreamViewer;
-use humhub\modules\ui\view\components\View;
 
 /* @var $space Space */
 /* @var $canCreateEntries bool */

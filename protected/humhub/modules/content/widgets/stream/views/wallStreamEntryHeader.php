@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\ArchivedIcon;
@@ -12,7 +13,6 @@ use humhub\modules\content\widgets\VisibilityIcon;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\TimeAgo;
 
 /* @var $this View */

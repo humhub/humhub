@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $menu LeftNavigation */

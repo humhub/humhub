@@ -8,7 +8,7 @@
 
 namespace humhub\modules\tour\assets;
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use Yii;
 use yii\helpers\Url;
 use yii\web\AssetBundle;

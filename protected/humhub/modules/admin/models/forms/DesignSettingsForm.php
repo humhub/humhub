@@ -8,11 +8,11 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\helpers\ThemeHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use Yii;

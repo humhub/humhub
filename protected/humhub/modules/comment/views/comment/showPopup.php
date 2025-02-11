@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\comment\widgets\Form;
 use humhub\modules\content\components\ContentActiveRecord;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\modal\Modal;
 
 /* @var $this View */

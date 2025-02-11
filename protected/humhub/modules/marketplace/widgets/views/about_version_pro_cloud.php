@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 
 /* @var $this View */
 ?>

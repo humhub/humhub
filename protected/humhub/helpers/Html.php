@@ -11,7 +11,6 @@ namespace humhub\helpers;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\security\helpers\Security;
 use Yii;

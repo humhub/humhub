@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\Module;
@@ -8,7 +9,6 @@ use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;

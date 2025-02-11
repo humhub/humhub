@@ -1,8 +1,9 @@
 <?php
-/* @var $this View */
+/* @var $this \humhub\components\View */
 
 /* @var $container Space */
 
+use humhub\components\View;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\FollowButton;
 use humhub\modules\space\widgets\HeaderControls;
@@ -10,7 +11,6 @@ use humhub\modules\space\widgets\HeaderControlsMenu;
 use humhub\modules\space\widgets\HeaderCounterSet;
 use humhub\modules\space\widgets\InviteButton;
 use humhub\modules\space\widgets\MembershipButton;
-use humhub\modules\ui\view\components\View;
 
 ?>
 

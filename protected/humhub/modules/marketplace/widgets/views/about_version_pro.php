@@ -1,8 +1,8 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */

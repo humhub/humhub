@@ -1,10 +1,10 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\comment\Module;
 use humhub\modules\comment\widgets\CommentLink;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Url;
 

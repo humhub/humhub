@@ -6,11 +6,11 @@
  */
 
 use humhub\assets\CardsAsset;
+use humhub\components\View;
 use humhub\modules\marketplace\assets\Assets;
 use humhub\modules\marketplace\widgets\ModuleFilters;
 use humhub\modules\marketplace\widgets\ModuleGroups;
 use humhub\modules\marketplace\widgets\Settings;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 

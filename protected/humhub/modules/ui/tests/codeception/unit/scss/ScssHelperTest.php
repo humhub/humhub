@@ -2,7 +2,7 @@
 
 namespace tests\codeception\unit;
 
-use humhub\modules\ui\view\helpers\ScssHelper;
+use humhub\helpers\ScssHelper;
 use tests\codeception\_support\HumHubDbTestCase;
 use yii\helpers\ArrayHelper;
 

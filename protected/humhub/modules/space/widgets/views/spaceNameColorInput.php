@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use humhub\widgets\ColorPickerField;
 use humhub\widgets\form\ActiveForm;
 use yii\base\Model;

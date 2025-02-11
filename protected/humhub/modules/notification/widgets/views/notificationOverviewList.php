@@ -1,8 +1,8 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\LinkPager;
 use yii\data\Pagination;
 

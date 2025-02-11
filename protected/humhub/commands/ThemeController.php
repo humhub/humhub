@@ -6,12 +6,12 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\commands;
+namespace humhub\commands;
 
 use Exception;
+use humhub\components\bootstrap\ThemeLoader;
+use humhub\helpers\ThemeHelper;
 use humhub\libs\DynamicConfig;
-use humhub\modules\ui\view\bootstrap\ThemeLoader;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
 use yii\console\Controller;
 use yii\console\ExitCode;

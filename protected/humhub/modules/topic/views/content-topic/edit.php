@@ -6,9 +6,9 @@
  *
  */
 
+use humhub\components\View;
 use humhub\modules\topic\models\forms\ContentTopicsForm;
 use humhub\modules\topic\widgets\TopicPicker;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 

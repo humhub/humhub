@@ -6,12 +6,12 @@
  *
  */
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\AccountSettingsMenu;
 use humhub\widgets\bootstrap\Button;

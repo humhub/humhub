@@ -6,10 +6,10 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\modules\ui\view\helpers;
+namespace humhub\helpers;
 
 use Exception;
-use humhub\modules\ui\view\components\Theme;
+use humhub\components\Theme;
 use RuntimeException;
 
 /**

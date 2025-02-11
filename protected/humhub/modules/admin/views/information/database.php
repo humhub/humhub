@@ -6,8 +6,8 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\ui\view\components\View;
 use humhub\services\MigrationService;
 use humhub\widgets\bootstrap\Button;
 
