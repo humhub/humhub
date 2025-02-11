@@ -88,7 +88,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     <?php if ($canRegister && $showRegistrationForm) : ?>
         <div id="register-form"
              class="panel panel-default animated bounceInLeft"
-             style="max-width: 300px; margin: 0 auto 20px; text-align: left;">
+             style="max-width: 350px; margin: 0 auto 20px; text-align: left;">
 
             <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Sign</strong> up') ?></div>
 
@@ -120,7 +120,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <?php endif; ?>
 
-    <?= humhub\widgets\LanguageChooser::widget(); ?>
+    <?= humhub\widgets\LanguageChooser::widget() ?>
 </div>
 
 <script <?= Html::nonce() ?>>

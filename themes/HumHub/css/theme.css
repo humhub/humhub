@@ -11730,6 +11730,7 @@ ul.tab-menu-settings .nav-link.active {
   background-image: none;
   text-shadow: none;
   border-radius: 3px;
+  white-space: nowrap;
 }
 .btn:not(.btn-outline-primary):not(.btn-outline-secondary):not(.btn-outline-success):not(.btn-outline-info):not(.btn-outline-warning):not(.btn-outline-danger):not(.btn-outline-light):not(.btn-outline-dark) {
   border: none;
@@ -12265,6 +12266,9 @@ altcha-widget.form-control .altcha, .grid-view .filters input .altcha, .grid-vie
 }
 .content_create .fileinput-button:active, .content_edit .fileinput-button:active {
   box-shadow: none !important;
+}
+#choose-language-form {
+  width: 150px;
 }
 #notification_overview_filter label {
   display: block;
@@ -15676,7 +15680,7 @@ img.bounceIn {
 .select2-container--humhub .select2-selection--single {
   height: calc(1.5em + 0.75rem + calc(var(--bs-border-width) * 2));
   line-height: 1.5;
-  padding: 0.375rem 0.75rem 0.375rem 0.75rem;
+  padding: 0.375rem 1.75rem 0.375rem 0.75rem;
   background-color: var(--hh-background-color-main);
   /**
          * Adjust the single Select2's dropdown arrow button appearance.
@@ -15805,7 +15809,7 @@ img.bounceIn {
   font-size: 0.875rem;
   height: calc(1.5em + 0.5rem + calc(var(--bs-border-width) * 2));
   line-height: 1.25;
-  padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+  padding: 0.25rem 1.75rem 0.5rem;
   /* 2 */
 }
 .select2-container--humhub.input-sm .select2-selection--single .select2-selection__arrow b, .input-group-sm .select2-container--humhub .select2-selection--single .select2-selection__arrow b, .form-group-sm .select2-container--humhub .select2-selection--single .select2-selection__arrow b {
@@ -15834,7 +15838,7 @@ img.bounceIn {
   font-size: 1.25rem;
   height: calc(1.5em + 1rem + calc(var(--bs-border-width) * 2));
   line-height: 2;
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 0.5rem 2rem 0.5rem 1rem;
   /* 1 */
 }
 .select2-container--humhub.input-lg .select2-selection--single .select2-selection__arrow, .input-group-lg .select2-container--humhub .select2-selection--single .select2-selection__arrow, .form-group-lg .select2-container--humhub .select2-selection--single .select2-selection__arrow {
@@ -15895,7 +15899,7 @@ img.bounceIn {
          */
 }
 .select2-container--humhub[dir="rtl"] .select2-selection--single {
-  padding-left: 0.75rem;
+  padding-left: 1.75rem;
   padding-right: 0.75rem;
 }
 .select2-container--humhub[dir="rtl"] .select2-selection--single .select2-selection__rendered {

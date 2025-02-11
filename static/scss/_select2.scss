@@ -17,6 +17,7 @@ $form-control-transition: border-color ease-in-out .15s, box-shadow ease-in-out 
 $dropdown-arrow-color: $input-color;
 $dropdown-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 $clear-selection-color: $dropdown-arrow-color;
+$select2-caret-width: 1rem; // we cannot use $caret-width because it's a em value instead of rem
 
 //
 // Mixins
@@ -331,7 +332,7 @@ $clear-selection-color: $dropdown-arrow-color;
     .select2-selection--single {
         height: $input-height;
         line-height: $line-height-base;
-        padding: $input-btn-padding-y $input-btn-padding-x $input-btn-padding-y $input-btn-padding-x; // Removed $caret-width*3 because it's a em value instead of rem
+        padding: $input-btn-padding-y $input-btn-padding-x + $select2-caret-width $input-btn-padding-y $input-btn-padding-x;
         background-color: var(--hh-background-color-main);
 
         /**
@@ -506,7 +507,7 @@ $clear-selection-color: $dropdown-arrow-color;
             font-size: $font-size-sm;
             height: $input-height-sm;
             line-height: $line-height-sm;
-            padding: $input-btn-padding-y-sm $input-btn-padding-x-sm $input-btn-padding-y-sm $input-btn-padding-x-sm; // Removed $caret-width*3 because it's a em value instead of rem
+            padding: $input-btn-padding-y-sm $input-btn-padding-x-sm + $select2-caret-width + $input-btn-padding-y-sm $input-btn-padding-x-sm;
 
             /* 2 */
             .select2-selection__arrow b {
@@ -546,7 +547,7 @@ $clear-selection-color: $dropdown-arrow-color;
             font-size: $font-size-lg;
             height: $input-height-lg;
             line-height: $line-height-lg;
-            padding: $input-btn-padding-y-lg $input-btn-padding-x-lg $input-btn-padding-y-lg $input-btn-padding-x-lg; // Removed $caret-width*3 because it's a em value instead of rem
+            padding: $input-btn-padding-y-lg $input-btn-padding-x-lg + $select2-caret-width $input-btn-padding-y-lg $input-btn-padding-x-lg;
 
             /* 1 */
             .select2-selection__arrow {
@@ -609,7 +610,7 @@ $clear-selection-color: $dropdown-arrow-color;
          */
 
         .select2-selection--single {
-            padding-left: $input-btn-padding-x; // Removed $caret-width*3 because it's a em value instead of rem
+            padding-left: $input-btn-padding-x + $select2-caret-width;
             padding-right: $input-btn-padding-x;
 
             .select2-selection__rendered {
