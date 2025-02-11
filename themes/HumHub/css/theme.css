@@ -12071,6 +12071,7 @@ input[type=checkbox], input[type=radio] {
   background: white;
   border: 2px solid #ccc;
   border-radius: 3px;
+  cursor: pointer;
 }
 input[type=checkbox]:disabled, input[type=radio]:disabled {
   background: var(--hh-background3) !important;
@@ -12115,6 +12116,9 @@ input[type=radio]:checked::after {
   text-shadow: none;
   left: 3px;
   font-size: 32px;
+}
+.form-check-label {
+  cursor: pointer;
 }
 div.mb-3 div.checkbox .form-text {
   margin-left: 23px;
