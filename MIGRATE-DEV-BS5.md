@@ -149,6 +149,12 @@ If the footer contains a "Submit" button, the modal dialog must be included in t
 
 Search also for `<div class="modal-dialog` in the code to find modal dialogs not using the `Modal::beginDialog()` method.
 
+### Sizes
+
+Modals have three other optional sizes, see https://getbootstrap.com/docs/5.3/components/modal/#optional-sizes
+
+Use `'size' => Modal::SIZE_LARGE,` in the `Modal::beginFormDialog` param array to change the size (or `SIZE_EXTRA_LARGE`, but `SIZE_SMALL` is not recommended).
+
 ## Forms
 
 ### Widgets deprecations
