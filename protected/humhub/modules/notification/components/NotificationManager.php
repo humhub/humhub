@@ -224,14 +224,23 @@ class NotificationManager
             $isDefault = $this->isDefaultNotificationSpace($container);
 
             $query = $container->getMemberListService()->getNotificationQuery();
+            // All members without explicit following and no notification settings.
+            $queryMembersWithNoNotificationSettings = $container->getMemberListService()->getNotificationQuery(false)
+                ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]);
 
             if ($public) {
                 // Add explicit follower and non explicit follower if $isDefault
                 $query->union($this->findFollowers($container, $isDefault));
+
+                /** @var \humhub\modules\notification\Module $module */
+                $module = Yii::$app->getModule('notification');
+                if ($isDefault && $module->disableNewContentNotificationSpacesToNonMemberFollowing) {
+                    // Add all members without explicit following and no notification settings.
+                    $query->union($queryMembersWithNoNotificationSettings);
+                }
             } elseif ($isDefault) {
                 // Add all members without explicit following and no notification settings.
-                $query->union($container->getMemberListService()->getNotificationQuery(false)
-                    ->andWhere(['not exists', $this->findNotExistingSettingSubQuery()]));
+                $query->union($queryMembersWithNoNotificationSettings);
             }
         } elseif ($container instanceof User) {
             // Note the notification follow logic for users is currently not implemented.
@@ -257,10 +266,21 @@ class NotificationManager
         $query = Follow::getFollowersQuery($container, true);
 
         if ($isDefault) {
+            /** @var \humhub\modules\notification\Module $module */
+            $module = Yii::$app->getModule('notification');
+
+            $conditions = [
+                'and',
+                'user.status=1',
+                ['not exists', $this->findNotExistingSettingSubQuery()],
+            ];
+
+            if ($module->disableNewContentNotificationSpacesToNonMemberFollowing) {
+                $conditions[] = ['in', 'user.id', Follow::getFollowersQuery($container)->select('user.id')->column()];
+            }
+
             // Add all user with no notification setting
-            $query->orWhere([
-                'and', 'user.status=1', ['not exists', $this->findNotExistingSettingSubQuery()],
-            ]);
+            $query->orWhere($conditions);
         }
 
         return $query;
@@ -282,14 +302,27 @@ class NotificationManager
      */
     public function getSpaces(User $user)
     {
-        $memberSpaces = Membership::getUserSpaceQuery($user, true, true)->all();
-        $followSpaces = Follow::getFollowedSpacesQuery($user, true)->all();
-
-        $result = array_merge($memberSpaces, $followSpaces);
+        $result = array_merge(
+            Membership::getUserSpaceQuery($user, true, true)->all(),
+            Follow::getFollowedSpacesQuery($user, true)->all(),
+        );
 
         if (!static::isTouchedSettings($user)) {
+            /** @var \humhub\modules\notification\Module $module */
+            $module = Yii::$app->getModule('notification');
+
+            $sendNotificationSpaceGuids = $module->settings->getSerialized('sendNotificationSpaces');
+
+            if ($module->disableNewContentNotificationSpacesToNonMemberFollowing) {
+                $userSpaceGuids = array_merge(
+                    Membership::getUserSpaceQuery($user)->select('guid')->column(),
+                    Follow::getFollowedSpacesQuery($user)->select('guid')->column(),
+                );
+                $sendNotificationSpaceGuids = array_intersect($sendNotificationSpaceGuids, $userSpaceGuids);
+            }
+
             $result = array_merge($result, Space::find()
-                ->where(['guid' => Yii::$app->getModule('notification')->settings->getSerialized('sendNotificationSpaces')])
+                ->where(['guid' => $sendNotificationSpaceGuids])
                 ->visible($user)
                 ->filterBlockedSpaces($user)
                 ->all());
@@ -303,7 +336,7 @@ class NotificationManager
      */
     public static function isTouchedSettings(User $user): bool
     {
-        /** @var Module $module */
+        /** @var \humhub\modules\notification\Module $module */
         $module = Yii::$app->getModule('notification');
         return (bool)$module->settings->user($user)?->get(self::IS_TOUCHED_SETTINGS);
     }
