@@ -1,15 +1,15 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\admin\permissions\ManageUsers;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\models\forms\Invite;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
-use yii\bootstrap\ActiveForm;
 
 /**
  * @var $this View
@@ -19,20 +19,20 @@ use yii\bootstrap\ActiveForm;
  */
 ?>
 
-<?php ModalDialog::begin([
-    'header' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
+<?php Modal::beginDialog([
+    'title' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
-<div class="modal-body">
 
     <?php if ($canInviteByEmail && $canInviteByLink): ?>
         <!-- Nav tabs -->
         <ul class="nav nav-tabs">
-            <li class="nav-item active">
-                <a class="nav-link" data-toggle="tab"
+            <li class="nav-item">
+                <a class="nav-link active" data-bs-toggle="tab"
                    href="#invite-by-email"><?= Yii::t('UserModule.base', 'Invite by email') ?></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab"
+                <a class="nav-link" data-bs-toggle="tab"
                    href="#invite-by-link"><?= Yii::t('UserModule.base', 'Invite by link') ?></a>
             </li>
         </ul>
@@ -68,7 +68,7 @@ use yii\bootstrap\ActiveForm;
                 <div class="input-group" style="width: 100%;">
                     <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
                     <?php if (Yii::$app->user->can([ManageUsers::class, ManageGroups::class])): ?>
-                        <a href="#" class="pull-right"
+                        <a href="#" class="float-end"
                            data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
                            data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
                            data-action-click="ui.modal.load"
@@ -92,12 +92,8 @@ use yii\bootstrap\ActiveForm;
             </div>
         <?php endif; ?>
     </div>
-</div>
 
-<div class="modal-footer">
-    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
-</div>
-<?php ModalDialog::end() ?>
+<?php Modal::endDialog() ?>
 
 <script <?= Html::nonce() ?>>
     $(function () {

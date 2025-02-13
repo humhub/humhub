@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.18.0 (Unreleased - Develop)
 ----------------------------
+- Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
 
 1.17.1 (Unreleased)

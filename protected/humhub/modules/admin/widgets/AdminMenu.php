@@ -20,7 +20,7 @@ use humhub\modules\marketplace\services\MarketplaceService;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\LeftNavigation;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use Yii;
 
 /**
@@ -174,7 +174,7 @@ class AdminMenu extends LeftNavigation
     private function getMarketplaceUpdatesBadge(): string
     {
         $updatesCount = (new MarketplaceService())->getPendingModuleUpdateCount();
-        return $updatesCount > 0 ? '&nbsp;&nbsp;' . Label::danger($updatesCount) : '';
+        return $updatesCount > 0 ? '&nbsp;&nbsp;' . Badge::danger($updatesCount) : '';
     }
 
 }

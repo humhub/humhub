@@ -5,11 +5,11 @@
  * @license https://www.humhub.org/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\activity\assets\ActivityAsset;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 
-/* @var $this humhub\modules\ui\view\components\View */
+/* @var $this \humhub\components\View */
 /* @var $streamUrl string */
 /* @var $options array */
 
@@ -21,6 +21,6 @@ ActivityAsset::register($this);
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
     <?= Html::beginTag('div', $options) ?>
-    <ul id="activityContents" class="media-list activities" data-stream-content></ul>
+    <div id="activityContents" class="hh-list activities" data-stream-content></div>
     <?= Html::endTag('div') ?>
 </div>

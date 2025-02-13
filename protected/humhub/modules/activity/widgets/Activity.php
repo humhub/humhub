@@ -32,11 +32,6 @@ class Activity extends StreamEntryWidget
     /**
      * @inheritDoc
      */
-    public $rootElement = 'li';
-
-    /**
-     * @inheritDoc
-     */
     public $jsWidget = 'activity.ActivityStreamEntry';
 
     /**

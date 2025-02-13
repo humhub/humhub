@@ -22,10 +22,10 @@ use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\file\models\File;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\topic\widgets\TopicLabel;
+use humhub\modules\topic\widgets\TopicBadge;
 use humhub\modules\user\behaviors\Followable;
 use humhub\modules\user\models\User;
-use humhub\widgets\Label;
+use humhub\widgets\bootstrap\Badge;
 use Throwable;
 use Yii;
 use yii\base\Exception;
@@ -236,6 +236,14 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     }
 
     /**
+     * @deprecated since 1.18 use getBadges() instead
+     */
+    public function getLabels($labels = [], $includeContentName = true)
+    {
+        return $this->getBadges($labels, $includeContentName);
+    }
+
+    /**
      * Returns either Label widget instances or strings.
      *
      * Subclasses should call `paren::getLabels()` as follows:
@@ -243,39 +251,39 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * ```php
      * public function getLabels($labels = [], $includeContentName = true)
      * {
-     *    return parent::getLabels([Label::info('someText')->sortOrder(5)]);
+     *    return parent::getLabels([Badge::info('someText')->sortOrder(5)]);
      * }
      * ```
      *
      * @param array $labels
      * @param bool $includeContentName
-     * @return Label[]|string[] content labels used for example in wallentrywidget
+     * @return Badge[]|string[] content labels used for example in wallentrywidget
      * @throws \Exception
      */
-    public function getLabels($labels = [], $includeContentName = true)
+    public function getBadges($labels = [], $includeContentName = true)
     {
         if ($this->content->isPinned()) {
-            $labels[] = Label::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
+            $labels[] = Badge::danger(Yii::t('ContentModule.base', 'Pinned'))->icon('fa-map-pin')->sortOrder(100);
         }
 
         if ($this->content->isArchived()) {
-            $labels[] = Label::warning(Yii::t('ContentModule.base', 'Archived'))->icon('fa-archive')->sortOrder(200);
+            $labels[] = Badge::warning(Yii::t('ContentModule.base', 'Archived'))->icon('fa-archive')->sortOrder(200);
         }
 
         if ($this->content->isPublic()) {
-            $labels[] = Label::info(Yii::t('ContentModule.base', 'Public'))->icon('fa-globe')->sortOrder(300);
+            $labels[] = Badge::info(Yii::t('ContentModule.base', 'Public'))->icon('fa-globe')->sortOrder(300);
         }
 
         if ($includeContentName) {
-            $labels[] = Label::defaultType($this->getContentName())->icon($this->getIcon())->sortOrder(400);
+            $labels[] = Badge::light($this->getContentName())->icon($this->getIcon())->sortOrder(400);
         }
 
         foreach (Topic::findByContent($this->content)->all() as $topic) {
             /** @var $topic Topic */
-            $labels[] = TopicLabel::forTopic($topic, $this->content->getPolymorphicRelation());
+            $labels[] = TopicBadge::forTopic($topic, $this->content->getPolymorphicRelation());
         }
 
-        return Label::sort($labels);
+        return Badge::sort($labels);
     }
 
     /**

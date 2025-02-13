@@ -1,7 +1,7 @@
 <?php
 
 
-use yii\bootstrap\Html;
+use humhub\helpers\Html;
 
 /* @var array $modules */
 ?>
@@ -19,13 +19,13 @@ use yii\bootstrap\Html;
         <?= Html::beginForm(); ?>
 
         <?php foreach ($modules as $module): ?>
-            <div class="form-group">
+            <div class="mb-3">
                 <div class="checkbox">
                     <label>
                         <?= Html::checkbox('enableModules[' . $module['id'] . ']', true) ?>
                         <?= $module['name'] ?>
                     </label>
-                    <p class="help-block"><?= $module['description'] ?></p>
+                    <p class="text-body-secondary"><?= $module['description'] ?></p>
                 </div>
             </div>
             <hr>
@@ -37,5 +37,3 @@ use yii\bootstrap\Html;
 
     </div>
 </div>
-
-
