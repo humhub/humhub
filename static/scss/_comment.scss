@@ -160,8 +160,6 @@ div.comment {
 }
 
 div.nested-comments-root {
-    margin-left: 28px;
-
     .ProseMirror-menubar-wrapper {
         z-index: 210;
     }
@@ -189,7 +187,6 @@ div.nested-comments-root {
 
     div.comment-container {
         margin-top: 0;
-        padding-bottom: 0 !important;
-        padding-top: 0 !important;
+        padding: 0 !important;
     }
 }

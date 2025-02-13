@@ -12868,9 +12868,6 @@ div.comment > div.d-flex:first-of-type .nav-pills.preferences {
   display: none;
   top: -3px;
 }
-div.nested-comments-root {
-  margin-left: 28px;
-}
 div.nested-comments-root .ProseMirror-menubar-wrapper {
   z-index: 210;
 }
@@ -12891,8 +12888,7 @@ div.nested-comments-root div.comment .d-flex .nav-pills.preferences {
 }
 div.nested-comments-root div.comment-container {
   margin-top: 0;
-  padding-bottom: 0 !important;
-  padding-top: 0 !important;
+  padding: 0 !important;
 }
 .grid-view img {
   width: 24px;
