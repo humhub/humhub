@@ -259,6 +259,10 @@ ul.tab-menu-settings {
     filter: opacity(.6);
     font-size: 12px;
     text-align: center;
+
+    .select2-container {
+        text-align: initial;
+    }
 }
 
 @include media-breakpoint-down(lg) {

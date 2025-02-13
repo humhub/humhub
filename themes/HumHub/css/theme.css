@@ -10856,9 +10856,6 @@ input[type=text], input[type=password], input[type=select] {
 .powered, .powered a {
   color: #b8c7d3 !important;
 }
-.langSwitcher {
-  display: inline-block;
-}
 [data-ui-show-more] {
   overflow: hidden;
 }
@@ -11252,6 +11249,9 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 .login-container select {
   color: var(--hh-text-color-highlight);
 }
+.login-container #user-auth-login {
+  max-width: 350px;
+}
 #account-login-form .mb-3 {
   margin-bottom: 10px;
 }
@@ -11620,6 +11620,9 @@ ul.tab-menu-settings .nav-link.active {
   filter: opacity(0.6);
   font-size: 12px;
   text-align: center;
+}
+.footer-nav .select2-container {
+  text-align: initial;
 }
 @media (max-width: 991.98px) {
   .controls-header {
@@ -12272,7 +12275,7 @@ altcha-widget.form-control .altcha, .grid-view .filters input .altcha, .grid-vie
   box-shadow: none !important;
 }
 #choose-language-form {
-  width: 150px;
+  min-width: 150px;
 }
 #notification_overview_filter label {
   display: block;

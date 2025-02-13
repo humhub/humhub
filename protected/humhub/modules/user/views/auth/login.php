@@ -6,6 +6,7 @@ use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\CaptchaField;
+use humhub\widgets\LanguageChooser;
 use humhub\widgets\SiteLogo;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
@@ -20,14 +21,13 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
 ?>
 
-<div id="user-auth-login" class="container" style="text-align: center;">
-    <?= SiteLogo::widget(['place' => 'login']); ?>
+<div id="user-auth-login" class="container">
+    <?= SiteLogo::widget(['place' => 'login']) ?>
     <br>
 
-    <div class="panel panel-default animated bounceIn" id="login-form"
-         style="max-width: 350px; margin: 0 auto 20px; text-align: left;">
+    <div class="panel panel-default animated bounceIn" id="login-form">
 
-        <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Please</strong> sign in'); ?></div>
+        <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Please</strong> sign in') ?></div>
 
         <div class="panel-body">
 
@@ -41,43 +41,43 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 <?= AuthChoice::widget(['showOrDivider' => $showLoginForm]) ?>
             <?php else: ?>
                 <?php if ($canRegister) : ?>
-                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password.") ?></p>
                 <?php elseif ($showLoginForm): ?>
-                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password.") ?></p>
                 <?php endif; ?>
             <?php endif; ?>
 
             <?php if ($showLoginForm): ?>
-                <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]); ?>
-                <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false); ?>
-                <?= $form->field($model, 'password')
-                    ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
-                    ->label(false); ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+                <?php $form = ActiveForm::begin(['id' => 'account-login-form', 'enableClientValidation' => false]) ?>
+                    <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username'), 'aria-label' => $model->getAttributeLabel('username')])->label(false) ?>
+                    <?= $form->field($model, 'password')
+                        ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
+                        ->label(false) ?>
+                    <?= $form->field($model, 'rememberMe')->checkbox() ?>
 
-                <hr>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
-                    </div>
-                    <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-lg-8 text-end">
-                            <small>
-                                <?= Html::a(
-                                    Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
-                                    $passwordRecoveryRoute,
-                                    [
-                                        'id' => 'password-recovery-link',
-                                        'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
-                                        'data' => [
-                                            'pjax-prevent' => true,
-                                        ]
-                                    ]
-                                ) ?>
-                            </small>
+                    <hr>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <?= Html::submitButton(Yii::t('UserModule.auth', 'Sign in'), ['id' => 'login-button', 'data-ui-loader' => "", 'class' => 'btn btn-large btn-primary']); ?>
                         </div>
-                    <?php endif; ?>
-                </div>
+                        <?php if ($passwordRecoveryRoute) : ?>
+                            <div class="col-lg-8 text-end">
+                                <small>
+                                    <?= Html::a(
+                                        Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
+                                        $passwordRecoveryRoute,
+                                        [
+                                            'id' => 'password-recovery-link',
+                                            'target' => is_array($passwordRecoveryRoute) ? '_self' : '_blank',
+                                            'data' => [
+                                                'pjax-prevent' => true,
+                                            ],
+                                        ],
+                                    ) ?>
+                                </small>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                 <?php ActiveForm::end(); ?>
             <?php endif; ?>
         </div>
@@ -86,9 +86,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
     <br>
 
     <?php if ($canRegister && $showRegistrationForm) : ?>
-        <div id="register-form"
-             class="panel panel-default animated bounceInLeft"
-             style="max-width: 350px; margin: 0 auto 20px; text-align: left;">
+        <div id="register-form" class="panel panel-default animated bounceInLeft">
 
             <div class="panel-heading"><?= Yii::t('UserModule.auth', '<strong>Sign</strong> up') ?></div>
 
@@ -101,7 +99,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                         <div>or</div>
                     </div>
                 <?php else: ?>
-                    <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address.") ?></p>
                 <?php endif; ?>
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form']); ?>
@@ -112,7 +110,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                     </div>
                 <?php endif; ?>
                 <hr>
-                <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
+                <?= Html::submitButton(Yii::t('UserModule.auth', 'Register'), ['class' => 'btn btn-primary', 'data-ui-loader' => '']) ?>
 
                 <?php ActiveForm::end(); ?>
             </div>
@@ -120,7 +118,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
     <?php endif; ?>
 
-    <?= humhub\widgets\LanguageChooser::widget() ?>
+    <?= LanguageChooser::widget(['vertical' => true]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>

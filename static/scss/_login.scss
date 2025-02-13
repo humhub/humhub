@@ -46,6 +46,10 @@
     select {
         color: var(--hh-text-color-highlight);
     }
+
+    #user-auth-login {
+        max-width: 350px;
+    }
 }
 
 #account-login-form {
