@@ -304,6 +304,8 @@ ul.tab-menu-settings {
         float: right;
 
         > li.nav-item > a.nav-link {
+            position: relative;
+            
             &, &.active {
                 color: #7A7A7A;
                 background: #fff;
