@@ -47,5 +47,4 @@ use humhub\widgets\bootstrap\Button;
             </div>
         <?php endif; ?>
     </div>
-    <div class="clearfix"></div>
 <?= Html::endTag('li') ?>

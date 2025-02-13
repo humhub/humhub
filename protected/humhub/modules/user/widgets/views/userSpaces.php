@@ -30,7 +30,7 @@ use humhub\widgets\PanelMenu;
                         'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'top',
                         'title' => $space->name,
-                    ]
+                    ],
                 ]);
                 ?>
             <?php endforeach; ?>
@@ -38,8 +38,9 @@ use humhub\widgets\PanelMenu;
             <?php if ($showMoreLink): ?>
                 <br>
                 <br>
-                <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'float-end btn btn-sm btn-light', 'data-bs-target' => '#globalModal']); ?>
-                <div class="clearfix"></div>
+                <div class="clearfix">
+                    <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'float-end btn btn-sm btn-light', 'data-bs-target' => '#globalModal']) ?>
+                </div>
             <?php endif; ?>
         </div>
     </div>

@@ -15374,8 +15374,12 @@ img.bounceIn {
 #dropdown-search.dropdown-menu .search-provider.provider-searching .search-provider-title, #dropdown-search.dropdown-menu .search-provider.provider-searching .search-provider-content {
   float: left;
 }
-#dropdown-search.dropdown-menu .search-provider .search-provider-content > .loader {
-  margin-top: 8px;
+#dropdown-search.dropdown-menu .search-provider .search-provider-content > .hh-loader {
+  margin-top: 10px;
+}
+#dropdown-search.dropdown-menu .search-provider .search-provider-content > .hh-loader .spinner-border {
+  width: 1rem;
+  height: 1rem;
 }
 #dropdown-search.dropdown-menu .search-provider .search-provider-content a.search-provider-record {
   display: flex;

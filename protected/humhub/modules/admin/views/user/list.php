@@ -64,7 +64,7 @@ use yii\helpers\Url;
                     'options' => ['style' => 'width:120px;'],
                     'value' => function ($data) {
                         return ($data->last_login == null) ? Yii::t('AdminModule.user', 'never') : Yii::$app->formatter->asDate($data->last_login);
-                    }
+                    },
                 ],
                 ['class' => UserActionColumn::class],
             ],
@@ -72,7 +72,8 @@ use yii\helpers\Url;
     </div>
     <?php if ($showPendingRegistrations): ?>
         <br/>
-        <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
-        <div class="clearfix"></div>
+        <div class="clearfix">
+            <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm() ?>
+        </div>
     <?php endif; ?>
 </div>

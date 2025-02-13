@@ -87,8 +87,10 @@ Assets::register($this);
         <?php endforeach; ?>
     <?php endif; ?>
 
-    <small class="float-end"><br/>Installation
-        Id: <?= Yii::$app->getModule('admin')->settings->get('installationId'); ?></small>
-    <div class="clearfix"></div>
+    <div class="clearfix">
+        <small class="float-end">
+            <br/>Installation Id: <?= Yii::$app->getModule('admin')->settings->get('installationId') ?>
+        </small>
+    </div>
 
 <?php Modal::endDialog() ?>

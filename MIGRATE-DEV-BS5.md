@@ -153,7 +153,7 @@ Search also for `<div class="modal-dialog` in the code to find modal dialogs not
 
 Modals have three other optional sizes, see https://getbootstrap.com/docs/5.3/components/modal/#optional-sizes
 
-Use `'size' => Modal::SIZE_LARGE,` in the `Modal::beginFormDialog` param array to change the size (or `SIZE_EXTRA_LARGE`, but `SIZE_SMALL` is not recommended).
+Use `'size' => Modal::SIZE_LARGE,` in the `Modal::beginFormDialog()` param array to change the size (or `SIZE_EXTRA_LARGE`, but `SIZE_SMALL` is not recommended).
 
 ## Forms
 
@@ -475,6 +475,28 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 
 Doc: https://getbootstrap.com/docs/5.3/utilities/flex/#media-object
 
+
+### clearfix
+
+The `.clearfix` class works differently in Bootstrap 5.
+Now, the `clear: both;` is done with a `:after` pseudo-element.
+
+Before:
+
+```html
+<div>
+    <div class="pull-right">...</div>
+    <div class="clearfix"></div>
+</div>
+```
+
+After:
+
+```html
+<div class="clearfix">
+    <div class="float-end">...</div>
+</div>
+```
 
 ## Themes and Modules: LESS is replaced with SCSS
 

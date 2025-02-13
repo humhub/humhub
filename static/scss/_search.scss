@@ -132,8 +132,12 @@
         }
 
         .search-provider-content {
-            > .loader {
-                margin-top: 8px;
+            > .hh-loader {
+                margin-top: 10px;
+                .spinner-border {
+                    width: 1rem;
+                    height: 1rem;
+                }
             }
 
             a.search-provider-record {
