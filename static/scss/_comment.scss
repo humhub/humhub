@@ -4,10 +4,6 @@
 
 $commentLeftMargin: 35px;
 
-.comment-container {
-    margin-top: 10px;
-}
-
 @include media-breakpoint-down(md) {
     .comment {
         .post-files {
@@ -107,14 +103,24 @@ $commentLeftMargin: 35px;
     }
 }
 
-
-.comment-container .content_edit {
-    margin-left: $commentLeftMargin;
-}
-
 .comment-container {
+    margin-top: 10px;
+
     .d-flex {
         overflow: visible;
+    }
+
+    hr {
+        margin: 10px 0;
+        border-top: 1px solid var(--hh-background-color-secondary);
+
+        &.comment-separator:first-of-type {
+            display: none;
+        }
+    }
+
+    .content_edit {
+        margin-left: $commentLeftMargin;
     }
 
     [data-ui-richtext] pre, [data-ui-richtext] pre code.hljs {
@@ -147,10 +153,6 @@ $commentLeftMargin: 35px;
 
 // Hide seperator of last comment. Seperator is included in optional comment form
 div.comment {
-    hr.comment-separator:first-of-type {
-        display: none;
-    }
-
     > div.d-flex:first-of-type .nav-pills.preferences {
         display: none;
         top: -3px;
@@ -187,7 +189,7 @@ div.nested-comments-root {
 
     div.comment-container {
         margin-top: 0;
-        padding-bottom: 0;
-        padding-top: 0;
+        padding-bottom: 0 !important;
+        padding-top: 0 !important;
     }
 }

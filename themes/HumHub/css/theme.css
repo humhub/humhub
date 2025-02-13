@@ -11545,6 +11545,11 @@ ul.tab-menu-settings .nav-link.active {
 .nav-pills .dropdown-menu li a:hover, .nav-pills .dropdown-menu li a:visited, .nav-pills .dropdown-menu li a:focus, .nav-tabs .dropdown-menu li a:hover, .nav-tabs .dropdown-menu li a:visited, .nav-tabs .dropdown-menu li a:focus, .account .dropdown-menu li a:hover, .account .dropdown-menu li a:visited, .account .dropdown-menu li a:focus {
   background: none;
 }
+.nav-pills .nav-link.dropdown-toggle, .nav-tabs .nav-link.dropdown-toggle, .account .nav-link.dropdown-toggle {
+  font-size: 16px;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
 .nav-pills.preferences {
   position: absolute;
   right: 10px;
@@ -11552,11 +11557,6 @@ ul.tab-menu-settings .nav-link.active {
 }
 .nav-pills.preferences .dropdown .dropdown-toggle {
   padding: 2px 8px;
-}
-.nav-pills.preferences .dropdown .dropdown-toggle i {
-  color: var(--bs-info);
-  font-size: 15px;
-  font-weight: 600;
 }
 .nav-pills.preferences .dropdown .dropdown-toggle:hover {
   background-color: var(--hh-background-color-secondary);
@@ -12742,9 +12742,6 @@ table .time {
     white-space: normal;
   }
 }
-.comment-container {
-  margin-top: 10px;
-}
 @media (max-width: 767.98px) {
   .comment .post-files img {
     height: 100px;
@@ -12814,11 +12811,21 @@ table .time {
 .comment.guest-mode .d-flex:last-child hr {
   display: none;
 }
-.comment-container .content_edit {
-  margin-left: 35px;
+.comment-container {
+  margin-top: 10px;
 }
 .comment-container .d-flex {
   overflow: visible;
+}
+.comment-container hr {
+  margin: 10px 0;
+  border-top: 1px solid var(--hh-background-color-secondary);
+}
+.comment-container hr.comment-separator:first-of-type {
+  display: none;
+}
+.comment-container .content_edit {
+  margin-left: 35px;
 }
 .comment-container [data-ui-richtext] pre, .comment-container [data-ui-richtext] pre code.hljs {
   background-color: #ececec;
@@ -12841,9 +12848,6 @@ table .time {
   color: var(--hh-text-color-highlight);
   margin-bottom: 3px;
   font-weight: 500;
-}
-div.comment hr.comment-separator:first-of-type {
-  display: none;
 }
 div.comment > div.d-flex:first-of-type .nav-pills.preferences {
   display: none;
@@ -12872,8 +12876,8 @@ div.nested-comments-root div.comment .d-flex .nav-pills.preferences {
 }
 div.nested-comments-root div.comment-container {
   margin-top: 0;
-  padding-bottom: 0;
-  padding-top: 0;
+  padding-bottom: 0 !important;
+  padding-top: 0 !important;
 }
 .grid-view img {
   width: 24px;
@@ -13177,6 +13181,10 @@ div.nested-comments-root div.comment-container {
   font-size: 14px;
   padding-top: 1px;
   margin-bottom: 3px;
+}
+.wall-entry h4 small, .wall-entry .h4 small, .wall-entry h4 .small, .wall-entry .h4 .small {
+  font-weight: 400;
+  font-size: 11px;
 }
 .wall-entry h4 .labels, .wall-entry .h4 .labels {
   padding-right: 32px;

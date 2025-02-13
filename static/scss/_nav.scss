@@ -141,6 +141,12 @@ ul.tab-menu-settings {
             }
         }
     }
+
+    .nav-link.dropdown-toggle {
+        font-size: 16px; // Size of the dropdown caret
+        padding-top: 0.2em;
+        padding-bottom: 0.2em;
+    }
 }
 
 .nav-pills.preferences {
@@ -150,12 +156,6 @@ ul.tab-menu-settings {
 
     .dropdown .dropdown-toggle {
         padding: 2px 8px;
-
-        i {
-            color: var(--bs-info);
-            font-size: 15px;
-            font-weight: 600;
-        }
 
         &:hover {
             background-color: var(--hh-background-color-secondary);
