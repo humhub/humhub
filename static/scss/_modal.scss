@@ -38,7 +38,7 @@ body.modal-open {
 
 .modal-title {
     font-size: 20px;
-    font-weight: 200;
+    font-weight: 700;
     color: var(--hh-text-color-highlight);
 }
 
@@ -50,9 +50,9 @@ body.modal-open {
     box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
     border: none;
     background-color: var(--hh-background-color-main);
+    padding: calc(var(--bs-modal-padding) * 0.8);
 
     .modal-header {
-        padding: 20px 20px 0;
         border-bottom: none;
         text-align: center;
 
@@ -75,9 +75,12 @@ body.modal-open {
 
     .modal-footer {
         margin-top: 0;
-        text-align: left;
         border-top: none;
         text-align: center;
+
+        button, .btn {
+            flex: 1;
+        }
 
         hr {
             margin-top: 0;
