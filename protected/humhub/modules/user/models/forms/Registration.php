@@ -185,7 +185,7 @@ class Registration extends HForm
 
     protected function getGroupFormDefinition()
     {
-        $groupModels = Group::getRegistrationGroups();
+        $groupModels = Group::getRegistrationGroups($this->getUser());
 
         $groupFieldType = (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count($groupModels) > 1)
             ? 'dropdownlist'
@@ -368,7 +368,7 @@ class Registration extends HForm
             $this->_groupUser->scenario = GroupUser::SCENARIO_REGISTRATION;
 
             // assign default value for group_id
-            $registrationGroups = Group::getRegistrationGroups();
+            $registrationGroups = Group::getRegistrationGroups($this->getUser());
             if (count($registrationGroups) == 1) {
                 $this->_groupUser->group_id = $registrationGroups[0]->id;
             }
