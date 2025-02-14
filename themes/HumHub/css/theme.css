@@ -12633,8 +12633,10 @@ body.modal-open {
 }
 .modal-title {
   font-size: 20px;
-  font-weight: 700;
   color: var(--hh-text-color-highlight);
+}
+.modal-title, .modal-title strong {
+  font-weight: 600;
 }
 .modal-dialog, .modal-content {
   min-width: 150px;
@@ -12662,16 +12664,23 @@ body.modal-open {
 .modal-content .modal-body {
   font-size: 13px;
 }
-.modal-content .modal-footer {
+.modal-content .modal-footer, .modal-content .modal-body-footer {
   margin-top: 0;
   border-top: none;
   text-align: center;
 }
-.modal-content .modal-footer button, .modal-content .modal-footer .btn {
+.modal-content .modal-footer button, .modal-content .modal-footer .btn, .modal-content .modal-body-footer button, .modal-content .modal-body-footer .btn {
   flex: 1;
 }
-.modal-content .modal-footer hr {
+.modal-content .modal-footer hr, .modal-content .modal-body-footer hr {
   margin-top: 0;
+}
+.modal-content .modal-body-footer {
+  display: flex;
+  padding-top: calc(var(--bs-modal-padding) - var(--bs-modal-footer-gap)* .5);
+}
+.modal-content .modal-body-footer > * {
+  margin: calc(var(--bs-modal-footer-gap)* .5);
 }
 .tooltip-inner {
   background-color: var(--bs-primary);

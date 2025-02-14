@@ -21,7 +21,6 @@ use yii\helpers\Url;
 
 <?php Modal::beginDialog([
     'title' => Yii::t('UserModule.invite', '<strong>Invite</strong> new people'),
-    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 
     <?php if ($canInviteByEmail && $canInviteByLink): ?>
@@ -46,11 +45,14 @@ use yii\helpers\Url;
                 <strong><?= Yii::t('UserModule.invite', 'Please add the email addresses of people you want to invite below.') ?></strong>
                 <br/><br/>
                 <?php $form = ActiveForm::begin(); ?>
-                <?= $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')); ?>
-                <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
-                   data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
-                    <?= Yii::t('UserModule.invite', 'Send invite') ?>
-                </a>
+                <?= $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')) ?>
+                <div class="modal-body-footer">
+                    <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
+                       data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
+                        <?= Yii::t('UserModule.invite', 'Send invite') ?>
+                    </a>
+                    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+                </div>
                 <?php ActiveForm::end(); ?>
             </div>
         <?php endif; ?>
@@ -78,17 +80,20 @@ use yii\helpers\Url;
                     <?php endif; ?>
                 </div>
                 <br>
-                <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
-                    ->link('mailto:' .
-                        '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
-                        '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
-                            'originator' => Yii::$app->user->identity,
-                            'registrationUrl' => $model->getInviteLink()
-                        ])))
-                    ->id('global-invite-send-link-by-email-btn')
-                    ->icon('paper-plane')
-                    ->loader(false)
-                ?>
+                <div class="modal-body-footer">
+                    <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
+                        ->link('mailto:' .
+                            '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
+                            '&body=' . rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
+                                'originator' => Yii::$app->user->identity,
+                                'registrationUrl' => $model->getInviteLink()
+                            ])))
+                        ->id('global-invite-send-link-by-email-btn')
+                        ->icon('paper-plane')
+                        ->loader(false)
+                    ?>
+                    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+                </div>
             </div>
         <?php endif; ?>
     </div>

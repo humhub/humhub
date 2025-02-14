@@ -38,8 +38,11 @@ body.modal-open {
 
 .modal-title {
     font-size: 20px;
-    font-weight: 700;
     color: var(--hh-text-color-highlight);
+
+    &, & strong {
+        font-weight: 600;
+    }
 }
 
 .modal-dialog, .modal-content {
@@ -73,7 +76,7 @@ body.modal-open {
         font-size: 13px;
     }
 
-    .modal-footer {
+    .modal-footer, .modal-body-footer {
         margin-top: 0;
         border-top: none;
         text-align: center;
@@ -84,6 +87,15 @@ body.modal-open {
 
         hr {
             margin-top: 0;
+        }
+    }
+
+    .modal-body-footer {
+        display: flex;
+        padding-top: calc(var(--bs-modal-padding) - var(--bs-modal-footer-gap)* .5);
+
+        > * {
+            margin: calc(var(--bs-modal-footer-gap)* .5);
         }
     }
 }
