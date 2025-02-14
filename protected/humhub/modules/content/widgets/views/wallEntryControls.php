@@ -1,11 +1,10 @@
 <?php
 
-use humhub\libs\Html;
-use humhub\modules\content\widgets\LegacyWallEntryControlLink;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\WidgetMenuEntry;
 use humhub\modules\ui\menu\widgets\DropdownMenu;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $menu DropdownMenu */
@@ -14,19 +13,24 @@ use humhub\modules\ui\view\components\View;
 ?>
 
 <?= Html::beginTag('ul', $options) ?>
-<li class="dropdown ">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-       aria-label="<?= Yii::t('base', 'Toggle stream entry menu'); ?>" aria-haspopup="true">
-        <?= Icon::get('dropdownToggle') ?>
-    </a>
+<li class="nav-item dropdown">
 
-    <ul class="dropdown-menu pull-right">
+    <?= Html::a('', '#', [
+        'class' => 'nav-link dropdown-toggle',
+        'data-bs-toggle' => 'dropdown',
+        'aria-label' => Yii::t('base', 'Toggle stream entry menu'),
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+        'role' => 'button',
+    ]) ?>
+
+    <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
-            <?php if ($entry instanceof LegacyWallEntryControlLink) : ?>
+            <?php if ($entry instanceof WidgetMenuEntry) : ?>
                 <?= $entry->render() ?>
             <?php else: ?>
                 <li>
-                    <?= $entry->render() ?>
+                    <?= $entry->render(['class' => 'dropdown-item']) ?>
                 </li>
             <?php endif; ?>
         <?php endforeach; ?>

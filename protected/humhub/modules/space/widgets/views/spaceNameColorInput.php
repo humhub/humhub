@@ -1,9 +1,9 @@
 <?php
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use humhub\widgets\ColorPickerField;
+use humhub\widgets\form\ActiveForm;
 use yii\base\Model;
-use yii\widgets\ActiveForm;
 
 /**
  * @var $this View
@@ -19,18 +19,18 @@ if ($model->color === null) {
 }
 ?>
 
-<div id="<?= $containerId ?>" class="form-group space-color-chooser-edit" style="margin-top: 5px;">
+<div id="<?= $containerId ?>" class="mb-3 space-color-chooser-edit" style="margin-top: 5px;">
     <?= ColorPickerField::widget(['model' => $model, 'field' => 'color', 'container' => $containerId]); ?>
 
     <?= $form->field($model, 'name', ['template' => '
             {label}
             <div class="input-group">
-                <span class="input-group-addon">
+                <span class="input-group-text">
                     <i></i>
                 </span>
                 {input}
-            </div>
-            {error}{hint}',
+                {error}{hint}
+            </div>',
     ])->textInput(array_merge([
         'placeholder' => Yii::t('SpaceModule.manage', 'Space name'),
         'maxlength' => 45,

@@ -5,9 +5,8 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
 
 /* @var $menu WallCreateContentMenu */
@@ -18,19 +17,19 @@ use humhub\modules\ui\menu\MenuEntry;
 <ul class="nav nav-tabs">
     <?php foreach ($entries as $e => $entry) : ?>
         <?php $entry->setIsActive($e === 0) ?>
-        <li<?= $entry->getIsActive() ? ' class="active"' : '' ?>>
-            <?= $entry->render() ?>
+        <li class="nav-item">
+            <?= $entry->render(['class' => 'nav-link' . ($entry->getIsActive() ? ' active' : '')]) ?>
         </li>
         <?php if ($e == $menu->visibleEntriesNum - 1 && count($entries) > $menu->visibleEntriesNum) : ?>
-            <li class="content-create-menu-more">
-                <?= Icon::get('caret-down', ['htmlOptions' => ['data-toggle' => 'dropdown']]) ?>
-                <ul class="dropdown-menu pull-right">
+            <li class="nav-item content-create-menu-more">
+                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-expanded="false"></a>
+                <ul class="dropdown-menu dropdown-menu-end">
                     <?php foreach ($entries as $e => $entry) : ?>
                         <?php if ($e < $menu->visibleEntriesNum) {
                             continue;
                         } ?>
                         <li>
-                            <?= $entry->render() ?>
+                            <?= $entry->render(['class' => 'dropdown-item']) ?>
                         </li>
                     <?php endforeach; ?>
                 </ul>

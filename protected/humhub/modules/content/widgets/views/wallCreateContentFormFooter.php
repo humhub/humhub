@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -15,9 +16,9 @@ use humhub\modules\file\widgets\UploadProgress;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
@@ -28,7 +29,7 @@ use yii\helpers\Html;
 /* @var $scheduleUrl string */
 ?>
 
-<div id="notifyUserContainer" class="form-group" style="margin-top:15px;display:none">
+<div id="notifyUserContainer" class="mb-3" style="margin-top:15px;display:none">
     <?= UserPickerField::widget([
         'id' => 'notifyUserInput',
         'url' => $pickerUrl,
@@ -39,7 +40,7 @@ use yii\helpers\Html;
     ]) ?>
 </div>
 
-<div id="postTopicContainer" class="form-group" style="margin-top:15px;display:none">
+<div id="postTopicContainer" class="mb-3" style="margin-top:15px;display:none">
     <?= TopicPicker::widget([
         'id' => 'postTopicInput',
         'name' => 'postTopicInput',
@@ -63,43 +64,46 @@ use yii\helpers\Html;
             'dropZone' => '#contentFormBody',
             'max' => Yii::$app->getModule('content')->maxAttachedFiles
         ]); ?>
-        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
+        <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-light']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm d-none', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
 
         <!-- content sharing -->
-        <div class="pull-right">
-            <span class="label-container">
-                <span class="label label-info label-public hidden"><?= Yii::t('ContentModule.base', 'Public'); ?></span>
+        <div class="float-end">
+            <span class="badge-container">
+                <?= Badge::info(Yii::t('ContentModule.base', 'Public'))
+                    ->cssClass(['badge-public', 'd-none']) ?>
             </span>
 
             <ul class="nav nav-pills preferences" style="right:0;top:5px">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" style="padding:5px 10px" data-toggle="dropdown" href="#"
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
                        aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
-                    <ul class="dropdown-menu pull-right">
+                    <ul class="dropdown-menu dropdown-menu-end">
                         <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell') ?>
+                            <?= Link::withAction(Yii::t('ContentModule.base', 'Notify members'), 'notifyUser')->icon('bell')->cssClass('dropdown-item') ?>
                         </li>
                         <?php if (TopicPicker::showTopicPicker($contentContainer)) : ?>
                             <li>
-                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon) ?>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Topics'), 'setTopics')->icon(Yii::$app->getModule('topic')->icon)->cssClass('dropdown-item') ?>
                             </li>
                         <?php endif; ?>
                         <?php if ($canSwitchVisibility): ?>
                             <li>
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
+                                    ->cssClass('dropdown-item')
                                     ->id('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Create as draft'), 'changeState')
+                                ->cssClass('dropdown-item')
                                 ->icon('edit')
                                 ->options([
                                     'data-state' => Content::STATE_DRAFT,
@@ -109,6 +113,7 @@ use yii\helpers\Html;
                         </li>
                         <li>
                             <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                ->cssClass('dropdown-item')
                                 ->icon('clock-o') ?>
                         </li>
                     </ul>

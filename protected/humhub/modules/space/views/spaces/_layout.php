@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\view\helpers\ThemeHelper;
+use humhub\helpers\ThemeHelper;
 
 /* @var $content string */
 ?>

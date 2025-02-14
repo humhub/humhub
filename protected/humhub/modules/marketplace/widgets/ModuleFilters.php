@@ -8,12 +8,12 @@
 
 namespace humhub\modules\marketplace\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\marketplace\Module;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\widgets\DirectoryFilters;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\helpers\Url;
 
@@ -44,7 +44,7 @@ class ModuleFilters extends DirectoryFilters
             'title' => Yii::t('MarketplaceModule.base', 'Search'),
             'placeholder' => Yii::t('MarketplaceModule.base', 'Search...'),
             'type' => 'input',
-            'wrapperClass' => 'col-md-7 form-search-filter-keyword',
+            'wrapperClass' => 'col-lg-7 form-search-filter-keyword',
             'afterInput' => Html::submitButton(Icon::get('search'), ['class' => 'form-button-search']),
             'sortOrder' => 100,
         ]);
@@ -55,7 +55,7 @@ class ModuleFilters extends DirectoryFilters
                 'title' => Yii::t('MarketplaceModule.base', 'Categories'),
                 'type' => 'dropdown',
                 'options' => $categories,
-                'wrapperClass' => 'col-md-3',
+                'wrapperClass' => 'col-lg-3',
                 'sortOrder' => 200,
             ]);
         }
@@ -73,7 +73,7 @@ class ModuleFilters extends DirectoryFilters
                 'partner' => Yii::t('MarketplaceModule.base', 'Partner'),
                 'new' => Yii::t('MarketplaceModule.base', 'New'),
             ],
-            'wrapperClass' => 'col-md-12 form-search-filter-tags',
+            'wrapperClass' => 'col-lg-12 form-search-filter-tags',
             'sortOrder' => 20000,
         ]);
     }
