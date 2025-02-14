@@ -9,12 +9,12 @@
 /* @var $attribute string */
 /* @var $searchUrl string */
 
-use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\space\models\forms\InviteForm;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 $modalAnimationClass = ($model->hasErrors()) ? 'shake' : 'fadeIn';
 
@@ -56,21 +56,21 @@ $form = Modal::beginFormDialog([
             <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
                 <li class="nav-item tab-user-picker">
                     <a class="nav-link<?= $isInviteTabActiveClass ?>" href="#user-picker" data-bs-toggle="tab">
-                        <?= Yii::t('SpaceModule.base', 'Pick users'); ?>
+                        <?= Yii::t('SpaceModule.base', 'Pick users') ?>
                     </a>
                 </li>
                 <?php if ($canInviteByEmail) : ?>
                     <li class="nav-item tab-invite-by-email">
                         <a class="nav-link<?= $isInviteByEmailTabActiveClass ?>" href="#invite-by-email"
                            data-bs-toggle="tab">
-                            <?= Yii::t('SpaceModule.base', 'Invite by email'); ?>
+                            <?= Yii::t('SpaceModule.base', 'Invite by email') ?>
                         </a>
                     </li>
                 <?php endif; ?>
                 <?php if ($canInviteByLink) : ?>
                     <li class="nav-item tab-invite-by-link">
                         <a class="nav-link" href="#invite-by-link" data-bs-toggle="tab">
-                            <?= Yii::t('SpaceModule.base', 'Invite by link'); ?>
+                            <?= Yii::t('SpaceModule.base', 'Invite by link') ?>
                         </a>
                     </li>
                 <?php endif; ?>
@@ -92,15 +92,12 @@ $form = Modal::beginFormDialog([
             <?= $form->field($model, 'invite')
                 ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']) ?>
 
-            <br>
             <?= $form->field($model, 'allRegisteredUsers')->checkbox() ?>
 
             <?php if ($canAddWithoutInvite) : ?>
-                <br>
                 <?= $form->field($model, 'withoutInvite')->checkbox() ?>
             <?php endif; ?>
 
-            <br/>
             <?= $form->field($model, 'addDefaultSpace')->checkbox() ?>
         </div>
 
@@ -109,7 +106,7 @@ $form = Modal::beginFormDialog([
                 <?= Yii::t(
                     'SpaceModule.base',
                     'You can also invite external users by email, which are not registered now. Just add their e-mail addresses separated by comma.',
-                ); ?>
+                ) ?>
                 <br><br>
                 <?= $form->field($model, 'inviteEmails')->textarea([
                     'id' => 'space-invite-by-email',
@@ -128,21 +125,20 @@ $form = Modal::beginFormDialog([
                 <br><br>
 
                 <div><strong><?= Yii::t(
-                            'SpaceModule.base',
-                            'Invite link',
-                        ) ?></strong></div>
-                <div class="input-group" style="width: 100%;">
-                    <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control']) ?>
+                    'SpaceModule.base',
+                    'Invite link',
+                ) ?></strong></div>
+                <div class="input-group w-100 d-flex flex-column align-items-end">
+                    <?= Html::textarea('secureLink', $model->getInviteLink(), ['readonly' => 'readonly', 'class' => 'form-control w-100']) ?>
+                    <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
+                        <?= ModalButton::asLink(Html::tag('small', Yii::t('SpaceModule.base', 'Create new link')))
+                            ->confirm(
+                                Yii::t('SpaceModule.base', 'Create new link'),
+                                Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?'),
+                            )
+                            ->load($model->space->createUrl('/space/membership/reset-invite-link')) ?>
+                    <?php endif; ?>
                 </div>
-                <?php if (Yii::$app->controller->id === 'membership' && $model->space->isAdmin()) : ?>
-                    <a href="#" class="float-end"
-                       data-action-confirm-header="<?= Yii::t('SpaceModule.base', 'Create new link') ?>" ,
-                       data-action-confirm="<?= Yii::t('SpaceModule.base', 'Please note that any links you have previously created will become invalid as soon as you create a new one. Would you like to proceed?') ?>"
-                       data-action-click="ui.modal.load"
-                       data-action-click-url="<?= $model->space->createUrl('/space/membership/reset-invite-link') ?>">
-                        <small><?= Yii::t('SpaceModule.base', 'Create new link'); ?></small>
-                    </a>
-                <?php endif; ?>
             </div>
         <?php endif; ?>
 

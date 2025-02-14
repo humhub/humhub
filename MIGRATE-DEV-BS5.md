@@ -157,6 +157,26 @@ Use `'size' => Modal::SIZE_LARGE,` in the `Modal::beginFormDialog()` param array
 
 ### Footer
 
+Affirmative buttons (i.e., CTA buttons that perform an action) should always be placed on the right side, whereas dismissive buttons should be placed on the left.
+
+E.g., "Close" should be on the left, and "Save" should be on the right.
+
+Affirmative Buttons (Action-Taking):
+
+- Submit - Used for submitting forms.
+- Save - Confirms and saves edits.
+- Send Invite - Sends an invitation.
+- Confirm - Approves and proceeds with an action.
+- Publish - Makes content "live".
+
+Dismissive Buttons (Non-Action, Exit, or Revert):
+
+- Cancel - Dismisses an action without saving.
+- Close - Closes a modal or window.
+- Back - Returns to the previous step.
+- Discard - Exits without saving edits.
+- Exit - Leaves a process or page.
+
 When it is not possible to place the buttons in the modal footer, use the `modal-body-footer` class:
 
 ```php

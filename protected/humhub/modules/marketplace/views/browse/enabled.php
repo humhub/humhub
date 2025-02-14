@@ -11,13 +11,10 @@ use humhub\widgets\modal\ModalButton;
 
 /* @var string $moduleConfigUrl */
 
-if ($moduleConfigUrl) {
-    $footer =
-        ModalButton::cancel(Yii::t('MarketplaceModule.base', 'No, thank you!')) . ' ' .
-        Button::primary(Yii::t('MarketplaceModule.base', 'Module configuration'))->link($moduleConfigUrl);
-} else {
-    $footer = ModalButton::primary(Yii::t('MarketplaceModule.base', 'Great!'))->close();
-}
+$footer = $moduleConfigUrl ?
+    ModalButton::cancel(Yii::t('MarketplaceModule.base', 'No, thank you!')) . ' ' .
+    Button::primary(Yii::t('MarketplaceModule.base', 'Module configuration'))->link($moduleConfigUrl) :
+    ModalButton::primary(Yii::t('MarketplaceModule.base', 'Great!'))->close();
 ?>
 
 <?php Modal::beginDialog([

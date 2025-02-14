@@ -7,6 +7,7 @@ use humhub\modules\user\widgets\AuthChoice;
 use humhub\widgets\form\ActiveForm;
 use humhub\widgets\form\CaptchaField;
 use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -24,7 +25,6 @@ use yii\helpers\Url;
     'id' => 'user-auth-login-modal',
     'title' => Yii::t('UserModule.auth', '<strong>Join</strong> the network'),
 ]) ?>
-    <br>
     <?php if ($canRegister && $showRegistrationForm) : ?>
         <div class="text-center">
             <ul id="tabs" class="nav nav-tabs tabs-center" data-tabs="tabs">
@@ -38,7 +38,7 @@ use yii\helpers\Url;
                     <a
                         href="#register"
                         class="nav-link<?= (isset($_POST['Invite'])) ? ' active' : '' ?>"
-                        data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?'); ?></a>
+                        data-bs-toggle="tab"><?= Yii::t('SpaceModule.base', 'New user?') ?></a>
                 </li>
             </ul>
         </div>
@@ -58,29 +58,23 @@ use yii\helpers\Url;
                 <?= AuthChoice::widget(['showOrDivider' => $showLoginForm]) ?>
             <?php else: ?>
                 <?php if ($canRegister) : ?>
-                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "If you're already a member, please login with your username/email and password.") ?></p>
                 <?php elseif ($showLoginForm): ?>
-                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "Please login with your username/email and password.") ?></p>
                 <?php endif; ?>
             <?php endif; ?>
 
             <?php if ($showLoginForm): ?>
                 <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]); ?>
-                <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')]); ?>
-                <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]); ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(); ?>
-                <hr>
-                <div class="row">
-                    <div class="col-lg-4">
-                        <button href="#" id="login-button" data-ui-loader type="submit" class="btn btn-primary"
-                                data-action-click="ui.modal.submit"
-                                data-action-url="<?= Url::to(['/user/auth/login']) ?>">
-                            <?= Yii::t('UserModule.auth', 'Sign in') ?>
-                        </button>
-
-                    </div>
-                    <?php if ($passwordRecoveryRoute) : ?>
-                        <div class="col-lg-8 text-end">
+                <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')]) ?>
+                <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]) ?>
+                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <div class="modal-body-footer">
+                    <div class="d-flex flex-column align-items-end w-100">
+                        <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign in'), ['/user/auth/login'])
+                            ->id('login-button')
+                            ->cssClass('w-100') ?>
+                        <?php if ($passwordRecoveryRoute) : ?>
                             <small>
                                 <?= Html::a(
                                     Html::tag('br') . Yii::t('UserModule.auth', 'Forgot your password?'),
@@ -97,8 +91,8 @@ use yii\helpers\Url;
                                     ]),
                                 ) ?>
                             </small>
-                        </div>
-                    <?php endif; ?>
+                        <?php endif; ?>
+                    </div>
                 </div>
 
                 <?php ActiveForm::end(); ?>
@@ -106,7 +100,7 @@ use yii\helpers\Url;
         </div>
 
         <?php if ($canRegister && $showRegistrationForm) : ?>
-            <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : ""; ?>"
+            <div class="tab-pane <?= (isset($_POST['Invite'])) ? "active" : "" ?>"
                  id="register">
 
                 <?php if (AuthChoice::hasClients()): ?>
@@ -116,21 +110,19 @@ use yii\helpers\Url;
                         <div>or</div>
                     </div>
                 <?php else: ?>
-                    <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address."); ?></p>
+                    <p><?= Yii::t('UserModule.auth', "Don't have an account? Join the network by entering your e-mail address.") ?></p>
                 <?php endif; ?>
 
                 <?php $form = ActiveForm::begin(['id' => 'invite-form-modal', 'enableClientValidation' => false]); ?>
 
-                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]); ?>
+                <?= $form->field($invite, 'email')->input('email', ['id' => 'register-email', 'placeholder' => $invite->getAttributeLabel('email')]) ?>
                 <?php if ($invite->showCaptureInRegisterForm()) : ?>
                     <?= $form->field($invite, 'captcha')->widget(CaptchaField::class)->label(false) ?>
                 <?php endif; ?>
-                <hr>
 
-                <a href="#" class="btn btn-primary" data-ui-loader data-action-click="ui.modal.submit"
-                   data-action-url="<?= Url::to(['/user/auth/login']) ?>">
-                    <?= Yii::t('UserModule.auth', 'Register') ?>
-                </a>
+                <div class="modal-body-footer">
+                    <?= ModalButton::save(Yii::t('UserModule.auth', 'Register'), ['/user/auth/login']) ?>
+                </div>
 
                 <?php ActiveForm::end(); ?>
 
