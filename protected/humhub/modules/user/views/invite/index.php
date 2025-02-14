@@ -47,11 +47,11 @@ use yii\helpers\Url;
                 <?php $form = ActiveForm::begin(); ?>
                 <?= $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')) ?>
                 <div class="modal-body-footer">
+                    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
                     <a href="#" class="btn btn-primary" data-action-click="ui.modal.submit"
                        data-action-url="<?= Url::to(['/user/invite']) ?>" data-ui-loader>
                         <?= Yii::t('UserModule.invite', 'Send invite') ?>
                     </a>
-                    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
@@ -81,6 +81,7 @@ use yii\helpers\Url;
                 </div>
                 <br>
                 <div class="modal-body-footer">
+                    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
                     <?= Button::primary(Yii::t('SpaceModule.base', 'Send the link via email'))
                         ->link('mailto:' .
                             '?subject=' . rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
@@ -92,7 +93,6 @@ use yii\helpers\Url;
                         ->icon('paper-plane')
                         ->loader(false)
                     ?>
-                    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
                 </div>
             </div>
         <?php endif; ?>

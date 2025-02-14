@@ -155,6 +155,20 @@ Modals have three other optional sizes, see https://getbootstrap.com/docs/5.3/co
 
 Use `'size' => Modal::SIZE_LARGE,` in the `Modal::beginFormDialog()` param array to change the size (or `SIZE_EXTRA_LARGE`, but `SIZE_SMALL` is not recommended).
 
+### Footer
+
+When it is not possible to place the buttons in the modal footer, use the `modal-body-footer` class:
+
+```php
+<?php $form = Modal::beginDialog() ?>
+    Content
+    <div class="modal-body-footer">
+        <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+        <?= ModalButton::save() ?>
+    </div>
+<?php Modal::endDialog()?>
+```
+
 ## Forms
 
 ### Widgets deprecations
