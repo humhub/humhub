@@ -1,13 +1,13 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\DataSaved;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $model DesignSettingsForm */
@@ -30,8 +30,17 @@ $iconUrl = SiteIcon::getUrl(140);
 ?>
 
 <div class="panel-body">
+    <?php $form = ActiveForm::begin(); ?>
+    <?= Html::input('hidden', 'rebuild-theme-css', '1') ?>
+    <?= Button::primary(Yii::t('AdminModule.settings', '(Re)build theme CSS'))
+        ->tooltip(Yii::t('AdminModule.settings', 'Rebuild the CSS of the current theme'))
+        ->submit()
+//        ->confirm()
+        ->right() ?>
+    <?php ActiveForm::end(); ?>
+
     <h4><?= Yii::t('AdminModule.settings', 'Appearance Settings'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.settings', 'These settings refer to the appearance of your social network.'); ?>
     </div>
 
@@ -44,10 +53,10 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'paginationSize'); ?>
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'displayNameFormat')->dropDownList(['{username}' => Yii::t('AdminModule.settings', 'Username (e.g. john)'), '{profile.firstname} {profile.lastname}' => Yii::t('AdminModule.settings', 'Firstname Lastname (e.g. John Doe)')]); ?>
         </div>
-        <div class="col-md-6">
+        <div class="col-lg-6">
             <?= $form->field($model, 'displayNameSubFormat')->dropDownList($model->getDisplayNameSubAttributes()); ?>
         </div>
 
@@ -71,11 +80,11 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
 
 
-    <div class="well">
-        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
+    <div class="bg-light p-3">
+        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'class' => 'd-none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
-            <img class="img-rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
+            <img class="rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
                  data-src="holder.js/140x140"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no logo at the moment. Upload your logo now."); ?>"
                  style="max-height: 40px;<?= LogoImage::hasImage() ? '' : 'display:none' ?>">
@@ -90,10 +99,12 @@ $iconUrl = SiteIcon::getUrl(140);
         </div>
     </div>
 
-    <div class="well">
-        <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'style' => 'display: none', 'name' => 'icon[]']); ?>
+    <br>
+
+    <div class="bg-light p-3">
+        <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'class' => 'd-none', 'name' => 'icon[]']); ?>
         <div class="image-upload-container" id="icon-upload">
-            <img class="img-rounded" id="icon-image" src="<?= $iconUrl ?>"
+            <img class="rounded" id="icon-image" src="<?= $iconUrl ?>"
                  alt="<?= Yii::t('AdminModule.settings', "You're using no icon at the moment. Upload your logo now."); ?>"
                  style="max-height: 40px;">
 

@@ -5,10 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\PeopleSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $model PeopleSettingsForm */
 ?>
@@ -16,7 +16,7 @@ use humhub\widgets\Button;
 <div class="panel-body">
 
     <h4><?= Yii::t('AdminModule.user', 'People'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'Select which user information should be displayed in the \'People\' overview. You can select any profile fields, even those you have created individually. '); ?>
     </div>
 

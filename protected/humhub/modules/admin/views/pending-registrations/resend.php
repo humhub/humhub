@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Invite;
-use yii\helpers\Html;
 use yii\helpers\Url;
 use yii\widgets\DetailView;
 
@@ -38,6 +38,6 @@ use yii\widgets\DetailView;
     <?= Html::a(
         Yii::t('AdminModule.user', 'Cancel'),
         Url::to(['/admin/pending-registrations']),
-        ['class' => 'btn btn-primary pull-right']
+        ['class' => 'btn btn-primary float-end']
     ); ?>
 </div>
