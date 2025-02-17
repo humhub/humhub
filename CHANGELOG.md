@@ -4,6 +4,7 @@ HumHub Changelog
 1.18.0 (Unreleased - Develop)
 ----------------------------
 - Enh #7412: Confusing message after creating an account
+- Enh #7425: Installer Wording update due to `.env` configuration
 
 1.17.1 (Unreleased)
 -------------------
