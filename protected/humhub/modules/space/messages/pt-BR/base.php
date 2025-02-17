@@ -152,7 +152,7 @@ return [
   'Visibility' => 'Visibilidade',
   'Visible for all (members and guests)' => 'Visível para todos (membros e convidados)',
   'Warning: If you change the visibility settings of a Space from public to private, all content within that Space, including posts, comments, attachments etc. will also be set to private. This means that non-members will no longer be able to see, access, or interact with any of the content within that Space.' => 'Aviso: Se você alterar as configurações de visibilidade de um Espaço de público para privado, todo o conteúdo dentro desse Espaço, incluindo postagens, comentários, anexos etc. também será definido como privado. Isso significa que não membros não poderão mais ver, acessar ou interagir com qualquer conteúdo dentro desse Espaço.',
-  'Would you like to end your membership in Space {spaceName}?' => 'Gostaria de encerrar sua associação ao Espaço {spaceName}?',
+  'Would you like to end your membership in Space {spaceName}?' => 'Deseja encerrar sua participação no Espaço {spaceName}?',
   'Would you like to unfollow Space {spaceName}?' => 'Gostaria de deixar de seguir o Espaço {spaceName}?',
   'Would you like to unfollow {userName}?' => 'Deseja deixar de seguir {userName}?',
   'Would you like to withdraw your request to join Space {spaceName}?' => 'Você gostaria de retirar sua solicitação para ingressar no Espaço {spaceName}?',
