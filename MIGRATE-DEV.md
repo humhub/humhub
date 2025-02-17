@@ -1,8 +1,22 @@
 Module Migration Guide
 ======================
 
+Version 1.18 (Unreleased)
+-------------------------
 
-Version 1.17 (Unreleased)
+### New
+- `\humhub\components\captcha\CaptchaInterface`
+- `\humhub\components\captcha\AltchaCaptcha`
+- `\humhub\components\captcha\AltchaCaptchaInput`
+- `\humhub\components\captcha\AltchaCaptchaValidator`
+- `\humhub\components\captcha\AltchaCaptchaAction`
+- `\humhub\components\captcha\AltchaCaptchaAsset`
+- `\humhub\components\captcha\YiiCaptcha`
+- `\humhub\components\captcha\YiiCaptchaInput`
+- `\humhub\components\captcha\YiiCaptchaValidator`
+- `Yii::$app->captcha` component
+
+Version 1.17 (January 2024)
 -------------------------
 
 ### Behaviour change
