@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return [
   '"My Spaces" Sorting' => 'Сортировка "Моих сообществ"',
   '1 month' => '1 месяц',

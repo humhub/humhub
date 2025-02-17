@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return [
   '<strong>Confirm</strong> Action' => '<strong>Подтвердите действие</strong>',
   '<strong>Latest</strong> updates' => '<strong>Последние обновления</strong>',
