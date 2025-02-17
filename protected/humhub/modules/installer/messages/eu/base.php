@@ -46,7 +46,7 @@ return [
   'In the installation folder, locate the <strong>.env.example</strong> file and copy its contents into the <strong>.env</strong> file. Next, find the <strong>Pretty URLs</strong> block and uncomment it by removing the <strong>#</strong> symbol.' => '',
   'Open the crontab of HumHub/PHP process user e.g. <code>{user}</code>.' => 'Ireki HumHub/PHP prozesuaren erabiltzailea adibidez <code>{user}</code>.',
   'Optional: Port of your MySQL Database Server. Leave empty to use default port.' => 'Aukeran: zure MySQL datu-basearen zerbitzaria. Hutsik utzi oporto defektua erabiltzeko.',
-  'Our documentation provides a more detailed look into <a href="{link}" target="_blank">Pretty URLs</a>.' => 'Gure dokumentazioak <a href="{link}">URL politak</a> hobeto aztertzen ditu.',
+  'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => '',
   'Password' => 'Pasahitza',
   'Port' => 'Portua',
   'Recommended <strong>Modules</strong>' => '<strong>Modulu</strong> gomendatuak',

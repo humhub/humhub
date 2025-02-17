@@ -47,7 +47,7 @@ return [
   'Open the crontab of HumHub/PHP process user e.g. <code>{user}</code>.' => 'HumHub/PHPプロセスユーザーのcrontabを開きます。
 <code>{user}</code>',
   'Optional: Port of your MySQL Database Server. Leave empty to use default port.' => 'オプション：MySQLデータベースサーバーのポート。デフォルトのポートを使用するには、空のままにします。',
-  'Our documentation provides a more detailed look into <a href="{link}" target="_blank">Pretty URLs</a>.' => 'ドキュメントでは、<a href="{link}">Pretty URL</a>について詳しく説明しています。',
+  'For more information on this topic, please refer to our <a href="{link}" target="_blank">documentation</a>.' => '',
   'Password' => 'パスワード',
   'Port' => 'ポート',
   'Recommended <strong>Modules</strong>' => '推奨 <strong>モジュール</strong>',
