@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return [
   '<strong>Manage</strong> Spaces' => '<strong>Управление Сообществами</strong>',
   'Add new space' => 'Добавить новое сообщество',
