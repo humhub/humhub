@@ -9,14 +9,17 @@
 namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
+use humhub\libs\ParameterEvent;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
+use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
+use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -50,6 +53,7 @@ use yii\helpers\Url;
  */
 class Group extends ActiveRecord
 {
+    public const EVENT_GET_REGISTRATION_GROUPS = 'getRegistrationGroups';
     public const SCENARIO_EDIT = 'edit';
 
     /**
@@ -460,26 +464,32 @@ class Group extends ActiveRecord
     /**
      * Returns groups which are available in user registration
      *
+     * @param User|null $user
      * @return Group[] the groups which can be selected in registration
      */
-    public static function getRegistrationGroups()
+    public static function getRegistrationGroups(?User $user = null)
     {
         if (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup')) {
             $groups = self::find()
                 ->where(['show_at_registration' => 1, 'is_admin_group' => 0])
                 ->orderBy('name ASC')
                 ->all();
-            if (count($groups) > 0) {
-                return $groups;
+        }
+
+        if (empty($groups)) {
+            $groups = [];
+            if ($defaultGroup = Yii::$app->getModule('user')->getDefaultGroup()) {
+                $groups[] = $defaultGroup;
             }
         }
 
-        $groups = [];
-        if ($defaultGroup = Yii::$app->getModule('user')->getDefaultGroup()) {
-            $groups[] = $defaultGroup;
-        }
+        $evt = new ParameterEvent([
+            'user' => $user,
+            'groups' => $groups,
+        ]);
+        ParameterEvent::trigger(static::class, static::EVENT_GET_REGISTRATION_GROUPS, $evt);
 
-        return $groups;
+        return $evt->parameters['groups'];
     }
 
     /**
