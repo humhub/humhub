@@ -38,6 +38,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
 - Fix #454: Profile about page missing left and right margin on mobile screen
+- Enh #7311: Improve space/user picker focus
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
 - Enh #7329: Add a new "Manage All Content" Group Permission (see [migration guide](https://github.com/humhub/humhub/blob/develop/MIGRATE-DEV.md#version-117-unreleased) for details)
