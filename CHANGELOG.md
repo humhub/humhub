@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------------
 - Enh #7412: Confusing message after creating an account
 - Enh #7425: Installer Wording update due to `.env` configuration
+- Enh #7433: Use strikethrough style for disabled user name
 
 1.17.1 (Unreleased)
 -------------------
