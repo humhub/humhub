@@ -1,8 +1,16 @@
 Module Migration Guide
 ======================
 
+Version 1.17.1
+---------------
 
-Version 1.17 (Unreleased)
+### Behaviour change
+
+- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`  
+
+
+
+Version 1.17
 -------------------------
 
 ### Behaviour change

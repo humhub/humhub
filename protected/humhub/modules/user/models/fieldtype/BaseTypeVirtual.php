@@ -34,9 +34,9 @@ abstract class BaseTypeVirtual extends BaseType
     /**
      * @inheritdoc
      */
-    final public function getUserValue(User $user, $raw = true): ?string
+    final public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
-        return $this->getVirtualUserValue($user, $raw);
+        return $this->getVirtualUserValue($user, $raw, $encode);
     }
 
     /**
@@ -71,13 +71,14 @@ abstract class BaseTypeVirtual extends BaseType
     }
 
     /**
-     * Returns the readonly virutal value for the given User
+     * Returns the readonly virtual value for the given User
      *
      * @param User $user
      * @param bool $raw
-     * @return mixed
+     * @param bool $encode
+     * @return string
      */
-    abstract protected function getVirtualUserValue($user, $raw = true);
+    abstract protected function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string;
 
     /**
      * @inheritDoc

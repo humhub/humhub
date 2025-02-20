@@ -413,9 +413,10 @@ class Profile extends ActiveRecord
      *
      * @param string $field
      * @param bool $raw
+     * @param bool $encode
      * @return string|null
      */
-    public function getFieldValue(string $field, bool $raw = false): ?string
+    public function getFieldValue(string $field, bool $raw = false, bool $encode = true): ?string
     {
         if (!$this->hasAttribute($field) || !$this->user) {
             return null;
@@ -423,6 +424,6 @@ class Profile extends ActiveRecord
 
         $profileField = ProfileField::findOne(['internal_name' => $field]);
 
-        return $profileField?->getUserValue($this->user, $raw);
+        return $profileField?->getUserValue($this->user, $raw, $encode);
     }
 }

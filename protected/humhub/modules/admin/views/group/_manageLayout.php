@@ -10,7 +10,7 @@ use humhub\widgets\Button;
 ?>
 <div class="panel-body">
     <div class="pull-right">
-        <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview')) ?>
+        <?= Button::back(['/admin/group/index'], Yii::t('AdminModule.base', 'Back to overview')) ?>
     </div>
 
     <?php if (!$group->isNewRecord) : ?>
