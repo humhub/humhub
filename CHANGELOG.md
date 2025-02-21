@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #7419: Reset modal window after close
 - Fix #7428: Fix picker autofocus
 - Enh #7424: New event on get registration groups
+- Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 
 1.17.0 (January 13, 2025)
 -------------------------
