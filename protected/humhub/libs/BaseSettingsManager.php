@@ -311,6 +311,6 @@ abstract class BaseSettingsManager extends Component
      */
     public static function isDatabaseInstalled(): bool
     {
-        return Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED);
+        return Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED);
     }
 }

@@ -91,7 +91,7 @@ class InstallController extends Controller
         MigrationService::create()->migrateUp();
 
         $this->stdout("  * Finishing\n", Console::FG_YELLOW);
-        Yii::$app->installationState->setInstalled();
+        Yii::$app->installationState->setState(Yii::$app->installationState::STATE_INSTALLED);
 
         return ExitCode::OK;
     }
@@ -137,7 +137,7 @@ class InstallController extends Controller
         Yii::$app->settings->set('mailer.systemEmailName', $site_email);
         Yii::$app->settings->set('secret', UUID::v4());
 
-        Yii::$app->installationState->setInstalled();
+        Yii::$app->installationState->setState(Yii::$app->installationState::STATE_INSTALLED);
 
         return ExitCode::OK;
     }

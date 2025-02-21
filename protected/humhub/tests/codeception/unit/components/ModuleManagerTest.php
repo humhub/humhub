@@ -1139,7 +1139,7 @@ class ModuleManagerTest extends HumHubDbTestCase
             ],
         ]);
 
-        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
             static::$moduleEnabledList ??= array_column(
                 static::dbSelect('module_enabled', 'module_id'),
                 'module_id',

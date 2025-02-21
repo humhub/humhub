@@ -44,7 +44,7 @@ class DynamicConfig extends BaseObject
             return [];
         }
 
-        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
             $validConfig = [
                 'components' => [
                     'db' => ArrayHelper::getValue($config, 'components.db', []),

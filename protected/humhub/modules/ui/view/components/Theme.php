@@ -229,7 +229,7 @@ class Theme extends BaseTheme
             return $this->parents;
         }
 
-        if ($this->isActive() && Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+        if ($this->isActive() && Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
             $this->parents = static::getActiveParents();
         }
 
@@ -244,7 +244,7 @@ class Theme extends BaseTheme
                     $parentPaths[] = $theme->getBasePath();
                 }
 
-                if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+                if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CONFIGURED)) {
                     Yii::$app->settings->setSerialized('themeParents', $parentPaths);
                 }
             }

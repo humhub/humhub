@@ -9,33 +9,27 @@ use yii\base\BaseObject;
 use yii\base\StaticInstanceInterface;
 use yii\base\StaticInstanceTrait;
 
-final class InstallationState extends BaseObject implements StaticInstanceInterface
+class InstallationState extends BaseObject implements StaticInstanceInterface
 {
     use StaticInstanceTrait;
 
     /**
      * The application is not installed.
-     * Condition: No database configuration is present.
+     * This state indicates that the installation process has not been started or completed.
      */
     public const STATE_NOT_INSTALLED = 0;
 
     /**
      * The database is configured.
-     * Condition: A database configuration is present.
+     * This state indicates that the database configuration is complete and is valid, but the application may not be fully installed.
      */
-    public const STATE_DATABASE_CONFIGURED = 1;
+    public const STATE_DATABASE_CONFIGURED = 1 << 1;
 
     /**
-     * The database is created.
-     * Condition: The database has been migrated (e.g. `settings` table exists)
+     * The application is fully installed.
+     * This state indicates that the installation process is complete and the application is ready to use.
      */
-    public const STATE_DATABASE_CREATED = 2;
-
-    /**
-     * The database is initialized.
-     * Condition: The admin user is created and the installation is complete.
-     */
-    public const STATE_INSTALLED = 3;
+    public const STATE_INSTALLED = self::STATE_DATABASE_CONFIGURED;
 
     private int $state;
 
@@ -43,49 +37,19 @@ final class InstallationState extends BaseObject implements StaticInstanceInterf
     {
         if (!YII_ENV_TEST && !DynamicConfig::exist()) {
             $this->state = self::STATE_NOT_INSTALLED;
-
-            return;
+        } else {
+            $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
         }
-
-        $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
-
-        if ($this->state > self::STATE_DATABASE_CONFIGURED && (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username))) {
-            $this->state = self::STATE_NOT_INSTALLED;
-        }
-
-        if ($this->state > self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
-            $this->state = self::STATE_DATABASE_CONFIGURED;
-        }
-
-//        var_dump($this->state);die;
     }
 
-    public function hasState(int $state): bool
-    {
-        return ($this->state >= $state);
-    }
-
-    public function setInstalled(): void
-    {
-        $this->setState(self::STATE_INSTALLED);
-    }
-
-    /**
-     * Mark as uninstalled. Used for testing purposes.
-     */
-    public function setUninstalled(): void
-    {
-        Yii::$app->settings->delete(self::class);
-        $this->init();
-    }
-
-    private function setState(int $state): void
+    public function setState(int $state): void
     {
         $this->state = $state;
+
         Yii::$app->settings->set(self::class, $this->state);
     }
 
-    private function getState(): int
+    private function getState(): string
     {
         if ($this->state === self::STATE_NOT_INSTALLED) {
             $this->init();
@@ -94,12 +58,25 @@ final class InstallationState extends BaseObject implements StaticInstanceInterf
         return $this->state;
     }
 
-    private function isDatabaseInstalled(): bool
+    public function hasState(int $state): bool
     {
+        return ($this->getState() & $state) === $state;
+    }
+
+    public function isDatabaseInstalled(): bool
+    {
+        $configExist = $this->hasState(self::STATE_DATABASE_CONFIGURED);
+
+        if (!$configExist) {
+            return false;
+        }
+
         try {
             Yii::$app->db->open();
         } catch (\Exception $e) {
-            DatabaseHelper::handleConnectionErrors($e);
+            if ($configExist) {
+                DatabaseHelper::handleConnectionErrors($e);
+            }
             return false;
         }
 
