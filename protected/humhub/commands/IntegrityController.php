@@ -21,6 +21,7 @@ class IntegrityController extends Controller
     /**
      * @event Event an event that is triggered when the integritychecker is started.
      */
+
     public const EVENT_ON_RUN = "run";
 
     /**
