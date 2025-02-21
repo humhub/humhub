@@ -15,21 +15,28 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     /**
      * The application is not installed.
-     * This state indicates that the installation process has not been started or completed.
+     * Condition: No database configuration is present.
      */
     public const STATE_NOT_INSTALLED = 0;
 
     /**
      * The database is configured.
-     * This state indicates that the database configuration is complete and is valid, but the application may not be fully installed.
+     * Condition: A database configuration is present.
      */
-    public const STATE_DATABASE_CONFIGURED = 1 << 1;
+    public const STATE_DATABASE_CONFIGURED = 1;
+
 
     /**
-     * The application is fully installed.
-     * This state indicates that the installation process is complete and the application is ready to use.
+     * The database is created.
+     * Condition: The database has been migrated (e.g. `settings` table exists)
      */
-    public const STATE_INSTALLED = self::STATE_DATABASE_CONFIGURED;
+    public const STATE_DATABASE_CREATED = 2;
+
+    /**
+     * The database is initialized.
+     * Condition: The admin user is created and the installation is complete.
+     */
+    public const STATE_INSTALLED = 3;
 
     private int $state;
 
@@ -49,7 +56,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         Yii::$app->settings->set(self::class, $this->state);
     }
 
-    private function getState(): string
+    public function getState(): string
     {
         if ($this->state === self::STATE_NOT_INSTALLED) {
             $this->init();
@@ -60,7 +67,13 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function hasState(int $state): bool
     {
-        return ($this->getState() & $state) === $state;
+        return $this->getState() >= $state;
+    }
+
+    public function setUninstalled(): void
+    {
+        Yii::$app->settings->delete(self::class);
+        $this->init();
     }
 
     public function isDatabaseInstalled(): bool
