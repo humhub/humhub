@@ -164,14 +164,13 @@ class CheckboxList extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
         $internalNameOther = $internalName . '_other_selection';
 
         $value = $user->profile->$internalName;
         if (!$raw && $value !== null) {
-
             $options = $this->getSelectItems();
             $translatedValues = [];
             if (is_string($value)) {
@@ -179,15 +178,14 @@ class CheckboxList extends BaseType
             }
             foreach ($value as $v) {
                 if ($v === 'other' && !empty($user->profile->$internalNameOther)) {
-                    $translatedValues[] = Html::encode($user->profile->$internalNameOther);
+                    $translatedValues[] = $user->profile->$internalNameOther;
                 } elseif (isset($options[$v])) {
-                    $translatedValues[] = Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$v]));
+                    $translatedValues[] = Yii::t($this->profileField->getTranslationCategory(), $options[$v]);
                 }
             }
-
-            return implode(', ', $translatedValues);
+            $value = implode(', ', $translatedValues);
         }
 
-        return $value;
+        return $encode ? Html::encode($value) : $value;
     }
 }

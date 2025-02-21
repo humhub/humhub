@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '-' => '-',
   '<strong>Create</strong> Space' => '<strong>Criar</strong> novo espaço',
   '<strong>Manage</strong> members' => '<strong>Gerenciar</strong> membros',
@@ -15,7 +15,7 @@ return array (
   'Are you sure you want to remove this member.' => 'Tem certeza de que deseja remover este membro.',
   'Are you sure, that you want to delete this space? All published content will be removed!' => 'Tem a certeza que quer deletar este espaço? Todo o conteúdo publicado será removido!',
   'As owner of this space you can transfer this role to another administrator in space.' => 'Como proprietário deste espaço você pode transferir esse papel para outro administrador.',
-  'Cancel Membership' => 'Cancelar Adesão',
+  'Cancel Membership' => 'Deixar de Participar',
   'Choose if new content should be public or private by default' => 'Escolha se novos conteúdos devem ser públicos ou privados por padrão',
   'Choose the kind of membership you want to provide for this workspace.' => 'Escolha o tipo de associação que você deseja fornecer para este espaço.',
   'Choose the modules you want to use for this Space. If you are undecided, you can also activate them later on via the Space settings.' => 'Escolha os módulos que pretende utilizar para este Espaço. Se você estiver indeciso, também poderá ativá-los posteriormente por meio das configurações do Espaço.',
@@ -55,4 +55,4 @@ return array (
   'Unarchive' => 'Desarquivar',
   'e.g. example for {baseUrl}/s/example' => 'p. ex. exemplo para {baseUrl}/s/exemplo',
   'never' => 'nunca',
-);
+];

@@ -699,7 +699,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
         }
 
         if ($this->profile !== null) {
-            return $this->profile->getFieldValue(Yii::$app->settings->get('displayNameSubFormat', '')) ?? '';
+            return $this->profile->getFieldValue(Yii::$app->settings->get('displayNameSubFormat', ''), false, false) ?? '';
         }
 
         return '';

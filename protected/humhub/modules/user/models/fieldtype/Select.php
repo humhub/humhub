@@ -115,19 +115,19 @@ class Select extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $value = $user->profile->$internalName;
+        $value = $user->profile->$internalName ?? '';
 
         if (!$raw) {
             $options = $this->getSelectItems();
             if (isset($options[$value])) {
-                return Html::encode(Yii::t($this->profileField->getTranslationCategory(), $options[$value]));
+                $value = Yii::t($this->profileField->getTranslationCategory(), $options[$value]);
             }
         }
 
-        return $value;
+        return $encode ? Html::encode($value) : $value;
     }
 
 }
