@@ -3,6 +3,7 @@
 namespace humhub\components;
 
 use humhub\helpers\DatabaseHelper;
+use humhub\libs\DynamicConfig;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\StaticInstanceInterface;
@@ -40,21 +41,23 @@ final class InstallationState extends BaseObject implements StaticInstanceInterf
 
     public function init()
     {
-        try {
-            $this->state = (int)Yii::$app->settings->get(self::class, null);
-        } catch (\Exception $e) {
-            // Database seems not working
+        if (!YII_ENV_TEST && !DynamicConfig::exist()) {
+            $this->state = self::STATE_NOT_INSTALLED;
+
+            return;
         }
 
-        if ($this->state === self::STATE_INSTALLED) {
-            ;
-        } elseif (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
+        $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+
+        if ($this->state > self::STATE_DATABASE_CONFIGURED && (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username))) {
             $this->state = self::STATE_NOT_INSTALLED;
-        } elseif ($this->isDatabaseInstalled()) {
-            $this->state = self::STATE_DATABASE_CREATED;
-        } else {
+        }
+
+        if ($this->state > self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
             $this->state = self::STATE_DATABASE_CONFIGURED;
         }
+
+//        var_dump($this->state);die;
     }
 
     public function hasState(int $state): bool

@@ -114,7 +114,7 @@ trait ApplicationTrait
      */
     public function isInstalled(): bool
     {
-        return $this->installationState->hasState(InstallationState::STATE_INSTALLED);;
+        return $this->installationState->hasState(InstallationState::STATE_INSTALLED);
     }
 
     /**
