@@ -8,6 +8,7 @@
 
 namespace humhub\commands;
 
+use humhub\components\InstallationState;
 use Yii;
 use yii\helpers\BaseConsole;
 use yii\helpers\Console;
@@ -45,7 +46,7 @@ class TestController extends \yii\console\Controller
         $this->stdout(PHP_EOL . 'DB Connection: ');
         if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
             $this->stdout('Not Configured!', BaseConsole::FG_RED, BaseConsole::BOLD);
-        } elseif (Yii::$app->installationState->isDatabaseInstalled()) {
+        } elseif (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $this->stdout('OK!', BaseConsole::FG_GREEN, BaseConsole::BOLD);
         } else {
             $this->stdout('Failed!', BaseConsole::FG_RED, BaseConsole::BOLD);

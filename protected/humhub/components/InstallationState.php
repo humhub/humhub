@@ -43,9 +43,17 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     public function init()
     {
         if (!YII_ENV_TEST && !DynamicConfig::exist()) {
+            return $this->state = self::STATE_NOT_INSTALLED;
+        }
+
+        $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+
+        if ($this->state > self::STATE_DATABASE_CONFIGURED && (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username))) {
             $this->state = self::STATE_NOT_INSTALLED;
-        } else {
-            $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+        }
+
+        if ($this->state > self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
+            $this->state = self::STATE_DATABASE_CONFIGURED;
         }
     }
 
@@ -56,7 +64,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         Yii::$app->settings->set(self::class, $this->state);
     }
 
-    public function getState(): string
+    private function getState(): string
     {
         if ($this->state === self::STATE_NOT_INSTALLED) {
             $this->init();
@@ -70,26 +78,23 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         return $this->getState() >= $state;
     }
 
+    public function setInstalled(): void
+    {
+        $this->setState(self::STATE_INSTALLED);
+    }
+
     public function setUninstalled(): void
     {
         Yii::$app->settings->delete(self::class);
         $this->init();
     }
 
-    public function isDatabaseInstalled(): bool
+    private function isDatabaseInstalled(): bool
     {
-        $configExist = $this->hasState(self::STATE_DATABASE_CONFIGURED);
-
-        if (!$configExist) {
-            return false;
-        }
-
         try {
             Yii::$app->db->open();
         } catch (\Exception $e) {
-            if ($configExist) {
-                DatabaseHelper::handleConnectionErrors($e);
-            }
+            DatabaseHelper::handleConnectionErrors($e);
             return false;
         }
 
