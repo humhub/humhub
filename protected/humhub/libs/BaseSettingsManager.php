@@ -57,10 +57,8 @@ abstract class BaseSettingsManager extends Component
             throw new InvalidConfigException('Module id not set!', 2);
         }
 
-        try {
-            Yii::$app->db->open();
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $this->loadValues();
-        } catch (\Exception $e) {
         }
 
         parent::init();
