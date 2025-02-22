@@ -20,7 +20,6 @@
 
 namespace humhub\widgets;
 
-use humhub\components\InstallationState;
 use humhub\models\forms\ChooseLanguage;
 use Yii;
 use yii\base\Widget;
@@ -38,7 +37,7 @@ class LanguageChooser extends Widget
      */
     public function beforeRun()
     {
-        return parent::beforeRun() && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && Yii::$app->user->isGuest;
+        return parent::beforeRun() && (Yii::$app->controller->module->id === 'installer' || Yii::$app->user->isGuest);
     }
 
     /**
