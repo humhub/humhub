@@ -121,9 +121,6 @@ class ModuleManager extends Component
         if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && !Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             return;
         }
-        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
-            return;
-        }
 
         if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $this->enabledModules = [];
