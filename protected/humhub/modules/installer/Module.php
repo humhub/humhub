@@ -9,6 +9,7 @@
 namespace humhub\modules\installer;
 
 use Exception;
+use humhub\components\InstallationState;
 use Yii;
 use yii\console\Application;
 use yii\helpers\Url;
@@ -66,7 +67,7 @@ class Module extends \humhub\components\Module
     {
 
         // Block installer, when it's marked as installed
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             throw new HttpException(500, 'HumHub is already installed!');
         }
 

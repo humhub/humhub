@@ -8,12 +8,15 @@
 
 namespace humhub\libs;
 
+use humhub\components\InstallationState;
 use Yii;
 use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
 
 /**
  * DynamicConfig provides access to the dynamic configuration file.
+ *
+ * @todo check modules too
  *
  * @author luke
  */
@@ -41,17 +44,21 @@ class DynamicConfig extends BaseObject
             return [];
         }
 
-        $validConfig = [
-            'components' => [
-                'db' => ArrayHelper::getValue($config, 'components.db', []),
-            ],
-        ];
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            $validConfig = [
+                'components' => [
+                    'db' => ArrayHelper::getValue($config, 'components.db', []),
+                ],
+            ];
 
-        if ($validConfig != $config) {
-            self::save($validConfig);
+            if ($validConfig != $config) {
+                self::save($validConfig);
+            }
+
+            return $validConfig;
         }
 
-        return $validConfig;
+        return $config;
     }
 
     /**

@@ -32,7 +32,6 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\caching\DummyCache;
 use yii\web\HttpException;
 
 /**
@@ -578,7 +577,7 @@ class ConfigController extends Controller
         Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);
 
         // Set to installed
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         try {
             Yii::$app->user->logout();

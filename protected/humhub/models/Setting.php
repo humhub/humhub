@@ -8,8 +8,8 @@
 
 namespace humhub\models;
 
+use humhub\components\InstallationState;
 use humhub\components\SettingActiveRecord;
-use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\base\Exception;
 
@@ -127,7 +127,7 @@ class Setting extends SettingActiveRecord
      */
     public static function isInstalled()
     {
-        return Yii::$app->isInstalled();
+        return Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);
     }
 
     /**
