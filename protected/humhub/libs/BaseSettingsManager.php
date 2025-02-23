@@ -58,7 +58,6 @@ abstract class BaseSettingsManager extends Component
         }
 
         try {
-            Yii::$app->db->open();
             $this->loadValues();
         } catch (\Exception $e) {
         }
