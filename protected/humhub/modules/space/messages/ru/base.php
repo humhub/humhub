@@ -54,7 +54,7 @@ return [
   'Find Spaces by their description or by their tags' => 'Поиск сообществ по их описанию или по тегам',
   'Follow' => 'Подписаться',
   'Followers' => 'Подписчики',
-  'Following' => 'Подписан(а)',
+  'Following' => 'Подписки',
   'Guests' => 'Гости',
   'Hide About Page' => 'Скрыть страницу «О сообществе»',
   'Hide Activity Sidebar Widget' => 'Скрыть боковую панель активностей',
