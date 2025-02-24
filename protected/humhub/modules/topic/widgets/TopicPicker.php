@@ -97,11 +97,7 @@ class TopicPicker extends ContentTagPicker
      */
     private static function hasTopics(ContentContainerActiveRecord $container = null)
     {
-        if (!$container) {
-            return (bool)Topic::find()->count();
-        }
-
-        return (bool)Topic::findByContainer($container)->count();
+        return ($container ? Topic::findByContainer($container)->count() : 0) + Topic::find()->count();
     }
 
     /**
