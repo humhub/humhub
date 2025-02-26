@@ -53,7 +53,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
                 <?= $form->field($model, 'password')
                     ->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password'), 'aria-label' => $model->getAttributeLabel('password')])
                     ->label(false); ?>
-                <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+                <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox(); ?>
 
                 <hr>
                 <div class="row">
