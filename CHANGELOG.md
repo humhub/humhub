@@ -23,6 +23,7 @@ HumHub Changelog
 - Enh #7424: New event on get registration groups
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 - Fix #7441: Hide "Remember me" option on mobile app
+- Fix #7443: Exclude inactive users from `followers` and `following` lists
 
 1.17.0 (January 13, 2025)
 -------------------------
