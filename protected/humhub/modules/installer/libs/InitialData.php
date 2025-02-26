@@ -52,9 +52,9 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', '1');
 
         // Mailing
-        Yii::$app->settings->set('mailer.transportType', 'php');
-        Yii::$app->settings->set('mailer.systemEmailAddress', 'social@example.com');
-        Yii::$app->settings->set('mailer.systemEmailName', 'My Social Network');
+        Yii::$app->settings->set('mailerTransportType', 'php');
+        Yii::$app->settings->set('mailerSystemEmailAddress', 'social@example.com');
+        Yii::$app->settings->set('mailerSystemEmailName', 'My Social Network');
         Yii::$app->getModule('activity')->settings->set('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
 
         // File

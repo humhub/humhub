@@ -100,8 +100,8 @@ class Mailer extends \yii\symfonymailer\Mailer implements MailerInterface
             return $message;
         }
 
-        $message->setFrom([Yii::$app->settings->get('mailer.systemEmailAddress') => Yii::$app->settings->get('mailer.systemEmailName')]);
-        if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
+        $message->setFrom([Yii::$app->settings->get('mailerSystemEmailAddress') => Yii::$app->settings->get('mailerSystemEmailName')]);
+        if ($replyTo = Yii::$app->settings->get('mailerSystemEmailReplyTo')) {
             $message->setReplyTo($replyTo);
         }
 

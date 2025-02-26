@@ -9,7 +9,6 @@
 namespace humhub\models;
 
 use humhub\components\SettingActiveRecord;
-use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\base\Exception;
 
@@ -146,9 +145,9 @@ class Setting extends SettingActiveRecord
                 'defaultUserGroup' => ['auth.allowGuestAccess', 'user'],
             ],
             'mailing' => [
-                'systemEmailAddress' => ['mailer.systemEmailAddress', 'user'],
-                'mailing' => ['mailer.systemEmailName', 'user'],
-                'systemEmailReplyTo' => ['mailer.systemEmailReplyTo', 'user'],
+                'systemEmailAddress' => ['mailerSystemEmailAddress', 'user'],
+                'mailing' => ['mailerSystemEmailName', 'user'],
+                'systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'user'],
             ],
             'proxy' => [
                 'enabled' => ['proxy.enabled', 'base'],
