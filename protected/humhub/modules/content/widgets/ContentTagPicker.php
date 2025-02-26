@@ -53,10 +53,7 @@ class ContentTagPicker extends BasePicker
     {
         /* @var ContentTagActiveQuery $query */
         $query = call_user_func([$this->itemClass, 'findByContainer'], $this->contentContainer, true);
-        $query->limit($this->limit);
-        if (!Yii::$app->user->identity->canManageAllContent()) {
-            $query->readable();
-        }
+        $query->readable()->limit($this->limit);
 
         return Yii::$app->runtimeCache->getOrSet(__METHOD__ . $this->id, function () use ($query) {
             return $query->all();
