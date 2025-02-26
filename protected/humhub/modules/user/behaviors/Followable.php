@@ -165,6 +165,7 @@ class Followable extends Behavior
                 ':object_id' => $this->owner->getPrimaryKey(),
             ])
             ->where('user_follow.user_id IS NOT null')
+            ->active()
             ->visible();
     }
 
@@ -190,12 +191,13 @@ class Followable extends Behavior
      */
     public function getFollowingQuery($query)
     {
-        $query->leftJoin(
-            'user_follow',
-            'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
-            ['object_model' => get_class($this->owner)],
-        );
-        $query->andWhere(['user_follow.user_id' => $this->owner->id]);
-        return $query;
+        return $query
+            ->leftJoin(
+                'user_follow',
+                'user.id=user_follow.object_id AND user_follow.object_model=:object_model',
+                ['object_model' => get_class($this->owner)],
+            )
+            ->andWhere(['user_follow.user_id' => $this->owner->id])
+            ->active();
     }
 }
