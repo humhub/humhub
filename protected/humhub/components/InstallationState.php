@@ -55,7 +55,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         }
     }
 
-    public function setState(int $state): void
+    private function setState(int $state): void
     {
         $this->state = $state;
 
