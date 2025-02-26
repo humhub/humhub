@@ -118,7 +118,7 @@ class LinkInviteCest
         $I->fillField('#register-email', 'text@example.com');
         $I->click('Register');
 
-        $I->see('successful');
+        $I->see('Almost there!');
 
         $messages = $I->grabSentEmails();
 

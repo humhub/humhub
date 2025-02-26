@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\libs\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
@@ -108,16 +109,19 @@ class Checkbox extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-
         $value = $user->profile->$internalName;
-        if (!$raw && !empty($value)) {
-            $labels = $this->getLabels();
-            return $labels[$internalName];
+
+        if (empty($value)) {
+            return '';
         }
 
-        return $value;
+        if (!$raw) {
+            $value = $this->getLabels()[$internalName] ?? '';
+        }
+
+        return $encode ? Html::encode($value) : $value;
     }
 }

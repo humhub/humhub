@@ -126,7 +126,7 @@ class GroupUser extends ActiveRecord
     {
         if ($this->scenario == self::SCENARIO_REGISTRATION) {
             if ($this->group_id != '') {
-                $registrationGroups = Group::getRegistrationGroups();
+                $registrationGroups = Group::getRegistrationGroups($this->user);
                 foreach ($registrationGroups as $group) {
                     if ($this->group_id == $group->id) {
                         return;

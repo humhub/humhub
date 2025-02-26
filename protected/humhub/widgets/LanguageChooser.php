@@ -33,6 +33,14 @@ use yii\base\Widget;
 class LanguageChooser extends Widget
 {
     /**
+     * @inheritdoc
+     */
+    public function beforeRun()
+    {
+        return parent::beforeRun() && Yii::$app->user->isGuest;
+    }
+
+    /**
      * Displays / Run the Widget
      */
     public function run()

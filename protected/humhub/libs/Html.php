@@ -150,14 +150,16 @@ class Html extends \yii\bootstrap\Html
 
         if ($container instanceof Space) {
             return static::a(static::encode($container->name), $container->getUrl(), $options);
-        } elseif ($container instanceof User) {
-            if ($container->status == User::STATUS_SOFT_DELETED) {
+        }
+
+        if ($container instanceof User) {
+            if (in_array($container->status, [User::STATUS_SOFT_DELETED, User::STATUS_DISABLED])) {
                 return static::beginTag('strike') . static::encode($container->displayName) . static::endTag('strike');
             }
             return static::a(static::encode($container->displayName), $container->getUrl(), $options);
-        } else {
-            throw new InvalidArgumentException('Content container type not supported!');
         }
+
+        throw new InvalidArgumentException('Content container type not supported!');
     }
 
     /**
