@@ -89,16 +89,20 @@ class CountrySelect extends Select
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $value = $user->profile->$internalName;
+        $value = $user->profile->$internalName ?? '';
 
-        if (!$raw) {
-            return Html::encode(Iso3166Codes::country($value));
+        if (empty($value)) {
+            return '';
         }
 
-        return $value;
+        if (!$raw) {
+            $value = Iso3166Codes::country($value);
+        }
+
+        return $encode ? Html::encode($value) : $value;
     }
 
     /**

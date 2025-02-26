@@ -79,20 +79,25 @@ class Date extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
+        $value = $user->profile->$internalName ?? '';
         $date = \DateTime::createFromFormat(
             'Y-m-d',
-            $user->profile->$internalName ?? '',
+            $value,
             new DateTimeZone(Yii::$app->formatter->timeZone),
         );
 
         if ($date === false) {
-            return "";
+            return '';
         }
 
-        return $raw ? Html::encode($user->profile->$internalName) : Yii::$app->formatter->asDate($date, 'long');
+        if (!$raw) {
+            $value = Yii::$app->formatter->asDate($date, 'long');
+        }
+
+        return $encode ? Html::encode($value) : $value;
     }
 
 }

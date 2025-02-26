@@ -103,7 +103,7 @@ return [
   'User Group' => 'Grupo de usuário',
   'User has been invited.' => 'O usuário foi convidado.',
   'Username' => 'Nome de usuário',
-  'Username contains invalid characters.' => 'Nome de usuário contém caracteres inválidos.',
+  'Username contains invalid characters.' => 'Nome de usuário inválido. Digite apenas letras, números e símbolos. Espaços não são permitidos!',
   'View your about page' => 'Ver sua página de informações',
   'Visibility' => 'Visibilidade',
   'Visible' => 'Visível',

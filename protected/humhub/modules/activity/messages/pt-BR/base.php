@@ -1,12 +1,12 @@
 <?php
 return [
-  '<strong>E-Mail</strong> Summaries' => '<strong>E-Mail</strong> de resumo',
+  '<strong>E-Mail</strong> Summaries' => '<strong>E-Mails</strong> de resumo',
   '<strong>Latest</strong> activities' => '<strong>Últimas</strong> atividades',
   'Activities' => 'Atividades',
-  'Daily' => 'Diáriamente',
+  'Daily' => 'Diariamente',
   'E-Mail Summaries' => 'E-mails de resumo',
-  'E-Mail summaries are sent to inform you about recent activities in the network.' => 'E-mails de resumo são enviados para informa-lo sobre atividades recentes na rede.',
-  'E-Mail summaries are sent to users to inform them about recent activities in your network.' => 'E-mails de resumo são enviados para usuários para informa-los sobre atividades recentes em sua rede.',
+  'E-Mail summaries are sent to inform you about recent activities in the network.' => 'E-mails de resumo são enviados para informá-lo sobre atividades recentes na rede.',
+  'E-Mail summaries are sent to users to inform them about recent activities in your network.' => 'E-mails de resumo são enviados para os usuários para informá-los sobre atividades recentes em sua rede.',
   'Exclude spaces below from the mail summary' => 'Exclua espaços abaixo do resumo do e-mail',
   'Hourly' => 'De hora em hora',
   'Interval' => 'Intervalo',
@@ -35,5 +35,5 @@ return [
   '{displayName} left this space.' => '{displayName} deixou este espaço.',
   '{spaceName} has been archived' => '{spaceName} foi arquivado',
   '{spaceName} has been unarchived' => '{spaceName} foi desarquivado',
-  '{user1} now follows {user2}.' => '{user1} agora segue {user2}.',
+  '{user1} now follows {user2}.' => '{user1} está seguindo {user2}',
 ];

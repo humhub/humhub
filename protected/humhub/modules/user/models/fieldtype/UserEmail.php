@@ -9,6 +9,7 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\libs\Html;
+use humhub\modules\user\models\User;
 
 /**
  * UserEmail is a virtual profile field
@@ -19,18 +20,20 @@ use humhub\libs\Html;
 class UserEmail extends BaseTypeVirtual
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function getVirtualUserValue($user, $raw = true)
+    protected function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string
     {
         if (empty($user->email)) {
             return '';
         }
 
-        if ($raw) {
-            return Html::encode($user->email);
-        } else {
-            return Html::a(Html::encode($user->email), 'mailto:' . $user->email);
+        $value = $encode ? Html::encode($user->email) : $user->email;
+
+        if (!$raw) {
+            return Html::a($value, 'mailto:' . $user->email);
         }
+
+        return $value;
     }
 }

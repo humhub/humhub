@@ -309,11 +309,11 @@ class ProfileField extends ActiveRecord
      *
      * @param User $user
      * @param bool $raw
-     * @return string
+     * @return string|null
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
-        return $this->fieldType->getUserValue($user, $raw);
+        return $this->fieldType->getUserValue($user, $raw, $encode);
     }
 
     /**

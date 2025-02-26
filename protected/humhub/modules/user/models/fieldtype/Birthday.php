@@ -177,7 +177,7 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
         $birthdayDate = \DateTime::createFromFormat(
