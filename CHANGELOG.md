@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7361: Refactor application state mechanism
 
 1.17.1 (Unreleased)
 -------------------

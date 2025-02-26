@@ -3,6 +3,7 @@
 namespace humhub\modules\web\security\helpers;
 
 use Exception;
+use humhub\components\InstallationState;
 use humhub\modules\web\security\models\SecuritySettings;
 use Yii;
 
@@ -86,7 +87,7 @@ class Security
      */
     public static function getNonce($create = false)
     {
-        if (!Yii::$app->isInstalled()) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             return null;
         }
 

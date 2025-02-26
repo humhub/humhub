@@ -9,6 +9,7 @@
 namespace humhub\components\behaviors;
 
 use humhub\components\access\ControllerAccess;
+use humhub\components\InstallationState;
 use Yii;
 use yii\base\ActionFilter;
 use yii\web\HttpException;
@@ -136,7 +137,7 @@ class AccessControl extends ActionFilter
     {
         // Bypass when not installed for installer
         if (
-            !Yii::$app->isInstalled()
+            !Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)
             && ($module = Yii::$app->controller->module)
             && $module->id === 'installer'
         ) {

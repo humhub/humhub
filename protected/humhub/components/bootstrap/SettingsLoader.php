@@ -2,6 +2,7 @@
 
 namespace humhub\components\bootstrap;
 
+use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use yii\base\BootstrapInterface;
@@ -97,14 +98,16 @@ class SettingsLoader implements BootstrapInterface
 
     private function setUserConfig($app): void
     {
-        if ($defaultUserIdleTimeoutSec = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-            if ($app->has('user', true)) {
-                $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
-            } else {
-                $this->updateComponentDefinition($app, 'user', [
-                    'authTimeout' => $defaultUserIdleTimeoutSec,
-                ]);
+        if ($app->has('user', true)) {
+            $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+        } else {
+            $definition = [
+                'enableSession' => $app->installationState->hasState(InstallationState::STATE_INSTALLED),
+            ];
+            if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
+                $definition[] = $authTimeout;
             }
+            $this->updateComponentDefinition($app, 'user', $definition);
         }
     }
 
@@ -142,6 +145,5 @@ class SettingsLoader implements BootstrapInterface
     protected function setParams($app)
     {
         $app->name = $app->settings->get('name');
-        $app->params['installed'] = $app->settings->get('installed');
     }
 }
