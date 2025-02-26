@@ -2,7 +2,6 @@
 
 namespace humhub\components;
 
-use humhub\helpers\DatabaseHelper;
 use humhub\libs\DynamicConfig;
 use Yii;
 use yii\base\BaseObject;
@@ -93,7 +92,6 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
         try {
             Yii::$app->db->open();
         } catch (\Exception $e) {
-            DatabaseHelper::handleConnectionErrors($e);
             return false;
         }
 

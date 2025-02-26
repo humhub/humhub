@@ -37,7 +37,7 @@ class LanguageChooser extends Widget
      */
     public function beforeRun()
     {
-        return parent::beforeRun() && (Yii::$app->controller->module->id === 'installer' || Yii::$app->user->isGuest);
+        return parent::beforeRun() && Yii::$app->user->isGuest;
     }
 
     /**
