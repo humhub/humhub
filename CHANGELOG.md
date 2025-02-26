@@ -24,6 +24,7 @@ HumHub Changelog
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 - Fix #7441: Hide "Remember me" option on mobile app
 - Fix #7443: Exclude inactive users from `followers` and `following` lists
+- Enh #7444: Rename Mailer settings keys to work with `.env`
 
 1.17.0 (January 13, 2025)
 -------------------------
