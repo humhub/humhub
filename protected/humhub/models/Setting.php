@@ -137,7 +137,7 @@ class Setting extends SettingActiveRecord
      * @param string $name
      * @param string $moduleId
      */
-    public static function fixModuleIdAndName($name, $moduleId)
+    public static function fixModuleIdAndName($name, $moduleId = '')
     {
         static $translation = [
             'authentication_internal' => [
