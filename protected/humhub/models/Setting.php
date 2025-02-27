@@ -170,7 +170,7 @@ class Setting extends SettingActiveRecord
                 'mailer.systemEmailAddress' => ['mailerSystemEmailAddress', 'base'],
                 'mailer.systemEmailName' => ['mailerSystemEmailName', 'base'],
                 'mailer.systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'base'],
-            ]
+            ],
         ];
 
         return $translation[$moduleId][$name] ?? [$name, $moduleId];
