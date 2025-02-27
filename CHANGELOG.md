@@ -17,6 +17,7 @@ HumHub Changelog
 - Enh #7424: New event on get registration groups
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 - Fix #7441: Hide "Remember me" option on mobile app
+- Enh #7408: Update code to manage users from external modules
 
 1.17.0 (January 13, 2025)
 -------------------------
