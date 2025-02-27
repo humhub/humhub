@@ -157,19 +157,19 @@ class Setting extends SettingActiveRecord
                 'pass' => ['proxy.password', 'base'],
                 'noproxy' => ['proxy.noproxy', 'base'],
             ],
-            'mailer' => [
-                'transportType' => ['mailerTransportType', 'base'],
-                'dsn' => ['mailerDsn', 'base'],
-                'hostname' => ['mailerHostname', 'base'],
-                'username' => ['mailerUsername', 'base'],
-                'password' => ['mailerPassword', 'base'],
-                'useSmtps' => ['mailerUseSmtps', 'base'],
-                'port' => ['mailerPort', 'base'],
-                'encryption' => ['mailerEncryption', 'base'],
-                'allowSelfSignedCerts' => ['mailerAllowSelfSignedCerts', 'base'],
-                'systemEmailAddress' => ['mailerSystemEmailAddress', 'base'],
-                'systemEmailName' => ['mailerSystemEmailName', 'base'],
-                'systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'base'],
+            '' => [
+                'mailer.transportType' => ['mailerTransportType', 'base'],
+                'mailer.dsn' => ['mailerDsn', 'base'],
+                'mailer.hostname' => ['mailerHostname', 'base'],
+                'mailer.username' => ['mailerUsername', 'base'],
+                'mailer.password' => ['mailerPassword', 'base'],
+                'mailer.useSmtps' => ['mailerUseSmtps', 'base'],
+                'mailer.port' => ['mailerPort', 'base'],
+                'mailer.encryption' => ['mailerEncryption', 'base'],
+                'mailer.allowSelfSignedCerts' => ['mailerAllowSelfSignedCerts', 'base'],
+                'mailer.systemEmailAddress' => ['mailerSystemEmailAddress', 'base'],
+                'mailer.systemEmailName' => ['mailerSystemEmailName', 'base'],
+                'mailer.systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'base'],
             ]
         ];
 
