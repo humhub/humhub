@@ -18,7 +18,7 @@ class m250226_125226_rename_mailer_vars extends Migration
             'mailer.allowSelfSignedCerts' => 'mailerAllowSelfSignedCerts',
             'mailer.systemEmailAddress' => 'mailerSystemEmailAddress',
             'mailer.systemEmailName' => 'mailerSystemEmailName',
-            'mailer.systemEmailReplyTo' => 'mailerSystemEmailReplyTo'
+            'mailer.systemEmailReplyTo' => 'mailerSystemEmailReplyTo',
         ];
     }
 
