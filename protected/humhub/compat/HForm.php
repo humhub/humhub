@@ -91,10 +91,17 @@ class HForm extends \yii\base\Component
 
         foreach ($this->models as $modelName => $model) {
             $className = substr(strrchr(get_class($model), '\\'), 1);
-            if (isset($post[$className], $this->definition['elements'][$modelName]['elements'])) {
+            if (!isset($post[$className])) {
+                continue;
+            }
+            if (!isset($this->definition['elements'][$modelName])) {
+                // Remove post data of the object if no definition
+                unset($post[$className]);
+            }
+            if (isset($this->definition['elements'][$modelName]['elements'])) {
                 foreach ($this->definition['elements'][$modelName]['elements'] as $elementName => $element) {
                     if (!empty($element['readonly']) && isset($post[$className][$elementName])) {
-                        // Remove readonly fields from the POST data
+                        // Remove a readonly field from the POST data
                         unset($post[$className][$elementName]);
                     }
                 }
