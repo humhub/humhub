@@ -9,7 +9,6 @@
 namespace humhub\models;
 
 use humhub\components\SettingActiveRecord;
-use humhub\libs\BaseSettingsManager;
 use Yii;
 use yii\base\Exception;
 
@@ -138,7 +137,7 @@ class Setting extends SettingActiveRecord
      * @param string $name
      * @param string $moduleId
      */
-    public static function fixModuleIdAndName($name, $moduleId)
+    public static function fixModuleIdAndName($name, $moduleId = '')
     {
         static $translation = [
             'authentication_internal' => [
@@ -146,9 +145,9 @@ class Setting extends SettingActiveRecord
                 'defaultUserGroup' => ['auth.allowGuestAccess', 'user'],
             ],
             'mailing' => [
-                'systemEmailAddress' => ['mailer.systemEmailAddress', 'user'],
-                'mailing' => ['mailer.systemEmailName', 'user'],
-                'systemEmailReplyTo' => ['mailer.systemEmailReplyTo', 'user'],
+                'systemEmailAddress' => ['mailerSystemEmailAddress', 'user'],
+                'mailing' => ['mailerSystemEmailName', 'user'],
+                'systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'user'],
             ],
             'proxy' => [
                 'enabled' => ['proxy.enabled', 'base'],
@@ -158,6 +157,20 @@ class Setting extends SettingActiveRecord
                 'pass' => ['proxy.password', 'base'],
                 'noproxy' => ['proxy.noproxy', 'base'],
             ],
+            '' => [
+                'mailer.transportType' => ['mailerTransportType', 'base'],
+                'mailer.dsn' => ['mailerDsn', 'base'],
+                'mailer.hostname' => ['mailerHostname', 'base'],
+                'mailer.username' => ['mailerUsername', 'base'],
+                'mailer.password' => ['mailerPassword', 'base'],
+                'mailer.useSmtps' => ['mailerUseSmtps', 'base'],
+                'mailer.port' => ['mailerPort', 'base'],
+                'mailer.encryption' => ['mailerEncryption', 'base'],
+                'mailer.allowSelfSignedCerts' => ['mailerAllowSelfSignedCerts', 'base'],
+                'mailer.systemEmailAddress' => ['mailerSystemEmailAddress', 'base'],
+                'mailer.systemEmailName' => ['mailerSystemEmailName', 'base'],
+                'mailer.systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'base'],
+            ]
         ];
 
         return $translation[$moduleId][$name] ?? [$name, $moduleId];
