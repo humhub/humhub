@@ -25,6 +25,7 @@ HumHub Changelog
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 - Fix #7441: Hide "Remember me" option on mobile app
 - Fix #7443: Exclude inactive users from `followers` and `following` lists
+- Fix #7447: Update the comment counter when deleting a comment
 
 1.17.0 (January 13, 2025)
 -------------------------
