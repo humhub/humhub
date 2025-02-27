@@ -157,6 +157,20 @@ class Setting extends SettingActiveRecord
                 'pass' => ['proxy.password', 'base'],
                 'noproxy' => ['proxy.noproxy', 'base'],
             ],
+            'mailer' => [
+                'transportType' => ['mailerTransportType', 'base'],
+                'dsn' => ['mailerDsn', 'base'],
+                'hostname' => ['mailerHostname', 'base'],
+                'username' => ['mailerUsername', 'base'],
+                'password' => ['mailerPassword', 'base'],
+                'useSmtps' => ['mailerUseSmtps', 'base'],
+                'port' => ['mailerPort', 'base'],
+                'encryption' => ['mailerEncryption', 'base'],
+                'allowSelfSignedCerts' => ['mailerAllowSelfSignedCerts', 'base'],
+                'systemEmailAddress' => ['mailerSystemEmailAddress', 'base'],
+                'systemEmailName' => ['mailerSystemEmailName', 'base'],
+                'systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'base'],
+            ]
         ];
 
         return $translation[$moduleId][$name] ?? [$name, $moduleId];
