@@ -69,7 +69,7 @@ use yii\widgets\ActiveForm;
                         <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]); ?>
                         <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')]); ?>
                         <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]); ?>
-                        <?= $form->field($model, 'rememberMe')->checkbox(); ?>
+                        <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox(); ?>
                         <hr>
                         <div class="row">
                             <div class="col-md-4">

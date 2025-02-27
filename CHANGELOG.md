@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
 - Fix #7438: Allow admins to manage profile topics
+- Enh #7444: Rename Mailer settings keys to work with `.env`
 
 1.17.1 (Unreleased)
 -------------------
@@ -22,6 +23,9 @@ HumHub Changelog
 - Fix #7419: Reset modal window after close
 - Fix #7428: Fix picker autofocus
 - Enh #7424: New event on get registration groups
+- Enh #7437: Add beforeInitCallback `humhub.ui.picker`
+- Fix #7441: Hide "Remember me" option on mobile app
+- Fix #7443: Exclude inactive users from `followers` and `following` lists
 
 1.17.0 (January 13, 2025)
 -------------------------
