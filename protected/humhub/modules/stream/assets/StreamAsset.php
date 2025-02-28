@@ -14,6 +14,7 @@ use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentContainerAsset;
 use humhub\modules\ui\filter\assets\FilterAsset;
 use humhub\modules\user\assets\UserAsset;
+use Yii;
 
 /**
  * Stream related assets.
@@ -48,5 +49,12 @@ class StreamAsset extends AssetBundle
         CoreExtensionAsset::class,
     ];
 
+    public static function register($view)
+    {
+        $view->registerJsConfig('ui.showMore', [
+            'collapseAt' => Yii::$app->getModule('content')->collapsedContentHeight,
+        ]);
 
+        return parent::register($view);
+    }
 }

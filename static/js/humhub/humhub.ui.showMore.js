@@ -1,12 +1,10 @@
 humhub.module('ui.showMore', function (module, require, $) {
     var additions = require('ui.additions');
 
-    var DEFAULT_COLLAPSE_AT = 380;
-
     var CollapseContent = function (node, options) {
         this.options = options || {};
         this.$ = node instanceof $ ? node : $(node);
-        this.collapseAt = this.$.data('collapse-at') || DEFAULT_COLLAPSE_AT;
+        this.collapseAt = module.config.collapseAt || this.$.data('collapse-at') || 0;
         this.options.readMoreText = this.$.data('read-more-text') || module.text('readMore');
         this.options.readLessText = this.$.data('read-less-text') || module.text('readLess');
         this.init();
