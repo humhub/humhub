@@ -5,11 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\content\assets\ContentFormAsset;
 
 /* @var $contentContainer ContentContainerActiveRecord */
+/* @var $fileList array */
 /* @var $formClass string */
 
 ContentFormAsset::register($this);
@@ -18,5 +19,8 @@ ContentFormAsset::register($this);
 <?= WallCreateContentMenu::widget(['contentContainer' => $contentContainer]) ?>
 
 <?php if ($formClass) : ?>
-    <?= $formClass::widget(['contentContainer' => $contentContainer]) ?>
+    <?= $formClass::widget([
+        'contentContainer' => $contentContainer,
+        'fileList' => $fileList,
+    ]) ?>
 <?php endif; ?>

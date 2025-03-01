@@ -159,6 +159,15 @@ class UploadInput extends JsWidget
      */
     public $attach = true;
 
+    /**
+     * pre-uploaded File GUIDs to be attached to the new content
+     *
+     * E.g., if the mobile app uploads files, the guid of the files are stored here, and then reposted to WallCreateContentForm to be attached to the new content
+     *
+     * @var ?array
+     */
+    public $fileList;
+
     public function init()
     {
         parent::init();
@@ -182,6 +191,9 @@ class UploadInput extends JsWidget
             foreach (static::getSubmittedFiles($this->model, $this->attribute, $this->submitName) as $file) {
                 $result .= Html::hiddenInput($this->submitName, $file->guid);
             }
+        }
+        foreach ((array)$this->fileList as $file) {
+            $result .= Html::hiddenInput($this->submitName, $file);
         }
 
         return $result;

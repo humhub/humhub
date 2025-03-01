@@ -39,6 +39,15 @@ class WallCreateContentFormFooter extends Widget
     public $contentContainer;
 
     /**
+     * pre-uploaded File GUIDs to be attached to the new content
+     *
+     * E.g., if the mobile app uploads files, the guid of the files are stored here, and then reposted to WallCreateContentForm to be attached to the new content
+     *
+     * @var ?array
+     */
+    public $fileList;
+
+    /**
      * @inheritdoc
      */
     public function init()
@@ -61,6 +70,7 @@ class WallCreateContentFormFooter extends Widget
     {
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentFormFooter', [
             'contentContainer' => $this->contentContainer,
+            'fileList' => $this->fileList,
             'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
             'submitButtonText' => $this->submitButtonText,
             'canSwitchVisibility' => $this->contentContainer->visibility !== Space::VISIBILITY_NONE && $this->contentContainer->can(CreatePublicContent::class),

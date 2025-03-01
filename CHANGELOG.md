@@ -16,6 +16,7 @@ HumHub Changelog
 - Fix #7428: Fix picker autofocus
 - Enh #7424: New event on get registration groups
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
+- Enh: Add the possibility to create a content from a modal for the Mobile app Share Intend feature, in the Profile, a Space, or a new Conversation
 
 1.17.0 (January 13, 2025)
 -------------------------

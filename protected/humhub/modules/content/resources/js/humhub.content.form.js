@@ -69,7 +69,11 @@ humhub.module('content.form', function (module, require, $) {
             if (!response.errors) {
                 event.trigger('humhub:content:newEntry', response.output, this);
                 event.trigger('humhub:content:afterSubmit', response.output, this);
-                that.resetForm();
+                if ($('#create-content-modal').length) {
+                    $("#globalModal").modal("hide");
+                } else {
+                    that.resetForm();
+                }
             } else {
                 that.handleError(response);
             }
