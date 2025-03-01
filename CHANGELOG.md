@@ -7,6 +7,7 @@ HumHub Changelog
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
 - Enh #7444: Rename Mailer settings keys to work with `.env`
+- Fix #7450: Fix stream load suppressed when previous content is deleted/archived
 
 1.17.1 (Unreleased)
 -------------------
