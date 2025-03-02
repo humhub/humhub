@@ -14,6 +14,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
 use yii\db\IntegrityException;
+use yii\helpers\Url;
 
 class CreateContentForm extends Model
 {
@@ -129,7 +130,7 @@ class CreateContentForm extends Model
 
     public function getSpaceSearchUrl()
     {
-        return '/content/content/create-search-space';
+        return Url::to(['/content/content/create-search-space']);
     }
 
     public static function getSpaceSearchQuery(): ActiveQuerySpace
