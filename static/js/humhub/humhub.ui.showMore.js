@@ -1,6 +1,8 @@
 humhub.module('ui.showMore', function (module, require, $) {
     var additions = require('ui.additions');
 
+    alert(module.config.collapseAt);
+
     var CollapseContent = function (node, options) {
         this.options = options || {};
         this.$ = node instanceof $ ? node : $(node);
