@@ -38,7 +38,7 @@ return [
   'Fieldtype' => 'Тип поля',
   'First name' => 'Имя',
   'Followers' => 'Подписчики',
-  'Following' => 'Подписан(а)',
+  'Following' => 'Подписки',
   'Friends' => 'Друзья',
   'Gender' => 'Пол',
   'General' => 'Основная информация',

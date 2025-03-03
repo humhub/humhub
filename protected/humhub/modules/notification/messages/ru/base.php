@@ -1,4 +1,4 @@
-<?php
+<?php /* Translated by Paul (https://paul.bid) www.paul.bid@gmail.com */
 return [
   '<strong>Notification</strong> Overview' => '<strong>Просмотр</strong> уведомлений',
   '<strong>Notification</strong> Settings' => '<strong>Настройки</strong> уведомлений',
@@ -14,17 +14,17 @@ return [
   'Notifications are sent directly to your users to inform them about new activities in your network.' => 'Уведомления отправляются непосредственно вашим пользователям, чтобы информировать их о новых действиях в вашей сети.',
   'Notifications are sent instantly to you to inform you about new activities in your network.' => 'Вам мгновенно отправляются уведомления, информирующие о новых действиях в вашей сети.',
   'Open the notification dropdown menu' => 'Откройте выпадающее меню уведомлений',
-  'Others' => '',
+  'Others' => 'Прочие',
   'Receive \'New Content\' Notifications for the following spaces' => 'Получайте уведомления о «новом контенте» для следующих сообществ',
   'Reset for all users' => 'Сброс для всех пользователей',
   'Reset to defaults' => 'Сброс к значениям по умолчанию',
-  'Seen' => '',
+  'Seen' => 'Просмотренные',
   'Show all notifications' => 'Показать все уведомления',
   'The requested content is not valid or was removed!' => 'Запрашиваемый контент недействителен или был удалён!',
   'There are no notifications yet.' => 'Уведомлений пока нет.',
   'This view allows you to configure your notification settings by selecting the desired targets for the given notification categories.' => 'Здесь можно настроить параметры уведомлений, выбрав нужные настройки для указанных категорий уведомлений.',
   'Type' => 'Тип',
-  'Unseen' => '',
+  'Unseen' => 'Непросмотренные',
   'View online:' => 'Просмотр онлайн:',
   '{displayName} and {displayName2}' => '{displayName} и {displayName2}',
   '{displayName} and {number} others' => '{displayName} и {number} других',
