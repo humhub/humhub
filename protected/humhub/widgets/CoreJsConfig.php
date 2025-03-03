@@ -233,6 +233,7 @@ class CoreJsConfig extends Widget
                     ],
                 ],
                 'ui.showMore' => [
+                    'collapseAt' => Yii::$app->getModule('content')->collapsedContentHeight,
                     'text' => [
                         'readMore' => Yii::t('UiModule.base', 'Read more'),
                         'readLess' => Yii::t('UiModule.base', 'Collapse'),

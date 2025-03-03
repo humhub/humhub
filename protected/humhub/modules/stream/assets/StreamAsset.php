@@ -47,6 +47,4 @@ class StreamAsset extends AssetBundle
         UserAsset::class,
         CoreExtensionAsset::class,
     ];
-
-
 }

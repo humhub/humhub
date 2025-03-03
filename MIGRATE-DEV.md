@@ -23,6 +23,8 @@ Version 1.18
 | `mailer.systemEmailName`         | `mailerSystemEmailName`        |
 | `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
 
+- `showMore:collapseAt` is not configurable from `\humhub\modules\content\Module::$collapsedContentHeight`, default values is 0
+
 Version 1.17.1
 ---------------
 

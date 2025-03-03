@@ -55,6 +55,12 @@ class Module extends \humhub\components\Module
     public $emailSubjectDailyUpdate = null;
 
     /**
+     * @since 1.18
+     * @var int collapsed content block height for showMore
+     */
+    public int $collapsedContentHeight = 0;
+
+    /**
      * @since 1.2
      * @var int Maximum allowed file uploads for posts/comments
      */
