@@ -160,13 +160,11 @@ class UploadInput extends JsWidget
     public $attach = true;
 
     /**
-     * pre-uploaded File GUIDs to be attached to the new content
+     * Pre-uploaded File GUIDs to be attached to the new content
      *
-     * E.g., if the mobile app uploads files, the guid of the files are stored here, and then reposted to WallCreateContentForm to be attached to the new content
-     *
-     * @var ?array
+     * @var array
      */
-    public $fileList;
+    public $fileList = [];
 
     public function init()
     {

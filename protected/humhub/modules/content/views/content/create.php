@@ -32,7 +32,7 @@ $targetHeader = [
 ?>
 <?php ModalDialog::begin([
     'id' => 'create-content-modal',
-    'header' => $targetHeader[$model->target] ?? Yii::t('ContentModule.base', 'Create new content'),
+    'header' => $targetHeader[$model->target] ?? Yii::t('ContentModule.base', 'Select a target'),
 ]) ?>
 
 <?php $form = ActiveForm::begin() ?>
@@ -50,7 +50,7 @@ $targetHeader = [
                 'closeButton' => false,
             ]) ?>
         <?php else: ?>
-            <?= $form->field($model, 'target')->radioList($targetNames, ['data-action-change' => 'ui.modal.submit']) ?>
+            <?= $form->field($model, 'target')->radioList($targetNames, ['data-action-change' => 'ui.modal.submit'])->label(false) ?>
         <?php endif; ?>
 
     <?php else: ?>
@@ -92,15 +92,18 @@ $targetHeader = [
 <script <?= Html::nonce() ?>>
     $(function () {
         <?php if (
-        $model->target === User::class
-        || ($model->target === Space::class && $model->targetSpace)
+            $model->target === User::class
+            || ($model->target === Space::class && $model->targetSpace)
         ): ?>
+
         humhub.modules.content.form.init();
         $('.contentForm_options').show();
         $('#create-content-modal').find('input[type=text], textarea, .ProseMirror').eq(0).trigger('click').focus();
 
         <?php elseif ($model->target === Message::class): ?>
+
         humhub.modules.ui.modal.global.load("<?= Url::to(['/mail/mail/create']) ?>");
+
         <?php endif; ?>
     });
 </script>

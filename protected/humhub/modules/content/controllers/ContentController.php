@@ -59,7 +59,7 @@ class ContentController extends Controller
     public function actionCreate()
     {
         $model = new CreateContentForm();
-        $model->fileList = Yii::$app->request->get('fileList');
+        $model->fileList = (array)Yii::$app->request->get('fileList');
 
         if ($model->load(Yii::$app->request->post())) {
             $model->validate();
@@ -71,11 +71,12 @@ class ContentController extends Controller
     }
 
     /**
-     * Returns a workspace list by json
+     * Returns a Space list by json
      *
      * It can be filtered by keyword.
+     * @throws \Exception
      */
-    public function actionCreateSearchSpace()
+    public function actionSpaceSearchJson()
     {
         $query = CreateContentForm::getSpaceSearchQuery();
         $query->search(Yii::$app->request->get('keyword'));
@@ -85,7 +86,7 @@ class ContentController extends Controller
 
         $query->offset($pagination->offset)->limit($pagination->limit);
 
-        return $this->asJson($this->prepareResult($query->all()));
+        return $this->asJson($this->prepareSpaceResult($query->all()));
     }
 
     /**
@@ -93,7 +94,7 @@ class ContentController extends Controller
      * @return array
      * @throws \Exception
      */
-    protected function prepareResult($spaces): array
+    protected function prepareSpaceResult($spaces): array
     {
         $target = Yii::$app->request->get('target');
 

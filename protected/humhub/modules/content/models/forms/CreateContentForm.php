@@ -16,31 +16,47 @@ use yii\base\Model;
 use yii\db\IntegrityException;
 use yii\helpers\Url;
 
+/**
+ * CreateContentForm is the model behind the create content form.
+ *
+ * It allows creating a content form a global page and selecting a target such as the Profile, a Space or a new Conversation.
+ *
+ * @property-read array $targetNames
+ * @property-read mixed $spaceSearchUrl
+ */
 class CreateContentForm extends Model
 {
     /**
+     * Target class name of the content to be created
+     *
      * @var ?string
      */
     public $target;
 
     /**
+     * Target Space of the content to be created
+     *
      * @var ?Space
      */
     public $targetSpace;
 
     /**
+     * Form field to select the target space (array of maximum 1 element)
+     *
      * @var ?array
      */
     public $targetSpaceGuids;
 
     /**
-     * pre-uploaded File GUIDs to be attached to the new content
+     * Pre-uploaded File GUIDs to be attached to the new content
      *
-     * E.g., if the mobile app uploads files, the guid of the files are stored here, and then reposted to WallCreateContentForm to be attached to the new content
+     * E.g., if the mobile app uploads files, the GUIDs of the files are stored here,
      *
-     * @var ?array
+     * and then forwarded to WallCreateContentForm to be attached to the new content
+     *
+     * @var array
      */
-    public $fileList;
+    public $fileList = [];
 
     /**
      * @inerhitdoc
@@ -49,7 +65,7 @@ class CreateContentForm extends Model
      * @throws InvalidConfigException
      * @throws Throwable
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
 
@@ -59,7 +75,7 @@ class CreateContentForm extends Model
         }
     }
 
-    public function afterValidate()
+    public function afterValidate(): void
     {
         parent::afterValidate();
 
@@ -71,7 +87,7 @@ class CreateContentForm extends Model
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['target'], 'string'],
@@ -82,7 +98,7 @@ class CreateContentForm extends Model
     /**
      * @inerhitdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'target' => Yii::t('ContentModule.base', 'Select a target'),
@@ -91,7 +107,7 @@ class CreateContentForm extends Model
     }
 
     /**
-     * @return array
+     * @return array - key: target class name, value: target name
      * @throws Exception
      * @throws IntegrityException
      * @throws InvalidConfigException
@@ -128,9 +144,9 @@ class CreateContentForm extends Model
         return $targetNames;
     }
 
-    public function getSpaceSearchUrl()
+    public function getSpaceSearchUrl(): string
     {
-        return Url::to(['/content/content/create-search-space']);
+        return Url::to(['/content/content/space-search-json']);
     }
 
     public static function getSpaceSearchQuery(): ActiveQuerySpace
