@@ -12,6 +12,7 @@ HumHub Changelog
 - Enh #7454: Upgrade compose packages
 - Fix #7443: Exclude inactive users from `followers` and `following` lists
 - Fix #7447: Update the comment counter when deleting a comment
+- Fix #7456: Fix setting manager backwards compatibility
 
 1.17.1 (Unreleased)
 -------------------
