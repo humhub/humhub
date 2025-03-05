@@ -154,12 +154,7 @@ abstract class BaseSettingsManager extends Component
      */
     public function get(string $name, $default = null)
     {
-        [$name, $moduleId] = Setting::fixModuleIdAndName($name, $this->moduleId);
-
-        if ($moduleId != $this->moduleId) {
-            $this->moduleId = $moduleId;
-            $this->loadValues();
-        }
+        $name = Setting::fixDeprecatedSettingKeys($name);
 
         $value = $this->_loaded[$name] ?? null;
 
