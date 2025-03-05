@@ -10,6 +10,8 @@ HumHub Changelog
 - Fix #7451: Fix Module permissions visibility in content containers when not enabled
 - Fix #7450: Fix stream load suppressed when previous content is deleted/archived
 - Enh #7454: Upgrade compose packages
+- Fix #7443: Exclude inactive users from `followers` and `following` lists
+- Fix #7447: Update the comment counter when deleting a comment
 
 1.17.1 (Unreleased)
 -------------------
@@ -27,8 +29,8 @@ HumHub Changelog
 - Enh #7424: New event on get registration groups
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 - Fix #7441: Hide "Remember me" option on mobile app
-- Fix #7443: Exclude inactive users from `followers` and `following` lists
-- Fix #7447: Update the comment counter when deleting a comment
+- Enh #7408: Update code to manage users from external modules
+- Fix #7453: Fix registration form submit
 
 1.17.0 (January 13, 2025)
 -------------------------
