@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use humhub\components\SettingActiveRecord;
 use humhub\exceptions\InvalidArgumentTypeException;
+use humhub\models\Setting;
 use Stringable;
 use Yii;
 use yii\base\Component;
@@ -153,6 +154,12 @@ abstract class BaseSettingsManager extends Component
      */
     public function get(string $name, $default = null)
     {
+        [$name, $moduleId] = Setting::fixModuleIdAndName($name, $this->moduleId);
+
+        if ($moduleId != $this->moduleId) {
+            $this->loadValues();
+        }
+
         $value = $this->_loaded[$name] ?? null;
 
         // make sure it is an int, if it is possible
