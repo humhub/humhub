@@ -8,6 +8,25 @@ Module Migration Guide
 - `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
 
+### Behaviour change
+
+- The following Mailer settings keys have been renamed to work with `.env`:
+
+| Old Key                          | New Key                        |
+|----------------------------------|-------------------------------|
+| `mailer.transportType`           | `mailerTransportType`          |
+| `mailer.dsn`                     | `mailerDsn`                    |
+| `mailer.hostname`                | `mailerHostname`               |
+| `mailer.username`                | `mailerUsername`               |
+| `mailer.password`                | `mailerPassword`               |
+| `mailer.useSmtps`                | `mailerUseSmtps`               |
+| `mailer.port`                    | `mailerPort`                   |
+| `mailer.encryption`              | `mailerEncryption`             |
+| `mailer.allowSelfSignedCerts`    | `mailerAllowSelfSignedCerts`   |
+| `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
+| `mailer.systemEmailName`         | `mailerSystemEmailName`        |
+| `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
+
 Version 1.17.1
 ---------------
 

@@ -134,7 +134,7 @@ class InstallController extends Controller
         InitialData::bootstrap();
 
         Yii::$app->settings->set('name', $site_name);
-        Yii::$app->settings->set('mailer.systemEmailName', $site_email);
+        Yii::$app->settings->set('mailerSystemEmailName', $site_email);
         Yii::$app->settings->set('secret', UUID::v4());
 
         Yii::$app->installationState->setInstalled();
