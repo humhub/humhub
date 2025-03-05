@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #7451: Fix Module permissions visibility in content containers when not enabled
 - Fix #7450: Fix stream load suppressed when previous content is deleted/archived
 - Enh #7454: Upgrade compose packages
+- Fix #7456: Fix setting manager backwards compatibility
 
 1.17.1 (Unreleased)
 -------------------
