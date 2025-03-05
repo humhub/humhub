@@ -39,7 +39,7 @@ class SettingTest extends SettingActiveRecordTest
         $this->assertCount(0, $settingAfter, "Setting 'testSetting' for 'base' was not deleted.");
     }
 
-    public function testDeprecatedFixModuleIdAndName()
+    public function testDeprecatedFixKey()
     {
         $this->assertEquals('foo', Setting::fixDeprecatedSettingKeys('foo'), "Translation messed things up!");
 
