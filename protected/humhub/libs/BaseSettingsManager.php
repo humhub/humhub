@@ -157,6 +157,7 @@ abstract class BaseSettingsManager extends Component
         [$name, $moduleId] = Setting::fixModuleIdAndName($name, $this->moduleId);
 
         if ($moduleId != $this->moduleId) {
+            $this->moduleId = $moduleId;
             $this->loadValues();
         }
 
