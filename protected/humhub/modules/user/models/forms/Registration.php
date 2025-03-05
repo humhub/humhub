@@ -84,16 +84,9 @@ class Registration extends HForm
             $this->enableUserApproval = false;
         }
 
-        return parent::init();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function render($form)
-    {
         $this->setFormDefinition();
-        return parent::render($form);
+
+        parent::init();
     }
 
     /**
