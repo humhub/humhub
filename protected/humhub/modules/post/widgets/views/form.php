@@ -9,6 +9,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var ActiveForm $form */
 /* @var Post $post */
 /* @var string $submitUrl */
+/* @var $fileList array */
 ?>
 
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
@@ -26,4 +27,5 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?= WallCreateContentFormFooter::widget([
     'contentContainer' => $post->content->container,
     'submitUrl' => $submitUrl,
+    'fileList' => $fileList,
 ]) ?>

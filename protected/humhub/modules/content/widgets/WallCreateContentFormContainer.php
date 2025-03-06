@@ -8,10 +8,10 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Sort;
-use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\components\Widget;
+use humhub\libs\Sort;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use yii\web\HttpException;
 
 /**
@@ -25,6 +25,13 @@ class WallCreateContentFormContainer extends Widget
      * @var ContentContainerActiveRecord this content will belong to
      */
     public $contentContainer;
+
+    /**
+     * Pre-uploaded File GUIDs to be attached to the new content
+     *
+     * @var array
+     */
+    public $fileList = [];
 
     /**
      * @inheritdoc
@@ -46,6 +53,7 @@ class WallCreateContentFormContainer extends Widget
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentFormContainer', [
             'contentContainer' => $this->contentContainer,
             'formClass' => $this->getTopSortedFormClass(),
+            'fileList' => $this->fileList,
         ]);
     }
 

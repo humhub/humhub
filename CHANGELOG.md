@@ -19,6 +19,7 @@ HumHub Changelog
 - Fix #7441: Hide "Remember me" option on mobile app
 - Enh #7408: Update code to manage users from external modules
 - Fix #7453: Fix registration form submit
+- Enh: Add the possibility to create a content from a modal for the Mobile app Share Intend feature, in the Profile, a Space, or a new Conversation
 
 1.17.0 (January 13, 2025)
 -------------------------

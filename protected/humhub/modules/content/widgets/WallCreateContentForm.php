@@ -39,6 +39,13 @@ abstract class WallCreateContentForm extends Widget
     public $contentContainer;
 
     /**
+     * Pre-uploaded File GUIDs to be attached to the new content
+     *
+     * @var array
+     */
+    public $fileList = [];
+
+    /**
      * @inheritdoc
      */
     public function init()
