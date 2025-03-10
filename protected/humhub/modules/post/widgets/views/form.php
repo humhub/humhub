@@ -16,7 +16,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
     'id' => 'contentForm_message',
     'form' => $form,
-    'layout' => RichTextField::LAYOUT_INLINE,
+    'layout' => $isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
     'pluginOptions' => ['maxHeight' => '300px'],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',
