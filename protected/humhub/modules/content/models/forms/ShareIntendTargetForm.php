@@ -2,10 +2,9 @@
 
 namespace humhub\modules\content\models\forms;
 
-use humhub\modules\mail\models\Message;
+use humhub\modules\content\services\ContentCreationService;
 use humhub\modules\mail\permissions\StartConversation;
 use humhub\modules\post\models\Post;
-use humhub\modules\space\components\ActiveQuerySpace;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Throwable;
@@ -17,14 +16,14 @@ use yii\db\IntegrityException;
 use yii\helpers\Url;
 
 /**
- * CreateContentForm is the model behind the create content form.
+ * Allows selecting the target when sharing files from the mobile app
  *
- * It allows creating a content form a global page and selecting a target such as the Profile, a Space or a new Conversation.
+ * @since 1.17.2
  *
  * @property-read array $targetNames
  * @property-read mixed $spaceSearchUrl
  */
-class CreateContentForm extends Model
+class ShareIntendTargetForm extends Model
 {
     /**
      * Target class name of the content to be created
@@ -128,7 +127,7 @@ class CreateContentForm extends Model
             $targetNames[User::class] = Yii::t('ContentModule.base', 'My profile');
         }
 
-        if (static::getSpaceSearchQuery()->exists()) { // Can post in at least one space
+        if ((new ContentCreationService())->searchSpaces()) { // Can post in at least one space
             $targetNames[Space::class] = Yii::t('ContentModule.base', 'A Space');
         }
 
@@ -136,7 +135,8 @@ class CreateContentForm extends Model
             $mailModule
             && Yii::$app->user->can(StartConversation::class)
         ) {
-            $targetNames[Message::class] = Yii::t('ContentModule.base', 'A message');
+            // TODO in mail module
+            // $targetNames[Message::class] = Yii::t('ContentModule.base', 'A message');
         }
 
         return $targetNames;
@@ -144,14 +144,6 @@ class CreateContentForm extends Model
 
     public function getSpaceSearchUrl(): string
     {
-        return Url::to(['/content/content/space-search-json']);
-    }
-
-    public static function getSpaceSearchQuery(): ActiveQuerySpace
-    {
-        return (new ActiveQuerySpace(Space::class))
-            ->visible()
-            ->filterBlockedSpaces()
-            ->andWhere(['space.status' => Space::STATUS_ENABLED]);
+        return Url::to(['/content/share-intend/space-search-json']);
     }
 }

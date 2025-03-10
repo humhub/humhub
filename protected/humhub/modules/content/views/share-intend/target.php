@@ -6,7 +6,7 @@
  */
 
 use humhub\libs\Html;
-use humhub\modules\content\models\forms\CreateContentForm;
+use humhub\modules\content\models\forms\ShareIntendTargetForm;
 use humhub\modules\mail\models\Message;
 use humhub\modules\post\widgets\Form;
 use humhub\modules\space\models\Space;
@@ -20,7 +20,7 @@ use yii\helpers\Url;
 
 /**
  * @var $this View
- * @var $model CreateContentForm
+ * @var $model ShareIntendTargetForm
  */
 
 $targetNames = $model->getTargetNames();
@@ -38,7 +38,7 @@ $targetHeader = [
 <?php $form = ActiveForm::begin() ?>
 
 <?php foreach ($model->fileList as $index => $file) : ?>
-    <?= Html::hiddenInput(CreateContentForm::class . "[fileList][$index]", $file) ?>
+    <?= Html::hiddenInput(ShareIntendTargetForm::class . "[fileList][$index]", $file) ?>
 <?php endforeach; ?>
 
 <div class="modal-body">
@@ -78,6 +78,7 @@ $targetHeader = [
                     <?= Form::widget([
                         'contentContainer' => $model->targetSpace,
                         'fileList' => $model->fileList,
+                        'isModal' => true,
                     ]) ?>
                 </div>
             <?php endif; ?>

@@ -12,11 +12,9 @@ use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\forms\AdminDeleteContentForm;
-use humhub\modules\content\models\forms\CreateContentForm;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePublicContent;
-use humhub\modules\content\services\ContentCreationService;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\stream\actions\StreamEntryResponse;
@@ -48,37 +46,6 @@ class ContentController extends Controller
                 'class' => AccessControl::class,
             ],
         ];
-    }
-
-    /**
-     * @param $fileList array pre-uploaded File GUIDs to be attached to the new content
-     * @return string
-     */
-    public function actionCreate()
-    {
-        $model = new CreateContentForm();
-        $model->fileList = (array)Yii::$app->request->get('fileList');
-
-        if ($model->load(Yii::$app->request->post())) {
-            $model->validate();
-        }
-
-        return $this->renderAjax('create', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Returns a Space list by json
-     *
-     * It can be filtered by keyword.
-     * @throws \Exception
-     */
-    public function actionSpaceSearchJson()
-    {
-        $shareService = new ContentCreationService();
-        $spaces = $shareService->searchSpaces(Yii::$app->request->get('keyword'));
-        return $this->asJson($spaces);
     }
 
     /**

@@ -3,7 +3,7 @@ HumHub Changelog
 
 1.17.2 (Unreleased)
 ----------------------
-- Enh #7455: Add the possibility to create a content from a modal for the Mobile app Share Intend feature, in the Profile, a Space, or a new Conversation
+- Enh #7455: Add Share Intend feature for the Mobile app
 
 1.17.1 (March 6, 2025)
 ----------------------

@@ -30,8 +30,11 @@ class ContentCreationService
         $spaces = Space::find()
             ->visible($this->user)
             ->filterBlockedSpaces($this->user)
-            ->andWhere(['space.status' => Space::STATUS_ENABLED])
-            ->search($keyword);
+            ->andWhere(['space.status' => Space::STATUS_ENABLED]);
+
+        if ($keyword) {
+            $spaces->search($keyword);
+        }
 
         if ($this->record?->content?->container instanceof Space) {
             $spaces->andWhere(['!=', 'space.id', $this->record->content->container->id]);
