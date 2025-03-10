@@ -16,16 +16,14 @@ use humhub\modules\content\models\forms\CreateContentForm;
 use humhub\modules\content\models\forms\ScheduleOptionsForm;
 use humhub\modules\content\Module;
 use humhub\modules\content\permissions\CreatePublicContent;
+use humhub\modules\content\services\ContentCreationService;
 use humhub\modules\content\widgets\AdminDeleteModal;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
-use humhub\modules\space\models\Space;
-use humhub\modules\space\widgets\Chooser;
 use humhub\modules\stream\actions\StreamEntryResponse;
 use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
-use yii\data\Pagination;
 use yii\db\IntegrityException;
 use yii\web\ForbiddenHttpException;
 use yii\web\NotFoundHttpException;
@@ -78,33 +76,9 @@ class ContentController extends Controller
      */
     public function actionSpaceSearchJson()
     {
-        $query = CreateContentForm::getSpaceSearchQuery();
-        $query->search(Yii::$app->request->get('keyword'));
-
-        $countQuery = clone $query;
-        $pagination = new Pagination(['totalCount' => $countQuery->count(), 'pageSizeParam' => 'limit']);
-
-        $query->offset($pagination->offset)->limit($pagination->limit);
-
-        return $this->asJson($this->prepareSpaceResult($query->all()));
-    }
-
-    /**
-     * @param $spaces Space[] array of spaces
-     * @return array
-     * @throws \Exception
-     */
-    protected function prepareSpaceResult($spaces): array
-    {
-        $target = Yii::$app->request->get('target');
-
-        $json = [];
-        $withChooserItem = ($target === 'chooser');
-        foreach ($spaces as $space) {
-            $json[] = Chooser::getSpaceResult($space, $withChooserItem);
-        }
-
-        return $json;
+        $shareService = new ContentCreationService();
+        $spaces = $shareService->searchSpaces(Yii::$app->request->get('keyword'));
+        return $this->asJson($spaces);
     }
 
     /**
