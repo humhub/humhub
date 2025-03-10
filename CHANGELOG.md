@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.2 (Unreleased)
+----------------------
+- Enh #7455: Add Share Intend feature for the Mobile app
+
 1.17.1 (March 6, 2025)
 ----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value

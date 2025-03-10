@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -17,13 +18,14 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
-use yii\helpers\Html;
 
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
 /* @var $fileHandlers BaseFileHandler[] */
 /* @var $canSwitchVisibility bool */
 /* @var $contentContainer ContentContainerActiveRecord */
+/* @var $fileList array */
+/* @var $isModal bool */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
 ?>
@@ -61,7 +63,8 @@ use yii\helpers\Html;
             'progress' => '#contentFormFiles_progress',
             'preview' => '#contentFormFiles_preview',
             'dropZone' => '#contentFormBody',
-            'max' => Yii::$app->getModule('content')->maxAttachedFiles
+            'max' => Yii::$app->getModule('content')->maxAttachedFiles,
+            'fileList' => $fileList,
         ]); ?>
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
@@ -104,13 +107,15 @@ use yii\helpers\Html;
                                 ->options([
                                     'data-state' => Content::STATE_DRAFT,
                                     'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
-                                    'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
+                                    'data-button-title' => Yii::t('ContentModule.base', 'Save as draft'),
                                 ]) ?>
                         </li>
-                        <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
-                                ->icon('clock-o') ?>
-                        </li>
+                        <?php if (!$isModal): ?>
+                            <li>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                    ->icon('clock-o') ?>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </li>
             </ul>
@@ -118,5 +123,10 @@ use yii\helpers\Html;
     </div>
 
     <?= UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
-    <?= FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
+    <?= FilePreview::widget([
+        'id' => 'contentFormFiles_preview',
+        'edit' => true,
+        'items' => $fileList,
+        'options' => ['style' => 'margin-top:10px;'],
+    ]) ?>
 </div><!-- /contentForm_Options -->
