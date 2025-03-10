@@ -27,13 +27,6 @@ class WallCreateContentFormContainer extends Widget
     public $contentContainer;
 
     /**
-     * Pre-uploaded File GUIDs to be attached to the new content
-     *
-     * @var array
-     */
-    public $fileList = [];
-
-    /**
      * @inheritdoc
      */
     public function init()
@@ -53,7 +46,6 @@ class WallCreateContentFormContainer extends Widget
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentFormContainer', [
             'contentContainer' => $this->contentContainer,
             'formClass' => $this->getTopSortedFormClass(),
-            'fileList' => $this->fileList,
         ]);
     }
 

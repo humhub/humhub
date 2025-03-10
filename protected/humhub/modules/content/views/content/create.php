@@ -7,8 +7,8 @@
 
 use humhub\libs\Html;
 use humhub\modules\content\models\forms\CreateContentForm;
-use humhub\modules\content\widgets\WallCreateContentFormContainer;
 use humhub\modules\mail\models\Message;
+use humhub\modules\post\widgets\Form;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpacePickerField;
 use humhub\modules\ui\form\widgets\ActiveForm;
@@ -58,7 +58,7 @@ $targetHeader = [
 
         <?php if ($model->target === User::class): ?>
             <div id="user-content-create-form" data-stream-create-content="stream.wall.WallStream">
-                <?= WallCreateContentFormContainer::widget([
+                <?= Form::widget([
                     'contentContainer' => Yii::$app->user->identity,
                     'fileList' => $model->fileList,
                 ]) ?>
@@ -74,7 +74,7 @@ $targetHeader = [
                 ]) ?>
             <?php else: ?>
                 <div id="space-content-create-form" data-stream-create-content="stream.wall.WallStream">
-                    <?= WallCreateContentFormContainer::widget([
+                    <?= Form::widget([
                         'contentContainer' => $model->targetSpace,
                         'fileList' => $model->fileList,
                     ]) ?>
