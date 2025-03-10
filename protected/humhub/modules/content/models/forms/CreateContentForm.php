@@ -53,10 +53,8 @@ class CreateContentForm extends Model
      * E.g., if the mobile app uploads files, the GUIDs of the files are stored here,
      *
      * and then forwarded to WallCreateContentForm to be attached to the new content
-     *
-     * @var array
      */
-    public $fileList = [];
+    public array $fileList = [];
 
     /**
      * @inerhitdoc

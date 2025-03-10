@@ -10,6 +10,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 /* @var Post $post */
 /* @var string $submitUrl */
 /* @var $fileList array */
+/* @var $isModal bool */
 ?>
 
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
@@ -28,4 +29,5 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     'contentContainer' => $post->content->container,
     'submitUrl' => $submitUrl,
     'fileList' => $fileList,
+    'isModal' => $isModal,
 ]) ?>

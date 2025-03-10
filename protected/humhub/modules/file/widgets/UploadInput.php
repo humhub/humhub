@@ -161,10 +161,8 @@ class UploadInput extends JsWidget
 
     /**
      * Pre-uploaded File GUIDs to be attached to the new content
-     *
-     * @var array
      */
-    public $fileList = [];
+    public array $fileList = [];
 
     public function init()
     {

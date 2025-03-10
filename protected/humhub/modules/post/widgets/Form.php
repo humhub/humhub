@@ -48,6 +48,7 @@ class Form extends WallCreateContentForm
             'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
             'submitUrl' => $this->submitUrl,
             'fileList' => $this->fileList,
+            'isModal' => $this->isModal,
         ], $additionalParams);
     }
 

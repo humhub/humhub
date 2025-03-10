@@ -25,6 +25,7 @@ use humhub\widgets\Link;
 /* @var $canSwitchVisibility bool */
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $fileList array */
+/* @var $isModal bool */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
 ?>
@@ -109,10 +110,12 @@ use humhub\widgets\Link;
                                     'data-button-title' => Yii::t('ContentModule.base', 'Save as draft'),
                                 ]) ?>
                         </li>
-                        <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
-                                ->icon('clock-o') ?>
-                        </li>
+                        <?php if (!$isModal): ?>
+                            <li>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                    ->icon('clock-o') ?>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </li>
             </ul>

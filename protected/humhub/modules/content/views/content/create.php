@@ -61,6 +61,7 @@ $targetHeader = [
                 <?= Form::widget([
                     'contentContainer' => Yii::$app->user->identity,
                     'fileList' => $model->fileList,
+                    'isModal' => true,
                 ]) ?>
             </div>
 
