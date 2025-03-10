@@ -1,8 +1,8 @@
 HumHub Changelog
 ================
 
-1.17.1 (Unreleased)
--------------------
+1.17.1 (March 6, 2025)
+----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
 - Fix #7375: Use default language for email invitation and show language chooser on registration form
 - Enh #7383: Improve SelfTest for Base URL 
