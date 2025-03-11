@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.2 (Unreleased)
+----------------------
+- Fix #7457: Fix changing of space visibility
+
 1.17.1 (March 6, 2025)
 ----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
