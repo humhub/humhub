@@ -4,6 +4,7 @@ HumHub Changelog
 1.17.2 (Unreleased)
 ----------------------
 - Fix #7457: Fix changing of space visibility
+- Fix: Formatted Arabic numbers displays 0 instead of the number
 
 1.17.1 (March 6, 2025)
 ----------------------

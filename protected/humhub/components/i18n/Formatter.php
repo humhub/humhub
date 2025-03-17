@@ -90,6 +90,12 @@ class Formatter extends \yii\i18n\Formatter
     public function asShortInteger($value, $options = [], $textOptions = [])
     {
         list($params, $position) = $this->formatNumber($value, null, 2, 1000, $options, $textOptions);
+
+        // If the number is not a decimal, e.g. Arabic, return it as it is
+        if (!is_numeric($params['nFormatted'])) {
+            return $params['nFormatted'];
+        }
+
         $params['nFormatted'] = floor((float)$params['nFormatted']);
 
         switch ($position) {
