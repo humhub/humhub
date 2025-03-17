@@ -94,8 +94,9 @@ class Registration extends HForm
      */
     protected function setFormDefinition()
     {
-        $this->definition = [];
-        $this->definition['elements'] = [];
+        if (!isset($this->definition['elements']) || !is_array($this->definition['elements'])) {
+            $this->definition['elements'] = [];
+        }
         $this->definition['elements']['User'] = $this->getUserFormDefinition();
         $this->definition['elements']['GroupUser'] = $this->getGroupFormDefinition();
         if ($this->enablePasswordForm) {

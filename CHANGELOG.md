@@ -18,6 +18,10 @@ HumHub Changelog
 - Fix #7447: Update the comment counter when deleting a comment
 - Fix #7456: Fix setting manager backwards compatibility
 
+1.17.2 (Unreleased)
+----------------------
+- Fix #7457: Fix changing of space visibility
+
 1.17.1 (March 6, 2025)
 ----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
