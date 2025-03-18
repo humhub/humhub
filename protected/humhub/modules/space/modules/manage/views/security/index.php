@@ -44,7 +44,7 @@ use humhub\libs\Html;
                     'action-confirm-header' => Yii::t('SpaceModule.base', 'Change visibility'),
                     'confirm-text' => Yii::t('SpaceModule.base', 'Warning: If you change the visibility settings of a Space from public to private, all content within that Space, including posts, comments, attachments etc. will also be set to private. This means that non-members will no longer be able to see, access, or interact with any of the content within that Space.'),
                 ],
-            ]
+            ],
         ); ?>
 
         <?= DataSaved::widget(); ?>
@@ -52,13 +52,3 @@ use humhub\libs\Html;
         <?php ActiveForm::end(); ?>
     </div>
 </div>
-
-<script <?= Html::nonce() ?>>
-    $('#space-visibility').on('change', function () {
-        if (this.value == 0) {
-            $('#space-join_policy, #space-default_content_visibility').val('0').prop('disabled', true);
-        } else {
-            $('#space-join_policy, #space-default_content_visibility').val('0').prop('disabled', false);
-        }
-    });
-</script>
