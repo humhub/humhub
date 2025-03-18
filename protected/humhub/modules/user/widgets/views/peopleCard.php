@@ -10,6 +10,7 @@ use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
 use humhub\modules\user\widgets\PeopleActionButtons;
 use humhub\modules\user\widgets\PeopleDetails;
+use humhub\modules\user\widgets\PeopleIcons;
 use humhub\modules\user\widgets\PeopleTagList;
 use yii\web\View;
 
@@ -28,9 +29,9 @@ use yii\web\View;
             'width' => 94,
             'showSelfOnlineStatus' => true,
         ]); ?>
-        <?php /*<div class="card-icons">
-            <?= PeopleIcons::widget(['user' => $user]); ?>
-        </div> */ ?>
+        <div class="card-icons">
+            <?= PeopleIcons::widget(['user' => $user]) ?>
+        </div>
     </div>
     <div class="card-body">
         <strong class="card-title"><?= Html::containerLink($user); ?></strong>

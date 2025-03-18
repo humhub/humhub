@@ -5,6 +5,7 @@ HumHub Changelog
 ----------------------
 - Fix #7457: Fix changing of space visibility
 - Fix #7464: Fix searching with not full latin words
+- Enh #7462: Activate people icons widget
 
 1.17.1 (March 6, 2025)
 ----------------------
