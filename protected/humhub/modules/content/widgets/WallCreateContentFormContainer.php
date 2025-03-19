@@ -8,10 +8,10 @@
 
 namespace humhub\modules\content\widgets;
 
-use humhub\libs\Sort;
-use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\components\Widget;
+use humhub\libs\Sort;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use yii\web\HttpException;
 
 /**

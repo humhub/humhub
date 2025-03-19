@@ -8,8 +8,8 @@
 
 namespace humhub\modules\space\controllers;
 
-use humhub\components\Controller;
 use humhub\components\behaviors\AccessControl;
+use humhub\components\Controller;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Chooser;
@@ -43,7 +43,7 @@ class BrowseController extends Controller
     /**
      * Returns a workspace list by json
      *
-     * It can be filtered by by keyword.
+     * It can be filtered by keyword.
      */
     public function actionSearchJson()
     {
