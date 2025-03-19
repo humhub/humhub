@@ -76,12 +76,4 @@ class UserPickerField extends ContentContainerPicker
         }
         return $result;
     }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getItemText($item)
-    {
-        return $item->getDisplayName();
-    }
 }
