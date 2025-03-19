@@ -2,7 +2,6 @@
 
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
-use humhub\widgets\DataSaved;
 use yii\bootstrap\ActiveForm;
 use humhub\libs\Html;
 
@@ -46,8 +45,6 @@ use humhub\libs\Html;
                 ],
             ],
         ); ?>
-
-        <?= DataSaved::widget(); ?>
 
         <?php ActiveForm::end(); ?>
     </div>
