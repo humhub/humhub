@@ -6,6 +6,7 @@
  */
 
 use humhub\modules\ui\view\components\View;
+use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use yii\helpers\Url;
 
@@ -16,12 +17,16 @@ use yii\helpers\Url;
 ?>
 
 <?php ModalDialog::begin(['header' => Yii::t('FileModule.base', 'Share file(s)')]) ?>
-<div class="modal-body">
-    <?php foreach ($shareTargets as $target): ?>
-        <a class="btn btn-primary btn-block" data-action-click="ui.modal.load"
-           data-action-url="<?= Url::to([$target['route']]) ?>">
-            <?= $target['title'] ?>
-        </a>
-    <?php endforeach; ?>
-</div>
+    <div class="modal-body">
+        <?php foreach ($shareTargets as $target): ?>
+            <a class="btn btn-primary btn-block" data-action-click="ui.modal.load"
+               data-action-url="<?= Url::to([$target['route']]) ?>">
+                <?= $target['title'] ?>
+            </a>
+        <?php endforeach; ?>
+    </div>
+
+    <div class="modal-footer">
+        <?= ModalButton::cancel() ?>
+    </div>
 <?php ModalDialog::end() ?>
