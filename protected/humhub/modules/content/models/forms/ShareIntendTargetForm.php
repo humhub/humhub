@@ -2,12 +2,13 @@
 
 namespace humhub\modules\content\models\forms;
 
+use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
 
 class ShareIntendTargetForm extends Model
 {
-    public $targetSpaceGuid;
+    public $targetContainerGuid;
 
     /**
      * @inheritdoc
@@ -15,12 +16,19 @@ class ShareIntendTargetForm extends Model
     public function rules(): array
     {
         return [
-            [['targetSpaceGuid'], 'required'],
+            [['targetContainerGuid'], 'required'],
         ];
     }
 
-    public function getSpaceSearchUrl(): string
+    public function attributeLabels()
     {
-        return Url::to(['space-search-json']);
+        return [
+            'targetContainerGuid' => Yii::t('ContentModule.base', 'Add to'),
+        ];
+    }
+
+    public function getContainerSearchUrl(): string
+    {
+        return Url::to(['container-search-json']);
     }
 }

@@ -12,11 +12,10 @@ use yii\helpers\Url;
 /**
  * @var $this View
  * @var $shareTargets array
- * @var $fileList array
  */
 ?>
 
-<?php ModalDialog::begin(['header' => Yii::t('FileModule.base', 'Share a file')]) ?>
+<?php ModalDialog::begin(['header' => Yii::t('FileModule.base', 'Share file(s)')]) ?>
 <div class="modal-body">
     <?php foreach ($shareTargets as $target): ?>
         <a class="btn btn-primary btn-block" data-action-click="ui.modal.load"

@@ -6,22 +6,29 @@
  */
 
 use humhub\libs\Html;
+use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\post\widgets\Form;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\modules\ui\view\components\View;
+use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
+use yii\helpers\StringHelper;
 
 /**
  * @var $this View
  * @var $fileList array
- * @var $shareTarget \humhub\modules\content\components\ContentContainerActiveRecord
+ * @var $shareTarget ContentContainerActiveRecord
  */
 ?>
 
 <?php ModalDialog::begin([
     'id' => 'create-content-modal',
-    'header' => Yii::t('FileModule.base', 'Share the file with a Post')
-    ]) ?>
+    'header' => Yii::t('FileModule.base', 'Post file(s) in {targetDisplayName}', [
+        'targetDisplayName' => $shareTarget->guid === Yii::$app->user->identity->guid ?
+            Yii::t('base', 'My Profile') :
+            Html::encode(StringHelper::truncate($shareTarget->displayName, 10)),
+    ]),
+]) ?>
 <?php $form = ActiveForm::begin() ?>
 
 <div class="modal-body">
@@ -32,6 +39,13 @@ use humhub\widgets\ModalDialog;
             'isModal' => true,
         ]) ?>
     </div>
+</div>
+
+<div class="modal-footer">
+    <?= ModalButton::defaultType(Yii::t('base', 'Back'))
+        ->load(['/post/share-intend'])
+        ->icon('back')
+        ->left() ?>
 </div>
 
 <?php ActiveForm::end() ?>

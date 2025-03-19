@@ -13,8 +13,10 @@ use humhub\components\Controller;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\forms\ShareIntendTargetForm;
-use humhub\modules\content\services\ContentCreationService;
+use humhub\modules\post\models\Post;
 use humhub\modules\space\helpers\CreateContentPermissionHelper;
+use humhub\modules\user\Module;
+use humhub\modules\user\widgets\UserPicker;
 use Yii;
 use yii\web\HttpException;
 
@@ -50,13 +52,13 @@ abstract class ShareIntendController extends Controller
 
         \humhub\modules\file\controllers\ShareIntendController::checkShareFileGuids();
 
-        if (!in_array($action->id, ['index', 'space-search-json'])) {
+        if (!in_array($action->id, ['index', 'container-search-json'])) {
             $this->initShareTarget();
         }
         return true;
     }
 
-    private function initShareTarget() : void
+    private function initShareTarget(): void
     {
         $shareTargetGuid = Yii::$app->session->get(self::SESSION_KEY_TARGET_GUID);
         $this->shareTarget = ContentContainer::findRecord($shareTargetGuid);
@@ -72,7 +74,7 @@ abstract class ShareIntendController extends Controller
         $model = new ShareIntendTargetForm();
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            Yii::$app->session->set(self::SESSION_KEY_TARGET_GUID, $model->targetSpaceGuid);
+            Yii::$app->session->set(self::SESSION_KEY_TARGET_GUID, $model->targetContainerGuid);
             $this->initShareTarget();
 
             return $this->actionCreate();
@@ -80,16 +82,29 @@ abstract class ShareIntendController extends Controller
 
         return $this->renderAjax('@content/views/share-intend/index', [
             'model' => $model,
+            'fileList' => \humhub\modules\file\controllers\ShareIntendController::getShareFileGuids(),
         ]);
     }
 
-    public function actionSpaceSearchJson()
+    public function actionContainerSearchJson()
     {
-        $spaces = CreateContentPermissionHelper::findSpaces(
+        $containers = CreateContentPermissionHelper::findSpaces(
             $this->getCreatePermissionClass(),
             Yii::$app->request->get('keyword'),
-            Yii::$app->user->identity
+            Yii::$app->user->identity,
         );
-        return $this->asJson($spaces);
+
+        /** @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        if (
+            !$userModule->profileDisableStream // The profile stream is enabled
+            && (new Post(Yii::$app->user->identity))->content->canEdit() // Can post in own profile
+        ) {
+            $currentUser = UserPicker::createJSONUserInfo(Yii::$app->user->identity);
+            $currentUser['text'] = Yii::t('base', 'My Profile');
+            array_unshift($containers, $currentUser);
+        }
+
+        return $this->asJson($containers);
     }
 }

@@ -8,13 +8,30 @@
 
 namespace humhub\modules\file\controllers;
 
+use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
 use Yii;
-use humhub\components\behaviors\AccessControl;
 use yii\web\HttpException;
+use yii\web\NotFoundHttpException;
 
 /**
- * @todo Add example how to add `shareTargets` via Events
+ * Modules can be added as an additional target by
+ * registering an event on `ShareIntendController::EVENT_INIT`
+ * and adding the following method to the Events class:
+ *
+ * ```
+ * public static function onShareIntendControllerInit($event)
+ * {
+ *     $event->sender->shareTargets[] = [
+ *         'title' => 'Share as Your Module',
+ *         'route' => '/your-module/share-intend/index',
+ *     ];
+ * }
+ * ```
+ *
+ * The module must have the ShareIntendController and view,
+ * similar to the Post module.
+ * The controller must extend \humhub\modules\content\controllers\ShareIntendController
  */
 final class ShareIntendController extends Controller
 {
@@ -31,22 +48,29 @@ final class ShareIntendController extends Controller
 
     public function init()
     {
-        parent::init();
-
         $this->shareTargets[] = [
             'title' => Yii::t('FileModule.base', 'Share as Post'),
             'route' => '/post/share-intend',
         ];
+
+        parent::init();
     }
 
     public function actionIndex()
     {
-        //TODO: Check if file guids are valid
-        Yii::$app->session->set('shareIntendFiles', Yii::$app->request->get('fileList'));
+        $fileList = Yii::$app->request->get('fileList');
+        if (!$fileList) {
+            throw new NotFoundHttpException('No files to share found!');
+        }
+
+        if (count($this->shareTargets) === 0) {
+            throw new NotFoundHttpException('No sharing targets found!');
+        }
+
+        Yii::$app->session->set('shareIntendFiles', $fileList);
 
         return $this->renderAjax('index', [
             'shareTargets' => $this->shareTargets,
-            'fileList' => Yii::$app->request->get('fileList'),
         ]);
     }
 
@@ -63,5 +87,4 @@ final class ShareIntendController extends Controller
     {
         return Yii::$app->session->get('shareIntendFiles');
     }
-
 }

@@ -23,9 +23,8 @@ final class CreateContentPermissionHelper
     public static function findSpaces(
         string $permissionClass,
         ?string $keyword = null,
-        ?IdentityInterface $user = null
-    ): array
-    {
+        ?IdentityInterface $user = null,
+    ): array {
         $user = $user ?? Yii::$app->user->identity;
 
         $spaces = Space::find()

@@ -6,16 +6,16 @@
  */
 
 use humhub\modules\content\models\forms\ShareIntendTargetForm;
-use humhub\modules\space\widgets\SpacePickerField;
+use humhub\modules\content\widgets\ContentContainerPicker;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
 use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 
 /**
  * @var $this View
  * @var $model ShareIntendTargetForm
+ * @var $fileList string[]
  */
 ?>
 
@@ -26,19 +26,20 @@ use humhub\widgets\ModalDialog;
 <?php $form = ActiveForm::begin() ?>
 
 <div class="modal-body">
-    <p>ToDo: Integrate Profile Option (in Picker via ContentContainerPicker?)</p>
-
-    <?= $form->field($model, 'targetSpaceGuid')->widget(SpacePickerField::class, [
+    <?= $form->field($model, 'targetContainerGuid')->widget(ContentContainerPicker::class, [
         'maxSelection' => 1,
+        'minInput' => 0,
         'focus' => true,
-        'url' => $model->getSpaceSearchUrl()
+        'url' => $model->getContainerSearchUrl(),
+        'options' => ['data-action-change' => 'ui.modal.submit'],
     ]) ?>
 </div>
 
 <div class="modal-footer">
-    <?= ModalButton::cancel() ?>
-    <?= Button::primary(Yii::t('base', 'Save'))
-        ->action('ui.modal.submit', ['index'])->submit()->loader(true) ?>
+    <?= ModalButton::defaultType(Yii::t('base', 'Back'))
+        ->load(['/file/share-intend', 'fileList' => $fileList])
+        ->icon('back')
+        ->left() ?>
 </div>
 
 <?php ActiveForm::end() ?>
