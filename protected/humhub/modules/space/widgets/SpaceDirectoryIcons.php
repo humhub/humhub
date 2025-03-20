@@ -9,7 +9,9 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\libs\Html;
 use humhub\modules\space\models\Space;
+use humhub\widgets\Link;
 use Yii;
 
 /**
@@ -26,26 +28,66 @@ class SpaceDirectoryIcons extends Widget
     public $space;
 
     /**
+     * @var string $separator Separator between icons
+     */
+    public string $separator = ' ';
+
+    /**
+     * @var array $icons An icon can be HTML code or object convertable to string
+     */
+    protected array $icons = [];
+
+    /**
+     * @inheritdoc
+     */
+    public function init()
+    {
+        $this->addMembersIcon();
+        parent::init();
+    }
+
+    /**
      * @inheritdoc
      */
     public function run()
     {
+        return implode($this->separator, $this->icons);
+    }
+
+    protected function addMembersIcon(): void
+    {
         if ($this->space->getAdvancedSettings()->hideMembers) {
-            return '';
+            return;
         }
 
+        $membersCount = Yii::$app->runtimeCache->getOrSet(
+            __METHOD__ . Yii::$app->user->id . '-' . $this->space->id,
+            fn() => $this->space->getMemberListService()->getReadableQuery()->count(),
+        );
+
+        $text = ' <span>' . Yii::$app->formatter->asShortInteger($membersCount) . '</span>';
+        $class = 'fa fa-users';
+
         $membership = $this->space->getMembership();
+        if ($membership && $membership->isPrivileged()) {
+            $icon = Link::withAction($text, 'ui.modal.load', $this->space->createUrl('/space/membership/members-list'))
+                ->cssClass($class);
+        } else {
+            $icon = Html::tag('span', $text, ['class' => $class]);
+        }
 
-        $membersCountQuery = $this->space->getMemberListService()->getReadableQuery();
-        $membersCount = Yii::$app->runtimeCache->getOrSet(__METHOD__ . Yii::$app->user->id . '-' . $this->space->id, function () use ($membersCountQuery) {
-            return $membersCountQuery->count();
-        });
+        $this->addIcon($icon);
+    }
 
-        return $this->render('spaceDirectoryIcons', [
-            'space' => $this->space,
-            'membersCount' => Yii::$app->formatter->asShortInteger($membersCount),
-            'canViewMembers' => $membership && $membership->isPrivileged(),
-        ]);
+    /**
+     * Add an icon to this widget
+     *
+     * @param mixed $icon HTML code or object convertable to string
+     * @return void
+     */
+    public function addIcon($icon): void
+    {
+        $this->icons[] = $icon;
     }
 
 }
