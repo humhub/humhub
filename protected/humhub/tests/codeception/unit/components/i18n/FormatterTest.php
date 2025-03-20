@@ -42,4 +42,35 @@ class FormatterTest extends Unit
             $this->assertEquals(Yii::$app->formatter->asShortInteger($numberValue), $result);
         }
     }
+
+    public function testAsShortIntegerArabic()
+    {
+        Yii::$app->formatter->locale = 'ar';
+
+        $testNumbers = [
+            1 => '١',
+            12 => '١٢',
+            123 => '١٢٣',
+            999 => '٩٩٩',
+            1000 => '١K',
+            1234 => '١K',
+            9990 => '٩K',
+            123456 => '١٢٣K',
+            123999 => '١٢٣K',
+            999999 => '٩٩٩K',
+            1234567 => '١M',
+            123456789 => '١٢٣M',
+            123999500 => '١٢٤M',
+            999999499 => '٩٩٩M',
+            999999500 => '١٠٠٠M',
+            1234567899 => '١B',
+            123456789999 => '١٢٣B',
+            12345678999999 => '١٢٣٤٥B',
+            999999999499999 => '٩٩٩٩٩٩B',
+            999999999500000 => '١٠٠٠٠٠٠B',
+        ];
+        foreach ($testNumbers as $numberValue => $result) {
+            $this->assertEquals(Yii::$app->formatter->asShortInteger($numberValue), $result);
+        }
+    }
 }

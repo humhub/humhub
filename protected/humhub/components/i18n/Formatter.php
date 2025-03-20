@@ -89,7 +89,11 @@ class Formatter extends \yii\i18n\Formatter
      */
     public function asShortInteger($value, $options = [], $textOptions = [])
     {
-        list($params, $position) = $this->formatNumber($value, 0, 2, 1000, $options, $textOptions);
+        list($params, $position) = $this->formatNumber($value, 3, 2, 1000, $options, $textOptions);
+
+        if ($position > 0) {
+            $params['nFormatted'] = mb_substr($params['nFormatted'], 0, -4);
+        }
 
         switch ($position) {
             case 0:
