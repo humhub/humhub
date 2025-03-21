@@ -18,6 +18,9 @@ HumHub Changelog
 1.17.2 (Unreleased)
 ----------------------
 - Fix #7457: Fix changing of space visibility
+- Fix #7464: Fix searching with not full latin words
+- Enh #7469: Refactor widget `SpaceDirectoryIcons` to handle from external modules
+- Fix #7471: Fix advanced searching by space filter
 
 1.17.1 (March 6, 2025)
 ----------------------
