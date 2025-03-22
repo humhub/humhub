@@ -1,11 +1,12 @@
 <?php
 
+use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\space\models\Space;
+use humhub\modules\ui\form\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $wallCreateContentForm WallCreateContentForm */
 /* @var $defaultVisibility int */
@@ -19,8 +20,9 @@ $this->registerJsConfig('content.form', [
     'text' => [
         'makePrivate' => Yii::t('ContentModule.base', 'Change to "Private"'),
         'makePublic' => Yii::t('ContentModule.base', 'Change to "Public"'),
-        'info.archived' => Yii::t('ContentModule.base', 'This space is archived.')
-    ]
+        'info.archived' => Yii::t('ContentModule.base', 'This space is archived.'),
+    ],
+    'redirectToContentContainerUrl' => Url::to(['/content/content/redirect-to-content-container']),
 ]);
 ?>
 

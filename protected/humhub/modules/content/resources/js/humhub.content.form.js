@@ -71,6 +71,10 @@ humhub.module('content.form', function (module, require, $) {
                 event.trigger('humhub:content:afterSubmit', response.output, this);
                 if ($('#create-content-modal').length) {
                     $("#globalModal").modal("hide");
+                    // If the dashboard stream is not displayed on the current page, redirect to the content container, to make sure the user sees the new content
+                    if (response.url && !$('#dashboard-stream').length) {
+                        client.pjax.redirect(module.config.redirectToContentContainerUrl + '?contentId=' + response.data.id);
+                    }
                 } else {
                     that.resetForm();
                 }
