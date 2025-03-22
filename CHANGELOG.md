@@ -7,6 +7,7 @@ HumHub Changelog
 - Fix #7464: Fix searching with not full latin words
 - Fix #7465: Formatted Arabic numbers displays 0 instead of the number
 - Fix #7471: Fix advanced searching by space filter
+- Fix #7472: Fix missing fields when creating a new user from admin
 
 1.17.1 (March 6, 2025)
 ----------------------

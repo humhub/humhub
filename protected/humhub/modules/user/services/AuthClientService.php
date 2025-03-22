@@ -123,9 +123,10 @@ class AuthClientService
             return null;
         }
 
-        $registration = new Registration();
-        $registration->enablePasswordForm = false;
-        $registration->enableEmailField = true;
+        $registration = new Registration([], null, [
+            'enablePasswordForm' => false,
+            'enableEmailField' => true,
+        ]);
 
         if ($this->authClient instanceof ApprovalBypass) {
             $registration->enableUserApproval = false;
