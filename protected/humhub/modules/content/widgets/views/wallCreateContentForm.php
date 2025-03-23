@@ -22,7 +22,7 @@ $this->registerJsConfig('content.form', [
         'makePublic' => Yii::t('ContentModule.base', 'Change to "Public"'),
         'info.archived' => Yii::t('ContentModule.base', 'This space is archived.'),
     ],
-    'redirectToContentContainerUrl' => Url::to(['/content/content/redirect-to-content-container']),
+    'redirectToContentContainerUrl' => Url::to(['/content/content/redirect-to-content-container', 'contentId' => 'the-content-id']),
 ]);
 ?>
 
