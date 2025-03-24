@@ -23,7 +23,7 @@ use yii\web\NotFoundHttpException;
  * public static function onShareIntendControllerInit($event)
  * {
  *     $event->sender->shareTargets[] = [
- *         'title' => 'Share as Your Module',
+ *         'title' => 'Your Module',
  *         'route' => '/your-module/share-intend/index',
  *     ];
  * }
@@ -49,7 +49,7 @@ final class ShareIntendController extends Controller
     public function init()
     {
         $this->shareTargets[] = [
-            'title' => Yii::t('FileModule.base', 'Share as Post'),
+            'title' => Yii::t('FileModule.base', 'Post'),
             'route' => '/post/share-intend',
         ];
 

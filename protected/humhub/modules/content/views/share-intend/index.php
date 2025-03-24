@@ -37,9 +37,7 @@ use humhub\widgets\ModalDialog;
 
 <div class="modal-footer">
     <?= ModalButton::defaultType(Yii::t('base', 'Back'))
-        ->load(['/file/share-intend', 'fileList' => $fileList])
-        ->icon('back')
-        ->left() ?>
+        ->load(['/file/share-intend', 'fileList' => $fileList]) ?>
 </div>
 
 <?php ActiveForm::end() ?>

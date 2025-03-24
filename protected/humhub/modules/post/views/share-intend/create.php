@@ -23,7 +23,7 @@ use yii\helpers\StringHelper;
 
 <?php ModalDialog::begin([
     'id' => 'create-content-modal',
-    'header' => Yii::t('FileModule.base', 'Post file(s) in {targetDisplayName}', [
+    'header' => Yii::t('FileModule.base', 'Share in {targetDisplayName}', [
         'targetDisplayName' => $shareTarget->guid === Yii::$app->user->identity->guid ?
             Yii::t('base', 'My Profile') :
             Html::encode(StringHelper::truncate($shareTarget->displayName, 10)),
@@ -43,9 +43,7 @@ use yii\helpers\StringHelper;
 
 <div class="modal-footer">
     <?= ModalButton::defaultType(Yii::t('base', 'Back'))
-        ->load(['/post/share-intend'])
-        ->icon('back')
-        ->left() ?>
+        ->load(['/post/share-intend']) ?>
 </div>
 
 <?php ActiveForm::end() ?>
