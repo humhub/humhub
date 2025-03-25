@@ -20,7 +20,7 @@ use humhub\widgets\ModalDialog;
 ?>
 
 <?php ModalDialog::begin([
-    'header' => Yii::t('ContentModule.base', 'Select a target'),
+    'header' => Yii::t('ContentModule.base', 'Share'),
 ]) ?>
 
 <?php $form = ActiveForm::begin() ?>
@@ -32,7 +32,7 @@ use humhub\widgets\ModalDialog;
         'focus' => true,
         'url' => $model->getContainerSearchUrl(),
         'options' => ['data-action-change' => 'ui.modal.submit'],
-    ]) ?>
+    ])->label(false) ?>
 </div>
 
 <div class="modal-footer">

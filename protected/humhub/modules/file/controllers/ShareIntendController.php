@@ -49,7 +49,7 @@ final class ShareIntendController extends Controller
     public function init()
     {
         $this->shareTargets[] = [
-            'title' => Yii::t('FileModule.base', 'Post'),
+            'title' => Yii::t('FileModule.base', 'Share as Post'),
             'route' => '/post/share-intend',
         ];
 

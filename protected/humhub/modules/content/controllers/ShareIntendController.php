@@ -94,12 +94,14 @@ abstract class ShareIntendController extends Controller
             Yii::$app->user->identity,
         );
 
+
         /** @var Module $userModule */
         $userModule = Yii::$app->getModule('user');
-        if (
+        $canPostInOwnProfile =
             !$userModule->profileDisableStream // The profile stream is enabled
-            && (new Post(Yii::$app->user->identity))->content->canEdit() // Can post in own profile
-        ) {
+            && (new Post(Yii::$app->user->identity))->content->canEdit(); // Can post in own profile
+
+        if ($canPostInOwnProfile) {
             $currentUser = UserPicker::createJSONUserInfo(Yii::$app->user->identity);
             $currentUser['text'] = Yii::t('base', 'My Profile');
             array_unshift($containers, $currentUser);

@@ -2,6 +2,8 @@
 
 namespace humhub\modules\content\models\forms;
 
+use humhub\modules\post\models\Post;
+use humhub\modules\user\Module;
 use Yii;
 use yii\base\Model;
 use yii\helpers\Url;
@@ -20,10 +22,18 @@ class ShareIntendTargetForm extends Model
         ];
     }
 
-    public function attributeLabels()
+    public function attributeHints(): array
     {
+        /** @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        $canPostInOwnProfile =
+            !$userModule->profileDisableStream // The profile stream is enabled
+            && (new Post(Yii::$app->user->identity))->content->canEdit(); // Can post in own profile
+
         return [
-            'targetContainerGuid' => Yii::t('ContentModule.base', 'Add to'),
+            'targetContainerGuid' => $canPostInOwnProfile ?
+                Yii::t('ContentModule.base', 'Select target Space/Profile.') :
+                Yii::t('ContentModule.base', 'Select target Space.'),
         ];
     }
 
