@@ -48,7 +48,10 @@ class Registration extends HForm
      */
     public $enableUserApproval = false;
 
-    public $disablePasswordForm = false;
+    /**
+     * @var bool show password creation form
+     */
+    public $enablePasswordForm = true;
 
     /**
      * @var User
@@ -82,7 +85,7 @@ class Registration extends HForm
         }
 
         if (Yii::$app->session->has('authClient')) {
-            $this->disablePasswordForm = true;
+            $this->enablePasswordForm = false;
         }
 
         $this->setFormDefinition();
@@ -100,7 +103,7 @@ class Registration extends HForm
         }
         $this->definition['elements']['User'] = $this->getUserFormDefinition();
         $this->definition['elements']['GroupUser'] = $this->getGroupFormDefinition();
-        if (!$this->disablePasswordForm) {
+        if ($this->enablePasswordForm) {
             $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
         }
 
@@ -210,7 +213,7 @@ class Registration extends HForm
         $this->models['User'] = $this->getUser();
         $this->models['Profile'] = $this->getProfile();
         $this->models['GroupUser'] = $this->getGroupUser();
-        if (!$this->disablePasswordForm) {
+        if ($this->enablePasswordForm) {
             $this->models['Password'] = $this->getPassword();
             if (!isset($this->models['Password']->mustChangePassword)) {
                 // Enable the checkbox by default on new user form:
