@@ -48,6 +48,8 @@ class Registration extends HForm
      */
     public $enableUserApproval = false;
 
+    public $disablePasswordForm = false;
+
     /**
      * @var User
      */
@@ -202,10 +204,12 @@ class Registration extends HForm
         $this->models['User'] = $this->getUser();
         $this->models['Profile'] = $this->getProfile();
         $this->models['GroupUser'] = $this->getGroupUser();
-        $this->models['Password'] = $this->getPassword();
-        if (!isset($this->models['Password']->mustChangePassword)) {
-            // Enable the checkbox by default on new user form:
-            $this->models['Password']->mustChangePassword = true;
+        if (!$this->disablePasswordForm) {
+            $this->models['Password'] = $this->getPassword();
+            if (!isset($this->models['Password']->mustChangePassword)) {
+                // Enable the checkbox by default on new user form:
+                $this->models['Password']->mustChangePassword = true;
+            }
         }
 
         return true;
@@ -213,6 +217,7 @@ class Registration extends HForm
 
     public function disablePasswordForm()
     {
+        $this->disablePasswordForm = true;
         unset($this->definition['elements']['Password']);
         unset($this->models['Password']);
     }
@@ -349,9 +354,9 @@ class Registration extends HForm
     }
 
     /**
-     * Returns Password model
+     * Returns GroupUser model
      *
-     * @return Password
+     * @return GroupUser
      */
     public function getGroupUser()
     {
