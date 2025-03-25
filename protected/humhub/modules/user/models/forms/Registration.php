@@ -34,11 +34,6 @@ class Registration extends HForm
     public const EVENT_AFTER_REGISTRATION = 'afterRegistration';
 
     /**
-     * @var bool show password creation form
-     */
-    public $enablePasswordForm = true;
-
-    /**
      * @var bool show checkbox to force to change password on first log in
      */
     public $enableMustChangePassword = false;
@@ -92,16 +87,15 @@ class Registration extends HForm
     /**
      * Builds HForm Definition to automatically build form output
      */
-    protected function setFormDefinition()
+    private function setFormDefinition()
     {
         if (!isset($this->definition['elements']) || !is_array($this->definition['elements'])) {
             $this->definition['elements'] = [];
         }
         $this->definition['elements']['User'] = $this->getUserFormDefinition();
         $this->definition['elements']['GroupUser'] = $this->getGroupFormDefinition();
-        if ($this->enablePasswordForm) {
-            $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
-        }
+        $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
+
         $this->definition['elements']['Profile'] = array_merge(['type' => 'form'], $this->getProfile()->getFormDefinition());
         $this->definition['buttons'] = [
             'save' => [
@@ -202,21 +196,25 @@ class Registration extends HForm
     /**
      * Set models User, Profile and Password to Form
      */
-    protected function setModels()
+    private function setModels()
     {
         // Set Models
         $this->models['User'] = $this->getUser();
         $this->models['Profile'] = $this->getProfile();
         $this->models['GroupUser'] = $this->getGroupUser();
-        if ($this->enablePasswordForm) {
-            $this->models['Password'] = $this->getPassword();
-            if (!isset($this->models['Password']->mustChangePassword)) {
-                // Enable the checkbox by default on new user form:
-                $this->models['Password']->mustChangePassword = true;
-            }
+        $this->models['Password'] = $this->getPassword();
+        if (!isset($this->models['Password']->mustChangePassword)) {
+            // Enable the checkbox by default on new user form:
+            $this->models['Password']->mustChangePassword = true;
         }
 
         return true;
+    }
+
+    public function disablePasswordForm()
+    {
+        unset($this->definition['elements']['Password']);
+        unset($this->models['Password']);
     }
 
     /**
@@ -278,7 +276,7 @@ class Registration extends HForm
                 $this->models['GroupUser']->save();
             }
 
-            if ($this->enablePasswordForm) {
+            if (isset($this->models['Password'])) {
                 // Save User Password
                 $this->models['Password']->user_id = $this->models['User']->id;
                 $this->models['Password']->setPassword($this->models['Password']->newPassword);
