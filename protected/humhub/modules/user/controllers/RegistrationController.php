@@ -181,7 +181,6 @@ class RegistrationController extends Controller
             throw new Exception("No user id given by authclient!");
         }
 
-        $registration->disablePasswordForm();
         if ($authClient instanceof ApprovalBypass) {
             $registration->enableUserApproval = false;
         }

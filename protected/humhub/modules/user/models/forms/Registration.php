@@ -81,6 +81,10 @@ class Registration extends HForm
             $this->enableUserApproval = false;
         }
 
+        if (Yii::$app->session->has('authClient')) {
+            $this->disablePasswordForm = true;
+        }
+
         $this->setFormDefinition();
 
         parent::init();
@@ -96,7 +100,9 @@ class Registration extends HForm
         }
         $this->definition['elements']['User'] = $this->getUserFormDefinition();
         $this->definition['elements']['GroupUser'] = $this->getGroupFormDefinition();
-        $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
+        if (!$this->disablePasswordForm) {
+            $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
+        }
 
         $this->definition['elements']['Profile'] = array_merge(['type' => 'form'], $this->getProfile()->getFormDefinition());
         $this->definition['buttons'] = [
@@ -213,13 +219,6 @@ class Registration extends HForm
         }
 
         return true;
-    }
-
-    public function disablePasswordForm()
-    {
-        $this->disablePasswordForm = true;
-        unset($this->definition['elements']['Password']);
-        unset($this->models['Password']);
     }
 
     /**
