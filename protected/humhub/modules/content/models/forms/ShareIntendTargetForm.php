@@ -24,14 +24,8 @@ class ShareIntendTargetForm extends Model
 
     public function attributeHints(): array
     {
-        /** @var Module $userModule */
-        $userModule = Yii::$app->getModule('user');
-        $canPostInOwnProfile =
-            !$userModule->profileDisableStream // The profile stream is enabled
-            && (new Post(Yii::$app->user->identity))->content->canEdit(); // Can post in own profile
-
         return [
-            'targetContainerGuid' => $canPostInOwnProfile ?
+            'targetContainerGuid' => static::canPostInOwnProfile() ?
                 Yii::t('ContentModule.base', 'Select target Space/Profile.') :
                 Yii::t('ContentModule.base', 'Select target Space.'),
         ];
@@ -40,5 +34,15 @@ class ShareIntendTargetForm extends Model
     public function getContainerSearchUrl(): string
     {
         return Url::to(['container-search-json']);
+    }
+
+    public static function canPostInOwnProfile(): bool
+    {
+        /** @var Module $userModule */
+        $userModule = Yii::$app->getModule('user');
+        return
+            !$userModule->profileDisableStream // The profile stream is enabled
+            && !Yii::$app->user->isGuest
+            && (new Post(Yii::$app->user->identity))->content->canEdit(); // Can post in own profile
     }
 }

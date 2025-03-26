@@ -13,9 +13,7 @@ use humhub\components\Controller;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\ContentContainer;
 use humhub\modules\content\models\forms\ShareIntendTargetForm;
-use humhub\modules\post\models\Post;
 use humhub\modules\space\helpers\CreateContentPermissionHelper;
-use humhub\modules\user\Module;
 use humhub\modules\user\widgets\UserPicker;
 use Yii;
 use yii\web\HttpException;
@@ -94,14 +92,7 @@ abstract class ShareIntendController extends Controller
             Yii::$app->user->identity,
         );
 
-
-        /** @var Module $userModule */
-        $userModule = Yii::$app->getModule('user');
-        $canPostInOwnProfile =
-            !$userModule->profileDisableStream // The profile stream is enabled
-            && (new Post(Yii::$app->user->identity))->content->canEdit(); // Can post in own profile
-
-        if ($canPostInOwnProfile) {
+        if (ShareIntendTargetForm::canPostInOwnProfile()) {
             $currentUser = UserPicker::createJSONUserInfo(Yii::$app->user->identity);
             $currentUser['text'] = Yii::t('base', 'My Profile');
             array_unshift($containers, $currentUser);
