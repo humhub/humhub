@@ -2,11 +2,11 @@
 
 namespace humhub\modules\dashboard\widgets;
 
-use humhub\modules\post\widgets\Form;
-use Yii;
-use humhub\modules\stream\widgets\StreamViewer;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\post\widgets\Form;
+use humhub\modules\stream\widgets\StreamViewer;
+use Yii;
 
 class DashboardContent extends Widget
 {
@@ -33,6 +33,7 @@ class DashboardContent extends Widget
         }
 
         echo StreamViewer::widget([
+            'id' => 'dashboard-stream',
             'streamAction' => '//dashboard/dashboard/stream',
             'showFilters' => (bool)Yii::$app->getModule('dashboard')->settings->get('showProfilePostForm'),
             'messageStreamEmpty' => $messageStreamEmpty,

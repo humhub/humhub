@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\modules\content\assets\ContentFormAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\WallCreateContentMenu;
-use humhub\modules\content\assets\ContentFormAsset;
 
 /* @var $contentContainer ContentContainerActiveRecord */
 /* @var $formClass string */

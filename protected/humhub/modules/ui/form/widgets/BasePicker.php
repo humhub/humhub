@@ -80,14 +80,14 @@ abstract class BasePicker extends JsInputWidget
     public $maxSelection = 50;
 
     /**
-     * Minimum character input before triggering search query.
+     * Minimum characters input before triggering search query.
      *
      * @var int
      */
     public $minInput = 3;
 
     /**
-     * Minimum character input before triggering search query.
+     * Maximum characters input before triggering search query.
      *
      * @var int
      */

@@ -24,6 +24,7 @@ use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\db\IntegrityException;
 use yii\web\ForbiddenHttpException;
+use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
 use yii\web\Response;
 
@@ -420,5 +421,17 @@ class ContentController extends Controller
             'scheduleOptions' => $scheduleOptions,
             'disableInputs' => $disableInputs,
         ]);
+    }
+
+    /**
+     * Triggered after content creation
+     */
+    public function actionRedirectToContentContainer($contentId)
+    {
+        $content = Content::findOne(['id' => $contentId]);
+        if ($content === null) {
+            throw new HttpException(404, 'Content not found!');
+        }
+        return $this->redirect($content->container->getUrl());
     }
 }
