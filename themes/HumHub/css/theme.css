@@ -11959,6 +11959,9 @@ label {
   font-weight: 700;
   margin-bottom: 5px;
 }
+.form-check-input:checked {
+  background-color: transparent;
+}
 .radio, .checkbox {
   margin-top: 5px !important;
   margin-bottom: 0;

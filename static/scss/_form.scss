@@ -7,6 +7,11 @@ label {
     margin-bottom: 5px;
 }
 
+// Remove BS5 inner black color in radio
+.form-check-input:checked {
+    background-color: transparent;
+}
+
 .radio,
 .checkbox {
     margin-top: 5px !important;
