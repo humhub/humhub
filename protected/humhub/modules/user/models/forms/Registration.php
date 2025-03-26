@@ -79,7 +79,7 @@ class Registration extends HForm
         array $config = [],
         bool $enableEmailField = false,
         bool $enablePasswordForm = true,
-        bool $enableMustChangePassword = false
+        bool $enableMustChangePassword = false,
     ) {
         $this->enableEmailField = $enableEmailField;
         $this->enablePasswordForm = $enablePasswordForm;
@@ -117,8 +117,10 @@ class Registration extends HForm
         if ($this->enablePasswordForm) {
             $this->definition['elements']['Password'] = $this->getPasswordFormDefinition();
         }
-        $this->definition['elements']['Profile'] = array_merge(['type' => 'form'],
-            $this->getProfile()->getFormDefinition());
+        $this->definition['elements']['Profile'] = array_merge(
+            ['type' => 'form'],
+            $this->getProfile()->getFormDefinition(),
+        );
         $this->definition['buttons'] = [
             'save' => [
                 'type' => 'submit',
@@ -198,8 +200,8 @@ class Registration extends HForm
         $groupModels = Group::getRegistrationGroups($this->getUser());
 
         $groupFieldType = (Yii::$app->getModule('user')->settings->get('auth.showRegistrationUserGroup') && count(
-                $groupModels
-            ) > 1)
+            $groupModels,
+        ) > 1)
             ? 'dropdownlist'
             : 'hidden'; // TODO: Completely hide the element instead of current <input type="hidden">
 
@@ -309,7 +311,7 @@ class Registration extends HForm
                 (new AuthClientUserService($this->models['User']))->add($authClient);
                 $authClient->trigger(
                     BaseClient::EVENT_CREATE_USER,
-                    new UserEvent(['identity' => $this->models['User']])
+                    new UserEvent(['identity' => $this->models['User']]),
                 );
             }
 
