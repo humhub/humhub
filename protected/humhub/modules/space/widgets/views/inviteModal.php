@@ -159,7 +159,6 @@ $form = Modal::beginFormDialog([
     });
 
     $('.tab-user-picker a').on('shown.bs.tab', function (e) {
-        $('#space-invite-user-picker').data('picker').focus();
         $('#space-invite-submit-btn').show();
         $('#space-invite-send-link-by-email-btn').hide();
     });
