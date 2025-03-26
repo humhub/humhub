@@ -12,6 +12,7 @@ use humhub\components\Event;
 use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -377,4 +378,17 @@ abstract class Menu extends JsWidget
             $this->removeEntry($entry);
         }
     }
+
+    /**
+     * @deprecated since 1.4
+     */
+    public static function setViewState()
+    {
+        $instance = new static();
+        if (!empty($instance->id)) {
+            $active = $instance->getActive();
+            $instance->view->registerJs('humhub.modules.ui.navigation.setActive("' . $instance->id . '", ' . json_encode($active) . ');', View::POS_END, 'active-' . $instance->id);
+        }
+    }
+
 }
