@@ -597,6 +597,53 @@ Their values can be overwritten in the component related SCSS file (e.g. `_badge
 
 Full list of Bootstrap CSS variables here: https://github.com/twbs/bootstrap/tree/main/scss
 
+#### Global colors
+
+Doc: https://getbootstrap.com/docs/5.3/customize/color/
+
+Availability:
+- SCSS variables
+- root CSS variables
+- CSS classes (utility classes)
+
+##### Theme colors
+
+`primary`, etc.
+
+3 Variations:
+- `primary-bg-subtle`
+- `primary-border-subtle`
+- `primary-text-emphasis`
+
+##### All colors
+
+`blue`, etc.
+
+Variations:
+- `blue-100` (lighter)
+- ...
+- `blue-500` (= `blue`)
+- ...
+- `blue-900` (darker)
+
+##### Other colors
+
+`body-color`, etc.
+
+#### Component colors
+
+Example for alerts: https://getbootstrap.com/docs/5.3/components/alerts/#variables
+
+Availability:
+- CSS variables: `--bs-alert-bg`, etc
+- CSS classes: `.alert-primary`, etc
+
+In components:
+- CSS variables only apply to HTML elements having a certain class. E.g.: `.alert`
+- there are no color SCSS variables
+- but CSS variable values are usually defined from global SCSS variables
+
+
 ### Breakpoints
 
 Search for `@media` and replace with SCSS functions:
