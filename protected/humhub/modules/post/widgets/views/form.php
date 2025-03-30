@@ -1,11 +1,12 @@
 <?php
 
 use humhub\modules\content\widgets\richtext\RichTextField;
+use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\widgets\WallCreateContentFormFooter;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
-/* @var \humhub\modules\post\widgets\Form $this */
+/* @var WallCreateContentForm $wallCreateContentForm */
 /* @var string $mentioningUrl */
 /* @var ActiveForm $form */
 /* @var Post $post */
@@ -14,7 +15,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
     'id' => 'contentForm_message',
     'form' => $form,
-    'layout' => $this->isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
+    'layout' => $wallCreateContentForm->isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
     'pluginOptions' => ['maxHeight' => '300px'],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',
@@ -25,5 +26,5 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?= WallCreateContentFormFooter::widget([
     'contentContainer' => $post->content->container,
-    'wallCreateContentForm' => $this,
+    'wallCreateContentForm' => $wallCreateContentForm,
 ]) ?>
