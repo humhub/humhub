@@ -22,7 +22,7 @@ use yii\helpers\StringHelper;
 ?>
 
 <?php ModalDialog::begin([
-    'id' => 'create-content-modal',
+    'id' => 'share-intend-modal',
     'header' => Yii::t('FileModule.base', 'Share in {targetDisplayName}', [
         'targetDisplayName' => $shareTarget->guid === Yii::$app->user->identity->guid ?
             Yii::t('base', 'My Profile') :
@@ -57,6 +57,6 @@ use yii\helpers\StringHelper;
         // ToDo: Fix  me - Init seems not to work
         $('.contentFormBody').show();
 
-        $('#create-content-modal').find('input[type=text], textarea, .ProseMirror').eq(0).trigger('click').focus();
+        $('#share-intend-modal').find('input[type=text], textarea, .ProseMirror').eq(0).trigger('click').focus();
     });
 </script>
