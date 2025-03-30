@@ -24,7 +24,12 @@ use yii\web\HttpException;
 class WallCreateContentFormFooter extends Widget
 {
     /**
-     * @var string form submit route/url (required)
+     * @var WallCreateContentForm null (required)
+     */
+    public WallCreateContentForm $wallCreateContentForm = null;
+
+    /**
+     * @var string form submit route/url (automatically set if `wallCreateContentForm` is provided)
      */
     public $submitUrl;
 
@@ -39,16 +44,6 @@ class WallCreateContentFormFooter extends Widget
     public $contentContainer;
 
     /**
-     * Pre-uploaded File GUIDs to be attached to the new content
-     */
-    public array $fileList = [];
-
-    /**
-     * The widget is executed in a modal window
-     */
-    public bool $isModal = false;
-
-    /**
      * @inheritdoc
      */
     public function init()
@@ -61,6 +56,10 @@ class WallCreateContentFormFooter extends Widget
             throw new HttpException(500, 'No Content Container given!');
         }
 
+        if ($this->wallCreateContentForm === null) {
+            $this->submitUrl = $this->wallCreateContentForm->submitUrl;
+        }
+
         parent::init();
     }
 
@@ -71,8 +70,8 @@ class WallCreateContentFormFooter extends Widget
     {
         return $this->render('@humhub/modules/content/widgets/views/wallCreateContentFormFooter', [
             'contentContainer' => $this->contentContainer,
-            'fileList' => $this->fileList,
-            'isModal' => $this->isModal,
+            'fileList' => $this->wallCreateContentForm?->fileList ?? [],
+            'isModal' => $this->wallCreateContentForm?->isModal ?? false,
             'submitUrl' => $this->contentContainer->createUrl($this->submitUrl),
             'submitButtonText' => $this->submitButtonText,
             'canSwitchVisibility' => $this->contentContainer->visibility !== Space::VISIBILITY_NONE && $this->contentContainer->can(CreatePublicContent::class),

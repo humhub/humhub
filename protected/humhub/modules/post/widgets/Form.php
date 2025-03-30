@@ -45,10 +45,7 @@ class Form extends WallCreateContentForm
 
         return array_merge([
             'post' => $post,
-            'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null,
-            'submitUrl' => $this->submitUrl,
-            'fileList' => $this->fileList,
-            'isModal' => $this->isModal,
+            'mentioningUrl' => $canCreatePostInSpace ? Url::to([$this->mentioningUrl, 'id' => $this->contentContainer->id]) : null
         ], $additionalParams);
     }
 

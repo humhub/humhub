@@ -5,18 +5,16 @@ use humhub\modules\content\widgets\WallCreateContentFormFooter;
 use humhub\modules\post\models\Post;
 use humhub\modules\ui\form\widgets\ActiveForm;
 
+/* @var \humhub\modules\post\widgets\Form $this */
 /* @var string $mentioningUrl */
 /* @var ActiveForm $form */
 /* @var Post $post */
-/* @var string $submitUrl */
-/* @var $fileList array */
-/* @var $isModal bool */
 ?>
 
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
     'id' => 'contentForm_message',
     'form' => $form,
-    'layout' => $isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
+    'layout' => $this->isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
     'pluginOptions' => ['maxHeight' => '300px'],
     'placeholder' => Yii::t("PostModule.base", "What's on your mind?"),
     'name' => 'message',
@@ -27,7 +25,5 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
 <?= WallCreateContentFormFooter::widget([
     'contentContainer' => $post->content->container,
-    'submitUrl' => $submitUrl,
-    'fileList' => $fileList,
-    'isModal' => $isModal,
+    'wallCreateContentForm' => $this,
 ]) ?>
