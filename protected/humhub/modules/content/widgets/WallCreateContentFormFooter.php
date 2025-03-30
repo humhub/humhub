@@ -26,7 +26,7 @@ class WallCreateContentFormFooter extends Widget
     /**
      * @var WallCreateContentForm null (required)
      */
-    public WallCreateContentForm $wallCreateContentForm = null;
+    public ?WallCreateContentForm $wallCreateContentForm = null;
 
     /**
      * @var string form submit route/url (automatically set if `wallCreateContentForm` is provided)
