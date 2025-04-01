@@ -6,7 +6,7 @@
  */
 
 use humhub\modules\content\models\forms\ShareIntendTargetForm;
-use humhub\modules\content\widgets\ContentContainerPicker;
+use humhub\modules\content\widgets\ContentContainerPickerField;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\view\components\View;
 use humhub\widgets\ModalButton;
@@ -26,7 +26,7 @@ use humhub\widgets\ModalDialog;
 <?php $form = ActiveForm::begin() ?>
 
 <div class="modal-body">
-    <?= $form->field($model, 'targetContainerGuid')->widget(ContentContainerPicker::class, [
+    <?= $form->field($model, 'targetContainerGuid')->widget(ContentContainerPickerField::class, [
         'maxSelection' => 1,
         'minInput' => 0,
         'focus' => true,

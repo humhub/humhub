@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\content\widgets\ContentContainerPicker;
+use humhub\modules\content\widgets\ContentContainerPickerField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -13,7 +13,7 @@ use yii\helpers\Url;
  * @since 1.2
  * @author buddha
  */
-class UserPickerField extends ContentContainerPicker
+class UserPickerField extends ContentContainerPickerField
 {
     public $itemClass = User::class;
 

@@ -2,7 +2,7 @@
 
 namespace humhub\modules\space\widgets;
 
-use humhub\modules\content\widgets\ContentContainerPicker;
+use humhub\modules\content\widgets\ContentContainerPickerField;
 use humhub\modules\space\models\Space;
 use Yii;
 
@@ -13,7 +13,7 @@ use Yii;
  * @since 1.2
  * @author buddha
  */
-class SpacePickerField extends ContentContainerPicker
+class SpacePickerField extends ContentContainerPickerField
 {
     public $itemClass = Space::class;
     /**

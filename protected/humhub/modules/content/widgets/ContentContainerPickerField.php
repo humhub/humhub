@@ -19,7 +19,7 @@ use humhub\modules\ui\form\widgets\BasePicker;
  *
  * @since 1.17.2
  */
-class ContentContainerPicker extends BasePicker
+class ContentContainerPickerField extends BasePicker
 {
     /**
      * @inheritdoc
