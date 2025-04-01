@@ -10,6 +10,7 @@ namespace humhub\modules\file\controllers;
 
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
+use humhub\modules\file\models\File;
 use Yii;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -61,6 +62,11 @@ final class ShareIntendController extends Controller
         $fileList = Yii::$app->request->get('fileList');
         if (!$fileList) {
             throw new NotFoundHttpException('No files to share found!');
+        }
+
+        // Check if the files exists, and if user is the owner of the files
+        if (File::find()->where(['guid' => $fileList])->andWhere(['created_by' => Yii::$app->user->id])->count() !== count($fileList)) {
+            throw new NotFoundHttpException('Files not uploaded correctly!');
         }
 
         if (count($this->shareTargets) === 0) {

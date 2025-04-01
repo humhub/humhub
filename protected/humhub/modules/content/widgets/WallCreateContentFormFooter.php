@@ -56,7 +56,7 @@ class WallCreateContentFormFooter extends Widget
             throw new HttpException(500, 'No Content Container given!');
         }
 
-        if ($this->wallCreateContentForm === null) {
+        if ($this->wallCreateContentForm !== null) {
             $this->submitUrl = $this->wallCreateContentForm->submitUrl;
         }
 
