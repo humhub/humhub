@@ -51,12 +51,7 @@ use yii\helpers\StringHelper;
 
 <script <?= Html::nonce() ?>>
     $(function () {
-        humhub.modules.content.form.init();
-        $('.contentForm_options').show();
-
-        // ToDo: Fix  me - Init seems not to work
-        $('.contentFormBody').show();
-
+        humhub.modules.content.form.initModal();
         $('#share-intend-modal').find('input[type=text], textarea, .ProseMirror').eq(0).trigger('click').focus();
     });
 </script>

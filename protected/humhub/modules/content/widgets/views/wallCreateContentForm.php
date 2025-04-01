@@ -28,7 +28,7 @@ $this->registerJsConfig('content.form', [
 
 <?php if (WallCreateContentMenu::canCreateEntry($contentContainer, 'form')) : ?>
     <div class="panel panel-default clearfix">
-        <div class="panel-body" id="contentFormBody" style="display:none;"
+        <div class="panel-body" id="contentFormBody<?= $wallCreateContentForm->isModal ? 'Modal' : '' ?>" class="content-form-body" style="display:none;"
              data-action-component="content.form.CreateForm">
             <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 

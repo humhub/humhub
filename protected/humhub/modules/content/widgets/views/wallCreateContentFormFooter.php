@@ -30,9 +30,9 @@ use humhub\widgets\Link;
 /* @var $scheduleUrl string */
 ?>
 
-<div id="notifyUserContainer" class="form-group" style="margin-top:15px;display:none">
+<div class="notifyUserContainer form-group" style="margin-top:15px;display:none">
     <?= UserPickerField::widget([
-        'id' => 'notifyUserInput',
+        'id' => 'notifyUserInput' . ($isModal ? 'Modal' : ''),
         'url' => $pickerUrl,
         'formName' => 'notifyUserInput',
         'maxSelection' => 10,
@@ -41,35 +41,35 @@ use humhub\widgets\Link;
     ]) ?>
 </div>
 
-<div id="postTopicContainer" class="form-group" style="margin-top:15px;display:none">
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="form-group" style="margin-top:15px;display:none">
     <?= TopicPicker::widget([
-        'id' => 'postTopicInput',
+        'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',
-        'contentContainer' => $contentContainer
-    ]); ?>
+        'contentContainer' => $contentContainer,
+    ]) ?>
 </div>
 
-<?= Html::hiddenInput('containerGuid', $contentContainer->guid); ?>
-<?= Html::hiddenInput('containerClass', get_class($contentContainer)); ?>
+<?= Html::hiddenInput('containerGuid', $contentContainer->guid) ?>
+<?= Html::hiddenInput('containerClass', get_class($contentContainer)) ?>
 
 <div class="contentForm_options">
     <hr>
     <div class="btn_container">
-        <?= Button::info($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button')->submit() ?>
+        <?= Button::info($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button' . ($isModal ? '_modal' : ''))->submit() ?>
 
         <?php $uploadButton = UploadButton::widget([
-            'id' => 'contentFormFiles',
+            'id' => 'contentFormFiles' . ($isModal ? 'Modal' : ''),
             'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
-            'progress' => '#contentFormFiles_progress',
-            'preview' => '#contentFormFiles_preview',
-            'dropZone' => '#contentFormBody',
+            'progress' => '#contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
+            'preview' => '#contentFormFiles_preview' . ($isModal ? 'Modal' : ''),
+            'dropZone' => '#contentFormBody' . ($isModal ? 'Modal' : ''),
             'max' => Yii::$app->getModule('content')->maxAttachedFiles,
             'fileList' => $fileList,
         ]); ?>
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm hidden', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
@@ -98,7 +98,7 @@ use humhub\widgets\Link;
                         <?php if ($canSwitchVisibility): ?>
                             <li>
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
-                                    ->id('contentForm_visibility_entry')->icon('unlock') ?>
+                                    ->cssClass('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
                         <li>
@@ -122,9 +122,11 @@ use humhub\widgets\Link;
         </div>
     </div>
 
-    <?= UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
+    <?= UploadProgress::widget([
+        'id' => 'contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
+    ]) ?>
     <?= FilePreview::widget([
-        'id' => 'contentFormFiles_preview',
+        'id' => 'contentFormFiles_preview' . ($isModal ? 'Modal' : ''),
         'edit' => true,
         'items' => $fileList,
         'options' => ['style' => 'margin-top:10px;'],
