@@ -15,15 +15,12 @@ use humhub\modules\ui\form\widgets\BasePicker;
 /**
  * Mutliselect input field for selecting Space guids or current user Profile
  *
+ * This widget has no default route, so the `url` param is required.
+ *
  * @since 1.17.2
  */
 class ContentContainerPicker extends BasePicker
 {
-    /**
-     * @inheritdoc
-     */
-    public $defaultRoute = '/content/search-container/json';
-
     /**
      * @inheritdoc
      * The 'guid' value is default for UserPickerField
