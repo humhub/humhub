@@ -1,7 +1,7 @@
 <?php
 
 use humhub\components\View;
-use humhub\widgets\ColorPickerField;
+use humhub\modules\ui\form\widgets\ColorPicker;
 use humhub\widgets\form\ActiveForm;
 use yii\base\Model;
 
@@ -20,7 +20,7 @@ if ($model->color === null) {
 ?>
 
 <div id="<?= $containerId ?>" class="mb-3 space-color-chooser-edit" style="margin-top: 5px;">
-    <?= ColorPickerField::widget(['model' => $model, 'field' => 'color', 'container' => $containerId]); ?>
+    <?= ColorPicker::widget(['model' => $model, 'field' => 'color', 'container' => $containerId]); ?>
 
     <?= $form->field($model, 'name', ['template' => '
             {label}

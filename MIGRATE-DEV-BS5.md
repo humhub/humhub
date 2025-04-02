@@ -199,6 +199,7 @@ When it is not possible to place the buttons in the modal footer, use the `modal
 - `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\form\ContentHiddenCheckbox` instead
 - `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\form\ContentVisibilitySelect` instead
 - `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
+- `humhub\widgets\ColorPickerField` and `kartik\widgets\ColorInput` use `->colorInput()` instead
 
 ### Input groups
 
@@ -707,11 +708,11 @@ Take example with the `HumHub` community theme.
 
 Grunt compiler has been removed.
 
-Instead, compile your theme with the web browser, using the new "(Re)build Theme CSS" button in Administration -> Settings -> Appearance.
+Instead, compile your theme with the web browser, in Administration -> Settings -> Appearance, just by saving the form.
 
 If you use the "Updater" module to update HumHub core, you don't need to recompile your custom theme CSS anymore, as it will be done automatically.
 
-But without this module, you will have to click on the "(Re)build Theme CSS" button after each HumHub core upgrade.
+But without this module, you will have to save this form after each HumHub core upgrade, to rebuild the CSS with the new changes.
 
 #### Overwritten view files
 

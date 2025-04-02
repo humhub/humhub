@@ -10,6 +10,7 @@ namespace humhub\helpers;
 
 use Exception;
 use humhub\components\Theme;
+use humhub\modules\admin\models\forms\DesignSettingsForm;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
@@ -224,7 +225,9 @@ class ThemeHelper
         $theme = $theme ?? Yii::$app->view->theme;
         $treeThemes = array_reverse(static::getThemeTree($theme));
         $compiler = new Compiler();
-        $imports = [];
+        $designSettingsForm = new DesignSettingsForm();
+        $variableImports = [];
+        $otherImports = [];
 
         // Set import paths
         $compiler->setImportPaths(Yii::getAlias('@bower/bootstrap/scss'));
@@ -234,16 +237,16 @@ class ThemeHelper
         }
 
         // Import variables (bootstrap variables have a !default suffix to allow overwriting)
-        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
+        $variableImports[] = Yii::getAlias('@webroot-static/scss/variables');
         foreach ($treeThemes as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . '/scss/variables';
+            $variableImports[] = $treeTheme->getBasePath() . '/scss/variables';
         }
 
         // Import all other files
-        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
-        $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
+        $otherImports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+        $otherImports[] = Yii::getAlias('@webroot-static/scss/humhub');
         foreach ($treeThemes as $treeTheme) {
-            $imports[] = $treeTheme->getBasePath() . '/scss/build';
+            $otherImports[] = $treeTheme->getBasePath() . '/scss/build';
         }
 
         // Set source map
@@ -269,9 +272,21 @@ class ThemeHelper
             return $errorMsgStart . ' ' . $mapFilePermissionError;
         }
 
+        // Create SCSS source from imports and Design Settings form
+        $scssSource = '@import "' . implode('", "', $variableImports) . '";' . PHP_EOL;
+        if ($designSettingsForm->themePrimaryColor) {
+            $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
+        }
+        if ($designSettingsForm->themeSecondaryColor) {
+            $scssSource .= '$secondary: ' . $designSettingsForm->themeSecondaryColor . ';' . PHP_EOL;
+        }
+        $scssSource .=
+            '@import "' . implode('", "', $otherImports) . '";' . PHP_EOL .
+            $designSettingsForm->themeCustomScss;
+
         // Compile to CSS
         try {
-            $result = $compiler->compileString('@import "' . implode('", "', $imports) . '";');
+            $result = $compiler->compileString($scssSource);
             if (
                 file_put_contents($cssFilePath, $result->getCss()) !== false
                 && file_put_contents($mapFilePath, $result->getSourceMap()) !== false

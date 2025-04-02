@@ -39,6 +39,15 @@ class CodeMirrorInputWidget extends JsInputWidget
      */
     public $spellcheck = true;
 
+    public function init()
+    {
+        parent::init();
+
+        if ($this->hasModel() && $this->model->hasErrors($this->attribute)) {
+            $this->inputClass .= ' is-invalid';
+        }
+    }
+
     public function run()
     {
         CodeMirrorAssetBundle::register($this->view);

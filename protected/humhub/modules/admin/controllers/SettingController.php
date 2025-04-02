@@ -228,22 +228,15 @@ class SettingController extends Controller
         $form = new DesignSettingsForm();
         $post = Yii::$app->request->post();
 
-        if ($post['rebuild-theme-css'] ?? false) {
+        if ($form->load($post) && $form->validate() && $form->save()) {
             $buildResult = ThemeHelper::buildCss();
             if ($buildResult === true) {
-                $this->view->success(Yii::t('AdminModule.settings', 'CSS successfully (re)built for the current theme!'));
+                $this->view->saved();
             } else {
                 Yii::error($buildResult, 'admin');
                 $this->view->error($buildResult);
             }
             return $this->refresh(); // Reload the page without ajax to refresh the theme
-        }
-
-        if ($form->load($post) && $form->validate() && $form->save()) {
-            $this->view->saved();
-            return $this->redirect([
-                '/admin/setting/design',
-            ]);
         }
 
         return $this->render('design', [
