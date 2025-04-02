@@ -13,7 +13,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 ?>
 
 <?= $form->field($post, 'message')->widget(RichTextField::class, [
-    'id' => 'contentForm_message',
+    'id' => 'contentForm_message' . ($wallCreateContentForm->isModal ? 'Modal' : ''),
     'form' => $form,
     'layout' => $wallCreateContentForm->isModal ? RichTextField::LAYOUT_BLOCK : RichTextField::LAYOUT_INLINE,
     'pluginOptions' => ['maxHeight' => '300px'],

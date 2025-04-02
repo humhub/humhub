@@ -307,7 +307,7 @@ humhub.module('content.form', function (module, require, $) {
         }
 
         if (!input.length) {
-            input = ('<input name="' + name + '" type="hidden">');
+            input = $('<input name="' + name + '" type="hidden">');
             this.$.find('input[name=state]').after(input);
         }
         input.val(value);
