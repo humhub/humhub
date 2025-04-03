@@ -118,8 +118,7 @@ class Theme extends BaseTheme
      */
     public function activate()
     {
-        $this->publishResources(true);
-        $this->variables->flushCache();
+        ThemeHelper::buildCss();
         Yii::$app->settings->set('theme', $this->getBasePath());
         Yii::$app->settings->delete('themeParents');
     }
