@@ -71,7 +71,6 @@ $iconUrl = SiteIcon::getUrl(140);
     <br>
     <?= $form->field($model, 'horImageScrollOnMobile')->checkbox() ?>
 
-
     <div class="bg-light p-3">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'class' => 'd-none', 'name' => 'logo[]']) ?>
         <div class="image-upload-container" id="logo-upload">
@@ -92,7 +91,6 @@ $iconUrl = SiteIcon::getUrl(140);
     </div>
 
     <br>
-
     <div class="bg-light p-3">
         <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'class' => 'd-none', 'name' => 'icon[]']) ?>
         <div class="image-upload-container" id="icon-upload">
@@ -110,8 +108,19 @@ $iconUrl = SiteIcon::getUrl(140);
         </div>
     </div>
 
-    <?= $form->field($model, 'themePrimaryColor')->colorInput() ?>
-    <?= $form->field($model, 'themeSecondaryColor')->colorInput() ?>
+    <br>
+    <div class="form-group bg-light p-3 pb-1">
+        <?= $form->field($model, 'themePrimaryColor')->colorInput() ?>
+        <?= $form->field($model, 'useDefaultThemePrimaryColor')->checkbox() ?>
+    </div>
+
+    <br>
+    <div class="form-group bg-light p-3 pb-1">
+        <?= $form->field($model, 'themeSecondaryColor')->colorInput() ?>
+        <?= $form->field($model, 'useDefaultThemeSecondaryColor')->checkbox() ?>
+    </div>
+
+    <br>
     <?= $form->field($model, 'themeCustomScss')->widget(CodeMirrorInputWidget::class, ['mode' => 'text/x-scss']) ?>
 
     <hr>
@@ -120,3 +129,33 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= DataSaved::widget() ?>
     <?php ActiveForm::end(); ?>
 </div>
+
+<script <?= Html::nonce() ?>>
+    $(function () {
+        function toggleColorField($checkbox, $colorField) {
+            if ($checkbox.is(':checked')) {
+                $colorField.hide();
+            } else {
+                $colorField.show();
+            }
+        }
+
+        function setupColorFieldToggle(checkboxId, colorFieldId) {
+            const $checkbox = $('#designsettingsform-' + checkboxId);
+            const $colorField = $('#designsettingsform-' + colorFieldId);
+            toggleColorField($checkbox, $colorField);
+            $checkbox.on('change', function () {
+                toggleColorField($checkbox, $colorField);
+            });
+        }
+
+        setupColorFieldToggle(
+            'usedefaultthemeprimarycolor',
+            'themeprimarycolor'
+        );
+        setupColorFieldToggle(
+            'usedefaultthemesecondarycolor',
+            'themesecondarycolor'
+        );
+    })
+</script>

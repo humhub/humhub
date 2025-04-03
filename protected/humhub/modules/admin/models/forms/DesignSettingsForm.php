@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\ThemeVariables;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
@@ -39,7 +40,9 @@ class DesignSettingsForm extends Model
     public $horImageScrollOnMobile;
     public $defaultStreamSort;
     public $themePrimaryColor;
+    public $useDefaultThemePrimaryColor;
     public $themeSecondaryColor;
+    public $useDefaultThemeSecondaryColor;
     public $themeCustomScss;
 
     /**
@@ -59,8 +62,10 @@ class DesignSettingsForm extends Model
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
-        $this->themePrimaryColor = $settingsManager->get('themePrimaryColor');
-        $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor');
+        $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', Yii::$app->view->theme->variables->get('primary'));
+        $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
+        $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor', Yii::$app->view->theme->variables->get('secondary'));
+        $this->useDefaultThemeSecondaryColor = (bool)$settingsManager->get('useDefaultThemeSecondaryColor', true);
         $this->themeCustomScss = $settingsManager->get('themeCustomScss');
     }
 
@@ -81,6 +86,7 @@ class DesignSettingsForm extends Model
             ['icon', ImageSquareValidator::class],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
             [['themePrimaryColor', 'themeSecondaryColor', 'themeCustomScss'], 'string'],
+            [['useDefaultThemePrimaryColor', 'useDefaultThemeSecondaryColor'], 'boolean'],
             [['themePrimaryColor', 'themeSecondaryColor', 'themeCustomScss'], 'trim'],
             [['themePrimaryColor', 'themeSecondaryColor'], 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             ['themeCustomScss', 'filter', 'filter' => function ($value) {
@@ -119,7 +125,9 @@ class DesignSettingsForm extends Model
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
+            'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Use theme default color'),
             'themeSecondaryColor' => Yii::t('AdminModule.settings', 'Secondary color'),
+            'useDefaultThemeSecondaryColor' => Yii::t('AdminModule.settings', 'Use theme default color'),
             'themeCustomScss' => Yii::t('AdminModule.settings', 'Custom SCSS'),
         ];
     }
@@ -200,8 +208,10 @@ class DesignSettingsForm extends Model
             SiteIcon::set($this->icon);
         }
 
-        $settingsManager->set('themePrimaryColor', $this->themePrimaryColor);
-        $settingsManager->set('themeSecondaryColor', $this->themeSecondaryColor);
+        $settingsManager->set('themePrimaryColor', $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor);
+        $settingsManager->set('useDefaultThemePrimaryColor', $this->useDefaultThemePrimaryColor);
+        $settingsManager->set('themeSecondaryColor', $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor);
+        $settingsManager->set('useDefaultThemeSecondaryColor', $this->useDefaultThemeSecondaryColor);
         $settingsManager->set('themeCustomScss', $this->themeCustomScss);
 
         DynamicConfig::rewrite();
