@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\components\ThemeVariables;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
@@ -53,6 +52,7 @@ class DesignSettingsForm extends Model
         parent::init();
 
         $settingsManager = Yii::$app->settings;
+        $themeVariables = Yii::$app->view->theme->variables;
 
         $this->theme = Yii::$app->view->theme->name;
         $this->paginationSize = $settingsManager->get('paginationSize');
@@ -62,9 +62,9 @@ class DesignSettingsForm extends Model
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
-        $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', Yii::$app->view->theme->variables->get('primary'));
+        $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
         $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
-        $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor', Yii::$app->view->theme->variables->get('secondary'));
+        $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor', $themeVariables->get('secondary'));
         $this->useDefaultThemeSecondaryColor = (bool)$settingsManager->get('useDefaultThemeSecondaryColor', true);
         $this->themeCustomScss = $settingsManager->get('themeCustomScss');
     }

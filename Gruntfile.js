@@ -108,13 +108,6 @@ module.exports = function (grunt) {
             target: {
                 files: cssMinAssetcfg
             }
-        },
-        less: {
-            dev: {
-                files: {
-                    'themes/HumHub/css/less/theme.css': 'themes/HumHub/css/less/theme.less'
-                }
-            }
         }
     });
 
@@ -136,20 +129,6 @@ module.exports = function (grunt) {
      * > grunt migrate-create --name=MyMigration
      */
     grunt.registerTask('migrate-create', ['shell:migrateCreate']);
-
-    /**
-     * Build default HumHub theme:
-     *
-     * > grunt build-theme
-     *
-     * Build named theme:
-     * > grunt build-theme --name=MyTheme
-     *
-     * or
-     *
-     * > grunt shell:buildTheme:MyTheme
-     */
-    grunt.registerTask('build-theme', ['shell:buildTheme']);
     grunt.registerTask('test-server', ['shell:testServer']);
     grunt.registerTask('test', ['shell:testRun']);
 };

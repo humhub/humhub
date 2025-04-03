@@ -16,6 +16,7 @@ use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
+use yii\helpers\FileHelper;
 
 /**
  * ThemeHelper
@@ -57,10 +58,7 @@ class ThemeHelper
             if (is_dir($moduleThemePath)) {
                 $themes = ArrayHelper::merge(
                     $themes,
-                    self::getThemesByPath(
-                        $moduleThemePath,
-                        ['publishResources' => true],
-                    ),
+                    self::getThemesByPath($moduleThemePath),
                 );
             }
         }
@@ -106,10 +104,9 @@ class ThemeHelper
         try {
             /** @var Theme $theme */
             $theme = Yii::createObject(ArrayHelper::merge([
-                'class' => 'humhub\components\Theme',
+                'class' => Theme::class,
                 'basePath' => $path,
                 'name' => basename($path),
-                'publishResources' => (dirname($path) !== Yii::getAlias('@themes')),
             ], $options));
         } catch (InvalidConfigException $e) {
             Yii::error('Could not get theme by path "' . $path . '" - Error: ' . $e->getMessage());
@@ -260,8 +257,16 @@ class ThemeHelper
         ]);
 
         // Define the output files
-        $cssFilePath = $theme->getBasePath() . '/css/theme.css';
-        $mapFilePath = $theme->getBasePath() . '/css/theme.map';
+        $resourcesDir = $theme->getBasePath() . '/resources';
+        if (!file_exists($theme->getBasePath() . '/resources')) {
+            FileHelper::createDirectory($resourcesDir);
+        }
+        $cssDir = $resourcesDir . '/css';
+        if (!file_exists($cssDir)) {
+            FileHelper::createDirectory($cssDir);
+        }
+        $cssFilePath = $cssDir . '/theme.css';
+        $mapFilePath = $cssDir . '/theme.map';
         $errorMsgStart = Yii::t('UiModule.base', 'Cannot compile SCSS to CSS code.');
 
         // Check if files are writable
@@ -291,7 +296,8 @@ class ThemeHelper
                 file_put_contents($cssFilePath, $result->getCss()) !== false
                 && file_put_contents($mapFilePath, $result->getSourceMap()) !== false
             ) {
-                Yii::$app->assetManager->clear();
+                $theme->publishResources(true);
+                $theme->variables->flushCache();
                 return true;
             }
         } catch (SassException $e) {

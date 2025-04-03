@@ -30,6 +30,7 @@ nbproject
 
 themes/*
 !themes/HumHub
+themes/HumHub/resources/css/*
 
 favicon.ico
 /.settings

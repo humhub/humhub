@@ -21,8 +21,8 @@ use yii\base\Theme as BaseTheme;
  * to see if there is a themed version of the view file exists. If so, the themed version will be rendered instead.
  * See [[ThemeViews]] for more details.
  *
- * - Using less variables
- * Using this theme class you can also access all LESS style variables of the current theme.
+ * - Using scss variables
+ * Using this theme class you can also access all SCSS style variables of the current theme.
  *
  * Examples:
  *
@@ -51,7 +51,7 @@ class Theme extends BaseTheme
     /**
      * @var bool indicates that resources should be published via assetManager
      */
-    public $publishResources = false;
+    public $publishResources = true;
 
     /**
      * @var ThemeVariables
@@ -93,7 +93,7 @@ class Theme extends BaseTheme
             return $this->_baseUrl;
         }
 
-        $this->_baseUrl = ($this->publishResources) ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
+        $this->_baseUrl = $this->publishResources ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
         return $this->_baseUrl;
     }
 
@@ -106,9 +106,9 @@ class Theme extends BaseTheme
             return;
         }
 
-        if (file_exists($this->getBasePath() . '/css/theme.css')) {
-            $mtime = filemtime($this->getBasePath() . '/css/theme.css');
-            Yii::$app->view->registerCssFile($this->getBaseUrl() . '/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
+        if (file_exists($this->getBasePath() . '/resources/css/theme.css')) {
+            $mtime = filemtime($this->getBasePath() . '/resources/css/theme.css');
+            Yii::$app->view->registerCssFile($this->getBaseUrl() . '/resources/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
         }
     }
 
@@ -181,12 +181,12 @@ class Theme extends BaseTheme
     public function publishResources($force = null)
     {
         if ($force === null) {
-            $force = (YII_DEBUG);
+            $force = YII_DEBUG;
         }
 
         $published = Yii::$app->assetManager->publish(
             $this->getBasePath(),
-            ['forceCopy' => $force, 'except' => ['views/']],
+            ['forceCopy' => $force, 'except' => ['views/', 'scss/']],
         );
 
         return $published[1];
