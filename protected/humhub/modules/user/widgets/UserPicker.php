@@ -3,11 +3,11 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\libs\BasePermission;
+use humhub\modules\user\models\UserFilter;
 use Yii;
 use yii\base\Widget;
 use yii\helpers\Html;
 use yii\helpers\Url;
-use humhub\modules\user\models\UserFilter;
 
 /**
  * UserPickerWidget displays a user picker instead of an input field.
@@ -254,7 +254,7 @@ class UserPicker extends Widget
      * @param type $permission
      * @return type
      */
-    private static function createJSONUserInfo($user, $permission = null, $priority = null)
+    public static function createJSONUserInfo($user, $permission = null, $priority = null)
     {
         $disabled = false;
 
