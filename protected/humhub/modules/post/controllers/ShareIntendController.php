@@ -12,7 +12,6 @@ use humhub\modules\post\permissions\CreatePost;
 
 final class ShareIntendController extends \humhub\modules\content\controllers\ShareIntendController
 {
-
     public function actionCreate()
     {
         return $this->renderAjax('create', [
