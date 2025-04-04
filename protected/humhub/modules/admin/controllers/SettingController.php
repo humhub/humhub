@@ -229,11 +229,11 @@ class SettingController extends Controller
         $post = Yii::$app->request->post();
 
         if ($form->load($post) && $form->validate() && $form->save()) {
-            $buildResult = ThemeHelper::buildCss();
+            $newTheme = ThemeHelper::getThemeByName($form->theme);
+            $buildResult = ThemeHelper::buildCss($newTheme);
             if ($buildResult === true) {
                 $this->view->saved();
             } else {
-                Yii::error($buildResult, 'admin');
                 $this->view->error($buildResult);
             }
             return $this->refresh(); // Reload the page without ajax to refresh the theme

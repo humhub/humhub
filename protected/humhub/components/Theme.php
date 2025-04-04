@@ -35,6 +35,8 @@ use yii\base\Theme as BaseTheme;
  *
  * @since 1.3
  * @inheritdoc
+ *
+ * @property-read string $publishedResourcesPath
  */
 class Theme extends BaseTheme
 {
@@ -47,6 +49,7 @@ class Theme extends BaseTheme
      * @inheritdoc
      */
     private $_baseUrl = null;
+    private $_basePath = null;
 
     /**
      * @var bool indicates that resources should be published via assetManager
@@ -89,11 +92,10 @@ class Theme extends BaseTheme
      */
     public function getBaseUrl()
     {
-        if ($this->_baseUrl !== null) {
-            return $this->_baseUrl;
+        if (!$this->_baseUrl) {
+            $this->_baseUrl = $this->publishResources ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
         }
 
-        $this->_baseUrl = $this->publishResources ? $this->publishResources() : rtrim(Yii::getAlias('@web/themes/' . $this->name), '/');
         return $this->_baseUrl;
     }
 
@@ -106,10 +108,17 @@ class Theme extends BaseTheme
             return;
         }
 
-        if (file_exists($this->getBasePath() . '/resources/css/theme.css')) {
-            $mtime = filemtime($this->getBasePath() . '/resources/css/theme.css');
-            Yii::$app->view->registerCssFile($this->getBaseUrl() . '/resources/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
+        // Get bas URL and make sure resources are published
+        $baseUrl = $this->getBaseUrl();
+
+        // Build CSS if not already done
+        $cssFile = $this->publishedResourcesPath . '/css/theme.css';
+        if (!file_exists($cssFile)) {
+            ThemeHelper::buildCss();
         }
+
+        $mtime = filemtime($cssFile);
+        Yii::$app->view->registerCssFile($baseUrl . '/resources/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
     }
 
 
@@ -118,9 +127,11 @@ class Theme extends BaseTheme
      */
     public function activate()
     {
-        ThemeHelper::buildCss();
         Yii::$app->settings->set('theme', $this->getBasePath());
         Yii::$app->settings->delete('themeParents');
+
+        // Publish resources to assets (the CSS will be automatically generated on layout rendering)
+        $this->publishResources(true);
     }
 
     /**
@@ -171,11 +182,25 @@ class Theme extends BaseTheme
     }
 
     /**
-     * Publishs theme assets (e.g. images or css)
+     * @return string Path of published resources
+     *
+     * @since 1.18
+     */
+    public function getPublishedResourcesPath(): string
+    {
+        if (!$this->_basePath) {
+            $publishedPath = Yii::$app->assetManager->getPublishedPath($this->getBasePath());
+            $this->_basePath = $publishedPath . '/resources';
+        }
+        return $this->_basePath;
+    }
+
+    /**
+     * Published theme assets (e.g. images or css)
      *
      * @param bool|null $force
      *
-     * @return string url of published resources
+     * @return string URL of published resources
      */
     public function publishResources($force = null)
     {

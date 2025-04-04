@@ -217,6 +217,11 @@ class ThemeHelper
         return $theme->variable('isFluid') == 'true';
     }
 
+    /**
+     * @param Theme|null $theme
+     * @return true|string true if successfully compiled, string if error occurred
+     * @throws \yii\base\Exception
+     */
     public static function buildCss(?Theme $theme = null): bool|string
     {
         $theme = $theme ?? Yii::$app->view->theme;
@@ -257,24 +262,21 @@ class ThemeHelper
         ]);
 
         // Define the output files
-        $resourcesDir = $theme->getBasePath() . '/resources';
-        if (!file_exists($theme->getBasePath() . '/resources')) {
-            FileHelper::createDirectory($resourcesDir);
-        }
-        $cssDir = $resourcesDir . '/css';
-        if (!file_exists($cssDir)) {
-            FileHelper::createDirectory($cssDir);
+        $cssDir = $theme->getPublishedResourcesPath() . '/css';
+        if (!file_exists($cssDir) && !FileHelper::createDirectory($cssDir)) {
+            return static::logAndGetError('Could not create directory ' . $cssDir);
         }
         $cssFilePath = $cssDir . '/theme.css';
         $mapFilePath = $cssDir . '/theme.map';
-        $errorMsgStart = Yii::t('UiModule.base', 'Cannot compile SCSS to CSS code.');
 
         // Check if files are writable
-        if ($cssFilePermissionError = static::getFilePermissionError($cssFilePath)) {
-            return $errorMsgStart . ' ' . $cssFilePermissionError;
+        $cssFilePermissionError = static::getFilePermissionError($cssFilePath);
+        if ($cssFilePermissionError) {
+            return static::logAndGetError($cssFilePermissionError);
         }
-        if ($mapFilePermissionError = static::getFilePermissionError($mapFilePath)) {
-            return $errorMsgStart . ' ' . $mapFilePermissionError;
+        $mapFilePermissionError = static::getFilePermissionError($mapFilePath);
+        if ($mapFilePermissionError) {
+            return static::logAndGetError($mapFilePermissionError);
         }
 
         // Create SCSS source from imports and Design Settings form
@@ -292,31 +294,36 @@ class ThemeHelper
         // Compile to CSS
         try {
             $result = $compiler->compileString($scssSource);
-            if (
-                file_put_contents($cssFilePath, $result->getCss()) !== false
-                && file_put_contents($mapFilePath, $result->getSourceMap()) !== false
-            ) {
-                $theme->publishResources(true);
-                $theme->variables->flushCache();
-                return true;
+            if (file_put_contents($cssFilePath, $result->getCss()) === false) {
+                return static::logAndGetError('Could not write to file ' . $cssFilePath);
+            }
+            if (file_put_contents($mapFilePath, $result->getSourceMap()) === false) {
+                return static::logAndGetError('Could not write to file ' . $mapFilePath);
             }
         } catch (SassException $e) {
-            $errorMsg = $e->getMessage();
+            return static::logAndGetError($e->getMessage());
         }
 
-        return $errorMsgStart . (!empty($errorMsg) ? ' ' . $errorMsg : '');
+        return true;
     }
 
-    private static function getFilePermissionError($filePath): ?string
+    /**
+     * @param string $filePath
+     * @return string|null null if no error, otherwise a string with the error message
+     */
+    private static function getFilePermissionError(string $filePath): ?string
     {
         if (file_exists($filePath) && !is_writable($filePath)) {
-            return
-                Yii::t('UiModule.base', 'File {filePath} is not writable. Check files ownership and permissions. Current: {currentPermissions}', [
-                    'filePath' => $filePath,
-                    'currentPermissions' => substr(sprintf('%o', fileperms($filePath)), -4),
-                ]);
+            return 'File ' . $filePath . ' is not writable. Check files ownership and permissions. Current: ' . substr(sprintf('%o', fileperms($filePath)), -4);
         }
 
         return null;
+    }
+
+    private static function logAndGetError(string $errorMsg): string
+    {
+        $fullErrorMsg = 'Error while building the CSS from theme SCSS.' . ' ' . $errorMsg;
+        Yii::error($fullErrorMsg);
+        return $fullErrorMsg;
     }
 }
