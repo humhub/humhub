@@ -243,8 +243,12 @@ humhub.module('content.form', function (module, require, $) {
         const initial = stateInput.data('initial');
         if (initial !== undefined) {
             stateInput.val(initial.state);
-            button.data('htmlOld', initial.buttonTitle).removeAttr('style');
-            loader.reset(button);
+            if (loader.is(button)) {
+                button.data('htmlOld', initial.buttonTitle).removeAttr('style');
+                loader.reset(button);
+            } else {
+                button.html(initial.buttonTitle);
+            }
         }
         this.$.find('input[name^=scheduled]').remove();
         this.$.find('.label-content-state').hide();

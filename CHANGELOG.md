@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #7472: Fix missing fields when creating a new user from admin
 - Fix #7477: Refactor Registration Form Options 
 - Enh #7455: Add Share Intend feature for the Mobile app
+- Fix #7482: Fix the post submit button title after back from draft mode
 
 1.17.1 (March 6, 2025)
 ----------------------
