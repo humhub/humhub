@@ -1,13 +1,13 @@
 <?php
 
 use humhub\commands\CronController;
-use humhub\modules\content\Events;
 use humhub\commands\IntegrityController;
+use humhub\modules\content\Events;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\WallEntryAddons;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 
 return [
     'id' => 'content',

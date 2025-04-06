@@ -17,6 +17,13 @@ HumHub Changelog
 1.17.2 (Unreleased)
 ----------------------
 - Fix #7457: Fix changing of space visibility
+- Fix #7464: Fix searching with not full latin words
+- Fix #7465: Formatted Arabic numbers displays 0 instead of the number
+- Fix #7471: Fix advanced searching by space filter
+- Fix #7472: Fix missing fields when creating a new user from admin
+- Fix #7477: Refactor Registration Form Options 
+- Enh #7455: Add Share Intend feature for the Mobile app
+- Fix #7482: Fix the post submit button title after back from draft mode
 
 1.17.1 (March 6, 2025)
 ----------------------
