@@ -471,9 +471,9 @@ class PermissionManager extends Component
             if (
                 $returnOnlyChangeable && !$permission->canChangeState($groupId) ||
                 (
-                    $this->contentContainer &&
-                    array_key_exists($permission->moduleId, $this->contentContainer->moduleManager->getInstallable())
-                    && !$this->contentContainer->moduleManager->isEnabled($permission->moduleId)
+                    $permission->contentContainer &&
+                    array_key_exists($permission->moduleId, $permission->contentContainer->moduleManager->getInstallable())
+                    && !$permission->contentContainer->moduleManager->isEnabled($permission->moduleId)
                 )
             ) {
                 continue;

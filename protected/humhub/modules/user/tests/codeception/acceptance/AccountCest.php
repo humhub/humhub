@@ -33,11 +33,11 @@ class AccountCest
         $I->see('Sprache');
         $I->see('Speichern');
         $I->click('Save');
-        $I->waitForElementVisible('.data-saved', 5);
+        $I->seeSuccess();
 
         $I->selectOption('#accountsettings-language', 'English(US)');
         $I->click('Save');
-        $I->waitForElementVisible('.data-saved', 5);
+        $I->seeSuccess();
         */
 
         $I->seeSuccess('Saved');

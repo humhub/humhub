@@ -307,7 +307,7 @@ class SettingController extends Controller
 
             $timeAgo = strtotime($form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
-            Yii::$app->getSession()->setFlash('data-saved', Yii::t('AdminModule.settings', 'Saved'));
+            $this->view->saved();
             return $this->redirect([
                 '/admin/setting/logs',
             ]);
