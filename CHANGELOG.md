@@ -17,10 +17,18 @@ HumHub Changelog
 - Fix #7443: Exclude inactive users from `followers` and `following` lists
 - Fix #7447: Update the comment counter when deleting a comment
 - Fix #7456: Fix setting manager backwards compatibility
+- Enh #7468: Remove deprecated widget `DataSaved`
 
 1.17.2 (Unreleased)
 ----------------------
 - Fix #7457: Fix changing of space visibility
+- Fix #7464: Fix searching with not full latin words
+- Fix #7465: Formatted Arabic numbers displays 0 instead of the number
+- Fix #7471: Fix advanced searching by space filter
+- Fix #7472: Fix missing fields when creating a new user from admin
+- Fix #7477: Refactor Registration Form Options 
+- Enh #7455: Add Share Intend feature for the Mobile app
+- Fix #7482: Fix the post submit button title after back from draft mode
 
 1.17.1 (March 6, 2025)
 ----------------------

@@ -56,10 +56,14 @@ class HForm extends \yii\base\Component
      */
     public $markedAsSubmitted = false;
 
-    public function __construct($definition = [], $primaryModel = null)
+    public function __construct($definition = [], $primaryModel = null, array $config = [])
     {
         $this->definition = $definition;
         $this->primaryModel = $primaryModel;
+
+        if (!empty($config)) {
+            Yii::configure($this, $config);
+        }
 
         $this->init();
         $this->trigger(static::EVENT_AFTER_INIT);
