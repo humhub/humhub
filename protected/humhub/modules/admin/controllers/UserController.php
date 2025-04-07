@@ -264,7 +264,7 @@ class UserController extends Controller
         $registration = new Registration(enableEmailField: true, enableMustChangePassword: true);
         $registration->enableUserApproval = false;
 
-        if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
+        if ($registration->submitted('save') && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
