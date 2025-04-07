@@ -19,7 +19,11 @@ HumHub Changelog
 - Fix #7456: Fix setting manager backwards compatibility
 - Enh #7468: Remove deprecated widget `DataSaved`
 
-1.17.2 (Unreleased)
+1.17.3 (Unreleased)
+----------------------
+- Fix #7484: Use password type on the installation DB config form
+
+1.17.2 (April 7, 2025)
 ----------------------
 - Fix #7457: Fix changing of space visibility
 - Fix #7464: Fix searching with not full latin words
