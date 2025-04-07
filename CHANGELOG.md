@@ -1,7 +1,7 @@
 HumHub Changelog
 ================
 
-1.17.2 (Unreleased)
+1.17.2 (April 7, 2025)
 ----------------------
 - Fix #7457: Fix changing of space visibility
 - Fix #7464: Fix searching with not full latin words
