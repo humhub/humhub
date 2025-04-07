@@ -1,6 +1,10 @@
 HumHub Changelog
 ================
 
+1.17.3 (Unreleased)
+----------------------
+- Fix #7484: Use password type on the installation DB config form
+
 1.17.2 (April 7, 2025)
 ----------------------
 - Fix #7457: Fix changing of space visibility
