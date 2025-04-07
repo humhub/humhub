@@ -99,7 +99,7 @@ class RegistrationController extends Controller
             return $this->redirect(['/user/auth/login']);
         }
 
-        if ($registration->submitted('save') && $registration->validate() && $registration->register($authClient)) {
+        if ($registration->submitted('save') && $registration->register($authClient)) {
             Yii::$app->session->remove('authClient');
 
             // Autologin when user is enabled (no approval required)
