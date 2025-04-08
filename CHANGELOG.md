@@ -4,6 +4,7 @@ HumHub Changelog
 1.17.3 (Unreleased)
 ----------------------
 - Fix #7484: Use password type on the installation DB config form
+- Fix #7486: Catch errors in external file handlers
 
 1.17.2 (April 7, 2025)
 ----------------------

@@ -57,7 +57,11 @@ class FileHandlerCollection extends Component
     {
         parent::init();
 
-        $this->trigger(self::EVENT_INIT);
+        try {
+            $this->trigger(self::EVENT_INIT);
+        } catch (\Exception $ex) {
+            Yii::error('Could not init file handler. Error: ' . $ex->getMessage(), 'file');
+        }
 
         // Register default handlers
         if ($this->type === self::TYPE_CREATE) {
