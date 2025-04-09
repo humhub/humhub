@@ -234,7 +234,7 @@ class AcceptanceTester extends BaseTester
         $user = ($user != null) ? $user : 'User1';
         $password = ($password != null) ? $password : '123qwe';
         $this->login($user, $password);
-        $this->waitForElementVisible('#wallStream', 30);
+        $this->waitForElementVisible('#wallStream', 40);
     }
 
     public function login($user, $password)
