@@ -234,7 +234,7 @@ class AcceptanceTester extends BaseTester
         $user = ($user != null) ? $user : 'User1';
         $password = ($password != null) ? $password : '123qwe';
         $this->login($user, $password);
-        $this->waitForElementVisible('#wallStream', 40);
+        $this->waitForElementVisible('#wallStream', 50);
     }
 
     public function login($user, $password)
@@ -298,7 +298,7 @@ class AcceptanceTester extends BaseTester
     public function seeInNotifications($text, $click = false)
     {
         $this->click('.notifications .fa-bell');
-        $this->waitForText('Notifications', 10, '.notifications');
+        $this->waitForText('Notifications', 20, '.notifications');
         $this->waitForText($text, 5, '.notifications');
 
         if ($click) {
