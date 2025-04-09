@@ -91,7 +91,7 @@ class LoginCest
         $I->click('Confirm');
 
         $I->expectTo('see dashboard');
-        $I->waitForText('Password changed', 20);
+        $I->waitForText('Password changed');
         $I->see('Latest activities');
     }
 
