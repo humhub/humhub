@@ -119,7 +119,7 @@ jobs:
               run: php protected/humhub/tests/codeception/bin/yii installer/auto
 
             - name: Rebuild search index
-              run: php protected/humhub/tests/codeception/bin/yii search/rebuild
+              run: php protected/humhub/tests/codeception/bin/yii content-search/rebuild
 
             - name: Run test server
               run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
