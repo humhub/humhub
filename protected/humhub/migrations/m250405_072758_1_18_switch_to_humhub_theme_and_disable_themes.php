@@ -24,7 +24,7 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         // Uninstall the Theme Builder module
         $moduleManager = Yii::$app->moduleManager;
         $themeBuilderModuleId = 'theme-builder';
-        if ($moduleManager->getModule($themeBuilderModuleId)) {
+        if ($moduleManager->getModule($themeBuilderModuleId, false)) {
             $moduleManager->removeModule($themeBuilderModuleId);
         }
 
@@ -51,19 +51,4 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
 
         return false;
     }
-
-    /*
-    // Use up()/down() to run migration code without a transaction.
-    public function up()
-    {
-
-    }
-
-    public function down()
-    {
-        echo "m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes cannot be reverted.\n";
-
-        return false;
-    }
-    */
 }
