@@ -31,7 +31,7 @@ class PeopleFiltersTest extends HumHubDbTestCase
         ProfileField::updateAll(['directory_filter' => 1], ['IN', 'internal_name', ['firstname', 'lastname']]);
         $peopleFilters = new PeopleFilters();
 
-        $this->assertEquals(['Admin', 'Andreas', 'Peter', 'Sara'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
+        $this->assertEquals(['Admin', 'AdminNotMember', 'Andreas', 'Peter', 'Sara'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
     }
 
     public function testReducedFilters()
@@ -52,8 +52,8 @@ class PeopleFiltersTest extends HumHubDbTestCase
         // Filter by firstname
         $peopleQuery = new PeopleQuery(['defaultFilters' => ['fields' => ['firstname' => 'Admin']]]);
         $peopleFilters = new PeopleFilters(['query' => $peopleQuery]);
-        $this->assertEquals(['Admin'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
-        $this->assertEquals(['AdminLastName'], $this->getFilterOptions('fields[lastname]', $peopleFilters));
+        $this->assertEquals(['Admin', 'AdminNotMember'], $this->getFilterOptions('fields[firstname]', $peopleFilters));
+        $this->assertEquals(['AdminLastName', 'User'], $this->getFilterOptions('fields[lastname]', $peopleFilters));
         $this->assertEquals(['' => 'Any', 1 => 'Administrator'], $this->getFilterOptions('groupId', $peopleFilters));
 
         // Filter by group
