@@ -49,21 +49,27 @@ class WebHelper extends Module
     {
         parent::_failed($test, $fail);
 
+        $filePath = codecept_output_dir() . str_replace(['\\', '/', ':', ' '], '.', $test->getSignature());
+
+        $logFilePath = Yii::getAlias('@runtime/logs') . DIRECTORY_SEPARATOR . 'app.log';
+        if (file_exists($logFilePath)) {
+            copy($logFilePath, $filePath . '.app.log');
+        }
+
         if (!Yii::$app->db->isActive) {
             return;
         }
 
-        $filename = codecept_output_dir() . str_replace(['\\', '/', ':', ' '], '.', $test->getSignature()) . '.dump.sql';
         preg_match('/host=([^;]+)/', Yii::$app->db->dsn, $hostMatch);
         preg_match('/dbname=([^;]+)/', Yii::$app->db->dsn, $dbMatch);
 
         exec(sprintf(
-            'mysqldump -u%s -p%s -h%s %s > %s',
+            'mysqldump --skip-column-statistics -u%s -p%s -h%s %s > %s',
             escapeshellarg(Yii::$app->db->username ?? 'root'),
             escapeshellarg(Yii::$app->db->password ?? 'root'),
             escapeshellarg($hostMatch[1] ?? '127.0.0.1'),
             escapeshellarg($dbMatch[1] ?? 'humhub_test'),
-            escapeshellarg($filename),
+            escapeshellarg($filePath . '.dump.sql'),
         ));
     }
 }
