@@ -31,6 +31,7 @@
         "laminas/laminas-zendframework-bridge": "^1.4",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
+        "mobiledetect/mobiledetectlib": "4.8.09",
         "npm-asset/animate.css": "^4.0",
         "npm-asset/bluebird": "^3.3.5",
         "npm-asset/blueimp-file-upload": "^9.24",
@@ -87,8 +88,7 @@
         "yiisoft/yii2-jui": "^2.0.0",
         "yiisoft/yii2-queue": "^2.3.0",
         "yiisoft/yii2-redis": "^2.0.0",
-        "yiisoft/yii2-symfonymailer": "^2.0",
-        "mobiledetect/mobiledetectlib": "4.8.09"
+        "yiisoft/yii2-symfonymailer": "^2.0"
     },
     "replace": {
     },
