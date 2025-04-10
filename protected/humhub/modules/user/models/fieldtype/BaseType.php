@@ -315,7 +315,7 @@ class BaseType extends Model
             $query = $db->getQueryBuilder()->dropColumn(Profile::tableName(), $this->profileField->internal_name);
             $db->createCommand($query)->execute();
         } else {
-            Yii::error('Could not delete profile column - not exists!');
+            Yii::error('Could not delete profile column "' . $columnName . '" - not exists!');
         }
     }
 

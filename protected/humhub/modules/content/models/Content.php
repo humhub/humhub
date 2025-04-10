@@ -212,7 +212,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * @since 1.3
      */
-    public function getModel(): ContentActiveRecord
+    public function getModel(): ?ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
