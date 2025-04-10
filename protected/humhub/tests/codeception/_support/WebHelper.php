@@ -3,6 +3,7 @@
 namespace tests\codeception\_support;
 
 use Codeception\Module;
+use Codeception\TestInterface;
 use Yii;
 
 /**
@@ -39,5 +40,30 @@ class WebHelper extends Module
         if (!empty($cfg['humhub_modules'])) {
             Yii::$app->moduleManager->enableModules($cfg['humhub_modules']);
         }
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function _failed(TestInterface $test, $fail)
+    {
+        parent::_failed($test, $fail);
+
+        if (!Yii::$app->db->isActive) {
+            return;
+        }
+
+        $filename = codecept_output_dir() . str_replace(['\\', '/', ':', ' '], '.', $test->getSignature()) . '.dump.sql';
+        preg_match('/host=([^;]+)/', Yii::$app->db->dsn, $hostMatch);
+        preg_match('/dbname=([^;]+)/', Yii::$app->db->dsn, $dbMatch);
+
+        exec(sprintf(
+            'mysqldump -u%s -p%s -h%s %s > %s',
+            escapeshellarg(Yii::$app->db->username ?? 'root'),
+            escapeshellarg(Yii::$app->db->password ?? 'root'),
+            escapeshellarg($hostMatch[1] ?? '127.0.0.1'),
+            escapeshellarg($dbMatch[1] ?? 'humhub_test'),
+            escapeshellarg($filename),
+        ));
     }
 }

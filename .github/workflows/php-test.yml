@@ -133,12 +133,6 @@ jobs:
             - name: Run test suite
               run: grunt test -build -env=github
 
-            - name: Dump Database
-              if: failure()
-              run: |
-                mkdir -p dump
-                mysqldump -u root -proot -h 127.0.0.1 humhub_test > dump/db-dump.sql
-
             - name: Upload Codeception Output
               if: failure()
               uses: actions/upload-artifact@v4
@@ -148,4 +142,3 @@ jobs:
                   protected/humhub/tests/codeception/_output/*
                   protected/humhub/modules/*/tests/codeception/_output/*
                   protected/runtime/logs/*
-                  dump/db-dump.sql
