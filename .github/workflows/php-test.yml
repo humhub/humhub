@@ -1,6 +1,7 @@
 name: PHP Codeception Tests
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
@@ -56,7 +57,7 @@ jobs:
         steps:
             - name: Start Selenium
               run: |
-                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:108.0-20250123
 
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
