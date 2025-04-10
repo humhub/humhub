@@ -25,4 +25,5 @@ return [
     ['user_id' => 5, 'firstname' => 'Disabled', 'lastname' => 'User'],
     ['user_id' => 6, 'firstname' => 'UnApproved', 'lastname' => 'User'],
     ['user_id' => 7, 'firstname' => 'UnApprovedNoGroup', 'lastname' => 'User'],
+    ['user_id' => 8, 'firstname' => 'AdminNotMember', 'lastname' => 'User'],
 ];
