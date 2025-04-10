@@ -1,6 +1,7 @@
 name: PHP Codeception Tests
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
