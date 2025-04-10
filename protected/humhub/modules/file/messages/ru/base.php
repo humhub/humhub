@@ -17,8 +17,8 @@ return array (
   'Invalid Mime-Type' => 'Неправильный MIME-тип файла',
   'Last update by:' => 'Последнее обновление:',
   'Size:' => 'Размер:',
-  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'К сожалению, вы можете загрузить только до {n, plural, =1{# файла} many{# файлов}} одновременно.',
+  'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'К сожалению, вы можете загрузить только до {n,plural,=1{# файла} other{# файлов}} одновременно.',
   'The uploaded image is not a squared.' => 'Загруженное изображение не квадратное.',
-  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Это поле загрузки допускает максимум {n,plural,=1{# файл} few{# файла} many{# файлов}}.',
+  'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Это поле загрузки допускает максимум {n,plural,=1{# файл} other{# файлов}}.',
   'Upload files' => 'Загрузить файлы',
 );
