@@ -66,6 +66,12 @@ class Controller extends \yii\web\Controller
     protected $doNotInterceptActionIds = [];
 
     /**
+     * @var array Defines actions for which the 2FA check will be skipped, `['*']` for all actions.
+     * @since 1.18
+     */
+    public $skip2faCheck = [];
+
+    /**
      * Returns access rules for the standard access control behavior.
      *
      * @return array the access permissions
