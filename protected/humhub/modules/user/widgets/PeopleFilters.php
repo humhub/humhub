@@ -163,7 +163,7 @@ class PeopleFilters extends DirectoryFilters
         return '';
     }
 
-    protected function getGroupOptions(): array
+    protected function getGroupOptions(int $limit = 200): array
     {
         $options = ['' => Yii::t('UserModule.base', 'Any')];
 
@@ -177,6 +177,7 @@ class PeopleFilters extends DirectoryFilters
                 ->andWhere(['show_at_directory' => 1])
                 ->andWhere(['IS NOT', 'group.id', new Expression('NULL')])
                 ->offset(null)
+                ->limit($limit)
                 ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
                 ->asArray()
                 ->all();
@@ -195,6 +196,7 @@ class PeopleFilters extends DirectoryFilters
         $groups = Group::find()
             ->where(['show_at_directory' => 1])
             ->orderBy(['sort_order' => SORT_ASC, 'name' => SORT_ASC])
+            ->limit($limit)
             ->all();
 
         if (empty($groups)) {
