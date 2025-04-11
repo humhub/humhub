@@ -67,13 +67,16 @@ class SearchController extends Controller
      */
     public function actionFind($keyword)
     {
-        $driver = ContentSearchService::getDriver();
+        /* @var Module $module */
+        $module = Yii::$app->getModule('content');
 
-        $user = User::findOne(['id' => 1]);
+        $options = new SearchRequest([
+            'keyword' => $keyword,
+            'user' => User::findOne(['id' => 1]),
+            'orderBy' => $module->searchOrderBy,
+        ]);
 
-        $options = new SearchRequest(['keyword' => $keyword, 'user' => $user]);
-
-        $searchResultSet = $driver->search($options);
+        $searchResultSet = ContentSearchService::getDriver()->search($options);
 
         print "Number of hits: " . $searchResultSet->pagination->totalCount . "\n";
 
