@@ -8,6 +8,7 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
@@ -189,6 +190,7 @@ class DesignSettingsForm extends Model
         $theme = ThemeHelper::getThemeByName($this->theme);
         if ($theme !== null) {
             $theme->activate();
+            Yii::$app->view->theme = new Theme($theme); // Force new theme immediately, e.g. to rebuild the CSS files
         }
 
         $settingsManager->set('paginationSize', $this->paginationSize);
