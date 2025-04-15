@@ -13,6 +13,7 @@ use humhub\components\Theme;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use ScssPhp\ScssPhp\Compiler;
 use ScssPhp\ScssPhp\Exception\SassException;
+use ScssPhp\ScssPhp\OutputStyle;
 use Yii;
 use yii\base\InvalidConfigException;
 use yii\helpers\ArrayHelper;
@@ -230,6 +231,9 @@ class ThemeHelper
         $designSettingsForm = new DesignSettingsForm();
         $variableImports = [];
         $otherImports = [];
+
+        // Compress CSS
+        $compiler->setOutputStyle(OutputStyle::COMPRESSED);
 
         // Set import paths
         $compiler->setImportPaths(Yii::getAlias('@bower/bootstrap/scss'));
