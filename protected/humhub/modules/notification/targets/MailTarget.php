@@ -71,7 +71,7 @@ class MailTarget extends BaseTarget
         $mail = Yii::$app->mailer->compose($this->view, $viewParams)
             ->setTo($recipient->email)
             ->setSubject(str_replace("\n", " ", trim($notification->getMailSubject())));
-        if ($replyTo = Yii::$app->settings->get('mailer.systemEmailReplyTo')) {
+        if ($replyTo = Yii::$app->settings->get('mailerSystemEmailReplyTo')) {
             $mail->setReplyTo($replyTo);
         }
 

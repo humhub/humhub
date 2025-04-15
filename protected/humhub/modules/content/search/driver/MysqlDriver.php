@@ -165,7 +165,7 @@ class MysqlDriver extends AbstractDriver
         $term = preg_replace('/-+(\*?)$/', '$1', $term);
 
         // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
-        return preg_match('#[^\p{L}\d\*’\'`\-\_]#', $term) ? '"' . $term . '"' : $term;
+        return preg_match('#[^\p{L}\d\*’\'`\-\_]#u', $term) ? '"' . $term . '"' : $term;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery

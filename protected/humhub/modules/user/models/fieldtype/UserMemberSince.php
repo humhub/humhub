@@ -8,6 +8,8 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\helpers\Html;
+use humhub\modules\user\models\User;
 use Yii;
 
 /**
@@ -19,14 +21,19 @@ use Yii;
 class UserMemberSince extends BaseTypeVirtual
 {
     /**
-     * @inheritDoc
+     * @inheritdoc
      */
-    public function getVirtualUserValue($user, $raw = true)
+    public function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string
     {
-        if (empty($user->created_at)) {
+        $value = $user->created_at;
+        if (empty($value)) {
             return '';
         }
 
-        return Yii::$app->formatter->asDate($user->created_at, 'long');
+        if (!$raw) {
+            $value = Yii::$app->formatter->asDate($value, 'long');
+        }
+
+        return $encode ? Html::encode($value) : $value;
     }
 }

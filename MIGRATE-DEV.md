@@ -2,7 +2,7 @@ Module Migration Guide
 ======================
 
 Version 1.18 (Unreleased)
--------------------------
+------------
 
 ### New
 - `\humhub\components\captcha\CaptchaInterface`
@@ -15,6 +15,38 @@ Version 1.18 (Unreleased)
 - `\humhub\components\captcha\YiiCaptchaInput`
 - `\humhub\components\captcha\YiiCaptchaValidator`
 - `Yii::$app->captcha` component
+
+### Behaviour change
+
+- The following Mailer settings keys have been renamed to work with `.env`:
+
+| Old Key                          | New Key                        |
+|----------------------------------|--------------------------------|
+| `mailer.transportType`           | `mailerTransportType`          |
+| `mailer.dsn`                     | `mailerDsn`                    |
+| `mailer.hostname`                | `mailerHostname`               |
+| `mailer.username`                | `mailerUsername`               |
+| `mailer.password`                | `mailerPassword`               |
+| `mailer.useSmtps`                | `mailerUseSmtps`               |
+| `mailer.port`                    | `mailerPort`                   |
+| `mailer.encryption`              | `mailerEncryption`             |
+| `mailer.allowSelfSignedCerts`    | `mailerAllowSelfSignedCerts`   |
+| `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
+| `mailer.systemEmailName`         | `mailerSystemEmailName`        |
+| `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
+
+### Removed deprecations
+- Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
+
+Version 1.17.2
+---------------
+
+### Behaviour change
+
+- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`  
+
+- Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
+
 
 Version 1.17 (January 2024)
 -------------------------

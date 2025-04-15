@@ -207,17 +207,17 @@ class Text extends BaseType
     /**
      * @inheritdoc
      */
-    public function getUserValue(User $user, $raw = true): string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
         $internalName = $this->profileField->internal_name;
-        $value = $user->profile->$internalName;
+        $value = $user->profile->$internalName ?? '';
 
         if (!$raw && (in_array($this->validator, [self::VALIDATOR_EMAIL, self::VALIDATOR_URL]) || !empty($this->linkPrefix))) {
             $linkPrefix = ($this->validator === self::VALIDATOR_EMAIL) ? 'mailto:' : $this->linkPrefix;
-            return Html::a(Html::encode($value), $linkPrefix . $value);
+            return Html::a($encode ? Html::encode($value) : $value, $linkPrefix . $value);
         }
 
-        return Html::encode($value);
+        return $encode ? Html::encode($value) : $value;
     }
 
 }

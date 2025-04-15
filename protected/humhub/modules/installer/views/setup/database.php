@@ -24,7 +24,7 @@ use humhub\widgets\form\ActiveForm;
         <hr/>
         <?= $form->field($model, 'username') ?>
         <hr/>
-        <?= $form->field($model, 'password') ?>
+        <?= $form->field($model, 'password')->passwordInput() ?>
         <hr/>
         <?= $form->field($model, 'database') ?>
         <?= $form->field($model, 'create')->checkbox() ?>

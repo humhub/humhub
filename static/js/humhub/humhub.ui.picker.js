@@ -22,6 +22,11 @@ humhub.module('ui.picker', function (module, require, $) {
                 this.options.dataAdapter = $.fn.select2.amd.require('select2/data/extended-ajax');
             }
         }
+
+        if (this.options.beforeInitCallback && typeof window[this.options.beforeInitCallback] === 'function') {
+            this.options = window[this.options.beforeInitCallback].call(null, this.options);
+        }
+
         _initSelect2(this.$, this.options);
     };
 
@@ -167,7 +172,7 @@ humhub.module('ui.picker', function (module, require, $) {
             Widget.instance($node).renderPlaceholder(true);
 
             // Focus if auto focus is active
-            if (Widget.instance($node).data('picker-focus')) {
+            if (Widget.instance($node).$.data('picker-focus')) {
                 Widget.instance($node).focus();
             }
 

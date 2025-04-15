@@ -5,6 +5,7 @@
 humhub.module('content.form', function (module, require, $) {
 
     var CREATE_FORM_ROOT_SELECTOR = '#contentFormBody';
+    var CREATE_FORM_ROOT_SELECTOR_MODAL = CREATE_FORM_ROOT_SELECTOR + 'Modal';
 
     var object = require('util').object;
     var client = require('client');
@@ -22,26 +23,32 @@ humhub.module('content.form', function (module, require, $) {
     object.inherits(CreateForm, Widget);
 
     CreateForm.prototype.init = function () {
-        this.$.hide();
-        this.menu = this.$.parent().prev('#contentFormMenu');
-        // Hide options by default
-        $('.contentForm_options').hide();
+        this.isModal = this.$.is(CREATE_FORM_ROOT_SELECTOR_MODAL)
+
+        if (!this.isModal) {
+            this.$.hide();
+            this.menu = this.$.parent().prev('#contentFormMenu'); // #contentFormMenuModal doesn't exist
+            // Hide options by default
+            this.$.find('.contentForm_options').hide();
+        }
 
         this.setDefaultVisibility();
         this.$.fadeIn('fast');
         this.showMenu();
 
         if (!module.config['disabled']) {
-            $('#contentFormBody').on('click.humhub:content:form dragover.humhub:content:form', function (evt) {
+            this.$.on('click.humhub:content:form dragover.humhub:content:form', function (evt) {
                 // Prevent fading in for topic remove button clicks
                 if ($(evt.target).closest('.topic-remove-label').length) {
                     return;
                 }
 
-                $('.contentForm_options').fadeIn();
-            });
+                if (!this.isModal) {
+                    this.$.find('.contentForm_options').fadeIn();
+                }
+            }.bind(this));
         } else {
-            $('#contentFormBody').find('.humhub-ui-richtext').trigger('disable');
+            this.$.find('.humhub-ui-richtext').trigger('disable');
         }
     };
 
@@ -65,11 +72,19 @@ humhub.module('content.form', function (module, require, $) {
         event.trigger('humhub:content:beforeSubmit', this);
         client.submit(evt).then(function (response) {
             that.$.find(".preferences, .fileinput-button").show();
-            $('.contentForm_options .preferences, .fileinput-button').show();
+            that.$.find('.contentForm_options .preferences, .fileinput-button').show();
             if (!response.errors) {
                 event.trigger('humhub:content:newEntry', response.output, this);
                 event.trigger('humhub:content:afterSubmit', response.output, this);
-                that.resetForm();
+                if ($('#share-intend-modal').length) {
+                    $("#globalModal").modal("hide");
+                    // If the dashboard stream is not displayed on the current page, redirect to the content container, to make sure the user sees the new content
+                    if (response.url && !$('.dashboard-wall-stream').length) {
+                        client.pjax.redirect(module.config.redirectToContentContainerUrl.replace('the-content-id', response.data.id));
+                    }
+                } else {
+                    that.resetForm();
+                }
             } else {
                 that.handleError(response);
             }
@@ -82,12 +97,15 @@ humhub.module('content.form', function (module, require, $) {
 
     /**
      * Todo: this is post form only, this needs to be added to post module perhaps by calling $form.trigger('humhub:form:clear');
+     *
+     * As the form for share intend is in a modal, we don't need to reset it
+     *
      * @returns {undefined}
      */
     CreateForm.prototype.resetForm = function () {
         // Reset Form (Empty State)
-        $('.contentForm_options').hide();
-        var $contentForm = $('.contentForm');
+        this.$.find('.contentForm_options').hide();
+        var $contentForm = this.$.find('.contentForm');
         $contentForm.filter(':text').val('');
         $contentForm.filter('textarea').val('').trigger('autosize.resize');
         $contentForm.attr('checked', false);
@@ -98,30 +116,29 @@ humhub.module('content.form', function (module, require, $) {
         this.resetFileUpload();
         this.resetState();
 
-        $('#public').attr('checked', false);
-        $('#contentFormBody').find('.humhub-ui-richtext').trigger('clear');
+        this.$.find('.humhub-ui-richtext').trigger('clear');
     };
 
     CreateForm.prototype.resetSettingInputs = function () {
-        $('#notifyUserContainer').hide();
-        Widget.instance('#notifyUserInput').reset();
-        $('#postTopicContainer').hide();
+        this.$.find('.notifyUserContainer').hide();
+        Widget.instance('#notifyUserInput' + (this.isModal ? 'Modal' : '')).reset();
+        $('#postTopicContainer' + (this.isModal ? 'Modal' : '')).hide();
 
-        var topicPicker = Widget.instance('#postTopicInput');
+        var topicPicker = Widget.instance('#postTopicInput' + (this.isModal ? 'Modal' : ''));
         if (topicPicker) {
             topicPicker.reset();
         }
     };
 
     CreateForm.prototype.resetFilePreview = function () {
-        var preview = Widget.instance($('#contentFormFiles_preview'));
+        var preview = Widget.instance($('#contentFormFiles_preview' + (this.isModal ? 'Modal' : '')));
         if (preview) {
             preview.reset();
         }
     };
 
     CreateForm.prototype.resetFileUpload = function () {
-        var upload = Widget.instance($('#contentForm_message-file-upload'));
+        var upload = Widget.instance($('#contentFormFiles_progress' + (this.isModal ? 'Modal' : '')));
         if (upload) {
             upload.reset();
         }
@@ -146,7 +163,7 @@ humhub.module('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.changeVisibility = function () {
-        if (!$('#contentForm_visibility').prop('checked')) {
+        if (!this.$.find('.contentForm_visibility').prop('checked')) {
             this.setPublicVisibility();
         } else {
             this.setPrivateVisibility();
@@ -162,26 +179,26 @@ humhub.module('content.form', function (module, require, $) {
     };
 
     CreateForm.prototype.setPublicVisibility = function () {
-        $('#contentForm_visibility').prop("checked", true);
-        $('#contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
-        $('.badge-public').removeClass('d-none');
+        this.$.find('.contentForm_visibility').prop("checked", true);
+        this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-lock"></i>' + module.text(['makePrivate']));
+        this.$.find('.badge-public').removeClass('d-none');
     };
 
     CreateForm.prototype.setPrivateVisibility = function () {
-        $('#contentForm_visibility').prop("checked", false);
-        $('#contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
-        $('.badge-public').addClass('d-none');
+        this.$.find('.contentForm_visibility').prop("checked", false);
+        this.$.find('.contentForm_visibility_entry').html('<i class="fa fa-unlock"></i>' + module.text(['makePublic']));
+        this.$.find('.badge-public').addClass('d-none');
     };
 
     CreateForm.prototype.notifyUser = function () {
-        $('#notifyUserContainer').show();
-        Widget.instance('#notifyUserInput').focus();
+        this.$.find('.notifyUserContainer').show();
+        Widget.instance('#notifyUserInput' + (this.isModal ? 'Modal' : '')).focus();
     };
 
     CreateForm.prototype.setTopics = function () {
-        $('#postTopicContainer').show();
+        $('#postTopicContainer' + (this.isModal ? 'Modal' : '')).show();
 
-        var topicPicker = Widget.instance('#postTopicInput');
+        var topicPicker = Widget.instance('#postTopicInput' + (this.isModal ? 'Modal' : ''));
         if (topicPicker) {
             topicPicker.focus();
         }
@@ -190,7 +207,7 @@ humhub.module('content.form', function (module, require, $) {
     CreateForm.prototype.changeState = function (state, title, buttonTitle) {
         const stateInput = this.$.find('input[name=state]');
         let stateLabel = this.$.find('.label-content-state');
-        const button = this.$.find('#post_submit_button');
+        const button = $('#post_submit_button' + (this.isModal ? '_modal' : ''));
 
         if (!stateLabel.length) {
             stateLabel = $('<span>').addClass('badge text-bg-warning label-content-state');
@@ -217,12 +234,12 @@ humhub.module('content.form', function (module, require, $) {
         stateLabel.show().html(title);
         button.html(buttonTitle);
         this.$.find('.preferences [data-action-click=notifyUser]').parent().hide();
-        this.$.find('#notifyUserContainer').hide();
+        this.$.find('.notifyUserContainer').hide();
     }
 
     CreateForm.prototype.resetState = function () {
         const stateInput = this.$.find('input[name=state]');
-        const button = this.$.find('#post_submit_button');
+        const button = $('#post_submit_button' + (this.isModal ? '_modal' : ''));
         const initial = stateInput.data('initial');
         if (initial !== undefined) {
             stateInput.val(initial.state);
@@ -236,12 +253,15 @@ humhub.module('content.form', function (module, require, $) {
         this.$.find('input[name^=scheduled]').remove();
         this.$.find('.label-content-state').hide();
         this.$.find('.preferences [data-action-click=notifyUser]').parent().show();
-        const notifyUserContainer = this.$.find('#notifyUserContainer');
+        const notifyUserContainer = this.$.find('.notifyUserContainer');
         if (notifyUserContainer.find('ul .select2-selection__clear').length) {
             notifyUserContainer.show();
         }
     }
 
+    /**
+     * Schedule is not available for share intend because it is already in a modal
+     */
     CreateForm.prototype.scheduleOptions = function (evt) {
         const that = this;
         const modalGlobal = modal.global.$;
@@ -279,6 +299,9 @@ humhub.module('content.form', function (module, require, $) {
         });
     }
 
+    /**
+     * Schedule is not available for share intend because it is already in a modal
+     */
     CreateForm.prototype.setScheduleOption = function (name, value) {
         let input = this.$.find('input[name=' + name + ']');
 
@@ -294,10 +317,16 @@ humhub.module('content.form', function (module, require, $) {
         input.val(value);
     }
 
+    /**
+     * Schedule is not available for share intend because it is already in a modal
+     */
     CreateForm.prototype.resetScheduleOption = function (name) {
         this.setScheduleOption(name);
     }
 
+    /**
+     * CreateFormMenu is not available for share intend
+     */
     const CreateFormMenu = Widget.extend();
 
     CreateFormMenu.prototype.init = function () {
@@ -347,6 +376,13 @@ humhub.module('content.form', function (module, require, $) {
         }
     };
 
+    var initModal = function () {
+        var $rootModal = $(CREATE_FORM_ROOT_SELECTOR_MODAL);
+        if ($rootModal.length) {
+            instance = Widget.instance($rootModal);
+        }
+    };
+
     var unload = function () {
         instance = undefined;
     }
@@ -356,6 +392,7 @@ humhub.module('content.form', function (module, require, $) {
         CreateFormMenu: CreateFormMenu,
         instance: instance,
         init: init,
+        initModal: initModal,
         initOnPjaxLoad: true,
         unload: unload
     });

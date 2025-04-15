@@ -13,10 +13,10 @@ class m220606_205507_mailer_settings extends Migration
      */
     public function safeUp()
     {
-        $setting = Setting::findOne(['name' => 'mailer.encryption', 'module_id' => 'base']);
+        $setting = Setting::findOne(['name' => 'mailerEncryption', 'module_id' => 'base']);
         if ($setting !== null) {
             if ($setting->value === 'ssl') {
-                Yii::$app->settings->set('mailer.useSmtps', true);
+                Yii::$app->settings->set('mailerUseSmtps', true);
             }
             $setting->delete();
         }

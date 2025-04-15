@@ -105,7 +105,7 @@ class SearchFilters extends DirectoryFilters
             'sortOrder' => 500,
         ]);*/
 
-        $this->addFilter('space', [
+        $this->addFilter('contentContainer', [
             'title' => Yii::t('ContentModule.search', 'Space'),
             'type' => 'widget',
             'widget' => SpacePickerField::class,

@@ -3,7 +3,6 @@
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\SecurityTabMenu;
-use humhub\widgets\DataSaved;
 use humhub\widgets\form\ActiveForm;
 
 /* @var $model Space */
@@ -45,9 +44,7 @@ use humhub\widgets\form\ActiveForm;
                     'confirm-text' => Yii::t('SpaceModule.base', 'Warning: If you change the visibility settings of a Space from public to private, all content within that Space, including posts, comments, attachments etc. will also be set to private. This means that non-members will no longer be able to see, access, or interact with any of the content within that Space.'),
                 ],
             ]
-        ); ?>
-
-        <?= DataSaved::widget(); ?>
+        ) ?>
 
         <?php ActiveForm::end(); ?>
     </div>

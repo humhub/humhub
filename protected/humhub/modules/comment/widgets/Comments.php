@@ -65,9 +65,7 @@ class Comments extends Widget
     {
         $objectModel = PolymorphicRelation::getObjectModel($this->object);
         $objectId = $this->object->getPrimaryKey();
-
-        $streamQuery = Yii::$app->request->getQueryParam('StreamQuery');
-        $currentCommentId = empty($streamQuery['commentId']) ? null : $streamQuery['commentId'];
+        $currentCommentId = $this->getCurrentCommentId();
 
         // Count all Comments
         $commentCount = CommentModel::GetCommentCount($objectModel, $objectId);
@@ -100,5 +98,28 @@ class Comments extends Widget
     public function getPageSize(): int
     {
         return $this->isFullViewMode() ? $this->module->commentsBlockLoadSizeViewMode : $this->module->commentsBlockLoadSize;
+    }
+
+    protected function getCurrentCommentId(): ?int
+    {
+        $streamQuery = Yii::$app->request->getQueryParam('StreamQuery');
+        if (empty($streamQuery['commentId'])) {
+            return null;
+        }
+
+        $currentCommentId = (int) $streamQuery['commentId'];
+
+        $currentComment = Yii::$app->runtimeCache->getOrSet('getCurrentComment' . $currentCommentId, function () use ($currentCommentId) {
+            return CommentModel::findOne(['id' => $currentCommentId]);
+        });
+
+        if (!$currentComment ||
+            $currentComment->object_id !== $this->object?->id ||
+            $currentComment->object_model !== get_class($this->object)) {
+            // The current comment is from another parent object
+            return null;
+        }
+
+        return $currentCommentId;
     }
 }

@@ -56,12 +56,18 @@ humhub.module('space', function (module, require, $) {
     };
 
     var changeVisibilityOption = function (event) {
-        const submitButton = event.$trigger.closest('form').find(':submit');
+        const form = event.$trigger.closest('form');
+        const submitButton = form.find(':submit');
+        const fields = form.find('select[name*=join_policy], select[name*=default_content_visibility]');
 
-        if (event.$trigger.val() == 0) {
-            submitButton.attr('data-action-confirm', submitButton.data('confirm-text'))
+        if (event.$trigger.val() === '0') {
+            // Private visibility
+            submitButton.attr('data-action-confirm', submitButton.data('confirm-text'));
+            fields.val(0).prop('disabled', true);
         } else {
-            submitButton.removeAttr('data-action-confirm')
+            // Public or guest visibility
+            submitButton.removeAttr('data-action-confirm');
+            fields.prop('disabled', false);
         }
     };
 

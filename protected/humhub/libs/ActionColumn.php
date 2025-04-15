@@ -10,6 +10,8 @@ namespace humhub\libs;
 
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Button;
+use yii\base\Event;
+use yii\base\Model;
 use yii\grid\Column;
 use yii\helpers\Url;
 
@@ -20,6 +22,8 @@ use yii\helpers\Url;
  */
 class ActionColumn extends Column
 {
+    public const EVENT_AFTER_INIT_ACTIONS = 'afterInitActions';
+
     /**
      * @var string the ID attribute of the model, to generate action URLs.
      */
@@ -81,9 +85,13 @@ class ActionColumn extends Column
     {
         if ($this->actions === null) {
             return [];
-        } elseif (is_callable($this->actions)) {
+        }
+
+        if (is_callable($this->actions)) {
             return call_user_func($this->actions, $model, $key, $index, $this);
         }
+
+        Event::trigger($this, self::EVENT_AFTER_INIT_ACTIONS);
 
         return $this->actions;
     }
@@ -92,7 +100,7 @@ class ActionColumn extends Column
      * Builds the URL for a given Action
      *
      * @param array $url
-     * @param \yii\base\Model $model
+     * @param Model $model
      * @return string the url
      */
     protected function handleUrl($url, $model)

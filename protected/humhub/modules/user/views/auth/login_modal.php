@@ -68,7 +68,7 @@ use yii\helpers\Url;
                 <?php $form = ActiveForm::begin(['id' => 'account-login-form-modal', 'enableClientValidation' => false]); ?>
                 <?= $form->field($model, 'username')->textInput(['id' => 'login_username', 'placeholder' => $model->getAttributeLabel('username')]) ?>
                 <?= $form->field($model, 'password')->passwordInput(['id' => 'login_password', 'placeholder' => $model->getAttributeLabel('password')]) ?>
-                <?= $form->field($model, 'rememberMe')->checkbox() ?>
+                <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
                 <div class="modal-body-footer">
                     <div class="d-flex flex-column align-items-end w-100">
                         <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign in'), ['/user/auth/login'])

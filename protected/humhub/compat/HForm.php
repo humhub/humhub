@@ -56,10 +56,14 @@ class HForm extends \yii\base\Component
      */
     public $markedAsSubmitted = false;
 
-    public function __construct($definition = [], $primaryModel = null)
+    public function __construct($definition = [], $primaryModel = null, array $config = [])
     {
         $this->definition = $definition;
         $this->primaryModel = $primaryModel;
+
+        if (!empty($config)) {
+            Yii::configure($this, $config);
+        }
 
         $this->init();
         $this->trigger(static::EVENT_AFTER_INIT);
@@ -69,11 +73,12 @@ class HForm extends \yii\base\Component
     {
         if (Yii::$app->request->method == 'POST') {
             if ($buttonName == "" || isset($_POST[$buttonName])) {
+                $allowedPostData = $this->getAllowedPostData();
                 foreach ($this->models as $model) {
-                    $model->load(Yii::$app->request->post());
+                    $model->load($allowedPostData);
                 }
                 if ($this->primaryModel !== null) {
-                    $this->primaryModel->load(Yii::$app->request->post());
+                    $this->primaryModel->load($allowedPostData);
                 }
                 return true;
             }
@@ -82,6 +87,32 @@ class HForm extends \yii\base\Component
         }
 
         return false;
+    }
+
+    protected function getAllowedPostData(): array
+    {
+        $post = Yii::$app->request->post();
+
+        foreach ($this->models as $modelName => $model) {
+            $className = substr(strrchr(get_class($model), '\\'), 1);
+            if (!isset($post[$className])) {
+                continue;
+            }
+            if (!isset($this->definition['elements'][$modelName])) {
+                // Remove post data of the object if no definition
+                unset($post[$className]);
+            }
+            if (isset($this->definition['elements'][$modelName]['elements'])) {
+                foreach ($this->definition['elements'][$modelName]['elements'] as $elementName => $element) {
+                    if (!empty($element['readonly']) && isset($post[$className][$elementName])) {
+                        // Remove a readonly field from the POST data
+                        unset($post[$className][$elementName]);
+                    }
+                }
+            }
+        }
+
+        return $post;
     }
 
     public function validate()

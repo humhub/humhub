@@ -8,6 +8,7 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\modules\user\models\User;
 use humhub\helpers\Html;
 
 /**
@@ -21,12 +22,12 @@ class UserName extends BaseTypeVirtual
     /**
      * @inheritDoc
      */
-    public function getVirtualUserValue($user, $raw = true)
+    public function getVirtualUserValue(User $user, bool $raw = true, bool $encode = true): string
     {
         if (empty($user->username)) {
             return '';
         }
 
-        return Html::encode($user->username);
+        return $encode ? Html::encode($user->username) : $user->username;
     }
 }

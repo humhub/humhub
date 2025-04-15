@@ -11,7 +11,7 @@ use humhub\widgets\bootstrap\Button;
 ?>
 <div class="panel-body">
     <div class="float-end">
-        <?= Button::back(['index'], Yii::t('AdminModule.base', 'Back to overview')) ?>
+        <?= Button::back(['/admin/group/index'], Yii::t('AdminModule.base', 'Back to overview')) ?>
     </div>
 
     <?php if (!$group->isNewRecord) : ?>

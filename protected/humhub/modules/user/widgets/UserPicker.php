@@ -254,7 +254,7 @@ class UserPicker extends Widget
      * @param type $permission
      * @return type
      */
-    private static function createJSONUserInfo($user, $permission = null, $priority = null)
+    public static function createJSONUserInfo($user, $permission = null, $priority = null)
     {
         $disabled = false;
 

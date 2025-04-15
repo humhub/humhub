@@ -33,7 +33,6 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\caching\DummyCache;
 use yii\web\HttpException;
 
 /**
@@ -120,7 +119,7 @@ class ConfigController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Yii::$app->settings->set('name', $form->name);
-            Yii::$app->settings->set('mailer.systemEmailName', $form->name);
+            Yii::$app->settings->set('mailerSystemEmailName', $form->name);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 

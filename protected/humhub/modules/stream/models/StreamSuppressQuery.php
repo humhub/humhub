@@ -8,6 +8,7 @@
 
 namespace humhub\modules\stream\models;
 
+use humhub\helpers\ArrayHelper;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\stream\Module;
@@ -206,7 +207,7 @@ class StreamSuppressQuery extends StreamQuery
         // Checks if previous two contents have the same content class model
         $c = count($results) - 1;
         if ($c >= 1 && $results[$c - 1]->object_model === $results[$c]->object_model && $content->object_model === $results[$c]->object_model) {
-            $this->addSuppression($results[$c], $content);
+            $this->addSuppression($results[$c], $content, ArrayHelper::getColumn($results, 'id'));
             return true;
         }
 
@@ -219,13 +220,14 @@ class StreamSuppressQuery extends StreamQuery
      * @param Content $parentContent
      * @param Content $content
      */
-    public function addSuppression($parentContent, $content)
+    public function addSuppression($parentContent, $content, $parentContentIds = [])
     {
         if (!isset($this->suppressions[$parentContent->id]['parentContent'])) {
             $this->suppressions[$parentContent->id]['parentContent'] = $parentContent;
             $this->suppressions[$parentContent->id]['contentIds'] = [];
         }
         $this->suppressions[$parentContent->id]['contentIds'][] = $content->id;
+        $this->suppressions[$parentContent->id]['parentContentIds'][] = $parentContentIds;
     }
 
     /**
@@ -251,6 +253,7 @@ class StreamSuppressQuery extends StreamQuery
 
             $results[$parentContentId] = [
                 'contentName' => $contentInstance->getContentName(),
+                'keys' => $infos['parentContentIds'],
                 'message' => Yii::t('StreamModule.base', 'Show {i} more.', ['i' => count($infos['contentIds'])]),
             ];
         }
