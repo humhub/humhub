@@ -241,7 +241,6 @@ humhub.module('ui.picker', function (module, require, $) {
                 item.disabled = true;
             }
             // Compatibility with old picker implementation and data attributes
-            console.log(item);
             item.id = item.id || item.guid || item['data-id'];
             item.text = item.text || item.title || item.displayName || item['data-text'];
             item.image = item.image || item['data-image'];
