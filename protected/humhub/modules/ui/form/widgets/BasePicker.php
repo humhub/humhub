@@ -408,6 +408,7 @@ abstract class BasePicker extends JsInputWidget
 
         $result = [
             'add-options' => $this->addOptions,
+            'item-key' => $this->itemKey,
             'picker-url' => $this->getUrl(),
             'picker-focus' => $this->focus,
             'maximum-selection-length' => $this->maxSelection,

@@ -241,7 +241,8 @@ humhub.module('ui.picker', function (module, require, $) {
                 item.disabled = true;
             }
             // Compatibility with old picker implementation and data attributes
-            item.id = item.guid || item.id || item['data-id'];
+            console.log(item);
+            item.id = item.id || item.guid || item['data-id'];
             item.text = item.text || item.title || item.displayName || item['data-text'];
             item.image = item.image || item['data-image'];
             item.new = false;
@@ -334,6 +335,7 @@ humhub.module('ui.picker', function (module, require, $) {
     Picker.prototype.prepareItem = function (item) {
         item.text = item.textValue || item.text || $(item.element).data('text');
         item.image = item.image || $(item.element).data('image');
+        item.id = item.id || $(item.element).data('item-key');
         item.imageNode = this.getImageNode(item);
         item.disabledText = item.disabledText || '';
     }
