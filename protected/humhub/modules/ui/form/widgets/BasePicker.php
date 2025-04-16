@@ -119,7 +119,7 @@ abstract class BasePicker extends JsInputWidget
 
     /**
      * The item key used as option value and loading items by attribute value.
-     * e.g. id or guid.
+     * Available values: `id` or `guid`
      *
      * @since v1.3 'id' by default
      *
