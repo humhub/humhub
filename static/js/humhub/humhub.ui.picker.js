@@ -332,8 +332,10 @@ humhub.module('ui.picker', function (module, require, $) {
     };
 
     Picker.prototype.prepareItem = function (item) {
-        var that = this;
-        item.id = that.$.data('item-key') === 'id' ? item.id : item.guid;
+        const itemKey = this.$.data('item-key');
+        if (itemKey && itemKey !== 'id' && item.hasOwnProperty(itemKey)) {
+            item.id = item[itemKey];
+        }
         item.text = item.textValue || item.text || $(item.element).data('text');
         item.image = item.image || $(item.element).data('image');
         item.imageNode = this.getImageNode(item);
