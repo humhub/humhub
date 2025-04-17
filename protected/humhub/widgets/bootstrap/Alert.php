@@ -25,7 +25,7 @@ namespace humhub\widgets\bootstrap;
  * ```
  *
  * @since 1.18
- * @see https://getbootstrap.com/docs/5.3/components/badge/
+ * @see https://getbootstrap.com/docs/5.3/components/alerts/
  */
 class Alert extends \yii\bootstrap5\Alert
 {
