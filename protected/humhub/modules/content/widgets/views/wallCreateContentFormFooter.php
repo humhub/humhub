@@ -82,10 +82,10 @@ use humhub\widgets\bootstrap\Link;
                     ->cssClass(['badge-public', 'd-none']) ?>
             </span>
 
-            <ul class="nav nav-pills preferences" style="right:0;top:5px">
+            <ul class="nav nav-pills" style="right:0;top:5px">
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" style="padding:5px 10px" data-bs-toggle="dropdown" href="#"
-                       aria-label="<?= Yii::t('base', 'Toggle post menu'); ?>" aria-haspopup="true">
+                       aria-label="<?= Yii::t('base', 'Toggle post menu') ?>" aria-haspopup="true">
                         <?= Icon::get('cogs') ?>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
