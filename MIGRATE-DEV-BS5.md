@@ -533,6 +533,15 @@ After:
 </div>
 ```
 
+### Bootstrap Glyphicons
+
+Dropped the Glyphicons icon font ([source](https://getbootstrap.com/docs/4.6/migration/#components)).
+
+Use Font Awesome instead.
+
+Search for `glyphicon` in the code and replace with Font Awesome, by using the `\humhub\modules\ui\icon\widgets\Icon` widget.
+
+
 ## Themes and Modules: LESS is replaced with SCSS
 
 LESS format is not supported anymore.
