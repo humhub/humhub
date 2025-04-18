@@ -9,6 +9,10 @@
 
 namespace humhub\widgets\bootstrap;
 
+use ReflectionMethod;
+use yii\bootstrap5\Html;
+use yii\bootstrap5\Widget;
+
 /**
  * Provides an extension of the yii\bootstrap5\Alert class with additional features.
  *
@@ -60,15 +64,32 @@ class Alert extends \yii\bootstrap5\Alert
     }
 
     /**
-     * @inerhitdoc
+     * {@inheritdoc}
      */
-    public function run(): void
+    public function init()
+    {
+        // Bypass the parent's init method to prevent rendering the div beginning tag at this stage, as we may modify the options later
+        $method = new ReflectionMethod(Widget::class, 'init');
+        $method->invoke($this);
+
+        $this->initOptions();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function run()
     {
         if ($this->icon) {
             $this->body = $this->icon . ' ' . $this->body;
         }
 
-        parent::run();
+        echo
+            Html::beginTag('div', $this->options) . "\n" .
+            $this->renderBodyEnd() . "\n" .
+            Html::endTag('div');
+
+        $this->registerPlugin('alert');
     }
 
     /**
