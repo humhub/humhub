@@ -191,6 +191,10 @@ When it is not possible to place the buttons in the modal footer, use the `modal
 
 ## Forms
 
+### Widgets removed
+
+- `\humhub\modules\ui\form\widgets\ColorPicker` and `\humhub\widgets\ColorPickerField` input widget use `->colorInput()` instead ([see documentation](https://github.com/yiisoft/yii2-bootstrap5/blob/master/docs/guide/usage-widgets.md#activefield-additional-fields-))
+
 ### Widgets deprecations
 
 - `yii\widgets\ActiveForm`, `yii\bootstrap\ActiveForm`, `yii\bootstrap5\ActiveForm`, `kartik\widgets\ActiveForm`, `kartik\form\ActiveForm`, `humhub\modules\ui\form\widgets\ActiveForm`: use `humhub\widgets\form\ActiveForm` instead
@@ -199,7 +203,7 @@ When it is not possible to place the buttons in the modal footer, use the `modal
 - `humhub\modules\ui\form\widgets\ContentHiddenCheckbox` use `humhub\widgets\form\ContentHiddenCheckbox` instead
 - `humhub\modules\ui\form\widgets\ContentVisibilitySelect` use `humhub\widgets\form\ContentVisibilitySelect` instead
 - `humhub\modules\ui\form\widgets\FormTabs` use `humhub\widgets\bootstrap\FormTabs` instead
-- `humhub\widgets\ColorPickerField` and `kartik\widgets\ColorInput` use `->colorInput()` instead
+- `kartik\widgets\ColorInput` use `->colorInput()` instead ([see documentation](https://github.com/yiisoft/yii2-bootstrap5/blob/master/docs/guide/usage-widgets.md#activefield-additional-fields-))
 
 ### Input groups
 
