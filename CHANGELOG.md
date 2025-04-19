@@ -15,6 +15,7 @@ HumHub Changelog
 - Fix #7456: Fix setting manager backwards compatibility
 - Enh #7468: Remove deprecated widget `DataSaved`
 - Enh #7493: Add possibility to define content search order via module config
+- Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
 
 1.17.3 (Unreleased)
 ----------------------
