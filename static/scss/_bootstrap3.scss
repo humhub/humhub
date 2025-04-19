@@ -623,3 +623,41 @@ a.label-warning:hover {
         margin: 0;
     }
 }
+
+
+//
+// Button
+// --------------------------------------------------
+
+.btn-default {
+    background: var(--bs-light);
+    color: var(--hh-text-color-default) !important;
+
+    &:hover,
+    &:focus {
+        background: darken($light, 2%);
+        color: var(--hh-text-color-default);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        background: darken($light, 5%);
+    }
+}
+
+.btn-default[disabled],
+.btn-default.disabled {
+    background: lighten($light, 2%);
+
+    &:hover,
+    &:focus {
+        background: lighten($light, 2%);
+    }
+
+    &:active,
+    &.active {
+        background: lighten($light, 2%);
+    }
+}

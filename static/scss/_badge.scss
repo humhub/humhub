@@ -26,6 +26,8 @@
     line-height: 1;
 
     &.text-bg-info,
+    &.text-bg-secondary,
+    &.text-bg-success,
     &.text-bg-danger {
         color: var(--hh-text-color-contrast) !important;
     }

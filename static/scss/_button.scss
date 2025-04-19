@@ -88,41 +88,7 @@
     font-size: 12px;
 }
 
-.btn-default {
-    background: var(--bs-light);
-    color: var(--hh-text-color-default) !important;
-
-    &:hover,
-    &:focus {
-        background: darken($light, 2%);
-        color: var(--hh-text-color-default);
-        text-decoration: none;
-    }
-
-    &:active,
-    &.active {
-        outline: 0;
-        background: darken($light, 5%);
-    }
-}
-
-.btn-default[disabled],
-.btn-default.disabled {
-    background: lighten($light, 2%);
-
-    &:hover,
-    &:focus {
-        background: lighten($light, 2%);
-    }
-
-    &:active,
-    &.active {
-        background: lighten($light, 2%);
-    }
-}
-
 .btn-primary {
-    background: var(--bs-primary);
     color: var(--hh-text-color-contrast) !important;
 
     &:hover,
@@ -172,7 +138,6 @@
 }
 
 .btn-info {
-    background: var(--bs-info);
     color: var(--hh-text-color-contrast) !important;
 
     &:hover,
@@ -222,7 +187,6 @@
 }
 
 .btn-danger {
-    background: var(--bs-danger);
     color: var(--hh-text-color-contrast) !important;
 
     &:hover,
@@ -254,7 +218,6 @@
 }
 
 .btn-success {
-    background: var(--bs-success);
     color: var(--hh-text-color-contrast) !important;
 
     &:hover,
@@ -286,7 +249,6 @@
 }
 
 .btn-warning {
-    background: var(--bs-warning);
     color: var(--hh-text-color-contrast) !important;
 
     &:hover,
@@ -346,4 +308,8 @@
     &.active {
         color: lighten($link-color, 5%) !important;
     }
+}
+
+.btn-secondary {
+    color: var(--hh-text-color-contrast) !important;
 }
