@@ -47,7 +47,6 @@ return [
     'Port' => 'Ports',
     'Port number' => 'Porta numurs',
     'Save' => 'Saglabāt',
-    'Saved' => 'Saglabāts',
     'Saved and flushed cache' => 'Saglabāts un notīrīta kešatmiņa',
     'Server' => 'Serveris',
     'Show introduction tour for new users' => 'Rādīt iepazīšanās tūri jauniem lietotājiem',

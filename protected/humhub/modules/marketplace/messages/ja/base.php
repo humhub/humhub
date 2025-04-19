@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '
 Module successfully disabled!
 ' => 'モジュールの無効化が成功しました。',
@@ -77,7 +77,7 @@ The license was successfully removed!
   'License not found or expired. Please contact the module publisher.' => 'ライセンスが見つからないか、期限切れです。 モジュールの発行元にお問い合わせください。',
   'Licensed for max. {number} users.' => '最大ライセンス。{number} ユーザー',
   'Licensed to:' => 'ライセンス対象：',
-  'Marketplace' => '市場',
+  'Marketplace' => 'マーケットプレース',
   'Marketplace is disabled.' => 'マーケットプレイスが無効になっています。',
   'Max. users:' => '最大。ユーザー：',
   'Module "{moduleName}" has been updated to version {newVersion} successfully.' => 'モジュール "{moduleName}" はバージョン {newVersion} に正常に更新されました。',
@@ -137,4 +137,4 @@ The license was successfully removed!
   'Without category' => 'カテゴリなし',
   'Would you like to jump straight to it?' => 'すぐにジャンプしますか？',
   'Your HumHub installation is up to date!' => 'HumHub のインストールは最新です。',
-);
+];

@@ -7,7 +7,6 @@ return [
     'General' => 'Cheneral',
     'Password' => 'Clau',
     'Save' => 'Uložit',
-    'Saved' => ' ',
     'User' => 'Usuario',
     '"My Spaces" Sorting' => '',
     '1 month' => '',

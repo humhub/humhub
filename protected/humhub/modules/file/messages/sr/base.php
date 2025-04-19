@@ -22,4 +22,7 @@ return [
     'The uploaded image is not a squared.' => 'Podignuta slika nije kvadrat',
     'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ovaj upload fajlova dozvoljava maksimum od {n,plural,=1{# file} other{# files}}.',
     'Upload files' => 'Podignuti fajlovi',
+    'Share' => '',
+    'Share as Post' => '',
+    'Share in {targetDisplayName}' => '',
 ];

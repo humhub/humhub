@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => 'Fájl <strong>megnyitása</strong>',
   '<strong>Upload</strong> error' => '<strong>Feltöltési</strong> hiba',
   'Attach a video' => 'Videó csatolása',
@@ -16,9 +16,12 @@ return array (
   'Insufficient permissions!' => 'Elégtelen jogosultságok!',
   'Invalid Mime-Type' => 'Érvénytelen Mime-típus',
   'Last update by:' => 'Utoljára frissítve:',
+  'Share' => 'Megosztás',
+  'Share as Post' => '',
+  'Share in {targetDisplayName}' => '',
   'Size:' => 'Méret:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Egyszerre csak {n,plural,=1{# fájl} other{# fájl}} feltöltése lehetséges.',
   'The uploaded image is not a squared.' => 'A feltöltött kép nem négyzet alakú.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Ez a feltöltési mező maximum {n,plural,=1{# fájl} other{# fájl}} feltöltését teszi lehetővé.',
   'Upload files' => 'Fájlok feltöltése',
-);
+];

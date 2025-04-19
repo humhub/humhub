@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => '<strong>Abrir</strong> arquivo',
   '<strong>Upload</strong> error' => '<strong>Upload</strong> erro',
   'Attach a video' => 'Anexar um video',
@@ -16,9 +16,12 @@ return array (
   'Insufficient permissions!' => 'Permissões insuficientes!',
   'Invalid Mime-Type' => 'Mime-Type inválido',
   'Last update by:' => 'Última atualização por:',
+  'Share' => '➤',
+  'Share as Post' => '',
+  'Share in {targetDisplayName}' => '',
   'Size:' => 'Tamanho:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Desculpe, você só pode enviar {n,plural,=1{# arquivo} other{# arquivos}} de uma vez.',
   'The uploaded image is not a squared.' => 'A imagem carregada não é quadrada',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Esse campo só permite o envio de até {n,plural,=1{# arquivo} other{# arquivos}}.',
   'Upload files' => 'Fazer upload de arquivos',
-);
+];

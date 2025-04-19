@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => '<strong> فتح </strong> الملف',
   '<strong>Upload</strong> error' => '<strong>خطأ</strong> في الرفع',
   'Attach a video' => 'إرفاق فيديو',
@@ -16,9 +16,12 @@ return array (
   'Insufficient permissions!' => 'ليست لديك الصلاحيات الكافية!',
   'Invalid Mime-Type' => 'نوع ملف غير صالح',
   'Last update by:' => 'آخر تحديث بواسطة:',
+  'Share' => 'مشاركة',
+  'Share as Post' => '',
+  'Share in {targetDisplayName}' => '',
   'Size:' => 'بحجم:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'عذرًا، يمكنك تحميل ملف واحد فقط {n,plural,=1{# ملف} other{# ملفات}} في وقت واحد.',
   'The uploaded image is not a squared.' => 'الصورة التي تم تحميلها ليست مربعة.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'هذا الحقل يسمح فقط بملف واحد {n,plural,=1{# ملف} other{# ملفات}} بحد أقصى.',
   'Upload files' => 'رفع ملفات',
-);
+];
