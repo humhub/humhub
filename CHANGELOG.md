@@ -21,6 +21,7 @@ HumHub Changelog
 - Fix #7484: Use password type on the installation DB config form
 - Fix #7486: Catch errors in external file handlers
 - Fix #7487: Fix comments list when comment is active from another parent comment
+- Enh #7492: Fix access to options on space invite form
 
 1.17.2 (April 7, 2025)
 ----------------------
