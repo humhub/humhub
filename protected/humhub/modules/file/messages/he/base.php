@@ -22,4 +22,7 @@ return [
     'Attach an audio message' => '',
     'Attach an image' => '',
     'Double file extensions are not allowed!' => '',
+    'Share' => '',
+    'Share as Post' => '',
+    'Share in {targetDisplayName}' => '',
 ];

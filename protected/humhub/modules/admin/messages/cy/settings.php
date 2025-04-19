@@ -101,7 +101,6 @@ return [
     'Save' => '',
     'Save & Flush Caches' => '',
     'Save & Test' => '',
-    'Saved' => '',
     'Saved and flushed cache' => '',
     'Saved and sent test email to: {address}' => '',
     'Server' => '',

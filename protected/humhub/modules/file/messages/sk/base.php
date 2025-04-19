@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => '<strong>Otvoriť</strong> súbor',
   '<strong>Upload</strong> error' => 'Chyba pri <strong>Nahrávaní</strong>',
   'Attach a video' => 'Pripojiť video',
@@ -16,6 +16,9 @@ return array (
   'Insufficient permissions!' => 'Nedostatočné povolenia!',
   'Invalid Mime-Type' => 'Neplatný Mime-Type',
   'Last update by:' => 'Posledná aktualizácia:',
+  'Share' => 'Zdieľať',
+  'Share as Post' => '',
+  'Share in {targetDisplayName}' => '',
   'Size:' => 'Veľkosť:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Ľutujeme, naraz môžete nahrať maximálne {n,plural,=1{# súbor} =2{# súbori}
  =3{# súbori} =3{# súbori} =4{# súbori} other{# súborov}}.',
@@ -23,4 +26,4 @@ return array (
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Toto pole nahrávania povoľuje maximálne {n,plural,=1{# súbor} =2{# súbori}
  =3{# súbori} =3{# súbori} =4{# súbori} other{# súborov}}.',
   'Upload files' => 'Nahrať súbory',
-);
+];
