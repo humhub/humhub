@@ -184,7 +184,7 @@ class CommentController extends Controller
                     $form->comment->addError(
                         'message',
                         Yii::t(
-                            'PostModule.base',
+                            'CommentModule.base',
                             'The comment you\'re editing has already been modified. Please reload the page and try again.'
                         )
                     );
