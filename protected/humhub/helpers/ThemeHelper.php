@@ -297,7 +297,7 @@ class ThemeHelper
 
         // Compile to CSS
         try {
-            $result = $compiler->compileString($scssSource);
+            $result = $compiler->compileString(str_replace('\\', '/', $scssSource)); // replace backslashes with forward slashes for Windows compatibility
             if (file_put_contents($cssFilePath, $result->getCss()) === false) {
                 return static::logAndGetError('Could not write to file ' . $cssFilePath);
             }
