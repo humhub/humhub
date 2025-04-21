@@ -85,7 +85,7 @@ return [
                 'css' => [],
             ],
             BootstrapPluginAsset::class => [
-                'js' => ['dist/js/bootstrap.bundle.min.js'],
+                'js' => ['js/bootstrap.bundle.min.js'],
                 'depends' => [
                     JqueryAsset::class,
                     BootstrapAsset::class,
