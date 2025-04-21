@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Confirm</strong> Action' => 'Aktion <strong>bestätigen</strong>',
   '<strong>Latest</strong> updates' => '<strong>Letzte</strong> Aktualisierungen',
   '<strong>Mail</strong> summary' => '<strong>E-Mail</strong>-Zusammenfassung',
@@ -18,7 +18,7 @@ return array (
   'Back' => 'Zurück',
   'Back to dashboard' => 'Zurück zur Übersicht',
   'Cancel' => 'Abbrechen',
-  'Choose language:' => 'Sprache wählen / Choose language:',
+  'Choose language:' => 'Sprache:',
   'Close' => 'Schließen',
   'Collapse' => 'Einklappen',
   'Confirm' => 'Bestätigen',
@@ -94,4 +94,4 @@ return array (
   '{nFormatted}B' => '{nFormatted} Mrd.',
   '{nFormatted}K' => '{nFormatted} Tsd.',
   '{nFormatted}M' => '{nFormatted} Mio.',
-);
+];

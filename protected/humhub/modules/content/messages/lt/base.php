@@ -111,6 +111,9 @@ return [
     'in' => 'į',
     '(Also visible to people who are not logged in)' => '',
     'Advanced Content Search' => '',
+    'Select target Space.' => '',
+    'Select target Space/Profile.' => '',
+    'Share' => '',
     'Topic already exists globally.' => '',
     'Topic already in use in Spaces or on Profiles.' => '',
 ];

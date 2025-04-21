@@ -7,7 +7,6 @@ return [
     'Friendship' => 'Persahabatan',
     'General' => 'Umum',
     'Save' => 'Simpan',
-    'Saved' => 'Tersimpan',
     'User' => 'Pengguna',
     '"My Spaces" Sorting' => '',
     '1 month' => '',

@@ -1,6 +1,31 @@
 Module Migration Guide
 ======================
 
+Version 1.18
+------------
+
+### Behaviour change
+
+- The following Mailer settings keys have been renamed to work with `.env`:
+
+| Old Key                          | New Key                        |
+|----------------------------------|--------------------------------|
+| `mailer.transportType`           | `mailerTransportType`          |
+| `mailer.dsn`                     | `mailerDsn`                    |
+| `mailer.hostname`                | `mailerHostname`               |
+| `mailer.username`                | `mailerUsername`               |
+| `mailer.password`                | `mailerPassword`               |
+| `mailer.useSmtps`                | `mailerUseSmtps`               |
+| `mailer.port`                    | `mailerPort`                   |
+| `mailer.encryption`              | `mailerEncryption`             |
+| `mailer.allowSelfSignedCerts`    | `mailerAllowSelfSignedCerts`   |
+| `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
+| `mailer.systemEmailName`         | `mailerSystemEmailName`        |
+| `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
+
+### Removed deprecations
+- Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
+
 Version 1.17.2
 ---------------
 

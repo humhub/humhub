@@ -39,6 +39,14 @@ class Image extends BaseImage
     /**
      * @inheritdoc
      */
+    public function beforeRun()
+    {
+        return parent::beforeRun() && $this->user instanceof User;
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function run()
     {
         if ($this->user->status === User::STATUS_SOFT_DELETED) {

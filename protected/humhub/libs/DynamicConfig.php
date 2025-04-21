@@ -147,31 +147,31 @@ class DynamicConfig extends BaseObject
         $mail = [];
         $mail['transport'] = [];
 
-        $transportType = Yii::$app->settings->get('mailer.transportType', MailingSettingsForm::TRANSPORT_PHP);
+        $transportType = Yii::$app->settings->get('mailerTransportType', MailingSettingsForm::TRANSPORT_PHP);
 
         if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
-            if (Yii::$app->settings->get('mailer.hostname')) {
-                $mail['transport']['host'] = Yii::$app->settings->get('mailer.hostname');
+            if (Yii::$app->settings->get('mailerHostname')) {
+                $mail['transport']['host'] = Yii::$app->settings->get('mailerHostname');
             }
-            if (Yii::$app->settings->get('mailer.port')) {
-                $mail['transport']['port'] = (int)Yii::$app->settings->get('mailer.port');
+            if (Yii::$app->settings->get('mailerPort')) {
+                $mail['transport']['port'] = (int)Yii::$app->settings->get('mailerPort');
             } else {
                 $mail['transport']['port'] = 25;
             }
-            if (Yii::$app->settings->get('mailer.username')) {
-                $mail['transport']['username'] = Yii::$app->settings->get('mailer.username');
+            if (Yii::$app->settings->get('mailerUsername')) {
+                $mail['transport']['username'] = Yii::$app->settings->get('mailerUsername');
             }
-            if (Yii::$app->settings->get('mailer.password')) {
-                $mail['transport']['password'] = Yii::$app->settings->get('mailer.password');
+            if (Yii::$app->settings->get('mailerPassword')) {
+                $mail['transport']['password'] = Yii::$app->settings->get('mailerPassword');
             }
-            $mail['transport']['scheme'] = (empty(Yii::$app->settings->get('mailer.useSmtps'))) ? 'smtp' : 'smtps';
+            $mail['transport']['scheme'] = (empty(Yii::$app->settings->get('mailerUseSmtps'))) ? 'smtp' : 'smtps';
 
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             return [];
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_PHP) {
             $mail['transport']['dsn'] = 'native://default';
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
-            $mail['transport']['dsn'] = Yii::$app->settings->get('mailer.dsn');
+            $mail['transport']['dsn'] = Yii::$app->settings->get('mailerDsn');
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
             unset($mail['transport']);
             $mail['useFileTransport'] = true;
@@ -190,9 +190,9 @@ class DynamicConfig extends BaseObject
     public static function needRewrite($moduleId, $name)
     {
         return (in_array($name, [
-            'name', 'defaultLanguage', 'timeZone', 'cacheClass', 'mailer.transportType',
-            'mailer.hostname', 'mailer.username', 'mailer.password', 'mailer.encryption',
-            'mailer.port', 'horImageScrollOnMobile']));
+            'name', 'defaultLanguage', 'timeZone', 'cacheClass', 'mailerTransportType',
+            'mailerHostname', 'mailerUsername', 'mailerPassword', 'mailerEncryption',
+            'mailerPort', 'horImageScrollOnMobile']));
     }
 
     public static function getConfigFilePath()

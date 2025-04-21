@@ -61,7 +61,6 @@ return [
     'Port number' => '端口号',
     'Save' => '保存',
     'Save & Flush Caches' => '保存并删除缓存',
-    'Saved' => '保 存',
     'Saved and flushed cache' => '保存并清除缓存',
     'Server' => '服务器',
     'Show introduction tour for new users' => '新用户显示向导',

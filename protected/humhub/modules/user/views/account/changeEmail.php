@@ -1,7 +1,6 @@
 <?php
 
 use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 
 ?>
@@ -21,12 +20,5 @@ use yii\helpers\Html;
 <hr>
 <?php echo Html::submitButton(Yii::t('UserModule.account', 'Save'), ['name' => 'save', 'class' => 'btn btn-primary', 'data-ui-loader' => '']); ?>
 
-<!-- show flash message after saving -->
-<?php echo DataSaved::widget(); ?>
-
 <?php ActiveForm::end(); ?>
 <?php $this->endContent(); ?>
-
-
-
-
