@@ -26,6 +26,7 @@ $contentModule = Yii::$app->getModule('content');
     <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
     <?= Html::hiddenInput('objectModel', $objectModel); ?>
     <?= Html::hiddenInput('objectId', $objectId); ?>
+    <?= Html::hiddenInput('version', $comment->version); ?>
 
     <div class="content-create-input-group">
         <?= $form->field($comment, 'message')->widget(RichTextField::class, [

@@ -22,6 +22,7 @@ use humhub\modules\comment\widgets\Form;
 use humhub\modules\comment\widgets\ShowMore;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\file\handler\FileHandlerCollection;
+use RuntimeException;
 use Throwable;
 use Yii;
 use yii\db\StaleObjectException;
@@ -166,15 +167,29 @@ class CommentController extends Controller
 
         $form = new CommentForm($this->target, $comment);
 
-        if ($form->load(Yii::$app->request->post()) && $form->save()) {
-            return $this->renderAjaxContent(CommentWidget::widget([
-                'comment' => $form->comment,
-                'justEdited' => true,
-            ]));
-        }
+        if ($form->load(Yii::$app->request->post())) {
+            try {
+                if (!$form->save()) {
+                    throw new RuntimeException();
+                }
 
-        if (Yii::$app->request->post()) {
-            Yii::$app->response->statusCode = 400;
+                return $this->renderAjaxContent(CommentWidget::widget([
+                    'comment' => $form->comment,
+                    'justEdited' => true,
+                ]));
+            } catch (StaleObjectException|RuntimeException $e) {
+                Yii::$app->response->statusCode = 400;
+
+                if ($e instanceof StaleObjectException) {
+                    $form->comment->addError(
+                        'message',
+                        Yii::t(
+                            'PostModule.base',
+                            'The comment you\'re editing has already been modified. Please reload the page and try again.'
+                        )
+                    );
+                }
+            }
         }
 
         $submitUrl = Url::to(['/comment/comment/edit',

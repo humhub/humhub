@@ -22,6 +22,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
+use yii\behaviors\OptimisticLockBehavior;
 use yii\db\ActiveRecord;
 use yii\helpers\Url;
 
@@ -36,12 +37,40 @@ use yii\helpers\Url;
  * @property int $created_by
  * @property string $updated_at
  * @property int $updated_by
+ * @property int $version @since 1.18
  * @property-read string $url @since 1.10.2
  *
  * @since 0.5
  */
 class Comment extends ContentAddonActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => OptimisticLockBehavior::class,
+                'value' => function () {
+                    /**
+                     * Returning `$this->version` as default value ensures that optimistic lock
+                     * is applied only when `version` param is specified in the request body
+                     */
+                    return Yii::$app->request->getBodyParam('version', $this->version);
+                },
+            ],
+            [
+                'class' => PolymorphicRelation::class,
+                'mustBeInstanceOf' => [
+                    ActiveRecord::class,
+                ],
+            ],
+        ];
+    }
+
+    public function optimisticLock()
+    {
+        return 'version';
+    }
+
     public const CACHE_KEY_COUNT = 'commentCount_%s_%s';
     public const CACHE_KEY_LIMITED = 'commentsLimited_%s_%s';
 
@@ -60,21 +89,7 @@ class Comment extends ContentAddonActiveRecord
     {
         return [
             [['message'], 'safe'],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => PolymorphicRelation::class,
-                'mustBeInstanceOf' => [
-                    ActiveRecord::class,
-                ],
-            ],
+            [['version'], 'default', 'value' => 1],
         ];
     }
 
