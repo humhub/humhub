@@ -122,7 +122,11 @@ class Badge extends Widget
      */
     public function action($handler, $url = null, $target = null)
     {
-        $this->link = Link::withAction($this->getText(), $handler, $url, $target);
+        $label = ($this->encodeLabel) ? Html::encode($this->label) : $this->label;
+        if ($this->icon) {
+            $label = $this->icon . ' ' . $label;
+        }
+        $this->link = Link::withAction($label, $handler, $url, $target);
         return $this;
     }
 
