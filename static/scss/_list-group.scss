@@ -7,12 +7,11 @@
 // See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
 .list-group {
     --bs-list-group-bg: var(--hh-background-color-main);
+    --bs-list-group-border-width: 0;
 }
 
 .list-group-item {
     padding: 6px 15px;
-    border: none;
-    border-width: 0 !important;
     border-left: 3px solid #fff !important;
     font-size: 12px;
     font-weight: 600;
@@ -109,14 +108,8 @@ a.list-group-item {
         margin-bottom: 4px !important;
     }
 
-    .list-group-item {
-        border: none !important;
-
-    }
-
     a.list-group-item {
         @mixin mobileListGroupItemActiveOrFocus {
-            border: none !important;
             background: var(--bs-primary) !important;
             color: #fff !important;
         }
