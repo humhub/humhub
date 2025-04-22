@@ -7,6 +7,7 @@
 
 use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */
 /* @var array $options */
@@ -14,16 +15,12 @@ use humhub\modules\ui\menu\MenuEntry;
 
 <?= Html::beginTag('ul', $options) ?>
 <li class="nav-item dropdown">
-    <?= Html::a('', '#', [
-        'class' => 'nav-link dropdown-toggle',
-        'data-bs-toggle' => 'dropdown',
-        'aria-label' => Yii::t('base', 'Toggle stream entry menu'),
-        'aria-haspopup' => 'true',
-        'aria-expanded' => 'false',
-        'role' => 'button',
-    ]) ?>
-
-    <ul class="dropdown-menu">
+    <?= Button::light()
+        ->options(['data-bs-toggle' => 'dropdown'])
+        ->sm()
+        ->cssClass('nav-link dropdown-toggle')
+        ->loader(false) ?>
+    <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
             <li>
                 <?= $entry->render(['class' => 'dropdown-item']) ?>
