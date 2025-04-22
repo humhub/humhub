@@ -67,7 +67,7 @@ class Comment extends ContentAddonActiveRecord
 
     public function optimisticLock()
     {
-        return 'version';
+        return 'updated_at';
     }
 
     public const CACHE_KEY_COUNT = 'commentCount_%s_%s';

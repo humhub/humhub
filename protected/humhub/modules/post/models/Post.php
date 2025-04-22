@@ -47,7 +47,7 @@ class Post extends ContentActiveRecord
 
     public function optimisticLock()
     {
-        return 'version';
+        return 'updated_at';
     }
 
     /**
