@@ -8,11 +8,12 @@
 
 namespace humhub\modules\post\models;
 
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\WallEntry;
 use Yii;
+use yii\behaviors\OptimisticLockBehavior;
 use yii\helpers\Url;
 
 /**
@@ -28,6 +29,27 @@ use yii\helpers\Url;
  */
 class Post extends ContentActiveRecord
 {
+    public function behaviors()
+    {
+        return [
+            [
+                'class' => OptimisticLockBehavior::class,
+                'value' => function () {
+                    /**
+                     * Returning `$this->updated_at` as default value ensures that optimistic lock
+                     * is applied only when `version` param is specified in the request body
+                     */
+                    return Yii::$app->request->getBodyParam('version', $this->updated_at);
+                },
+            ],
+        ];
+    }
+
+    public function optimisticLock()
+    {
+        return 'updated_at';
+    }
+
     /**
      * @inheritdoc
      */

@@ -8,21 +8,22 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
-use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
-use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\Form;
+use RuntimeException;
 use Throwable;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
+use yii\db\StaleObjectException;
 use yii\web\ForbiddenHttpException;
 use yii\web\HttpException;
 use yii\web\NotFoundHttpException;
@@ -103,12 +104,27 @@ class PostController extends ContentContainerController
         }
 
         if ($model->load(Yii::$app->request->post())) {
-            // Reload record to get populated updated_at field
-            if ($model->save()) {
-                $post = Post::findOne(['id' => $id]);
-                return $this->renderAjaxContent(StreamEntryWidget::renderStreamEntry($post, WallStreamEntryOptions::getInstanceFromRequest()));
-            } else {
+            try {
+                if ($model->save()) {
+                    $post->refresh(); // Reload record to get populated updated_at field
+                    return $this->renderAjaxContent(
+                        StreamEntryWidget::renderStreamEntry($post, WallStreamEntryOptions::getInstanceFromRequest())
+                    );
+                } else {
+                    throw new RuntimeException();
+                }
+            } catch (StaleObjectException|RuntimeException $e) {
                 Yii::$app->response->statusCode = 400;
+
+                if ($e instanceof StaleObjectException) {
+                    $model->post->addError(
+                        'message',
+                        Yii::t(
+                            'PostModule.base',
+                            'The post you\'re editing has already been modified. Please reload the page and try again.'
+                        )
+                    );
+                }
             }
         }
 
