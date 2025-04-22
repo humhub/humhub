@@ -26,7 +26,6 @@ use yii\helpers\Url;
  * @property int $created_by
  * @property string $updated_at
  * @property int $updated_by
- * @property int $version @since 1.18
  */
 class Post extends ContentActiveRecord
 {
@@ -37,10 +36,10 @@ class Post extends ContentActiveRecord
                 'class' => OptimisticLockBehavior::class,
                 'value' => function () {
                     /**
-                     * Returning `$this->version` as default value ensures that optimistic lock
+                     * Returning `$this->updated_at` as default value ensures that optimistic lock
                      * is applied only when `version` param is specified in the request body
                      */
-                    return Yii::$app->request->getBodyParam('version', $this->version);
+                    return Yii::$app->request->getBodyParam('version', $this->updated_at);
                 },
             ],
         ];
@@ -97,7 +96,6 @@ class Post extends ContentActiveRecord
         return [
             [['message'], 'required', 'except' => [self::SCENARIO_AJAX_VALIDATION, self::SCENARIO_HAS_FILES]],
             [['message'], 'string'],
-            [['version'], 'default', 'value' => 1],
             [['url'], 'string', 'max' => 255],
         ];
     }

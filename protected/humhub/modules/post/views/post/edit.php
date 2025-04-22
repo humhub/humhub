@@ -18,7 +18,7 @@ use yii\bootstrap\ActiveForm;
 ?>
 <div class="content content_edit" id="post_edit_<?= $model->post->id; ?>">
     <?php $form = ActiveForm::begin(['id' => 'post-edit-form_' . $model->post->id]); ?>
-    <?= Html::hiddenInput('version', $model->post->version) ?>
+    <?= Html::hiddenInput('version', $model->post->updated_at) ?>
 
     <div class="content-create-input-group">
         <?= $form->field($model->post, 'message')->widget(RichTextField::class, [

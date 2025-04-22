@@ -37,7 +37,6 @@ use yii\helpers\Url;
  * @property int $created_by
  * @property string $updated_at
  * @property int $updated_by
- * @property int $version @since 1.18
  * @property-read string $url @since 1.10.2
  *
  * @since 0.5
@@ -51,10 +50,10 @@ class Comment extends ContentAddonActiveRecord
                 'class' => OptimisticLockBehavior::class,
                 'value' => function () {
                     /**
-                     * Returning `$this->version` as default value ensures that optimistic lock
+                     * Returning `$this->updated_at` as default value ensures that optimistic lock
                      * is applied only when `version` param is specified in the request body
                      */
-                    return Yii::$app->request->getBodyParam('version', $this->version);
+                    return Yii::$app->request->getBodyParam('version', $this->updated_at);
                 },
             ],
             [
@@ -89,7 +88,6 @@ class Comment extends ContentAddonActiveRecord
     {
         return [
             [['message'], 'safe'],
-            [['version'], 'default', 'value' => 1],
         ];
     }
 
