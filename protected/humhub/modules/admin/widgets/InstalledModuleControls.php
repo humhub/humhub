@@ -68,8 +68,7 @@ class InstalledModuleControls extends Menu
                 'label' => Yii::t('AdminModule.base', 'Enable'),
                 'url' => $this->getActionUrl('/admin/module/enable'),
                 'htmlOptions' => [
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
+                    'data-action-click' => 'ui.modal.post',
                     'data-message' => Yii::t('AdminModule.modules', 'Enable module...'),
                 ],
                 'icon' => 'check-circle',
