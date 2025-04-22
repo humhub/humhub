@@ -13,6 +13,7 @@ use humhub\components\Widget;
 use humhub\modules\admin\permissions\ManageModules;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\widgets\bootstrap\Button;
+use humhub\widgets\modal\ModalButton;
 use Yii;
 use yii\helpers\Url;
 
@@ -32,21 +33,17 @@ class InstalledModuleActionButtons extends Widget
     public function run()
     {
         if (!$this->module->getIsEnabled() && Yii::$app->user->can(ManageModules::class)) {
-            return Button::asLink(
-                Yii::t('AdminModule.base', 'Enable'),
-                Url::to(['/admin/module/enable', 'moduleId' => $this->module->id]),
-            )
-                ->cssClass('btn btn-sm btn-info')
-                ->options([
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
-                    'data-message' => Yii::t('AdminModule.base', 'Enable module...'),
-                ]);
+            return ModalButton::info(Yii::t('AdminModule.base', 'Enable'))
+                ->sm()
+                ->post(['/admin/module/enable', 'moduleId' => $this->module->id])
+                ->options(['data-message' => Yii::t('AdminModule.base', 'Enable module...')]);
         }
 
         if ($this->module->getConfigUrl() !== '' && Yii::$app->user->can(ManageSettings::class)) {
-            return Button::asLink(Yii::t('AdminModule.base', 'Configure'), $this->module->getConfigUrl())
-                ->cssClass('btn btn-sm btn-info active');
+            return Button::info(Yii::t('AdminModule.base', 'Configure'))
+                ->link($this->module->getConfigUrl())
+                ->sm()
+                ->outline();
         }
 
         return '';
