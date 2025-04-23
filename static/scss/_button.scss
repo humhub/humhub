@@ -88,6 +88,10 @@
     font-size: 12px;
 }
 
+.btn.disabled, .btn:disabled, fieldset:disabled .btn {
+    cursor: not-allowed;
+}
+
 .btn-primary {
     color: var(--hh-text-color-contrast) !important;
 
