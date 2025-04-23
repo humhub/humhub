@@ -49,12 +49,6 @@
     border-radius: 3px;
     white-space: nowrap;
 
-    // If not outline button
-    &:not(.btn-outline-primary):not(.btn-outline-secondary):not(.btn-outline-success):not(.btn-outline-info):not(.btn-outline-warning):not(.btn-outline-danger):not(.btn-outline-light):not(.btn-outline-dark) {
-        border: none;
-        outline: none !important;
-    }
-
     &:not(.btn-icon-only) {
         i.fa {
             margin-right: 4px;
@@ -190,6 +184,10 @@
     }
 }
 
+.btn-outline-info:hover {
+    color: var(--hh-text-color-contrast);
+}
+
 .btn-danger {
     color: var(--hh-text-color-contrast) !important;
 
@@ -219,6 +217,10 @@
     &.active {
         background: lighten($danger, 5%) !important;
     }
+}
+
+.btn-outline-danger:hover {
+    color: var(--hh-text-color-contrast);
 }
 
 .btn-success {
@@ -252,6 +254,10 @@
     }
 }
 
+.btn-outline-success:hover {
+    color: var(--hh-text-color-contrast);
+}
+
 .btn-warning {
     color: var(--hh-text-color-contrast) !important;
 
@@ -281,6 +287,10 @@
     &.active {
         background: lighten($warning, 5%) !important;
     }
+}
+
+.btn-outline-warning:hover {
+    color: var(--hh-text-color-contrast);
 }
 
 .btn-link {
@@ -316,4 +326,8 @@
 
 .btn-secondary {
     color: var(--hh-text-color-contrast) !important;
+}
+
+.btn-outline-secondary:hover {
+    color: var(--hh-text-color-contrast);
 }
