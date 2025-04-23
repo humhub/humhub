@@ -57,10 +57,12 @@ humhub.module('ui.modal', function (module, require, $) {
      */
     Modal.template = {
         container: '<div class="modal fade" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
-        header: '<div class="modal-header"><h5 class="modal-title"></h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>',
+        title: '<h5 class="modal-title"></h5>',
+        closeButton: '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
         body: '<div class="modal-body"></div>',
         footer: '<div class="modal-footer"></div>',
     };
+    Modal.template.header = '<div class="modal-header">' + Modal.template.title + Modal.template.closeButton + '</div>';
 
     /**
      * Creates a new modal dom skeleton.
@@ -127,9 +129,12 @@ humhub.module('ui.modal', function (module, require, $) {
      * Sets the loader content and shows the modal
      * @returns {undefined}
      */
-    Modal.prototype.loader = function () {
+    Modal.prototype.loader = function (evt) {
         this.reset();
         this.show();
+        if (typeof(evt) === 'object' && typeof(evt.$trigger) === 'object' && evt.$trigger.data('message')) {
+            this.setHeader(evt.$trigger.data('message'));
+        }
     };
 
     /**
@@ -203,7 +208,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
-                that.loader();
+                that.loader(url);
             }
             client.get(url, cfg, originalEvent).then(function (response) {
                 that.setDialog(response);
@@ -219,7 +224,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
-                that.loader();
+                that.loader(url);
             }
             client.post(url, cfg, originalEvent).then(function (response) {
                 that.setDialog(response);
@@ -367,14 +372,19 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.setHeader = function (title) {
-        var $header = this.getHeader();
+        let $header = this.getHeader();
         if (!$header.length) {
             $header = $(this.getTemplate('header'));
             this.getContent().prepend($header);
         }
+        let $title = $header.find('.modal-title');
+        if (!$title.length) {
+            $title = $(this.getTemplate('title'));
+            $header.prepend($title);
+        }
 
         // Set title id for aria-labelledby
-        $header.find('.modal-title').attr('id', this.getTitleId()).html(title);
+        $title.attr('id', this.getTitleId()).html(title);
     };
 
     Modal.prototype.setFooter = function (footer) {
