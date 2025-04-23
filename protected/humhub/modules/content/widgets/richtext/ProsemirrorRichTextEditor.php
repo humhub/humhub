@@ -68,7 +68,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
                 FileHandlerCollection::TYPE_IMPORT,
                 FileHandlerCollection::TYPE_CREATE,
             ]),
-            'cssClass' => 'btn-group d-none',
+            'cssClass' => 'btn-group d-none' . ($this->hasModel() && !$this->model->validate($this->attribute) ? ' is-invalid' : ''),
         ]);
     }
 }
