@@ -8,11 +8,12 @@
 
 namespace humhub\controllers;
 
+use humhub\components\access\ControllerAccess;
+use humhub\components\Controller;
 use humhub\modules\user\helpers\AuthHelper;
 use Yii;
-use yii\web\HttpException;
 use yii\base\UserException;
-use humhub\components\Controller;
+use yii\web\HttpException;
 
 /**
  * ErrorController
@@ -22,6 +23,8 @@ use humhub\components\Controller;
  */
 class ErrorController extends Controller
 {
+    public $access = ControllerAccess::class;
+
     /**
      * This is the action to handle external exceptions.
      */
