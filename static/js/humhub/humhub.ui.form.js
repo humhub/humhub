@@ -19,7 +19,7 @@ humhub.module('ui.form', function (module, require, $) {
         var activeTab = 0;
 
         var $tabContent = $('<div class="tab-content"></div>');
-        var $tabs = $('<ul id="profile-tabs" class="nav nav-tabs" data-tabs="tabs"></ul>');
+        var $tabs = $('<ul id="profile-tabs" class="nav nav-tabs tab-sub-menu" data-tabs="tabs"></ul>');
         this.$.prepend($tabContent).prepend($tabs);
         var inputCsrf = $('input[name ="_csrf"]').detach();
 
