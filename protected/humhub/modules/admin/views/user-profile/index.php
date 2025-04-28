@@ -36,6 +36,7 @@ $categoryItems[] = [
 
     <?= Tabs::widget([
         'viewPath' => '@admin/views/user-profile/',
-        'items' => $categoryItems
+        'isSubMenu' => true,
+        'items' => $categoryItems,
     ]) ?>
 </div>

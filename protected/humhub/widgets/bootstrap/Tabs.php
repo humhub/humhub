@@ -10,6 +10,7 @@
 namespace humhub\widgets\bootstrap;
 
 use Yii;
+use yii\bootstrap5\Html;
 
 /**
  * A HumHub enhanced version of native bootstrap Tabs
@@ -50,10 +51,21 @@ class Tabs extends \yii\bootstrap5\Tabs
      */
     public $params;
 
+    public bool $isSubMenu = false;
+
     /**
      * @inheritdoc
      */
     public $navType = 'nav-tabs tab-menu';
+
+    public function init()
+    {
+        parent::init();
+
+        if ($this->isSubMenu) {
+            Html::addCssClass($this->options, ['widget' => 'nav', 'tab-sub-menu']);
+        }
+    }
 
     /**
      * @inheritdoc
