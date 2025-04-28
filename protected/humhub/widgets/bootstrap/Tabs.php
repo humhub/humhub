@@ -63,7 +63,7 @@ class Tabs extends \yii\bootstrap5\Tabs
         parent::init();
 
         if ($this->isSubMenu) {
-            Html::addCssClass($this->options, ['widget' => 'nav', 'tab-sub-menu']);
+            Html::addCssClass($this->options, 'tab-sub-menu');
         }
     }
 
