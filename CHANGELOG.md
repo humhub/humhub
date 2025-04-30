@@ -8,6 +8,7 @@ HumHub Changelog
 - Fix #7487: Fix comments list when comment is active from another parent comment
 - Enh #7492: Fix access to options on space invite form
 - Fix #7503: Don't run migration on updating of disabled module
+- Fix #7508: Fix missed messages on search spaces in top space chooser
 
 1.17.2 (April 7, 2025)
 ----------------------
