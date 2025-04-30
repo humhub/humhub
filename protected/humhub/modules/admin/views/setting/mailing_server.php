@@ -18,6 +18,11 @@ use yii\web\View;
 
 <?= $form->errorSummary($model); ?>
 
+<?= $form->field($model, 'enableLinkService')->checkbox()
+    ->label(Yii::t('FcmPushModule.base', 'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server. (Experimental Features // <a href="{url}">Privacy Policy</a>)', [
+        'url' => 'https://www.humhub.com/en/privacy/',
+    ])) ?>
+
 <?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailName')]); ?>
 
 <div class="row">
@@ -31,7 +36,6 @@ use yii\web\View;
 </div>
 
 <?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]); ?>
-
 
 <div id="smtpOptions">
 

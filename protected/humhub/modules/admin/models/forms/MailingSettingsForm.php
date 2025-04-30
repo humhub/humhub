@@ -31,6 +31,7 @@ class MailingSettingsForm extends Model
     public $port;
     public $useSmtps;
     public $allowSelfSignedCerts;
+    public $enableLinkService;
 
     /**
      * @inheritdoc
@@ -54,6 +55,7 @@ class MailingSettingsForm extends Model
         $this->systemEmailAddress = $settingsManager->get('mailerSystemEmailAddress');
         $this->systemEmailName = $settingsManager->get('mailerSystemEmailName');
         $this->systemEmailReplyTo = $settingsManager->get('mailerSystemEmailReplyTo');
+        $this->enableLinkService = $settingsManager->get('mailerLinkService');
     }
 
     /**
@@ -64,7 +66,7 @@ class MailingSettingsForm extends Model
         return [
             [['transportType', 'systemEmailAddress', 'systemEmailName'], 'required'],
             ['transportType', 'in', 'range' => (array_keys($this->getTransportTypes()))],
-            [['allowSelfSignedCerts', 'useSmtps'], 'boolean'],
+            [['allowSelfSignedCerts', 'useSmtps', 'enableLinkService'], 'boolean'],
             ['systemEmailAddress', 'email'],
             ['port', 'integer', 'min' => 1, 'max' => 65535],
             [['hostname', 'port'], 'required', 'when' => function ($model) {
@@ -93,6 +95,9 @@ class MailingSettingsForm extends Model
             'port' => Yii::t('AdminModule.settings', 'Port number'),
             'useSmtps' => Yii::t('AdminModule.settings', 'Use SMTPS'),
             'allowSelfSignedCerts' => Yii::t('AdminModule.settings', 'Allow Self-Signed Certificates?'),
+            'enableLinkService' => Yii::t('FcmPushModule.base', 'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server. (Experimental Features // <a href="{url}">Privacy Policy</a>)', [
+                'url' => 'https://www.humhub.com/en/privacy/',
+            ]),
         ];
     }
 
@@ -140,6 +145,7 @@ class MailingSettingsForm extends Model
         }
         $settingsManager->set('mailerSystemEmailName', $this->systemEmailName);
         $settingsManager->set('mailerSystemEmailReplyTo', $this->systemEmailReplyTo);
+        $settingsManager->set('mailerLinkService', $this->enableLinkService);
 
         DynamicConfig::rewrite();
 
