@@ -14,6 +14,7 @@ use Yii;
  * Service to handle URLs to "go" app in order to open then in mobile app
  *
  * @author Luke
+ * @since 1.18.0
  */
 class MailLinkService
 {
@@ -22,9 +23,9 @@ class MailLinkService
     private ?string $hid = null;
     private bool $isEnabled = false;
 
-    public function __construct(string $appUrl)
+    public function __construct()
     {
-        $this->appUrl = $appUrl;
+        $this->appUrl = Yii::$app->params['humhub']['goUrl'];
 
         $baseUrl = Yii::$app->settings->get('baseUrl');
         $this->sitePattern = is_string($baseUrl) ? preg_quote($baseUrl, '#') : null;
@@ -35,6 +36,11 @@ class MailLinkService
             : null;
 
         $this->isEnabled = (bool) Yii::$app->settings->get('mailerLinkService');
+    }
+
+    public static function instance(): self
+    {
+        return new self();
     }
 
     public function isConfigured(): bool

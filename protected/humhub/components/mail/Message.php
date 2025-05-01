@@ -26,7 +26,7 @@ class Message extends \yii\symfonymailer\Message
     public function init()
     {
         parent::init();
-        $this->linkService = new MailLinkService('https://go.humhub.com');
+        $this->linkService = new MailLinkService();
     }
 
     /**

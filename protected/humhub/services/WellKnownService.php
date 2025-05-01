@@ -14,6 +14,12 @@ use Yii;
 use yii\helpers\Json;
 use yii\web\Response;
 
+/**
+ * Service to handle well-known json files
+ *
+ * @author Luke
+ * @since 1.18.0
+ */
 class WellKnownService
 {
     public const URL_ROUTE = '/well-known';
@@ -76,7 +82,7 @@ class WellKnownService
             Yii::$app->response->data = Json::decode($this->getFileContent());
         } catch (Exception $ex) {
             Yii::$app->response->data = '';
-            Yii::error('Wrong file format "' . $this->file . '". Error: ' . $ex->getMessage(), 'fcm-push');
+            Yii::error('Wrong file format "' . $this->file . '". Error: ' . $ex->getMessage());
         }
 
         return Yii::$app->response;

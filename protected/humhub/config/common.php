@@ -271,6 +271,7 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
+            'goUrl' => 'https://go.humhub.com',
         ],
         'curl' => [
             // Check SSL certificates on cURL requests
