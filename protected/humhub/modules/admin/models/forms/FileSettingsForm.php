@@ -71,10 +71,10 @@ class FileSettingsForm extends Model
             'useXSendfile' => Yii::t('AdminModule.settings', 'Use X-Sendfile for File Downloads'),
             'excludeMediaFilesPreview' => Yii::t('AdminModule.settings', 'Exclude media files from stream attachment list'),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Allowed file extensions'),
-            'fileAssetLinks' => Yii::t('FcmPushModule.base', 'Well-known file {fileName}', [
+            'fileAssetLinks' => Yii::t('AdminModule.settings', 'Well-known file {fileName}', [
                 'fileName' => '"' . WellKnownService::getFileName('fileAssetLinks') . '"',
             ]),
-            'fileAppleAssociation' => Yii::t('FcmPushModule.base', 'Well-known file {fileName}', [
+            'fileAppleAssociation' => Yii::t('AdminModule.settings', 'Well-known file {fileName}', [
                 'fileName' => '"' . WellKnownService::getFileName('fileAppleAssociation') . '"',
             ]),
         ];
@@ -89,13 +89,13 @@ class FileSettingsForm extends Model
                 '{maxUploadSize}' => "(" . $fileSizeKey . "): " . $maxUploadSize,
             ]),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'),
-            'fileAssetLinks' => Yii::t('FcmPushModule.base', 'URL to the file {fileNameLink}', [
+            'fileAssetLinks' => Yii::t('AdminModule.settings', 'URL to the file {fileNameLink}', [
                 'fileNameLink' => Link::to(
                     WellKnownService::getFileName('fileAssetLinks'),
                     WellKnownService::getFileRoute('fileAssetLinks'),
                 )->target('_blank'),
             ]),
-            'fileAppleAssociation' => Yii::t('FcmPushModule.base', 'URL to the file {fileNameLink}', [
+            'fileAppleAssociation' => Yii::t('AdminModule.settings', 'URL to the file {fileNameLink}', [
                 'fileNameLink' => Link::to(
                     WellKnownService::getFileName('fileAppleAssociation'),
                     WellKnownService::getFileRoute('fileAppleAssociation'),

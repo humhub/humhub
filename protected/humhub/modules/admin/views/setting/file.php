@@ -29,7 +29,7 @@ $fileModule = Yii::$app->getModule('file');
     <?php if (!Yii::$app->urlManager->enablePrettyUrl) : ?>
         <div class="alert alert-warning">
             <?= Icon::get('warning') ?>
-            <?= Yii::t('FcmPushModule.base', 'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.', [
+            <?= Yii::t('AdminModule.settings', 'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.', [
                 'url' => 'https://docs.humhub.org/docs/admin/installation/#pretty-urls',
             ]) ?>
         </div>
