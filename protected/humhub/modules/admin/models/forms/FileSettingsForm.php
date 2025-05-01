@@ -3,6 +3,8 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\libs\Helpers;
+use humhub\services\WellKnownService;
+use humhub\widgets\Link;
 use Yii;
 use yii\base\Model;
 
@@ -22,6 +24,9 @@ class FileSettingsForm extends Model
     public $useXSendfile;
     public $allowedExtensions;
 
+    public $fileAssetLinks;
+    public $fileAppleAssociation;
+
     /**
      * @inheritdoc
      */
@@ -37,6 +42,8 @@ class FileSettingsForm extends Model
         $this->excludeMediaFilesPreview = $settingsManager->get('excludeMediaFilesPreview');
         $this->useXSendfile = $settingsManager->get('useXSendfile');
         $this->allowedExtensions = $settingsManager->get('allowedExtensions');
+        $this->fileAssetLinks = $settingsManager->get('fileAssetLinks');
+        $this->fileAppleAssociation = $settingsManager->get('fileAppleAssociation');
     }
 
     /**
@@ -64,6 +71,12 @@ class FileSettingsForm extends Model
             'useXSendfile' => Yii::t('AdminModule.settings', 'Use X-Sendfile for File Downloads'),
             'excludeMediaFilesPreview' => Yii::t('AdminModule.settings', 'Exclude media files from stream attachment list'),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Allowed file extensions'),
+            'fileAssetLinks' => Yii::t('FcmPushModule.base', 'Well-known file {fileName}', [
+                'fileName' => '"' . WellKnownService::getFileName('fileAssetLinks') . '"',
+            ]),
+            'fileAppleAssociation' => Yii::t('FcmPushModule.base', 'Well-known file {fileName}', [
+                'fileName' => '"' . WellKnownService::getFileName('fileAppleAssociation') . '"',
+            ]),
         ];
     }
 
@@ -76,6 +89,18 @@ class FileSettingsForm extends Model
                 '{maxUploadSize}' => "(" . $fileSizeKey . "): " . $maxUploadSize,
             ]),
             'allowedExtensions' => Yii::t('AdminModule.settings', 'Comma separated list. Leave empty to allow all.'),
+            'fileAssetLinks' => Yii::t('FcmPushModule.base', 'URL to the file {fileNameLink}', [
+                'fileNameLink' => Link::to(
+                    WellKnownService::getFileName('fileAssetLinks'),
+                    WellKnownService::getFileRoute('fileAssetLinks'),
+                )->target('_blank'),
+            ]),
+            'fileAppleAssociation' => Yii::t('FcmPushModule.base', 'URL to the file {fileNameLink}', [
+                'fileNameLink' => Link::to(
+                    WellKnownService::getFileName('fileAppleAssociation'),
+                    WellKnownService::getFileRoute('fileAppleAssociation'),
+                )->target('_blank'),
+            ]),
         ];
     }
 
@@ -110,6 +135,8 @@ class FileSettingsForm extends Model
         $settingsManager->set('excludeMediaFilesPreview', $this->excludeMediaFilesPreview);
         $settingsManager->set('useXSendfile', $this->useXSendfile);
         $settingsManager->set('allowedExtensions', strtolower($this->allowedExtensions));
+        $settingsManager->set('fileAssetLinks', $this->fileAssetLinks);
+        $settingsManager->set('fileAppleAssociation', $this->fileAppleAssociation);
 
         return true;
     }

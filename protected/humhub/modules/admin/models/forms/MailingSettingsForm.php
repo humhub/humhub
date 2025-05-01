@@ -95,9 +95,6 @@ class MailingSettingsForm extends Model
             'port' => Yii::t('AdminModule.settings', 'Port number'),
             'useSmtps' => Yii::t('AdminModule.settings', 'Use SMTPS'),
             'allowSelfSignedCerts' => Yii::t('AdminModule.settings', 'Allow Self-Signed Certificates?'),
-            'enableLinkService' => Yii::t('FcmPushModule.base', 'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server. (Experimental Features // <a href="{url}">Privacy Policy</a>)', [
-                'url' => 'https://www.humhub.com/en/privacy/',
-            ]),
         ];
     }
 
