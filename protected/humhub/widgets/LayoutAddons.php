@@ -52,5 +52,8 @@ class LayoutAddons extends BaseStack
             MobileAppHelper::registerShowOpenerScript();
             Yii::$app->session->remove(MobileAppHelper::SESSION_VAR_SHOW_OPENER);
         }
+
+        // Get info for the Share intend feature (uploading files from the mobile app)
+        MobileAppHelper::getFileUploadSettings();
     }
 }
