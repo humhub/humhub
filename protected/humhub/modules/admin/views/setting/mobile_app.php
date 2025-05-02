@@ -10,6 +10,7 @@ use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\Button;
+use humhub\widgets\ModalButton;
 use yii\web\View;
 
 /* @var $this View */
@@ -21,10 +22,7 @@ use yii\web\View;
 
 <?= $form->errorSummary($model) ?>
 
-<?= $form->field($model, 'enableLinkService')->checkbox()
-    ->label(Yii::t('AdminModule.settings', 'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server. (Experimental Features // <a href="{url}">Privacy Policy</a>)', [
-        'url' => 'https://www.humhub.com/en/privacy/',
-    ])) ?>
+<?= $form->field($model, 'enableLinkService')->checkbox() ?>
 
 <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Well-known files')) ?>
 <?php if (!Yii::$app->urlManager->enablePrettyUrl) : ?>
@@ -43,6 +41,10 @@ use yii\web\View;
 <hr>
 
 <?= Button::save()->submit() ?>
+<?= ModalButton::defaultType(Yii::t('AdminModule.settings', 'Debug'))
+    ->load(['mobile-app-debug'])
+    ->icon('bug')
+    ->right() ?>
 
 <?php ActiveForm::end() ?>
 <?php $this->endContent() ?>

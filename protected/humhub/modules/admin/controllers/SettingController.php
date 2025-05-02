@@ -25,6 +25,7 @@ use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
 use humhub\modules\admin\models\Log;
+use humhub\modules\admin\notifications\NewVersionAvailable;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\Topic;
@@ -200,12 +201,27 @@ class SettingController extends Controller
         $form = new MobileSettingsForm();
         if ($form->load(Yii::$app->request->post()) && $form->save()) {
             $this->view->saved();
-            return $this->redirect(['/admin/setting/mobile-app']);
+            return $this->redirect(['mobile-app']);
+        }
+
+        if (Yii::$app->request->get('triggerNotification') == 1) {
+            $updateNotification = new NewVersionAvailable();
+            $updateNotification->sendBulk(User::find()->where(['id' => Yii::$app->user->id]));
+            $this->view->success('Notification queued!');
+            return $this->redirect('mobile-app');
         }
 
         return $this->render('mobile_app', [
             'model' => $form,
         ]);
+    }
+
+    /**
+     * Mobile App Debug Page
+     */
+    public function actionMobileAppDebug()
+    {
+        return $this->renderAjax('mobile_app_debug');
     }
 
     public function actionMailingServerTest()
