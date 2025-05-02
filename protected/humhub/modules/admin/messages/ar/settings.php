@@ -132,4 +132,7 @@ return [
     'never' => 'أبدا',
     'Convert to global topic' => '',
     'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
+    'Well-known file {fileName}' => 'ملف معروف {fileName}',
+    'URL to the file {fileNameLink}' => 'عنوان URL للملف {fileNameLink}',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'تمكين خدمة إعادة توجيه الارتباط. لكي يتم فتح الروابط في التطبيق على الأجهزة المحمولة، بدلاً من متصفح الهاتف المحمول، يجب توجيه جميع الروابط (مثل رسائل البريد الإلكتروني الخاصة بالإشعارات) عبر خادم وكيل HumHub.',
 ];

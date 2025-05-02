@@ -94,4 +94,5 @@ return [
   '{nFormatted}B' => '{nFormatted} Mrd.',
   '{nFormatted}K' => '{nFormatted} Tsd.',
   '{nFormatted}M' => '{nFormatted} Mio.',
+  'Switch network' => 'Wechsle das Netzwerk',
 ];

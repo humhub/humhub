@@ -132,4 +132,8 @@ return [
     'e.g. localhost' => 'till exempel lokalvärd',
     'e.g. smtps://user:pass@smtp.example.com:port' => 'till exempel smtps://user:pass@smtp.example.com:port',
     'never' => 'aldrig',
+    'Well-known file {fileName}' => 'Välkänd fil {fileName}',
+    'URL to the file {fileNameLink}' => 'URL till filen {fileNameLink}',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'Aktivera länkomdirigeringstjänst. För att länkar ska öppnas i appen på mobila enheter, snarare än i den mobila webbläsaren, måste alla länkar (t.ex. e-postmeddelanden) dirigeras via HumHubs proxyserver.',
+    'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.' => 'Aktivera <a href="{url}" target="_blank">Pretty URLs</a> för att filerna ska fungera korrekt.',
 ];
