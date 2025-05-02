@@ -272,6 +272,7 @@ $config = [
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
             'goUrl' => 'https://go.humhub.com',
+            'disableAuthChoicesIos' => false,
         ],
         'curl' => [
             // Check SSL certificates on cURL requests

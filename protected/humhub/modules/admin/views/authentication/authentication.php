@@ -39,7 +39,6 @@ $this->beginContent('@admin/views/authentication/_authenticationLayout.php');
         <?= $form->field($model, 'blockUsers')->checkbox() ?>
         <?= $form->field($model, 'hideOnlineStatus')->checkbox() ?>
         <?= $form->field($model, 'allowUserTopics')->checkbox(['data' => ['action-change' => 'admin.space.restrictTopicCreation']]) ?>
-        <?= $form->field($model, 'disableChoicesIos')->checkbox() ?>
         <?= $form->field($model, 'defaultUserIdleTimeoutSec')->textInput(['readonly' => $userModule->settings->isFixed('auth.defaultUserIdleTimeoutSec')]) ?>
         <p class="help-block"><?= Yii::t('AdminModule.user', 'The default user idle timeout is used when user session is idle for a certain time. The user is automatically logged out after this time.') ?></p>
         <?= $form->field($model, 'defaultUserProfileVisibility')->dropDownList(User::getVisibilityOptions(false), ['readonly' => (!Yii::$app->getModule('user')->settings->get('auth.allowGuestAccess'))]) ?>

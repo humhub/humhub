@@ -36,7 +36,6 @@ class AuthenticationSettingsForm extends Model
     public $registrationApprovalMailContent;
     public $registrationDenialMailContent;
     public $allowUserTopics = true;
-    public $disableChoicesIos;
 
     /**
      * @inheritdoc
@@ -63,7 +62,6 @@ class AuthenticationSettingsForm extends Model
         $this->registrationApprovalMailContent = $settingsManager->get('auth.registrationApprovalMailContent', ApproveUserForm::getDefaultApprovalMessage());
         $this->registrationDenialMailContent = $settingsManager->get('auth.registrationDenialMailContent', ApproveUserForm::getDefaultDeclineMessage());
         $this->allowUserTopics = $settingsManager->get('auth.allowUserTopics', true);
-        $this->disableChoicesIos = $settingsManager->get('auth.disableChoicesIos');
     }
 
     /**
@@ -76,7 +74,7 @@ class AuthenticationSettingsForm extends Model
             ['defaultUserProfileVisibility', 'in', 'range' => array_keys(User::getVisibilityOptions(false))],
             ['defaultUserIdleTimeoutSec', 'integer', 'min' => 20],
             [['registrationSendMessageMailContent', 'registrationApprovalMailContent', 'registrationDenialMailContent'], 'string'],
-            [['allowUserTopics', 'disableChoicesIos'], 'boolean'],
+            [['allowUserTopics'], 'boolean'],
         ];
     }
 
@@ -100,7 +98,6 @@ class AuthenticationSettingsForm extends Model
             'registrationApprovalMailContent' => Yii::t('AdminModule.user', 'Default content of the registration approval email'),
             'registrationDenialMailContent' => Yii::t('AdminModule.user', 'Default content of the registration denial email'),
             'allowUserTopics' => Yii::t('AdminModule.user', 'Allow individual topics on profiles'),
-            'disableChoicesIos' => Yii::t('AdminModule.user', 'Hide third-party login options for app users with iOS.'),
         ];
     }
 
@@ -135,7 +132,6 @@ class AuthenticationSettingsForm extends Model
         $settingsManager->set('auth.defaultUserIdleTimeoutSec', $this->defaultUserIdleTimeoutSec);
         $settingsManager->set('auth.allowGuestAccess', $this->allowGuestAccess);
         $settingsManager->set('auth.allowUserTopics', $this->allowUserTopics);
-        $settingsManager->set('auth.disableChoicesIos', $this->disableChoicesIos);
 
         if ($settingsManager->get('auth.allowGuestAccess')) {
             $settingsManager->set('auth.defaultUserProfileVisibility', $this->defaultUserProfileVisibility);
