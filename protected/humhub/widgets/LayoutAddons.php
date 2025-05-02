@@ -8,6 +8,7 @@
 
 namespace humhub\widgets;
 
+use humhub\helpers\MobileAppHelper;
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
 use Yii;
@@ -44,6 +45,12 @@ class LayoutAddons extends BaseStack
                 }
             }
         }
+
         parent::init();
+
+        if (Yii::$app->session->has(MobileAppHelper::SESSION_VAR_SHOW_OPENER)) {
+            MobileAppHelper::registerShowOpenerScript();
+            Yii::$app->session->remove(MobileAppHelper::SESSION_VAR_SHOW_OPENER);
+        }
     }
 }
