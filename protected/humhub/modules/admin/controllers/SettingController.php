@@ -19,6 +19,7 @@ use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\admin\models\forms\FileSettingsForm;
 use humhub\modules\admin\models\forms\LogsSettingsForm;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
+use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\admin\models\forms\OEmbedProviderForm;
 use humhub\modules\admin\models\forms\OEmbedSettingsForm;
 use humhub\modules\admin\models\forms\ProxySettingsForm;
@@ -188,6 +189,22 @@ class SettingController extends Controller
         return $this->render('mailing_server', [
             'model' => $form,
             'settings' => Yii::$app->settings,
+        ]);
+    }
+
+    /**
+     * Mobile App Settings
+     */
+    public function actionMobileApp()
+    {
+        $form = new MobileSettingsForm();
+        if ($form->load(Yii::$app->request->post()) && $form->save()) {
+            $this->view->saved();
+            return $this->redirect(['/admin/setting/mobile-app']);
+        }
+
+        return $this->render('mobile_app', [
+            'model' => $form,
         ]);
     }
 

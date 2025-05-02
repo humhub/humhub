@@ -9,7 +9,6 @@
 namespace humhub\services;
 
 use Exception;
-use humhub\modules\file\Module;
 use Yii;
 use yii\helpers\Json;
 use yii\web\Response;
@@ -68,10 +67,7 @@ class WellKnownService
             return '';
         }
 
-        /* @var Module $module */
-        $module = Yii::$app->getModule('file');
-
-        return $module->settings->get($settingName, '');
+        return Yii::$app->settings->get($settingName, '');
     }
 
     public function renderFile(): Response

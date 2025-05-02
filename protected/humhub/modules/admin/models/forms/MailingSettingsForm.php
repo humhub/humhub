@@ -31,7 +31,6 @@ class MailingSettingsForm extends Model
     public $port;
     public $useSmtps;
     public $allowSelfSignedCerts;
-    public $enableLinkService;
 
     /**
      * @inheritdoc
@@ -55,7 +54,6 @@ class MailingSettingsForm extends Model
         $this->systemEmailAddress = $settingsManager->get('mailerSystemEmailAddress');
         $this->systemEmailName = $settingsManager->get('mailerSystemEmailName');
         $this->systemEmailReplyTo = $settingsManager->get('mailerSystemEmailReplyTo');
-        $this->enableLinkService = $settingsManager->get('mailerLinkService');
     }
 
     /**
@@ -66,7 +64,7 @@ class MailingSettingsForm extends Model
         return [
             [['transportType', 'systemEmailAddress', 'systemEmailName'], 'required'],
             ['transportType', 'in', 'range' => (array_keys($this->getTransportTypes()))],
-            [['allowSelfSignedCerts', 'useSmtps', 'enableLinkService'], 'boolean'],
+            [['allowSelfSignedCerts', 'useSmtps'], 'boolean'],
             ['systemEmailAddress', 'email'],
             ['port', 'integer', 'min' => 1, 'max' => 65535],
             [['hostname', 'port'], 'required', 'when' => function ($model) {
@@ -142,7 +140,6 @@ class MailingSettingsForm extends Model
         }
         $settingsManager->set('mailerSystemEmailName', $this->systemEmailName);
         $settingsManager->set('mailerSystemEmailReplyTo', $this->systemEmailReplyTo);
-        $settingsManager->set('mailerLinkService', $this->enableLinkService);
 
         DynamicConfig::rewrite();
 
