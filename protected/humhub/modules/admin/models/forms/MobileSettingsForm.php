@@ -54,7 +54,7 @@ class MobileSettingsForm extends Model
     public function attributeLabels()
     {
         return [
-            'enableLinkService' => Yii::t('AdminModule.settings', 'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.'),
+            'enableLinkService' => Yii::t('AdminModule.settings', 'Enable Link Redirection Service'),
             'fileAssetLinks' => Yii::t('AdminModule.settings', 'Well-known file {fileName}', [
                 'fileName' => '"' . WellKnownService::getFileName('fileAssetLinks') . '"',
             ]),
@@ -70,6 +70,7 @@ class MobileSettingsForm extends Model
     public function attributeHints(): array
     {
         return [
+            'enableLinkService' => Yii::t('AdminModule.settings', 'In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.'),
             'fileAssetLinks' => Yii::t('AdminModule.settings', 'URL to the file {fileNameLink}', [
                 'fileNameLink' => Link::to(
                     WellKnownService::getFileName('fileAssetLinks'),
