@@ -7,7 +7,6 @@ return [
     'Enabled' => 'הופעל',
     'Friendship' => 'חברות',
     'Save' => 'שמירה',
-    'Saved' => 'נשמר',
     'User' => 'מִשׁתַמֵשׁ',
     'Username' => 'שם משתמש',
     '"My Spaces" Sorting' => '',

@@ -1,13 +1,12 @@
 <?php
-
 return [
-    'Content' => 'Indhold',
-    'Scope' => 'Område',
-    'Sorting' => 'Sortering',
-    'Visibility' => 'Synlighed',
-    'Author' => '',
-    'Content Type' => '',
-    'Date from' => '',
-    'Date to' => '',
-    'Topic' => '',
+  'Author' => 'Forfatter',
+  'Content' => 'Indhold',
+  'Content Type' => 'Indholdstype',
+  'Date from' => 'Dato fra',
+  'Date to' => 'Dato til',
+  'Scope' => 'Omfang',
+  'Sorting' => 'Sortering',
+  'Topic' => 'Emne',
+  'Visibility' => 'Synlighed',
 ];

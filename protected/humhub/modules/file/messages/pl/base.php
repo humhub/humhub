@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => '<strong>Otwórz</strong> plik',
   '<strong>Upload</strong> error' => '<strong>Błąd</strong> wczytywania',
   'Attach a video' => 'Załącz wideo',
@@ -16,9 +16,12 @@ return array (
   'Insufficient permissions!' => 'Niedostateczne uprawnienia',
   'Invalid Mime-Type' => 'Nieprawidłowy typ mime',
   'Last update by:' => 'Ostatnio aktualizowany przez:',
+  'Share' => 'Udostępnij',
+  'Share as Post' => '',
+  'Share in {targetDisplayName}' => '',
   'Size:' => 'Rozmiar:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Możesz wgrać tylko {n,plural,=1{# plik} other{# pliki}} na raz.',
   'The uploaded image is not a squared.' => 'Wgrany obraz nie jest kwadratem.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'To pole wgrywania pozwala na maksymalne wgranie {n,plural,=1{# pliku} other{# plików}}.',
   'Upload files' => 'Wczytaj plik',
-);
+];

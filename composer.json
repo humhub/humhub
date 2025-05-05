@@ -35,6 +35,7 @@
         "laminas/laminas-zendframework-bridge": "^1.4",
         "matthewbdaly/zendsearch": "^0.0.3",
         "mistic100/randomcolor": "^1.0",
+        "mobiledetect/mobiledetectlib": "4.8.09",
         "npm-asset/animate.css": "^4.0",
         "npm-asset/bluebird": "^3.3.5",
         "npm-asset/blueimp-file-upload": "^9.24",

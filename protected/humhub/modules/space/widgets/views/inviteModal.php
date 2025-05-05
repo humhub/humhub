@@ -2,7 +2,9 @@
 /* @var $this \humhub\components\View */
 /* @var $canInviteByEmail bool */
 /* @var $canInviteByLink bool */
+/* @var $canSelectAllRegisteredUsers bool */
 /* @var $canAddWithoutInvite bool */
+/* @var $canAddAsDefaultSpace bool */
 /* @var $submitText string */
 /* @var $submitAction string */
 /* @var $model InviteForm */
@@ -92,13 +94,17 @@ $form = Modal::beginFormDialog([
             <?= $form->field($model, 'invite')
                 ->widget(UserPickerField::class, ['disabledItems' => [Yii::$app->user->guid], 'url' => $searchUrl, 'focus' => true, 'id' => 'space-invite-user-picker']) ?>
 
-            <?= $form->field($model, 'allRegisteredUsers')->checkbox() ?>
+            <?php if ($canSelectAllRegisteredUsers) : ?>
+                <?= $form->field($model, 'allRegisteredUsers')->checkbox() ?>
+            <?php endif; ?>
 
             <?php if ($canAddWithoutInvite) : ?>
                 <?= $form->field($model, 'withoutInvite')->checkbox() ?>
             <?php endif; ?>
 
-            <?= $form->field($model, 'addDefaultSpace')->checkbox() ?>
+            <?php if ($canAddAsDefaultSpace) : ?>
+                <?= $form->field($model, 'addDefaultSpace')->checkbox() ?>
+            <?php endif; ?>
         </div>
 
         <?php if ($canInviteByEmail) : ?>

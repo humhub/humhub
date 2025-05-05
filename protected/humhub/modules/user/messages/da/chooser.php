@@ -1,8 +1,8 @@
 <?php
-return array (
+return [
   'Add user' => 'Tilføj bruger',
   'An unexpected error occurred while loading the result.' => '',
-  'Load more' => '',
+  'Load more' => 'Læs mere',
   'No results found.' => '',
   'No users found for the given query.' => '',
   'Please enter at least {n} character' => '',
@@ -13,4 +13,4 @@ return array (
   'This field only allows a maximum of {n,plural,=1{# user} other{# users}}.' => '',
   'You reached the maximum number of allowed characters ({n}).' => '',
   'Your search returned no matches.' => '',
-);
+];
