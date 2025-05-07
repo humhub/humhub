@@ -3,8 +3,8 @@ Module and Theme Migration Guide to Bootstrap 5
 
 ## Mandatory changes for modules to work with Bootstrap 5
 
-- Classes extending `\humhub\modules\content\widgets\WallCreateContentForm`: replace `renderActiveForm(\humhub\modules\ui\form\widgets\ActiveForm $form)` with `renderActiveForm(\humhub\widgets\form\ActiveForm $form)`
-- "Dropdown" replacements in HTML attributes (see bellow)
+- Classes extending `humhub\modules\content\widgets\WallCreateContentForm`: replace `renderActiveForm(\humhub\modules\ui\form\widgets\ActiveForm $form)` with `renderActiveForm(\humhub\widgets\form\ActiveForm $form)`
+- "Dropdown" replacements in HTML attributes (see below)
 
 
 ## Removed
@@ -33,6 +33,7 @@ And especially:
 - `humhub\widgets\bootstrap\Button::secondary()`
 - `humhub\widgets\bootstrap\Button::light()`
 - `humhub\widgets\bootstrap\Button::dark()`
+- `humhub\widgets\bootstrap\Button::outline()`
 
 Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
 
@@ -50,7 +51,7 @@ Widgets & helpers:
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead (watch out for class name changes!)
 - `humhub\libs\Html` use `humhub\helpers\Html` instead
 - `humhub\modules\ui\view\components\View` use `humhub\components\View` instead
-- `humhub\modules\ui\view\helpers\ThemeHelper` use `protected/humhub/helpers/ThemeHelper.php` instead
+- `humhub\modules\ui\view\helpers\ThemeHelper` use `humhub\helpers\ThemeHelper` instead
 
 Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
@@ -60,11 +61,11 @@ Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
 - `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
 
-Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" bellow)
+Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" below)
 
-Forms and Modal Dialog: see bellow.
+Forms and Modal Dialog: see below.
 
-SCSS and CSS variables: see bellow.
+SCSS and CSS variables: see below.
 
 
 ## HumHub widgets
@@ -72,7 +73,15 @@ SCSS and CSS variables: see bellow.
 If available, use HumHub widgets instead of the native library widgets.
 This will make it easier to migrate to new versions of the external libraries ([see Code Style wiki page](https://community.humhub.com/s/contribution-core-development/wiki/201/code-style#widgets)).
 
-E.g. `\yii\bootstrap5\Html`, use `humhub\widgets\bootstrap\Html` instead.
+E.g.:
+- `yii\bootstrap5\Html`, use `humhub\helpers\Html` instead.
+- `yii\bootstrap5\Button`, use `humhub\widgets\bootstrap\Button` instead.
+- `yii\bootstrap5\Alert`, use `humhub\widgets\bootstrap\Alert` instead.
+- `yii\bootstrap5\Badge`, use `humhub\widgets\bootstrap\Badge` instead.
+- `yii\bootstrap5\Tabs`, use `humhub\widgets\bootstrap\Tabs` instead.
+- `yii\bootstrap5\Modal`, use `humhub\widgets\modal\Modal` instead
+- `yii\bootstrap5\ActiveForm`, use `humhub\widgets\form\ActiveForm` instead.
+- `yii\bootstrap5\ActiveField`, use `humhub\widgets\form\ActiveField` instead.
 
 If a Bootstrap widget is not available, create an issue on https://github.com/humhub/humhub/issues).
 
@@ -92,13 +101,13 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
-- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "Modal Dialog" chapter bellow)
+- `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "Modal Dialog" chapter below)
 - `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
-- `humhub\widgets\modal\Modal::header` & `humhub\widgets\modal\JsModal::header`: use `title` instead
-- `humhub\widgets\modal\Modal::animation` & `humhub\widgets\modal\JsModal::animation` (all modal boxes are opened with the fade animation)
-- `humhub\widgets\modal\Modal::centerText` & `humhub\widgets\modal\JsModal::centerText`
-- `humhub\widgets\modal\Modal::showClose`: use `closeButton` instead (but works differently, see `yii\bootstrap5\Modal::closeButton` doc)
-- `humhub\widgets\modal\JsModal::size` & `humhub\widgets\modal\Modal::size` values: use `Modal::SIZE_DEFAULT`, `Modal::SIZE_SMALL`, `Modal::SIZE_LARGE`, `Modal::SIZE_EXTRA_LARGE` instead of (`normal`, `extra-small`, `small`, `medium`, and `large`)
+- `humhub\widgets\modal\Modal::header` & `humhub\widgets\modal\JsModal::header`: use `title` instead (search for `'header' =>`)
+- `humhub\widgets\modal\Modal::animation` & `humhub\widgets\modal\JsModal::animation` (all modal boxes are opened with the fade animation) (search for `'animation' =>`)
+- `humhub\widgets\modal\Modal::centerText` & `humhub\widgets\modal\JsModal::centerText` (search for `'centerText' =>`)
+- `humhub\widgets\modal\Modal::showClose`: use `closeButton` instead (but works differently, see `yii\bootstrap5\Modal::closeButton` doc) (search for `'showClose' =>`)
+- `humhub\widgets\modal\JsModal::size` & `humhub\widgets\modal\Modal::size` values: use `Modal::SIZE_DEFAULT`, `Modal::SIZE_SMALL`, `Modal::SIZE_LARGE`, `Modal::SIZE_EXTRA_LARGE` instead of (`normal`, `extra-small`, `small`, `medium`, and `large`) (search for `'size' =>`)
 
 ### Replacements in HTML attributes
 
@@ -121,7 +130,7 @@ Before:
 	<div class="modal-footer">
 		<?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
 	</div>
-<?php ModalDialog::end()?>
+<?php ModalDialog::end() ?>
 ```
 
 Now:
@@ -177,7 +186,7 @@ Dismissive Buttons (Non-Action, Exit, or Revert):
 - Discard - Exits without saving edits.
 - Exit - Leaves a process or page.
 
-When it is not possible to place the buttons in the modal footer, use the `modal-body-footer` class:
+When it is not possible to place the buttons in the modal `footer` param, use the `modal-body-footer` class:
 
 ```php
 <?php $form = Modal::beginDialog() ?>
@@ -254,8 +263,8 @@ Example:
 - Move the tags with `dropdown-header` class to a child tag of `li` (usually in a `h6` tag)
 - `dropdown-menu-left` -> `dropdown-menu-start`
 - `dropdown-menu-right` -> `dropdown-menu-end`
-- `dropdown-menu float-start` -> `dropdown-menu dropdown-menu-start`
-- `dropdown-menu float-end` -> `dropdown-menu dropdown-menu-end`
+- `dropdown-menu float-start` (or `pull-left`) -> `dropdown-menu dropdown-menu-start`
+- `dropdown-menu float-end` (or `pull-right`) -> `dropdown-menu dropdown-menu-end`
 - Remove `<span class="caret"></span>` and `<b class="caret"></b>` in dropdown buttons (as there are already added by Bootstrap 5 via the `:after` pseudo-element)
 
 Before:
@@ -352,8 +361,8 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `alert-default` -> `alert-light` or  `alert-secondary` (use the `humhub\widgets\bootstrap\Alert` widget when possible)
 - `btn-xs` -> `btn-sm` (use the `humhub\widgets\bootstrap\Button` widget when possible)
 - `btn-default` -> `btn-light` (the new  `btn-secondary` can also be used, but it will be a darker gray)
-- `pull-left` -> `float-start`
-- `pull-right` -> `float-end`
+- `pull-left` (or `style="float:left"`) -> `float-start`
+- `pull-right` (or `style="float:right"`) -> `float-end`
 - `center-block` -> `mx-auto` (image, inline or inline-block elements:  `d-block mx-auto`)
 - `text-left` -> `text-start`
 - `text-right` -> `text-end`
@@ -368,7 +377,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `input-group-addon` -> `input-group-text` (or  `input-group-prepend` or  `input-group-append`)
 - `form-group` -> `mb-3`
 - `well` (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?well(?:\s[^"']*)?["'][^>]*>`) -> `bg-light p-3` for a simple inset container or `card` (with a  `card-body` child element)
-- `has-error`,  `has-warning`, and  `has-success` -> `is-invalid` or  `is-valid`, but the new classes are now append to the input instead of the previous  `form-group` (the input is a child of the form group)
+- `has-error`,  `has-warning`, and  `has-success` -> `is-invalid` or  `is-valid`, but the new classes are now appended to the input instead of the previous  `form-group` (the input is a child of the form group)
 - `help-block help-block-error` -> `invalid-feedback`
 - `help-block` -> `text-body-secondary` or  `form-text` if in a form
 - Remove  `jumbotron` class
@@ -406,10 +415,10 @@ Make sure:
 Use the new `d-none` class instead of the `display: none;` style (except for email views).
 
 In the following class replacements, you can also use `inline`, `flex`, etc. instead of `block` (depending on the desired display mode).
-E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block`.
+E.g., `d-sm-inline` or `d-sm-flex` instead of `d-sm-block` ([see all available](https://getbootstrap.com/docs/5.0/utilities/display/#notation))
 
-In Bootstrap 3, the class applies to the designed screen size only, whereas in Bootstrap 5, the class applies to the designated screen size and larger.
-And `visible` will hide the element for other screen sizes, whereas in Bootstrap 5, you need to add `d-none` to hide for other screen sizes.
+In Bootstrap 3, the class applies only to the defined screen size, while in Bootstrap 5, the class applies to the defined screen size and larger sizes.
+And `visible` will hide the element for other screen sizes, while in Bootstrap 5, you need to add `d-none` to hide for other screen sizes.
 
 Remplacement examples (must be adapted to the specific situation):
 - `hidden-xs` -> `d-none d-sm-block` or `d-none d-sm-inline` or `d-none d-sm-flex` (depending on the desired display mode)
@@ -479,13 +488,15 @@ If wrapped in an HTML element having `loader` (search for the `<\w+\s+[^>]*class
 
 ### Panel
 
-Should be replaced with cards.
+In a future HumHub version, panels will be replaced with cards.
 
-TODO in core and to document here.
+Currently, you should continue using them (a compatibility layer is provided for BS3 panels).
 
-### Label & Badge
+### Label
 
 Search for all `label` classes (`label label-` and the regex expression `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?label(?:\s[^"']*)?["'][^>]*>`) and use the new `humhub\widgets\bootstrap\Badge` widget instead
+
+### Badge
 
 Use the `humhub\widgets\bootstrap\Badge` widget when possible.
 
@@ -504,6 +515,7 @@ Doc: https://getbootstrap.com/docs/5.3/components/badge/
 - Search for `media-list` and remove the HTML element, or, to keep a similar style, use the class `hh-list` and replace the `ul` tag with a `div`. E.g. `<ul class="media-list">` -> `<div class="hh-list">`
 - Inside, replace `li` tags with `div` or `a` tags. E.g. `<li class="media">` -> `<div class="d-flex">`
 - Search for `media` classes (search regex expression for HTML tags: `<\w+\s+[^>]*class\s*=\s*["'](?:[^"']*\s)?media(?:\s[^"']*)?["'][^>]*>`) and replace with `d-flex`
+- Search for `.media` in CSS files and replace with `d-flex`
 - Search for `img-space` classes and surround the `UserImage` and `SpaceImage` with the `img-profile-space` (see example in `protected/humhub/modules/content/widgets/views/wallEntry.php`)
 - `media-heading` -> `mt-0` (removes the top margin, keeping it close to the top of the content area) ; the related HTML tag can be replaced with `h5` or `h4`
 - `media-body` -> `flex-grow-1`
@@ -546,7 +558,7 @@ Use Font Awesome instead.
 Search for `glyphicon` in the code and replace with Font Awesome, by using the `\humhub\modules\ui\icon\widgets\Icon` widget.
 
 
-## Themes and Modules: LESS is replaced with SCSS
+## Themes & Modules: LESS is replaced with SCSS
 
 LESS format is not supported anymore.
 Use SCSS instead.
@@ -565,7 +577,23 @@ However, you need to check the output manually, mainly functions and syntaxes su
 - `color: fade(@color, 20%);` -> `color: mix(white, $primary, 80%);`
 - `transition:`: remove the `@include` added after the conversion
 
-An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks.
+An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks (use a DIFF tool).
+
+#### Compiler to generate CSS files
+
+#### Themes
+
+Grunt compiler has been removed.
+
+The CSS is automatically generated by the new compiler in the `assets` folder, each time the cache is flushed, or the theme is changed.
+
+#### Modules
+
+Update `Gruntfile.js` and `package.json` to use the new SaaS compiler:
+- `Gruntfile.js`: replace `less` with `saas` section, and update `loadNpmTasks` and `registerTask` 
+- `package.json`: remove `grunt-contrib-less` package and add `grunt-sass` and `saas`
+
+Take the Wiki module as an example: https://github.com/humhub/wiki/tree/bs5
 
 ### SCSS and CSS variables
 
@@ -584,9 +612,9 @@ New SCSS variables:
 
 Use the new variables starting with `--bs-` for Bootstrap variables, and `--hh-` for HumHub variables.
 E.g.: `color: $primary` -> `color: var(--bs-primary)`
-Full deprecation list in `static/scss/variables.scss`.
+Full deprecation list in `static/scss/_root.scss`.
 
-In modules or custom themes, if you need new variables, prefix them with `--hh-xx-` where `xx` is the first letters of your module or theme ID. E.g. `my-module` will use `hh-mm-`.
+In modules or custom themes, if you need new variables, prefix them with `--hh-xx-` where `xx` are the first letters of your module or theme ID. E.g. `my-module` will use `hh-mm-`.
 
 #### Use CSS variables instead of SCSS variables
 
@@ -730,12 +758,6 @@ There is no `css` folder anymore.
 #### Build file
 
 The `build.scss` file mustn't import the parent theme files anymore, as it is automatically done by the new compiler.
-
-#### Compiler
-
-Grunt compiler has been removed.
-
-The CSS is automatically generated by the new compiler in the `assets` folder, each time the cache is flushed, or the theme is changed.
 
 #### Overwritten view files
 
