@@ -22,24 +22,16 @@ use yii\helpers\Url;
 <div class="modal-body">
 
 <?php if (DeviceDetectorHelper::isAppRequest()): ?>
-    <p class="alert alert-success">
-        <strong>App Detection</strong> - Current Request: Is App Request
-    </p>
-
-    <?php if (DeviceDetectorHelper::isAppWithCustomFcm()): ?>
-        <p class="alert alert-success">
-            <strong>FCM Detection</strong> - App is using custom Firebase
-        </p>
-    <?php else: ?>
-        <p class="alert alert-warning">
-            <strong>FCM Detection</strong> - App is using Proxy Firebase Service
-        </p>
-    <?php endif; ?>
+    <div class="alert alert-success">
+        <strong>App Detection</strong>: Current Request: Is App Request
+        <br>
+        <strong>FCM Detection</strong>: App is using <?= DeviceDetectorHelper::isAppWithCustomFcm() ? 'custom Firebase' : 'Proxy Firebase Service' ?>
+    </div>
 
 <?php else: ?>
-    <p class="alert alert-warning">
-        <strong>App Detection</strong> - Current Request: NO App Request Detected
-    </p>
+    <div class="alert alert-warning">
+        <strong>App Detection</strong>: Current Request: NO App Request Detected
+    </div>
 <?php endif; ?>
 
 <?= Button::defaultType('Show Opener')
@@ -51,10 +43,6 @@ use yii\helpers\Url;
     ->cssClass('postFlutterMsgLink')
     ->options(['data-message' => Json::encode(['type' => 'hideOpener'])])
     ->loader(false) ?>
-
-<?= Button::defaultType('Open this page as POST Request')
-    ->link(['mobile-app'])
-    ->options(['data-method' => 'POST']) ?>
 
 <?= Button::defaultType('Open native console')
     ->cssClass('postFlutterMsgLink')
