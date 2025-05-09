@@ -745,7 +745,6 @@ And replace with the BS5 equivalent.
 E.g.:
 - `backgroundSuccess` -> `bg-success`
 - `colorInfo` -> `text-info`
-- `colorFont5` -> `text-body-secondary`
 
 ### Select2 stylesheet
 
