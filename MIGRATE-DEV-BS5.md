@@ -350,6 +350,12 @@ Example:
 </ul>
 ```
 
+## Breadcrumb
+
+Search for the class `breadcrumb`.
+
+[See documentation](https://getbootstrap.com/docs/5.3/components/breadcrumb/)
+
 
 ## Replacements in HTML attributes
 
