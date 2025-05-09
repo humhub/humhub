@@ -32,7 +32,6 @@ use yii\web\View;
 
 <?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]); ?>
 
-
 <div id="smtpOptions">
 
     <div class="row">

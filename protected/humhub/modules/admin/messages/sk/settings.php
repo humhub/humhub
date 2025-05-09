@@ -132,4 +132,8 @@ return [
     'e.g. localhost' => 'napr. localhost',
     'e.g. smtps://user:pass@smtp.example.com:port' => 'napr. smtps://user:pass@smtp.example.com:port',
     'never' => 'nikdy',
+    'Well-known file {fileName}' => 'Známý súbor {fileName}',
+    'URL to the file {fileNameLink}' => 'URL k súboru {fileNameLink}',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'Povoliť službu presmerovania odkazov. Aby sa odkazy otvárali v aplikácii na mobilných zariadeniach a nie v mobilnom prehliadači, všetky odkazy (napr. e-maily s upozornením) musia byť smerované cez proxy server HumHub.',
+    'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.' => 'Povoľte <a href="{url}" target="_blank">Pretty URLs</a> pre správne fungovanie známych súborov.',
 ];

@@ -52,6 +52,15 @@ class AdvancedSettingMenu extends SubTabMenu
         ]));
 
         $this->addEntry(new MenuLink([
+            'label' => Yii::t('AdminModule.settings', 'Mobile App'),
+            'url' => Url::toRoute(['/admin/setting/mobile-app']),
+            'icon' => 'mobile',
+            'sortOrder' => 260,
+            'isActive' => ControllerHelper::isActivePath('admin', 'setting', 'mobile-app'),
+            'isVisible' => Yii::$app->user->isAdmin(),
+        ]));
+
+        $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.base', 'Proxy'),
             'url' => Url::toRoute('/admin/setting/proxy'),
             'icon' => 'sitemap',

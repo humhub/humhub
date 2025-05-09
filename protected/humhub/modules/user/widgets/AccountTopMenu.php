@@ -8,11 +8,11 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\admin\widgets\AdminMenu;
 use humhub\modules\ui\menu\DropdownDivider;
 use humhub\modules\ui\menu\MenuLink;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\modules\user\models\User;
 use humhub\widgets\ModalButton;
 use Yii;
 use yii\helpers\Url;
@@ -85,6 +85,15 @@ class AccountTopMenu extends Menu
         }
 
         $this->addEntry(new DropdownDivider(['sortOrder' => 600]));
+
+        if (DeviceDetectorHelper::isMultiInstanceApp()) {
+            $this->addEntry(new MenuLink([
+                'label' => Yii::t('base', 'Switch network'),
+                'url' => ['/mobile-app/instance-opener'],
+                'icon' => 'arrows-h',
+                'sortOrder' => 699,
+            ]));
+        }
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('base', 'Logout'),

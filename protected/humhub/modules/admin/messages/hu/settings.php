@@ -132,4 +132,7 @@ return [
     'never' => 'soha',
     'Convert to global topic' => '',
     'Global topics can be used by all users in all Spaces. They make it easier for you to define consistent keywords throughout your entire network. If users have already created topics in Spaces, you can also convert them to global topics here.' => '',
+    'Well-known file {fileName}' => 'Jól ismert fájl {fileName}',
+    'URL to the file {fileNameLink}' => 'URL a(z) {fileNameLink} fájlhoz',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'Link-átirányítási szolgáltatás engedélyezése. Ahhoz, hogy a linkek a mobileszközökön az alkalmazásban nyíljanak meg, nem pedig a mobilböngészőben, minden hivatkozást (például értesítő e-maileket) a HumHub proxyszerveren keresztül kell irányítani.',
 ];
