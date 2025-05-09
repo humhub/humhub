@@ -24,9 +24,9 @@ require(__DIR__ . '/protected/vendor/yiisoft/yii2/Yii.php');
 $config = yii\helpers\ArrayHelper::merge(
     require(__DIR__ . '/protected/humhub/config/common.php'),
     require(__DIR__ . '/protected/humhub/config/web.php'),
+    $dynamicConfig,
     require(__DIR__ . '/protected/config/common.php'),
     require(__DIR__ . '/protected/config/web.php'),
-    $dynamicConfig,
     humhub\helpers\EnvHelper::toConfig($_ENV, \humhub\components\Application::class),
 );
 
