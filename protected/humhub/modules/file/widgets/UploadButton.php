@@ -33,9 +33,15 @@ class UploadButton extends UploadInput
 
     /**
      * Defines the button color class like btn-light, btn-primary
-     * @var type
+     * @var string
      */
     public $cssButtonClass = 'btn-light';
+
+    /**
+     * Render as link instead of a button
+     * @var bool
+     */
+    public $asLink = false;
 
     /**
      * Either defines a label string or true to use the default label.
@@ -57,8 +63,14 @@ class UploadButton extends UploadInput
             $this->label = '&nbsp;' . $this->label;
         }
 
+        $classPrefix = '';
+        if ($this->asLink && $this->cssButtonClass === 'btn-light') {
+            $this->cssButtonClass = '';
+        }
+        $classSuffix = $this->tooltip ? 'fileinput-button tt' : 'fileinput-button';
+
         $defaultButtonOptions = [
-            'class' => ($this->tooltip) ? 'btn ' . $this->cssButtonClass . ' fileinput-button tt' : 'btn ' . $this->cssButtonClass . '  fileinput-button',
+            'class' => trim($classPrefix . ' ' . $this->cssButtonClass . ' ' . $classSuffix),
             'title' => ($this->tooltip === true) ? Yii::t('FileModule.base', 'Upload files') : $this->tooltip,
             'data' => [
                 'placement' => $this->tooltipPosition,
