@@ -65,10 +65,6 @@ $iconUrl = SiteIcon::getUrl(140);
     ]);
     ?>
     <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
-    <br>
-    <br>
-    <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
-
 
     <div class="well">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>

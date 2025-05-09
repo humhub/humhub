@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\InstallationState;
 use humhub\libs\BasePermission;
 use humhub\modules\space\permissions\CreatePrivateSpace;
 use humhub\modules\space\permissions\CreatePublicSpace;
@@ -18,7 +19,7 @@ class m240807_230603_add_permissions_to_existing_user_groups extends Migration
      */
     public function safeUp()
     {
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             foreach ((new Query())->from(Group::tableName())->batch() as $groups) {
                 foreach ($groups as $group) {
                     foreach ([Yii::createObject(CreatePublicSpace::class), Yii::createObject(CreatePrivateSpace::class)] as $permission) {

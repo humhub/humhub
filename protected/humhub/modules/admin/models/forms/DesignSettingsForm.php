@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
@@ -34,7 +33,6 @@ class DesignSettingsForm extends Model
     public $logo;
     public $icon;
     public $dateInputDisplayFormat;
-    public $horImageScrollOnMobile;
     public $defaultStreamSort;
 
     /**
@@ -52,7 +50,6 @@ class DesignSettingsForm extends Model
         $this->displayNameSubFormat = $settingsManager->get('displayNameSubFormat');
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
-        $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
     }
 
@@ -66,7 +63,6 @@ class DesignSettingsForm extends Model
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
-            [['horImageScrollOnMobile'], 'boolean'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 100, 'minHeight' => 120],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
@@ -89,7 +85,6 @@ class DesignSettingsForm extends Model
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
-            'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
         ];
     }
 
@@ -156,7 +151,6 @@ class DesignSettingsForm extends Model
         $settingsManager->set('displayNameSubFormat', $this->displayNameSubFormat);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
-        $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
 
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
 
@@ -167,8 +161,6 @@ class DesignSettingsForm extends Model
         if ($this->icon) {
             SiteIcon::set($this->icon);
         }
-
-        DynamicConfig::rewrite();
 
         return true;
     }

@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\components\InstallationState;
 use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
@@ -415,7 +416,7 @@ class SelfTest
 
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
-            if (Yii::$app->isInstalled()) {
+            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
                     $checks[] = [
@@ -749,7 +750,7 @@ class SelfTest
             ];
         }
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             $title = Yii::t('AdminModule.information', 'Database') . ' - ';
             $migrations = MigrationService::create()->getPendingMigrations();
             if ($migrations === []) {
@@ -858,7 +859,7 @@ class SelfTest
             ];
         }
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
 
             // Check installed modules by marketplace
             /* @var \humhub\components\Module[] $modules */
