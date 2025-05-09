@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #7486: Catch errors in external file handlers
 - Fix #7487: Fix comments list when comment is active from another parent comment
 - Enh #7492: Fix access to options on space invite form
+- Fix #7503: Don't run migration on updating of disabled module
 
 1.17.2 (April 7, 2025)
 ----------------------
