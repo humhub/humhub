@@ -314,11 +314,8 @@ humhub.module('ui.modal', function (module, require, $) {
      */
     Modal.prototype.show = function () {
         if (!this.$.is(':visible')) {
-            const modalInstance = bootstrap.Modal.getInstance(this.$[0]);
-            if (modalInstance) {
-                Object.assign(modalInstance._config, this.options);
-                modalInstance.show();
-            }
+            this.set(this.options);
+            this.$.modal('show');
             this.focus();
         }
 
@@ -422,11 +419,6 @@ humhub.module('ui.modal', function (module, require, $) {
 
         this.options.backdrop = object.defaultValue(options.backdrop, this.$.data('bs-backdrop'));
         this.options.keyboard = object.defaultValue(options.keyboard, this.$.data('bs-keyboard'));
-
-        const modalInstance = bootstrap.Modal.getInstance(this.$[0]);
-        if (modalInstance) {
-            Object.assign(modalInstance._config, this.options);
-        }
 
         return this;
     };

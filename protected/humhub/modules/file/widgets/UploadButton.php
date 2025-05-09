@@ -46,7 +46,7 @@ class UploadButton extends UploadInput
     /**
      * Either defines a label string or true to use the default label.
      * If set to false, no button label is printed.
-     * @var type
+     * @var bool
      */
     public $label = false;
 
@@ -71,7 +71,7 @@ class UploadButton extends UploadInput
             }
         }
 
-        $classSuffix = $this->tooltip ? 'fileinput-button tt' : 'fileinput-button';
+        $classSuffix = 'fileinput-button ' . ($this->tooltip ? ' tt' : '');
 
         $defaultButtonOptions = [
             'class' => trim($classPrefix . ' ' . $this->cssButtonClass . ' ' . $classSuffix),
