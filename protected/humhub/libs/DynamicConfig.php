@@ -8,7 +8,7 @@
 
 namespace humhub\libs;
 
-use humhub\modules\admin\models\forms\MailingSettingsForm;
+use humhub\components\InstallationState;
 use Yii;
 use yii\base\BaseObject;
 use yii\helpers\ArrayHelper;
@@ -16,21 +16,12 @@ use yii\helpers\ArrayHelper;
 /**
  * DynamicConfig provides access to the dynamic configuration file.
  *
+ * @todo check modules too
+ *
  * @author luke
  */
 class DynamicConfig extends BaseObject
 {
-    /**
-     * Add an array to the dynamic configuration
-     *
-     * @param array $new
-     */
-    public static function merge($new)
-    {
-        $config = ArrayHelper::merge(self::load(), $new);
-        self::save($config);
-    }
-
     /**
      * Returns the dynamic configuration
      *
@@ -53,6 +44,20 @@ class DynamicConfig extends BaseObject
             return [];
         }
 
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
+            $validConfig = [
+                'components' => [
+                    'db' => ArrayHelper::getValue($config, 'components.db', []),
+                ],
+            ];
+
+            if ($validConfig != $config) {
+                self::save($validConfig);
+            }
+
+            return $validConfig;
+        }
+
         return $config;
     }
 
@@ -65,7 +70,7 @@ class DynamicConfig extends BaseObject
     {
         $content = '<' . '?php return ';
         $content .= var_export($config, true);
-        $content .= '; ?' . '>';
+        $content .= ';';
 
         $configFile = self::getConfigFilePath();
         file_put_contents($configFile, $content);
@@ -81,118 +86,11 @@ class DynamicConfig extends BaseObject
 
     /**
      * Rewrites DynamicConfiguration based on Database Stored Settings
+     *
+     * @deprecated since 1.8
      */
     public static function rewrite()
     {
-        // Get Current Configuration
-        $config = self::load();
-
-        // Add Application Name to Configuration
-        $config['name'] = Yii::$app->settings->get('name');
-
-        // Add Caching
-        $cacheClass = Yii::$app->settings->get('cacheClass');
-        $cacheKeyPrefix = empty($config['components']['cache']['keyPrefix']) ? Yii::$app->id : $config['components']['cache']['keyPrefix'];
-        if (in_array($cacheClass, ['yii\caching\DummyCache', 'yii\caching\FileCache'])) {
-            $config['components']['cache'] = [
-                'class' => $cacheClass,
-                'keyPrefix' => $cacheKeyPrefix,
-            ];
-        } elseif ($cacheClass == 'yii\caching\ApcCache' && (function_exists('apcu_add') || function_exists('apc_add'))) {
-            $config['components']['cache'] = [
-                'class' => $cacheClass,
-                'keyPrefix' => $cacheKeyPrefix,
-                'useApcu' => (function_exists('apcu_add')),
-            ];
-        } elseif ($cacheClass === \yii\redis\Cache::class) {
-            $config['components']['cache'] = [
-                'class' => \yii\redis\Cache::class,
-                'keyPrefix' => $cacheKeyPrefix,
-            ];
-        }
-
-        // Add User settings
-        $config['components']['user'] = [];
-        if (Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-            $config['components']['user']['authTimeout'] = Yii::$app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec');
-        }
-
-        // Install Mail Component
-        $config['components']['mailer'] = self::getMailerConfig();
-
-        // Remove old theme/view stuff
-        unset($config['components']['view']);
-        unset($config['components']['mailer']['view']);
-
-        // Cleanups
-        unset($config['components']['db']['charset']);
-        unset($config['components']['formatterApp']);
-
-        // Remove old localisation options
-        unset($config['timeZone']);
-        unset($config['language']);
-        unset($config['components']['formatter']['defaultTimeZone']);
-        if (empty($config['components']['formatter'])) {
-            unset($config['components']['formatter']);
-        }
-
-        $config['params']['config_created_at'] = time();
-        $config['params']['horImageScrollOnMobile'] = Yii::$app->settings->get('horImageScrollOnMobile');
-
-        self::save($config);
-    }
-
-    private static function getMailerConfig()
-    {
-        $mail = [];
-        $mail['transport'] = [];
-
-        $transportType = Yii::$app->settings->get('mailerTransportType', MailingSettingsForm::TRANSPORT_PHP);
-
-        if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
-            if (Yii::$app->settings->get('mailerHostname')) {
-                $mail['transport']['host'] = Yii::$app->settings->get('mailerHostname');
-            }
-            if (Yii::$app->settings->get('mailerPort')) {
-                $mail['transport']['port'] = (int)Yii::$app->settings->get('mailerPort');
-            } else {
-                $mail['transport']['port'] = 25;
-            }
-            if (Yii::$app->settings->get('mailerUsername')) {
-                $mail['transport']['username'] = Yii::$app->settings->get('mailerUsername');
-            }
-            if (Yii::$app->settings->get('mailerPassword')) {
-                $mail['transport']['password'] = Yii::$app->settings->get('mailerPassword');
-            }
-            $mail['transport']['scheme'] = (empty(Yii::$app->settings->get('mailerUseSmtps'))) ? 'smtp' : 'smtps';
-
-        } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
-            return [];
-        } elseif ($transportType === MailingSettingsForm::TRANSPORT_PHP) {
-            $mail['transport']['dsn'] = 'native://default';
-        } elseif ($transportType === MailingSettingsForm::TRANSPORT_DSN) {
-            $mail['transport']['dsn'] = Yii::$app->settings->get('mailerDsn');
-        } elseif ($transportType === MailingSettingsForm::TRANSPORT_FILE) {
-            unset($mail['transport']);
-            $mail['useFileTransport'] = true;
-        }
-
-        return $mail;
-    }
-
-    /**
-     * Checks whether the config should be rewritten based on changed setting name
-     *
-     * @param $moduleId
-     * @param $name
-     * @return bool
-     */
-    public static function needRewrite($moduleId, $name)
-    {
-        return (in_array($name, [
-            'name', 'defaultLanguage', 'timeZone', 'cacheClass', 'mailerTransportType',
-            'mailerHostname', 'mailerUsername', 'mailerPassword', 'mailerEncryption',
-            'mailerPort', 'horImageScrollOnMobile']));
     }
 
     public static function getConfigFilePath()

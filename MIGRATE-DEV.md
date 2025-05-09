@@ -4,6 +4,11 @@ Module Migration Guide
 Version 1.18
 ------------
 
+### Deprecated
+- `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
+
 ### Behaviour change
 
 - The following Mailer settings keys have been renamed to work with `.env`:

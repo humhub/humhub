@@ -8,6 +8,7 @@
 
 namespace humhub\libs;
 
+use humhub\components\InstallationState;
 use humhub\components\SettingActiveRecord;
 use humhub\exceptions\InvalidArgumentTypeException;
 use humhub\models\Setting;
@@ -57,8 +58,9 @@ abstract class BaseSettingsManager extends Component
             throw new InvalidConfigException('Module id not set!', 2);
         }
 
-        if (Yii::$app->isDatabaseInstalled()) {
+        try {
             $this->loadValues();
+        } catch (\Exception $e) {
         }
 
         parent::init();
@@ -311,6 +313,6 @@ abstract class BaseSettingsManager extends Component
      */
     public static function isDatabaseInstalled(): bool
     {
-        return Yii::$app->isDatabaseInstalled(true);
+        return Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED);
     }
 }

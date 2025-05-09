@@ -4,6 +4,10 @@ HumHub Changelog
 1.18.0 (Unreleased - Develop)
 ----------------------------
 - Enh #7412: Confusing message after creating an account
+- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
+- Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7361: Refactor application state mechanism
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
 - Enh #7444: Rename Mailer settings keys to work with `.env`

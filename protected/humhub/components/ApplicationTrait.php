@@ -8,17 +8,17 @@
 
 namespace humhub\components;
 
-use humhub\helpers\DatabaseHelper;
 use humhub\helpers\EnvHelper;
 use humhub\interfaces\MailerInterface;
-use humhub\libs\DynamicConfig;
 use humhub\libs\SelfTest;
 use humhub\libs\TimezoneHelper;
-use Yii;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 use yii\i18n\Formatter;
 
+/**
+ * @property-read InstallationState $installationState
+ */
 trait ApplicationTrait
 {
     /**
@@ -57,9 +57,14 @@ trait ApplicationTrait
         $this->initLocales();
     }
 
+    public function getInstallationState(): InstallationState
+    {
+        return InstallationState::instance();
+    }
+
     private function initLocales(): void
     {
-        if ($this->isDatabaseInstalled(true)) {
+        if ($this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             if ($this->settings instanceof SettingsManager) {
                 $this->timeZone = $this->settings->get('serverTimeZone', $this->timeZone);
                 if ($this->formatter instanceof Formatter) {
@@ -102,63 +107,39 @@ trait ApplicationTrait
     /**
      * Checks if Humhub is installed
      *
+     * @deprecated since 1.18
+     * @see InstallationState::hasState()
      * @return bool
      * @since 1.16
      */
     public function isInstalled(): bool
     {
-        return isset(Yii::$app->params['installed']) && Yii::$app->params['installed'];
+        return $this->installationState->hasState(InstallationState::STATE_INSTALLED);
     }
 
     /**
      * Sets application in installed state (disables installer)
      *
+     * @deprecated since 1.18
+     * @see InstallationState::setState()
      * @since 1.16
      */
     public function setInstalled()
     {
-        $config = DynamicConfig::load();
-        $config['params']['installed'] = true;
-        DynamicConfig::save($config);
+        $this->installationState->setInstalled();
     }
 
 
     /**
      * Checks if settings table exists or application is not installed yet
      *
+     * @deprecated since 1.18
+     * @see InstallationState::hasState()
      * @since 1.16
      */
     public function isDatabaseInstalled(bool $checkConnection = false): bool
     {
-        $dieOnError = $this->params['databaseInstalled'] ?? null;
-
-        if (!$checkConnection && $dieOnError !== null) {
-            return $dieOnError;
-        }
-
-        try {
-            $db = Yii::$app->db;
-            $db->open();
-        } catch (\Exception $ex) {
-            if ($dieOnError) {
-                DatabaseHelper::handleConnectionErrors($ex);
-            }
-            return false;
-        }
-
-        return Yii::$app->params['databaseInstalled'] = in_array('setting', $db->schema->getTableNames());
-    }
-
-    /**
-     * Sets the application database in installed state
-     *
-     * @since 1.16
-     */
-    public function setDatabaseInstalled()
-    {
-        $config = DynamicConfig::load();
-        $config['params']['databaseInstalled'] = true;
-        DynamicConfig::save($config);
+        return $this->installationState->hasState(InstallationState::STATE_DATABASE_CREATED);
     }
 
 
