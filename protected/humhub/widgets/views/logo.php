@@ -1,14 +1,14 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\libs\LogoImage;
-use yii\helpers\Html;
 
 /* @var $place string */
 ?>
 <?php if ($place == "topMenu") : ?>
     <?php if (LogoImage::hasImage()) : ?>
-        <a class="navbar-brand hidden-xs" href="<?= Yii::$app->homeUrl; ?>">
-            <img class="img-rounded" src="<?= LogoImage::getUrl(); ?>"
+        <a class="navbar-brand d-none d-sm-block" href="<?= Yii::$app->homeUrl; ?>">
+            <img class="rounded" src="<?= LogoImage::getUrl(); ?>"
                  alt="<?= Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]) ?>"
                  id="img-logo"/>
         </a>
@@ -23,7 +23,7 @@ use yii\helpers\Html;
 <?php if ($place == "login") : ?>
     <?php if (LogoImage::hasImage()) : ?>
         <a href="<?= Yii::$app->homeUrl; ?>" data-pjax-prevent>
-            <img class="img-rounded" src="<?= LogoImage::getUrl(500, 250); ?>" id="img-logo"
+            <img class="rounded" src="<?= LogoImage::getUrl(500, 250); ?>" id="img-logo"
                  alt="<?= Yii::t('base', 'Logo of {appName}', ['appName' => Html::encode(Yii::$app->name)]) ?>"/>
         </a>
         <br>

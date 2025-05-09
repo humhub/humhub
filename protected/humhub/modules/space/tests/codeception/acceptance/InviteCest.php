@@ -85,7 +85,7 @@ class InviteCest
 
         $I->waitForElementNotVisible('#globalModal');
 
-        $I->click('.dropdown-navigation', '.controls-header');
+        $I->click('.dropdown', '.controls-header');
         $I->waitForText('Members', null, '.controls-header');
         $I->click('Members', '.controls-header');
 

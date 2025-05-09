@@ -38,6 +38,16 @@ class DeviceDetectorHelper
         }
     }
 
+    public static function isIos(): bool
+    {
+        return (bool)static::getMobileDetect()?->isiOS();
+    }
+
+    public static function isAndroid(): bool
+    {
+        return (bool)static::getMobileDetect()?->isAndroidOS();
+    }
+
     private static function getMobileDetect(): ?MobileDetect
     {
         $userAgent = Yii::$app->request->getUserAgent();
@@ -126,6 +136,11 @@ class DeviceDetectorHelper
             }
         } elseif (static::isMobile()) {
             $classes[] = 'device-mobile';
+            if (static::isIos()) {
+                $classes[] = 'device-ios-mobile';
+            } elseif (static::isAndroid()) {
+                $classes[] = 'device-android-mobile';
+            }
         } elseif (static::isTablet()) {
             $classes[] = 'device-tablet';
         } else {

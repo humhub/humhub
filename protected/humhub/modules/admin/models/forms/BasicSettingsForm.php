@@ -6,7 +6,7 @@ use humhub\libs\DynamicConfig;
 use humhub\modules\ui\icon\widgets\Icon;
 use Yii;
 use yii\base\Model;
-use yii\bootstrap\Alert;
+use yii\bootstrap5\Alert;
 
 /**
  * BasicSettingsForm

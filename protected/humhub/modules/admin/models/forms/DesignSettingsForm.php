@@ -8,13 +8,16 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\Theme;
+use humhub\helpers\ThemeHelper;
 use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
-use humhub\modules\ui\view\helpers\ThemeHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
+use ScssPhp\ScssPhp\Compiler;
+use ScssPhp\ScssPhp\Exception\SassException;
 use Yii;
 use yii\base\Model;
 use yii\web\UploadedFile;
@@ -36,6 +39,11 @@ class DesignSettingsForm extends Model
     public $dateInputDisplayFormat;
     public $horImageScrollOnMobile;
     public $defaultStreamSort;
+    public $themePrimaryColor;
+    public $useDefaultThemePrimaryColor;
+    public $themeSecondaryColor;
+    public $useDefaultThemeSecondaryColor;
+    public $themeCustomScss;
 
     /**
      * @inheritdoc
@@ -45,6 +53,7 @@ class DesignSettingsForm extends Model
         parent::init();
 
         $settingsManager = Yii::$app->settings;
+        $themeVariables = Yii::$app->view->theme->variables;
 
         $this->theme = Yii::$app->view->theme->name;
         $this->paginationSize = $settingsManager->get('paginationSize');
@@ -54,6 +63,11 @@ class DesignSettingsForm extends Model
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
+        $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
+        $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
+        $this->themeSecondaryColor = $settingsManager->get('themeSecondaryColor', $themeVariables->get('secondary'));
+        $this->useDefaultThemeSecondaryColor = (bool)$settingsManager->get('useDefaultThemeSecondaryColor', true);
+        $this->themeCustomScss = $settingsManager->get('themeCustomScss');
     }
 
     /**
@@ -72,6 +86,27 @@ class DesignSettingsForm extends Model
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
+            [['themePrimaryColor', 'themeSecondaryColor', 'themeCustomScss'], 'string'],
+            [['useDefaultThemePrimaryColor', 'useDefaultThemeSecondaryColor'], 'boolean'],
+            [['themePrimaryColor', 'themeSecondaryColor', 'themeCustomScss'], 'trim'],
+            [['themePrimaryColor', 'themeSecondaryColor'], 'match', 'pattern' => '/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            ['themeCustomScss', 'filter', 'filter' => function ($value) {
+                $patterns = [
+                    '/<style>/',
+                    '/<style type="text\/css">/',
+                    '/<\/style>/',
+                ];
+                $replacements = ['', '', ''];
+                return preg_replace($patterns, $replacements, $value);
+            }],
+            ['themeCustomScss', function ($attribute, $params, $validator) {
+                $compiler = new Compiler();
+                try {
+                    $compiler->compileString($this->$attribute)->getCss();
+                } catch (SassException $e) {
+                    $this->addError($attribute, Yii::t('AdminModule.settings', 'Cannot compile SCSS to CSS:') . ' ' . $e->getMessage());
+                }
+            }],
         ];
     }
 
@@ -90,6 +125,11 @@ class DesignSettingsForm extends Model
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
+            'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
+            'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Use theme default color'),
+            'themeSecondaryColor' => Yii::t('AdminModule.settings', 'Secondary color'),
+            'useDefaultThemeSecondaryColor' => Yii::t('AdminModule.settings', 'Use theme default color'),
+            'themeCustomScss' => Yii::t('AdminModule.settings', 'Custom SCSS'),
         ];
     }
 
@@ -100,6 +140,7 @@ class DesignSettingsForm extends Model
     {
         return [
             'spaceOrder' => Yii::t('AdminModule.settings', 'Custom sort order can be defined in the Space advanced settings.'),
+            'themeCustomScss' => Yii::t('AdminModule.settings', 'Use Sassy CSS syntax (SCSS)'),
         ];
     }
 
@@ -149,6 +190,7 @@ class DesignSettingsForm extends Model
         $theme = ThemeHelper::getThemeByName($this->theme);
         if ($theme !== null) {
             $theme->activate();
+            Yii::$app->view->theme = new Theme($theme); // Force new theme immediately, e.g. to rebuild the CSS files
         }
 
         $settingsManager->set('paginationSize', $this->paginationSize);
@@ -167,6 +209,12 @@ class DesignSettingsForm extends Model
         if ($this->icon) {
             SiteIcon::set($this->icon);
         }
+
+        $settingsManager->set('themePrimaryColor', $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor);
+        $settingsManager->set('useDefaultThemePrimaryColor', $this->useDefaultThemePrimaryColor);
+        $settingsManager->set('themeSecondaryColor', $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor);
+        $settingsManager->set('useDefaultThemeSecondaryColor', $this->useDefaultThemeSecondaryColor);
+        $settingsManager->set('themeCustomScss', $this->themeCustomScss);
 
         DynamicConfig::rewrite();
 

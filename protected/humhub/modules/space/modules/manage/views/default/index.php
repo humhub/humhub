@@ -1,14 +1,14 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\widgets\DefaultMenu;
 use humhub\modules\space\widgets\SpaceNameColorInput;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\UserPickerField;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $this View
  * @var $model Space
@@ -39,7 +39,7 @@ use humhub\widgets\Button;
 
         <?= Button::save()->submit() ?>
 
-        <div class="pull-right">
+        <div class="float-end">
             <?= Button::warning(Yii::t('SpaceModule.manage', 'Archive'))
                 ->action('space.archive', $model->createUrl('/space/manage/default/archive'))
                 ->cssClass('archive')->style(($model->status == Space::STATUS_ENABLED) ? 'display:inline' : 'display:none') ?>

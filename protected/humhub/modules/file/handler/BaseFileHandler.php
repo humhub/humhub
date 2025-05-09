@@ -40,7 +40,7 @@ abstract class BaseFileHandler extends Component
      *
      * @return array the HTML attributes of the button.
      * @see \humhub\modules\file\widgets\FileHandlerButtonDropdown
-     * @see \yii\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
+     * @see \humhub\helpers\Html::renderTagAttributes() for details on how attributes are being rendered.
      */
     abstract public function getLinkAttributes();
 }
