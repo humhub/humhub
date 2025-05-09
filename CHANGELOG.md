@@ -21,6 +21,7 @@ HumHub Changelog
 - Enh #7493: Add possibility to define content search order via module config
 - Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
 - Fix #7485: Fix initialization of the registration form definitions
+- Fix #7512: Fix priority of `dynamic.php`
 
 1.17.3 (Unreleased)
 ----------------------
