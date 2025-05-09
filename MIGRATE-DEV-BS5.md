@@ -737,6 +737,16 @@ In modules, you will have to import the Boostrap breakpoints SCSS functions:
 
 Doc: https://getbootstrap.com/docs/5.3/layout/breakpoints
 
+### Deprecated CSS classes
+
+Search for the regex expression `(color|background|border)(Default|Primary|Info|Success|Warning|Danger)|(colorLink)|(colorFont[1-5])`
+And replace with the BS5 equivalent.
+
+E.g.:
+- `backgroundSuccess` -> `bg-success`
+- `colorInfo` -> `text-info`
+- `colorFont5` -> `text-body-secondary`
+
 ### Select2 stylesheet
 
 `static/css/select2Theme` folder has been removed, and the SCSS file moved and renamed to `static/scss/_select2.scss`

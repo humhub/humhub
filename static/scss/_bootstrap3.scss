@@ -304,7 +304,12 @@ a.label-warning:hover {
     }
 
     .panel-heading {
-        @include heading;
+        font-size: 16px;
+        font-weight: 300;
+        color: var(--hh-text-color-highlight);
+        background-color: white;
+        border: none;
+        padding: 10px;
         border-radius: 4px;
 
         .heading-link {
@@ -666,4 +671,113 @@ a.label-warning:hover {
 .btn-xs {
     padding: 1px 5px;
     font-size: 12px;
+}
+
+
+//
+// BS3 Less Mixins used as classes
+// --------------------------------------------------
+
+/* Default */
+.colorDefault {
+    color: var(--bs-light);
+}
+
+.backgroundDefault {
+    background: var(--bs-light);
+}
+
+.borderDefault {
+    border-color: var(--bs-light);
+}
+
+/* Primary */
+.colorPrimary {
+    color: var(--bs-primary) !important;
+}
+
+.backgroundPrimary {
+    background: var(--bs-primary) !important;
+}
+
+.borderPrimary {
+    border-color: var(--bs-primary) !important;
+}
+
+/* Info */
+.colorInfo {
+    color: var(--bs-info) !important;
+}
+
+.backgroundInfo {
+    background: var(--bs-info) !important;
+}
+
+.borderInfo {
+    border-color: var(--bs-info) !important;
+}
+
+/* Link */
+.colorLink {
+    color: var(--bs-link-color) !important;
+}
+
+/* Success */
+.colorSuccess {
+    color: var(--bs-success) !important;
+}
+
+.backgroundSuccess {
+    background: var(--bs-success) !important;
+}
+
+.borderSuccess {
+    border-color: var(--bs-success) !important;
+}
+
+/* Warning */
+.colorWarning {
+    color: var(--bs-warning) !important;
+}
+
+.backgroundWarning {
+    background: var(--bs-warning) !important;
+}
+
+.borderWarning {
+    border-color: var(--bs-warning) !important;
+}
+
+/* Danger */
+.colorDanger {
+    color: var(--bs-danger) !important;
+}
+
+.backgroundDanger {
+    background: var(--bs-danger) !important;
+}
+
+.borderDanger {
+    border-color: var(--bs-danger) !important;
+}
+
+/* Fonts */
+.colorFont1 {
+    color: var(--hh-text-color-soft3) !important;
+}
+
+.colorFont2 {
+    color: var(--hh-text-color-secondary) !important;
+}
+
+.colorFont3 {
+    color: var(--hh-text-color-highlight) !important;
+}
+
+.colorFont4 {
+    color: var(--hh-text-color-soft) !important;
+}
+
+.colorFont5 {
+    color: var(--hh-text-color-soft2) !important;
 }

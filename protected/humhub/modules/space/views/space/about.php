@@ -90,12 +90,12 @@ use humhub\modules\user\widgets\Image;
         <div class="row">
             <div class="col-lg-4">
                 <p><strong><?= Yii::t('SpaceModule.base', 'Join Policy') ?></strong></p>
-                <p><i class="fa fa-users colorInfo"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
+                <p><i class="fa fa-users text-info"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
                 <br/>
             </div>
             <div class="col-lg-8">
                 <p><strong><?= Yii::t('SpaceModule.base', 'Space Visibility') ?></strong></p>
-                <p><i class="fa fa-globe colorInfo"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
+                <p><i class="fa fa-globe text-info"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
             </div>
         </div>
 
