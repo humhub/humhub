@@ -63,10 +63,14 @@ class UploadButton extends UploadInput
             $this->label = '&nbsp;' . $this->label;
         }
 
-        $classPrefix = '';
-        if ($this->asLink && $this->cssButtonClass === 'btn-light') {
-            $this->cssButtonClass = '';
+        $classPrefix = 'btn';
+        if ($this->asLink) {
+            $classPrefix = '';
+            if ($this->cssButtonClass === 'btn-light') {
+                $this->cssButtonClass = '';
+            }
         }
+
         $classSuffix = $this->tooltip ? 'fileinput-button tt' : 'fileinput-button';
 
         $defaultButtonOptions = [
