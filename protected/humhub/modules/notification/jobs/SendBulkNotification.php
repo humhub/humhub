@@ -101,7 +101,7 @@ class SendBulkNotification extends LongRunningActiveJob
     protected function updateInQueue(): void
     {
         $queueId = $this->getQueueId();
-        if (!is_int($queueId) || empty($queueId)) {
+        if (!is_int($queueId) || $queueId === 0) {
             return;
         }
 
@@ -132,9 +132,10 @@ class SendBulkNotification extends LongRunningActiveJob
                     break;
                 }
             }
-            if (!is_int($this->uid)) {
-                $this->uid = 0;
-            }
+        }
+
+        if (!is_int($this->uid)) {
+            $this->uid = 0;
         }
 
         return $this->uid;
