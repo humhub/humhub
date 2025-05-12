@@ -100,8 +100,7 @@ class SendBulkNotification extends LongRunningActiveJob
      */
     protected function updateInQueue(): void
     {
-        $queueId = $this->getQueueId();
-        if (!is_int($queueId) || $queueId === 0) {
+        if ($this->getQueueId() === 0) {
             return;
         }
 
@@ -110,17 +109,17 @@ class SendBulkNotification extends LongRunningActiveJob
             ->update(
                 Yii::$app->queue->tableName,
                 ['job' => Yii::$app->queue->serializer->serialize($this)],
-                ['id' => $queueId],
+                ['id' => $this->getQueueId()],
             )->execute();
     }
 
     /**
      * Get ID of the queue db record where the notification is called from
      *
-     * @return int|null
+     * @return int
      * @since 1.17.3
      */
-    protected function getQueueId(): ?int
+    protected function getQueueId(): int
     {
         if (!is_int($this->uid) && Yii::$app->queue instanceof Queue) {
             // Try to find queue record by uid

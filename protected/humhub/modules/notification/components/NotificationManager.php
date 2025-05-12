@@ -123,7 +123,10 @@ class NotificationManager
      */
     public function send(BaseNotification $notification, User $user)
     {
-        $this->sendBulk($notification, User::find()->where(['user.id' => $user->id]));
+        $this->sendBulk(new SendBulkNotification([
+            'notification' => $notification,
+            'query' => User::find()->where(['user.id' => $user->id]),
+        ]));
     }
 
     /**
