@@ -132,4 +132,8 @@ return [
     'e.g. localhost' => 'bijv. localhost',
     'e.g. smtps://user:pass@smtp.example.com:port' => 'bijv. smtps://gebruiker:pas@smtp.voorbeeld.com:poort',
     'never' => 'nooit',
+    'Well-known file {fileName}' => 'Well-known bestand {fileName}',
+    'URL to the file {fileNameLink}' => 'URL naar het bestand {fileNameLink}',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'Schakel de link-omleidingsservice in. Om ervoor te zorgen dat links in de app op mobiele apparaten worden geopend, in plaats van in de mobiele browser, moeten alle links (bijvoorbeeld notificatie-e-mails) via de HumHub-proxyserver worden geleid.',
+    'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.' => 'Schakel <a href="{url}" target="_blank">Mooie URL\'s</a> in om de well-known bestanden goed te laten werken.',
 ];

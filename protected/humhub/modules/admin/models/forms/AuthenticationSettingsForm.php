@@ -8,7 +8,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\DynamicConfig;
 use humhub\modules\topic\jobs\ConvertTopicsToGlobalJob;
 use humhub\modules\user\models\User;
 use humhub\modules\user\Module;
@@ -166,7 +165,6 @@ class AuthenticationSettingsForm extends Model
             ]));
         }
 
-        DynamicConfig::rewrite();
         return true;
     }
 

@@ -132,4 +132,8 @@ return [
     'e.g. localhost' => 'par exemple « localhost »',
     'e.g. smtps://user:pass@smtp.example.com:port' => 'par exemple : smtps://identifiant:motdepasse@smtp.exemple.com:port',
     'never' => 'jamais',
+    'Well-known file {fileName}' => 'Fichier Well-known {fileName}',
+    'URL to the file {fileNameLink}' => 'URL du fichier {fileNameLink}',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'Activer le service de redirection de liens. Afin que les liens s\'ouvrent dans l\'application sur les appareils mobiles, plutôt que dans le navigateur mobile, tous les liens (par exemple, les e-mails de notification) doivent être acheminés via le serveur proxy HumHub.',
+    'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.' => 'Veuillez activer <a href="{url}" target="_blank">Pretty URLs</a> pour le bon fonctionnement des fichiers connus.',
 ];

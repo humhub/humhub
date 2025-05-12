@@ -37,7 +37,7 @@ class Request extends \yii\web\Request
      */
     public function init()
     {
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             $secret = Yii::$app->settings->get('secret');
             if ($secret != "") {
                 $this->cookieValidationKey = $secret;

@@ -9,6 +9,7 @@
 namespace humhub\components;
 
 use humhub\helpers\ThemeHelper;
+use humhub\components\InstallationState;
 use humhub\modules\ui\Module;
 use Yii;
 use yii\base\Component;
@@ -58,7 +59,7 @@ class ThemeVariables extends Component
      */
     public function get($key, $default = null)
     {
-        if (!Yii::$app->isDatabaseInstalled()) {
+        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             return null;
         }
 

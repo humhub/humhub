@@ -72,7 +72,9 @@ class SetupController extends Controller
         if (isset($config['params']['installer']['db']['installer_hostname'])) {
             $model->hostname = $config['params']['installer']['db']['installer_hostname'];
         }
-
+        if (isset($config['params']['installer']['db']['installer_port'])) {
+            $model->port = $config['params']['installer']['db']['installer_port'];
+        }
         if (isset($config['params']['installer']['db']['installer_database'])) {
             $model->database = $config['params']['installer']['db']['installer_database'];
         }
@@ -80,7 +82,6 @@ class SetupController extends Controller
         if (isset($config['components']['db']['username'])) {
             $model->username = $config['components']['db']['username'];
         }
-
         if (isset($config['components']['db']['password'])) {
             $model->password = self::PASSWORD_PLACEHOLDER;
         }
@@ -148,14 +149,27 @@ class SetupController extends Controller
 
                 // Write Config
                 $config['components']['db'] = $dbConfig;
-                $config['params']['installer']['db']['installer_hostname'] = $model->hostname;
-                $config['params']['installer']['db']['installer_database'] = $model->database;
+                unset($config['params']);
 
                 DynamicConfig::save($config);
 
                 return $this->redirect(['migrate']);
             } catch (Exception $e) {
                 $errorMessage = $e->getMessage();
+
+                if (!empty($model->hostname)) {
+                    $config['params']['installer']['db']['installer_hostname'] = $model->hostname;
+                }
+                if (!empty($model->port)) {
+                    $config['params']['installer']['db']['installer_port'] = $model->port;
+                }
+                if (!empty($username)) {
+                    $config['params']['installer']['db']['installer_database'] = $model->database;
+                }
+
+                if (!empty($config['params'])) {
+                    DynamicConfig::save($config);
+                }
             }
         }
 
@@ -220,9 +234,5 @@ class SetupController extends Controller
 
         // Migrate Up Database
         MigrationService::create()->migrateUp();
-
-        DynamicConfig::rewrite();
-
-        Yii::$app->setDatabaseInstalled();
     }
 }

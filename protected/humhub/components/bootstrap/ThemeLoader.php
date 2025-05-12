@@ -9,6 +9,7 @@
 namespace humhub\components\bootstrap;
 
 use humhub\components\console\Application as ConsoleApplication;
+use humhub\components\InstallationState;
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
 use humhub\modules\installer\libs\EnvironmentChecker;
@@ -34,7 +35,7 @@ class ThemeLoader implements BootstrapInterface
             return;
         }
 
-        if ($app->isDatabaseInstalled()) {
+        if ($app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $themePath = $app->settings->get('theme');
             if (!empty($themePath) && is_dir($themePath)) {
                 $theme = ThemeHelper::getThemeByPath($themePath);
@@ -48,11 +49,13 @@ class ThemeLoader implements BootstrapInterface
             EnvironmentChecker::preInstallChecks();
         }
 
-        if ($app->view->theme instanceof Theme) {
-            if (!Yii::$app->request->isConsoleRequest && !(Yii::$app instanceof ConsoleApplication)) {
-                // Register the theme (e.g. add core js/css header)
-                $app->view->theme->register();
-            }
+        if (
+            $app->view->theme instanceof Theme
+            && !Yii::$app->request->isConsoleRequest
+            && !(Yii::$app instanceof ConsoleApplication)
+        ) {
+            // Register the theme (e.g. add core js/css header)
+            $app->view->theme->register();
         }
     }
 }

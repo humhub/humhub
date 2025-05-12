@@ -133,4 +133,8 @@ return [
     'e.g. localhost' => '例：localhost',
     'e.g. smtps://user:pass@smtp.example.com:port' => '例：smtps://user:pass@smtp.example.com:port',
     'never' => 'なし',
+    'Well-known file {fileName}' => 'よく知られているファイル {fileName}',
+    'URL to the file {fileNameLink}' => 'ファイルへの URL {fileNameLink}',
+    'Enable Link Redirection Service. In order for links to open in the app on mobile devices, rather than in the mobile browser, all links (e.g. notification emails) need to be routed through the HumHub proxy server.' => 'リンクリダイレクト サービスを有効にします。リンクをモバイルブラウザーではなくモバイルデバイスのアプリで開くには、すべてのリンク (通知メールなど) を HumHub プロキシ サーバー経由でルーティングする必要があります。',
+    'Please enable <a href="{url}" target="_blank">Pretty URLs</a> for proper working of the well-known files.' => 'よく知られているファイルが正しく動作するには、<a href="{url}" target="_blank">Pretty URLs</a> を有効にしてください。',
 ];

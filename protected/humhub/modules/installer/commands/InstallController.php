@@ -66,8 +66,6 @@ class InstallController extends Controller
         $config = DynamicConfig::load();
 
         $config['components']['db'] = $dbConfig;
-        $config['params']['installer']['db']['installer_hostname'] = $db_host;
-        $config['params']['installer']['db']['installer_database'] = $db_name;
 
         DynamicConfig::save($config);
 
@@ -92,12 +90,8 @@ class InstallController extends Controller
 
         MigrationService::create()->migrateUp();
 
-        DynamicConfig::rewrite();
-
-        Yii::$app->setDatabaseInstalled();
-
         $this->stdout("  * Finishing\n", Console::FG_YELLOW);
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         return ExitCode::OK;
     }
@@ -143,7 +137,7 @@ class InstallController extends Controller
         Yii::$app->settings->set('mailerSystemEmailName', $site_email);
         Yii::$app->settings->set('secret', UUID::v4());
 
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         return ExitCode::OK;
     }

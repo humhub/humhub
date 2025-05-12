@@ -9,6 +9,7 @@
 namespace humhub\modules\installer;
 
 use Exception;
+use humhub\components\InstallationState;
 use Yii;
 use yii\console\Application;
 use yii\helpers\Url;
@@ -66,7 +67,7 @@ class Module extends \humhub\components\Module
     {
 
         // Block installer, when it's marked as installed
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             throw new HttpException(500, 'HumHub is already installed!');
         }
 
@@ -104,28 +105,6 @@ class Module extends \humhub\components\Module
         }
 
         return true;
-    }
-
-    /**
-     * Sets application in installed state (disables installer)
-     *
-     * @deprecated since v1.16; use Yii::$app->setInstalled()
-     * @see Yii::$app->setInstalled()
-     */
-    public function setInstalled()
-    {
-        Yii::$app->setInstalled();
-    }
-
-    /**
-     * Sets the application database in installed state
-     *
-     * @deprecated since v1.16; use Yii::$app->setDatabaseInstalled()
-     * @see Yii::$app->setDatabaseInstalled()
-     */
-    public function setDatabaseInstalled()
-    {
-        Yii::$app->setDatabaseInstalled();
     }
 
     protected function initConfigSteps()

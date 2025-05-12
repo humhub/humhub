@@ -5,6 +5,10 @@ HumHub Changelog
 ----------------------------
 - Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
+- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
+- Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7361: Refactor application state mechanism
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
 - Enh #7444: Rename Mailer settings keys to work with `.env`
@@ -18,6 +22,7 @@ HumHub Changelog
 - Enh #7493: Add possibility to define content search order via module config
 - Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
 - Fix #7485: Fix initialization of the registration form definitions
+- Fix #7512: Fix priority of `dynamic.php`
 
 1.17.3 (Unreleased)
 ----------------------
@@ -25,6 +30,7 @@ HumHub Changelog
 - Fix #7486: Catch errors in external file handlers
 - Fix #7487: Fix comments list when comment is active from another parent comment
 - Enh #7492: Fix access to options on space invite form
+- Fix #7503: Don't run migration on updating of disabled module
 
 1.17.2 (April 7, 2025)
 ----------------------

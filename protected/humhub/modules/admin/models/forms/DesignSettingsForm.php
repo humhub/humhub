@@ -10,7 +10,6 @@ namespace humhub\modules\admin\models\forms;
 
 use humhub\components\Theme;
 use humhub\helpers\ThemeHelper;
-use humhub\libs\DynamicConfig;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
@@ -37,7 +36,6 @@ class DesignSettingsForm extends Model
     public $logo;
     public $icon;
     public $dateInputDisplayFormat;
-    public $horImageScrollOnMobile;
     public $defaultStreamSort;
     public $themePrimaryColor;
     public $useDefaultThemePrimaryColor;
@@ -61,7 +59,6 @@ class DesignSettingsForm extends Model
         $this->displayNameSubFormat = $settingsManager->get('displayNameSubFormat');
         $this->spaceOrder = Yii::$app->getModule('space')->settings->get('spaceOrder');
         $this->dateInputDisplayFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
-        $this->horImageScrollOnMobile = $settingsManager->get('horImageScrollOnMobile');
         $this->defaultStreamSort = Yii::$app->getModule('stream')->settings->get('defaultSort');
         $this->themePrimaryColor = $settingsManager->get('themePrimaryColor', $themeVariables->get('primary'));
         $this->useDefaultThemePrimaryColor = (bool)$settingsManager->get('useDefaultThemePrimaryColor', true);
@@ -80,7 +77,6 @@ class DesignSettingsForm extends Model
             ['paginationSize', 'integer', 'max' => 200, 'min' => 1],
             ['theme', 'in', 'range' => $this->getThemes()],
             [['displayNameFormat', 'displayNameSubFormat', 'spaceOrder'], 'safe'],
-            [['horImageScrollOnMobile'], 'boolean'],
             ['logo', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 100, 'minHeight' => 120],
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
@@ -124,7 +120,6 @@ class DesignSettingsForm extends Model
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
-            'horImageScrollOnMobile' => Yii::t('AdminModule.settings', 'Horizontal scrolling images on a mobile device'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
             'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Use theme default color'),
             'themeSecondaryColor' => Yii::t('AdminModule.settings', 'Secondary color'),
@@ -198,7 +193,6 @@ class DesignSettingsForm extends Model
         $settingsManager->set('displayNameSubFormat', $this->displayNameSubFormat);
         Yii::$app->getModule('space')->settings->set('spaceOrder', $this->spaceOrder);
         Yii::$app->getModule('admin')->settings->set('defaultDateInputFormat', $this->dateInputDisplayFormat);
-        $settingsManager->set('horImageScrollOnMobile', $this->horImageScrollOnMobile);
 
         Yii::$app->getModule('stream')->settings->set('defaultSort', $this->defaultStreamSort);
 
@@ -215,8 +209,6 @@ class DesignSettingsForm extends Model
         $settingsManager->set('themeSecondaryColor', $this->useDefaultThemeSecondaryColor ? null : $this->themeSecondaryColor);
         $settingsManager->set('useDefaultThemeSecondaryColor', $this->useDefaultThemeSecondaryColor);
         $settingsManager->set('themeCustomScss', $this->themeCustomScss);
-
-        DynamicConfig::rewrite();
 
         return true;
     }

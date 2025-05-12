@@ -459,7 +459,7 @@ class View extends \yii\web\View
             echo '<title>' . $this->getPageTitle() . '</title>';
         }
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             if (Yii::$app->getSession()->hasFlash('view-status')) {
                 $viewStatus = Yii::$app->getSession()->getFlash('view-status');
                 $type = strtolower(key($viewStatus));
@@ -489,7 +489,7 @@ class View extends \yii\web\View
         }
 
         // Since the JsConfig accesses user queries it fails before installation.
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             CoreJsConfig::widget();
         }
 

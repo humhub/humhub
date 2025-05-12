@@ -8,6 +8,8 @@
 
 namespace humhub\widgets;
 
+use humhub\helpers\MobileAppHelper;
+use humhub\components\InstallationState;
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
 use humhub\widgets\modal\GlobalConfirmModal;
@@ -31,14 +33,14 @@ class LayoutAddons extends BaseStack
             $this->addWidget(GlobalModal::class);
             $this->addWidget(GlobalConfirmModal::class);
 
-            if (Yii::$app->isInstalled()) {
+            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                 $this->addWidget(Tour::class);
                 $this->addWidget(TrackingWidget::class);
             }
 
             $this->addWidget(LoaderWidget::class, ['show' => false, 'id' => "humhub-ui-loader-default"]);
             $this->addWidget(StatusBar::class);
-            if (Yii::$app->isInstalled()) {
+            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                 $this->addWidget(BlueimpGallery::class);
 
                 if (Yii::$app->params['enablePjax']) {
@@ -46,6 +48,15 @@ class LayoutAddons extends BaseStack
                 }
             }
         }
+
         parent::init();
+
+        if (Yii::$app->session->has(MobileAppHelper::SESSION_VAR_SHOW_OPENER)) {
+            MobileAppHelper::registerShowOpenerScript();
+            Yii::$app->session->remove(MobileAppHelper::SESSION_VAR_SHOW_OPENER);
+        }
+
+        // Get info for the Share intend feature (uploading files from the mobile app)
+        MobileAppHelper::getFileUploadSettings();
     }
 }

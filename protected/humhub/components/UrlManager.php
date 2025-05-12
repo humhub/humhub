@@ -23,6 +23,15 @@ class UrlManager extends \yii\web\UrlManager
      */
     public static $cachedLastContainerRecord;
 
+    public function init()
+    {
+        parent::init();
+
+        $this->addRules([
+            ['class' => WellKnownUrlRule::class],
+        ]);
+    }
+
     /**
      * @inheritdoc
      */

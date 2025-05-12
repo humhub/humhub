@@ -59,6 +59,7 @@ $config = [
     'bootstrap' => [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
+        'humhub\components\bootstrap\SettingsLoader',
         'queue',
         'humhub\components\bootstrap\ThemeLoader',
     ],
@@ -281,6 +282,8 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
+            'goUrl' => 'https://go.humhub.com',
+            'disableAuthChoicesIos' => false,
         ],
         'curl' => [
             // Check SSL certificates on cURL requests

@@ -9,6 +9,7 @@
 namespace humhub\modules\content\assets;
 
 use humhub\components\assets\AssetBundle;
+use humhub\components\InstallationState;
 use Yii;
 use yii\web\Application;
 
@@ -41,7 +42,7 @@ class ContentHighlightAsset extends AssetBundle
 
     private function getKeyword(): ?string
     {
-        if (!(Yii::$app instanceof Application && Yii::$app->isInstalled())) {
+        if (!(Yii::$app instanceof Application && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED))) {
             return null;
         }
 

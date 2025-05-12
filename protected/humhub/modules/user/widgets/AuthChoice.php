@@ -9,6 +9,7 @@
 namespace humhub\modules\user\widgets;
 
 use humhub\helpers\Html;
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\BaseFormAuth;
 use Yii;
 use yii\authclient\ClientInterface;
@@ -111,23 +112,19 @@ class AuthChoice extends \yii\authclient\widgets\AuthChoice
      */
     public function init()
     {
-        if (count($this->getClients()) == 0) {
-            return;
-        } else {
-            return parent::init();
+        if (count($this->getClients()) > 0) {
+            parent::init();
         }
     }
 
     /**
      * @inheritdoc
      */
-    public function run()
+    public function beforeRun()
     {
-        if (count($this->getClients()) == 0) {
-            return;
-        } else {
-            return parent::run();
-        }
+        return parent::beforeRun() &&
+            count($this->getClients()) > 0 &&
+            !(DeviceDetectorHelper::isIosApp() && Yii::$app->params['humhub']['disableAuthChoicesIos']);
     }
 
     /**

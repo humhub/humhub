@@ -65,13 +65,10 @@ $iconUrl = SiteIcon::getUrl(140);
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
     ]);
     ?>
-    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance') ?></strong>
-    <br>
-    <br>
-    <?= $form->field($model, 'horImageScrollOnMobile')->checkbox() ?>
+    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
 
-    <div class="bg-light p-3">
-        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'class' => 'd-none', 'name' => 'logo[]']) ?>
+    <div class="well">
+        <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
             <img class="rounded" id="logo-image" src="<?= LogoImage::getUrl() ?>"
