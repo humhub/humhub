@@ -13,6 +13,7 @@ use humhub\components\Module;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\models\ContentContainerSetting;
+use humhub\modules\notification\jobs\SendBulkNotification;
 use humhub\modules\notification\targets\BaseTarget;
 use humhub\modules\space\models\Membership;
 use humhub\modules\space\models\Space;
@@ -70,20 +71,19 @@ class NotificationManager
      * Sends the given $notification to all enabled targets of the given $users if possible
      * as bulk message.
      *
-     * @param BaseNotification $notification
-     * @param ActiveQueryUser $userQuery
+     * @param SendBulkNotification $bulkNotification
      * @throws InvalidConfigException
      */
-    public function sendBulk(BaseNotification $notification, $userQuery)
+    public function sendBulk(SendBulkNotification $bulkNotification)
     {
+        $notification = $bulkNotification->notification;
         if (!$notification->isValid()) {
             return;
         }
 
-        $processed = [];
         /** @var User $user */
-        foreach ($userQuery->each() as $user) {
-            if (in_array($user->id, $processed)) {
+        foreach ($bulkNotification->query->each() as $user) {
+            if ($bulkNotification->isProcessedUser($user)) {
                 continue;
             }
 
@@ -104,14 +104,13 @@ class NotificationManager
             }
 
             if ($notification->saveRecord($user)) {
+                $bulkNotification->acknowledge($user);
                 foreach ($this->getTargets($user) as $target) {
                     $target->send($notification, $user);
                 }
             } else {
                 Yii::debug('Could not store notification ' . get_class($notification) . ' for user ' . $user->id);
             }
-
-            $processed[] = $user->id;
         }
     }
 
