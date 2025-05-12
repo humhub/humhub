@@ -22,6 +22,7 @@ HumHub Changelog
 - Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
 - Fix #7485: Fix initialization of the registration form definitions
 - Fix #7512: Fix priority of `dynamic.php`
+- Fix #7518:  Fix Incorrect German Translation
 
 1.17.3 (Unreleased)
 ----------------------
