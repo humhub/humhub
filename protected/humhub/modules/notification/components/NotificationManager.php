@@ -82,7 +82,7 @@ class NotificationManager
         }
 
         /** @var User $user */
-        foreach ($bulkNotification->query->each() as $user) {
+        foreach ($bulkNotification->getQuery()->each() as $user) {
             if ($bulkNotification->isProcessedUser($user)) {
                 continue;
             }

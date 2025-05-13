@@ -139,4 +139,22 @@ class SendBulkNotification extends LongRunningActiveJob
 
         return $this->uid;
     }
+
+    /**
+     * Get users query with excluding already processed users
+     *
+     * @return ActiveQueryUser
+     * @since 1.17.3
+     */
+    public function getQuery(): ActiveQueryUser
+    {
+        if ($this->processed === []) {
+            return $this->query;
+        }
+
+        // Clone it in order to don't write the updated query into DB, otherwise the query
+        // will be very long because this condition will be appended after each processed user.
+        $query = clone $this->query;
+        return $query->andWhere(['NOT IN', 'user.id', $this->processed]);
+    }
 }
