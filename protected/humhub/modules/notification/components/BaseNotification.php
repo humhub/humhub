@@ -500,10 +500,19 @@ abstract class BaseNotification extends SocialActivity
             ]);
         }
 
-        list($user1, $user2) = $this->getGroupLastUsers(2);
+        $users = $this->getGroupLastUsers(2);
+        $usersCount = count($users);
 
-        $displayName1 = $html ? Html::tag('strong', Html::encode($user1->displayName)) : $user1->displayName;
-        $displayName2 = $html ? Html::tag('strong', Html::encode($user2->displayName)) : $user2->displayName;
+        if ($usersCount === 0) {
+            return '[Deleted user]';
+        }
+
+        $displayName1 = $html ? Html::tag('strong', Html::encode($users[0]->displayName)) : $users[0]->displayName;
+        if ($usersCount === 1) {
+            return $displayName1;
+        }
+
+        $displayName2 = $html ? Html::tag('strong', Html::encode($users[1]->displayName)) : $users[1]->displayName;
 
         return Yii::t('NotificationModule.base', '{displayName} and {displayName2}', [
             'displayName' => $displayName1,

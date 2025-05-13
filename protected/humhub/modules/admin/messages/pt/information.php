@@ -64,6 +64,7 @@ return [
     'Detected URL: {currentBaseUrl}' => '',
     'Different table collations in the tables: {tables}' => '',
     'Disabled Functions' => '',
+    'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'HumHub' => '',
     'HumHub Documentation' => '',
     'Make sure that the `proc_open` function is not disabled.' => '',

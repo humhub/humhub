@@ -95,4 +95,5 @@ return [
     '{nFormatted}M' => '{nFormatted}M',
     'No results' => '',
     'Show all results' => '',
+    'Switch network' => '',
 ];
