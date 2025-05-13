@@ -224,7 +224,7 @@ Mit freundlichen Grüßen
   'This overview contains a list of each registered user with actions to view, edit and delete users.' => 'Diese Übersicht enthält eine Liste aller registrierten Benutzer mit der Möglichkeit, diese anzusehen, zu bearbeiten und zu löschen.',
   'This user owns no spaces.' => 'Dieser Benutzer besitzt keine Spaces.',
   'Unapproved' => 'Nicht freigegeben',
-  'User deletion process queued.' => 'Der Prozess zum Löschen des Bentuzers wurde eingereiht.',
+  'User deletion process queued.' => 'Der Prozess zum Löschen des Benutzers wurde eingereiht.',
   'User is already a member of this group.' => 'Der Benutzer ist bereits Mitglied dieser Gruppe.',
   'User not found!' => 'Benutzer nicht gefunden!',
   'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.' => 'Benutzer können verschiedenen Gruppen (z. B. Teams, Abteilungen etc.) mit bestimmten Standardspaces, Gruppenmanagern und Berechtigungen zugeordnet werden.',

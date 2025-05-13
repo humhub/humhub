@@ -21,6 +21,8 @@ HumHub Changelog
 - Enh #7493: Add possibility to define content search order via module config
 - Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
 - Fix #7485: Fix initialization of the registration form definitions
+- Fix #7512: Fix priority of `dynamic.php`
+- Fix #7518:  Fix Incorrect German Translation
 
 1.17.3 (Unreleased)
 ----------------------
@@ -29,6 +31,8 @@ HumHub Changelog
 - Fix #7487: Fix comments list when comment is active from another parent comment
 - Enh #7492: Fix access to options on space invite form
 - Fix #7503: Don't run migration on updating of disabled module
+- Fix #7513: Fix priority of `dynamic.php`
+- Enh #7514: Update Redis example in `env.example`
 
 1.17.2 (April 7, 2025)
 ----------------------

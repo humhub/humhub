@@ -87,6 +87,7 @@ return [
     'Search...' => '',
     'Show all results' => '',
     'Stop impersonation' => '',
+    'Switch network' => '',
     'Unsaved changes will be lost. Do you want to proceed?' => '',
     'verify your upload_max_filesize and post_max_size php settings.' => '',
     '{attribute} has been empty. The system-configured function to fill empty values has returned an invalid value. Please try again or contact your administrator.' => '',

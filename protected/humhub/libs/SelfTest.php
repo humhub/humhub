@@ -13,6 +13,7 @@ use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\MailLinkService;
 use humhub\services\MigrationService;
 use Yii;
 use yii\helpers\UnsetArrayValue;
@@ -896,16 +897,24 @@ class SelfTest
 
             // Check Mobile App - Push Service
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
-            if (static::isPushModuleAvailable()) {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'OK',
-                ];
-            } else {
+            if (!static::isPushModuleAvailable()) {
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
                     'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required'),
+                ];
+            } elseif (!MailLinkService::instance()->isConfigured()) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Enable <a href="{url}">Link Redirection Service</a>', [
+                        'url' => Url::to(['/admin/setting/mailing-server']),
+                    ]),
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK',
                 ];
             }
 
@@ -946,8 +955,7 @@ class SelfTest
         $pushModule = Yii::$app->getModule('fcm-push');
         return
             $pushModule instanceof \humhub\modules\fcmPush\Module &&
-            $pushModule->getIsEnabled() &&
-            $pushModule->getGoService()->isConfigured();
+            $pushModule->getIsEnabled();
     }
 
     /**

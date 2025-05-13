@@ -95,6 +95,7 @@ return [
     '{phpExtension} Support' => '{phpExtension} Euskarria',
     'Configuration File' => '',
     'Different table collations in the tables: {tables}' => '',
+    'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'New migrations should be applied: {migrations}' => '',
     'No pending migrations' => '',
     'Rebuild search index' => '',

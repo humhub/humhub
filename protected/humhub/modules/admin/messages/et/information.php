@@ -25,6 +25,7 @@ return [
     'Done' => '',
     'Driver' => '',
     'Dynamic Config' => '',
+    'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'Error' => '',
     'Flush entries' => '',
     'HumHub' => '',
