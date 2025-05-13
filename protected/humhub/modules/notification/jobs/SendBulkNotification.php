@@ -13,11 +13,9 @@ use humhub\modules\queue\LongRunningActiveJob;
 use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\db\Query;
-use yii\queue\db\Queue;
 
 /**
- * Description of SendNotification
+ * Send Bulk Notification
  *
  * @author buddha
  * @since 1.2
@@ -25,7 +23,7 @@ use yii\queue\db\Queue;
 class SendBulkNotification extends LongRunningActiveJob
 {
     /**
-     * @var BaseNotification Base notification data as array.
+     * @var BaseNotification Base notification object
      */
     public $notification;
 
@@ -35,16 +33,10 @@ class SendBulkNotification extends LongRunningActiveJob
     public $query;
 
     /**
-     * @var int[] Ids of the processed used to avoid duplicated notifications
+     * @var string|null $uid Unique ID to cache already processed user IDs
      * @since 1.17.3
      */
-    public array $processed = [];
-
-    /**
-     * @var int|string|null $uid Unique ID or Queue ID
-     * @since 1.17.3
-     */
-    public $uid = null;
+    public ?string $uid = null;
 
     /**
      * @inheritdoc
@@ -54,7 +46,6 @@ class SendBulkNotification extends LongRunningActiveJob
         parent::init();
 
         if ($this->uid === null) {
-            // Generate unique key only for new record, it is used to find a queue record of this job in DB
             $this->uid = Yii::$app->security->generateRandomString();
         }
     }
@@ -68,6 +59,29 @@ class SendBulkNotification extends LongRunningActiveJob
     }
 
     /**
+     * Get a cache key for processed user IDs
+     *
+     * @return string
+     * @since 1.17.3
+     */
+    private function getProcessedCacheKey(): string
+    {
+        return 'SendBulkNotification' . $this->uid;
+    }
+
+    /**
+     * Get the array with processed user IDs
+     *
+     * @return array
+     * @since 1.17.3
+     */
+    public function getProcessedUserIds(): array
+    {
+        $processedUserIds = Yii::$app->cache->get($this->getProcessedCacheKey());
+        return is_array($processedUserIds) ? $processedUserIds : [];
+    }
+
+    /**
      * Check if the user has been already processed
      *
      * @param User $user
@@ -76,7 +90,7 @@ class SendBulkNotification extends LongRunningActiveJob
      */
     public function isProcessedUser(User $user): bool
     {
-        return in_array($user->id, $this->processed);
+        return in_array($user->id, $this->getProcessedUserIds());
     }
 
     /**
@@ -88,56 +102,9 @@ class SendBulkNotification extends LongRunningActiveJob
      */
     public function acknowledge(User $user): void
     {
-        $this->processed[] = $user->id;
-        $this->updateInQueue();
-    }
-
-    /**
-     * Update this notification in queue db record
-     *
-     * @return void
-     * @since 1.17.3
-     */
-    protected function updateInQueue(): void
-    {
-        if ($this->getQueueId() === 0) {
-            return;
-        }
-
-        // New processed user ID and/or real queue ID may be stored here
-        Yii::$app->queue->db->createCommand()
-            ->update(
-                Yii::$app->queue->tableName,
-                ['job' => Yii::$app->queue->serializer->serialize($this)],
-                ['id' => $this->getQueueId()],
-            )->execute();
-    }
-
-    /**
-     * Get ID of the queue db record where the notification is called from
-     *
-     * @return int
-     * @since 1.17.3
-     */
-    protected function getQueueId(): int
-    {
-        if (!is_int($this->uid) && Yii::$app->queue instanceof Queue) {
-            // Try to find queue record by uid
-            $queues = (new Query())->from(Yii::$app->queue->tableName);
-            foreach ($queues->each() as $queue) {
-                $job = Yii::$app->queue->serializer->unserialize($queue['job']);
-                if ($job instanceof self && isset($job->uid) && $job->uid === $this->uid) {
-                    $this->uid = $queue['id'];
-                    break;
-                }
-            }
-        }
-
-        if (!is_int($this->uid)) {
-            $this->uid = 0;
-        }
-
-        return $this->uid;
+        $processedUserIds = $this->getProcessedUserIds();
+        $processedUserIds[] = $user->id;
+        Yii::$app->cache->set($this->getProcessedCacheKey(), $processedUserIds);
     }
 
     /**
@@ -148,13 +115,11 @@ class SendBulkNotification extends LongRunningActiveJob
      */
     public function getQuery(): ActiveQueryUser
     {
-        if ($this->processed === []) {
-            return $this->query;
+        $processedUserIds = $this->getProcessedUserIds();
+        if ($processedUserIds !== []) {
+            $this->query->andWhere(['NOT IN', 'user.id', $processedUserIds]);
         }
 
-        // Clone it in order to don't write the updated query into DB, otherwise the query
-        // will be very long because this condition will be appended after each processed user.
-        $query = clone $this->query;
-        return $query->andWhere(['NOT IN', 'user.id', $this->processed]);
+        return $this->query;
     }
 }
