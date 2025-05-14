@@ -1,12 +1,80 @@
 HumHub Changelog
 ================
 
-1.18 (TBA)
-------------------------------
+1.18.0 (Unreleased - Develop)
+----------------------------
+- Enh #7412: Confusing message after creating an account
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
 - Enh #7367: Changed Auto Debug Mode Detection
+- Enh #7361: Refactor application state mechanism
+- Enh #7425: Installer Wording update due to `.env` configuration
+- Enh #7433: Use strikethrough style for disabled user name
+- Enh #7444: Rename Mailer settings keys to work with `.env`
+- Fix #7451: Fix Module permissions visibility in content containers when not enabled
+- Fix #7450: Fix stream load suppressed when previous content is deleted/archived
+- Enh #7454: Upgrade compose packages
+- Fix #7443: Exclude inactive users from `followers` and `following` lists
+- Fix #7447: Update the comment counter when deleting a comment
+- Fix #7456: Fix setting manager backwards compatibility
+- Enh #7468: Remove deprecated widget `DataSaved`
+- Enh #7493: Add possibility to define content search order via module config
+- Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
+- Fix #7485: Fix initialization of the registration form definitions
+- Fix #7512: Fix priority of `dynamic.php`
+- Fix #7518:  Fix Incorrect German Translation
+
+1.17.3 (Unreleased)
+----------------------
+- Fix #7484: Use password type on the installation DB config form
+- Fix #7486: Catch errors in external file handlers
+- Fix #7487: Fix comments list when comment is active from another parent comment
+- Enh #7492: Fix access to options on space invite form
+- Fix #7503: Don't run migration on updating of disabled module
+- Fix #7513: Fix priority of `dynamic.php`
+- Enh #7514: Update Redis example in `env.example`
+
+1.17.2 (April 7, 2025)
+----------------------
+- Fix #7457: Fix changing of space visibility
+- Fix #7464: Fix searching with not full latin words
+- Fix #7465: Formatted Arabic numbers displays 0 instead of the number
+- Fix #7471: Fix advanced searching by space filter
+- Fix #7472: Fix missing fields when creating a new user from admin
+- Fix #7477: Refactor Registration Form Options 
+- Enh #7455: Add Share Intend feature for the Mobile app
+- Fix #7482: Fix the post submit button title after back from draft mode
+
+1.17.1 (March 6, 2025)
+----------------------
+- Fix #7377: Configured Redis cache key prefix was overwritten by the default value
+- Fix #7375: Use default language for email invitation and show language chooser on registration form
+- Enh #7383: Improve SelfTest for Base URL 
+- Enh #5426: Show language chooser for guest on the sidebar footer
+- Fix #7395: Fix profile stream for guests
+- Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
+- Fix #7404: Marketplace - Allow symlinked `@app/modules` directory
+- Fix: Always allow admins to edit/delete content in the other Profile stream
+- Fix #7414: Fix profile field encoding
+- Fix #7419: Reset modal window after close
+- Fix #7428: Fix picker autofocus
+- Enh #7424: New event on get registration groups
+- Enh #7437: Add beforeInitCallback `humhub.ui.picker`
+- Fix #7441: Hide "Remember me" option on mobile app
+- Enh #7408: Update code to manage users from external modules
+- Fix #7453: Fix registration form submit
+
+1.17.0 (January 13, 2025)
+-------------------------
+
+See also: HumHub 1.17 - [Release Notes](https://docs.humhub.org/docs/about/releasenotes/release_notes_1_17) and [Changelog](https://github.com/humhub/humhub/blob/master/CHANGELOG.md)
+
+Info: The minimum PHP version is now `PHP 8.1`!
+
+- Fix #7365: `DeviceDetectorHelper::isMobile()` and `DeviceDetectorHelper::isTablet()` when no user agent
+- Fix #7376: `humhub\helpers\ArrayHelper::flatten()` not compatible Yii base ArrayHelper
+- Enh #7382: Allow initial collapsed comments bu setting `\humhub\modules\comment\Module::$commentsPreviewMax` to 0
 
 1.17.0-beta.4 (December 24, 2024)
 ---------------------------------

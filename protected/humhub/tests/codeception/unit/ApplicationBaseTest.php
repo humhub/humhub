@@ -15,6 +15,13 @@ class ApplicationBaseTest extends HumHubDbTestCase
 {
     public function testIsDatabaseInstalled()
     {
-        $this->assertTrue(Yii::$app->isDatabaseInstalled());
+        try {
+            Yii::$app->db->open();
+            $databaseInstalled = true;
+        } catch (\Exception $e) {
+            $databaseInstalled = false;
+        }
+
+        $this->assertTrue($databaseInstalled);
     }
 }

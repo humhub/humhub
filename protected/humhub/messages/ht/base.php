@@ -73,6 +73,7 @@ return [
     'Show less' => '',
     'Some files could not be uploaded:' => '',
     'Stop impersonation' => '',
+    'Switch network' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     'The file has been deleted.' => '',

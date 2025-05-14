@@ -1,11 +1,9 @@
 <?php
 
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\widgets\DataSaved;
-use yii\helpers\Html;
 use humhub\modules\admin\models\forms\StatisticSettingsForm;
+use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
-use yii\web\View;
+use yii\helpers\Html;
 
 /* @var $model StatisticSettingsForm */
 
@@ -26,8 +24,6 @@ use yii\web\View;
 <hr>
 
 <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
-
-<?= DataSaved::widget(); ?>
 
 <?php ActiveForm::end(); ?>
 

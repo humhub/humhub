@@ -21,7 +21,7 @@ use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\ProfileFieldCategory;
 use Yii;
 use yii\base\Exception;
-use yii\helpers\BaseUrl;
+use yii\helpers\Url;
 
 /**
  * InitialData
@@ -37,7 +37,7 @@ class InitialData
             return;
         }
 
-        Yii::$app->settings->set('baseUrl', BaseUrl::base(true));
+        Yii::$app->settings->set('baseUrl', Url::base(true));
         Yii::$app->settings->set('paginationSize', 10);
         Yii::$app->settings->set('displayNameFormat', '{profile.firstname} {profile.lastname}');
 
@@ -51,9 +51,9 @@ class InitialData
         Yii::$app->getModule('user')->settings->set('auth.internalUsersCanInviteByLink', '1');
 
         // Mailing
-        Yii::$app->settings->set('mailer.transportType', 'php');
-        Yii::$app->settings->set('mailer.systemEmailAddress', 'social@example.com');
-        Yii::$app->settings->set('mailer.systemEmailName', 'My Social Network');
+        Yii::$app->settings->set('mailerTransportType', 'php');
+        Yii::$app->settings->set('mailerSystemEmailAddress', 'social@example.com');
+        Yii::$app->settings->set('mailerSystemEmailName', 'My Social Network');
         Yii::$app->getModule('activity')->settings->set('mailSummaryInterval', MailSummary::INTERVAL_DAILY);
 
         // File

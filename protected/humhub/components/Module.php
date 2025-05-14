@@ -322,9 +322,8 @@ class Module extends \yii\base\Module
      */
     public function update()
     {
-        if ($this->beforeUpdate() !== false) {
-            $this->migrate();
-            $this->afterUpdate();
+        if ($this->isEnabled) {
+            $this->getMigrationService()->migrateUp();
         }
     }
 
@@ -334,7 +333,7 @@ class Module extends \yii\base\Module
      * The update will cancel if this function does return false;
      *
      * @return bool
-     * @deprecated
+     * @deprecated since v1.15.3
      *
      */
     public function beforeUpdate()
@@ -345,7 +344,7 @@ class Module extends \yii\base\Module
     /**
      * Called right after the module update.
      *
-     * @deprecated
+     * @deprecated since v1.15.3
      */
     public function afterUpdate()
     {

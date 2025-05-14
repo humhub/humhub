@@ -212,7 +212,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * @since 1.3
      */
-    public function getModel(): ContentActiveRecord
+    public function getModel(): ?ContentActiveRecord
     {
         return $this->getPolymorphicRelation();
     }
@@ -915,8 +915,17 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
             $user = User::findOne(['id' => $user]);
         }
 
-        // Only owner can edit his content
+        // Owner can edit his content
         if ($user !== null && $this->created_by === $user->id) {
+            return true;
+        }
+
+        // System Admins can edit User content for moderation purposes
+        if (
+            $this->id // The content exists
+            && $this->container instanceof User
+            && $user->isSystemAdmin()
+        ) {
             return true;
         }
 

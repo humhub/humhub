@@ -101,6 +101,7 @@ return [
     '{imageExtension} Support' => 'دعم {imageExtension}',
     '{phpExtension} Extension' => 'الإضافة {phpExtension}',
     '{phpExtension} Support' => 'دعم {phpExtension}',
+    'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'New migrations should be applied: {migrations}' => '',
     'No pending migrations' => '',
 ];

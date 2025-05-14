@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => '<strong>Öppna</strong> fil',
   '<strong>Upload</strong> error' => '<strong>Uppladdnings</strong> fel',
   'Attach a video' => 'Bifoga en video',
@@ -16,9 +16,12 @@ return array (
   'Insufficient permissions!' => 'Otillräckliga rättigheter!',
   'Invalid Mime-Type' => 'Ogiltig MIME-typ',
   'Last update by:' => 'Senast uppdaterad av:',
+  'Share' => 'Dela',
+  'Share as Post' => '',
+  'Share in {targetDisplayName}' => '',
   'Size:' => 'Storlek:',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'Tyvärr, du kan endast ladda upp {n,plural,=1{# file} other{# files}} på samma gång.',
   'The uploaded image is not a squared.' => 'Den uppladdade bilden är inte en kvadrerad bild.',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => 'Det här uppladdningsfältet tillåter endast uppladdning av maximalt {n,plural,=1{# file} other{# files}}.',
   'Upload files' => 'Ladda upp filer',
-);
+];

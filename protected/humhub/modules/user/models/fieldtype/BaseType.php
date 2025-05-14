@@ -315,7 +315,7 @@ class BaseType extends Model
             $query = $db->getQueryBuilder()->dropColumn(Profile::tableName(), $this->profileField->internal_name);
             $db->createCommand($query)->execute();
         } else {
-            Yii::error('Could not delete profile column - not exists!');
+            Yii::error('Could not delete profile column "' . $columnName . '" - not exists!');
         }
     }
 
@@ -352,17 +352,14 @@ class BaseType extends Model
      *
      * @param User $user
      * @param bool $raw
-     * @return string
+     * @param bool $encode
+     * @return string|null
      */
-    public function getUserValue(User $user, $raw = true): ?string
+    public function getUserValue(User $user, bool $raw = true, bool $encode = true): ?string
     {
-        $internalName = $this->profileField->internal_name;
+        $value = $user->profile->{$this->profileField->internal_name} ?? '';
 
-        if ($raw) {
-            return $user->profile->$internalName;
-        } else {
-            return Html::encode($user->profile->$internalName);
-        }
+        return $encode ? Html::encode($value) : $value;
     }
 
     /**

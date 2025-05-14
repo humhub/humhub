@@ -92,14 +92,14 @@ class RegistrationController extends Controller
             $inviteRegistrationService->populateRegistration($registration);
         } elseif (Yii::$app->session->has('authClient')) {
             $authClient = Yii::$app->session->get('authClient');
-            $this->handleAuthClientRegistration($authClient, $registration);
+            $registration = $this->createRegistrationByAuthClient($authClient);
         } else {
             Yii::warning('Registration failed: No token (query) or authclient (session) found!', 'user');
             Yii::$app->session->setFlash('error', 'Registration failed.');
             return $this->redirect(['/user/auth/login']);
         }
 
-        if ($registration->submitted('save') && $registration->validate() && $registration->register($authClient)) {
+        if ($registration->submitted('save') && $registration->register($authClient)) {
             Yii::$app->session->remove('authClient');
 
             // Autologin when user is enabled (no approval required)
@@ -173,7 +173,7 @@ class RegistrationController extends Controller
      * @param Registration $registration
      * @throws Exception
      */
-    protected function handleAuthClientRegistration(ClientInterface $authClient, Registration $registration)
+    protected function createRegistrationByAuthClient(ClientInterface $authClient): Registration
     {
         $attributes = $authClient->getUserAttributes();
 
@@ -181,7 +181,8 @@ class RegistrationController extends Controller
             throw new Exception("No user id given by authclient!");
         }
 
-        $registration->enablePasswordForm = false;
+        $registration = new Registration(enablePasswordForm: false);
+
         if ($authClient instanceof ApprovalBypass) {
             $registration->enableUserApproval = false;
         }
@@ -191,5 +192,7 @@ class RegistrationController extends Controller
 
         $registration->getUser()->setAttributes($attributes, false);
         $registration->getProfile()->setAttributes($attributes, false);
+
+        return $registration;
     }
 }

@@ -8,7 +8,7 @@ return [
   '<strong>Profile</strong> menu' => 'Menu do <strong>Perfil</strong>',
   'About' => 'Sobre',
   'Allow other selection' => 'Permitir outra seleção',
-  'Birthday' => 'Data de Nascimento',
+  'Birthday' => 'Aniversário',
   'Birthday field options' => 'Opções do campo aniversário',
   'Checkbox' => 'Checkbox',
   'Checkbox List' => 'Lista de Checkbox',

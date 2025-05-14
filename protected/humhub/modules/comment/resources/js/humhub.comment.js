@@ -122,17 +122,16 @@ humhub.module('comment', function (module, require, $) {
     };
 
     Comment.prototype.delete = function (evt) {
-        var $form = this.$.parent().siblings('.comment_create');
-        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.media').length;
+        var form = Widget.instance(this.$.parent().siblings('.comment_create'));
+        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.media').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
         this.super('delete', {modal: module.config.modal.delteConfirm}).then(function ($confirm) {
             if ($confirm) {
                 module.log.success('success.delete');
-                if (hideHr) {
-                    $form.find('hr').hide();
-                }
+                hideHr && form.$.find('hr').hide();
+                form.incrementCommentCount(-1);
             }
         }).catch(function (err) {
             module.log.error(err, true);
@@ -305,8 +304,12 @@ humhub.module('comment', function (module, require, $) {
             target.slideToggle();
         }
 
-        if (!visible) {
+        if (!visible && !window.comments_collapsed) {
             target.find('.humhub-ui-richtext').trigger('focus');
+        }
+
+        if (!visible && window.comments_collapsed && !target.find('.comment>.media').length) {
+            target.find('[data-action-click="comment.showMore"]').trigger('click');
         }
     }
 

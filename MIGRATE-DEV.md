@@ -1,14 +1,54 @@
 Module Migration Guide
 ======================
 
+Version 1.18
+------------
 
-Version 1.17 (Unreleased)
+### Deprecated
+- `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
+
+### Behaviour change
+
+- The following Mailer settings keys have been renamed to work with `.env`:
+
+| Old Key                          | New Key                        |
+|----------------------------------|--------------------------------|
+| `mailer.transportType`           | `mailerTransportType`          |
+| `mailer.dsn`                     | `mailerDsn`                    |
+| `mailer.hostname`                | `mailerHostname`               |
+| `mailer.username`                | `mailerUsername`               |
+| `mailer.password`                | `mailerPassword`               |
+| `mailer.useSmtps`                | `mailerUseSmtps`               |
+| `mailer.port`                    | `mailerPort`                   |
+| `mailer.encryption`              | `mailerEncryption`             |
+| `mailer.allowSelfSignedCerts`    | `mailerAllowSelfSignedCerts`   |
+| `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
+| `mailer.systemEmailName`         | `mailerSystemEmailName`        |
+| `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
+
+### Removed deprecations
+- Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
+
+Version 1.17.2
+---------------
+
+### Behaviour change
+
+- Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`  
+
+- Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
+
+
+Version 1.17
 -------------------------
 
 ### Behaviour change
 
 - Forms in modal box no longer have focus automatically on the first field. [The `autofocus` attribute](https://developer.mozilla.org/docs/Web/HTML/Global_attributes/autofocus) is now required on the field. More info: [#7136](https://github.com/humhub/humhub/issues/7136)
 - The new "Manage All Content" Group Permission allows managing all content (view, edit, move, archive, pin, etc.) even if the user is not a super administrator. It is disabled by default. It can be enabled via the configuration file, using the `\humhub\modules\admin\Module::$enableManageAllContentPermission` option.
+- System admins are allowed, in all cases (even when `enableManageAllContentPermission` is disabled), to edit and delete content in other Profile streams.
 - Users allowed to "Manage Users" can no longer move all content: they need to be allowed to "Manage All Content".
 
 ### New

@@ -2,9 +2,12 @@
 
 namespace humhub\components\bootstrap;
 
+use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
+use Yii;
 use yii\base\BootstrapInterface;
+use yii\caching\DummyCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
 
@@ -97,24 +100,26 @@ class SettingsLoader implements BootstrapInterface
 
     private function setUserConfig($app): void
     {
-        if ($defaultUserIdleTimeoutSec = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-            if ($app->has('user', true)) {
-                $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
-            } else {
-                $this->updateComponentDefinition($app, 'user', [
-                    'authTimeout' => $defaultUserIdleTimeoutSec,
-                ]);
+        if ($app->has('user', true)) {
+            $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+        } else {
+            $definition = [
+                'enableSession' => $app->installationState->hasState(InstallationState::STATE_INSTALLED),
+            ];
+            if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
+                $definition[] = $authTimeout;
             }
+            $this->updateComponentDefinition($app, 'user', $definition);
         }
     }
 
     private function setCacheConfig($app): void
     {
-        if ($app->has('cache', true)) {
+        if ($app->has('cache', true) && !Yii::$app->cache instanceof DummyCache) {
             $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
-        $cacheClass = $app->settings->get('cache.class');
+        $cacheClass = $app->settings->get('cacheClass');
         $cacheComponent = [];
 
         if (in_array($cacheClass, [\yii\caching\DummyCache::class, \yii\caching\FileCache::class])) {
@@ -142,6 +147,5 @@ class SettingsLoader implements BootstrapInterface
     protected function setParams($app)
     {
         $app->name = $app->settings->get('name');
-        $app->params['installed'] = $app->settings->get('installed');
     }
 }

@@ -8,6 +8,7 @@
 
 namespace humhub\components\i18n;
 
+use humhub\components\InstallationState;
 use IntlDateFormatter;
 use Yii;
 use yii\base\InvalidArgumentException;
@@ -36,7 +37,7 @@ class Formatter extends \yii\i18n\Formatter
     {
         parent::init();
 
-        if (Yii::$app->isInstalled() && Yii::$app->getModule('admin') !== null && !empty(Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat'))) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && Yii::$app->getModule('admin') !== null && !empty(Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat'))) {
             $this->dateInputFormat = Yii::$app->getModule('admin')->settings->get('defaultDateInputFormat');
         }
     }
@@ -89,8 +90,13 @@ class Formatter extends \yii\i18n\Formatter
      */
     public function asShortInteger($value, $options = [], $textOptions = [])
     {
-        list($params, $position) = $this->formatNumber($value, null, 2, 1000, $options, $textOptions);
-        $params['nFormatted'] = floor((float)$params['nFormatted']);
+        list($params, $position) = $this->formatNumber($value, 0, 2, 1000, $options, $textOptions);
+
+        if ($position < 3 && mb_strlen($params['nFormatted']) === 4) {
+            // Convert 1000K to 1M or 1000M to 1B
+            $params['nFormatted'] = mb_substr($params['nFormatted'], 0, 1);
+            $position++;
+        }
 
         switch ($position) {
             case 0:

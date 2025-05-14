@@ -31,13 +31,13 @@ class Template extends BaseType
         ];
     }
 
-    public function getUserValue($user, $raw = true): ?string
+    public function getUserValue($user, bool $raw = true, bool $encode = true): ?string
     {
         $variables = ArrayHelper::map(
             $user->profile->getProfileFields(null, [static::class]),
             'internal_name',
-            function (ProfileField $profileField) use ($user) {
-                return $profileField->getUserValue($user);
+            function (ProfileField $profileField) use ($user, $raw, $encode) {
+                return $profileField->getUserValue($user, $raw, $encode);
             },
         );
 

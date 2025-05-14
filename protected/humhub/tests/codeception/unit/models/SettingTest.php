@@ -39,13 +39,13 @@ class SettingTest extends SettingActiveRecordTest
         $this->assertCount(0, $settingAfter, "Setting 'testSetting' for 'base' was not deleted.");
     }
 
-    public function testDeprecatedFixModuleIdAndName()
+    public function testDeprecatedFixKey()
     {
-        $this->assertEquals(['foo', 'bar'], Setting::fixModuleIdAndName('foo', 'bar'), "Translation messed things up!");
+        $this->assertEquals('foo', Setting::fixDeprecatedSettingKeys('foo'), "Translation messed things up!");
 
         $this->assertEquals(
-            ['allowGuestAccess', 'user'],
-            Setting::fixModuleIdAndName('allowGuestAccess', 'authentication_internal'),
+            'mailerTransportType',
+            Setting::fixDeprecatedSettingKeys('mailer.transportType'),
             "Translation messed things up!",
         );
     }
