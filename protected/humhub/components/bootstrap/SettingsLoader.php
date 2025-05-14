@@ -67,9 +67,7 @@ class SettingsLoader implements BootstrapInterface
         } elseif ($transportType === MailingSettingsForm::TRANSPORT_CONFIG) {
             $app->set('mailer', false);
         } else {
-            $definition = [
-                'useFileTransport' => true,
-            ];
+            $definition = [];
 
             if ($transportType === MailingSettingsForm::TRANSPORT_SMTP) {
                 if ($app->settings->get('mailer.hostname')) {
@@ -96,6 +94,10 @@ class SettingsLoader implements BootstrapInterface
 
             $this->updateComponentDefinition($app, 'mailer', $definition);
         }
+
+        var_dump($definition);
+
+        die;
     }
 
     private function setUserConfig($app): void
