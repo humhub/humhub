@@ -23,6 +23,7 @@ class SettingsLoader implements BootstrapInterface
         $this->setUserConfig($app);
         $this->setCacheConfig($app);
         $this->setParams($app);
+        die;
     }
 
     private function updateComponentDefinition($app, $component, $definition)
