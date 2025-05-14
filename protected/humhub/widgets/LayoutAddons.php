@@ -8,8 +8,8 @@
 
 namespace humhub\widgets;
 
-use humhub\helpers\MobileAppHelper;
 use humhub\components\InstallationState;
+use humhub\helpers\MobileAppHelper;
 use humhub\modules\admin\widgets\TrackingWidget;
 use humhub\modules\tour\widgets\Tour;
 use Yii;
