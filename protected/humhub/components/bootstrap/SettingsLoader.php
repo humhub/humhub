@@ -94,10 +94,6 @@ class SettingsLoader implements BootstrapInterface
 
             $this->updateComponentDefinition($app, 'mailer', $definition);
         }
-
-        var_dump($definition);
-
-        die;
     }
 
     private function setUserConfig($app): void
