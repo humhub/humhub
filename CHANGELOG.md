@@ -8,6 +8,7 @@ HumHub Changelog
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
 - Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7367: Changed Auto Debug Mode Detection
 - Enh #7361: Refactor application state mechanism
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
@@ -23,7 +24,8 @@ HumHub Changelog
 - Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
 - Fix #7485: Fix initialization of the registration form definitions
 - Fix #7512: Fix priority of `dynamic.php`
-- Fix #7518:  Fix Incorrect German Translation
+- Fix #7518: Fix Incorrect German Translation
+- Fix #7522: Fix mailer config
 
 1.17.3 (Unreleased)
 ----------------------
