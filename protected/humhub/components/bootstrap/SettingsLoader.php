@@ -10,6 +10,7 @@ use yii\base\BootstrapInterface;
 use yii\caching\DummyCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
+use yii\web\Application;
 
 class SettingsLoader implements BootstrapInterface
 {
@@ -23,7 +24,6 @@ class SettingsLoader implements BootstrapInterface
         $this->setUserConfig($app);
         $this->setCacheConfig($app);
         $this->setParams($app);
-        die;
     }
 
     private function updateComponentDefinition($app, $component, $definition)
@@ -46,7 +46,6 @@ class SettingsLoader implements BootstrapInterface
     private function setMailerConfig($app): void
     {
         if ($app->has('mailer', true)) {
-            die('`mailer` component should not be instantiated before settings are loaded.');
             $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
@@ -94,35 +93,33 @@ class SettingsLoader implements BootstrapInterface
                 $definition['transport']['dsn'] = $app->settings->get('mailer.dsn');
             }
 
-            var_dump($definition);
-
-//            $this->updateComponentDefinition($app, 'mailer', $definition);
+            $this->updateComponentDefinition($app, 'mailer', $definition);
         }
     }
 
     private function setUserConfig($app): void
     {
         if ($app->has('user', true)) {
-            die('`user` component should not be instantiated before settings are loaded.');
             $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         } else {
-            $definition = [
-                'enableSession' => $app->installationState->hasState(InstallationState::STATE_INSTALLED),
-            ];
+            if ($app instanceof Application) {
+                $definition = [
+                    'enableSession' => $app->installationState->hasState(InstallationState::STATE_INSTALLED),
+                ];
+            } else {
+                $definition = [];
+            }
+
             if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
                 $definition[] = $authTimeout;
             }
-
-            var_dump($definition);
-
-//            $this->updateComponentDefinition($app, 'user', $definition);
+            $this->updateComponentDefinition($app, 'user', $definition);
         }
     }
 
     private function setCacheConfig($app): void
     {
         if ($app->has('cache', true) && !Yii::$app->cache instanceof DummyCache) {
-            die('`cache` component should not be instantiated before settings are loaded.');
             $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
@@ -144,14 +141,10 @@ class SettingsLoader implements BootstrapInterface
             ];
         }
 
-        var_dump(ArrayHelper::merge($cacheComponent, [
-            'keyPrefix' => $app->id,
-        ]));
-
         if (!empty($cacheComponent)) {
-//            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
-//                'keyPrefix' => $app->id,
-//            ]));
+            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
+                'keyPrefix' => $app->id,
+            ]));
         }
     }
 
