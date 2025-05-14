@@ -45,6 +45,7 @@ class SettingsLoader implements BootstrapInterface
     private function setMailerConfig($app): void
     {
         if ($app->has('mailer', true)) {
+            die('`mailer` component should not be instantiated before settings are loaded.');
             $app->log->logger->log('`mailer` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
@@ -92,13 +93,16 @@ class SettingsLoader implements BootstrapInterface
                 $definition['transport']['dsn'] = $app->settings->get('mailer.dsn');
             }
 
-            $this->updateComponentDefinition($app, 'mailer', $definition);
+            var_dump($definition);
+
+//            $this->updateComponentDefinition($app, 'mailer', $definition);
         }
     }
 
     private function setUserConfig($app): void
     {
         if ($app->has('user', true)) {
+            die('`user` component should not be instantiated before settings are loaded.');
             $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         } else {
             $definition = [
@@ -107,13 +111,17 @@ class SettingsLoader implements BootstrapInterface
             if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
                 $definition[] = $authTimeout;
             }
-            $this->updateComponentDefinition($app, 'user', $definition);
+
+            var_dump($definition);
+
+//            $this->updateComponentDefinition($app, 'user', $definition);
         }
     }
 
     private function setCacheConfig($app): void
     {
         if ($app->has('cache', true) && !Yii::$app->cache instanceof DummyCache) {
+            die('`cache` component should not be instantiated before settings are loaded.');
             $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         }
 
@@ -135,10 +143,14 @@ class SettingsLoader implements BootstrapInterface
             ];
         }
 
+        var_dump(ArrayHelper::merge($cacheComponent, [
+            'keyPrefix' => $app->id,
+        ]));
+
         if (!empty($cacheComponent)) {
-            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
-                'keyPrefix' => $app->id,
-            ]));
+//            $this->updateComponentDefinition($app, 'cache', ArrayHelper::merge($cacheComponent, [
+//                'keyPrefix' => $app->id,
+//            ]));
         }
     }
 
