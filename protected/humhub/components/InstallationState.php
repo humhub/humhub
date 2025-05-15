@@ -47,7 +47,15 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
         $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
 
-        if ($this->state >= self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
+        if ($this->state === self::STATE_NOT_INSTALLED) {
+            if (DynamicConfig::exist() && !empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username)) {
+                $this->state = self::STATE_DATABASE_CONFIGURED;
+
+                if ($this->isDatabaseInstalled()) {
+                    $this->state = self::STATE_DATABASE_CREATED;
+                }
+            }
+        } elseif ($this->state >= self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
             $this->state = self::STATE_DATABASE_CONFIGURED;
             if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
                 $this->state = self::STATE_NOT_INSTALLED;
