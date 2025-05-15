@@ -8,7 +8,9 @@ class m250514_125129_reduce_dynamic_config extends Migration
 {
     public function safeUp()
     {
-        if (!!ArrayHelper::getValue(Yii::$app->params, 'installed', false)) {
+        $installed = ArrayHelper::getValue(Yii::$app->params, 'installed');
+
+        if ($installed || is_null($installed)) {
             Yii::$app->installationState->setInstalled();
             DynamicConfig::load();
         }
