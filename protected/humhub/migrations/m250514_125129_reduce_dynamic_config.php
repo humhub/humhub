@@ -10,7 +10,7 @@ class m250514_125129_reduce_dynamic_config extends Migration
     {
         $installed = ArrayHelper::getValue(Yii::$app->params, 'installed');
 
-        if ($installed || is_null($installed)) {
+        if (!YII_ENV_TEST && ($installed || is_null($installed))) {
             Yii::$app->installationState->setInstalled();
             DynamicConfig::load();
         }
