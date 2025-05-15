@@ -54,6 +54,8 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
                 if ($this->isDatabaseInstalled()) {
                     $this->state = self::STATE_DATABASE_CREATED;
                 }
+            } else {
+                $this->state = self::STATE_NOT_INSTALLED;
             }
         } elseif ($this->state >= self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
             $this->state = self::STATE_DATABASE_CONFIGURED;
