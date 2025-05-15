@@ -111,7 +111,7 @@ class SettingsLoader implements BootstrapInterface
             }
 
             if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-                $definition[] = $authTimeout;
+                $definition['authTimeout'] = $authTimeout;
             }
             $this->updateComponentDefinition($app, 'user', $definition);
         }
