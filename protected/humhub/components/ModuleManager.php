@@ -117,14 +117,7 @@ class ModuleManager extends Component
     {
         parent::init();
 
-        // Either database installed and not in installed state
-        if (!Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED) && !Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            return;
-        }
-
-        if (!Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            $this->enabledModules = [];
-        } else {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $this->enabledModules = ModuleEnabled::getEnabledIds();
         }
     }
@@ -176,7 +169,13 @@ class ModuleManager extends Component
         ) {
             $errorMessage = Yii::t('error', 'The module {moduleId} is present in the HumHub configuration file even though this module is disabled. Please remove it from the configuration.', ['moduleId' => '“' . $config['id'] . '”']);
             Yii::error($errorMessage);
-            Yii::$app->view?->error($errorMessage);
+
+            if (Yii::$app instanceof \yii\console\Application) {
+                throw new InvalidConfigException($errorMessage);
+            } else {
+                Yii::$app->view?->error($errorMessage);
+            }
+
             return null;
         }
 

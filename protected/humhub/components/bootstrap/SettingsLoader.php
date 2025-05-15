@@ -10,6 +10,7 @@ use yii\base\BootstrapInterface;
 use yii\caching\DummyCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
+use yii\web\Application;
 
 class SettingsLoader implements BootstrapInterface
 {
@@ -101,11 +102,16 @@ class SettingsLoader implements BootstrapInterface
         if ($app->has('user', true)) {
             $app->log->logger->log('`user` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
         } else {
-            $definition = [
-                'enableSession' => $app->installationState->hasState(InstallationState::STATE_INSTALLED),
-            ];
+            if ($app instanceof Application) {
+                $definition = [
+                    'enableSession' => $app->installationState->hasState(InstallationState::STATE_INSTALLED),
+                ];
+            } else {
+                $definition = [];
+            }
+
             if ($authTimeout = $app->getModule('user')->settings->get('auth.defaultUserIdleTimeoutSec')) {
-                $definition[] = $authTimeout;
+                $definition['authTimeout'] = $authTimeout;
             }
             $this->updateComponentDefinition($app, 'user', $definition);
         }
