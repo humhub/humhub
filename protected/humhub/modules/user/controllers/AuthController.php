@@ -100,9 +100,9 @@ class AuthController extends Controller
      */
     public function actionLogin()
     {
-        // If user is already logged in, redirect him to the dashboard
+        // If user is already logged in, redirect to dashboard by default or to URL from param 'returnUrl'
         if (!Yii::$app->user->isGuest) {
-            return $this->goBack();
+            return $this->goBack(Yii::$app->request->get('returnUrl'));
         }
 
         // Login Form Handling
