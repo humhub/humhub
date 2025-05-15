@@ -37,7 +37,7 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
      */
     public const STATE_INSTALLED = 3;
 
-    private int $state;
+    private ?int $state;
 
     public function init()
     {
@@ -45,9 +45,19 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
             return $this->state = self::STATE_NOT_INSTALLED;
         }
 
-        $this->state = Yii::$app->settings->get(self::class, self::STATE_NOT_INSTALLED);
+        $this->state = Yii::$app->settings->get(self::class);
 
-        if ($this->state >= self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
+        if (is_null($this->state)) {
+            if (DynamicConfig::exist() && !empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username)) {
+                $this->state = self::STATE_DATABASE_CONFIGURED;
+
+                if ($this->isDatabaseInstalled()) {
+                    $this->state = self::STATE_DATABASE_CREATED;
+                }
+            } else {
+                $this->state = self::STATE_NOT_INSTALLED;
+            }
+        } elseif ($this->state >= self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
             $this->state = self::STATE_DATABASE_CONFIGURED;
             if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
                 $this->state = self::STATE_NOT_INSTALLED;

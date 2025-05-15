@@ -26,6 +26,7 @@ HumHub Changelog
 - Fix #7512: Fix priority of `dynamic.php`
 - Fix #7518: Fix Incorrect German Translation
 - Fix #7522: Fix mailer config
+- Fix #7526: Fix `installationState` issues
 
 1.17.3 (Unreleased)
 ----------------------
