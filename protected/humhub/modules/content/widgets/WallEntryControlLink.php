@@ -101,7 +101,8 @@ class WallEntryControlLink extends Widget
      */
     protected function renderLinkText()
     {
-        return ($this->icon) ? Icon::get($this->getIcon()) . $this->getLabel() : $this->getLabel();
+        $label = trim($this->getLabel());
+        return $this->icon ? Icon::get($this->getIcon()) . ' ' . $label : $label;
     }
 
     /**
