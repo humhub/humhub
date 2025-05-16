@@ -9,8 +9,8 @@
 namespace humhub\modules\installer\commands;
 
 use humhub\helpers\DatabaseHelper;
-use humhub\libs\DynamicConfig;
 use humhub\libs\UUID;
+use humhub\modules\installer\libs\DynamicConfig;
 use humhub\modules\installer\libs\InitialData;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Password;

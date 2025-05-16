@@ -2,7 +2,7 @@
 
 namespace humhub\components;
 
-use humhub\libs\DynamicConfig;
+use humhub\modules\installer\libs\DynamicConfig;
 use Yii;
 use yii\base\BaseObject;
 use yii\base\StaticInstanceInterface;
