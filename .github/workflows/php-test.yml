@@ -8,6 +8,7 @@ on:
             - develop
             - next
             - statable
+            - bs5
         paths-ignore:
             - '*.md'
     pull_request:
