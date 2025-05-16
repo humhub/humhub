@@ -253,7 +253,7 @@ humhub.module('notification', function (module, require, $) {
     };
 
     module.templates = {
-        info: '<li class="info">{text}</li>'
+        info: '<div class="info">{text}</div>'
     };
 
     var init = function ($pjax) {
