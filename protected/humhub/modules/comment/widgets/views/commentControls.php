@@ -14,9 +14,9 @@ use humhub\modules\ui\menu\MenuEntry;
 
 <div class="comment-entry-loader float-end"></div>
 <?= Html::beginTag('ul', $options) ?>
-<li class="dropdown ">
+<li class="nav-item dropdown">
     <?= Html::a('', '#', [
-        'class' => 'dropdown-toggle',
+        'class' => 'nav-link dropdown-toggle',
         'data-bs-toggle' => 'dropdown',
         'aria-label' => Yii::t('base', 'Toggle comment menu'),
         'aria-haspopup' => 'true',
