@@ -6,7 +6,7 @@
  * @license https://www.humhub.com/licences
  */
 
-namespace humhub\libs;
+namespace humhub\modules\installer\libs;
 
 use humhub\components\InstallationState;
 use Yii;
@@ -84,14 +84,7 @@ class DynamicConfig extends BaseObject
         }
     }
 
-    /**
-     * Rewrites DynamicConfiguration based on Database Stored Settings
-     *
-     * @deprecated since 1.8
-     */
-    public static function rewrite()
-    {
-    }
+
 
     public static function getConfigFilePath()
     {

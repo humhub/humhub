@@ -2,9 +2,9 @@
 
 namespace humhub\components;
 
-use humhub\libs\DynamicConfig;
 use Yii;
 use yii\base\BaseObject;
+use yii\base\InvalidConfigException;
 use yii\base\StaticInstanceInterface;
 use yii\base\StaticInstanceTrait;
 
@@ -41,27 +41,20 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
 
     public function init()
     {
-        if (!YII_ENV_TEST && !DynamicConfig::exist()) {
+        if (!$this->isDatabaseConfigured()) {
             return $this->state = self::STATE_NOT_INSTALLED;
         }
 
         $this->state = Yii::$app->settings->get(self::class);
 
         if (is_null($this->state)) {
-            if (DynamicConfig::exist() && !empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username)) {
-                $this->state = self::STATE_DATABASE_CONFIGURED;
-
-                if ($this->isDatabaseInstalled()) {
-                    $this->state = self::STATE_DATABASE_CREATED;
-                }
-            } else {
-                $this->state = self::STATE_NOT_INSTALLED;
-            }
-        } elseif ($this->state >= self::STATE_DATABASE_CREATED && !$this->isDatabaseInstalled()) {
             $this->state = self::STATE_DATABASE_CONFIGURED;
-            if (empty(Yii::$app->db->dsn) || empty(Yii::$app->db->username)) {
-                $this->state = self::STATE_NOT_INSTALLED;
+
+            if ($this->isDatabaseInstalled()) {
+                $this->state = self::STATE_DATABASE_CREATED;
             }
+        } elseif(intval($this->state) !== self::STATE_INSTALLED) {
+            throw new InvalidConfigException('Invalid installation state: ' . $this->state);
         }
     }
 
@@ -95,6 +88,11 @@ class InstallationState extends BaseObject implements StaticInstanceInterface
     {
         Yii::$app->settings->delete(self::class);
         $this->init();
+    }
+
+    private function isDatabaseConfigured(): bool
+    {
+        return (!empty(Yii::$app->db->dsn) && !empty(Yii::$app->db->username));
     }
 
     private function isDatabaseInstalled(): bool

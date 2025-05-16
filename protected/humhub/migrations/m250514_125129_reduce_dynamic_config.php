@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\DynamicConfig;
+use humhub\modules\installer\libs\DynamicConfig;
 use yii\db\Migration;
 use yii\helpers\ArrayHelper;
 
