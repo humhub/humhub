@@ -8,7 +8,6 @@
 
 namespace humhub\modules\installer\libs;
 
-use humhub\libs\DynamicConfig;
 use Yii;
 
 /**
@@ -33,6 +32,8 @@ class EnvironmentChecker
             exit(1);
         }
 
+        /* 
+        Should be moved to installer
         $dynamicConfigFile = DynamicConfig::getConfigFilePath();
         if (file_exists($dynamicConfigFile) && !is_writable($dynamicConfigFile)) {
             print "Error: The dynamic configuration (config/dynamic.php) is not writable by the PHP process.";
@@ -41,5 +42,6 @@ class EnvironmentChecker
             print "Error: The dynamic configuration (config/dynamic.php) cannot be created by the PHP process.";
             exit(1);
         }
+        */
     }
 }
