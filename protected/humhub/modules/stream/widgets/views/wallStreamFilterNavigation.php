@@ -6,11 +6,11 @@
  *
  */
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\stream\widgets\WallStreamFilterNavigation;
 use humhub\modules\ui\filter\widgets\FilterPanel;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */
 /* @var $panels [] */
@@ -29,7 +29,7 @@ $panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4])
 <div class="wall-stream-filter-root nav-tabs">
     <div class="wall-stream-filter-head clearfix">
         <div class="wall-stream-filter-bar"></div>
-        <?= Button::asLink(Yii::t('ContentModule.base', 'Filter') . '<b class="caret"></b>')
+        <?= Button::asLink(Yii::t('ContentModule.base', 'Filter'))
             ->cssClass('wall-stream-filter-toggle')->icon('fa-filter')->sm()->style('pa') ?>
     </div>
     <div class="wall-stream-filter-body"<?php if ($isCollapsed) : ?> style="display:none"<?php endif; ?>>

@@ -21,7 +21,7 @@ use Yii;
  */
 class TimeZoneDropdownAddition extends JsInputWidget
 {
-    public $toggleClass = 'input-field-addon-sm colorInfo pull-right';
+    public $toggleClass = 'input-field-addon-sm text-info float-end';
 
     /**
      * @var bool whether or not to add offset information

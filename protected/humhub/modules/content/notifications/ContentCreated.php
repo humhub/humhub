@@ -8,11 +8,10 @@
 
 namespace humhub\modules\content\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
-use Yii;
-use yii\bootstrap\Html;
 use humhub\modules\user\models\User;
-use humhub\libs\Helpers;
+use Yii;
 
 /**
  * ContentCreatedNotification is fired to all users which are manually selected

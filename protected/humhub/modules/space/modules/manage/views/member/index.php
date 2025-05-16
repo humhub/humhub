@@ -1,17 +1,17 @@
 <?php
 
-use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
-use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
-use humhub\widgets\GridView;
-use yii\bootstrap\ActiveForm;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\space\modules\manage\widgets\MemberMenu;
-use humhub\modules\user\grid\ImageColumn;
-use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
+use humhub\modules\space\modules\manage\widgets\MemberHeaderControlsMenu;
+use humhub\modules\space\modules\manage\widgets\MemberMenu;
+use humhub\modules\ui\icon\widgets\Icon;
+use humhub\modules\user\grid\DisplayNameColumn;
+use humhub\modules\user\grid\ImageColumn;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\GridView;
 use humhub\widgets\TimeAgo;
-use yii\helpers\Html;
 
 /* @var $space Space */
 ?>
@@ -25,19 +25,17 @@ use yii\helpers\Html;
 
         <?php $form = ActiveForm::begin(['method' => 'get']); ?>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-lg-6">
                 <div class="input-group">
                     <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                    </span>
+                    <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <?= Html::activeDropDownList($searchModel, 'group_id', MembershipSearch::getRoles($space), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
             </div>
-            <div class="col-md-2">
-                <div class="pull-right">
+            <div class="col-lg-2">
+                <div class="float-end">
                     <?= MemberHeaderControlsMenu::widget([
                         'space' => $space,
                         'label' => Icon::get('cog'),
@@ -115,7 +113,7 @@ use yii\helpers\Html;
                                 return Button::danger()->tooltip(Yii::t('SpaceModule.manage', 'Remove from space'))
                                     ->link(['/space/manage/member/remove', 'userGuid' => $model->user->guid, 'container' => $space])
                                     ->options(['data-method' => 'POST', 'data-confirm' => Yii::t('SpaceModule.manage', 'Are you sure you want to remove this member.')])
-                                    ->icon('remove')->xs();
+                                    ->icon('remove')->sm();
                             }
                         ],
                     ],

@@ -9,13 +9,13 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\helpers\DataTypeHelper;
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
-use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**

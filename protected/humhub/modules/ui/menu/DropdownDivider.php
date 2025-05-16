@@ -8,8 +8,8 @@
 
 namespace humhub\modules\ui\menu;
 
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\widgets\Menu;
-use yii\bootstrap\Html;
 
 /**
  * Class DropdownDivider
@@ -32,7 +32,8 @@ class DropdownDivider extends MenuEntry
      */
     public function renderEntry($extraHtmlOptions = [])
     {
-        Html::addCssClass($extraHtmlOptions, 'divider');
+        Html::removeCssClass($extraHtmlOptions, 'dropdown-item');
+        Html::addCssClass($extraHtmlOptions, 'dropdown-divider');
         return Html::tag('li', '', $this->getHtmlOptions($extraHtmlOptions));
     }
 }

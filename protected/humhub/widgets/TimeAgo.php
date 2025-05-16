@@ -69,7 +69,7 @@ class TimeAgo extends Widget
             $this->staticTimeAgo = Yii::$app->params['formatter']['timeAgoStatic'];
         }
 
-        // Make sure we get an timestamp in server tz
+        // Make sure we get a timestamp in server tz
         if (is_numeric($this->timestamp)) {
             $this->timestamp = date('Y-m-d H:i:s', $this->timestamp);
         }

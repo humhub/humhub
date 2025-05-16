@@ -1,16 +1,16 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\admin\grid\UserActionColumn;
 use humhub\modules\admin\models\UserSearch;
 use humhub\modules\admin\widgets\ExportButton;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 use yii\helpers\Url;
-use yii\widgets\ActiveForm;
 
 /**
  * @var $searchModel UserSearch
@@ -21,13 +21,13 @@ use yii\widgets\ActiveForm;
 
 <div class="panel-body">
 
-    <div class="pull-right">
+    <div class="float-end">
         <?= Button::success(Yii::t('AdminModule.user', 'Add new user'))->icon('user-plus')->sm()->link(['/admin/user/add']) ?>
         <?= ExportButton::widget(['filter' => 'UserSearch']) ?>
     </div>
 
     <h4><?= Yii::t('AdminModule.user', 'Overview'); ?></h4>
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'This overview contains a list of each registered user with actions to view, edit and delete users.'); ?>
     </div>
 
@@ -35,15 +35,13 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(['method' => 'get', 'action' => Url::to(['/admin/user/list'])]); ?>
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-lg-8">
             <div class="input-group">
                 <?= Html::activeTextInput($searchModel, 'freeText', ['class' => 'form-control', 'placeholder' => Yii::t('AdminModule.user', 'Search by name, email or id.')]); ?>
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="submit"><i class="fa fa-search"></i></button>
-                </span>
+                <button class="btn btn-light" type="submit"><i class="fa fa-search"></i></button>
             </div>
         </div>
-        <div class="col-md-4 usersearch-statuses">
+        <div class="col-lg-4 usersearch-statuses">
             <?= Html::activeDropDownList($searchModel, 'status', UserSearch::getStatusAttributes(), ['class' => 'form-control', 'data-action-change' => 'ui.form.submit']); ?>
         </div>
     </div>
@@ -66,7 +64,7 @@ use yii\widgets\ActiveForm;
                     'options' => ['style' => 'width:120px;'],
                     'value' => function ($data) {
                         return ($data->last_login == null) ? Yii::t('AdminModule.user', 'never') : Yii::$app->formatter->asDate($data->last_login);
-                    }
+                    },
                 ],
                 ['class' => UserActionColumn::class],
             ],
@@ -74,6 +72,8 @@ use yii\widgets\ActiveForm;
     </div>
     <?php if ($showPendingRegistrations): ?>
         <br/>
-        <?= Button::defaultType(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm(); ?>
+        <div class="clearfix">
+            <?= Button::light(Yii::t('AdminModule.user', 'List pending registrations'))->link(Url::to(['/admin/pending-registrations']))->right()->sm() ?>
+        </div>
     <?php endif; ?>
 </div>

@@ -9,11 +9,11 @@
 namespace humhub\modules\ui\form\widgets;
 
 use humhub\assets\DatePickerRussianLanguageAsset;
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\FormatConverter;
 use yii\helpers\Json;
 use yii\jui\DatePicker as BaseDatePicker;
-use humhub\libs\Html;
 use yii\jui\DatePickerLanguageAsset;
 use yii\jui\JuiAsset;
 

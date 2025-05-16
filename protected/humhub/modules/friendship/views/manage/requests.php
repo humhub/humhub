@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\friendship\widgets\ManageMenu;
-use yii\bootstrap\Html;
 use humhub\widgets\GridView;
 
 ?>
@@ -38,6 +38,3 @@ use humhub\widgets\GridView;
     ?>
 
 </div>
-
-
-

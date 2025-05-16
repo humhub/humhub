@@ -9,38 +9,38 @@
 namespace humhub\modules\marketplace\widgets;
 
 use humhub\modules\marketplace\models\Module;
+use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\menu\widgets\Menu;
+use humhub\modules\ui\menu\widgets\DropdownMenu;
 use Yii;
 
 /**
  * Widget for Marketplace settings dropdown menu
  */
-class Settings extends Menu
+class Settings extends DropdownMenu
 {
     public Module $module;
-
-    /**
-     * @inheritdoc
-     */
-    public $template = '@marketplace/widgets/views/settings';
 
     public function init()
     {
         parent::init();
 
+        if (!$this->label) {
+            $this->label = Icon::get('cog');
+        }
+
         $this->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'General Settings'),
             'url' => ['/marketplace/browse/module-settings'],
             'icon' => 'cog',
-            'htmlOptions' => ['data-target' => '#globalModal'],
+            'htmlOptions' => ['data-bs-target' => '#globalModal'],
             'sortOrder' => 100,
         ]));
 
         $this->addEntry(new MenuLink([
             'label' => Yii::t('MarketplaceModule.base', 'Add License Key'),
             'url' => ['/marketplace/purchase'],
-            'htmlOptions' => ['data-target' => '#globalModal'],
+            'htmlOptions' => ['data-bs-target' => '#globalModal'],
             'icon' => 'key',
             'sortOrder' => 200,
         ]));
@@ -58,6 +58,6 @@ class Settings extends Menu
      */
     public function getAttributes()
     {
-        return ['class' => 'marketplace-settings-dropdown'];
+        return ['class' => 'marketplace-settings-dropdown pull-right'];
     }
 }

@@ -8,12 +8,9 @@
 
 namespace humhub\modules\content\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
 use Yii;
-use yii\bootstrap\Html;
-use humhub\modules\user\models\User;
-use humhub\libs\Helpers;
-use yii\helpers\Json;
 
 /**
  * ContentDeletedNotification is fired when admin deletes a content (e.g. post)

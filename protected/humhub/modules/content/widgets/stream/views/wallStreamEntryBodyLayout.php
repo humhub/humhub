@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\topic\widgets\TopicLabel;
-use humhub\modules\ui\view\components\View;
+use humhub\modules\topic\widgets\TopicBadge;
 
 /* @var $this View */
 /* @var $model ContentActiveRecord */
@@ -16,14 +16,14 @@ use humhub\modules\ui\view\components\View;
 
 <div class="panel panel-default wall_<?= $model->getUniqueId() ?>">
     <div class="panel-body">
-        <div class="media wall-entry-header">
+        <div class="d-flex wall-entry-header">
             <?= $header ?>
         </div>
 
         <div class="wall-entry-body">
             <div class="topic-label-list">
                 <?php foreach ($topics as $topic) : ?>
-                    <?= TopicLabel::forTopic($topic, $model->content->contentContainer->getPolymorphicRelation()) ?>
+                    <?= TopicBadge::forTopic($topic, $model->content->contentContainer->getPolymorphicRelation()) ?>
                 <?php endforeach; ?>
             </div>
 

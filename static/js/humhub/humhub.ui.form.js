@@ -19,7 +19,7 @@ humhub.module('ui.form', function (module, require, $) {
         var activeTab = 0;
 
         var $tabContent = $('<div class="tab-content"></div>');
-        var $tabs = $('<ul id="profile-tabs" class="nav nav-tabs" data-tabs="tabs"></ul>');
+        var $tabs = $('<ul id="profile-tabs" class="nav nav-tabs tab-sub-menu" data-tabs="tabs"></ul>');
         this.$.prepend($tabContent).prepend($tabs);
         var inputCsrf = $('input[name ="_csrf"]').detach();
 
@@ -32,11 +32,11 @@ humhub.module('ui.form', function (module, require, $) {
             }
 
             // init tab structure
-            $tabs.append('<li><a href="#tab-' + index + '" data-toggle="tab">' + label + '</a></li>');
+            $tabs.append('<li class="nav-item"><a class="nav-link" href="#tab-' + index + '" data-bs-toggle="tab">' + label + '</a></li>');
             $tabContent.append('<div class="tab-pane" data-tab-index="' + index + '" id="tab-' + index + '"></div>');
 
             // clone inputs from fieldSet into our tab structure
-            var $inputs = $fieldSet.children(".form-group");
+            var $inputs = $fieldSet.children(".mb-3");
             $('#tab-' + index).html($inputs);
 
             // remove old fieldset from dom
@@ -67,7 +67,7 @@ humhub.module('ui.form', function (module, require, $) {
         }
 
         // focus first input on tab change
-        this.$.find('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+        this.$.find('a[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
             var tabId = $(e.target).attr('href'); // newly activated tab
             $(tabId).find('.form-control').first().focus();
         });
@@ -104,7 +104,7 @@ humhub.module('ui.form', function (module, require, $) {
             if (legend && legend.length) {
                 result[legend] = $lastFieldSet = $fieldSet;
             } else if ($lastFieldSet) {
-                $lastFieldSet.append($fieldSet.children(".form-group"));
+                $lastFieldSet.append($fieldSet.children(".mb-3"));
             }
         });
         return result;
@@ -117,7 +117,7 @@ humhub.module('ui.form', function (module, require, $) {
      * @returns {boolean}
      */
     var _hasErrors = function ($fieldSet) {
-        return $fieldSet.find('.error, .has-error').length > 0;
+        return $fieldSet.find('.error, .is-invalid').length > 0;
     };
 
     var addValidationListener = function () {

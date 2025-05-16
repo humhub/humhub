@@ -17,8 +17,8 @@ humhub.module('comment', function (module, require, $) {
                 that.getInput().val('').trigger('autosize.resize');
                 richText.$.trigger('clear');
                 that.getUpload().reset();
-                that.$.find('.form-group').removeClass('has-error');
-                that.$.find('.help-block-error').html('');
+                that.$.find('.is-invalid').removeClass('is-invalid');
+                that.$.find('.invalid-feedback').html('');
             },
             400: function (response) {
                 that.replace(response.html);
@@ -123,7 +123,7 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.delete = function (evt) {
         var form = Widget.instance(this.$.parent().siblings('.comment_create'));
-        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.media').length;
+        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.d-flex').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
@@ -140,7 +140,7 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.adminDelete = function (evt) {
         var $form = this.$.parent().siblings('.comment_create');
-        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.media').length;
+        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.d-flex').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
         this.$.data('admin-delete-modal-url', evt.$trigger.data('admin-delete-modal-url'));
@@ -263,14 +263,14 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var init = function () {
-        $(document).on('mouseover', '.comment .media', function () {
+        $(document).on('mouseover', '.comment .d-flex', function () {
             var $this = $(this);
             var element = $this.find('.preferences:first');
             if (!loader.is($this.find('.comment-entry-loader'))) {
                 element.show();
             }
         });
-        $(document).on('mouseout', '.comment .media', function () {
+        $(document).on('mouseout', '.comment .d-flex', function () {
             // find dropdown menu
             var element = $(this).find('.preferences:first');
 
@@ -294,7 +294,7 @@ humhub.module('comment', function (module, require, $) {
 
         var $form = target.children('.comment_create');
 
-        if (!target.find('.comment .media').length && !target.closest('[data-action-component="comment.Comment"]').length) {
+        if (!target.find('.comment .d-flex').length && !target.closest('[data-action-component="comment.Comment"]').length) {
             $form.find('hr').hide();
         }
 
@@ -326,7 +326,7 @@ humhub.module('comment', function (module, require, $) {
             target = evt.$target.closest('.comment').closest('.comment-container');
             toggleComment(target, false);
             var richtext = Widget.instance(target.find('.ProsemirrorEditor:last'));
-            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.media').find('.media-heading a'));
+            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.comment ').find('.comment-heading a'));
             richtext.editor.init(mentioning);
             richtext.$.trigger('focus');
         }

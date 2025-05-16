@@ -1,13 +1,13 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\modules\manage\models\MembershipSearch;
+use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\widgets\GridView;
-use humhub\modules\space\modules\manage\widgets\MemberMenu;
 use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
 
 /* @var $dataProvider ActiveDataProvider */
 /* @var $searchModel MembershipSearch */

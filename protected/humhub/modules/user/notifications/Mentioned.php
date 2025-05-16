@@ -8,11 +8,11 @@
 
 namespace humhub\modules\user\notifications;
 
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
+use humhub\modules\notification\components\BaseNotification;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\bootstrap\Html;
-use humhub\modules\notification\components\BaseNotification;
 
 /**
  * Mentioned Notification is fired to all users which are mentionied

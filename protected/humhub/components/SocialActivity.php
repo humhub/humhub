@@ -10,17 +10,17 @@ namespace humhub\components;
 
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\helpers\Html;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
-use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 

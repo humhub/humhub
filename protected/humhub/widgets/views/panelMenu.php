@@ -1,23 +1,28 @@
 <?php
-use yii\helpers\Html;
-use humhub\widgets\Link;
-use humhub\modules\ui\icon\widgets\Icon;
+
+use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $id string */
 
 ?>
 
 <ul data-ui-widget="ui.panel.PanelMenu" data-ui-init class="nav nav-pills preferences">
-    <li class="dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-           aria-label="<?= Yii::t('base', 'Toggle panel menu'); ?>" aria-haspopup="true">
-            <?= Icon::get('dropdownToggle') ?>
-        </a>
-        <ul class="dropdown-menu pull-right">
+    <li class="nav-item dropdown">
+        <?= Html::a('', '#', [
+            'class' => 'nav-link dropdown-toggle',
+            'data-bs-toggle' => 'dropdown',
+            'aria-label' => Yii::t('base', 'Toggle panel menu'),
+            'aria-haspopup' => 'true',
+            'aria-expanded' => 'false',
+            'role' => 'button',
+        ]) ?>
+
+        <ul class="dropdown-menu dropdown-menu-end">
             <li>
-                <?= Link::instance()->action('toggle')->cssClass('panel-collapse')?>
+                <?= Link::instance()->action('toggle')->cssClass(['dropdown-item', 'panel-collapse'])?>
             </li>
-            <?= $this->context->extraMenus; ?>
+            <?= $this->context->extraMenus ?>
         </ul>
     </li>
 </ul>

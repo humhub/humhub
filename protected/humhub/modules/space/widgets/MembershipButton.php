@@ -9,10 +9,10 @@
 namespace humhub\modules\space\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
@@ -42,7 +42,7 @@ class MembershipButton extends Widget
                 'attrs' => [
                     'class' => 'btn btn-info',
                     'data-space-request-membership' => $this->space->id,
-                    'data-target' => '#globalModal',
+                    'data-bs-target' => '#globalModal',
                 ],
             ],
             'becomeMember' => [

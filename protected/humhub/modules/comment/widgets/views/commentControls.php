@@ -5,26 +5,29 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
-use humhub\modules\ui\icon\widgets\Icon;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
 
 /* @var MenuEntry[] $entries */
 /* @var array $options */
 ?>
 
-<div class="comment-entry-loader pull-right"></div>
+<div class="comment-entry-loader float-end"></div>
 <?= Html::beginTag('ul', $options) ?>
 <li class="dropdown ">
-    <a class="dropdown-toggle" data-toggle="dropdown" href="#"
-       aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
-        <?= Icon::get('dropdownToggle') ?>
-    </a>
+    <?= Html::a('', '#', [
+        'class' => 'dropdown-toggle',
+        'data-bs-toggle' => 'dropdown',
+        'aria-label' => Yii::t('base', 'Toggle comment menu'),
+        'aria-haspopup' => 'true',
+        'aria-expanded' => 'false',
+        'role' => 'button',
+    ]) ?>
 
-    <ul class="dropdown-menu pull-right">
+    <ul class="dropdown-menu dropdown-menu-end">
         <?php foreach ($entries as $entry) : ?>
             <li>
-                <?= $entry->render() ?>
+                <?= $entry->render(['class' => 'dropdown-item']) ?>
             </li>
         <?php endforeach; ?>
     </ul>

@@ -6,10 +6,10 @@
  *
  */
 
-/* @var $this View */
+/* @var $this \humhub\components\View */
 
+use humhub\components\View;
 use humhub\modules\topic\widgets\TopicPicker;
-use humhub\modules\ui\view\components\View;
 
 ?>
 

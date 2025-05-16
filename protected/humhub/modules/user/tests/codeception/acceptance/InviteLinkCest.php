@@ -19,13 +19,15 @@ class InviteLinkCest
      */
     public function testLinkInvite(AcceptanceTester $I)
     {
-        $I->wantTo('ensure that test link invite is working.');
+        $I->wantTo('Ensure that link invite is working.');
 
         // Enable Link Invite
         $I->amAdmin();
         $I->amOnPage('/admin/authentication');
         $I->checkOption('#authenticationsettingsform-internaluserscaninvitebyemail');
         $I->checkOption('#authenticationsettingsform-internaluserscaninvitebylink');
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Save');
 
 
@@ -67,6 +69,8 @@ class InviteLinkCest
         $I->amOnPage('/admin/authentication');
         $I->checkOption('#authenticationsettingsform-internaluserscaninvitebyemail');
         $I->uncheckOption('#authenticationsettingsform-internaluserscaninvitebylink');
+        $I->scrollToBottom();
+        $I->wait(1);
         $I->click('Save');
 
 

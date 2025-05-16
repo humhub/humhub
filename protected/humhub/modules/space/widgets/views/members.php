@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\models\User;
 use humhub\modules\user\widgets\Image;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 
 /* @var User[] $users */
 /* @var bool $showListButton */
@@ -57,8 +57,8 @@ use yii\helpers\Html;
 
         <?php if ($showListButton) : ?>
             <br>
-            <a href="<?= $urlMembersList; ?>" data-target="#globalModal"
-               class="btn btn-default btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
+            <a href="<?= $urlMembersList; ?>" data-bs-target="#globalModal"
+               class="btn btn-light btn-sm"><?= Yii::t('SpaceModule.base', 'Show all'); ?></a>
         <?php endif; ?>
 
     </div>

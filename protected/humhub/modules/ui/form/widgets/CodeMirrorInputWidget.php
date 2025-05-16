@@ -8,7 +8,7 @@
 
 namespace humhub\modules\ui\form\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\form\assets\CodeMirrorAssetBundle;
 
 /**
@@ -38,6 +38,15 @@ class CodeMirrorInputWidget extends JsInputWidget
      * @var bool
      */
     public $spellcheck = true;
+
+    public function init()
+    {
+        parent::init();
+
+        if ($this->hasModel() && $this->model->hasErrors($this->attribute)) {
+            $this->inputClass .= ' is-invalid';
+        }
+    }
 
     public function run()
     {

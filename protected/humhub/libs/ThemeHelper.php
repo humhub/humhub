@@ -16,6 +16,6 @@ namespace humhub\libs;
  * @author Luke
  * @see \humhub\modules\ui\view\components\ThemeHelper
  */
-class ThemeHelper extends \humhub\modules\ui\view\helpers\ThemeHelper
+class ThemeHelper extends \humhub\helpers\ThemeHelper
 {
 }

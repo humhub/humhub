@@ -1,9 +1,9 @@
 <?php
 
-use humhub\libs\Html;
-use yii\helpers\Url;
+use humhub\helpers\Html;
 use humhub\libs\MimeHelper;
 use humhub\modules\file\libs\FileHelper;
+use yii\helpers\Url;
 
 /* @var $uploaderId string */
 /* @var $file \humhub\modules\file\models\File */

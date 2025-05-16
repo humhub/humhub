@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\file\actions\DownloadAction;
 use humhub\modules\file\models\File;
@@ -27,9 +27,9 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
      * It is required for some email clients which ignore styles from head <style>
      */
     public const CLASS_STYLES = [
-        'pull-left' => ['float' => 'left'],
-        'pull-right' => ['float' => 'right'],
-        'center-block' => ['display' => 'block', 'margin' => 'auto'],
+        'float-start' => ['float' => 'left'],
+        'float-end' => ['float' => 'right'],
+        'd-block mx-auto' => ['display' => 'block', 'margin' => 'auto'],
     ];
 
     /**

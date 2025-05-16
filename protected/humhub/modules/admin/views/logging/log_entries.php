@@ -1,9 +1,10 @@
 <?php
 
-use humhub\modules\ui\view\components\View;
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\Log;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\LinkPager;
 use yii\data\Pagination;
 use yii\log\Logger;
@@ -16,7 +17,7 @@ use yii\log\Logger;
 <div id="admin-log-entries">
     <div>
         <?= Yii::t('AdminModule.information', 'Total {count} entries found.', ['{count}' => $pagination->totalCount]) ?>
-        <span class="pull-right">
+        <span class="float-end">
             <?= Yii::t('AdminModule.information', 'Displaying {count} entries per page.', ['{count}' => $pagination->pageSize]) ?>
         </span>
     </div>
@@ -25,20 +26,19 @@ use yii\log\Logger;
         <hr>
     <?php endif; ?>
 
-    <ul class="media-list">
+    <div id="admin-log-entry-list">
         <?php foreach ($logEntries as $entry) : ?>
 
-            <li class="media">
-                <div class="media-body" style="word-break: break-word">
+            <div class="d-flex mx-2 mb-5">
+                <div class="flex-grow-1 me-2" style="word-break: break-word">
 
-                    <?php
-                    switch ($entry->level) {
+                    <?php switch ($entry->level) {
                         case Logger::LEVEL_INFO:
-                            $labelClass = 'label-info';
+                            $bsColor = 'info';
                             $levelName = Yii::t('AdminModule.information', 'Info');
                             break;
                         case Logger::LEVEL_WARNING:
-                            $labelClass = 'label-warning';
+                            $bsColor = 'warning';
                             $levelName = Yii::t('AdminModule.information', 'Warning');
                             break;
                         case Logger::LEVEL_TRACE:
@@ -47,28 +47,27 @@ use yii\log\Logger;
                             break;
                         case Logger::LEVEL_ERROR:
                         default:
-                            $labelClass = 'label-danger';
+                            $bsColor = 'danger';
                             $levelName = Yii::t('AdminModule.information', 'Error');
-                    }
-                    ?>
+                    } ?>
 
-                    <h4 class="media-heading">
-                        <span class="label <?= $labelClass; ?>"><?= Html::encode($levelName) ?></span>&nbsp;
+                    <h5 class="mt-0">
+                        <?= Badge::instance($levelName, $bsColor) ?>&nbsp;
                         <?= date('r', (int)$entry->log_time) ?>&nbsp;
-                        <span class="pull-right"><?= Html::encode($entry->category) ?></span>
-                    </h4>
+                        <span class="float-end"><?= Html::encode($entry->category) ?></span>
+                    </h5>
                     <div data-ui-show-more data-collapse-at="150">
                         <?= nl2br(Html::encode($entry->message)) ?>
                     </div>
                 </div>
-            </li>
+            </div>
 
         <?php endforeach; ?>
-    </ul>
+    </div>
 
     <?php if ($pagination->totalCount): ?>
         <div
-            class="pull-right"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
+            class="float-end"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
     <?php endif; ?>
 
     <div style="text-align: center;">

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment as CommentModel;
 use humhub\modules\comment\widgets\Comment;
 use humhub\modules\comment\widgets\Form;
@@ -12,7 +12,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 /* @var $currentCommentId int */
 /* @var $id string unqiue object id */
 ?>
-<div class="well well-small comment-container" style="display:none;" id="comment_<?= $id; ?>">
+<div class="bg-light p-3 comment-container" style="display:none;" id="comment_<?= $id; ?>">
     <div class="comment <?php if (Yii::$app->user->isGuest): ?>guest-mode<?php endif; ?>"
          id="comments_area_<?= $id; ?>">
 

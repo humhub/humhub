@@ -24,29 +24,27 @@ use yii\helpers\Url;
 <a href="<?= Url::to(['/activity/link', 'id' => $record->id]) ?>">
     <?php endif; ?>
 
-    <div class="media">
-        <?php if ($originator !== null) : ?>
-            <!-- Show user image -->
-            <?= $originator->getProfileImage()->render(32, ['class' => 'media-object', 'link' => false, 'htmlOptions' => ['class' => 'pull-left']]) ?>
-        <?php endif; ?>
-
-        <!-- Show space image, if you are outside from a space -->
-        <?php if (!Yii::$app->controller instanceof ContentContainerController) : ?>
-            <?php if ($record->content->container instanceof Space) : ?>
-                <?=
-                Image::widget([
-                    'space' => $record->content->container,
-                    'width' => 20,
-                    'htmlOptions' => [
-                        'class' => 'img-space pull-left',
-                    ]
-                ])
-                ?>
+    <div class="d-flex">
+        <div class="flex-shrink-0 me-2 img-profile-space">
+            <?php if ($originator !== null) : ?>
+                <!-- Show user image -->
+                <?= $originator->getProfileImage()->render(32, ['link' => false]) ?>
             <?php endif; ?>
 
-        <?php endif; ?>
+            <!-- Show space image, if you are outside from a space -->
+            <?php if (
+                !Yii::$app->controller instanceof ContentContainerController
+                && $record->content->container instanceof Space
+            ) : ?>
+                <?= Image::widget([
+                    'space' => $record->content->container,
+                    'width' => 20,
+                    'htmlOptions' => ['class' => 'img-space'],
+                ]) ?>
+            <?php endif; ?>
+        </div>
 
-        <div class="media-body text-break">
+        <div class="flex-grow-1 text-break">
 
             <!-- Show content -->
             <?= $content ?>

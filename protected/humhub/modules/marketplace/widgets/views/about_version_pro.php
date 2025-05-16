@@ -1,19 +1,19 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\marketplace\models\Licence;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */
 /* @var $licence Licence */
 
 ?>
-<div style="padding:20px" class="jumbotron">
-    <div class="pull-left" style="padding-right:24px">
+<div style="padding:20px">
+    <div class="float-start" style="padding-right:24px">
         <?= Html::img(Yii::getAlias('@web-static/img/humhub_pro.jpg'), ['style' => 'height:124px']) ?>
     </div>
-    <div class="pull-right">
+    <div class="float-end">
         <?= Button::primary(Yii::t('MarketplaceModule.base', 'Edit license'))
             ->link(['/marketplace/licence'])->icon('cogs')->sm() ?>
     </div>

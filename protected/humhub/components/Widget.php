@@ -8,12 +8,12 @@
 
 namespace humhub\components;
 
-use Yii;
 use humhub\libs\WidgetCreateEvent;
+use Yii;
 
 /**
  * @inheritdoc
- * @property-read \humhub\modules\ui\view\components\View $view
+ * @property-read \humhub\components\View $view
  */
 class Widget extends \yii\base\Widget
 {

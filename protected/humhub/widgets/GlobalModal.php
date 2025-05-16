@@ -12,21 +12,11 @@ namespace humhub\widgets;
  * GlobalModal is the standard modal which can be used in every layout.
  * This widget is automatically added to the page via the LayoutAddons.
  *
+ * @deprecated since 1.18.0 use [[humhub\widgets\modal\GlobalModal]] instead
  * @see LayoutAddons
  * @author Luke
  * @since 1.1
  */
-class GlobalModal extends Modal
+class GlobalModal extends modal\GlobalModal
 {
-    /**
-     * @var string this id need to js scripts
-     */
-    public $id = 'globalModal';
-
-    /**
-     * @inheritdoc
-     * It's false because it's often used for serious work, for example html forms,
-     * accidental closing of which can lead to loss of user data.
-     */
-    public $backdrop = false;
 }

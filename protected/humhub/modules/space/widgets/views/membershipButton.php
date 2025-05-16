@@ -1,8 +1,8 @@
 <?php
 
-use humhub\modules\space\models\Space;
+use humhub\helpers\Html;
 use humhub\modules\space\models\Membership;
-use yii\helpers\Html;
+use humhub\modules\space\models\Space;
 
 /* @var $membership Membership */
 /* @var $space Space */
@@ -22,12 +22,11 @@ if ($membership === null) {
     <div class="<?= $options['acceptInvite']['groupClass'] ?>">
         <?= Html::a($options['acceptInvite']['title'], $options['acceptInvite']['url'], $options['acceptInvite']['attrs']); ?>
         <button type="button" class="<?= $options['acceptInvite']['togglerClass'] ?> dropdown-toggle"
-                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="caret"></span>
+                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="sr-only">Toggle Dropdown</span>
         </button>
         <ul class="dropdown-menu">
-            <li><?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], $options['declineInvite']['attrs']); ?></li>
+            <li><?= Html::a($options['declineInvite']['title'], $options['declineInvite']['url'], array_merge(['class' => 'dropdown-item'], $options['declineInvite']['attrs'])) ?></li>
         </ul>
     </div>
     <?php

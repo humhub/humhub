@@ -125,9 +125,9 @@ humhub.module('space.chooser', function (module, require, $) {
         var $messageCount = $('[data-space-guid="' + guid + '"]').find('[data-message-count]');
         var newCount = $messageCount.data('message-count') + count;
 
-        $messageCount.hide().text(newCount).data('message-count', newCount);
+        $messageCount.addClass('d-none').text(newCount).data('message-count', newCount);
         setTimeout(function () {
-            $messageCount.show();
+            $messageCount.removeClass('d-none');
         }, 100);
     };
 
@@ -174,15 +174,15 @@ humhub.module('space.chooser', function (module, require, $) {
                 case 40: // Down -> select next
                     if (!$selection.length) {
                         SpaceChooser.selectItem(that.getFirstItem());
-                    } else if ($selection.nextAll(SELECTOR_ITEM + ':visible').length) {
+                    } else if ($selection.nextAll(SELECTOR_ITEM + ':not(.d-none)').length) {
                         SpaceChooser.deselectItem($selection)
-                            .selectItem($selection.nextAll(SELECTOR_ITEM + ':visible').first());
+                            .selectItem($selection.nextAll(SELECTOR_ITEM + ':not(.d-none)').first());
                     }
                     break;
                 case 38: // Up -> select previous
-                    if ($selection.prevAll(SELECTOR_ITEM + ':visible').length) {
+                    if ($selection.prevAll(SELECTOR_ITEM + ':not(.d-none)').length) {
                         SpaceChooser.deselectItem($selection)
-                            .selectItem($selection.prevAll(SELECTOR_ITEM + ':visible').first());
+                            .selectItem($selection.prevAll(SELECTOR_ITEM + ':not(.d-none)').first());
                     }
                     break;
                 case 13: // Enter
@@ -241,14 +241,14 @@ humhub.module('space.chooser', function (module, require, $) {
 
             // Show only space items where a keyword is searched
             if (itemText.search(input) >= 0) {
-                $item.show();
+                $item.removeClass('d-none');
                 // Display space tags only if a keyword is searched inside the tags
                 var $spaceTags = $item.find('.space-tags');
                 if ($spaceTags.length) {
                     $spaceTags.toggle($spaceTags.text().toLowerCase().search(input) >= 0);
                 }
             } else {
-                $item.hide();
+                $item.addClass('d-none'); // Do not use hide() because the d-flex class is set in Bootstrap CSS to flex !important
             }
         });
 
@@ -319,7 +319,7 @@ humhub.module('space.chooser', function (module, require, $) {
                 }
             };
 
-            ui.loader.set(that.$remoteSearch, {'wrapper': '<li>', 'css': {padding: '5px'}});
+            ui.loader.set(that.$remoteSearch, {'wrapper': '<div class="d-flex">', 'css': {padding: '5px'}});
 
             client.get(url, options).then(function (response) {
                 that.currentXhr = undefined;
@@ -361,13 +361,13 @@ humhub.module('space.chooser', function (module, require, $) {
 
     SpaceChooser.prototype.resetSearch = function () {
         $('#space-search-reset').fadeOut('fast');
-        this.clearRemoteSearch();
+        this.clearRemoteSearch('');
 
         if (!view.isSmall()) {
             this.$search.val('').focus();
         }
         this.$search.removeData('last-search');
-        this.getItems().show().unhighlight().removeClass('selected');
+        this.getItems().unhighlight().removeClass(['d-none', 'selected']);
         this.$chooser.css('max-height', '400px');
         this.$remoteSearch.empty();
         this.trigger('resetSearch');
@@ -386,11 +386,11 @@ humhub.module('space.chooser', function (module, require, $) {
         var atLeastTwo = input && input.length > 1;
 
         if (emptyResult && atLeastTwo) {
-            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.emptyResult') + '</div></li>');
+            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.emptyResult') + '</div>');
         } else if (emptyResult) {
-            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div></li>');
+            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div>');
         } else if (!atLeastTwo) {
-            this.$remoteSearch.html('<li><div class="help-block">' + module.text('info.remoteAtLeastInput') + '</div></li>');
+            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.remoteAtLeastInput') + '</div>');
         }
     }
 
@@ -399,7 +399,7 @@ humhub.module('space.chooser', function (module, require, $) {
     };
 
     SpaceChooser.prototype.getFirstItem = function () {
-        return this.$chooser.find('[data-space-chooser-item]:visible').first();
+        return this.$chooser.find('[data-space-chooser-item]:not(.d-none)').first();
     };
 
     SpaceChooser.prototype.hasItems = function () {
@@ -435,7 +435,7 @@ humhub.module('space.chooser', function (module, require, $) {
      */
     SpaceChooser.prototype.setSpace = function (space) {
         this.setSpaceMessageCount(space, 0);
-        this._changeMenuButton(space.image + ' <b class="caret"></b>');
+        this._changeMenuButton(space.image);
     };
 
     SpaceChooser.prototype.setSpaceMessageCount = function (space, count) {
@@ -453,7 +453,7 @@ humhub.module('space.chooser', function (module, require, $) {
     SpaceChooser.prototype._changeMenuButton = function (newButton) {
         var $newTitle = (newButton instanceof $) ? newButton : $(newButton);
         var $oldTitle = this.$menu.children();
-        this.$menu.append($newTitle.hide());
+        this.$menu.append($newTitle.addClass('d-none'));
         ui.additions.switchButtons($oldTitle, $newTitle, {remove: true});
     };
 

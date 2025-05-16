@@ -444,7 +444,7 @@
 			To use Tour to highlight an entire dialog, set the step element to the dialog div. Tour will automatically realize this is a dialog, and
 			shift the element to use the modal-content div inside the dialog. This makes life friendly, because you can do this:
 
-			<div class="modal" id="myModal" role="dialog">
+			<div class="modal fade" id="myModal" role="dialog">
 				<div class="modal-dialog">
 					<div class="modal-content">
 					...blah...
@@ -753,7 +753,7 @@
 
             // SEARCH PLACEHOLDER: TEMPLATES LOCATION
             objTemplates = {
-                bootstrap3: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-default" data-role="prev">&laquo; ' + this._options.localization.buttonTexts.prevButton + '</button> <button class="btn btn-sm btn-default" data-role="next">' + this._options.localization.buttonTexts.nextButton + ' &raquo;</button> <button class="btn btn-sm btn-default" data-role="pause-resume" data-pause-text="' + this._options.localization.buttonTexts.pauseButton + '" data-resume-text="' + this._options.localization.buttonTexts.resumeButton + '">' + this._options.localization.buttonTexts.pauseButton + '</button> </div> <button class="btn btn-sm btn-default" data-role="end">' + this._options.localization.buttonTexts.endTourButton + '</button> </div> </div>',
+                bootstrap3: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-title"></h3> <div class="popover-content"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-light" data-role="prev">&laquo; ' + this._options.localization.buttonTexts.prevButton + '</button> <button class="btn btn-sm btn-light" data-role="next">' + this._options.localization.buttonTexts.nextButton + ' &raquo;</button> <button class="btn btn-sm btn-light" data-role="pause-resume" data-pause-text="' + this._options.localization.buttonTexts.pauseButton + '" data-resume-text="' + this._options.localization.buttonTexts.resumeButton + '">' + this._options.localization.buttonTexts.pauseButton + '</button> </div> <button class="btn btn-sm btn-light" data-role="end">' + this._options.localization.buttonTexts.endTourButton + '</button> </div> </div>',
                 bootstrap4: '<div class="popover" role="tooltip"> <div class="arrow"></div> <h3 class="popover-header"></h3> <div class="popover-body"></div> <div class="popover-navigation"> <div class="btn-group"> <button class="btn btn-sm btn-outline-secondary" data-role="prev">&laquo; ' + this._options.localization.buttonTexts.prevButton + '</button> <button class="btn btn-sm btn-outline-secondary" data-role="next">' + this._options.localization.buttonTexts.nextButton + ' &raquo;</button> <button class="btn btn-sm btn-outline-secondary" data-role="pause-resume" data-pause-text="' + this._options.localization.buttonTexts.pauseButton + '" data-resume-text="' + this._options.localization.buttonTexts.resumeButton + '">' + this._options.localization.buttonTexts.pauseButton + '</button> </div> <button class="btn btn-sm btn-outline-secondary" data-role="end">' + this._options.localization.buttonTexts.endTourButton + '</button> </div> </div>',
             };
 
@@ -1214,7 +1214,7 @@
                 }
             }
 
-            // will be set to element <div class="modal"> if modal in use
+            // will be set to element <div class="modal fade"> if modal in use
             $modalObject = null;
 
             // is element a modal?
@@ -1710,7 +1710,7 @@
                         title += step.getProgressTextHTML(i, percentProgress, this.getStepCount());
                     } else {
                         if (this._options.framework == "bootstrap3") {
-                            title += '<span class="pull-right">' + (i + 1) + '/' + this.getStepCount() + '</span>';
+                            title += '<span class="float-end">' + (i + 1) + '/' + this.getStepCount() + '</span>';
                         }
                         if (this._options.framework == "bootstrap4") {
                             title += '<span class="float-right">' + (i + 1) + '/' + this.getStepCount() + '</span>';

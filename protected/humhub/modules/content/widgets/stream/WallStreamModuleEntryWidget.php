@@ -3,7 +3,7 @@
 namespace humhub\modules\content\widgets\stream;
 
 use Exception;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 
 /**

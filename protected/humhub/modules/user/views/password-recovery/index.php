@@ -1,12 +1,12 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\forms\AccountRecoverPassword;
-use humhub\widgets\Button;
-use yii\helpers\Url;
-use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\CaptchaField;
 use humhub\widgets\SiteLogo;
-use yii\captcha\Captcha;
+use yii\helpers\Url;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
@@ -31,13 +31,8 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
 
                 <?= $form->field($model, 'email')->textInput(['class' => 'form-control', 'id' => 'email_txt', 'placeholder' => Yii::t('UserModule.auth', 'Your email')])->label(false) ?>
 
-                <div class="form-group">
-                    <?= $form->field($model, 'verifyCode')->widget(Captcha::class, [
-                        'model' => $model,
-                        'attribute' => 'verifyCode',
-                        'captchaAction' => '/user/auth/captcha',
-                        'options' => ['class' => 'form-control', 'placeholder' => Yii::t('UserModule.auth', 'Enter security code above')]
-                    ])->label(false);
+                <div class="mb-3">
+                    <?= $form->field($model, 'captcha')->widget(CaptchaField::class)->label(false);
                     ?>
                 </div>
 
@@ -52,7 +47,7 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Password recovery');
     </div>
 </div>
 
-<script <?= \humhub\libs\Html::nonce() ?>>
+<script <?= \humhub\helpers\Html::nonce() ?>>
 
     $(function () {
         // set cursor to email field
