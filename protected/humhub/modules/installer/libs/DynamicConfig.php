@@ -62,7 +62,13 @@ final class DynamicConfig
         $content .= var_export($this->content, true);
         $content .= ';';
 
-        file_put_contents($this->fileName, $content);
+        try {
+            file_put_contents($this->fileName, $content);
+        } catch (\Exception $ex) {
+            throw new InvalidConfigException(
+                Yii::t('InstallerModule.base', 'Make sure that the following file is writable: ' . $this->fileName)
+            );
+        }
 
         if (function_exists('opcache_invalidate')) {
             @opcache_invalidate($this->fileName);
