@@ -10,7 +10,7 @@ namespace humhub\modules\installer\controllers;
 
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\DynamicConfig;
+use humhub\modules\installer\libs\DynamicConfig;
 
 /**
  * Index Controller shows a simple welcome page.
