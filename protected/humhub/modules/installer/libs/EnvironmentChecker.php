@@ -32,7 +32,8 @@ class EnvironmentChecker
             exit(1);
         }
 
-        /* Should be moved to installer
+        /* 
+        Should be moved to installer
         $dynamicConfigFile = DynamicConfig::getConfigFilePath();
         if (file_exists($dynamicConfigFile) && !is_writable($dynamicConfigFile)) {
             print "Error: The dynamic configuration (config/dynamic.php) is not writable by the PHP process.";
