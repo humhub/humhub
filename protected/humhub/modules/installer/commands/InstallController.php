@@ -51,23 +51,20 @@ class InstallController extends Controller
      */
     public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass)
     {
-        $connectionString = "mysql:host=" . $db_host . ";dbname=" . $db_name;
-        $dbConfig = [
-            'class' => 'yii\db\Connection',
-            'dsn' => $connectionString,
-            'username' => $db_user,
-            'password' => $db_pass,
-            'charset' => 'utf8',
-        ];
+        $databaseForm = new DatabaseForm();
+        $databaseForm->hostname = $db_host;
+        $databaseForm->database = $db_name;
+        $databaseForm->username = $db_user;
+        $databaseForm->password = $db_pass;
+
+        $dbConfig = $databaseForm->getDbConfigAsArray();
 
         $temporaryConnection = Yii::createObject($dbConfig);
         $temporaryConnection->open();
 
-        $config = DynamicConfig::load();
-
-        $config['components']['db'] = $dbConfig;
-
-        DynamicConfig::save($config);
+        $dynamicConfig = new DynamicConfig();
+        $dynamicConfig->content['components']['db'] = $dbConfig;
+        $dynamicConfig->save();
 
         return ExitCode::OK;
     }

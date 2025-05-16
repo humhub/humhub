@@ -8,91 +8,69 @@
 
 namespace humhub\modules\installer\libs;
 
-use humhub\components\InstallationState;
 use Yii;
-use yii\base\BaseObject;
-use yii\helpers\ArrayHelper;
+use yii\base\InvalidConfigException;
 
-/**
- * DynamicConfig provides access to the dynamic configuration file.
- *
- * @todo check modules too
- *
- * @author luke
- */
-class DynamicConfig extends BaseObject
+final class DynamicConfig
 {
-    /**
-     * Returns the dynamic configuration
-     *
-     * @return array
-     */
-    public static function load()
+    private string $fileName;
+
+    public array $content = [];
+
+    public function __construct($fileName = null)
     {
-        $configFile = self::getConfigFilePath();
-
-        if (!is_file($configFile)) {
-            self::save([]);
+        if ($fileName === null) {
+            $this->fileName = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
+        } else {
+            $this->fileName = Yii::getAlias($fileName);
         }
 
-        // Load config file with 'file_get_contents' and 'eval'
-        // because 'require' don't reload the file when it's changed on runtime
-        $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '', file_get_contents($configFile));
-        $config = eval($configContent);
-
-        if (!is_array($config)) {
-            return [];
+        if (file_exists($this->fileName)) {
+            $this->load();
         }
-
-        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
-            $validConfig = [
-                'components' => [
-                    'db' => ArrayHelper::getValue($config, 'components.db', []),
-                ],
-            ];
-
-            if ($validConfig != $config) {
-                self::save($validConfig);
-            }
-
-            return $validConfig;
-        }
-
-        return $config;
     }
 
-    /**
-     * Sets a new dynamic configuration
-     *
-     * @param array $config
-     */
-    public static function save($config)
+    private function load()
     {
+        // Load config file with 'file_get_contents' and 'eval'
+        // because 'require' don't reload the file when it's changed on runtime
+        $configContent = str_replace(
+            ['<' . '?php', '<' . '?', '?' . '>'],
+            '',
+            file_get_contents($this->fileName)
+        );
+
+        $this->config = eval($configContent);
+
+        if (!is_array($this->config)) {
+            $this->config = [];
+        }
+    }
+
+    public function autoSetDatabase()
+    {
+        $this->config['components']['db'] = [];
+    }
+
+    public function save()
+    {
+        if (is_writable($this->fileName)) {
+            throw new InvalidConfigException('File is not writable: ' . $this->fileName);
+        }
+
         $content = '<' . '?php return ';
-        $content .= var_export($config, true);
+        $content .= var_export($this->content, true);
         $content .= ';';
 
-        $configFile = self::getConfigFilePath();
-        file_put_contents($configFile, $content);
+        file_put_contents($this->fileName, $content);
 
         if (function_exists('opcache_invalidate')) {
-            @opcache_invalidate($configFile);
+            @opcache_invalidate($this->fileName);
         }
 
         if (function_exists('apc_compile_file')) {
-            apc_compile_file($configFile);
+            apc_compile_file($this->fileName);
         }
     }
 
-
-
-    public static function getConfigFilePath()
-    {
-        return Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
-    }
-
-    public static function exist()
-    {
-        return file_exists(self::getConfigFilePath());
-    }
 }

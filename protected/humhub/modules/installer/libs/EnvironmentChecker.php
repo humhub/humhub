@@ -31,17 +31,5 @@ class EnvironmentChecker
             print "Error: The runtime directory is not writable by the PHP process.";
             exit(1);
         }
-
-        /* 
-        Should be moved to installer
-        $dynamicConfigFile = DynamicConfig::getConfigFilePath();
-        if (file_exists($dynamicConfigFile) && !is_writable($dynamicConfigFile)) {
-            print "Error: The dynamic configuration (config/dynamic.php) is not writable by the PHP process.";
-            exit(1);
-        } elseif (!is_writable(dirname($dynamicConfigFile))) {
-            print "Error: The dynamic configuration (config/dynamic.php) cannot be created by the PHP process.";
-            exit(1);
-        }
-        */
     }
 }
