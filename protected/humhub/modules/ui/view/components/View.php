@@ -337,9 +337,13 @@ class View extends \yii\web\View
     protected function renderHeadHtml()
     {
         if (!Yii::$app->request->isAjax) {
-            SiteIcon::registerMetaTags($this);
-            LayoutHeader::registerHeadTags($this);
-            $this->meta->registerMetaTags($this);
+
+            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
+                LayoutHeader::registerHeadTags($this);
+                $this->meta->registerMetaTags($this);
+                SiteIcon::registerMetaTags($this);
+            }
+
             parent::registerCsrfMetaTags();
         }
 

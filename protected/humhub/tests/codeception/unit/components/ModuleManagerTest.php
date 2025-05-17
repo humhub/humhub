@@ -56,6 +56,8 @@ class ModuleManagerTest extends HumHubDbTestCase
     private static array $aliases;
     private static ModuleManager $originalModuleManager;
 
+
+
     public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
@@ -114,6 +116,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         $this->moduleId = null;
         $this->moduleClass = null;
         $this->moduleNS = null;
+
+
+        Yii::$app->installationState->setInstalled();
 
         parent::setUp();
     }
