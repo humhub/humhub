@@ -573,29 +573,6 @@ class SelfTest
                 'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
             ];
         }
-        // Check Dynamic Config is Writable
-        $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
-        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
-        if (!is_file($path)) {
-            $path = dirname($path);
-        }
-
-        // Use realpath on the path alone to get the canonical path
-        // Applying realpath to a boolean (from is_writable) would cause errors, so keep them separate
-        $realPath = realpath($path);
-
-        if ($realPath !== false && is_writable($realPath)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
-            ];
-        }
 
         return self::getMarketplaceResults($checks);
     }
