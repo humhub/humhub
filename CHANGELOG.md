@@ -10,6 +10,7 @@ HumHub Changelog
 - Fix #7503: Don't run migration on updating of disabled module
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
+- Fix #7519: Fix duplicated notifications on timeout
 
 1.17.2 (April 7, 2025)
 ----------------------
