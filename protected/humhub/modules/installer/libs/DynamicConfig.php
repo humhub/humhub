@@ -37,7 +37,7 @@ final class DynamicConfig
         $configContent = str_replace(
             ['<' . '?php', '<' . '?', '?' . '>'],
             '',
-            file_get_contents($this->fileName)
+            file_get_contents($this->fileName),
         );
 
         $this->config = eval($configContent);
@@ -66,7 +66,7 @@ final class DynamicConfig
             file_put_contents($this->fileName, $content);
         } catch (\Exception $ex) {
             throw new InvalidConfigException(
-                Yii::t('InstallerModule.base', 'Make sure that the following file is writable: ' . $this->fileName)
+                Yii::t('InstallerModule.base', 'Make sure that the following file is writable: ' . $this->fileName),
             );
         }
 
