@@ -85,11 +85,11 @@ class DatabaseForm extends Model
         return [
             'hostname' => Yii::t(
                 'InstallerModule.base',
-                'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)'
+                'Hostname of your MySQL Database Server (e.g. localhost if MySQL is running on the same machine)',
             ),
             'port' => Yii::t(
                 'InstallerModule.base',
-                'Optional: Port of your MySQL Database Server. Leave empty to use default port.'
+                'Optional: Port of your MySQL Database Server. Leave empty to use default port.',
             ),
             'username' => Yii::t('InstallerModule.base', 'Your MySQL username'),
             'password' => Yii::t('InstallerModule.base', 'Your MySQL password.'),
@@ -138,7 +138,8 @@ class DatabaseForm extends Model
         return $connectionString;
     }
 
-    public function getDbConfigAsArray(bool $includeDatabaseName = true) : array {
+    public function getDbConfigAsArray(bool $includeDatabaseName = true): array
+    {
         return [
             'class' => 'yii\db\Connection',
             'dsn' => $this->getDsn($includeDatabaseName),

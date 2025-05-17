@@ -17,7 +17,8 @@ class m250514_125129_reduce_dynamic_config extends Migration
                 $configFile = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
 
                 if (!file_exists($configFile)) {
-                    Yii::error('Could not migrate DynamicConfig. File does not exists: ' . $configFile);;
+                    Yii::error('Could not migrate DynamicConfig. File does not exists: ' . $configFile);
+                    ;
                 }
 
                 if (!is_writable($configFile)) {
@@ -26,8 +27,11 @@ class m250514_125129_reduce_dynamic_config extends Migration
 
                 // Load config file with 'file_get_contents' and 'eval'
                 // because 'require' don't reload the file when it's changed on runtime
-                $configContent = str_replace(['<' . '?php', '<' . '?', '?' . '>'], '',
-                    file_get_contents($configFile));
+                $configContent = str_replace(
+                    ['<' . '?php', '<' . '?', '?' . '>'],
+                    '',
+                    file_get_contents($configFile),
+                );
                 $config = eval($configContent);
 
                 unset($config['components']['cache']);
