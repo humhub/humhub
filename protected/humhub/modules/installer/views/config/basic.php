@@ -1,8 +1,8 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\installer\forms\ConfigBasicForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /**
  * @var $model ConfigBasicForm
@@ -20,7 +20,7 @@ use humhub\modules\ui\form\widgets\ActiveForm;
 
         <?php $form = ActiveForm::begin(); ?>
 
-        <div class="form-group">
+        <div class="mb-3">
             <?= $form->field($model, 'name')->textInput(); ?>
         </div>
         <hr>
@@ -45,5 +45,3 @@ use humhub\modules\ui\form\widgets\ActiveForm;
     <?php endif; ?>
 
 </script>
-
-

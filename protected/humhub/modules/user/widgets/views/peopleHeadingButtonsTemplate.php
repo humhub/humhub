@@ -1,10 +1,10 @@
 <?php
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\ui\menu\MenuEntry;
-use humhub\modules\ui\view\components\View;
 use humhub\modules\user\widgets\PeopleHeadingButtons;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
 
 /* @var $this View */
 /* @var $menu PeopleHeadingButtons */
@@ -18,7 +18,7 @@ use yii\helpers\Html;
         $htmlOptions['active'] = '';
     }
     ?>
-    <div style="margin-left: 10px" class="pull-right">
+    <div style="margin-left: 10px" class="float-end">
         <?= Button::info($entry->getIcon() . '&nbsp;&nbsp;' . Html::tag('strong', $entry->getLabel()))
             ->link($entry->getUrl())
             ->options($htmlOptions)

@@ -28,7 +28,9 @@ humhub.module('admin.topic', function (module, require, $) {
         event.on('humhub:ready', function (evt) {
             $('#addtopicform-name, #addtopicform-converttoglobal').on('input', function() {
                 var form = $(this).closest('form');
-                form.find('.field-addtopicform-name').removeClass('has-error').find('.help-block').remove();
+                var $addTopicForm = form.find('.field-addtopicform-name');
+                $addTopicForm.find('.is-invalid').removeClass('is-invalid')
+                $addTopicForm.find('.form-text').remove();
             });
         });
     };

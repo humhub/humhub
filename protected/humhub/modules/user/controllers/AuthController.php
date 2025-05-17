@@ -73,10 +73,6 @@ class AuthController extends Controller
     public function actions()
     {
         return [
-            'captcha' => [
-                'class' => CaptchaAction::class,
-                'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
-            ],
             'external' => [
                 'class' => AuthAction::class,
                 'successCallback' => [$this, 'onAuthSuccess'],

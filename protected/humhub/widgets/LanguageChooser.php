@@ -32,6 +32,8 @@ use yii\base\Widget;
  */
 class LanguageChooser extends Widget
 {
+    public bool $vertical = false;
+
     /**
      * @inheritdoc
      */
@@ -48,7 +50,11 @@ class LanguageChooser extends Widget
         $model = new ChooseLanguage();
         $model->language = Yii::$app->language;
 
-        return $this->render('languageChooser', ['model' => $model, 'languages' => Yii::$app->i18n->getAllowedLanguages()]);
+        return $this->render('languageChooser', [
+            'model' => $model,
+            'languages' => Yii::$app->i18n->getAllowedLanguages(),
+            'vertical' => $this->vertical,
+        ]);
     }
 
 }

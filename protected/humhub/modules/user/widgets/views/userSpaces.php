@@ -1,8 +1,8 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 
 ?>
 <?php if (count($spaces) > 0) { ?>
@@ -27,10 +27,10 @@ use yii\helpers\Html;
                     'link' => 'true',
                     'linkOptions' => [
                         'class' => 'tt',
-                        'data-toggle' => 'tooltip',
+                        'data-bs-toggle' => 'tooltip',
                         'data-placement' => 'top',
                         'title' => $space->name,
-                    ]
+                    ],
                 ]);
                 ?>
             <?php endforeach; ?>
@@ -38,7 +38,9 @@ use yii\helpers\Html;
             <?php if ($showMoreLink): ?>
                 <br>
                 <br>
-                <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'pull-right btn btn-sm btn-default', 'data-target' => '#globalModal']); ?>
+                <div class="clearfix">
+                    <?= Html::a('Show all', $user->createUrl('/user/profile/space-membership-list'), ['class' => 'float-end btn btn-sm btn-light', 'data-bs-target' => '#globalModal']) ?>
+                </div>
             <?php endif; ?>
         </div>
     </div>

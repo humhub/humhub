@@ -1,15 +1,15 @@
 <?php
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $this View */
 /* @var $objectModel string */
@@ -28,7 +28,7 @@ $contentModule = Yii::$app->getModule('content');
     <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="content-create-input-group">
-        <?= $form->field($comment, 'message')->widget(RichTextField::class, [
+        <?= $form->field($comment, 'message', ['template' => "{input}"])->widget(RichTextField::class, [
             'id' => 'comment_input_' . $comment->id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
@@ -38,7 +38,7 @@ $contentModule = Yii::$app->getModule('content');
                 'scroll-active' => 'comment.scrollActive',
                 'scroll-inactive' => 'comment.scrollInactive'
             ]
-        ])->label(false) ?>
+        ]) ?>
 
         <div class="upload-buttons"><?php
             $uploadButton = UploadButton::widget([
@@ -49,12 +49,12 @@ $contentModule = Yii::$app->getModule('content');
                 'preview' => '#comment_upload_preview_' . $comment->id,
                 'progress' => '#comment_upload_progress_' . $comment->id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-default',
+                'cssButtonClass' => 'btn-sm btn-light',
             ]);
             echo FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-default btn-sm',
+                'cssButtonClass' => 'btn-light btn-sm',
                 'pullRight' => true,
             ]);
             echo Button::info()
