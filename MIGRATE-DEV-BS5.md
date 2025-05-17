@@ -29,7 +29,6 @@ Widgets in these new folders:
 And especially:
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
 - `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
-- `humhub\widgets\bootstrap\NavBar` (see https://getbootstrap.com/docs/5.3/components/navbar/)
 - `humhub\widgets\bootstrap\Button::asBadge()`
 - `humhub\widgets\bootstrap\Button::secondary()`
 - `humhub\widgets\bootstrap\Button::light()`
