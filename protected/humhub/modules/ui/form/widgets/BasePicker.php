@@ -221,16 +221,6 @@ abstract class BasePicker extends JsInputWidget
      */
     abstract protected function getItemImage($item);
 
-    public function init()
-    {
-        parent::init();
-
-        $attributeName = Html::getAttributeName($this->attribute);
-        if ($this->model?->hasErrors($attributeName)) {
-            Html::addCssClass($this->options, 'is-invalid');
-        }
-    }
-
     /**
      * @inhertidoc
      */
