@@ -83,9 +83,11 @@ abstract class JsInputWidget extends JsWidget
     {
         parent::init();
 
-        $attributeName = Html::getAttributeName($this->attribute);
-        if ($this->model?->hasErrors($attributeName)) {
-            Html::addCssClass($this->options, 'is-invalid');
+        if ($this->attribute && $this->hasModel()) {
+            $attributeName = Html::getAttributeName($this->attribute);
+            if ($attributeName && $this->model->hasErrors($attributeName)) {
+                Html::addCssClass($this->options, 'is-invalid');
+            }
         }
     }
 
