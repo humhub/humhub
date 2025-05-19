@@ -79,6 +79,16 @@ abstract class JsInputWidget extends JsWidget
      */
     public $field;
 
+    public function init()
+    {
+        parent::init();
+
+        $attributeName = Html::getAttributeName($this->attribute);
+        if ($this->model?->hasErrors($attributeName)) {
+            Html::addCssClass($this->options, 'is-invalid');
+        }
+    }
+
     /**
      * Initializes the widget.
      * If you override this method, make sure you call the parent implementation first.
