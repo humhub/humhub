@@ -49,7 +49,7 @@ class Events extends BaseObject
         Yii::error(
             'Could not execute queued job! Message: ' . $exception->getMessage(
             ) . ' Trace:' . $exception->getTraceAsString(),
-            'queue'
+            'queue',
         );
     }
 
@@ -69,7 +69,8 @@ class Events extends BaseObject
         }
 
         if ($event->job instanceof LongRunningActiveJob) {
-            $event->ttr = Yii::$app->getModule('queue')->longRunningJobTtr;;
+            $event->ttr = Yii::$app->getModule('queue')->longRunningJobTtr;
+            ;
         }
     }
 
@@ -91,7 +92,7 @@ class Events extends BaseObject
         if (!($event->job instanceof RetryableJobInterface) && $event->attempt > 1) {
             Yii::error(
                 'Job ' . get_class($event->job) . ' (' . $event->id . ') has failed (Timeout? Max. Execution Time too low?) and is still in queue. Skipping.',
-                'queue'
+                'queue',
             );
             $event->handled = true;
         }
