@@ -194,7 +194,7 @@ class TourParams
                         ],
                     ],
                     [
-                        'element' => ".wall-entry:eq(0)",
+                        'element' => ".wall-entry:first-of-type",
                         'popover' => [
                             'title' => Yii::t('TourModule.spaces', '<strong>Posts</strong>'),
                             'description' => Yii::t('TourModule.spaces', 'Yours, and other users\' posts will appear here.<br><br>These can then be liked or commented on.'),
