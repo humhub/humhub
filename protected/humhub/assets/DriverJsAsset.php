@@ -11,7 +11,8 @@ namespace humhub\assets;
 use humhub\components\assets\AssetBundle;
 
 /**
- * jQery Blueimp File Upload
+ * Driver.js library
+ * https://github.com/kamranahmedse/driver.js
  *
  * @author luke
  */
