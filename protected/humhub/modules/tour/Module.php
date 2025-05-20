@@ -14,14 +14,25 @@ use Yii;
 class Module extends \humhub\components\Module
 {
     /**
-     * @var string[]
-     */
-    public $acceptableNames = ['interface', 'administration', 'profile', 'spaces'];
-
-    /**
      * @inheritdoc
      */
     public $isCoreModule = true;
+
+    /**
+     * Custom parameters for the introduction tour
+     * Replace the default ones
+     * Must be an array of valid params: see `\humhub\modules\tour\models\TourParams::isValidParams()`
+     */
+    public ?array $customTourParams = null;
+
+    /**
+     * @var array Driver.js extra options
+     * Will be merged with the view options
+     * See documentation: https://driverjs.com/docs
+     */
+    public array $driverOptions = [
+        'showProgress' => 'true',
+    ];
 
     /**
      * Check if the welcome tour window should be displayed automatically
@@ -35,9 +46,10 @@ class Module extends \humhub\components\Module
             $user = Yii::$app->user->identity;
         }
 
-        return $user instanceof User &&
-            $user->id === 1 &&
-            Yii::$app->getModule('installer')->settings->get('sampleData') != 1 &&
-            $this->settings->user($user)->get('welcome') != 1;
+        return
+            $user instanceof User
+            && $user->id === 1
+            && !Yii::$app->getModule('installer')->settings->get('sampleData')
+            && $this->settings->user($user)->get('welcome');
     }
 }

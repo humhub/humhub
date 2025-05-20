@@ -15,13 +15,16 @@ Version 1.18 (Unreleased)
 - `\humhub\components\captcha\YiiCaptchaInput`
 - `\humhub\components\captcha\YiiCaptchaValidator`
 - `Yii::$app->captcha` component
+- `\humhub\assets\DriverJsAsset` (driver.js)
+- `\humhub\modules\tour\Module::customTourParams`
+- `\humhub\modules\tour\Module::driverOptions`
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
 
-### Behaviour change
+### Changed
 
 - The following Mailer settings keys have been renamed to work with `.env`:
 
@@ -39,6 +42,10 @@ Version 1.18 (Unreleased)
 | `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
 | `mailer.systemEmailName`         | `mailerSystemEmailName`        |
 | `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
+
+- `tour` module:
+  - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
+  - Widget view files rewritten
 
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers

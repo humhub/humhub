@@ -1,26 +1,19 @@
 humhub.module('tour', function (module, requrie, $) {
 
     var client = requrie('client');
-    var tourOptions;
-    var completedUrl;
+    var page;
     var nextUrl;
 
     var start = function (options) {
-        new Tour({
-            storage: false,
-            template: module.config.template,
-            steps: options.steps,
-            framework: "bootstrap3",
-            name: options.name,
-            sanitizeWhitelist: {'a': ['data-action-click']},
-            onShown: function () {
-                $('.tour button[data-role].disabled').remove();
-            },
-            onEnd: tourCompleted
-        }).start();
+        // Load driver.js
+        const driver = window.driver.js.driver;
+        const driverObj = driver({
+            ...module.config.driverOptions,
+            ...options.driver
+        });
+        driverObj.drive();
 
-        tourOptions = options;
-        completedUrl = options.completedUrl;
+        page = options.page;
         nextUrl = options.nextUrl;
     };
 
@@ -28,10 +21,9 @@ humhub.module('tour', function (module, requrie, $) {
      * Set tour as seen
      */
     function tourCompleted(next) {
-        // load user spaces
-        client.post(module.config.completedUrl, {data: {section: tourOptions.name}}).then(function () {
+        client.post(module.config.completedUrl, {data: {page: page}}).then(function () {
             // cross out welcome tour entry
-            $('#interface_entry').addClass('completed');
+            $('#tour-panel-' + module.config.dashboardPage).addClass('completed');
 
             if (next === true && nextUrl) {
                 window.location.href = nextUrl;

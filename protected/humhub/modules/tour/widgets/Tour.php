@@ -8,11 +8,12 @@ use humhub\modules\admin\controllers\ModuleController;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\controllers\SpaceController;
 use humhub\modules\tour\assets\TourAsset;
+use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\Module;
 use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
 use humhub\modules\user\controllers\ProfileController;
 use humhub\modules\user\models\User;
 use Yii;
-use yii\web\View;
 
 /**
  * Will show the introduction tour
@@ -26,7 +27,7 @@ class Tour extends Widget
     private static function getTypes(): array
     {
         return [
-            'dashboard' => ['view' => 'guide_interface', 'controller' => DashboardController::class],
+            'interface' => ['view' => 'guide_interface', 'controller' => DashboardController::class],
             'space' => ['view' => 'guide_spaces', 'controller' => SpaceController::class],
             'user' => ['view' => 'guide_profile', 'controller' => ProfileController::class],
             'admin' => ['view' => 'guide_administration', 'controller' => ModuleController::class],
@@ -57,66 +58,48 @@ class Tour extends Widget
             return '';
         }
 
-        $type = self::getCurrentType();
+        $params = TourParams::getCurrent();
 
-        if ($type === null) {
+        if (!$params) {
             return '';
         }
 
-        self::disableAutoStart($type['type']);
+        self::disableAutoStart($params[TourParams::KEY_PAGE]);
 
         TourAsset::register($this->view);
 
-        return $this->render($type['view']);
-    }
-
-    /**
-     * @deprecated since 1.3.13
-     */
-    public function loadResources(View $view)
-    {
-        // Dummy for old template version
+        return $this->render('tour', ['params' => $params]);
     }
 
     private static function getSettings(): SettingsManager
     {
-        return Yii::$app->getModule('tour')->settings;
+        /* @var Module $module */
+        $module = Yii::$app->getModule('tour');
+        return $module->settings;
     }
 
-    public static function isEnabledAutoStart(?string $type = null, ?User $user = null): bool
+    public static function isEnabledAutoStart(?string $page = null, ?User $user = null): bool
     {
-        if ($type === null) {
-            $type = self::getCurrentType();
-            if ($type === null) {
+        if ($page === null) {
+            $params = TourParams::getCurrent();
+            if (!$params) {
                 return false;
             }
-            $type = $type['type'];
+            $page = $params[TourParams::KEY_PAGE];
         }
 
-        return (bool)self::getSettings()->user($user)->get('autoStartTour.' . $type, false);
+        return (bool)self::getSettings()->user($user)->get('autoStartTour.' . $page, false);
     }
 
-    public static function enableAutoStart(string $type, ?User $user = null)
+    public static function enableAutoStart(string $page, ?User $user = null)
     {
-        self::getSettings()->user($user)->set('autoStartTour.' . $type, true);
+        self::getSettings()->user($user)->set('autoStartTour.' . $page, true);
     }
 
-    public static function disableAutoStart(string $type, ?User $user = null)
+    public static function disableAutoStart(string $page, ?User $user = null)
     {
-        if (self::isEnabledAutoStart($type)) {
-            self::getSettings()->user($user)->delete('autoStartTour.' . $type);
+        if (self::isEnabledAutoStart($page)) {
+            self::getSettings()->user($user)->delete('autoStartTour.' . $page);
         }
-    }
-
-    private static function getCurrentType(): ?array
-    {
-        foreach (self::getTypes() as $type => $tour) {
-            if (Yii::$app->controller instanceof $tour['controller']) {
-                $tour['type'] = $type;
-                return $tour;
-            }
-        }
-
-        return null;
     }
 }

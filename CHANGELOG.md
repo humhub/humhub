@@ -27,6 +27,7 @@ HumHub Changelog
 - Fix #7518: Fix Incorrect German Translation
 - Fix #7522: Fix mailer config
 - Fix #7526: Fix `installationState` issues
+- Enh: Tour module: replace unmaintained [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) with [driver.js](https://driverjs.com/)
 
 1.17.3 (Unreleased)
 ----------------------
