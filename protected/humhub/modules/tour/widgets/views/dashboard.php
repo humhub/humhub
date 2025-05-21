@@ -48,10 +48,10 @@ $removeOptionHtml = Html::tag(
 
         <ul class="tour-list">
             <?php foreach (TourParams::get() as $params): ?>
-                <?php if (isset($params[TourParams::KEY_PAGE], $params[TourParams::KEY_URL], $params[TourParams::KEY_NAME])): ?>
+                <?php if (isset($params[TourParams::KEY_PAGE], $params[TourParams::KEY_URL], $params[TourParams::KEY_TITLE])): ?>
                     <li id="tour-panel-<?= $params[TourParams::KEY_PAGE] ?>"<?= $settingsManager->get($params[TourParams::KEY_PAGE]) ? ' class="completed"' : '' ?>>
                         <a href="<?= $params[TourParams::KEY_URL] ?>" data-pjax-prevent>
-                            <?= Icon::get('play-circle-o') ?> <?= $params[TourParams::KEY_NAME] ?>
+                            <?= Icon::get('play-circle-o') ?> <?= $params[TourParams::KEY_TITLE] ?>
                         </a>
                     </li>
                 <?php endif; ?>
