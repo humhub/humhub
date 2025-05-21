@@ -27,6 +27,8 @@ use yii\web\JsExpression;
  */
 class IconPicker extends Select2
 {
+    public $bsVersion = 5;
+
     /**
      * @var string optional icon provider id
      */
