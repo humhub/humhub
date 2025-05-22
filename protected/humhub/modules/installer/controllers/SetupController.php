@@ -78,7 +78,7 @@ class SetupController extends Controller
                     if (!$temporaryConnection->createCommand('SHOW DATABASES LIKE "' . $model->database . '"')
                         ->execute()) {
                         $temporaryConnection->createCommand(
-                            'CREATE DATABASE `' . $model->database . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci'
+                            'CREATE DATABASE `' . $model->database . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
                         )->execute();
                     }
                 }

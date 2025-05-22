@@ -135,7 +135,7 @@ class SettingsLoader implements BootstrapInterface
                 'class' => $cacheClass,
                 'useApcu' => (function_exists('apcu_add')),
             ];
-        } elseif ($cacheClass === \yii\redis\Cache::class) {
+        } elseif ($cacheClass === \yii\redis\Cache::class && Yii::$app->has('redis')) {
             $cacheComponent = [
                 'class' => \yii\redis\Cache::class,
             ];
