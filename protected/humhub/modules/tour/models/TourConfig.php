@@ -15,6 +15,8 @@ use Yii;
 
 /**
  * Configurations for the introduction tour
+ * Loads and manage the configuration files
+ * Default files are in @tour/config
  *
  * @since 1.18
  */
