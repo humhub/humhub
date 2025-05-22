@@ -12,11 +12,11 @@ use humhub\components\Event;
 use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
+use humhub\modules\ui\view\components\View;
 use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
 use Yii;
 use yii\helpers\Url;
-use yii\web\View;
 
 /**
  * Base class for menus and navigations.

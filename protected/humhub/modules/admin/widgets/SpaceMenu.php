@@ -28,7 +28,6 @@ class SpaceMenu extends TabMenu
      */
     public function init()
     {
-
         $this->addEntry(new MenuLink([
             'label' => Yii::t('AdminModule.space', 'Overview'),
             'url' => Url::toRoute(['/admin/space/index']),

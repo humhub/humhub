@@ -1,0 +1,50 @@
+//
+// Tooltips
+// --------------------------------------------------
+.tooltip-inner {
+    background-color: var(--bs-primary);
+    max-width: 400px;
+    text-align: left;
+    padding: 2px 8px 4px;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: pre-wrap;
+}
+
+.tooltip {
+    &.top .tooltip-arrow {
+        border-top-color: var(--bs-primary);
+    }
+
+    &.top-left .tooltip-arrow {
+        border-top-color: var(--bs-primary);
+    }
+
+    &.top-right .tooltip-arrow {
+        border-top-color: var(--bs-primary);
+    }
+
+    &.right .tooltip-arrow {
+        border-right-color: var(--bs-primary);
+    }
+
+    &.left .tooltip-arrow {
+        border-left-color: var(--bs-primary);
+    }
+
+    &.bottom .tooltip-arrow {
+        border-bottom-color: var(--bs-primary);
+    }
+
+    &.bottom-left .tooltip-arrow {
+        border-bottom-color: var(--bs-primary);
+    }
+
+    &.bottom-right .tooltip-arrow {
+        border-bottom-color: var(--bs-primary);
+    }
+}
+
+.tooltip.in {
+    opacity: 1;
+}

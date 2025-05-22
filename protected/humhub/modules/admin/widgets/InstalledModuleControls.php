@@ -45,7 +45,7 @@ class InstalledModuleControls extends Menu
                     'id' => 'default',
                     'label' => Yii::t('AdminModule.base', 'Set as default'),
                     'url' => $this->getActionUrl('/admin/module/set-as-default'),
-                    'htmlOptions' => ['data-target' => '#globalModal'],
+                    'htmlOptions' => ['data-bs-target' => '#globalModal'],
                     'icon' => 'check-square',
                     'sortOrder' => 200,
                 ]));
@@ -68,8 +68,7 @@ class InstalledModuleControls extends Menu
                 'label' => Yii::t('AdminModule.base', 'Enable'),
                 'url' => $this->getActionUrl('/admin/module/enable'),
                 'htmlOptions' => [
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
+                    'data-action-click' => 'ui.modal.post',
                     'data-message' => Yii::t('AdminModule.modules', 'Enable module...'),
                 ],
                 'icon' => 'check-circle',

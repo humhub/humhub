@@ -9,6 +9,7 @@
 namespace humhub\modules\admin\controllers;
 
 use Exception;
+use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\models\UrlOembed;
 use humhub\modules\admin\components\Controller;
@@ -31,7 +32,7 @@ use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
-use humhub\widgets\ModalClose;
+use humhub\widgets\modal\ModalClose;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\db\Expression;
@@ -258,11 +259,17 @@ class SettingController extends Controller
     public function actionDesign()
     {
         $form = new DesignSettingsForm();
-        if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
-            $this->view->saved();
-            return $this->redirect([
-                '/admin/setting/design',
-            ]);
+        $post = Yii::$app->request->post();
+
+        if ($form->load($post) && $form->validate() && $form->save()) {
+            $newTheme = ThemeHelper::getThemeByName($form->theme);
+            $buildResult = ThemeHelper::buildCss($newTheme);
+            if ($buildResult === true) {
+                $this->view->saved();
+            } else {
+                $this->view->error($buildResult);
+            }
+            return $this->refresh(); // Reload the page without ajax to refresh the theme
         }
 
         return $this->render('design', [

@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\widgets\BaseImage;
 use humhub\modules\user\models\User;
 use humhub\modules\user\services\IsOnlineService;
@@ -53,11 +53,11 @@ class Image extends BaseImage
             $this->link = false;
         }
 
-        Html::addCssClass($this->imageOptions, 'img-rounded');
+        Html::addCssClass($this->imageOptions, 'rounded');
         Html::addCssStyle($this->imageOptions, 'width: ' . $this->width . 'px; height: ' . $this->height . 'px');
 
         if ($this->tooltipText || $this->showTooltip) {
-            $this->imageOptions['data-toggle'] = 'tooltip';
+            $this->imageOptions['data-bs-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
             $this->imageOptions['data-html'] = 'true';
             $this->imageOptions['data-original-title'] = $this->tooltipText ?: Html::encode($this->user->displayName);

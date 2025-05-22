@@ -1,0 +1,304 @@
+//
+// Buttons
+// --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+.btn-primary {
+    --bs-btn-bg: var(--bs-primary);
+}
+
+.btn-secondary {
+    --bs-btn-bg: var(--bs-secondary);
+}
+
+.btn-success {
+    --bs-btn-bg: var(--bs-success);
+}
+
+.btn-info {
+    --bs-btn-bg: var(--bs-info);
+}
+
+.btn-warning {
+    --bs-btn-bg: var(--bs-warning);
+}
+
+.btn-danger {
+    --bs-btn-bg: var(--bs-danger);
+}
+
+.btn-light {
+    --bs-btn-bg: var(--bs-light);
+    --bs-btn-color: var(--hh-text-color-default);
+}
+
+.btn-dark {
+    --bs-btn-bg: var(--bs-dark);
+}
+
+.btn {
+    float: none;
+    margin-bottom: 0;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 16px;
+    box-shadow: none;
+    background-image: none;
+    text-shadow: none;
+    border-radius: 3px;
+    white-space: nowrap;
+
+    &:not(.btn-icon-only) {
+        i.fa {
+            margin-right: 4px;
+        }
+    }
+
+    &.input {
+        outline: none;
+    }
+
+    &.btn-sm {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    &.btn-lg {
+        padding: 16px 28px;
+
+        &:active, &.active {
+            padding: 15px 27px;
+        }
+    }
+}
+
+.btn-primary {
+    color: var(--hh-text-color-contrast) !important;
+
+    &:hover,
+    &:focus {
+        background: darken($primary, 5%);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        border: 1px solid var(--bs-primary);
+        padding: 7px 15px;
+        color: var(--bs-primary) !important;
+        background: var(--hh-text-color-contrast) !important;
+        box-shadow: none;
+    }
+
+    &.active:hover,
+    &.active:focus {
+        border: 1px solid darken($primary, 5%);
+        color: darken($primary, 5%) !important;
+    }
+}
+
+.btn-primary[disabled],
+.btn-primary.disabled {
+    background: lighten($primary, 5%);
+
+    &:hover,
+    &:focus {
+        background: lighten($primary, 5%);
+    }
+
+    &:active,
+    &.active {
+        background: lighten($primary, 5%) !important;
+    }
+}
+
+.btn-info {
+    color: var(--hh-text-color-contrast) !important;
+
+    &:hover,
+    &:focus {
+        background: darken($info, 5%) !important;
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        border: 1px solid var(--bs-info);
+        padding: 7px 15px;
+        color: var(--bs-info) !important;
+        background: var(--hh-text-color-contrast) !important;
+        box-shadow: none;
+    }
+
+    &.active:hover,
+    &.active:focus {
+        border: 1px solid darken($info, 5%);
+        color: darken($info, 5%) !important;
+    }
+}
+
+.btn-info[disabled],
+.btn-info.disabled {
+    background: lighten($info, 5%);
+
+    &:hover,
+    &:focus {
+        background: lighten($info, 5%);
+    }
+
+    &:active,
+    &.active {
+        background: lighten($info, 5%) !important;
+    }
+}
+
+.btn-outline-info:hover {
+    color: var(--hh-text-color-contrast);
+}
+
+.btn-danger {
+    color: var(--hh-text-color-contrast) !important;
+
+    &:hover,
+    &:focus {
+        background: darken($danger, 5%);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        background: darken($danger, 5%) !important;
+    }
+}
+
+.btn-danger[disabled],
+.btn-danger.disabled {
+    background: lighten($danger, 5%);
+
+    &:hover,
+    &:focus {
+        background: lighten($danger, 5%);
+    }
+
+    &:active,
+    &.active {
+        background: lighten($danger, 5%) !important;
+    }
+}
+
+.btn-outline-danger:hover {
+    color: var(--hh-text-color-contrast);
+}
+
+.btn-success {
+    color: var(--hh-text-color-contrast) !important;
+
+    &:hover,
+    &:focus {
+        background: darken($success, 5%);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        background: darken($success, 5%) !important;
+    }
+}
+
+.btn-success[disabled],
+.btn-success.disabled {
+    background: lighten($success, 5%);
+
+    &:hover,
+    &:focus {
+        background: lighten($success, 5%);
+    }
+
+    &:active,
+    &.active {
+        background: lighten($success, 5%) !important;
+    }
+}
+
+.btn-outline-success:hover {
+    color: var(--hh-text-color-contrast);
+}
+
+.btn-warning {
+    color: var(--hh-text-color-contrast) !important;
+
+    &:hover,
+    &:focus {
+        background: darken($warning, 2%);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        background: darken($warning, 2%) !important;
+    }
+}
+
+.btn-warning[disabled],
+.btn-warning.disabled {
+    background: lighten($warning, 5%);
+
+    &:hover,
+    &:focus {
+        background: lighten($warning, 5%);
+    }
+
+    &:active,
+    &.active {
+        background: lighten($warning, 5%) !important;
+    }
+}
+
+.btn-outline-warning:hover {
+    color: var(--hh-text-color-contrast);
+}
+
+.btn-link {
+    color: var(--bs-link-color) !important;
+
+    &:hover,
+    &:focus {
+        color: darken($link-color, 2%);
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        color: darken($link-color, 2%) !important;
+    }
+}
+
+.btn-link[disabled],
+.btn-link.disabled {
+    color: lighten($link-color, 5%);
+
+    &:hover,
+    &:focus {
+        color: lighten($link-color, 5%);
+    }
+
+    &:active,
+    &.active {
+        color: lighten($link-color, 5%) !important;
+    }
+}
+
+.btn-secondary {
+    color: var(--hh-text-color-contrast) !important;
+}
+
+.btn-outline-secondary:hover {
+    color: var(--hh-text-color-contrast);
+}

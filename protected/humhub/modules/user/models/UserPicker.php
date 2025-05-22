@@ -4,9 +4,6 @@ namespace humhub\modules\user\models;
 
 use humhub\libs\BasePermission;
 use Throwable;
-use Yii;
-use yii\helpers\Html;
-use humhub\modules\user\models\UserFilter;
 
 /**
  * This class can be used to filter results for a user picker search query by calling the static
