@@ -51,7 +51,14 @@ class DatePicker extends BaseDatePicker
 
         parent::init();
 
-        $this->pickerLanguage = $this->language ? $this->language : Yii::$app->language;
+        if ($this->attribute && $this->hasModel()) {
+            $attributeName = Html::getAttributeName($this->attribute);
+            if ($attributeName && $this->model->hasErrors($attributeName)) {
+                Html::addCssClass($this->options, 'is-invalid');
+            }
+        }
+
+        $this->pickerLanguage = $this->language ?: Yii::$app->language;
         $this->pickerLanguage = (array_key_exists($this->pickerLanguage, static::LANGUAGEMAPPING))
             ? static::LANGUAGEMAPPING[$this->pickerLanguage]
             : $this->pickerLanguage;
@@ -75,7 +82,7 @@ class DatePicker extends BaseDatePicker
 
         $this->options['autocomplete'] = 'off';
 
-        $language = $this->language ? $this->language : Yii::$app->language;
+        $language = $this->language ?: Yii::$app->language;
 
         echo $this->renderWidget() . "\n";
 
