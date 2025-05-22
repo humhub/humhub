@@ -50,7 +50,7 @@ use yii\helpers\Url;
     ->options(['data-message' => Json::encode(['type' => 'openNativeConsole'])])
     ->loader(false) ?>
 
-<div class="panel panel-default mt-5">
+<div class="panel panel-default mt-3">
     <div class="panel-body">
         <h4>Test Push Notification</h4>
         <p>
