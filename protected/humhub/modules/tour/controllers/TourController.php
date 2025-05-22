@@ -9,7 +9,7 @@
 namespace humhub\modules\tour\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -40,7 +40,7 @@ class TourController extends Controller
         // get page name from completed tour
         $page = Yii::$app->request->post('page');
 
-        if (!TourParams::isPageAcceptable($page)) {
+        if (!TourConfig::isPageAcceptable($page)) {
             return;
         }
 

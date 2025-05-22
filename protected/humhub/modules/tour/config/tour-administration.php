@@ -6,17 +6,17 @@
  */
 
 use humhub\modules\admin\controllers\ModuleController;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use yii\helpers\Url;
 
 return [
-    TourParams::KEY_PAGE => TourParams::PAGE_ADMINISTRATION,
-    TourParams::KEY_IS_VISIBLE => Yii::$app->user->isAdmin(),
-    TourParams::KEY_CONTROLLER_CLASS => ModuleController::class,
-    TourParams::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Administration (Modules)'),
-    TourParams::KEY_URL => Url::to(['/admin/module/list', 'tour' => true]),
-    TourParams::KEY_NEXT_PAGE => null,
-    TourParams::KEY_DRIVER => [
+    TourConfig::KEY_PAGE => TourConfig::PAGE_ADMINISTRATION,
+    TourConfig::KEY_IS_VISIBLE => Yii::$app->user->isAdmin(),
+    TourConfig::KEY_CONTROLLER_CLASS => ModuleController::class,
+    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Administration (Modules)'),
+    TourConfig::KEY_URL => Url::to(['/admin/module/list', 'tour' => true]),
+    TourConfig::KEY_NEXT_PAGE => null,
+    TourConfig::KEY_DRIVER => [
         'steps' => [
             [
                 'popover' => [

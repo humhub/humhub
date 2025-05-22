@@ -4,7 +4,7 @@ use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\tour\assets\TourAsset;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Url;
@@ -47,11 +47,11 @@ $removeOptionHtml = Html::tag(
         </p>
 
         <ul class="tour-list">
-            <?php foreach (TourParams::get() as $params): ?>
-                <?php if (isset($params[TourParams::KEY_PAGE], $params[TourParams::KEY_URL], $params[TourParams::KEY_TITLE])): ?>
-                    <li id="tour-panel-<?= $params[TourParams::KEY_PAGE] ?>"<?= $settingsManager->get($params[TourParams::KEY_PAGE]) ? ' class="completed"' : '' ?>>
-                        <a href="<?= $params[TourParams::KEY_URL] ?>" data-pjax-prevent>
-                            <?= Icon::get('play-circle-o') ?> <?= $params[TourParams::KEY_TITLE] ?>
+            <?php foreach (TourConfig::get() as $config): ?>
+                <?php if (isset($config[TourConfig::KEY_PAGE], $config[TourConfig::KEY_URL], $config[TourConfig::KEY_TITLE])): ?>
+                    <li id="tour-panel-<?= $config[TourConfig::KEY_PAGE] ?>"<?= $settingsManager->get($config[TourConfig::KEY_PAGE]) ? ' class="completed"' : '' ?>>
+                        <a href="<?= $config[TourConfig::KEY_URL] ?>" data-pjax-prevent>
+                            <?= Icon::get('play-circle-o') ?> <?= $config[TourConfig::KEY_TITLE] ?>
                         </a>
                     </li>
                 <?php endif; ?>

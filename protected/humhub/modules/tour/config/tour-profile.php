@@ -5,17 +5,17 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\modules\user\controllers\ProfileController;
 use humhub\widgets\bootstrap\Button;
 
 return [
-    TourParams::KEY_PAGE => TourParams::PAGE_PROFILE,
-    TourParams::KEY_CONTROLLER_CLASS => ProfileController::class,
-    TourParams::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> User profile'),
-    TourParams::KEY_URL => Yii::$app->user->identity->createUrl('/user/profile/home', ['tour' => true]),
-    TourParams::KEY_NEXT_PAGE => Yii::$app->user?->isAdmin() ? TourParams::PAGE_ADMINISTRATION : null,
-    TourParams::KEY_DRIVER => [
+    TourConfig::KEY_PAGE => TourConfig::PAGE_PROFILE,
+    TourConfig::KEY_CONTROLLER_CLASS => ProfileController::class,
+    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> User profile'),
+    TourConfig::KEY_URL => Yii::$app->user->identity->createUrl('/user/profile/home', ['tour' => true]),
+    TourConfig::KEY_NEXT_PAGE => Yii::$app->user?->isAdmin() ? TourConfig::PAGE_ADMINISTRATION : null,
+    TourConfig::KEY_DRIVER => [
         'steps' => [
             [
                 'popover' => [

@@ -6,17 +6,17 @@
  */
 
 use humhub\modules\dashboard\controllers\DashboardController;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Url;
 
 return [
-    TourParams::KEY_PAGE => TourParams::PAGE_DASHBOARD,
-    TourParams::KEY_CONTROLLER_CLASS => DashboardController::class,
-    TourParams::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Overview'),
-    TourParams::KEY_URL => Url::to(['/dashboard/dashboard', 'tour' => true]),
-    TourParams::KEY_NEXT_PAGE => TourParams::PAGE_SPACES,
-    TourParams::KEY_DRIVER => [
+    TourConfig::KEY_PAGE => TourConfig::PAGE_DASHBOARD,
+    TourConfig::KEY_CONTROLLER_CLASS => DashboardController::class,
+    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Overview'),
+    TourConfig::KEY_URL => Url::to(['/dashboard/dashboard', 'tour' => true]),
+    TourConfig::KEY_NEXT_PAGE => TourConfig::PAGE_SPACES,
+    TourConfig::KEY_DRIVER => [
         'steps' => [
             [
                 'popover' => [

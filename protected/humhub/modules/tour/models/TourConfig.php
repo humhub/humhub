@@ -14,11 +14,11 @@ use humhub\modules\tour\Module;
 use Yii;
 
 /**
- * Parameters for the introduction tour
+ * Configurations for the introduction tour
  *
  * @since 1.18
  */
-class TourParams
+class TourConfig
 {
     public const PAGE_DASHBOARD = 'interface';
     public const PAGE_SPACES = 'spaces';
@@ -55,64 +55,42 @@ class TourParams
      */
     public const KEY_DRIVER = 'driver';
 
+    /**
+     * Return an array of valid and visible page configs
+     * The array keys are the Page names
+     */
     public static function get(): array
-    {
-        return static::getCustom() ?? static::getDefault();
-    }
-
-    private static function getCustom(): ?array
     {
         /* @var Module $module */
         $module = Yii::$app->getModule('tour');
 
-        if (!is_array($module->customTourParams)) {
-            return null;
-        }
-
-        $validCustomParams = [];
-        foreach ($module->customTourParams as $params) {
+        $tourConfigs = [];
+        foreach ($module->tourConfigFiles as $file) {
+            $config = require Yii::getAlias($file);
             if (
-                static::isValidParams($params)
-                && (!isset($params[self::KEY_IS_VISIBLE]) || !$params[self::KEY_IS_VISIBLE])
+                static::isValidConfig($config)
+                && (!isset($config[self::KEY_IS_VISIBLE]) || $config[self::KEY_IS_VISIBLE])
             ) {
-                $validCustomParams[] = $params;
+                $tourConfigs[$config[self::KEY_PAGE]] = $config;
             }
         }
 
-        return $validCustomParams;
+        return $tourConfigs;
     }
 
-    public static function getDefault(): array
-    {
-        $tourParams = [
-            require(__DIR__ . '/../configs/tour-interface.php'),
-            require(__DIR__ . '/../configs/tour-spaces.php'),
-            require(__DIR__ . '/../configs/tour-profile.php'),
-            require(__DIR__ . '/../configs/tour-administration.php'),
-        ];
-
-        foreach ($tourParams as $key => $param) {
-            if (isset($params[self::KEY_IS_VISIBLE]) && !$params[self::KEY_IS_VISIBLE]) {
-                unset($params[$key]);
-            }
-        }
-
-        return $tourParams;
-    }
-
-    public static function isValidParams($params): bool
+    public static function isValidConfig($config): bool
     {
         $isValid =
-            is_array($params)
-            && !empty($params[self::KEY_PAGE])
-            && !empty($params[self::KEY_TITLE])
-            && !empty($params[self::KEY_CONTROLLER_CLASS])
-            && !empty($params[self::KEY_URL])
-            && array_key_exists(self::KEY_NEXT_PAGE, $params)
-            && !empty($params[self::KEY_DRIVER]);
+            is_array($config)
+            && !empty($config[self::KEY_PAGE])
+            && !empty($config[self::KEY_TITLE])
+            && !empty($config[self::KEY_CONTROLLER_CLASS])
+            && !empty($config[self::KEY_URL])
+            && array_key_exists(self::KEY_NEXT_PAGE, $config)
+            && !empty($config[self::KEY_DRIVER]);
 
         if (!$isValid) {
-            Yii::error("Invalid Tour params: " . print_r($params, true), 'tour');
+            Yii::error("Invalid Tour params: " . print_r($config, true), 'tour');
         }
 
         return $isValid;
@@ -120,9 +98,9 @@ class TourParams
 
     public static function getCurrent(): ?array
     {
-        foreach (self::get() as $params) {
-            if (Yii::$app->controller instanceof $params[self::KEY_CONTROLLER_CLASS]) {
-                return $params;
+        foreach (self::get() as $config) {
+            if (Yii::$app->controller instanceof $config[self::KEY_CONTROLLER_CLASS]) {
+                return $config;
             }
         }
 
@@ -131,13 +109,7 @@ class TourParams
 
     public static function isPageAcceptable(string $page): bool
     {
-        foreach (self::get() as $params) {
-            if ($page === $params[self::KEY_PAGE]) {
-                return true;
-            }
-        }
-
-        return false;
+        return array_key_exists($page, self::get());
     }
 
 
@@ -162,19 +134,12 @@ class TourParams
         return $space;
     }
 
-    public static function getNextUrl(array $params): ?string
+    public static function getNextUrl(?string $nextPage): ?string
     {
-        $nextPage = $params[self::KEY_NEXT_PAGE];
         if (!$nextPage) {
             return null;
         }
 
-        foreach (static::get() as $searchedParams) {
-            if ($searchedParams[self::KEY_PAGE] === $nextPage) {
-                return $searchedParams[self::KEY_URL];
-            }
-        }
-
-        return null;
+        return static::get()[$nextPage][self::KEY_URL] ?? null;
     }
 }

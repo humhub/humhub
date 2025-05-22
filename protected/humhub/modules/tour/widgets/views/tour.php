@@ -2,11 +2,11 @@
 
 use humhub\components\View;
 use humhub\helpers\Html;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 
 /**
  * @var $this View
- * @var $params array
+ * @var $config array
  */
 ?>
 
@@ -14,9 +14,9 @@ use humhub\modules\tour\models\TourParams;
     $(document).one('humhub:ready', function () {
         humhub.require('tour').start(
             {
-                page: '<?= $params[TourParams::KEY_PAGE] ?>',
-                nextUrl: '<?= TourParams::getNextUrl($params) ?>',
-                driver: <?= json_encode($params[TourParams::KEY_DRIVER], JSON_THROW_ON_ERROR) ?>
+                page: '<?= $config[TourConfig::KEY_PAGE] ?>',
+                nextUrl: '<?= TourConfig::getNextUrl($config[TourConfig::KEY_NEXT_PAGE]) ?>',
+                driver: <?= json_encode($config[TourConfig::KEY_DRIVER], JSON_THROW_ON_ERROR) ?>
             }
         );
     });

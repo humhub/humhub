@@ -8,7 +8,7 @@ use humhub\modules\admin\controllers\ModuleController;
 use humhub\modules\dashboard\controllers\DashboardController;
 use humhub\modules\space\controllers\SpaceController;
 use humhub\modules\tour\assets\TourAsset;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\modules\tour\Module;
 use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
 use humhub\modules\user\controllers\ProfileController;
@@ -58,17 +58,17 @@ class Tour extends Widget
             return '';
         }
 
-        $params = TourParams::getCurrent();
+        $config = TourConfig::getCurrent();
 
-        if (!$params) {
+        if (!$config) {
             return '';
         }
 
-        self::disableAutoStart($params[TourParams::KEY_PAGE]);
+        self::disableAutoStart($config[TourConfig::KEY_PAGE]);
 
         TourAsset::register($this->view);
 
-        return $this->render('tour', ['params' => $params]);
+        return $this->render('tour', ['config' => $config]);
     }
 
     private static function getSettings(): SettingsManager
@@ -81,11 +81,11 @@ class Tour extends Widget
     public static function isEnabledAutoStart(?string $page = null, ?User $user = null): bool
     {
         if ($page === null) {
-            $params = TourParams::getCurrent();
-            if (!$params) {
+            $config = TourConfig::getCurrent();
+            if (!$config) {
                 return false;
             }
-            $page = $params[TourParams::KEY_PAGE];
+            $page = $config[TourConfig::KEY_PAGE];
         }
 
         return (bool)self::getSettings()->user($user)->get('autoStartTour.' . $page, false);

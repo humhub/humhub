@@ -6,17 +6,17 @@
  */
 
 use humhub\modules\space\controllers\SpaceController;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\widgets\bootstrap\Button;
 
 return [
-    TourParams::KEY_PAGE => TourParams::PAGE_SPACES,
-    TourParams::KEY_IS_VISIBLE => (bool)TourParams::getTourSpace(),
-    TourParams::KEY_CONTROLLER_CLASS => SpaceController::class,
-    TourParams::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Spaces'),
-    TourParams::KEY_URL => TourParams::getTourSpace()?->createUrl('/space/space', ['tour' => true]),
-    TourParams::KEY_NEXT_PAGE => TourParams::PAGE_PROFILE,
-    TourParams::KEY_DRIVER => [
+    TourConfig::KEY_PAGE => TourConfig::PAGE_SPACES,
+    TourConfig::KEY_IS_VISIBLE => (bool)TourConfig::getTourSpace(),
+    TourConfig::KEY_CONTROLLER_CLASS => SpaceController::class,
+    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Spaces'),
+    TourConfig::KEY_URL => TourConfig::getTourSpace()?->createUrl('/space/space', ['tour' => true]),
+    TourConfig::KEY_NEXT_PAGE => TourConfig::PAGE_PROFILE,
+    TourConfig::KEY_DRIVER => [
         'steps' => [
             [
                 'popover' => [

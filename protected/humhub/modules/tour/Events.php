@@ -9,7 +9,7 @@
 namespace humhub\modules\tour;
 
 use humhub\modules\dashboard\widgets\Sidebar;
-use humhub\modules\tour\models\TourParams;
+use humhub\modules\tour\models\TourConfig;
 use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
 use humhub\modules\tour\widgets\Tour;
 use humhub\modules\user\models\User;
@@ -40,7 +40,7 @@ class Events
         $user = $event->identity;
 
         if ($user instanceof User && self::shouldStartWelcomeTour($user)) {
-            Tour::enableAutoStart(TourParams::PAGE_DASHBOARD, $user);
+            Tour::enableAutoStart(TourConfig::PAGE_DASHBOARD, $user);
         }
     }
 
