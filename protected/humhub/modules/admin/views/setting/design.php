@@ -6,7 +6,6 @@ use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\Button;
-use humhub\widgets\DataSaved;
 use yii\helpers\Html;
 use yii\helpers\Url;
 
@@ -66,10 +65,6 @@ $iconUrl = SiteIcon::getUrl(140);
     ]);
     ?>
     <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
-    <br>
-    <br>
-    <?= $form->field($model, 'horImageScrollOnMobile')->checkbox(); ?>
-
 
     <div class="well">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
@@ -110,6 +105,5 @@ $iconUrl = SiteIcon::getUrl(140);
     <hr>
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]); ?>
 
-    <?= DataSaved::widget(); ?>
     <?php ActiveForm::end(); ?>
 </div>

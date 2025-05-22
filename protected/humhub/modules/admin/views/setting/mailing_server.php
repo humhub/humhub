@@ -18,29 +18,28 @@ use yii\web\View;
 
 <?= $form->errorSummary($model); ?>
 
-<?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailName')]); ?>
+<?= $form->field($model, 'systemEmailName')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailName')]); ?>
 
 <div class="row">
     <div class="col-md-6">
-        <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailAddress')]); ?>
+        <?= $form->field($model, 'systemEmailAddress')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailAddress')]); ?>
     </div>
     <div class="col-md-6">
-        <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailer.systemEmailReplyTo')]); ?>
+        <?= $form->field($model, 'systemEmailReplyTo')->textInput(['readonly' => $settings->isFixed('mailerSystemEmailReplyTo')]); ?>
     </div>
 
 </div>
 
-<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailer.transportType')]); ?>
-
+<?= $form->field($model, 'transportType')->dropDownList($model->getTransportTypes(), ['readonly' => $settings->isFixed('mailerTransportType')]); ?>
 
 <div id="smtpOptions">
 
     <div class="row">
         <div class="col-md-8">
-            <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailer.hostname')]); ?>
+            <?= $form->field($model, 'hostname')->textInput(['readonly' => $settings->isFixed('mailerHostname')]); ?>
         </div>
         <div class="col-md-4">
-            <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailer.port')]); ?>
+            <?= $form->field($model, 'port')->textInput(['readonly' => $settings->isFixed('mailerPort')]); ?>
         </div>
     </div>
 
@@ -55,15 +54,15 @@ use yii\web\View;
 
     <div class="row">
         <div class="col-md-6">
-            <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailer.username')]); ?>
+            <?= $form->field($model, 'username')->textInput(['readonly' => $settings->isFixed('mailerUsername')]); ?>
         </div>
         <div class="col-md-6">
-            <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailer.password')])->passwordInput(); ?>
+            <?= $form->field($model, 'password')->textInput(['readonly' => $settings->isFixed('mailerPassword')])->passwordInput(); ?>
         </div>
     </div>
 </div>
 <div id="dsnOptions">
-    <?= $form->field($model, 'dsn')->textInput(['readonly' => $settings->isFixed('mailer.dsn')]); ?>
+    <?= $form->field($model, 'dsn')->textInput(['readonly' => $settings->isFixed('mailerDsn')]); ?>
 
     <strong><?= Yii::t('AdminModule.settings', 'DSN Examples:'); ?></strong>
     <ul>

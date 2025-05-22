@@ -8,10 +8,12 @@
 
 namespace humhub\libs;
 
+use humhub\components\InstallationState;
 use humhub\helpers\ArrayHelper;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
+use humhub\services\MailLinkService;
 use humhub\services\MigrationService;
 use Yii;
 use yii\helpers\UnsetArrayValue;
@@ -414,7 +416,7 @@ class SelfTest
 
         // Timezone Setting
         if (Yii::$app->controller->id != 'setup') {
-            if (Yii::$app->isInstalled()) {
+            if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
                 $title = Yii::t('AdminModule.information', 'Settings') . ' - ' . Yii::t('AdminModule.information', 'Pretty URLs');
                 if (Yii::$app->urlManager->enablePrettyUrl) {
                     $checks[] = [
@@ -559,29 +561,6 @@ class SelfTest
         $marketplaceModule = Yii::$app->getModule('marketplace');
         $path = realpath(Yii::getAlias($marketplaceModule->modulesPath));
         if (is_writeable($path)) {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'OK',
-            ];
-        } else {
-            $checks[] = [
-                'title' => $title,
-                'state' => 'ERROR',
-                'hint' => Yii::t('AdminModule.information', 'Make {filePath} writable for the Webserver/PHP!', ['filePath' => $path]),
-            ];
-        }
-        // Check Dynamic Config is Writable
-        $title = Yii::t('AdminModule.information', 'Permissions') . ' - ' . Yii::t('AdminModule.information', 'Dynamic Config');
-        $path = Yii::getAlias(Yii::$app->params['dynamicConfigFile']);
-        if (!is_file($path)) {
-            $path = dirname($path);
-        }
-
-        // Use realpath on the path alone to get the canonical path
-        // Applying realpath to a boolean (from is_writable) would cause errors, so keep them separate
-        $realPath = realpath($path);
-
-        if ($realPath !== false && is_writable($realPath)) {
             $checks[] = [
                 'title' => $title,
                 'state' => 'OK',
@@ -748,7 +727,7 @@ class SelfTest
             ];
         }
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
             $title = Yii::t('AdminModule.information', 'Database') . ' - ';
             $migrations = MigrationService::create()->getPendingMigrations();
             if ($migrations === []) {
@@ -857,7 +836,7 @@ class SelfTest
             ];
         }
 
-        if (Yii::$app->isInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED)) {
 
             // Check installed modules by marketplace
             /* @var \humhub\components\Module[] $modules */
@@ -895,16 +874,24 @@ class SelfTest
 
             // Check Mobile App - Push Service
             $title = $titlePrefix . Yii::t('AdminModule.information', 'Mobile App - Push Service');
-            if (static::isPushModuleAvailable()) {
-                $checks[] = [
-                    'title' => $title,
-                    'state' => 'OK',
-                ];
-            } else {
+            if (!static::isPushModuleAvailable()) {
                 $checks[] = [
                     'title' => $title,
                     'state' => 'WARNING',
                     'hint' => Yii::t('AdminModule.information', '"Push Notifications (Firebase)" module and setup of Firebase API Key required'),
+                ];
+            } elseif (!MailLinkService::instance()->isConfigured()) {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'WARNING',
+                    'hint' => Yii::t('AdminModule.information', 'Enable <a href="{url}">Link Redirection Service</a>', [
+                        'url' => Url::to(['/admin/setting/mailing-server']),
+                    ]),
+                ];
+            } else {
+                $checks[] = [
+                    'title' => $title,
+                    'state' => 'OK',
                 ];
             }
 
@@ -945,8 +932,7 @@ class SelfTest
         $pushModule = Yii::$app->getModule('fcm-push');
         return
             $pushModule instanceof \humhub\modules\fcmPush\Module &&
-            $pushModule->getIsEnabled() &&
-            $pushModule->getGoService()->isConfigured();
+            $pushModule->getIsEnabled();
     }
 
     /**

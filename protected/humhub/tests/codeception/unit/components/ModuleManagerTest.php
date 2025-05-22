@@ -11,6 +11,7 @@
 namespace humhub\tests\codeception\unit\components;
 
 use humhub\components\bootstrap\ModuleAutoLoader;
+use humhub\components\InstallationState;
 use humhub\components\ModuleEvent;
 use humhub\components\ModuleManager;
 use humhub\exceptions\InvalidArgumentTypeException;
@@ -54,6 +55,8 @@ class ModuleManagerTest extends HumHubDbTestCase
     private ?string $moduleNS = null;
     private static array $aliases;
     private static ModuleManager $originalModuleManager;
+
+
 
     public static function setUpBeforeClass(): void
     {
@@ -106,10 +109,6 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         static::$aliases = Yii::$aliases;
         static::$originalModuleManager = Yii::$app->moduleManager;
-        /**
-         * prevent calling ModuleEnabled::getEnabledIds() from @see ModuleManager::init()
-         */
-        Yii::$app->params['databaseInstalled'] = false;
 
         $this->reset();
 
@@ -117,6 +116,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         $this->moduleId = null;
         $this->moduleClass = null;
         $this->moduleNS = null;
+
+
+        Yii::$app->installationState->setInstalled();
 
         parent::setUp();
     }
@@ -272,7 +274,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/installerModule');
 
-        static::assertTrue(Yii::$app->isInstalled());
+        static::assertTrue(Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED));
 
         $this->registerModule($basePath, $config, false);
 
@@ -287,8 +289,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/installerModule');
 
-        Yii::$app->params['installed'] = false;
-
+        Yii::$app->installationState->setUninstalled();
         $this->registerModule($basePath, $config, true);
 
         $this->assertModuleActive();
@@ -1143,7 +1144,7 @@ class ModuleManagerTest extends HumHubDbTestCase
             ],
         ]);
 
-        if (Yii::$app->isDatabaseInstalled()) {
+        if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             static::$moduleEnabledList ??= array_column(
                 static::dbSelect('module_enabled', 'module_id'),
                 'module_id',

@@ -9,7 +9,6 @@
 namespace humhub\modules\ui\commands;
 
 use Exception;
-use humhub\libs\DynamicConfig;
 use humhub\modules\ui\view\bootstrap\ThemeLoader;
 use humhub\modules\ui\view\helpers\ThemeHelper;
 use Yii;
@@ -76,7 +75,6 @@ class ThemeController extends Controller
         }
 
         $theme->activate();
-        DynamicConfig::rewrite();
         (new ThemeLoader())->bootstrap(Yii::$app);
 
         $this->stdout("\nSuccessfully switched to theme: \n", Console::BOLD);

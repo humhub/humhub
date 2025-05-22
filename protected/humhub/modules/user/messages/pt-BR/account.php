@@ -1,12 +1,12 @@
 <?php
 return [
-  '<strong>Account</strong> Settings' => 'Configurações de <strong>Conta</strong>',
+  '<strong>Account</strong> Settings' => 'Configurações da <strong>Conta</strong>',
   '<strong>Confirm</strong></strong> your new email address' => '<strong>Confirme</strong> seu novo endereço de e-mail',
   '<strong>Permissions</strong>' => '<strong>Permissões</strong>',
   '<strong>Your</strong> Account' => '<strong>Sua</strong> conta',
   '<strong>Your</strong> profile' => '<strong>Seu</strong> perfil',
   'Add tags to your profile describing you and highlighting your skills and interests. Your tags will be displayed in your profile and in the \'People\' directory.' => 'Adicione tags ao seu perfil descrevendo você e destacando suas habilidades e interesses. Suas tags serão exibidas em seu perfil e no diretório \'Pessoas\'.',
-  'All your personal data will be irrevocably deleted.' => 'Todos os seus dados pessoais serão irrevogavelmente excluídos.',
+  'All your personal data will be irrevocably deleted.' => 'Todos os seus dados pessoais serão excluídos permanentemente.',
   'Are you sure that you want to delete your account?' => 'Tem certeza de que deseja excluir sua conta?',
   'Blocked users' => 'Usuários bloqueados',
   'Changing the username can make some links unusable, for example old links to the profile.' => 'Alterar o nome de usuário pode tornar alguns links inutilizáveis, por exemplo, links antigos para o perfil.',

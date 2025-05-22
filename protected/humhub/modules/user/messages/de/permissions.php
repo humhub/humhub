@@ -1,5 +1,5 @@
 <?php
-return array (
-  'Can Access \'People\'' => 'Zugriff auf Mitgliederverzeichnis',
-  'Can access \'People\' section.' => 'Kann über die Hauptnavigation auf das Mitgliederverzeichnis zugreifen',
-);
+return [
+  'Can Access \'People\'' => 'Kann auf Mitgliederverzeichnis zugreifen',
+  'Can access \'People\' section.' => 'Kann auf die Übersicht der Mitglieder zugreifen',
+];

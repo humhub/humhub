@@ -42,6 +42,7 @@ return [
     'Disabled Functions' => '',
     'Driver' => '',
     'Dynamic Config' => '',
+    'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'HumHub' => '',
     'HumHub Documentation' => '',
     'ICU Data Version ({version})' => '',

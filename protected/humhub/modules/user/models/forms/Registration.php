@@ -99,8 +99,6 @@ class Registration extends HForm
             $this->enableUserApproval = false;
         }
 
-        $this->setFormDefinition();
-
         parent::init();
     }
 
@@ -244,9 +242,6 @@ class Registration extends HForm
      */
     public function validate()
     {
-        // Ensure Models
-        $this->setModels();
-
         // Remove optional group assignment before validation
         // GroupUser assignment is optional and will be validated on save
         $groupUser = $this->models['GroupUser'];
@@ -262,7 +257,7 @@ class Registration extends HForm
      */
     public function submitted($buttonName = "")
     {
-        // Ensure Models
+        $this->setFormDefinition();
         $this->setModels();
 
         return parent::submitted($buttonName);

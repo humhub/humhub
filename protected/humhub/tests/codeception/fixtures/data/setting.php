@@ -6,8 +6,11 @@
  * @license   https://www.humhub.com/licences
  */
 
+use humhub\components\InstallationState;
+
 return [
-    ['name' => 'name', 'value' => 'HumHub', 'module_id' => 'base'],
+    ['name' => 'name', 'value' => 'HumHub Test', 'module_id' => 'base'],
+    ['name' => InstallationState::class, 'value' => InstallationState::STATE_INSTALLED , 'module_id' => 'base'],
     ['name' => 'baseUrl', 'value' => 'http://localhost:8080', 'module_id' => 'base'],
     ['name' => 'paginationSize', 'value' => '10', 'module_id' => 'base'],
     ['name' => 'displayNameFormat', 'value' => '{profile.firstname} {profile.lastname}', 'module_id' => 'base'],
@@ -16,9 +19,9 @@ return [
     ['name' => 'auth.anonymousRegistration', 'value' => '1', 'module_id' => 'user'],
     ['name' => 'auth.internalUsersCanInviteByEmail', 'value' => '1', 'module_id' => 'user'],
     ['name' => 'auth.internalUsersCanInviteByLink', 'value' => '1', 'module_id' => 'user'],
-    ['name' => 'mailer.transportType', 'value' => 'file', 'module_id' => 'base'],
-    ['name' => 'mailer.systemEmailAddress', 'value' => 'social@example.com', 'module_id' => 'base'],
-    ['name' => 'mailer.systemEmailName', 'value' => 'My Social Network', 'module_id' => 'base'],
+    ['name' => 'mailerTransportType', 'value' => 'file', 'module_id' => 'base'],
+    ['name' => 'mailerSystemEmailAddress', 'value' => 'social@example.com', 'module_id' => 'base'],
+    ['name' => 'mailerSystemEmailName', 'value' => 'My Social Network', 'module_id' => 'base'],
     ['name' => 'receive_email_activities', 'value' => '1', 'module_id' => 'activity'],
     ['name' => 'receive_email_notifications', 'value' => '2', 'module_id' => 'notification'],
     ['name' => 'maxFileSize', 'value' => '1048576', 'module_id' => 'file'],

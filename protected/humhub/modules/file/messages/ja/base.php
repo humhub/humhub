@@ -1,5 +1,5 @@
 <?php
-return array (
+return [
   '<strong>Open</strong> file' => 'ファイルを<strong>オープン</strong>',
   '<strong>Upload</strong> error' => '<strong>アップロード</strong> エラー',
   'Attach a video' => 'ビデオを添付する',
@@ -16,9 +16,12 @@ return array (
   'Insufficient permissions!' => '権限が不十分です！',
   'Invalid Mime-Type' => '無効なMIMEタイプ',
   'Last update by:' => '最終更新者:',
+  'Share' => '共有',
+  'Share as Post' => '投稿として共有する',
+  'Share in {targetDisplayName}' => '{targetDisplayName}で共有する。',
   'Size:' => 'サイズ：',
   'Sorry, you can only upload up to {n,plural,=1{# file} other{# files}} at once.' => 'もうしわけありませんが、{n} 個までのファイルしか一度にアップロードできません。',
   'The uploaded image is not a squared.' => 'アップロード画像が四角ではありません。',
   'This upload field only allows a maximum of {n,plural,=1{# file} other{# files}}.' => '{n} 個までのファイルしかこのアップロードに指定できません。',
   'Upload files' => 'ファイルをアップロード',
-);
+];

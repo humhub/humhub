@@ -47,7 +47,7 @@ class RegistrationCest
         $I->see('Sign up');
         $I->fillField('#register-email', 'mytestmail@test.de');
         $I->click('.btn-primary', '#invite-form');
-        $I->see('Registration successful!');
+        $I->see('Almost there!');
 
         $I->assertMailSent(1);
         $I->assertEqualsLastEmailSubject('Welcome to HumHub Test');

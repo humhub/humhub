@@ -2,7 +2,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\DynamicConfig;
 use Yii;
 use yii\base\Model;
 
@@ -40,20 +39,20 @@ class MailingSettingsForm extends Model
         parent::init();
 
         $settingsManager = Yii::$app->settings;
-        $this->transportType = $settingsManager->get('mailer.transportType');
-        $this->dsn = $settingsManager->get('mailer.dsn');
-        $this->hostname = $settingsManager->get('mailer.hostname');
-        $this->username = $settingsManager->get('mailer.username');
-        if ($settingsManager->get('mailer.password') != '') {
+        $this->transportType = $settingsManager->get('mailerTransportType');
+        $this->dsn = $settingsManager->get('mailerDsn');
+        $this->hostname = $settingsManager->get('mailerHostname');
+        $this->username = $settingsManager->get('mailerUsername');
+        if ($settingsManager->get('mailerPassword') != '') {
             $this->password = '---invisible---';
         }
 
-        $this->useSmtps = $settingsManager->get('mailer.useSmtps');
-        $this->port = $settingsManager->get('mailer.port');
-        $this->allowSelfSignedCerts = $settingsManager->get('mailer.allowSelfSignedCerts');
-        $this->systemEmailAddress = $settingsManager->get('mailer.systemEmailAddress');
-        $this->systemEmailName = $settingsManager->get('mailer.systemEmailName');
-        $this->systemEmailReplyTo = $settingsManager->get('mailer.systemEmailReplyTo');
+        $this->useSmtps = $settingsManager->get('mailerUseSmtps');
+        $this->port = $settingsManager->get('mailerPort');
+        $this->allowSelfSignedCerts = $settingsManager->get('mailerAllowSelfSignedCerts');
+        $this->systemEmailAddress = $settingsManager->get('mailerSystemEmailAddress');
+        $this->systemEmailName = $settingsManager->get('mailerSystemEmailName');
+        $this->systemEmailReplyTo = $settingsManager->get('mailerSystemEmailReplyTo');
     }
 
     /**
@@ -118,30 +117,28 @@ class MailingSettingsForm extends Model
     {
         $settingsManager = Yii::$app->settings;
 
-        $systemEmailAddressIsFixedBefore = $settingsManager->isFixed('mailer.systemEmailAddress');
-        $settingsManager->set('mailer.transportType', $this->transportType);
+        $systemEmailAddressIsFixedBefore = $settingsManager->isFixed('mailerSystemEmailAddress');
+        $settingsManager->set('mailerTransportType', $this->transportType);
 
         if ($this->transportType === self::TRANSPORT_SMTP) {
-            $settingsManager->set('mailer.hostname', $this->hostname);
-            $settingsManager->set('mailer.username', $this->username);
+            $settingsManager->set('mailerHostname', $this->hostname);
+            $settingsManager->set('mailerUsername', $this->username);
             if ($this->password != '---invisible---') {
-                $settingsManager->set('mailer.password', $this->password);
+                $settingsManager->set('mailerPassword', $this->password);
             }
-            $settingsManager->set('mailer.port', $this->port);
-            $settingsManager->set('mailer.useSmtps', $this->useSmtps);
-            $settingsManager->set('mailer.allowSelfSignedCerts', $this->allowSelfSignedCerts);
+            $settingsManager->set('mailerPort', $this->port);
+            $settingsManager->set('mailerUseSmtps', $this->useSmtps);
+            $settingsManager->set('mailerAllowSelfSignedCerts', $this->allowSelfSignedCerts);
         } elseif ($this->transportType === self::TRANSPORT_DSN) {
-            $settingsManager->set('mailer.dsn', $this->dsn);
+            $settingsManager->set('mailerDsn', $this->dsn);
         }
 
-        if (!$systemEmailAddressIsFixedBefore && !$settingsManager->isFixed('mailer.systemEmailAddress')) {
+        if (!$systemEmailAddressIsFixedBefore && !$settingsManager->isFixed('mailerSystemEmailAddress')) {
             // Update it only when it was not fixed before and after current updating
-            $settingsManager->set('mailer.systemEmailAddress', $this->systemEmailAddress);
+            $settingsManager->set('mailerSystemEmailAddress', $this->systemEmailAddress);
         }
-        $settingsManager->set('mailer.systemEmailName', $this->systemEmailName);
-        $settingsManager->set('mailer.systemEmailReplyTo', $this->systemEmailReplyTo);
-
-        DynamicConfig::rewrite();
+        $settingsManager->set('mailerSystemEmailName', $this->systemEmailName);
+        $settingsManager->set('mailerSystemEmailReplyTo', $this->systemEmailReplyTo);
 
         return true;
     }

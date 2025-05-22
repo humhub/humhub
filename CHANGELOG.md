@@ -1,6 +1,33 @@
 HumHub Changelog
 ================
 
+1.18.0 (Unreleased - Develop)
+----------------------------
+- Enh #7412: Confusing message after creating an account
+- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
+- Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7367: Changed Auto Debug Mode Detection
+- Enh #7361: Refactor application state mechanism
+- Enh #7425: Installer Wording update due to `.env` configuration
+- Enh #7433: Use strikethrough style for disabled user name
+- Enh #7444: Rename Mailer settings keys to work with `.env`
+- Fix #7451: Fix Module permissions visibility in content containers when not enabled
+- Fix #7450: Fix stream load suppressed when previous content is deleted/archived
+- Enh #7454: Upgrade compose packages
+- Fix #7443: Exclude inactive users from `followers` and `following` lists
+- Fix #7447: Update the comment counter when deleting a comment
+- Fix #7456: Fix setting manager backwards compatibility
+- Enh #7468: Remove deprecated widget `DataSaved`
+- Enh #7493: Add possibility to define content search order via module config
+- Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
+- Fix #7485: Fix initialization of the registration form definitions
+- Fix #7512: Fix priority of `dynamic.php`
+- Fix #7518: Fix Incorrect German Translation
+- Fix #7522: Fix mailer config
+- Fix #7526: Fix `installationState` issues
+- Fix #7508: Fix missed messages on search spaces in top space chooser
+
 1.17.3 (Unreleased)
 ----------------------
 - Fix #7484: Use password type on the installation DB config form
@@ -8,7 +35,8 @@ HumHub Changelog
 - Fix #7487: Fix comments list when comment is active from another parent comment
 - Enh #7492: Fix access to options on space invite form
 - Fix #7503: Don't run migration on updating of disabled module
-- Fix #7508: Fix missed messages on search spaces in top space chooser
+- Fix #7513: Fix priority of `dynamic.php`
+- Enh #7514: Update Redis example in `env.example`
 
 1.17.2 (April 7, 2025)
 ----------------------

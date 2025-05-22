@@ -22,5 +22,8 @@ return [
     'Attach a video' => '',
     'Attach an audio message' => '',
     'Attach an image' => '',
+    'Share' => '',
+    'Share as Post' => '',
+    'Share in {targetDisplayName}' => '',
     'The uploaded image is not a squared.' => '',
 ];
