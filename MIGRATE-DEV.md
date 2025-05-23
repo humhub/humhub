@@ -16,8 +16,8 @@ Version 1.18 (Unreleased)
 - `\humhub\components\captcha\YiiCaptchaValidator`
 - `Yii::$app->captcha` component
 - `\humhub\assets\DriverJsAsset` (driver.js)
-- `\humhub\modules\tour\Module::customTourParams`
-- `\humhub\modules\tour\Module::driverOptions`
+- `\humhub\modules\tour\Module::tourConfigFiles`
+- `\humhub\modules\tour\Module::driverJsOptions`
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
