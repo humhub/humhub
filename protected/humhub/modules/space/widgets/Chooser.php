@@ -104,9 +104,9 @@ class Chooser extends Widget
             'remoteSearchUrl' => Url::to(['/space/browse/search-json']),
             'lazySearchUrl' => Url::to(['/space/browse/search-lazy']),
             'text' => [
-                'info.remoteAtLeastInput' => Yii::t('SpaceModule.chooser', 'To search for other spaces, type at least {count} characters.', ['count' => 2]),
-                'info.emptyOwnResult' => Yii::t('SpaceModule.chooser', 'No member or following spaces found.'),
-                'info.emptyResult' => Yii::t('SpaceModule.chooser', 'No result found for the given filter.'),
+                'info.remoteAtLeastInput' => Yii::t('SpaceModule.chooser', 'Please enter at least {count} characters to search Spaces.', ['count' => 2]),
+                'info.emptyOwnResult' => Yii::t('SpaceModule.chooser', 'You are not a member of or following any Spaces.'),
+                'info.emptyResult' => Yii::t('SpaceModule.chooser', 'No Spaces found.'),
             ],
         ];
     }
