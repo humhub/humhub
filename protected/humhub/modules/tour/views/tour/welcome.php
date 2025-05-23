@@ -21,7 +21,6 @@ $imageDeleteUrl = $user->createUrl('/user/image/delete', ['type' => ContainerIma
 $imageCropUrl = $user->createUrl('/user/image/crop');
 
 $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
-
 ?>
 
 <?php Modal::beginDialog([

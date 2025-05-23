@@ -49,6 +49,19 @@
     border-radius: 3px;
     white-space: nowrap;
 
+    &:hover,
+    &:focus {
+        text-decoration: none;
+    }
+
+    &:active,
+    &.active {
+        outline: 0;
+        border-width: 1px;
+        border-style: solid;
+        box-shadow: none;
+    }
+
     &:not(.btn-icon-only) {
         i.fa {
             margin-right: 4px;
@@ -66,10 +79,6 @@
 
     &.btn-lg {
         padding: 16px 28px;
-
-        &:active, &.active {
-            padding: 15px 27px;
-        }
     }
 }
 
@@ -79,22 +88,18 @@
     &:hover,
     &:focus {
         background: darken($primary, 5%);
-        text-decoration: none;
     }
 
     &:active,
     &.active {
-        outline: 0;
-        border: 1px solid var(--bs-primary);
-        padding: 7px 15px;
+        border-color: var(--bs-primary);
         color: var(--bs-primary) !important;
         background: var(--hh-text-color-contrast) !important;
-        box-shadow: none;
     }
 
     &.active:hover,
     &.active:focus {
-        border: 1px solid darken($primary, 5%);
+        border-color: darken($primary, 5%);
         color: darken($primary, 5%) !important;
     }
 }
@@ -120,22 +125,18 @@
     &:hover,
     &:focus {
         background: darken($info, 5%) !important;
-        text-decoration: none;
     }
 
     &:active,
     &.active {
-        outline: 0;
-        border: 1px solid var(--bs-info);
-        padding: 7px 15px;
+        border-color: var(--bs-info);
         color: var(--bs-info) !important;
         background: var(--hh-text-color-contrast) !important;
-        box-shadow: none;
     }
 
     &.active:hover,
     &.active:focus {
-        border: 1px solid darken($info, 5%);
+        border-color: darken($info, 5%);
         color: darken($info, 5%) !important;
     }
 }
@@ -165,7 +166,6 @@
     &:hover,
     &:focus {
         background: darken($danger, 5%);
-        text-decoration: none;
     }
 
     &:active,
@@ -200,12 +200,10 @@
     &:hover,
     &:focus {
         background: darken($success, 5%);
-        text-decoration: none;
     }
 
     &:active,
     &.active {
-        outline: 0;
         background: darken($success, 5%) !important;
     }
 }
@@ -235,12 +233,10 @@
     &:hover,
     &:focus {
         background: darken($warning, 2%);
-        text-decoration: none;
     }
 
     &:active,
     &.active {
-        outline: 0;
         background: darken($warning, 2%) !important;
     }
 }
@@ -270,12 +266,10 @@
     &:hover,
     &:focus {
         color: darken($link-color, 2%);
-        text-decoration: none;
     }
 
     &:active,
     &.active {
-        outline: 0;
         color: darken($link-color, 2%) !important;
     }
 }
