@@ -19,7 +19,7 @@ class Module extends \humhub\components\Module
     public $isCoreModule = true;
 
     /**
-     * Configuration files for each page of the introduction tour
+     * Configuration files for each Tour
      * Must return an array of valid params, see `\humhub\modules\tour\models\TourConfig::isValidConfig()`
      *
      * Example of a custom config file:
@@ -44,7 +44,7 @@ class Module extends \humhub\components\Module
      *
      * @since 1.18
      */
-    public array $driverOptions = [
+    public array $driverJsOptions = [
         'showProgress' => 'true',
     ];
 

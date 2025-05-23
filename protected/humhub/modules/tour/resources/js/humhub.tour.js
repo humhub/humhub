@@ -1,29 +1,33 @@
 humhub.module('tour', function (module, requrie, $) {
 
     var client = requrie('client');
-    var page;
+    var tourId;
     var nextUrl;
 
     var start = function (options) {
+        tourId = options.tourId;
+        nextUrl = options.nextUrl;
+
         // Load driver.js
         const driver = window.driver.js.driver;
         const driverObj = driver({
-            ...module.config.driverOptions,
-            ...options.driver
+            ...module.config.driverJsOptions,
+            ...options.driverJs,
+            onDestroyed: (element, step, options) => {
+                const next = nextUrl !== "" && nextUrl != null;
+                tourCompleted(next);
+            }
         });
         driverObj.drive();
-
-        page = options.page;
-        nextUrl = options.nextUrl;
     };
 
     /**
      * Set tour as seen
      */
     function tourCompleted(next) {
-        client.post(module.config.completedUrl, {data: {page: page}}).then(function () {
+        client.post(module.config.completedUrl, {data: {tour_id: tourId}}).then(function () {
             // cross out welcome tour entry
-            $('#tour-panel-' + module.config.dashboardPage).addClass('completed');
+            $('#tour-panel-' + module.config.dashboardTourId).addClass('completed');
 
             if (next === true && nextUrl) {
                 window.location.href = nextUrl;

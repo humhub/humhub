@@ -9,7 +9,7 @@
 namespace humhub\modules\tour\controllers;
 
 use humhub\components\Controller;
-use humhub\modules\tour\models\TourConfig;
+use humhub\modules\tour\TourConfig;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -37,15 +37,15 @@ class TourController extends Controller
      */
     public function actionTourCompleted()
     {
-        // get page name from completed tour
-        $page = Yii::$app->request->post('page');
+        // get Tour ID from the completed tour
+        $tourId = Yii::$app->request->post('tour_id');
 
-        if (!TourConfig::isPageAcceptable($page)) {
+        if (!TourConfig::IsCurrentRouteAcceptable($tourId)) {
             return;
         }
 
         // set tour status to seen for current user
-        Yii::$app->getModule('tour')->settings->user()->set($page, true);
+        Yii::$app->getModule('tour')->settings->user()->set($tourId, true);
     }
 
     public function actionHidePanel()

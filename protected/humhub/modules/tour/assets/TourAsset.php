@@ -10,8 +10,8 @@ namespace humhub\modules\tour\assets;
 
 use humhub\assets\DriverJsAsset;
 use humhub\components\View;
-use humhub\modules\tour\models\TourConfig;
 use humhub\modules\tour\Module;
+use humhub\modules\tour\TourConfig;
 use Yii;
 use yii\helpers\Url;
 use yii\web\AssetBundle;
@@ -59,9 +59,9 @@ class TourAsset extends AssetBundle
 
         $view->registerJsConfig('tour', [
             'dashboardUrl' => Url::to(['/dashboard/dashboard']),
-            'dashboardPage' => TourConfig::PAGE_DASHBOARD,
+            'dashboardTourId' => TourConfig::TOUR_ID_DASHBOARD,
             'completedUrl' => Url::to(['/tour/tour/tour-completed']),
-            'driverOptions' => $module->driverOptions,
+            'driverJsOptions' => $module->driverJsOptions,
         ]);
 
         return parent::register($view);

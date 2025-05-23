@@ -4,14 +4,10 @@ namespace humhub\modules\tour\widgets;
 
 use humhub\components\SettingsManager;
 use humhub\components\Widget;
-use humhub\modules\admin\controllers\ModuleController;
-use humhub\modules\dashboard\controllers\DashboardController;
-use humhub\modules\space\controllers\SpaceController;
 use humhub\modules\tour\assets\TourAsset;
-use humhub\modules\tour\models\TourConfig;
 use humhub\modules\tour\Module;
+use humhub\modules\tour\TourConfig;
 use humhub\modules\tour\widgets\Dashboard as DashboardWidget;
-use humhub\modules\user\controllers\ProfileController;
 use humhub\modules\user\models\User;
 use Yii;
 
@@ -24,15 +20,6 @@ use Yii;
  */
 class Tour extends Widget
 {
-    private static function getTypes(): array
-    {
-        return [
-            'interface' => ['view' => 'guide_interface', 'controller' => DashboardController::class],
-            'space' => ['view' => 'guide_spaces', 'controller' => SpaceController::class],
-            'user' => ['view' => 'guide_profile', 'controller' => ProfileController::class],
-            'admin' => ['view' => 'guide_administration', 'controller' => ModuleController::class],
-        ];
-    }
 
     /**
      * Executes the widgets
@@ -43,7 +30,7 @@ class Tour extends Widget
             return '';
         }
 
-        // Active tour flag is not set and auto start is not enabled
+        // Active Tour flag is not set and auto start is not enabled
         if (!Yii::$app->request->get('tour') && !self::isEnabledAutoStart()) {
             return '';
         }
@@ -53,7 +40,7 @@ class Tour extends Widget
             return '';
         }
 
-        // Check if tour is activated by admin and users
+        // Check if Tour is activated by admin and users
         if (!DashboardWidget::isVisible()) {
             return '';
         }
@@ -64,7 +51,7 @@ class Tour extends Widget
             return '';
         }
 
-        self::disableAutoStart($config[TourConfig::KEY_PAGE]);
+        self::disableAutoStart(TourConfig::getTourId($config));
 
         TourAsset::register($this->view);
 
@@ -78,28 +65,28 @@ class Tour extends Widget
         return $module->settings;
     }
 
-    public static function isEnabledAutoStart(?string $page = null, ?User $user = null): bool
+    public static function isEnabledAutoStart(?string $tourId = null, ?User $user = null): bool
     {
-        if ($page === null) {
+        if ($tourId === null) {
             $config = TourConfig::getCurrent();
             if (!$config) {
                 return false;
             }
-            $page = $config[TourConfig::KEY_PAGE];
+            $tourId = TourConfig::getTourId($config);
         }
 
-        return (bool)self::getSettings()->user($user)->get('autoStartTour.' . $page, false);
+        return (bool)self::getSettings()->user($user)->get('autoStartTour.' . $tourId, false);
     }
 
-    public static function enableAutoStart(string $page, ?User $user = null)
+    public static function enableAutoStart(string $tourId, ?User $user = null)
     {
-        self::getSettings()->user($user)->set('autoStartTour.' . $page, true);
+        self::getSettings()->user($user)->set('autoStartTour.' . $tourId, true);
     }
 
-    public static function disableAutoStart(string $page, ?User $user = null)
+    public static function disableAutoStart(string $tourId, ?User $user = null)
     {
-        if (self::isEnabledAutoStart($page)) {
-            self::getSettings()->user($user)->delete('autoStartTour.' . $page);
+        if (self::isEnabledAutoStart($tourId)) {
+            self::getSettings()->user($user)->delete('autoStartTour.' . $tourId);
         }
     }
 }

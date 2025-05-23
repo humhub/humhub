@@ -6,17 +6,21 @@
  */
 
 use humhub\modules\dashboard\controllers\DashboardController;
-use humhub\modules\tour\models\TourConfig;
+use humhub\modules\tour\TourConfig;
 use humhub\widgets\bootstrap\Button;
 use yii\helpers\Url;
 
 return [
-    TourConfig::KEY_PAGE => TourConfig::PAGE_DASHBOARD,
-    TourConfig::KEY_CONTROLLER_CLASS => DashboardController::class,
-    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Overview'),
-    TourConfig::KEY_URL => Url::to(['/dashboard/dashboard', 'tour' => true]),
-    TourConfig::KEY_NEXT_PAGE => TourConfig::PAGE_SPACES,
-    TourConfig::KEY_DRIVER => [
+    TourConfig::KEY_TOUR_ID => TourConfig::TOUR_ID_DASHBOARD,
+    TourConfig::KEY_TOUR_ON_CONTROLLER_CLASS => DashboardController::class,
+    TourConfig::KEY_TITLE => function () {
+        return Yii::t('TourModule.base', '<strong>Guide:</strong> Overview');
+    },
+    TourConfig::KEY_START_URL => function () {
+        return Url::to(['/dashboard/dashboard', 'tour' => true]);
+    },
+    TourConfig::KEY_NEXT_TOUR_ID => TourConfig::TOUR_ID_SPACES,
+    TourConfig::KEY_DRIVER_JS => [
         'steps' => [
             [
                 'popover' => [
