@@ -112,13 +112,13 @@ class Theme extends BaseTheme
         $baseUrl = $this->getBaseUrl();
 
         // Build CSS if not already done
-        $cssFile = $this->publishedResourcesPath . '/css/theme.css';
+        $cssFile = $this->publishedResourcesPath . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
         if (!file_exists($cssFile)) {
             ThemeHelper::buildCss();
         }
 
         $mtime = filemtime($cssFile);
-        Yii::$app->view->registerCssFile($baseUrl . '/resources/css/theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
+        Yii::$app->view->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
     }
 
 
