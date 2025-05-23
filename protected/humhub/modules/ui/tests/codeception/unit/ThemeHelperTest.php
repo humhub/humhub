@@ -12,7 +12,15 @@ class ThemeHelperTest extends HumHubDbTestCase
 {
     public function testBuildCssForDefaultTheme()
     {
-        $this->testTheme(ThemeHelper::getThemeByName('HumHub'));
+        $theme = ThemeHelper::getThemeByName('HumHub');
+        $this->testTheme($theme);
+
+        // Clear the assets folder
+        Yii::$app->assetManager->clear();
+        $this->assertFileNotExists($this->getThemeCssPath($theme));
+
+        $this->assertTrue(ThemeHelper::buildCss($theme));
+        $this->assertFileExists($this->getThemeCssPath($theme));
     }
 
     public function testBuildCssForChildTheme()
@@ -24,7 +32,7 @@ class ThemeHelperTest extends HumHubDbTestCase
     {
         $this->assertInstanceOf(Theme::class, $theme);
         $this->assertTrue(ThemeHelper::buildCss($theme));
-        $this->assertFileExists($theme->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css');
+        $this->assertFileExists($this->getThemeCssPath($theme));
         $this->assertEquals('#435f6f', $theme->variable('primary'));
     }
 
@@ -37,5 +45,10 @@ class ThemeHelperTest extends HumHubDbTestCase
         FileHelper::copyDirectory($sourceThemeDir, $newThemeDir, ['recursive' => true]);
 
         return ThemeHelper::getThemeByPath($newThemeDir);
+    }
+
+    private function getThemeCssPath(Theme $theme): string
+    {
+        return $theme->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css';
     }
 }
