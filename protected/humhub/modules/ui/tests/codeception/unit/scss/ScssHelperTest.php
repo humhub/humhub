@@ -11,7 +11,7 @@ class ScssHelperTest extends HumHubDbTestCase
     /**
      * Make sure value of SCSS variables like @firstColor is replaced with real value like #FFF of the SCSS variable with name firstColor
      */
-    public function testParseLinkedScssVariables()
+    public function testGetAndParseLinkedScssVariables()
     {
         // Get SCSS variables from two sample files:
         $variables = ArrayHelper::merge(
