@@ -245,14 +245,14 @@ class ThemeHelper
         // Import variables (bootstrap variables have a !default suffix to allow overwriting)
         $variableImports[] = Yii::getAlias('@webroot-static/scss/variables');
         foreach ($treeThemes as $treeTheme) {
-            $variableImports[] = $treeTheme->getBasePath() . '/scss/variables';
+            $variableImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
 
         // Import all other files
         $otherImports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
         $otherImports[] = Yii::getAlias('@webroot-static/scss/humhub');
         foreach ($treeThemes as $treeTheme) {
-            $otherImports[] = $treeTheme->getBasePath() . '/scss/build';
+            $otherImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
         }
 
         // Set source map
@@ -266,12 +266,12 @@ class ThemeHelper
         ]);
 
         // Define the output files
-        $cssDir = $theme->getPublishedResourcesPath() . '/css';
+        $cssDir = $theme->getPublishedResourcesPath() . DIRECTORY_SEPARATOR . 'css';
         if (!file_exists($cssDir) && !FileHelper::createDirectory($cssDir)) {
             return static::logAndGetError('Could not create directory ' . $cssDir);
         }
-        $cssFilePath = $cssDir . '/theme.css';
-        $mapFilePath = $cssDir . '/theme.map';
+        $cssFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.css';
+        $mapFilePath = $cssDir . DIRECTORY_SEPARATOR . 'theme.map';
 
         // Check if files are writable
         $cssFilePermissionError = static::getFilePermissionError($cssFilePath);
