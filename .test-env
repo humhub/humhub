@@ -1,9 +1,0 @@
-# adapt the following line to include your path:
-export HUMHUB_PATH="/home/marc/www/dev"
-
-# If you're using the newly checked-out source in your temp directory, uncomment the following line
-#export HUMHUB_PATH="/tmp/test/humhub"
-
-# Keep these lines unchanged
-export HUMHUB_VENDOR_BIN="$HUMHUB_PATH/protected/vendor/bin"
-export HUMHUB_TEST_YII="$HUMHUB_PATH/protected/humhub/tests/codeception/bin/yii"
