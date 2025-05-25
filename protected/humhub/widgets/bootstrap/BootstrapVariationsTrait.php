@@ -263,7 +263,9 @@ trait BootstrapVariationsTrait
      */
     public function cssTextColor(string $color): static
     {
-        $this->style('color:' . $color . ' !important');
+        if ($color) {
+            $this->style('color:' . $color . ' !important');
+        }
         return $this;
     }
 }
