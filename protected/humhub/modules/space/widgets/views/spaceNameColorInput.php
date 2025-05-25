@@ -20,7 +20,7 @@ if ($model->color === null) {
 
 <label class="form-label" for="<?= $containerId ?>"><?= $model->attributeLabels()['name'] ?></label>
 
-<div id="<?= $containerId ?>" class="mb-3 input-group space-color-chooser-edit">
+<div id="<?= $containerId ?>" class="mb-3 input-group input-color-group">
 
     <div class="input-group-prepend">
         <?= $form->field($model, 'color', ['options' => []])
