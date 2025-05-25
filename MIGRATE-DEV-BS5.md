@@ -29,11 +29,13 @@ Widgets in these new folders:
 And especially:
 - `humhub\widgets\bootstrap\Badge` (see https://getbootstrap.com/docs/5.3/components/badge/)
 - `humhub\widgets\bootstrap\Alert` (see https://getbootstrap.com/docs/5.3/components/alerts/)
-- `humhub\widgets\bootstrap\Button::asBadge()`
-- `humhub\widgets\bootstrap\Button::secondary()`
-- `humhub\widgets\bootstrap\Button::light()`
-- `humhub\widgets\bootstrap\Button::dark()`
+- `humhub\widgets\bootstrap\Button::secondary()` (same for Badge and Label)
+- `humhub\widgets\bootstrap\Button::light()` (same for Badge and Label)
+- `humhub\widgets\bootstrap\Button::dark()` (same for Badge and Label)
+- `humhub\widgets\bootstrap\Button::cssBgColor()` (same for Badge and Label)
+- `humhub\widgets\bootstrap\Button::cssTextColor()` (same for Badge and Label)
 - `humhub\widgets\bootstrap\Button::outline()`
+- `humhub\widgets\bootstrap\Button::asBadge()`
 
 Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
 
@@ -54,12 +56,11 @@ Widgets & helpers:
 - `humhub\modules\ui\view\helpers\ThemeHelper` use `humhub\helpers\ThemeHelper` instead
 
 Widget methods & properties:
-- `humhub\widgets\bootstrap\Button::xs()` use `humhub\widgets\bootstrap\Button::sm()` instead
-- `humhub\widgets\bootstrap\Button::defaultType()` use `humhub\widgets\bootstrap\Button::light()` or `Button::secondary()` instead
-- `humhub\widgets\bootstrap\Badge::xs()` use `humhub\widgets\bootstrap\Badge::sm()` instead
-- `humhub\widgets\bootstrap\Badge::defaultType()` use `humhub\widgets\bootstrap\Badge::light()` or `Badge::secondary()` instead
-- `humhub\widgets\bootstrap\Button::htmlOptions` use `humhub\widgets\bootstrap\Button::options` instead
-- `humhub\widgets\bootstrap\Badge::htmlOptions` use `humhub\widgets\bootstrap\Badge::options` instead
+- `humhub\widgets\bootstrap\Button::xs()` & `humhub\widgets\bootstrap\Badge::xs()` use `::sm()` instead
+- `humhub\widgets\bootstrap\Button::defaultType()` & `humhub\widgets\bootstrap\Badge::defaultType()` use `::light()` or `::secondary()` instead
+- `humhub\widgets\bootstrap\Button::htmlOptions` & `humhub\widgets\bootstrap\Badge::htmlOptions` use `::options` instead
+- `humhub\widgets\bootstrap\Button::color()` & `humhub\widgets\bootstrap\Badge::color()` use `::instance($text, $color)` instead for a Bootstrap color, or `::cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA) (same for Badge)
+- `humhub\widgets\bootstrap\Button::textColor()` & `humhub\widgets\bootstrap\Badge::textColor()` use `::cssTextColor()` instead
 
 Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" below)
 
