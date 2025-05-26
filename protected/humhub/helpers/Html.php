@@ -279,4 +279,16 @@ class Html extends \yii\bootstrap5\Html
         return parent::dropDownList($name, $selection, $items, self::getDropDownListOptions($options));
     }
 
+    /**
+     * @inheritdoc
+     */
+    public static function activeLabel($model, $attribute, $options = [])
+    {
+        if ($model->isAttributeRequired('name')) {
+            $options['required'] = true;
+        }
+
+        return parent::activeLabel($model, $attribute, $options);
+    }
+
 }
