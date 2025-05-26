@@ -10,7 +10,7 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
      */
     public function safeUp()
     {
-        // Copy Primary and Secondary colors to the Settings manager
+        // Copy colors to the Settings manager
         $settingsManager = Yii::$app->settings;
         $themeVariables = Yii::$app->view->theme->variables;
         $settingsManager->set('themePrimaryColor', $themeVariables->get('primary'));
@@ -18,7 +18,7 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
         $settingsManager->set('themeDangerColor', $themeVariables->get('danger'));
         $settingsManager->set('themeWarningColor', $themeVariables->get('warning'));
         $settingsManager->set('themeInfoColor', $themeVariables->get('info'));
-        $settingsManager->set('themeLightColor', $themeVariables->get('default')); // Info becomes Light
+        $settingsManager->set('themeLightColor', $themeVariables->get('default')); // Default becomes Light
 
         // Switch to HumHub theme
         $hhTheme = ThemeHelper::getThemeByName('HumHub');
