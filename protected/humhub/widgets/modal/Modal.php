@@ -12,9 +12,36 @@ use humhub\widgets\form\ActiveForm;
 use yii\bootstrap5\Html;
 
 /**
- * @inerhitdoc
- *
  * Provides an extension of the yii\bootstrap5\Modal class with additional features.
+ *
+ * Usages:
+ *
+ *  ~~~php
+ * <?php Modal::beginDialog([
+ *     'title' => Yii::t('ModuleIdModule.base', 'Title'),
+ *     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+ * ]) ?>
+ *     Content
+ * <?php Modal::endDialog() ?>
+ *  ~~~
+ *
+ * ~~~php
+ * <?php $form = Modal::beginFormDialog([
+ *     'title' => Yii::t('ModuleIdModule.base', 'Title'),
+ *     'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+ *     'form' => [], //  configuration for the form (optional)
+ * ]) ?>
+ *     Content and the form inputs for $form
+ * <?php Modal::endFormDialog()?>
+ * ~~~
+ *
+ * ~~~php
+ * Modal::widget([
+ *     'title' => Yii::t('ModuleIdModule.base', 'Title'),
+ *     'body' => 'Content',
+ *     'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+ * ])
+ * ~~~
  *
  * @since 1.18
  * @see https://getbootstrap.com/docs/5.3/components/modal/
@@ -65,6 +92,11 @@ class Modal extends \yii\bootstrap5\Modal
     public $centerText;
 
     /**
+     * @var string Body text, useful when this widget is called as Modal::widget(['body' => '...'])
+     */
+    public string $body = '';
+
+    /**
      * If true, prevents echo of the modal beginning tags.
      */
     public bool $bypassParentInit = false;
@@ -78,19 +110,17 @@ class Modal extends \yii\bootstrap5\Modal
 
     protected function initOptions()
     {
-        $this->title = $this->title ?: $this->header;
-
-        if ($this->showClose === false) {
-            $this->closeButton = false;
-        }
-
         $this->options['data-bs-backdrop'] = ($this->closable && $this->backdrop) ? 'true' : 'static';
         $this->options['data-bs-keyboard'] = ($this->closable && $this->keyboard) ? 'true' : 'false';
 
         $this->clientOptions['show'] = $this->show;
 
-        // Convert size from deprecated values to new ones
         // TODO: remove in later version
+        $this->title = $this->title ?: $this->header;
+        if ($this->showClose === false) {
+            $this->closeButton = false;
+        }
+        // Convert size from deprecated values to new ones
         if ($this->size === 'extra-small') {
             $this->size = static::SIZE_SMALL;
         } elseif ($this->size === 'small') {
@@ -104,6 +134,24 @@ class Modal extends \yii\bootstrap5\Modal
         }
 
         parent::initOptions();
+    }
+
+    public function run()
+    {
+        echo $this->renderDialogBegin() . "\n" .
+            $this->renderHeader() . "\n" .
+            $this->renderBodyBegin() . "\n" .
+            $this->body . "\n" .
+            $this->renderBodyEnd() . "\n" .
+            $this->renderFooter() . "\n" .
+            $this->renderDialogEnd();
+        $this->registerPlugin('modal');
+    }
+
+    public static function widget($config = [])
+    {
+        $config['bypassParentInit'] = true;
+        return parent::widget($config);
     }
 
     /**

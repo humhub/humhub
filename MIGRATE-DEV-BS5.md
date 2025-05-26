@@ -145,6 +145,16 @@ Now:
 <?php Modal::endDialog() ?>
 ```
 
+Or:
+
+```php
+<?= Modal::widget([
+    'title' => Yii::t('ModuleIdModule.base', 'Title'),
+    'body' => 'Content',
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+]); ?>
+```
+
 If the footer contains a "Submit" button, the modal dialog must be included in the form by using the `Modal::beginFormDialog()` and `Modal::endFormDialog()` methods:
 
 ```php
