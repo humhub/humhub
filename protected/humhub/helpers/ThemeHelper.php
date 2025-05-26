@@ -291,6 +291,24 @@ class ThemeHelper
         if ($designSettingsForm->themeSecondaryColor) {
             $scssSource .= '$secondary: ' . $designSettingsForm->themeSecondaryColor . ';' . PHP_EOL;
         }
+        if ($designSettingsForm->themeSuccessColor) {
+            $scssSource .= '$success: ' . $designSettingsForm->themeSuccessColor . ';' . PHP_EOL;
+        }
+        if ($designSettingsForm->themeDangerColor) {
+            $scssSource .= '$danger: ' . $designSettingsForm->themeDangerColor . ';' . PHP_EOL;
+        }
+        if ($designSettingsForm->themeWarningColor) {
+            $scssSource .= '$warning: ' . $designSettingsForm->themeWarningColor . ';' . PHP_EOL;
+        }
+        if ($designSettingsForm->themeInfoColor) {
+            $scssSource .= '$info: ' . $designSettingsForm->themeInfoColor . ';' . PHP_EOL;
+        }
+        if ($designSettingsForm->themeLightColor) {
+            $scssSource .= '$light: ' . $designSettingsForm->themeLightColor . ';' . PHP_EOL;
+        }
+        if ($designSettingsForm->themeDarkColor) {
+            $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
+        }
         $scssSource .=
             '@import "' . implode('", "', $otherImports) . '";' . PHP_EOL .
             $designSettingsForm->themeCustomScss;
