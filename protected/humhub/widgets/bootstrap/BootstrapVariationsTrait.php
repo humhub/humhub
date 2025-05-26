@@ -250,7 +250,7 @@ trait BootstrapVariationsTrait
     /**
      * @param string $color Hexadecimal, RGB, RGBA, HSL, HSLA
      */
-    public function cssBgColor(string $color): static
+    public function cssBgColor(?string $color): static
     {
         if ($color) {
             $this->style('background-color:' . $color . ' !important');
@@ -261,7 +261,7 @@ trait BootstrapVariationsTrait
     /**
      * @param string $color Hexadecimal, RGB, RGBA, HSL, HSLA
      */
-    public function cssTextColor(string $color): static
+    public function cssTextColor(?string $color): static
     {
         if ($color) {
             $this->style('color:' . $color . ' !important');
