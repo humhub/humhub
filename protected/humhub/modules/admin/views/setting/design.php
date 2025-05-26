@@ -109,8 +109,8 @@ $themeVariables = Yii::$app->view->theme->variables;
 
     <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
 
-    <div class="row mb-3">
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themePrimaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themePrimaryColor')->colorInput() ?>
@@ -118,7 +118,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSecondaryColor')->colorInput() ?>
@@ -127,8 +127,8 @@ $themeVariables = Yii::$app->view->theme->variables;
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeSuccessColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeSuccessColor')->colorInput() ?>
@@ -136,7 +136,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeDangerColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDangerColor')->colorInput() ?>
@@ -145,8 +145,8 @@ $themeVariables = Yii::$app->view->theme->variables;
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeWarningColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeWarningColor')->colorInput() ?>
@@ -154,7 +154,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeInfoColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeInfoColor')->colorInput() ?>
@@ -163,8 +163,8 @@ $themeVariables = Yii::$app->view->theme->variables;
         </div>
     </div>
 
-    <div class="row mb-3">
-        <div class="col-lg-6">
+    <div class="row">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeLightColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeLightColor')->colorInput() ?>
@@ -172,7 +172,7 @@ $themeVariables = Yii::$app->view->theme->variables;
             </div>
         </div>
 
-        <div class="col-lg-6">
+        <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeDarkColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
                 <?= $form->field($model, 'themeDarkColor')->colorInput() ?>
