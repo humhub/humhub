@@ -5,6 +5,9 @@
 label {
     font-weight: 700;
     margin-bottom: 5px;
+    &[required]:after{
+        content:" *";color:var(--bs-info);
+    }
 }
 
 // Remove BS5 inner black color in radio
@@ -140,6 +143,30 @@ textarea.placeholder {
 .hint-block:hover {
     color: var(--hh-text-color-secondary) !important;
     font-size: 12px;
+}
+
+.input-color-group {
+    flex-wrap: nowrap;
+    > div > label {
+        display: none;
+    }
+    div:first-child input {
+        height: 100%;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+    div:last-child {
+        flex-grow: 1;
+        input {
+            margin-left: calc(-1 * var(--bs-border-width));
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+    input:focus {
+        position: relative;
+        z-index: 1;
+    }
 }
 
 .input-group-text {
