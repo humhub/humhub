@@ -97,9 +97,9 @@ class Modal extends \yii\bootstrap5\Modal
     public string $body = '';
 
     /**
-     * If true, prevents echo of the modal beginning tags.
+     * If true, removes the Widget div wrapper
      */
-    public bool $bypassParentInit = false;
+    public bool $isHumHubDialog = false;
 
     /**
      * @var self the Modal that are currently being rendered (not ended). This property
@@ -138,19 +138,23 @@ class Modal extends \yii\bootstrap5\Modal
 
     public function run()
     {
-        echo $this->renderDialogBegin() . "\n" .
-            $this->renderHeader() . "\n" .
-            $this->renderBodyBegin() . "\n" .
-            $this->body . "\n" .
-            $this->renderBodyEnd() . "\n" .
-            $this->renderFooter() . "\n" .
-            $this->renderDialogEnd();
-        $this->registerPlugin('modal');
+        if ($this->isHumHubDialog === true) {
+            echo $this->renderDialogBegin() . "\n" .
+                $this->renderHeader() . "\n" .
+                $this->renderBodyBegin() . "\n" .
+                $this->body . "\n" .
+                $this->renderBodyEnd() . "\n" .
+                $this->renderFooter() . "\n" .
+                $this->renderDialogEnd();
+            $this->registerPlugin('modal');
+        } else {
+            parent::run();
+        }
     }
 
     public static function widget($config = [])
     {
-        $config['bypassParentInit'] = true;
+        $config['isHumHubDialog'] = true;
         return parent::widget($config);
     }
 
@@ -159,7 +163,7 @@ class Modal extends \yii\bootstrap5\Modal
      */
     public function init()
     {
-        if ($this->bypassParentInit) {
+        if ($this->isHumHubDialog) {
             $this->trigger(self::EVENT_INIT);
             if (!isset($this->options['id'])) {
                 $this->options['id'] = $this->getId();
@@ -206,7 +210,7 @@ class Modal extends \yii\bootstrap5\Modal
      */
     public static function beginDialog($config = [], bool $renderElements = true): void
     {
-        $config['bypassParentInit'] = true;
+        $config['isHumHubDialog'] = true;
         $widget = new static($config);
         self::$stackForDialog = $widget;
         echo $widget->renderDialogBegin();
