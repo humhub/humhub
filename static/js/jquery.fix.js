@@ -23,6 +23,8 @@
     };
 
     $.fn.fadeIn = function(duration, easing, complete) {
+        [duration, easing, complete] = normalizeArgs(duration, easing, complete);
+
         return this.each(function() {
             const $el = $(this);
             $el.removeClass('d-none').css({opacity: 0, display: ''});
@@ -36,6 +38,8 @@
     };
 
     $.fn.fadeOut = function(duration, easing, complete) {
+        [duration, easing, complete] = normalizeArgs(duration, easing, complete);
+
         return this.each(function() {
             const $el = $(this);
             $el.originalFadeOut(duration, easing, function() {
@@ -60,6 +64,8 @@
     };
 
     $.fn.slideDown = function(duration, easing, complete) {
+        [duration, easing, complete] = normalizeArgs(duration, easing, complete);
+
         return this.each(function() {
             const $el = $(this);
 
@@ -85,9 +91,10 @@
     };
 
     $.fn.slideUp = function(duration, easing, complete) {
+        [duration, easing, complete] = normalizeArgs(duration, easing, complete);
+
         return this.each(function() {
             const $el = $(this);
-
             $el.originalSlideUp(duration, easing, function() {
                 $el.addClass('d-none').css('display', '');
                 if (typeof complete === 'function') {
@@ -108,4 +115,16 @@
             }
         });
     };
+
+    const normalizeArgs = function (duration, easing, complete) {
+        if (typeof duration === 'function') {
+            complete = duration;
+            duration = undefined;
+            easing = undefined;
+        } else if (typeof easing === 'function') {
+            complete = easing;
+            easing = undefined;
+        }
+        return [duration, easing, complete];
+    }
 })(jQuery);
