@@ -209,13 +209,6 @@ class Module extends \humhub\components\Module
     public $enableRegistrationFormCaptcha = true;
 
     /**
-     * @var int Time to live in days for invites.
-     * Invites older than this number of days will be automatically deleted.
-     * @since 1.17
-     */
-    public int $invitesTimeToLiveInDays = 30;
-
-    /**
      * @inheritdoc
      */
     public function getPermissions($contentContainer = null)
