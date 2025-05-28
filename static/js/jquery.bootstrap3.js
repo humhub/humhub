@@ -1,14 +1,21 @@
+/**
+ * Compatibility with Bootstrap 3
+ *
+ * $deprecated since 1.18
+ *
+ * TODO: Remove this file when Bootstrap 3 is no longer supported
+ */
+
 (function($) {
-    // Save original methods
-    $.fn.originalHide = $.fn.hide;
-    $.fn.originalShow = $.fn.show;
-    $.fn.originalToggle = $.fn.toggle;
-    $.fn.originalFadeIn = $.fn.fadeIn;
-    $.fn.originalFadeOut = $.fn.fadeOut;
-    $.fn.originalFadeToggle = $.fn.fadeToggle;
-    $.fn.originalSlideDown = $.fn.slideDown;
-    $.fn.originalSlideUp = $.fn.slideUp;
-    $.fn.originalSlideToggle = $.fn.slideToggle;
+    $.fn.bs3Hide = $.fn.hide;
+    $.fn.bs3Show = $.fn.show;
+    $.fn.bs3Toggle = $.fn.toggle;
+    $.fn.bs3FadeIn = $.fn.fadeIn;
+    $.fn.bs3FadeOut = $.fn.fadeOut;
+    $.fn.bs3FadeToggle = $.fn.fadeToggle;
+    $.fn.bs3SlideDown = $.fn.slideDown;
+    $.fn.bs3SlideUp = $.fn.slideUp;
+    $.fn.bs3SlideToggle = $.fn.slideToggle;
 
     $.fn.hide = function() {
         return this.addClass('d-none');
@@ -42,7 +49,7 @@
 
         return this.each(function() {
             const $el = $(this);
-            $el.originalFadeOut(duration, easing, function() {
+            $el.bs3FadeOut(duration, easing, function() {
                 $el.addClass('d-none').css('display', '');
                 if (typeof complete === 'function') {
                     complete.call(this);
@@ -95,7 +102,7 @@
 
         return this.each(function() {
             const $el = $(this);
-            $el.originalSlideUp(duration, easing, function() {
+            $el.bs3SlideUp(duration, easing, function() {
                 $el.addClass('d-none').css('display', '');
                 if (typeof complete === 'function') {
                     complete.call(this);

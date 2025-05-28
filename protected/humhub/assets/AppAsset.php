@@ -49,7 +49,7 @@ class AppAsset extends WebStaticAssetBundle
 
     public const STATIC_DEPENDS = [
         JqueryAsset::class,
-        JqueryFixAsset::class,
+        JqueryBootstrap3Asset::class,
         JuiBootstrapBridgeAsset::class,
         JuiAsset::class,
         YiiAsset::class,

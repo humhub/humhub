@@ -10,10 +10,17 @@ namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
 
-class JqueryFixAsset extends WebStaticAssetBundle
+/**
+ * Compatibility with Bootstrap 3
+ *
+ * $deprecated since 1.18
+ *
+ * TODO: Remove when Bootstrap 3 is no longer supported
+ */
+class JqueryBootstrap3Asset extends WebStaticAssetBundle
 {
     /**
      * @inheritdoc
      */
-    public $js = ['js/jquery.fix.js'];
+    public $js = ['js/jquery.bootstrap3.js'];
 }
