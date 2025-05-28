@@ -6,20 +6,38 @@
  */
 
 use humhub\modules\space\controllers\SpaceController;
+use humhub\modules\space\models\Membership;
+use humhub\modules\space\models\Space;
 use humhub\modules\tour\TourConfig;
 use humhub\widgets\bootstrap\Button;
 
+// Get Space to run Tour in
+$tourSpace = null;
+
+// Loop over all spaces where the user is member
+foreach (Membership::getUserSpaces() as $tourSpace) {
+    if ($tourSpace->isAdmin() && !$tourSpace->isArchived()) {
+        // If user is admin on this space, it´s the perfect match
+        break;
+    }
+}
+
+if ($tourSpace === null) {
+    // If user is not member of any space, try to find a public space to run Tour in
+    $tourSpace = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['status' => Space::STATUS_ENABLED]]);
+}
+
 return [
     TourConfig::KEY_TOUR_ID => TourConfig::TOUR_ID_SPACES,
-    TourConfig::KEY_IS_VISIBLE => function () {
-        return (bool)TourConfig::getTourSpace();
+    TourConfig::KEY_IS_VISIBLE => function () use ($tourSpace) {
+        return (bool)$tourSpace;
     },
     TourConfig::KEY_TOUR_ON_CONTROLLER_CLASS => SpaceController::class,
     TourConfig::KEY_TITLE => function () {
         return Yii::t('TourModule.base', '<strong>Guide:</strong> Spaces');
     },
-    TourConfig::KEY_START_URL => function () {
-        return TourConfig::getTourSpace()?->createUrl('/space/space', ['tour' => true]);
+    TourConfig::KEY_START_URL => function () use ($tourSpace) {
+        return $tourSpace?->createUrl('/space/space', ['tour' => true]);
     },
     TourConfig::KEY_NEXT_TOUR_ID => TourConfig::TOUR_ID_PROFILE,
     TourConfig::KEY_DRIVER_JS => [

@@ -8,8 +8,6 @@
 
 namespace humhub\modules\tour;
 
-use humhub\modules\space\models\Membership;
-use humhub\modules\space\models\Space;
 use Yii;
 use yii\helpers\Url;
 
@@ -119,27 +117,6 @@ class TourConfig
     public static function IsCurrentRouteAcceptable(string $tourId): bool
     {
         return array_key_exists($tourId, self::get());
-    }
-
-
-    public static function getTourSpace(): ?Space
-    {
-        $space = null;
-
-        // Loop over all spaces where the user is member
-        foreach (Membership::getUserSpaces() as $space) {
-            if ($space->isAdmin() && !$space->isArchived()) {
-                // If user is admin on this space, it´s the perfect match
-                break;
-            }
-        }
-
-        if ($space === null) {
-            // If user is not member of any space, try to find a public space to run Tour in
-            $space = Space::findOne(['and', ['!=', 'visibility' => Space::VISIBILITY_NONE], ['status' => Space::STATUS_ENABLED]]);
-        }
-
-        return $space;
     }
 
     private static function getConfigValue(array $config, string $key): mixed
