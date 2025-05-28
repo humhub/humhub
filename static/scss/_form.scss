@@ -150,8 +150,10 @@ textarea.placeholder {
     > div > label {
         display: none;
     }
+    input {
+        height: 36px;
+    }
     div:first-child input {
-        height: 100%;
         border-top-right-radius: 0;
         border-bottom-right-radius: 0;
     }
