@@ -212,7 +212,7 @@ class Module extends \humhub\components\Module
      * @deprecated
      * @see \humhub\modules\admin\Module::$cleanupPendingRegistrationInterval
      */
-    public int $invitesTimeToLiveInDays = 30;
+    public int $invitesTimeToLiveInDays;
 
     /**
      * @inheritdoc
