@@ -13,10 +13,14 @@ humhub.module('tour', function (module, requrie, $) {
         const driverObj = driver({
             ...module.config.driverJsOptions,
             ...options.driverJs,
-            onDestroyed: (element, step, options) => {
-                const next = nextUrl !== "" && nextUrl != null;
-                tourCompleted(next);
-            }
+            onDestroyStarted: () => {
+                // If the last step is displayed, go to the next tour
+                if (!driverObj.hasNextStep()) {
+                    const next = nextUrl !== "" && nextUrl != null;
+                    tourCompleted(next);
+                }
+                driverObj.destroy();
+            },
         });
         driverObj.drive();
     };
