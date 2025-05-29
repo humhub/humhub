@@ -3,6 +3,7 @@ assets/*
 
 protected/runtime/*
 .env
+.test-env
 !protected/runtime/.gitignore
 
 node_modules
