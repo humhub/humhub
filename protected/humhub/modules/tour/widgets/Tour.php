@@ -22,7 +22,7 @@ class Tour extends Widget
 {
 
     /**
-     * Executes the widgets
+     * @inerhitdoc
      */
     public function run()
     {
@@ -53,9 +53,20 @@ class Tour extends Widget
 
         self::disableAutoStart(TourConfig::getTourId($config));
 
-        TourAsset::register($this->view);
+        $tourId = TourConfig::getTourId($config);
+        $nextUrl = TourConfig::getNextUrl($config);
+        $driverJs = json_encode(TourConfig::getDriverJs($config), JSON_THROW_ON_ERROR);
+        $js = "
+humhub.require('tour').start({
+    tourId: '{$tourId}',
+    nextUrl: '{$nextUrl}',
+    driverJs: {$driverJs}
+});
+        ";
 
-        return $this->render('tour', ['config' => $config]);
+        TourAsset::register($this->view);
+        $this->view->registerJs($js);
+        return '';
     }
 
     private static function getSettings(): SettingsManager
