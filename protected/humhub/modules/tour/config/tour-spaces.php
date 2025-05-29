@@ -29,16 +29,10 @@ if ($tourSpace === null) {
 
 return [
     TourConfig::KEY_TOUR_ID => TourConfig::TOUR_ID_SPACES,
-    TourConfig::KEY_IS_VISIBLE => function () use ($tourSpace) {
-        return (bool)$tourSpace;
-    },
+    TourConfig::KEY_IS_VISIBLE => (bool)$tourSpace,
     TourConfig::KEY_TOUR_ON_CONTROLLER_CLASS => SpaceController::class,
-    TourConfig::KEY_TITLE => function () {
-        return Yii::t('TourModule.base', '<strong>Guide:</strong> Spaces');
-    },
-    TourConfig::KEY_START_URL => function () use ($tourSpace) {
-        return $tourSpace?->createUrl('/space/space', ['tour' => true]);
-    },
+    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Spaces'),
+    TourConfig::KEY_START_URL => $tourSpace?->createUrl('/space/space', ['tour' => true]),
     TourConfig::KEY_NEXT_TOUR_ID => TourConfig::TOUR_ID_PROFILE,
     TourConfig::KEY_DRIVER_JS => [
         'steps' => [

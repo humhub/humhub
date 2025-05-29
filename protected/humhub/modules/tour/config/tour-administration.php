@@ -11,16 +11,10 @@ use yii\helpers\Url;
 
 return [
     TourConfig::KEY_TOUR_ID => TourConfig::TOUR_ID_ADMINISTRATION,
-    TourConfig::KEY_IS_VISIBLE => function () {
-        return Yii::$app->user->isAdmin();
-    },
+    TourConfig::KEY_IS_VISIBLE => Yii::$app->user->isAdmin(),
     TourConfig::KEY_TOUR_ON_CONTROLLER_CLASS => ModuleController::class,
-    TourConfig::KEY_TITLE => function () {
-        return Yii::t('TourModule.base', '<strong>Guide:</strong> Administration (Modules)');
-    },
-    TourConfig::KEY_START_URL => function () {
-        return Url::to(['/admin/module/list', 'tour' => true]);
-    },
+    TourConfig::KEY_TITLE => Yii::t('TourModule.base', '<strong>Guide:</strong> Administration (Modules)'),
+    TourConfig::KEY_START_URL => Url::to(['/admin/module/list', 'tour' => true]),
     TourConfig::KEY_NEXT_TOUR_ID => null,
     TourConfig::KEY_DRIVER_JS => [
         'steps' => [
