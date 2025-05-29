@@ -50,6 +50,12 @@ Version 1.18 (Unreleased)
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
 
+Version 1.17.3
+------------
+### Deprecated
+- `\humhub\modules\user\Module::$invitesTimeToLiveInDays` use `\humhub\modules\admin\Module::$cleanupPendingRegistrationInterval` instead
+
+
 Version 1.17.2
 ---------------
 

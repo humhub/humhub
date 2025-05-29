@@ -230,7 +230,8 @@ trait BootstrapVariationsTrait
 
     /**
      * @deprecated since 1.18
-     * Use `static::instance($text, $color)` instead
+     * Use `static::instance($text, $color)` instead for a Bootstrap color
+     * Or `cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA)
      */
     public function color($color)
     {
@@ -239,9 +240,32 @@ trait BootstrapVariationsTrait
 
     /**
      * @deprecated since 1.18
+     * Use `cssTextColor()` instead
      */
     public function textColor($color)
     {
+        return $this;
+    }
+
+    /**
+     * @param string $color Hexadecimal, RGB, RGBA, HSL, HSLA
+     */
+    public function cssBgColor(?string $color): static
+    {
+        if ($color) {
+            $this->style('background-color:' . $color . ' !important');
+        }
+        return $this;
+    }
+
+    /**
+     * @param string $color Hexadecimal, RGB, RGBA, HSL, HSLA
+     */
+    public function cssTextColor(?string $color): static
+    {
+        if ($color) {
+            $this->style('color:' . $color . ' !important');
+        }
         return $this;
     }
 }

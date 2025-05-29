@@ -46,11 +46,11 @@ class FontAwesomeIconProvider implements IconProvider
         }
 
         if ($icon->right) {
-            Html::addCssClass($options, 'fa-float-end');
+            Html::addCssClass($options, 'fa-pull-right');
         }
 
         if ($icon->left) {
-            Html::addCssClass($options, 'fa-float-start');
+            Html::addCssClass($options, 'fa-pull-left');
         }
 
         if ($icon->border) {

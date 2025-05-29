@@ -26,7 +26,7 @@ $this->registerJsConfig('admin', [
 ]);
 
 $iconUrl = SiteIcon::getUrl(140);
-
+$themeVariables = Yii::$app->view->theme->variables;
 ?>
 
 <div class="panel-body">
@@ -63,11 +63,11 @@ $iconUrl = SiteIcon::getUrl(140);
     <?= $form->field($model, 'dateInputDisplayFormat')->dropDownList([
         '' => Yii::t('AdminModule.settings', 'Auto format based on user language - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'short')]),
         'php:d/m/Y' => Yii::t('AdminModule.settings', 'Fixed format (dd/mm/yyyy) - Example: {example}', ['{example}' => Yii::$app->formatter->asDate(time(), 'php:d/m/Y')]),
-    ]);
-    ?>
-    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance'); ?></strong>
+    ]) ?>
 
-    <div class="well">
+    <strong><?= Yii::t('AdminModule.settings', 'Mobile appearance') ?></strong>
+
+    <div class="bg-light p-3 mt-2">
         <?= $form->field($model, 'logo')->fileInput(['id' => 'admin-logo-file-upload', 'data-action-change' => 'admin.changeLogo', 'style' => 'display: none', 'name' => 'logo[]']); ?>
         <div class="image-upload-container" id="logo-upload">
 
@@ -86,8 +86,7 @@ $iconUrl = SiteIcon::getUrl(140);
         </div>
     </div>
 
-    <br>
-    <div class="bg-light p-3">
+    <div class="bg-light p-3 mt-2">
         <?= $form->field($model, 'icon')->fileInput(['id' => 'admin-icon-file-upload', 'data-action-change' => 'admin.changeIcon', 'class' => 'd-none', 'name' => 'icon[]']) ?>
         <div class="image-upload-container" id="icon-upload">
             <img class="rounded" id="icon-image" src="<?= $iconUrl ?>"
@@ -105,19 +104,86 @@ $iconUrl = SiteIcon::getUrl(140);
     </div>
 
     <br>
-    <div class="form-group bg-light p-3 pb-1">
-        <?= $form->field($model, 'themePrimaryColor')->colorInput() ?>
-        <?= $form->field($model, 'useDefaultThemePrimaryColor')->checkbox() ?>
+
+    <?= $form->beginCollapsibleFields(Yii::t('AdminModule.settings', 'Theme customization')) ?>
+
+    <?php $checkBoxOptions = ['options' => ['class' => 'pt-2']]; ?>
+
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themePrimaryColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themePrimaryColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeSecondaryColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
     </div>
 
-    <br>
-    <div class="form-group bg-light p-3 pb-1">
-        <?= $form->field($model, 'themeSecondaryColor')->colorInput() ?>
-        <?= $form->field($model, 'useDefaultThemeSecondaryColor')->checkbox() ?>
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeSuccessColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeSuccessColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeDangerColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeDangerColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
     </div>
 
-    <br>
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeWarningColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeWarningColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeInfoColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeInfoColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeLightColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeLightColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+
+        <div class="col-lg-6 mb-3">
+            <?= Html::activeLabel($model, 'themeDarkColor') ?>
+            <div class="input-group input-color-group bg-light p-3 pb-0">
+                <?= $form->field($model, 'themeDarkColor')->colorInput() ?>
+                <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
+            </div>
+        </div>
+    </div>
+
     <?= $form->field($model, 'themeCustomScss')->widget(CodeMirrorInputWidget::class, ['mode' => 'text/x-scss']) ?>
+
+    <?= $form->endCollapsibleFields() ?>
 
     <hr>
     <?= Html::submitButton(Yii::t('AdminModule.settings', 'Save'), ['class' => 'btn btn-primary', 'data-ui-loader' => ""]) ?>
@@ -127,30 +193,30 @@ $iconUrl = SiteIcon::getUrl(140);
 
 <script <?= Html::nonce() ?>>
     $(function () {
-        function toggleColorField($checkbox, $colorField) {
+        function toggleColorField($checkbox, $colorField, defaultColor) {
             if ($checkbox.is(':checked')) {
-                $colorField.hide();
+                $colorField.prop('disabled', true).prop('value', defaultColor);
             } else {
-                $colorField.show();
+                $colorField.prop('disabled', false);
             }
         }
 
-        function setupColorFieldToggle(checkboxId, colorFieldId) {
-            const $checkbox = $('#designsettingsform-' + checkboxId);
-            const $colorField = $('#designsettingsform-' + colorFieldId);
-            toggleColorField($checkbox, $colorField);
+        function setupColorFieldToggle(color, defaultColor) {
+            const $checkbox = $('#designsettingsform-usedefaulttheme' + color + 'color');
+            const $colorField = $('#designsettingsform-theme' + color + 'color');
+            toggleColorField($checkbox, $colorField, defaultColor);
             $checkbox.on('change', function () {
-                toggleColorField($checkbox, $colorField);
+                toggleColorField($checkbox, $colorField, defaultColor);
             });
         }
 
-        setupColorFieldToggle(
-            'usedefaultthemeprimarycolor',
-            'themeprimarycolor'
-        );
-        setupColorFieldToggle(
-            'usedefaultthemesecondarycolor',
-            'themesecondarycolor'
-        );
+        setupColorFieldToggle('primary', '<?= $themeVariables->get('primary') ?>');
+        setupColorFieldToggle('secondary', '<?= $themeVariables->get('secondary') ?>');
+        setupColorFieldToggle('success', '<?= $themeVariables->get('success') ?>');
+        setupColorFieldToggle('danger', '<?= $themeVariables->get('danger') ?>');
+        setupColorFieldToggle('warning', '<?= $themeVariables->get('warning') ?>');
+        setupColorFieldToggle('info', '<?= $themeVariables->get('info') ?>');
+        setupColorFieldToggle('light', '<?= $themeVariables->get('light') ?>');
+        setupColorFieldToggle('dark', '<?= $themeVariables->get('dark') ?>');
     })
 </script>
