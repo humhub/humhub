@@ -236,23 +236,6 @@ Now:
 </div>
 ```
 
-### Error messages with RichTextField input widget
-
-When using the `RichTextField` input widget AND setting the `form` attribute, as the active input is displayed as a nested input, the input elements mustn't be displayed twice.
-Previously, the error field was displayed by the parent input.
-But Bootstrap 5 requires the error field to be at the same level to the displayed input.
-
-So now, the error HTML element (`invalid-feedback`) is included in the widget.
-Which means it needs to be removed in the parent input (by specifying the template) to prevent displaying it twice.
-
-Example:
-
-```php
-<?= $form->field($model, 'attribute', ['template' => "{label}\n{input}"])->widget(RichTextField::class, [
-    'form' => $form,
-]) ?>
-```
-
 
 ## Dropdown, Navs & tabs
 

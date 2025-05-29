@@ -152,6 +152,10 @@ class AbstractRichTextEditor extends JsInputWidget
      * @var bool defines if the default label should be rendered.
      */
     public $label = false;
+    /**
+     * @since 1.18
+     */
+    private ?string $fieldTemplate = "{label}\n{input}";
 
     /**
      * @inhertidoc
@@ -175,7 +179,7 @@ class AbstractRichTextEditor extends JsInputWidget
         $inputOptions = $this->getInputAttributes();
 
         if ($this->form !== null) {
-            $input = $this->form->field($this->model, $this->attribute)->textarea($inputOptions)->label(false);
+            $input = $this->form->field($this->model, $this->attribute, $this->fieldTemplate ? ['template' => $this->fieldTemplate] : [])->textarea($inputOptions)->label(false);
         } elseif ($this->model !== null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
         } else {

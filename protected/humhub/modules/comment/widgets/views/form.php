@@ -46,7 +46,7 @@ $placeholder = ($isNestedComment)
     <?= Html::hiddenInput('objectId', $objectId) ?>
 
     <div class="content-create-input-group input-group">
-        <?= $form->field($model, 'message', ['template' => "{input}"])->widget(RichTextField::class, [
+        <?= $form->field($model, 'message')->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
             'form' => $form,
             'layout' => RichTextField::LAYOUT_INLINE,
@@ -57,7 +57,7 @@ $placeholder = ($isNestedComment)
                 'scroll-active' => 'comment.scrollActive',
                 'scroll-inactive' => 'comment.scrollInactive',
             ],
-        ]) ?>
+        ])->label(false) ?>
 
         <div class="upload-buttons">
             <?php $uploadButton = UploadButton::widget([

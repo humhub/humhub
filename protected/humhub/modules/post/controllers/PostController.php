@@ -8,16 +8,15 @@
 
 namespace humhub\modules\post\controllers;
 
+use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallCreateContentForm;
-use humhub\modules\content\components\ContentContainerController;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\post\models\forms\PostEditForm;
 use humhub\modules\post\models\Post;
-use humhub\modules\post\permissions\CreatePost;
 use humhub\modules\post\widgets\Form;
 use Throwable;
 use Yii;
