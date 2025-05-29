@@ -154,7 +154,7 @@ humhub.module('content.form', function (module, require, $) {
             that.$.find(fieldSelector + ' .form-control').addClass('is-invalid');
             that.$.find(fieldSelector + ', ' + inputSelector + ', ' + inputSelector + '_input')
                 .find('.invalid-feedback:first').html(errorMessages.join('<br>'));
-            that.$.find(multiInputSelector).closest('.mb-3 .form-control').addClass('is-invalid');
+            that.$.find(inputSelector + '_input').addClass('is-invalid');
         });
     };
 

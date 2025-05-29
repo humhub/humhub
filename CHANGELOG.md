@@ -27,6 +27,7 @@ HumHub Changelog
 - Fix #7518: Fix Incorrect German Translation
 - Fix #7522: Fix mailer config
 - Fix #7526: Fix `installationState` issues
+- Enh #7535: Tour module: replace unmaintained [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) with [driver.js](https://driverjs.com/)
 - Fix #7508: Fix missed messages on search spaces in top space chooser
 - Fix #7538: Mail layout: button not centered because of table width not 100%
 - Fix #7542: HTTP Session Cleanup Issue

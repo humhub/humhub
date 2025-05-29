@@ -28,7 +28,7 @@ $contentModule = Yii::$app->getModule('content');
     <?= Html::hiddenInput('objectId', $objectId); ?>
 
     <div class="content-create-input-group">
-        <?= $form->field($comment, 'message', ['template' => "{input}"])->widget(RichTextField::class, [
+        <?= $form->field($comment, 'message')->widget(RichTextField::class, [
             'id' => 'comment_input_' . $comment->id,
             'layout' => RichTextField::LAYOUT_INLINE,
             'pluginOptions' => ['maxHeight' => '300px'],
@@ -36,9 +36,9 @@ $contentModule = Yii::$app->getModule('content');
             'focus' => true,
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
-                'scroll-inactive' => 'comment.scrollInactive'
-            ]
-        ]) ?>
+                'scroll-inactive' => 'comment.scrollInactive',
+            ],
+        ])->label(false) ?>
 
         <div class="upload-buttons"><?php
             $uploadButton = UploadButton::widget([
@@ -61,7 +61,8 @@ $contentModule = Yii::$app->getModule('content');
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();
-            ?></div>
+            ?>
+        </div>
     </div>
 
     <div id="comment_upload_progress_<?= $comment->id ?>" style="display:none; margin:10px 0;"></div>
@@ -70,7 +71,7 @@ $contentModule = Yii::$app->getModule('content');
         'id' => 'comment_upload_preview_' . $comment->id,
         'options' => ['style' => 'margin-top:10px'],
         'model' => $comment,
-        'edit' => true
-    ]); ?>
+        'edit' => true,
+    ]) ?>
     <?php ActiveForm::end(); ?>
 </div>

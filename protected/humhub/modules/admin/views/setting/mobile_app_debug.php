@@ -7,19 +7,20 @@
  */
 
 use humhub\helpers\DeviceDetectorHelper;
-use humhub\libs\Html;
-use humhub\widgets\Button;
-use humhub\widgets\Link;
-use humhub\widgets\ModalDialog;
+use humhub\helpers\Html;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
 ?>
-<?php ModalDialog::begin([
-    'header' => Yii::t('AdminModule.settings', '<strong>Mobile App</strong> Debug Page'),
-    'size' => 'medium',
+
+<?php Modal::beginDialog([
+    'title' => Yii::t('AdminModule.settings', '<strong>Mobile App</strong> Debug Page'),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+    'size' => Modal::SIZE_LARGE,
 ]) ?>
-<div class="modal-body">
 
 <?php if (DeviceDetectorHelper::isAppRequest()): ?>
     <div class="alert alert-success">
@@ -34,32 +35,31 @@ use yii\helpers\Url;
     </div>
 <?php endif; ?>
 
-<?= Button::defaultType('Show Opener')
+<?= Button::light('Show Opener')
     ->cssClass('postFlutterMsgLink')
     ->options(['data-message' => Json::encode(['type' => 'showOpener'])])
     ->loader(false) ?>
 
-<?= Button::defaultType('Hide Opener')
+<?= Button::light('Hide Opener')
     ->cssClass('postFlutterMsgLink')
     ->options(['data-message' => Json::encode(['type' => 'hideOpener'])])
     ->loader(false) ?>
 
-<?= Button::defaultType('Open native console')
+<?= Button::light('Open native console')
     ->cssClass('postFlutterMsgLink')
     ->options(['data-message' => Json::encode(['type' => 'openNativeConsole'])])
     ->loader(false) ?>
 
-<div class="panel panel-default" style="margin-top:15px">
+<div class="panel panel-default mt-3">
     <div class="panel-body">
         <h4>Test Push Notification</h4>
         <p>
             Make sure the <code>Mobile</code> checkbox is enabled for
-            <?= Link::asLink('Administrative Notifications!', ['/notification/user']) ?>.
+            <?= Button::asLink('Administrative Notifications!', ['/notification/user']) ?>.
             It may take a few minutes.
         </p>
         <?= Button::primary('Trigger "HumHub Update" notification')
-            ->link(['mobile-app', 'triggerNotification' => 1])
-            ->right() ?>
+            ->link(['mobile-app', 'triggerNotification' => 1]) ?>
     </div>
 </div>
 
@@ -71,8 +71,7 @@ use yii\helpers\Url;
         <?= Button::primary('Execute via JS Channel')
             ->cssClass('postFlutterMsgLink')
             ->options(['data-message' => $message])
-            ->loader(false)
-            ->right() ?>
+            ->loader(false) ?>
     </div>
 </div>
 
@@ -99,8 +98,7 @@ use yii\helpers\Url;
         <?= Button::primary('Execute via JS Channel')
             ->cssClass('postFlutterMsgLink')
             ->options(['data-message' => $message])
-            ->loader(false)
-            ->right() ?>
+            ->loader(false) ?>
     </div>
 </div>
 <div class="panel panel-default">
@@ -119,8 +117,7 @@ use yii\helpers\Url;
         <?= Button::primary('Execute via JS Channel')
             ->cssClass('postFlutterMsgLink')
             ->options(['data-message' => $message])
-            ->loader(false)
-            ->right() ?>
+            ->loader(false) ?>
     </div>
 </div>
 
@@ -139,5 +136,5 @@ use yii\helpers\Url;
         }
     });
 </script>
-</div>
-<?php ModalDialog::end() ?>
+
+<?php Modal::endDialog() ?>

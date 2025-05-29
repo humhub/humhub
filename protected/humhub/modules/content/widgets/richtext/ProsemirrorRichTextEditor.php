@@ -2,6 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
+use humhub\helpers\Html;
 use humhub\modules\file\handler\FileHandlerCollection;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\UploadButton;
@@ -41,6 +42,8 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
             $this->menuClass = static::MENU_CLASS_FOCUS;
         }
 
+        Html::addCssClass($this->options, ['ProsemirrorEditor', $this->menuClass, 'is-invalid']);
+
         parent::init();
     }
 
@@ -50,7 +53,7 @@ class ProsemirrorRichTextEditor extends AbstractRichTextEditor
     public function getAttributes()
     {
         return [
-            'class' => 'ProsemirrorEditor ' . $this->menuClass,
+            'class' => $this->options['class'],
         ];
     }
 
