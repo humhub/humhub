@@ -27,6 +27,9 @@ HumHub Changelog
 - Fix #7518: Fix Incorrect German Translation
 - Fix #7522: Fix mailer config
 - Fix #7526: Fix `installationState` issues
+- Fix #7508: Fix missed messages on search spaces in top space chooser
+- Fix #7538: Mail layout: button not centered because of table width not 100%
+- Fix #7542: HTTP Session Cleanup Issue
 
 1.17.3 (Unreleased)
 ----------------------
@@ -37,6 +40,7 @@ HumHub Changelog
 - Fix #7503: Don't run migration on updating of disabled module
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
+- Fix #7543: Remove duplicate UserInvites Cleanup job
 
 1.17.2 (April 7, 2025)
 ----------------------

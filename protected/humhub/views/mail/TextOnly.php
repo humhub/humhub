@@ -28,7 +28,7 @@ use humhub\modules\ui\mail\DefaultMailStyle; ?>
                                     <!-- start text content -->
                                     <tr>
                                         <td valign="top">
-                                            <table border="0" cellspacing="0" cellpadding="0" align="left">
+                                            <table width="100%" border="0" cellspacing="0" cellpadding="0" align="left">
 
                                                 <tr>
                                                     <td style="font-size: 14px; line-height: 22px; font-family: <?= Yii::$app->view->theme->variable('mail-font-family', DefaultMailStyle::DEFAULT_FONT_FAMILY) ?>; color:<?= Yii::$app->view->theme->variable('text-color-main', '#777') ?>; font-weight:300; text-align:left; ">

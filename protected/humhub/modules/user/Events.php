@@ -141,16 +141,6 @@ class Events extends BaseObject
     }
 
     /**
-     * Tasks on daily cron job
-     *
-     * @param \yii\base\Event $event
-     */
-    public static function onDailyCron($event)
-    {
-        Yii::$app->queue->push(new jobs\CleanupInvites());
-    }
-
-    /**
      * Tasks on hourly cron job
      *
      * @param \yii\base\Event $event

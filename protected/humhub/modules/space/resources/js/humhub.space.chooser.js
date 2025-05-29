@@ -374,23 +374,20 @@ humhub.module('space.chooser', function (module, require, $) {
     };
 
     SpaceChooser.prototype.onChange = function (input) {
-        if (!this.lazyLoad) {
-            this.showMessage(input);
-        }
-
+        this.showMessage(input);
         this.trigger('changed', input);
     };
 
     SpaceChooser.prototype.showMessage = function (input) {
         var emptyResult = !this.getFirstItem().length;
-        var atLeastTwo = input && input.length > 1;
+        var inputLength = input ? input.length : 0;
 
-        if (emptyResult && atLeastTwo) {
-            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.emptyResult') + '</div>');
+        if (emptyResult && inputLength > 1) {
+            this.$remoteSearch.html('<li><div class="text-body-secondary">' + module.text('info.emptyResult') + '</div></li>');
         } else if (emptyResult) {
-            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div>');
-        } else if (!atLeastTwo) {
-            this.$remoteSearch.html('<div class="text-body-secondary">' + module.text('info.remoteAtLeastInput') + '</div>');
+            this.$remoteSearch.html('<li><div class="text-body-secondary">' + module.text('info.emptyOwnResult') + '<br/>' + module.text('info.remoteAtLeastInput') + '</div></li>');
+        } else if (inputLength === 1) {
+            this.$remoteSearch.html('<li><div class="text-body-secondary">' + module.text('info.remoteAtLeastInput') + '</div></li>');
         }
     }
 

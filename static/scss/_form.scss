@@ -2,6 +2,23 @@
 // Forms
 // --------------------------------------------------
 
+// Fix input lists (radio, checkboxes, dropdown) for Bootstrap 5
+// See https://github.com/yiisoft/yii2-bootstrap5/issues/99
+.is-invalid[aria-invalid="true"] .form-check-input {
+    &, &:checked {
+        border-color: var(--bs-form-invalid-border-color);
+    }
+
+    &~.form-check-label {
+        color: var(--bs-form-invalid-color);
+    }
+
+    &~.invalid-feedback {
+        display: block;
+    }
+}
+
+
 label {
     font-weight: 700;
     margin-bottom: 5px;
