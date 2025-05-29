@@ -1,21 +1,21 @@
 /**
- * Compatibility with Bootstrap 3
+ * jQuery Fix to work with Bootstrap 5
  *
  * $deprecated since 1.18
  *
- * TODO: Remove this file when Bootstrap 3 is no longer supported
+ * TODO: Remove when jQuery is no longer supported
  */
 
 (function($) {
-    $.fn.bs3Hide = $.fn.hide;
-    $.fn.bs3Show = $.fn.show;
-    $.fn.bs3Toggle = $.fn.toggle;
-    $.fn.bs3FadeIn = $.fn.fadeIn;
-    $.fn.bs3FadeOut = $.fn.fadeOut;
-    $.fn.bs3FadeToggle = $.fn.fadeToggle;
-    $.fn.bs3SlideDown = $.fn.slideDown;
-    $.fn.bs3SlideUp = $.fn.slideUp;
-    $.fn.bs3SlideToggle = $.fn.slideToggle;
+    $.fn.bs5FixHide = $.fn.hide;
+    $.fn.bs5FixShow = $.fn.show;
+    $.fn.bs5FixToggle = $.fn.toggle;
+    $.fn.bs5FixFadeIn = $.fn.fadeIn;
+    $.fn.bs5FixFadeOut = $.fn.fadeOut;
+    $.fn.bs5FixFadeToggle = $.fn.fadeToggle;
+    $.fn.bs5FixSlideDown = $.fn.slideDown;
+    $.fn.bs5FixSlideUp = $.fn.slideUp;
+    $.fn.bs5FixSlideToggle = $.fn.slideToggle;
 
     $.fn.hide = function() {
         return this.addClass('d-none');
@@ -49,7 +49,7 @@
 
         return this.each(function() {
             const $el = $(this);
-            $el.bs3FadeOut(duration, easing, function() {
+            $el.bs5FixFadeOut(duration, easing, function() {
                 $el.addClass('d-none').css('display', '');
                 if (typeof complete === 'function') {
                     complete.call(this);
@@ -102,7 +102,7 @@
 
         return this.each(function() {
             const $el = $(this);
-            $el.bs3SlideUp(duration, easing, function() {
+            $el.bs5FixSlideUp(duration, easing, function() {
                 $el.addClass('d-none').css('display', '');
                 if (typeof complete === 'function') {
                     complete.call(this);
