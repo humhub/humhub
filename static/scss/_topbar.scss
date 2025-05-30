@@ -79,7 +79,7 @@
 
     .nav > li > a:hover,
     .nav > .open > a {
-        background-color: lighten($primary, 10%);
+        background-color: tint-color($primary, 10%);
     }
 
     .nav > .account {
