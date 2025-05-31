@@ -2,7 +2,7 @@
 
 namespace humhub\modules\ui\icon\components;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\ui\icon\widgets\Icon;
 
 /**

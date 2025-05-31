@@ -2,7 +2,7 @@
  * Module for creating an manipulating modal dialoges.
  * Normal layout of a dialog:
  *
- * <div class="modal">
+ * <div class="modal fade">
  *     <div class="modal-dialog">
  *         <div class="modal-content">
  *             <div class="modal-header"></div>
@@ -27,7 +27,7 @@ humhub.module('ui.modal', function (module, require, $) {
     var modals = {};
 
     var ERROR_DEFAULT_TITLE = 'Error';
-    var ERROR_DEFAULT_MESSAGE = 'An unknown error occured!';
+    var ERROR_DEFAULT_MESSAGE = 'An unknown error occurred!';
 
     /**
      * The Modal class can be used to create new modals or manipulate existing modals.
@@ -53,14 +53,16 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     /**
-     * Template for the modal splitted into different parts. Those can be overwritten my changing or overwriting module.template.
+     * Template for the modal splitted into different parts. Those can be overwritten by changing or overwriting module.template.
      */
     Modal.template = {
-        container: '<div class="modal" tabindex="-1" role="dialog" aria-hidden="true" style="display: none; background:rgba(0,0,0,0.1)"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
-        header: '<div class="modal-header"><button type="button" class="close" data-modal-close="true" aria-hidden="true">×</button><h4 class="modal-title"></h4></div>',
+        container: '<div class="modal fade" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"></div></div></div>',
+        title: '<h5 class="modal-title"></h5>',
+        closeButton: '<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>',
         body: '<div class="modal-body"></div>',
         footer: '<div class="modal-footer"></div>',
     };
+    Modal.template.header = '<div class="modal-header">' + Modal.template.title + Modal.template.closeButton + '</div>';
 
     /**
      * Creates a new modal dom skeleton.
@@ -127,9 +129,12 @@ humhub.module('ui.modal', function (module, require, $) {
      * Sets the loader content and shows the modal
      * @returns {undefined}
      */
-    Modal.prototype.loader = function () {
+    Modal.prototype.loader = function (evt) {
         this.reset();
         this.show();
+        if (typeof(evt) === 'object' && typeof(evt.$trigger) === 'object' && evt.$trigger.data('message')) {
+            this.setHeader(evt.$trigger.data('message'));
+        }
     };
 
     /**
@@ -203,7 +208,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
-                that.loader();
+                that.loader(url);
             }
             client.get(url, cfg, originalEvent).then(function (response) {
                 that.setDialog(response);
@@ -219,7 +224,7 @@ humhub.module('ui.modal', function (module, require, $) {
 
         return new Promise(function (resolve, reject) {
             if (!that.isVisible()) {
-                that.loader();
+                that.loader(url);
             }
             client.post(url, cfg, originalEvent).then(function (response) {
                 that.setDialog(response);
@@ -309,12 +314,8 @@ humhub.module('ui.modal', function (module, require, $) {
      */
     Modal.prototype.show = function () {
         if (!this.$.is(':visible')) {
-            if (!this.$.data('bs.modal')) {
-                this.$.modal(this.options);
-            } else {
-                this.set(this.options);
-                this.$.modal('show');
-            }
+            this.set(this.options);
+            this.$.modal('show');
             this.focus();
         }
 
@@ -368,14 +369,19 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.setHeader = function (title) {
-        var $header = this.getHeader();
+        let $header = this.getHeader();
         if (!$header.length) {
             $header = $(this.getTemplate('header'));
             this.getContent().prepend($header);
         }
+        let $title = $header.find('.modal-title');
+        if (!$title.length) {
+            $title = $(this.getTemplate('title'));
+            $header.prepend($title);
+        }
 
         // Set title id for aria-labelledby
-        $header.find('.modal-title').attr('id', this.getTitleId()).html(title);
+        $title.attr('id', this.getTitleId()).html(title);
     };
 
     Modal.prototype.setFooter = function (footer) {
@@ -408,15 +414,11 @@ humhub.module('ui.modal', function (module, require, $) {
         }
 
         if (this.options.size) {
-            this.getDialog().addClass('modal-dialog-' + this.options.size);
+            this.getDialog().removeClass(['modal-sm', 'modal-lg', 'modal-xl']).addClass('modal-' + this.options.size);
         }
 
-        this.options.backdrop = object.defaultValue(options.backdrop, 'static');
-        this.options.keyboard = object.defaultValue(options.keyboard, false);
-
-        if (this.$.data('bs.modal')) {
-            this.$.data('bs.modal').options = this.options;
-        }
+        this.options.backdrop = object.defaultValue(options.backdrop, this.$.data('bs-backdrop'));
+        this.options.keyboard = object.defaultValue(options.keyboard, this.$.data('bs-keyboard'));
 
         return this;
     };
@@ -479,10 +481,13 @@ humhub.module('ui.modal', function (module, require, $) {
         }, 100);
     };
 
+    /**
+     * Update Modal options from Dialog HumHub options defined in [[Modal::renderDialogBegin()]]
+     */
     Modal.prototype.updateDialogOptions = function () {
         this.set({
-            backdrop: this.getDialog().data('backdrop'),
-            keyboard: this.getDialog().data('keyboard')
+            backdrop: this.getDialog().data('hh-backdrop'),
+            keyboard: this.getDialog().data('hh-keyboard')
         });
     };
 
@@ -565,7 +570,7 @@ humhub.module('ui.modal', function (module, require, $) {
             $(this).attr('aria-hidden', 'false');
         });
 
-        $(document).on('shown.bs.modal', '.modal.in', function (event) {
+        $(document).on('shown.bs.modal', '.modal.show', function (event) {
             _setModalsAndBackdropsOrder();
         });
 
@@ -581,18 +586,18 @@ humhub.module('ui.modal', function (module, require, $) {
 
     var _setModalsAndBackdropsOrder = function () {
         var modalZIndex = 1040;
-        $('.modal.in').each(function (index) {
+        $('.modal.show').each(function (index) {
             var $modal = $(this);
             modalZIndex++;
             $modal.css('zIndex', modalZIndex);
-            $modal.next('.modal-backdrop.in').addClass('hidden').css('zIndex', modalZIndex - 1);
+            $modal.next('.modal-backdrop.show').addClass('d-none').css('zIndex', modalZIndex - 1);
         });
-        $('.modal.in:visible:last').focus().next('.modal-backdrop.in').removeClass('hidden');
+        $('.modal.show:visible:last').focus().next('.modal-backdrop.show').removeClass('d-none');
     };
 
     /**
      * To allow other frameworks to overlay focusable nodes over an active modal we have
-     * to explicitly allow ith within this overwritten function.
+     * to explicitly allow it within this overwritten function.
      *
      */
     var _setModalEnforceFocus = function () {
@@ -626,32 +631,32 @@ humhub.module('ui.modal', function (module, require, $) {
     };
 
     var _setGlobalModalTargetHandler = function () {
-
         // unbind all previously-attached events
-        $("a[data-target='#globalModal']").off('.humhub:globalModal');
+        $("a[data-bs-target='#globalModal']").off('.humhub:globalModal');
 
         // deprecated use action handler instead @see get action
-        $(document).off('click.humhub:globalModal').on('click.humhub:globalModal', "a[data-target='#globalModal']", function (evt) {
+        $(document).off('click.humhub:globalModal').on('click.humhub:globalModal', "a[data-bs-target='#globalModal']", function (evt) {
             evt.preventDefault();
 
             var options = {
                 'show': true,
-                'backdrop': $(this).data('backdrop'),
-                'keyboard': $(this).data('keyboard')
+                'backdrop': $(this).data('bs-backdrop'),
+                'keyboard': $(this).data('bs-keyboard')
             };
 
-            $("#globalModal").modal(options);
+            var globalModalElement = document.getElementById('globalModal');
+            var globalModal = bootstrap.Modal.getInstance(globalModalElement) || new bootstrap.Modal(globalModalElement, options);
 
             var target = $(this).attr("href");
 
             client.html(target).then(function (response) {
                 module.global.setDialog(response);
                 if (!module.global.$.is(':visible')) {
-                    module.global.show();
+                    globalModal.show();
                 }
             }).catch(function (error) {
                 module.log.error(error, true);
-                module.global.close();
+                globalModal.hide();
             });
         });
     };

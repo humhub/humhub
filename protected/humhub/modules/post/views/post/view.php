@@ -1,11 +1,11 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\StreamEntryWidget;
 use humhub\modules\post\models\Post;
 use humhub\modules\stream\assets\StreamAsset;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $post Post */

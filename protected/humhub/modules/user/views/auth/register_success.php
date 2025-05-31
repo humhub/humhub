@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use humhub\modules\user\models\Invite;
 use yii\helpers\Url;
 

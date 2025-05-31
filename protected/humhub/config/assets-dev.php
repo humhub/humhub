@@ -7,10 +7,13 @@
  */
 
 return [
-    'yii\bootstrap\BootstrapPluginAsset' => [
+    'yii\bootstrap5\BootstrapAsset' => [
+        'css' => [],
+    ],
+    'yii\bootstrap5\BootstrapPluginAsset' => [
         'depends' => [
             'yii\web\JqueryAsset',
-            'yii\bootstrap\BootstrapAsset',
+            'yii\bootstrap5\BootstrapAsset',
             'humhub\assets\JuiBootstrapBridgeAsset',
         ],
     ],

@@ -1,8 +1,8 @@
 <?php
 
+use Facebook\WebDriver\WebDriverKeys;
 use tests\codeception\_pages\LoginPage;
 use yii\helpers\Url;
-use Facebook\WebDriver\WebDriverKeys;
 
 /**
  * Inherited Methods
@@ -117,6 +117,8 @@ class AcceptanceTester extends BaseTester
     {
         $this->amOnRoute(['/admin/authentication']);
         $this->jsClick('#authenticationsettingsform-allowguestaccess');
+        $this->scrollToBottom();
+        $this->wait(1);
         $this->click('button.btn-primary', '#authentication-settings-form');
         $this->wait(1);
         $this->guestAccessAllowed = true;
@@ -138,7 +140,7 @@ class AcceptanceTester extends BaseTester
 
         foreach ($topics as $topic) {
             $this->fillField('#topic-name', $topic);
-            $this->click('.input-group-btn .btn-default');
+            $this->click('.input-group .btn-light');
             $this->waitForText($topic, null, '.layout-content-container .table-hover');
         }
     }
@@ -267,7 +269,7 @@ class AcceptanceTester extends BaseTester
     public function clickAccountDropDown()
     {
         $this->jsClick('#account-dropdown-link');
-        $this->waitForElementVisible('.account.open');
+        $this->waitForElementVisible('.account > .dropdown-menu.show');
     }
 
     public function amOnDirectory()

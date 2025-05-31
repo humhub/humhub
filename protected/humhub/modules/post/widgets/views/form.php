@@ -4,7 +4,7 @@ use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\content\widgets\WallCreateContentForm;
 use humhub\modules\content\widgets\WallCreateContentFormFooter;
 use humhub\modules\post\models\Post;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 
 /* @var WallCreateContentForm $wallCreateContentForm */
 /* @var string $mentioningUrl */

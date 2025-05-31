@@ -10,9 +10,9 @@ use humhub\assets\AppAsset;
 use humhub\assets\CoreBundleAsset;
 use humhub\assets\JuiBootstrapBridgeAsset;
 use humhub\components\assets\WebStaticAssetBundle;
-use humhub\modules\ui\view\components\View;
-use yii\bootstrap\BootstrapAsset;
-use yii\bootstrap\BootstrapPluginAsset;
+use humhub\components\View;
+use yii\bootstrap5\BootstrapAsset;
+use yii\bootstrap5\BootstrapPluginAsset;
 use yii\helpers\ArrayHelper;
 use yii\jui\JuiAsset;
 use yii\web\JqueryAsset;
@@ -81,15 +81,17 @@ return [
             JuiAsset::class => [
                 'sourcePath' => '@npm/jquery-ui/dist',
             ],
+            BootstrapAsset::class => [
+                'css' => [],
+            ],
             BootstrapPluginAsset::class => [
-                'js' => ['js/bootstrap.min.js'],
+                'js' => ['js/bootstrap.bundle.min.js'],
                 'depends' => [
                     JqueryAsset::class,
                     BootstrapAsset::class,
                     JuiBootstrapBridgeAsset::class,
                 ],
             ],
-
         ],
     ],
 ];

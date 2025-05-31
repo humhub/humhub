@@ -22,7 +22,7 @@ use humhub\modules\marketplace\widgets\ModuleCard;
 
 <div class="row cards">
     <?php if (empty($modules)) : ?>
-        <div class="col-md-12 cards-no-results">
+        <div class="col-lg-12 cards-no-results">
             <?php if ($count) : ?>
                 <strong><?= Yii::t('MarketplaceModule.base', 'No modules found.') ?></strong><br/>
                 <?= Yii::t('MarketplaceModule.base', 'Try other keywords or remove filters.') ?>

@@ -4,21 +4,21 @@ use humhub\libs\ActionColumn;
 use humhub\modules\admin\models\GroupSearch;
 use humhub\modules\admin\widgets\GroupMenu;
 use humhub\modules\user\models\Group;
-use humhub\widgets\Label;
-use humhub\widgets\Link;
-use yii\helpers\Url;
+use humhub\widgets\bootstrap\Badge;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\GridView;
+use yii\helpers\Url;
 
 /* @var $searchModel GroupSearch */
 ?>
 <div class="panel-body">
-    <div class="pull-right">
+    <div class="float-end">
         <?= Link::success(Yii::t('AdminModule.user', 'Create new group'))->href(Url::to(['edit']))->sm()->icon('add') ?>
     </div>
 
     <h4><?= Yii::t('AdminModule.user', 'Manage groups'); ?></h4>
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'Users can be assigned to different groups (e.g. teams, departments etc.) with specific standard spaces, group managers and permissions.'); ?>
     </div>
 </div>
@@ -38,8 +38,8 @@ use humhub\widgets\GridView;
                 'value' => function (Group $group) {
                     // Yii::t is available for default texts
                     return Yii::t('AdminModule.base', $group->name) .
-                        ($group->is_default_group ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Default')) : '') .
-                        ($group->is_protected ? ' ' . Label::defaultType(Yii::t('AdminModule.user', 'Protected')) : '');
+                        ($group->is_default_group ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Default')) : '') .
+                        ($group->is_protected ? ' ' . Badge::light(Yii::t('AdminModule.user', 'Protected')) : '');
                 }
             ],
             [

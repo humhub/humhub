@@ -1,15 +1,15 @@
 <?php
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $this View */
 /* @var $objectModel string */
@@ -36,8 +36,8 @@ $contentModule = Yii::$app->getModule('content');
             'focus' => true,
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
-                'scroll-inactive' => 'comment.scrollInactive'
-            ]
+                'scroll-inactive' => 'comment.scrollInactive',
+            ],
         ])->label(false) ?>
 
         <div class="upload-buttons"><?php
@@ -49,19 +49,20 @@ $contentModule = Yii::$app->getModule('content');
                 'preview' => '#comment_upload_preview_' . $comment->id,
                 'progress' => '#comment_upload_progress_' . $comment->id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-default',
+                'cssButtonClass' => 'btn-sm btn-light',
             ]);
             echo FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-default btn-sm',
+                'cssButtonClass' => 'btn-light btn-sm',
                 'pullRight' => true,
             ]);
             echo Button::info()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
                 ->action('editSubmit', $submitUrl)->submit();
-            ?></div>
+            ?>
+        </div>
     </div>
 
     <div id="comment_upload_progress_<?= $comment->id ?>" style="display:none; margin:10px 0;"></div>
@@ -70,7 +71,7 @@ $contentModule = Yii::$app->getModule('content');
         'id' => 'comment_upload_preview_' . $comment->id,
         'options' => ['style' => 'margin-top:10px'],
         'model' => $comment,
-        'edit' => true
-    ]); ?>
+        'edit' => true,
+    ]) ?>
     <?php ActiveForm::end(); ?>
 </div>

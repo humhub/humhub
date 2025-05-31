@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\WallEntryAddons;
-use humhub\modules\ui\view\components\View;
 
 /* @var $this View */
 /* @var $model ContentActiveRecord */

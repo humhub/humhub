@@ -8,16 +8,16 @@
 
 namespace humhub\modules\file\libs;
 
+use humhub\helpers\Html;
+use humhub\libs\MimeHelper;
+use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentContainerActiveRecord;
+use humhub\modules\file\converter\PreviewImage;
+use humhub\modules\file\handler\DownloadFileHandler;
+use humhub\modules\file\handler\FileHandlerCollection;
+use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use humhub\modules\file\widgets\FileDownload;
-use humhub\libs\Html;
-use humhub\libs\MimeHelper;
-use humhub\modules\file\models\File;
-use humhub\modules\file\handler\FileHandlerCollection;
-use humhub\modules\file\handler\DownloadFileHandler;
-use humhub\modules\file\converter\PreviewImage;
-use humhub\modules\content\components\ContentActiveRecord;
 use Yii;
 use yii\helpers\Url;
 
@@ -92,7 +92,7 @@ class FileHelper extends \yii\helpers\FileHelper
             return Html::a($label, $file->getUrl(), $htmlOptions);
         }
 
-        $htmlOptions = array_merge($htmlOptions, ['data-target' => '#globalModal']);
+        $htmlOptions = array_merge($htmlOptions, ['data-bs-target' => '#globalModal']);
 
         $urlOptions = ['/file/view', 'guid' => $file->guid];
 
