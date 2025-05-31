@@ -7,7 +7,6 @@ use humhub\modules\content\widgets\ContainerTagPicker;
 use humhub\modules\file\widgets\Upload;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
-use humhub\widgets\form\ActiveForm;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
 use yii\helpers\Url;
@@ -23,9 +22,10 @@ $imageCropUrl = $user->createUrl('/user/image/crop');
 $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 ?>
 
-<?php Modal::beginDialog([
+<?php $form = Modal::beginFormDialog([
     'title' => Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]),
-    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+    'footer' => ModalButton::save(Yii::t('TourModule.base', 'Save and close'), Url::to(['/tour/tour/welcome'])),
+    'size' => Modal::SIZE_LARGE,
 ]) ?>
 
     <div class="text-center">
@@ -64,7 +64,6 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
         </div>
 
         <div class="col-lg-9">
-            <?php $form = ActiveForm::begin(); ?>
             <div class="row">
                 <div class="col-lg-6">
                     <?php echo $form->field($user->profile, 'firstname')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your firstname')]); ?>
@@ -110,17 +109,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     <?php echo $form->field($user->profile, 'mobile')->textInput(['placeholder' => Yii::t('TourModule.base', 'Your mobile phone number')]); ?>
                 </div>
             </div>
-
-            <div class="row">
-                <div class="col-lg-12 text-end">
-                    <hr>
-                    <br>
-                    <?= ModalButton::save(Yii::t('TourModule.base', 'Save and close'), Url::to(['/tour/tour/welcome'])) ?>
-                </div>
-            </div>
-
-            <?php ActiveForm::end(); ?>
         </div>
     </div>
 
-<?php Modal::endDialog() ?>
+<?php Modal::endFormDialog(); ?>
