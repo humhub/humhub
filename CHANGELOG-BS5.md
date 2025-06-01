@@ -17,4 +17,4 @@ Migration proccess:
 - Enh: Upgrade jQuery library (3.6.4 => 3.7.1)
 - Enh: Add [scssphp library](https://github.com/scssphp/scssphp) allowing to compile SCSS to CSS with PHP
 - Enh: Add CSS compiler after saving the Appearance settings form and after flushing cache
-- Enh: Add Appearance settings form fields: Primary and Secondary color, and a free SCSS textArea
+- Enh: Add Appearance settings form fields: 8 main Bootstrap color, and a free SCSS textArea
