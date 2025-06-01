@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\events\UserEvent;
@@ -330,6 +331,11 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
+        // Allow automated logout requests from mobile app
+        if (DeviceDetectorHelper::isAppRequest()) {
+            $this->enableCsrfValidation = false;
+        }
+
         $this->forcePostRequest();
 
         $language = Yii::$app->user->language;
