@@ -420,6 +420,15 @@ humhub.module('ui.modal', function (module, require, $) {
         this.options.backdrop = object.defaultValue(options.backdrop, this.$.data('bs-backdrop'));
         this.options.keyboard = object.defaultValue(options.keyboard, this.$.data('bs-keyboard'));
 
+        // Update Bootstrap modal instance
+        const bsModalInstance = bootstrap.Modal.getInstance(this.$);
+        if (bsModalInstance) {
+            this.$.attr('data-bs-backdrop', this.options.backdrop);
+            bsModalInstance._config.backdrop = this.options.backdrop;
+            this.$.attr('data-bs-keyboard', this.options.keyboard);
+            bsModalInstance._config.keyboard = this.options.keyboard;
+        }
+
         return this;
     };
 

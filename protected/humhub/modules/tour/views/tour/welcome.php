@@ -26,6 +26,8 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
     'title' => Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]),
     'footer' => ModalButton::save(Yii::t('TourModule.base', 'Save and close'), Url::to(['/tour/tour/welcome'])),
     'size' => Modal::SIZE_LARGE,
+    'closeButton' => false,
+    'closable' => false,
 ]) ?>
 
     <div class="text-center">
