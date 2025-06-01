@@ -581,7 +581,7 @@ Check the output manually, mainly functions and syntaxes such as:
 - `color: darken(@color, 20%);` ->  `shade-color($color, 20%);`
 - `transition:`: remove the `@include` added after the conversion
 
-#### Compiler to generate CSS files
+### Compiler to generate CSS files
 
 #### Themes
 
@@ -629,11 +629,6 @@ Replace all SCSS variables with CSS variables when available. You can use regex:
 For color variation, check if a CSS variable already exists.
 If not, create a new CSS variable (see "Custom colors" section below).
 
-References:
-- Doc: https://getbootstrap.com/docs/5.3/customize/css-variables/
-- Bootstrap 5 CSS variable list: https://github.com/twbs/bootstrap/blob/main/dist/css/bootstrap.css
-- Additional HumHub CSS root variables: `static/scss/_root.scss`
-
 #### Root vs component variables
 
 **Root variables** ([see doc](https://getbootstrap.com/docs/5.3/customize/css-variables/#root-variables)) are global variables that can be used in any component.
@@ -653,33 +648,15 @@ Their values can be overwritten in the component-related SCSS file (e.g. `_badge
 Doc: https://getbootstrap.com/docs/5.3/customize/color/
 
 Availability:
-- SCSS variables
-- root CSS variables
-- CSS classes (utility classes)
+- SCSS variables (e.g. `$primary`)
+- root CSS variables (e.g. `--bs-primary`)
+- CSS classes (utility classes, e.g. `.bg-primary`)
 
-##### Theme colors
-
-`primary`, etc.
-
-3 Variations:
-- `primary-bg-subtle`
-- `primary-border-subtle`
-- `primary-text-emphasis`
-
-##### All colors
-
-`blue`, etc.
-
-Variations ([doc](https://getbootstrap.com/docs/5.3/customize/color/#all-colors)):
-- `blue-100` (lighter)
-- ...
-- `blue-500` (= `blue`)
-- ...
-- `blue-900` (darker)
-
-##### Other colors
-
-`body-color`, etc.
+CSS color variations:
+- `--bs-primary-bg-subtle`
+- `--bs-primary-border-subtle`
+- `--bs-primary-text-emphasis`
+- etc.
 
 #### Component colors
 
@@ -694,14 +671,21 @@ In components:
 - there are no color SCSS variables
 - but CSS variable values are usually defined from global SCSS variables
 
+#### Available CSS variables
+
+- Bootstrap root (prefix `--bs`) : https://getbootstrap.com/docs/5.3/customize/css-variables/
+- Bootstrap components (prefix `--bs-componentName`) : See component page (e.g. https://getbootstrap.com/docs/5.3/components/alerts/#variables)
+- HumHub root (prefix `--hh`) : `static/scss/_root.scss`
+- HumHub components (prefix `--hh-componentName`) : See component SCSS file in `static/scss`
+
 #### Custom colors
 
-If you need an extra color for your module or theme:
+If a color is not available for your module or theme:
 - Create a CSS variable
 - Prepend the name with a unique prefix: see "CSS variable prefixes" section
 - Define the CSS variable color value using Boostrap `tint-color()` and `shade-color()` functions (which uses Saas`mix()`) instead of `lighten()` and `darken()` (See https://codepen.io/emdeoh/pen/zYOQOPB)
 
-Example:
+Example for "My Module" (`-hh-mm` prefix):
 
 ```scss
 :root { // Or, if possible, a component such as button (see example in _buttons.scss), alert, etc.
