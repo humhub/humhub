@@ -1,7 +1,13 @@
+//
+// Sass variables
+// For CSS variables, see _root.scss
+// Bootstrap functions such as tint-color() and shade-color() are not available for this file
+// --------------------------------------------------
+
 $isFluid: false;
 
 //
-// Colors for buttons status etc.
+// Bootstrap base colors overwrite
 // --------------------------------------------------
 
 $primary: #435f6f;
@@ -14,16 +20,13 @@ $light: #e7e7e7;
 $dark: #333;
 
 $link-color: $info;
-$link-hover-color: darken($link-color, 10%);
-$code-color: darken($info, 10%);
+$link-hover-color: mix(black, $link-color, 10%);
+$code-color: mix(black, $info, 10%);
 $body-color: #555;
 $body-bg: #ededed;
 
-$default: #e7e7e7; // @deprecated since 1.18
-$link: $link-color; // @deprecated since 1.18
-
 //
-// Text colors
+// HumHub Text colors
 // --------------------------------------------------
 
 // Default body text color.
@@ -130,3 +133,11 @@ $container-max-widths: (
 $line-height-base: 1.5;
 $input-border-color: #e9ecef;
 $input-bg: #fff; // default is $body-bg
+
+
+//
+// @deprecated since 1.18
+// --------------------------------------------------
+
+$default: #e7e7e7;
+$link: $link-color;

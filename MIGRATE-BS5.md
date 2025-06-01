@@ -573,13 +573,15 @@ E.g.: `less/theme.less` -> `scss/_theme.scss`
 Linux command: `for file in *.less; do mv "$file" "_${file%.less}.scss"; done` and remove the `_` for the `build.scss` file
 
 You can use the following tool to convert LESS to SCSS: https://less2scss.awk5.com/
-However, you need to check the output manually, mainly functions and syntaxes such as:
-- `color: fade(@color, 20%);` -> `color: mix(white, $primary, 80%);`
+An AI might be more powerful to convert, but still requires manual checks (use a DIFF tool).
+
+Check the output manually, mainly functions and syntaxes such as:
+- `color: fade(@color, 20%);` ->  `tint-color($color, 80%);`
+- `color: lighten(@color, 20%);` ->  `tint-color($color, 20%);`
+- `color: darken(@color, 20%);` ->  `shade-color($color, 20%);`
 - `transition:`: remove the `@include` added after the conversion
 
-An AI such as https://claude.ai/ might be more powerful to convert, but still requires manual checks (use a DIFF tool).
-
-#### Compiler to generate CSS files
+### Compiler to generate CSS files
 
 #### Themes
 
@@ -618,59 +620,43 @@ In modules or custom themes, if you need new variables, prefix them with `--hh-x
 
 #### Use CSS variables instead of SCSS variables
 
-In all SCSS files (except in SASS functions), replace all SCSS variables with CSS variables, when available (see list in `variables.scss`), except the one used in SCSS function (e.g. `lighten($primary, 5%)`). You can use regex:
+CSS variables allow changing the value dynamically on the browser side without having to refresh the page, e.g. to switch to High contrast or Dark mode.
+
+Replace all SCSS variables with CSS variables when available. You can use regex:
 - search: `\$([a-zA-Z0-9-_]+)`
 - replace: `var(--bs-$1)` (mainly for base colors such as `$primary`) or `var(--hh-$1)`
 
+For color variation, check if a CSS variable already exists.
+If not, create a new CSS variable (see "Custom colors" section below).
+
 #### Root vs component variables
 
-**Root variables** are global variables that can be used in any component.
-They are stored in this file: `_root.scss`
-See https://getbootstrap.com/docs/5.3/customize/css-variables/#root-variables
+**Root variables** ([see doc](https://getbootstrap.com/docs/5.3/customize/css-variables/#root-variables)) are global variables that can be used in any component.
+They are stored in this file: `static/scss/__root.scss`
 
 **Component variables** only apply to the HTML elements having the related class (e.g. `.badge` for [Badge CSS variables](https://getbootstrap.com/docs/5.3/components/badge/#variables)), and HTML elements inside of it.
 
-Their values can be overwritten in the component related SCSS file (e.g. `_badge.scss`). Example:
+Their values can be overwritten in the component-related SCSS file (e.g. `_badge.scss`). Example:
 ```scss
 .badge {
     --bs-badge-padding-x: 0.8em;
 }
 ```
 
-Full list of Bootstrap CSS variables here: https://github.com/twbs/bootstrap/tree/main/scss
-
 #### Global colors
 
 Doc: https://getbootstrap.com/docs/5.3/customize/color/
 
 Availability:
-- SCSS variables
-- root CSS variables
-- CSS classes (utility classes)
+- SCSS variables (e.g. `$primary`)
+- root CSS variables (e.g. `--bs-primary`)
+- CSS classes (utility classes, e.g. `.bg-primary`)
 
-##### Theme colors
-
-`primary`, etc.
-
-3 Variations:
-- `primary-bg-subtle`
-- `primary-border-subtle`
-- `primary-text-emphasis`
-
-##### All colors
-
-`blue`, etc.
-
-Variations:
-- `blue-100` (lighter)
-- ...
-- `blue-500` (= `blue`)
-- ...
-- `blue-900` (darker)
-
-##### Other colors
-
-`body-color`, etc.
+CSS color variations:
+- `--bs-primary-bg-subtle`
+- `--bs-primary-border-subtle`
+- `--bs-primary-text-emphasis`
+- etc.
 
 #### Component colors
 
@@ -685,6 +671,27 @@ In components:
 - there are no color SCSS variables
 - but CSS variable values are usually defined from global SCSS variables
 
+#### Available CSS variables
+
+- Bootstrap root (prefix `--bs`) : https://getbootstrap.com/docs/5.3/customize/css-variables/
+- Bootstrap components (prefix `--bs-componentName`) : See component page (e.g. https://getbootstrap.com/docs/5.3/components/alerts/#variables)
+- HumHub root (prefix `--hh`) : `static/scss/_root.scss`
+- HumHub components (prefix `--hh-componentName`) : See component SCSS file in `static/scss`
+
+#### Custom colors
+
+If a color is not available for your module or theme:
+- Create a CSS variable
+- Prepend the name with a unique prefix: see "CSS variable prefixes" section
+- Define the CSS variable color value using Boostrap `tint-color()` and `shade-color()` functions (which uses Saas`mix()`) instead of `lighten()` and `darken()` (See https://codepen.io/emdeoh/pen/zYOQOPB)
+
+Example for "My Module" (`-hh-mm` prefix):
+
+```scss
+:root { // Or, if possible, a component such as button (see example in _buttons.scss), alert, etc.
+    --hh-mm-custom-color: shade-color($some-color, $percentage);
+}
+```
 
 ### Breakpoints
 

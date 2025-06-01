@@ -4,67 +4,17 @@
 
 // Bootstrap overwrite
 // See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
-.btn-primary {
-    --bs-btn-bg: var(--bs-primary);
-}
-
-.btn-secondary {
-    --bs-btn-bg: var(--bs-secondary);
-}
-
-.btn-success {
-    --bs-btn-bg: var(--bs-success);
-}
-
-.btn-info {
-    --bs-btn-bg: var(--bs-info);
-}
-
-.btn-warning {
-    --bs-btn-bg: var(--bs-warning);
-}
-
-.btn-danger {
-    --bs-btn-bg: var(--bs-danger);
-}
-
-.btn-light {
-    --bs-btn-bg: var(--bs-light);
-    --bs-btn-color: var(--hh-text-color-default);
-}
-
-.btn-dark {
-    --bs-btn-bg: var(--bs-dark);
-}
 
 .btn {
-    float: none;
-    margin-bottom: 0;
-    font-size: 14px;
-    font-weight: 600;
-    padding: 8px 16px;
-    box-shadow: none;
-    background-image: none;
-    text-shadow: none;
-    border-radius: 3px;
+    --bs-btn-padding-x: 1.1rem;
+    --bs-btn-padding-y: 0.5rem;
+    --bs-btn-font-weight: 600;
+    --bs-btn-border-radius: 3px;
     white-space: nowrap;
-
-    &:hover,
-    &:focus {
-        text-decoration: none;
-    }
-
-    &:active,
-    &.active {
-        outline: 0;
-        border-width: 1px;
-        border-style: solid;
-        box-shadow: none;
-    }
 
     &:not(.btn-icon-only) {
         i.fa {
-            margin-right: 4px;
+            margin-right: 0.3rem;
         }
     }
 
@@ -72,227 +22,55 @@
         outline: none;
     }
 
-    &.btn-sm {
-        padding: 4px 8px;
-        font-size: 12px;
-    }
-
-    &.btn-lg {
-        padding: 16px 28px;
+    &:hover,
+    &:focus,
+    &:active,
+    &.active {
+        color: var(--hh-text-color-contrast) !important;
     }
 }
 
-.btn-primary {
-    color: var(--hh-text-color-contrast) !important;
+.btn-sm, .btn-group-sm > .btn {
+    --bs-btn-padding-x: 0.5rem;
+    --bs-btn-padding-y: 0.2rem;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+    --bs-btn-padding-x: 1.75rem;
+    --bs-btn-padding-y: 0.9rem;
+    --bs-btn-font-size: 1.1rem;
+}
+
+$button-variant-colors: (
+    primary: $primary,
+    secondary: $secondary,
+    success: $success,
+    danger: $danger,
+    warning: $warning,
+    info: $info,
+    light: $light,
+    dark: $dark
+);
+
+@mixin button-variant-dark-active($color, $darken-amount: 10%) {
+    --bs-btn-active-bg: #{darken($color, $darken-amount)};
+}
+
+@each $variant, $color in $button-variant-colors {
+    .btn-#{$variant} {
+        // Force white text color
+        --bs-btn-color: var(--hh-text-color-contrast);
+        // Force active button background color shade (darken) instead of tint (lighten)
+        @include button-variant-dark-active($color);
+    }
+}
+
+// Exception for the Light button
+.btn-light {
+    --bs-btn-color: var(--hh-text-color-default);
 
     &:hover,
     &:focus {
-        background: darken($primary, 5%);
+        color: var(--hh-text-color-highlight) !important;
     }
-
-    &:active,
-    &.active {
-        border-color: var(--bs-primary);
-        color: var(--bs-primary) !important;
-        background: var(--hh-text-color-contrast) !important;
-    }
-
-    &.active:hover,
-    &.active:focus {
-        border-color: darken($primary, 5%);
-        color: darken($primary, 5%) !important;
-    }
-}
-
-.btn-primary[disabled],
-.btn-primary.disabled {
-    background: lighten($primary, 5%);
-
-    &:hover,
-    &:focus {
-        background: lighten($primary, 5%);
-    }
-
-    &:active,
-    &.active {
-        background: lighten($primary, 5%) !important;
-    }
-}
-
-.btn-info {
-    color: var(--hh-text-color-contrast) !important;
-
-    &:hover,
-    &:focus {
-        background: darken($info, 5%) !important;
-    }
-
-    &:active,
-    &.active {
-        border-color: var(--bs-info);
-        color: var(--bs-info) !important;
-        background: var(--hh-text-color-contrast) !important;
-    }
-
-    &.active:hover,
-    &.active:focus {
-        border-color: darken($info, 5%);
-        color: darken($info, 5%) !important;
-    }
-}
-
-.btn-info[disabled],
-.btn-info.disabled {
-    background: lighten($info, 5%);
-
-    &:hover,
-    &:focus {
-        background: lighten($info, 5%);
-    }
-
-    &:active,
-    &.active {
-        background: lighten($info, 5%) !important;
-    }
-}
-
-.btn-outline-info:hover {
-    color: var(--hh-text-color-contrast);
-}
-
-.btn-danger {
-    color: var(--hh-text-color-contrast) !important;
-
-    &:hover,
-    &:focus {
-        background: darken($danger, 5%);
-    }
-
-    &:active,
-    &.active {
-        outline: 0;
-        background: darken($danger, 5%) !important;
-    }
-}
-
-.btn-danger[disabled],
-.btn-danger.disabled {
-    background: lighten($danger, 5%);
-
-    &:hover,
-    &:focus {
-        background: lighten($danger, 5%);
-    }
-
-    &:active,
-    &.active {
-        background: lighten($danger, 5%) !important;
-    }
-}
-
-.btn-outline-danger:hover {
-    color: var(--hh-text-color-contrast);
-}
-
-.btn-success {
-    color: var(--hh-text-color-contrast) !important;
-
-    &:hover,
-    &:focus {
-        background: darken($success, 5%);
-    }
-
-    &:active,
-    &.active {
-        background: darken($success, 5%) !important;
-    }
-}
-
-.btn-success[disabled],
-.btn-success.disabled {
-    background: lighten($success, 5%);
-
-    &:hover,
-    &:focus {
-        background: lighten($success, 5%);
-    }
-
-    &:active,
-    &.active {
-        background: lighten($success, 5%) !important;
-    }
-}
-
-.btn-outline-success:hover {
-    color: var(--hh-text-color-contrast);
-}
-
-.btn-warning {
-    color: var(--hh-text-color-contrast) !important;
-
-    &:hover,
-    &:focus {
-        background: darken($warning, 2%);
-    }
-
-    &:active,
-    &.active {
-        background: darken($warning, 2%) !important;
-    }
-}
-
-.btn-warning[disabled],
-.btn-warning.disabled {
-    background: lighten($warning, 5%);
-
-    &:hover,
-    &:focus {
-        background: lighten($warning, 5%);
-    }
-
-    &:active,
-    &.active {
-        background: lighten($warning, 5%) !important;
-    }
-}
-
-.btn-outline-warning:hover {
-    color: var(--hh-text-color-contrast);
-}
-
-.btn-link {
-    color: var(--bs-link-color) !important;
-
-    &:hover,
-    &:focus {
-        color: darken($link-color, 2%);
-    }
-
-    &:active,
-    &.active {
-        color: darken($link-color, 2%) !important;
-    }
-}
-
-.btn-link[disabled],
-.btn-link.disabled {
-    color: lighten($link-color, 5%);
-
-    &:hover,
-    &:focus {
-        color: lighten($link-color, 5%);
-    }
-
-    &:active,
-    &.active {
-        color: lighten($link-color, 5%) !important;
-    }
-}
-
-.btn-secondary {
-    color: var(--hh-text-color-contrast) !important;
-}
-
-.btn-outline-secondary:hover {
-    color: var(--hh-text-color-contrast);
 }
