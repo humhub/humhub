@@ -49,6 +49,7 @@ Widgets & helpers:
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
 - `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
+- `humhub\widgets\LinkPager` use `humhub\widgets\bootstrap\LinkPager` instead
 - `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead (watch out for class name changes!)
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead (watch out for class name changes!)
 - `humhub\libs\Html` use `humhub\helpers\Html` instead

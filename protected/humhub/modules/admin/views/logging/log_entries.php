@@ -5,7 +5,7 @@ use humhub\helpers\Html;
 use humhub\modules\admin\models\Log;
 use humhub\widgets\bootstrap\Badge;
 use humhub\widgets\bootstrap\Link;
-use humhub\widgets\LinkPager;
+use humhub\widgets\bootstrap\LinkPager;
 use yii\data\Pagination;
 use yii\log\Logger;
 
@@ -66,8 +66,11 @@ use yii\log\Logger;
     </div>
 
     <?php if ($pagination->totalCount): ?>
-        <div
-            class="float-end"><?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?></div>
+        <div class="clearfix">
+            <div class="float-end">
+                <?= Link::danger(Yii::t('AdminModule.information', 'Flush entries'))->post(['flush']) ?>
+            </div>
+        </div>
     <?php endif; ?>
 
     <div style="text-align: center;">

@@ -3,7 +3,7 @@
 use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\notification\components\BaseNotification;
-use humhub\widgets\LinkPager;
+use humhub\widgets\bootstrap\LinkPager;
 use yii\data\Pagination;
 
 /**
