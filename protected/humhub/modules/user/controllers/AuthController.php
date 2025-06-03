@@ -11,6 +11,7 @@ namespace humhub\modules\user\controllers;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\components\Response;
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\modules\user\authclient\AuthAction;
 use humhub\modules\user\authclient\BaseFormAuth;
 use humhub\modules\user\events\UserEvent;
@@ -89,6 +90,11 @@ class AuthController extends Controller
      */
     public function beforeAction($action)
     {
+        // Allow automated logout requests from mobile app
+        if ($action->id === 'logout' && DeviceDetectorHelper::isAppRequest()) {
+            $this->enableCsrfValidation = false;
+        }
+
         // Remove authClient from session - if already exists
         Yii::$app->session->remove('authClient');
 
