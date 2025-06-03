@@ -90,6 +90,11 @@ class AuthController extends Controller
      */
     public function beforeAction($action)
     {
+        // Allow automated logout requests from mobile app
+        if ($action->id === 'logout' && DeviceDetectorHelper::isAppRequest()) {
+            $this->enableCsrfValidation = false;
+        }
+
         // Remove authClient from session - if already exists
         Yii::$app->session->remove('authClient');
 
@@ -331,11 +336,6 @@ class AuthController extends Controller
      */
     public function actionLogout()
     {
-        // Allow automated logout requests from mobile app
-        if (DeviceDetectorHelper::isAppRequest()) {
-            $this->enableCsrfValidation = false;
-        }
-
         $this->forcePostRequest();
 
         $language = Yii::$app->user->language;
