@@ -1,12 +1,12 @@
 /**
  * jQuery Fix to work with Bootstrap 5
  *
- * $deprecated since 1.18
+ * @deprecated since 1.18
  *
  * TODO: Remove when jQuery is no longer supported
  */
 
-(function($) {
+(function ($) {
     $.fn.bs5FixHide = $.fn.hide;
     $.fn.bs5FixShow = $.fn.show;
     $.fn.bs5FixToggle = $.fn.toggle;
@@ -17,51 +17,55 @@
     $.fn.bs5FixSlideUp = $.fn.slideUp;
     $.fn.bs5FixSlideToggle = $.fn.slideToggle;
 
-    $.fn.hide = function() {
-        return this.addClass('d-none');
-    };
+    $.each(['hide', 'show', 'toggle'], function (_i, name) {
+        $.fn[name] = function (speed, easing, callback) {
+            const [duration, easingFinal, complete] = normalizeArgs(speed, easing, callback);
 
-    $.fn.show = function() {
-        return this.removeClass('d-none');
-    };
+            if (duration != null) {
+                if (name === 'hide') return this.fadeOut(duration, easingFinal, complete);
+                if (name === 'show') return this.fadeIn(duration, easingFinal, complete);
+                if (name === 'toggle') return this.fadeToggle(duration, easingFinal, complete);
+            }
 
-    $.fn.toggle = function(display) {
-        return this.toggleClass('d-none', typeof display === 'boolean' ? !display : display);
-    };
+            return this.each(function () {
+                const $el = $(this);
+                if (name === 'hide') $el.addClass('d-none');
+                else if (name === 'show') $el.removeClass('d-none');
+                else if (name === 'toggle') $el.toggleClass('d-none');
 
-    $.fn.fadeIn = function(duration, easing, complete) {
+                if (typeof complete === 'function') complete.call(this);
+            });
+        };
+    });
+
+    $.fn.fadeIn = function (duration, easing, complete) {
         [duration, easing, complete] = normalizeArgs(duration, easing, complete);
 
-        return this.each(function() {
+        return this.each(function () {
             const $el = $(this);
-            $el.removeClass('d-none').css({opacity: 0, display: ''});
-            $el.animate({ opacity: 1 }, duration, easing, function() {
+            $el.stop(true, true).css({ opacity: 0, display: '' }).removeClass('d-none');
+            $el.animate({ opacity: 1 }, duration, easing, function () {
                 $el.css('opacity', '');
-                if (typeof complete === 'function') {
-                    complete.call(this);
-                }
+                if (typeof complete === 'function') complete.call(this);
             });
         });
     };
 
-    $.fn.fadeOut = function(duration, easing, complete) {
+    $.fn.fadeOut = function (duration, easing, complete) {
         [duration, easing, complete] = normalizeArgs(duration, easing, complete);
 
-        return this.each(function() {
+        return this.each(function () {
             const $el = $(this);
-            $el.bs5FixFadeOut(duration, easing, function() {
-                $el.addClass('d-none').css('display', '');
-                if (typeof complete === 'function') {
-                    complete.call(this);
-                }
+            $el.stop(true, true).animate({ opacity: 0 }, duration, easing, function () {
+                $el.addClass('d-none').css('opacity', '');
+                if (typeof complete === 'function') complete.call(this);
             });
         });
     };
 
-    $.fn.fadeToggle = function(duration, easing, complete) {
-        return this.each(function() {
+    $.fn.fadeToggle = function (duration, easing, complete) {
+        return this.each(function () {
             const $el = $(this);
-
             if ($el.hasClass('d-none')) {
                 $el.fadeIn(duration, easing, complete);
             } else {
@@ -70,51 +74,53 @@
         });
     };
 
-    $.fn.slideDown = function(duration, easing, complete) {
+    $.fn.slideDown = function (duration, easing, complete) {
         [duration, easing, complete] = normalizeArgs(duration, easing, complete);
 
-        return this.each(function() {
+        return this.each(function () {
             const $el = $(this);
+
+            if (!$el.hasClass('d-none')) {
+                return;
+            }
 
             $el.removeClass('d-none').css({
-                display: '',
                 overflow: 'hidden',
-                height: 0
+                height: 0,
+                display: ''
             });
 
-            const fullHeight = $el.get(0).scrollHeight;
+            const fullHeight = this.scrollHeight;
 
-            $el.animate({ height: fullHeight }, duration, easing, function() {
-                $el.css({
-                    height: '',
-                    overflow: ''
-                });
-
-                if (typeof complete === 'function') {
-                    complete.call(this);
-                }
+            $el.stop(true, true).animate({ height: fullHeight }, duration, easing, function () {
+                $el.css({ height: '', overflow: '' });
+                if (typeof complete === 'function') complete.call(this);
             });
         });
     };
 
-    $.fn.slideUp = function(duration, easing, complete) {
+    $.fn.slideUp = function (duration, easing, complete) {
         [duration, easing, complete] = normalizeArgs(duration, easing, complete);
 
-        return this.each(function() {
+        return this.each(function () {
             const $el = $(this);
-            $el.bs5FixSlideUp(duration, easing, function() {
-                $el.addClass('d-none').css('display', '');
-                if (typeof complete === 'function') {
-                    complete.call(this);
-                }
+            const currentHeight = $el.outerHeight();
+
+            $el.css({
+                overflow: 'hidden',
+                height: currentHeight
+            });
+
+            $el.stop(true, true).animate({ height: 0 }, duration, easing, function () {
+                $el.addClass('d-none').css({ height: '', overflow: '' });
+                if (typeof complete === 'function') complete.call(this);
             });
         });
     };
 
-    $.fn.slideToggle = function(duration, easing, complete) {
-        return this.each(function() {
+    $.fn.slideToggle = function (duration, easing, complete) {
+        return this.each(function () {
             const $el = $(this);
-
             if ($el.hasClass('d-none')) {
                 $el.slideDown(duration, easing, complete);
             } else {
@@ -133,5 +139,5 @@
             easing = undefined;
         }
         return [duration, easing, complete];
-    }
+    };
 })(jQuery);
