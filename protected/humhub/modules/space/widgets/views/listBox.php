@@ -1,7 +1,9 @@
 <?php
 
 use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
+use humhub\widgets\ModalButton;
 use humhub\widgets\ModalDialog;
 use humhub\libs\Html;
 
@@ -26,9 +28,11 @@ use humhub\libs\Html;
                 <a href="<?= $space->getUrl(); ?>" data-modal-close="1">
 
                     <div class="media">
-                        <img class="media-object img-rounded pull-left"
-                             src="<?= $space->getProfileImage()->getUrl(); ?>" width="50"
-                             height="50" style="width: 50px; height: 50px;">
+                        <?= Image::widget([
+                            'space' => $space,
+                            'width' => 50,
+                            'htmlOptions' => ['class' => 'media-object pull-left'],
+                        ]) ?>
 
                         <div class="media-body">
                             <h4 class="media-heading"><?= Html::encode($space->name); ?></h4>
@@ -48,6 +52,11 @@ use humhub\libs\Html;
     </div>
 
 </div>
+
+<div class="modal-footer">
+    <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
+</div>
+
 <script <?= Html::nonce() ?>>
 
     // scroll to top of list
@@ -55,6 +64,3 @@ use humhub\libs\Html;
 
 </script>
 <?php ModalDialog::end() ?>
-
-
-
