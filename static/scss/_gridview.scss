@@ -9,7 +9,7 @@
 
 .grid-view .filters input,
 .grid-view .filters select {
-    @extend .form-control;
+    @extend %form-control-base;
     border-radius: 4px;
     font-size: 12px;
     padding: 4px;

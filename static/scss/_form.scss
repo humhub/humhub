@@ -55,7 +55,7 @@ div.required > label:after {
     }
 }
 
-.form-control {
+%form-control-base {
     border: 2px solid var(--hh-background-color-page);
     box-shadow: none;
     min-height: 35px;
@@ -78,6 +78,10 @@ div.required > label:after {
         border-radius: 30px;
         padding-left: 34px;
     }
+}
+
+.form-control {
+    @extend %form-control-base;
 }
 
 .form-group-search {
