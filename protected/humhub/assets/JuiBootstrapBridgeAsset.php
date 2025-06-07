@@ -9,7 +9,7 @@
 namespace humhub\assets;
 
 use humhub\components\assets\WebStaticAssetBundle;
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 use yii\jui\JuiAsset;
 
 /**

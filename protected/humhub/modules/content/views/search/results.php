@@ -10,7 +10,7 @@
 ?>
 <?php if ($results === '') : ?>
     <div class="row cards">
-        <div class="col-md-12">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
                     <strong><?= Yii::t('ContentModule.search', 'No results found!'); ?></strong><br/>

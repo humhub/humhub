@@ -225,16 +225,16 @@ $.fn.userpicker = function (options) {
         $('#' + uniqueID + '_userpicker li').remove();
 
         // show loader while loading
-        $('#' + uniqueID + '_userpicker').html('<li><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></li>');
+        $('#' + uniqueID + '_userpicker').html('<li><div id="loader_search"><div class="spinner-border spinner-border-sm" role="status"><span class="visually-hidden">...</span></div></div></li>');
 
         // build data object
         var data = options['data'] || {};
-        
+
         //This is the preferred way of adding the keyword
         if(options['searchUrl'].indexOf('-keywordPlaceholder-') < 0) {
             data['keyword'] = keyword;
         }
-        
+
         //Set the user role filter
         if(options['userRole']) {
             data['userRole'] = options['userRole'];
@@ -256,7 +256,7 @@ $.fn.userpicker = function (options) {
                 } else if(a.displayName.indexOf(keyword) < 0 && b.displayName.indexOf(keyword) >= 0) {
                       return 1;
                 }
-  
+
                 return 0;
             });
 
@@ -267,7 +267,7 @@ $.fn.userpicker = function (options) {
 
                     var _takenStyle = "";
                     var _takenData = false;
-                   
+
                     // set options to link, that this entry is already taken or not available
                     if (json[i].disabled == true || $('#' + uniqueID + '_' + json[i].guid).length || $('#'+json[i].guid).length || json[i].isMember == true || json[i].guid == options.userGuid) {
                         _takenStyle = "opacity: 0.4;"
@@ -275,7 +275,7 @@ $.fn.userpicker = function (options) {
                     }
 
                     // build <li> entry
-                    var str = '<li id="user_' + json[i].guid + '"><a style="' + _takenStyle + '" data-taken="' + _takenData + '" tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName.replace(/&#039;/g, "\\'") + '\', \'' + uniqueID + '\');"><img class="img-rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
+                    var str = '<li id="user_' + json[i].guid + '"><a style="' + _takenStyle + '" data-taken="' + _takenData + '" tabindex="-1" href="javascript:$.fn.userpicker.addUserTag(\'' + json[i].guid + '\', \'' + json[i].image + '\', \'' + json[i].displayName.replace(/&#039;/g, "\\'") + '\', \'' + uniqueID + '\');"><img class="rounded" src="' + json[i].image + '" height="20" width="20" alt=""/> ' + json[i].displayName + '</a></li>';
 
                     // append the entry to the <ul> list
                     $('#' + uniqueID + '_userpicker').append(str);
@@ -329,11 +329,11 @@ $.fn.userpicker = function (options) {
 
 // Add an usertag for invitation
 $.fn.userpicker.addUserTag = function (guid, image_url, name, id) {
-    
+
     if ($('#user_' + guid + ' a').attr('data-taken') != "true") {
-      
+
         // Building a new <li> entry
-        var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="img-rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="fa fa-times-circle"></i></li>';
+        var _tagcode = '<li class="userInput" id="' + id + '_' + guid + '"><img class="rounded" alt="24x24" data-src="holder.js/24x24" style="width: 24px; height: 24px;" src="' + image_url + '" alt="' + name + '" width="24" height="24" />' + name + '<i class="fa fa-times-circle"></i></li>';
 
 
         // insert the new created <li> entry into the <ul> construct

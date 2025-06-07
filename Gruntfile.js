@@ -79,13 +79,6 @@ module.exports = function (grunt) {
                     return doBuild ? `${build} ${sep} ${run}` : run;
                 }
             },
-            buildTheme: {
-                command: function (name) {
-                    let theme = name || grunt.option('name') || "HumHub";
-                    let sep = cmdSep();
-                    return `cd themes/${theme}/less ${sep} lessc --clean-css build.less ../css/theme.css`;
-                }
-            },
             migrateCreate: {
                 command: function (name) {
                     let migrationName = name || grunt.option('name');
@@ -115,17 +108,9 @@ module.exports = function (grunt) {
             target: {
                 files: cssMinAssetcfg
             }
-        },
-        less: {
-            dev: {
-                files: {
-                    'themes/HumHub/css/less/theme.css': 'themes/HumHub/css/less/theme.less'
-                }
-            }
         }
     });
 
-    grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
@@ -143,20 +128,6 @@ module.exports = function (grunt) {
      * > grunt migrate-create --name=MyMigration
      */
     grunt.registerTask('migrate-create', ['shell:migrateCreate']);
-
-    /**
-     * Build default HumHub theme:
-     *
-     * > grunt build-theme
-     *
-     * Build named theme:
-     * > grunt build-theme --name=MyTheme
-     *
-     * or
-     *
-     * > grunt shell:buildTheme:MyTheme
-     */
-    grunt.registerTask('build-theme', ['shell:buildTheme']);
     grunt.registerTask('test-server', ['shell:testServer']);
     grunt.registerTask('test', ['shell:testRun']);
 };

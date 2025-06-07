@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use humhub\helpers\Html;
 
 /** @var $originator \humhub\modules\user\models\User */
 

@@ -1,15 +1,30 @@
 Module Migration Guide
 ======================
 
-Version 1.18
+Version 1.18 (Unreleased)
 ------------
+
+### New
+- `\humhub\components\captcha\CaptchaInterface`
+- `\humhub\components\captcha\AltchaCaptcha`
+- `\humhub\components\captcha\AltchaCaptchaInput`
+- `\humhub\components\captcha\AltchaCaptchaValidator`
+- `\humhub\components\captcha\AltchaCaptchaAction`
+- `\humhub\components\captcha\AltchaCaptchaAsset`
+- `\humhub\components\captcha\YiiCaptcha`
+- `\humhub\components\captcha\YiiCaptchaInput`
+- `\humhub\components\captcha\YiiCaptchaValidator`
+- `Yii::$app->captcha` component
+- `\humhub\assets\DriverJsAsset` (driver.js)
+- `\humhub\modules\tour\Module::tourConfigFiles` (allows customizing the introduction tour)
+- `\humhub\modules\tour\Module::driverJsOptions`
 
 ### Deprecated
 - `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
 - `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
 
-### Behaviour change
+### Changed
 
 - The following Mailer settings keys have been renamed to work with `.env`:
 
@@ -27,6 +42,10 @@ Version 1.18
 | `mailer.systemEmailAddress`      | `mailerSystemEmailAddress`     |
 | `mailer.systemEmailName`         | `mailerSystemEmailName`        |
 | `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
+
+- `tour` module:
+  - Library [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) replaced Wwith [driver.js](https://driverjs.com/)
+  - Widget view files rewritten
 
 ### Removed deprecations
 - Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
@@ -47,7 +66,7 @@ Version 1.17.2
 - Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
 
 
-Version 1.17
+Version 1.17 (January 2024)
 -------------------------
 
 ### Behaviour change

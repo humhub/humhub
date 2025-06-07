@@ -12,7 +12,7 @@ use humhub\components\Module;
 use humhub\components\Widget;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\space\models\Space;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 
 /**
@@ -48,7 +48,9 @@ class ContainerModuleActionButtons extends Widget
                     'data-action-click' => 'content.container.disableModule',
                     'data-action-url' => $this->getDisableUrl(),
                     'data-reload' => '1',
+                    'data-action-confirm-header' => Yii::t('AdminModule.modules', 'Disable Module'),
                     'data-action-confirm' => $this->getDisableConfirmationText(),
+                    'data-action-confirm-text' => Yii::t('AdminModule.base', 'Disable'),
                     'data-ui-loader' => 1,
                 ]);
         }
@@ -88,8 +90,8 @@ class ContainerModuleActionButtons extends Widget
     private function getDisableConfirmationText(): string
     {
         return $this->isSpace()
-            ? Yii::t('ContentModule.manage', 'Are you sure? *ALL* module data for this space will be deleted!')
-            : Yii::t('ContentModule.manage', 'Are you really sure? *ALL* module data for your profile will be deleted!');
+            ? Yii::t('ContentModule.manage', 'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from the Space.', ['moduleName' => $this->module->getName()])
+            : Yii::t('ContentModule.manage', 'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content from your Profile.', ['moduleName' => $this->module->getName()]);
     }
 
     private function getEnableUrl(): string

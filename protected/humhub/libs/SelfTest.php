@@ -10,6 +10,7 @@ namespace humhub\libs;
 
 use humhub\components\InstallationState;
 use humhub\helpers\ArrayHelper;
+use humhub\helpers\Html;
 use humhub\modules\admin\libs\HumHubAPI;
 use humhub\modules\ldap\helpers\LdapHelper;
 use humhub\modules\marketplace\Module;
