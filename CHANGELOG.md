@@ -11,6 +11,7 @@ HumHub Changelog
 - Enh #7361: Refactor application state mechanism
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
+- Fix #7438: Allow admins to manage profile topics
 - Enh #7444: Rename Mailer settings keys to work with `.env`
 - Fix #7451: Fix Module permissions visibility in content containers when not enabled
 - Fix #7450: Fix stream load suppressed when previous content is deleted/archived
