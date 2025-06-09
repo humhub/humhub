@@ -38,6 +38,9 @@ HumHub Changelog
 - Fix #7503: Don't run migration on updating of disabled module
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
+- Fix #7532: Prevent multiple execution of jobs canceled due to max. execution time.
+- Enh #7549: Allow logout from Mobile App
+- Enh #7546: Improve member space list box
 
 1.17.2 (April 7, 2025)
 ----------------------
