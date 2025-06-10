@@ -2,14 +2,19 @@
 
 use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
+use humhub\modules\space\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 
 /* @var $spaces Space[] */
 ?>
 
 
-<?php Modal::beginDialog(['title' => $title]) ?>
+<?php Modal::beginDialog([
+    'title' => $title,
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+]) ?>
 
     <?php if (count($spaces) === 0) : ?>
         <p><?= Yii::t('SpaceModule.base', 'No spaces found.'); ?></p>
@@ -20,9 +25,10 @@ use humhub\widgets\modal\Modal;
         <?php foreach ($spaces as $space) : ?>
             <a href="<?= $space->getUrl() ?>" data-modal-close="1" class="d-flex">
                 <div class="flex-shrink-0 me-2">
-                    <img class="rounded"
-                         src="<?= $space->getProfileImage()->getUrl() ?>" width="50"
-                         height="50" style="width: 50px; height: 50px;">
+                    <?= Image::widget([
+                        'space' => $space,
+                        'width' => 50,
+                    ]) ?>
                 </div>
 
                 <div class="flex-grow-1">

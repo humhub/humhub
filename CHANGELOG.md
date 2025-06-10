@@ -31,6 +31,7 @@ HumHub Changelog
 - Fix #7508: Fix missed messages on search spaces in top space chooser
 - Fix #7538: Mail layout: button not centered because of table width not 100%
 - Fix #7542: HTTP Session Cleanup Issue
+- Fix #7550: Don't show opener if logout triggered by mobile app
 - Enh #7547: Change title when disabling a module
 
 1.17.3 (Unreleased)
