@@ -8,6 +8,7 @@ on:
             - develop
             - next
             - bs5
+            - fix/654-bs5-tests
         paths-ignore:
             - '*.md'
     pull_request:
