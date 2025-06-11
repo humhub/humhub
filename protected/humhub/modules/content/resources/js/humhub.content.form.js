@@ -63,7 +63,7 @@ humhub.module('content.form', function (module, require, $) {
     }
 
     CreateForm.prototype.submit = function (evt) {
-        this.$.find('.preferences, .fileinput-button').hide();
+        this.$.find('.nav-pills, .fileinput-button').hide();
         this.$.find('.invalid-feedback').html('');
         this.$.find('.is-invalid').removeClass('is-invalid');
 
@@ -71,8 +71,8 @@ humhub.module('content.form', function (module, require, $) {
         evt.block = 'manual';
         event.trigger('humhub:content:beforeSubmit', this);
         client.submit(evt).then(function (response) {
-            that.$.find(".preferences, .fileinput-button").show();
-            that.$.find('.contentForm_options .preferences, .fileinput-button').show();
+            that.$.find(".nav-pills, .fileinput-button").show();
+            that.$.find('.contentForm_options .nav-pills, .fileinput-button').show();
             if (!response.errors) {
                 event.trigger('humhub:content:newEntry', response.output, this);
                 event.trigger('humhub:content:afterSubmit', response.output, this);
@@ -206,11 +206,11 @@ humhub.module('content.form', function (module, require, $) {
 
     CreateForm.prototype.changeState = function (state, title, buttonTitle) {
         const stateInput = this.$.find('input[name=state]');
-        let stateLabel = this.$.find('.label-content-state');
+        let stateLabel = this.$.find('.badge-content-state');
         const button = $('#post_submit_button' + (this.isModal ? '_modal' : ''));
 
         if (!stateLabel.length) {
-            stateLabel = $('<span>').addClass('badge text-bg-warning label-content-state');
+            stateLabel = $('<span>').addClass('badge text-bg-warning badge-content-state');
             this.$.find('.badge-container').append(stateLabel);
         }
 
@@ -233,7 +233,7 @@ humhub.module('content.form', function (module, require, $) {
         stateInput.val(state);
         stateLabel.show().html(title);
         button.html(buttonTitle);
-        this.$.find('.preferences [data-action-click=notifyUser]').parent().hide();
+        this.$.find('.nav-pills [data-action-click=notifyUser]').parent().hide();
         this.$.find('.notifyUserContainer').hide();
     }
 
@@ -251,8 +251,8 @@ humhub.module('content.form', function (module, require, $) {
             }
         }
         this.$.find('input[name^=scheduled]').remove();
-        this.$.find('.label-content-state').hide();
-        this.$.find('.preferences [data-action-click=notifyUser]').parent().show();
+        this.$.find('.badge-content-state').hide();
+        this.$.find('.nav-pills [data-action-click=notifyUser]').parent().show();
         const notifyUserContainer = this.$.find('.notifyUserContainer');
         if (notifyUserContainer.find('ul .select2-selection__clear').length) {
             notifyUserContainer.show();

@@ -29,9 +29,14 @@
 
             return this.each(function () {
                 const $el = $(this);
-                if (name === 'hide') $el.addClass('d-none');
-                else if (name === 'show') $el.removeClass('d-none');
-                else if (name === 'toggle') $el.toggleClass('d-none');
+                if (name === 'hide' || (name === 'toggle' && $el.is(':visible'))) {
+                    $el.addClass('d-none').removeClass('d-revert');
+                } else if (name === 'show' || (name === 'toggle' && !$el.is(':visible'))) {
+                    $el.removeClass('d-none');
+                    if ($el.css('display') === 'none') {
+                        $el.addClass('d-revert');
+                    }
+                }
 
                 if (typeof complete === 'function') complete.call(this);
             });
@@ -43,11 +48,16 @@
 
         return this.each(function () {
             const $el = $(this);
-            $el.stop(true, true).css({ opacity: 0, display: '' }).removeClass('d-none');
-            $el.animate({ opacity: 1 }, duration, easing, function () {
-                $el.css('opacity', '');
-                if (typeof complete === 'function') complete.call(this);
-            });
+            if ($el.is(':visible')) {
+                return;
+            }
+            $el.stop(true, true)
+                .css({ opacity: 0, display: '' })
+                .removeClass('d-none')
+                .animate({ opacity: 1 }, duration, easing, function () {
+                    $el.css('opacity', '');
+                    if (typeof complete === 'function') complete.call(this);
+                });
         });
     };
 
@@ -56,6 +66,9 @@
 
         return this.each(function () {
             const $el = $(this);
+            if (!$el.is(':visible')) {
+                return;
+            }
             $el.stop(true, true).animate({ opacity: 0 }, duration, easing, function () {
                 $el.addClass('d-none').css('opacity', '');
                 if (typeof complete === 'function') complete.call(this);

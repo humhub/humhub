@@ -46,7 +46,7 @@ SearchAsset::register($this);
             'autocomplete' => 'off',
         ]) ?>
     </div>
-    <ul class="dropdown-search-list">
+    <ul class="dropdown-search-list d-none">
         <?php foreach ($providers as $provider) : ?>
             <?= MetaSearchProviderWidget::widget(['provider' => $provider]) ?>
         <?php endforeach; ?>

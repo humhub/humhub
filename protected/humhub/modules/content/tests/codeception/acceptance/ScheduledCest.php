@@ -6,7 +6,7 @@ class ScheduledCest
 {
     public const DATE_FORMAT = 'short';
 
-    public function testCreateDraftPost(AcceptanceTester $I)
+    public function testCreateScheduledPost(AcceptanceTester $I)
     {
         $I->amSpaceAdmin(false, 3);
 
@@ -15,7 +15,7 @@ class ScheduledCest
         $I->click('#contentFormBody .humhub-ui-richtext[contenteditable]');
         $postContent = 'Sample text for a scheduled post';
         $I->fillField('#contentFormBody .humhub-ui-richtext[contenteditable]', $postContent);
-        $I->click('#contentFormBody ul.preferences');
+        $I->click('#contentFormBody ul.nav-pills');
         $datetime = (new Datetime('tomorrow'))->setTime(19, 15);
         $this->updateSchedulingOptions($I, $datetime);
         $I->see('Save scheduling', '#post_submit_button');
@@ -56,7 +56,7 @@ class ScheduledCest
             : 'DRAFT';
     }
 
-    private function updateSchedulingOptions(AcceptanceTester $I, ?Datetime $datetime = null, $labelSelector = '.label-content-state')
+    private function updateSchedulingOptions(AcceptanceTester $I, ?Datetime $datetime = null, $labelSelector = '.badge-content-state')
     {
         $I->waitForText('Schedule publication');
         $I->jsClick('.dropdown-menu.show [data-action-click=scheduleOptions]');

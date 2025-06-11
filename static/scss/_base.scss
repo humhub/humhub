@@ -39,6 +39,10 @@ hr {
     opacity: 0.1;
 }
 
+.d-revert {
+    display: revert !important;
+}
+
 // Cols (change position property to prevent the cutting of tooltips or menus)
 .col-lg-1,
 .col-lg-2,
