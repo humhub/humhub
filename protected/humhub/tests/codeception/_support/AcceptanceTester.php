@@ -154,7 +154,7 @@ class AcceptanceTester extends BaseTester
         $this->wait(1);
 
         if ($topics) {
-            $this->click('.dropdown-toggle', '.contentForm_options .preferences');
+            $this->click('.dropdown-toggle', '.contentForm_options .nav-pills');
             $this->wait(1);
             $this->click('Topics', '.contentForm_options');
             $this->waitForElementVisible('#postTopicContainer');
