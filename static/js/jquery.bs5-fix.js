@@ -43,11 +43,16 @@
 
         return this.each(function () {
             const $el = $(this);
-            $el.stop(true, true).css({ opacity: 0, display: '' }).removeClass('d-none');
-            $el.animate({ opacity: 1 }, duration, easing, function () {
-                $el.css('opacity', '');
-                if (typeof complete === 'function') complete.call(this);
-            });
+            if ($el.is(':visible')) {
+                return;
+            }
+            $el.stop(true, true)
+                .css({ opacity: 0, display: '' })
+                .removeClass('d-none')
+                .animate({ opacity: 1 }, duration, easing, function () {
+                    $el.css('opacity', '');
+                    if (typeof complete === 'function') complete.call(this);
+                });
         });
     };
 
@@ -56,6 +61,9 @@
 
         return this.each(function () {
             const $el = $(this);
+            if (!$el.is(':visible')) {
+                return;
+            }
             $el.stop(true, true).animate({ opacity: 0 }, duration, easing, function () {
                 $el.addClass('d-none').css('opacity', '');
                 if (typeof complete === 'function') complete.call(this);
