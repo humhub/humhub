@@ -19,6 +19,7 @@ use humhub\widgets\form\ActiveForm;
 use humhub\widgets\GridView;
 use humhub\widgets\modal\ModalButton;
 use yii\data\ActiveDataProvider;
+use yii\grid\ActionColumn;
 
 /* @var $this View */
 /* @var $dataProvider ActiveDataProvider */
@@ -49,7 +50,7 @@ use yii\data\ActiveDataProvider;
             <p><?= Yii::t('TopicModule.base', 'Add topics that you will use in your posts. Topics can be personal interests or general terms. When posting, you can select them by choosing "Topics" and it will be easier for other users to find your posts related to that topic.') ?></p>
             <div class="mb-3">
                 <div class="input-group">
-                    <?= Html::activeTextInput($addModel, 'name', ['style' => 'height:36px', 'class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
+                    <?= Html::activeTextInput($addModel, 'name', ['class' => 'form-control', 'placeholder' => Yii::t('TopicModule.base', 'Add Topic')]) ?>
                     <?= Button::light()->icon('add')->loader()->submit() ?>
                 </div>
             </div>
@@ -64,8 +65,8 @@ use yii\data\ActiveDataProvider;
                 'sort_order',
                 [
                     'header' => Yii::t('base', 'Actions'),
-                    'class' => 'yii\grid\ActionColumn',
-                    'options' => ['width' => '80px'],
+                    'class' => ActionColumn::class,
+                    'options' => ['width' => '100px'],
                     'buttons' => [
                         'update' => function ($url, $model) use ($contentContainer) {
                             /* @var $model Topic */
