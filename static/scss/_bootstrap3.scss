@@ -673,6 +673,18 @@ a.label-warning:hover {
     font-size: 12px;
 }
 
+// Temporary exceptions for "active" Primary and Info buttons to display as outlined
+// See https://github.com/humhub/humhub-internal/issues/661#issuecomment-2968279827
+.btn-primary {
+    --bs-btn-active-color: var(--bs-primary);
+    --bs-btn-active-bg: var(--hh-background-color-main);
+    --bs-btn-active-border-color: var(--bs-primary);
+}
+.btn-info {
+    --bs-btn-active-color: var(--bs-info);
+    --bs-btn-active-bg: var(--hh-background-color-main);
+    --bs-btn-active-border-color: var(--bs-info);
+}
 
 //
 // BS3 Less Mixins used as classes

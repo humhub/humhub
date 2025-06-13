@@ -21,13 +21,6 @@
     &.input {
         outline: none;
     }
-
-    &:hover,
-    &:focus,
-    &:active,
-    &.active {
-        color: var(--hh-text-color-contrast) !important;
-    }
 }
 
 .btn-sm, .btn-group-sm > .btn {
@@ -60,6 +53,9 @@ $button-variant-colors: (
     .btn-#{$variant} {
         // Force white text color
         --bs-btn-color: var(--hh-text-color-contrast);
+        --bs-btn-active-color: var(--hh-text-color-contrast);
+        --bs-btn-hover-color: var(--hh-text-color-contrast);
+        --bs-btn-focus-color: var(--hh-text-color-contrast);
         // Force active button background color shade (darken) instead of tint (lighten)
         @include button-variant-dark-active($color);
     }
