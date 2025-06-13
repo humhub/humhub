@@ -31,7 +31,7 @@ use humhub\widgets\bootstrap\Link;
 /* @var $scheduleUrl string */
 ?>
 
-<div class="notifyUserContainer mb-3" style="margin-top:15px;display:none">
+<div class="notifyUserContainer my-3 d-none">
     <?= UserPickerField::widget([
         'id' => 'notifyUserInput' . ($isModal ? 'Modal' : ''),
         'url' => $pickerUrl,
@@ -42,7 +42,7 @@ use humhub\widgets\bootstrap\Link;
     ]) ?>
 </div>
 
-<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="mb-3" style="margin-top:15px;display:none">
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="my-3 d-none">
     <?= TopicPicker::widget([
         'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',

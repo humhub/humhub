@@ -9,10 +9,10 @@
 
 namespace humhub\widgets\form;
 
-use humhub\components\Widget;
 use Yii;
+use yii\widgets\InputWidget;
 
-class CaptchaField extends Widget
+class CaptchaField extends InputWidget
 {
     public static function widget($config = [])
     {

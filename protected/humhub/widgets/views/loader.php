@@ -12,8 +12,8 @@
  */
 ?>
 
-<div<?= $id ? ' id="' . $id . '"' : ''?><?= (isset($show) && !$show) ? ' style="display:none;"' : '' ?>
-    class="hh-loader humhub-ui-loader text-center<?= $cssClass ? ' ' . $cssClass : '' ?>">
+<div<?= $id ? ' id="' . $id . '"' : ''?>
+    class="hh-loader humhub-ui-loader text-center<?= $cssClass ? ' ' . $cssClass : '' ?><?= isset($show) && !$show ? ' d-none' : '' ?>">
     <div class="spinner-border" role="status">
         <span class="visually-hidden"><?= Yii::t('base', 'Loading...') ?></span>
     </div>

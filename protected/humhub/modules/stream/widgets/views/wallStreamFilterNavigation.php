@@ -32,7 +32,7 @@ $panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4])
         <?= Button::asLink(Yii::t('ContentModule.base', 'Filter'))
             ->cssClass('wall-stream-filter-toggle')->icon('fa-filter')->sm()->style('pa') ?>
     </div>
-    <div class="wall-stream-filter-body"<?php if ($isCollapsed) : ?> style="display:none"<?php endif; ?>>
+    <div class="wall-stream-filter-body<?= $isCollapsed ? ' d-none' : '' ?>">
         <div class="filter-root">
             <div class="row">
                 <?= FilterPanel::widget(['blocks' => $panelColumn1Blocks, 'span' => count($panels)]) ?>
