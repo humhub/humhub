@@ -10,8 +10,8 @@ namespace humhub\modules\dashboard\controllers;
 
 use humhub\components\behaviors\AccessControl;
 use humhub\components\Controller;
+use humhub\components\View;
 use humhub\modules\dashboard\components\actions\DashboardStreamAction;
-use humhub\modules\ui\view\components\View;
 use Yii;
 
 class DashboardController extends Controller

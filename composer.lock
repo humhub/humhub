@@ -4,8 +4,93 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d508d1e80a36a7838a68fb3d4c386db",
+    "content-hash": "f82fd53e3ece144670d6d13a79a2f330",
     "packages": [
+        {
+            "name": "altcha-org/altcha",
+            "version": "v0.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/altcha-org/altcha-lib-php.git",
+                "reference": "f42d5b2e57ca65a227a3c7fbfe125001d640b79e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/altcha-org/altcha-lib-php/zipball/f42d5b2e57ca65a227a3c7fbfe125001d640b79e",
+                "reference": "f42d5b2e57ca65a227a3c7fbfe125001d640b79e",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^11.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "AltchaOrg\\Altcha\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Regeci",
+                    "email": "536331+ovx@users.noreply.github.com"
+                }
+            ],
+            "support": {
+                "issues": "https://github.com/altcha-org/altcha-lib-php/issues",
+                "source": "https://github.com/altcha-org/altcha-lib-php/tree/v0.1.3"
+            },
+            "time": "2024-12-06T09:12:30+00:00"
+        },
+        {
+            "name": "apalfrey/select2-bootstrap-5-theme",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/apalfrey/select2-bootstrap-5-theme.git",
+                "reference": "ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/apalfrey/select2-bootstrap-5-theme/zipball/ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f",
+                "reference": "ab448b2ac36a6f7f90b162e384ca2b1469a3cc1f",
+                "shasum": ""
+            },
+            "type": "library",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Andrew Palfrey",
+                    "email": "apalfrey@apalfrey.me"
+                }
+            ],
+            "description": "Select2 theme for Bootstrap 5",
+            "homepage": "https://github.com/apalfrey/select2-bootstrap-5-theme",
+            "keywords": [
+                "bootstrap",
+                "bootstrap-5",
+                "bootstrap5",
+                "css",
+                "scss",
+                "select2",
+                "theme"
+            ],
+            "support": {
+                "issues": "https://github.com/apalfrey/select2-bootstrap-5-theme/issues",
+                "source": "https://github.com/apalfrey/select2-bootstrap-5-theme/tree/1.3.0"
+            },
+            "abandoned": true,
+            "time": "2022-05-08T00:12:43+00:00"
+        },
         {
             "name": "async-aws/core",
             "version": "1.26.0",
@@ -196,24 +281,18 @@
         },
         {
             "name": "bower-asset/bootstrap",
-            "version": "v3.4.1",
+            "version": "v5.3.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twbs/bootstrap.git",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
+                "reference": "f849680d16a9695c9a6c9c062d6cff55ddcf071e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/68b0d231a13201eb14acd3dc84e51543d16e5f7e",
-                "reference": "68b0d231a13201eb14acd3dc84e51543d16e5f7e"
+                "url": "https://api.github.com/repos/twbs/bootstrap/zipball/f849680d16a9695c9a6c9c062d6cff55ddcf071e",
+                "reference": "f849680d16a9695c9a6c9c062d6cff55ddcf071e"
             },
-            "require": {
-                "bower-asset/jquery": ">=1.9.1,<4.0"
-            },
-            "type": "bower-asset",
-            "license": [
-                "MIT"
-            ]
+            "type": "bower-asset"
         },
         {
             "name": "bower-asset/inputmask",
@@ -3730,6 +3809,33 @@
             ]
         },
         {
+            "name": "npm-asset/altcha",
+            "version": "1.1.0",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/altcha/-/altcha-1.1.0.tgz"
+            },
+            "require": {
+                "npm-asset/altcha--crypto": ">=0.0.1,<0.0.2"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/altcha--crypto",
+            "version": "0.0.1",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/@altcha/crypto/-/crypto-0.0.1.tgz"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
             "name": "npm-asset/animate.css",
             "version": "4.1.1",
             "dist": {
@@ -3864,31 +3970,6 @@
             ]
         },
         {
-            "name": "npm-asset/bootstrap",
-            "version": "3.4.1",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.4.1.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/bootstrap-tour",
-            "version": "0.11.0",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/bootstrap-tour/-/bootstrap-tour-0.11.0.tgz"
-            },
-            "require": {
-                "npm-asset/bootstrap": "~3",
-                "npm-asset/jquery": ">=1.8"
-            },
-            "type": "npm-asset"
-        },
-        {
             "name": "npm-asset/clipboard-polyfill",
             "version": "3.0.3",
             "dist": {
@@ -3951,6 +4032,18 @@
             },
             "require": {
                 "npm-asset/ms": "2.0.0"
+            },
+            "type": "npm-asset",
+            "license": [
+                "MIT"
+            ]
+        },
+        {
+            "name": "npm-asset/driver.js",
+            "version": "1.3.6",
+            "dist": {
+                "type": "tar",
+                "url": "https://registry.npmjs.org/driver.js/-/driver.js-1.3.6.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4066,10 +4159,10 @@
         },
         {
             "name": "npm-asset/humhub-prosemirror-richtext",
-            "version": "2.1.5",
+            "version": "2.3.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.1.5.tgz"
+                "url": "https://registry.npmjs.org/humhub-prosemirror-richtext/-/humhub-prosemirror-richtext-2.3.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4141,10 +4234,10 @@
         },
         {
             "name": "npm-asset/jquery",
-            "version": "3.6.4",
+            "version": "3.7.1",
             "dist": {
                 "type": "tar",
-                "url": "https://registry.npmjs.org/jquery/-/jquery-3.6.4.tgz"
+                "url": "https://registry.npmjs.org/jquery/-/jquery-3.7.1.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -4286,18 +4379,6 @@
             "dist": {
                 "type": "tar",
                 "url": "https://registry.npmjs.org/select2/-/select2-4.0.13.tgz"
-            },
-            "type": "npm-asset",
-            "license": [
-                "MIT"
-            ]
-        },
-        {
-            "name": "npm-asset/select2-bootstrap-theme",
-            "version": "0.1.0-beta.10",
-            "dist": {
-                "type": "tar",
-                "url": "https://registry.npmjs.org/select2-bootstrap-theme/-/select2-bootstrap-theme-0.1.0-beta.10.tgz"
             },
             "type": "npm-asset",
             "license": [
@@ -5664,6 +5745,86 @@
                 "source": "https://github.com/raoul2000/yii2-jcrop-widget/tree/1.0.0"
             },
             "time": "2014-07-30T15:40:38+00:00"
+        },
+        {
+            "name": "scssphp/scssphp",
+            "version": "v1.13.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/scssphp/scssphp.git",
+                "reference": "63d1157457e5554edf00b0c1fabab4c1511d2520"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/scssphp/scssphp/zipball/63d1157457e5554edf00b0c1fabab4c1511d2520",
+                "reference": "63d1157457e5554edf00b0c1fabab4c1511d2520",
+                "shasum": ""
+            },
+            "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4",
+                "phpunit/phpunit": "^5.7 || ^6.5 || ^7.5 || ^8.3 || ^9.4",
+                "sass/sass-spec": "*",
+                "squizlabs/php_codesniffer": "~3.5",
+                "symfony/phpunit-bridge": "^5.1",
+                "thoughtbot/bourbon": "^7.0",
+                "twbs/bootstrap": "~5.0",
+                "twbs/bootstrap4": "4.6.1",
+                "zurb/foundation": "~6.7.0"
+            },
+            "suggest": {
+                "ext-iconv": "Can be used as fallback when ext-mbstring is not available",
+                "ext-mbstring": "For best performance, mbstring should be installed as it is faster than ext-iconv"
+            },
+            "bin": [
+                "bin/pscss"
+            ],
+            "type": "library",
+            "extra": {
+                "bamarni-bin": {
+                    "bin-links": false,
+                    "forward-command": false
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ScssPhp\\ScssPhp\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Anthon Pang",
+                    "email": "apang@softwaredevelopment.ca",
+                    "homepage": "https://github.com/robocoder"
+                },
+                {
+                    "name": "Cédric Morin",
+                    "email": "cedric@yterium.com",
+                    "homepage": "https://github.com/Cerdic"
+                }
+            ],
+            "description": "scssphp is a compiler for SCSS written in PHP.",
+            "homepage": "http://scssphp.github.io/scssphp/",
+            "keywords": [
+                "css",
+                "less",
+                "sass",
+                "scss",
+                "stylesheet"
+            ],
+            "support": {
+                "issues": "https://github.com/scssphp/scssphp/issues",
+                "source": "https://github.com/scssphp/scssphp/tree/v1.13.0"
+            },
+            "time": "2024-08-17T21:02:11+00:00"
         },
         {
             "name": "sebastian/cli-parser",
@@ -9780,45 +9941,43 @@
             "time": "2025-02-13T21:32:58+00:00"
         },
         {
-            "name": "yiisoft/yii2-bootstrap",
-            "version": "2.0.11",
+            "name": "yiisoft/yii2-bootstrap5",
+            "version": "2.0.50",
             "source": {
                 "type": "git",
-                "url": "https://github.com/yiisoft/yii2-bootstrap.git",
-                "reference": "83d144f4089adaa7064ad60dc4c1436daa2eb30e"
+                "url": "https://github.com/yiisoft/yii2-bootstrap5.git",
+                "reference": "ad080a7ea063074888c2d801f6b05162064f8ae0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap/zipball/83d144f4089adaa7064ad60dc4c1436daa2eb30e",
-                "reference": "83d144f4089adaa7064ad60dc4c1436daa2eb30e",
+                "url": "https://api.github.com/repos/yiisoft/yii2-bootstrap5/zipball/ad080a7ea063074888c2d801f6b05162064f8ae0",
+                "reference": "ad080a7ea063074888c2d801f6b05162064f8ae0",
                 "shasum": ""
             },
             "require": {
-                "bower-asset/bootstrap": "3.4.* | 3.3.* | 3.2.* | 3.1.*",
-                "yiisoft/yii2": "~2.0.6"
+                "bower-asset/bootstrap": "^5.2.3",
+                "ext-json": "*",
+                "php": ">=7.3",
+                "yiisoft/yii2": "^2.0.42"
             },
             "require-dev": {
-                "cweagans/composer-patches": "^1.7",
-                "phpunit/phpunit": "4.8.34"
+                "phpunit/phpunit": "^9.6",
+                "twbs/bootstrap-icons": "^1.7.2",
+                "yiisoft/yii2-coding-standards": "~2.0"
+            },
+            "suggest": {
+                "twbs/bootstrap-icons": "Add this package to the `require` section of your `composer.json` if you'd like to use the bootstrap icon asset."
             },
             "type": "yii2-extension",
             "extra": {
-                "patches": {
-                    "phpunit/phpunit": {
-                        "Fix PHP 7 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php7.patch",
-                        "Fix PHP 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_php8.patch"
-                    },
-                    "phpunit/phpunit-mock-objects": {
-                        "Fix PHP 7 and 8 compatibility": "https://yiisoft.github.io/phpunit-patches/phpunit_mock_objects.patch"
-                    }
-                },
+                "bootstrap": "yii\\bootstrap5\\i18n\\TranslationBootstrap",
                 "branch-alias": {
                     "dev-master": "2.0.x-dev"
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "yii\\bootstrap\\": "src"
+                    "yii\\bootstrap5\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -9827,35 +9986,24 @@
             ],
             "authors": [
                 {
-                    "name": "Qiang Xue",
-                    "email": "qiang.xue@gmail.com",
-                    "homepage": "http://www.yiiframework.com/"
+                    "name": "Sergey Zhukovskiy",
+                    "email": "mylistryx@gmail.com",
+                    "homepage": "https://net23.ru/"
                 },
                 {
-                    "name": "Alexander Makarov",
-                    "email": "sam@rmcreative.ru",
-                    "homepage": "http://rmcreative.ru/"
-                },
-                {
-                    "name": "Antonio Ramirez",
-                    "email": "amigo.cobos@gmail.com"
-                },
-                {
-                    "name": "Paul Klimov",
-                    "email": "klimov.paul@gmail.com"
+                    "name": "Simon Karlen",
+                    "email": "simi.albi@outlook.com"
                 }
             ],
-            "description": "The Twitter Bootstrap extension for the Yii framework",
+            "description": "The Twitter Bootstrap v5 extension for the Yii framework",
             "keywords": [
                 "bootstrap",
+                "bootstrap5",
                 "yii2"
             ],
             "support": {
-                "forum": "http://www.yiiframework.com/forum/",
-                "irc": "irc://irc.freenode.net/yii",
-                "issues": "https://github.com/yiisoft/yii2-bootstrap/issues",
-                "source": "https://github.com/yiisoft/yii2-bootstrap",
-                "wiki": "http://www.yiiframework.com/wiki/"
+                "issues": "https://github.com/yiisoft/yii2-bootstrap5/issues",
+                "source": "https://github.com/yiisoft/yii2-bootstrap5"
             },
             "funding": [
                 {
@@ -9867,11 +10015,11 @@
                     "type": "open_collective"
                 },
                 {
-                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-bootstrap",
+                    "url": "https://tidelift.com/funding/github/packagist/yiisoft/yii2-bootstrap5",
                     "type": "tidelift"
                 }
             ],
-            "time": "2021-08-09T20:54:06+00:00"
+            "time": "2025-04-10T08:03:20+00:00"
         },
         {
             "name": "yiisoft/yii2-composer",
@@ -14588,9 +14736,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "npm-asset/select2-bootstrap-theme": 10,
-        "roave/security-advisories": 20,
-        "yiisoft/yii2": 20
+        "yiisoft/yii2": 20,
+        "roave/security-advisories": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
@@ -14602,9 +14749,9 @@
         "ext-pdo": "*",
         "ext-zip": "*"
     },
-    "platform-dev": {},
+    "platform-dev": [],
     "platform-overrides": {
         "php": "8.1"
     },
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

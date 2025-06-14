@@ -45,7 +45,7 @@ class InstalledModuleControls extends Menu
                     'id' => 'default',
                     'label' => Yii::t('AdminModule.base', 'Set as default'),
                     'url' => $this->getActionUrl('/admin/module/set-as-default'),
-                    'htmlOptions' => ['data-target' => '#globalModal'],
+                    'htmlOptions' => ['data-bs-target' => '#globalModal'],
                     'icon' => 'check-square',
                     'sortOrder' => 200,
                 ]));
@@ -57,7 +57,9 @@ class InstalledModuleControls extends Menu
                 'url' => $this->getActionUrl('/admin/module/disable'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
-                    'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module data will be lost!'),
+                    'data-action-confirm-header' => Yii::t('AdminModule.modules', 'Disable Module'),
+                    'data-action-confirm' => Yii::t('AdminModule.modules', 'Disabling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.', ['moduleName' => $this->module->getName()]),
+                    'data-action-confirm-text' => Yii::t('AdminModule.base', 'Disable'),
                 ],
                 'icon' => 'minus-circle',
                 'sortOrder' => 300,
@@ -68,8 +70,7 @@ class InstalledModuleControls extends Menu
                 'label' => Yii::t('AdminModule.base', 'Enable'),
                 'url' => $this->getActionUrl('/admin/module/enable'),
                 'htmlOptions' => [
-                    'data-method' => 'POST',
-                    'data-loader' => 'modal',
+                    'data-action-click' => 'ui.modal.post',
                     'data-message' => Yii::t('AdminModule.modules', 'Enable module...'),
                 ],
                 'icon' => 'check-circle',
@@ -84,7 +85,9 @@ class InstalledModuleControls extends Menu
                 'url' => $this->getActionUrl('/admin/module/remove'),
                 'htmlOptions' => [
                     'data-method' => 'POST',
-                    'data-confirm' => Yii::t('AdminModule.modules', 'Are you sure? *ALL* module related data and files will be lost!'),
+                    'data-action-confirm-header' => Yii::t('AdminModule.modules', 'Uninstall Module'),
+                    'data-action-confirm' => Yii::t('AdminModule.modules', 'Uninstalling the <strong>{moduleName}</strong> module will permanently delete <strong>all</strong> module-related content.', ['moduleName' => $this->module->getName()]),
+                    'data-action-confirm-text' => Yii::t('AdminModule.base', 'Uninstall'),
                 ],
                 'icon' => 'trash',
                 'sortOrder' => 400,

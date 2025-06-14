@@ -8,10 +8,9 @@
 
 namespace humhub\modules\space\widgets;
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\widgets\BaseImage;
-use Yii;
-use yii\bootstrap\Html;
 
 /**
  * Return space image or acronym
@@ -60,26 +59,26 @@ class Image extends BaseImage
         $acronymHtmlOptions['style'] .= " " . $this->getDynamicStyles($this->width);
         $acronymHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
-        $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " img-rounded profile-user-photo";
-        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px";
+        $imageHtmlOptions['class'] .= " space-profile-image-" . $this->space->id . " rounded profile-user-photo";
+        $imageHtmlOptions['style'] .= " width: " . $this->width . "px; height: " . $this->height . "px;";
         $imageHtmlOptions['alt'] = Html::encode($this->space->name);
 
         $imageHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
         if ($this->showTooltip) {
-            $this->linkOptions['data-toggle'] = 'tooltip';
+            $this->linkOptions['data-bs-toggle'] = 'tooltip';
             $this->linkOptions['data-placement'] = 'top';
             $this->linkOptions['data-html'] = 'true';
             $this->linkOptions['data-original-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->space->name);
             Html::addCssClass($this->linkOptions, 'tt');
         }
 
-        $defaultImage = (basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg' || basename($this->space->getProfileImage()->getUrl()) == 'default_space.jpg?cacheId=0') ? true : false;
+        $isDefaultImage = str_starts_with(basename($this->space->getProfileImage()->getUrl()), 'default_space.jpg');
 
-        if (!$defaultImage) {
-            $acronymHtmlOptions['class'] .= " hidden";
+        if ($isDefaultImage) {
+            $imageHtmlOptions['class'] .= ' d-none-space-image'; // Don't replace with `d-none` because it would be removed after changing space
         } else {
-            $imageHtmlOptions['class'] .= " hidden";
+            $acronymHtmlOptions['class'] .= ' d-none-space-image'; // Idem
         }
 
         return $this->render('@space/widgets/views/image', [

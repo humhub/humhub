@@ -9,7 +9,7 @@
 namespace humhub\assets;
 
 use humhub\components\assets\AssetBundle;
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 
 /**
  * OpenSans Font

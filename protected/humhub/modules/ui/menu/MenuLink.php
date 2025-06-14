@@ -11,7 +11,7 @@ namespace humhub\modules\ui\menu;
 use Exception;
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\widgets\Menu;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /**
  * Class MenuLink
@@ -56,7 +56,7 @@ class MenuLink extends MenuEntry
      */
     public function renderEntry($extraHtmlOptions = [])
     {
-        // Set default html options and merge with extraoptions
+        // Set default HTML options and merge with extra options
         $this->getHtmlOptions($extraHtmlOptions);
         return $this->getLink()->asString();
     }
@@ -77,7 +77,7 @@ class MenuLink extends MenuEntry
         $this->getLink()->options(['data-sort-order' => $this->getSortOrder()]);
 
 
-        return $this->getLink()->htmlOptions;
+        return $this->getLink()->options;
     }
 
     public function compare(MenuEntry $entry)
@@ -91,7 +91,7 @@ class MenuLink extends MenuEntry
      */
     public function setLabel($label)
     {
-        $this->getLink()->setText($label);
+        $this->getLink()->setLabel($label);
         return $this;
     }
 
@@ -110,7 +110,7 @@ class MenuLink extends MenuEntry
      */
     public function getLabel()
     {
-        return $this->getLink()->text;
+        return $this->getLink()->label;
     }
 
     /**
@@ -118,17 +118,18 @@ class MenuLink extends MenuEntry
      */
     public function getIcon()
     {
-        return $this->getLink()->_icon;
+        return $this->getLink()->icon;
     }
 
     /**
      * @param $icon Icon|string the icon instance or icon name
-     * * @return static
+     * @param bool $right
+     * @return static
      * @throws Exception
      */
-    public function setIcon($icon, $right = false, $raw = false)
+    public function setIcon($icon, $right = false)
     {
-        $this->getLink()->icon($icon, $right, $raw);
+        $this->getLink()->icon($icon, $right);
         return $this;
     }
 
@@ -202,7 +203,7 @@ class MenuLink extends MenuEntry
         }
 
         if (isset($item['icon'])) {
-            $entry->setIcon($item['icon'], false, true);
+            $entry->setIcon($item['icon']);
         }
 
         if (isset($item['url'])) {

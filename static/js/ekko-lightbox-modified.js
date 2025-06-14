@@ -206,7 +206,7 @@
             return this;
         },
         showLoading: function () {
-            this.lightbox_body.html('<div class="modal-loading"><br><div class="loader"><div class="sk-spinner sk-spinner-three-bounce"><div class="sk-bounce1"></div><div class="sk-bounce2"></div><div class="sk-bounce3"></div></div></div></div>');
+            this.lightbox_body.html('<div class="modal-loading"><br><div class="spinner-border" role="status"><span class="visually-hidden">...</span></div></div>');
             return this;
         },
         showYoutubeVideo: function (id) {
@@ -256,9 +256,9 @@
                     if (_this.modal_arrows) {
                         _this.modal_arrows.css('display', 'block');
                     }
-                    
+
                     var width = image.width();
-                    
+
                     // Don't resize for small devices
                     if(windowWidth < 700) {
                         _this.lightbox_container.find('a').css('line-height', function() {
@@ -268,7 +268,7 @@
                     } else {
                         return _this.resize((width < maxW) ? width : maxW);
                     }
-                    
+
                 };
                 img.onerror = function () {
                     return _this.error('Failed to load image: ' + src);

@@ -7,18 +7,19 @@
 
 use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\ui\menu\MenuEntry;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var MenuEntry[] $entries */
 ?>
-<?= Button::defaultType(Icon::get('cog') . Icon::get('dropdownToggle'))
-    ->options(['data-toggle' => 'dropdown'])
+<?= Button::light(Icon::get('cog'))
+    ->options(['data-bs-toggle' => 'dropdown'])
     ->sm()
+    ->cssClass('dropdown-toggle')
     ->loader(false) ?>
-<ul class="dropdown-menu pull-right">
+<ul class="dropdown-menu dropdown-menu-end">
     <?php foreach ($entries as $entry) : ?>
         <li>
-            <?= $entry->render() ?>
+            <?= $entry->render(['class' => 'dropdown-item']) ?>
         </li>
     <?php endforeach; ?>
 </ul>

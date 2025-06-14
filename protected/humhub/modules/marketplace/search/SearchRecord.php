@@ -8,8 +8,8 @@
 
 namespace humhub\modules\marketplace\search;
 
+use humhub\helpers\Html;
 use humhub\interfaces\MetaSearchResultInterface;
-use humhub\libs\Html;
 use humhub\modules\marketplace\models\Module as ModelModule;
 
 /**
@@ -33,7 +33,7 @@ class SearchRecord implements MetaSearchResultInterface
     public function getImage(): string
     {
         return Html::img($this->module->image, [
-            'class' => 'media-object img-rounded',
+            'class' => 'rounded',
             'data-src' => 'holder.js/36x36',
             'alt' => '36x36',
             'style' => 'width:36px;height:36px',

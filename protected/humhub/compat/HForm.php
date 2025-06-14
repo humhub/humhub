@@ -8,16 +8,16 @@
 
 namespace humhub\compat;
 
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\content\widgets\richtext\RichTextField;
 use humhub\modules\file\components\FileManager;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\form\widgets\DatePicker;
 use humhub\modules\ui\form\widgets\MultiSelect;
-use humhub\modules\ui\form\widgets\SortOrderField;
+use humhub\widgets\form\ActiveField;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\form\SortOrderField;
 use Yii;
-use yii\helpers\Html;
-use yii\widgets\ActiveField;
 
 /**
  * HForm - Yii1 compatible form generator
@@ -228,7 +228,7 @@ class HForm extends \yii\base\Component
         foreach ($buttons as $buttonName => $definition) {
             $isVisible = $definition['isVisible'] ?? true;
             if ($definition['type'] == 'submit' && $isVisible) {
-                $output .= \yii\helpers\Html::submitButton($definition['label'], array_merge(['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => ''], $definition['options'] ?? []));
+                $output .= Html::submitButton($definition['label'], array_merge(['name' => $buttonName, 'class' => $definition['class'], 'data-ui-loader' => ''], $definition['options'] ?? []));
                 $output .= "&nbsp;";
             }
         }

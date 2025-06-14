@@ -45,7 +45,7 @@ class ModuleControls extends Menu
                 'id' => 'marketplace-licence-key',
                 'label' => Yii::t('MarketplaceModule.base', 'Add License Key'),
                 'url' => ['/marketplace/purchase'],
-                'htmlOptions' => ['data-target' => '#globalModal'],
+                'htmlOptions' => ['data-bs-target' => '#globalModal'],
                 'icon' => 'key',
                 'sortOrder' => 200,
             ]));
@@ -57,7 +57,7 @@ class ModuleControls extends Menu
                 'label' => Yii::t('MarketplaceModule.base', 'Third-party')
                     . ($this->module->isCommunity ? ' - ' . Yii::t('MarketplaceModule.base', 'Community') : ''),
                 'url' => ['/marketplace/browse/thirdparty-disclaimer'],
-                'htmlOptions' => ['data-target' => '#globalModal'],
+                'htmlOptions' => ['data-bs-target' => '#globalModal'],
                 'icon' => 'info-circle',
                 'sortOrder' => 300,
             ]));

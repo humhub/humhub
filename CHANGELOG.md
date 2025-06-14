@@ -3,6 +3,7 @@ HumHub Changelog
 
 1.18.0 (Unreleased - Develop)
 ----------------------------
+- Enh #7029: Add Altcha captcha provider for an alternative to the default Yii captcha
 - Enh #7412: Confusing message after creating an account
 - Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
 - Enh #7332: Optimized `DynamicConfig` to store and read database information only
@@ -26,10 +27,12 @@ HumHub Changelog
 - Fix #7518: Fix Incorrect German Translation
 - Fix #7522: Fix mailer config
 - Fix #7526: Fix `installationState` issues
+- Enh #7535: Tour module: replace unmaintained [bootstrap-tour](https://github.com/sorich87/bootstrap-tour/) with [driver.js](https://driverjs.com/)
 - Fix #7508: Fix missed messages on search spaces in top space chooser
 - Fix #7538: Mail layout: button not centered because of table width not 100%
 - Fix #7542: HTTP Session Cleanup Issue
 - Fix #7550: Don't show opener if logout triggered by mobile app
+- Enh #7547: Change title when disabling a module
 
 1.17.3 (Unreleased)
 ----------------------

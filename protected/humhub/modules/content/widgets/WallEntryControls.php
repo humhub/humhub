@@ -7,6 +7,7 @@ use humhub\modules\content\widgets\stream\StreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryOptions;
 use humhub\modules\content\widgets\stream\WallStreamEntryWidget;
 use humhub\modules\ui\menu\MenuEntry;
+use humhub\modules\ui\menu\WidgetMenuEntry;
 use humhub\modules\ui\menu\widgets\Menu;
 use yii\helpers\ArrayHelper;
 
@@ -134,7 +135,7 @@ class WallEntryControls extends Menu
     {
         $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $className, 'widgetOptions' => $params, 'sortOrder' => $sortOrder]);
-        $this->addEntry(new LegacyWallEntryControlLink($cfg));
+        $this->addEntry(new WidgetMenuEntry($cfg));
     }
 
     /**
@@ -169,7 +170,7 @@ class WallEntryControls extends Menu
         $sortOrder = isset($options['sortOrder']) ? $options['sortOrder'] : PHP_INT_MAX;
         $cfg = array_merge($options, ['widgetClass' => $widgetClass, 'widgetOptions' => $widgetOptions, 'sortOrder' => $sortOrder]);
 
-        return new LegacyWallEntryControlLink($cfg);
+        return new WidgetMenuEntry($cfg);
     }
 
     /**

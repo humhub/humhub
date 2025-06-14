@@ -8,12 +8,11 @@
 
 namespace humhub\modules\web\pwa\widgets;
 
-use Yii;
-use yii\base\WidgetEvent;
-use yii\helpers\Url;
+use humhub\components\View;
 use humhub\components\Widget;
 use humhub\modules\web\Module;
-use humhub\modules\ui\view\components\View;
+use Yii;
+use yii\helpers\Url;
 
 /**
  * Class LayoutHeader

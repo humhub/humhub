@@ -8,10 +8,10 @@
 
 namespace humhub\modules\ui\form\widgets;
 
+use humhub\helpers\Html;
 use humhub\widgets\JsWidget;
 use yii\base\InvalidConfigException;
 use yii\base\Model;
-use yii\helpers\Html;
 use yii\widgets\InputWidget;
 
 /**
@@ -21,8 +21,8 @@ use yii\widgets\InputWidget;
  * or a name and a value. If the former, the name and the value will
  * be generated automatically.
  *
- * Classes extending from this widget can be used in an [[\yii\widgets\ActiveForm|ActiveForm]]
- * using the [[\yii\widgets\ActiveField::widget()|widget()]] method, for example like this:
+ * Classes extending from this widget can be used in an [[\humhub\widgets\form\ActiveForm|ActiveForm]]
+ * using the [[\humhub\widgets\form\ActiveField::widget()|widget()]] method, for example like this:
  *
  * ```php
  * <?= $form->field($model, 'from_date')->widget('WidgetClassName', [
@@ -42,7 +42,7 @@ abstract class JsInputWidget extends JsWidget
      * If the ActiveForm is set, it should be used to create input field.
      * This may differ between implementations.
      *
-     * @var \yii\widgets\ActiveForm
+     * @var \humhub\widgets\form\ActiveForm
      */
     public $form;
 
@@ -73,11 +73,23 @@ abstract class JsInputWidget extends JsWidget
     public $options = [];
 
     /**
-     * @var \yii\widgets\ActiveField active input field, which triggers this widget rendering.
-     * This field will be automatically filled up in case widget instance is created via [[\yii\widgets\ActiveField::widget()]].
+     * @var \humhub\widgets\form\ActiveField active input field, which triggers this widget rendering.
+     * This field will be automatically filled up in case widget instance is created via [[\humhub\widgets\form\ActiveField::widget()]].
      * @since 1.6
      */
     public $field;
+
+    public function init()
+    {
+        parent::init();
+
+        if ($this->attribute && $this->hasModel()) {
+            $attributeName = Html::getAttributeName($this->attribute);
+            if ($attributeName && $this->model->hasErrors($attributeName)) {
+                Html::addCssClass($this->options, 'is-invalid');
+            }
+        }
+    }
 
     /**
      * Initializes the widget.

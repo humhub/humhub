@@ -2,12 +2,12 @@
 
 namespace humhub\components\assets;
 
+use humhub\assets\CoreBundleAsset;
+use humhub\components\View;
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Application;
 use yii\web\AssetBundle as BaseAssetBundle;
-use humhub\assets\CoreBundleAsset;
-use humhub\modules\ui\view\components\View;
 
 /**
  * This base asset bundle class adds some additional properties as well ass default loading behavior for HumHub assets.

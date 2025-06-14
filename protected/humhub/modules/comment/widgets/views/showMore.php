@@ -1,7 +1,7 @@
 <?php
 
 use humhub\modules\comment\widgets\ShowMore;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 
 /* @var $text string */
 /* @var $showMoreUrl string */
@@ -9,8 +9,8 @@ use humhub\widgets\Link;
 /* @var $linkStyleClass string */
 ?>
 <div class="showMore">
-    <?php if ($type == ShowMore::TYPE_NEXT) : ?>
+    <?php if ($type === ShowMore::TYPE_NEXT) : ?>
         <hr class="comment-separator">
     <?php endif; ?>
-    <?= Link::withAction($text, 'comment.showMore', $showMoreUrl)->options(['data-type' => $type])->cssClass($linkStyleClass) ?>
+    <?= Link::withAction($text, 'comment.showMore', $showMoreUrl)->options(['data-type' => $type])->cssClass($linkStyleClass ?? '') ?>
 </div>

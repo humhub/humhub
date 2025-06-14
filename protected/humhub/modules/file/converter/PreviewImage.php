@@ -9,12 +9,12 @@
 namespace humhub\modules\file\converter;
 
 use Exception;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\Log;
 use humhub\modules\file\libs\ImageHelper;
+use humhub\modules\file\models\File;
 use humhub\modules\file\Module;
 use Imagine\Image\ImageInterface;
-use humhub\modules\file\models\File;
-use humhub\libs\Html;
 use Yii;
 use yii\imagine\Image;
 
