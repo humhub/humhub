@@ -34,6 +34,18 @@
     --bs-btn-font-size: 1.1rem;
 }
 
+.btn-group > .btn {
+    --bs-btn-padding-x: 0.8rem;
+}
+
+.btn-group-sm > .btn {
+    --bs-btn-padding-x: 0.4rem;
+}
+
+.btn-group-lg > .btn {
+    --bs-btn-padding-x: 1.2rem;
+}
+
 $button-variant-colors: (
     primary: $primary,
     secondary: $secondary,
