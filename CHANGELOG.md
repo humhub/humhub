@@ -13,6 +13,7 @@ HumHub Changelog
 - Fix #7532: Prevent multiple execution of jobs canceled due to max. execution time.
 - Enh #7549: Allow logout from Mobile App
 - Enh #7546: Improve member space list box
+- Fix #7560: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
 
 1.17.2 (April 7, 2025)
 ----------------------
