@@ -11,6 +11,7 @@ namespace humhub\modules\topic;
 
 use humhub\helpers\ControllerHelper;
 use humhub\modules\content\components\ContentActiveRecord;
+use humhub\modules\topic\permissions\ManageTopics;
 use humhub\modules\topic\widgets\ContentTopicButton;
 use humhub\modules\topic\widgets\TopicPicker;
 use humhub\modules\user\events\UserEvent;
@@ -37,7 +38,7 @@ class Events extends BaseObject
     {
         $space = $event->sender->space;
 
-        if ($space->isAdmin() && Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)) {
+        if ($space->isAdmin() && $space->can(ManageTopics::class) && Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)) {
             $event->sender->addItem([
                 'label' => Yii::t('TopicModule.base', 'Topics'),
                 'url' => $space->createUrl('/topic/manage'),

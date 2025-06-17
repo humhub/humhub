@@ -13,7 +13,6 @@ use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\helpers\ContentContainerHelper;
 use humhub\modules\content\widgets\ContentTagPicker;
 use humhub\modules\topic\models\Topic;
-use humhub\modules\topic\permissions\AddTopic;
 use Yii;
 use yii\helpers\Url;
 
@@ -87,7 +86,7 @@ class TopicPicker extends ContentTagPicker
      */
     private static function canAddTopic(ContentContainerActiveRecord $container = null)
     {
-        return $container && $container->can(AddTopic::class);
+        return $container && Topic::isAllowedToCreate($container);
     }
 
     /**
