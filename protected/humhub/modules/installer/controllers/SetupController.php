@@ -8,12 +8,11 @@
 
 namespace humhub\modules\installer\controllers;
 
-use Exception;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\DynamicConfig;
 use humhub\modules\admin\widgets\PrerequisitesList;
 use humhub\modules\installer\forms\DatabaseForm;
+use humhub\modules\installer\libs\DynamicConfig;
 use humhub\modules\installer\Module;
 use humhub\services\MigrationService;
 use Yii;
@@ -50,7 +49,6 @@ class SetupController extends Controller
 
         if ($this->module->enableAutoSetup) {
             return $this->redirect(['database']);
-
         }
 
         return $this->render('prerequisites', ['hasError' => PrerequisitesList::hasError()]);
@@ -66,100 +64,42 @@ class SetupController extends Controller
     {
         $errorMessage = "";
 
-        $config = DynamicConfig::load();
-
+        $dynamicConfig = new DynamicConfig();
         $model = new DatabaseForm();
-        if (isset($config['params']['installer']['db']['installer_hostname'])) {
-            $model->hostname = $config['params']['installer']['db']['installer_hostname'];
-        }
 
-        if (isset($config['params']['installer']['db']['installer_database'])) {
-            $model->database = $config['params']['installer']['db']['installer_database'];
-        }
-
-        if (isset($config['components']['db']['username'])) {
-            $model->username = $config['components']['db']['username'];
-        }
-
-        if (isset($config['components']['db']['password'])) {
-            $model->password = self::PASSWORD_PLACEHOLDER;
-        }
-
-        if (($modelLoaded = $model->load(Yii::$app->request->post()) && $model->validate()) || $this->module->enableAutoSetup) {
-            if ($modelLoaded) {
-                $connectionString =  'mysql:host=' . $model->hostname;
-                if ($model->port !== '') {
-                    $connectionString .= ';port=' . $model->port;
-                }
-                if (!$model->create) {
-                    $connectionString .= ';dbname=' . $model->database;
-                }
-                $username = $model->username;
-                $password = $model->password;
-                if ($password == self::PASSWORD_PLACEHOLDER) {
-                    $password = $config['components']['db']['password'];
-                }
-            } elseif ($this->module->enableAutoSetup) {
-                $username = $model->username = Yii::$app->db->username;
-                $password = Yii::$app->db->password;
-                $connectionString = Yii::$app->db->dsn;
-                $model->create = 1;
-
-                if (preg_match('/host=([^;]+)/', $connectionString ?: '', $matches)) {
-                    $model->hostname = $matches[1];
-                }
-                if (preg_match('/port=([^;]+)/', $connectionString ?: '', $matches)) {
-                    $model->port = $matches[1];
-                }
-                if (preg_match('/dbname=([^;]+)/', $connectionString ?: '', $matches)) {
-                    $model->database = $matches[1];
-                }
-
-                $connectionString = preg_replace('/;dbname=[^;]*/', '', $connectionString);
-            } else {
-                $username = '';
-                $password = '';
-                $connectionString = '';
-            }
-
-            // Create Test DB Connection
-            $dbConfig = [
-                'class' => 'yii\db\Connection',
-                'dsn' => $connectionString,
-                'username' => $username,
-                'password' => $password,
-                'charset' => 'utf8',
-            ];
-
+        if (($model->autoLoad() || $model->load(Yii::$app->request->post())) && $model->validate()) {
             try {
+                if ($model->create) {
+                    /** @var yii\db\Connection $temporaryConnection */
+                    $temporaryConnection = Yii::createObject($model->getDbConfigAsArray(false));
+                    // Create Database Connection without specifying a database
+                    $temporaryConnection->open();
+
+                    if (!$temporaryConnection->createCommand('SHOW DATABASES LIKE "' . $model->database . '"')
+                        ->execute()) {
+                        $temporaryConnection->createCommand(
+                            'CREATE DATABASE `' . $model->database . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci',
+                        )->execute();
+                    }
+                }
+
+                $dbConfig = $model->getDbConfigAsArray(true);
+
                 /** @var yii\db\Connection $temporaryConnection */
                 $temporaryConnection = Yii::createObject($dbConfig);
-
-                // Check DB Connection
+                // Try access to the given database
                 $temporaryConnection->open();
 
-                if ($model->create) {
-                    // Try to create DB
-                    if (!$temporaryConnection->createCommand('SHOW DATABASES LIKE "' . $model->database . '"')->execute()) {
-                        $temporaryConnection->createCommand('CREATE DATABASE `' . $model->database . '` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci')->execute();
-                    }
-                    $dbConfig['dsn'] .= ';dbname=' . $model->database;
-                }
-
-                // Write Config
-                $config['components']['db'] = $dbConfig;
-                $config['params']['installer']['db']['installer_hostname'] = $model->hostname;
-                $config['params']['installer']['db']['installer_database'] = $model->database;
-
-                DynamicConfig::save($config);
+                $dynamicConfig->content['components']['db'] = $dbConfig;
+                $dynamicConfig->save();
 
                 return $this->redirect(['migrate']);
-            } catch (Exception $e) {
-                $errorMessage = $e->getMessage();
+            } catch (\Exception $ex) {
+                $errorMessage = $ex->getMessage();
             }
         }
 
-        // Render Template
+        $model->password = '';
         return $this->render('database', ['model' => $model, 'errorMessage' => $errorMessage]);
     }
 
@@ -220,9 +160,5 @@ class SetupController extends Controller
 
         // Migrate Up Database
         MigrationService::create()->migrateUp();
-
-        DynamicConfig::rewrite();
-
-        Yii::$app->setDatabaseInstalled();
     }
 }

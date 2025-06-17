@@ -111,6 +111,9 @@ return [
     'Your last edit state has been saved!' => 'Zure azken edizio-egoera gorde da!',
     'in' => '-n',
     '(Also visible to people who are not logged in)' => '',
+    'Select target Space.' => '',
+    'Select target Space/Profile.' => '',
+    'Share' => '',
     'Topic already exists globally.' => '',
     'Topic already in use in Spaces or on Profiles.' => '',
 ];

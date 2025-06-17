@@ -2921,25 +2921,25 @@ div.nested-comments-root div.comment-container {
 #content-topic-bar .label {
   margin-left: 4px;
 }
-#contentFormBody .form-group,
-#contentFormBody .help-block-error {
+.content-form-body .form-group,
+.content-form-body .help-block-error {
   margin: 0;
 }
-#contentFormBody .contentForm_options .form-group {
+.content-form-body .contentForm_options .form-group {
   margin-bottom: 15px;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label {
+.content-form-body .contentForm_options .form-group .checkbox label {
   padding-left: 22px;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label input[type=checkbox] {
+.content-form-body .contentForm_options .form-group .checkbox label input[type=checkbox] {
   position: absolute;
   top: 4px;
   left: 0;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label input[type=checkbox]:focus {
+.content-form-body .contentForm_options .form-group .checkbox label input[type=checkbox]:focus {
   border-color: #ccc !important;
 }
-#contentFormBody .contentForm_options .form-group .checkbox label input[type=checkbox]:focus:checked {
+.content-form-body .contentForm_options .form-group .checkbox label input[type=checkbox]:focus:checked {
   border-color: #21A1B3 !important;
 }
 .placeholder-empty-stream {
@@ -4185,10 +4185,6 @@ ul.tour-list li.completed a {
   color: #ff8989;
   background-color: #fff6f6;
   border-color: #ff8989;
-}
-.data-saved {
-  padding-left: 10px;
-  color: #21A1B3;
 }
 img.bounceIn {
   animation-duration: 800ms;

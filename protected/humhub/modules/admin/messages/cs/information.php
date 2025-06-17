@@ -74,6 +74,7 @@ return [
     'Assets' => '',
     'Configuration File' => '',
     'Different table collations in the tables: {tables}' => '',
+    'Enable <a href="{url}">Link Redirection Service</a>' => '',
     'ICU Data Version ({version})' => '',
     'ICU Data {icuMinVersion} or higher is required' => '',
     'ICU Version ({version})' => '',

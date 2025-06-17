@@ -1,12 +1,13 @@
 name: PHP Codeception Tests
 
 on:
+    workflow_dispatch:
     push:
         branches:
             - master
             - develop
             - next
-            - statable
+            - bs5
         paths-ignore:
             - '*.md'
     pull_request:
@@ -56,7 +57,7 @@ jobs:
         steps:
             - name: Start Selenium
               run: |
-                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome
+                docker run --detach --net=host --shm-size="2g" selenium/standalone-chrome:108.0-20250123
 
             - uses: actions/checkout@v4
             - uses: actions/setup-node@v4
@@ -119,7 +120,7 @@ jobs:
               run: php protected/humhub/tests/codeception/bin/yii installer/auto
 
             - name: Rebuild search index
-              run: php protected/humhub/tests/codeception/bin/yii search/rebuild
+              run: php protected/humhub/tests/codeception/bin/yii content-search/rebuild
 
             - name: Run test server
               run: php --server 127.0.0.1:8080 index-test.php &>/tmp/phpserver.log &
@@ -138,4 +139,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                 name: codeception-output
-                path: protected/humhub/tests/codeception/_output/*
+                path: |
+                  protected/humhub/tests/codeception/_output/*
+                  protected/humhub/modules/*/tests/codeception/_output/*
+                  protected/runtime/logs/*

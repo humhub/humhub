@@ -12,7 +12,6 @@ use Exception;
 use humhub\compat\HForm;
 use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
-use humhub\libs\DynamicConfig;
 use humhub\libs\ProfileImage;
 use humhub\libs\UUID;
 use humhub\modules\comment\models\Comment;
@@ -33,7 +32,6 @@ use humhub\modules\user\models\Password;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\caching\DummyCache;
 use yii\web\HttpException;
 
 /**
@@ -120,7 +118,7 @@ class ConfigController extends Controller
 
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Yii::$app->settings->set('name', $form->name);
-            Yii::$app->settings->set('mailer.systemEmailName', $form->name);
+            Yii::$app->settings->set('mailerSystemEmailName', $form->name);
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
 
@@ -563,8 +561,6 @@ class ConfigController extends Controller
             Yii::$app->settings->set('secret', UUID::v4());
         }
 
-        DynamicConfig::rewrite();
-
         return $this->redirect(['finished']);
     }
 
@@ -581,7 +577,7 @@ class ConfigController extends Controller
         Yii::$app->settings->set('defaultTimeZone', Yii::$app->timeZone);
 
         // Set to installed
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         try {
             Yii::$app->user->logout();

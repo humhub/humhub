@@ -83,7 +83,7 @@ class UserController extends Controller
      */
     public function actionList()
     {
-        $searchModel = new UserSearch();
+        $searchModel = Yii::createObject(UserSearch::class);
         $searchModel->status = User::STATUS_ENABLED;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         $showPendingRegistrations = Invite::find()->where(Invite::filterSource())->exists() &&
@@ -261,12 +261,10 @@ class UserController extends Controller
 
     public function actionAdd()
     {
-        $registration = new Registration();
-        $registration->enableEmailField = true;
+        $registration = new Registration(enableEmailField: true, enableMustChangePassword: true);
         $registration->enableUserApproval = false;
-        $registration->enableMustChangePassword = true;
 
-        if ($registration->submitted('save') && $registration->validate() && $registration->register()) {
+        if ($registration->submitted('save') && $registration->register()) {
             return $this->redirect(['edit', 'id' => $registration->getUser()->id]);
         }
 
@@ -390,7 +388,7 @@ class UserController extends Controller
      */
     public function actionExport($format)
     {
-        $searchModel = new UserSearch();
+        $searchModel = Yii::createObject(UserSearch::class);
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         $exporter = new SpreadsheetExport([

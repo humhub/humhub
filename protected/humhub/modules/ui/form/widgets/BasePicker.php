@@ -80,14 +80,14 @@ abstract class BasePicker extends JsInputWidget
     public $maxSelection = 50;
 
     /**
-     * Minimum character input before triggering search query.
+     * Minimum characters input before triggering search query.
      *
      * @var int
      */
     public $minInput = 3;
 
     /**
-     * Minimum character input before triggering search query.
+     * Maximum characters input before triggering search query.
      *
      * @var int
      */
@@ -119,7 +119,7 @@ abstract class BasePicker extends JsInputWidget
 
     /**
      * The item key used as option value and loading items by attribute value.
-     * e.g. id or guid.
+     * Available values: `id` or `guid`
      *
      * @since v1.3 'id' by default
      *
@@ -408,6 +408,7 @@ abstract class BasePicker extends JsInputWidget
 
         $result = [
             'add-options' => $this->addOptions,
+            'item-key' => $this->itemKey,
             'picker-url' => $this->getUrl(),
             'picker-focus' => $this->focus,
             'maximum-selection-length' => $this->maxSelection,

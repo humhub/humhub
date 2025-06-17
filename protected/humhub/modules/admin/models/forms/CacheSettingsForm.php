@@ -2,7 +2,6 @@
 
 namespace humhub\modules\admin\models\forms;
 
-use humhub\libs\DynamicConfig;
 use humhub\modules\admin\events\FetchReloadableScriptsEvent;
 use humhub\modules\admin\Module;
 use Yii;
@@ -106,7 +105,6 @@ class CacheSettingsForm extends Model
         $settingsManager->set('cacheExpireTime', $this->expireTime);
         $settingsManager->set('cacheReloadableScript', $this->reloadableScripts);
 
-        DynamicConfig::rewrite();
         self::flushCache();
 
         return true;

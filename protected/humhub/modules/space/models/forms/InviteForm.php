@@ -2,6 +2,7 @@
 
 namespace humhub\modules\space\models\forms;
 
+use humhub\modules\admin\permissions\ManageSpaces;
 use humhub\modules\admin\permissions\ManageUsers;
 use humhub\modules\space\jobs\AddUsersToSpaceJob;
 use humhub\modules\space\models\Membership;
@@ -127,8 +128,10 @@ class InviteForm extends Model
 
         $this->inviteExternalByEmail();
 
-        $this->space->auto_add_new_members = $this->addDefaultSpace ? 1 : null;
-        $this->space->save();
+        if (Yii::$app->user->can(ManageSpaces::class)) {
+            $this->space->auto_add_new_members = $this->addDefaultSpace ? 1 : null;
+            $this->space->save();
+        }
 
         return true;
     }
@@ -168,7 +171,7 @@ class InviteForm extends Model
             'forceMembership' => $this->withoutInvite,
             'spaceId' => $this->space->id,
             'userIds' => $this->getInviteIds(),
-            'allUsers' => $this->allRegisteredUsers,
+            'allUsers' => $this->allRegisteredUsers && Yii::$app->user->can(ManageUsers::class),
         ]));
     }
 

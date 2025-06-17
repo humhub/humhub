@@ -8,7 +8,6 @@
 
 namespace humhub\modules\installer\libs;
 
-use humhub\libs\DynamicConfig;
 use Yii;
 
 /**
@@ -30,15 +29,6 @@ class EnvironmentChecker
 
         if (!is_writable(realpath(Yii::getAlias("@runtime")))) {
             print "Error: The runtime directory is not writable by the PHP process.";
-            exit(1);
-        }
-
-        $dynamicConfigFile = DynamicConfig::getConfigFilePath();
-        if (file_exists($dynamicConfigFile) && !is_writable($dynamicConfigFile)) {
-            print "Error: The dynamic configuration (config/dynamic.php) is not writable by the PHP process.";
-            exit(1);
-        } elseif (!is_writable(dirname($dynamicConfigFile))) {
-            print "Error: The dynamic configuration (config/dynamic.php) cannot be created by the PHP process.";
             exit(1);
         }
     }

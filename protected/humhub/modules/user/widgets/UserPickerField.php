@@ -2,7 +2,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\modules\ui\form\widgets\BasePicker;
+use humhub\modules\content\widgets\ContentContainerPickerField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\Url;
@@ -13,8 +13,10 @@ use yii\helpers\Url;
  * @since 1.2
  * @author buddha
  */
-class UserPickerField extends BasePicker
+class UserPickerField extends ContentContainerPickerField
 {
+    public $itemClass = User::class;
+
     /**
      * @inheritdoc
      */
@@ -27,47 +29,19 @@ class UserPickerField extends BasePicker
 
     /**
      * @inheritdoc
-     * The 'guid' value is default for UserPickerField
-     */
-    public $itemKey = 'guid';
-
-    /**
-     * @inheritdoc
-     */
-    public function init()
-    {
-        $this->itemClass = User::class;
-        if (empty($this->itemKey)) {
-            $this->itemKey = 'guid';
-        }
-        parent::init();
-    }
-
-    /**
-     * @inheritdoc
      */
     public function getUrl()
     {
         if (!$this->url) {
             // provide the space id if the widget is calling from a space
-            if (Yii::$app->controller->id == 'space') {
+            if (Yii::$app->controller->id === 'space') {
                 return Url::to([$this->defaultRoute, 'space_id' => Yii::$app->controller->getSpace()->id]);
-            } else {
-                return Url::to([$this->defaultRoute]);
             }
+
+            return Url::to([$this->defaultRoute]);
         }
 
         return parent::getUrl();
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getAttributes()
-    {
-        return array_merge(parent::getAttributes(), [
-            'data-tags' => 'false',
-        ]);
     }
 
     /**
@@ -88,8 +62,7 @@ class UserPickerField extends BasePicker
         if ($this->placeholder && !$this->placeholderMore) {
             $result['placeholder-more'] = $this->placeholder;
         } else {
-            $result['placeholder-more'] = ($this->placeholderMore) ? $this->placeholderMore
-                : Yii::t('UserModule.chooser', 'Add user');
+            $result['placeholder-more'] = ($this->placeholderMore) ?: Yii::t('UserModule.chooser', 'Add user');
         }
 
         $result['no-result'] = Yii::t('UserModule.chooser', 'No users found for the given query.');
@@ -102,21 +75,5 @@ class UserPickerField extends BasePicker
             );
         }
         return $result;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getItemText($item)
-    {
-        return $item->displayName;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function getItemImage($item)
-    {
-        return $item->getProfileImage()->getUrl();
     }
 }

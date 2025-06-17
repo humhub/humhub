@@ -5,6 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\libs\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\models\Content;
 use humhub\modules\file\handler\BaseFileHandler;
@@ -17,20 +18,21 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\widgets\UserPickerField;
 use humhub\widgets\Button;
 use humhub\widgets\Link;
-use yii\helpers\Html;
 
 /* @var $submitUrl string */
 /* @var $submitButtonText string */
 /* @var $fileHandlers BaseFileHandler[] */
 /* @var $canSwitchVisibility bool */
 /* @var $contentContainer ContentContainerActiveRecord */
+/* @var $fileList array */
+/* @var $isModal bool */
 /* @var $pickerUrl string */
 /* @var $scheduleUrl string */
 ?>
 
-<div id="notifyUserContainer" class="form-group" style="margin-top:15px;display:none">
+<div class="notifyUserContainer form-group" style="margin-top:15px;display:none">
     <?= UserPickerField::widget([
-        'id' => 'notifyUserInput',
+        'id' => 'notifyUserInput' . ($isModal ? 'Modal' : ''),
         'url' => $pickerUrl,
         'formName' => 'notifyUserInput',
         'maxSelection' => 10,
@@ -39,34 +41,35 @@ use yii\helpers\Html;
     ]) ?>
 </div>
 
-<div id="postTopicContainer" class="form-group" style="margin-top:15px;display:none">
+<div id="postTopicContainer<?= $isModal ? 'Modal' : '' ?>" class="form-group" style="margin-top:15px;display:none">
     <?= TopicPicker::widget([
-        'id' => 'postTopicInput',
+        'id' => 'postTopicInput' . ($isModal ? 'Modal' : ''),
         'name' => 'postTopicInput',
-        'contentContainer' => $contentContainer
-    ]); ?>
+        'contentContainer' => $contentContainer,
+    ]) ?>
 </div>
 
-<?= Html::hiddenInput('containerGuid', $contentContainer->guid); ?>
-<?= Html::hiddenInput('containerClass', get_class($contentContainer)); ?>
+<?= Html::hiddenInput('containerGuid', $contentContainer->guid) ?>
+<?= Html::hiddenInput('containerClass', get_class($contentContainer)) ?>
 
 <div class="contentForm_options">
     <hr>
     <div class="btn_container">
-        <?= Button::info($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button')->submit() ?>
+        <?= Button::info($submitButtonText)->action('submit', $submitUrl)->id('post_submit_button' . ($isModal ? '_modal' : ''))->submit() ?>
 
         <?php $uploadButton = UploadButton::widget([
-            'id' => 'contentFormFiles',
+            'id' => 'contentFormFiles' . ($isModal ? 'Modal' : ''),
             'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
-            'progress' => '#contentFormFiles_progress',
-            'preview' => '#contentFormFiles_preview',
-            'dropZone' => '#contentFormBody',
-            'max' => Yii::$app->getModule('content')->maxAttachedFiles
+            'progress' => '#contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
+            'preview' => '#contentFormFiles_preview' . ($isModal ? 'Modal' : ''),
+            'dropZone' => '#contentFormBody' . ($isModal ? 'Modal' : ''),
+            'max' => Yii::$app->getModule('content')->maxAttachedFiles,
+            'fileList' => $fileList,
         ]); ?>
         <?= FileHandlerButtonDropdown::widget(['primaryButton' => $uploadButton, 'handlers' => $fileHandlers, 'cssButtonClass' => 'btn-default']); ?>
 
         <!-- public checkbox -->
-        <?= Html::checkbox('visibility', '', ['id' => 'contentForm_visibility', 'class' => 'contentForm hidden', 'aria-hidden' => 'true']); ?>
+        <?= Html::checkbox('visibility', '', ['class' => 'contentForm_visibility contentForm hidden', 'aria-hidden' => 'true']); ?>
 
         <!-- state data -->
         <?= Html::hiddenInput('state', Content::STATE_PUBLISHED) ?>
@@ -95,7 +98,7 @@ use yii\helpers\Html;
                         <?php if ($canSwitchVisibility): ?>
                             <li>
                                 <?= Link::withAction(Yii::t('ContentModule.base', 'Change to "Public"'), 'changeVisibility')
-                                    ->id('contentForm_visibility_entry')->icon('unlock') ?>
+                                    ->cssClass('contentForm_visibility_entry')->icon('unlock') ?>
                             </li>
                         <?php endif; ?>
                         <li>
@@ -104,19 +107,28 @@ use yii\helpers\Html;
                                 ->options([
                                     'data-state' => Content::STATE_DRAFT,
                                     'data-state-title' => Yii::t('ContentModule.base', 'Draft'),
-                                    'data-button-title' => Yii::t('ContentModule.base', 'Save as draft')
+                                    'data-button-title' => Yii::t('ContentModule.base', 'Save as draft'),
                                 ]) ?>
                         </li>
-                        <li>
-                            <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
-                                ->icon('clock-o') ?>
-                        </li>
+                        <?php if (!$isModal): ?>
+                            <li>
+                                <?= Link::withAction(Yii::t('ContentModule.base', 'Schedule publication'), 'scheduleOptions', $scheduleUrl)
+                                    ->icon('clock-o') ?>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                 </li>
             </ul>
         </div>
     </div>
 
-    <?= UploadProgress::widget(['id' => 'contentFormFiles_progress']) ?>
-    <?= FilePreview::widget(['id' => 'contentFormFiles_preview', 'edit' => true, 'options' => ['style' => 'margin-top:10px;']]); ?>
+    <?= UploadProgress::widget([
+        'id' => 'contentFormFiles_progress' . ($isModal ? 'Modal' : ''),
+    ]) ?>
+    <?= FilePreview::widget([
+        'id' => 'contentFormFiles_preview' . ($isModal ? 'Modal' : ''),
+        'edit' => true,
+        'items' => $fileList,
+        'options' => ['style' => 'margin-top:10px;'],
+    ]) ?>
 </div><!-- /contentForm_Options -->

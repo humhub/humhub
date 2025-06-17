@@ -9,6 +9,7 @@
 namespace humhub\modules\user\components;
 
 use humhub\helpers\DeviceDetectorHelper;
+use humhub\helpers\MobileAppHelper;
 use humhub\libs\BasePermission;
 use humhub\modules\user\events\UserEvent;
 use humhub\modules\user\helpers\AuthHelper;
@@ -152,6 +153,18 @@ class User extends \yii\web\User
         $identity->updateAttributes(['last_login' => date('Y-m-d G:i:s')]);
 
         parent::afterLogin($identity, $cookieBased, $duration);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    protected function afterLogout($identity)
+    {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            Yii::$app->session->set(MobileAppHelper::SESSION_VAR_SHOW_OPENER, 1);
+        }
+
+        parent::afterLogout($identity);
     }
 
     /**
