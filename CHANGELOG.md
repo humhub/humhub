@@ -30,6 +30,7 @@ HumHub Changelog
 - Fix #7538: Mail layout: button not centered because of table width not 100%
 - Fix #7542: HTTP Session Cleanup Issue
 - Fix #7550: Don't show opener if logout triggered by mobile app
+- Fix #7561: Added ability to check if a component is explicitly defined in the config file in `ComponentLoader`
 
 1.17.3 (Unreleased)
 ----------------------
