@@ -8,8 +8,6 @@ use yii\helpers\ArrayHelper;
 /* @var $cacheTypes [] */
 /* @var $model CacheSettingsForm */
 
-var_dump($model->isTypeFixed);
-
 ?>
 
 <?php $this->beginContent('@admin/views/setting/_advancedLayout.php') ?>
@@ -19,7 +17,10 @@ var_dump($model->isTypeFixed);
 <?php if (!$model->isTypeFixed): ?>
     <?= $form->field($model, 'type')->dropDownList($cacheTypes) ?>
 <?php else: ?>
-    <?= $form->field($model, 'type')->textInput(['value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue), 'readonly' => true]) ?>
+    <?= $form->field($model, 'type')->textInput([
+        'value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue),
+        'readonly' => true,
+    ]) ?>
 <?php endif; ?>
 
 <?= $form->field($model, 'expireTime')->textInput(['readonly' => Yii::$app->settings->isFixed('cacheExpireTime')]) ?>
