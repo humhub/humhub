@@ -18,7 +18,7 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'type')->dropDownList($cacheTypes) ?>
 <?php else: ?>
     <?= $form->field($model, 'type')->textInput([
-        'value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue),
+        'value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue, $model->fixedTypeValue),
         'readonly' => true,
         'title' => Yii::t('base', 'Specified in the configuration file'),
         'class' => 'form-control tt',
