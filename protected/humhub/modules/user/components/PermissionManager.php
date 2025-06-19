@@ -465,11 +465,17 @@ class PermissionManager extends Component
      */
     public function createPermissionArray($groupId, $returnOnlyChangeable = false)
     {
-
         $permissions = [];
         foreach ($this->getPermissions() as $permission) {
             /** @var $permission BasePermission */
-            if ($returnOnlyChangeable && !$permission->canChangeState($groupId)) {
+            if (
+                $returnOnlyChangeable && !$permission->canChangeState($groupId) ||
+                (
+                    $permission->contentContainer &&
+                    array_key_exists($permission->moduleId, $permission->contentContainer->moduleManager->getInstallable())
+                    && !$permission->contentContainer->moduleManager->isEnabled($permission->moduleId)
+                )
+            ) {
                 continue;
             }
 

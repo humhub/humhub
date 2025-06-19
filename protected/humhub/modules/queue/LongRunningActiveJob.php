@@ -2,27 +2,13 @@
 
 namespace humhub\modules\queue;
 
-use Yii;
-use yii\queue\RetryableJobInterface;
-
 /**
+ * The maximum time to run (Ttr) of jobs of this class is increased.
+ * This is done via the event handler of the queue module.
+ *
+ * @see Module::$longRunningJobTtr
  * @since 1.15
  */
-abstract class LongRunningActiveJob extends ActiveJob implements RetryableJobInterface
+abstract class LongRunningActiveJob extends ActiveJob
 {
-    public function getTtr()
-    {
-        /** @var Module $module */
-        $module = Yii::$app->getModule('queue');
-
-        return $module->longRunningJobTtr;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function canRetry($attempt, $error)
-    {
-        return false;
-    }
 }

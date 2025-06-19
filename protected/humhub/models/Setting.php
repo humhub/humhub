@@ -8,7 +8,9 @@
 
 namespace humhub\models;
 
+use humhub\components\InstallationState;
 use humhub\components\SettingActiveRecord;
+use humhub\helpers\ArrayHelper;
 use Yii;
 use yii\base\Exception;
 
@@ -66,7 +68,7 @@ class Setting extends SettingActiveRecord
      */
     public static function get($name, $moduleId = '')
     {
-        list($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
+        $name = self::fixDeprecatedSettingKeys($name);
         return self::getModule($moduleId)->settings->get($name);
     }
 
@@ -81,7 +83,7 @@ class Setting extends SettingActiveRecord
      */
     public static function set($name, $value, $moduleId = '')
     {
-        list($name, $moduleId) = self::fixModuleIdAndName($name, $moduleId);
+        $name = self::fixDeprecatedSettingKeys($name);
         return self::getModule($moduleId)->settings->set($name, $value);
     }
 
@@ -126,7 +128,7 @@ class Setting extends SettingActiveRecord
      */
     public static function isInstalled()
     {
-        return Yii::$app->isInstalled();
+        return Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);
     }
 
     /**
@@ -135,45 +137,25 @@ class Setting extends SettingActiveRecord
      * @deprecated since version 1.1
      *
      * @param string $name
-     * @param string $moduleId
      */
-    public static function fixModuleIdAndName($name, $moduleId = '')
+    public static function fixDeprecatedSettingKeys($name)
     {
-        static $translation = [
-            'authentication_internal' => [
-                'allowGuestAccess' => ['allowGuestAccess', 'user'],
-                'defaultUserGroup' => ['auth.allowGuestAccess', 'user'],
-            ],
-            'mailing' => [
-                'systemEmailAddress' => ['mailerSystemEmailAddress', 'user'],
-                'mailing' => ['mailerSystemEmailName', 'user'],
-                'systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'user'],
-            ],
-            'proxy' => [
-                'enabled' => ['proxy.enabled', 'base'],
-                'server' => ['proxy.server', 'base'],
-                'port' => ['proxy.port', 'base'],
-                'user' => ['proxy.user', 'base'],
-                'pass' => ['proxy.password', 'base'],
-                'noproxy' => ['proxy.noproxy', 'base'],
-            ],
-            '' => [
-                'mailer.transportType' => ['mailerTransportType', 'base'],
-                'mailer.dsn' => ['mailerDsn', 'base'],
-                'mailer.hostname' => ['mailerHostname', 'base'],
-                'mailer.username' => ['mailerUsername', 'base'],
-                'mailer.password' => ['mailerPassword', 'base'],
-                'mailer.useSmtps' => ['mailerUseSmtps', 'base'],
-                'mailer.port' => ['mailerPort', 'base'],
-                'mailer.encryption' => ['mailerEncryption', 'base'],
-                'mailer.allowSelfSignedCerts' => ['mailerAllowSelfSignedCerts', 'base'],
-                'mailer.systemEmailAddress' => ['mailerSystemEmailAddress', 'base'],
-                'mailer.systemEmailName' => ['mailerSystemEmailName', 'base'],
-                'mailer.systemEmailReplyTo' => ['mailerSystemEmailReplyTo', 'base'],
-            ],
+        static $translations = [
+            'mailer.transportType' => 'mailerTransportType',
+            'mailer.dsn' => 'mailerDsn',
+            'mailer.hostname' => 'mailerHostname',
+            'mailer.username' => 'mailerUsername',
+            'mailer.password' => 'mailerPassword',
+            'mailer.useSmtps' => 'mailerUseSmtps',
+            'mailer.port' => 'mailerPort',
+            'mailer.encryption' => 'mailerEncryption',
+            'mailer.allowSelfSignedCerts' => 'mailerAllowSelfSignedCerts',
+            'mailer.systemEmailAddress' => 'mailerSystemEmailAddress',
+            'mailer.systemEmailName' => 'mailerSystemEmailName',
+            'mailer.systemEmailReplyTo' => 'mailerSystemEmailReplyTo',
         ];
 
-        return $translation[$moduleId][$name] ?? [$name, $moduleId];
+        return ArrayHelper::getValue($translations, $name, $name);
     }
 
     /**

@@ -1,15 +1,20 @@
 Module Migration Guide
 ======================
 
-
 Version 1.18
----------------
+------------
+
+### Deprecated
+- `\humhub\components\Application::isInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::isDatabaseInstalled()` use `\humhub\components\Application::hasState()` instead
+- `\humhub\components\Application::setInstalled()` use `\humhub\components\Application::setState()` instead
+
 ### Behaviour change
 
 - The following Mailer settings keys have been renamed to work with `.env`:
 
 | Old Key                          | New Key                        |
-|----------------------------------|-------------------------------|
+|----------------------------------|--------------------------------|
 | `mailer.transportType`           | `mailerTransportType`          |
 | `mailer.dsn`                     | `mailerDsn`                    |
 | `mailer.hostname`                | `mailerHostname`               |
@@ -23,13 +28,23 @@ Version 1.18
 | `mailer.systemEmailName`         | `mailerSystemEmailName`        |
 | `mailer.systemEmailReplyTo`      | `mailerSystemEmailReplyTo`     |
 
-Version 1.17.1
+### Removed deprecations
+- Widget class `\humhub\widgets\DataSaved`, the related code `Yii::$app->getSession()->setFlash('data-saved', Yii::t('base', 'Saved'));` must be replaced with `$this->view->saved();` on controllers
+
+Version 1.17.3
+------------
+### Deprecated
+- `\humhub\modules\user\Module::$invitesTimeToLiveInDays` use `\humhub\modules\admin\Module::$cleanupPendingRegistrationInterval` instead
+
+
+Version 1.17.2
 ---------------
 
 ### Behaviour change
 
 - Method signature changed - `humhub\modules\user\models\fieldtype\BaseType::getUserValue(User $user, bool $raw = true, bool $encode = true): ?string`  
 
+- Constructor changed - `humhub\modules\user\models\forms\Registration` and properties (`$enablePasswordForm`, `$enableMustChangePassword`, `$enableEmailField`) are now private
 
 
 Version 1.17

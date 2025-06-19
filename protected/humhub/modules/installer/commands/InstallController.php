@@ -9,8 +9,8 @@
 namespace humhub\modules\installer\commands;
 
 use humhub\helpers\DatabaseHelper;
-use humhub\libs\DynamicConfig;
 use humhub\libs\UUID;
+use humhub\modules\installer\libs\DynamicConfig;
 use humhub\modules\installer\libs\InitialData;
 use humhub\modules\user\models\Group;
 use humhub\modules\user\models\Password;
@@ -51,25 +51,20 @@ class InstallController extends Controller
      */
     public function actionWriteDbConfig($db_host, $db_name, $db_user, $db_pass)
     {
-        $connectionString = "mysql:host=" . $db_host . ";dbname=" . $db_name;
-        $dbConfig = [
-            'class' => 'yii\db\Connection',
-            'dsn' => $connectionString,
-            'username' => $db_user,
-            'password' => $db_pass,
-            'charset' => 'utf8',
-        ];
+        $databaseForm = new DatabaseForm();
+        $databaseForm->hostname = $db_host;
+        $databaseForm->database = $db_name;
+        $databaseForm->username = $db_user;
+        $databaseForm->password = $db_pass;
+
+        $dbConfig = $databaseForm->getDbConfigAsArray();
 
         $temporaryConnection = Yii::createObject($dbConfig);
         $temporaryConnection->open();
 
-        $config = DynamicConfig::load();
-
-        $config['components']['db'] = $dbConfig;
-        $config['params']['installer']['db']['installer_hostname'] = $db_host;
-        $config['params']['installer']['db']['installer_database'] = $db_name;
-
-        DynamicConfig::save($config);
+        $dynamicConfig = new DynamicConfig();
+        $dynamicConfig->content['components']['db'] = $dbConfig;
+        $dynamicConfig->save();
 
         return ExitCode::OK;
     }
@@ -92,12 +87,8 @@ class InstallController extends Controller
 
         MigrationService::create()->migrateUp();
 
-        DynamicConfig::rewrite();
-
-        Yii::$app->setDatabaseInstalled();
-
         $this->stdout("  * Finishing\n", Console::FG_YELLOW);
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         return ExitCode::OK;
     }
@@ -143,7 +134,7 @@ class InstallController extends Controller
         Yii::$app->settings->set('mailerSystemEmailName', $site_email);
         Yii::$app->settings->set('secret', UUID::v4());
 
-        Yii::$app->setInstalled();
+        Yii::$app->installationState->setInstalled();
 
         return ExitCode::OK;
     }

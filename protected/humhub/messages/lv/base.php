@@ -85,6 +85,7 @@ return [
     'Select Me' => '',
     'Show all results' => '',
     'Stop impersonation' => '',
+    'Switch network' => '',
     'Text could not be copied to clipboard' => '',
     'Text has been copied to clipboard' => '',
     'Time Zone' => '',

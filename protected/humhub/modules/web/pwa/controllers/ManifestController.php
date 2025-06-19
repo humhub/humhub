@@ -35,7 +35,9 @@ class ManifestController extends Controller
     /**
      * @var array the manifest
      */
-    public $manifest = [];
+    public $manifest = [
+        'gcm_sender_id' => '103953800507',
+    ];
 
 
     public function actionIndex()

@@ -4,12 +4,57 @@ HumHub Changelog
 1.18.0 (Unreleased - Develop)
 ----------------------------
 - Enh #7412: Confusing message after creating an account
+- Enh #7328: `Mailer`, `User` and `Cache` configs removed from `dynamic.php`
+- Enh #7332: Optimized `DynamicConfig` to store and read database information only
+- Enh #7338: Remove `horImageScrollOnMobile` config option
+- Enh #7367: Changed Auto Debug Mode Detection
+- Enh #7361: Refactor application state mechanism
 - Enh #7425: Installer Wording update due to `.env` configuration
 - Enh #7433: Use strikethrough style for disabled user name
 - Enh #7444: Rename Mailer settings keys to work with `.env`
+- Fix #7451: Fix Module permissions visibility in content containers when not enabled
+- Fix #7450: Fix stream load suppressed when previous content is deleted/archived
+- Enh #7454: Upgrade compose packages
+- Fix #7443: Exclude inactive users from `followers` and `following` lists
+- Fix #7447: Update the comment counter when deleting a comment
+- Fix #7456: Fix setting manager backwards compatibility
+- Enh #7468: Remove deprecated widget `DataSaved`
+- Enh #7493: Add possibility to define content search order via module config
+- Fix #7483: `BasePicker`: when posting the form, use the `itemKey` value instead of the `guid`
+- Fix #7485: Fix initialization of the registration form definitions
+- Fix #7512: Fix priority of `dynamic.php`
+- Fix #7518: Fix Incorrect German Translation
+- Fix #7522: Fix mailer config
+- Fix #7526: Fix `installationState` issues
+- Fix #7508: Fix missed messages on search spaces in top space chooser
+- Fix #7538: Mail layout: button not centered because of table width not 100%
+- Fix #7542: HTTP Session Cleanup Issue
+- Fix #7550: Don't show opener if logout triggered by mobile app
 
-1.17.1 (Unreleased)
--------------------
+1.17.3 (Unreleased)
+----------------------
+- Fix #7484: Use password type on the installation DB config form
+- Fix #7486: Catch errors in external file handlers
+- Fix #7487: Fix comments list when comment is active from another parent comment
+- Enh #7492: Fix access to options on space invite form
+- Fix #7503: Don't run migration on updating of disabled module
+- Fix #7513: Fix priority of `dynamic.php`
+- Enh #7514: Update Redis example in `env.example`
+- Fix #7543: Remove duplicate UserInvites Cleanup job
+
+1.17.2 (April 7, 2025)
+----------------------
+- Fix #7457: Fix changing of space visibility
+- Fix #7464: Fix searching with not full latin words
+- Fix #7465: Formatted Arabic numbers displays 0 instead of the number
+- Fix #7471: Fix advanced searching by space filter
+- Fix #7472: Fix missing fields when creating a new user from admin
+- Fix #7477: Refactor Registration Form Options 
+- Enh #7455: Add Share Intend feature for the Mobile app
+- Fix #7482: Fix the post submit button title after back from draft mode
+
+1.17.1 (March 6, 2025)
+----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
 - Fix #7375: Use default language for email invitation and show language chooser on registration form
 - Enh #7383: Improve SelfTest for Base URL 
@@ -24,9 +69,8 @@ HumHub Changelog
 - Enh #7424: New event on get registration groups
 - Enh #7437: Add beforeInitCallback `humhub.ui.picker`
 - Fix #7441: Hide "Remember me" option on mobile app
-- Fix #7443: Exclude inactive users from `followers` and `following` lists
-- Fix #7447: Update the comment counter when deleting a comment
-- Fix #7448: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
+- Enh #7408: Update code to manage users from external modules
+- Fix #7453: Fix registration form submit
 
 1.17.0 (January 13, 2025)
 -------------------------

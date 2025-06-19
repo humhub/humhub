@@ -42,13 +42,14 @@ $logTargetConfig = [
 
 $config = [
     'name' => 'HumHub',
-    'version' => '1.17.1',
+    'version' => '1.18.0-dev',
     'minRecommendedPhpVersion' => '8.1',
     'minSupportedPhpVersion' => '8.1',
     'basePath' => dirname(__DIR__) . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR,
     'bootstrap' => [
         'log',
         'humhub\components\bootstrap\ModuleAutoLoader',
+        'humhub\components\bootstrap\SettingsLoader',
         'queue',
         'humhub\modules\ui\view\bootstrap\ThemeLoader',
     ],
@@ -271,6 +272,8 @@ $config = [
             // Marketplace / New Version Check
             'apiEnabled' => true,
             'apiUrl' => 'https://api.humhub.com',
+            'goUrl' => 'https://go.humhub.com',
+            'disableAuthChoicesIos' => false,
         ],
         'curl' => [
             // Check SSL certificates on cURL requests

@@ -82,6 +82,7 @@ return [
     'Search...' => '',
     'Show all results' => '',
     'Stop impersonation' => '',
+    'Switch network' => '',
     'Toggle comment menu' => '',
     'Toggle panel menu' => '',
     'Toggle post menu' => '',
