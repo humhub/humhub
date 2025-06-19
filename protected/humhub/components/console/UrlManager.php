@@ -10,7 +10,6 @@ namespace humhub\components\console;
 
 use humhub\components\InstallationState;
 use Yii;
-use yii\base\InvalidConfigException;
 
 /**
  * @inheritdoc
@@ -22,10 +21,6 @@ class UrlManager extends \humhub\components\UrlManager
      */
     public function init()
     {
-        if (Yii::$app instanceof \yii\web\Application) {
-            throw new InvalidConfigException('Console UrlManager cannot be used in a web application');
-        }
-
         $urlParts = parse_url($this->getConfiguredBaseUrl());
 
         $this->setBaseUrl($urlParts['path'] ?? '');
@@ -35,7 +30,9 @@ class UrlManager extends \humhub\components\UrlManager
             $hostInfo .= ':' . $urlParts['port'];
         }
         $this->setHostInfo($hostInfo);
-        $this->setScriptUrl($this->getBaseUrl() . ($this->getScriptUrl() ?: '/index.php'));
+        if (!Yii::$app instanceof \yii\web\Application) {
+            $this->setScriptUrl($this->getBaseUrl() . ($this->getScriptUrl() ?: '/index.php'));
+        }
 
         parent::init();
     }

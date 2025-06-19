@@ -25,10 +25,6 @@ class SafeBaseUrl extends BaseUrl
      */
     protected static function getUrlManager()
     {
-        if (Yii::$app instanceof \yii\web\Application) {
-            return parent::getUrlManager();
-        }
-
         if (isset(Yii::$app->components['urlManager'])) {
             $config = Yii::$app->components['urlManager'];
             if (isset($config['class'])) {
