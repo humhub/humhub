@@ -20,6 +20,8 @@ use yii\helpers\ArrayHelper;
     <?= $form->field($model, 'type')->textInput([
         'value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue),
         'readonly' => true,
+        'title' => Yii::t('base', 'Specified in the configuration file'),
+        'class' => 'form-control tt',
     ]) ?>
 <?php endif; ?>
 
