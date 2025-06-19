@@ -3,6 +3,7 @@
 use humhub\modules\admin\models\forms\CacheSettingsForm;
 use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\widgets\Button;
+use yii\helpers\ArrayHelper;
 
 /* @var $cacheTypes [] */
 /* @var $model CacheSettingsForm */
@@ -13,8 +14,15 @@ use humhub\widgets\Button;
 
 <?php $form = ActiveForm::begin(['acknowledge' => true]); ?>
 
-<?php if (!Yii::$app->settings->isFixed('cacheClass')): ?>
-    <?= $form->field($model, 'type')->dropDownList($cacheTypes, ['readonly' => Yii::$app->settings->isFixed('cacheClass')]) ?>
+<?php if (!$model->isTypeFixed): ?>
+    <?= $form->field($model, 'type')->dropDownList($cacheTypes) ?>
+<?php else: ?>
+    <?= $form->field($model, 'type')->textInput([
+        'value' => ArrayHelper::getValue($cacheTypes, $model->fixedTypeValue, $model->fixedTypeValue),
+        'readonly' => true,
+        'title' => Yii::t('base', 'Specified in the configuration file'),
+        'class' => 'form-control tt',
+    ]) ?>
 <?php endif; ?>
 
 <?= $form->field($model, 'expireTime')->textInput(['readonly' => Yii::$app->settings->isFixed('cacheExpireTime')]) ?>

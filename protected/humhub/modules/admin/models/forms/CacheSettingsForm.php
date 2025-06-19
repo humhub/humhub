@@ -2,15 +2,20 @@
 
 namespace humhub\modules\admin\models\forms;
 
+use humhub\components\bootstrap\ComponentLoader;
 use humhub\modules\admin\events\FetchReloadableScriptsEvent;
 use humhub\modules\admin\Module;
 use Yii;
 use yii\base\Model;
+use yii\helpers\ArrayHelper;
 
 /**
  * CachingForm
  *
  * @since 0.5
+ *
+ * @property-read bool $isTypeFixed
+ * @property-read bool $fixedTypeValue
  */
 class CacheSettingsForm extends Model
 {
@@ -28,9 +33,19 @@ class CacheSettingsForm extends Model
         parent::init();
 
         $settingsManager = Yii::$app->settings;
-        $this->type = $settingsManager->get('cacheClass');
+        $this->type = $this->isTypeFixed ? $this->fixedTypeValue : $settingsManager->get('cacheClass');
         $this->expireTime = $settingsManager->get('cacheExpireTime');
         $this->reloadableScripts = $settingsManager->get('cacheReloadableScript');
+    }
+
+    public function GetIsTypeFixed()
+    {
+        return ComponentLoader::isFixed('cache') || Yii::$app->settings->isFixed('cacheClass');
+    }
+
+    public function getFixedTypeValue()
+    {
+        return ArrayHelper::getValue(Yii::$app->getComponents(), 'cache.class');
     }
 
     /**
@@ -44,10 +59,10 @@ class CacheSettingsForm extends Model
             ['type', 'checkCacheType'],
             ['expireTime', 'integer'],
             ['type', 'required', 'when' => function () {
-                return !Yii::$app->settings->isFixed('cacheClass');
+                return !$this->isTypeFixed;
             }],
             ['type', 'in', 'range' => array_keys($this->getTypes()), 'when' => function () {
-                return !Yii::$app->settings->isFixed('cacheClass');
+                return !$this->isTypeFixed;
             }],
         ];
     }
@@ -101,7 +116,9 @@ class CacheSettingsForm extends Model
     {
         $settingsManager = Yii::$app->settings;
 
-        $settingsManager->set('cacheClass', $this->type);
+        if (!$this->isTypeFixed) {
+            $settingsManager->set('cacheClass', $this->type);
+        }
         $settingsManager->set('cacheExpireTime', $this->expireTime);
         $settingsManager->set('cacheReloadableScript', $this->reloadableScripts);
 

@@ -2,18 +2,20 @@
 
 namespace humhub\components\bootstrap;
 
+use humhub\components\cache\InitialCache;
 use humhub\components\InstallationState;
 use humhub\components\mail\Mailer;
 use humhub\modules\admin\models\forms\MailingSettingsForm;
 use Yii;
 use yii\base\BootstrapInterface;
-use yii\caching\DummyCache;
 use yii\helpers\ArrayHelper;
 use yii\log\Logger;
 use yii\web\Application;
 
-class SettingsLoader implements BootstrapInterface
+class ComponentLoader implements BootstrapInterface
 {
+    private static $loadedComponents = [];
+
     public function bootstrap($app)
     {
         if (!$app) {
@@ -26,8 +28,15 @@ class SettingsLoader implements BootstrapInterface
         $this->setParams($app);
     }
 
+    public static function isFixed($component)
+    {
+        return !ArrayHelper::keyExists($component, self::$loadedComponents);
+    }
+
     private function updateComponentDefinition($app, $component, $definition)
     {
+        self::$loadedComponents[$component] = true;
+
         $app->set(
             $component,
             ArrayHelper::merge($this->getComponentDefinition($app, $component), $definition),
@@ -119,8 +128,8 @@ class SettingsLoader implements BootstrapInterface
 
     private function setCacheConfig($app): void
     {
-        if ($app->has('cache', true) && !Yii::$app->cache instanceof DummyCache) {
-            $app->log->logger->log('`cache` component should not be instantiated before settings are loaded.', Logger::LEVEL_WARNING);
+        if ($app->has('cache', true) && !Yii::$app->cache instanceof InitialCache) {
+            return;
         }
 
         $cacheClass = $app->settings->get('cacheClass');
