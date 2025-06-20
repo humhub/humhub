@@ -9,6 +9,7 @@ html {
 body {
     @include text-break();
     padding-top: var(--hh-fixed-header-height);
+    padding-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
     background-color: var(--bs-body-bg);
     color: var(--bs-body-color);
     font-family: var(--bs-body-font-family);
