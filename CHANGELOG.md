@@ -44,6 +44,7 @@ HumHub Changelog
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
 - Fix #7543: Remove duplicate UserInvites Cleanup job
+- Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 
 1.17.2 (April 7, 2025)
 ----------------------
