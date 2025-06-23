@@ -1,6 +1,6 @@
 <?php
 return [
-  '<strong>Confirm</strong> Action' => '<strong>確認</strong> アクション',
+  '<strong>Confirm</strong> Action' => '<strong>確認</strong>',
   '<strong>Latest</strong> updates' => '<strong>最新</strong>情報',
   '<strong>Mail</strong> summary' => '<strong>メール</strong>サマリー',
   'Actions' => 'アクション',
@@ -21,7 +21,7 @@ return [
   'Choose language:' => '言語を選択：',
   'Close' => '閉じる',
   'Collapse' => '折りたたむ',
-  'Confirm' => '確認',
+  'Confirm' => 'はい',
   'Content Addon source must be instance of HActiveRecordContent or HActiveRecordContentAddon!' => 'コンテンツアドオンソースは HActiveRecordContent または HActiveRecordContentAddon のインスタンスでなければなりません！',
   'Copy to clipboard' => 'クリップボードにコピー',
   'Could not find content of addon!' => 'アドオンのコンテンツを見つけることができませんでした！',
@@ -70,6 +70,7 @@ return [
   'Show more' => 'もっと見る',
   'Some files could not be uploaded:' => '一部のファイルをアップロードできませんでした：',
   'Stop impersonation' => 'なりすましを止める',
+  'Switch network' => 'スイッチネットワーク',
   'Text could not be copied to clipboard' => 'テキストをクリップボードにコピーできませんでした。',
   'Text has been copied to clipboard' => 'テキストがクリップボードにコピーされました。',
   'The date has to be in the past.' => '日付は過去である必要があります。',
@@ -95,5 +96,4 @@ X = [a-fA-F0-9]、波括弧と区切りダッシュは両方ともオプショ�
   '{nFormatted}B' => '{nFormatted}B',
   '{nFormatted}K' => '{nFormatted}K',
   '{nFormatted}M' => '{nFormatted}M',
-  'Switch network' => 'スイッチネットワーク',
 ];
