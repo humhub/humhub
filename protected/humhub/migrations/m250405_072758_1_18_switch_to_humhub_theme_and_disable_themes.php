@@ -1,6 +1,7 @@
 <?php
 
 use humhub\helpers\ThemeHelper;
+use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use yii\db\Migration;
 
 class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migration
@@ -10,8 +11,19 @@ class m250405_072758_1_18_switch_to_humhub_theme_and_disable_themes extends Migr
      */
     public function safeUp()
     {
-        // Copy colors to the Settings manager
         $settingsManager = Yii::$app->settings;
+
+        // Copy Login Background image
+        $oldThemeBasePath = $settingsManager->get('theme');
+        foreach (['login-bg.jpg', 'login-bg.png'] as $loginBgFile) {
+            $oldFile = $oldThemeBasePath . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $loginBgFile;
+            if (file_exists($oldFile)) {
+                LoginBackgroundImageHelper::set($oldFile);
+                break;
+            }
+        }
+
+        // Copy Theme colors vars to the Settings manager
         $themeVariables = Yii::$app->view->theme->variables;
         $settingsManager->set('themePrimaryColor', $themeVariables->get('primary'));
         $settingsManager->set('themeSuccessColor', $themeVariables->get('success'));
