@@ -30,6 +30,7 @@ HumHub Changelog
 - Fix #7538: Mail layout: button not centered because of table width not 100%
 - Fix #7542: HTTP Session Cleanup Issue
 - Fix #7550: Don't show opener if logout triggered by mobile app
+- Fix #7438: Allow admins to manage profile topics, permission fixes
 - Fix #7448: Fix `SafeBaseUrl` to not use console `UrlManager` in web app
 
 1.17.3 (Unreleased)
@@ -41,6 +42,11 @@ HumHub Changelog
 - Fix #7503: Don't run migration on updating of disabled module
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
+- Fix #7532: Prevent multiple execution of jobs canceled due to max. execution time.
+- Enh #7549: Allow logout from Mobile App
+- Enh #7546: Improve member space list box
+- Fix #7560: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
+- Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7543: Remove duplicate UserInvites Cleanup job
 
 1.17.2 (April 7, 2025)
@@ -50,7 +56,7 @@ HumHub Changelog
 - Fix #7465: Formatted Arabic numbers displays 0 instead of the number
 - Fix #7471: Fix advanced searching by space filter
 - Fix #7472: Fix missing fields when creating a new user from admin
-- Fix #7477: Refactor Registration Form Options 
+- Fix #7477: Refactor Registration Form Options
 - Enh #7455: Add Share Intend feature for the Mobile app
 - Fix #7482: Fix the post submit button title after back from draft mode
 
@@ -58,7 +64,7 @@ HumHub Changelog
 ----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
 - Fix #7375: Use default language for email invitation and show language chooser on registration form
-- Enh #7383: Improve SelfTest for Base URL 
+- Enh #7383: Improve SelfTest for Base URL
 - Enh #5426: Show language chooser for guest on the sidebar footer
 - Fix #7395: Fix profile stream for guests
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings
@@ -90,7 +96,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #7308: Fix Hungarian symbol error in `Open Sans` font
 - Fix #7309: Fix style of the "Notification Settings" button on small screen
 - Fix #7312: Auto refresh a page with violated script-src because of obsolete nonce
-- Fix #7308: Fix Hungarian symbol error in `Open Sans` font 
+- Fix #7308: Fix Hungarian symbol error in `Open Sans` font
 - Fix #454: Profile about page missing left and right margin on mobile screen
 - Fix #7316: Fix formatter default time zone
 - Enh #7317: Space browser: Make the whole space card header and body clickable
@@ -117,7 +123,7 @@ Info: The minimum PHP version is now `PHP 8.1`!
 - Fix #7287: Fix `Profile::getFormDefinition` to skip virtual fields
 - Fix #7295: iOS mobile app detection for iPad devices
 - Fix #7299: Fix public content from spaces on the profile in guest access mode
-- Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal   
+- Fix #7301: Profile header: on small screens, the space at the left and the right of the image must be equal
 - Fix #7298: Don't check email for existing on password recovery (CVE-2024-52043)
 - Enh #7038: Optimize notification overview
 - Enh #7346: Change cache settings keys to meet dot env naming

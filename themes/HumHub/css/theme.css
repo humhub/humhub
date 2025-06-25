@@ -214,8 +214,8 @@ input[type=select] {
   .layout-nav-container {
     padding: 0 15px;
   }
-  body {
-    padding-top: 120px;
+  :root {
+    --hh-fixed-header-height: 120px;
   }
 }
 @media print {
