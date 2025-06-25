@@ -30,7 +30,10 @@ class UrlManager extends \humhub\components\UrlManager
             $hostInfo .= ':' . $urlParts['port'];
         }
         $this->setHostInfo($hostInfo);
-        $this->setScriptUrl(($this->getScriptUrl() ?: '/index.php'));
+
+        if (!Yii::$app instanceof \yii\web\Application) {
+            $this->setScriptUrl($this->getBaseUrl() . ($this->getScriptUrl() ?: '/index.php'));
+        }
 
         parent::init();
     }
