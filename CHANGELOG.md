@@ -40,6 +40,11 @@ HumHub Changelog
 - Fix #7503: Don't run migration on updating of disabled module
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
+- Fix #7532: Prevent multiple execution of jobs canceled due to max. execution time.
+- Enh #7549: Allow logout from Mobile App
+- Enh #7546: Improve member space list box
+- Fix #7560: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
+- Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7543: Remove duplicate UserInvites Cleanup job
 
 1.17.2 (April 7, 2025)
