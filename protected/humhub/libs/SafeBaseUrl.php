@@ -9,6 +9,7 @@
 namespace humhub\libs;
 
 use humhub\components\console\UrlManager;
+use humhub\helpers\ArrayHelper;
 use Yii;
 use yii\helpers\BaseUrl;
 
@@ -25,14 +26,8 @@ class SafeBaseUrl extends BaseUrl
      */
     protected static function getUrlManager()
     {
-        if (isset(Yii::$app->components['urlManager'])) {
-            $config = Yii::$app->components['urlManager'];
-            if (isset($config['class'])) {
-                unset($config['class']);
-            }
-        } else {
-            $config = [];
-        }
+        $config = ArrayHelper::getValue(Yii::$app->getComponents(), 'urlManager', []);
+        ArrayHelper::remove($config, 'class');
 
         return static::$urlManager ?: new UrlManager($config);
     }

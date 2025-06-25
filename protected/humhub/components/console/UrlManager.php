@@ -30,12 +30,15 @@ class UrlManager extends \humhub\components\UrlManager
             $hostInfo .= ':' . $urlParts['port'];
         }
         $this->setHostInfo($hostInfo);
-        $this->setScriptUrl($this->getBaseUrl() . (str_replace($this->getBaseUrl(), '', $this->getScriptUrl()) ?: '/index.php'));
+
+        if (!Yii::$app instanceof \yii\web\Application) {
+            $this->setScriptUrl($this->getBaseUrl() . ($this->getScriptUrl() ?: '/index.php'));
+        }
 
         parent::init();
     }
 
-    private function getConfiguredBaseUrl()
+    protected function getConfiguredBaseUrl()
     {
         if (Yii::$app->installationState->hasState(InstallationState::STATE_DATABASE_CREATED)) {
             $baseUrl = Yii::$app->settings->get('baseUrl');
