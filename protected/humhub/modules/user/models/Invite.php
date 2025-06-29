@@ -13,6 +13,7 @@ use humhub\components\ActiveRecord;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\Module;
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\captcha\CaptchaValidator;
 use yii\db\ActiveQuery;
 use yii\helpers\Url;
@@ -157,8 +158,25 @@ class Invite extends ActiveRecord
             return false;
         }
 
-        if ($this->save()) {
-            return $this->sendInviteMail();
+        $transaction = Yii::$app->db->beginTransaction();
+
+        try {
+            if ($this->save()) {
+                if (!$this->sendInviteMail()) {
+                    throw new InvalidConfigException('Could not send an email.');
+                }
+                $transaction->commit();
+
+                return true;
+            }
+            
+            throw new \RuntimeException();
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+
+            if (!$e instanceof \RuntimeException) {
+                throw $e;
+            }
         }
 
         return false;
