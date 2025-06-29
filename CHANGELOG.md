@@ -31,6 +31,7 @@ HumHub Changelog
 - Fix #7542: HTTP Session Cleanup Issue
 - Fix #7550: Don't show opener if logout triggered by mobile app
 - Fix #7438: Allow admins to manage profile topics, permission fixes
+- Fix #7565: Fix stream filter placeholder text
 
 1.17.3 (Unreleased)
 ----------------------
