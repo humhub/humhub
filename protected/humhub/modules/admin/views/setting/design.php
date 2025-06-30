@@ -5,6 +5,7 @@ use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
 use humhub\modules\admin\models\forms\DesignSettingsForm;
 use humhub\modules\ui\form\widgets\CodeMirrorInputWidget;
+use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
@@ -21,11 +22,15 @@ $this->registerJsConfig('admin', [
         'confirm.deleteLogo.confirm' => Yii::t('AdminModule.settings', 'Delete'),
         'confirm.deleteIcon.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> icon deletion'),
         'confirm.deleteIcon.body' => Yii::t('UserModule.account', 'Do you really want to delete your icon image?'),
-        'confirm.deleteIcon.confirm' => Yii::t('AdminModule.settings', 'Delete')
+        'confirm.deleteIcon.confirm' => Yii::t('AdminModule.settings', 'Delete'),
+        'confirm.deleteLoginBg.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
+        'confirm.deleteLoginBg.body' => Yii::t('UserModule.account', 'Do you really want to delete your login background image?'),
+        'confirm.deleteLoginBg.confirm' => Yii::t('AdminModule.settings', 'Delete'),
     ]
 ]);
 
 $iconUrl = SiteIcon::getUrl(140);
+$loginBgUrl = LoginBackgroundImageHelper::getUrl();
 $themeVariables = Yii::$app->view->theme->variables;
 ?>
 
@@ -99,6 +104,22 @@ $themeVariables = Yii::$app->view->theme->variables;
                 <?= Button::danger()->id('admin-delete-icon-image')
                     ->action('admin.deletePageIcon', Url::to(['/admin/setting/delete-icon-image']))
                     ->style(SiteIcon::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-light p-3 mt-2">
+        <?= $form->field($model, 'loginBackgroundImage')->fileInput(['id' => 'admin-loginBg-file-upload', 'data-action-change' => 'admin.changeLoginBg', 'class' => 'd-none', 'name' => 'loginBackgroundImage[]']) ?>
+        <div class="image-upload-container" id="loginBg-upload">
+            <img class="rounded" id="loginBg-image" src="<?= $loginBgUrl ?>" style="max-height: 40px;">
+
+            <div class="image-upload-buttons" id="loginBg-upload-buttons" style="display: block;">
+                <?= Button::info()->icon('cloud-upload')->id('admin-loginBg-upload-button')->sm()->loader(false) ?>
+
+                <?= Button::danger()->id('admin-delete-loginBg-image')
+                    ->action('admin.deleteLoginBg', Url::to(['/admin/setting/delete-login-background-image']))
+                    ->style(LoginBackgroundImageHelper::hasImage() ? '' : 'display:none')->icon('remove')->sm()->loader(false) ?>
             </div>
         </div>
     </div>

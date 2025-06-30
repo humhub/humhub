@@ -13,6 +13,7 @@ use humhub\helpers\ThemeHelper;
 use humhub\libs\LogoImage;
 use humhub\modules\file\validators\ImageSquareValidator;
 use humhub\modules\stream\actions\Stream;
+use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use ScssPhp\ScssPhp\Compiler;
@@ -35,6 +36,7 @@ class DesignSettingsForm extends Model
     public $spaceOrder;
     public $logo;
     public $icon;
+    public $loginBackgroundImage;
     public $dateInputDisplayFormat;
     public $defaultStreamSort;
     public $themePrimaryColor;
@@ -107,6 +109,7 @@ class DesignSettingsForm extends Model
             [['defaultStreamSort'], 'in', 'range' => array_keys($this->getDefaultStreamSortOptions())],
             ['icon', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 256, 'minHeight' => 256],
             ['icon', ImageSquareValidator::class],
+            ['loginBackgroundImage', 'image', 'extensions' => 'png, jpg, jpeg', 'minWidth' => 800, 'minHeight' => 600],
             ['dateInputDisplayFormat', 'in', 'range' => ['', 'php:d/m/Y']],
             [['themePrimaryColor', 'themeSecondaryColor', 'themeSuccessColor', 'themeDangerColor', 'themeWarningColor', 'themeInfoColor', 'themeLightColor', 'themeDarkColor', 'themeCustomScss'], 'string'],
             [['useDefaultThemePrimaryColor', 'useDefaultThemeSecondaryColor', 'useDefaultThemeSuccessColor', 'useDefaultThemeDangerColor', 'useDefaultThemeWarningColor', 'useDefaultThemeInfoColor', 'useDefaultThemeLightColor', 'useDefaultThemeDarkColor'], 'boolean'],
@@ -145,6 +148,7 @@ class DesignSettingsForm extends Model
             'spaceOrder' => Yii::t('AdminModule.settings', '"My Spaces" Sorting'),
             'logo' => Yii::t('AdminModule.settings', 'Logo upload'),
             'icon' => Yii::t('AdminModule.settings', 'Icon upload'),
+            'loginBackgroundImage' => Yii::t('AdminModule.settings', 'Login Background'),
             'dateInputDisplayFormat' => Yii::t('AdminModule.settings', 'Date input format'),
             'themePrimaryColor' => Yii::t('AdminModule.settings', 'Primary color'),
             'useDefaultThemePrimaryColor' => Yii::t('AdminModule.settings', 'Default'),
@@ -194,6 +198,12 @@ class DesignSettingsForm extends Model
             $this->icon = $file;
         }
 
+        $files = UploadedFile::getInstancesByName('loginBackgroundImage');
+        if (count($files) != 0) {
+            $file = $files[0];
+            $this->loginBackgroundImage = $file;
+        }
+
         return parent::load($data, $formName);
     }
 
@@ -240,6 +250,10 @@ class DesignSettingsForm extends Model
 
         if ($this->icon) {
             SiteIcon::set($this->icon);
+        }
+
+        if ($this->loginBackgroundImage && $this->loginBackgroundImage instanceof UploadedFile) {
+            LoginBackgroundImageHelper::set($this->loginBackgroundImage->tempName);
         }
 
         $settingsManager->set('themePrimaryColor', $this->useDefaultThemePrimaryColor ? null : $this->themePrimaryColor);
