@@ -1,7 +1,6 @@
 <?php
 
 use humhub\helpers\Html;
-use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\forms\Login;
 use humhub\modules\user\models\Invite;
 use humhub\modules\user\widgets\AuthChoice;
@@ -20,22 +19,6 @@ $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 /* @var $passwordRecoveryRoute string|array|null */
 /* @var $showLoginForm bool */
 /* @var $showRegistrationForm bool */
-
-if (LoginBackgroundImageHelper::hasImage()) {
-    $this->registerCss('
-        body, html {
-            height: 100%;
-            margin: 0;
-        }
-        .login-container {
-            height:100%;
-            background-image: url("' . LoginBackgroundImageHelper::getUrl() . '");
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }');
-}
-
 
 ?>
 
