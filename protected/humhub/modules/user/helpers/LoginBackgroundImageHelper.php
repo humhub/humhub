@@ -22,8 +22,11 @@ final class LoginBackgroundImageHelper
 
     public static function set(?string $fileName): void
     {
-        @unlink(static::getAssetsFile());
-        @unlink(static::getStoreFile());
+        foreach ([static::getAssetsFile(), static::getStoreFile()] as $file) {
+            if (file_exists($file)) {
+                unlink($file);
+            }
+        }
 
         if ($fileName) {
             Image::getImagine()->open($fileName)->save(self::getStoreFile());
