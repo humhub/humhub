@@ -11,6 +11,7 @@ use humhub\widgets\SiteLogo;
 
 $this->pageTitle = Yii::t('UserModule.auth', 'Login');
 
+/* @var $this \humhub\components\View */
 /* @var $canRegister bool */
 /* @var $model Login */
 /* @var $invite Invite */

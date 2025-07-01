@@ -30,6 +30,7 @@ use humhub\modules\admin\notifications\NewVersionAvailable;
 use humhub\modules\admin\permissions\ManageSettings;
 use humhub\modules\notification\models\forms\NotificationSettings;
 use humhub\modules\topic\models\Topic;
+use humhub\modules\user\helpers\LoginBackgroundImageHelper;
 use humhub\modules\user\models\User;
 use humhub\modules\web\pwa\widgets\SiteIcon;
 use humhub\widgets\modal\ModalClose;
@@ -113,6 +114,15 @@ class SettingController extends Controller
     {
         $this->forcePostRequest();
         LogoImage::set(null);
+
+        Yii::$app->response->format = 'json';
+        return [];
+    }
+
+    public function actionDeleteLoginBackgroundImage()
+    {
+        $this->forcePostRequest();
+        LoginBackgroundImageHelper::set(null);
 
         Yii::$app->response->format = 'json';
         return [];
