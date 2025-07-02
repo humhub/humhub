@@ -12,7 +12,6 @@ namespace humhub\modules\ui\filter\widgets;
 use DateTime;
 use humhub\modules\ui\form\widgets\DatePicker;
 use Yii;
-use yii\helpers\FormatConverter;
 
 class DatePickerFilterInput extends FilterInput
 {
@@ -40,8 +39,7 @@ class DatePickerFilterInput extends FilterInput
         $this->value = $filter;
 
         if (!isset($this->options['placeholder'])) {
-            $this->options['placeholder'] = (new DateTime())
-                ->format(FormatConverter::convertDateIcuToPhp(Yii::$app->formatter->dateInputFormat));
+            $this->options['placeholder'] = Yii::$app->formatter->asDate(new DateTime(), Yii::$app->formatter->dateInputFormat);
         }
     }
 
