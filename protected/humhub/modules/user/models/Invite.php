@@ -169,7 +169,7 @@ class Invite extends ActiveRecord
 
                 return true;
             }
-            
+
             throw new \RuntimeException();
         } catch (\Throwable $e) {
             $transaction->rollBack();
