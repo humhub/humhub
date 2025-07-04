@@ -60,6 +60,10 @@ a.list-group-item {
     }
 }
 
+.list-group-horizontal > .list-group-item.active {
+    margin-top: auto; // Overwrite Bootstrap 5 `0` value
+}
+
 // Introduce a new class for vertical list groups
 @include media-breakpoint-up(sm) {
     .list-group-vertical-sm {
@@ -99,11 +103,13 @@ a.list-group-item {
 
     .list-group {
         margin-left: 4px;
+        gap: 4px;
     }
 
     .list-group-item {
         display: inline-block !important;
         border-radius: 3px !important;
+        border-left: none !important;
         margin: 4px 0;
         margin-bottom: 4px !important;
     }
@@ -112,6 +118,7 @@ a.list-group-item {
         @mixin mobileListGroupItemActiveOrFocus {
             background: var(--bs-primary) !important;
             color: #fff !important;
+            border-left: none !important;
         }
 
         &.active {
