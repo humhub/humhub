@@ -33,6 +33,7 @@ HumHub Changelog
 - Fix #7542: HTTP Session Cleanup Issue
 - Fix #7550: Don't show opener if logout triggered by mobile app
 - Enh #7547: Change title when disabling a module
+- Fix #7562: Device system bottom bar on top of HumHub: Add bottom padding for mobile (safe area)
 
 1.17.3 (Unreleased)
 ----------------------
