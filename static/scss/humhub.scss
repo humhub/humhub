@@ -113,6 +113,11 @@ $prev-gridview: false !default;
     @import "gridview";
 }
 
+$prev-grid: false !default;
+@if not $prev-grid {
+    @import "grid";
+}
+
 $prev-oembed: false !default;
 @if not $prev-oembed {
     @import "oembed";
