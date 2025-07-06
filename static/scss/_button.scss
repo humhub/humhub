@@ -46,14 +46,13 @@
     --bs-btn-padding-x: 1.2rem;
 }
 
-$button-variant-colors: (
+$white-button-variant-colors: (
     primary: $primary,
     secondary: $secondary,
     success: $success,
     danger: $danger,
     warning: $warning,
     info: $info,
-    light: $light,
     dark: $dark
 );
 
@@ -61,24 +60,18 @@ $button-variant-colors: (
     --bs-btn-active-bg: #{darken($color, $darken-amount)};
 }
 
-@each $variant, $color in $button-variant-colors {
+@each $variant, $color in $white-button-variant-colors {
     .btn-#{$variant} {
         // Force white text color
         --bs-btn-color: var(--hh-text-color-contrast);
         --bs-btn-active-color: var(--hh-text-color-contrast);
         --bs-btn-hover-color: var(--hh-text-color-contrast);
-        --bs-btn-focus-color: var(--hh-text-color-contrast);
         // Force active button background color shade (darken) instead of tint (lighten)
         @include button-variant-dark-active($color);
     }
-}
-
-// Exception for the Light button
-.btn-light {
-    --bs-btn-color: var(--hh-text-color-default);
-
-    &:hover,
-    &:focus {
-        color: var(--hh-text-color-highlight) !important;
+    .btn-outline-#{$variant} {
+        // Force white text color
+        --bs-btn-active-color: var(--hh-text-color-contrast);
+        --bs-btn-hover-color: var(--hh-text-color-contrast);
     }
 }
