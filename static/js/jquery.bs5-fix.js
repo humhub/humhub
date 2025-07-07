@@ -56,6 +56,9 @@
                 .removeClass('d-none')
                 .animate({ opacity: 1 }, duration, easing, function () {
                     $el.css('opacity', '');
+                    if ($el.css('display') === 'none') {
+                        $el.addClass('d-revert');
+                    }
                     if (typeof complete === 'function') complete.call(this);
                 });
         });
@@ -70,7 +73,7 @@
                 return;
             }
             $el.stop(true, true).animate({ opacity: 0 }, duration, easing, function () {
-                $el.addClass('d-none').css('opacity', '');
+                $el.addClass('d-none').removeClass('d-revert').css('opacity', '');
                 if (typeof complete === 'function') complete.call(this);
             });
         });
@@ -107,6 +110,9 @@
 
             $el.stop(true, true).animate({ height: fullHeight }, duration, easing, function () {
                 $el.css({ height: '', overflow: '' });
+                if ($el.css('display') === 'none') {
+                    $el.addClass('d-revert');
+                }
                 if (typeof complete === 'function') complete.call(this);
             });
         });
@@ -125,7 +131,7 @@
             });
 
             $el.stop(true, true).animate({ height: 0 }, duration, easing, function () {
-                $el.addClass('d-none').css({ height: '', overflow: '' });
+                $el.addClass('d-none').removeClass('d-revert').css({ height: '', overflow: '' });
                 if (typeof complete === 'function') complete.call(this);
             });
         });
