@@ -45,6 +45,10 @@ body.modal-open {
     }
 }
 
+.modal-dialog {
+    margin-bottom: calc(var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)) + var(--bs-modal-margin)); // for the web view space (safe area) on mobile devices
+}
+
 .modal-dialog, .modal-content {
     min-width: 150px;
 }

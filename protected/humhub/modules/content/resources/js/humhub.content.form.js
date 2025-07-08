@@ -59,7 +59,7 @@ humhub.module('content.form', function (module, require, $) {
             firstMenuWithForm.addClass('active')
                 .parent().addClass('active');
         }
-        this.menu.fadeIn();
+        this.menu.show();
     }
 
     CreateForm.prototype.submit = function (evt) {

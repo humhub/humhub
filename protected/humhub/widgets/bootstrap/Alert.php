@@ -43,6 +43,8 @@ class Alert extends \yii\bootstrap5\Alert
         setLabel as private;
     }
 
+    public bool $useBeginEndMethod = false;
+
     public static function instance(?string $text = null, ?string $color = null): static
     {
         if ($text === null) {
@@ -68,6 +70,11 @@ class Alert extends \yii\bootstrap5\Alert
      */
     public function init()
     {
+        if ($this->useBeginEndMethod) {
+            parent::init();
+            return;
+        }
+
         // Bypass the parent's init method to prevent rendering the div beginning tag at this stage, as we may modify the options later
         $method = new ReflectionMethod(Widget::class, 'init');
         $method->invoke($this);
@@ -80,6 +87,11 @@ class Alert extends \yii\bootstrap5\Alert
      */
     public function run()
     {
+        if ($this->useBeginEndMethod) {
+            parent::run();
+            return;
+        }
+
         if ($this->icon) {
             $this->body = $this->icon . ' ' . $this->body;
         }
@@ -110,6 +122,12 @@ class Alert extends \yii\bootstrap5\Alert
     {
         $this->closeButton = $closeButton;
         return $this;
+    }
+
+    public static function begin($config = [])
+    {
+        $config['useBeginEndMethod'] = true;
+        return parent::begin($config);
     }
 
     public static function beginInstance(string $color): static

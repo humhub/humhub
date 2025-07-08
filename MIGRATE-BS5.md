@@ -78,7 +78,7 @@ This will make it easier to migrate to new versions of the external libraries ([
 E.g.:
 - `yii\bootstrap5\Html`, use `humhub\helpers\Html` instead.
 - `yii\bootstrap5\Button`, use `humhub\widgets\bootstrap\Button` instead.
-- `yii\bootstrap5\Alert`, use `humhub\widgets\bootstrap\Alert` instead.
+- `yii\bootstrap5\Alert`, use `humhub\widgets\bootstrap\Alert` instead (check the class documentation for the new recommended syntax).
 - `yii\bootstrap5\Badge`, use `humhub\widgets\bootstrap\Badge` instead.
 - `yii\bootstrap5\Tabs`, use `humhub\widgets\bootstrap\Tabs` instead.
 - `yii\bootstrap5\Modal`, use `humhub\widgets\modal\Modal` instead
@@ -214,7 +214,7 @@ When it is not possible to place the buttons in the modal `footer` param, use th
 
 ### Widgets removed
 
-- `\humhub\modules\ui\form\widgets\ColorPicker` and `\humhub\widgets\ColorPickerField` input widget use `->colorInput()` instead ([see documentation](https://github.com/yiisoft/yii2-bootstrap5/blob/master/docs/guide/usage-widgets.md#activefield-additional-fields-))
+- `humhub\modules\ui\form\widgets\ColorPicker` and `humhub\widgets\ColorPickerField` input widget: use `->colorInput()` instead ([see documentation](https://github.com/yiisoft/yii2-bootstrap5/blob/master/docs/guide/usage-widgets.md#activefield-additional-fields-))
 
 ### Widgets deprecations
 
@@ -392,7 +392,7 @@ Bootstrap 3:
 - `lg`: ≥ 1200px
 
 Bootstrap 5:
-- `xs`: removed (default)
+- `xs`: removed (default when not specified)
 - `sm`: ≥ 576px (new)
 - `md`: ≥ 768px
 - `lg`: ≥ 992px

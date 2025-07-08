@@ -1,5 +1,6 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\libs\LogoImage;
 use humhub\modules\admin\assets\AdminAsset;
@@ -11,7 +12,10 @@ use humhub\widgets\bootstrap\Button;
 use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
-/* @var $model DesignSettingsForm */
+/**
+ * @var $this View
+ * @var $model DesignSettingsForm
+ */
 
 AdminAsset::register($this);
 
@@ -26,7 +30,7 @@ $this->registerJsConfig('admin', [
         'confirm.deleteLoginBg.header' => Yii::t('AdminModule.settings', '<strong>Confirm</strong> image deletion'),
         'confirm.deleteLoginBg.body' => Yii::t('UserModule.account', 'Do you really want to delete your login background image?'),
         'confirm.deleteLoginBg.confirm' => Yii::t('AdminModule.settings', 'Delete'),
-    ]
+    ],
 ]);
 
 $iconUrl = SiteIcon::getUrl(140);
@@ -134,7 +138,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themePrimaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themePrimaryColor')->colorInput() ?>
+                <?= $form->field($model, 'themePrimaryColor')->colorInput(['disabled' => $model->useDefaultThemePrimaryColor]) ?>
                 <?= $form->field($model, 'useDefaultThemePrimaryColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -142,7 +146,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeSecondaryColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeSecondaryColor')->colorInput() ?>
+                <?= $form->field($model, 'themeSecondaryColor')->colorInput(['disabled' => $model->useDefaultThemeSecondaryColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeSecondaryColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -152,7 +156,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeSuccessColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeSuccessColor')->colorInput() ?>
+                <?= $form->field($model, 'themeSuccessColor')->colorInput(['disabled' => $model->useDefaultThemeSuccessColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeSuccessColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -160,7 +164,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeDangerColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeDangerColor')->colorInput() ?>
+                <?= $form->field($model, 'themeDangerColor')->colorInput(['disabled' => $model->useDefaultThemeDangerColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeDangerColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -170,7 +174,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeWarningColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeWarningColor')->colorInput() ?>
+                <?= $form->field($model, 'themeWarningColor')->colorInput(['disabled' => $model->useDefaultThemeWarningColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeWarningColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -178,7 +182,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeInfoColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeInfoColor')->colorInput() ?>
+                <?= $form->field($model, 'themeInfoColor')->colorInput(['disabled' => $model->useDefaultThemeInfoColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeInfoColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -188,7 +192,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeLightColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeLightColor')->colorInput() ?>
+                <?= $form->field($model, 'themeLightColor')->colorInput(['disabled' => $model->useDefaultThemeLightColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeLightColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -196,7 +200,7 @@ $themeVariables = Yii::$app->view->theme->variables;
         <div class="col-lg-6 mb-3">
             <?= Html::activeLabel($model, 'themeDarkColor') ?>
             <div class="input-group input-color-group bg-light p-3 pb-0">
-                <?= $form->field($model, 'themeDarkColor')->colorInput() ?>
+                <?= $form->field($model, 'themeDarkColor')->colorInput(['disabled' => $model->useDefaultThemeDarkColor]) ?>
                 <?= $form->field($model, 'useDefaultThemeDarkColor', $checkBoxOptions)->checkbox() ?>
             </div>
         </div>
@@ -214,30 +218,21 @@ $themeVariables = Yii::$app->view->theme->variables;
 
 <script <?= Html::nonce() ?>>
     $(function () {
-        function toggleColorField($checkbox, $colorField, defaultColor) {
-            if ($checkbox.is(':checked')) {
-                $colorField.prop('disabled', true).prop('value', defaultColor);
-            } else {
-                $colorField.prop('disabled', false);
-            }
-        }
-
-        function setupColorFieldToggle(color, defaultColor) {
+        // Disable the color field pickers when the "default" checkbox is checked
+        function setupColorFieldToggleDisabled(color, defaultColorValue) {
             const $checkbox = $('#designsettingsform-usedefaulttheme' + color + 'color');
             const $colorField = $('#designsettingsform-theme' + color + 'color');
-            toggleColorField($checkbox, $colorField, defaultColor);
             $checkbox.on('change', function () {
-                toggleColorField($checkbox, $colorField, defaultColor);
+                if ($checkbox.is(':checked')) {
+                    $colorField.prop('disabled', true).prop('value', defaultColorValue);
+                } else {
+                    $colorField.prop('disabled', false);
+                }
             });
         }
 
-        setupColorFieldToggle('primary', '<?= $themeVariables->get('primary') ?>');
-        setupColorFieldToggle('secondary', '<?= $themeVariables->get('secondary') ?>');
-        setupColorFieldToggle('success', '<?= $themeVariables->get('success') ?>');
-        setupColorFieldToggle('danger', '<?= $themeVariables->get('danger') ?>');
-        setupColorFieldToggle('warning', '<?= $themeVariables->get('warning') ?>');
-        setupColorFieldToggle('info', '<?= $themeVariables->get('info') ?>');
-        setupColorFieldToggle('light', '<?= $themeVariables->get('light') ?>');
-        setupColorFieldToggle('dark', '<?= $themeVariables->get('dark') ?>');
+        <?php foreach (['primary', 'secondary', 'success', 'danger', 'warning', 'info', 'light', 'dark'] as $color) : ?>
+            setupColorFieldToggleDisabled('<?= $color ?>', '<?= $themeVariables->get($color) ?>');
+        <?php endforeach; ?>
     })
 </script>

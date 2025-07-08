@@ -4,6 +4,7 @@
 .status-bar-body {
     color: white;
     position: fixed;
+    margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
     width: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     text-align: center;
