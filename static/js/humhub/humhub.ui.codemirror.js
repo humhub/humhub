@@ -23,6 +23,7 @@ humhub.module('ui.codemirror', function(module, require, $) {
                         var codeMirrorInstance = CodeMirror.fromTextArea(this, {
                             mode: $(this).data('codemirror'),
                             lineNumbers: true,
+                            autoRefresh: true,
                             extraKeys: {'Ctrl-Space': 'autocomplete'}
                         });
                         $(this).data('codemirror-instance', codeMirrorInstance);
