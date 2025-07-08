@@ -68,10 +68,6 @@
         margin-right: 1px;
     }
 
-    .ProseMirror-menubar-wrapper {
-        z-index: 200;
-    }
-
     .ProseMirror-menu-group {
         display: flex;
         flex-wrap: wrap;
@@ -280,10 +276,6 @@
         min-width: 3em;
     }
 
-    .ProseMirror-menubar-wrapper {
-        z-index: 8;
-    }
-
     .ProseMirror-menubar {
         background: white;
         border: 1px solid var(--hh-background3);
@@ -298,7 +290,6 @@
         top: 0;
         left: 0;
         right: 0;
-        z-index: 10;
     }
 }
 
