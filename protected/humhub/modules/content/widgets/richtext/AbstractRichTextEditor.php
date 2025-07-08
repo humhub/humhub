@@ -179,7 +179,14 @@ class AbstractRichTextEditor extends JsInputWidget
         $inputOptions = $this->getInputAttributes();
 
         if ($this->form !== null) {
-            $input = $this->form->field($this->model, $this->attribute, $this->fieldTemplate ? ['template' => $this->fieldTemplate] : [])->textarea($inputOptions)->label(false);
+            $fieldOptions = [];
+            if (!empty($this->options)) {
+                $fieldOptions['options'] = $this->options;
+            }
+            if ($this->fieldTemplate) {
+                $fieldOptions['template'] = $this->fieldTemplate;
+            }
+            $input = $this->form->field($this->model, $this->attribute, $fieldOptions)->textarea($inputOptions)->label(false);
         } elseif ($this->model !== null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
         } else {
