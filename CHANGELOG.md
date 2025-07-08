@@ -15,6 +15,7 @@ HumHub Changelog
 - Enh #7546: Improve member space list box
 - Fix #7560: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
+- Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 
 1.17.2 (April 7, 2025)
 ----------------------
