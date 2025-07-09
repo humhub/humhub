@@ -9,7 +9,6 @@
 namespace humhub\helpers;
 
 use Exception;
-use humhub\components\Theme;
 use RuntimeException;
 
 /**
@@ -18,30 +17,28 @@ use RuntimeException;
 class ScssHelper
 {
     /**
-     * @param Theme $theme
-     * @return string
-     */
-    public static function getVariableFile(Theme $theme)
-    {
-        return $theme->getBasePath() . '/scss/variables.scss';
-    }
-
-
-    /**
      * Returns all SCSS variables of a given file
      * @param string $scssFilePath
      * @return array
      * @throws RuntimeException
      */
-    public static function getVariables(string $scssFilePath): array
+    public static function getVariables(array|string $scssFilePaths): array
     {
-        if (!file_exists($scssFilePath)) {
-            return [];
+        if (is_string($scssFilePaths)) {
+            $scssFilePaths = [$scssFilePaths];
         }
 
         try {
             // Read the SCSS file contents
-            $scssContent = file_get_contents($scssFilePath);
+            $scssContent = '';
+            foreach ($scssFilePaths as $scssFilePath) {
+                if (file_exists($scssFilePath)) {
+                    $scssContent .= file_get_contents($scssFilePath);
+                }
+            }
+            if (!$scssContent) {
+                return [];
+            }
 
             // Extract all variable declarations
             preg_match_all('/\$([a-zA-Z0-9_-]+)\s*:\s*(.+?);/', $scssContent, $matches, PREG_SET_ORDER);
@@ -81,9 +78,9 @@ class ScssHelper
         }
     }
 
-    public static function getVariable(string $scssFilePath, string $variableName): ?string
+    public static function getVariable(array|string $scssFilePaths, string $variableName): ?string
     {
-        $variables = static::getVariables($scssFilePath);
+        $variables = static::getVariables($scssFilePaths);
         return $variables[$variableName] ?? null;
     }
 

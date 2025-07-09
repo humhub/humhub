@@ -143,9 +143,16 @@ class ThemeHelper
      */
     public static function getAllVariables(Theme $theme): array
     {
-        $variables = ScssHelper::getVariables(Yii::getAlias('@webroot-static/scss/variables.scss'));
+        $variables = ScssHelper::getVariables([
+            Yii::getAlias('@webroot-static/scss/configurable_variables.scss'),
+            Yii::getAlias('@webroot-static/scss/variables.scss'),
+        ]);
+
         foreach (array_reverse(static::getThemeTree($theme)) as $treeTheme) {
-            $variables = ArrayHelper::merge($variables, ScssHelper::getVariables(ScssHelper::getVariableFile($treeTheme)));
+            $variables = ArrayHelper::merge($variables, ScssHelper::getVariables([
+                $treeTheme->getBasePath() . '/scss/configurable_variables.scss',
+                $treeTheme->getBasePath() . '/scss/variables.scss',
+            ]));
         }
 
         return ScssHelper::updateLinkedScssVariables($variables);
@@ -192,7 +199,7 @@ class ThemeHelper
         $themes = static::getThemes();
 
         $baseTheme = ScssHelper::getVariable(
-            ScssHelper::getVariableFile($theme),
+            $theme->getBasePath() . '/scss/variables.scss',
             'baseTheme',
         );
 
@@ -229,7 +236,7 @@ class ThemeHelper
         $treeThemes = array_reverse(static::getThemeTree($theme));
         $compiler = new Compiler();
         $designSettingsForm = new DesignSettingsForm();
-        $variableImports = [];
+        $configurableVariableImports = [];
         $otherImports = [];
 
         // Compress CSS
@@ -242,17 +249,32 @@ class ThemeHelper
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
-        // Import variables (bootstrap variables have a !default suffix to allow overwriting)
+        // Import configurable variables (bootstrap variables have a !default suffix to allow overwriting)
+        $configurableVariableImports[] = Yii::getAlias('@webroot-static/scss/configurable_variables');
+        foreach ($treeThemes as $treeTheme) {
+            $themeConfVarFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'configurable_variables';
+            if (file_exists($themeConfVarFile . '.scss')) {
+                $configurableVariableImports[] = $themeConfVarFile;
+            }
+        }
+
+        // Import variables
         $variableImports[] = Yii::getAlias('@webroot-static/scss/variables');
         foreach ($treeThemes as $treeTheme) {
-            $variableImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            $themeVariableFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            if (file_exists($themeVariableFile . '.scss')) {
+                $variableImports[] = $themeVariableFile;
+            }
         }
 
         // Import all other files
-        $otherImports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+        $otherImports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the BS variables.scss file
         $otherImports[] = Yii::getAlias('@webroot-static/scss/humhub');
         foreach ($treeThemes as $treeTheme) {
-            $otherImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            $themeBuildFile = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            if (file_exists($themeBuildFile . '.scss')) {
+                $otherImports[] = $themeBuildFile;
+            }
         }
 
         // Set source map
@@ -284,7 +306,7 @@ class ThemeHelper
         }
 
         // Create SCSS source from imports and Design Settings form
-        $scssSource = '@import "' . implode('", "', $variableImports) . '";' . PHP_EOL;
+        $scssSource = '@import "' . implode('", "', $configurableVariableImports) . '";' . PHP_EOL;
         if ($designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
         }
@@ -310,6 +332,7 @@ class ThemeHelper
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource .=
+            '@import "' . implode('", "', $variableImports) . '";' . PHP_EOL .
             '@import "' . implode('", "', $otherImports) . '";' . PHP_EOL .
             $designSettingsForm->themeCustomScss;
 

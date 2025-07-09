@@ -4,7 +4,6 @@ namespace tests\codeception\unit;
 
 use humhub\helpers\ScssHelper;
 use tests\codeception\_support\HumHubDbTestCase;
-use yii\helpers\ArrayHelper;
 
 class ScssHelperTest extends HumHubDbTestCase
 {
@@ -14,10 +13,8 @@ class ScssHelperTest extends HumHubDbTestCase
     public function testGetAndParseLinkedScssVariables()
     {
         // Get SCSS variables from two sample files:
-        $variables = ArrayHelper::merge(
-            ScssHelper::getVariables(__dir__ . DIRECTORY_SEPARATOR . 'first.scss'),
-            ScssHelper::getVariables(__dir__ . DIRECTORY_SEPARATOR . 'second.scss'),
-        );
+        $variables = ScssHelper::getVariables([__dir__ . DIRECTORY_SEPARATOR . 'first.scss', __dir__ . DIRECTORY_SEPARATOR . 'second.scss']);
+
         // Update variables linked between two different files:
         $variables = ScssHelper::updateLinkedScssVariables($variables);
 

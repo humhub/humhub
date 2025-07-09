@@ -1,29 +1,30 @@
 //
 // Sass variables
 // For CSS variables, see _root.scss
-// Bootstrap functions such as tint-color() and shade-color() are not available for this file
+// Bootstrap variables and functions such as tint-color() and shade-color() are not available for this file
+// But configurable variables from configurable_variables.scss or defined in the Administration Settings are available
 // --------------------------------------------------
 
 $isFluid: false;
 
 //
-// Bootstrap base colors overwrite
+// Bootstrap colors overwrite
 // --------------------------------------------------
 
-$primary: #435f6f;
-$secondary: #7a7a7a;
-$info: #21A1B3;
-$success: #97d271;
-$warning: #FFC107;
-$danger: #FC4A64;
-$light: #e7e7e7;
-$dark: #333;
-
-$link-color: $info;
-$link-hover-color: mix(black, $link-color, 10%);
+$link-hover-color: mix(black, $primary, 10%);
 $code-color: mix(black, $info, 10%);
 $body-color: #555;
 $body-bg: #ededed;
+
+//
+// Other Bootstrap overwrites
+// --------------------------------------------------
+
+$grid-gutter-width: 30px;
+$line-height-base: 1.5;
+$input-border-color: #e9ecef;
+$input-bg: #fff; // default is $body-bg
+$form-check-padding-start: 2em; // Fix checkbox with multiple lines label
 
 //
 // HumHub Text colors
@@ -125,20 +126,9 @@ $container-max-widths: (
     xxl: 1170px // instead of the Bootstrap default 1320px
 );
 
-
-//
-// Other Bootstrap overwritten variables
-// --------------------------------------------------
-
-$grid-gutter-width: 30px;
-$line-height-base: 1.5;
-$input-border-color: #e9ecef;
-$input-bg: #fff; // default is $body-bg
-$form-check-padding-start: 2em; // Fix checkbox with multiple lines label
-
 //
 // @deprecated since 1.18
 // --------------------------------------------------
 
 $default: #e7e7e7;
-$link: $link-color;
+$link: $primary;

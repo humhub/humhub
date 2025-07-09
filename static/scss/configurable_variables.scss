@@ -1,0 +1,15 @@
+//
+// Configurable Sass variables
+// Default values of the variables configurable in the Administration Settings
+// See humhub\modules\admin\models\forms\DesignSettingsForm properties starting with $theme
+// Bootstrap functions such as tint-color() and shade-color() are not available for this file
+// --------------------------------------------------
+
+$primary: #435f6f;
+$secondary: #7a7a7a;
+$info: #21A1B3;
+$success: #97d271;
+$warning: #FFC107;
+$danger: #FC4A64;
+$light: #e7e7e7;
+$dark: #333;

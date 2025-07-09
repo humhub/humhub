@@ -569,7 +569,7 @@ Doc: https://getbootstrap.com/docs/5.3/customize/sass/
 ### Convert LESS to SCSS
 
 Rename `less` folder to `scss` and rename all `.less` files to `.scss`
-Prefix all SCSS files with `_` except the `build.scss` and `variables.scss` files.
+Prefix all SCSS files with `_` except the `build.scss`, `configurable_variables.scss` and `variables.scss` files.
 E.g.: `less/theme.less` -> `scss/_theme.scss`
 Linux command: `for file in *.less; do mv "$file" "_${file%.less}.scss"; done` and remove the `_` for the `build.scss` file
 
@@ -768,13 +768,16 @@ Structure example:
 - scss/_mixins.scss
 - scss/_root.scss
 - scss/_theme.scss
+- scss/configurable_variables.scss
 - scss/variables.scss
 
 There is no `css` folder anymore.
 
 #### Build file
 
-The `build.scss` file mustn't import the parent theme files anymore, as it is automatically done by the new compiler.
+The `build.scss` file mustn't import:
+- the parent theme files anymore, as it is automatically done by the new compiler.
+- the `variables.scss` and `configurable_variables.scss` files, as they are automatically imported by the compiler.
 
 #### Overwritten view files
 
