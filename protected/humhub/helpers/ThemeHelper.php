@@ -229,8 +229,6 @@ class ThemeHelper
         $treeThemes = array_reverse(static::getThemeTree($theme));
         $compiler = new Compiler();
         $designSettingsForm = new DesignSettingsForm();
-        $variableImports = [];
-        $otherImports = [];
 
         // Compress CSS
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
@@ -248,8 +246,10 @@ class ThemeHelper
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
 
-        // Import all other files
+        // Import Bootstrap files
         $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+
+        // Import all other files
         $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
