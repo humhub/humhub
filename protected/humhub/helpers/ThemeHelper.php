@@ -243,16 +243,16 @@ class ThemeHelper
         }
 
         // Import variables (bootstrap variables have a !default suffix to allow overwriting)
-        $variableImports[] = Yii::getAlias('@webroot-static/scss/variables');
+        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
         foreach ($treeThemes as $treeTheme) {
-            $variableImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
 
         // Import all other files
-        $otherImports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
-        $otherImports[] = Yii::getAlias('@webroot-static/scss/humhub');
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
+        $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
         foreach ($treeThemes as $treeTheme) {
-            $otherImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
         }
 
         // Set source map
@@ -284,7 +284,7 @@ class ThemeHelper
         }
 
         // Create SCSS source from imports and Design Settings form
-        $scssSource = '@import "' . implode('", "', $variableImports) . '";' . PHP_EOL;
+        $scssSource = '';
         if ($designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
         }
@@ -310,7 +310,7 @@ class ThemeHelper
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource .=
-            '@import "' . implode('", "', $otherImports) . '";' . PHP_EOL .
+            '@import "' . implode('", "', $imports) . '";' . PHP_EOL .
             $designSettingsForm->themeCustomScss;
 
         // Compile to CSS

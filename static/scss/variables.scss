@@ -7,23 +7,30 @@
 $isFluid: false;
 
 //
-// Bootstrap base colors overwrite
+// Default base colors (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
 
-$primary: #435f6f;
-$secondary: #7a7a7a;
-$info: #21A1B3;
-$success: #97d271;
-$warning: #FFC107;
-$danger: #FC4A64;
-$light: #e7e7e7;
-$dark: #333;
+$primary: #435f6f !default;
+$secondary: #7a7a7a !default;
+$info: #21A1B3 !default;
+$success: #97d271 !default;
+$warning: #FFC107 !default;
+$danger: #FC4A64 !default;
+$light: #e7e7e7 !default;
+$dark: #333 !default;
 
-$link-color: $info;
-$link-hover-color: mix(black, $link-color, 10%);
+
+//
+// Color Bootstrap overwritten variables
+// --------------------------------------------------
+
+$link-hover-color: mix(black, $primary, 10%);
 $code-color: mix(black, $info, 10%);
 $body-color: #555;
 $body-bg: #ededed;
+$input-border-color: #e9ecef;
+$input-bg: #fff; // default is $body-bg
+
 
 //
 // HumHub Text colors
@@ -132,8 +139,6 @@ $container-max-widths: (
 
 $grid-gutter-width: 30px;
 $line-height-base: 1.5;
-$input-border-color: #e9ecef;
-$input-bg: #fff; // default is $body-bg
 $form-check-padding-start: 2em; // Fix checkbox with multiple lines label
 
 //
@@ -141,4 +146,4 @@ $form-check-padding-start: 2em; // Fix checkbox with multiple lines label
 // --------------------------------------------------
 
 $default: #e7e7e7;
-$link: $link-color;
+$link: $primary;
