@@ -240,11 +240,11 @@ class ThemeHelper
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
-        // Import variables (bootstrap variables have a !default suffix to allow overwriting)
-        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
-        foreach ($treeThemes as $treeTheme) {
+        // Import variables in reverse order (sub-child theme first) because they have the !default flag
+        foreach (array_reverse($treeThemes) as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
+        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
 
         // Import Bootstrap files
         $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
@@ -283,7 +283,7 @@ class ThemeHelper
             return static::logAndGetError($mapFilePermissionError);
         }
 
-        // Create SCSS source from imports and Design Settings form
+        // Create SCSS source from Design Settings form and imports
         $scssSource = '';
         if ($designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
