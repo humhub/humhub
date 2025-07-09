@@ -51,6 +51,10 @@
                 td:first-of-type {
                     padding-left: 5px;
                 }
+
+                &:last-of-type td {
+                    border-bottom: none;
+                }
             }
         }
     }
