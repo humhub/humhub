@@ -12,7 +12,7 @@ $this->registerJsVar('file_delete_url', Url::to(['/file/file/delete']));
 ?>
 <div class="progress" id="fileUploaderProgressbar_<?= Html::encode($uploaderId) ?>" style="display:none">
     <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-         aria-valuemax="100" style="width: 0%">
+         aria-valuemax="100" style="width: 0;">
     </div>
 </div>
 
