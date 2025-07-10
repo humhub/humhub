@@ -12,6 +12,7 @@ namespace humhub\modules\topic\controllers;
 use humhub\modules\user\models\User;
 use humhub\widgets\modal\ModalClose;
 use humhub\modules\content\components\ContentContainerController;
+use humhub\modules\space\models\Space;
 use humhub\modules\topic\models\Topic;
 use humhub\modules\topic\permissions\ManageTopics;
 use Yii;
@@ -28,7 +29,6 @@ class ManageController extends ContentContainerController
     {
         return [
             ['login'],
-            ['permission' => ManageTopics::class],
             ['json' => ['delete']],
         ];
     }
@@ -44,7 +44,7 @@ class ManageController extends ContentContainerController
 
     public function beforeAction($action)
     {
-        if (!Topic::isAllowedToCreate($this->contentContainer)) {
+        if (!Topic::isAllowedToCreate($this->contentContainer) || ($this->contentContainer instanceof Space && !$this->contentContainer->can(ManageTopics::class))) {
             throw new ForbiddenHttpException();
         }
 

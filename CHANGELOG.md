@@ -34,6 +34,9 @@ HumHub Changelog
 - Fix #7550: Don't show opener if logout triggered by mobile app
 - Enh #7547: Change title when disabling a module
 - Fix #7562: Device system bottom bar on top of HumHub: Add bottom padding for mobile (safe area)
+- Fix #7438: Allow admins to manage profile topics, permission fixes
+- Fix #7565: Fix stream filter placeholder text
+- Fix #7566: Throw an exception during registration if email sending fails
 
 1.17.3 (Unreleased)
 ----------------------
@@ -44,6 +47,11 @@ HumHub Changelog
 - Fix #7503: Don't run migration on updating of disabled module
 - Fix #7513: Fix priority of `dynamic.php`
 - Enh #7514: Update Redis example in `env.example`
+- Fix #7532: Prevent multiple execution of jobs canceled due to max. execution time.
+- Enh #7549: Allow logout from Mobile App
+- Enh #7546: Improve member space list box
+- Fix #7560: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
+- Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7543: Remove duplicate UserInvites Cleanup job
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 
@@ -54,7 +62,7 @@ HumHub Changelog
 - Fix #7465: Formatted Arabic numbers displays 0 instead of the number
 - Fix #7471: Fix advanced searching by space filter
 - Fix #7472: Fix missing fields when creating a new user from admin
-- Fix #7477: Refactor Registration Form Options 
+- Fix #7477: Refactor Registration Form Options
 - Enh #7455: Add Share Intend feature for the Mobile app
 - Fix #7482: Fix the post submit button title after back from draft mode
 
@@ -62,7 +70,7 @@ HumHub Changelog
 ----------------------
 - Fix #7377: Configured Redis cache key prefix was overwritten by the default value
 - Fix #7375: Use default language for email invitation and show language chooser on registration form
-- Enh #7383: Improve SelfTest for Base URL 
+- Enh #7383: Improve SelfTest for Base URL
 - Enh #5426: Show language chooser for guest on the sidebar footer
 - Fix #7395: Fix profile stream for guests
 - Fix #7400: Fixed `Default user profile visibility` field visibility in the user settings

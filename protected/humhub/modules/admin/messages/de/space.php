@@ -18,7 +18,7 @@ return [
   'Default Join Policy' => 'Standard Beitrittsrichtlinie',
   'Default Space Permissions' => 'Voreinstellungen für Spaces',
   'Default Space(s)' => 'Standard Space(s)',
-  'Default Stream Sort' => 'Standard Stream Sortierung',
+  'Default Stream Sort' => 'Standardsortierung des Streams',
   'Default Visibility' => 'Standard Sichtbarkeit',
   'Default space' => 'Standardspace',
   'Here you can define your default settings for new spaces. These settings can be overwritten for each individual space.' => 'Hier legst du die Voreinstellungen für Spaces fest. Wenn du einen neuen Space anlegst, kannst du diese natürlich beim Erstellprozess individuell anpassen.',

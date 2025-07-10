@@ -23,7 +23,7 @@ return [
   'Choose the security level for this workspace to define the visibleness.' => 'Vælg sikkerhedsniveauet for dette arbejdsområde for at definere synligheden.',
   'Currently there are no modules available for this space!' => 'I øjeblikket er der ingen moduler til rådighed for dette rum!',
   'Delete' => 'Slet',
-  'Don\'t receive notifications for new content' => 'Don\'t receive notifications for new content',
+  'Don\'t receive notifications for new content' => 'Modtag ikke notifikationer om nyt indhold',
   'Enable' => 'Aktiver',
   'Hide posts on dashboard' => 'Skjul indlæg på Overblik',
   'Invited By' => 'Inviteret af',

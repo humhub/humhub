@@ -83,7 +83,7 @@ class Topic extends ContentTag
         // Clear all relations and append them again
         static::deleteContentRelations($content);
 
-        $canAdd = $content->container->can(AddTopic::class);
+        $canAdd = Topic::isAllowedToCreate($content->container);
 
         if (empty($topics)) {
             return;
@@ -162,7 +162,8 @@ class Topic extends ContentTag
     {
         return (
             $contentContainer instanceof Space &&
-            Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true)
+            Yii::$app->getModule('space')->settings->get('allowSpaceTopics', true) &&
+            $contentContainer->can(AddTopic::class)
         ) ||
         (
             $contentContainer instanceof User &&
