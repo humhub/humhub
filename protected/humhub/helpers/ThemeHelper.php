@@ -316,10 +316,15 @@ class ThemeHelper
         // Compile to CSS
         try {
             $result = $compiler->compileString(str_replace('\\', '/', $scssSource)); // replace backslashes with forward slashes for Windows compatibility
-            if (file_put_contents($cssFilePath, $result->getCss()) === false) {
+            $css = $result->getCss();
+            $map = $result->getSourceMap();
+            if (!$css) {
+                return static::logAndGetError('Could not compile SCSS');
+            }
+            if (file_put_contents($cssFilePath, $css) === false) {
                 return static::logAndGetError('Could not write to file ' . $cssFilePath);
             }
-            if (file_put_contents($mapFilePath, $result->getSourceMap()) === false) {
+            if (file_put_contents($mapFilePath, $map) === false) {
                 return static::logAndGetError('Could not write to file ' . $mapFilePath);
             }
         } catch (SassException $e) {
