@@ -123,7 +123,7 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.delete = function (evt) {
         var form = Widget.instance(this.$.parent().siblings('.comment_create'));
-        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.d-flex').length;
+        var hideHr = !this.isNestedComment() && form.$.length && !this.$.siblings('.single-comment').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
 
@@ -140,7 +140,7 @@ humhub.module('comment', function (module, require, $) {
 
     Comment.prototype.adminDelete = function (evt) {
         var $form = this.$.parent().siblings('.comment_create');
-        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.d-flex').length;
+        var hideHr = !this.isNestedComment() && $form.length && !this.$.siblings('.single-comment').length;
 
         this.$.data('content-delete-url', evt.$trigger.data('content-delete-url'));
         this.$.data('admin-delete-modal-url', evt.$trigger.data('admin-delete-modal-url'));
@@ -263,14 +263,14 @@ humhub.module('comment', function (module, require, $) {
     };
 
     var init = function () {
-        $(document).on('mouseover', '.comment .d-flex', function () {
+        $(document).on('mouseover', '.comment .single-comment', function () {
             var $this = $(this);
             var element = $this.find('.preferences:first');
             if (!loader.is($this.find('.comment-entry-loader'))) {
                 element.show();
             }
         });
-        $(document).on('mouseout', '.comment .d-flex', function () {
+        $(document).on('mouseout', '.comment .single-comment', function () {
             // find dropdown menu
             var element = $(this).find('.preferences:first');
 
@@ -294,7 +294,7 @@ humhub.module('comment', function (module, require, $) {
 
         var $form = target.children('.comment_create');
 
-        if (!target.find('.comment .d-flex').length && !target.closest('[data-action-component="comment.Comment"]').length) {
+        if (!target.find('.comment .single-comment').length && !target.closest('[data-action-component="comment.Comment"]').length) {
             $form.find('hr').hide();
         }
 
@@ -308,7 +308,7 @@ humhub.module('comment', function (module, require, $) {
             target.find('.humhub-ui-richtext').trigger('focus');
         }
 
-        if (!visible && window.comments_collapsed && !target.find('.comment>.media').length) {
+        if (!visible && window.comments_collapsed && !target.find('.comment > .single-comment').length) {
             target.find('[data-action-click="comment.showMore"]').trigger('click');
         }
     }
@@ -325,8 +325,8 @@ humhub.module('comment', function (module, require, $) {
             //toggle parent comment
             target = evt.$target.closest('.comment').closest('.comment-container');
             toggleComment(target, false);
-            var richtext = Widget.instance(target.find('.ProsemirrorEditor:last'));
-            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.comment ').find('.comment-heading a'));
+            var richtext = Widget.instance(target.find('.comment_create:last .ProsemirrorEditor:first'));
+            var mentioning = require('ui.richtext.prosemirror').buildMentioning(evt.$target.closest('.single-comment').find('.comment-heading a'));
             richtext.editor.init(mentioning);
             richtext.$.trigger('focus');
         }

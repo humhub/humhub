@@ -49,6 +49,11 @@
 
     #user-auth-login {
         max-width: 350px;
+        text-align: center;
+
+        .panel {
+            text-align: left;
+        }
     }
 }
 

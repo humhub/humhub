@@ -12,41 +12,40 @@ use humhub\modules\content\components\ContentActiveRecord;
 /* @var $currentCommentId int */
 /* @var $id string unqiue object id */
 ?>
-<div class="bg-light p-3 comment-container d-none" id="comment_<?= $id; ?>">
-    <div class="comment <?php if (Yii::$app->user->isGuest): ?>guest-mode<?php endif; ?>"
-         id="comments_area_<?= $id; ?>">
 
+<div class="bg-light p-3 comment-container d-none" id="comment_<?= $id ?>">
+    <div class="comment<?= Yii::$app->user->isGuest ? ' guest-mode' : '' ?>" id="comments_area_<?= $id ?>">
         <?= ShowMore::widget([
             'object' => $object,
             'commentId' => isset($comments[0]) ? $comments[0]->id : null,
             'type' => ShowMore::TYPE_PREVIOUS,
-        ]); ?>
+        ]) ?>
 
         <?php foreach ($comments as $comment) : ?>
             <?= Comment::widget([
                 'comment' => $comment,
                 'additionalClass' => ($currentCommentId == $comment->id ? 'comment-current' : ''),
             ]); ?>
-        <?php endforeach; ?>
+        <?php endforeach ?>
 
         <?php if ($currentCommentId && count($comments) > 1) : ?>
             <?= ShowMore::widget([
                 'object' => $object,
                 'commentId' => $comments[count($comments) - 1]->id,
                 'type' => ShowMore::TYPE_NEXT,
-            ]); ?>
+            ]) ?>
         <?php endif; ?>
     </div>
 
-    <?= Form::widget(['object' => $object]); ?>
+    <?= Form::widget(['object' => $object]) ?>
 </div>
 
 <script <?= Html::nonce() ?>>
-    <?php if (count($comments) != 0): ?>
-    // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
-    $('#comment_<?= $id; ?>').show();
+    <?php if (count($comments) != 0) : ?>
+        // make comments visible at this point to fixing autoresizing issue for textareas in Firefox
+        $('#comment_<?= $id ?>').show();
     <?php endif; ?>
     <?php if (!empty($currentCommentId)) : ?>
-    $('#comment_<?= $currentCommentId ?>').get(0).scrollIntoView();
+        $('#comment_<?= $currentCommentId ?>').get(0).scrollIntoView();
     <?php endif; ?>
 </script>

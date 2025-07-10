@@ -772,7 +772,11 @@ Structure example:
 
 There is no `css` folder anymore.
 
-#### Build file
+#### variables.scss file
+
+In the `variables.scss`, all variables must have the `!default` flag to allow being overwritten by a child-theme.
+
+#### build.scss file
 
 The `build.scss` file mustn't import the parent theme files anymore, as it is automatically done by the new compiler.
 

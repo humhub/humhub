@@ -21,7 +21,7 @@
         $.fn[name] = function (speed, easing, callback) {
             const [duration, easingFinal, complete] = normalizeArgs(speed, easing, callback);
 
-            if (duration != null) {
+            if (duration != null && typeof duration !== 'boolean') {
                 if (name === 'hide') return this.fadeOut(duration, easingFinal, complete);
                 if (name === 'show') return this.fadeIn(duration, easingFinal, complete);
                 if (name === 'toggle') return this.fadeToggle(duration, easingFinal, complete);
@@ -29,16 +29,23 @@
 
             return this.each(function () {
                 const $el = $(this);
-                if (name === 'hide' || (name === 'toggle' && $el.is(':visible'))) {
+                let hide = name === 'hide';
+                if (name === 'toggle') {
+                    hide = typeof duration === 'boolean' ? !duration : $el.is(':visible');
+                }
+
+                if (hide) {
                     $el.addClass('d-none').removeClass('d-revert');
-                } else if (name === 'show' || (name === 'toggle' && !$el.is(':visible'))) {
+                } else {
                     $el.removeClass('d-none');
                     if ($el.css('display') === 'none') {
                         $el.addClass('d-revert');
                     }
                 }
 
-                if (typeof complete === 'function') complete.call(this);
+                if (typeof complete === 'function') {
+                    complete.call(this);
+                }
             });
         };
     });

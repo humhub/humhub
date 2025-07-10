@@ -229,8 +229,6 @@ class ThemeHelper
         $treeThemes = array_reverse(static::getThemeTree($theme));
         $compiler = new Compiler();
         $designSettingsForm = new DesignSettingsForm();
-        $variableImports = [];
-        $otherImports = [];
 
         // Compress CSS
         $compiler->setOutputStyle(OutputStyle::COMPRESSED);
@@ -242,17 +240,19 @@ class ThemeHelper
             $compiler->addImportPath($treeTheme->getBasePath() . '/scss');
         }
 
-        // Import variables (bootstrap variables have a !default suffix to allow overwriting)
-        $variableImports[] = Yii::getAlias('@webroot-static/scss/variables');
-        foreach ($treeThemes as $treeTheme) {
-            $variableImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
+        // Import variables in reverse order (sub-child theme first) because they have the !default flag
+        foreach (array_reverse($treeThemes) as $treeTheme) {
+            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'variables';
         }
+        $imports[] = Yii::getAlias('@webroot-static/scss/variables');
+
+        // Import Bootstrap files
+        $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
 
         // Import all other files
-        $otherImports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
-        $otherImports[] = Yii::getAlias('@webroot-static/scss/humhub');
+        $imports[] = Yii::getAlias('@webroot-static/scss/build');
         foreach ($treeThemes as $treeTheme) {
-            $otherImports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
+            $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
         }
 
         // Set source map
@@ -283,8 +283,8 @@ class ThemeHelper
             return static::logAndGetError($mapFilePermissionError);
         }
 
-        // Create SCSS source from imports and Design Settings form
-        $scssSource = '@import "' . implode('", "', $variableImports) . '";' . PHP_EOL;
+        // Create SCSS source from Design Settings form and imports
+        $scssSource = '';
         if ($designSettingsForm->themePrimaryColor) {
             $scssSource .= '$primary: ' . $designSettingsForm->themePrimaryColor . ';' . PHP_EOL;
         }
@@ -310,16 +310,21 @@ class ThemeHelper
             $scssSource .= '$dark: ' . $designSettingsForm->themeDarkColor . ';' . PHP_EOL;
         }
         $scssSource .=
-            '@import "' . implode('", "', $otherImports) . '";' . PHP_EOL .
+            '@import "' . implode('", "', $imports) . '";' . PHP_EOL .
             $designSettingsForm->themeCustomScss;
 
         // Compile to CSS
         try {
             $result = $compiler->compileString(str_replace('\\', '/', $scssSource)); // replace backslashes with forward slashes for Windows compatibility
-            if (file_put_contents($cssFilePath, $result->getCss()) === false) {
+            $css = $result->getCss();
+            $map = $result->getSourceMap();
+            if (!$css) {
+                return static::logAndGetError('Could not compile SCSS');
+            }
+            if (file_put_contents($cssFilePath, $css) === false) {
                 return static::logAndGetError('Could not write to file ' . $cssFilePath);
             }
-            if (file_put_contents($mapFilePath, $result->getSourceMap()) === false) {
+            if (file_put_contents($mapFilePath, $map) === false) {
                 return static::logAndGetError('Could not write to file ' . $mapFilePath);
             }
         } catch (SassException $e) {

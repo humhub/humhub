@@ -1,58 +1,66 @@
 //
 // Sass variables
 // For CSS variables, see _root.scss
-// Bootstrap functions such as tint-color() and shade-color() are not available for this file
+// Bootstrap variables and functions such as tint-color() and shade-color() are not available for this file
+// All variables mus have the !default flag to allow child-themes to overwrite them
 // --------------------------------------------------
 
 $isFluid: false;
 
 //
-// Bootstrap base colors overwrite
+// Default base colors (can be overwritten in Administration -> Settings -> Appearance)
 // --------------------------------------------------
 
-$primary: #435f6f;
-$secondary: #7a7a7a;
-$info: #21A1B3;
-$success: #97d271;
-$warning: #FFC107;
-$danger: #FC4A64;
-$light: #e7e7e7;
-$dark: #333;
+$primary: #435f6f !default;
+$secondary: #7a7a7a !default;
+$info: #21A1B3 !default;
+$success: #97d271 !default;
+$warning: #FFC107 !default;
+$danger: #FC4A64 !default;
+$light: #e7e7e7 !default;
+$dark: #333 !default;
 
-$link-color: $info;
-$link-hover-color: mix(black, $link-color, 10%);
-$code-color: mix(black, $info, 10%);
-$body-color: #555;
-$body-bg: #ededed;
+
+//
+// Color Bootstrap overwritten variables
+// --------------------------------------------------
+
+$link-hover-color: mix(black, $primary, 10%) !default;
+$code-color: mix(black, $info, 10%) !default;
+$body-color: #555 !default;
+$body-bg: #ededed !default;
+$input-border-color: #e9ecef !default;
+$input-bg: #fff !default; // default is $body-bg
+
 
 //
 // HumHub Text colors
 // --------------------------------------------------
 
 // Default body text color.
-$text-color-main: $body-color;
+$text-color-main: $body-color !default;
 
 // used for default icons and buttons etc.
-$text-color-default: #4b4b4b;
+$text-color-default: #4b4b4b !default;
 
 // used for some icons and buttons etc. - former $font2
-$text-color-secondary: #7a7a7a;
+$text-color-secondary: #7a7a7a !default;
 
 // highlighted text like some active links hovered links etc. - former $font3
-$text-color-highlight: #000;
+$text-color-highlight: #000 !default;
 
 // side information like dates, placeholder, some dropdown headers - former $font4
-$text-color-soft: #555555;
+$text-color-soft: #555555 !default;
 
 // also side information wall entry links (like/comment), help blocks in forms etc.  - former $font5
-$text-color-soft2: #aeaeae;
+$text-color-soft2: #aeaeae !default;
 
 // used in gridview summary and installer - former $font1
-$text-color-soft3: #bac2c7;
+$text-color-soft3: #bac2c7 !default;
 
 // used as contrast color for $primary, $info, $success, $warning, $danger backgrounds for buttons etc.
 // Note that $default does not use a contrast color $default is normally combined with $text-color-secondary
-$text-color-contrast: #fff;
+$text-color-contrast: #fff !default;
 
 
 //
@@ -60,25 +68,25 @@ $text-color-contrast: #fff;
 // --------------------------------------------------
 
 // main content background color should be in contrast with $text-color-main, $text-color-secondary and other text colors
-$background-color-main: #fff;
+$background-color-main: #fff !default;
 
 // used beside others for tabs - former $background1
-$background-color-secondary: #f9f9f9;
+$background-color-secondary: #f9f9f9 !default;
 
 // page background which is also used for other ui components as comment box etc. - former $background2
-$background-color-page: $body-bg;
+$background-color-page: $body-bg !default;
 
 // Informative highlighting color
 // (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
-$background-color-highlight: rgba($info, 0.2);
+$background-color-highlight: rgba($info, 0.2) !default;
 
 // Informative highlighting soft color
 // (e.g. Wiki Active Category)
-$background-color-highlight-soft: lighten(desaturate(adjust-hue($info, 6), 16), 55);
+$background-color-highlight-soft: lighten(desaturate(adjust-hue($info, 6), 16), 55) !default;
 
 // Additional background colors
-$background3: #d7d7d7;
-$background4: #b2b2b2;
+$background3: #d7d7d7 !default;
+$background4: #b2b2b2 !default;
 
 
 //
@@ -86,30 +94,30 @@ $background4: #b2b2b2;
 // --------------------------------------------------
 
 // Alert box success (used in forms)
-$background-color-success: #f7fbf4;
-$text-color-success: #84be5e;
-$border-color-success: #97d271;
+$background-color-success: #f7fbf4 !default;
+$text-color-success: #84be5e !default;
+$border-color-success: #97d271 !default;
 
 // Alert box warning (used in forms)
-$background-color-warning: #fffbf7;
-$text-color-warning: #e9b168;
-$border-color-warning: #fdd198;
+$background-color-warning: #fffbf7 !default;
+$text-color-warning: #e9b168 !default;
+$border-color-warning: #fdd198 !default;
 
 // Alert box danger (used in forms)
-$background-color-danger: #fff6f6;
-$text-color-danger: #ff8989;
-$border-color-danger: #ff8989;
+$background-color-danger: #fff6f6 !default;
+$text-color-danger: #ff8989 !default;
+$border-color-danger: #ff8989 !default;
 
 
 //
 // Fonts
 // --------------------------------------------------
 
-$font-family-base: 'Open Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-$font-family-sans-serif: $font-family-base;
-$font-size-root: 14px; // affects the value of `rem`, which is used for as well font sizes, paddings, and margins
-$font-weight-base: 400;
-$mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif;
+$font-family-base: 'Open Sans', system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-sans-serif: $font-family-base !default;
+$font-size-root: 14px !default; // affects the value of `rem`, which is used for as well font sizes, paddings, and margins
+$font-weight-base: 400 !default;
+$mail-font-family: 'Open Sans', Arial, Tahoma, Helvetica, sans-serif !default;
 
 
 //
@@ -123,22 +131,20 @@ $container-max-widths: (
     lg: 960px,
     xl: 1140px,
     xxl: 1170px // instead of the Bootstrap default 1320px
-);
+) !default;
 
 
 //
 // Other Bootstrap overwritten variables
 // --------------------------------------------------
 
-$grid-gutter-width: 30px;
-$line-height-base: 1.5;
-$input-border-color: #e9ecef;
-$input-bg: #fff; // default is $body-bg
-$form-check-padding-start: 2em; // Fix checkbox with multiple lines label
+$grid-gutter-width: 30px !default;
+$line-height-base: 1.5 !default;
+$form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 
 //
 // @deprecated since 1.18
 // --------------------------------------------------
 
-$default: #e7e7e7;
-$link: $link-color;
+$default: #e7e7e7 !default;
+$link: $primary !default;

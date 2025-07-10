@@ -117,7 +117,7 @@ class Theme extends BaseTheme
             ThemeHelper::buildCss();
         }
 
-        $mtime = filemtime($cssFile);
+        $mtime = file_exists($cssFile) ? filemtime($cssFile) : '';
         Yii::$app->view->registerCssFile($baseUrl . DIRECTORY_SEPARATOR . 'resources' . DIRECTORY_SEPARATOR . 'css' . DIRECTORY_SEPARATOR . 'theme.css?v=' . $mtime, ['depends' => CoreBundleAsset::class]);
     }
 

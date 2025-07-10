@@ -224,6 +224,7 @@ ul.tab-menu-settings {
             &.active,
             &:hover,
             &:focus {
+                border-bottom-color: transparent;
                 color: var(--hh-text-color-highlight);
             }
         }
