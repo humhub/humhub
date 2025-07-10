@@ -47,6 +47,16 @@ humhub.module('ui.modal', function (module, require, $) {
 
     Modal.component = 'humhub-ui-modal';
 
+    Modal.prototype.modalInstance = null;
+
+    Modal.prototype.getModalInstance = function () {
+        if (!this.modalInstance) {
+            this.modalInstance = bootstrap.Modal.getOrCreateInstance(this.$);
+        }
+
+        return this.modalInstance;
+    };
+
     Modal.prototype.init = function () {
         this.initModal(this.options);
         modals[this.$.attr('id')] = this;
@@ -119,7 +129,8 @@ humhub.module('ui.modal', function (module, require, $) {
      * @returns {undefined}
      */
     Modal.prototype.close = function (reset) {
-        this.$.modal('hide');
+        this.getModalInstance().hide();
+
         if (reset) {
             this.reset();
         }
@@ -315,7 +326,7 @@ humhub.module('ui.modal', function (module, require, $) {
     Modal.prototype.show = function () {
         if (!this.$.is(':visible')) {
             this.set(this.options);
-            this.$.modal('show');
+            this.getModalInstance().show();
             this.focus();
         }
 
@@ -421,7 +432,7 @@ humhub.module('ui.modal', function (module, require, $) {
         this.options.keyboard = object.defaultValue(options.keyboard, this.$.data('bs-keyboard'));
 
         // Update Bootstrap modal instance
-        const bsModalInstance = bootstrap.Modal.getInstance(this.$);
+        const bsModalInstance = this.getModalInstance();
         if (bsModalInstance) {
             this.$.attr('data-bs-backdrop', this.options.backdrop);
             bsModalInstance._config.backdrop = this.options.backdrop;
