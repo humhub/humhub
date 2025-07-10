@@ -250,7 +250,7 @@ class ThemeHelper
         $imports[] = Yii::getAlias('@bower/bootstrap/scss/bootstrap'); // includes the variables.scss file
 
         // Import all other files
-        $imports[] = Yii::getAlias('@webroot-static/scss/humhub');
+        $imports[] = Yii::getAlias('@webroot-static/scss/build');
         foreach ($treeThemes as $treeTheme) {
             $imports[] = $treeTheme->getBasePath() . DIRECTORY_SEPARATOR . 'scss' . DIRECTORY_SEPARATOR . 'build';
         }
