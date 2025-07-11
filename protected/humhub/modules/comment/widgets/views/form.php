@@ -1,5 +1,7 @@
 <?php
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\comment\models\Comment;
 use humhub\modules\content\Module;
 use humhub\modules\content\widgets\richtext\RichTextField;
@@ -7,10 +9,8 @@ use humhub\modules\file\handler\BaseFileHandler;
 use humhub\modules\file\widgets\FileHandlerButtonDropdown;
 use humhub\modules\file\widgets\FilePreview;
 use humhub\modules\file\widgets\UploadButton;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\Button;
-use yii\helpers\Html;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 use yii\helpers\Url;
 
 /* @var $this View */
@@ -45,7 +45,7 @@ $placeholder = ($isNestedComment)
     <?= Html::hiddenInput('objectModel', $objectModel) ?>
     <?= Html::hiddenInput('objectId', $objectId) ?>
 
-    <div class="content-create-input-group">
+    <div class="content-create-input-group input-group">
         <?= $form->field($model, 'message')->widget(RichTextField::class, [
             'id' => 'newCommentForm_' . $id,
             'form' => $form,
@@ -55,12 +55,12 @@ $placeholder = ($isNestedComment)
             'placeholder' => $placeholder,
             'events' => [
                 'scroll-active' => 'comment.scrollActive',
-                'scroll-inactive' => 'comment.scrollInactive'
-            ]
+                'scroll-inactive' => 'comment.scrollInactive',
+            ],
         ])->label(false) ?>
 
-        <div class="upload-buttons"><?php
-            $uploadButton = UploadButton::widget([
+        <div class="upload-buttons">
+            <?php $uploadButton = UploadButton::widget([
                 'id' => 'comment_create_upload_' . $id,
                 'tooltip' => Yii::t('ContentModule.base', 'Attach Files'),
                 'options' => ['class' => 'main_comment_upload'],
@@ -68,19 +68,19 @@ $placeholder = ($isNestedComment)
                 'preview' => '#comment_create_upload_preview_' . $id,
                 'dropZone' => '#comment_create_form_' . $id,
                 'max' => $contentModule->maxAttachedFiles,
-                'cssButtonClass' => 'btn-sm btn-default',
-            ]);
-            echo FileHandlerButtonDropdown::widget([
+                'cssButtonClass' => 'btn-sm btn-light',
+            ]) ?>
+            <?= FileHandlerButtonDropdown::widget([
                 'primaryButton' => $uploadButton,
                 'handlers' => $fileHandlers,
-                'cssButtonClass' => 'btn-sm btn-default',
+                'cssButtonClass' => 'btn-sm btn-light',
                 'pullRight' => true,
-            ]);
-            echo Button::info()
+            ]) ?>
+            <?= Button::info()
                 ->icon('send')
                 ->cssClass('btn-comment-submit')->sm()
-                ->action('submit', $submitUrl)->submit();
-            ?></div>
+                ->action('submit', $submitUrl)->submit() ?>
+        </div>
     </div>
 
     <div id="comment_create_upload_progress_<?= $id ?>" style="display:none;margin:10px 0px;"></div>
@@ -88,7 +88,7 @@ $placeholder = ($isNestedComment)
     <?= FilePreview::widget([
         'id' => 'comment_create_upload_preview_' . $id,
         'options' => ['style' => 'margin-top:10px'],
-        'edit' => true
+        'edit' => true,
     ]) ?>
 
     <?php ActiveForm::end() ?>

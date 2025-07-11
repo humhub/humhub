@@ -12,7 +12,7 @@ use humhub\components\Widget;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\libs\SelfTest;
 use humhub\modules\admin\Module;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use Yii;
 use yii\db\Query;
 use yii\queue\db\Queue;

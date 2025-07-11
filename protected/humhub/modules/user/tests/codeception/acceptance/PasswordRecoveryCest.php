@@ -18,14 +18,14 @@ class PasswordRecoveryCest
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'wrong@mail.de');
-        $I->fillField('#accountrecoverpassword-verifycode', 'wrong');
+        $I->fillField('#accountrecoverpassword-captcha', 'wrong');
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see error messages');
         $I->see('The verification code is incorrect.');
 
         $I->amGoingTo('request a recovery mail for an invalid user email');
-        $I->fillField('#accountrecoverpassword-verifycode', 'testme');
+        $I->fillField('#accountrecoverpassword-captcha', 'testme');
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages even with wrong email for safe reason');
@@ -39,7 +39,7 @@ class PasswordRecoveryCest
         $I->jsClick('#password-recovery-link');
         $I->waitForText('Password recovery');
         $I->fillField('#email_txt', 'user1@example.com');
-        $I->fillField('#accountrecoverpassword-verifycode', 'testme');
+        $I->fillField('#accountrecoverpassword-captcha', 'testme');
         $I->click('Reset password');
         $I->wait(3);
         $I->expectTo('see confirm messages');

@@ -2,9 +2,9 @@
 
 namespace humhub\modules\content\widgets\richtext;
 
+use humhub\helpers\Html;
 use humhub\modules\ui\form\widgets\JsInputWidget;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**
@@ -152,6 +152,10 @@ class AbstractRichTextEditor extends JsInputWidget
      * @var bool defines if the default label should be rendered.
      */
     public $label = false;
+    /**
+     * @since 1.18
+     */
+    private ?string $fieldTemplate = "{label}\n{input}";
 
     /**
      * @inhertidoc
@@ -174,22 +178,23 @@ class AbstractRichTextEditor extends JsInputWidget
     {
         $inputOptions = $this->getInputAttributes();
 
-        if ($this->form != null) {
-            $this->fieldOptions['template'] = "{label}\n{input}";
-            $input = $this->form->field($this->model, $this->attribute, $this->fieldOptions)->textarea($inputOptions)->label(false);
-            $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
-            $richText = $this->getLabel() . $richText;
-        } elseif ($this->model != null) {
+        if ($this->form !== null) {
+            $fieldOptions = [];
+            if (!empty($this->options)) {
+                $fieldOptions['options'] = $this->options;
+            }
+            if ($this->fieldTemplate) {
+                $fieldOptions['template'] = $this->fieldTemplate;
+            }
+            $input = $this->form->field($this->model, $this->attribute, $fieldOptions)->textarea($inputOptions)->label(false);
+        } elseif ($this->model !== null) {
             $input = Html::activeTextarea($this->model, $this->attribute, $inputOptions);
-            $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
-            $richText = $this->getLabel() . $richText;
         } else {
             $input = Html::textarea(((!$this->name) ? 'richtext' : $this->name), $this->value, $inputOptions);
-            $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
-            $richText = $this->getLabel() . $richText;
         }
 
-        return $richText . $input . $this->prepend();
+        $richText = Html::tag('div', $this->editOutput($this->getValue()), $this->getOptions());
+        return $this->getLabel() . $richText . $input . $this->prepend();
     }
 
     /**

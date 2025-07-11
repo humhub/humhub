@@ -8,7 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\widgets\assets\AjaxLinkPagerAsset;
 use yii\helpers\ArrayHelper;
 
@@ -18,9 +18,9 @@ use yii\helpers\ArrayHelper;
  * @inheritdoc
  * @author luke
  */
-class AjaxLinkPager extends \humhub\widgets\LinkPager
+class AjaxLinkPager extends \humhub\widgets\bootstrap\LinkPager
 {
-    protected function renderPageButton($label, $page, $class, $disabled, $active)
+    protected function renderPageButton($label, $page, $class, $disabled, $active): string
     {
         $options = ['class' => $class === '' ? null : $class];
         if ($active) {

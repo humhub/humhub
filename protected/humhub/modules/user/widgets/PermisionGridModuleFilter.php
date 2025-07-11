@@ -8,7 +8,7 @@
 
 namespace humhub\modules\user\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\user\assets\PermissionGridModuleFilterAsset;
 use humhub\widgets\JsWidget;
 use Yii;
@@ -47,7 +47,7 @@ class PermisionGridModuleFilter extends JsWidget
     public function getAttributes()
     {
         return [
-            'class' => 'form-control pull-right visible-md visible-lg',
+            'class' => 'form-control float-end d-none d-md-block',
             'style' => 'width:150px',
         ];
     }

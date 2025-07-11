@@ -9,6 +9,7 @@
 namespace humhub\assets;
 
 use humhub\components\assets\AssetBundle;
+use yii\jui\JuiAsset;
 
 /**
  * Fixes https://github.com/humhub/humhub/issues/4638 by aligning jui and icu month short names
@@ -36,7 +37,7 @@ class DatePickerRussianLanguageAsset extends AssetBundle
     ];
 
     public $depends = [
-        'yii\jui\JuiAsset',
+        JuiAsset::class,
     ];
 
 }

@@ -55,7 +55,7 @@ class MetaSearchWidget extends JsWidget
      */
     protected function getAttributes()
     {
-        return ['class' => 'dropdown search-menu'];
+        return ['class' => 'nav-item dropdown search-menu'];
     }
 
     /**

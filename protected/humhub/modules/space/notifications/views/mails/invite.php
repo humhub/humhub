@@ -6,9 +6,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\components\View;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\mails\MailButton;
 use humhub\widgets\mails\MailButtonList;
 use humhub\widgets\mails\MailContentContainerInfoBox;
