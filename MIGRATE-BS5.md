@@ -99,7 +99,7 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 - `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
 - `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
-- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label, $url)` (watch out the parameter order change!) or `humhub\widgets\modal\ModalButton::primary($label)->submit($url)` instead
+- `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label)->submit($url)` instead
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
@@ -161,7 +161,7 @@ If the footer contains a "Submit" button, the modal dialog must be included in t
 ```php
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('ModuleIdModule.base', 'Title'),
-    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save()->submit(),
     'form' => [], //  configuration for the form (optional)
 ]) ?>
     Content and the form inputs for $form
@@ -205,7 +205,7 @@ When it is not possible to place the buttons in the modal `footer` param, use th
     Content
     <div class="modal-body-footer">
         <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
-        <?= ModalButton::save() ?>
+        <?= ModalButton::save()->submit() ?>
     </div>
 <?php Modal::endDialog()?>
 ```

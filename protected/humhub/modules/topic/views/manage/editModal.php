@@ -18,7 +18,7 @@ use humhub\widgets\modal\ModalButton;
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('TopicModule.base', '<strong>Edit</strong> Topic'),
-    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save()->submit(),
 ]) ?>
 
     <?= $form->field($model, 'name') ?>

@@ -5,7 +5,6 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\SpaceNameColorInput;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
-use yii\helpers\Url;
 
 /* @var $model Space */
 /* @var $visibilityOptions array */
@@ -16,7 +15,7 @@ $animation = $model->hasErrors() ? 'shake' : 'fadeIn';
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('SpaceModule.manage', '<strong>Create</strong> Space'),
-    'footer' => ModalButton::save(Yii::t('SpaceModule.manage', 'Next'), Url::to(['/space/create/create'])),
+    'footer' => ModalButton::save(Yii::t('SpaceModule.manage', 'Next'))->submit(['/space/create/create']),
     'form' => ['enableClientValidation' => false],
 ]) ?>
 

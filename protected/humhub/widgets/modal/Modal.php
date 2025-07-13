@@ -28,7 +28,7 @@ use yii\bootstrap5\Html;
  * ~~~php
  * <?php $form = Modal::beginFormDialog([
  *     'title' => Yii::t('ModuleIdModule.base', 'Title'),
- *     'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+ *     'footer' => ModalButton::cancel() . ' ' . ModalButton::save()->submit(),
  *     'form' => [], //  configuration for the form (optional)
  * ]) ?>
  *     Content and the form inputs for $form

@@ -71,7 +71,7 @@ use yii\helpers\Url;
                 <?= $model->hideRememberMe ? '' : $form->field($model, 'rememberMe')->checkbox() ?>
                 <div class="modal-body-footer">
                     <div class="d-flex flex-column align-items-end w-100">
-                        <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign in'), ['/user/auth/login'])
+                        <?= ModalButton::save(Yii::t('UserModule.auth', 'Sign in'))->submit(['/user/auth/login'])
                             ->id('login-button')
                             ->cssClass('w-100') ?>
                         <?php if ($passwordRecoveryRoute) : ?>
@@ -121,7 +121,7 @@ use yii\helpers\Url;
                 <?php endif; ?>
 
                 <div class="modal-body-footer">
-                    <?= ModalButton::save(Yii::t('UserModule.auth', 'Register'), ['/user/auth/login']) ?>
+                    <?= ModalButton::save(Yii::t('UserModule.auth', 'Register'))->submit(['/user/auth/login']) ?>
                 </div>
 
                 <?php ActiveForm::end(); ?>

@@ -16,8 +16,7 @@ use Yii;
  * Usage examples:
  *
  * ```
- * <?= ModalButton::save() ?>
- * <?= ModalButton::primary()->submit() ?>
+ * <?= ModalButton::save()->submit() ?>
  * <?= ModalButton::cancel() ?>
  * ```
  */
@@ -27,17 +26,17 @@ class ModalButton extends Button
      * @param $url
      * @return $this
      */
-    public function load($url)
+    public function load($url): static
     {
         return $this->action('ui.modal.load', $url)->loader(false);
     }
 
-    public function post($url)
+    public function post($url): static
     {
         return $this->action('ui.modal.post', $url)->loader(false);
     }
 
-    public function show($target)
+    public function show($target): static
     {
         return $this->action('ui.modal.show', null, $target);
     }
@@ -52,14 +51,6 @@ class ModalButton extends Button
     }
 
     /**
-     * @since 1.18
-     */
-    public static function save($label = null, $url = null): static
-    {
-        return parent::save($label)->action('ui.modal.submit', $url);
-    }
-
-    /**
      * @param null $url
      * @param null $text
      * @return Button
@@ -67,18 +58,14 @@ class ModalButton extends Button
      */
     public static function submitModal($url = null, $text = null)
     {
-        if (!$text) {
-            $text = Yii::t('base', 'Save');
-        }
-
-        return static::save($text)->submit()->action('ui.modal.submit', $url);
+        return static::save($text)->submit($url);
     }
 
     /**
      * @param null $text
      * @return $this
      */
-    public static function cancel($text = null)
+    public static function cancel($text = null): static
     {
         if (!$text) {
             $text = Yii::t('base', 'Cancel');
@@ -90,7 +77,7 @@ class ModalButton extends Button
     /**
      * @return $this
      */
-    public function close()
+    public function close(): static
     {
         return $this->options(['data-modal-close' => '']);
     }

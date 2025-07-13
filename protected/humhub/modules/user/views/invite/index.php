@@ -47,7 +47,7 @@ use humhub\widgets\modal\ModalButton;
                 <?= $form->field($model, 'emails')->textarea(['rows' => '3', 'placeholder' => Yii::t('UserModule.invite', 'Email address(es)'), 'id' => 'emails'])->label(false)->hint(Yii::t('UserModule.invite', 'Separate multiple email addresses by comma.')) ?>
                 <div class="modal-body-footer">
                     <?= ModalButton::cancel(Yii::t('base', 'Close')) ?>
-                    <?= ModalButton::save(Yii::t('UserModule.invite', 'Send invite'), ['/user/invite']) ?>
+                    <?= ModalButton::save(Yii::t('UserModule.invite', 'Send invite'))->submit(['/user/invite']) ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
