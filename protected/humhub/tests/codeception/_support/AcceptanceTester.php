@@ -27,7 +27,7 @@ class AcceptanceTester extends BaseTester
 
     public function amAdmin($logout = false)
     {
-        $this->amUser('Admin', 'admin1humhub@PASS%worD!', $logout);
+        $this->amUser('Admin', 'admin&humhub@PASS%worD!', $logout);
     }
 
     public function amSpaceAdmin($logout = false, $spaceId = 2)
@@ -48,17 +48,17 @@ class AcceptanceTester extends BaseTester
 
     public function amUser1($logout = false)
     {
-        $this->amUser('User1', 'user2humhub@PASS%worD!', $logout);
+        $this->amUser('User1', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amUser2($logout = false)
     {
-        $this->amUser('User2', 'user3humhub@PASS%worD!', $logout);
+        $this->amUser('User2', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amUser3($logout = false)
     {
-        $this->amUser('User3', 'user4humhub@PASS%worD!', $logout);
+        $this->amUser('User3', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amOnSpace1($path = '/space/space', $params = [])

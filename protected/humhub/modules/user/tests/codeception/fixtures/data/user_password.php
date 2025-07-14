@@ -19,13 +19,13 @@
  */
 return [
     // admin&humhub@PASS%worD!
-    ['id' => '1', 'user_id' => '1', 'algorithm' => 'bcrypt', 'password' => '$2y$12$K4w302k7/jxp.asgdzXPXOTTzSf1NUC.coi9OWnvj/S.PtoW1vh/q', 'salt' => '885386e3-2284-4b5c-974f-6c613fe8a30c', 'created_at' => '2025-07-14 07:00:00'],
+    ['id' => '1', 'user_id' => '1', 'algorithm' => 'bcrypt', 'password' => '$2y$12$8fekVx7l9uy.9SYJWcD3L.eh35RDgmJlTQvXqcQD1qvuaTw28.bFW', 'salt' => 'dd5db262-4fe0-4654-a057-223cf918cf1e', 'created_at' => '2025-07-14 07:00:00'],
     // user^humhub@PASS%worD!
-    ['id' => '2', 'user_id' => '2', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:01:00'],
-    ['id' => '3', 'user_id' => '3', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:02:00'],
-    ['id' => '4', 'user_id' => '4', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:03:00'],
-    ['id' => '5', 'user_id' => '5', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:04:00'],
-    ['id' => '6', 'user_id' => '6', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:05:00'],
-    ['id' => '7', 'user_id' => '7', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:06:00'],
-    ['id' => '8', 'user_id' => '8', 'algorithm' => 'bcrypt', 'password' => '$2y$12$ddGA5Ym655yb6OUgqKQBYOLLPmjbnkRGmIR45qxIXYd1s7P6buGQK', 'salt' => '4b4177f7-61b2-4017-9927-e9464d58be0f', 'created_at' => '2025-07-14 07:07:00'],
+    ['id' => '2', 'user_id' => '2', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:01:00'],
+    ['id' => '3', 'user_id' => '3', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:02:00'],
+    ['id' => '4', 'user_id' => '4', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:03:00'],
+    ['id' => '5', 'user_id' => '5', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:04:00'],
+    ['id' => '6', 'user_id' => '6', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:05:00'],
+    ['id' => '7', 'user_id' => '7', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:06:00'],
+    ['id' => '8', 'user_id' => '8', 'algorithm' => 'bcrypt', 'password' => '$2y$12$q0PyH7IwA3iymitKFxQXU.K3ANr8XNVdpbBrCkd4VzgCgw5.N3hQS', 'salt' => '0401e821-b554-4a94-a7ce-b3975470c860', 'created_at' => '2025-07-14 07:07:00'],
 ];
