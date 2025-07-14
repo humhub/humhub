@@ -27,22 +27,22 @@ class ApiTester extends BaseTester
 
     public function amAdmin()
     {
-        $this->amUser('Admin', 'test');
+        $this->amUser('Admin', 'admin&humhub@PASS%worD!');
     }
 
     public function amUser1()
     {
-        $this->amUser('User1', '123qwe');
+        $this->amUser('User1', 'user^humhub@PASS%worD!');
     }
 
     public function amUser2()
     {
-        $this->amUser('User2', '123qwe');
+        $this->amUser('User2', 'user^humhub@PASS%worD!');
     }
 
     public function amUser3()
     {
-        $this->amUser('User3', '123qwe');
+        $this->amUser('User3', 'user^humhub@PASS%worD!');
     }
 
     public function amUser($user = null, $password = null)
