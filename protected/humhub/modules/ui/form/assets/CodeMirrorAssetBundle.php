@@ -27,6 +27,7 @@ class CodeMirrorAssetBundle extends AssetBundle
 
     public $js = [
         'lib/codemirror.js',
+        'addon/display/autorefresh.js',
         'addon/hint/show-hint.js',
         'addon/hint/html-hint.js',
         'addon/hint/xml-hint.js',
