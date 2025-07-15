@@ -17,6 +17,7 @@ HumHub Changelog
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 - Fix #7573: Update test user passwords
+- Enh #7577: Increase Group Name max length to 120chars
 
 1.17.2 (April 7, 2025)
 ----------------------
