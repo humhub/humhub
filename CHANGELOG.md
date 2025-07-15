@@ -18,6 +18,7 @@ HumHub Changelog
 - Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 - Fix #7573: Update test user passwords
 - Enh #7577: Increase Group Name max length to 120chars
+- Enh #7576: Do not invite existing space members when selected `all registered members`
 
 1.17.2 (April 7, 2025)
 ----------------------
