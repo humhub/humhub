@@ -85,7 +85,7 @@ class AddUsersToSpaceJob extends LongRunningActiveJob
             try {
                 $user = ($user instanceof User) ? $user : User::findOne(['id' => $user]);
 
-                if (!$user || $user->id === $this->originator->id) {
+                if (!$user || $user->id === $this->originator->id || $this->space->isMember($user->id)) {
                     continue;
                 }
 
