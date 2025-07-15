@@ -17,7 +17,7 @@ HumHub Changelog
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 - Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
 - Fix #7573: Update test user passwords
-- Enh #7574: Do not invite existing space members when selected `all registered members`
+- Enh #7576: Do not invite existing space members when selected `all registered members`
 
 1.17.2 (April 7, 2025)
 ----------------------
