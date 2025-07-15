@@ -33,6 +33,7 @@ HumHub Changelog
 - Fix #7438: Allow admins to manage profile topics, permission fixes
 - Fix #7565: Fix stream filter placeholder text
 - Fix #7566: Throw an exception during registration if email sending fails
+- Enh #7574: Do not invite existing space members when selected `all registered members`
 
 1.17.3 (Unreleased)
 ----------------------
