@@ -15,11 +15,9 @@ use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
-use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
-use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
@@ -72,7 +70,7 @@ class Group extends ActiveRecord
         return [
             [['sort_order', 'notify_users', 'is_default_group', 'is_protected'], 'integer'],
             [['description'], 'string'],
-            [['name'], 'string', 'max' => 45],
+            [['name'], 'string', 'max' => 120],
             ['show_at_registration', 'validateShowAtRegistration'],
             ['is_default_group', 'validateIsDefaultGroup'],
         ];
