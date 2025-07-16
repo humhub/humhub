@@ -21,6 +21,7 @@ use humhub\widgets\modal\Modal;
 
 <?php Modal::begin([
     'options' => $options,
+    'clientOptions' => false, //disable bs modal initialization as modal will be controlled by `ui.modal.Modal`
     'title' => $title,
     'size' => $size,
     'closable' => $closable,

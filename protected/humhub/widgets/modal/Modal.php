@@ -115,7 +115,10 @@ class Modal extends \yii\bootstrap5\Modal
         // Disable autofocus on click outside the modal to avoid issue with Select2 rendered outside
         $this->options['data-bs-focus'] = 'false';
 
-        $this->clientOptions['show'] = $this->show;
+        // If `clientOptions` property is false, `registerJs()` will not be called on the view to initialize the module.
+        if ($this->clientOptions !== false) {
+            $this->clientOptions['show'] = $this->show;
+        }
 
         // TODO: remove in later version
         $this->title = $this->title ?: $this->header;

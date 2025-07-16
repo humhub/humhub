@@ -47,14 +47,8 @@ humhub.module('ui.modal', function (module, require, $) {
 
     Modal.component = 'humhub-ui-modal';
 
-    Modal.prototype.modalInstance = null;
-
     Modal.prototype.getModalInstance = function () {
-        if (!this.modalInstance) {
-            this.modalInstance = bootstrap.Modal.getOrCreateInstance(this.$);
-        }
-
-        return this.modalInstance;
+        return bootstrap.Modal.getOrCreateInstance(this.$);
     };
 
     Modal.prototype.init = function () {
