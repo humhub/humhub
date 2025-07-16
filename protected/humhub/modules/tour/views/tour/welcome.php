@@ -44,7 +44,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     'style' => 'width:100%',
                 ]) ?>
 
-                <div class="image-upload-loader" style="padding-top: 60px;">
+                <div class="image-upload-loader d-none" style="padding-top: 60px;">
                     <?= $profileImageUpload->progress() ?>
                 </div>
 
