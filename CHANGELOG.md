@@ -37,6 +37,7 @@ HumHub Changelog
 - Fix #7438: Allow admins to manage profile topics, permission fixes
 - Fix #7565: Fix stream filter placeholder text
 - Fix #7566: Throw an exception during registration if email sending fails
+- Fix #7575: Add safeguard to deletion of content when deleting a user/space with an empty `contentcontainer_id`
 
 1.17.3 (Unreleased)
 ----------------------
@@ -52,6 +53,8 @@ HumHub Changelog
 - Enh #7546: Improve member space list box
 - Fix #7560: Fix SafeBaseUrl to not repeat the `base URL` in the `script URL`
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
+- Fix #7570: Fix `CodeMirrorInputWidget` in collapsible fields
+- Fix #7573: Update test user passwords
 - Fix #7543: Remove duplicate UserInvites Cleanup job
 - Fix #7563: Top padding on medium screen size for some themes such as Entreprise theme
 

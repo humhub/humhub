@@ -17,7 +17,7 @@ class MaintenanceModeCest
         $loginPage = LoginPage::openBy($I);
 
         $I->amGoingTo('try to login with correct credentials');
-        $loginPage->login('Admin', 'test');
+        $loginPage->login('Admin', 'admin&humhub@PASS%worD!');
         $I->expectTo('see dashboard');
         $I->waitForText('DASHBOARD');
         $I->dontSee('Administration');
@@ -32,7 +32,7 @@ class MaintenanceModeCest
         $loginPage = LoginPage::openBy($I);
 
         $I->amGoingTo('try to login with correct credentials');
-        $loginPage->login('User1', '123qwe');
+        $loginPage->login('User1', 'user^humhub@PASS%worD!');
         $I->expectTo('see login');
         $I->waitForText('Maintenance mode');
         $I->dontSee('DIRECTORY');
