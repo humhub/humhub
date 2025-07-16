@@ -26,15 +26,16 @@ SpaceAsset::register($this);
             ->action('space.requestMembershipSend', $space->createUrl('/space/membership/request-membership-form')),
 ]) ?>
 
-        <?= Yii::t('SpaceModule.base', 'Access to this Space is restricted. Please introduce yourself to become a member.'); ?>
+    <?= Yii::t('SpaceModule.base', 'Access to this Space is restricted. Please introduce yourself to become a member.'); ?>
 
-        <br/>
-        <br/>
+    <br/>
+    <br/>
 
-        <?= $form->field($model, 'message')->textarea([
-            'id' => 'request-message',
-            'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...'),
-        ]) ?>
+    <?= $form->field($model, 'options')->hiddenInput()->label(false) ?>
+    <?= $form->field($model, 'message')->textarea([
+        'id' => 'request-message',
+        'placeholder' => Yii::t('SpaceModule.base', 'I want to become a member because...'),
+    ]) ?>
 
 <?php Modal::endFormDialog(); ?>
 

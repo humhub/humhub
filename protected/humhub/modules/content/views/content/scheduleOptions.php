@@ -19,7 +19,7 @@ use humhub\widgets\modal\ModalButton;
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('ContentModule.base', '<strong>Scheduling</strong> Options'),
-    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save()->submit(),
 ]) ?>
 
     <?= Html::hiddenInput('state', Content::STATE_SCHEDULED) ?>

@@ -32,7 +32,7 @@ class FunctionalTester extends BaseTester
             $this->logout();
         }
 
-        LoginPage::openBy($this)->login('admin', 'test');
+        LoginPage::openBy($this)->login('admin', 'admin&humhub@PASS%worD!');
         $this->see('Dashboard');
         $this->see('Administration');
     }
@@ -146,7 +146,7 @@ class FunctionalTester extends BaseTester
     }
 
 
-    public function amUser($user = null, $password = '123qwe', $logout = false)
+    public function amUser($user = null, $password = 'user^humhub@PASS%worD!', $logout = false)
     {
         if ($logout) {
             $this->logout();
@@ -156,7 +156,7 @@ class FunctionalTester extends BaseTester
             $this->amUser1();
         } else {
             if (strtolower($user) == 'admin') {
-                $password = 'test';
+                $password = 'admin&humhub@PASS%worD!';
             }
             LoginPage::openBy($this)->login($user, $password);
             tests\codeception\_pages\DashboardPage::openBy($this);
@@ -166,17 +166,17 @@ class FunctionalTester extends BaseTester
 
     public function amUser1($logout = false)
     {
-        $this->amUser('User1', '123qwe', $logout);
+        $this->amUser('User1', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amUser2($logout = false)
     {
-        $this->amUser('User2', '123qwe', $logout);
+        $this->amUser('User2', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function amUser3($logout = false)
     {
-        $this->amUser('User3', '123qwe', $logout);
+        $this->amUser('User3', 'user^humhub@PASS%worD!', $logout);
     }
 
     public function logout()

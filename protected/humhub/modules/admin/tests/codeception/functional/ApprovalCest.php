@@ -103,8 +103,8 @@ class ApprovalCest
         $I->amOnRoute('/user/registration', ['token' => $invte->token]);
         $I->see('Account registration');
         $I->fillField(['name' => 'User[username]'], 'approvalTest');
-        $I->fillField(['name' => 'Password[newPassword]'], 'approva1TestPassword');
-        $I->fillField(['name' => 'Password[newPasswordConfirm]'], 'approva1TestPassword');
+        $I->fillField(['name' => 'Password[newPassword]'], 'approval^humhub@PASS%worD!');
+        $I->fillField(['name' => 'Password[newPasswordConfirm]'], 'approval^humhub@PASS%worD!');
         $I->fillField(['name' => 'Profile[firstname]'], 'approval');
         $I->fillField(['name' => 'Profile[lastname]'], 'test');
 
@@ -130,7 +130,7 @@ class ApprovalCest
         $I->click('Send & save');
 
         $I->logout();
-        $I->amUser('approvalTest', 'approva1TestPassword');
+        $I->amUser('approvalTest', 'approval^humhub@PASS%worD!');
         $I->seeElement('#wallStream');
     }
 

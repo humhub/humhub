@@ -26,7 +26,7 @@ class LoginCest
         $I->waitForText('User or Password incorrect.');
 
         $I->amGoingTo('try to login with correct credentials');
-        $loginPage->login('User1', '123qwe');
+        $loginPage->login('User1', 'user^humhub@PASS%worD!');
         $I->expectTo('see dashboard');
         $I->waitForText('User 2 Space 2 Post Public');
         $I->dontSee('Administration');
@@ -37,7 +37,7 @@ class LoginCest
         $I->wantTo('ensure that login with email works');
         $loginPage = LoginPage::openBy($I);
         $I->amGoingTo('try to login with admin credentials');
-        $loginPage->login('user1@example.com', '123qwe');
+        $loginPage->login('user1@example.com', 'user^humhub@PASS%worD!');
         $I->expectTo('see dashboard');
         $I->waitForText('User 2 Space 2 Post Public');
     }
@@ -46,7 +46,7 @@ class LoginCest
     {
         $I->wantTo('ensure that disabled user cannot login');
         $loginPage = LoginPage::openBy($I);
-        $loginPage->login('DisabledUser', '123qwe');
+        $loginPage->login('DisabledUser', 'user^humhub@PASS%worD!');
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is disabled!');
     }
@@ -67,7 +67,7 @@ class LoginCest
 
         $I->wantTo('ensure that unapproved user cannot login');
         $loginPage = LoginPage::openBy($I);
-        $loginPage->login('User3', '123qwe');
+        $loginPage->login('User3', 'user^humhub@PASS%worD!');
         $I->expectTo('see validations errors');
         $I->waitForText('Your account is not approved yet!');
     }
@@ -81,11 +81,11 @@ class LoginCest
 
         $I->wantTo('ensure that user need to change password');
         $loginPage = LoginPage::openBy($I);
-        $loginPage->login('User3', '123qwe');
+        $loginPage->login('User3', 'user^humhub@PASS%worD!');
 
         $I->expectTo('see password change dialog');
         $I->waitForText('Due to security reasons');
-        $I->fillField('#password-currentpassword', '123qwe');
+        $I->fillField('#password-currentpassword', 'user^humhub@PASS%worD!');
         $I->fillField('#password-newpassword', '321QW12e');
         $I->fillField('#password-newpasswordconfirm', '321QW12e');
         $I->click('Confirm');

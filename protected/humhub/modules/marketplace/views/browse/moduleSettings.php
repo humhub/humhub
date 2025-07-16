@@ -14,7 +14,7 @@ use humhub\widgets\modal\ModalButton;
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('MarketplaceModule.base', '<strong>General</strong> Settings'),
-    'footer' => ModalButton::cancel() . ' ' . ModalButton::save(),
+    'footer' => ModalButton::cancel() . ' ' . ModalButton::save()->submit(),
 ]) ?>
 
     <?= $form->field($settings, 'includeBetaUpdates')->checkbox() ?>

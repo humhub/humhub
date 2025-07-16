@@ -9,7 +9,6 @@ use humhub\modules\ui\icon\widgets\Icon;
 use humhub\modules\user\models\User;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
-use yii\helpers\Url;
 
 /* @var $user User */
 
@@ -24,7 +23,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
 
 <?php $form = Modal::beginFormDialog([
     'title' => Yii::t('TourModule.base', 'Howdy <strong>%firstname%</strong>, thank you for using %community%.', ['%firstname%' => $user->profile->firstname, '%community%' => Html::encode(Yii::$app->name)]),
-    'footer' => ModalButton::save(Yii::t('TourModule.base', 'Save and close'), Url::to(['/tour/tour/welcome'])),
+    'footer' => ModalButton::save(Yii::t('TourModule.base', 'Save and close'))->submit(['/tour/tour/welcome']),
     'size' => Modal::SIZE_LARGE,
     'closeButton' => false,
     'closable' => false,
@@ -45,7 +44,7 @@ $profileImageUpload = Upload::withName('images', ['url' => $imageUploadUrl]);
                     'style' => 'width:100%',
                 ]) ?>
 
-                <div class="image-upload-loader" style="padding-top: 60px;">
+                <div class="image-upload-loader d-none" style="padding-top: 60px;">
                     <?= $profileImageUpload->progress() ?>
                 </div>
 

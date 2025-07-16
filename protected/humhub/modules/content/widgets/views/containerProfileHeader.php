@@ -22,7 +22,6 @@
  * Note: Inline styles have been retained for legacy theme compatibility (prior to v1.4)
  */
 
-use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\modules\content\assets\ContainerHeaderAsset;
 use humhub\modules\content\components\ContentContainerActiveRecord;
@@ -58,7 +57,7 @@ $profileImageHeight = $container->getProfileImage()->height();
 
 
         <?php if ($canEdit) : ?>
-            <div class="image-upload-loader" style="padding:<?= $bannerProgressBarPadding ?>">
+            <div class="image-upload-loader d-none" style="padding:<?= $bannerProgressBarPadding ?>">
                 <?= $bannerUpload->progress() ?>
             </div>
         <?php endif; ?>
@@ -87,7 +86,7 @@ $profileImageHeight = $container->getProfileImage()->height();
         <?php endif; ?>
 
         <?php if ($canEdit) : ?>
-            <div class="image-upload-loader" style="padding-top: 60px;">
+            <div class="image-upload-loader d-none" style="padding-top: 60px;">
                 <?= $profileImageUpload->progress() ?>
             </div>
 

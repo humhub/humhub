@@ -30,10 +30,10 @@ class ScssHelper
     /**
      * Returns all SCSS variables of a given file
      * @param string $scssFilePath
+     * @param bool $removeFlag Removes !default, !global, !optional and !important
      * @return array
-     * @throws RuntimeException
      */
-    public static function getVariables(string $scssFilePath): array
+    public static function getVariables(string $scssFilePath, bool $removeFlag = true): array
     {
         if (!file_exists($scssFilePath)) {
             return [];
@@ -70,6 +70,11 @@ class ScssHelper
                     $visited[$value] = true;
                     $value = $variables[$value];
                     $value = trim(ltrim($value, '$'), '"');
+                }
+
+                if ($removeFlag) {
+                    // Match CSS/SCSS flags at the end of the string such as !important, !default, !optional, !global, etc.
+                    $value = preg_replace('/\s*![a-zA-Z]+\s*$/', '', $value);
                 }
 
                 $resolvedVariables[$name] = $value;
