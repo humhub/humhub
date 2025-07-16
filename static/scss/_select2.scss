@@ -284,7 +284,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
         }
 
         .select2-selection {
-            background-color: $gray-400;
+            background-color: var(--bs-secondary-bg);
         }
 
         .select2-selection--multiple .select2-selection__choice {

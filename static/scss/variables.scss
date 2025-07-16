@@ -141,6 +141,7 @@ $container-max-widths: (
 $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
+$focus-ring-box-shadow: none !default;
 
 //
 // @deprecated since 1.18
