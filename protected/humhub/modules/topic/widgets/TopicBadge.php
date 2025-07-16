@@ -27,9 +27,14 @@ class TopicBadge extends Badge
      */
     public static function forTopic(Topic $topic, ?ContentContainerActiveRecord $contentContainer = null): static
     {
+        $color = $topic->color ?: 'secondary';
+
         $badge = static::instance($topic->name, $topic->color)
             ->sortOrder(20)
             ->icon('star');
+
+        // Change badge to outline style
+        $badge->cssClass(['border', 'border-' . $color, 'text-' . $color, 'bg-transparent']);
 
         if ($contentContainer = $contentContainer ?: ContentContainerHelper::getCurrent()) {
             $badge->withLink(Link::withAction('', 'topic.addTopic')->options([
