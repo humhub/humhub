@@ -110,6 +110,26 @@ class Mailer extends \yii\symfonymailer\Mailer implements MailerInterface
 
     /**
      * @inheritdoc
+     */
+    public function beforeSend($message)
+    {
+        $headers = $message->getSymfonyEmail()->getHeaders();
+
+        if (!$headers->has('Auto-Submitted')) {
+            $headers->addTextHeader('Auto-Submitted', 'auto-generated');
+        }
+        if (!$headers->has('Precedence')) {
+            $headers->addTextHeader('Precedence', 'bulk');
+        }
+        if (!$headers->has('X-Auto-Response-Suppress')) {
+            $headers->addTextHeader('X-Auto-Response-Suppress', 'All');
+        }
+
+        return parent::beforeSend($message);
+    }
+
+    /**
+     * @inheritdoc
      * @param Message $message
      */
     public function sendMessage($message): bool
