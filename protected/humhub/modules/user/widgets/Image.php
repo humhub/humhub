@@ -60,7 +60,7 @@ class Image extends BaseImage
             $this->imageOptions['data-bs-toggle'] = 'tooltip';
             $this->imageOptions['data-placement'] = 'top';
             $this->imageOptions['data-html'] = 'true';
-            $this->imageOptions['data-original-title'] = $this->tooltipText ?: Html::encode($this->user->displayName);
+            $this->imageOptions['data-bs-title'] = $this->tooltipText ?: Html::encode($this->user->displayName);
             Html::addCssClass($this->imageOptions, 'tt');
         }
 

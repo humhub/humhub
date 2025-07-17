@@ -26,7 +26,7 @@ UiImageSetAsset::register($this);
                  style="width: <?= $options['width'] ?>px; height: <?= $options['height'] ?>px;"
                  data-bs-toggle="tooltip"
                  data-placement="top"
-                 data-original-title="Show more"><?= count($hiddenItems) ?>+
+                 data-bs-title="Show more"><?= count($hiddenItems) ?>+
             </div>
             <div class="ui-imageset-hidden-items">
                 <?php

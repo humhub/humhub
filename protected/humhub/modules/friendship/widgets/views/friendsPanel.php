@@ -19,7 +19,7 @@ use humhub\widgets\PanelMenu;
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-bs-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<?php echo Html::encode($friend->displayName); ?>">
+                         data-bs-title="<?php echo Html::encode($friend->displayName); ?>">
                 </a>
             <?php endforeach; ?>
             <?php if ($totalCount > $limit): ?>

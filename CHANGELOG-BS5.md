@@ -7,7 +7,7 @@ Bootstrap 5 migration
 Modules and themes must be migrated to Bootstrap 5.
 See MIGRATE_DEV-BS5.md
 
-Migration proccess:
+Migration process:
 - The default HumHub theme will be activated
 - Themes in the `themes` folder will be renamed by adding `.bs3.old`. 
 - The Theme Builder module will be uninstalled.

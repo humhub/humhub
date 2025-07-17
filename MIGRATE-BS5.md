@@ -371,6 +371,7 @@ These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
 - `media-object img-rounded` -> `rounded`
 - `img-rounded` -> `rounded`
 - `data-toggle` -> `data-bs-toggle`
+- `data-original-title` -> `data-bs-title`
 - `data-target` -> `data-bs-target`
 - `data-dismiss` -> `data-bs-dismiss`
 - `no-space` -> `m-0 p-0`
