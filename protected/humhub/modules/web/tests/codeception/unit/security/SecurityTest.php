@@ -2,7 +2,7 @@
 
 namespace tests\codeception\unit\modules\web\security;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\web\security\helpers\Security;
 use humhub\modules\web\security\models\SecuritySettings;
 use web\WebSecurityTest;

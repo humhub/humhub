@@ -8,9 +8,9 @@
 
 namespace humhub\modules\notification\widgets;
 
-use Yii;
-use humhub\widgets\JsWidget;
 use humhub\modules\notification\controllers\ListController;
+use humhub\widgets\JsWidget;
+use Yii;
 use yii\helpers\Url;
 
 /**
@@ -30,7 +30,7 @@ class Overview extends JsWidget
         $this->view->registerJsConfig('notification', [
             'loadEntriesUrl' => Url::to(['/notification/list']),
             'text' => [
-                'placeholder' => Yii::t('NotificationModule.base', 'There are no notifications yet.'),
+                'info' => Yii::t('NotificationModule.base', 'There are no notifications yet.'),
             ],
         ]);
 

@@ -1,0 +1,77 @@
+//
+// Buttons
+// --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+
+.btn {
+    --bs-btn-padding-x: 1.1rem;
+    --bs-btn-padding-y: 0.5rem;
+    --bs-btn-font-weight: 600;
+    --bs-btn-border-radius: 3px;
+    white-space: nowrap;
+
+    &:not(.btn-icon-only) {
+        i.fa {
+            margin-right: 0.3rem;
+        }
+    }
+
+    &.input {
+        outline: none;
+    }
+}
+
+.btn-sm, .btn-group-sm > .btn {
+    --bs-btn-padding-x: 0.5rem;
+    --bs-btn-padding-y: 0.2rem;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+    --bs-btn-padding-x: 1.75rem;
+    --bs-btn-padding-y: 0.9rem;
+    --bs-btn-font-size: 1.1rem;
+}
+
+.btn-group > .btn {
+    --bs-btn-padding-x: 0.8rem;
+}
+
+.btn-group-sm > .btn {
+    --bs-btn-padding-x: 0.4rem;
+}
+
+.btn-group-lg > .btn {
+    --bs-btn-padding-x: 1.2rem;
+}
+
+$white-button-variant-colors: (
+    primary: $primary,
+    secondary: $secondary,
+    success: $success,
+    danger: $danger,
+    warning: $warning,
+    info: $info,
+    dark: $dark
+);
+
+@mixin button-variant-dark-active($color, $darken-amount: 10%) {
+    --bs-btn-active-bg: #{darken($color, $darken-amount)};
+}
+
+@each $variant, $color in $white-button-variant-colors {
+    .btn-#{$variant} {
+        // Force white text color
+        --bs-btn-color: var(--hh-text-color-contrast);
+        --bs-btn-active-color: var(--hh-text-color-contrast);
+        --bs-btn-hover-color: var(--hh-text-color-contrast);
+        // Force active button background color shade (darken) instead of tint (lighten)
+        @include button-variant-dark-active($color);
+    }
+    .btn-outline-#{$variant} {
+        // Force white text color
+        --bs-btn-active-color: var(--hh-text-color-contrast);
+        --bs-btn-hover-color: var(--hh-text-color-contrast);
+    }
+}

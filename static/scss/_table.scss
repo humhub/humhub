@@ -1,0 +1,62 @@
+//
+// Tables
+// --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+.table {
+    --bs-table-bg: var(--hh-background-color-main);
+    --bs-table-color: var(--bs-body-color);
+}
+
+table {
+    margin-bottom: 0 !important;
+
+    th {
+        font-size: 11px;
+        color: var(--hh-text-color-soft);
+        font-weight: normal;
+        a {
+            color: var(--hh-text-color-highlight);
+        }
+    }
+
+    thead tr th {
+        border: none !important;
+    }
+
+    .time {
+        font-size: 12px;
+    }
+}
+
+.table > thead > tr > th,
+.table > tbody > tr > th,
+.table > tfoot > tr > th,
+.table > thead > tr > td,
+.table > tbody > tr > td,
+.table > tfoot > tr > td {
+    padding: 10px 10px 10px 0;
+
+    select {
+        font-size: 12px;
+        padding: 4px 8px;
+        height: 30px;
+        margin: 0;
+    }
+}
+
+.table-middle > thead > tr > th,
+.table-middle > tbody > tr > th,
+.table-middle > tfoot > tr > th,
+.table-middle > thead > tr > td,
+.table-middle > tbody > tr > td,
+.table-middle > tfoot > tr > td {
+    vertical-align: middle !important;
+}
+
+.table-responsive > .table > tbody > tr > td.notification-type {
+    @include media-breakpoint-down(md) {
+        white-space: normal;
+    }
+}

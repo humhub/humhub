@@ -83,7 +83,7 @@ class Invite extends ActiveRecord
             [['email'], 'required'],
             [['email'], 'unique', 'except' => self::SCENARIO_INVITE_BY_LINK_FORM],
             [['email'], 'email'],
-            [['captcha'], 'captcha', 'captchaAction' => 'user/auth/captcha', 'on' => [self::SCENARIO_INVITE, self::SCENARIO_INVITE_BY_LINK_FORM]],
+            [['captcha'], Yii::$app->captcha->getValidatorClass(), 'on' => [self::SCENARIO_INVITE, self::SCENARIO_INVITE_BY_LINK_FORM]],
         ];
     }
 

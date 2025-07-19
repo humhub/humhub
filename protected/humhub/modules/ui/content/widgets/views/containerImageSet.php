@@ -1,11 +1,11 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
-use humhub\modules\user\models\User;
 use humhub\modules\space\widgets\Image as SpaceImage;
-use humhub\modules\user\widgets\Image as UserImage;
-use yii\helpers\Html;
 use humhub\modules\ui\content\assets\UiImageSetAsset;
+use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\Image as UserImage;
 
 UiImageSetAsset::register($this);
 ?>
@@ -22,11 +22,11 @@ UiImageSetAsset::register($this);
         }
         ?>
         <?php if (count($hiddenItems) > 0) : ?>
-            <div class="ui-imageset-show-more tt img-rounded"
+            <div class="ui-imageset-show-more tt rounded"
                  style="width: <?= $options['width'] ?>px; height: <?= $options['height'] ?>px;"
-                 data-toggle="tooltip"
+                 data-bs-toggle="tooltip"
                  data-placement="top"
-                 data-original-title="Show more"><?= count($hiddenItems) ?>+
+                 data-bs-title="Show more"><?= count($hiddenItems) ?>+
             </div>
             <div class="ui-imageset-hidden-items">
                 <?php

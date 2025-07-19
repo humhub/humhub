@@ -24,7 +24,7 @@ class AutoTourCest
         $I->amAdmin();
 
         // Turn-on Show introduction tour for new users
-        if (Yii::$app->settings->get('enable') == 0) {
+        if (!Yii::$app->settings->get('enable')) {
             $I->checkOptionShowTour();
         }
 

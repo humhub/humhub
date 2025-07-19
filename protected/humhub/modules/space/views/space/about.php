@@ -1,8 +1,8 @@
 <?php
 
+use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\AboutPageSidebar;
-use humhub\modules\content\widgets\richtext\RichText;
 use humhub\modules\user\widgets\Image;
 
 /**
@@ -27,12 +27,12 @@ use humhub\modules\user\widgets\Image;
 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <?php if (!empty($userGroups[Space::USERGROUP_OWNER])): ?>
-                    <div class="media">
-                        <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
-                            </p></div>
-                        <div class="media-body">
+                    <div class="d-flex">
+                        <h5 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Owner'); ?></strong>
+                            </p></h5>
+                        <div class="flex-grow-1">
                             <?php foreach ($userGroups[Space::USERGROUP_OWNER] as $user) : ?>
                                 <?= Image::widget([
                                     'showTooltip' => true,
@@ -48,12 +48,11 @@ use humhub\modules\user\widgets\Image;
                 <?php endif; ?>
             </div>
 
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <?php if (!empty($userGroups[Space::USERGROUP_ADMIN])): ?>
-                    <div class="media">
-                        <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p>
-                        </div>
-                        <div class="media-body">
+                    <div class="d-flex">
+                        <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Admin'); ?></strong></p></h4>
+                        <div class="flex-grow-1">
                             <?php foreach ($userGroups[Space::USERGROUP_ADMIN] as $user) : ?>
                                 <?= Image::widget([
                                     'showTooltip' => true,
@@ -70,9 +69,9 @@ use humhub\modules\user\widgets\Image;
         </div>
 
         <?php if (!empty($userGroups[Space::USERGROUP_MODERATOR])): ?>
-            <div class="media">
-                <div class="media-heading"><p><strong><?= Yii::t('SpaceModule.base', 'Moderator'); ?></strong></p></div>
-                <div class="media-body">
+            <div class="d-flex">
+                <h4 class="mt-0"><p><strong><?= Yii::t('SpaceModule.base', 'Moderator'); ?></strong></p></h4>
+                <div class="flex-grow-1">
                     <?php foreach ($userGroups[Space::USERGROUP_MODERATOR] as $user) : ?>
                         <?= Image::widget([
                             'showTooltip' => true,
@@ -89,14 +88,14 @@ use humhub\modules\user\widgets\Image;
         <br/>
 
         <div class="row">
-            <div class="col-md-4">
+            <div class="col-lg-4">
                 <p><strong><?= Yii::t('SpaceModule.base', 'Join Policy') ?></strong></p>
-                <p><i class="fa fa-users colorInfo"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
+                <p><i class="fa fa-users text-info"></i> <?= Space::joinPolicyOptions()[$space->join_policy] ?></p>
                 <br/>
             </div>
-            <div class="col-md-8">
+            <div class="col-lg-8">
                 <p><strong><?= Yii::t('SpaceModule.base', 'Space Visibility') ?></strong></p>
-                <p><i class="fa fa-globe colorInfo"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
+                <p><i class="fa fa-globe text-info"></i> <?= Space::visibilityOptions()[$space->visibility] ?></p>
             </div>
         </div>
 

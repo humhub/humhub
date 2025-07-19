@@ -14,7 +14,7 @@
  * The loader module also adds an click handler to all buttons and links with a
  * data-ui-loader attribute set.
  *
- * If a data-ui-loader button is used within a yii ActiveForm we automaticly reset all loader buttons
+ * If a data-ui-loader button is used within a yii ActiveForm we automatically reset all loader buttons
  * in case of form validation errors.
  *
  *
@@ -24,6 +24,7 @@
 humhub.module('ui.loader', function (module, require, $) {
 
     var DEFAULT_LOADER_SELECTOR = '#humhub-ui-loader-default';
+    var LOADER_SELECTOR = '.hh-loader';
 
     var set = function (node, cfg) {
         var $node = (node instanceof $) ? node : $(node);
@@ -59,12 +60,12 @@ humhub.module('ui.loader', function (module, require, $) {
     };
 
     var remove = function (node) {
-        $(node).find('.loader').remove();
+        $(node).find(LOADER_SELECTOR).remove();
     };
 
     var reset = function (node) {
         var $node = (node instanceof $) ? node : $(node);
-        var $loader = $node.find('.loader').length;
+        var $loader = $node.find(LOADER_SELECTOR).length;
         if (!$loader) {
             return;
         }
@@ -74,12 +75,12 @@ humhub.module('ui.loader', function (module, require, $) {
         if ($loader && $node.data('htmlOld')) {
             $node.html($node.data('htmlOld'));
         } else if ($loader) {
-            $node.find('.loader').remove();
+            $node.find(LOADER_SELECTOR).remove();
         }
     };
 
     var is = function (node) {
-        return $(node).find('.loader').length > 0;
+        return $(node).find(LOADER_SELECTOR).length > 0;
     };
 
     var getInstance = function (cfg, $this) {
@@ -108,22 +109,10 @@ humhub.module('ui.loader', function (module, require, $) {
 
         if (cfg.position) {
             if (cfg.position === 'left') {
-                $result.find('.sk-spinner').css('margin', '0');
+                $result.addClass('float-start');
             } else if (cfg.position === 'right') {
-                $result.find('.sk-spinner').css('margin', '0').addClass('pull-right');
-                $result.addClass('clearfix');
+                $result.addClass('float-end');
             }
-        }
-
-        $skBounce = $result.find('.sk-bounce1, .sk-bounce2, .sk-bounce3');
-
-        if (cfg.itemCss) {
-            $skBounce.css(cfg.itemCss);
-        }
-
-        if (cfg.size) {
-            var size = cfg.size;
-            $skBounce.css({'width': size, 'height': size});
         }
 
         if (cfg.wrapper) {
@@ -155,7 +144,7 @@ humhub.module('ui.loader', function (module, require, $) {
     };
 
     var hasLoader = function ($node) {
-        return $node.find('.loader').length > 0;
+        return $node.find(LOADER_SELECTOR).length > 0;
     };
 
     var initLoaderButton = function (node, evt) {
@@ -177,11 +166,6 @@ humhub.module('ui.loader', function (module, require, $) {
         var color = $node.css('color') || '#ffffff';
         var $loader = $(module.template);
 
-        // Align bouncer animation color and size
-        $loader.find('.sk-bounce1, .sk-bounce2, .sk-bounce3')
-                .addClass('disabled')
-                .css({'background-color': color, 'width': '10px', 'height': '10px'});
-
         // The loader does have some margin we have to hide
         $node.css('overflow', 'hidden');
         $node.addClass('disabled');
@@ -201,7 +185,7 @@ humhub.module('ui.loader', function (module, require, $) {
         }
     };
 
-    var template = '<span class="loader"><span class="sk-spinner sk-spinner-three-bounce"><span class="sk-bounce1"></span><span class="sk-bounce2"></span><span class="sk-bounce3"></span></span></span>';
+    var template = '<span class="hh-loader text-center"><span class="spinner-border spinner-border-sm"></span></span>';
 
     module.export({
         set: set,

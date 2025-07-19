@@ -9,7 +9,7 @@
 namespace humhub\modules\file\widgets;
 
 use humhub\components\Widget;
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\file\handler\BaseFileHandler;
 use yii\helpers\ArrayHelper;
 
@@ -43,7 +43,7 @@ class FileHandlerButtonDropdown extends Widget
     public $handlers;
 
     /**
-     * @var bool if true the dropdown-menu will be assigned with an dropdown-menu-right class.
+     * @var bool if true the dropdown-menu will be assigned with an dropdown-menu-end class.
      */
     public $pullRight = false;
 
@@ -68,13 +68,13 @@ class FileHandlerButtonDropdown extends Widget
         }
 
         if (count($this->handlers) !== 0) {
-            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>';
+            $output .= '<button type="button" class="btn ' . $this->cssButtonClass . ' dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="sr-only">Toggle Dropdown</span></button>';
 
-            $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-right' : 'dropdown-menu';
+            $cssClass = ($this->pullRight) ? 'dropdown-menu dropdown-menu-end' : 'dropdown-menu';
 
             $output .= Html::beginTag('ul', ['class' => $cssClass]);
             foreach ($this->handlers as $handler) {
-                $output .= Html::beginTag('li');
+                $output .= Html::beginTag('li', ['class' => 'dropdown-item']);
                 $output .= $this->renderLink($handler->getLinkAttributes());
                 $output .= Html::endTag('li');
             }

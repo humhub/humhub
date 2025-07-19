@@ -9,10 +9,8 @@
 namespace humhub\modules\content\widgets;
 
 use humhub\modules\content\components\ContentActiveRecord;
-use Yii;
 use yii\base\Widget;
 use yii\helpers\Url;
-use humhub\modules\content\components\ContentContainerController;
 
 /**
  * PinLinkWidget for Wall Entries shows a pin link.
@@ -38,7 +36,7 @@ class PinLink extends Widget
 
         // Show pin links only inside content container streams
         if (!$this->content->content->canPin()) {
-            return;
+            return '';
         }
 
         return $this->render('pinLink', [

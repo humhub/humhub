@@ -105,6 +105,42 @@ humhub.module('admin', function (module, require, $) {
         }
     };
 
+    var deleteLoginBg = function (evt) {
+        evt.finish();
+
+        var options = {
+            'header': module.text('confirm.deleteLoginBg.header'),
+            'body': module.text('confirm.deleteLoginBg.body'),
+            'confirmText': module.text('confirm.deleteLoginBg.confirm')
+        };
+
+        modal.confirm(options).then(function ($confirmed) {
+            if ($confirmed) {
+                _confirmDeleteLoginBg(evt);
+            }
+        });
+    };
+
+    var _confirmDeleteLoginBg = function (evt) {
+        client.post(evt).then(function () {
+            $('#deleteLoginBg').fadeOut();
+            $('#loginBg-image').attr('src', '').hide();
+            additions.switchButtons($('#img-loginBg'), ('#text-loginBg'));
+        });
+    };
+
+    var changeLoginBg = function (evt) {
+        var input = evt.$trigger[0];
+        if (input.files && input.files.length) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#loginBg-image').attr('src', e.target.result).show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    };
     var init = function () {
         if ($('#admin-logo-file-upload').length) {
             // Forward file to chooser.
@@ -119,6 +155,14 @@ humhub.module('admin', function (module, require, $) {
             $('#admin-icon-upload-button').on('click', function (evt) {
                 evt.preventDefault();
                 $('#admin-icon-file-upload').trigger('click');
+            });
+        }
+
+        if ($('#admin-loginBg-file-upload').length) {
+            // Forward file to chooser.
+            $('#admin-loginBg-upload-button').on('click', function (evt) {
+                evt.preventDefault();
+                $('#admin-loginBg-file-upload').trigger('click');
             });
         }
     };
@@ -152,6 +196,8 @@ humhub.module('admin', function (module, require, $) {
         changeLogo: changeLogo,
         deletePageIcon: deletePageIcon,
         changeIcon: changeIcon,
+        deleteLoginBg: deleteLoginBg,
+        changeLoginBg: changeLoginBg,
         changeIndividualProfilePermissions: changeIndividualProfilePermissions,
         moduleSetAsDefault: moduleSetAsDefault,
     });
