@@ -468,7 +468,7 @@
     }
 
     .ProseMirror [data-mention] {
-        color: var(--bs-link-color);
+        color: var(--bs-info);
     }
 
     .ProseMirror {
@@ -604,11 +604,6 @@
 .atwho-view .cur {
     border-left: 3px solid lighten($info, 30%);
     background-color: var(--hh-background-color-secondary) !important;
-}
-
-.atwho-user,
-.atwho-space {
-    color: var(--bs-link-color);
 }
 
 .atwho-view strong {

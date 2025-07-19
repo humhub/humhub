@@ -605,7 +605,7 @@ Take the Wiki module as an example: https://github.com/humhub/wiki/tree/bs5
 
 Deprecated SCSS variables:
 - `$default`: use `$light` instead
-- `$link`: use `$link-color` instead
+- `$link`: use `$info` instead (or `$link-color` if it's about a link but not a `a` HTML tag)
 
 New SCSS variables:
 - `$secondary`
