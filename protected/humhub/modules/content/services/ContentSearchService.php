@@ -25,7 +25,7 @@ class ContentSearchService
         }
 
         if ((new ContentStateService(['content' => $this->content]))->isPublished()) {
-            (new SearchDriverService())->update($asActiveJob);
+            (new SearchDriverService())->update($this->content, $asActiveJob);
         } else {
             $this->delete($asActiveJob);
         }
