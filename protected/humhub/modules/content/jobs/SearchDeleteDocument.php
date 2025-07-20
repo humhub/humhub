@@ -9,6 +9,7 @@
 namespace humhub\modules\content\jobs;
 
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\services\SearchDriverService;
 use humhub\modules\content\services\SearchJobService;
 use humhub\modules\queue\interfaces\ExclusiveJobInterface;
 use humhub\modules\queue\LongRunningActiveJob;
@@ -31,7 +32,7 @@ class SearchDeleteDocument extends LongRunningActiveJob implements ExclusiveJobI
     public function run()
     {
         return $this->getService()->run(function () {
-            ContentSearchService::deleteContentById($this->contentId, false);
+            (new SearchDriverService())->delete($this->contentId, false);
         });
     }
 

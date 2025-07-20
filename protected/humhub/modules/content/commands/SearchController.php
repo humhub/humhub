@@ -14,8 +14,10 @@ use humhub\modules\content\Module;
 use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\content\search\SearchRequest;
 use humhub\modules\content\services\ContentSearchService;
+use humhub\modules\content\services\SearchDriverService;
 use humhub\modules\queue\helpers\QueueHelper;
 use humhub\modules\user\models\User;
+use LdapRecord\Query\Events\Search;
 use Yii;
 use yii\console\Controller;
 
@@ -27,7 +29,7 @@ class SearchController extends Controller
     public function actionOptimize()
     {
         print "Optimizing search index: ";
-        $driver = ContentSearchService::getDriver();
+        $driver = (new SearchDriverService())->getDriver();
         $driver->optimize();
         print "OK!\n\n";
     }
@@ -37,7 +39,7 @@ class SearchController extends Controller
      */
     public function actionRebuild()
     {
-        $driver = ContentSearchService::getDriver();
+        $driver = (new SearchDriverService())->getDriver();
         $driver->purge();
         foreach (Content::find()->each() as $content) {
             (new ContentSearchService($content))->update(false);
@@ -76,7 +78,7 @@ class SearchController extends Controller
             'orderBy' => $module->searchOrderBy,
         ]);
 
-        $searchResultSet = ContentSearchService::getDriver()->search($options);
+        $searchResultSet = (new SearchDriverService())->getDriver()->search($options);
 
         print "Number of hits: " . $searchResultSet->pagination->totalCount . "\n";
 
