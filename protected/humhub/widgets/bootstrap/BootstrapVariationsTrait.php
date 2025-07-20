@@ -175,7 +175,7 @@ trait BootstrapVariationsTrait
      */
     public function tooltip(string $title): static
     {
-        return $this->title($title)->cssClass('tt');
+        return $this->options(['data-bs-title' => $title])->cssClass('tt');
     }
 
     public function cssClass(array|string $cssClass): static
