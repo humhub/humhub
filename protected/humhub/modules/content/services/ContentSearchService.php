@@ -3,11 +3,7 @@
 namespace humhub\modules\content\services;
 
 use humhub\modules\comment\models\Comment;
-use humhub\modules\content\jobs\SearchDeleteDocument;
-use humhub\modules\content\jobs\SearchUpdateDocument;
 use humhub\modules\content\models\Content;
-use humhub\modules\content\Module;
-use humhub\modules\content\search\driver\AbstractDriver;
 use humhub\modules\file\converter\TextConverter;
 use humhub\modules\file\models\File;
 use humhub\modules\user\models\User;
@@ -29,11 +25,7 @@ class ContentSearchService
         }
 
         if ((new ContentStateService(['content' => $this->content]))->isPublished()) {
-            if ($asActiveJob) {
-                Yii::$app->queue->push(new SearchUpdateDocument(['contentId' => $this->content->id]));
-            } else {
-                self::getDriver()->update($this->content);
-            }
+            (new SearchDriverService())->update($this->content, $asActiveJob);
         } else {
             $this->delete($asActiveJob);
         }
@@ -41,16 +33,7 @@ class ContentSearchService
 
     public function delete(bool $asActiveJob = true): void
     {
-        self::deleteContentById($this->content->id, $asActiveJob);
-    }
-
-    public static function deleteContentById(int $id, bool $asActiveJob = true): void
-    {
-        if ($asActiveJob) {
-            Yii::$app->queue->push(new SearchDeleteDocument(['contentId' => $id]));
-        } else {
-            self::getDriver()->delete($id);
-        }
+        (new SearchDriverService())->delete($this->content->id, $asActiveJob);
     }
 
     public function getFileContentAsText(): string
@@ -97,12 +80,4 @@ class ContentSearchService
 
         return true;
     }
-
-    public static function getDriver(): AbstractDriver
-    {
-        /* @var Module $module */
-        $module = Yii::$app->getModule('content');
-        return $module->getSearchDriver();
-    }
-
 }
