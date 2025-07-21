@@ -165,17 +165,17 @@ trait BootstrapVariationsTrait
     /**
      * Adds an HTML title attribute
      */
-    public function title(string $title): static
+    public function title(?string $title): static
     {
-        return $this->options(['title' => $title]);
+        return $title ? $this->options(['title' => $title]) : $this;
     }
 
     /**
      * Adds a title + tooltip behaviour class
      */
-    public function tooltip(string $title): static
+    public function tooltip(?string $title): static
     {
-        return $this->options(['data-bs-title' => $title])->cssClass('tt');
+        return $title ? $this->options(['data-bs-title' => $title])->cssClass('tt') : $this;
     }
 
     public function cssClass(array|string $cssClass): static
