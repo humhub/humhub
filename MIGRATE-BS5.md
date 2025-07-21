@@ -355,7 +355,7 @@ Search for the class `breadcrumb`.
 
 Search for "Show more" or toggle buttons and use Bootstrap 5 collapse component instead.
 
-[See documentation](https://getbootstrap.com/docs/5.0/components/collapse)
+[See documentation](https://getbootstrap.com/docs/5.3/components/collapse)
 
 ## Replacements in HTML attributes
 
