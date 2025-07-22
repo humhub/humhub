@@ -8,6 +8,7 @@
 
 namespace humhub\helpers;
 
+use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\file\Module;
 use Yii;
 use yii\helpers\Json;
@@ -53,6 +54,15 @@ class MobileAppHelper
 
         $message = Json::encode($json);
         self::sendFlutterMessage($message);
+    }
+
+    public static function getWhiteListedDomains(): void
+    {
+        $whiteListedDomains = (new MobileSettingsForm())->getWhiteListedDomainsArray();
+        if ($whiteListedDomains) {
+            $message = Json::encode($whiteListedDomains);
+            self::sendFlutterMessage($message);
+        }
     }
 
     protected static function sendFlutterMessage($msg): void

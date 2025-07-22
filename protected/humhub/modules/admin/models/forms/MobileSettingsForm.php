@@ -23,6 +23,7 @@ class MobileSettingsForm extends Model
     public $enableLinkService;
     public $fileAssetLinks;
     public $fileAppleAssociation;
+    public $whiteListedDomains;
 
     /**
      * @inheritdoc
@@ -35,23 +36,47 @@ class MobileSettingsForm extends Model
         $this->enableLinkService = $settingsManager->get('mailerLinkService');
         $this->fileAssetLinks = $settingsManager->get('fileAssetLinks');
         $this->fileAppleAssociation = $settingsManager->get('fileAppleAssociation');
+        $this->whiteListedDomains = $settingsManager->get('whiteListedDomains');
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             [['enableLinkService'], 'boolean'],
-            [['fileAssetLinks', 'fileAppleAssociation'], 'string'],
+            [['fileAssetLinks', 'fileAppleAssociation', 'whiteListedDomains'], 'string'],
+            [['whiteListedDomains'], 'validateWhiteListedDomains'],
         ];
+    }
+
+    public function validateWhiteListedDomains($attribute, $params): void
+    {
+        if (!$this->$attribute) {
+            return;
+        }
+
+        foreach ($this->getWhiteListedDomainsArray() as $domain) {
+            if (!$domain) {
+                continue;
+            }
+            if (!filter_var($domain, FILTER_VALIDATE_URL)) {
+                $this->addError($attribute, Yii::t('AdminModule.settings', 'Invalid URL format: {domain}', ['domain' => $domain]));
+                return;
+            }
+        }
+    }
+
+    public function getWhiteListedDomainsArray(): array
+    {
+        return array_map('trim', explode(',', $this->whiteListedDomains));
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'enableLinkService' => Yii::t('AdminModule.settings', 'Enable Link Redirection Service'),
@@ -61,6 +86,7 @@ class MobileSettingsForm extends Model
             'fileAppleAssociation' => Yii::t('AdminModule.settings', 'Well-known file {fileName}', [
                 'fileName' => '"' . WellKnownService::getFileName('fileAppleAssociation') . '"',
             ]),
+            'whiteListedDomains' => Yii::t('AdminModule.settings', 'Domain URLs to whitelist, separated by comma'),
         ];
     }
 
@@ -83,6 +109,7 @@ class MobileSettingsForm extends Model
                     WellKnownService::getFileRoute('fileAppleAssociation'),
                 )->target('_blank'),
             ]),
+            'whiteListedDomains' => Yii::t('AdminModule.settings', 'E.g. URLs of the SSO service providers'),
         ];
     }
 
@@ -92,10 +119,13 @@ class MobileSettingsForm extends Model
             return false;
         }
 
+        $this->whiteListedDomains = implode(',', $this->getWhiteListedDomainsArray());
+
         $settingsManager = Yii::$app->settings;
         $settingsManager->set('mailerLinkService', $this->enableLinkService);
         $settingsManager->set('fileAssetLinks', $this->fileAssetLinks);
         $settingsManager->set('fileAppleAssociation', $this->fileAppleAssociation);
+        $settingsManager->set('whiteListedDomains', $this->whiteListedDomains);
 
         return true;
     }

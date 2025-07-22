@@ -10,17 +10,17 @@ namespace humhub\components;
 
 use Exception;
 use humhub\components\behaviors\PolymorphicRelation;
+use humhub\modules\comment\models\Comment;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\content\interfaces\ContentOwner;
-use humhub\modules\comment\models\Comment;
 use humhub\modules\content\models\Content;
+use humhub\modules\content\widgets\richtext\converter\BaseRichTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToPlainTextConverter;
 use humhub\modules\content\widgets\richtext\converter\RichTextToShortTextConverter;
-use humhub\modules\user\models\User;
 use humhub\modules\space\models\Space;
+use humhub\modules\user\models\User;
 use Yii;
 use yii\base\BaseObject;
-use yii\helpers\Html;
 use yii\helpers\Json;
 use yii\helpers\Url;
 
@@ -345,7 +345,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
             return null;
         }
 
-        return ($withContentName) ? Html::encode($content->getContentName()) . ' "' . $info . '"' : $info;
+        return ($withContentName) ? $content->getContentName() . ' "' . $info . '"' : $info;
     }
 
     /**
@@ -369,9 +369,9 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
             $content = $this->source;
         }
 
-        return RichTextToShortTextConverter::process($content->getContentDescription(), [
-            RichTextToShortTextConverter::OPTION_MAX_LENGTH => $maxLength,
-            RichTextToShortTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
+        return RichTextToPlainTextConverter::process($content->getContentDescription(), [
+            RichTextToPlainTextConverter::OPTION_MAX_LENGTH => $maxLength,
+            BaseRichTextConverter::OPTION_CACHE_KEY => RichTextToShortTextConverter::buildCacheKeyForContent($content),
         ]);
     }
 
