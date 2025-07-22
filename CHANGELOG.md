@@ -37,7 +37,7 @@ HumHub Changelog
 
 1.17.4 (Unreleased)
 ----------------------
-- `Enh: Mobile App: allow configuring whitelisted domains`
+- Enh: Mobile App: allow configuring whitelisted domains
 
 1.17.3 (Unreleased)
 ----------------------
