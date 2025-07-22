@@ -27,8 +27,9 @@ class MobileAppHelper
             return;
         }
 
-        $json = ['type' => 'showOpener'];
-        $message = Json::encode($json);
+        $message = Json::encode([
+            'type' => 'showOpener',
+        ]);
 
         self::sendFlutterMessage($message);
     }
@@ -38,7 +39,7 @@ class MobileAppHelper
         /* @var Module $module */
         $module = Yii::$app->getModule('file');
 
-        $json = [
+        $message = Json::encode([
             'type' => 'fileUploadSettings',
             'fileUploadUrl' => Url::to(['/file/file/upload'], true),
             'contentCreateUrl' => Url::to(['/file/share-intend/index'], true),
@@ -50,9 +51,7 @@ class MobileAppHelper
             'imageWebpQuality' => $module->imageWebpQuality,
             'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
             'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
-        ];
-
-        $message = Json::encode($json);
+        ]);
         self::sendFlutterMessage($message);
     }
 
@@ -60,7 +59,9 @@ class MobileAppHelper
     {
         $whiteListedDomains = (new MobileSettingsForm())->getWhiteListedDomainsArray();
         if ($whiteListedDomains) {
-            $message = Json::encode($whiteListedDomains);
+            $message = Json::encode([
+                'whiteListedDomains' => $whiteListedDomains,
+            ]);
             self::sendFlutterMessage($message);
         }
     }
