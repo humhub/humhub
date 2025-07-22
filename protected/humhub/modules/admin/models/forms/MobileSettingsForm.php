@@ -70,7 +70,7 @@ class MobileSettingsForm extends Model
 
     public function getWhiteListedDomainsArray(): array
     {
-        return array_map('trim', explode(',', $this->whiteListedDomains));
+        return array_map('trim', explode(',', $this->whiteListedDomains ?? ''));
     }
 
     /**
