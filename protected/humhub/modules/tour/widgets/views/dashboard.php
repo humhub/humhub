@@ -6,6 +6,7 @@ use humhub\modules\content\components\ContentContainerSettingsManager;
 use humhub\modules\tour\assets\TourAsset;
 use humhub\modules\tour\TourConfig;
 use humhub\modules\ui\icon\widgets\Icon;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\PanelMenu;
 use yii\helpers\Url;
 
@@ -19,19 +20,17 @@ TourAsset::register($this);
 
 $removeOptionHtml = Html::tag(
     'li',
-    Html::a(
-        Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'),
-        Url::to(["/tour/tour/hide-panel", "ajax" => 1]),
-        [
-            'data' => [
-                'action-click' => 'tour.hidePanel',
-                'action-confirm-header' => Icon::get('eye-slash') . ' ' . Yii::t('TourModule.base', ' Remove panel'),
-                'action-confirm' => Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
-                'action-confirm-text' => Yii::t('TourModule.base', 'Ok'),
-                'action-cancel-text' => Yii::t('TourModule.base', 'Cancel'),
-            ],
-        ],
-    ),
+    Link::to('&nbsp;' . Yii::t('TourModule.base', '<strong>Remove</strong> tour panel'))
+        ->link(["/tour/tour/hide-panel", "ajax" => 1])
+        ->icon('eye-slash')
+        ->action('tour.hidePanel')
+        ->confirm(
+            Icon::get('eye-slash') . ' ' . Yii::t('TourModule.base', ' Remove panel'),
+            Yii::t('TourModule.base', 'This action will remove the tour panel from your dashboard. You can reactivate it at<br>Account settings <i class="fa fa-caret-right"></i> Settings.'),
+            Yii::t('TourModule.base', 'Ok'),
+            Yii::t('TourModule.base', 'Cancel'),
+        )
+        ->cssClass('dropdown-item'),
 );
 ?>
 
