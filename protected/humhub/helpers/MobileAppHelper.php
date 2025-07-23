@@ -36,6 +36,10 @@ class MobileAppHelper
 
     public static function getFileUploadSettings(): void
     {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
         /* @var Module $module */
         $module = Yii::$app->getModule('file');
 
@@ -57,6 +61,10 @@ class MobileAppHelper
 
     public static function getWhiteListedDomains(): void
     {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
         $whiteListedDomains = (new MobileSettingsForm())->getWhiteListedDomainsArray();
         if ($whiteListedDomains) {
             $message = Json::encode([
