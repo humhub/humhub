@@ -71,7 +71,7 @@
 }
 
 .atwho-view .cur {
-    border-left: 3px solid var(--bs-info);
+    border-left: 3px solid lighten($info, 30%);
     background-color: var(--hh-background-color-secondary) !important;
 }
 

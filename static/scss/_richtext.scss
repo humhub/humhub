@@ -601,19 +601,6 @@
     text-align: center;
 }
 
-.atwho-view .cur {
-    border-left: 3px solid lighten($info, 30%);
-    background-color: var(--hh-background-color-secondary) !important;
-}
-
-.atwho-view strong {
-    background-color: lighten($warning, 40%);
-}
-
-.atwho-view .cur strong {
-    background-color: lighten($warning, 40%);
-}
-
 [data-emoji-category] {
     max-height: 200px;
     display: block;
