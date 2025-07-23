@@ -60,7 +60,8 @@ class MobileAppHelper
         $whiteListedDomains = (new MobileSettingsForm())->getWhiteListedDomainsArray();
         if ($whiteListedDomains) {
             $message = Json::encode([
-                'whiteListedDomains' => $whiteListedDomains,
+                'type' => 'whiteListedDomains',
+                'domainList' => $whiteListedDomains,
             ]);
             self::sendFlutterMessage($message);
         }
@@ -68,6 +69,7 @@ class MobileAppHelper
 
     protected static function sendFlutterMessage($msg): void
     {
+        Yii::$app->view->registerJs('console.log(\'' . $msg . '\');');
         Yii::$app->view->registerJs('if (window.flutterChannel) { window.flutterChannel.postMessage(\'' . $msg . '\'); }');
     }
 }
