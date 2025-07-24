@@ -445,14 +445,15 @@ class StreamQuery extends Model
         $this->checkLimit();
         $this->checkFrom();
         $this->checkTo();
-        $this->setupCriteria();
-        $this->setupFilters();
 
         $this->_query->andWhere($this->stateFilterCondition);
 
         if (!empty($this->channel)) {
             $this->channel($this->channel);
         }
+
+        $this->setupCriteria();
+        $this->setupFilters();
 
         $this->_built = true;
     }
