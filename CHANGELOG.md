@@ -36,6 +36,10 @@ HumHub Changelog
 - Fix #7575: Add safeguard to deletion of content when deleting a user/space with an empty `contentcontainer_id`
 - Fix #7588: Fix depreciation warnings on PHP 8.4
 
+1.17.4 (Unreleased)
+----------------------
+- Enh #7584: Mobile App: allow configuring whitelisted domains
+
 1.17.3 (Unreleased)
 ----------------------
 - Fix #7484: Use password type on the installation DB config form

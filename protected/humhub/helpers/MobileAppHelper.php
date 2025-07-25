@@ -8,6 +8,7 @@
 
 namespace humhub\helpers;
 
+use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\file\Module;
 use Yii;
 use yii\helpers\Json;
@@ -26,18 +27,23 @@ class MobileAppHelper
             return;
         }
 
-        $json = ['type' => 'showOpener'];
-        $message = Json::encode($json);
+        $message = Json::encode([
+            'type' => 'showOpener',
+        ]);
 
         self::sendFlutterMessage($message);
     }
 
     public static function getFileUploadSettings(): void
     {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
         /* @var Module $module */
         $module = Yii::$app->getModule('file');
 
-        $json = [
+        $message = Json::encode([
             'type' => 'fileUploadSettings',
             'fileUploadUrl' => Url::to(['/file/file/upload'], true),
             'contentCreateUrl' => Url::to(['/file/share-intend/index'], true),
@@ -49,10 +55,24 @@ class MobileAppHelper
             'imageWebpQuality' => $module->imageWebpQuality,
             'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
             'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
-        ];
-
-        $message = Json::encode($json);
+        ]);
         self::sendFlutterMessage($message);
+    }
+
+    public static function getWhiteListedDomains(): void
+    {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
+        $whiteListedDomains = (new MobileSettingsForm())->getWhiteListedDomainsArray();
+        if ($whiteListedDomains) {
+            $message = Json::encode([
+                'type' => 'whiteListedDomains',
+                'domainList' => $whiteListedDomains,
+            ]);
+            self::sendFlutterMessage($message);
+        }
     }
 
     protected static function sendFlutterMessage($msg): void
