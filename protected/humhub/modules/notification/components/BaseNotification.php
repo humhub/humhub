@@ -399,7 +399,7 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Deletes this notification
      */
-    public function delete(User $user = null)
+    public function delete(?User $user = null)
     {
         $condition = [];
 
@@ -470,7 +470,7 @@ abstract class BaseNotification extends SocialActivity
      * @param BaseTarget $target
      * @return string render result
      */
-    public function render(BaseTarget $target = null)
+    public function render(?BaseTarget $target = null)
     {
         if (!$target) {
             $target = Yii::$app->notification->getTarget(WebTarget::class);

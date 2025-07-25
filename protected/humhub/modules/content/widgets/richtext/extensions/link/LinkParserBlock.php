@@ -124,7 +124,7 @@ class LinkParserBlock extends Model
         return $this->block[static::BLOCK_KEY_TITLE] ?? null;
     }
 
-    public function setTitle(string $title = null)
+    public function setTitle(?string $title = null)
     {
         $this->block[static::BLOCK_KEY_TITLE] = $title;
     }
@@ -134,7 +134,7 @@ class LinkParserBlock extends Model
         return $this->block[static::BLOCK_KEY_FILE_ID] ?? null;
     }
 
-    public function setFileId(string $fileId = null)
+    public function setFileId(?string $fileId = null)
     {
         $this->block[static::BLOCK_KEY_FILE_ID] = $fileId;
     }
@@ -193,7 +193,7 @@ class LinkParserBlock extends Model
         $this->block[static::BLOCK_KEY_STYLE] = array_merge($this->block[static::BLOCK_KEY_STYLE], $style);
     }
 
-    public function setBlock(string $text, string $url, string $title = null, $fileId = null)
+    public function setBlock(string $text, string $url, ?string $title = null, $fileId = null)
     {
         $this->setUrl($url);
         $this->setText($text);

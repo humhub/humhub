@@ -643,7 +643,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * @return bool|string
      * @throws InvalidConfigException
      */
-    public function canMove(ContentContainerActiveRecord $container = null)
+    public function canMove(?ContentContainerActiveRecord $container = null)
     {
         if (!$this->canMove) {
             return Yii::t('ContentModule.base', 'This content type can\'t be moved.');
@@ -662,7 +662,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
     /**
      * {@inheritdoc}
      */
-    final public function move(ContentContainerActiveRecord $container = null, $force = false)
+    final public function move(?ContentContainerActiveRecord $container = null, $force = false)
     {
         return $this->content->move($container, $force);
     }
@@ -672,7 +672,7 @@ class ContentActiveRecord extends ActiveRecord implements ContentOwner, Movable,
      * in order to define model specific logic as moving sub-content or other related.
      * @param ContentContainerActiveRecord|null $container
      */
-    public function afterMove(ContentContainerActiveRecord $container = null)
+    public function afterMove(?ContentContainerActiveRecord $container = null)
     {
     }
 

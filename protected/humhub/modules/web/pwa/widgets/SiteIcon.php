@@ -32,7 +32,7 @@ class SiteIcon extends Widget
      *
      * @param UploadedFile|null $file
      */
-    public static function set(UploadedFile $file = null)
+    public static function set(?UploadedFile $file = null)
     {
         static::deleteFiles();
 

@@ -81,7 +81,7 @@ class RichTextLinkExtension extends RichTextContentExtension
         return strpos($url, $this->key . ':') === 0;
     }
 
-    public static function buildLink(string $text, string $url, string $title = null): string
+    public static function buildLink(string $text, string $url, ?string $title = null): string
     {
         if (!$title) {
             return '[' . $text . '](' . $url . ')';
@@ -90,7 +90,7 @@ class RichTextLinkExtension extends RichTextContentExtension
         return '[' . $text . '](' . $url . ' "' . $title . '")';
     }
 
-    public static function buildExtensionLink(string $text, string $extensionId, string $title = null, string $addition = ''): string
+    public static function buildExtensionLink(string $text, string $extensionId, ?string $title = null, string $addition = ''): string
     {
         if (!empty($addition)) {
             $addition = ' ' . $addition;

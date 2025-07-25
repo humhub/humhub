@@ -243,7 +243,7 @@ class Notification extends ActiveRecord
      * @return ActiveQuery
      * @throws Throwable
      */
-    public static function findGrouped(User $user = null, $sendWebNotifications = 1)
+    public static function findGrouped(?User $user = null, $sendWebNotifications = 1)
     {
         $user = ($user) ? $user : Yii::$app->user->getIdentity();
 
@@ -283,7 +283,7 @@ class Notification extends ActiveRecord
      * @throws Throwable
      * @since 1.2
      */
-    public static function findUnseen(User $user = null)
+    public static function findUnseen(?User $user = null)
     {
         return Notification::findGrouped($user)
             ->andWhere(['notification.seen' => 0])

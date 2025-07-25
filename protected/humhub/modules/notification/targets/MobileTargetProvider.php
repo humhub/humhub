@@ -24,5 +24,5 @@ interface MobileTargetProvider
      * @param User|null $user
      * @return bool
      */
-    public function isActive(User $user = null);
+    public function isActive(?User $user = null);
 }

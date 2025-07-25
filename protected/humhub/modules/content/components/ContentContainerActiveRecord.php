@@ -169,7 +169,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param User $user
      * @return bool can access private content
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         return false;
     }
@@ -203,7 +203,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @return bool
      * @since 1.7
      */
-    public function is(ContentContainerActiveRecord $container = null)
+    public function is(?ContentContainerActiveRecord $container = null)
     {
         if (!$container || !($container instanceof self)) {
             return false;
@@ -309,7 +309,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param User|IdentityInterface $user
      * @return ContentContainerPermissionManager
      */
-    public function getPermissionManager(User $user = null)
+    public function getPermissionManager(?User $user = null)
     {
         if ($user && !$user->is(Yii::$app->user->getIdentity())) {
             return new ContentContainerPermissionManager([
@@ -350,7 +350,7 @@ abstract class ContentContainerActiveRecord extends ActiveRecord
      * @param User|null $user
      * @return string
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         return "";
     }

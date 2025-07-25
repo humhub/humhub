@@ -51,7 +51,7 @@ class ContentContainerHelper
      * @param ContentContainerActiveRecord|null $container
      * @since 1.7
      */
-    public static function setCurrent(ContentContainerActiveRecord $container = null)
+    public static function setCurrent(?ContentContainerActiveRecord $container = null)
     {
         static::$container = $container;
     }

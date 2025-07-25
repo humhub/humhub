@@ -268,7 +268,7 @@ class Registration extends HForm
      *
      * @return bool state
      */
-    public function register(ClientInterface $authClient = null)
+    public function register(?ClientInterface $authClient = null)
     {
         if (!$this->validate()) {
             return false;

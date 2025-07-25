@@ -69,7 +69,7 @@ class AuthClientService
      * @param User|null $user
      * @return bool succeed
      */
-    public function updateUser(User $user = null): bool
+    public function updateUser(?User $user = null): bool
     {
         if ($user === null) {
             $user = $this->getUser();

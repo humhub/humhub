@@ -87,7 +87,7 @@ class MailTarget extends BaseTarget
     /**
      * @inheritdoc
      */
-    public function isActive(User $user = null)
+    public function isActive(?User $user = null)
     {
         // Do not send mail notifications for example content during installlation.
         return parent::isActive() && Yii::$app->installationState->hasState(InstallationState::STATE_INSTALLED);

@@ -722,7 +722,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
@@ -903,7 +903,7 @@ class User extends ContentContainerActiveRecord implements IdentityInterface
      * TODO: deprecated
      * @inheritdoc
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 

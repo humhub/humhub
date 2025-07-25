@@ -64,7 +64,7 @@ class MobileTarget extends BaseTarget
         return Yii::t('NotificationModule.targets', 'Mobile');
     }
 
-    public function isActive(User $user = null)
+    public function isActive(?User $user = null)
     {
         if (!parent::isActive() || !$this->provider) {
             return false;
