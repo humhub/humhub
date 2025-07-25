@@ -442,7 +442,7 @@ class OnlineModuleManager extends Component
     /**
      * @throws ServerErrorHttpException
      */
-    private function throwError(string $moduleId, string $errorMsg, string $displayedErrorMsg = null): void
+    private function throwError(string $moduleId, string $errorMsg, ?string $displayedErrorMsg = null): void
     {
         Yii::error('Error installing or updating the "' . $moduleId . '" module: ' . $errorMsg, 'marketplace');
         throw new ServerErrorHttpException($displayedErrorMsg ?? $errorMsg);

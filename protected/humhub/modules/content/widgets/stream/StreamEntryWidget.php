@@ -75,7 +75,7 @@ abstract class StreamEntryWidget extends JsWidget
      * @return string
      * @throws Exception
      */
-    public static function renderStreamEntry(ContentActiveRecord $model, StreamEntryOptions $renderOptions = null, $widgetParams = [])
+    public static function renderStreamEntry(ContentActiveRecord $model, ?StreamEntryOptions $renderOptions = null, $widgetParams = [])
     {
         if (!is_a($model->wallEntryClass, static::class, true)) {
             return static::renderLegacyWallEntry($model, $widgetParams);

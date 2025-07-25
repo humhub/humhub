@@ -120,7 +120,7 @@ class CheckboxList extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         $result = parent::getFieldFormDefinition($user, array_merge([
             'delimiter' => "\n",

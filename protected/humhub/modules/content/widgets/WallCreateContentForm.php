@@ -112,7 +112,7 @@ abstract class WallCreateContentForm extends Widget
      * @param ContentActiveRecord $record
      * @return array json
      */
-    public static function create(ContentActiveRecord $record, ContentContainerActiveRecord $contentContainer = null)
+    public static function create(ContentActiveRecord $record, ?ContentContainerActiveRecord $contentContainer = null)
     {
         Yii::$app->response->format = 'json';
 

@@ -139,7 +139,7 @@ class Birthday extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         $result = parent::getFieldFormDefinition($user, array_merge([
             'format' => 'medium',

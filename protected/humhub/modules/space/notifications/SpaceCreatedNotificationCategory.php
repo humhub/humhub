@@ -59,7 +59,7 @@ class SpaceCreatedNotificationCategory extends NotificationCategory
     /**
      * @inerhitdoc
      */
-    public function isVisible(User $user = null)
+    public function isVisible(?User $user = null)
     {
         return $user && (new PermissionManager(['subject' => $user]))->can(ManageSpaces::class);
     }
