@@ -10,7 +10,6 @@ namespace humhub\components\captcha;
 
 class AltchaCaptcha implements CaptchaInterface
 {
-
     public function createInputWidget($config = []): string
     {
         return AltchaCaptchaInput::widget($config);
