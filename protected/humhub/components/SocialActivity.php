@@ -329,7 +329,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @return string|null
      * @throws Exception
      */
-    public function getContentInfo(ContentOwner $content = null, $withContentName = true)
+    public function getContentInfo(?ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -359,7 +359,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @return string|null
      * @throws Exception
      */
-    public function getContentPreview(ContentOwner $content = null, $maxLength = 60)
+    public function getContentPreview(?ContentOwner $content = null, $maxLength = 60)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -390,7 +390,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @throws Exception
      * @since 1.4
      */
-    public function getContentPlainTextInfo(ContentOwner $content = null, $withContentName = true)
+    public function getContentPlainTextInfo(?ContentOwner $content = null, $withContentName = true)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -419,7 +419,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @throws Exception
      * @since 1.4
      */
-    public function getContentPlainTextPreview(ContentOwner $content = null, $maxLength = 60)
+    public function getContentPlainTextPreview(?ContentOwner $content = null, $maxLength = 60)
     {
         if (!$this->hasContent() && !$content) {
             return null;
@@ -449,7 +449,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
      * @param ContentOwner $content
      * @return string|null
      */
-    public function getContentName(ContentOwner $content = null)
+    public function getContentName(?ContentOwner $content = null)
     {
         if (!$this->hasContent() && !$content) {
             return null;

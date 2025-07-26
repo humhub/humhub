@@ -38,6 +38,7 @@ HumHub Changelog
 - Fix #7565: Fix stream filter placeholder text
 - Fix #7566: Throw an exception during registration if email sending fails
 - Fix #7575: Add safeguard to deletion of content when deleting a user/space with an empty `contentcontainer_id`
+- Fix #7588: Fix depreciation warnings on PHP 8.4
 
 1.17.3 (Unreleased)
 ----------------------

@@ -206,7 +206,7 @@ abstract class BaseTarget extends BaseObject
      * @param User $user
      * @return bool
      */
-    public function isActive(User $user = null)
+    public function isActive(?User $user = null)
     {
         return $this->active;
     }
@@ -224,7 +224,7 @@ abstract class BaseTarget extends BaseObject
      * @see BaseTarget::isCategoryEnabled()
      * @see BaseTarget::isActive()
      */
-    public function isEnabled(BaseNotification $notification, User $user = null)
+    public function isEnabled(BaseNotification $notification, ?User $user = null)
     {
         if (!$this->isActive($user)) {
             return false;
@@ -239,7 +239,7 @@ abstract class BaseTarget extends BaseObject
      * Checks if the settings for this target are editable.
      * @return bool
      */
-    public function isEditable(user $user = null)
+    public function isEditable(?User $user = null)
     {
         return true;
     }
@@ -251,7 +251,7 @@ abstract class BaseTarget extends BaseObject
      * @param User $user
      * @return bool
      */
-    public function isCategoryEnabled(NotificationCategory $category, User $user = null)
+    public function isCategoryEnabled(NotificationCategory $category, ?User $user = null)
     {
         if (!$category->isVisible($user)) {
             return false;

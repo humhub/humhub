@@ -102,7 +102,7 @@ abstract class NotificationCategory extends BaseObject
      * @param User $user
      * @return bool
      */
-    public function isVisible(User $user = null)
+    public function isVisible(?User $user = null)
     {
         return true;
     }

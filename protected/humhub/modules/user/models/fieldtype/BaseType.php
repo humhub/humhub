@@ -198,7 +198,7 @@ class BaseType extends Model
      * @param array $options Additional options
      * @return array
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return [
             $this->profileField->internal_name => array_merge([

@@ -25,7 +25,7 @@ class LogoImage
      * Sets a new icon for the installation.
      * @param UploadedFile|null $file
      */
-    public static function set(UploadedFile $file = null)
+    public static function set(?UploadedFile $file = null)
     {
         static::deleteFiles();
 

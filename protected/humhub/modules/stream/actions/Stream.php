@@ -402,7 +402,7 @@ abstract class Stream extends Action
      * @return array|null
      * @throws Throwable
      */
-    private function getStreamEntryResult(Content $content, StreamEntryOptions $options = null)
+    private function getStreamEntryResult(Content $content, ?StreamEntryOptions $options = null)
     {
         try {
             if (!$content->getModel()) {

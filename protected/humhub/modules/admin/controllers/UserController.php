@@ -299,7 +299,7 @@ class UserController extends Controller
         return $this->render('delete', ['model' => $model]);
     }
 
-    public function checkUserAccess(User $user = null)
+    public function checkUserAccess(?User $user = null)
     {
         if (!$user) {
             throw new HttpException(404, Yii::t('AdminModule.user', 'User not found!'));
