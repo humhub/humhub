@@ -20,7 +20,6 @@ use Yii;
  */
 class Tour extends Widget
 {
-
     /**
      * @inerhitdoc
      */
