@@ -20,7 +20,16 @@ use yii\base\Widget;
 class PanelMenu extends Widget
 {
     /**
-     * @var String unique id from panel element
+     * Unique ID of the section to collapse via the collapse/expand menu item.
+     *
+     * If empty, the collapse/expand menu item is not rendered.
+     *
+     * @since since 1.18
+     */
+    public ?string $collapseId = null;
+
+    /**
+     * @deprecated since 1.18
      */
     public $id = '';
 
@@ -33,22 +42,13 @@ class PanelMenu extends Widget
      */
     public $extraMenus = '';
 
-
-    /**
-     * @inheritDoc
-     */
-    public function init()
-    {
-        return parent::init();
-    }
-
     /**
      * Displays / Run the Widgets
      */
     public function run()
     {
         return $this->render('panelMenu', [
-            'id' => $this->id,
+            'collapseId' => $this->collapseId,
             'extraMenus' => $this->extraMenus,
         ]);
     }

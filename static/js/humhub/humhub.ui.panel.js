@@ -4,71 +4,72 @@
  * @namespace humhub.modules.ui.panel
  **/
 
-humhub.module('ui.panel', function(module, require, $) {
+humhub.module('ui.panel', function (module, require, $) {
 
-    var Widget = require('ui.widget').Widget;
+    const Widget = require('ui.widget').Widget;
+    const PanelMenu = Widget.extend();
+    const STATE_COLLAPSED = 'collapsed';
 
-    var PanelMenu = Widget.extend();
+    PanelMenu.prototype.init = function () {
+        const that = this;
 
-    var STATE_COLLAPSED = 'collapsed';
+        this.$collapseLink = this.$.find('a.panel-collapse');
+        if (!this.$collapseLink.length) {
+            return; // No toggle Link
+        }
 
-    PanelMenu.prototype.init = function() {
-        this.$panel = this.$.closest('.panel');
-        this.$body = this.$panel.find('.panel-body');
+        const collapseId = this.$collapseLink.attr('href').substring(1); // Remove #
+        if (!collapseId) {
+            throw new Error('Collapse ID ' + collapseId + ' not found.');
+        }
 
-        var that = this;
-        setTimeout(function() {
-            if(!that.getToggleState()) {
-                that.$body.css({'display': 'none'});
-            }
+        const collapseElement = document.getElementById(collapseId);
+        if (!collapseElement) {
+            throw new Error('Collapse element ' + collapseId + ' not found.');
+        }
 
-            that.checkToggleLinkState();
-        }, 1)
+        const bsCollapse = new bootstrap.Collapse(collapseElement, {
+            toggle: false, // Don't toggle on instantiation
+            parent: null // Avoid parent lookup because the Link is in a dropdown menu
+        });
+
+        const localStorageKey = 'pm_' + collapseId;
+
+        if (localStorage.getItem(localStorageKey) !== STATE_COLLAPSED) {
+            bsCollapse.show();
+            that.setToggleLinkState(true);
+        } else {
+            bsCollapse.hide();
+            that.setToggleLinkState(false);
+        }
+
+        collapseElement.addEventListener('show.bs.collapse', function () {
+            localStorage.removeItem(localStorageKey);
+        });
+
+        collapseElement.addEventListener('hide.bs.collapse', function () {
+            localStorage.setItem(localStorageKey, STATE_COLLAPSED);
+        });
+
+        collapseElement.addEventListener('shown.bs.collapse', function () {
+            that.setToggleLinkState(true);
+        });
+
+        collapseElement.addEventListener('hidden.bs.collapse', function () {
+            that.setToggleLinkState(false);
+        });
     };
 
-    PanelMenu.prototype.getToggleState = function() {
-        return localStorage.getItem(this.getKey()) !== STATE_COLLAPSED;
-    };
-
-    PanelMenu.prototype.getKey = function() {
-        var panelId = this.$panel.attr('id');
-        return (!panelId || !panelId.length) ? null : 'pm_'+this.$panel.attr('id');
-    };
-
-    PanelMenu.prototype.checkToggleLinkState = function() {
-        var isCollapsed = this.$body.css('display') !== 'none';
-
-        var icon = (isCollapsed)
+    PanelMenu.prototype.setToggleLinkState = function (isExpanded) {
+        const icon = isExpanded
             ? module.config.icon.up
             : module.config.icon.down;
 
-        var text = (isCollapsed)
+        const text = isExpanded
             ? module.text('collapse')
             : module.text('expand');
 
-        var $collapseLink = this.$.find('.panel-collapse').html( icon + ' ' + text);
-
-        if(isCollapsed) {
-            $collapseLink.addClass('panel-collapsed');
-        } else {
-            $collapseLink.removeClass('panel-collapsed');
-        }
-    };
-
-    PanelMenu.prototype.toggle = function(evt) {
-        var that = this;
-        if(this.$body.is(':visible')) {
-            this.$body.slideUp("fast", function () {
-                localStorage.setItem(that.getKey(), STATE_COLLAPSED);
-                that.checkToggleLinkState();
-            });
-
-        } else {
-            this.$body.slideDown("fast", function () {
-                that.checkToggleLinkState();
-                localStorage.removeItem(that.getKey());
-            });
-        }
+        this.$collapseLink.html(icon + ' ' + text).removeClass('disabled').removeAttr('disabled');
     };
 
     module.export({

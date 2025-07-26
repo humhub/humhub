@@ -12,12 +12,12 @@ use humhub\widgets\PanelMenu;
 <div class="panel panel-default spaces" id="new-spaces-panel">
 
     <!-- Display panel menu widget -->
-    <?= PanelMenu::widget(['id' => 'new-spaces-panel']); ?>
+    <?= PanelMenu::widget(['collapseId' => 'new-spaces-panel-body']) ?>
 
     <div class="panel-heading">
-        <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces'); ?>
+        <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces') ?>
     </div>
-    <div class="panel-body">
+    <div class="panel-body collapse" id="new-spaces-panel-body">
         <?php foreach ($newSpaces as $space) : ?>
             <?= Image::widget([
                 'space' => $space,
@@ -26,14 +26,14 @@ use humhub\widgets\PanelMenu;
                 'link' => true,
                 'htmlOptions' => [
                     'style' => 'margin-bottom: 5px;',
-                ]
-            ]); ?>
+                ],
+            ]) ?>
         <?php endforeach; ?>
 
         <?php if ($showMoreButton): ?>
             <br/>
             <br/>
-            <?= Html::a(Yii::t('SpaceModule.base', 'See all'), ['/space/spaces'], ['class' => 'btn btn-xl btn-primary']); ?>
+            <?= Html::a(Yii::t('SpaceModule.base', 'See all'), ['/space/spaces'], ['class' => 'btn btn-xl btn-primary']) ?>
         <?php endif; ?>
     </div>
 </div>

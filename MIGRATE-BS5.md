@@ -62,6 +62,7 @@ Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::htmlOptions` & `humhub\widgets\bootstrap\Badge::htmlOptions` use `::options` instead
 - `humhub\widgets\bootstrap\Button::color()` & `humhub\widgets\bootstrap\Badge::color()` use `::instance($text, $color)` instead for a Bootstrap color, or `::cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA) (same for Badge)
 - `humhub\widgets\bootstrap\Button::textColor()` & `humhub\widgets\bootstrap\Badge::textColor()` use `::cssTextColor()` instead
+- `humhub\widgets\PanelMenu::$id` use `$collapseId` instead (see "### PanelMenu widget" below)
 
 Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" below)
 
@@ -356,6 +357,42 @@ Search for the class `breadcrumb`.
 Search for "Show more" or toggle buttons and use Bootstrap 5 collapse component instead.
 
 [See documentation](https://getbootstrap.com/docs/5.3/components/collapse)
+
+### PanelMenu widget
+
+When using the `humhub\widgets\PanelMenu` widget, the collapsed section must now have the `collapse` class and the same ID value as the one passed to `PanelMenu::$collapseId`.
+
+Before:
+
+```php
+<div class="panel panel-default members" id="my-panel">
+    <?= PanelMenu::widget([
+        'id' => 'my-panel',
+    ]) ?>
+    <div class="panel-heading">
+        ...
+    </div>
+    <div class="panel-body">
+        ...
+    </div>
+</div>
+```
+
+After (not tested, just a concept based on BS5 doc):
+
+```php
+<div class="panel panel-default members" id="my-panel">
+    <?= PanelMenu::widget([
+        'collapseId' => 'my-panel-panel-body',
+    ]) ?>
+    <div class="panel-heading">
+        ...
+    </div>
+    <div class="panel-body collapse" id="my-panel-body">
+        ...
+    </div>
+</div>
+```
 
 ## Replacements in HTML attributes
 

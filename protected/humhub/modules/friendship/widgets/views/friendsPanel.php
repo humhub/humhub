@@ -6,13 +6,13 @@ use humhub\widgets\PanelMenu;
 ?>
 <?php if (count($friends) > 0) { ?>
     <div class="panel panel-default follower" id="profile-friends-panel">
-        <?php echo PanelMenu::widget(['id' => 'profile-friends-panel']); ?>
+        <?php echo PanelMenu::widget(['collapseId' => 'profile-friends-panel-body']); ?>
 
         <div class="panel-heading"><strong><?php echo Yii::t('FriendshipModule.base', 'Friends'); ?></strong>
             (<?php echo $totalCount; ?>)
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body collapse" id="profile-friends-panel-body">
             <?php foreach ($friends as $friend): ?>
                 <a href="<?php echo $friend->getUrl(); ?>">
                     <img src="<?php echo $friend->getProfileImage()->getUrl(); ?>" class="rounded tt img_margin"

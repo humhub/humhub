@@ -16,13 +16,13 @@ use humhub\widgets\PanelMenu;
 ?>
 <div class="panel panel-default members" id="space-members-panel">
     <?= PanelMenu::widget([
-        'id' => 'space-members-panel',
+        'collapseId' => 'space-members-panel-body',
         'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]); ?>
     <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)
     </div>
-    <div class="panel-body">
+    <div class="panel-body collapse" id="space-members-panel-body">
         <?php foreach ($users as $user) : ?>
             <?php
             $imageWidgetConfig = [

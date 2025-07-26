@@ -11,11 +11,11 @@ use humhub\widgets\PanelMenu;
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
-        <?php echo PanelMenu::widget(['id' => 'profile-follower-panel']); ?>
+        <?= PanelMenu::widget(['collapseId' => 'profile-follower-panel-body']) ?>
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
-        <div class="panel-body">
+        <div class="panel-body collapse" id="profile-follower-panel-body">
             <?php foreach ($followers as $follower): ?>
                 <a href="<?php echo $follower->getUrl(); ?>">
                     <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="rounded tt img_margin"
@@ -33,13 +33,13 @@ use humhub\widgets\PanelMenu;
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->
-        <?php echo PanelMenu::widget(['id' => 'profile-following-panel']); ?>
+        <?php echo PanelMenu::widget(['collapseId' => 'profile-following-panel-body']); ?>
 
         <div class="panel-heading">
             <?php echo Yii::t('UserModule.base', '<strong>Following</strong>'); ?>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body collapse" id="profile-following-panel-body">
             <?php foreach ($following as $followingUser): ?>
                 <a href="<?php echo $followingUser->getUrl(); ?>">
                     <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>"
