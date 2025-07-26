@@ -14,7 +14,6 @@ use yii\helpers\FileHelper;
 
 final class LoginBackgroundImageHelper
 {
-
     private const ASSETS_PATH = 'login-bg';
     private const ASSETS_FILE = 'background.png';
 
