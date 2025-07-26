@@ -7,5 +7,4 @@ namespace humhub\modules\ui\view\components;
  */
 class View extends \humhub\components\View
 {
-
 }

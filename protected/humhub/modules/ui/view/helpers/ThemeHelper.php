@@ -7,5 +7,4 @@ namespace humhub\modules\ui\view\helpers;
  */
 class ThemeHelper extends \humhub\helpers\ThemeHelper
 {
-
 }
