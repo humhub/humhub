@@ -9,6 +9,7 @@
 namespace humhub\controllers;
 
 use humhub\components\Controller;
+use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\MobileAppHelper;
 use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\file\Module;
@@ -29,6 +30,10 @@ class MobileAppController extends Controller
 
     public function actionGetSettings()
     {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            $this->forbidden();
+        }
+
         /* @var Module $module */
         $module = Yii::$app->getModule('file');
 
