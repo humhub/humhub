@@ -8,7 +8,6 @@
 
 namespace humhub\helpers;
 
-use humhub\modules\admin\models\forms\MobileSettingsForm;
 use humhub\modules\file\Module;
 use Yii;
 use yii\helpers\Json;
@@ -34,6 +33,9 @@ class MobileAppHelper
         self::sendFlutterMessage($message);
     }
 
+    /**
+     * @deprecated Remove in 1.19
+     */
     public static function getFileUploadSettings(): void
     {
         if (!DeviceDetectorHelper::isAppRequest()) {
@@ -57,22 +59,6 @@ class MobileAppHelper
             'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
         ]);
         self::sendFlutterMessage($message);
-    }
-
-    public static function getWhiteListedDomains(): void
-    {
-        if (!DeviceDetectorHelper::isAppRequest()) {
-            return;
-        }
-
-        $whiteListedDomains = (new MobileSettingsForm())->getWhiteListedDomainsArray();
-        if ($whiteListedDomains) {
-            $message = Json::encode([
-                'type' => 'whiteListedDomains',
-                'domainList' => $whiteListedDomains,
-            ]);
-            self::sendFlutterMessage($message);
-        }
     }
 
     protected static function sendFlutterMessage($msg): void

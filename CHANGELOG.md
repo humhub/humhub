@@ -34,9 +34,6 @@ HumHub Changelog
 - Fix #7565: Fix stream filter placeholder text
 - Fix #7566: Throw an exception during registration if email sending fails
 - Fix #7575: Add safeguard to deletion of content when deleting a user/space with an empty `contentcontainer_id`
-
-1.17.4 (Unreleased)
-----------------------
 - Enh #7584: Mobile App: allow configuring whitelisted domains
 
 1.17.3 (Unreleased)

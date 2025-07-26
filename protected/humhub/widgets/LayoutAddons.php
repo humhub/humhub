@@ -56,10 +56,8 @@ class LayoutAddons extends BaseStack
             }
 
             // Get info for the Share intend feature (uploading files from the mobile app)
+            // @deprecated Remove in 1.19
             MobileAppHelper::getFileUploadSettings();
-
-            // Get WhiteListed Domains for the Mobile App
-            MobileAppHelper::getWhiteListedDomains();
         }
 
     }
