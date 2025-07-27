@@ -34,7 +34,7 @@ use yii\helpers\Url;
             <?php endif; ?>
             <!-- end: show wall entry options -->
 
-            <div class="flex-shrink-0 me-2 img-profile-space">
+            <div class="flex-shrink-0 me-3 img-profile-space">
                 <?= UserImage::widget([
                     'user' => $user,
                     'width' => 32,
