@@ -5,6 +5,7 @@ use humhub\modules\space\models\Space;
 use humhub\modules\space\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\data\Pagination;
 
 /* @var $title string */
@@ -15,7 +16,7 @@ use yii\data\Pagination;
 
 <?php Modal::beginDialog([
     'title' => $title,
-    'footer' => Html::tag('div', AjaxLinkPager::widget(['pagination' => $pagination]), ['class' => 'pagination-container']),
+    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
 ]) ?>
 
     <?php if (count($spaces) === 0) : ?>
@@ -41,6 +42,10 @@ use yii\data\Pagination;
 
         <?php endforeach; ?>
         <!-- END: Results -->
+    </div>
+
+    <div class="pagination-container">
+        <?= AjaxLinkPager::widget(['pagination' => $pagination]) ?>
     </div>
 
     <script <?= Html::nonce() ?>>
