@@ -6,7 +6,6 @@
  * @license https://www.humhub.com/licences
  */
 
-
 namespace humhub\widgets\form;
 
 use Yii;

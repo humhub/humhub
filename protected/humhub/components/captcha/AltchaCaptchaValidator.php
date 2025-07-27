@@ -41,7 +41,7 @@ class AltchaCaptchaValidator extends Validator
         $this->addError(
             $model,
             $attribute,
-            Yii::t('base', 'We couldn\'t verify that you\'re human. Please check the box again.')
+            Yii::t('base', 'We couldn\'t verify that you\'re human. Please check the box again.'),
         );
     }
 
