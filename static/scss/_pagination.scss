@@ -2,7 +2,10 @@
 // Pagination
 // --------------------------------------------------
 .pagination-container {
-    text-align: center;
+    ul.pagination {
+        margin-top: 32px;
+        justify-content: center;
+    }
 }
 
 .pagination > li:not(.active) {
