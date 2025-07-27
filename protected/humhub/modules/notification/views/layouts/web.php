@@ -25,7 +25,7 @@ use humhub\widgets\TimeAgo;
         ? Html::encode(get_class($record->baseModel) . ':' . $record->baseModel->getGroupKey())
         : '' ?>">
 
-    <div class="flex-shrink-0 me-2 img-profile-space">
+    <div class="flex-shrink-0 me-3 pt-1 img-profile-space">
         <?php if ($originator) : ?>
             <?= UserImage::widget([
                 'user' => $originator,

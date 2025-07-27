@@ -5,10 +5,12 @@ use humhub\modules\user\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
+use yii\data\Pagination;
 
 /* @var $users \humhub\modules\user\models\User[] */
 /* @var $hideOnlineStatus bool */
 /* @var $title string */
+/* @var $pagination Pagination */
 ?>
 
 <?php Modal::beginDialog([
@@ -44,10 +46,8 @@ use humhub\widgets\modal\ModalButton;
     </div>
 
     <script <?= Html::nonce() ?>>
-
         // scroll to top of list
         $(".modal-body").animate({scrollTop: 0}, 200);
-
     </script>
 
 <?php Modal::endDialog() ?>

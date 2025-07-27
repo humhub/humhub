@@ -6,8 +6,11 @@ use humhub\modules\space\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\modal\Modal;
 use humhub\widgets\modal\ModalButton;
+use yii\data\Pagination;
 
+/* @var $title string */
 /* @var $spaces Space[] */
+/* @var $pagination Pagination */
 ?>
 
 
