@@ -4,16 +4,17 @@ use humhub\helpers\Html;
 use humhub\modules\user\widgets\Image;
 use humhub\widgets\AjaxLinkPager;
 use humhub\widgets\modal\Modal;
-use humhub\widgets\modal\ModalButton;
+use yii\data\Pagination;
 
 /* @var $users \humhub\modules\user\models\User[] */
 /* @var $hideOnlineStatus bool */
 /* @var $title string */
+/* @var $pagination Pagination */
 ?>
 
 <?php Modal::beginDialog([
     'title' => $title,
-    'footer' => ModalButton::cancel(Yii::t('base', 'Close')),
+    'footer' => Html::tag('div', AjaxLinkPager::widget(['pagination' => $pagination]), ['class' => 'pagination-container']),
 ]) ?>
 
     <?php if (count($users) === 0): ?>
@@ -39,15 +40,9 @@ use humhub\widgets\modal\ModalButton;
         <?php endforeach; ?>
     </div>
 
-    <div class="pagination-container">
-        <?= AjaxLinkPager::widget(['pagination' => $pagination]) ?>
-    </div>
-
     <script <?= Html::nonce() ?>>
-
         // scroll to top of list
         $(".modal-body").animate({scrollTop: 0}, 200);
-
     </script>
 
 <?php Modal::endDialog() ?>
