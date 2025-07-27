@@ -8,8 +8,7 @@
 
 namespace humhub\widgets;
 
-use humhub\helpers\Html;
-use humhub\widgets\assets\AjaxLinkPagerAsset;
+use yii\bootstrap5\Html;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -20,30 +19,33 @@ use yii\helpers\ArrayHelper;
  */
 class AjaxLinkPager extends \humhub\widgets\bootstrap\LinkPager
 {
-    protected function renderPageButton($label, $page, $class, $disabled, $active): string
+    /**
+     * @inerhitdoc
+     */
+    protected function renderPageButton(string $label, int $page, string $class, bool $disabled, bool $active): string
     {
-        $options = ['class' => $class === '' ? null : $class];
+        // Same code as parent:
+        $options = $this->linkContainerOptions;
+        $linkWrapTag = ArrayHelper::remove($options, 'tag', 'li');
+        Html::addCssClass($options, $class ?: $this->pageCssClass);
+
+        $linkOptions = $this->linkOptions;
+        $linkOptions['data']['page'] = $page;
+
         if ($active) {
+            $options['aria'] = ['current' => 'page'];
             Html::addCssClass($options, $this->activePageCssClass);
         }
         if ($disabled) {
             Html::addCssClass($options, $this->disabledPageCssClass);
-
-            return Html::tag('li', Html::tag('span', $label), $options);
+            $disabledItemOptions = $this->disabledListItemSubTagOptions;
+            $linkOptions = ArrayHelper::merge($linkOptions, $disabledItemOptions);
+            $linkOptions['tabindex'] = '-1';
         }
 
-        AjaxLinkPagerAsset::register($this->view);
-
-        return Html::tag(
-            'li',
-            Html::a($label, '#', ArrayHelper::merge([
-                'data' => [
-                    'page' => $page,
-                    'action-click' => 'ajaxLinkPager.setPage',
-                    'action-url' => $this->pagination->createUrl($page),
-                ],
-            ], $this->linkOptions)),
-            $options,
-        );
+        // Modifications for Ajax:
+        $linkOptions['data']['action-click'] = 'ui.modal.post';
+        $linkOptions['data']['action-url'] = $this->pagination->createUrl($page);
+        return Html::tag($linkWrapTag, Html::a($label, '#', $linkOptions), $options);
     }
 }

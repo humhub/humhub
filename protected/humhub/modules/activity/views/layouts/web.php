@@ -25,7 +25,7 @@ use yii\helpers\Url;
     <?php endif; ?>
 
     <div class="d-flex">
-        <div class="flex-shrink-0 me-2 img-profile-space">
+        <div class="flex-shrink-0 me-3 img-profile-space">
             <?php if ($originator !== null) : ?>
                 <!-- Show user image -->
                 <?= $originator->getProfileImage()->render(32, ['link' => false]) ?>
