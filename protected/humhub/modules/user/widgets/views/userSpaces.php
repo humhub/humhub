@@ -5,34 +5,24 @@ use humhub\modules\space\widgets\Image;
 use humhub\widgets\PanelMenu;
 
 ?>
-<?php if (count($spaces) > 0) { ?>
+<?php if (count($spaces) > 0) : ?>
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
 
         <!-- Display panel menu widget -->
-        <?php echo PanelMenu::widget(['id' => 'user-spaces-panel']); ?>
+        <?= PanelMenu::widget(['id' => 'user-spaces-panel']) ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces'); ?>
+            <?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body d-flex gap-2 flex-wrap">
             <?php foreach ($spaces as $space): ?>
-                <?php
-                echo Image::widget([
+                <?= Image::widget([
                     'space' => $space,
-                    'width' => 24,
-                    'htmlOptions' => [
-                        'class' => 'current-space-image',
-                    ],
-                    'link' => 'true',
-                    'linkOptions' => [
-                        'class' => 'tt',
-                        'data-bs-toggle' => 'tooltip',
-                        'data-placement' => 'top',
-                        'title' => $space->name,
-                    ],
-                ]);
-                ?>
+                    'width' => 30,
+                    'link' => true,
+                    'showTooltip' => true,
+                ]) ?>
             <?php endforeach; ?>
 
             <?php if ($showMoreLink): ?>
@@ -44,4 +34,4 @@ use humhub\widgets\PanelMenu;
             <?php endif; ?>
         </div>
     </div>
-<?php } ?>
+<?php endif; ?>

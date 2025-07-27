@@ -66,11 +66,11 @@ class Image extends BaseImage
         $imageHtmlOptions['data-contentcontainer-id'] = $this->space->contentcontainer_id;
 
         if ($this->showTooltip) {
-            $this->linkOptions['data-bs-toggle'] = 'tooltip';
-            $this->linkOptions['data-placement'] = 'top';
-            $this->linkOptions['data-html'] = 'true';
-            $this->linkOptions['data-bs-title'] = ($this->tooltipText) ? $this->tooltipText : Html::encode($this->space->name);
-            Html::addCssClass($this->linkOptions, 'tt');
+            $this->htmlOptions['data-bs-toggle'] = 'tooltip';
+            $this->htmlOptions['data-placement'] = 'top';
+            $this->htmlOptions['data-html'] = 'true';
+            $this->htmlOptions['data-bs-title'] = $this->tooltipText ?: Html::encode($this->space->name);
+            Html::addCssClass($this->htmlOptions, 'tt');
         }
 
         $isDefaultImage = str_starts_with(basename($this->space->getProfileImage()->getUrl()), 'default_space.jpg');
