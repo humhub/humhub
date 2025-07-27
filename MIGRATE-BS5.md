@@ -378,17 +378,18 @@ Before:
 </div>
 ```
 
-After (not tested, just a concept based on BS5 doc):
+After:
 
 ```php
 <div class="panel panel-default members" id="my-panel">
     <?= PanelMenu::widget([
-        'collapseId' => 'my-panel-panel-body',
+        'id' => 'my-panel',
+        'enableCollapseOption' => true,
     ]) ?>
     <div class="panel-heading">
         ...
     </div>
-    <div class="panel-body collapse" id="my-panel-body">
+    <div class="panel-body collapse">
         ...
     </div>
 </div>
