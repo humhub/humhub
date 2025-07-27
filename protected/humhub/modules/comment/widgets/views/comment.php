@@ -38,7 +38,7 @@ $module = Yii::$app->getModule('comment');
         <?= UserImage::widget(['user' => $user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $user->contentcontainer_id]]) ?>
     </div>
 
-    <div class="flex-grow-1">
+    <div class="flex-grow-1 overflow-hidden">
         <h4 class="comment-heading">
             <?= Html::containerLink($user) ?>
             <small>&middot <?= TimeAgo::widget(['timestamp' => $createdAt]) ?>
