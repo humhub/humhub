@@ -1,9 +1,14 @@
 <?php
 
+use humhub\components\View;
 use humhub\helpers\Html;
 use humhub\widgets\bootstrap\Link;
 
-/* @var $collapseId ?string */
+/**
+ * @var $this View
+ * @var $enableCollapseOption bool
+ * @var $collapseId string
+ */
 
 ?>
 
@@ -19,7 +24,7 @@ use humhub\widgets\bootstrap\Link;
         ]) ?>
 
         <ul class="dropdown-menu dropdown-menu-end">
-            <?php if ($collapseId): ?>
+            <?php if ($enableCollapseOption): ?>
                 <li>
                     <?= Link::instance()
                         ->link('#' . $collapseId)
@@ -29,7 +34,7 @@ use humhub\widgets\bootstrap\Link;
                             'aria-controls' => $collapseId,
                             'aria-expanded' => 'false',
                             'role' => 'button',
-                        ])?>
+                        ]) ?>
                 </li>
             <?php endif; ?>
             <?= $this->context->extraMenus ?>

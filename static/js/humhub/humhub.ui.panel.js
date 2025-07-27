@@ -13,21 +13,35 @@ humhub.module('ui.panel', function (module, require, $) {
     PanelMenu.prototype.init = function () {
         const that = this;
 
+        // Get Menu Link to "Collapse" / "Expand"
         this.$collapseLink = this.$.find('a.panel-collapse');
         if (!this.$collapseLink.length) {
-            return; // No toggle Link
+            return;
         }
 
+        // Get collapse ID
         const collapseId = this.$collapseLink.attr('href').substring(1); // Remove #
         if (!collapseId) {
             throw new Error('Collapse ID ' + collapseId + ' not found.');
         }
 
-        const collapseElement = document.getElementById(collapseId);
-        if (!collapseElement) {
-            throw new Error('Collapse element ' + collapseId + ' not found.');
+        // Get parent element
+        const $parent = this.$.closest('.panel');
+        if (!$parent.length) {
+            throw new Error('Panel for ' + collapseId + ' not found.');
         }
 
+        // Get HTML element to collapse (.collapse class, or .panel-body if not found)
+        const $collapseElement = $parent.find('.collapse');
+        if (!$collapseElement.length) {
+            throw new Error('Collapse element for ' + collapseId + ' not found.');
+        }
+
+        // Set ID to collapse element and get vanilla JS collapse element
+        $collapseElement.attr('id', collapseId);
+        const collapseElement = $collapseElement[0];
+
+        // Instantiate BS collapse
         const bsCollapse = new bootstrap.Collapse(collapseElement, {
             toggle: false, // Don't toggle on instantiation
             parent: null // Avoid parent lookup because the Link is in a dropdown menu
@@ -35,32 +49,33 @@ humhub.module('ui.panel', function (module, require, $) {
 
         const localStorageKey = 'pm_' + collapseId;
 
+        // Expand or Collapse depending on the local storage state
         if (localStorage.getItem(localStorageKey) !== STATE_COLLAPSED) {
             bsCollapse.show();
-            that.setToggleLinkState(true);
+            that.setToggleLinkTitle(true);
         } else {
             bsCollapse.hide();
-            that.setToggleLinkState(false);
+            that.setToggleLinkTitle(false);
         }
 
+        // When the Link is clicked, update the local storage state
         collapseElement.addEventListener('show.bs.collapse', function () {
             localStorage.removeItem(localStorageKey);
         });
-
         collapseElement.addEventListener('hide.bs.collapse', function () {
             localStorage.setItem(localStorageKey, STATE_COLLAPSED);
         });
 
+        // When the collapse is toggled, update the Link title
         collapseElement.addEventListener('shown.bs.collapse', function () {
-            that.setToggleLinkState(true);
+            that.setToggleLinkTitle(true);
         });
-
         collapseElement.addEventListener('hidden.bs.collapse', function () {
-            that.setToggleLinkState(false);
+            that.setToggleLinkTitle(false);
         });
     };
 
-    PanelMenu.prototype.setToggleLinkState = function (isExpanded) {
+    PanelMenu.prototype.setToggleLinkTitle = function (isExpanded) {
         const icon = isExpanded
             ? module.config.icon.up
             : module.config.icon.down;

@@ -8,10 +8,13 @@ use yii\helpers\Url;
 <?php if ($user->hasTags()) : ?>
     <div id="user-tags-panel" class="panel panel-default" style="position: relative;">
 
-        <?= PanelMenu::widget(['collapseId' => 'user-tags-panel-body']) ?>
+        <?= PanelMenu::widget([
+            'id' => 'user-tags-panel',
+            'enableCollapseOption' => true,
+        ]) ?>
 
         <div class="panel-heading"><?= Yii::t('UserModule.base', '<strong>User</strong> tags') ?></div>
-        <div class="panel-body collapse" id="user-tags-panel-body">
+        <div class="panel-body collapse">
             <!-- start: tags for user skills -->
             <div class="tags">
                 <?php foreach ($user->getTags() as $tag): ?>

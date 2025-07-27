@@ -16,11 +16,14 @@ use humhub\widgets\PanelMenu;
 ActivityAsset::register($this);
 ?>
 <div class="panel panel-default panel-activities" id="panel-activities">
-    <?= PanelMenu::widget(['collapseId' => 'panel-activities-content']) ?>
+    <?= PanelMenu::widget([
+        'id' => 'panel-activities',
+        'enableCollapseOption' => true,
+    ]) ?>
     <div class="panel-heading">
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
-    <div class="collapse" id="panel-activities-content">
+    <div class="collapse">
         <?= Html::beginTag('div', $options) ?>
         <div id="activityContents" class="hh-list activities" data-stream-content></div>
         <?= Html::endTag('div') ?>

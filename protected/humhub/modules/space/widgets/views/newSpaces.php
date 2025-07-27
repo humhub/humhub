@@ -12,12 +12,15 @@ use humhub\widgets\PanelMenu;
 <div class="panel panel-default spaces" id="new-spaces-panel">
 
     <!-- Display panel menu widget -->
-    <?= PanelMenu::widget(['collapseId' => 'new-spaces-panel-body']) ?>
+    <?= PanelMenu::widget([
+        'id' => 'new-spaces-panel',
+        'enableCollapseOption' => true,
+    ]) ?>
 
     <div class="panel-heading">
         <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces') ?>
     </div>
-    <div class="panel-body collapse" id="new-spaces-panel-body">
+    <div class="panel-body collapse">
         <?php foreach ($newSpaces as $space) : ?>
             <?= Image::widget([
                 'space' => $space,

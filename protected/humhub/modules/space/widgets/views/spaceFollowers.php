@@ -16,7 +16,8 @@ use humhub\widgets\PanelMenu;
 ?>
 <div class="panel panel-default follower" id="space-follower-panel">
     <?= PanelMenu::widget([
-        'collapseId' => 'space-follower-panel-body',
+        'id' => 'space-follower-panel',
+        'enableCollapseOption' => true,
         'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]) ?>
 
@@ -24,7 +25,7 @@ use humhub\widgets\PanelMenu;
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> followers') ?> (<?= $totalFollowerCount ?>)
     </div>
 
-    <div class="panel-body collapse" id="space-follower-panel-body">
+    <div class="panel-body collapse">
         <?php foreach ($followers as $follower): ?>
             <?= $follower->getProfileImage()->render(32, [
                 'class' => 'rounded tt img_margin',

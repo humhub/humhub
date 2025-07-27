@@ -35,13 +35,17 @@ $removeOptionHtml = Html::tag(
 ?>
 
 <div class="panel panel-default panel-tour" id="getting-started-panel">
-    <?= PanelMenu::widget(['collapseId' => 'getting-started-panel-body', 'extraMenus' => $removeOptionHtml]) ?>
+    <?= PanelMenu::widget([
+        'id' => 'getting-started-panel',
+        'enableCollapseOption' => true,
+        'extraMenus' => $removeOptionHtml,
+    ]) ?>
 
     <div class="panel-heading">
         <?= Yii::t('TourModule.base', '<strong>Getting</strong> Started') ?>
     </div>
 
-    <div class="panel-body collapse" id="getting-started-panel-body">
+    <div class="panel-body collapse">
         <p>
             <?= Yii::t('TourModule.base', 'Get to know your way around the site\'s most important features with the following guides:') ?>
         </p>

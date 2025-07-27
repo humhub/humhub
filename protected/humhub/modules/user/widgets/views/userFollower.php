@@ -11,11 +11,14 @@ use humhub\widgets\PanelMenu;
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
-        <?= PanelMenu::widget(['collapseId' => 'profile-follower-panel-body']) ?>
+        <?= PanelMenu::widget([
+            'id' => 'profile-follower-panel',
+            'enableCollapseOption' => true,
+        ]) ?>
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
-        <div class="panel-body collapse" id="profile-follower-panel-body">
+        <div class="panel-body collapse">
             <?php foreach ($followers as $follower): ?>
                 <a href="<?php echo $follower->getUrl(); ?>">
                     <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="rounded tt img_margin"
@@ -33,21 +36,24 @@ use humhub\widgets\PanelMenu;
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->
-        <?php echo PanelMenu::widget(['collapseId' => 'profile-following-panel-body']); ?>
+        <?= PanelMenu::widget([
+            'id' => 'profile-following-panel',
+            'enableCollapseOption' => true,
+        ]) ?>
 
         <div class="panel-heading">
-            <?php echo Yii::t('UserModule.base', '<strong>Following</strong>'); ?>
+            <?= Yii::t('UserModule.base', '<strong>Following</strong>') ?>
         </div>
 
-        <div class="panel-body collapse" id="profile-following-panel-body">
+        <div class="panel-body collapse">
             <?php foreach ($following as $followingUser): ?>
-                <a href="<?php echo $followingUser->getUrl(); ?>">
-                    <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>"
+                <a href="<?= $followingUser->getUrl() ?>">
+                    <img src="<?= $followingUser->getProfileImage()->getUrl() ?>"
                          class="rounded tt img_margin"
                          height="24" width="24" alt="24x24" data-src="holder.js/24x24"
                          style="width: 24px; height: 24px;"
                          data-bs-toggle="tooltip" data-placement="top" title=""
-                         data-bs-title="<?php echo Html::encode($followingUser->displayName); ?>">
+                         data-bs-title="<?= Html::encode($followingUser->displayName) ?>">
                 </a>
             <?php endforeach; ?>
         </div>

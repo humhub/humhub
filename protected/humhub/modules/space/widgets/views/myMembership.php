@@ -9,11 +9,14 @@ use humhub\widgets\PanelMenu;
 ?>
 
 <div class="panel panel-default panel-my-membership" id="my-membership-panel">
-    <?= PanelMenu::widget(['collapseId' => 'space-my-membership-panel-body']) ?>
+    <?= PanelMenu::widget([
+        'id' => 'my-membership-panel',
+        'enableCollapseOption' => true,
+    ]) ?>
     <div class="panel-heading">
         <?= Yii::t('SpaceModule.base', '<strong>About</strong> your membership') ?>
     </div>
-    <div class="panel-body collapse" id="space-my-membership-panel-body">
+    <div class="panel-body collapse">
         <p>
             <b><?= Yii::t('SpaceModule.base', 'Role') ?>: </b>
             <?= Yii::t('SpaceModule.base', ucfirst($role)) ?>
