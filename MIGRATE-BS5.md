@@ -62,7 +62,6 @@ Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::htmlOptions` & `humhub\widgets\bootstrap\Badge::htmlOptions` use `::options` instead
 - `humhub\widgets\bootstrap\Button::color()` & `humhub\widgets\bootstrap\Badge::color()` use `::instance($text, $color)` instead for a Bootstrap color, or `::cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA) (same for Badge)
 - `humhub\widgets\bootstrap\Button::textColor()` & `humhub\widgets\bootstrap\Badge::textColor()` use `::cssTextColor()` instead
-- `humhub\widgets\PanelMenu::$id` use `$collapseId` instead (see "### PanelMenu widget" below)
 
 Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" below)
 
@@ -360,7 +359,7 @@ Search for "Show more" or toggle buttons and use Bootstrap 5 collapse component 
 
 ### PanelMenu widget
 
-When using the `humhub\widgets\PanelMenu` widget, the collapsed section must now have the `collapse` class and the same ID value as the one passed to `PanelMenu::$collapseId`.
+When using the `humhub\widgets\PanelMenu` widget, the collapsed section must now have the `collapse` class and `PanelMenu::$enableCollapseOption` must be defined to true.
 
 Before:
 
