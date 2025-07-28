@@ -388,7 +388,7 @@ class NotificationManager
      * @param Space $space which notifications will be followed / unfollowed
      * @param bool $follow the setting value (true by default)
      */
-    public function setSpaceSetting(?User $user = null, Space $space, $follow = true)
+    public function setSpaceSetting(User $user, Space $space, $follow = true)
     {
         /* @var $membership Membership */
         $membership = $space->getMembership($user->id);
