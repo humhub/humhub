@@ -17,10 +17,10 @@ use humhub\widgets\bootstrap\Button;
 /* @var $options [] */
 /* @var $isCollapsed bool */
 
-$panelColumn1Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_1]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_1] : null;
-$panelColumn2Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_2]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_2] : null;
-$panelColumn3Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_3]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_3] : null;
-$panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4]) ? $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] : null;
+$panelColumn1Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_1] ?? null;
+$panelColumn2Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_2] ?? null;
+$panelColumn3Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_3] ?? null;
+$panelColumn4Blocks = $panels[WallStreamFilterNavigation::PANEL_COLUMN_4] ?? null;
 
 ?>
 
@@ -30,7 +30,9 @@ $panelColumn4Blocks = isset($panels[WallStreamFilterNavigation::PANEL_COLUMN_4])
     <div class="wall-stream-filter-head clearfix">
         <div class="wall-stream-filter-bar"></div>
         <?= Button::asLink(Yii::t('ContentModule.base', 'Filter'))
-            ->cssClass('wall-stream-filter-toggle')->icon('fa-filter')->sm()->style('pa') ?>
+            ->cssClass('wall-stream-filter-toggle filter-toggle-link')
+            ->icon('filter')
+            ->sm() ?>
     </div>
     <div class="wall-stream-filter-body<?= $isCollapsed ? ' d-none' : '' ?>">
         <div class="filter-root">

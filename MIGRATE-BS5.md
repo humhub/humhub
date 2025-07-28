@@ -39,6 +39,8 @@ And especially:
 
 Colors: `secondary`, `light` and `dark` are the new Bootstrap colors (`default` is deprecated).
 
+CSS Class: `.filter-toggle-link` for "Filter" toggle link
+
 
 ## Deprecations
 
