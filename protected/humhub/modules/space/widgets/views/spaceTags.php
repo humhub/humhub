@@ -14,7 +14,7 @@ use yii\helpers\Url;
         <?= PanelMenu::widget() ?>
 
         <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> tags') ?></div>
-        <div class="panel-body collapse">
+        <div class="panel-body">
             <div class="tags">
                 <?php foreach ($space->getTags() as $tag): ?>
                     <?= Html::a(Html::encode($tag), Url::to(['/space/spaces', 'keyword' => $tag]), ['class' => 'btn btn-light btn-sm tag']) ?>

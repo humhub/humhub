@@ -12,7 +12,7 @@ use humhub\widgets\PanelMenu;
             (<?php echo $totalCount; ?>)
         </div>
 
-        <div class="panel-body collapse">
+        <div class="panel-body">
             <?php foreach ($friends as $friend): ?>
                 <a href="<?= $friend->getUrl() ?>">
                     <img src="<?= $friend->getProfileImage()->getUrl() ?>" class="rounded tt img_margin"

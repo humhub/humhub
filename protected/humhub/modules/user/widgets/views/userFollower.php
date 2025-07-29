@@ -15,7 +15,7 @@ use humhub\widgets\PanelMenu;
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
-        <div class="panel-body collapse d-flex column-gap-2 flex-wrap">
+        <div class="panel-body d-flex column-gap-2 flex-wrap">
             <?php foreach ($followers as $follower): ?>
                 <?= Image::widget([
                     'user' => $follower,
@@ -38,7 +38,7 @@ use humhub\widgets\PanelMenu;
             <?= Yii::t('UserModule.base', '<strong>Following</strong>') ?>
         </div>
 
-        <div class="panel-body collapse d-flex column-gap-2 flex-wrap">
+        <div class="panel-body d-flex column-gap-2 flex-wrap">
             <?php foreach ($following as $followingUser): ?>
                 <?= Image::widget([
                     'user' => $followingUser,

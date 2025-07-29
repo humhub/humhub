@@ -23,7 +23,7 @@ use humhub\widgets\PanelMenu;
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> followers') ?> (<?= $totalFollowerCount ?>)
     </div>
 
-    <div class="panel-body collapse">
+    <div class="panel-body">
         <?php foreach ($followers as $follower): ?>
             <?= $follower->getProfileImage()->render(32, [
                 'class' => 'rounded tt img_margin',

@@ -21,7 +21,7 @@ use humhub\widgets\PanelMenu;
     <div class="panel-heading"<?= Html::renderTagAttributes($showListOptions + ['style' => 'cursor:pointer']) ?>>
         <?= Yii::t('SpaceModule.base', '<strong>Space</strong> members'); ?> (<?= $totalMemberCount ?>)
     </div>
-    <div class="panel-body collapse">
+    <div class="panel-body">
         <?php foreach ($users as $user) : ?>
             <?php
             $imageWidgetConfig = [

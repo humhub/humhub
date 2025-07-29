@@ -13,7 +13,7 @@ use humhub\widgets\PanelMenu;
     <div class="panel-heading">
         <?= Yii::t('SpaceModule.base', '<strong>About</strong> your membership') ?>
     </div>
-    <div class="panel-body collapse">
+    <div class="panel-body">
         <p>
             <b><?= Yii::t('SpaceModule.base', 'Role') ?>: </b>
             <?= Yii::t('SpaceModule.base', ucfirst($role)) ?>

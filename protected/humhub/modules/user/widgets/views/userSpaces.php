@@ -9,13 +9,13 @@ use humhub\widgets\PanelMenu;
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
 
         <!-- Display panel menu widget -->
-        <?php echo PanelMenu::widget(); ?>
+        <?= PanelMenu::widget() ?>
 
         <div class="panel-heading">
             <?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?>
         </div>
 
-        <div class="panel-body collapse d-flex gap-2 flex-wrap">
+        <div class="panel-body d-flex gap-2 flex-wrap">
             <?php foreach ($spaces as $space): ?>
                 <?= Image::widget([
                     'space' => $space,

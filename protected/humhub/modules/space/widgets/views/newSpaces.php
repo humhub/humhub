@@ -17,7 +17,7 @@ use humhub\widgets\PanelMenu;
     <div class="panel-heading">
         <?= Yii::t('SpaceModule.base', '<strong>New</strong> spaces') ?>
     </div>
-    <div class="panel-body collapse">
+    <div class="panel-body">
         <?php foreach ($newSpaces as $space) : ?>
             <?= Image::widget([
                 'space' => $space,

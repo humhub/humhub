@@ -43,7 +43,7 @@ $removeOptionHtml = Html::tag(
         <?= Yii::t('TourModule.base', '<strong>Getting</strong> Started') ?>
     </div>
 
-    <div class="panel-body collapse">
+    <div class="panel-body">
         <p>
             <?= Yii::t('TourModule.base', 'Get to know your way around the site\'s most important features with the following guides:') ?>
         </p>

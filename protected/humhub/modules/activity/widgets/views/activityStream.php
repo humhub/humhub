@@ -20,7 +20,7 @@ ActivityAsset::register($this);
     <div class="panel-heading">
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>
-    <div class="collapse">
+    <div>
         <?= Html::beginTag('div', $options) ?>
         <div id="activityContents" class="hh-list activities" data-stream-content></div>
         <?= Html::endTag('div') ?>
