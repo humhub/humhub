@@ -13,7 +13,7 @@ use humhub\modules\content\components\ContentActiveRecord;
 /* @var $id string unqiue object id */
 ?>
 
-<div class="bg-light p-3 comment-container d-none" id="comment_<?= $id ?>">
+<div class="bg-light p-2 mt-3 comment-container d-none" id="comment_<?= $id ?>">
     <div class="comment<?= Yii::$app->user->isGuest ? ' guest-mode' : '' ?>" id="comments_area_<?= $id ?>">
         <?= ShowMore::widget([
             'object' => $object,

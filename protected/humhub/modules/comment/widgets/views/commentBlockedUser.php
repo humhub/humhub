@@ -24,7 +24,7 @@ use humhub\widgets\bootstrap\Button;
         <?= UserImage::widget(['user' => $comment->user, 'width' => 25, 'htmlOptions' => ['data-contentcontainer-id' => $comment->user->contentcontainer_id]]); ?>
     </div>
 
-    <div class="flex-grow-1">
+    <div class="flex-grow-1 overflow-hidden">
         <?= Yii::t('CommentModule.base', 'Comment of blocked user.') ?>
         <?= Button::asLink(Yii::t('CommentModule.base', 'Show'))->action('showBlocked', $loadBlockedCommentUrl)->sm()->cssClass('text-primary') ?>
     </div>

@@ -21,7 +21,7 @@ $commentLeftMargin: 35px;
 
         .nav-pills.preferences {
             display: none;
-            right: -3px;
+            right: 0;
         }
 
         &.comment-current {
@@ -99,7 +99,7 @@ $commentLeftMargin: 35px;
 }
 
 .comment-container {
-    margin-top: 10px;
+    border-radius: 3px;
 
     .d-flex {
         overflow: visible;
@@ -157,11 +157,13 @@ $commentLeftMargin: 35px;
 div.comment {
     > div.d-flex:first-of-type .nav-pills.preferences {
         display: none;
-        top: -3px;
+        top: 0;
     }
 }
 
 div.nested-comments-root {
+    margin-left: -0.5rem !important;
+
     .ProseMirror-menubar-wrapper {
         z-index: 210;
     }
@@ -181,14 +183,7 @@ div.nested-comments-root {
 
             .nav-pills.preferences {
                 display: none;
-                top: 8px;
-                right: 0;
             }
         }
-    }
-
-    div.comment-container {
-        margin-top: 0;
-        padding: 0 !important;
     }
 }

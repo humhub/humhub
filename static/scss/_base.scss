@@ -126,6 +126,7 @@ input[type=select] {
 :focus-visible {
     outline: none; // User account menu blue outline when active
 }
+
 button.ProseMirror-icon {
     color: inherit; // Prosemirror editor button blue color (-apple-system-blue)
 }
@@ -140,6 +141,22 @@ span.likeLinkContainer .like.disabled, span.likeLinkContainer .unlike.disabled {
 
 .showMore {
     font-size: 13px;
+}
+
+.filter-toggle-link {
+    color: var(--hh-text-color-highlight);
+    font-size: 12px;
+    // Right caret
+    &::after {
+        display: inline-block;
+        margin-left: 0.4em;
+        vertical-align: 0.1em;
+        content: "";
+        border-top: 0.4em solid;
+        border-right: 0.4em solid transparent;
+        border-bottom: 0;
+        border-left: 0.4em solid transparent;
+    }
 }
 
 .table-responsive {

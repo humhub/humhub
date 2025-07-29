@@ -52,7 +52,7 @@ humhub.module('comment', function (module, require, $) {
 
         $elements.hide().css('opacity', 1).fadeIn('fast');
 
-        this.$.find('hr').show();
+        this.$.find('hr').css('display', 'inherit');
     };
 
     Form.prototype.incrementCommentCount = function (count) {
@@ -130,7 +130,7 @@ humhub.module('comment', function (module, require, $) {
         this.super('delete', {modal: module.config.modal.delteConfirm}).then(function ($confirm) {
             if ($confirm) {
                 module.log.success('success.delete');
-                hideHr && form.$.find('hr').hide();
+                hideHr && form.$.find('hr').css('display', 'none');
                 form.incrementCommentCount(-1);
             }
         }).catch(function (err) {
@@ -149,7 +149,7 @@ humhub.module('comment', function (module, require, $) {
             if ($confirm) {
                 module.log.success('success.delete');
                 if (hideHr) {
-                    $form.find('hr').hide();
+                    $form.find('hr').css('display', 'none');
                 }
             }
         }).catch(function (err) {
@@ -295,7 +295,7 @@ humhub.module('comment', function (module, require, $) {
         var $form = target.children('.comment_create');
 
         if (!target.find('.comment .single-comment').length && !target.closest('[data-action-component="comment.Comment"]').length) {
-            $form.find('hr').hide();
+            $form.find('hr').css('display', 'none');
         }
 
         $form.show();
