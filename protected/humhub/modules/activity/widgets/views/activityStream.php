@@ -16,10 +16,7 @@ use humhub\widgets\PanelMenu;
 ActivityAsset::register($this);
 ?>
 <div class="panel panel-default panel-activities" id="panel-activities">
-    <?= PanelMenu::widget([
-        'id' => 'panel-activities',
-        'enableCollapseOption' => true,
-    ]) ?>
+    <?= PanelMenu::widget() ?>
     <div class="panel-heading">
         <?= Yii::t('ActivityModule.base', '<strong>Latest</strong> activities') ?>
     </div>

@@ -11,10 +11,7 @@ use yii\helpers\Url;
 <?php if (!empty($space->getTags())) : ?>
     <div id="user-tags-panel" class="panel panel-default">
 
-        <?= PanelMenu::widget([
-            'id' => 'user-tags-panel',
-            'enableCollapseOption' => true,
-        ]) ?>
+        <?= PanelMenu::widget() ?>
 
         <div class="panel-heading"><?= Yii::t('SpaceModule.base', '<strong>Space</strong> tags') ?></div>
         <div class="panel-body collapse">

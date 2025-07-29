@@ -6,10 +6,7 @@ use humhub\widgets\PanelMenu;
 ?>
 <?php if (count($friends) > 0) { ?>
     <div class="panel panel-default follower" id="profile-friends-panel">
-        <?= PanelMenu::widget([
-            'id' => 'profile-friends-panel',
-            'enableCollapseOption' => true,
-        ]) ?>
+        <?= PanelMenu::widget() ?>
 
         <div class="panel-heading"><strong><?= Yii::t('FriendshipModule.base', 'Friends') ?></strong>
             (<?php echo $totalCount; ?>)

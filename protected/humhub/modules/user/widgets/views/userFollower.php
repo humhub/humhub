@@ -11,10 +11,7 @@ use humhub\widgets\PanelMenu;
     <div class="panel panel-default follower" id="profile-follower-panel">
 
         <!-- Display panel menu widget -->
-        <?= PanelMenu::widget([
-            'id' => 'profile-follower-panel',
-            'enableCollapseOption' => true,
-        ]) ?>
+        <?= PanelMenu::widget() ?>
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
@@ -35,10 +32,7 @@ use humhub\widgets\PanelMenu;
     <div class="panel panel-default follower" id="profile-following-panel">
 
         <!-- Display panel menu widget -->
-        <?= PanelMenu::widget([
-            'id' => 'profile-following-panel',
-            'enableCollapseOption' => true,
-        ]) ?>
+        <?= PanelMenu::widget() ?>
 
         <div class="panel-heading">
             <?= Yii::t('UserModule.base', '<strong>Following</strong>') ?>

@@ -16,8 +16,6 @@ use humhub\widgets\PanelMenu;
 ?>
 <div class="panel panel-default follower" id="space-follower-panel">
     <?= PanelMenu::widget([
-        'id' => 'space-follower-panel',
-        'enableCollapseOption' => true,
         'extraMenus' => Html::tag('li', Link::asLink(Yii::t('SpaceModule.base', 'Show as List'))->icon('list')->options($showListOptions)),
     ]) ?>
 

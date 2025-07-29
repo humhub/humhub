@@ -31,11 +31,19 @@ humhub.module('ui.panel', function (module, require, $) {
             throw new Error('Panel for ' + collapseId + ' not found.');
         }
 
-        // Get HTML element to collapse (.collapse class, or .panel-body if not found)
-        const $collapseElement = $parent.find('.collapse');
+        // Get HTML element to collapse (next if it is not a heading)
+        let $collapseElement = $parent.find('.collapse');
+        if (!$collapseElement.length) {
+            $collapseElement = this.$.next();
+            if ($collapseElement.hasClass('panel-heading')) {
+                // Use next element (usually it is .panel-body)
+                $collapseElement = $collapseElement.next();
+            }
+        }
         if (!$collapseElement.length) {
             throw new Error('Collapse element for ' + collapseId + ' not found.');
         }
+        $collapseElement.addClass('collapse');
 
         // Set ID to collapse element and get vanilla JS collapse element
         $collapseElement.attr('id', collapseId);

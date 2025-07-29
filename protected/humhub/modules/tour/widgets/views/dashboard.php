@@ -36,8 +36,6 @@ $removeOptionHtml = Html::tag(
 
 <div class="panel panel-default panel-tour" id="getting-started-panel">
     <?= PanelMenu::widget([
-        'id' => 'getting-started-panel',
-        'enableCollapseOption' => true,
         'extraMenus' => $removeOptionHtml,
     ]) ?>
 

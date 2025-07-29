@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use yii\base\Widget;
+use yii\helpers\BaseInflector;
 
 /**
  * PanelMenuWidget add an dropdown menu to the panel header
@@ -22,14 +23,12 @@ class PanelMenu extends Widget
     /**
      * Allow collapsing the HTML element having the `.collapse` class
      *
-     * The `id` is mandatory
-     *
      * @since since 1.18
      */
-    public bool $enableCollapseOption = false;
+    public bool $enableCollapseOption = true;
 
     /**
-     * Unique id from panel element
+     * @deprecated since 1.18
      */
     public ?string $id = null;
 
@@ -48,10 +47,9 @@ class PanelMenu extends Widget
     public function run()
     {
         return $this->render('panelMenu', [
-            'enableCollapseOption' => $this->enableCollapseOption && $this->id,
-            'collapseId' => $this->id . '-collapse',
+            'enableCollapseOption' => $this->enableCollapseOption,
+            'collapseId' => BaseInflector::slug(get_class($this->view->context)), // Generate a unique ID based from the parent Widget class name
             'extraMenus' => $this->extraMenus,
         ]);
     }
-
 }
