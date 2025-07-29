@@ -8,6 +8,7 @@
 
 namespace humhub\controllers;
 
+use humhub\components\access\ControllerAccess;
 use humhub\components\Controller;
 use humhub\helpers\DeviceDetectorHelper;
 use humhub\helpers\MobileAppHelper;
@@ -21,6 +22,8 @@ use yii\helpers\Url;
  */
 class MobileAppController extends Controller
 {
+    public $access = ControllerAccess::class;
+
     public function actionInstanceOpener()
     {
         MobileAppHelper::registerShowOpenerScript();
