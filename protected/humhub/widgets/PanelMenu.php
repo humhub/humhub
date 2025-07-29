@@ -28,6 +28,15 @@ class PanelMenu extends Widget
     public bool $enableCollapseOption = true;
 
     /**
+     * Optional unique ID for the collapse element and the local storage state (expanded/collapsed)
+     *
+     * If the parent widget class is unique, it can be null
+     *
+     * @since since 1.18
+     */
+    public ?string $collapseId = null;
+
+    /**
      * @deprecated since 1.18
      */
     public ?string $id = null;
@@ -48,7 +57,7 @@ class PanelMenu extends Widget
     {
         return $this->render('panelMenu', [
             'enableCollapseOption' => $this->enableCollapseOption,
-            'collapseId' => BaseInflector::slug(get_class($this->view->context)), // Generate a unique ID based from the parent Widget class name
+            'collapseId' => $this->collapseId ?? BaseInflector::slug(get_class($this->view->context)), // Generate a unique ID from the parent Widget class name
             'extraMenus' => $this->extraMenus,
         ]);
     }
