@@ -359,40 +359,6 @@ Search for "Show more" or toggle buttons and use Bootstrap 5 collapse component 
 
 [See documentation](https://getbootstrap.com/docs/5.3/components/collapse)
 
-### PanelMenu widget
-
-When using the `humhub\widgets\PanelMenu` widget, the `id` must be removed and the collapsed section must now have the `collapse` class.
-
-Before:
-
-```php
-<div class="panel panel-default members" id="my-panel">
-    <?= PanelMenu::widget([
-        'id' => 'my-panel',
-    ]) ?>
-    <div class="panel-heading">
-        ...
-    </div>
-    <div class="panel-body">
-        ...
-    </div>
-</div>
-```
-
-After:
-
-```php
-<div class="panel panel-default members" id="my-panel">
-    <?= PanelMenu::widget() ?>
-    <div class="panel-heading">
-        ...
-    </div>
-    <div class="panel-body collapse">
-        ...
-    </div>
-</div>
-```
-
 ## Replacements in HTML attributes
 
 These replacements must be done in PHP, SCSS (formerly LESS) and JS files.
