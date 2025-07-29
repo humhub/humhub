@@ -1,7 +1,7 @@
 <?php
 
+use humhub\helpers\Html;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
@@ -15,14 +15,14 @@ use yii\helpers\Url;
             <!-- start: tags for user skills -->
             <div class="tags">
                 <?php foreach ($user->getTags() as $tag): ?>
-                    <?php echo Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => $tag]), ['class' => 'btn btn-default btn-xs tag']); ?>
+                    <?php echo Html::a(Html::encode($tag), Url::to(['/user/people', 'keyword' => $tag]), ['class' => 'btn btn-light btn-sm tag']); ?>
                 <?php endforeach; ?>
             </div>
             <!-- end: tags for user skills -->
 
         </div>
     </div>
-    <script <?= \humhub\libs\Html::nonce() ?>>
+    <script <?= \humhub\helpers\Html::nonce() ?>>
         function toggleUp() {
             $('.pups').slideUp("fast", function () {
                 // Animation complete.

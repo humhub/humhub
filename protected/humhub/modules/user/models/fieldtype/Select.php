@@ -8,11 +8,11 @@
 
 namespace humhub\modules\user\models\fieldtype;
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
 
 /**
  * Select handles profile select list fields.
@@ -104,7 +104,7 @@ class Select extends BaseType
     /**
      * @inheritdoc
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return parent::getFieldFormDefinition($user, array_merge([
             'items' => $this->getSelectItems(),

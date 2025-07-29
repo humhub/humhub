@@ -24,7 +24,7 @@ class DateTimeHelper
      * @param DateTime $dateTime
      * @return DateTime
      */
-    public static function roundToNextFullHour(DateTime $dateTime = null)
+    public static function roundToNextFullHour(?DateTime $dateTime = null)
     {
         if ($dateTime === null) {
             $dateTime = new DateTime();

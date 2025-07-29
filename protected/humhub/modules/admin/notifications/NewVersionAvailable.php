@@ -8,11 +8,11 @@
 
 namespace humhub\modules\admin\notifications;
 
+use humhub\helpers\Html;
+use humhub\modules\admin\libs\HumHubAPI;
+use humhub\modules\notification\components\BaseNotification;
 use Yii;
 use yii\helpers\Url;
-use yii\bootstrap\Html;
-use humhub\modules\notification\components\BaseNotification;
-use humhub\modules\admin\libs\HumHubAPI;
 
 /**
  * HumHubUpdateNotification

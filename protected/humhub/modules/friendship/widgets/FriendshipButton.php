@@ -99,7 +99,7 @@ class FriendshipButton extends Widget
         $this->options = $this->getOptions($defaultOptions);
     }
 
-    public function getOptions(array $defaultOptions = null): array
+    public function getOptions(?array $defaultOptions = null): array
     {
         if ($defaultOptions === null) {
             $defaultOptions = $this->getDefaultOptions();

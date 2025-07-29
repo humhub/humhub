@@ -218,11 +218,10 @@ class Registration extends HForm
     }
 
     /**
-     * Set models User, Profile and Password to Form
+     * Set models User, Profile, GroupUser and Password to Form
      */
-    protected function setModels()
+    public function setModels(): void
     {
-        // Set Models
         $this->models['User'] = $this->getUser();
         $this->models['Profile'] = $this->getProfile();
         $this->models['GroupUser'] = $this->getGroupUser();
@@ -233,8 +232,6 @@ class Registration extends HForm
                 $this->models['Password']->mustChangePassword = true;
             }
         }
-
-        return true;
     }
 
     /**
@@ -268,7 +265,7 @@ class Registration extends HForm
      *
      * @return bool state
      */
-    public function register(ClientInterface $authClient = null)
+    public function register(?ClientInterface $authClient = null)
     {
         if (!$this->validate()) {
             return false;

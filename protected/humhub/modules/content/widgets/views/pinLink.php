@@ -5,17 +5,24 @@
 
 /* @var $pinUrl string */
 
+use humhub\modules\ui\icon\widgets\Icon;
 use yii\web\View;
 
 ?>
 <li>
     <?php if ($isPinned): ?>
-        <a href="#" data-action-click="unpin" data-action-url="<?= $unpinUrl ?>">
-            <i class="fa fa-map-pin"></i> <?php echo Yii::t('ContentModule.base', 'Unpin'); ?>
+        <a href="#"
+           class="dropdown-item "
+           data-action-click="unpin"
+           data-action-url="<?= $unpinUrl ?>">
+            <?= Icon::get('map-pin') ?> <?php echo Yii::t('ContentModule.base', 'Unpin'); ?>
         </a>
     <?php else: ?>
-        <a href="#" data-action-click="pin" data-action-url="<?= $pinUrl ?>">
-            <i class="fa fa-map-pin"></i> <?php echo Yii::t('ContentModule.base', 'Pin to top'); ?>
+        <a href="#"
+           class="dropdown-item "
+           data-action-click="pin"
+           data-action-url="<?= $pinUrl ?>">
+            <?= Icon::get('map-pin') ?> <?php echo Yii::t('ContentModule.base', 'Pin to top'); ?>
         </a>
     <?php endif; ?>
 </li>

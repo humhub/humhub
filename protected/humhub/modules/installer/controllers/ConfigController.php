@@ -276,7 +276,7 @@ class ConfigController extends Controller
      */
     public function actionSampleData()
     {
-        if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
+        if (Yii::$app->getModule('installer')->settings->get('sampleData')) {
             // Sample Data already created
             return $this->redirect(Yii::$app->getModule('installer')->getNextConfigStepUrl());
         }
@@ -287,7 +287,7 @@ class ConfigController extends Controller
         if ($form->load(Yii::$app->request->post()) && $form->validate()) {
             Yii::$app->getModule('installer')->settings->set('sampleData', $form->sampleData);
 
-            if (Yii::$app->getModule('installer')->settings->get('sampleData') == 1) {
+            if (Yii::$app->getModule('installer')->settings->get('sampleData')) {
                 // Add sample image to admin
                 $admin = User::find()->where(['id' => 1])->one();
                 $adminImage = new ProfileImage($admin->guid);

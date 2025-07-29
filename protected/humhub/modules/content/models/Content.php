@@ -635,7 +635,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * {@inheritdoc}
      * @throws Throwable
      */
-    public function move(ContentContainerActiveRecord $container = null, $force = false)
+    public function move(?ContentContainerActiveRecord $container = null, $force = false)
     {
         $move = ($force) ? true : $this->canMove($container);
 
@@ -657,7 +657,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * {@inheritdoc}
      */
-    public function canMove(ContentContainerActiveRecord $container = null)
+    public function canMove(?ContentContainerActiveRecord $container = null)
     {
         $model = $this->getModel();
 
@@ -705,7 +705,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
         return true;
     }
 
-    public function isModelMovable(ContentContainerActiveRecord $container = null)
+    public function isModelMovable(?ContentContainerActiveRecord $container = null)
     {
         $model = $this->getModel();
         $canModelBeMoved = $model->canMove($container);
@@ -735,7 +735,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
      * @throws Throwable
      * @throws InvalidConfigException
      */
-    public function checkMovePermission(ContentContainerActiveRecord $container = null)
+    public function checkMovePermission(?ContentContainerActiveRecord $container = null)
     {
         if (!$container) {
             $container = $this->container;
@@ -750,7 +750,7 @@ class Content extends ActiveRecord implements Movable, ContentOwner, Archiveable
     /**
      * {@inheritdoc}
      */
-    public function afterMove(ContentContainerActiveRecord $container = null)
+    public function afterMove(?ContentContainerActiveRecord $container = null)
     {
         // Nothing to do
     }

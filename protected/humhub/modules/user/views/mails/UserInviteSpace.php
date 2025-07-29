@@ -5,10 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\space\models\Space;
 use humhub\modules\ui\mail\DefaultMailStyle;
 use humhub\modules\user\models\User;
-use yii\helpers\Html;
 
 /* @var User $originator */
 /* @var Space $space */

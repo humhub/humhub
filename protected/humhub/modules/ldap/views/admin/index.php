@@ -14,9 +14,9 @@
  * @var $userCount string
  */
 
+use humhub\helpers\Html;
 use humhub\modules\ldap\models\LdapSettings;
-use yii\helpers\Html;
-use humhub\modules\ui\form\widgets\ActiveForm;
+use humhub\widgets\form\ActiveForm;
 use yii\web\View;
 
 ?>
@@ -25,7 +25,7 @@ use yii\web\View;
 
 <div class="panel-body">
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('LdapModule.base', 'Specify your LDAP-backend used to fetch user accounts.') ?>
     </div>
     <br>

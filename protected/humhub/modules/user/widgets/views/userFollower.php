@@ -1,8 +1,8 @@
 <?php
 
-use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 use humhub\modules\user\models\User;
+use humhub\modules\user\widgets\Image;
+use humhub\widgets\PanelMenu;
 
 /* @var User[] $followers */
 /* @var User[] $following */
@@ -15,15 +15,14 @@ use humhub\modules\user\models\User;
 
         <div class="panel-heading"><?php echo Yii::t('UserModule.base', '<strong>Followers</strong>'); ?></div>
 
-        <div class="panel-body">
+        <div class="panel-body d-flex column-gap-2 flex-wrap">
             <?php foreach ($followers as $follower): ?>
-                <a href="<?php echo $follower->getUrl(); ?>">
-                    <img src="<?php echo $follower->getProfileImage()->getUrl(); ?>" class="img-rounded tt img_margin"
-                         height="24" width="24" alt="24x24" data-src="holder.js/24x24"
-                         style="width: 24px; height: 24px;"
-                         data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<?php echo Html::encode($follower->displayName); ?>">
-                </a>
+                <?= Image::widget([
+                    'user' => $follower,
+                    'width' => 30,
+                    'link' => true,
+                    'showTooltip' => true,
+                ]) ?>
             <?php endforeach; ?>
         </div>
     </div>
@@ -39,16 +38,14 @@ use humhub\modules\user\models\User;
             <?php echo Yii::t('UserModule.base', '<strong>Following</strong>'); ?>
         </div>
 
-        <div class="panel-body">
+        <div class="panel-body d-flex column-gap-2 flex-wrap">
             <?php foreach ($following as $followingUser): ?>
-                <a href="<?php echo $followingUser->getUrl(); ?>">
-                    <img src="<?php echo $followingUser->getProfileImage()->getUrl(); ?>"
-                         class="img-rounded tt img_margin"
-                         height="24" width="24" alt="24x24" data-src="holder.js/24x24"
-                         style="width: 24px; height: 24px;"
-                         data-toggle="tooltip" data-placement="top" title=""
-                         data-original-title="<?php echo Html::encode($followingUser->displayName); ?>">
-                </a>
+                <?= Image::widget([
+                    'user' => $followingUser,
+                    'width' => 30,
+                    'link' => true,
+                    'showTooltip' => true,
+                ]) ?>
             <?php endforeach; ?>
         </div>
     </div>

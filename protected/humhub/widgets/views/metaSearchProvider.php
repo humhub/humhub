@@ -5,9 +5,9 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\interfaces\MetaSearchProviderInterface;
-use humhub\libs\Html;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 
 /* @var array $options */
 /* @var MetaSearchProviderInterface $provider */
@@ -39,7 +39,7 @@ use humhub\widgets\Button;
                 <div class="search-provider-no-results"><?= Yii::t('base', 'No results') ?></div>
             <?php endif; ?>
             <div class="search-provider-actions">
-                <?= Button::defaultType($provider->getAllResultsText())
+                <?= Button::light($provider->getAllResultsText())
                     ->link($provider->getService()->getUrl())
                     ->cssClass('search-provider-show-all')
                     ->options(['target' => $provider->getService()->getLinkTarget()])
@@ -47,5 +47,4 @@ use humhub\widgets\Button;
             </div>
         <?php endif; ?>
     </div>
-    <div class="clearfix"></div>
 <?= Html::endTag('li') ?>

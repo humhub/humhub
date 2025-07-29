@@ -9,13 +9,13 @@
 namespace humhub\modules\user\models\fieldtype;
 
 use humhub\helpers\DataTypeHelper;
+use humhub\helpers\Html;
 use humhub\modules\user\models\Profile;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\Exception;
 use yii\base\Model;
-use yii\helpers\Html;
 use yii\helpers\Json;
 
 /**
@@ -198,7 +198,7 @@ class BaseType extends Model
      * @param array $options Additional options
      * @return array
      */
-    public function getFieldFormDefinition(User $user = null, array $options = []): array
+    public function getFieldFormDefinition(?User $user = null, array $options = []): array
     {
         return [
             $this->profileField->internal_name => array_merge([

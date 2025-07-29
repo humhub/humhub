@@ -1,0 +1,105 @@
+//
+// Modals
+// --------------------------------------------------
+
+.modal-backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+//
+// Animate.css modifications
+// --------------------------------------------------
+.modal-dialog.fadeIn,
+.modal-dialog.pulse {
+    animation-duration: 200ms;
+}
+
+body.modal-open {
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.modal-top {
+    z-index: 999999 !important;
+}
+
+.modal {
+    backdrop-filter: blur(2px);
+    overflow-y: visible;
+}
+
+@include media-breakpoint-down(lg) {
+    .modal-dialog-large {
+        width: auto !important;
+        padding-top: 30px;
+        padding-bottom: 30px;
+    }
+}
+
+.modal-title {
+    font-size: 20px;
+    color: var(--hh-text-color-highlight);
+
+    &, & strong {
+        font-weight: 600;
+    }
+}
+
+.modal-dialog {
+    margin-bottom: calc(var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)) + var(--bs-modal-margin)); // for the web view space (safe area) on mobile devices
+}
+
+.modal-dialog, .modal-content {
+    min-width: 150px;
+}
+
+.modal-content {
+    box-shadow: 0 2px 26px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(0, 0, 0, 0.1);
+    border: none;
+    background-color: var(--hh-background-color-main);
+    padding: calc(var(--bs-modal-padding) * 0.8);
+
+    .modal-header {
+        border-bottom: none;
+        text-align: center;
+
+        .close {
+            margin-top: 2px;
+            margin-right: 5px;
+            opacity: 1;
+            color: var(--bs-primary);
+            font-size: 28px;
+
+            &:hover {
+                opacity: 0.9;
+            }
+        }
+    }
+
+    .modal-body {
+        font-size: 13px;
+    }
+
+    .modal-footer, .modal-body-footer {
+        margin-top: 0;
+        border-top: none;
+        text-align: center;
+
+        button, .btn {
+            flex: 1;
+        }
+
+        hr {
+            margin-top: 0;
+        }
+    }
+
+    .modal-body-footer {
+        display: flex;
+        padding-top: calc(var(--bs-modal-padding) - var(--bs-modal-footer-gap)* .5);
+
+        > * {
+            margin: calc(var(--bs-modal-footer-gap)* .5);
+        }
+    }
+}

@@ -7,10 +7,10 @@
  */
 
 use humhub\modules\admin\models\forms\MobileSettingsForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
 use humhub\modules\ui\icon\widgets\Icon;
-use humhub\widgets\Button;
-use humhub\widgets\ModalButton;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
+use humhub\widgets\modal\ModalButton;
 use yii\web\View;
 
 /* @var $this View */
@@ -44,7 +44,7 @@ use yii\web\View;
 <hr>
 
 <?= Button::save()->submit() ?>
-<?= ModalButton::defaultType(Yii::t('AdminModule.settings', 'Debug'))
+<?= ModalButton::light(Yii::t('AdminModule.settings', 'Debug'))
     ->load(['mobile-app-debug'])
     ->icon('bug')
     ->right() ?>

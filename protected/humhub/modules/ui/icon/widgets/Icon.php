@@ -3,12 +3,12 @@
 namespace humhub\modules\ui\icon\widgets;
 
 use humhub\components\Widget;
+use humhub\helpers\Html;
+use humhub\modules\ui\icon\components\IconFactory;
+use humhub\modules\ui\icon\components\IconProvider;
 use humhub\modules\ui\Module;
 use Throwable;
 use Yii;
-use humhub\libs\Html;
-use humhub\modules\ui\icon\components\IconProvider;
-use humhub\modules\ui\icon\components\IconFactory;
 use yii\base\InvalidConfigException;
 
 /**

@@ -1,6 +1,6 @@
 <?php
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\admin\controllers\ApprovalController;
 use humhub\modules\admin\grid\ApprovalActionColumn;
 use humhub\modules\admin\models\forms\ApproveUserForm;
@@ -9,7 +9,7 @@ use humhub\modules\user\grid\DisplayNameColumn;
 use humhub\modules\user\grid\ImageColumn;
 use humhub\modules\user\models\ProfileField;
 use humhub\modules\user\models\User;
-use humhub\widgets\Button;
+use humhub\widgets\bootstrap\Button;
 use humhub\widgets\GridView;
 use yii\data\ActiveDataProvider;
 
@@ -45,7 +45,7 @@ $columns[] = [
     'options' => ['style' => 'width:160px;'],
     'buttons' => [
         'view' => function ($url, $model) {
-            return Button::defaultType()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
+            return Button::light()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
         },
         'sendMessage' => function ($url, $model) {
             $nbMsgSent = ApproveUserForm::getNumberMessageSent($model->id);
@@ -67,22 +67,24 @@ $columns[] = [
 
 <div class="panel-body">
 
-    <div class="dropdown pull-right">
+    <div class="dropdown float-end">
         <?php if (!empty($availableProfileFields)): ?>
-            <?= Button::defaultType()
+            <?= Button::light()
                 ->icon('cog')
                 ->loader(false)
-                ->options(['data-toggle' => 'dropdown']) ?>
+                ->options(['data-bs-toggle' => 'dropdown']) ?>
         <?php endif; ?>
 
         <?= Html::beginForm('#', 'post', [
             'id' => 'screen-options',
-            'class' => 'dropdown-menu p-4'
+            'class' => 'dropdown-menu',
         ]) ?>
-        <h6 class="dropdown-header">
+        <div>
+            <h6 class="dropdown-header">
             <strong><?= Yii::t('AdminModule.user', 'Select the profile fields you want to add as columns') ?></strong>
-        </h6>
-        <li class="divider"></li>
+            </h6>
+        </div>
+        <div><hr class="dropdown-divider"></div>
         <div style="padding: 0 15px;">
             <?php foreach ($availableProfileFields as $field): ?>
                 <?= Html::checkbox('screenProfileFieldsId[]', array_key_exists($field->id, $profileFieldsColumns), ['id' => 'profile-select-' . $field->id, 'value' => $field->id, 'label' => Yii::t($field->getTranslationCategory(), $field->title)]) ?>
@@ -95,7 +97,7 @@ $columns[] = [
 
     <h4><?= Yii::t('AdminModule.user', 'Pending user approvals') ?></h4>
 
-    <div class="help-block">
+    <div class="text-body-secondary">
         <?= Yii::t('AdminModule.user', 'The following list contains all registered users awaiting an approval.') ?>
     </div>
 

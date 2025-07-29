@@ -46,7 +46,7 @@ class CheckPasswordValidator extends Validator
      * @param User $user the user or null for current
      * @return bool
      */
-    public static function hasPassword(ModelUser $user = null): bool
+    public static function hasPassword(?ModelUser $user = null): bool
     {
         if ($user === null) {
             $user = Yii::$app->user->getIdentity();

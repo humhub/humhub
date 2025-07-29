@@ -1,9 +1,9 @@
 <?php
 
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\admin\models\forms\LogFilterForm;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use yii\helpers\Html;
+use humhub\widgets\form\ActiveForm;
 
 /* @var $this View */
 /* @var $model LogFilterForm */

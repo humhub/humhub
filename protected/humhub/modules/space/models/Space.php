@@ -482,7 +482,7 @@ class Space extends ContentContainerActiveRecord
     /**
      * @inheritdoc
      */
-    public function canAccessPrivateContent(User $user = null)
+    public function canAccessPrivateContent(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 
@@ -584,7 +584,7 @@ class Space extends ContentContainerActiveRecord
     /**
      * @inheritdoc
      */
-    public function getUserGroup(User $user = null)
+    public function getUserGroup(?User $user = null)
     {
         $user = !$user && !Yii::$app->user->isGuest ? Yii::$app->user->getIdentity() : $user;
 

@@ -1,7 +1,7 @@
 <?php
-/* @var $this View */
+/* @var $this \humhub\components\View */
 
-use humhub\modules\ui\view\components\View;
+use humhub\components\View;
 
 ?>
 

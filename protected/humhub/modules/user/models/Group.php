@@ -10,21 +10,19 @@ namespace humhub\modules\user\models;
 
 use humhub\components\ActiveRecord;
 use humhub\libs\ParameterEvent;
+use humhub\helpers\Html;
 use humhub\modules\admin\notifications\ExcludeGroupNotification;
 use humhub\modules\admin\notifications\IncludeGroupNotification;
 use humhub\modules\admin\permissions\ManageGroups;
 use humhub\modules\space\models\Space;
 use humhub\modules\user\components\ActiveQueryUser;
-use humhub\modules\user\models\forms\Registration;
 use humhub\modules\user\Module;
 use Throwable;
 use Yii;
-use yii\base\Event;
 use yii\base\InvalidConfigException;
 use yii\db\ActiveQuery;
 use yii\db\Expression;
 use yii\db\StaleObjectException;
-use yii\helpers\Html;
 use yii\helpers\Url;
 
 /**

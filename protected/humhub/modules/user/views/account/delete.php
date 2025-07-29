@@ -1,7 +1,7 @@
 <?php
 
-use humhub\widgets\Button;
-use yii\bootstrap\ActiveForm;
+use humhub\widgets\bootstrap\Button;
+use humhub\widgets\form\ActiveForm;
 
 ?>
 <?php $this->beginContent('@user/views/account/_userProfileLayout.php') ?>
@@ -29,5 +29,3 @@ use yii\bootstrap\ActiveForm;
 <?php ActiveForm::end(); ?>
 
 <?php $this->endContent(); ?>
-
-

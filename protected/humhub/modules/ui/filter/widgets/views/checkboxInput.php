@@ -6,8 +6,8 @@
  *
  */
 
-use humhub\modules\ui\view\components\View;
-use yii\helpers\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 
 /* @var $this View */
 /* @var $options array */
@@ -21,4 +21,3 @@ use yii\helpers\Html;
 <?= Html::beginTag('a', $options) ?>
 <i class="fa  <?= ($checked) ? $iconActive : $iconInActive ?>"></i> <?= $title ?>
 <?= Html::endTag('a') ?>
-

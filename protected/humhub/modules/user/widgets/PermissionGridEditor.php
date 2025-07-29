@@ -8,15 +8,15 @@
 
 namespace humhub\modules\user\widgets;
 
+use humhub\helpers\Html;
+use humhub\libs\DropDownGridColumn;
 use humhub\modules\user\components\PermissionManager;
+use humhub\widgets\GridView;
 use Yii;
 use yii\base\Exception;
 use yii\base\InvalidConfigException;
 use yii\data\ArrayDataProvider;
-use humhub\widgets\GridView;
-use humhub\libs\Html;
 use yii\data\DataProviderInterface;
-use humhub\libs\DropDownGridColumn;
 
 /**
  * PermissionGridView

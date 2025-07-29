@@ -1,5 +1,6 @@
 <?php
-use humhub\libs\Html;
+
+use humhub\helpers\Html;
 use humhub\widgets\LoaderWidget;
 
 ?>
@@ -12,7 +13,7 @@ use humhub\widgets\LoaderWidget;
         <?php if ($header !== null || $showClose): ?>
             <div class="modal-header">
                 <?php if ($showClose): ?>
-                    <button aria-hidden="true" data-dismiss="modal" class="close" type="button" data-action-click="ui.modal.unload">×</button>
+                    <button aria-hidden="true" data-bs-dismiss="modal" class="close" type="button" data-action-click="ui.modal.unload">×</button>
                 <?php endif; ?>
                 <?php if ($header !== null): ?>
                     <h4 class="modal-title"><?= $header ?></h4>

@@ -135,7 +135,7 @@ class NotificationManager
      * @return BaseTarget[] the target
      * @throws InvalidConfigException
      */
-    public function getTargets(User $user = null)
+    public function getTargets(?User $user = null)
     {
         // Initialize targets
         if ($this->_targets === null) {
@@ -314,7 +314,7 @@ class NotificationManager
      * @param User $user
      * @return Space[]
      */
-    public function getNonNotificationSpaces(User $user = null, $limit = 25)
+    public function getNonNotificationSpaces(?User $user = null, $limit = 25)
     {
         if ($user) {
             $memberSpaces = Membership::getUserSpaceQuery($user, true, false)->limit($limit)->all();
@@ -336,7 +336,7 @@ class NotificationManager
      * @param string[] $spaceGuids array of space guids
      * @param User $user
      */
-    public function setSpaces($spaceGuids, User $user = null)
+    public function setSpaces($spaceGuids, ?User $user = null)
     {
         if (!$user) { // Note: global notification space settings are currently not active!
             return Yii::$app->getModule('notification')->settings->setSerialized('sendNotificationSpaces', $spaceGuids);
@@ -388,7 +388,7 @@ class NotificationManager
      * @param Space $space which notifications will be followed / unfollowed
      * @param bool $follow the setting value (true by default)
      */
-    public function setSpaceSetting(User $user = null, Space $space, $follow = true)
+    public function setSpaceSetting(User $user, Space $space, $follow = true)
     {
         /* @var $membership Membership */
         $membership = $space->getMembership($user->id);
@@ -487,7 +487,7 @@ class NotificationManager
      * @return bool
      * @since 1.15.6
      */
-    public function hasSpace(Space $space, User $user = null): bool
+    public function hasSpace(Space $space, ?User $user = null): bool
     {
         if ($user === null) {
             if (Yii::$app->user->isGuest) {

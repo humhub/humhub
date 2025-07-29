@@ -2,7 +2,7 @@
 
 namespace humhub\modules\content\widgets\richtext\converter;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use humhub\modules\content\widgets\richtext\extensions\link\LinkParserBlock;
 use humhub\modules\content\widgets\richtext\extensions\link\RichTextLinkExtension;
 use humhub\modules\content\widgets\richtext\ProsemirrorRichText;

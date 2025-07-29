@@ -1,0 +1,129 @@
+//
+// Dropdowns
+// --------------------------------------------------
+
+// Bootstrap overwrite
+// See all available Bootstrap CSS variables: @humhub/protected/vendor/bower-asset/bootstrap/dist/css/bootstrap.css
+.dropdown-menu {
+    --bs-dropdown-bg: var(--hh-background-color-main);
+    --bs-dropdown-font-size: 14px;
+}
+
+.dropdown-menu {
+    li {
+        a {
+            @include media-breakpoint-up(sm) {
+                white-space: nowrap;
+            }
+
+            @include media-breakpoint-down(md) {
+                small {
+                    white-space: normal;
+                }
+            }
+
+            i {
+                margin-right: 5px;
+                font-size: 14px;
+                display: inline-block;
+                width: 14px;
+            }
+
+            &:not(.btn) {
+                &:hover,
+                &:visited,
+                &:hover,
+                &:focus {
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    li:hover,
+    li.selected {
+        color: var(--hh-text-color-highlight);
+    }
+
+    li:first-child {
+        margin-top: 3px;
+    }
+
+    li:last-child {
+        margin-bottom: 3px;
+    }
+}
+
+.modal,
+.panel,
+.nav-tabs {
+    .dropdown-menu {
+        border: 1px solid var(--hh-background3);
+
+        li {
+            border-left: 3px solid white;
+
+            &:hover,
+            &.selected {
+                border-left: 3px solid var(--bs-info);
+                background-color: var(--hh-background-color-secondary) !important;
+            }
+
+            .dropdown-divider {
+                background-color: var(--hh-background-color-secondary);
+                border-bottom: none;
+                margin: 9px 1px !important;
+            }
+
+            a {
+                color: var(--hh-text-color-highlight);
+                font-size: 13px;
+                font-weight: 600;
+                padding: 4px 15px;
+
+                i {
+                    margin-right: 5px;
+                }
+            }
+
+            a:hover {
+                background: none;
+            }
+        }
+    }
+}
+
+ul.contextMenu {
+    border: 1px solid var(--hh-background3);
+
+    li {
+        border-left: 3px solid white;
+
+        &:hover,
+        &.selected {
+            border-left: 3px solid var(--bs-info);
+            background-color: var(--hh-background-color-secondary) !important;
+        }
+
+        .dropdown-divider {
+            background-color: var(--hh-background-color-secondary);
+            border-bottom: none;
+            margin: 9px 1px !important;
+        }
+
+        a {
+            color: var(--hh-text-color-highlight);
+            font-size: 14px;
+            font-weight: 400;
+            padding: 4px 15px;
+
+            i {
+                margin-right: 5px;
+            }
+        }
+
+        a:hover {
+            background: none;
+        }
+    }
+}

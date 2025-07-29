@@ -308,7 +308,7 @@ class Membership extends ActiveRecord
      * @since 1.2
      */
     public static function findByUser(
-        User $user = null,
+        ?User $user = null,
         $membershipStatus = self::STATUS_MEMBER,
         $spaceStatus = Space::STATUS_ENABLED,
     ) {

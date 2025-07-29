@@ -62,7 +62,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
 
         $this->assertConversionResult(
             '![Alt text><](http://local/image.jpg "Description text" =200x100)',
-            '<p><img class="center-block" src="http://local/image.jpg" width="200" height="100" alt="Alt text" title="Description text" style="max-width: 100%; display: block; margin: auto;"></p>',
+            '<p><img class="d-block mx-auto" src="http://local/image.jpg" width="200" height="100" alt="Alt text" title="Description text" style="max-width: 100%;"></p>',
         );
     }
 
@@ -86,17 +86,17 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
     {
         $this->assertConversionResult(
             '![alt>](http://local/image.jpg "desc")',
-            '<p><img class="pull-right" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: right;"></p>',
+            '<p><img class="float-end" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: right;"></p>',
         );
 
         $this->assertConversionResult(
             '![alt<](http://local/image.jpg "desc")',
-            '<p><img class="pull-left" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: left;"></p>',
+            '<p><img class="float-start" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; float: left;"></p>',
         );
 
         $this->assertConversionResult(
             '![alt><](http://local/image.jpg "desc")',
-            '<p><img class="center-block" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%; display: block; margin: auto;"></p>',
+            '<p><img class="d-block mx-auto" src="http://local/image.jpg" alt="alt" title="desc" style="max-width: 100%;"></p>',
         );
     }
 

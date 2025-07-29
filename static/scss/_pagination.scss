@@ -1,0 +1,18 @@
+//
+// Pagination
+// --------------------------------------------------
+.pagination-container {
+    ul.pagination {
+        margin-top: 32px;
+        justify-content: center;
+    }
+}
+
+.pagination > li:not(.active) {
+    > a,
+    > a:hover,
+    > a:focus {
+        color: var(--hh-text-color-highlight);
+        background-color: var(--hh-background-color-main);
+    }
+}

@@ -9,7 +9,7 @@
 
 namespace humhub\widgets;
 
-use humhub\libs\Html;
+use humhub\helpers\Html;
 use Yii;
 use yii\helpers\Url;
 
@@ -19,6 +19,8 @@ use yii\helpers\Url;
  *  e.g:
  *
  * `<?= Button::primary('Some Text')->actionClick('myHandler', [/some/url])->sm() ?>`
+ *
+ * @deprecated since 1.18, use [[\humhub\widgets\bootstrap\Button]] instead
  *
  * @package humhub\widgets
  */
@@ -61,7 +63,7 @@ class Button extends BootstrapComponent
             $text = Yii::t('base', 'Back');
         }
 
-        return self::defaultType($text)->link($url)->icon('back')->right()->loader(true)->sm();
+        return self::light($text)->link($url)->icon('back')->right()->loader(true)->sm();
     }
 
     public static function userPickerSelfSelect($selector, $text = null)
@@ -235,9 +237,9 @@ class Button extends BootstrapComponent
         if ($this->_link) {
             $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
             return Html::a($this->getText(), $href, $this->htmlOptions);
-        } else {
-            return Html::button($this->getText(), $this->htmlOptions);
         }
+
+        return Html::button($this->getText(), $this->htmlOptions);
     }
 
     public function getWidgetOptions()

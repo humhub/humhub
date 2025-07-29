@@ -10,6 +10,7 @@ namespace humhub\modules\notification\components;
 
 use humhub\components\behaviors\PolymorphicRelation;
 use humhub\components\SocialActivity;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentActiveRecord;
 use humhub\modules\content\components\ContentAddonActiveRecord;
 use humhub\modules\notification\jobs\SendBulkNotification;
@@ -22,7 +23,6 @@ use humhub\modules\user\components\ActiveQueryUser;
 use humhub\modules\user\models\User;
 use Yii;
 use yii\base\InvalidConfigException;
-use yii\bootstrap\Html;
 use yii\db\Expression;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Json;
@@ -399,7 +399,7 @@ abstract class BaseNotification extends SocialActivity
     /**
      * Deletes this notification
      */
-    public function delete(User $user = null)
+    public function delete(?User $user = null)
     {
         $condition = [];
 
@@ -470,7 +470,7 @@ abstract class BaseNotification extends SocialActivity
      * @param BaseTarget $target
      * @return string render result
      */
-    public function render(BaseTarget $target = null)
+    public function render(?BaseTarget $target = null)
     {
         if (!$target) {
             $target = Yii::$app->notification->getTarget(WebTarget::class);

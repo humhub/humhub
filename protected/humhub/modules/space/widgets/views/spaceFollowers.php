@@ -5,10 +5,10 @@
  * @license https://www.humhub.com/licences
  */
 
+use humhub\helpers\Html;
 use humhub\modules\user\models\User;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use humhub\widgets\PanelMenu;
-use yii\helpers\Html;
 
 /* @var User[] $followers */
 /* @var int $totalFollowerCount */
@@ -27,7 +27,7 @@ use yii\helpers\Html;
     <div class="panel-body">
         <?php foreach ($followers as $follower): ?>
             <?= $follower->getProfileImage()->render(32, [
-                'class' => 'img-rounded tt img_margin',
+                'class' => 'rounded tt img_margin',
                 'showTooltip' => true,
             ]) ?>
         <?php endforeach; ?>

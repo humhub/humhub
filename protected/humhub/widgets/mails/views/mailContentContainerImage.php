@@ -5,7 +5,7 @@
  * @license https://www.humhub.com/licences
  */
 
-use yii\helpers\Html;
+use humhub\helpers\Html;
 
 /* @var $container \humhub\modules\content\components\ContentContainerActiveRecord */
 /* @var $url string */

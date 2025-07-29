@@ -12,8 +12,8 @@ use humhub\components\assets\WebStaticAssetBundle;
 use humhub\modules\content\assets\ContentAsset;
 use humhub\modules\content\assets\ContentHighlightAsset;
 use humhub\modules\file\assets\FileAsset;
-use yii\bootstrap\BootstrapAsset;
-use yii\bootstrap\BootstrapPluginAsset;
+use yii\bootstrap5\BootstrapAsset;
+use yii\bootstrap5\BootstrapPluginAsset;
 use yii\jui\JuiAsset;
 use yii\validators\ValidationAsset;
 use yii\web\JqueryAsset;
@@ -49,6 +49,7 @@ class AppAsset extends WebStaticAssetBundle
 
     public const STATIC_DEPENDS = [
         JqueryAsset::class,
+        JqueryBs5FixAsset::class,
         JuiBootstrapBridgeAsset::class,
         JuiAsset::class,
         YiiAsset::class,

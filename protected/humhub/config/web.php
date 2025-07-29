@@ -28,6 +28,10 @@ $config = [
         'response' => [
             'class' => \humhub\components\Response::class,
         ],
+        'captcha' => [
+            //            'class' => \humhub\components\captcha\AltchaCaptcha::class
+            'class' => \humhub\components\captcha\YiiCaptcha::class,
+        ],
         'user' => [
             'class' => \humhub\modules\user\components\User::class,
             'identityClass' => \humhub\modules\user\models\User::class,
@@ -69,7 +73,8 @@ $config = [
     ],
     'container' => [
         'definitions' => [
-            'yii\web\Cookie' => ['\humhub\libs\CookieBuilder', 'build'],
+            \yii\web\Cookie::class => [\humhub\libs\CookieBuilder::class, 'build'],
+            \yii\widgets\LinkPager::class => \humhub\widgets\bootstrap\LinkPager::class,
         ],
     ],
 ];
