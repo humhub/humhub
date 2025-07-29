@@ -26,18 +26,26 @@ class MobileAppHelper
             return;
         }
 
-        $json = ['type' => 'showOpener'];
-        $message = Json::encode($json);
+        $message = Json::encode([
+            'type' => 'showOpener',
+        ]);
 
         self::sendFlutterMessage($message);
     }
 
+    /**
+     * @deprecated Remove in 1.19
+     */
     public static function getFileUploadSettings(): void
     {
+        if (!DeviceDetectorHelper::isAppRequest()) {
+            return;
+        }
+
         /* @var Module $module */
         $module = Yii::$app->getModule('file');
 
-        $json = [
+        $message = Json::encode([
             'type' => 'fileUploadSettings',
             'fileUploadUrl' => Url::to(['/file/file/upload'], true),
             'contentCreateUrl' => Url::to(['/file/share-intend/index'], true),
@@ -49,9 +57,7 @@ class MobileAppHelper
             'imageWebpQuality' => $module->imageWebpQuality,
             'imageMaxProcessingMP' => $module->imageMaxProcessingMP,
             'denyDoubleFileExtensions' => $module->denyDoubleFileExtensions,
-        ];
-
-        $message = Json::encode($json);
+        ]);
         self::sendFlutterMessage($message);
     }
 
