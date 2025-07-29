@@ -144,6 +144,8 @@ class AuthClientService
         $registration->getProfile()->setAttributes($attributes, false);
         $registration->getGroupUser()->setAttributes($attributes, false);
 
+        $registration->setModels();
+
         return $registration;
     }
 
@@ -154,8 +156,8 @@ class AuthClientService
      */
     public function createUser(): ?User
     {
-        $registration = static::createRegistration();
-        if ($registration !== null && $registration->validate() && $registration->register($this->authClient)) {
+        $registration = $this->createRegistration();
+        if ($registration !== null && $registration->register($this->authClient)) {
             return $registration->getUser();
         }
 
