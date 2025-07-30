@@ -1,5 +1,5 @@
 /**
- * Module for creating an manipulating modal dialoges.
+ * Module for creating an manipulating modal dialogs.
  * Normal layout of a dialog:
  *
  * <div class="modal fade">

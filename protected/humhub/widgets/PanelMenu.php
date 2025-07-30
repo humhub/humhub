@@ -9,6 +9,7 @@
 namespace humhub\widgets;
 
 use yii\base\Widget;
+use yii\helpers\BaseInflector;
 
 /**
  * PanelMenuWidget add an dropdown menu to the panel header
@@ -20,9 +21,25 @@ use yii\base\Widget;
 class PanelMenu extends Widget
 {
     /**
-     * @var String unique id from panel element
+     * Allow collapsing the HTML element having the `.collapse` class
+     *
+     * @since since 1.18
      */
-    public $id = '';
+    public bool $enableCollapseOption = true;
+
+    /**
+     * Optional unique ID for the collapse element and the local storage state (expanded/collapsed)
+     *
+     * If the parent widget class is unique, it can be null
+     *
+     * @since since 1.18
+     */
+    public ?string $collapseId = null;
+
+    /**
+     * @deprecated since 1.18
+     */
+    public ?string $id = null;
 
     /**
      * Workaround to inject menu items to PanelMenu
@@ -33,24 +50,15 @@ class PanelMenu extends Widget
      */
     public $extraMenus = '';
 
-
-    /**
-     * @inheritDoc
-     */
-    public function init()
-    {
-        return parent::init();
-    }
-
     /**
      * Displays / Run the Widgets
      */
     public function run()
     {
         return $this->render('panelMenu', [
-            'id' => $this->id,
+            'enableCollapseOption' => $this->enableCollapseOption,
+            'collapseId' => $this->collapseId ?? BaseInflector::slug(get_class($this->view->context)), // Generate a unique ID from the parent Widget class name
             'extraMenus' => $this->extraMenus,
         ]);
     }
-
 }

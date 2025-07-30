@@ -9,7 +9,7 @@ use humhub\widgets\PanelMenu;
     <div id="user-spaces-panel" class="panel panel-default members" style="position: relative;">
 
         <!-- Display panel menu widget -->
-        <?= PanelMenu::widget(['id' => 'user-spaces-panel']) ?>
+        <?= PanelMenu::widget() ?>
 
         <div class="panel-heading">
             <?= Yii::t('UserModule.base', '<strong>Member</strong> of these Spaces') ?>
