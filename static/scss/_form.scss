@@ -90,7 +90,7 @@ div.required > label:after {
     &:before {
         font: 14px FontAwesome;
         content: "\f002";
-        color: #ededed;
+        color: var(--hh-background-color-page);
         position: absolute;
         top: 10px;
         left: 13px;
@@ -133,14 +133,14 @@ input::-ms-clear, input::-ms-reveal {
 // Placeholder text for empty content
 .placeholder {
     padding: 10px;
-    color: #77777A;
+    color: var(--hh-text-color-secondary);
 }
 
 // HTML5 Placeholder jQuery Plugin
 input.placeholder,
 textarea.placeholder {
     padding: 0 0 0 10px;
-    color: #999;
+    color: var(--hh-text-color-secondary);
 }
 
 .invalid-feedback {
@@ -237,7 +237,7 @@ input[type=checkbox], input[type=radio] {
     margin: 0 6px 0 0;
     vertical-align: middle;
     background: var(--hh-background-color-main);
-    border: 2px solid #ccc;
+    border: 2px solid var(--hh-background3);
     border-radius: 3px;
     cursor: pointer;
 
@@ -322,7 +322,7 @@ div.mb-3 {
         text-align: center;
         font-size: 12px;
         border-radius: 3px;
-        background: #FFF;
+        background: var(--hh-background-color-main);
         box-shadow: none;
         margin: 0 !important;
         white-space: nowrap;
@@ -403,7 +403,7 @@ altcha-widget.form-control {
 .form-collapsible-fields {
     margin-bottom: 12px;
     border-left: 3px solid var(--bs-primary);
-    background-color: #F4F4F4;
+    background-color: var(--hh-background-color-secondary);
 }
 
 .form-collapsible-fields-label {
@@ -487,13 +487,13 @@ altcha-widget.form-control {
             border-color: var(--bs-light);
 
             &:hover, &:focus {
-                background: #dedede !important;
-                border-color: #dedede;
+                background: var(--hh-background3) !important;
+                border-color: var(--hh-background3);
             }
 
             &:active, &.active {
-                background: #cacaca !important;
-                border-color: #cacaca;
+                background: var(--hh-background4) !important;
+                border-color: var(--hh-background4);
             }
         }
 

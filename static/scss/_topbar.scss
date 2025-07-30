@@ -38,7 +38,7 @@
         padding: 6px 16px;
         margin-bottom: 10px;
         font-weight: 600;
-        color: #000;
+        color: var(--hh-text-color-highlight);
 
         .dropdown-header-actions {
             float: right;
@@ -296,7 +296,7 @@
     z-index: 1029;
     background-image: none;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
-    border-bottom: 1px solid #d4d4d4;
+    border-bottom: 1px solid var(--hh-background3);
 
     .dropdown-menu {
         padding-top: 0;
@@ -330,7 +330,7 @@
 
         .search-reset {
             position: absolute;
-            color: #BFBFBF;
+            color: var(--hh-background4);
             margin: 4px;
             top: 0px;
             right: 40px;
@@ -367,7 +367,7 @@
 
                 &#space-menu {
                     padding-right: 13px;
-                    border-right: 1px solid #ededed;
+                    border-right: 1px solid var(--hh-background-color-page);
 
                     .no-space {
                         display: inline;
