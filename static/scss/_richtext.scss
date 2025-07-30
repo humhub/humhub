@@ -277,7 +277,7 @@
     }
 
     .ProseMirror-menubar {
-        background: white;
+        background: var(--hh-background-color-main);
         border: 1px solid var(--hh-background3);
         border-top-left-radius: 4px;
         border-top-right-radius: 4px;
@@ -302,7 +302,7 @@
     }
 
     .ProseMirror-menubar {
-        background: white;
+        background: var(--hh-background-color-main);
         border: 1px solid var(--hh-text-color-soft2);
         border-bottom: 0;
         border-top-left-radius: 4px;
@@ -552,7 +552,7 @@
 }
 
 .ProseMirror-prompt {
-    background: white;
+    background: var(--background-color-main);
     border: 1px solid silver;
     border-radius: 3px;
     box-shadow: -.5px 2px 5px rgba(0, 0, 0, .2);

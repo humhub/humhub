@@ -21,7 +21,7 @@ TODO: Remove this file when Bootstrap 3 is no longer supported
     padding: 3px 5px 4px;
     font-weight: 600;
     font-size: 10px;
-    color: white;
+    color: var(--hh-text-color-contrast);
     vertical-align: baseline;
     white-space: nowrap;
     text-shadow: none;
@@ -112,7 +112,7 @@ a.label-warning:hover {
         padding: 10px;
         border-bottom: 1px solid #eee;
         position: relative;
-        border-left: 3px solid white;
+        border-left: 3px solid var(--hh-text-color-contrast);
 
         &:hover,
         &.selected {
@@ -142,7 +142,7 @@ a.label-warning:hover {
 
 .media-list li.placeholder:hover {
     background: none !important;
-    border-left: 3px solid white;
+    border-left: 3px solid var(--hh-text-color-contrast);
 }
 
 .media-left,
@@ -307,7 +307,7 @@ a.label-warning:hover {
         font-size: 16px;
         font-weight: 300;
         color: var(--hh-text-color-highlight);
-        background-color: white;
+        background-color: var(--hh-background-color-main);
         border: none;
         padding: 10px;
         border-radius: 4px;
