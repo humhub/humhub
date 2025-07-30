@@ -161,7 +161,7 @@
             flex-direction: column;
             margin: 15px 0;
             border-radius: 4px;
-            background-color: #ffffff;
+            background-color: var(--hh-background-color-main);
 
             &.card-archived {
                 filter: opacity(60%);
@@ -230,7 +230,7 @@
 
             .card-image-link {
                 display: inline-block;
-                border: 2px solid #fff;
+                border: 2px solid var(--hh-text-color-contrast);
                 border-radius: 6px;
             }
 

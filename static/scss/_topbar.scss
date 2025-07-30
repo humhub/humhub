@@ -128,7 +128,7 @@
             left: 50%;
             margin-left: -18px;
             border-top-width: 0;
-            border-bottom-color: #fff;
+            border-bottom-color: var(--hh-text-color-contrast);
             top: -16px;
             z-index: 1035;
         }
@@ -292,7 +292,7 @@
 
 #topbar-second {
     top: 50px;
-    background-color: #fff;
+    background-color: var(--hh-background-color-main);
     z-index: 1029;
     background-image: none;
     box-shadow: 0 1px 10px rgba(0, 0, 0, 0.1);
@@ -393,8 +393,8 @@
 
             > ul > li > a {
                 & {
-                    border-left: 3px solid #fff;
-                    background-color: #fff;
+                    border-left: 3px solid var(--hh-text-color-contrast);
+                    background-color: var(--hh-background-color-main);
                     color: var(--hh-text-color-highlight);
                 }
 

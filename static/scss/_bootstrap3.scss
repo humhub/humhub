@@ -414,7 +414,7 @@ a.label-warning:hover {
 .panel-profile {
     .panel-profile-header {
         position: relative;
-        border: 3px solid #fff;
+        border: 3px solid var(--hh-text-color-contrast);
         border-top-right-radius: 3px;
         border-top-left-radius: 3px;
 
@@ -433,7 +433,7 @@ a.label-warning:hover {
             padding-top: 30px;
             border-bottom-right-radius: 3px;
             border-bottom-left-radius: 3px;
-            color: #fff;
+            color: var(--hh-text-color-contrast);
             background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0) 1%, rgba(0, 0, 0, 0.38) 100%);
 
             h1 {
@@ -445,7 +445,7 @@ a.label-warning:hover {
                 a {
                     font-size: 30px;
                     font-weight: 100;
-                    color: #fff;
+                    color: var(--hh-text-color-contrast);
                 }
             }
 
@@ -477,7 +477,7 @@ a.label-warning:hover {
             left: 15px;
 
             .profile-user-photo {
-                border: 3px solid #fff;
+                border: 3px solid var(--hh-text-color-contrast);
                 border-radius: 5px;
 
                 // Force position of the online status because of the 3px border on the photo

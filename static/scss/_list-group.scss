@@ -12,7 +12,7 @@
 
 .list-group-item {
     padding: 6px 15px;
-    border-left: 3px solid #fff !important;
+    border-left: 3px solid var(--hh-text-color-contrast) !important;
     font-size: 12px;
     font-weight: 600;
 
@@ -117,7 +117,7 @@ a.list-group-item {
     a.list-group-item {
         @mixin mobileListGroupItemActiveOrFocus {
             background: var(--bs-primary) !important;
-            color: #fff !important;
+            color: var(--hh-text-color-contrast) !important;
             border-left: none !important;
         }
 
