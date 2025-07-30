@@ -219,3 +219,8 @@ $prev-bootstrap3: false !default;
 @if not $prev-bootstrap3 {
     @import "bootstrap3";
 }
+
+$prev-dark-mode: false !default;
+@if not $prev-dark-mode {
+    @import "dark-mode";
+}

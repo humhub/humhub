@@ -1,0 +1,67 @@
+[data-bs-theme="dark"]{
+    --default: #2a2a2a;
+//
+// Text colors
+// --------------------------------------------------
+
+// Default body text color.
+--hh-text-color-main: #ddd;
+
+// used for default icons and buttons etc.
+--hh-text-color-default: #f0f0f0;
+
+// used for some icons and buttons etc. - former @font2
+--hh-text-color-secondary: #bbb;
+
+// highlighted text like some active links hovered links etc. - former @font3
+--hh-text-color-highlight: #fff;
+
+// side information like dates, placeholder, some dropdown headers - former @font4
+--hh-text-color-soft: #dddddd;
+
+// also side information wall entry links (like/comment), help blocks in forms etc.  - former @font5
+--hh-text-color-soft2: #ccc;
+
+// used in gridview summary and installer - former @font1
+--hh-text-color-soft3: #7b7773;
+
+// used as contrast color for @primary, @info, @success, @warning, @danger backgrounds for buttons etc.
+// Note that @default does not use a contrast color @default is normally combined with @text-color-secondary
+--hh-text-color-contrast: #000;
+
+
+//
+// Background colors
+// --------------------------------------------------
+
+// main content background color should be in contrast with @text-color-main, @text-color-secondary and other text colors
+--hh-background-color-main: #222;
+
+// used beside others for tabs - former @background1
+--hh-background-color-secondary: #333;
+
+// page background which is also used for other ui components as comment box etc. - former @background2
+--hh-background-color-page: #000;
+
+// Informative highlighting color
+// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
+--hh-background-color-highlight: #2e393a;
+
+// Informative highlighting soft color
+// (e.g. Wiki Active Category)
+--hh-background-color-highlight-soft: #293334;
+
+// Additional background colors
+--hh-background3: #393939;
+--hh-background4: #5e5e5e;
+
+  
+  // make 3 dots white (instead of black)
+  .nav-pills.preferences .dropdown .dropdown-toggle::after {
+    filter: invert(100%);
+  }
+  // Select 2 Dropdown dark instead of white
+  .select2-dropdown {
+    background: var(--hh-background-color-main);
+  }
+}
