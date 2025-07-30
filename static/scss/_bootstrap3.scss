@@ -110,7 +110,7 @@ a.label-warning:hover {
 .media-list {
     li {
         padding: 10px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--hh-background-color-page);
         position: relative;
         border-left: 3px solid var(--hh-text-color-contrast);
 
@@ -291,7 +291,7 @@ a.label-warning:hover {
     @include text-break();
     border: none;
     background-color: var(--hh-background-color-main);
-    box-shadow: 0 0 3px #dadada;
+    box-shadow: 0 0 3px var(--hh-background3);
     border-radius: 4px;
     position: relative;
     margin-bottom: 15px;
