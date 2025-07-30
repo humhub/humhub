@@ -482,9 +482,9 @@ altcha-widget.form-control {
         }
 
         .btn.fileinput-button, .fileinput-button + .dropdown-toggle {
-            background: var(--bs-light);
+            background: var(--hh-background-color-page);
             color: var(--hh-text-color-default) !important;
-            border-color: var(--bs-light);
+            border-color: var(--hh-background-color-page);
 
             &:hover, &:focus {
                 background: var(--hh-background3) !important;

@@ -12,7 +12,7 @@
 
     > div:not(.stream-end), > a:not(.stream-end) {
         padding: 10px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid var(--hh-background-color-page);
         position: relative;
         border-left: 3px solid var(--hh-text-color-contrast);
 

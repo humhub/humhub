@@ -41,7 +41,7 @@
                     left: 0;
 
                     &:focus {
-                        border-color: #ccc !important;
+                        border-color: var(--hh-background3) !important;
 
                         &:checked {
                             border-color: var(--bs-info) !important;
@@ -98,7 +98,7 @@ $wallEntryContentLeftPaddingMobile: 0;
         position: relative;
         padding-bottom: $wallEntryInnerPadding;
         margin-bottom: $wallEntryInnerPadding;
-        border-bottom: 1px solid #eeeeee;
+        border-bottom: 1px solid var(--hh-background-color-page);
 
         .img-space {
             top: 25px;
@@ -338,13 +338,13 @@ $wallEntryContentLeftPaddingMobile: 0;
 
     .wall-stream-filter-head {
         padding: 5px 5px 10px 5px;
-        border-bottom: 1px solid #ddd;
+        border-bottom: 1px solid var(--hh-background3);
     }
 
     .wall-stream-filter-body {
         overflow: hidden;
         background-color: var(--hh-background-color-secondary);
-        border: 1px solid #ddd;
+        border: 1px solid var(--hh-background3);
         border-top: 0;
         border-radius: 0 0 4px 4px;
     }
@@ -476,7 +476,7 @@ $wallEntryContentLeftPaddingMobile: 0;
         background-color: var(--hh-background-color-main);
         padding: 5px;
         border-radius: 0 0 4px 4px;
-        border: 1px solid #ddd;
+        border: 1px solid var(--hh-background3);
         font-size: 11px
     }
 }

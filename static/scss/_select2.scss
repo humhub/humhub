@@ -164,7 +164,7 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
         &--highlighted[aria-selected] {
             background-color: var(--bs-secondary);
             border-left: 3px solid var(--bs-info);
-            color: $text-color-highlight;
+            color: var(--hh-text-color-highlight);
         }
 
         .select2-results__option {
