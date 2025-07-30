@@ -24,8 +24,8 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
 // --------------------------------------------------
 
 @mixin humhub-input-defaults() {
-    background-color: $input-bg;
-    border: 2px solid $input-border-color;
+    background-color: var(--hh-background-color-main);
+    border: 2px solid var(--hh-background3);
     border-radius: $input-border-radius;
     color: $input-color;
     font-family: $font-family-base;
