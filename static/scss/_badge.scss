@@ -11,14 +11,8 @@
 }
 
 .badge {
-    display: inline-block;
-    padding: 3px 5px;
-    border-radius: 2px;
-    font-weight: normal;
     font-family: Arial, sans-serif;
-    font-size: 10px !important;
     text-transform: uppercase;
-    color: var(--hh-text-color-contrast);
     vertical-align: baseline;
     white-space: nowrap;
     text-shadow: none;
@@ -31,11 +25,15 @@
     &.text-bg-danger {
         color: var(--hh-text-color-contrast) !important;
     }
-}
 
-.badge-new {
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    background: var(--bs-info);
+    &.badge-new {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background: var(--bs-info);
+
+        &:empty {
+            display: inline-block; // Overwrites BS5 `&:empty {display: none;}`
+        }
+    }
 }

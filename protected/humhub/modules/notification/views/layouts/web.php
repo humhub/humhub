@@ -52,7 +52,7 @@ use humhub\widgets\TimeAgo;
 
     <div class="flex-shrink-0 ms-2 order-last text-center">
         <?php if ($isNew) : ?>
-            <span class="badge-new"></span>
+            <span class="badge badge-new"></span>
         <?php endif; ?>
     </div>
 </a>

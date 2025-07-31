@@ -135,6 +135,16 @@ $container-max-widths: (
 
 
 //
+// Badges
+//
+
+$badge-font-size: 10px !default;
+$badge-font-weight: normal !default;
+$badge-padding-y: 3px !default;
+$badge-padding-x: 5px !default;
+$badge-border-radius: 2px !default;
+
+//
 // Other Bootstrap overwritten variables
 // --------------------------------------------------
 
@@ -142,6 +152,7 @@ $grid-gutter-width: 30px !default;
 $line-height-base: 1.5 !default;
 $form-check-padding-start: 2em !default; // Fix checkbox with multiple lines label
 $focus-ring-box-shadow: none !default;
+
 
 //
 // @deprecated since 1.18
