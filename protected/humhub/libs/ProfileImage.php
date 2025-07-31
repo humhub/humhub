@@ -65,11 +65,6 @@ class ProfileImage
     protected $folder_images = 'profile_image';
 
     /**
-     * @var String name of the default image
-     */
-    protected $defaultImage;
-
-    /**
      * Constructor of Profile Image
      *
      * UserId is optional, if not given the current user will used
@@ -77,7 +72,7 @@ class ProfileImage
      * @param string $guid
      * @param string $defaultImage
      */
-    public function __construct($guid, $defaultImage = 'default_user')
+    public function __construct($guid, protected $defaultImage = 'default_user')
     {
         if ($guid instanceof ContentContainerActiveRecord) {
             $this->container = $guid;
@@ -85,7 +80,6 @@ class ProfileImage
         } else {
             $this->guid = $guid;
         }
-        $this->defaultImage = $defaultImage;
     }
 
     /**

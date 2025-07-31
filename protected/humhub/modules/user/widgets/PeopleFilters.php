@@ -121,7 +121,7 @@ class PeopleFilters extends DirectoryFilters
         }
 
         $definition = $profileFieldType->getFieldFormDefinition();
-        $fieldType = isset($definition[$profileField->internal_name]['type']) ? $definition[$profileField->internal_name]['type'] : null;
+        $fieldType = $definition[$profileField->internal_name]['type'] ?? null;
 
         $filterData = [
             'title' => Html::encode(Yii::t($profileField->getTranslationCategory(), $profileField->title)),

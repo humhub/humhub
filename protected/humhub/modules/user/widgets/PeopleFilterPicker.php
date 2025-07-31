@@ -95,7 +95,7 @@ class PeopleFilterPicker extends BasePicker
 
             $result[$this->itemKey] = [
                 'data-id' => $item,
-                'data-text' => isset($this->defaultResults[$item]) ? $this->defaultResults[$item] : $item,
+                'data-text' => $this->defaultResults[$item] ?? $item,
             ];
         }
         return $result;
@@ -190,7 +190,7 @@ class PeopleFilterPicker extends BasePicker
                 continue;
             }
 
-            if ($keyword !== '' && stripos($itemText, $keyword) === false) {
+            if ($keyword !== '' && stripos((string) $itemText, $keyword) === false) {
                 continue;
             }
 

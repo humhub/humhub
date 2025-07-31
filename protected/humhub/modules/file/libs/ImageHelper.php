@@ -74,7 +74,7 @@ class ImageHelper
      */
     public static function downscaleImage($file)
     {
-        if (substr($file->mime_type, 0, 6) !== 'image/') {
+        if (!str_starts_with((string) $file->mime_type, 'image/')) {
             return;
         }
 

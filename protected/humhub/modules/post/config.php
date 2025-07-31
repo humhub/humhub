@@ -9,6 +9,6 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
+        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, Events::onIntegrityCheck(...)],
     ],
 ];

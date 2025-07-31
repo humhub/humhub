@@ -37,7 +37,7 @@ class MobileTarget extends BaseTarget
 
         try {
             $this->provider = Yii::$container->get(MobileTargetProvider::class);
-        } catch (NotInstantiableException $e) {
+        } catch (NotInstantiableException) {
             // No provider given
         }
     }

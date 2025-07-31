@@ -53,7 +53,7 @@ class Checkbox extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => Yii::t('UserModule.profile', 'Checkbox field options'),
                 'elements' => [
@@ -95,7 +95,7 @@ class Checkbox extends BaseType
     {
         $profileField = $this->profileField;
         if ($profileField->required) {
-            $rules[] = [$profileField->internal_name, function ($attribute) use ($profileField) {
+            $rules[] = [$profileField->internal_name, function ($attribute) use ($profileField): void {
                 if (!$this->$attribute) {
                     $this->addError($attribute, Yii::t('UserModule.profile', '{attribute} is required!', ['{attribute}' => $profileField->title]));
                 }

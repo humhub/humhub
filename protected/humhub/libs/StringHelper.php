@@ -82,7 +82,7 @@ class StringHelper extends \yii\helpers\StringHelper
                 return \yii\helpers\StringHelper::floatToString($string);
 
             case "object":
-                $type = get_class($string);
+                $type = $string::class;
 
                 if ($string instanceof Stringable || (is_object($string) && is_callable([$string, '__toString']))) {
                     return (string)$string;

@@ -208,7 +208,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm(2);
             $form->approve();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -220,7 +220,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm(2);
             $form->decline();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -252,7 +252,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->approve();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
 
@@ -268,7 +268,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->sendMessage();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
     }
@@ -282,7 +282,7 @@ Admin Tester", $form->message);
             $form = new ApproveUserForm($this->unapprovedUser->id);
             $form->decline();
             $this->assertFalse(true);
-        } catch (NotFoundHttpException $e) {
+        } catch (NotFoundHttpException) {
             $this->assertTrue(true);
         }
 

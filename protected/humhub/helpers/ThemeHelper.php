@@ -107,7 +107,7 @@ class ThemeHelper
             $theme = Yii::createObject(ArrayHelper::merge([
                 'class' => Theme::class,
                 'basePath' => $path,
-                'name' => basename($path),
+                'name' => basename((string) $path),
             ], $options));
         } catch (InvalidConfigException $e) {
             Yii::error('Could not get theme by path "' . $path . '" - Error: ' . $e->getMessage());
@@ -225,7 +225,7 @@ class ThemeHelper
      */
     public static function buildCss(?Theme $theme = null): bool|string
     {
-        $theme = $theme ?? Yii::$app->view->theme;
+        $theme ??= Yii::$app->view->theme;
         $treeThemes = static::getThemeTree($theme);
         $compiler = new Compiler();
         $designSettingsForm = new DesignSettingsForm();

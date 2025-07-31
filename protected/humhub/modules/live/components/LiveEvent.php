@@ -42,7 +42,7 @@ abstract class LiveEvent extends BaseObject
         unset($data['contentContainerId']);
 
         return [
-            'type' => str_replace('\\', '.', get_class($this)),
+            'type' => str_replace('\\', '.', static::class),
             'contentContainerId' => $this->contentContainerId,
             'visibility' => $this->visibility,
             'data' => $data,

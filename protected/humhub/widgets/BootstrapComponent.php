@@ -43,7 +43,7 @@ use yii\helpers\ArrayHelper;
  *
  * @package humhub\widgets
  */
-abstract class BootstrapComponent extends Widget
+abstract class BootstrapComponent extends Widget implements \Stringable
 {
     public const TYPE_PRIMARY = 'primary';
     /**
@@ -435,7 +435,7 @@ abstract class BootstrapComponent extends Widget
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
         try {
             $result = $this::widget($this->getWidgetOptions());

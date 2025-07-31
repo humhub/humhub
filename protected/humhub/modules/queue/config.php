@@ -16,10 +16,10 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        [CronController::class, CronController::EVENT_ON_DAILY_RUN, [Events::class, 'onCronRun']],
-        [Queue::class, Queue::EVENT_AFTER_ERROR, [Events::class, 'onQueueError']],
-        [Queue::class, Queue::EVENT_BEFORE_PUSH, [Events::class, 'onQueueBeforePush']],
-        [Queue::class, Queue::EVENT_AFTER_PUSH, [Events::class, 'onQueueAfterPush']],
-        [Queue::class, Queue::EVENT_BEFORE_EXEC, [Events::class, 'onQueueBeforeExec']],
+        [CronController::class, CronController::EVENT_ON_DAILY_RUN, Events::onCronRun(...)],
+        [Queue::class, Queue::EVENT_AFTER_ERROR, Events::onQueueError(...)],
+        [Queue::class, Queue::EVENT_BEFORE_PUSH, Events::onQueueBeforePush(...)],
+        [Queue::class, Queue::EVENT_AFTER_PUSH, Events::onQueueAfterPush(...)],
+        [Queue::class, Queue::EVENT_BEFORE_EXEC, Events::onQueueBeforeExec(...)],
     ],
 ];

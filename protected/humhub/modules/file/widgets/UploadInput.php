@@ -214,7 +214,7 @@ class UploadInput extends JsWidget
             $postSubmit = $submitName;
 
             if (static::endsWith('[]', $postSubmit)) {
-                $postSubmit = substr($postSubmit, 0, -2);
+                $postSubmit = substr((string) $postSubmit, 0, -2);
             }
 
             $files = Yii::$app->request->post($postSubmit);
@@ -238,7 +238,7 @@ class UploadInput extends JsWidget
 
     private static function endsWith($needle, $haystack)
     {
-        return substr($haystack, -strlen($needle)) === $needle;
+        return str_ends_with((string) $haystack, (string) $needle);
     }
 
     public function getAttributes()

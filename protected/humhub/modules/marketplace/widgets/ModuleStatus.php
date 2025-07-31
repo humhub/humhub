@@ -73,22 +73,15 @@ class ModuleStatus extends Widget
 
     public function getStatusTitle(): string
     {
-        switch ($this->status) {
-            case 'professional':
-                return Yii::t('MarketplaceModule.base', 'Professional Edition');
-            case 'featured':
-                return Yii::t('MarketplaceModule.base', 'Featured');
-            case 'official':
-                return Yii::t('MarketplaceModule.base', 'Official');
-            case 'partner':
-                return Yii::t('MarketplaceModule.base', 'Partner');
-            case 'deprecated':
-                return Yii::t('MarketplaceModule.base', 'Deprecated');
-            case 'new':
-                return Yii::t('MarketplaceModule.base', 'New');
-        }
-
-        return '';
+        return match ($this->status) {
+            'professional' => Yii::t('MarketplaceModule.base', 'Professional Edition'),
+            'featured' => Yii::t('MarketplaceModule.base', 'Featured'),
+            'official' => Yii::t('MarketplaceModule.base', 'Official'),
+            'partner' => Yii::t('MarketplaceModule.base', 'Partner'),
+            'deprecated' => Yii::t('MarketplaceModule.base', 'Deprecated'),
+            'new' => Yii::t('MarketplaceModule.base', 'New'),
+            default => '',
+        };
     }
 
     public function getClass(): string

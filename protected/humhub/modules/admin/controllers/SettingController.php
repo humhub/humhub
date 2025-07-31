@@ -340,7 +340,7 @@ class SettingController extends Controller
     {
         $logsCount = Log::find()->count();
         $dating = Log::find()
-            ->orderBy('log_time', 'asc')
+            ->orderBy('log_time')
             ->limit(1)
             ->one();
 
@@ -355,7 +355,7 @@ class SettingController extends Controller
         $limitAgeOptions = $form->options;
         if ($form->load(Yii::$app->request->post()) && $form->validate() && $form->save()) {
 
-            $timeAgo = strtotime($form->logsDateLimit);
+            $timeAgo = strtotime((string) $form->logsDateLimit);
             Log::deleteAll(['<', 'log_time', $timeAgo]);
             $this->view->saved();
             return $this->redirect([
@@ -377,7 +377,7 @@ class SettingController extends Controller
         $suggestGlobalConversion = false;
 
         if ($model->load(Yii::$app->request->post())) {
-            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion) {
+            $model->on($model::EVENT_GLOBAL_CONVERSION_SUGGESTION, function () use (&$suggestGlobalConversion): void {
                 $suggestGlobalConversion = true;
             });
 

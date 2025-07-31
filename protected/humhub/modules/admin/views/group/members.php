@@ -84,27 +84,21 @@ AdminGroupAsset::register($this);
                         'class' => 'yii\grid\ActionColumn',
                         'options' => ['style' => 'width:40px; min-width:40px;'],
                         'buttons' => [
-                            'view' => function ($url, $model) {
-                                return false;
-                            },
-                            'update' => function ($url, $model) use ($group) {
-                                return false;
-                            },
-                            'delete' => function ($url, $model) use ($group) {
-                                return $model->getGroups()->count() > 1
-                                    ? Button::danger()
-                                        ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
-                                        ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
-                                        ->icon('remove')
-                                        ->sm()
-                                        ->confirm()
-                                    : Button::danger()
-                                        ->tooltip(Yii::t('AdminModule.user', 'The user cannot be removed from this Group, as users are required to be assigned to at least one Group.'))
-                                        ->icon('remove')
-                                        ->options(['disabled' => true])
-                                        ->sm()
-                                        ->loader(false);
-                            },
+                            'view' => fn($url, $model) => false,
+                            'update' => fn($url, $model) => false,
+                            'delete' => fn($url, $model) => $model->getGroups()->count() > 1
+                                ? Button::danger()
+                                    ->tooltip(Yii::t('AdminModule.user', 'Remove from group'))
+                                    ->action('admin.group.removeMember', Url::to(['remove-group-user', 'id' => $group->id, 'userId' => $model->id]))
+                                    ->icon('remove')
+                                    ->sm()
+                                    ->confirm()
+                                : Button::danger()
+                                    ->tooltip(Yii::t('AdminModule.user', 'The user cannot be removed from this Group, as users are required to be assigned to at least one Group.'))
+                                    ->icon('remove')
+                                    ->options(['disabled' => true])
+                                    ->sm()
+                                    ->loader(false),
                         ],
                     ],
                 ],

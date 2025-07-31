@@ -66,11 +66,9 @@ class SpaceDirectoryFilters extends DirectoryFilters
 
     public static function getDefaultValue(string $filter): string
     {
-        switch ($filter) {
-            case 'sort':
-                return 'sortOrder';
-        }
-
-        return parent::getDefaultValue($filter);
+        return match ($filter) {
+            'sort' => 'sortOrder',
+            default => parent::getDefaultValue($filter),
+        };
     }
 }

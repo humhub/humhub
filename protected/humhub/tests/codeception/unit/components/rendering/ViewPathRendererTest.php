@@ -54,7 +54,7 @@ class ViewPathRendererTest extends HumHubDbTestCase
         try {
             $renderer->render($viewable);
             $this->assertTrue(false);
-        } catch (\yii\base\ViewNotFoundException $ex) {
+        } catch (\yii\base\ViewNotFoundException) {
             $this->assertTrue(true);
         }
     }

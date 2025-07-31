@@ -72,7 +72,7 @@ class HumHubApiTestCest
 
         $recordDefinitions = [];
         foreach ($ids as $id) {
-            $recordDefinitions[] = isset($records[$id]) ? $records[$id] : null;
+            $recordDefinitions[] = $records[$id] ?? null;
         }
 
         return $recordDefinitions;

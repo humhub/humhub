@@ -249,7 +249,7 @@ abstract class FilterNavigation extends JsWidget
         }
 
         if (isset($this->filterBlocks[$blockId])) {
-            $this->filterBlocks[$blockId]['filters'] = isset($this->filterBlocks[$blockId]['filters']) ? $this->filterBlocks[$blockId]['filters'] : [];
+            $this->filterBlocks[$blockId]['filters'] ??= [];
             $this->filterBlocks[$blockId]['filters'][] = $filter;
         }
 

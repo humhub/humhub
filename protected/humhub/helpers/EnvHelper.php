@@ -83,9 +83,7 @@ class EnvHelper
     {
         return ArrayHelper::getColumn(
             explode(self::DEPTH_SEPARATOR, $key),
-            function ($path) {
-                return Inflector::variablize(strtolower($path));
-            },
+            fn($path) => Inflector::variablize(strtolower((string) $path)),
         );
     }
 

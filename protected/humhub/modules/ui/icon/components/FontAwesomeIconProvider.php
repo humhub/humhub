@@ -86,7 +86,7 @@ class FontAwesomeIconProvider implements IconProvider
         foreach ($listDefinition as $listItem) {
             $text = reset($listItem);
             $iconName = key($listItem);
-            $options = (isset($listItem['options'])) ? $listItem['options'] : [];
+            $options = $listItem['options'] ?? [];
             $options['listItem'] = true;
             $items[] = $this->render($iconName, $options) . $text;
         }
@@ -96,32 +96,20 @@ class FontAwesomeIconProvider implements IconProvider
 
     private function getIconSizeClass(Icon $icon)
     {
-        switch ($icon->size) {
-            case Icon::SIZE_SM:
-                return 'fa-sm';
-            case Icon::SIZE_LG:
-                return 'fa-lg';
-            case Icon::SIZE_2x:
-                return 'fa-2x';
-            case Icon::SIZE_3x:
-                return 'fa-3x';
-            case Icon::SIZE_4x:
-                return 'fa-4x';
-            case Icon::SIZE_5x:
-                return 'fa-5x';
-            case Icon::SIZE_6x:
-                return 'fa-6x';
-            case Icon::SIZE_7x:
-                return 'fa-7x';
-            case Icon::SIZE_8x:
-                return 'fa-8x';
-            case Icon::SIZE_9x:
-                return 'fa-9x';
-            case Icon::SIZE_10x:
-                return 'fa-10x';
-            default:
-                return null;
-        }
+        return match ($icon->size) {
+            Icon::SIZE_SM => 'fa-sm',
+            Icon::SIZE_LG => 'fa-lg',
+            Icon::SIZE_2x => 'fa-2x',
+            Icon::SIZE_3x => 'fa-3x',
+            Icon::SIZE_4x => 'fa-4x',
+            Icon::SIZE_5x => 'fa-5x',
+            Icon::SIZE_6x => 'fa-6x',
+            Icon::SIZE_7x => 'fa-7x',
+            Icon::SIZE_8x => 'fa-8x',
+            Icon::SIZE_9x => 'fa-9x',
+            Icon::SIZE_10x => 'fa-10x',
+            default => null,
+        };
     }
 
     /**

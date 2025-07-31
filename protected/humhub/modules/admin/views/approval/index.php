@@ -22,9 +22,7 @@ $columns = [
     [
         'header' => Html::checkbox('select-all'),
         'format' => 'raw',
-        'value' => static function (User $model) {
-            return Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id]);
-        }
+        'value' => static fn(User $model) => Html::checkbox('ids[]', false, ['id' => 'user-select-' . $model->id, 'value' => $model->id])
     ],
     ['class' => ImageColumn::class],
     ['class' => DisplayNameColumn::class],
@@ -34,9 +32,7 @@ $columns = [
 foreach ($profileFieldsColumns as $profileField) {
     $columns[] = [
         'attribute' => 'profile.' . $profileField->internal_name,
-        'value' => static function (User $model) use ($profileField) {
-            return $profileField->getUserValue($model);
-        }
+        'value' => static fn(User $model) => $profileField->getUserValue($model)
     ];
 }
 $columns[] = 'created_at';
@@ -44,9 +40,7 @@ $columns[] = [
     'class' => ApprovalActionColumn::class,
     'options' => ['style' => 'width:160px;'],
     'buttons' => [
-        'view' => function ($url, $model) {
-            return Button::light()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit'));
-        },
+        'view' => fn($url, $model) => Button::light()->link(['/admin/user/edit', 'id' => $model->id])->icon('edit')->sm()->tooltip(Yii::t('AdminModule.user', 'Edit')),
         'sendMessage' => function ($url, $model) {
             $nbMsgSent = ApproveUserForm::getNumberMessageSent($model->id);
             return
@@ -55,12 +49,8 @@ $columns[] = [
                     ($nbMsgSent ? ' (' . Yii::t('AdminModule.user', '{nbMsgSent} already sent', ['nbMsgSent' => $nbMsgSent]) . ')' : '')
                 );
         },
-        'update' => function ($url, $model) {
-            return Button::success()->link(['approve', 'id' => $model->id])->icon('check')->sm()->tooltip(Yii::t('AdminModule.user', 'Approve'));
-        },
-        'delete' => function ($url, $model) {
-            return Button::danger()->link(['decline', 'id' => $model->id])->icon('times')->sm()->tooltip(Yii::t('AdminModule.user', 'Decline'));
-        },
+        'update' => fn($url, $model) => Button::success()->link(['approve', 'id' => $model->id])->icon('check')->sm()->tooltip(Yii::t('AdminModule.user', 'Approve')),
+        'delete' => fn($url, $model) => Button::danger()->link(['decline', 'id' => $model->id])->icon('times')->sm()->tooltip(Yii::t('AdminModule.user', 'Decline')),
     ],
 ];
 ?>

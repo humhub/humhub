@@ -66,11 +66,7 @@ class TimeZoneDropdownAddition extends JsInputWidget
         $value = $this->getTimeZoneValue();
         $timeZones = $this->getTimeZoneItems();
 
-        if (isset($timeZones[$value])) {
-            return $timeZones[$value];
-        }
-
-        return array_values($timeZones)[0];
+        return $timeZones[$value] ?? array_values($timeZones)[0];
     }
 
     /**

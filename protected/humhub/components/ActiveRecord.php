@@ -90,7 +90,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
      */
     public function getUniqueId()
     {
-        return str_replace('\\', '', get_class($this)) . "_" . $this->primaryKey;
+        return str_replace('\\', '', static::class) . "_" . $this->primaryKey;
     }
 
     /**

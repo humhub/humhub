@@ -89,12 +89,10 @@ class ZendLucenceDriver extends AbstractDriver
             'updated_at' => $content->updated_at,
             'updated_by' => ($author = $content->updatedBy) ? $author->guid : '',
             'tags' => empty($content->tags) ? ''
-                : '-' . implode('-', array_map(function (ContentTag $tag) {
-                    return $tag->id;
-                }, $content->tags)) . '-',
+                : '-' . implode('-', array_map(fn(ContentTag $tag) => $tag->id, $content->tags)) . '-',
             'container_guid' => ($container = $content->container) ? $container->guid : '',
             'container_visibility' => $container ? $container->visibility : '',
-            'container_class' => $container ? get_class($container) : '',
+            'container_class' => $container ? $container::class : '',
             'comments' => (new ContentSearchService($content))->getCommentsAsText(),
             'files' => (new ContentSearchService($content))->getFileContentAsText(),
         ];
@@ -142,7 +140,7 @@ class ZendLucenceDriver extends AbstractDriver
         foreach ($hits as $hit) {
             try {
                 $contentId = $hit->getDocument()->getField('content_id')->getUtf8Value();
-            } catch (\Exception $ex) {
+            } catch (\Exception) {
                 throw new \Exception('Could not get content id from Lucence search result');
             }
 
@@ -338,7 +336,7 @@ class ZendLucenceDriver extends AbstractDriver
 
         try {
             $this->_index = Lucene::open($this->getIndexPath());
-        } catch (RuntimeException $ex) {
+        } catch (RuntimeException) {
             $this->_index = Lucene::create($this->getIndexPath());
         }
 

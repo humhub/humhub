@@ -80,9 +80,7 @@ class PermissionGridEditor extends GridView
                     'label' => '',
                     'class' => DropDownGridColumn::class,
                     'attribute' => 'state',
-                    'readonly' => function ($data) {
-                        return !($data['changeable']);
-                    },
+                    'readonly' => fn($data) => !($data['changeable']),
                     'submitAttributes' => ['permissionId', 'moduleId'],
                     'dropDownOptions' => 'states',
                 ],

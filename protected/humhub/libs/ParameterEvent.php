@@ -19,16 +19,14 @@ use yii\base\Event;
 class ParameterEvent extends Event
 {
     /**
+     * @inheritdoc
+     * @param mixed[] $parameters
+     */
+    public function __construct(/**
      * @var array the parameter references
      */
-    public $parameters;
-
-    /**
-     * @inheritdoc
-     */
-    public function __construct($parameters)
+    public $parameters)
     {
-        $this->parameters = $parameters;
         $this->init();
     }
 }

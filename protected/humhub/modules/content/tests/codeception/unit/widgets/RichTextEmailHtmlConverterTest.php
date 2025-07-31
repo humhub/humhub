@@ -148,7 +148,7 @@ class RichTextEmailHtmlConverterTest extends HumHubDbTestCase
         $this->assertTrue((bool)$tokenIsGenerated);
 
         // Compare generated token with parsed from email message
-        $parsedTokenFromEmailMessage = (isset($parsedTokenData[1]) ? $parsedTokenData[1] : null);
+        $parsedTokenFromEmailMessage = ($parsedTokenData[1] ?? null);
         $generatedToken = DownloadAction::generateDownloadToken($postedFile, $receiverUser);
         $this->assertEquals($parsedTokenFromEmailMessage, $generatedToken);
 

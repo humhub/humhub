@@ -61,7 +61,7 @@ trait InvalidArgumentExceptionTrait
             }
 
             // check if $parameter is actually the $message
-            if (strpos($parameterOrMessage, ' ') !== false) {
+            if (str_contains($parameterOrMessage, ' ')) {
                 $message = $parameterOrMessage;
                 $code ??= is_int($valid) ? $valid : 0;
                 if ($given instanceof Throwable) {
@@ -166,7 +166,7 @@ trait InvalidArgumentExceptionTrait
         if (!is_string($given)) {
             try {
                 $given = json_encode($given, JSON_THROW_ON_ERROR);
-            } catch (\JsonException $e) {
+            } catch (\JsonException) {
                 $given = serialize($given);
             }
         }
@@ -263,7 +263,7 @@ trait InvalidArgumentExceptionTrait
             foreach ($valid as $key => $value) {
                 try {
                     $this->valid[] = (string)($value ?? 'NULL');
-                } catch (\Error $t) {
+                } catch (\Error) {
                     throw new InvalidArgumentTypeException(sprintf("\$valid[%s]", $key), ['string'], $value, 0, $this);
                 }
             }

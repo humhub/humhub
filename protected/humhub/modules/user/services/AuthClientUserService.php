@@ -26,16 +26,13 @@ use yii\base\InvalidConfigException;
  */
 class AuthClientUserService
 {
-    public User $user;
-
     /**
      * @var ClientInterface[]
      */
     private ?array $_authClients = null;
 
-    public function __construct(User $user)
+    public function __construct(public User $user)
     {
-        $this->user = $user;
     }
 
     public function add(ClientInterface $authClient): void
@@ -85,7 +82,7 @@ class AuthClientUserService
     public function canChangeUsername(): bool
     {
         foreach ($this->getClients() as $authClient) {
-            if (get_class($authClient) == Password::class) {
+            if ($authClient::class == Password::class) {
                 return true;
             }
         }
@@ -121,7 +118,7 @@ class AuthClientUserService
     public function canChangePassword(): bool
     {
         $primaryAuthClient = $this->getPrimaryClient();
-        return $primaryAuthClient && get_class($primaryAuthClient) === Password::class;
+        return $primaryAuthClient && $primaryAuthClient::class === Password::class;
     }
 
     /**
@@ -171,7 +168,7 @@ class AuthClientUserService
     {
         try {
             return AuthClientService::getCollection()->getClient($this->user->auth_mode);
-        } catch (InvalidArgumentException $e) {
+        } catch (InvalidArgumentException) {
             Yii::error('Could not get primary auth client for user: ' . $this->user->id, 'user');
         } catch (InvalidConfigException $e) {
             Yii::error($e, 'user');

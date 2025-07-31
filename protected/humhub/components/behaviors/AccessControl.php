@@ -215,7 +215,7 @@ class AccessControl extends ActionFilter
     /**
      * @throws HttpException
      */
-    protected function forbidden()
+    protected function forbidden(): never
     {
         throw new HttpException($this->controllerAccess->code, $this->controllerAccess->reason);
     }

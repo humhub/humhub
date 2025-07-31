@@ -79,15 +79,13 @@ class Like extends ContentAddonActiveRecord
     {
         return Yii::$app->cache->getOrSet(
             "likes_{$objectModel}_{$objectId}",
-            function () use ($objectModel, $objectId) {
-                return Like::find()
-                    ->where([
-                        'object_model' => $objectModel,
-                        'object_id' => $objectId,
-                    ])
-                    ->with('user')
-                    ->all();
-            },
+            fn() => Like::find()
+                ->where([
+                    'object_model' => $objectModel,
+                    'object_id' => $objectId,
+                ])
+                ->with('user')
+                ->all(),
             Yii::$app->settings->get('cacheExpireTime'),
         );
     }
@@ -104,7 +102,7 @@ class Like extends ContentAddonActiveRecord
 
             if ($this->getSource() instanceof ContentOwner && $this->getSource()->content->createdBy !== null) {
                 // This is required for comments where $this->getSoruce()->createdBy contains the comment author.
-                $target = isset($this->getSource()->createdBy) ? $this->getSource()->createdBy : $this->getSource()->content->createdBy;
+                $target = $this->getSource()->createdBy ?? $this->getSource()->content->createdBy;
                 NewLike::instance()->from(Yii::$app->user->getIdentity())->about($this)->send($target);
             }
         }

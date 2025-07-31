@@ -170,7 +170,7 @@ abstract class AccessValidator extends BaseObject
         if (isset($rule['actions'])) {
             $actions = $rule['actions'];
         } else {
-            $actions = isset($rule[$name]) ? $rule[$name] : $actions;
+            $actions = $rule[$name] ?? $actions;
         }
 
         return $actions;

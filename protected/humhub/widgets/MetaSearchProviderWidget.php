@@ -79,7 +79,7 @@ class MetaSearchProviderWidget extends Widget
     {
         return [
             'class' => 'search-provider clearfix' . ($this->provider->getService()->isSearched() ? ' provider-searched' : ''),
-            'data-provider' => get_class($this->provider),
+            'data-provider' => $this->provider::class,
             'data-provider-route' => $this->provider->getRoute(),
             'data-hide-on-empty' => $this->provider->getIsHiddenWhenEmpty(),
         ];

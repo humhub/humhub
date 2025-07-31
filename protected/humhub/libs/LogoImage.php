@@ -32,7 +32,7 @@ class LogoImage
         if ($file !== null) {
             try {
                 FileHelper::createDirectory(Yii::getAlias('@webroot/uploads/logo_image/'));
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
             Image::getImagine()->open($file->tempName)->save(Yii::getAlias('@webroot/uploads/logo_image/logo.png'));
         }
@@ -64,7 +64,7 @@ class LogoImage
         } elseif (static::hasImage() && $autoResize) {
             try {
                 FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'logo'));
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
 
             $image = Image::getImagine()->open(static::getOriginalFile());

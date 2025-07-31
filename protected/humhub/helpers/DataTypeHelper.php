@@ -140,7 +140,7 @@ class DataTypeHelper
     protected static function matchTypeHelper($typeToCheck, &$input, string $inputType, ?array &$inputTraits = null): ?string
     {
 
-        if (is_string($typeToCheck) || (is_object($typeToCheck) && $typeToCheck = get_class($typeToCheck))) {
+        if (is_string($typeToCheck) || (is_object($typeToCheck) && $typeToCheck = $typeToCheck::class)) {
             switch ($typeToCheck) {
                 case self::STRING:
                 case self::ARRAY:
@@ -289,7 +289,7 @@ class DataTypeHelper
         if ($strict === false) {
             try {
                 return (bool)$value;
-            } catch (\Throwable $e) {
+            } catch (\Throwable) {
             }
             return false;
         }
@@ -383,7 +383,7 @@ class DataTypeHelper
         }
 
         if ($isObject = is_object($value)) {
-            $type = get_class($value);
+            $type = $value::class;
         } elseif (is_string($value)) {
             if (!class_exists($value)) {
                 if (!$throwException) {
@@ -566,7 +566,7 @@ class DataTypeHelper
 
         // Get all the traits of $class and its parent classes
         do {
-            $class_name = is_object($class) ? get_class($class) : $class;
+            $class_name = is_object($class) ? $class::class : $class;
 
             if (class_exists($class_name, $autoload)) {
                 $traits = array_merge(class_uses($class, $autoload), $traits);
@@ -642,7 +642,7 @@ class DataTypeHelper
             }
 
             if (is_object($item)) {
-                $item = $valid[$index] = get_class($item);
+                $item = $valid[$index] = $item::class;
                 continue;
             }
 

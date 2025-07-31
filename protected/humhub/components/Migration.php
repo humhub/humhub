@@ -64,7 +64,7 @@ class Migration extends \yii\db\Migration
      */
     public function up()
     {
-        return $this->saveUpDown([$this, 'safeUp']);
+        return $this->saveUpDown($this->safeUp(...));
     }
 
     /**
@@ -73,7 +73,7 @@ class Migration extends \yii\db\Migration
      */
     public function down()
     {
-        return $this->saveUpDown([$this, 'safeDown']);
+        return $this->saveUpDown($this->safeDown(...));
     }
 
     /**
@@ -724,7 +724,7 @@ class Migration extends \yii\db\Migration
         // make sure the class is set
         $params['class'] ??= static::class;
 
-        if (false === strpos('{class}', $message)) {
+        if (!str_contains('{class}', $message)) {
             $message = "Migration {class}: $message";
         }
 

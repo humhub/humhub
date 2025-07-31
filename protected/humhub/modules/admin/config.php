@@ -20,26 +20,17 @@ return [
         [
             'class' => User::class,
             'event' => User::EVENT_BEFORE_SWITCH_IDENTITY,
-            'callback' => [
-                Events::class,
-                'onSwitchUser',
-            ],
+            'callback' => Events::onSwitchUser(...),
         ],
         [
             'class' => Sidebar::class,
             'event' => Sidebar::EVENT_INIT,
-            'callback' => [
-                Events::class,
-                'onDashboardSidebarInit',
-            ],
+            'callback' => Events::onDashboardSidebarInit(...),
         ],
         [
             'class' => CronController::class,
             'event' => CronController::EVENT_ON_DAILY_RUN,
-            'callback' => [
-                Events::class,
-                'onCronDailyRun',
-            ],
+            'callback' => Events::onCronDailyRun(...),
         ],
     ],
 ];

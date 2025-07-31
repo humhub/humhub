@@ -65,19 +65,19 @@ class LinkParserBlock extends Model
         if ($this->hasOption(static::BLOCK_KEY_TEXT)) {
             // Extract image alignment from image alt text
             $text = trim((string)$this->block[static::BLOCK_KEY_TEXT]);
-            if (substr($text, -2) === '><') {
+            if (str_ends_with($text, '><')) {
                 $this->setClass('d-block mx-auto');
                 $this->setText(substr($text, 0, -2));
-            } elseif (substr($text, -1) === '<') {
+            } elseif (str_ends_with($text, '<')) {
                 $this->setClass('float-start');
                 $this->setText(substr($text, 0, -1));
-            } elseif (substr($text, -1) === '>') {
+            } elseif (str_ends_with($text, '>')) {
                 $this->setClass('float-end');
                 $this->setText(substr($text, 0, -1));
             }
         }
 
-        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)?x(\d+)?\)$/', $this->block[static::BLOCK_KEY_MD], $size)) {
+        if ($this->hasOption(static::BLOCK_KEY_MD) && preg_match('/=(\d+)?x(\d+)?\)$/', (string) $this->block[static::BLOCK_KEY_MD], $size)) {
             $this->setWidth($size[1] ?? null);
             $this->setHeight($size[2] ?? null);
         }

@@ -8,6 +8,6 @@ return [
     'class' => humhub\modules\installer\Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => Connection::class, 'event' => Connection::EVENT_AFTER_OPEN, 'callback' => [Events::class, 'onConnectionAfterOpen']],
+        ['class' => Connection::class, 'event' => Connection::EVENT_AFTER_OPEN, 'callback' => Events::onConnectionAfterOpen(...)],
     ],
 ];

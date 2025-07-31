@@ -14,7 +14,7 @@ class m160415_180332_wall_remove extends Migration
         try {
             $this->addColumn('content', 'show_in_stream', $this->boolean()->defaultValue(true));
             $this->addColumn('content', 'stream_sort_date', $this->dateTime());
-        } catch (Exception $ex) {
+        } catch (Exception) {
 
         }
 

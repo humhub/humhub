@@ -47,7 +47,7 @@ class ContentTest extends ContentModelTest
         try {
             $testContent->save();
             $this->assertTrue(false, 'Content should not be saved!');
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->assertTrue(true);
         }
     }
@@ -63,7 +63,7 @@ class ContentTest extends ContentModelTest
         try {
             $testContent->save();
             $this->assertTrue(false, 'Content should not be saved!');
-        } catch (Exception $e) {
+        } catch (Exception) {
             $this->assertTrue(true);
         }
     }

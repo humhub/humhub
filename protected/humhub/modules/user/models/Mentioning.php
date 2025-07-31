@@ -112,7 +112,7 @@ class Mentioning extends ActiveRecord
     {
         $result = [];
         if ($record instanceof ContentActiveRecord || $record instanceof ContentAddonActiveRecord) {
-            preg_replace_callback('@\@\-u([\w\-]*?)($|\s|\.)@', function ($hit) use (&$record, &$result) {
+            preg_replace_callback('@\@\-u([\w\-]*?)($|\s|\.)@', function ($hit) use (&$record, &$result): void {
                 $result = array_merge($result, static::mention($hit[1], $record));
             }, $text);
         } else {
@@ -156,7 +156,7 @@ class Mentioning extends ActiveRecord
 
             // Check the user was already mentioned (e.g. edit)
             $mention = static::findOne([
-                'object_model' => get_class($record),
+                'object_model' => $record::class,
                 'object_id' => $record->getPrimaryKey(),
                 'user_id' => $user->id,
             ]);

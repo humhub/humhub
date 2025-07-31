@@ -110,10 +110,10 @@ class ScssHelper
         }
 
         foreach ($variables as $name => $value) {
-            if (!str_starts_with($value, '$')) {
+            if (!str_starts_with((string) $value, '$')) {
                 continue;
             }
-            $linkedVarName = substr($value, 1);
+            $linkedVarName = substr((string) $value, 1);
             if (isset($variables[$linkedVarName])) {
                 $variables[$name] = $variables[$linkedVarName];
             }

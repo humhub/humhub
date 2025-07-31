@@ -85,7 +85,7 @@ class DbDateValidator extends DateValidator
                 $date->setTimezone(DateHelper::getSystemTimeZone());
             }
 
-            $targetAttribute = ($this->targetAttribute === null) ? $attribute : $this->targetAttribute;
+            $targetAttribute = $this->targetAttribute ?? $attribute;
 
             if ($this->convertToFormat !== null) {
                 $model->$targetAttribute = $date->format($this->convertToFormat);

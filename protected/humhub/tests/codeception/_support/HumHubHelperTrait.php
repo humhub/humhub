@@ -310,11 +310,11 @@ trait HumHubHelperTrait
         if (count($messages)) {
             try {
                 preg_match($regex, '');
-            } catch (ErrorException $e) {
+            } catch (ErrorException) {
                 throw new Exception("Invalid regex given: '{$regex}'");
             }
 
-            $messages = array_filter($messages, static fn($text) => preg_match($regex, $text));
+            $messages = array_filter($messages, static fn($text) => preg_match($regex, (string) $text));
         }
 
         static::assertCount($expectedCount, $messages, $errorMessage ?? print_r(static::logFilterMessageTexts(), true));
@@ -623,7 +623,7 @@ trait HumHubHelperTrait
     public function handleEvent(Event $event, array $eventData = [])
     {
         $eventData = ArrayHelper::merge([
-            'class' => get_class($event),
+            'class' => $event::class,
             'event' => $event->name,
             'sender' => $event->sender,
             'data' => $event->data,

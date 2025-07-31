@@ -69,7 +69,7 @@ class StdClassConfig extends StdClass
      * @see static::getParent()
      * @see static::getReflection()
      */
-    private WeakReference $__StdClassConfig_parent;
+    private readonly WeakReference $__StdClassConfig_parent;
 
     /**
      * @param StdClassConfigurable $parent
@@ -165,7 +165,7 @@ class StdClassConfig extends StdClass
                 $config = $class->newInstanceWithoutConstructor();
 
                 return $config->__unserialize($serialized);
-            } catch (ReflectionException $e) {
+            } catch (ReflectionException) {
             }
         }
 
@@ -289,7 +289,7 @@ class StdClassConfig extends StdClass
 
         try {
             $config = self::$__StdClassConfig_config[$parent];
-        } catch (UnexpectedValueException $e) {
+        } catch (UnexpectedValueException) {
             $config = null;
         } catch (Error $e) {
             if ($e->getMessage() === 'Typed static property ' . self::class . '::$__StdClassConfig_config must not be accessed before initialization') {

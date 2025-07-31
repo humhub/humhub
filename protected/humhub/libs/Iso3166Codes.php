@@ -528,11 +528,11 @@ class Iso3166Codes
 
     public static function phoneCode($code)
     {
-        return (isset(static::$phoneCodes[strtoupper($code)])) ? static::$phoneCodes[strtoupper($code)] : 'N/A';
+        return static::$phoneCodes[strtoupper((string) $code)] ?? 'N/A';
     }
 
     public static function isValid($code)
     {
-        return isset(static::$countries[strtoupper($code)]);
+        return isset(static::$countries[strtoupper((string) $code)]);
     }
 }

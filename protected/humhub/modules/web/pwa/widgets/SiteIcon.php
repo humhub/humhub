@@ -39,7 +39,7 @@ class SiteIcon extends Widget
         if ($file !== null) {
             try {
                 FileHelper::createDirectory(Yii::getAlias('@webroot/uploads/icon/'));
-            } catch (Exception $e) {
+            } catch (Exception) {
             }
             Image::getImagine()->open($file->tempName)->save(Yii::getAlias('@webroot/uploads/icon/icon.png'));
         }
@@ -69,7 +69,7 @@ class SiteIcon extends Widget
             }
             try {
                 FileHelper::createDirectory(Yii::getAlias(Yii::$app->assetManager->basePath . DIRECTORY_SEPARATOR . 'siteicons'));
-            } catch (Exception $e) {
+            } catch (Exception) {
                 // Directory already exists
             }
 

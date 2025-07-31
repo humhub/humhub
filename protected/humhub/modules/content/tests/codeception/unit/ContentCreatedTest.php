@@ -28,7 +28,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(1);
     }
 
     public function testSilentContentCreation()
@@ -42,7 +42,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(0, 'ContentCreated Notification Mail not sent');
+        $this->assertMailSent(0);
     }
 
     /**
@@ -63,7 +63,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->content->visibility = Content::VISIBILITY_PUBLIC;
         $post->save();
 
-        $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(0);
     }
 
     /**
@@ -81,7 +81,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // We expect two notification mails one for following User1 and one for notifyUserOfNewContent User3.
-        $this->assertMailSent(2, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(2);
     }
 
     /**
@@ -99,7 +99,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // We expect two notification mails one for following User1 and one for notifyUserOfNewContent User3.
-        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(1);
     }
 
     /**
@@ -117,7 +117,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // We only one notification
-        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(1);
     }
 
     /**
@@ -132,7 +132,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->content->visibility = Content::VISIBILITY_PUBLIC;
         $post->save();
 
-        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(1);
     }
 
     /**
@@ -147,7 +147,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->content->visibility = Content::VISIBILITY_PUBLIC;
         $post->save();
 
-        $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(0);
     }
 
     /**
@@ -165,7 +165,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->content->visibility = Content::VISIBILITY_PUBLIC;
         $post->save();
 
-        $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(0);
     }
 
     /**
@@ -183,7 +183,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(1, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(1);
     }
 
     /**
@@ -208,7 +208,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(0, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(0);
     }
 
     /**
@@ -225,7 +225,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(4, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(4);
     }
 
     /**
@@ -249,7 +249,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(3, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(3);
     }
 
     /**
@@ -273,7 +273,7 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(3, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(3);
     }
 
     /**
@@ -305,6 +305,6 @@ class ContentCreatedTest extends HumHubDbTestCase
         $post->save();
 
         // Note Admin is following Space2 so we expect one notification mail.
-        $this->assertMailSent(2, 'ContentCreated Notification Mail sent');
+        $this->assertMailSent(2);
     }
 }

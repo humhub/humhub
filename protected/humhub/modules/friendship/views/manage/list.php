@@ -24,15 +24,13 @@ use humhub\widgets\GridView;
                 'header' => Yii::t('base', 'Actions'),
                 'class' => 'yii\grid\ActionColumn',
                 'buttons' => [
-                    'update' => function () {
+                    'update' => function (): void {
                         return;
                     },
-                    'view' => function () {
+                    'view' => function (): void {
                         return;
                     },
-                    'delete' => function ($url, $model) {
-                        return Html::a(Yii::t('FriendshipModule.base', 'Unfriend'), ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']);
-                    },
+                    'delete' => fn($url, $model) => Html::a(Yii::t('FriendshipModule.base', 'Unfriend'), ['/friendship/request/delete', 'userId' => $model->id], ['class' => 'btn btn-danger btn-sm', 'data-method' => 'POST']),
                 ],
             ]],
     ]);

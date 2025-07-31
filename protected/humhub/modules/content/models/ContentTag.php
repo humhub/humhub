@@ -338,7 +338,7 @@ class ContentTag extends ActiveRecord
      */
     public static function find()
     {
-        $query = Yii::createObject(ContentTagActiveQuery::class, [get_called_class()])
+        $query = Yii::createObject(ContentTagActiveQuery::class, [static::class])
             ->select([
                 'content_tag.*',
                 'is_global' => new Expression('content_tag.contentcontainer_id IS NULL'),

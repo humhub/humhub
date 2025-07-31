@@ -17,7 +17,7 @@ class SearchDriverService extends Component
     public const EVENT_BEFORE_UPDATE = 'update';
     public const EVENT_BEFORE_DELETE = 'delete';
 
-    private AbstractDriver $driver;
+    private readonly AbstractDriver $driver;
 
     public function __construct($config = [])
     {

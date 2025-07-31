@@ -111,7 +111,7 @@ class Button extends BootstrapComponent
      */
     public function getHref()
     {
-        return isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
+        return $this->htmlOptions['href'] ?? null;
     }
 
     /**
@@ -235,7 +235,7 @@ class Button extends BootstrapComponent
         }
 
         if ($this->_link) {
-            $href = isset($this->htmlOptions['href']) ? $this->htmlOptions['href'] : null;
+            $href = $this->htmlOptions['href'] ?? null;
             return Html::a($this->getText(), $href, $this->htmlOptions);
         }
 

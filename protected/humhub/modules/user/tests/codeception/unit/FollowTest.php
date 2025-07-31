@@ -20,7 +20,7 @@ class FollowTest extends HumHubDbTestCase
         $follow = Follow::findOne(['object_model' => User::class, 'object_id' => 1, 'user_id' => 2]);
 
         $this->assertNotNull($follow);
-        $this->assertMailSent(1, 'User follow notification Mail.');
+        $this->assertMailSent(1);
         $this->assertHasNotification(Followed::class, $follow, Yii::$app->user->id, 'Approval Request Notification');
     }
 }

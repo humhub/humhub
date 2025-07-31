@@ -188,7 +188,7 @@ abstract class BaseNotification extends SocialActivity
     public function sendBulk($query)
     {
         if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
+            throw new InvalidConfigException('No moduleId given for "' . static::class . '"');
         }
 
         if (!$query instanceof ActiveQueryUser) {
@@ -218,7 +218,7 @@ abstract class BaseNotification extends SocialActivity
     public function send(User $user)
     {
         if (empty($this->moduleId)) {
-            throw new InvalidConfigException('No moduleId given for "' . get_class($this) . '"');
+            throw new InvalidConfigException('No moduleId given for "' . static::class . '"');
         }
 
         if ($this->suppressSendToOriginator && $this->isOriginator($user)) {
@@ -492,7 +492,7 @@ abstract class BaseNotification extends SocialActivity
     public function getGroupUserDisplayNames($html = true)
     {
         if ($this->groupCount > 2) {
-            list($user) = $this->getGroupLastUsers(1);
+            [$user] = $this->getGroupLastUsers(1);
             $displayName = $html ? Html::tag('strong', Html::encode($user->displayName)) : $user->displayName;
             return Yii::t('NotificationModule.base', '{displayName} and {number} others', [
                 'displayName' => $displayName,

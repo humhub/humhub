@@ -71,17 +71,12 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
         $connection = Yii::$app->request->get('connection', $this->defaultFilters['connection'] ?? null);
 
         $this->filterByConnectionArchived($connection === 'archived');
-
-        switch ($connection) {
-            case 'member':
-                return $this->filterByConnectionMember();
-            case 'follow':
-                return $this->filterByConnectionFollow();
-            case 'none':
-                return $this->filterByConnectionNone();
-        }
-
-        return $this;
+        return match ($connection) {
+            'member' => $this->filterByConnectionMember(),
+            'follow' => $this->filterByConnectionFollow(),
+            'none' => $this->filterByConnectionNone(),
+            default => $this,
+        };
     }
 
     public function filterByConnectionMember(): SpaceDirectoryQuery
@@ -117,23 +112,13 @@ class SpaceDirectoryQuery extends ActiveQuerySpace
 
     public function order(): SpaceDirectoryQuery
     {
-        switch (SpaceDirectoryFilters::getValue('sort')) {
-            case 'sortOrder':
-                $this->defaultOrderBy();
-                break;
-
-            case 'name':
-                $this->addOrderBy('space.name');
-                break;
-
-            case 'newer':
-                $this->addOrderBy(['space.created_at' => SORT_DESC]);
-                break;
-
-            case 'older':
-                $this->addOrderBy('space.created_at');
-                break;
-        }
+        match (SpaceDirectoryFilters::getValue('sort')) {
+            'sortOrder' => $this->defaultOrderBy(),
+            'name' => $this->addOrderBy('space.name'),
+            'newer' => $this->addOrderBy(['space.created_at' => SORT_DESC]),
+            'older' => $this->addOrderBy('space.created_at'),
+            default => $this,
+        };
 
         return $this;
     }

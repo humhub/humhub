@@ -14,10 +14,10 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        [User::class, User::EVENT_BEFORE_DELETE, [Events::class, 'onUserDelete']],
-        [ContentActiveRecord::class, ContentActiveRecord::EVENT_BEFORE_DELETE, [Events::class, 'onContentDelete']],
-        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
-        [WallEntryLinks::class, WallEntryLinks::EVENT_INIT, [Events::class, 'onWallEntryLinksInit']],
-        [WallEntryAddons::class, WallEntryAddons::EVENT_INIT, [Events::class, 'onWallEntryAddonInit']],
+        [User::class, User::EVENT_BEFORE_DELETE, Events::onUserDelete(...)],
+        [ContentActiveRecord::class, ContentActiveRecord::EVENT_BEFORE_DELETE, Events::onContentDelete(...)],
+        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, Events::onIntegrityCheck(...)],
+        [WallEntryLinks::class, WallEntryLinks::EVENT_INIT, Events::onWallEntryLinksInit(...)],
+        [WallEntryAddons::class, WallEntryAddons::EVENT_INIT, Events::onWallEntryAddonInit(...)],
     ],
 ];

@@ -265,7 +265,7 @@ class Button extends \yii\bootstrap5\Button
         // And so on for all Bootstrap 5 colors
         $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|light|dark)\b/';
         $replacement = 'btn-outline-$1';
-        $this->options['class'] = preg_replace($pattern, $replacement, $this->options['class']);
+        $this->options['class'] = preg_replace($pattern, $replacement, (string) $this->options['class']);
         return $this;
     }
 

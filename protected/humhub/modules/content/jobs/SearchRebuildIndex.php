@@ -29,7 +29,7 @@ class SearchRebuildIndex extends LongRunningActiveJob implements ExclusiveJobInt
      */
     public function run()
     {
-        return $this->getService()->run(function () {
+        return $this->getService()->run(function (): void {
             foreach (Content::find()->each() as $content) {
                 (new ContentSearchService($content))->update(false);
             }

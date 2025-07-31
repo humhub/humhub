@@ -43,12 +43,8 @@ class CacheSettingsForm extends Model
             ['reloadableScripts', 'string'],
             ['type', 'checkCacheType'],
             ['expireTime', 'integer'],
-            ['type', 'required', 'when' => function () {
-                return !Yii::$app->settings->isFixed('cacheClass');
-            }],
-            ['type', 'in', 'range' => array_keys($this->getTypes()), 'when' => function () {
-                return !Yii::$app->settings->isFixed('cacheClass');
-            }],
+            ['type', 'required', 'when' => fn() => !Yii::$app->settings->isFixed('cacheClass')],
+            ['type', 'in', 'range' => array_keys($this->getTypes()), 'when' => fn() => !Yii::$app->settings->isFixed('cacheClass')],
         ];
     }
 

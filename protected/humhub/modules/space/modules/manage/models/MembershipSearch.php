@@ -84,7 +84,7 @@ class MembershipSearch extends Membership
         $query->joinWith([
             'user',
             'user.profile',
-            'originator' => [$this, 'joinWithOriginator'],
+            'originator' => $this->joinWithOriginator(...),
         ]);
 
         $dataProvider = new ActiveDataProvider([

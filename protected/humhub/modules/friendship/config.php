@@ -9,6 +9,6 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => [Events::class, 'onAccountMenuInit']],
+        ['class' => AccountMenu::class, 'event' => AccountMenu::EVENT_INIT, 'callback' => Events::onAccountMenuInit(...)],
     ],
 ];

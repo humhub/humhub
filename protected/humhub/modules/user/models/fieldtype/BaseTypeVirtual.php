@@ -45,7 +45,7 @@ abstract class BaseTypeVirtual extends BaseType
     public function getFormDefinition($definition = [])
     {
         return parent::getFormDefinition([
-            get_class($this) => [
+            static::class => [
                 'type' => 'form',
                 'title' => '',
                 'elements' => [],

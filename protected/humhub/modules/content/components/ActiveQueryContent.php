@@ -136,7 +136,7 @@ class ActiveQueryContent extends ActiveQuery
             $this->andWhere(['IS', 'contentcontainer.pk', new Expression('NULL')]);
         } else {
             $this->joinWith(['content', 'content.contentContainer', 'content.createdBy']);
-            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => get_class($container)]);
+            $this->andWhere(['contentcontainer.pk' => $container->id, 'contentcontainer.class' => $container::class]);
         }
 
         return $this;
@@ -163,9 +163,7 @@ class ActiveQueryContent extends ActiveQuery
                 $this->andWhere(['content.id' => $contentTagQuery]);
             }
         } elseif ($mode == 'OR') {
-            $names = array_map(function ($v) {
-                return $v->name;
-            }, $contentTags);
+            $names = array_map(fn($v) => $v->name, $contentTags);
 
             $this->joinWith('content.tags');
             $this->andWhere(['IS NOT', 'content_tag.id', new Expression('NULL')]);
@@ -260,7 +258,7 @@ class ActiveQueryContent extends ActiveQuery
         }
 
         if (count($conditions) != 0) {
-            $this->andWhere("(" . join(') OR (', $conditions) . ")", $params);
+            $this->andWhere("(" . implode(') OR (', $conditions) . ")", $params);
         } else {
             // No results, when no selector given
             $this->andWhere('1=2');

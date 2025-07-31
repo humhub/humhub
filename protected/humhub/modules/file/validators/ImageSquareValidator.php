@@ -71,7 +71,7 @@ class ImageSquareValidator extends \yii\validators\FileValidator
             return false;
         }
 
-        list($width, $height) = $imageInfo;
+        [$width, $height] = $imageInfo;
         if ($width == 0 || $height == 0) {
             return false;
         }
