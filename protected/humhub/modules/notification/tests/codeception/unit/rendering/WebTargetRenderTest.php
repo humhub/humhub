@@ -2,12 +2,12 @@
 
 namespace humhub\modules\notification\tests\codeception\unit\rendering;
 
-use humhub\modules\post\models\Post;
-use humhub\modules\user\models\User;
-use Yii;
-use tests\codeception\_support\HumHubDbTestCase;
 use Codeception\Specify;
 use humhub\modules\notification\targets\WebTarget;
+use humhub\modules\post\models\Post;
+use humhub\modules\user\models\User;
+use tests\codeception\_support\HumHubDbTestCase;
+use Yii;
 
 class WebTargetRenderTest extends HumHubDbTestCase
 {
@@ -21,7 +21,7 @@ class WebTargetRenderTest extends HumHubDbTestCase
         $target = Yii::$app->notification->getTarget(WebTarget::class);
         $renderer = $target->getRenderer();
         $result = $renderer->render($notification);
-        $this->assertStringContainsString('<span class="badge-new"></span>', $result);
+        $this->assertStringContainsString('<span class="badge badge-new"></span>', $result);
         $this->assertStringContainsString('<h1>TestedMailViewNotificationHTML</h1>', $result);
     }
 
@@ -34,7 +34,7 @@ class WebTargetRenderTest extends HumHubDbTestCase
         $target = Yii::$app->notification->getTarget(WebTarget::class);
         $renderer = $target->getRenderer();
         $result = $renderer->render($notification);
-        $this->assertStringContainsString('<span class="badge-new"></span>', $result);
+        $this->assertStringContainsString('<span class="badge badge-new"></span>', $result);
         $this->assertStringContainsString('<div>Special:<h1>TestedMailViewNotificationHTML</h1></div>', $result);
     }
 }
