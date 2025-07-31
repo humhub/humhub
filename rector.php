@@ -9,6 +9,7 @@ return RectorConfig::configure()
         __DIR__ . '/protected/humhub',
     ])
     ->withSkip([
+        \Rector\Php81\Rector\Array_\FirstClassCallableRector::class,
         __DIR__ . '/protected/humhub/messages/*',
         __DIR__ . '/protected/humhub/modules/*/messages/*',
         __DIR__ . '/protected/humhub/modules/*/config.php',
