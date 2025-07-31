@@ -11,6 +11,7 @@ return RectorConfig::configure()
     ->withSkip([
         __DIR__ . '/protected/humhub/messages/*',
         __DIR__ . '/protected/humhub/modules/*/messages/*',
+        __DIR__ . '/protected/humhub/modules/*/config.php',
     ])
     ->withPhpSets(php82:true)
     ->withTypeCoverageLevel(0)

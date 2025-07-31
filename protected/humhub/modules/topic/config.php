@@ -18,8 +18,8 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => WallEntryControls::class, 'event' => WallEntryControls::EVENT_INIT, 'callback' => Events::onWallEntryControlsInit(...)],
-        ['class' => DefaultMenu::class, 'event' => DefaultMenu::EVENT_INIT, 'callback' => Events::onSpaceSettingMenuInit(...)],
-        ['class' => AccountSettingsMenu::class, 'event' => AccountSettingsMenu::EVENT_INIT, 'callback' => Events::onProfileSettingMenuInit(...)],
+        ['class' => WallEntryControls::class, 'event' => WallEntryControls::EVENT_INIT, 'callback' => [Events::class, 'onWallEntryControlsInit']],
+        ['class' => DefaultMenu::class, 'event' => DefaultMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceSettingMenuInit']],
+        ['class' => AccountSettingsMenu::class, 'event' => AccountSettingsMenu::EVENT_INIT, 'callback' => [Events::class, 'onProfileSettingMenuInit']],
     ],
 ];

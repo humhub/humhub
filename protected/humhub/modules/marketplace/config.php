@@ -23,9 +23,9 @@ return [
         'professional-edition' => 'humhub\modules\marketplace\commands\ProfessionalEditionController',
     ],
     'events' => [
-        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, Events::onHourlyCron(...)],
-        [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, Events::onMarketplaceAfterFilterModules(...)],
-        [AccountTopMenu::class, AccountTopMenu::EVENT_INIT, Events::onAccountTopMenuInit(...)],
-        [MetaSearchWidget::class, MetaSearchWidget::EVENT_INIT, Events::onMetaSearchInit(...)],
+        [CronController::class, CronController::EVENT_ON_HOURLY_RUN, [Events::class, 'onHourlyCron']],
+        [ModuleManager::class, ModuleManager::EVENT_AFTER_FILTER_MODULES, [Events::class, 'onMarketplaceAfterFilterModules']],
+        [AccountTopMenu::class, AccountTopMenu::EVENT_INIT, [Events::class, 'onAccountTopMenuInit']],
+        [MetaSearchWidget::class, MetaSearchWidget::EVENT_INIT, [Events::class, 'onMetaSearchInit']],
     ],
 ];

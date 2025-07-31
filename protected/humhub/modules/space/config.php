@@ -26,9 +26,9 @@ return [
         'space' => 'humhub\modules\space\commands\SpaceController',
     ],
     'events' => [
-        [User::class, User::EVENT_BEFORE_SOFT_DELETE, Events::onUserSoftDelete(...)],
-        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, Events::onIntegrityCheck(...)],
-        [TopMenu::class, TopMenu::EVENT_INIT, Events::onTopMenuInit(...)],
-        [HeaderControlsMenu::class, HeaderControlsMenu::EVENT_INIT, 'callback' => Events::onSpaceHeaderControlsMenuInit(...)],
+        [User::class, User::EVENT_BEFORE_SOFT_DELETE, [Events::class, 'onUserSoftDelete']],
+        [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
+        [TopMenu::class, TopMenu::EVENT_INIT, [Events::class, 'onTopMenuInit']],
+        [HeaderControlsMenu::class, HeaderControlsMenu::EVENT_INIT, 'callback' => [Events::class, 'onSpaceHeaderControlsMenuInit']],
     ],
 ];

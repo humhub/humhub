@@ -21,7 +21,7 @@ return [
         'ldap' => 'humhub\modules\ldap\commands\LdapController',
     ],
     'events' => [
-        [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, Events::onAuthenticationMenu(...)],
-        [Collection::class, Collection::EVENT_BEFORE_CLIENTS_SET, Events::onAuthClientCollectionSet(...)],
+        [AuthenticationMenu::class, AuthenticationMenu::EVENT_INIT, [Events::class, 'onAuthenticationMenu']],
+        [Collection::class, Collection::EVENT_BEFORE_CLIENTS_SET, [Events::class, 'onAuthClientCollectionSet']],
     ],
 ];

@@ -10,7 +10,7 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        [Sidebar::class, Sidebar::EVENT_INIT, Events::onDashboardSidebarInit(...)],
-        [User::class, User::EVENT_BEFORE_LOGIN, Events::onUserBeforeLogin(...)],
+        [Sidebar::class, Sidebar::EVENT_INIT, [Events::class, 'onDashboardSidebarInit']],
+        [User::class, User::EVENT_BEFORE_LOGIN, [Events::class, 'onUserBeforeLogin']],
     ],
 ];

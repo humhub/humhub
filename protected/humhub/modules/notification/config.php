@@ -14,11 +14,11 @@ return [
     'class' => Module::class,
     'isCoreModule' => true,
     'events' => [
-        ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => Events::onUserDelete(...)],
-        ['class' => Space::class, 'event' => Space::EVENT_BEFORE_DELETE, 'callback' => Events::onSpaceDelete(...)],
-        ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => Events::onIntegrityCheck(...)],
-        ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => Events::onCronDailyRun(...)],
-        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => Events::onActiveRecordDelete(...)],
-        ['class' => LayoutAddons::class, 'event' => LayoutAddons::EVENT_BEFORE_RUN, 'callback' => Events::onLayoutAddons(...)],
+        ['class' => User::class, 'event' => User::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onUserDelete']],
+        ['class' => Space::class, 'event' => Space::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onSpaceDelete']],
+        ['class' => IntegrityController::class, 'event' => IntegrityController::EVENT_ON_RUN, 'callback' => [Events::class, 'onIntegrityCheck']],
+        ['class' => CronController::class, 'event' => CronController::EVENT_ON_DAILY_RUN, 'callback' => [Events::class, 'onCronDailyRun']],
+        ['class' => ActiveRecord::class, 'event' => ActiveRecord::EVENT_BEFORE_DELETE, 'callback' => [Events::class, 'onActiveRecordDelete']],
+        ['class' => LayoutAddons::class, 'event' => LayoutAddons::EVENT_BEFORE_RUN, 'callback' => [Events::class, 'onLayoutAddons']],
     ],
 ];
