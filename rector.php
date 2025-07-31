@@ -10,6 +10,8 @@ return RectorConfig::configure()
     ])
     ->withSkip([
         \Rector\Php81\Rector\Array_\FirstClassCallableRector::class,
+        \Rector\TypeDeclaration\Rector\ClassMethod\ReturnNeverTypeRector::class,
+        __DIR__ . '/protected/humhub/config/*',
         __DIR__ . '/protected/humhub/messages/*',
         __DIR__ . '/protected/humhub/modules/*/messages/*',
         __DIR__ . '/protected/humhub/modules/*/config.php',

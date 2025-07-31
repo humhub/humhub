@@ -36,7 +36,7 @@ class BaseFormAuth extends BaseClient
      *
      * @throws NotSupportedException
      */
-    public function auth(): never
+    public function auth()
     {
         throw new NotSupportedException('Method "' . static::class . '::' . __FUNCTION__ . '" not implemented.');
     }
