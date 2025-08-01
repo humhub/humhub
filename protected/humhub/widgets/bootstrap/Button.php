@@ -189,8 +189,12 @@ class Button extends \yii\bootstrap5\Button
     /**
      * Adds a confirmation behaviour to the button.
      */
-    public function confirm(?string $title = null, ?string $body = null, ?string $confirmButtonText = null, ?string $cancelButtonText = null): static
-    {
+    public function confirm(
+        ?string $title = null,
+        ?string $body = null,
+        ?string $confirmButtonText = null,
+        ?string $cancelButtonText = null
+    ): static {
         if ($title) {
             $this->options['data-action-confirm-header'] = $title;
         }
@@ -217,7 +221,10 @@ class Button extends \yii\bootstrap5\Button
      */
     public function run(): string
     {
-        $this->options = array_merge($this->options, $this->htmlOptions); // For compatibility with old bootstrap buttons
+        $this->options = array_merge(
+            $this->options,
+            $this->htmlOptions
+        ); // For compatibility with old bootstrap buttons
 
         if ($this->loader) {
             $this->options['data-ui-loader'] = '';
@@ -265,7 +272,11 @@ class Button extends \yii\bootstrap5\Button
         // And so on for all Bootstrap 5 colors
         $pattern = '/\bbtn-(primary|secondary|success|danger|warning|info|light|dark)\b/';
         $replacement = 'btn-outline-$1';
-        $this->options['class'] = preg_replace($pattern, $replacement, (string) $this->options['class']);
+
+        if ($this->options['class'] !== null) {
+            $this->options['class'] = preg_replace($pattern, $replacement, $this->options['class']);
+        }
+
         return $this;
     }
 
