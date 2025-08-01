@@ -264,9 +264,9 @@ class UUIDTest extends HumHubDbTestCase
     /** @noinspection PhpUnhandledExceptionInspection */
     public function testUUIDValidatorValidation()
     {
-        $closureUUID = static::closureUUID(...);
-        $closureNull = static::closureNull(...);
-        $closureInvalid = static::closureInvalid(...);
+        $closureUUID = [static::class, 'closureUUID'];
+        $closureNull = [static::class, 'closureNull'];
+        $closureInvalid = [static::class, 'closureInvalid'];
 
         $validator = new UUIDValidator();
 
