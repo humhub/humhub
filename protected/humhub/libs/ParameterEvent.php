@@ -25,8 +25,8 @@ class ParameterEvent extends Event
     public function __construct(/**
      * @var array the parameter references
      */
-    public $parameters)
-    {
+        public $parameters,
+    ) {
         $this->init();
     }
 }
