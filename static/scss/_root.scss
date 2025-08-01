@@ -119,12 +119,6 @@
 
         // @deprecated since 1.18, use the above variable instead
         --default: #{$default-dark};
-        --primary: var(--bs-primary);
-        --info: var(--bs-info);
-        --success: var(--bs-success);
-        --warning: var(--bs-warning);
-        --danger: var(--bs-danger);
-        --link: var(--bs-link-color);
         --text-color-main: #{$text-color-main-dark};
         --text-color-default: #{$text-color-default-dark};
         --text-color-secondary: #{$text-color-secondary-dark};
