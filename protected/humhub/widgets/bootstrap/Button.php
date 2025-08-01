@@ -193,7 +193,7 @@ class Button extends \yii\bootstrap5\Button
         ?string $title = null,
         ?string $body = null,
         ?string $confirmButtonText = null,
-        ?string $cancelButtonText = null
+        ?string $cancelButtonText = null,
     ): static {
         if ($title) {
             $this->options['data-action-confirm-header'] = $title;
@@ -223,7 +223,7 @@ class Button extends \yii\bootstrap5\Button
     {
         $this->options = array_merge(
             $this->options,
-            $this->htmlOptions
+            $this->htmlOptions,
         ); // For compatibility with old bootstrap buttons
 
         if ($this->loader) {
