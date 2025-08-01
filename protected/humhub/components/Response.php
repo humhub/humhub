@@ -29,12 +29,12 @@ class Response extends \yii\web\Response
      */
     public function xSendFile($filePath, $attachmentName = null, $options = [])
     {
-        if (isset($_SERVER['SERVER_SOFTWARE']) && stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') === 0) {
+        if (isset($_SERVER['SERVER_SOFTWARE']) && stripos((string) $_SERVER['SERVER_SOFTWARE'], 'nginx') === 0) {
             // set nginx specific X-Sendfile header name
             $options['xHeader'] = 'X-Accel-Redirect';
             // make path relative to docroot
-            $docroot = rtrim($_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
-            if (substr($filePath, 0, strlen($docroot)) == $docroot) {
+            $docroot = rtrim((string) $_SERVER['DOCUMENT_ROOT'], DIRECTORY_SEPARATOR);
+            if (str_starts_with($filePath, $docroot)) {
                 $filePath = substr($filePath, strlen($docroot));
             }
         }

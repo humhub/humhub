@@ -82,7 +82,7 @@ use humhub\widgets\modal\ModalButton;
                             'mailto:?subject=' .
                             rawurlencode(Yii::t('UserModule.invite', 'You\'ve been invited to join %appName%', ['%appName%' => Yii::$app->name])) .
                             '&body=' .
-                            rawurlencode($this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
+                            rawurlencode((string) $this->renderFile($this->findViewFile('@humhub/modules/user/views/mails/plaintext/UserInvite'), [
                                 'originator' => Yii::$app->user->identity,
                                 'registrationUrl' => $model->getInviteLink()
                             ]))

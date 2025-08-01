@@ -45,7 +45,7 @@ class NewLike extends BaseNotification
     public function getGroupKey()
     {
         $model = $this->getLikedRecord();
-        return get_class($model) . '-' . $model->getPrimaryKey();
+        return $model::class . '-' . $model->getPrimaryKey();
     }
 
     /**

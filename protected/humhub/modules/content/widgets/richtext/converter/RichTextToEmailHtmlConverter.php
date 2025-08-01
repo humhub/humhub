@@ -56,7 +56,7 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
             return $linkBlock;
         }
 
-        $classes = explode(' ', $class);
+        $classes = explode(' ', (string) $class);
         foreach ($classes as $class) {
             if (isset(self::CLASS_STYLES[$class])) {
                 $linkBlock->setStyle(self::CLASS_STYLES[$class]);
@@ -89,7 +89,7 @@ class RichTextToEmailHtmlConverter extends RichTextToHtmlConverter
             }
         }
 
-        $linkBlock->setUrl($linkBlock->getUrl() . (strpos($linkBlock->getUrl(), '?') === false ? '?' : '&') . 'token=' . $token);
+        $linkBlock->setUrl($linkBlock->getUrl() . (!str_contains($linkBlock->getUrl(), '?') ? '?' : '&') . 'token=' . $token);
 
         return $linkBlock;
     }

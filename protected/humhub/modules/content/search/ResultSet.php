@@ -32,7 +32,7 @@ class ResultSet
     public function __serialize(): array
     {
         return [
-            'results' => array_map(function (Content $result) {return $result->id;}, $this->results),
+            'results' => array_map(fn(Content $result) => $result->id, $this->results),
             'pagination' => $this->pagination,
         ];
     }

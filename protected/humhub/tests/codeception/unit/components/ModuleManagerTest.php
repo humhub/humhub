@@ -99,7 +99,7 @@ class ModuleManagerTest extends HumHubDbTestCase
 
         try {
             Yii::$app->set('moduleManager', static::$originalModuleManager);
-        } catch (InvalidConfigException $e) {
+        } catch (InvalidConfigException) {
         }
 
         parent::tearDown();
@@ -342,7 +342,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->runEventExceptionTest([
             [
-                'class' => __CLASS__,
+                'class' => self::class,
             ],
         ], "required property 'event' missing!");
     }
@@ -351,7 +351,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->runEventExceptionTest([
             [
-                'class' => __CLASS__,
+                'class' => self::class,
                 'event' => 'invalid1',
             ],
         ], "required property 'callback' missing!");
@@ -361,9 +361,9 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->runEventExceptionTest([
             [
-                'class' => __CLASS__,
+                'class' => self::class,
                 'event' => 'invalid1',
-                'callback' => static function () {
+                'callback' => static function (): void {
                 },
             ],
         ], "property 'callback' must be a callable defined in the array-notation denoting a method of a class");
@@ -373,7 +373,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->runEventExceptionTest([
             [
-                'class' => __CLASS__,
+                'class' => self::class,
                 'event' => 'invalid1',
                 'callback' => [null, 'test'],
             ],
@@ -384,7 +384,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     {
         $this->runEventExceptionTest([
             [
-                'class' => __CLASS__,
+                'class' => self::class,
                 'event' => 'invalid1',
                 'callback' => ['someClass'],
             ],
@@ -396,9 +396,9 @@ class ModuleManagerTest extends HumHubDbTestCase
         $this->runEventExceptionTest(
             [
                 [
-                    'class' => __CLASS__,
+                    'class' => self::class,
                     'event' => 'invalid1',
-                    'callback' => [__CLASS__, 'someMethod'],
+                    'callback' => [self::class, 'someMethod'],
                 ],
             ],
             "class 'humhub\\tests\\codeception\\unit\\components\\ModuleManagerTest' does not have a method called 'someMethod",
@@ -529,10 +529,10 @@ class ModuleManagerTest extends HumHubDbTestCase
      */
     public function testEnableAndDisableModules()
     {
-        $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_ENABLE, [$this, 'handleEvent']);
-        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, [$this, 'handleEvent']);
-        $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_DISABLE, [$this, 'handleEvent']);
-        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_DISABLE, [$this, 'handleEvent']);
+        $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_ENABLE, $this->handleEvent(...));
+        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, $this->handleEvent(...));
+        $this->moduleManager->on(ModuleManager::EVENT_BEFORE_MODULE_DISABLE, $this->handleEvent(...));
+        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_DISABLE, $this->handleEvent(...));
 
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
@@ -612,7 +612,7 @@ class ModuleManagerTest extends HumHubDbTestCase
      */
     public function testEnableModules()
     {
-        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, [$this, 'handleEvent']);
+        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, $this->handleEvent(...));
 
         [$basePath, $config] = $this->getModuleConfig(static::$testModuleRoot . '/module1');
 
@@ -685,7 +685,7 @@ class ModuleManagerTest extends HumHubDbTestCase
     public function testEnableModulesWithMigration()
     {
         Yii::$app->set('moduleManager', $this->moduleManager);
-        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, [$this, 'handleEvent']);
+        $this->moduleManager->on(ModuleManager::EVENT_AFTER_MODULE_ENABLE, $this->handleEvent(...));
 
         /** @var ModuleWithMigration $module */
         $module = $this->moduleManager->getModule(static::$testModuleRoot . '/moduleWithMigration');
@@ -826,7 +826,7 @@ class ModuleManagerTest extends HumHubDbTestCase
             $this->moduleManager->filterModulesByKeyword(null, 'testing'),
         );
 
-        $this->moduleManager->on(ModuleManager::EVENT_AFTER_FILTER_MODULES, [$this, 'handleEvent']);
+        $this->moduleManager->on(ModuleManager::EVENT_AFTER_FILTER_MODULES, $this->handleEvent(...));
 
         static::assertEquals(
             ['module1' => $module1, 'module2' => $module2],
@@ -1059,7 +1059,7 @@ class ModuleManagerTest extends HumHubDbTestCase
         $e = [];
 
         if ($event instanceof ModuleEvent) {
-            $e['module'] = [$event->moduleId => get_class($event->module)];
+            $e['module'] = [$event->moduleId => $event->module::class];
         }
 
         if ($event instanceof ModulesEvent) {

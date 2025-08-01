@@ -30,7 +30,7 @@ class AltchaCaptchaValidator extends Validator
     public function validateAttribute($model, $attribute)
     {
         try {
-            $payload = json_decode(base64_decode($model->$attribute), true, 512, JSON_THROW_ON_ERROR);
+            $payload = json_decode(base64_decode((string) $model->$attribute), true, 512, JSON_THROW_ON_ERROR);
             if (Altcha::verifySolution($payload, static::getHmacKey(), true)) {
                 return;
             }

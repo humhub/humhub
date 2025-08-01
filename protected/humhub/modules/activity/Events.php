@@ -136,7 +136,7 @@ class Events extends BaseObject
             if ($a->object_model != '' && $a->object_id != '') {
                 try {
                     $source = $a->getSource();
-                } catch (IntegrityException $ex) {
+                } catch (IntegrityException) {
                     if ($integrityController->showFix('Deleting activity id ' . $a->id . ' without existing target! (' . $a->object_model . ')')) {
                         $a->hardDelete();
                     }

@@ -131,7 +131,7 @@ class RichTextPostProcessTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
@@ -175,13 +175,13 @@ class RichTextPostProcessTest extends HumHubDbTestCase
 
         try {
             $file->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 
         try {
             $file2->save();
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             // Need to catch since hash saving will fail
         }
 

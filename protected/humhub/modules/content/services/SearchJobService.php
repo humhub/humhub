@@ -25,7 +25,7 @@ class SearchJobService
         try {
             call_user_func($callable);
             Yii::$app->mutex->release(self::MUTEX_ID);
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             Yii::$app->mutex->release(self::MUTEX_ID);
             return false;
         }

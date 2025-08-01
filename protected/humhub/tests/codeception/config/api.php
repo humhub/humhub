@@ -13,7 +13,7 @@ $testConfig = [
     ],
 ];
 
-defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(dirname(dirname(dirname(__DIR__)))));
+defined('YII_APP_BASE_PATH') or define('YII_APP_BASE_PATH', dirname(__DIR__, 4));
 
 return yii\helpers\ArrayHelper::merge(
     // Common Config

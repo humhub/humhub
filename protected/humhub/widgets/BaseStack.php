@@ -121,8 +121,8 @@ class BaseStack extends Widget
     {
 
         usort($this->widgets, function ($a, $b) {
-            $sortA = (isset($a[2]['sortOrder'])) ? $a[2]['sortOrder'] : static::DEFAULT_SORT_ORDER;
-            $sortB = (isset($b[2]['sortOrder'])) ? $b[2]['sortOrder'] : static::DEFAULT_SORT_ORDER;
+            $sortA = $a[2]['sortOrder'] ?? static::DEFAULT_SORT_ORDER;
+            $sortB = $b[2]['sortOrder'] ?? static::DEFAULT_SORT_ORDER;
 
             if ($sortA == $sortB) {
                 return 0;

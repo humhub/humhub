@@ -19,11 +19,8 @@ use Yii;
  */
 class MemberListService
 {
-    private Space $space;
-
-    public function __construct(Space $space)
+    public function __construct(private readonly Space $space)
     {
-        $this->space = $space;
     }
 
     public function getAdminQuery(): ActiveQueryUser

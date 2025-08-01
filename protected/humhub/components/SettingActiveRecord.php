@@ -54,7 +54,7 @@ abstract class SettingActiveRecord extends ActiveRecord
             ->all();
 
         // going through that list, deleting the respective cache
-        array_walk($modulesOrContainers, static function (ActiveRecord $rec) {
+        array_walk($modulesOrContainers, static function (ActiveRecord $rec): void {
             $key = static::getCacheKey(...array_values($rec->toArray()));
             Yii::$app->cache->delete($key);
         });

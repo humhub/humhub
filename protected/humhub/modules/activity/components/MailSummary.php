@@ -121,17 +121,13 @@ class MailSummary extends Component
      */
     protected function getSubject()
     {
-        switch ($this->interval) {
-            case self::INTERVAL_HOURLY:
-                return Yii::t('ActivityModule.base', 'Latest news');
-            case self::INTERVAL_DAILY:
-                return Yii::t('ActivityModule.base', 'Your daily summary');
-            case self::INTERVAL_WEEKLY:
-                return Yii::t('ActivityModule.base', 'Your weekly summary');
-            case self::INTERVAL_MONTHLY:
-                return Yii::t('ActivityModule.base', 'Your monthly summary');
-        }
-        return '';
+        return match ($this->interval) {
+            self::INTERVAL_HOURLY => Yii::t('ActivityModule.base', 'Latest news'),
+            self::INTERVAL_DAILY => Yii::t('ActivityModule.base', 'Your daily summary'),
+            self::INTERVAL_WEEKLY => Yii::t('ActivityModule.base', 'Your weekly summary'),
+            self::INTERVAL_MONTHLY => Yii::t('ActivityModule.base', 'Your monthly summary'),
+            default => '',
+        };
     }
 
     /**
@@ -231,7 +227,7 @@ class MailSummary extends Component
         $activityModule = static::getModule();
         $defaultLimitSpaces = $activityModule->settings->get('mailSummaryLimitSpaces', '');
         $limitSpaces = $activityModule->settings->user($this->user)->get('mailSummaryLimitSpaces', $defaultLimitSpaces);
-        foreach (explode(',', $limitSpaces) as $guid) {
+        foreach (explode(',', (string) $limitSpaces) as $guid) {
             $contentContainer = ContentContainer::findOne(['guid' => $guid]);
             if ($contentContainer !== null) {
                 $spaces[] = $contentContainer->id;
@@ -255,7 +251,7 @@ class MailSummary extends Component
             return [];
         }
 
-        return explode(',', trim($activitySuppress));
+        return explode(',', trim((string) $activitySuppress));
     }
 
     /**

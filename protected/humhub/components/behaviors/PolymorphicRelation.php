@@ -72,7 +72,7 @@ class PolymorphicRelation extends Behavior
         if ($this->strict && !$record && !empty($this->classAttribute) && !empty($this->pkAttribute)) {
             throw new IntegrityException(
                 'Call to an inconsistent polymorphic relation detected on '
-                . ($this->owner === null ? 'NULL' : get_class($this->owner))
+                . ($this->owner === null ? 'NULL' : $this->owner::class)
                 . ' (' . $className . ':' . $primaryKey . ')',
             );
         }
@@ -119,7 +119,7 @@ class PolymorphicRelation extends Behavior
     {
         return $object instanceof ActiveRecord
             ? $object::getObjectModel()
-            : get_class($object);
+            : $object::class;
     }
 
     /**
@@ -158,7 +158,7 @@ class PolymorphicRelation extends Behavior
             return true;
         }
 
-        Yii::error('Got invalid underlying object type! (' . get_class($object) . ')');
+        Yii::error('Got invalid underlying object type! (' . $object::class . ')');
 
         return false;
     }

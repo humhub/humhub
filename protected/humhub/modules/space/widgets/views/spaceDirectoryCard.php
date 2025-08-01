@@ -36,7 +36,7 @@ use yii\web\View;
     <div class="card-body">
         <a href="<?= $space->getUrl() ?>" class="card-space-link">
             <strong class="card-title"><?= Html::encode($space->name) ?></strong>
-            <?php if (trim($space->description) !== '') : ?>
+            <?php if (trim((string) $space->description) !== '') : ?>
                 <div class="card-details"><?= Html::encode($space->description) ?></div>
             <?php endif; ?>
         </a>

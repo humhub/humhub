@@ -50,9 +50,7 @@ class MysqlDriver extends AbstractDriver
 
         $record->contents .= implode(
             ', ',
-            array_map(function (ContentTag $tag) {
-                return $tag->name;
-            }, $content->tags),
+            array_map(fn(ContentTag $tag) => $tag->name, $content->tags),
         ) . " \n";
 
         foreach ($content->getModel()->getSearchAttributes() as $attributeValue) {
@@ -165,7 +163,7 @@ class MysqlDriver extends AbstractDriver
         $term = preg_replace('/-+(\*?)$/', '$1', $term);
 
         // Wrap a keyword in quotes to avoid error with the special chars in the sql MATCH-AGAINST expression
-        return preg_match('#[^\p{L}\d\*’\'`\-\_]#u', $term) ? '"' . $term . '"' : $term;
+        return preg_match('#[^\p{L}\d\*’\'`\-\_]#u', (string) $term) ? '"' . $term . '"' : $term;
     }
 
     protected function addQueryFilterVisibility(ActiveQuery $query): ActiveQuery

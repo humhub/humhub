@@ -298,7 +298,7 @@ class ProfileField extends ActiveRecord
             }
         } else {
             $profileFieldTypes = new fieldtype\BaseType();
-            if (!key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
+            if (!array_key_exists($this->field_type_class, $profileFieldTypes->getFieldTypes())) {
                 $this->addError('field_type_class', Yii::t('UserModule.profile', 'Invalid field type!'));
             }
         }

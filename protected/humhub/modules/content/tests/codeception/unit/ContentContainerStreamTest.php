@@ -160,9 +160,7 @@ class ContentContainerStreamTest extends HumHubDbTestCase
 
         $wallEntries = $action->getStreamQuery()->all();
 
-        $wallEntryIds = array_map(static function ($entry) {
-            return $entry->id;
-        }, $wallEntries);
+        $wallEntryIds = array_map(static fn($entry) => $entry->id, $wallEntries);
 
         return $wallEntryIds;
     }

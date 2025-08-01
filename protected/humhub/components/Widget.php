@@ -43,7 +43,7 @@ class Widget extends \yii\base\Widget
     public static function widget($config = [])
     {
         if (!isset($config['class'])) {
-            $config['class'] = get_called_class();
+            $config['class'] = static::class;
         }
 
         if (isset($config['render']) && $config['render'] === false) {

@@ -726,7 +726,7 @@ class StreamQuery extends Model
     public function removeFilterHandler($handlerToRemove, bool $exclude = true)
     {
         $result = [];
-        $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : get_class($handlerToRemove);
+        $handlerToRemoveClass = is_string($handlerToRemove) ? $handlerToRemove : $handlerToRemove::class;
         foreach ($this->filterHandlers as $handler) {
             if (!is_a($handler, $handlerToRemoveClass, true)) {
                 $result[] = $handler;
@@ -748,7 +748,7 @@ class StreamQuery extends Model
      */
     public function isExcludedFilterHandler($handler): bool
     {
-        $handler = is_string($handler) ? $handler : get_class($handler);
+        $handler = is_string($handler) ? $handler : $handler::class;
         return in_array($handler, $this->excludedFilterHandlers);
     }
 
@@ -762,7 +762,7 @@ class StreamQuery extends Model
      */
     public function getFilterHandler($class): ?StreamQueryFilter
     {
-        $handlerClass = is_string($class) ? $class : get_class($class);
+        $handlerClass = is_string($class) ? $class : $class::class;
         foreach ($this->filterHandlers as $handler) {
             if (is_a($handler, $handlerClass, true)) {
                 return $this->prepareHandler($handler);

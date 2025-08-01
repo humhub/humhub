@@ -71,7 +71,7 @@ class RichTextToHtmlConverter extends BaseRichTextConverter
             return $text;
         }
 
-        return HtmlPurifier::process($text, function ($config) {
+        return HtmlPurifier::process($text, function ($config): void {
             /* @var HTMLPurifier_Config $config */
             // Make sure we use non xhtml tags, unfortunately HTML5 is not supported by html purifier
             $config->set('HTML.Doctype', $this->doctype);

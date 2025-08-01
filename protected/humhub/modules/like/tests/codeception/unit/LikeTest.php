@@ -27,7 +27,7 @@ class LikeTest extends HumHubDbTestCase
         Yii::$app->getModule('notification')->settings->user(User::findOne(['id' => 1]))->set('notification.like_email', 1);
 
         $this->assertTrue($like->save(), 'Save like.');
-        $this->assertMailSent(1, 'Like notification sent');
+        $this->assertMailSent(1);
         $this->assertHasNotification(NewLike::class, $like);
         $this->assertHasActivity(Liked::class, $like);
     }

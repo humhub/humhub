@@ -98,7 +98,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
 
         if ($this->recordClass) {
             $this->record = Yii::createObject($this->recordClass);
-            $this->record->class = get_class($this);
+            $this->record->class = static::class;
             $this->record->module = $this->moduleId;
         }
     }
@@ -260,7 +260,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         }
 
         // Create absolute URL, for E-Mails
-        if (substr($url, 0, 4) !== 'http') {
+        if (!str_starts_with($url, 'http')) {
             $url = Url::to($url, true);
         }
 
@@ -299,7 +299,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
     public function asArray(User $user)
     {
         $result = [
-            'class' => get_class($this),
+            'class' => static::class,
             'text' => $this->text(),
             'html' => $this->html(),
         ];
@@ -494,7 +494,7 @@ abstract class SocialActivity extends BaseObject implements rendering\Viewable
         $sourcePk = null;
 
         if ($this->source) {
-            $sourceClass = get_class($this->source);
+            $sourceClass = $this->source::class;
             $sourcePk = $this->source->getPrimaryKey();
         }
 

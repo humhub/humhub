@@ -90,9 +90,7 @@ class PeopleQuery extends ActiveQueryUser
         $fields = Yii::$app->request->get('fields', $this->defaultFilters['fields'] ?? []);
 
         // Remove empty filters
-        $fields = array_filter($fields, function ($value) {
-            return $value !== '';
-        });
+        $fields = array_filter($fields, fn($value) => $value !== '');
 
         if (empty($fields)) {
             return $this;
@@ -151,19 +149,13 @@ class PeopleQuery extends ActiveQueryUser
     {
         $connection = Yii::$app->request->get('connection', $this->defaultFilters['connection'] ?? null);
         $this->setActiveFilter('connection', $connection);
-
-        switch ($connection) {
-            case 'followers':
-                return $this->filterByConnectionFollowers();
-            case 'following':
-                return $this->filterByConnectionFollowing();
-            case 'friends':
-                return $this->filterByConnectionFriends();
-            case 'pending_friends':
-                return $this->filterByConnectionPendingFriends();
-        }
-
-        return $this;
+        return match ($connection) {
+            'followers' => $this->filterByConnectionFollowers(),
+            'following' => $this->filterByConnectionFollowing(),
+            'friends' => $this->filterByConnectionFriends(),
+            'pending_friends' => $this->filterByConnectionPendingFriends(),
+            default => $this,
+        };
     }
 
     public function filterByConnectionFollowers(): PeopleQuery

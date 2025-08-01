@@ -27,7 +27,7 @@ class InviteModelTest extends HumHubDbTestCase
         $model = new Invite();
         $scenarios = $model->scenarios();
         $this->assertTrue(is_array($scenarios));
-        $this->assertTrue(key_exists('invite', $scenarios));
+        $this->assertTrue(array_key_exists('invite', $scenarios));
         $this->assertEquals(['email'], $scenarios['invite']);
     }
 

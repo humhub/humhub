@@ -147,7 +147,7 @@ abstract class DirectoryFilters extends Widget
                 $activeTags = self::getValue($filter);
                 $filterOptions = empty($data['multiple']) ? [] : ['data-multiple' => 1];
                 $inputHtml .= Html::hiddenInput($filter, $activeTags, $filterOptions);
-                $activeTags = empty($activeTags) ? [] : explode(',', $activeTags);
+                $activeTags = empty($activeTags) ? [] : explode(',', (string) $activeTags);
 
                 foreach ($data['tags'] as $tagKey => $tagLabel) {
                     $isActiveTag = (empty($tagKey) && empty($activeTags))
@@ -219,7 +219,7 @@ abstract class DirectoryFilters extends Widget
 
         if (preg_match('/^(.+?)\[(.+?)\]$/', $filter, $arrayMatch)) {
             $array = Yii::$app->request->get($arrayMatch[1]);
-            return isset($array[$arrayMatch[2]]) ? $array[$arrayMatch[2]] : $defaultValue;
+            return $array[$arrayMatch[2]] ?? $defaultValue;
         }
 
         return Yii::$app->request->get($filter, $defaultValue);

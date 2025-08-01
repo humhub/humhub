@@ -124,7 +124,7 @@ class PreviewImage extends BaseConverter
     {
         $originalFile = $file->store->get();
 
-        if (substr($file->mime_type, 0, 6) !== 'image/' || !is_file($originalFile)) {
+        if (!str_starts_with($file->mime_type, 'image/') || !is_file($originalFile)) {
             return false;
         }
 

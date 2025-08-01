@@ -90,11 +90,7 @@ class Tabs extends \yii\bootstrap5\Tabs
      */
     private function getParams($item)
     {
-        if (isset($item['params'])) {
-            return $item['params'];
-        }
-
-        return !empty($this->params) ? $this->params : [];
+        return $item['params'] ?? ($this->params ?: []);
     }
 
     /**
@@ -135,7 +131,7 @@ class Tabs extends \yii\bootstrap5\Tabs
         foreach ($this->items as $key => $item) {
             if (isset($item['view'])) {
                 $view = $item['view'];
-                if ($this->viewPath && strpos($view, '@') === false) {
+                if ($this->viewPath && !str_contains($view, '@')) {
                     $view = $this->viewPath . '/' . $item['view'];
                 }
 

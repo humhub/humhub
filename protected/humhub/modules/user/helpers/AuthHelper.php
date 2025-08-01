@@ -77,7 +77,7 @@ class AuthHelper
         }
 
         if (empty($username) || $username === '_') {
-            $username = explode("@", $attributes['email'])[0];
+            $username = explode("@", (string) $attributes['email'])[0];
         }
 
         $username = strtolower(substr($username, 0, 32));

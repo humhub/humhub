@@ -18,7 +18,7 @@ use yii\base\BaseObject;
  */
 class InvalidArgumentExceptionTest extends Unit
 {
-    public function testInvalidArgumentValueExceptionMessageCase1()
+    public function testInvalidArgumentValueExceptionMessageCase1(): never
     {
         $message = 'Hello World';
 
@@ -29,7 +29,7 @@ class InvalidArgumentExceptionTest extends Unit
         throw new InvalidArgumentValueException($message);
     }
 
-    public function testInvalidArgumentValueExceptionMessageCase2()
+    public function testInvalidArgumentValueExceptionMessageCase2(): never
     {
         $message = 'Hello World';
 
@@ -40,7 +40,7 @@ class InvalidArgumentExceptionTest extends Unit
         throw new InvalidArgumentValueException($message, 1);
     }
 
-    public function testInvalidArgumentValueExceptionParameterCase1()
+    public function testInvalidArgumentValueExceptionParameterCase1(): never
     {
         $message = 'Argument $parameter passed to ' . __METHOD__ . ' must be bool - 3 given.';
 
@@ -51,7 +51,7 @@ class InvalidArgumentExceptionTest extends Unit
         throw new InvalidArgumentValueException('parameter', 'bool', 3);
     }
 
-    public function testInvalidArgumentValueExceptionParameterCase2()
+    public function testInvalidArgumentValueExceptionParameterCase2(): never
     {
         $message = 'Argument $parameter passed to ' . __METHOD__ . ' must be bool - NULL given.';
 
@@ -62,7 +62,7 @@ class InvalidArgumentExceptionTest extends Unit
         throw new InvalidArgumentValueException('parameter', 'bool');
     }
 
-    public function testInvalidArgumentValueExceptionParameterCase3()
+    public function testInvalidArgumentValueExceptionParameterCase3(): never
     {
         $message = 'Argument $parameter passed to ' . __METHOD__ . ' must be one of bool, NULL - 2 given.';
 
@@ -73,7 +73,7 @@ class InvalidArgumentExceptionTest extends Unit
         throw new InvalidArgumentValueException('parameter', ['bool', null], 2);
     }
 
-    public function testInvalidArgumentValueExceptionParameterCase4()
+    public function testInvalidArgumentValueExceptionParameterCase4(): never
     {
         $message = 'Argument $valid passed to ' . __METHOD__ . ' must be one of the following types: string, string[] - NULL given.';
 
@@ -84,7 +84,7 @@ class InvalidArgumentExceptionTest extends Unit
         throw new InvalidArgumentValueException('parameter');
     }
 
-    public function testInvalidArgumentValueExceptionParameterCase5()
+    public function testInvalidArgumentValueExceptionParameterCase5(): never
     {
         $message = 'Argument $valid[1] passed to ' . __METHOD__ . ' must be of type string - yii\base\BaseObject given.';
 

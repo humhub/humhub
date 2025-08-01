@@ -142,7 +142,7 @@ class OnlineModuleManager extends Component
 
         // Download
         $downloadUrl = $moduleInfo['latestCompatibleVersion']['downloadUrl'];
-        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename($downloadUrl);
+        $downloadTargetFileName = $moduleDownloadFolder . DIRECTORY_SEPARATOR . basename((string) $downloadUrl);
         try {
             $hashSha256 = $moduleInfo['latestCompatibleVersion']['downloadFileSha256'];
             $this->downloadFile($moduleId, $downloadTargetFileName, $downloadUrl, $hashSha256);

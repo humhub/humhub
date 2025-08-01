@@ -25,11 +25,9 @@ class MetaSearchService
     public int $cacheTimeout = 180;
 
     protected ?int $totalCount = null;
-    protected ?MetaSearchProviderInterface $provider = null;
 
-    public function __construct(MetaSearchProviderInterface $provider)
+    public function __construct(protected ?MetaSearchProviderInterface $provider)
     {
-        $this->provider = $provider;
     }
 
     /**
@@ -53,13 +51,11 @@ class MetaSearchService
             return;
         }
 
-        $cacheKey = get_class($this->provider) .
+        $cacheKey = ($this->provider !== null ? $this->provider::class : self::class) .
             Yii::$app->user->id .
             sha1($this->provider->getKeyword() . json_encode($this->provider->getRoute()));
 
-        $data = Yii::$app->cache->getOrSet($cacheKey, function () {
-            return $this->provider->getResults($this->pageSize);
-        }, $this->cacheTimeout);
+        $data = Yii::$app->cache->getOrSet($cacheKey, fn() => $this->provider->getResults($this->pageSize), $this->cacheTimeout);
 
         $this->totalCount = $data['totalCount'] ?? 0;
         $this->results = $data['results'] ?? [];

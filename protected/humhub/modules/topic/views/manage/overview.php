@@ -64,22 +64,19 @@ use yii\grid\ActionColumn;
                     'class' => ActionColumn::class,
                     'options' => ['width' => '100px'],
                     'buttons' => [
-                        'update' => function ($url, $model) use ($contentContainer) {
+                        'update' => fn($url, $model) =>
                             /* @var $model Topic */
-                            return ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->sm()->loader(false);
-                        },
-                        'view' => function ($url, $model) use ($contentContainer) {
+                            ModalButton::primary()->load($contentContainer->createUrl('edit', ['id' => $model->id]))->icon('edit')->sm()->loader(false),
+                        'view' => fn($url, $model) =>
                             /* @var $model Topic */
-                            return Button::primary()->link($model->getUrl())->icon('fa-filter')->sm()->loader(false);
-                        },
-                        'delete' => function ($url, $model) use ($contentContainer) {
+                            Button::primary()->link($model->getUrl())->icon('fa-filter')->sm()->loader(false),
+                        'delete' => fn($url, $model) =>
                             /* @var $model Topic */
-                            return Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
-                                Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
-                                Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
-                                Yii::t('base', 'Delete')
-                            )->sm()->loader(false);
-                        },
+                            Button::danger()->icon('delete')->action('topic.removeOverviewTopic', $contentContainer->createUrl('delete', ['id' => $model->id]))->confirm(
+                            Yii::t('TopicModule.base', '<strong>Confirm</strong> topic deletion'),
+                            Yii::t('TopicModule.base', 'Do you really want to delete this topic?'),
+                            Yii::t('base', 'Delete')
+                        )->sm()->loader(false),
                     ],
                 ],
             ]]);

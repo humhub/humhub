@@ -23,7 +23,7 @@ class InvalidArgumentClassException extends InvalidArgumentTypeException
             return 'one of the following types: ' . implode(', ', $this->valid);
         }
 
-        if (strpos($this->valid[0], ' ') === false) {
+        if (!str_contains((string) $this->valid[0], ' ')) {
             return 'of type ' . reset($this->valid);
         }
 

@@ -110,10 +110,10 @@ class ContentContainerPermissionManager extends PermissionManager
         }
 
         // Cache default permissions per Content Container Type(Space/User):
-        $cachedDefaultPermissions = Yii::$app->cache->getOrSet('defaultPermissions:' . get_class($this->contentContainer), function () use ($groupId) {
+        $cachedDefaultPermissions = Yii::$app->cache->getOrSet('defaultPermissions:' . $this->contentContainer::class, function () use ($groupId) {
             $records = ContentContainerDefaultPermission::find()
                 ->select(['group_id', 'module_id', 'permission_id', 'state'])
-                ->where(['contentcontainer_class' => get_class($this->contentContainer)])
+                ->where(['contentcontainer_class' => $this->contentContainer::class])
                 ->all();
             $defaultPermissions = [];
             foreach ($records as $defaultPermission) {

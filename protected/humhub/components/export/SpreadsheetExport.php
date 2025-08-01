@@ -229,8 +229,8 @@ class SpreadsheetExport extends Component
             'class' => DataColumn::class,
             'grid' => $this,
             'attribute' => $matches[1],
-            'format' => isset($matches[3]) ? $matches[3] : 'text',
-            'label' => isset($matches[5]) ? $matches[5] : null,
+            'format' => $matches[3] ?? 'text',
+            'label' => $matches[5] ?? null,
         ]);
 
         return $column;
@@ -261,7 +261,7 @@ class SpreadsheetExport extends Component
         }
 
         foreach ($models as $index => $model) {
-            $key = isset($keys[$index]) ? $keys[$index] : $index;
+            $key = $keys[$index] ?? $index;
             $this->composeBodyRow($spreadsheet, $model, $key, $index);
         }
 
@@ -371,7 +371,7 @@ class SpreadsheetExport extends Component
         if (
             empty($value) ||
             !in_array(
-                ucfirst(ArrayHelper::getValue($this->resultConfig, 'writerType', (new ExportResult())->writerType)),
+                ucfirst((string) ArrayHelper::getValue($this->resultConfig, 'writerType', (new ExportResult())->writerType)),
                 [IOFactory::WRITER_CSV, IOFactory::WRITER_XLSX, IOFactory::WRITER_XLS],
             )
         ) {

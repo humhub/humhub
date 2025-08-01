@@ -420,12 +420,12 @@ class Membership extends ActiveRecord
             throw new InvalidArgumentException("Argument #1 (\$user) must be a User object or user ID.");
         }
 
-        return Yii::$app->runtimeCache->getOrSet(__CLASS__ . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
+        return Yii::$app->runtimeCache->getOrSet(self::class . "_$spaceId-$userId", fn() => Membership::findOne(['user_id' => $userId, 'space_id' => $spaceId]));
     }
 
     public static function unsetCache(int $spaceId, int $userId)
     {
-        Yii::$app->runtimeCache->delete(__CLASS__ . "_$spaceId-$userId");
+        Yii::$app->runtimeCache->delete(self::class . "_$spaceId-$userId");
         Yii::$app->cache->delete(Module::$legitimateCachePrefix . $userId);
     }
 }

@@ -13,12 +13,11 @@ namespace humhub\modules\admin\components;
  */
 class DatabaseInfo
 {
-    /** @var string */
-    private $pdoDSN;
-
-    public function __construct($pdoDSN)
+    /**
+     * @param string $pdoDSN
+     */
+    public function __construct(private $pdoDSN)
     {
-        $this->pdoDSN = $pdoDSN;
     }
 
     /**

@@ -137,16 +137,14 @@ class Comment extends ContentAddonActiveRecord
         // Handle mentioned users
         // Execute before NewCommentNotification to avoid double notification when mentioned.
         $processResult = RichText::postProcess($this->message, $this, 'message');
-        $mentionedUsers = (isset($processResult['mentioning'])) ? $processResult['mentioning'] : [];
+        $mentionedUsers = $processResult['mentioning'] ?? [];
 
         if ($insert) {
             $followerQuery = $this->getCommentedRecord()->getFollowersWithNotificationQuery();
 
             // Remove mentioned users from followers query to avoid double notification
             if (count($mentionedUsers) !== 0) {
-                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(function (User $user) {
-                    return $user->id;
-                }, $mentionedUsers)]);
+                $followerQuery->andWhere(['NOT IN', 'user.id', array_map(fn(User $user) => $user->id, $mentionedUsers)]);
             }
 
             // Update updated_at etc..
@@ -298,7 +296,7 @@ class Comment extends ContentAddonActiveRecord
         }
 
         $query = Comment::find()
-            ->where(['object_model' => get_class($object), 'object_id' => $object->getPrimaryKey()])
+            ->where(['object_model' => $object::class, 'object_id' => $object->getPrimaryKey()])
             ->limit($pageSize);
 
         if ($type === ShowMore::TYPE_NEXT) {

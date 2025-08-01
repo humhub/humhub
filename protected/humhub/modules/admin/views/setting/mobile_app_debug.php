@@ -67,7 +67,7 @@ use yii\helpers\Url;
     <div class="panel-body">
         <h4>Test Update Notification Count</h4>
         <p>Set Notification Count to a number between 100 and 200.</p>
-        <p><code><?= $message = Json::encode(['type' => 'updateNotificationCount', 'count' => rand(100, 200)]) ?></code></p>
+        <p><code><?= $message = Json::encode(['type' => 'updateNotificationCount', 'count' => random_int(100, 200)]) ?></code></p>
         <?= Button::primary('Execute via JS Channel')
             ->cssClass('postFlutterMsgLink')
             ->options(['data-message' => $message])

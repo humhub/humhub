@@ -91,7 +91,7 @@ class Events extends BaseObject
     {
         if (!($event->job instanceof RetryableJobInterface) && $event->attempt > 1) {
             Yii::error(
-                'Job ' . get_class($event->job) . ' (' . $event->id . ') has failed (Timeout? Max. Execution Time too low?) and is still in queue. Skipping.',
+                'Job ' . ($event->job !== null ? $event->job::class : self::class) . ' (' . $event->id . ') has failed (Timeout? Max. Execution Time too low?) and is still in queue. Skipping.',
                 'queue',
             );
             $event->handled = true;

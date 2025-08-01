@@ -31,7 +31,7 @@ use yii\bootstrap5\Widget;
  * @since 1.18
  * @see https://getbootstrap.com/docs/5.3/components/alerts/
  */
-class Alert extends \yii\bootstrap5\Alert
+class Alert extends \yii\bootstrap5\Alert implements \Stringable
 {
     use BootstrapVariationsTrait {
         // Disabled methods:

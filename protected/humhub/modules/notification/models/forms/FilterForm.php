@@ -106,7 +106,7 @@ class FilterForm extends Model
                 ? $notification->getCategory()->id
                 : self::NO_CATEGORY_ID;
             if (in_array($categoryId, $this->categoryFilter)) {
-                $result[] = get_class($notification);
+                $result[] = $notification::class;
             }
         }
 

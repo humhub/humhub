@@ -147,7 +147,7 @@ class UserProfileController extends Controller
         // Add used models to the CForm, so we can validate it
         $form->models['ProfileField'] = $field;
         foreach ($fieldTypes as $fieldType) {
-            $form->models[get_class($fieldType)] = $fieldType;
+            $form->models[$fieldType::class] = $fieldType;
         }
 
         // Form Submitted?

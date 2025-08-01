@@ -236,10 +236,10 @@ class ConfigController extends Controller
 
         $modules = $marketplaceModule->onlineModuleManager->getModules(false);
         foreach ($modules as $i => $module) {
-            if (!isset($module['useCases']) || strpos(
+            if (!isset($module['useCases']) || !str_contains(
                 $module['useCases'],
-                Yii::$app->settings->get('useCase'),
-            ) === false) {
+                (string) Yii::$app->settings->get('useCase'),
+            )) {
                 unset($modules[$i]);
             }
         }
@@ -581,7 +581,7 @@ class ConfigController extends Controller
 
         try {
             Yii::$app->user->logout();
-        } catch (Exception $e) {
+        } catch (Exception) {
         }
         return $this->render('finished');
     }

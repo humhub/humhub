@@ -33,7 +33,7 @@ class SendMailSummary extends LongRunningActiveJob implements ExclusiveJobInterf
      */
     public function getExclusiveJobId()
     {
-        return get_class($this) . $this->interval;
+        return static::class . $this->interval;
     }
 
     /**

@@ -50,9 +50,7 @@ class Google extends \yii\authclient\clients\Google
                 return $attributes['family_name'];
             },
             'title' => 'tagline',
-            'email' => function ($attributes) {
-                return $attributes['email'];
-            },
+            'email' => fn($attributes) => $attributes['email'],
         ];
     }
 

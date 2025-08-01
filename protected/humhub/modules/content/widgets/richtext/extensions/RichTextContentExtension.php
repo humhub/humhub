@@ -60,7 +60,7 @@ abstract class RichTextContentExtension extends Model implements RichTextExtensi
      */
     protected function scanExtension($text)
     {
-        preg_match_all($this->getRegex(), $text, $matches, PREG_SET_ORDER);
+        preg_match_all($this->getRegex(), (string) $text, $matches, PREG_SET_ORDER);
 
         $result = [];
         foreach ($matches as $match) {
@@ -76,9 +76,7 @@ abstract class RichTextContentExtension extends Model implements RichTextExtensi
      */
     protected function replaceExtension($text, callable $callback)
     {
-        return preg_replace_callback($this->getRegex(), function ($match) use ($callback) {
-            return $callback($this->initMatch($match));
-        }, $text);
+        return preg_replace_callback($this->getRegex(), fn($match) => $callback($this->initMatch($match)), (string) $text);
     }
 
     public function onPostProcess(string $text, ActiveRecord $record, ?string $attribute, array &$result): string

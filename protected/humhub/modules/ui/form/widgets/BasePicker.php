@@ -451,6 +451,6 @@ abstract class BasePicker extends JsInputWidget
      */
     protected function getUrl()
     {
-        return ($this->url) ? $this->url : Url::to([$this->defaultRoute]);
+        return $this->url ?: Url::to([$this->defaultRoute]);
     }
 }

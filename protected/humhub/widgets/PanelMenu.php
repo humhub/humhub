@@ -57,7 +57,7 @@ class PanelMenu extends Widget
     {
         return $this->render('panelMenu', [
             'enableCollapseOption' => $this->enableCollapseOption,
-            'collapseId' => $this->collapseId ?? BaseInflector::slug(get_class($this->view->context)), // Generate a unique ID from the parent Widget class name
+            'collapseId' => $this->collapseId ?? BaseInflector::slug($this->view->context::class), // Generate a unique ID from the parent Widget class name
             'extraMenus' => $this->extraMenus,
         ]);
     }

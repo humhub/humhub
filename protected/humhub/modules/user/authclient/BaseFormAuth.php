@@ -38,7 +38,7 @@ class BaseFormAuth extends BaseClient
      */
     public function auth()
     {
-        throw new NotSupportedException('Method "' . get_class($this) . '::' . __FUNCTION__ . '" not implemented.');
+        throw new NotSupportedException('Method "' . static::class . '::' . __FUNCTION__ . '" not implemented.');
     }
 
     /**

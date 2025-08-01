@@ -31,7 +31,7 @@ class ActivityTest extends HumHubDbTestCase
 
         // Test Source
         $this->assertEquals($activity->source->id, $post->id, 'Source id before save');
-        $this->assertEquals(get_class($activity->source), Post::class, 'Source class before save');
+        $this->assertEquals($activity->source::class, Post::class, 'Source class before save');
 
         // Test Activity Record
         $this->assertNotNull($activity->record, 'BaseActivity Record not null');
@@ -47,8 +47,8 @@ class ActivityTest extends HumHubDbTestCase
         $testActivity = $record->getActivityBaseClass();
         $this->assertNotNull($testActivity, 'Get BaseActivity from Activity Record');
 
-        $this->assertEquals(get_class($activity), get_class($testActivity));
-        $this->assertEquals(get_class($source), get_class($testActivity->source), 'Activity source after reload');
+        $this->assertEquals($activity::class, $testActivity::class);
+        $this->assertEquals($source !== null ? $source::class : self::class, $testActivity->source::class, 'Activity source after reload');
         $this->assertEquals($source->id, $testActivity->source->id, 'Activity Source id after reload');
 
         $this->assertNotNull($testActivity->getContent(), 'Activity::getContent');

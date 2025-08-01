@@ -73,7 +73,7 @@ class ModuleAutoLoader implements BootstrapInterface
         foreach ($paths as $path) {
             try {
                 $folders = array_merge($folders, self::findModulesByPath($path));
-            } catch (InvalidArgumentException $ex) {
+            } catch (InvalidArgumentException) {
                 throw new ErrorException('Invalid module autoload path: ' . $path);
             }
         }
@@ -135,9 +135,7 @@ class ModuleAutoLoader implements BootstrapInterface
      */
     private static function findModulesByPath(string $path): array
     {
-        $hasConfigurationFile = static function ($path) {
-            return is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE);
-        };
+        $hasConfigurationFile = (static fn($path) => is_file($path . DIRECTORY_SEPARATOR . self::CONFIGURATION_FILE));
 
         return FileHelper::findDirectories(
             Yii::getAlias($path, true),

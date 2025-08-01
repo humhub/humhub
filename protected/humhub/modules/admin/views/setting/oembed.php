@@ -35,7 +35,7 @@ JS, View::POS_READY);
                         <span>
                             <?= Html::encode($providerName) ?>
                         </span>
-                        <?php parse_str($provider['endpoint'], $query); ?>
+                        <?php parse_str((string) $provider['endpoint'], $query); ?>
                         <?php if (isset($query['access_token']) && empty($query['access_token'])): ?>
                             <?= Badge::danger()
                                 ->icon('fa-exclamation-circle')

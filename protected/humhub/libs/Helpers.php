@@ -92,7 +92,7 @@ class Helpers
 
     public static function trimText($text, $length): string
     {
-        $text = trim(preg_replace('#<br */?>#i', ' ', $text));
+        $text = trim((string) preg_replace('#<br */?>#i', ' ', (string) $text));
 
         $length = abs((int)$length);
         if (mb_strlen($text) > $length) {
@@ -156,7 +156,7 @@ class Helpers
             $minus = '-';
         }
 
-        $minuten = bcdiv($sekunden, '60', 0);
+        $minuten = bcdiv((string) $sekunden, '60', 0);
 
         $stunden = bcdiv($minuten, '60', 0);
         $minuten = bcmod($minuten, '60');
@@ -221,19 +221,12 @@ class Helpers
             throw new InvalidArgumentValueException('Your configuration option of ini_get function does not exist.');
         }
 
-        switch (substr($valueString, -1)) {
-            case 'M':
-            case 'm':
-                return (int)$valueString * 1048576;
-            case 'K':
-            case 'k':
-                return (int)$valueString * 1024;
-            case 'G':
-            case 'g':
-                return (int)$valueString * 1073741824;
-            default:
-                return (int)$valueString;
-        }
+        return match (substr($valueString, -1)) {
+            'M', 'm' => (int)$valueString * 1048576,
+            'K', 'k' => (int)$valueString * 1024,
+            'G', 'g' => (int)$valueString * 1073741824,
+            default => (int)$valueString,
+        };
     }
 
     /**
@@ -256,7 +249,7 @@ class Helpers
             $className = preg_replace('/[^a-z0-9_\-\\\]/i', '', $className);
         }
 
-        return DataTypeHelper::matchClassType($className, $type, false, true);
+        return DataTypeHelper::matchClassType($className, $type, false);
     }
 
     /**

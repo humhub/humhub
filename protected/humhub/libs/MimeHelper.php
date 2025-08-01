@@ -99,10 +99,6 @@ class MimeHelper
         // lowercase string
         $ext = strtolower($ext);
 
-        if (isset(self::$extensionToIconClass[$ext])) {
-            return self::$extensionToIconClass[$ext];
-        }
-
-        return self::ICON_FILE;
+        return self::$extensionToIconClass[$ext] ?? self::ICON_FILE;
     }
 }

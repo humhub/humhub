@@ -200,7 +200,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
             if (is_array($config) && isset($config['class'])) {
                 $class = $config['class'];
             } elseif ($config instanceof Module) {
-                $class = get_class($config);
+                $class = $config::class;
             }
 
             if ($class !== null) {

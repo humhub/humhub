@@ -25,7 +25,7 @@ class MigrationEvent extends Event
     /**
      * @var \humhub\components\Module|ApplicationInterface|null
      */
-    public ?Module $module;
+    public ?Module $module = null;
 
     /**
      * @var string Either `up` or `uninstall`

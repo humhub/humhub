@@ -22,7 +22,7 @@ use humhub\widgets\TimeAgo;
     href="<?= $relativeUrl ?? $url ?>"
     data-notification-id="<?= $record->id ?>"
     data-notification-group="<?= !empty($record->baseModel->getGroupkey())
-        ? Html::encode(get_class($record->baseModel) . ':' . $record->baseModel->getGroupKey())
+        ? Html::encode($record->baseModel::class . ':' . $record->baseModel->getGroupKey())
         : '' ?>">
 
     <div class="flex-shrink-0 me-3 pt-1 img-profile-space">

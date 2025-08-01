@@ -20,11 +20,8 @@ use humhub\modules\marketplace\models\Module as ModelModule;
  */
 class SearchRecord implements MetaSearchResultInterface
 {
-    public ?ModelModule $module = null;
-
-    public function __construct(ModelModule $module)
+    public function __construct(public ?ModelModule $module)
     {
-        $this->module = $module;
     }
 
     /**

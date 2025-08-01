@@ -33,7 +33,7 @@ use humhub\widgets\modal\Modal;
     // scroll to top of list
     $(".comment-modal-body").animate({scrollTop: 0}, 200);
 
-    <?php if(empty(trim($output))) : ?>
+    <?php if(empty(trim((string) $output))) : ?>
     $('#comment_<?= $id ?>').find('.comment_create hr').hide();
     <?php endif; ?>
 </script>
