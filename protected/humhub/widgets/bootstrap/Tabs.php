@@ -90,7 +90,7 @@ class Tabs extends \yii\bootstrap5\Tabs
      */
     private function getParams($item)
     {
-        return $item['params'] ?? !empty($this->params) ? $this->params : [];
+        return $item['params'] ?? ($this->params ?: []);
     }
 
     /**
