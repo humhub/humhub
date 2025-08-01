@@ -754,3 +754,14 @@ $select2-caret-width: 1rem; // we cannot use $caret-width because it's a em valu
     position: absolute !important;
     width: 1px !important;
 }
+
+/**
+ * Dark Mode styles
+ */
+if $enable-dark-mode {
+    @include color-mode(dark, true) {
+        .select2-dropdown {
+            background: var(--hh-background-color-main);
+        }
+    }
+}

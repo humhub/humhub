@@ -383,3 +383,14 @@ ul.tab-menu-settings {
         }
     }
 }
+
+/**
+ * Dark Mode styles
+ */
+if $enable-dark-mode {
+    @include color-mode(dark, true) {
+        .nav-pills.preferences .dropdown .dropdown-toggle::after {
+            filter: invert(100%);
+        }
+    }
+}
