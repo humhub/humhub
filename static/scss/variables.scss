@@ -149,3 +149,106 @@ $focus-ring-box-shadow: none !default;
 
 $default: #e7e7e7 !default;
 $link: $primary !default;
+
+
+
+// Dark color mode variables
+//
+// Custom variables for the `[data-bs-theme="dark"]` theme.
+
+// Sass variables
+// For CSS variables, see _root.scss
+// Bootstrap variables and functions such as tint-color() and shade-color() are not available for this file
+// All variables must have the !default flag to allow child-themes to overwrite them
+
+//
+// Color Bootstrap overwritten variables
+// --------------------------------------------------
+
+$link-hover-color-dark: mix(white, $primary, 10%) !default;
+$code-color-dark: mix(white, $info, 10%) !default;
+$body-color-dark: #ddd !default;
+$body-bg-dark: #000 !default;
+$input-border-color-dark: #1f2225 !default;
+$input-bg-dark: #000 !default; // default is $body-bg-dark
+
+//
+// HumHub Text colors
+// --------------------------------------------------
+
+// Default body text color.
+$text-color-main-dark: $body-color-dark !default;
+
+// used for default icons and buttons etc.
+$text-color-default-dark: #f0f0f0 !default;
+
+// used for some icons and buttons etc. - former $font2
+$text-color-secondary-dark: #bbb !default;
+
+// highlighted text like some active links hovered links etc. - former $font3
+$text-color-highlight-dark: #fff !default;
+
+// side information like dates, placeholder, some dropdown headers - former $font4
+$text-color-soft-dark: #ddd !default;
+
+// also side information wall entry links (like/comment), help blocks in forms etc.  - former $font5
+$text-color-soft2-dark: #ccc !default;
+
+// used in gridview summary and installer - former $font1
+$text-color-soft3-dark: #7b7773 !default;
+
+// used as contrast color for $primary-dark, $info-dark, $success-dark, $warning-dark, $danger-dark backgrounds for buttons etc.
+// Note that $default-dark does not use a contrast color $default-dark is normally combined with $text-color-secondary-dark
+$text-color-contrast-dark: #000 !default;
+
+//
+// Background colors
+// --------------------------------------------------
+
+// main content background color should be in contrast with $text-color-main-dark, $text-color-secondary-dark and other text colors
+$background-color-main-dark: #222 !default;
+
+// used beside others for tabs - former $background1
+$background-color-secondary-dark: #333 !default;
+
+// page background which is also used for other ui components as comment box etc. - former $background2
+$background-color-page-dark: $body-bg-dark !default;
+
+// Informative highlighting color
+// (e.g. Comment Permalink, Shared Item, Calendar CurDay, Wiki Active Page Nav, Mail Module Speech Bubble)
+$background-color-highlight-dark: rgba($info, 0.2) !default;
+
+// Informative highlighting soft color
+// (e.g. Wiki Active Category)
+$background-color-highlight-soft-dark: darken(desaturate(adjust-hue($info, 6), 16), 55) !default;
+
+// Additional background colors
+$background3-dark: #393939 !default;
+$background4-dark: #5e5e5e !default;
+
+//
+// Bootstrap Alert boxes
+// --------------------------------------------------
+
+// Alert box success (used in forms)
+$background-color-success-dark: #3e423b !default;
+$text-color-success-dark: #84be5e !default;
+$border-color-success-dark: #97d271 !default;
+
+// Alert box warning (used in forms)
+$background-color-warning-dark: #4d443b !default;
+$text-color-warning-dark: #e9b168 !default;
+$border-color-warning-dark: #fdd198 !default;
+
+// Alert box danger (used in forms)
+$background-color-danger-dark: #372a2a !default;
+$text-color-danger-dark: #ff8989 !default;
+$border-color-danger-dark: #ff8989 !default;
+
+//
+// @deprecated since 1.18
+// --------------------------------------------------
+
+$default-dark: #2a2a2a !default;
+$link-dark: $primary !default;
+
