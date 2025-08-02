@@ -61,7 +61,7 @@
         border: 1px solid var(--hh-background3);
 
         li {
-            border-left: 3px solid white;
+            border-left: 3px solid var(--hh-background-color-main);
 
             &:hover,
             &.selected {
@@ -97,7 +97,7 @@ ul.contextMenu {
     border: 1px solid var(--hh-background3);
 
     li {
-        border-left: 3px solid white;
+        border-left: 3px solid var(--hh-background-color-main);
 
         &:hover,
         &.selected {

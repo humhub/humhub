@@ -119,7 +119,7 @@ ul.tab-menu-settings {
             }
 
             a {
-                color: white;
+                color: var(--hh-text-color-contrast);
                 font-weight: 400;
                 font-size: 13px;
                 padding: 4px 15px;
@@ -311,13 +311,13 @@ ul.tab-menu-settings {
 
             &, &.active {
                 color: #7A7A7A;
-                background: #fff;
-                border-color: #fff;
+                background: var(--hh-background-color-main);
+                border-color: var(--hh-background-color-main);
             }
 
             &:hover, &.active {
                 z-index: 1;
-                color: #333;
+                color: var(--text-color-default);
             }
         }
     }
@@ -333,7 +333,7 @@ ul.tab-menu-settings {
 
         > i {
             border-radius: 4px 4px 0 0;
-            background: #fff;
+            background: var(--hh-background-color-main);
             padding: 10px 15px 11px;
             font-size: 18px;
 
@@ -380,6 +380,17 @@ ul.tab-menu-settings {
                     }
                 }
             }
+        }
+    }
+}
+
+/**
+ * Dark Mode styles
+ */
+@if $enable-dark-mode {
+    @include color-mode(dark, true) {
+        .nav-pills.preferences .dropdown .dropdown-toggle::after {
+            filter: invert(100%);
         }
     }
 }

@@ -2,7 +2,7 @@
 // Statusbar
 // --------------------------------------------------
 .status-bar-body {
-    color: white;
+    color: var(--hh-text-color-contrast);
     position: fixed;
     margin-bottom: var(--hh-mobile-app-safe-area-inset-bottom, env(safe-area-inset-bottom)); // for the web view space (safe area) on mobile devices
     width: 100%;
@@ -16,14 +16,14 @@
 }
 
 .status-bar-close {
-    color: white;
+    color: var(--hh-text-color-contrast);
     font-weight: bold;
     font-size: 21px;
     cursor: pointer;
 }
 
 .status-bar-close:hover {
-    color: white;
+    color: var(--hh-text-color-contrast);
 }
 
 .status-bar-close i {

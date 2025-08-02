@@ -14,19 +14,19 @@
     }
 
     .text {
-        color: #fff;
+        color: var(--hh-text-color-contrast);
         font-size: 12px;
         margin-bottom: 15px;
 
         a {
-            color: #fff;
+            color: var(--hh-text-color-contrast);
             text-decoration: underline;
         }
     }
 
     h1,
     h2 {
-        color: #fff !important;
+        color: var(--hh-text-color-contrast) !important;
     }
 
     .panel {
