@@ -18,7 +18,8 @@ use yii\base\Event;
  */
 class ParameterEvent extends Event
 {
-    public function __construct(public array $parameters,
+    public function __construct(
+        public array $parameters,
     ) {
         $this->init();
     }
