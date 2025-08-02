@@ -192,9 +192,9 @@ $text-color-soft2-dark: #ccc !default;
 // used in gridview summary and installer - former $font1
 $text-color-soft3-dark: #7b7773 !default;
 
-// used as contrast color for $primary-dark, $info-dark, $success-dark, $warning-dark, $danger-dark backgrounds for buttons etc.
-// Note that $default-dark does not use a contrast color $default-dark is normally combined with $text-color-secondary-dark
-$text-color-contrast-dark: #000 !default;
+// used as contrast color for $primary, $info, $success, $warning, $danger backgrounds for buttons etc.
+// Note that $default does not use a contrast color $default is normally combined with $text-color-secondary
+$text-color-contrast-dark: #fff !default;
 
 //
 // Background colors

@@ -112,7 +112,7 @@ a.label-warning:hover {
         padding: 10px;
         border-bottom: 1px solid var(--hh-background-color-page);
         position: relative;
-        border-left: 3px solid var(--hh-text-color-contrast);
+        border-left: 3px solid var(--hh-background-color-main);
 
         &:hover,
         &.selected {
@@ -142,7 +142,7 @@ a.label-warning:hover {
 
 .media-list li.placeholder:hover {
     background: none !important;
-    border-left: 3px solid var(--hh-text-color-contrast);
+    border-left: 3px solid var(--hh-background-color-main);
 }
 
 .media-left,
@@ -414,7 +414,7 @@ a.label-warning:hover {
 .panel-profile {
     .panel-profile-header {
         position: relative;
-        border: 3px solid var(--hh-text-color-contrast);
+        border: 3px solid var(--hh-background-color-main);
         border-top-right-radius: 3px;
         border-top-left-radius: 3px;
 
@@ -477,7 +477,7 @@ a.label-warning:hover {
             left: 15px;
 
             .profile-user-photo {
-                border: 3px solid var(--hh-text-color-contrast);
+                border: 3px solid var(--hh-background-color-main);
                 border-radius: 5px;
 
                 // Force position of the online status because of the 3px border on the photo

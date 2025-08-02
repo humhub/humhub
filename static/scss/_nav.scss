@@ -312,7 +312,7 @@ ul.tab-menu-settings {
             &, &.active {
                 color: #7A7A7A;
                 background: var(--hh-background-color-main);
-                border-color: var(--hh-text-color-contrast);
+                border-color: var(--hh-background-color-main);
             }
 
             &:hover, &.active {

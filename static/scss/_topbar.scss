@@ -278,7 +278,7 @@
         text-align: right;
 
         span {
-            color: var(--hh-background3);
+            color: var(--bs-light);
         }
     }
 
@@ -393,7 +393,7 @@
 
             > ul > li > a {
                 & {
-                    border-left: 3px solid var(--hh-text-color-contrast);
+                    border-left: 3px solid var(--hh-background-color-main);
                     background-color: var(--hh-background-color-main);
                     color: var(--hh-text-color-highlight);
                 }

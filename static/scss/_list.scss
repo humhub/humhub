@@ -14,7 +14,7 @@
         padding: 10px;
         border-bottom: 1px solid var(--hh-background-color-page);
         position: relative;
-        border-left: 3px solid var(--hh-text-color-contrast);
+        border-left: 3px solid var(--hh-background-color-main);
 
         &:hover,
         &.selected {
@@ -42,7 +42,7 @@
 
         &.placeholder:hover {
             background: none !important;
-            border-left: 3px solid var(--hh-text-color-contrast);
+            border-left: 3px solid var(--hh-background-color-main);
         }
 
         // TODO: move to Enterprise Theme module
