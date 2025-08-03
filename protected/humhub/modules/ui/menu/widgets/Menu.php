@@ -9,10 +9,10 @@
 namespace humhub\modules\ui\menu\widgets;
 
 use humhub\components\Event;
+use humhub\components\View;
 use humhub\libs\Sort;
 use humhub\modules\ui\menu\MenuEntry;
 use humhub\modules\ui\menu\MenuLink;
-use humhub\modules\ui\view\components\View;
 use humhub\widgets\BaseStack;
 use humhub\widgets\JsWidget;
 use Yii;

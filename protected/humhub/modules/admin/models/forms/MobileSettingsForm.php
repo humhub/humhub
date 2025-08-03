@@ -9,7 +9,7 @@
 namespace humhub\modules\admin\models\forms;
 
 use humhub\services\WellKnownService;
-use humhub\widgets\Link;
+use humhub\widgets\bootstrap\Link;
 use Yii;
 use yii\base\Model;
 

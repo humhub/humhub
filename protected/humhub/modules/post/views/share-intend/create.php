@@ -5,13 +5,12 @@
  * @license https://www.humhub.com/licences
  */
 
-use humhub\libs\Html;
+use humhub\components\View;
+use humhub\helpers\Html;
 use humhub\modules\content\components\ContentContainerActiveRecord;
 use humhub\modules\post\widgets\Form;
-use humhub\modules\ui\form\widgets\ActiveForm;
-use humhub\modules\ui\view\components\View;
-use humhub\widgets\ModalButton;
-use humhub\widgets\ModalDialog;
+use humhub\widgets\modal\Modal;
+use humhub\widgets\modal\ModalButton;
 use yii\helpers\StringHelper;
 
 /**
@@ -21,17 +20,17 @@ use yii\helpers\StringHelper;
  */
 ?>
 
-<?php ModalDialog::begin([
+<?php $form = Modal::beginFormDialog([
     'id' => 'share-intend-modal',
-    'header' => Yii::t('FileModule.base', 'Share in {targetDisplayName}', [
+    'title' => Yii::t('FileModule.base', 'Share in {targetDisplayName}', [
         'targetDisplayName' => $shareTarget->guid === Yii::$app->user->identity->guid ?
             Yii::t('base', 'My Profile') :
             Html::encode(StringHelper::truncate($shareTarget->displayName, 10)),
     ]),
+    'footer' => ModalButton::light(Yii::t('base', 'Back'))
+        ->load(['/post/share-intend']),
 ]) ?>
-<?php $form = ActiveForm::begin() ?>
 
-<div class="modal-body">
     <div id="space-content-create-form" data-stream-create-content="stream.wall.WallStream">
         <?= Form::widget([
             'contentContainer' => $shareTarget,
@@ -39,15 +38,8 @@ use yii\helpers\StringHelper;
             'isModal' => true,
         ]) ?>
     </div>
-</div>
 
-<div class="modal-footer">
-    <?= ModalButton::defaultType(Yii::t('base', 'Back'))
-        ->load(['/post/share-intend']) ?>
-</div>
-
-<?php ActiveForm::end() ?>
-<?php ModalDialog::end() ?>
+<?php Modal::endFormDialog() ?>
 
 <script <?= Html::nonce() ?>>
     $(function () {
