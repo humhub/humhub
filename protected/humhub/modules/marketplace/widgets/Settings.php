@@ -58,6 +58,6 @@ class Settings extends DropdownMenu
      */
     public function getAttributes()
     {
-        return ['class' => 'marketplace-settings-dropdown pull-right'];
+        return ['class' => 'marketplace-settings-dropdown float-end'];
     }
 }

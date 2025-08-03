@@ -50,8 +50,8 @@ Widgets & helpers:
 - `humhub\widgets\BootstrapComponent`
 - `humhub\widgets\Tabs` use `humhub\widgets\bootstrap\Tabs` instead
 - `humhub\widgets\Button` use `humhub\widgets\bootstrap\Button` instead
-- `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
 - `humhub\widgets\LinkPager` use `humhub\widgets\bootstrap\LinkPager` instead
+- `humhub\widgets\Link` use `humhub\widgets\bootstrap\Link` instead
 - `humhub\widgets\Label` use `humhub\widgets\bootstrap\Badge` instead (watch out for class name changes!)
 - `humhub\modules\topic\widgets\TopicLabel` use `humhub\modules\topic\widgets\TopicBadge` instead (watch out for class name changes!)
 - `humhub\libs\Html` use `humhub\helpers\Html` instead
@@ -65,7 +65,7 @@ Widget methods & properties:
 - `humhub\widgets\bootstrap\Button::color()` & `humhub\widgets\bootstrap\Badge::color()` use `::instance($text, $color)` instead for a Bootstrap color, or `::cssBgColor()` for a custom color (Hexadecimal, RGB, RGBA, HSL, HSLA) (same for Badge)
 - `humhub\widgets\bootstrap\Button::textColor()` & `humhub\widgets\bootstrap\Badge::textColor()` use `::cssTextColor()` instead
 
-Name spaces starting with `yii\bootstrap`: use `yii\bootstrap5` instead (but see "HumHub widgets" below)
+Name spaces starting with `yii\bootstrap\`: use `yii\bootstrap5\` instead (but see "HumHub widgets" below)
 
 Forms and Modal Dialog: see below.
 
@@ -98,13 +98,13 @@ If a Bootstrap widget is not available, create an issue on https://github.com/hu
 
 ### Deprecations
 
-- `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog` use `humhub\widgets\modal\Modal` instead, which is different, as it's for the full Modal box, not just the dialog part of it
 - `humhub\widgets\ModalButton` use `humhub\widgets\modal\ModalButton` instead
 - `humhub\widgets\modal\ModalButton::submitModal($url, $label)` use `humhub\widgets\modal\ModalButton::save($label)->submit($url)` instead
 - `humhub\widgets\ModalClose` use `humhub\widgets\modal\ModalClose` instead
 - `humhub\widgets\GlobalModal` use `humhub\widgets\modal\GlobalModal` instead
 - `humhub\widgets\GlobalConfirmModal` use `humhub\widgets\modal\GlobalConfirmModal` instead
+- `humhub\widgets\Modal` use `humhub\widgets\modal\JsModal` instead
 - `humhub\widgets\ModalDialog::begin()` use `humhub\widgets\modal\Modal::beginDialog()` instead (see changes in the "Modal Dialog" chapter below)
 - `humhub\widgets\ModalDialog::end()` use `humhub\widgets\modal\Modal::endDialog()` instead
 - `humhub\widgets\modal\Modal::header` & `humhub\widgets\modal\JsModal::header`: use `title` instead (search for `'header' =>`)
@@ -799,6 +799,14 @@ Please review all overwritten view files. See [Migration: Identify Template Chan
 
 The most important change concerns the `protected/humhub/views/layouts/main.php` file, which has been refactored with bs5 flex logic (instead of floating right elements).
 
+## Quick test to check if the migration is done
+
+Search in all files for this regex expression:
+```regexp
+(humhub\\widgets\\(Tabs|Button|Link|Label)|humhub\\libs\\Html|humhub\\modules\\ui\\view\\components\\View|humhub\\modules\\ui\\view\\helpers\\ThemeHelper|humhub\\widgets\\Modal|yii\\widgets\\Active(Form|Field)|humhub\\modules\\ui\\form\\widgets\\Active(Form|Field)|humhub\\modules\\ui\\form\\widgets\\FormTabs|yii\\bootstrap\\|xs\(|-xs|defaultType\(|btn-default|class="divider"|pull-(left|right)|form-group|help-block)
+```
+
+It doesn't search for all migration changes, but it will find most of the important ones.
 
 ## Documentation
 
